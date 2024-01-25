@@ -1,4 +1,5 @@
 /*
+
   Naval Observatory Vector Astrometry Software (NOVAS)
   C Edition, Version 3.1
 
@@ -1086,6 +1087,7 @@ short int topo_planet (double jd_tt, object *ss_body, double delta_t,
       *dis (double)
          True distance from Earth to the body at 'jd_tt' in AU.
 
+
    RETURNED
    VALUE:
       (short int)
@@ -1776,6 +1778,11 @@ short int place (double jd_tt, object *cel_object,
 
       if ((error = light_time (jd_tdb,cel_object,pob,t_light0,accuracy,
            pos3,&t_light)) != 0)
+         return (error += 50);
+
+      // AK: Fix for antedating velocities...
+      jd[0] -= t_light;
+      if ((error = ephemeris (jd,cel_object,0,accuracy, pos1,vel1)) != 0)
          return (error += 50);
    }
 
@@ -3128,7 +3135,8 @@ short int sidereal_time (double jd_high, double jd_low,
    For mean sidereal time, subtract the equation of the equinoxes.
 */
 
-         ha_eq -= (eqeq / 240.0);
+         // AK: Fix for documented bug in NOVAS 3.1 --> 3.1.1
+         ha_eq -= (eqeq / 3600.0);
 
          ha_eq = fmod (ha_eq, 360.0) / 15.0;
          if (ha_eq < 0.0)
@@ -4843,9 +4851,9 @@ void frame_tie (double *pos1, short int direction,
    from IERS (2003) Conventions, Chapter 5.
 */
 
-   const double xi0  = -0.0166170;
-   const double eta0 = -0.0068192;
-   const double da0  = -0.01460;
+   const double xi0  = -0.0166170 * ASEC2RAD;
+   const double eta0 = -0.0068192 * ASEC2RAD;
+   const double da0  = -0.01460 * ASEC2RAD;
    static double xx, yx, zx, xy, yy, zy, xz, yz, zz;
 
 /*
@@ -4857,13 +4865,15 @@ void frame_tie (double *pos1, short int direction,
    if (compute_matrix == 1)
    {
       xx =  1.0;
-      yx = -da0  * ASEC2RAD;
-      zx =  xi0  * ASEC2RAD;
-      xy =  da0  * ASEC2RAD;
+      yx = -da0;
+      zx =  xi0;
+
+      xy =  da0;
       yy =  1.0;
-      zy =  eta0 * ASEC2RAD;
-      xz = -xi0  * ASEC2RAD;
-      yz = -eta0 * ASEC2RAD;
+      zy =  eta0;
+
+      xz = -xi0;
+      yz = -eta0;
       zz =  1.0;
 
 /*
@@ -4883,21 +4893,19 @@ void frame_tie (double *pos1, short int direction,
 
    if (direction < 0)
    {
-
-/*
-   Perform rotation from dynamical system to ICRS.
-*/
+     /*
+        Perform rotation from ICRS to dynamical system.
+      */
 
       pos2[0] = xx * pos1[0] + yx * pos1[1] + zx * pos1[2];
       pos2[1] = xy * pos1[0] + yy * pos1[1] + zy * pos1[2];
       pos2[2] = xz * pos1[0] + yz * pos1[1] + zz * pos1[2];
    }
-    else
+   else
    {
-
-/*
-   Perform rotation from ICRS to dynamical system.
-*/
+     /*
+        Perform rotation from dynamical system to ICRS.
+      */
 
       pos2[0] = xx * pos1[0] + xy * pos1[1] + xz * pos1[2];
       pos2[1] = yx * pos1[0] + yy * pos1[1] + yz * pos1[2];
