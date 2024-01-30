@@ -22,7 +22,7 @@
 
 
 /// \cond PRIVATE
-#define T0        NOVAS_T0
+#define T0        NOVAS_JD_J2000
 /// \endcond
 
 
@@ -61,12 +61,14 @@
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem_hp().
  *
- * @sa solarsystem1()
+ * @sa solarsystem_eph_manager()
  * @sa solarsystem_hp()
  * @sa planet_ephemeris()
  * @sa ephem_open()
+ *
+ * @since 1.0
  */
-short int solarsystem1_hp (const double jd_tdb[2], enum novas_major_planet body,
+short int solarsystem_eph_manager_hp (const double jd_tdb[2], enum novas_major_planet body,
         enum novas_origin origin,
         double *position, double *velocity) {
   short int target, center = 0;
@@ -112,7 +114,7 @@ short int solarsystem1_hp (const double jd_tdb[2], enum novas_major_planet body,
    between two double-precision elements for highest precision.
    */
 
-  planet_ephemeris (jd_tdb,target,center, position,velocity);
+  planet_ephemeris (jd_tdb, target, center, position,velocity);
 
   return 0;
 }
@@ -152,33 +154,35 @@ short int solarsystem1_hp (const double jd_tdb[2], enum novas_major_planet body,
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
- * @sa solarsystem1_hp()
+ * @sa solarsystem_eph_manager_hp()
  * @sa solarsystem()
  * @sa planet_ephemeris()
  * @sa ephem_open()
+ *
+ * @since 1.0
  */
-short int solarsystem1(double jd_tdb, enum novas_major_planet body, enum novas_origin origin,
+short int solarsystem_eph_manager(double jd_tdb, enum novas_major_planet body, enum novas_origin origin,
         double *position, double *velocity) {
   const double tjd[2] = {jd_tdb, 0.0 };
-  return solarsystem1_hp(tjd, body, origin, position, velocity);
+  return solarsystem_eph_manager_hp(tjd, body, origin, position, velocity);
 }
 
 
 
-#ifdef DEFAULT_SOLSYS
+#if DEFAULT_SOLSYS == 1
 short int default_solarsystem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem1(jd_tdb, body, origin, position, velocity);
+  return solarsystem_eph_manager(jd_tdb, body, origin, position, velocity);
 }
 
 short int default_solarsystem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem1_hp(jd_tdb, body, origin, position, velocity);
+  return solarsystem_eph_manager_hp(jd_tdb, body, origin, position, velocity);
 }
-#else
+#elif !BUILTIN_SOLSYS1
 short int solarsystem(double jd_tdb, short int body, short int origin, double *position, double *velocity) {
-  return solarsystem1(jd_tdb, body, origin, position, velocity);
+  return solarsystem_eph_manager(jd_tdb, body, origin, position, velocity);
 }
 
 short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity) {
-  return solarsystem1_hp(jd_tdb, body, origin, position, velocity);
+  return solarsystem_eph_manager_hp(jd_tdb, body, origin, position, velocity);
 }
 #endif

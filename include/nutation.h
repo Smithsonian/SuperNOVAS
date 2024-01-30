@@ -26,7 +26,7 @@
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
- * @param[out] deps   [rad] &delta;@epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
  *
  * @sa nutation()
  * @sa iau2000a()

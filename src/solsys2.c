@@ -15,12 +15,12 @@
 #endif
 
 /// \cond PRIVATE
-#define T0        NOVAS_T0
+#define T0        NOVAS_JD_J2000
 /// \endcond
 
 /********solarsystem */
 
-short int solarsystem2(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity)
+short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity)
 /*
  ------------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ short int solarsystem2(double jd_tdb, enum novas_major_planet body, enum novas_o
 
 /********solarsystem_hp */
 
-short int solarsystem2_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin,
+short int solarsystem_jplint_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin,
 
 double *position, double *velocity)
 /*
@@ -298,20 +298,20 @@ double *position, double *velocity)
   return 0;
 }
 
-#ifdef DEFAULT_SOLSYS
+#if DEFAULT_SOLSYS == 2
 short int default_solarsystem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem2(jd_tdb, body, origin, position, velocity);
+  return solarsystem_jplint(jd_tdb, body, origin, position, velocity);
 }
 
 short int default_solarsystem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem2_hp(jd_tdb, body, origin, position, velocity);
+  return solarsystem_jplint_hp(jd_tdb, body, origin, position, velocity);
 }
-#else
+#elif !BUILTIN_SOLSYS2
 short int solarsystem(double jd_tdb, short int body, short int origin, double *position, double *velocity) {
-  return solarsystem2(jd_tdb, body, origin, position, velocity);
+  return solarsystem_jplint(jd_tdb, body, origin, position, velocity);
 }
 
 short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity) {
-  return solarsystem2_hp(jd_tdb, body, origin, position, velocity);
+  return solarsystem_jplint_hp(jd_tdb, body, origin, position, velocity);
 }
 #endif

@@ -4,20 +4,58 @@ SRC = $(PROJECT_ROOT)src
 INC = $(PROJECT_ROOT)include
 
 # Compiler options
-CFLAGS = -I$(INC) -Os -Wall -Wextra
+CFLAGS = -I$(INC) -Os -Wall -Wextra -g
 
 # For maximum compatibility with NOVAS C 3.1, uncomment the line below
 #CFLAGS += -DCOMPAT=1
 
+# Whether to build into the library specific versions of solarsystem()
+#BUILTIN_SOLSYS1 = 1
+#BUILTIN_SOLSYS2 = 1
+BUILTIN_SOLSYS3 = 1
+
 # Compile library with a default solarsystem() implementation, which will be used
 # only if the application does not define another implementation via calls to the
 # to set_solarsystem() type functions.
-DEFAULT_SOLSYS = solsys3
+DEFAULT_SOLSYS = 3
 
 # Compile library with a default readeph() implementation, which will be used
 # only if the application does not define another implementation via calls to the
 # to set_ephem_reader() function.
 DEFAULT_READEPH = readeph0
+
+ifeq ($(DEFAULT_SOLSYS), 1) 
+  BUILTIN_SOLSYS1 = 1
+endif
+
+ifeq ($(DEFAULT_SOLSYS), 2)
+  BUILTIN_SOLSYS2 = 1
+endif
+
+ifeq ($(DEFAULT_SOLSYS), 3)
+  BUILTIN_SOLSYS3 = 1
+endif
+
+SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/eph_manager.c
+
+ifeq ($(BUILTIN_SOLSYS1), 1) 
+  SOURCES += $(SRC)/solsys1.c
+endif
+
+ifeq ($(BUILTIN_SOLSYS2), 1) 
+  SOURCES += $(SRC)/solsys2.c
+endif
+
+ifeq ($(BUILTIN_SOLSYS3), 1) 
+  SOURCES += $(SRC)/solsys3.c
+endif
+
+ifdef (DEFAULT_READEPH) 
+  SOURCES += $(SRC)/$(DEFAULT_READEPH).c
+endif
+
+OBJECTS := $(subst $(SRC),obj,$(SOURCES))
+OBJECTS := $(subst .c,.o,$(OBJECTS))
 
 # cppcheck options
 CHECKOPTS = --enable=performance,warning,portability,style --language=c --std=c90 --error-exitcode=1
@@ -53,12 +91,12 @@ static: lib/novas.a
 shared: lib/novas.so
 
 # Static library: novas.a
-lib/novas.a: obj/novas.o obj/nutation.o obj/eph_manager.o obj/$(DEFAULT_SOLSYS).o obj/$(DEFAULT_READEPH).o | lib
+lib/novas.a: $(OBJECTS) | lib
 	ar -rc $@ $^
 	ranlib $@
 
 # Shared library: novas.so
-lib/novas.so: $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/eph_manager.c $(SRC)/$(DEFAULT_SOLSYS).c $(SRC)/$(DEFAULT_READEPH).c | lib
+lib/novas.so: $(SOURCES) | lib
 	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC
 
 # Regular object files

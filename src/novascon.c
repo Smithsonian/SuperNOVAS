@@ -17,10 +17,10 @@
 #include "novas.h"
 #include "novascon.h"
 
-const double T0 = NOVAS_T0;
+const double T0 = NOVAS_JD_J2000;
 const double C = NOVAS_C;
 const double AU_SEC = NOVAS_AU_SEC;
-const double C_AUDAY = NOVAS_C_AUDAY;
+const double C_AUDAY = NOVAS_C_AU_PER_DAY;
 const double AU = NOVAS_AU;
 const double AU_KM = NOVAS_AU_KM;
 const double GS = NOVAS_GS;

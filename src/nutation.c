@@ -16,7 +16,7 @@
 #include "novas.h"
 
 /// \cond PRIVATE
-#define T0        NOVAS_T0
+#define T0        NOVAS_JD_J2000
 /// \endcond
 
 /**
@@ -39,7 +39,7 @@
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
- * @param[out] deps   [rad] &delta;@epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
  *
  * @sa nutation()
  * @sa novas_nutate_func
@@ -3007,7 +3007,7 @@ void iau2000a (double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) 
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
- * @param[out] deps   [rad] &delta;@epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
  *
  * @sa nutation()
  * @sa novas_nutate_func
@@ -3343,7 +3343,7 @@ void iau2000b (double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) 
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
- * @param[out] deps   [rad] &delta;@epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
  *
  * @sa nutation()
  * @sa novas_nutate_func

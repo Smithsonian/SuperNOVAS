@@ -245,7 +245,21 @@ short int solarsystem (double jd_tdb, short int body, short int origin, double *
 short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity);
 
 
+short int solarsystem_earth_sun(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
 
+short int solarsystem_earth_sun_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+
+short int solarsystem_unified(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+
+short int solarsystem_unified_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+
+short int solarsystem_eph_manager(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+
+short int solarsystem_eph_manager_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+
+short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+
+short int solarsystem_jplint_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 #endif

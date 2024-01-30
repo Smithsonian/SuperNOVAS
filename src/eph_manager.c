@@ -302,6 +302,7 @@ short int ephem_close(void)
 
   if(EPHFILE) {
     error = (short int) fclose(EPHFILE);
+    EPHFILE = NULL;
     free(BUFFER);
   }
   return error;

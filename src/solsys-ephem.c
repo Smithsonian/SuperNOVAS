@@ -16,10 +16,9 @@
  * Major planet ephemeris data via the same generic ephemeris reader that is configured by set_ephem_reader() prior
  * to calling this routine. This is the highest precision version.
  *
- * @param jd_tdb         [day] Two-element array containing the Julian date, which may be
- *                       split any way (although the first element is usually the
- *                       "integer" part, and the second element is the "fractional"
- *                       part).  Julian date is on the TDB or "T_eph" time scale.
+ * @param jd_tdb         [day] Barycentric Dynamical Time (TDB) based Julian date, split into high
+ *                       and low order components (e.g. integer and fractional parts) for high-precision
+ *                       calculations.
  * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                       report positions and velocities.
@@ -29,14 +28,14 @@
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem_hp().
  *
- * @sa solarsystem_ephem()
+ * @sa solarsystem_unified()
  * @sa solarsystem_hp()
  * @sa set_ephem_reader()
  *
  * @since 1.0
  * @author Attila Kovacs
  */
-short int solarsystem_ephem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
+short int solarsystem_unified_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
   static const char *names[] = NOVAS_MAJOR_PLANET_NAMES_INIT;
 
   novas_ephem_reader_func f;
@@ -83,10 +82,7 @@ short int solarsystem_ephem_hp(const double jd_tdb[2], enum novas_major_planet b
  * Major planet ephemeris data via the same generic ephemeris reader that is configured by set_ephem_reader() prior
  * to calling this routine. This is the regular (reduced) precision version.
  *
- * @param jd_tdb         [day] Two-element array containing the Julian date, which may be
- *                       split any way (although the first element is usually the
- *                       "integer" part, and the second element is the "fractional"
- *                       part).  Julian date is on the TDB or "T_eph" time scale.
+ * @param jd_tdb         [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                       report positions and velocities.
@@ -96,33 +92,33 @@ short int solarsystem_ephem_hp(const double jd_tdb[2], enum novas_major_planet b
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
- * @sa solarsystem_ephem_hp()
+ * @sa solarsystem_unified_hp()
  * @sa solarsystem()
  * @sa set_ephem_reader()
  *
  * @since 1.0
  * @author Attila Kovacs
  */
-short int solarsystem_ephem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
+short int solarsystem_unified(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
   const double jd_tdb2[2] = { jd_tdb };
-  return solarsystem_ephem_hp(jd_tdb2, body, origin, position, velocity);
+  return solarsystem_unified_hp(jd_tdb2, body, origin, position, velocity);
 }
 
 #ifdef DEFAULT_SOLSYS
 short int default_solarsystem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_ephem(jd_tdb, body, origin, position, velocity);
+  return solarsystem_unified(jd_tdb, body, origin, position, velocity);
 }
 
 short int default_solarsystem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_ephem_hp(jd_tdb, body, origin, position, velocity);
+  return solarsystem_unified_hp(jd_tdb, body, origin, position, velocity);
 }
 #else
-short int solarsystem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_ephem(jd_tdb, body, origin, position, velocity);
+short int solarsystem(double jd_tdb, short int body, short int origin, double *position, double *velocity) {
+  return solarsystem_unified(jd_tdb, body, origin, position, velocity);
 }
 
-short int solarsystem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_ephem_hp(jd_tdb, body, origin, position, velocity);
+short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity) {
+  return solarsystem_unified_hp(jd_tdb, body, origin, position, velocity);
 }
 #endif
 

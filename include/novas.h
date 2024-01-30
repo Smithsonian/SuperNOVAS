@@ -65,24 +65,25 @@
 /// The version string of the upstream NOVAS library on which this library is based.
 #define NOVAS_VERSION_STRING      #NOVAS_MAJOR_VERSION "." NOVAS_MINOR_VERSION
 
+#define NOVAS_CIO_CACHE_SIZE      1024    ///< [pts] cache size for GCRS CIO locator data (16 bytes per point).
 
 /// [day] Julian date at J2000
-#define NOVAS_T0          2451545.0
+#define NOVAS_JD_J2000    2451545.0
 
 /// [m/s] Speed of light in meters/second is a defining physical constant.
 #define NOVAS_C           299792458.0
 
-/// [AU] Light-time for one astronomical unit (AU) in seconds, from DE-405.
-#define NOVAS_AU_SEC      499.0047838061
-
-/// [AU/day] Speed of light in AU/day.  Value is 86400 / AU_SEC.
-#define NOVAS_C_AUDAY     173.1446326846693
-
 /// [m] Astronomical unit in meters.  Value is AU_SEC * C.
 #define NOVAS_AU          1.4959787069098932e+11
 
+/// [AU] Light-time for one astronomical unit (AU) in seconds, from DE-405.
+#define NOVAS_AU_SEC      ( NOVAS_AU / NOVAS_C )
+
+/// [AU/day] Speed of light in AU/day.  Value is 86400 / AU_SEC.
+#define NOVAS_C_AU_PER_DAY     ( 86400.0 / AU_SEC )
+
 /// [km] Astronomical Unit in kilometers.
-#define NOVAS_AU_KM       1.4959787069098932e+8
+#define NOVAS_AU_KM       ( 1e-3 * NOVAS_AU )
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant in meters^3 / second^2, from DE-405.
 #define NOVAS_GS          1.32712440017987e+20
@@ -119,25 +120,25 @@
 
 #  ifndef ASEC360
 /// [arcsec] Number of arcseconds in 360 degrees.
-#    define ASEC360           1296000.0
+#    define ASEC360           (360 * 60 * 60)
+#  endif
+
+#  ifndef DEG2RAD
+/// [rad/deg] 1 degree in radians
+#    define DEG2RAD           (M_PI / 180.0)
+#  endif
+
+#  ifndef RAD2DEG
+/// [deg/rad] 1 radian in degrees
+#    define RAD2DEG           (1.0 / DEG2RAD)
 #  endif
 
 
 #  ifndef ASEC2RAD
 /// [rad/arcsec] 1 arcsecond in radians
-#    define ASEC2RAD          4.848136811095359935899141e-6
+#    define ASEC2RAD          (DEG2RAD / 3600.0)
 #  endif
 
-
-#  ifndef RAD2DEG
-/// [deg/rad] 1 radian in degrees
-#    define RAD2DEG           57.295779513082321
-#  endif
-
-#  ifndef DEG2RAD
-/// [rad/deg] 1 degree in radians
-#    define DEG2RAD           (1.0 / RAD2DEG)
-#  endif
 
 #endif
 
@@ -472,22 +473,6 @@ typedef struct {
   double ra_cio;    ///< [arcsec] right ascension of the CIO with respect to the GCRS (arcseconds)
 } ra_of_cio;
 
-/**
- * Defines the location of the observer, which may be on the surface (i.e. fixed to the rotating frame of Earth)
- * or in near-earth orbit in space.
- *
- * @author Attila Kovacs
- * @since 1.0
- */
-typedef struct {
-  enum novas_observer_place place_type;    ///< The type of place that defines the observer location
-
-  /**
-   * Pointer to on_surface structure if observer_type is NOVAS_OBSERVER_ON_EARTH; pointer to in_space structure if
-   * observer_type is NOVAS_OBSERVER_IN_SPACE; otherwise ignored (an can be NULL).
-   */
-  void *data;
-} observer_location;
 
 /**
  * Fully defines the astronomical frame for which coordinates (including velocities) are calculated.
@@ -498,7 +483,7 @@ typedef struct {
 typedef struct {
   enum novas_reference_system basis_system;     ///< Coordindate system type.
   enum novas_origin origin;                     ///< Location of origin (if type is NOVAS_ICRS)
-  observer_location location;                   ///< Location of observer (if type is not NOVAS_ICRS)
+  observer location;                            ///< Location of observer (if type is not NOVAS_ICRS)
   double jd_tdb;                                ///< [day] Barycentric Dynamical Time (TDB) based Julian date of observation.
   double ut1_to_tt;                             ///< [s] TT - UT1 time difference (if observer is on the surface of Earth, otherwise ignored.
 } astro_frame;
@@ -723,12 +708,12 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *obs_space);
 
 // Added API in SuperNOVAS
-int calc_pos(const object *source, const observer_location *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
+int calc_pos(const object *source, const observer *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
         enum novas_accuracy accuracy, sky_pos *pos);
 
 int calc_frame_pos(const object *source, const astro_frame *frame, enum novas_accuracy accuracy, sky_pos *pos);
 
-int calc_star_pos(const cat_entry *star, const observer_location *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
+int calc_star_pos(const cat_entry *star, const observer *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
         enum novas_accuracy accuracy, sky_pos *pos);
 
 int calc_icrs_pos(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
