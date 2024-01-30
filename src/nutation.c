@@ -1,82 +1,53 @@
-/*
-   Naval Observatory Vector Astrometry Software (NOVAS)
-   C Edition, Version 3.1
-   
-   nutation.c: Nutation models
+/**
+ * @file
+ *
+ * @author G. Kaplan and A. Kovacs
+ *
+ *  SuperNOVAS implementations for the IAU2000 nutation series calculations, with varying trade-offs between computational cost and
+ *  precision. It provides support for both the IAU 2000A and IAU2000B series as well as a NOVAS-specific truncated low-precision
+ *  version we call NU2000K.
+ *
+ *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
+ *  Astronomical Applications Dept.
+ *  Washington, DC
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ */
 
-   U. S. Naval Observatory
-   Astronomical Applications Dept.
-   Washington, DC 
-   http://www.usno.navy.mil/USNO/astronomical-applications
-*/
+#include "novas.h"
 
-#ifndef _NOVAS_
-   #include "novas.h"
-#endif
+/// \cond PRIVATE
+#define T0        NOVAS_T0
+/// \endcond
 
-/********iau2000a */
-
-void iau2000a (double jd_high, double jd_low,
-
-               double *dpsi, double *deps)
-/*
-------------------------------------------------------------------------
-
-   PURPOSE:
-      To compute the forced nutation of the non-rigid Earth based on
-      the IAU 2000A nutation model.
-
-   REFERENCES:
-      IERS Conventions (2003), Chapter 5.
-      Simon et al. (1994) Astronomy and Astrophysics 282, 663-683,
-         esp. Sections 3.4-3.5.
-
-   INPUT
-   ARGUMENTS:
-      jd_high (double)
-         High-order part of TT Julian date.
-      jd_low (double)
-         Low-order part of TT Julian date.
-
-   OUTPUT
-   ARGUMENTS:
-      *dpsi (double)
-         Nutation (luni-solar + planetary) in longitude, in radians.
-      *deps (double)
-         Nutation (luni-solar + planetary) in obliquity, in radians.
-
-   RETURNED
-   VALUE:
-      None.
-
-   GLOBALS
-   USED:
-      T0, ASEC2RAD, TWOPI
-
-   FUNCTIONS
-   CALLED:
-      fund_args    novas.c
-      fmod         math.h
-      sin          math.h
-      cos          math.h
-
-   VER./DATE/
-   PROGRAMMER:
-      V1.0/03-04/JAB (USNO/AA)
-      V1.1/12-10/JAB (USNO/AA): Implement static storage class for const
-                                arrays.
-      V1.2/03-11/WKP (USNO/AA): Added braces to 2-D array initialization
-                                to quiet gcc warnings.
-
-   NOTES:
-     1. The IAU 2000A nutation model is MHB_2000 without the free core
-     nutation and without the corrections to Lieske precession.
-     2. This function is the "C" version of NOVAS Fortran routine
-     'nu2000a'.
-
-------------------------------------------------------------------------
-*/
-{
+/**
+ * Computes the IAU 2000A nutation high-precision series for the specified date.
+ * It is rather expensive computationally.
+ *
+ * The IAU 2000A nutation model is MHB_2000 without the free core
+ * nutation and without the corrections to Lieske precession.
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>IERS Conventions (2003), Chapter 5.</li>
+ *  <li>Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5.</li>
+ * </ol>
+ *
+ * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the integer part of a split date for the highest precision, or the
+ *                    full date for normal (reduced) precision.
+ * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the fractional part of a split date for the highest precision, or 0.0
+ *                    for normal (reduced) precision.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
+ * @param[out] deps   [rad] &delta;@epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ *
+ * @sa nutation()
+ * @sa novas_nutate_func
+ * @sa iau2000b()
+ * @sa iau2000k()
+ *
+ */
+void iau2000a (double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
    short int i;
 
    double t, a[5], dp, de, arg, sarg, carg, factor, dpsils, depsls,
@@ -2850,13 +2821,13 @@ void iau2000a (double jd_high, double jd_low,
    Interval between fundamental epoch J2000.0 and given date.
 */
 
-   t = ((jd_high - T0) + jd_low) / 36525.0;
+   t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
 /*
    Compute fundamental arguments from Simon et al. (1994), in radians.
 */
 
-   fund_args (t, a);
+   fund_args (t, (novas_fundamental_args *) a);
 
 /*
    ** Luni-solar nutation. **
@@ -3016,68 +2987,37 @@ void iau2000a (double jd_high, double jd_low,
    return;
 }
 
-/********iau2000b */
-
-void iau2000b (double jd_high, double jd_low,
-
-               double *dpsi, double *deps)
-/*
-------------------------------------------------------------------------
-
-   PURPOSE:
-      To compute the forced nutation of the non-rigid Earth based on
-      the IAU 2000B precession/nutation model.
-
-   REFERENCES:
-      McCarthy, D. and Luzum, B. (2003). "An Abridged Model of the
-         Precession & Nutation of the Celestial Pole," Celestial
-         Mechanics and Dynamical Astronomy, Volume 85, Issue 1,
-         Jan. 2003, p. 37. (IAU 2000B)
-      IERS Conventions (2003), Chapter 5.
-
-   INPUT
-   ARGUMENTS:
-      jd_high (double)
-         High-order part of TT Julian date.
-      jd_low (double)
-         Low-order part of TT Julian date.
-
-   OUTPUT
-   ARGUMENTS:
-      *dpsi (double)
-         Nutation (luni-solar + planetary) in longitude, in radians.
-      *deps (double)
-         Nutation (luni-solar + planetary) in obliquity, in radians.
-
-   RETURNED
-   VALUE:
-      None.
-
-   GLOBALS
-   USED:
-      T0, ASEC2RAD, TWOPI
-
-   FUNCTIONS
-   CALLED:
-      fmod      math.h
-      sin       math.h
-      cos       math.h
-
-   VER./DATE/
-   PROGRAMMER:
-      V1.0/09-03/JAB (USNO/AA)
-      V1.1/12-10/JAB (USNO/AA): Implement static storage class for const
-                                arrays.
-      V1.2/03-11/WKP (USNO/AA): Added braces to 2-D array initialization
-                                to quiet gcc warnings.
-
-   NOTES:
-      1. IAU 2000B reproduces the IAU 2000A model to a precision of
-      1 milliarcsecond in the interval 1995-2020.
-
-------------------------------------------------------------------------
-*/
-{
+/**
+ * Compute the forced nutation of the non-rigid Earth based on the IAU 2000B precession/nutation model.
+ *
+ * IAU 2000B reproduces the IAU 2000A model to a precision of 1 milliarcsecond in the interval 1995-2020.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>McCarthy, D. and Luzum, B. (2003). "An Abridged Model of the
+ *     Precession & Nutation of the Celestial Pole," Celestial
+ *     Mechanics and Dynamical Astronomy, Volume 85, Issue 1,
+ *     Jan. 2003, p. 37. (IAU 2000B) IERS Conventions (2003), Chapter 5.</li>
+ * </ol>
+ *
+ * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the integer part of a split date for the highest precision, or the
+ *                    full date for normal (reduced) precision.
+ * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the fractional part of a split date for the highest precision, or 0.0
+ *                    for normal (reduced) precision.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
+ * @param[out] deps   [rad] &delta;@epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ *
+ * @sa nutation()
+ * @sa novas_nutate_func
+ * @sa iau2000a()
+ * @sa iau2000k()
+ *
+ *
+ *
+ */
+void iau2000b (double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
    short int i;
 
 /*
@@ -3088,8 +3028,7 @@ void iau2000b (double jd_high, double jd_low,
    double dpplan = -0.000135;
    double deplan =  0.000388;
 
-   double t, el, elp, f, d, om, arg, dp, de, sarg, carg, factor, dpsils,
-      depsls, dpsipl, depspl;
+   double t, el, elp, f, d, om, dp, de, factor, dpsils, depsls, dpsipl, depspl;
 
 /*
    Luni-Solar argument multipliers:
@@ -3266,7 +3205,7 @@ void iau2000b (double jd_high, double jd_low,
    Interval between fundamental epoch J2000.0 and given date.
 */
 
-   t = ((jd_high - T0) + jd_low) / 36525.0;
+   t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
 /*
    ** Luni-solar nutation. **
@@ -3328,14 +3267,14 @@ void iau2000b (double jd_high, double jd_low,
    Argument and functions.
 */
 
-      arg = fmod ((double) nals_t[i][0] * el  +
+      const double arg = fmod ((double) nals_t[i][0] * el  +
                   (double) nals_t[i][1] * elp +
                   (double) nals_t[i][2] * f   +
                   (double) nals_t[i][3] * d   +
                   (double) nals_t[i][4] * om,   TWOPI);
 
-      sarg = sin (arg);
-      carg = cos (arg);
+      const double sarg = sin (arg);
+      const double carg = cos (arg);
 
 /*
    Term.
@@ -3374,77 +3313,45 @@ void iau2000b (double jd_high, double jd_low,
    return;
 }
 
-/********nu2000k */
-
-void nu2000k (double jd_high, double jd_low,
-
-              double *dpsi, double *deps)
-/*
-------------------------------------------------------------------------
-
-   PURPOSE:
-      To compute the forced nutation of the non-rigid Earth:
-      Model NU2000K.  This model is a modified version of IAU 2000A,
-      which has been truncated for speed of execution, and uses Simon
-      et al. (1994) fundamental arguments throughout.  NU2000K agrees
-      with IAU 2000A at the 0.1 milliarcsecond level from 1700 to
-      2300.
-
-   REFERENCES:
-      IERS Conventions (2003), Chapter 5.
-      Simon et al. (1994) Astronomy and Astrophysics 282, 663-683,
-         esp. Sections 3.4-3.5.
-
-   INPUT
-   ARGUMENTS:
-      jd_high (double)
-         High-order part of TT Julian date.
-      jd_low (double)
-         Low-order part of TT Julian date.
-
-   OUTPUT
-   ARGUMENTS:
-      *dpsi (double)
-         Nutation (luni-solar + planetary) in longitude, in radians.
-      *deps (double)
-         Nutation (luni-solar + planetary) in obliquity, in radians.
-
-   RETURNED
-   VALUE:
-      None.
-
-   GLOBALS
-   USED:
-      T0, ASEC2RAD, TWOPI
-
-   FUNCTIONS
-   CALLED:
-      fund_args    novas.c
-      fmod         math.h
-      sin          math.h
-      cos          math.h
-
-   VER./DATE/
-   PROGRAMMER:
-      V1.0/03-04/JAB (USNO/AA)
-      V1.1/12-10/JAB (USNO/AA): Implement static storage class for const
-                                arrays.
-      V1.2/03-11/WKP (USNO/AA): Added braces to 2-D array initialization
-                                to quiet gcc warnings.
-
-   NOTES:
-      1. NU2000K was compared to IAU 2000A over six centuries (1700-
-      2300).  The average error in dpsi is 20 microarcseconds, with 98%
-      of the errors < 60 microarcseconds;  the average error in deleps
-      is 8 microarcseconds, with 100% of the errors < 60
-      microarcseconds.
-     2. NU2000K was developed by G. Kaplan (USNO) in March 2004.
-     3. This function is the "C" version of NOVAS Fortran routine
-      'nu2000k'.
-
-------------------------------------------------------------------------
-*/
-{
+/**
+ * Computes the forced nutation of the non-rigid Earth:
+ * Model NU2000K.  This model is a modified version of IAU 2000A,
+ * which has been truncated for speed of execution, and uses Simon
+ * et al. (1994) fundamental arguments throughout.  NU2000K agrees
+ * with IAU 2000A at the 0.1 milliarcsecond level from 1700 to
+ * 2300. It has the most modest computational cost among the
+ * implementations provided in the NOVAS library.
+ *
+ * NU2000K was compared to IAU 2000A over six centuries (1700-
+ * 2300).  The average error in dpsi is 20 microarcseconds, with 98%
+ * of the errors < 60 microarcseconds;  the average error in deleps
+ * is 8 microarcseconds, with 100% of the errors < 60
+ * microarcseconds.
+ *
+ * NU2000K was developed by G. Kaplan (USNO) in March 2004
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions (2003), Chapter 5.</li>
+ * <li>Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5.</li>
+ * </ol>
+ *
+ * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the integer part of a split date for the highest precision, or the
+ *                    full date for normal (reduced) precision.
+ * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
+ *                    it may be the fractional part of a split date for the highest precision, or 0.0
+ *                    for normal (reduced) precision.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
+ * @param[out] deps   [rad] &delta;@epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ *
+ * @sa nutation()
+ * @sa novas_nutate_func
+ * @sa iau2000a()
+ * @sa iau2000k()
+ *
+ */
+void nu2000k (double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
    short int i;
 
    double t, a[5], dp, de, arg, sarg, carg, factor, dpsils,
@@ -4464,14 +4371,14 @@ void nu2000k (double jd_high, double jd_low,
    Interval between fundamental epoch J2000.0 and given date.
 */
 
-   t = ((jd_high - T0) + jd_low) / 36525.0;
+   t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
 /*
    Compute fundamental arguments from Simon et al. (1994),
    in radians.
 */
 
-   fund_args (t, a);
+   fund_args (t, (novas_fundamental_args *) a);
 
 /*
    ** Luni-solar nutation. **

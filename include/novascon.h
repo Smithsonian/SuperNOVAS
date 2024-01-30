@@ -1,118 +1,65 @@
-/*
-  Naval Observatory Vector Astrometry Software (NOVAS)
-  C Edition, Version 3.1
- 
-  novascon.h: Header file for novascon.c 
- 
-  U. S. Naval Observatory
-  Astronomical Applications Dept.
-  Washington, DC 
-  http://www.usno.navy.mil/USNO/astronomical-applications
-*/
+/**
+ * @file
+ *
+ * @author G. Kaplan and A. Kovacs
+ *
+ *  SuperNOVAS header for numerical constants that used to be used internally in novas.c.
+ *
+ *  @deprecated Use your own version for the selection of the constant you need, expressed in whatever units your application
+ *              desires. We should not force you to adopt the internally used convention of NOVAS, not to mention the high
+ *              chance of namespace conglicts with the super-simplistic naming scheme here. You are better off without this.
+ *
+ *  C Edition, Version 3.1,  U. S. Naval Observatory
+ *  Astronomical Applications Dept.
+ *  Washington, DC
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ */
 
 #ifndef _CONSTS_
-   #define _CONSTS_
+#define _CONSTS_
 
-   extern const short int FN1;
-   extern const short int FN0;
+/// @deprecated Definition was already ommitted in NOVAS C 3.1.
+extern const short int FN1;
 
-/*
-   TDB Julian date of epoch J2000.0.
-*/
+/// @deprecated Definition was already ommitted in NOVAS C 3.1.
+extern const short int FN0;
 
-   extern const double T0;
+/// @deprecated TDB Julian date of epoch J2000.0. Use NOVAS_T0 instead.
+extern const double T0;
 
-/*
-   Speed of light in meters/second is a defining physical constant.
-*/
+/// @deprecated Speed of light in meters/second is a defining physical constant. Use NOVAS_C instead.
+extern const double C;
 
-   extern const double C;
+/// @deprecated Light-time for one astronomical unit (AU) in seconds, from DE-405. Use NOVAS_AU_SEC instead.
+extern const double AU_SEC;
 
-/*
-   Light-time for one astronomical unit (AU) in seconds, from DE-405.
-*/
+/// @deprecated Speed of light in AU/day. Use NOVAS_AUDAY instead.
+extern const double C_AUDAY;
 
-   extern const double AU_SEC;
+/// @deprecated Astronomical unit in meters. Use NOVAS_AU instead.
+extern const double AU;
 
-/*
-   Speed of light in AU/day.  Value is 86400 / AU_SEC.
-*/
+/// @deprecated Astronomical Unit in kilometers. Use NOVAS AU_KM instead.
+extern const double AU_KM;
 
-   extern const double C_AUDAY;
+/// @deprecated Heliocentric gravitational constant in meters^3 / second^2, from DE-405. Use NOVAS_GS instead.
+extern const double GS;
 
-/*
-   Astronomical unit in meters.  Value is AU_SEC * C.
-*/
+/// @deprecated Geocentric gravitational constant in meters^3 / second^2, from DE-405. Use NOVAS_GE instead.
+extern const double GE;
 
-   extern const double AU;
+/// @deprecated Radius of Earth in kilometers from IERS Conventions (2003). Use NOVAS_ERAD instead
+extern const double ERAD;
 
-/*
-   Astronomical Unit in kilometers.
-*/
+/// @deprecated Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642. Use NOVAS_EARTH_FLATTENING instead.
+extern const double F;
 
-   extern const double AU_KM;
+/// @deprecated Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003). Use NOVAS_ANGVEL instead
+extern const double ANGVEL;
 
-/*
-   Heliocentric gravitational constant in meters^3 / second^2, from
-   DE-405.
-*/
+/// @deprecated Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
+///  MASS[0] = Earth/Moon barycenter, MASS[1] = Mercury, ..., MASS[9] = Pluto, MASS[10] = Sun, MASS[11] = Moon. Use NOVAS_RMASS_INIT instead.
+extern const double RMASS[12];
 
-   extern const double GS;
-
-/*
-   Geocentric gravitational constant in meters^3 / second^2, from
-   DE-405.
-*/
-
-   extern const double GE;
-
-/*
-   Radius of Earth in kilometers from IERS Conventions (2003).
-*/
-
-   extern const double ERAD;
-
-/*
-   Earth ellipsoid flattening from IERS Conventions (2003).
-   Value is 1 / 298.25642.
-*/
-
-   extern const double F;
-
-/*
-   Rotational angular velocity of Earth in radians/sec from IERS
-   Conventions (2003).
-*/
-
-   extern const double ANGVEL;
-
-/*
-   Reciprocal masses of solar system bodies, from DE-405
-   (Sun mass / body mass).
-   MASS[0] = Earth/Moon barycenter, MASS[1] = Mercury, ...,
-   MASS[9] = Pluto, MASS[10] = Sun, MASS[11] = Moon.
-*/
-
-   extern const double RMASS[12];
-
-/*
-   Value of 2 * pi in radians.
-*/
-
-   extern const double TWOPI;
-
-/*
-   Number of arcseconds in 360 degrees.
-*/
-
-   extern const double ASEC360;
-
-/*
-   Angle conversion constants.
-*/
-
-   extern const double ASEC2RAD;
-   extern const double DEG2RAD;
-   extern const double RAD2DEG;
 
 #endif
