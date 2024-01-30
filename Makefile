@@ -24,6 +24,27 @@ DEFAULT_SOLSYS = 3
 # to set_ephem_reader() function.
 DEFAULT_READEPH = readeph0
 
+# Compiler and linker options etc.
+ifeq ($(BUILD_MODE),debug)
+	CFLAGS += -g
+else ifeq ($(BUILD_MODE),run)
+	CFLAGS += -O2
+else ifeq ($(BUILD_MODE),linuxtools)
+	CFLAGS += -g -pg -fprofile-arcs -ftest-coverage
+	LDFLAGS += -pg -fprofile-arcs -ftest-coverage
+	EXTRA_CLEAN += novas.gcda novas.gcno $(PROJECT_ROOT)gmon.out
+	EXTRA_CMDS = rm -rf novas.gcda
+endif
+
+# cppcheck options
+CHECKOPTS = --enable=performance,warning,portability,style --language=c --std=c90 --error-exitcode=1
+
+
+# ===============================================================================
+# END of user config section, below is some logic and recipes only.
+# ===============================================================================
+
+
 ifeq ($(DEFAULT_SOLSYS), 1) 
   BUILTIN_SOLSYS1 = 1
 endif
@@ -57,20 +78,11 @@ endif
 OBJECTS := $(subst $(SRC),obj,$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
 
-# cppcheck options
-CHECKOPTS = --enable=performance,warning,portability,style --language=c --std=c90 --error-exitcode=1
 
+# ===============================================================================
+# Targets ans recipes below...
+# ===============================================================================
 
-ifeq ($(BUILD_MODE),debug)
-	CFLAGS += -g
-else ifeq ($(BUILD_MODE),run)
-	CFLAGS += -O2
-else ifeq ($(BUILD_MODE),linuxtools)
-	CFLAGS += -g -pg -fprofile-arcs -ftest-coverage
-	LDFLAGS += -pg -fprofile-arcs -ftest-coverage
-	EXTRA_CLEAN += novas.gcda novas.gcno $(PROJECT_ROOT)gmon.out
-	EXTRA_CMDS = rm -rf novas.gcda
-endif
 
 
 # You can set the default CIO locator file to use depending on where you installed it.
@@ -103,7 +115,7 @@ lib/novas.so: $(SOURCES) | lib
 obj/%.o: $(SRC)/%.c dep/%.d obj
 	$(CC) -o $@ -c $(CFLAGS) $<
 
-# Sub-directories for build targets
+# Create sub-directories for build targets
 dep obj lib apidoc:
 	mkdir $@
 

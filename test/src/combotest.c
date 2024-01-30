@@ -150,6 +150,11 @@ static void test_era() {
   fprintf(fp, "%12.6f", era(tdb, 0.0));
 }
 
+static void test_ee_ct() {
+  openfile("ee_ct");
+  fprintf(fp, "%12.6f", ee_ct(tdb, 0.0, accuracy));
+}
+
 static void test_precession() {
   double pos1[3];
   openfile("precession");
@@ -181,7 +186,7 @@ static void test_nutation() {
 
 static void test_ira_equinox() {
   openfile("ira_equinox");
-  fprintf(fp, "%12.6f %12.6f", ira_equinox(tdb, 0, accuracy), ira_equinox(tdb, 1, accuracy));
+  fprintf(fp, "%12.9f %12.9f", ira_equinox(tdb, 0, accuracy), ira_equinox(tdb, 1, accuracy));
 }
 
 static void test_cio_location() {
@@ -189,7 +194,7 @@ static void test_cio_location() {
   short sys = -1;
   openfile("cio_location");
   if(is_ok(cio_location(tdb, accuracy, &h, &sys)))
-    fprintf(fp, "%d %12.6f", sys, h);
+    fprintf(fp, "%d %12.9f", sys, h);
 }
 
 static void test_cio_basis() {
@@ -281,6 +286,7 @@ static int test_setting() {
   if(init() != 0) return -1;
 
   test_era();
+  test_ee_ct();
   test_precession();
 
   test_nutation_angles();

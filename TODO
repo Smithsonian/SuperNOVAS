@@ -1,19 +1,18 @@
-grav_def	O1	O0 OK
-sidereal_time	*	GST (ERA OK)
-place		O1	O0 OK
-
 
 
 Makefile:
 	cio_file target
 
-
-
+changes
+	- solsys handling
+	- cio_basis cleanup
+	- constants
+	- API:
+		- const where approrpiate
+		- enums
 
 
 - Add Makefiles (lib, tools, test)
-
-- NEW: Dynamic solsys implemetation...
 
 - Set up CI:
   - Check build (lib and compile)
