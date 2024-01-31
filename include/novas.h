@@ -95,7 +95,7 @@
 #define NOVAS_ERAD        6378136.6
 
 /// Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
-#define NOVAS_EARTH_FLATTENING  (1.0 / 298.25642)
+#define NOVAS_EFLAT       (1.0 / 298.25642)
 
 /// [rad/s] Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003).
 #define NOVAS_ANGVEL      7.2921150e-5
@@ -195,9 +195,15 @@ enum novas_major_planet {
  *
  */
 enum novas_observer_place {
-  NOVAS_OBSERVER_AT_GEOCENTER = 0, ///< Calculate coordinates as if observing from the geocenter for location and Earth rotation independent coordinates.
+  NOVAS_OBSERVER_AT_GEOCENTER = 0,    ///< Calculate coordinates as if observing from the geocenter for location and Earth rotation independent coordinates.
   NOVAS_OBSERVER_ON_EARTH,            ///< Observer is at a location that is in the rotating frame of Earth.
-  NOVAS_OBSERVER_IN_SPACE       ///< Observer is in space, in a near-Earth orbit, with a position and velocity vector relative to geocenter.
+
+  /**
+   * Observer is on Earth orbit, with a position and velocity vector relative to geocenter.
+   * This may also be appropriate for observatories at the L2 or other Earth-based Langrange
+   * points.
+   */
+  NOVAS_OBSERVER_IN_EARTH_ORBIT
 };
 
 #define NOVAS_OBSERVER_PLACES     (NOVAS_IN_SPACE + 1)  ///< The number of observer place types supported
@@ -354,8 +360,8 @@ enum novas_wobble_direction {
  * @sa TIE_J2000_TO_ICRS
  */
 enum novas_frametie_direction {
-  TIE_J2000_TO_ICRS = -1, ///< Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any negative value for the same effect).
-  TIE_ICRS_TO_J2000       ///< Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value &gt;=0 for the same effect).
+  TIE_ICRS_TO_J2000 = -1, ///< Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any negative value for the same effect).
+  TIE_J2000_TO_ICRS       ///< Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value &gt;=0 for the same effect).
 };
 
 /**
@@ -404,7 +410,7 @@ typedef struct {
  */
 typedef struct {
   enum novas_object_type type;    ///< NOVAS object type
-  long int number;                ///< enum novas_major_planet, or minor planet ID, or star catalog ID.
+  long int number;                ///< enum novas_major_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
   cat_entry star;                 ///< basic astrometric data for any celestial objecr located outside the solar system, such as a star
 } object;

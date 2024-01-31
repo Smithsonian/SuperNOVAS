@@ -38,8 +38,6 @@
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined
  *                      by enum novas_major_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
- *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
- *                      NOVAS C argument type here).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
  *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
@@ -57,7 +55,7 @@
  * @sa ephemeris()
  * @sa novas_solarsystem_hp_func
  */
-typedef short int (*novas_solarsystem_func)(double jd_tdb, short int body, short int origin, double *position, double *velocity);
+typedef short int (*novas_solarsystem_func)(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 /**
@@ -73,8 +71,6 @@ typedef short int (*novas_solarsystem_func)(double jd_tdb, short int body, short
  *                      highest precision.
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined
  *                      by enum novas_major_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
- *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
- *                      NOVAS C argument type here).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
  *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
@@ -92,7 +88,7 @@ typedef short int (*novas_solarsystem_func)(double jd_tdb, short int body, short
  * @sa novas_solarsystem_func
  * @sa ephemeris()
  */
-typedef short int (*novas_solarsystem_hp_func)(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity);
+typedef short int (*novas_solarsystem_hp_func)(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 
@@ -144,7 +140,7 @@ typedef int (*novas_ephem_reader_func)(int mp, const char *name, double jd_tdb_h
  *            configured implementations at runtime.
  *
  * @param mp            The ID number of the solar-system body for which the position in desired.
- * @param name          The name of the solar-system body
+ * @param name          The name of the solar-system body (usually upper-case)
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date for which to find
  *                      the position and velocity.
  * @param error         Pointer to integer to populate with the error status: 0 if successful, -1 if any of the

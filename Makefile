@@ -47,20 +47,23 @@ CHECKOPTS = --enable=performance,warning,portability,style --language=c --std=c9
 
 ifeq ($(DEFAULT_SOLSYS), 1) 
   BUILTIN_SOLSYS1 = 1
+  CFLAGS += -DDEFAULT_SOLSYS=1
 endif
 
 ifeq ($(DEFAULT_SOLSYS), 2)
   BUILTIN_SOLSYS2 = 1
+  CFLAGS += -DDEFAULT_SOLSYS=2
 endif
 
 ifeq ($(DEFAULT_SOLSYS), 3)
   BUILTIN_SOLSYS3 = 1
+  CFLAGS += -DDEFAULT_SOLSYS=3
 endif
 
-SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/eph_manager.c
+SOURCES = $(SRC)/novas.c $(SRC)/nutation.c
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
-  SOURCES += $(SRC)/solsys1.c
+  SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 
 endif
 
 ifeq ($(BUILTIN_SOLSYS2), 1) 
@@ -73,6 +76,7 @@ endif
 
 ifdef (DEFAULT_READEPH) 
   SOURCES += $(SRC)/$(DEFAULT_READEPH).c
+  CFLAGS += -DDEFAULT_READEPH=1
 endif
 
 OBJECTS := $(subst $(SRC),obj,$(SOURCES))

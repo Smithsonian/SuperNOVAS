@@ -31,7 +31,7 @@ double *readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
     return NULL;
   }
 
-  pv = (double *) calloc(6, sizeof (double));
+  pv = (double *) calloc(6, sizeof(double));
   *error = 9;
 
   return pv;

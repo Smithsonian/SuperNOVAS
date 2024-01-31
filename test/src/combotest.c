@@ -145,6 +145,22 @@ static int init() {
   return 0;
 }
 
+static void test_frame_tie() {
+  double pos1[3];
+
+  openfile("frame_tie");
+  frame_tie(pos0, -1, pos1);
+  printvector(pos1);
+}
+
+static void test_wobble() {
+  double pos1[3];
+  openfile("wobble");
+  wobble(tdb, 0, 2.0, -3.0, pos0, pos1);
+  printvector(pos1);
+}
+
+
 static void test_era() {
   openfile("era");
   fprintf(fp, "%12.6f", era(tdb, 0.0));
@@ -285,6 +301,8 @@ static int test_setting() {
 
   if(init() != 0) return -1;
 
+  test_frame_tie();
+  test_wobble();
   test_era();
   test_ee_ct();
   test_precession();
@@ -322,10 +340,14 @@ static int test_observers() {
 
 static int test_all() {
   cat_entry star;
-  make_cat_entry("TEST", "TST", 1001, 22.0, 20.0, 3.0, -2.0, 5.0, 10.0, &star);
 
   printf(" Testing date %.1f\n", tdb);
 
+  make_cat_entry("22+20", "TST", 1001, 22.0, 20.0, 3.0, -2.0, 5.0, 10.0, &star);
+  if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
+  if(test_observers() != 0) return -1;
+
+  make_cat_entry("16-20", "TST", 1001, 16.0, -20.0, 3.0, -2.0, 5.0, 10.0, &star);
   if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
   if(test_observers() != 0) return -1;
 

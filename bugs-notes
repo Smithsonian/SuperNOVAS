@@ -1,0 +1,23 @@
+ira_equinox (l. 8241-8244):
+
+  if equinox = 1, but was 0 in the previous call with the same date and 
+  accuracy, then it returns the last value (with eq_eq = 0) for equinox 0
+  instead of calculating eq_eq via e_tilt() for a proper equinox = 1 result.
+
+
+cio_basis 
+
+  if only 'ra_cio' changed since last call, it returned the basis for the
+  last calculation even if it was not for the same R.A.
+
+ecl2equ_vec
+equ2ecl_vec
+geo_posvel
+place
+sidereal_time
+
+  If accuracy changed but not the time, it returned the result for the
+  other accuracy.  
+ 
+
+

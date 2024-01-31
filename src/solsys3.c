@@ -17,98 +17,59 @@
 #include <math.h>
 #include <string.h>
 
+/**
+ * Whether the high-precision call is allowed to return a low-precision result. If set to 0
+ * (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a
+ * high-precision calculation is not possible. Otherise, a non-zero value (true) will
+ * let the function to be used without errors, returning the low-precison result of
+ * solarsystem_earth_sun() instead.
+ *
+ * @sa solarsystem_earth_sun_hp()
+ */
+#define ALLOW_LP_FOR_HP       0
+
 /// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
-/*
- Additional function prototype.
- */
-
+// Additional local function prototype
 void sun_eph(double jd, double *ra, double *dec, double *dis);
 
-/********solarsystem */
 
-short int solarsystem_earth_sun(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity)
-/*
- ------------------------------------------------------------------------
-
- PURPOSE:
- Provides the position and velocity of the Earth at epoch 'jd_tdb'
- by evaluating a closed-form theory without reference to an
- external file.  This function can also provide the position
- and velocity of the Sun.
-
- REFERENCES:
- Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
- Subroutines"; USNO internal document dated 20 Oct 1988;
- revised 15 Mar 1990.
- Explanatory Supplement to The Astronomical Almanac (1992).
-
- INPUT
- ARGUMENTS:
- jd_tdb (double)
- TDB Julian date.
- body (short int)
- Body identification number.
- Set 'body' = 0 or 'body' = 1 or 'body' = 10 for the Sun.
- Set 'body' = 2 or 'body' = 3 for the Earth.
- origin (short int)
- Origin code
- = 0 ... solar system barycenter
- = 1 ... center of mass of the Sun
- OUTPUT
- ARGUMENTS:
- position[3] (double)
- Position vector of 'body' at 'jd_tdb'; equatorial rectangular
- coordinates in AU referred to the mean equator and equinox
- of J2000.0.
- velocity[3] (double)
- Velocity vector of 'body' at 'jd_tdb'; equatorial rectangular
- system referred to the mean equator and equinox of J2000.0,
- in AU/Day.
-
- RETURNED
- VALUE:
- (short int)
- 0...Everything OK.
- 1...Input Julian date ('jd_tdb') out of range.
- 2...Invalid value of 'body'.
-
- GLOBALS
- USED:
- T0, TWOPI.       novascon.c
-
- FUNCTIONS
- CALLED:
- sun_eph          solsys3.c
- radec2vector     novas.c
- precession       novas.c
- sin              math.h
- cos              math.h
- fabs             math.h
- fmod             math.h
-
- VER./DATE/
- PROGRAMMER:
- V1.0/05-96/JAB (USNO/AA) Convert to C; substitute new theory of
- Sun.
- V1.1/06-98/JAB (USNO/AA) Updated planetary masses & mean elements.
- V1.2/04-09/JAB (USNO/AA) Updated value of obliquity at J2000.0.
- V1.3/11-09/WKP (USNO/AA) Updated output argument names to
- 'position' and 'velocity'.
- V1.4/11-09/JAB (USNO/AA) Update barycenter computation.
- V1.5/02-11/JLB (USNO/AA) Reformatted description of origin for
- consistency with other documentation.
-
-
- NOTES:
- 1. This function is the "C" version of Fortran NOVAS routine
- 'solsys' version 3.
-
- ------------------------------------------------------------------------
+/**
+ * Provides the position and velocity of the Earth and Sun only
+ * at epoch 'jd_tdb' by evaluating a closed-form theory without reference to an
+ * external file.  This function can also provide the position
+ * and velocity of the Sun.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
+ *     Subroutines"; USNO internal document dated 20 Oct 1988;
+ *     revised 15 Mar 1990.</li>
+ * <li>Explanatory Supplement to The Astronomical Almanac (1992).</li>
+ *
+ *
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
+ * @param body          NOVAS_EARTH (3) or NOVAS_SUN (10) only.
+ * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
+ *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
+ *                      NOVAS C argument type here).
+ * @param[out] position [AU] Position vector of 'body' at 'tjd'; equatorial rectangular
+ *                      coordinates in AU referred to the mean equator and equinox
+ *                      of J2000.0.
+ * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
+ *                      system referred to the mean equator and equinox of J2000.0,
+ *                      in AU/Day.
+ * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS),
+ *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid.
+ *
+ * @sa solarsystem_earth_sun_hp()
+ * @sa solarsystem()
+ * @sa set_planet_calc()
+ * @sa novas_solarsystem_func
  */
-{
+short int solarsystem_earth_sun(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
   short int i;
 
   /*
@@ -297,31 +258,54 @@ short int solarsystem_earth_sun(double jd_tdb, enum novas_major_planet body, enu
   return 0;
 }
 
-/********solarsystem_hp */
 
+
+/**
+ * It may provide the position and velocity of the Earth and Sun,
+ * the same as solarsystem_earth_sun(), if the ALLOW_LP_FOR_HP is set
+ * to true (non-zero). Otherwise, it will return with an error code
+ * of 3, indicating that high-precision calculations are not
+ * provided by this implementation.
+ *
+ * NOTES:
+ * <ol>
+ * <li>This implementation will always propulate the output positione
+ * and velocity vectors with the low-precision result, regardless of
+ * the return error code, in order to reduce the chance of unpredictable
+ * behavior, even if the user does not check the returned error status
+ * (which of course they should).
+ * </li>
+ * </ol>
+ *
+ *
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
+ * @param body          NOVAS_EARTH (3) or NOVAS_SUN (10) only.
+ * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
+ *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
+ *                      NOVAS C argument type here).
+ * @param[out] position [AU] Position vector of 'body' at 'tjd'; equatorial rectangular
+ *                      coordinates in AU referred to the mean equator and equinox
+ *                      of J2000.0.
+ * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
+ *                      system referred to the mean equator and equinox of J2000.0,
+ *                      in AU/Day.
+ * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS),
+ *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3
+ *                      if the high-precision orbital data cannot be produced (default return value).
+ *
+ * @sa ALLOW_LP_FOR_HP
+ * @sa solarsystem_earth_sun()
+ * @sa solarsystem_hp()
+ * @sa set_planet_calc()
+ * @sa novas_solarsystem_func
+ */
 short int solarsystem_earth_sun_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position,
         double *velocity) {
 
-  /*
-   Set the value of 'action' according to the rules explained under
-   NOTES in the prolog.
-   */
+  int error = solarsystem_earth_sun(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity);
+  if(error) return (error);
 
-  const int action = 1;
-
-  if(action == 2) { /* Return low-precision position and velocity */
-    double p[3], v[3];
-
-    int error = solarsystem(jd_tdb[0] + jd_tdb[1], body, origin, p, v);
-    if(error) return (error);
-
-    if(position) memcpy(position, p, sizeof(p));
-    if(velocity) memcpy(velocity, v, sizeof(v));
-
-    return 0;
-  }
-
-  return 3;
+  return ALLOW_LP_FOR_HP ? 0 : 3;
 }
 
 /********sun_eph */
@@ -480,13 +464,8 @@ double *ra, double *dec, double *dis)
 }
 
 #if DEFAULT_SOLSYS == 3
-short int default_solarsystem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_earth_sun(jd_tdb, body, origin, position, velocity);
-}
-
-short int default_solarsystem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_earth_sun_hp(jd_tdb, body, origin, position, velocity);
-}
+  novas_solarsystem_func default_solarsystem = solarsystem_earth_sun;
+  novas_solarsystem_hp_func default_solarsystem_hp = solarsystem_earth_sun_hp;
 #elif !BUILTIN_SOLSYS3
 short int solarsystem(double jd_tdb, short int body, short int origin, double *position, double *velocity) {
   return solarsystem_earth_sun(jd_tdb, body, origin, position, velocity);

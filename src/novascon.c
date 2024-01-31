@@ -26,7 +26,7 @@ const double AU_KM = NOVAS_AU_KM;
 const double GS = NOVAS_GS;
 const double GE = NOVAS_GE;
 const double ERAD = NOVAS_ERAD;
-const double F = NOVAS_EARTH_FLATTENING;
+const double F = NOVAS_EFLAT;
 const double ANGVEL = NOVAS_ANGVEL;
 const double RMASS[12] = NOVAS_RMASS_INIT;
 

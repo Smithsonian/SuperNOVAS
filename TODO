@@ -1,3 +1,6 @@
+- Check for _last handling
+  > check that calculated value and it's dependencies are always saved
+  > check that dependencies are ALL checked before returning saved value.
 
 
 Makefile:
