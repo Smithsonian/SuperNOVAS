@@ -1,6 +1,15 @@
 name: cppcheck
 
-on: [push, pull_request ]
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/check.yml'
+
+  pull_request:
     paths:
       - 'src/**'
       - 'include/**'
