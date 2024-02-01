@@ -4172,6 +4172,8 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     if(fread(&jd_end, sizeof(double), 1, cio_file) != sizeof(double)) return -1;
     if(fread(&t_int, sizeof(double), 1, cio_file) != sizeof(double)) return -1;
     if(fread(&n_recs, sizeof(long), 1, cio_file) != sizeof(double)) return -1;
+
+    last_file = cio_file;
   }
 
   //Check the input data against limits.
