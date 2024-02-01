@@ -10,12 +10,7 @@ on:
       - '.github/workflows/check.yml'
 
   pull_request:
-    paths:
-      - 'src/**'
-      - 'include/**'
-      - 'Makefile'
-      - '*.mk'
-      - '.github/workflows/check.yml'
+    branches: [ main ]
 
 jobs:
 
@@ -28,6 +23,9 @@ jobs:
     steps:
     
     - uses: actions/checkout@v3
+    
+    - name: install dependencies
+      run: sudo apt-get install -y cppcheck
     
     - name: Run cppcheck
       run: make check
