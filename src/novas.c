@@ -1561,7 +1561,7 @@ short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accur
     }
   }
   else {
-    double x[3], y[3], z[3]
+    double x[3], y[3], z[3];
 
     // Obtain the basis vectors, in the GCRS, of the celestial intermediate
     // system.
