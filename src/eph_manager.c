@@ -805,7 +805,7 @@ double *position, double *velocity)
    'tc' is the normalized Chebyshev time (-1 <= tc <= 1).
    */
 
-  tc = 2.0 * (fmod(temp, 1.0) + dt1) - 1.0;
+  tc = 2.0 * (remainder(temp, 1.0) + dt1) - 1.0;
 
   /*
    Check to see whether Chebyshev time has changed, and compute new

@@ -81,19 +81,44 @@ static double PSI_COR = 0.0;
  */
 static double EPS_COR = 0.0;
 
-static FILE *cio_file;            ///< Opened CIO locator data file, or NULL.
+///< Opened CIO locator data file, or NULL.
+static FILE *cio_file;
 
+/// function to use for calculating positions for major planets
 static novas_planet_calculator planetcalc = NULL;
+
+/// function to use for calculating positions for major planets with high precison
 static novas_planet_calculator_hp planetcalc_hp = NULL;
 
+/// function to use for reading ephemeris data for all types of solar system sources
 static novas_ephem_reader_func readeph2_call = NULL;
 
+/// Function to use for reduced-precision calculations. (The full IAU 2000A model is used always for high-precision calculations)
 static novas_nutate_func nutate_lp = nu2000k;
 
+/**
+ * Calculates the length of a 3-vector
+ *
+ * @param v     Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
+ * @return      the length of the vector
+ *
+ * @sa vdot
+ * @sa vdist
+ */
 static double vlen(const double *v) {
   return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
 
+/**
+ * Calculates the distance between two 3-vectors.
+ *
+ * @param v1    Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
+ * @param v2    Pointer to another 3-component (x, y, z) vector. The argument cannot be NULL
+ * @return      The distance between the two vectors
+ *
+ * @sa vlen()
+ * @sa vdot()
+ */
 static double vdist(const double *v1, const double *v2) {
   double d2 = 0.0;
   int i;
@@ -104,6 +129,16 @@ static double vdist(const double *v1, const double *v2) {
   return sqrt(d2);
 }
 
+/**
+ * Calculates the dot product between two 3-vectors.
+ *
+ * @param v1    Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
+ * @param v2    Pointer to another 3-component (x, y, z) vector. The argument cannot be NULL
+ * @return      The dot product between the two vectors.
+ *
+ * @sa vlen()
+ * @sa vdist()
+ */
 static double vdot(const double *v1, const double *v2) {
   return (v1[0] * v2[0]) + (v1[1] * v2[1]) + (v1[2] * v2[2]);
 }
@@ -125,10 +160,36 @@ static void tiny_rotate(const double *in, double ax, double ay, double az, doubl
   out[2] = in[2] - 0.5 * (A[0] + A[1]) * in[2] - ay * in[0] + ax * in[1];
 }
 
+/**
+ * Checks if two Julian dates are equals under the precision that can be handled by this library.
+ * In practive two dates are considered equal if they agree within 10<sup>-8</sup> days (or about
+ * 1 ms) of each other.
+ *
+ *
+ * @param jd1     [day] a Julian date (in any time measure)
+ * @param jd2     [day] a Julian date in the same time measure as the first argument
+ * @return        TRUE (1) if the two dates are effectively the same at the precision of comparison,
+ *                or else FALSE (0) if they differ by more than the allowed tolerance.
+ */
 static int time_equals(double jd1, double jd2) {
   return fabs(jd1 - jd2) <= 1.0e-8;
 }
 
+/**
+ * Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the
+ * True equinox Of Date (TOD) reference frame at the given epoch
+ *
+ * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the output
+ *                  epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param in        Input (x, y, z) position or velocity vector in rectangular equatorial coordinates at J2000
+ * @param[out] out  Output position or velocity 3-vector in the True equinox of Date coordinate frame.
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL.
+ *
+ * @sa tod_to_j2000()
+ * @sa icrs_to_tod()
+ */
 int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   double v[3];
 
@@ -147,6 +208,21 @@ int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
   return 0;
 }
 
+/**
+ * Transforms a rectangular equatorial (x, y, z) vector from True equinox Of Date (TOD) reference frame at the
+ * given epoch to the J2000 coordinates.
+ *
+ * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the input
+ *                  epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param in        Input (x, y, z)  position or velocity 3-vector in the True equinox of Date coordinate frame.
+ * @param[out] out  Output position or velocity vector in rectangular equatorial coordinates at J2000
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL.
+ *
+ * @sa j2000_to_tod()
+ * @sa tod_to_icrs()
+ */
 int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   double v[3];
 
@@ -166,6 +242,21 @@ int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
   return 0;
 }
 
+/**
+ * Transforms a rectangular equatorial (x, y, z) vector from the International Celestial
+ * Reference System (ICRS) to the True equinox Of Date (TOD) reference frame at the given epoch
+ *
+ * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the output
+ *                  epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param in        ICRS Input (x, y, z) position or velocity vector
+ * @param[out] out  Output position or velocity 3-vector in the True equinox of Date coordinate frame.
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL.
+ *
+ * @sa tod_to_icrs()
+ * @sa j2000_to_tod()
+ */
 int icrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   double j2000[3];
   int error = frame_tie(in, TIE_ICRS_TO_J2000, j2000);
@@ -173,6 +264,21 @@ int icrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
   return j2000_to_tod(jd_tdb, accuracy, j2000, out);
 }
 
+/**
+ * Transforms a rectangular equatorial (x, y, z) vector from True equinox Of Date (TOD) reference frame at the
+ * given epoch to the International Celestial Reference System(ICRS)
+ *
+ * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the input
+ *                  epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param in        Input (x, y, z)  position or velocity 3-vector in the True equinox of Date coordinate frame.
+ * @param[out] out  Output ICRS position or velocity vector
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL.
+ *
+ * @sa j2000_to_tod()
+ * @sa tod_to_icrs()
+ */
 int tod_to_icrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   double j2000[3];
   int error = tod_to_j2000(jd_tdb, accuracy, in, j2000);
@@ -1693,7 +1799,7 @@ short sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_
       // AK: Fix for documented bug in NOVAS 3.1 --> 3.1.1
       ha_eq -= (eqeq / 3600.0);
 
-      ha_eq = fmod(ha_eq, DEG360) / 15.0;
+      ha_eq = remainder(ha_eq, DEG360) / 15.0;
       if(ha_eq < 0.0) ha_eq += DAY_HOURS;
       *gst = ha_eq;
       return 0;
@@ -1708,7 +1814,7 @@ short sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_
       st = eqeq + 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
 
       // Form the Greenwich sidereal time.
-      *gst = fmod((st / 3600.0 + theta), DEG360) / 15.0;
+      *gst = remainder((st / 3600.0 + theta), DEG360) / 15.0;
 
       if(*gst < 0.0) *gst += DAY_HOURS;
       return 0;
@@ -1746,9 +1852,9 @@ double era(double jd_high, double jd_low) {
 
   thet1 = 0.7790572732640 + 0.00273781191135448 * (jd_high - JD_J2000);
   thet2 = 0.00273781191135448 * jd_low;
-  thet3 = fmod(jd_high, 1.0) + fmod(jd_low, 1.0);
+  thet3 = remainder(jd_high, 1.0) + remainder(jd_low, 1.0);
 
-  theta = fmod(thet1 + thet2 + thet3, 1.0) * DEG360;
+  theta = remainder(thet1 + thet2 + thet3, 1.0) * DEG360;
   if(theta < 0.0) theta += DEG360;
 
   return theta;
@@ -1998,7 +2104,7 @@ int spin(double angle, const double *pos1, double *pos2) {
     return -1;
   }
 
-  if(fmod(fabs(angle - ang_last), DEG360) >= 1.0e-12) {
+  if(remainder(fabs(angle - ang_last), DEG360) >= 1.0e-12) {
     const double angr = angle * DEGREE;
     const double cosang = cos(angr);
     const double sinang = sin(angr);
@@ -3535,10 +3641,21 @@ int fund_args(double t, novas_fundamental_args *a) {
   return 0;
 }
 
+/**
+ * Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical
+ * ecliptic and equinox of J2000, with high order terms omitted
+ * (Simon et al. 1994, 5.8.1-5.8.8).
+ *
+ * @param t       [cy] Julian centuries since J2000
+ * @param planet  Novas planet id, e.g. NOVAS_MARS.
+ * @return        [rad] The approximate longitude of the planet in radians.
+ *
+ * @sa accum_prec()
+ * @sa nutation()
+ * @sa nutation_angles()
+ * @sa NOVAS_JD_J2000
+ */
 double planet_lon(double t, enum novas_planet planet) {
-  // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
-  // ecliptic and equinox of J2000, with high order terms omitted
-  // (Simon et al. 1994, 5.8.1-5.8.8).
   double lon;
 
   switch(planet) {
@@ -3571,13 +3688,20 @@ double planet_lon(double t, enum novas_planet planet) {
       return NAN;
   }
 
-  return fmod(lon, TWOPI);
+  return remainder(lon, TWOPI);
 }
 
+/**
+ * Returns the general precession in longitude (Simon et al. 1994), equivalent
+ * to 5028.8200 arcsec/cy at J2000.
+ *
+ * @param t   [cy] Julian centuries since J2000
+ * @return    [rad] the approximate precession angle [-&pi;:&pi;].
+ */
 double accum_prec(double t) {
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
-  return fmod((0.024380407358 + 0.000005391235 * t) * t, TWOPI);
+  return remainder((0.024380407358 + 0.000005391235 * t) * t, TWOPI);
 }
 
 /**
@@ -4792,7 +4916,7 @@ int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
   djd = tjd + 0.5;
   jd = (long) floor(djd);
 
-  h = fmod(djd, 1.0) * DAY_HOURS;
+  h = remainder(djd, 1.0) * DAY_HOURS;
 
   k = jd + 68569L;
   n = 4L * k / 146097L;

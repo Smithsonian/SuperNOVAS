@@ -48,7 +48,7 @@ void sun_eph(double jd, double *ra, double *dec, double *dis);
  *     Subroutines"; USNO internal document dated 20 Oct 1988;
  *     revised 15 Mar 1990.</li>
  * <li>Explanatory Supplement to The Astronomical Almanac (1992).</li>
- *
+ * </ol>
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          NOVAS_EARTH (3) or NOVAS_SUN (10) only.
@@ -211,7 +211,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
         const double e = pe[i];
         const double mlon = pl[i] + pn[i] * (jd_tdb - T0);
-        const double ma = fmod((mlon - pw[i]), TWOPI);
+        const double ma = remainder((mlon - pw[i]), TWOPI);
         const double u = ma + e * sin(ma) + 0.5 * e * e * sin(2.0 * ma);
         const double sinu = sin(u);
         const double cosu = cos(u);
@@ -471,7 +471,7 @@ void sun_eph(double jd, double *ra, double *dec, double *dis)
   lon = 4.9353929 + 62833.1961680 * u + factor * sum_lon;
   lon += ((-0.1371679461 - 0.2918293271 * t) * ASEC2RAD);
 
-  lon = fmod(lon, TWOPI);
+  lon = remainder(lon, TWOPI);
   if(lon < 0.0) lon += TWOPI;
 
   *dis = 1.0001026 + factor * sum_r;
@@ -489,7 +489,7 @@ void sun_eph(double jd, double *ra, double *dec, double *dis)
 
   sin_lon = sin(lon);
   *ra = atan2((cos(emean) * sin_lon), cos(lon)) * RAD2DEG;
-  *ra = fmod(*ra, 360.0);
+  *ra = remainder(*ra, 360.0);
   if(*ra < 0.0) *ra += 360.0;
   *ra = *ra / 15.0;
 
