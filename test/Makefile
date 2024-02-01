@@ -1,36 +1,25 @@
+include ../Makefile
 
+CFLAGS += -O0 -g -pg -fprofile-arcs -ftest-coverage
+LDFLAGS += -pg -fprofile-arcs -ftest-coverage
 
-# Compiler options
-CFLAGS = -I../include -Os -Wall -Wextra -g
-
-# Linker options
-LDFLAGS = -lm
-
+SRC = ../src
 LIB = ../lib/novas.a
 
-.PHONY: all
-all: bin/combotest bin/checkout-mp bin/checkout-stars bin/checkout-stars-full
+test: src/test.c $(SOURCES) | Makefile
+	$(CC) -o $@ -O0 $(CFLAGS) -DDEFAULT_SOLSYS=3 $^ $(LDFLAGS) -lm
 
-$(LIB):
-	$(MAKE) -C .. static
+run: clean test
+	rm -rf data
+	mkdir data
+	./test
 
-# Regular object files
-obj/%.o: src/%.c obj
-	$(CC) -o $@ -c $(CFLAGS) $<
-
-bin/%: obj/%.o $(LIB) | bin
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-# Sub-directories for build targets
-obj bin:
-	mkdir $@
+# We are dependent on the project Makefile...
+Makefile: ../Makefile
 
 # Remove intermediate files
-.PHONY: clean
-clean:
-	rm -rf obj
+.PHONY: test-clean
+test-clean:
+	rm -rf obj data gmon.out *.gcov *.gcda *.gcno
 
-# Remove all locally built files, effectively restoring the repo to its pristine state
-.PHONY: distclean
-distclean: clean
-	rm -rf bin
+clean: test-clean

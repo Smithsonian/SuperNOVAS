@@ -4,7 +4,7 @@ SRC = $(PROJECT_ROOT)src
 INC = $(PROJECT_ROOT)include
 
 # Compiler options
-CFLAGS = -I$(INC) -Os -Wall -Wextra -g
+CFLAGS = -I$(INC) -Os -Wall -Wextra
 
 # For maximum compatibility with NOVAS C 3.1, uncomment the line below
 #CFLAGS += -DCOMPAT=1
@@ -29,11 +29,9 @@ ifeq ($(BUILD_MODE),debug)
 	CFLAGS += -g
 else ifeq ($(BUILD_MODE),run)
 	CFLAGS += -O2
-else ifeq ($(BUILD_MODE),linuxtools)
-	CFLAGS += -g -pg -fprofile-arcs -ftest-coverage
+else ifeq ($(BUILD_MODE),test)
+	CFLAGS += -O0 -g -pg -fprofile-arcs -ftest-coverage
 	LDFLAGS += -pg -fprofile-arcs -ftest-coverage
-	EXTRA_CLEAN += novas.gcda novas.gcno $(PROJECT_ROOT)gmon.out
-	EXTRA_CMDS = rm -rf novas.gcda
 endif
 
 # cppcheck options
@@ -64,14 +62,17 @@ SOURCES = $(SRC)/novas.c $(SRC)/nutation.c
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
   SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 
+  CFLAGS += -DBUILTIN_SOLSYS1=1
 endif
 
 ifeq ($(BUILTIN_SOLSYS2), 1) 
   SOURCES += $(SRC)/solsys2.c
+  CFLAGS += -DBUILTIN_SOLSYS2=1
 endif
 
 ifeq ($(BUILTIN_SOLSYS3), 1) 
   SOURCES += $(SRC)/solsys3.c
+  CFLAGS += -DBUILTIN_SOLSYS3=1
 endif
 
 ifdef (DEFAULT_READEPH) 
@@ -116,7 +117,7 @@ lib/novas.so: $(SOURCES) | lib
 	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC
 
 # Regular object files
-obj/%.o: $(SRC)/%.c dep/%.d obj
+obj/%.o: $(SRC)/%.c dep/%.d obj Makefile
 	$(CC) -o $@ -c $(CFLAGS) $<
 
 # Create sub-directories for build targets

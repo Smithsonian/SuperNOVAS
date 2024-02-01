@@ -64,13 +64,14 @@ void sun_eph(double jd, double *ra, double *dec, double *dis);
  * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS),
  *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid.
  *
- * @sa solarsystem_earth_sun_hp()
- * @sa solarsystem()
+ * @sa earth_sun_calc_hp()
  * @sa set_planet_calc()
  * @sa novas_solarsystem_func
+ * @sa solarsystem()
+ *
  */
-short int solarsystem_earth_sun(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  short int i;
+short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+  short i;
 
   /*
    The arrays below contain masses and orbital elements for the four
@@ -294,15 +295,15 @@ short int solarsystem_earth_sun(double jd_tdb, enum novas_major_planet body, enu
  *                      if the high-precision orbital data cannot be produced (default return value).
  *
  * @sa ALLOW_LP_FOR_HP
- * @sa solarsystem_earth_sun()
- * @sa solarsystem_hp()
+ * @sa earth_sun_calc()
  * @sa set_planet_calc()
- * @sa novas_solarsystem_func
+ * @sa solarsystem_hp()
+ *
  */
-short int solarsystem_earth_sun_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position,
+short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
         double *velocity) {
 
-  int error = solarsystem_earth_sun(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity);
+  int error = earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity);
   if(error) return (error);
 
   return ALLOW_LP_FOR_HP ? 0 : 3;
@@ -310,9 +311,7 @@ short int solarsystem_earth_sun_hp(const double jd_tdb[2], enum novas_major_plan
 
 /********sun_eph */
 
-void sun_eph(double jd,
-
-double *ra, double *dec, double *dis)
+void sun_eph(double jd, double *ra, double *dec, double *dis)
 /*
  ------------------------------------------------------------------------
 
@@ -379,7 +378,7 @@ double *ra, double *dec, double *dis)
  ------------------------------------------------------------------------
  */
 {
-  short int i;
+  short i;
 
   double sum_lon = 0.0;
   double sum_r = 0.0;
@@ -393,21 +392,57 @@ double *ra, double *dec, double *dis)
     double nu;
   };
 
-  static const struct sun_con con[50] = { { 403406.0, 0.0, 4.721964, 1.621043 }, { 195207.0, -97597.0, 5.937458, 62830.348067 }, { 119433.0,
-          -59715.0, 1.115589, 62830.821524 }, { 112392.0, -56188.0, 5.781616, 62829.634302 }, { 3891.0, -1556.0, 5.5474, 125660.5691 }, {
-          2819.0, -1126.0, 1.5120, 125660.9845 }, { 1721.0, -861.0, 4.1897, 62832.4766 }, { 0.0, 941.0, 1.163, 0.813 }, { 660.0, -264.0,
-          5.415, 125659.310 }, { 350.0, -163.0, 4.315, 57533.850 }, { 334.0, 0.0, 4.553, -33.931 }, { 314.0, 309.0, 5.198, 777137.715 }, {
-          268.0, -158.0, 5.989, 78604.191 }, { 242.0, 0.0, 2.911, 5.412 }, { 234.0, -54.0, 1.423, 39302.098 },
-          { 158.0, 0.0, 0.061, -34.861 }, { 132.0, -93.0, 2.317, 115067.698 }, { 129.0, -20.0, 3.193, 15774.337 }, { 114.0, 0.0, 2.828,
-                  5296.670 }, { 99.0, -47.0, 0.52, 58849.27 }, { 93.0, 0.0, 4.65, 5296.11 }, { 86.0, 0.0, 4.35, -3980.70 }, { 78.0, -33.0,
-                  2.75, 52237.69 }, { 72.0, -32.0, 4.50, 55076.47 }, { 68.0, 0.0, 3.23, 261.08 }, { 64.0, -10.0, 1.22, 15773.85 }, { 46.0,
-                  -16.0, 0.14, 188491.03 }, { 38.0, 0.0, 3.44, -7756.55 }, { 37.0, 0.0, 4.37, 264.89 }, { 32.0, -24.0, 1.14, 117906.27 }, {
-                  29.0, -13.0, 2.84, 55075.75 }, { 28.0, 0.0, 5.96, -7961.39 }, { 27.0, -9.0, 5.09, 188489.81 },
-          { 27.0, 0.0, 1.72, 2132.19 }, { 25.0, -17.0, 2.56, 109771.03 }, { 24.0, -11.0, 1.92, 54868.56 }, { 21.0, 0.0, 0.09, 25443.93 }, {
-                  21.0, 31.0, 5.98, -55731.43 }, { 20.0, -10.0, 4.03, 60697.74 }, { 18.0, 0.0, 4.27, 2132.79 }, { 17.0, -12.0, 0.79,
-                  109771.63 }, { 14.0, 0.0, 4.24, -7752.82 }, { 13.0, -5.0, 2.01, 188491.91 }, { 13.0, 0.0, 2.65, 207.81 }, { 13.0, 0.0,
-                  4.98, 29424.63 }, { 12.0, 0.0, 0.93, -7.99 }, { 10.0, 0.0, 2.21, 46941.14 }, { 10.0, 0.0, 3.59, -68.29 }, { 10.0, 0.0,
-                  1.50, 21463.25 }, { 10.0, -9.0, 2.55, 157208.40 } };
+  static const struct sun_con con[50] = {
+          { 403406.0, 0.0, 4.721964, 1.621043 }, //
+          { 195207.0, -97597.0, 5.937458, 62830.348067 }, //
+          { 119433.0, -59715.0, 1.115589, 62830.821524 }, //
+          { 112392.0, -56188.0, 5.781616, 62829.634302 }, //
+          { 3891.0, -1556.0, 5.5474, 125660.5691 }, //
+          { 2819.0, -1126.0, 1.5120, 125660.9845 }, //
+          { 1721.0, -861.0, 4.1897, 62832.4766 }, //
+          { 0.0, 941.0, 1.163, 0.813 }, //
+          { 660.0, -264.0, 5.415, 125659.310 }, //
+          { 350.0, -163.0, 4.315, 57533.850 }, //
+          { 334.0, 0.0, 4.553, -33.931 }, //
+          { 314.0, 309.0, 5.198, 777137.715 }, //
+          { 268.0, -158.0, 5.989, 78604.191 }, //
+          { 242.0, 0.0, 2.911, 5.412 }, //
+          { 234.0, -54.0, 1.423, 39302.098 }, //
+          { 158.0, 0.0, 0.061, -34.861 }, //
+          { 132.0, -93.0, 2.317, 115067.698 }, //
+          { 129.0, -20.0, 3.193, 15774.337 }, //
+          { 114.0, 0.0, 2.828, 5296.670 }, //
+          { 99.0, -47.0, 0.52, 58849.27 }, //
+          { 93.0, 0.0, 4.65, 5296.11 }, //
+          { 86.0, 0.0, 4.35, -3980.70 }, //
+          { 78.0, -33.0, 2.75, 52237.69 }, //
+          { 72.0, -32.0, 4.50, 55076.47 }, //
+          { 68.0, 0.0, 3.23, 261.08 }, //
+          { 64.0, -10.0, 1.22, 15773.85 }, //
+          { 46.0, -16.0, 0.14, 188491.03 }, //
+          { 38.0, 0.0, 3.44, -7756.55 }, //
+          { 37.0, 0.0, 4.37, 264.89 }, //
+          { 32.0, -24.0, 1.14, 117906.27 }, //
+          { 29.0, -13.0, 2.84, 55075.75 }, //
+          { 28.0, 0.0, 5.96, -7961.39 }, //
+          { 27.0, -9.0, 5.09, 188489.81 },
+          { 27.0, 0.0, 1.72, 2132.19 }, //
+          { 25.0, -17.0, 2.56, 109771.03 }, //
+          { 24.0, -11.0, 1.92, 54868.56 }, //
+          { 21.0, 0.0, 0.09, 25443.93 }, //
+          { 21.0, 31.0, 5.98, -55731.43 }, //
+          { 20.0, -10.0, 4.03, 60697.74 }, //
+          { 18.0, 0.0, 4.27, 2132.79 }, //
+          { 17.0, -12.0, 0.79, 109771.63 }, //
+          { 14.0, 0.0, 4.24, -7752.82 }, //
+          { 13.0, -5.0, 2.01, 188491.91 }, //
+          { 13.0, 0.0, 2.65, 207.81 }, //
+          { 13.0, 0.0, 4.98, 29424.63 }, //
+          { 12.0, 0.0, 0.93, -7.99 }, //
+          { 10.0, 0.0, 2.21, 46941.14 }, //
+          { 10.0, 0.0, 3.59, -68.29 }, //
+          { 10.0, 0.0, 1.50, 21463.25 }, //
+          { 10.0, -9.0, 2.55, 157208.40 } };
 
   /*
    Define the time units 'u', measured in units of 10000 Julian years
@@ -464,15 +499,15 @@ double *ra, double *dec, double *dis)
 }
 
 #if DEFAULT_SOLSYS == 3
-  novas_solarsystem_func default_solarsystem = solarsystem_earth_sun;
-  novas_solarsystem_hp_func default_solarsystem_hp = solarsystem_earth_sun_hp;
+  novas_planet_calculator default_planetcalc = earth_sun_calc;
+  novas_planet_calculator_hp default_planetcalc_hp = earth_sun_calc_hp;
 #elif !BUILTIN_SOLSYS3
-short int solarsystem(double jd_tdb, short int body, short int origin, double *position, double *velocity) {
-  return solarsystem_earth_sun(jd_tdb, body, origin, position, velocity);
+short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
+  return earth_sun_calc(jd_tdb, body, origin, position, velocity);
 }
 
-short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity) {
-  return solarsystem_earth_sun_hp(jd_tdb, body, origin, position, velocity);
+short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+  return earth_sun_calc_hp(jd_tdb, body, origin, position, velocity);
 }
 #endif
 

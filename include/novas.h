@@ -107,7 +107,6 @@
       332946.050895, 3098708.0, 1047.3486, 3497.898, 22902.98, \
       19412.24, 135200000.0, 1.0, 27068700.387534 }
 
-
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
 // as variables in novascon.h (with implementation in novascon.c), then define
@@ -116,7 +115,6 @@
 #  ifndef TWOPI
 #    define TWOPI             (2.0 * M_PI)    ///< 2&pi;
 #  endif
-
 
 #  ifndef ASEC360
 /// [arcsec] Number of arcseconds in 360 degrees.
@@ -133,12 +131,10 @@
 #    define RAD2DEG           (1.0 / DEG2RAD)
 #  endif
 
-
 #  ifndef ASEC2RAD
 /// [rad/arcsec] 1 arcsecond in radians
 #    define ASEC2RAD          (DEG2RAD / 3600.0)
 #  endif
-
 
 #endif
 
@@ -147,8 +143,8 @@
  *
  */
 enum novas_object_type {
-  NOVAS_MAJOR_PLANET = 0,     ///< A major planet, and also including the Sun an the moon Moon. @sa novas_major_planets
-  NOVAS_MINOR_PLANET,         ///< A minor planet, which may only be handled via ephemeris data, and may require specific user-provided implementation.
+  NOVAS_MAJOR_PLANET = 0,     ///< A major planet, and also including the Sun an the moon Moon. @sa novas_planets
+  NOVAS_MINOR_PLANET, ///< A minor planet, which may only be handled via ephemeris data, and may require specific user-provided implementation.
   NOVAS_DISTANT_OBJECT        ///< Any non-solar system object that may be handled via 'catalog' coordinates, such as a star or a quasar.
 };
 
@@ -161,7 +157,7 @@ enum novas_object_type {
  * @sa NOVAS_MAJOR_PLANET
  * @sa NOVAS_MAJOR_PLANET_NAMES_INIT
  */
-enum novas_major_planet {
+enum novas_planet {
   NOVAS_BARYCENTER_POS = 0, ///< Solar-system barycenter position ID
   NOVAS_MERCURY,        ///< Major planet number for the Mercury in NOVAS.
   NOVAS_VENUS,          ///< Major planet number for the Venus in NOVAS.
@@ -176,10 +172,10 @@ enum novas_major_planet {
   NOVAS_MOON            ///< Numerical ID for the Moon in NOVAS.
 };
 
-#define NOVAS_MAJOR_PLANETS       (NOVAS_MOON + 1)      ///< The number of major planets defined in NOVAS.
+#define NOVAS_PLANETS       (NOVAS_MOON + 1)      ///< The number of major planets defined in NOVAS.
 
 /**
- * String array initializer for Major planet names, matching the enum novas_major_planet. E.g.
+ * String array initializer for Major planet names, matching the enum novas_planet. E.g.
  *
  * \code
  * char *planet_names[] = NOVAS_MAJOR_PLANET_NAMES_INIT;
@@ -188,14 +184,14 @@ enum novas_major_planet {
  *
  * @sa novas_majot_planet
  */
-#define NOVAS_MAJOR_PLANET_NAMES_INIT { "Barycenter", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Sun", "Moon" }
+#define NOVAS_PLANET_NAMES_INIT { "Barycenter", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Sun", "Moon" }
 
 /**
  * Types of places on and around Earth that may serve a a reference position for the observation.
  *
  */
 enum novas_observer_place {
-  NOVAS_OBSERVER_AT_GEOCENTER = 0,    ///< Calculate coordinates as if observing from the geocenter for location and Earth rotation independent coordinates.
+  NOVAS_OBSERVER_AT_GEOCENTER = 0, ///< Calculate coordinates as if observing from the geocenter for location and Earth rotation independent coordinates.
   NOVAS_OBSERVER_ON_EARTH,            ///< Observer is at a location that is in the rotating frame of Earth.
 
   /**
@@ -217,8 +213,8 @@ enum novas_observer_place {
  */
 enum novas_reference_system {
   NOVAS_GCRS = 0, ///< Geocentric Celestial Reference system. Essentially the same as ICRS, but with velocities referenced to Earth's orbiting frame.
-  NOVAS_TOD,      ///< True equinox Of Date: dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
-  NOVAS_CIRS,     ///< Celestial Intermediate Reference System: dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
+  NOVAS_TOD,     ///< True equinox Of Date: dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
+  NOVAS_CIRS, ///< Celestial Intermediate Reference System: dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
   NOVAS_ICRS      ///< International Celestiual Reference system. The equatorial system fixed to the frame of distant quasars.
 };
 
@@ -238,8 +234,8 @@ enum novas_equator_type {
  *
  */
 enum novas_accuracy {
-  NOVAS_FULL_ACCURACY = 0,  ///< Use full precision calculations to micro-arcsecond accuracy. It can be computationally intensive when using the dynamical equator.
-  NOVAS_REDUCED_ACCURACY    ///< Calculate with truncated terms. It can be significantly faster if a few milliarcsecond accuracy is sufficient.
+  NOVAS_FULL_ACCURACY = 0, ///< Use full precision calculations to micro-arcsecond accuracy. It can be computationally intensive when using the dynamical equator.
+  NOVAS_REDUCED_ACCURACY ///< Calculate with truncated terms. It can be significantly faster if a few milliarcsecond accuracy is sufficient.
 };
 
 /**
@@ -249,7 +245,7 @@ enum novas_accuracy {
  * @sa on_surface
  */
 enum novas_refraction_model {
-  NOVAS_STANDARD_ATMOSPHERE = 0,  ///< Uses a standard atmospheric model, ignoring all weather values defined for the specific observing location
+  NOVAS_STANDARD_ATMOSPHERE = 0, ///< Uses a standard atmospheric model, ignoring all weather values defined for the specific observing location
   NOVAS_WEATHER_AT_LOCATION       ///< Uses the weather parameters that are specified together with the observing location.
 };
 
@@ -334,9 +330,9 @@ enum novas_cio_location_type {
      /// <code>CIO_RA.TXT</code> data (both are included in the distribution)
 #    define DEFAULT_CIO_LOCATOR_FILE      "cio_ra.bin"
 #  else
-     /// Path / name of file to use for interpolating the CIO location relative to GCRS
-     /// This file can be generated with the <code>cio_file.c</code> tool using the
-     /// <code>CIO_RA.TXT</code> data (both are included in the distribution)
+/// Path / name of file to use for interpolating the CIO location relative to GCRS
+/// This file can be generated with the <code>cio_file.c</code> tool using the
+/// <code>CIO_RA.TXT</code> data (both are included in the distribution)
 #    define DEFAULT_CIO_LOCATOR_FILE      "/usr/share/novas/cio_ra.bin"
 #  endif
 #endif
@@ -361,7 +357,7 @@ enum novas_wobble_direction {
  */
 enum novas_frametie_direction {
   TIE_ICRS_TO_J2000 = -1, ///< Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any negative value for the same effect).
-  TIE_J2000_TO_ICRS       ///< Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value &gt;=0 for the same effect).
+  TIE_J2000_TO_ICRS    ///< Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value &gt;=0 for the same effect).
 };
 
 /**
@@ -396,7 +392,7 @@ typedef struct {
 typedef struct {
   char starname[SIZE_OF_OBJ_NAME];  ///< name of celestial object
   char catalog[SIZE_OF_CAT_NAME];   ///< catalog designator (e.g., HIP)
-  long int starnumber;              ///< integer identifier assigned to object
+  long starnumber;              ///< integer identifier assigned to object
   double ra;                        ///< [h] ICRS right ascension (hours)
   double dec;                       ///< [deg] ICRS declination (degrees)
   double promora;                   ///< [mas/yr] ICRS proper motion in right ascension (milliarcseconds/year)
@@ -410,7 +406,7 @@ typedef struct {
  */
 typedef struct {
   enum novas_object_type type;    ///< NOVAS object type
-  long int number;                ///< enum novas_major_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
+  long number;                ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
   cat_entry star;                 ///< basic astrometric data for any celestial objecr located outside the solar system, such as a star
 } object;
@@ -479,7 +475,6 @@ typedef struct {
   double ra_cio;    ///< [arcsec] right ascension of the CIO with respect to the GCRS (arcseconds)
 } ra_of_cio;
 
-
 /**
  * Fully defines the astronomical frame for which coordinates (including velocities) are calculated.
  *
@@ -491,9 +486,8 @@ typedef struct {
   enum novas_origin origin;                     ///< Location of origin (if type is NOVAS_ICRS)
   observer location;                            ///< Location of observer (if type is not NOVAS_ICRS)
   double jd_tdb;                                ///< [day] Barycentric Dynamical Time (TDB) based Julian date of observation.
-  double ut1_to_tt;                             ///< [s] TT - UT1 time difference (if observer is on the surface of Earth, otherwise ignored.
+  double ut1_to_tt;                            ///< [s] TT - UT1 time difference (if observer is on the surface of Earth, otherwise ignored.
 } astro_frame;
-
 
 /**
  * Macro for converting epoch year to TT-based Julian date
@@ -554,62 +548,60 @@ typedef struct {
  */
 #define FRAME_INIT_APPARENT_NEAR_EARTH(jd_tdb, space_loc)    { NOVAS_CIRS, -1, { NOVAS_OBSERVER_IN_SPACE, space_loc}, jd_tdb }
 
+short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
 
+short virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
 
-short int app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
+short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
 
-short int virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
+short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
 
-short int astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
+short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
 
-short int app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
+short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
 
-short int virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
+short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy, double *ra,
+        double *dec);
 
-short int astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
-
-short int topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
+short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec);
 
-short int local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
-        double *ra, double *dec);
-
-short int topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
+short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec, double *dis);
 
-short int local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
+short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec, double *dis);
 
-short int mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accuracy, double *ira, double *idec);
+short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accuracy, double *ira, double *idec);
 
-short int place(double jd_tt, const object *cel_object, const observer *location, double ut1_to_tt, enum novas_reference_system coord_sys,
+short place(double jd_tt, const object *cel_object, const observer *location, double ut1_to_tt, enum novas_reference_system coord_sys,
         enum novas_accuracy accuracy, sky_pos *output);
 
 int equ2gal(double rai, double deci, double *glon, double *glat);
 
-short int equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec, double *elon,
+short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec, double *elon,
         double *elat);
 
-short int equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2);
+short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2);
 
-short int ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2);
+short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2);
 
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, short int ref_option, double *zd, double *az, double *rar, double *decr);
+        double dec, short ref_option, double *zd, double *az, double *rar, double *decr);
 
-short int gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
+short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
         double *dec);
 
-short int sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_equinox_type gst_type,
+short sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_equinox_type gst_type,
         enum novas_earth_rotation_measure method, enum novas_accuracy accuracy, double *gst);
 
 double era(double jd_high, double jd_low);
 
-short int ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
+short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
+        enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
 
-short int cel2ter(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
+short cel2ter(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
+        enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
 
 int spin(double angle, const double *pos1, double *pos2);
 
@@ -619,7 +611,7 @@ int terra(const on_surface *location, double lst, double *pos, double *vel);
 
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *tobl, double *ee, double *dpsi, double *deps);
 
-short int cel_pole(double tjd, enum novas_pole_offset_type type, double dpole1, double dpole2);
+short cel_pole(double tjd, enum novas_pole_offset_type type, double dpole1, double dpole2);
 
 double ee_ct(double jd_high, double jd_low, enum novas_accuracy accuracy);
 
@@ -629,15 +621,15 @@ int proper_motion(double jd_tdb1, const double *pos, const double *vel, double j
 
 int bary2obs(const double *pos, const double *pos_obs, double *pos2, double *lighttime);
 
-short int geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos, double *vel);
+short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos, double *vel);
 
-short int light_time(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
-        double *pos, double *tlight);
+short light_time(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos,
+        double *tlight);
 
 double d_light(const double *pos1, const double *pos_obs);
 
-short int grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_accuracy accuracy, const double *pos1,
-        const double *pos_obs, double *pos2);
+short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_accuracy accuracy, const double *pos1, const double *pos_obs,
+        double *pos2);
 
 int grav_vec(const double *pos1, const double *pos_obs, const double *pos_body, double rmass, double *pos2);
 
@@ -646,7 +638,7 @@ int aberration(const double *pos, const double *ve, double lighttime, double *po
 int rad_vel(const object *cel_object, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun,
         double d_obj_sun, double *rv);
 
-short int precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos2);
+short precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos2);
 
 int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *pos, double *pos2);
 
@@ -654,9 +646,13 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *dpsi, double
 
 int fund_args(double t, novas_fundamental_args *a);
 
+double planet_lon(double t, enum novas_planet planet);
+
+double accum_prec(double t);
+
 double mean_obliq(double jd_tdb);
 
-short int vector2radec(const double *pos, double *ra, double *dec);
+short vector2radec(const double *pos, double *ra, double *dec);
 
 int radec2vector(double ra, double dec, double dist, double *vector);
 
@@ -666,41 +662,41 @@ int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff);
 
 double tt2tdb(double jd_tt);
 
-short int cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio);
+short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio);
 
-short int cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, short int *ref_sys);
+short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, short *ref_sys);
 
-short int cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type ref_sys, enum novas_accuracy accuracy, double *x, double *y,
+short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type ref_sys, enum novas_accuracy accuracy, double *x, double *y,
         double *z);
 
-short int cio_array(double jd_tdb, long int n_pts, ra_of_cio *cio);
+short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio);
 
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy);
 
-short int ephemeris(const double jd_tdb[2], const object *cel_obj, enum novas_origin origin, enum novas_accuracy accuracy, double *pos,
+short ephemeris(const double jd_tdb[2], const object *cel_obj, enum novas_origin origin, enum novas_accuracy accuracy, double *pos,
         double *vel);
 
 int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);
 
-short int transform_cat(enum novas_transform_type, double date_incat, const cat_entry *incat, double date_newcat, const char *newcat_id,
+short transform_cat(enum novas_transform_type, double date_incat, const cat_entry *incat, double date_newcat, const char *newcat_id,
         cat_entry *newcat);
 
 int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, double *nadir_ang);
 
 double refract(const on_surface *location, enum novas_refraction_model ref_option, double zd_obs);
 
-double julian_date(short int year, short int month, short int day, double hour);
+double julian_date(short year, short month, short day, double hour);
 
-int cal_date(double tjd, short int *year, short int *month, short int *day, double *hour);
+int cal_date(double tjd, short *year, short *month, short *day, double *hour);
 
 double norm_ang(double angle);
 
-short int make_cat_entry(const char *star_name, const char *catalog, long int star_num, double ra, double dec, double pm_ra, double pm_dec,
+short make_cat_entry(const char *star_name, const char *catalog, long star_num, double ra, double dec, double pm_ra, double pm_dec,
         double parallax, double rad_vel, cat_entry *star);
 
-short int make_object(enum novas_object_type, int number, const char *name, const cat_entry *star_data, object *cel_obj);
+short make_object(enum novas_object_type, int number, const char *name, const cat_entry *star_data, object *cel_obj);
 
-short int make_observer(enum novas_observer_place, const on_surface *obs_surface, const in_space *obs_space, observer *obs);
+short make_observer(enum novas_observer_place, const on_surface *obs_surface, const in_space *obs_space, observer *obs);
 
 int make_observer_at_geocenter(observer *obs_at_geocenter);
 
@@ -732,12 +728,6 @@ int cio_set_locator_file(const char *filename);
 
 int nutation_set_lp(novas_nutate_func f);
 
-
-
 #include "solarsystem.h"
-
-
-
-
 
 #endif /* _NOVAS_ */

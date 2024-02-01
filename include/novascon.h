@@ -19,10 +19,10 @@
 #define _CONSTS_
 
 /// @deprecated Definition was already ommitted in NOVAS C 3.1.
-extern const short int FN1;
+extern const short FN1;
 
 /// @deprecated Definition was already ommitted in NOVAS C 3.1.
-extern const short int FN0;
+extern const short FN0;
 
 /// @deprecated TDB Julian date of epoch J2000.0. Use NOVAS_JD_J2000 instead.
 extern const double T0;

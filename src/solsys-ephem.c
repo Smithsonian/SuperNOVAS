@@ -35,8 +35,8 @@
  * @since 1.0
  * @author Attila Kovacs
  */
-short int solarsystem_unified_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  static const char *names[] = NOVAS_MAJOR_PLANET_NAMES_INIT;
+short planet_ephem_reader_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+  static const char *names[] = NOVAS_PLANET_NAMES_INIT;
 
   novas_ephem_reader_func f;
   enum novas_origin o = NOVAS_BARYCENTER;
@@ -47,7 +47,7 @@ short int solarsystem_unified_hp(const double jd_tdb[2], enum novas_major_planet
     return 1;
   }
 
-  if(body < 0 || body >= NOVAS_MAJOR_PLANETS) {
+  if(body < 0 || body >= NOVAS_PLANETS) {
     errno = EINVAL;
     return -1;
   }
@@ -99,26 +99,17 @@ short int solarsystem_unified_hp(const double jd_tdb[2], enum novas_major_planet
  * @since 1.0
  * @author Attila Kovacs
  */
-short int solarsystem_unified(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_ephem_reader(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
   const double jd_tdb2[2] = { jd_tdb };
-  return solarsystem_unified_hp(jd_tdb2, body, origin, position, velocity);
+  return planet_ephem_reader_hp(jd_tdb2, body, origin, position, velocity);
 }
 
-#ifdef DEFAULT_SOLSYS
-short int default_solarsystem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_unified(jd_tdb, body, origin, position, velocity);
+short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
+  return planet_ephem_reader(jd_tdb, body, origin, position, velocity);
 }
 
-short int default_solarsystem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_unified_hp(jd_tdb, body, origin, position, velocity);
-}
-#else
-short int solarsystem(double jd_tdb, short int body, short int origin, double *position, double *velocity) {
-  return solarsystem_unified(jd_tdb, body, origin, position, velocity);
-}
-
-short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity) {
-  return solarsystem_unified_hp(jd_tdb, body, origin, position, velocity);
+short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+  return planet_ephem_reader_hp(jd_tdb, body, origin, position, velocity);
 }
 #endif
 

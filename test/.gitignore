@@ -1,0 +1,6 @@
+*.dat
+**/*.gcov
+**/*.gcda
+**/*.gcno
+test
+

@@ -33,11 +33,11 @@
  * NOVAS_REDUCED_PRECISION).
  *
  * Since this is a function that may be provided by existing custom user implementations, we keep the original argument
- * types for compatibility, hence 'short int' instead of the more informative enums).
+ * types for compatibility, hence 'short' instead of the more informative enums).
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined
- *                      by enum novas_major_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
+ *                      by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
  *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
@@ -55,7 +55,7 @@
  * @sa ephemeris()
  * @sa novas_solarsystem_hp_func
  */
-typedef short int (*novas_solarsystem_func)(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+typedef short (*novas_planet_calculator)(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 /**
@@ -64,13 +64,13 @@ typedef short int (*novas_solarsystem_func)(double jd_tdb, enum novas_major_plan
  * NOVAS_FULL_PRECISION).
  *
  * Since this is a function that may be provided by existing custom user implementations, we keep the original argument
- * types for compatibility, hence 'short int' instead of the more informative enums).
+ * types for compatibility, hence 'short' instead of the more informative enums).
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order
  *                      components, respectively. Typically, as the integer and fractional parts for the
  *                      highest precision.
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined
- *                      by enum novas_major_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
+ *                      by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
  *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
@@ -88,7 +88,7 @@ typedef short int (*novas_solarsystem_func)(double jd_tdb, enum novas_major_plan
  * @sa novas_solarsystem_func
  * @sa ephemeris()
  */
-typedef short int (*novas_solarsystem_hp_func)(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+typedef short (*novas_planet_calculator_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 
@@ -162,9 +162,9 @@ typedef int (*novas_ephem_reader_func)(int mp, const char *name, double jd_tdb_h
 double *readeph(int mp, const char *name, double jd_tdb, int *error);
 
 
-int set_planet_calc(novas_solarsystem_func f);
+int set_planet_calc(novas_planet_calculator f);
 
-int set_planet_calc_hp(novas_solarsystem_hp_func f);
+int set_planet_calc_hp(novas_planet_calculator_hp f);
 
 int set_ephem_reader(novas_ephem_reader_func f);
 
@@ -177,11 +177,11 @@ novas_ephem_reader_func get_ephem_reader();
  * their own preferred implementations at runtime via set_planet_calc().
  *
  * Since this is a function that may be provided by existing custom user implementations, we keep the original argument
- * types for compatibility, hence 'short int' instead of the more informative enums).
+ * types for compatibility, hence 'short' instead of the more informative enums).
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined
- *                      by enum novas_major_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
+ *                      by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
  *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
@@ -197,12 +197,12 @@ novas_ephem_reader_func get_ephem_reader();
  *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the
  *                      ephemeris data cannot be produced for other reasons.
  *
- * @sa novas_major_planet
+ * @sa novas_planet
  * @sa solarsystem_hp()
  * @sa set_planet_calc()
  * @sa novas_solarsystem_func
  */
-short int solarsystem (double jd_tdb, short int body, short int origin, double *position, double *velocity);
+short solarsystem (double jd_tdb, short body, short origin, double *position, double *velocity);
 
 
 /**
@@ -211,14 +211,14 @@ short int solarsystem (double jd_tdb, short int body, short int origin, double *
  * their own preferred implementations at runtime via set_planet_calc_hp().
  *
  * Since this is a function that may be provided by existing custom user implementations, we keep the original argument
- * types for compatibility, hence 'short int' instead of the more informative enums).
+ * types for compatibility, hence 'short' instead of the more informative enums).
  *
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order
  *                      components, respectively. Typically, as the integer and fractional parts for the
  *                      highest precision.
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined
- *                      by enum novas_major_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
+ *                      by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
  *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
@@ -238,24 +238,24 @@ short int solarsystem (double jd_tdb, short int body, short int origin, double *
  * @sa set_planet_calc_hp()
  * @sa novas_solarsystem_hp_func
  */
-short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity);
+short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity);
 
 
-short int solarsystem_earth_sun(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short int solarsystem_earth_sun_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short int solarsystem_unified(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_ephem_reader(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short int solarsystem_unified_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_ephem_reader_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short int solarsystem_eph_manager(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short int solarsystem_eph_manager_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short int solarsystem_jplint_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 #endif

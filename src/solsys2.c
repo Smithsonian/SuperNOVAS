@@ -20,7 +20,7 @@
 
 /********solarsystem */
 
-short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity)
+short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity)
 /*
  ------------------------------------------------------------------------
 
@@ -39,10 +39,10 @@ short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum n
  ARGUMENTS:
  jd_tdb (double)
  Julian date of the desired time, on the TDB time scale.
- body (short int)
+ body (short)
  Body identification number for the solar system object of
  interest;  Mercury = 1,...,Pluto = 9, Sun = 10, Moon = 11.
- origin (short int)
+ origin (short)
  Origin code
  = 0 ... solar system barycenter
  = 1 ... center of mass of the Sun
@@ -58,7 +58,7 @@ short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum n
 
  RETURNED
  VALUE:
- (short int)
+ (short)
  0...Everything OK.
  1...Invalid value of body or origin.
  2...Error detected by JPL software.
@@ -101,11 +101,11 @@ short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum n
    Dummy function prototype for Fortran subroutine 'jplint'.
    */
 
-  extern void jplint_(double *jd_tdb, long int *targ, long int *cent, double *posvel, long int *err_flg);
+  extern void jplint_(double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
-  short int i;
+  short i;
 
-  long int targ, cent, err_flg = 0;
+  long targ, cent, err_flg = 0;
 
   double posvel[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
@@ -122,7 +122,7 @@ short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum n
 
   if(body == 10) targ = 11L;
   else if(body == 11) targ = 10L;
-  else targ = (long int) body;
+  else targ = (long) body;
 
   /*
    Select 'cent' according to the value of 'origin'.
@@ -157,7 +157,7 @@ short int solarsystem_jplint(double jd_tdb, enum novas_major_planet body, enum n
 
 /********solarsystem_hp */
 
-short int solarsystem_jplint_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin,
+short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
 
 double *position, double *velocity)
 /*
@@ -181,10 +181,10 @@ double *position, double *velocity)
  split any way (although the first element is usually the
  "integer" part, and the second element is the "fractional"
  part).  Julian date is on the TDB or "T_eph" time scale.
- body (short int)
+ body (short)
  Body identification number for the solar system object of
  interest;  Mercury = 1,...,Pluto = 9, Sun = 10, Moon = 11.
- origin (short int)
+ origin (short)
  Origin code
  = 0 ... solar system barycenter
  = 1 ... center of mass of the Sun
@@ -200,7 +200,7 @@ double *position, double *velocity)
 
  RETURNED
  VALUE:
- (short int)
+ (short)
  0...Everything OK.
  1...Invalid value of body or origin.
  2...Error detected by JPL software.
@@ -244,11 +244,11 @@ double *position, double *velocity)
  ------------------------------------------------------------------------
  */
 {
-  extern void jplihp_(double *jed, long int *targ, long int *cent, double *posvel, long int *err_flg);
+  extern void jplihp_(double *jed, long *targ, long *cent, double *posvel, long *err_flg);
 
-  short int i;
+  short i;
 
-  long int targ, cent, err_flg = 0;
+  long targ, cent, err_flg = 0;
 
   double posvel[6] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
@@ -265,7 +265,7 @@ double *position, double *velocity)
 
   if(body == 10) targ = 11L;
   else if(body == 11) targ = 10L;
-  else targ = (long int) body;
+  else targ = (long) body;
 
   /*
    Select 'cent' according to the value of 'origin'.
@@ -299,19 +299,14 @@ double *position, double *velocity)
 }
 
 #if DEFAULT_SOLSYS == 2
-short int default_solarsystem(double jd_tdb, enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_jplint(jd_tdb, body, origin, position, velocity);
-}
-
-short int default_solarsystem_hp(const double jd_tdb[2], enum novas_major_planet body, enum novas_origin origin, double *position, double *velocity) {
-  return solarsystem_jplint_hp(jd_tdb, body, origin, position, velocity);
-}
+novas_planet_calculator default_planetcalc = planet_jplint;
+novas_planet_calculator_hp default_planetcalc_hp = planet_jplint;
 #elif !BUILTIN_SOLSYS2
-short int solarsystem(double jd_tdb, short int body, short int origin, double *position, double *velocity) {
-  return solarsystem_jplint(jd_tdb, body, origin, position, velocity);
+short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
+  return planet_jplint(jd_tdb, body, origin, position, velocity);
 }
 
-short int solarsystem_hp(const double jd_tdb[2], short int body, short int origin, double *position, double *velocity) {
-  return solarsystem_jplint_hp(jd_tdb, body, origin, position, velocity);
+short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+  return planet_jplint_hp(jd_tdb, body, origin, position, velocity);
 }
 #endif

@@ -21,12 +21,12 @@
    External variables
  */
 
-extern short int KM;
+extern short KM;
 
 extern int IPT[3][12], LPT[3];
 
-extern long int  NRL, NP, NV;
-extern long int RECORD_LENGTH;
+extern long  NRL, NP, NV;
+extern long RECORD_LENGTH;
 
 extern double SS[3], JPLAU, PC[18], VC[18], TWOT, EM_RATIO;
 extern double *BUFFER;
@@ -37,20 +37,20 @@ extern FILE *EPHFILE;
    Function prototypes
  */
 
-short int ephem_open (const char *ephem_name,
+short ephem_open (const char *ephem_name,
         double *jd_begin, double *jd_end,
-        short int *de_number);
+        short *de_number);
 
-short int ephem_close (void);
+short ephem_close (void);
 
-short int planet_ephemeris (const double tjd[2], short int target,
-        short int center,
+short planet_ephemeris (const double tjd[2], short target,
+        short center,
         double *position, double *velocity);
 
-short int state (const double *jed, short int target,
+short state (const double *jed, short target,
         double *target_pos, double *target_vel);
 
-void interpolate (const double *buf, const double *t, long int ncm, long int na,
+void interpolate (const double *buf, const double *t, long ncm, long na,
         double *position, double *velocity);
 
 void split (double tt, double *fr);

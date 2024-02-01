@@ -18,7 +18,7 @@
  Define global variables
  */
 
-short int KM;
+short KM;
 
 /*
  IPT and LPT defined as int to support 64 bit systems.
@@ -26,8 +26,8 @@ short int KM;
 
 int IPT[3][12], LPT[3];
 
-long int NRL, NP, NV;
-long int RECORD_LENGTH;
+long NRL, NP, NV;
+long RECORD_LENGTH;
 
 double SS[3], JPLAU, PC[18], VC[18], TWOT, EM_RATIO;
 double *BUFFER;
@@ -36,7 +36,7 @@ FILE *EPHFILE = NULL;
 
 /********ephem_open */
 
-short int ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short int *de_number)
+short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number)
 /*
  ------------------------------------------------------------------------
 
@@ -60,12 +60,12 @@ short int ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, s
  Beginning Julian date of the ephemeris file.
  *jd_end (double)
  Ending Julian date of the ephemeris file.
- *de_number (short int)
+ *de_number (short)
  DE number of the ephemeris file opened.
 
  RETURNED
  VALUE:
- (short int)
+ (short)
  0   ...file exists and is opened correctly.
  1   ...file does not exist/not found.
  2-10...error reading from file header.
@@ -139,7 +139,7 @@ short int ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, s
   }
   else {
     char ttl[252], cnam[2400];
-    short int i, j;
+    short i, j;
     /*
      File found. Set initializations and default values.
      */
@@ -238,7 +238,7 @@ short int ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, s
 
     BUFFER = (double*) calloc(RECORD_LENGTH / 8, sizeof(double));
 
-    *de_number = (short int) denum;
+    *de_number = (short) denum;
     *jd_begin = SS[0];
     *jd_end = SS[1];
   }
@@ -248,7 +248,7 @@ short int ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, s
 
 /********ephem_close */
 
-short int ephem_close(void)
+short ephem_close(void)
 /*
  ------------------------------------------------------------------------
 
@@ -270,7 +270,7 @@ short int ephem_close(void)
 
  RETURNED
  VALUE:
- (short int)
+ (short)
  0  ...file was already closed or closed correctly.
  EOF...error closing file.
 
@@ -288,7 +288,7 @@ short int ephem_close(void)
  PROGRAMMER:
  V1.0/11-07/WKP (USNO/AA)
  V1.1/09-10/WKP (USNO/AA): Explicitly cast fclose return value to
- type 'short int'.
+ type 'short'.
  V1.2/10-10/WKP (USNO/AA): Renamed function to lowercase to
  comply with coding standards.
 
@@ -298,10 +298,10 @@ short int ephem_close(void)
  ------------------------------------------------------------------------
  */
 {
-  short int error = 0;
+  short error = 0;
 
   if(EPHFILE) {
-    error = (short int) fclose(EPHFILE);
+    error = (short) fclose(EPHFILE);
     EPHFILE = NULL;
     free(BUFFER);
   }
@@ -310,7 +310,7 @@ short int ephem_close(void)
 
 /********planet_ephemeris */
 
-short int planet_ephemeris(const double tjd[2], short int target, short int center,
+short planet_ephemeris(const double tjd[2], short target, short center,
 
 double *position, double *velocity)
 /*
@@ -332,9 +332,9 @@ double *position, double *velocity)
  split any way (although the first element is usually the
  "integer" part, and the second element is the "fractional"
  part).  Julian date is in the TDB or "T_eph" time scale.
- target (short int)
+ target (short)
  Number of 'target' point.
- center (short int)
+ center (short)
  Number of 'center' (origin) point.
  The numbering convention for 'target' and'center' is:
  0 = Mercury           7 = Neptune
@@ -343,7 +343,7 @@ double *position, double *velocity)
  3 = Mars             10 = Sun
  4 = Jupiter          11 = Solar system bary.
  5 = Saturn           12 = Earth-Moon bary.
- 6 = Uranus           13 = Nutations (long int. and obliq.)
+ 6 = Uranus           13 = Nutations (long. and obliq.)
  (If nutations are desired, set 'target' = 13;
  'center' will be ignored on that call.)
 
@@ -358,7 +358,7 @@ double *position, double *velocity)
 
  RETURNED
  VALUE:
- (short int)
+ (short)
  0  ...everything OK.
  1,2...error returned from State.
 
@@ -388,8 +388,8 @@ double *position, double *velocity)
  ------------------------------------------------------------------------
  */
 {
-  short int i, error = 0, earth = 2, moon = 9;
-  short int do_earth = 0, do_moon = 0;
+  short i, error = 0, earth = 2, moon = 9;
+  short do_earth = 0, do_moon = 0;
 
   double jed[2];
   double pos_moon[3] = { 0.0, 0.0, 0.0 }, vel_moon[3] = { 0.0, 0.0, 0.0 }, pos_earth[3] = { 0.0, 0.0, 0.0 }, vel_earth[3] =
@@ -552,7 +552,7 @@ double *position, double *velocity)
 
 /********state */
 
-short int state(const double *jed, short int target,
+short state(const double *jed, short target,
 
 double *target_pos, double *target_vel)
 /*
@@ -572,7 +572,7 @@ double *target_pos, double *target_vel)
  2-element Julian date (TDB) at which interpolation is wanted.
  Any combination of jed[0]+jed[1] which falls within the time
  span on the file is a permissible epoch.  See Note 1 below.
- target (short int)
+ target (short)
  The requested body to get data for from the ephemeris file.
  The designation of the astronomical bodies is:
  0 = Mercury                    6 = Uranus
@@ -597,7 +597,7 @@ double *target_pos, double *target_vel)
 
  RETURNED
  VALUE:
- (short int)
+ (short)
  0...everything OK.
  1...error reading ephemeris file.
  2...epoch out of range.
@@ -645,9 +645,9 @@ double *target_pos, double *target_vel)
  ------------------------------------------------------------------------
  */
 {
-  short int i;
+  short i;
 
-  long int nr;
+  long nr;
 
   double t[2], aufac = 1.0, jd[4], s;
 
@@ -683,7 +683,7 @@ double *target_pos, double *target_vel)
    Calculate record number and relative time interval.
    */
 
-  nr = (long int) ((jd[0] - SS[0]) / SS[2]) + 3;
+  nr = (long) ((jd[0] - SS[0]) / SS[2]) + 3;
   if(jd[0] == SS[1]) nr -= 2;
   t[0] = ((jd[0] - ((double) (nr - 3) * SS[2] + SS[0])) + jd[3]) / SS[2];
 
@@ -692,7 +692,7 @@ double *target_pos, double *target_vel)
    */
 
   if(nr != NRL) {
-    long int rec;
+    long rec;
     NRL = nr;
     rec = (nr - 1) * RECORD_LENGTH;
     fseek(EPHFILE, rec, SEEK_SET);
@@ -718,7 +718,7 @@ double *target_pos, double *target_vel)
 
 /********interpolate */
 
-void interpolate(const double *buf, const double *t, long int ncf, long int na,
+void interpolate(const double *buf, const double *t, long ncf, long na,
 
 double *position, double *velocity)
 /*
@@ -740,9 +740,9 @@ double *position, double *velocity)
  t[0] is fractional time interval covered by coefficients at
  which interpolation is desired (0 <= t[0] <= 1).
  t[1] is length of whole interval in input time units.
- ncf (long int)
+ ncf (long)
  Number of coefficients per component.
- na (long int)
+ na (long)
  Number of sets of coefficients in full array
  (i.e., number of sub-intervals in full interval).
 
@@ -777,7 +777,7 @@ double *position, double *velocity)
  two distinct vector arrays.
  V1.3/11-07/WKP (USNO/AA): Updated prolog.
  V1.4/12-07/WKP (USNO/AA): Changed ncf and na arguments from short
- int to long int.
+ int to long.
  V1.5/10-10/WKP (USNO/AA): Renamed function to lowercase to
  comply with coding standards.
 
@@ -787,7 +787,7 @@ double *position, double *velocity)
  ------------------------------------------------------------------------
  */
 {
-  long int i, j, k, l;
+  long i, j, k, l;
 
   double dna, dt1, temp, tc, vfac;
 
@@ -797,9 +797,9 @@ double *position, double *velocity)
    */
 
   dna = (double) na;
-  dt1 = (double) ((long int) t[0]);
+  dt1 = (double) ((long) t[0]);
   temp = dna * t[0];
-  l = (long int) (temp - dt1);
+  l = (long) (temp - dt1);
 
   /*
    'tc' is the normalized Chebyshev time (-1 <= tc <= 1).
@@ -934,7 +934,7 @@ double *fr)
    Get integer and fractional parts.
    */
 
-  fr[0] = (double) ((long int) tt);
+  fr[0] = (double) ((long) tt);
   fr[1] = tt - fr[0];
 
   /*
