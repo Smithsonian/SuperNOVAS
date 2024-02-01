@@ -1543,9 +1543,7 @@ short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accur
   pos1[1] = cos(d) * sin(r);
   pos1[2] = sin(d);
 
-
   // Transform the position vector based on the value of 'coord_sys'.
-
   if(coord_sys <= 1) {
     // Transform the position vector from GCRS to mean equator and equinox
     // of date.
