@@ -1,8 +1,8 @@
 
-![Build Status](https://github.com/Smithsonia/SuperNOVAS/actions/workflows/build.yml/badge.svg)
-![Test](https://github.com/Smithsonia/SuperNOVAS/actions/workflows/test.yml/badge.svg)
-![Static Analysis](https://github.com/Smithsonia/SuperNOVAS/actions/workflows/test.yml/badge.svg)
-![API documentation](https://github.com/Smithsonia/SuperNOVAS/actions/workflows/test.yml/badge.svg)
+![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
+![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
+![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
+![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 
 
 
