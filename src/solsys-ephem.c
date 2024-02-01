@@ -111,5 +111,4 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
   return planet_ephem_reader_hp(jd_tdb, body, origin, position, velocity);
 }
-#endif
 

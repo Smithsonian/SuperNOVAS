@@ -1523,7 +1523,7 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
  */
 short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
         double *dec) {
-  double t1, r, d, pos1[3], pos2[3], r_cio, x[3], y[3], z[3];
+  double t1, r, d, pos1[3], pos2[3], r_cio;
   short rs;
   int error = 0;
 
@@ -1561,6 +1561,8 @@ short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accur
     }
   }
   else {
+    double x[3], y[3], z[3]
+
     // Obtain the basis vectors, in the GCRS, of the celestial intermediate
     // system.
     error = cio_location(t1, accuracy, &r_cio, &rs);
@@ -2440,7 +2442,6 @@ double ee_ct(double jd_high, double jd_low, enum novas_accuracy accuracy) {
   // High accuracy mode.
   if(accuracy == NOVAS_FULL_ACCURACY) {
     double s0 = 0.0, s1 = 0.0;
-    double a = 0.0;
     int i;
 
     // Fill the 5 Earth-Sun-Moon fundamental args
@@ -2459,9 +2460,10 @@ double ee_ct(double jd_high, double jd_low, enum novas_accuracy accuracy) {
     for(i = 32; --i >= 0;) {
       const char *ke = &ke0_t[i][0];
       const float *se = &se0_t[i][0];
+
+      double a = 0.0;
       int j;
 
-      a = 0.0;
       for(j = 14; --j >= 0;)
         if(ke[j]) a += ke[j] * fa[j];
 

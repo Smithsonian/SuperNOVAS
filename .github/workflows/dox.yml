@@ -12,7 +12,7 @@ on:
 jobs:   
 
   apidocs:
-    name: Update API documentation
+    name: Generate API documentation
 
     runs-on: ubuntu-latest
     env:
