@@ -1,0 +1,27 @@
+codecov:
+  require_ci_to_pass: no
+
+coverage:
+  precision: 2
+  round: down
+  status:
+    patch: off
+    project:
+      default:
+        target: auto
+        threshold: 0.1%
+        removed_code_behavior: adjust_base
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: no
+

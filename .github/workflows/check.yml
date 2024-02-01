@@ -1,0 +1,24 @@
+name: cppcheck
+
+on: [push, pull_request ]
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/check.yml'
+
+jobs:
+
+  cppcheck:
+    name: Check source code
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+    steps:
+    
+    - uses: actions/checkout@v3
+    
+    - name: Run cppcheck
+      run: make check

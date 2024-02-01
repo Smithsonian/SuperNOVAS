@@ -3140,30 +3140,13 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   const double deplan = 0.000388;
 
   double dp, de, factor, dpsils, depsls, dpsipl, depspl;
+  novas_fundamental_args a;
 
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
   // ** Luni-solar nutation. **
-
-  // Fundamental (Delaunay) arguments from Simon et al. (1994),
-  // in radians.
-
-  // Mean anomaly of the Moon.
-  const double el = fmod(485868.249036 + t * 1717915923.2178, ASEC360) * ASEC2RAD;
-
-  // Mean anomaly of the Sun.
-  const double elp = fmod(1287104.79305 + t * 129596581.0481, ASEC360) * ASEC2RAD;
-
-  // Mean argument of the latitude of the Moon.
-  const double f = fmod(335779.526232 + t * 1739527262.8478, ASEC360) * ASEC2RAD;
-
-  // Mean elongation of the Moon from the Sun.
-  const double d = fmod(1072260.70369 + t * 1602961601.2090, ASEC360) * ASEC2RAD;
-
-  // Mean longitude of the ascending node of the Moon.
-  const double om = fmod(450160.398036 - t * 6962890.5431, ASEC360) * ASEC2RAD;
-
+  fund_args(t, &a);
 
   // Initialize the nutation values.
   dp = 0.0;
@@ -3177,11 +3160,11 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     double arg = 0.0;
     double sarg, carg;
 
-    if(n[0]) arg += n[0] * el;
-    if(n[1]) arg += n[1] * elp;
-    if(n[2]) arg += n[2] * f;
-    if(n[3]) arg += n[3] * d;
-    if(n[4]) arg += n[4] * om;
+    if(n[0]) arg += n[0] * a.l;
+    if(n[1]) arg += n[1] * a.l1;
+    if(n[2]) arg += n[2] * a.F;
+    if(n[3]) arg += n[3] * a.D;
+    if(n[4]) arg += n[4] * a.Omega;
 
     sarg = sin(arg);
     carg = cos(arg);

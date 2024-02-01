@@ -103,9 +103,9 @@
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
 /// [0]: Earth/Moon barycenter, MASS[1] = Mercury, ...,
 /// [9]: Pluto, [10]: Sun, [11]: Moon.
-#define NOVAS_RMASS_INIT  { 328900.561400, 6023600.0, 408523.71, \
-      332946.050895, 3098708.0, 1047.3486, 3497.898, 22902.98, \
-      19412.24, 135200000.0, 1.0, 27068700.387534 }
+#define NOVAS_RMASS_INIT  { \
+      328900.561400, 6023600.0, 408523.71, 332946.050895, 3098708.0, 1047.3486, 3497.898, \
+      22902.98, 19412.24, 135200000.0, 1.0, 27068700.387534 }
 
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined

@@ -39,8 +39,8 @@ static void newline() {
 static void openfile(const char *name) {
   char filename[100] = {};
 
-  if(idx >= 0) sprintf(filename, "data/%02d-%s.out", idx++, name);
-  else sprintf(filename, "data/%s.out", name);
+  //if(idx >= 0) sprintf(filename, "data/%02d-%s.out", idx++, name);
+  sprintf(filename, "data/%s.out", name);
 
   if(fp) {
     fprintf(fp, "\n");
@@ -389,8 +389,6 @@ static void test_precession() {
 
 static void test_light_time() {
   double pos1[3], t = 0.0;
-
-  if(source.type == 2) return;
 
   openfile("light_time");
 

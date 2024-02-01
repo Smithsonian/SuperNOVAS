@@ -1,0 +1,32 @@
+name: Build
+
+on: [push, pull_request ]
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'tools/src/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    name: Build libraries
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build static library
+      run: make static
+      
+    - name: Build shared library
+      run: make shared
+   
+    - name: Generate CIO locator data
+      run: make cio_file      
+
+      
+   

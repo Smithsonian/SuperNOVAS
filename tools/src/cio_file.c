@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main (void)
+int main (int argc, char *argv[])
 {
 
 /*
@@ -27,6 +27,8 @@ int main (void)
    NOVAS-C package.
 */
 
+   char *filename = "CIO_RA.TXT";
+   char *outname = "cio_ra.bin";
    char identifier[25];
 
    long int  header_size, record_size, i, n_recs;
@@ -44,11 +46,14 @@ int main (void)
    header_size = (long) ((size_t) 3 * double_size + long_size);
    record_size = (long) ((size_t) 2 * double_size);
 
+   if(argc > 1) filename = argv[1];
+   if(argc > 2) outname = argv[2];
+
 /*
    Open the input formatted text file.
 */
 
-   if ((in_file = fopen ("CIO_RA.TXT", "r")) == NULL)
+   if ((in_file = fopen (filename, "r")) == NULL)
    {
       printf ("Error opening input file.\n");
       return (1);
@@ -58,7 +63,7 @@ int main (void)
    Open the output binary, random-access file.
 */
 
-   if ((out_file = fopen ("cio_ra.bin", "wb+")) == NULL)
+   if ((out_file = fopen (outname, "wb+")) == NULL)
    {
       printf ("Error opening output file.\n");
       if (in_file)
@@ -174,7 +179,7 @@ int main (void)
    printf ("   Data interval: %f days\n\n", t_int);
    printf ("First data point: %f  %f\n", jd_1, ra_1);
    printf ("Last data point:  %f  %f\n\n", jd_n, ra_n);
-   printf ("Binary file cio_ra.bin created.\n");
+   printf ("Binary file %s created.\n", outname);
 
 /*
    Close files.

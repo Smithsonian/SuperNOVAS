@@ -1,25 +1,36 @@
-include ../Makefile
+include ../config.mk
+
 
 CFLAGS += -O0 -g -pg -fprofile-arcs -ftest-coverage
 LDFLAGS += -pg -fprofile-arcs -ftest-coverage
 
 SRC = ../src
-LIB = ../lib/novas.a
 
-test: src/test.c $(SOURCES) | Makefile
-	$(CC) -o $@ -O0 $(CFLAGS) -DDEFAULT_SOLSYS=3 $^ $(LDFLAGS) -lm
-
+.PHONY: run
 run: clean test
 	rm -rf data
 	mkdir data
 	./test
+	rm -f test
+	diff data reference
+
+.PHONY: coverge
+coverage: run
+	gcov test-novas.c
+	gcov test-nutation.c
+	gcov test-solsys3.c
+
+test: src/test.c $(SOURCES) | Makefile
+	$(CC) -o $@ -O0 $(CFLAGS) -DDEFAULT_SOLSYS=3 $^ $(LDFLAGS) -lm
 
 # We are dependent on the project Makefile...
 Makefile: ../Makefile
 
 # Remove intermediate files
-.PHONY: test-clean
-test-clean:
-	rm -rf obj data gmon.out *.gcov *.gcda *.gcno
+.PHONY: clean-data
+clean-data:
+	rm -rf test obj data gmon.out *.gcov *.gcda *.gcno
 
-clean: test-clean
+clean: clean-data
+
+include ../build.mk
