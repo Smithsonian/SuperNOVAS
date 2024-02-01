@@ -9,9 +9,6 @@ on:
       - '*.mk'
       - '.github/workflows/check.yml'
 
-  pull_request:
-    branches: [ main ]
-
 jobs:
 
   cppcheck:

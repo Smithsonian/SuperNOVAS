@@ -9,9 +9,6 @@ on:
       - 'Doxyfile'
       - '.github/workflows/dox.yml'
       
-  pull_request:
-    branches: [ main ]
-      
 jobs:   
 
   apidocs:

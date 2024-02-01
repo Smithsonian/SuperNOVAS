@@ -38,7 +38,7 @@ cio_file:
 	make -C tools cio_file
 
 .PHONY: tools
-tools:
+tools: lib/novas.a
 	make -C tools
 
 .PHONY: test

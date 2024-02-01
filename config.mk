@@ -44,7 +44,7 @@ ifeq ($(BUILD_MODE),debug)
 endif
 
 # cppcheck options
-CHECKOPTS = --enable=performance,warning,portability,style --language=c --std=c90 --error-exitcode=1
+CHECKOPTS = --enable=performance,warning,portability,style --language=c --error-exitcode=1
 
 # ===============================================================================
 # END of user config section. 

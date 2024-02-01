@@ -10,9 +10,6 @@ on:
       - '*.mk'
       - '.github/workflows/build.yml'
 
-  pull_request:
-    branches: [ main ]
-
 jobs:
 
   build:
