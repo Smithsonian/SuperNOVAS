@@ -52,7 +52,7 @@ lib/novas.so: $(SOURCES) | lib
 
 # CIO locator data
 .PHONY: cio_file
-cio_file:
+cio_file: lib/novas.a
 	make -C tools cio_file
 
 obj/jplint.o: $(SRC)/jplint.f

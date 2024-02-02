@@ -4,32 +4,180 @@
 ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 
 
-# SuperNOVAS: the Naval Observatory NOVAS C library, made easier to use.
+# SuperNOVAS: the Naval Observatory NOVAS C library, made better.
 
+SuperNOVAS is a fork of the Naval Observatory Vector Astrometry Software 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the overall aim of making it more user-friendly and
+easier to use. It is entirely free to use without any licensing restrictions. 
+
+
+# Table of Contents
+
+ - [Introduction](#introduction)
+ - [Related links](#related-links)
+ - [Compatibility with NOVAS C 3.1](#compatibility)
+ - [Building and installation](#installation)
+ - [SuperNOVAS specific features](#supernovas-features)
+ - [External Solar-system ephemeris data or services](#solarsystem)
+ - [Fixed NOVAS C 3.1 issues](#fixed-issues)
+ - [Releas schedule](#release-schedule)
+
+
+-----------------------------------------------------------------------------
+
+<a name="introduction"></a>
 ## Introduction
 
-SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)).
-NOVAS is a light-weight but capable C library for precise positional astronomy calculations, such as one might need for an observatory, 
-where apparent coordinates must be calculated to high precision. 
+SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)). NOVAS is a light-weight but capable C library for precise 
+positional astronomy calculations, such as one might need for an observatory, where apparent coordinates must be 
+calculated to high precision. 
 
 The primary goals of SuperNOVAS is to improve on the stock NOVAS C library by:
 
- - Fixing outstanding issues
- - Improving the ease of use by using enums instead of integer constants
+ - Fixing [outstanding issues](#fixed-issues)
+ - Improving the ease of use by using `enum`s instead of integer constants, which also allows for some checking
+   of use during compilations (such as using the incorrect `enum` type).
  - Improving API documentation with doxygen to provide browsable cross-referenced API docs. 
  - Streamlining calculations where possible
  - Adding `const` modifier to prototype arguments where appropriate
- - Checking arguments and setting `errno` as appropriate (and returning -1 unless another appropriate error code was defined already) 
- - Adding new API to facilitate more accessible use
- - Providing a Makefile to build static and shared libraries from sources easily
+ - Checking arguments and setting `errno` as appropriate (and returning -1 unless another appropriate error code was 
+   defined already) 
+ - Adding [new API](#supernovas-features) to facilitate more accessible use
+ - Providing a GNU `Makefile` to build static and shared libraries from sources easily on POSIX platforms
+   (including MaxOS X). (At this point we do not provide a similar build setup for Windows, but let us know if
+   you would like to add it yourself!)
  
-At the same time, SuperNOVAS aims to be fully backward compatible with the upstream NOVAS C library, such that it can be used as a 
-drop-in, link-time replacement for NOVAS in your application without having to change your exsiting code.
+At the same time, SuperNOVAS aims to be fully backward compatible with the upstream NOVAS C library, such that it can 
+be used as a drop-in, _link-time_ replacement for NOVAS in your application without having to change your exsiting 
+code.
  
-SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of the NOVAS C 
-library, if new releases become available.
+SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
+the NOVAS C library, if new releases become available.
  
-SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics | Harvard and Smithsonian, and it is available through
-the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repo on Github.
+SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics | Harvard and Smithsonian, and it is 
+available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repo on GitHub.
+
+Outside contributions are very welcome. See how you can contribute 
+[here](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md).
 
 
+-----------------------------------------------------------------------------
+
+<a name="related-links"></a>
+## Related links
+
+Here are some links to SupeNOVAS related content online:
+
+ - SuperNOVAS [API Documentation](https://github.com/Smithsonian/supernovas.github.io/apidocs/html)
+ - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
+ - [SuperNOVAS page](https://github.com/Smithsonian/supernovas.github.io/apidocs/novas.tag) page on github.io. 
+ - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
+ - The [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
+ - The [NOVAS C](https://aa.usno.navy.mil/software/novasc_intro) library page. 
+ - The [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
+   via JPL HORIZONS.
+ - The [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
+   of ephemeris data.
+
+-----------------------------------------------------------------------------
+https://github.com/attipaci/attipaci.gitgub.io
+<a name="compatibility"></a>
+## Compatibility with NOVAS C 3.1
+
+We strive to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatilibility. In 
+practical terms it means that you cannot simply drop-in replace your static (e.g. `novas.a`) or shared (e.g. 
+`novas.so`) library, from NOVAS C 3.1 to that from SuperNOVAS. Instead, you will need to (re)compile / link your 
+application with SuperNOVAS. 
+
+This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
+`short int` argument of NOVAS C 3.1, or because we added a return value to a functions that was declared `void` 
+in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of  `short` to 
+accomodate JPL NAIF values, which require a 32-bit width. 
+
+
+
+-----------------------------------------------------------------------------
+
+<a name="installation"></a>
+## Building and installation
+
+Coming soon...
+
+
+
+-----------------------------------------------------------------------------
+
+<a name="supernovas-features"></a>
+## SuperNOVAS specific features
+
+Coming soon...
+
+
+
+-----------------------------------------------------------------------------
+
+<a name="solarsystem"></a>
+## External Solar-system ephemeris data or services
+
+Coming soon...
+
+-----------------------------------------------------------------------------
+
+<a name="fixed-issues"></a>
+## Fixed NOVAS C 3.1 issues
+
+The SuperNOVAS library also fixes a number of issues with NOVAS C 3.1. Some are known (documented) issues already. 
+Others have surfaced anew. Here is a list of issues and fixes provided by SuperNOVAS over the upstream NOVAS C 3.1
+code:
+
+ - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
+   function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+   
+ - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+   `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+   
+ - Fixes antedating velocities for light travel time in `ephemeris()`. This issue has been reported, but has not
+   yet been fixed in NOVAS C. When getting positions and velocities for Solar-system sources, it is important
+   to use the values from the time light originated from the observed body rather than the position at the time
+   that light arrives to the observer. This correction was done properly for positions, but not for velocities,
+   resulting in incorrect observed radial velocities being reported for spectroscopic observations. 
+   
+ - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox if the the `equinox` 
+   argument was changing from 1 to 0, and back to 1 again with the date being held the same.
+   
+ - Fixes accuracy bug in `ecl2equ_vec()`, `equ2ecl_vec()`, `geo_posvel()`, `place()`, and `sidereal_time()`, which 
+   could return a cached value for the other accuracy if the other input parameters are the same as a prior call, 
+   except the accuracy. 
+   
+
+-----------------------------------------------------------------------------
+
+<a name="release-schedule"></a>
+## Release schedule
+
+A predictable release schedule and process can help manage expectations and reduce stress on adopters and developers 
+alike.
+
+Releases of the library shall follow a quarterly release schedule. You may expect upcoming releases 
+to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as needed
+basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that 
+addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a release will 
+actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 
+being published.
+
+_Feature releases_ (e.g. __1.x.0__ version bumps), which may include some significant API changes, are provided at 
+least 6 months apart, to reduce stress on adopters who may need/want to tweak their code to integrate these. Between 
+feature releases, _bug fix releases_ (without significant API changes) may be provided as needed to address issues. 
+New features are generally reserved for the feature releases, although they may also be rolled out in bug-fix releases 
+as long as they do not affect the existing API -- in line with the desire to keep bug-fix releases fully backwards 
+compatible with their parent versions.
+
+In the month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be available on github
+briefly, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be tested by 
+adopters before the releases are finalized. Please use due diligence to test such release candidates with your code 
+when they become available to avoid unexpected suprises when the finalized release is published. Release candidates 
+are typically available for one week only before they are superseded either by another, or by the finalized release.
+
+
+-----------------------------------------------------------------------------
