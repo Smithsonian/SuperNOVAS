@@ -1,7 +1,7 @@
 ![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
-![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
-![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
+![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/check.yml/badge.svg)
+![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 
 
 <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"><br clear="all">
@@ -10,8 +10,8 @@
 # SuperNOVAS: the Naval Observatory NOVAS C library, made better.
 
 SuperNOVAS is a fork of the Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the overall aim of making it more user-friendly and
-easier to use. It is entirely free to use without any licensing restrictions. 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)) package, with the overall aim of making it more user-friendly 
+and easier to use. It is entirely free to use without any licensing restrictions. 
 
 
 # Table of Contents
@@ -21,9 +21,10 @@ easier to use. It is entirely free to use without any licensing restrictions.
  - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Building and installation](#installation)
  - [SuperNOVAS specific features](#supernovas-features)
+ - [Notes on precision](#precision)
  - [External Solar-system ephemeris data or services](#solarsystem)
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
- - [Releas schedule](#release-schedule)
+ - [Release schedule](#release-schedule)
 
 
 -----------------------------------------------------------------------------
@@ -121,6 +122,42 @@ Coming soon...
 
 -----------------------------------------------------------------------------
 
+<a name="precision"></a>
+## SuperNOVAS specific features
+
+The SuperNOVAS library is in principle capable of calculating positions and velocities to sub-microarcsecond precision 
+for all types of celestial sources. However, there are certain pre-requisites and
+practical considerations before that level of accuracy is reached.
+
+
+ 1. __Earth's polar motion__: Calculating positions for any Earth-based observations requires precise knowledge of the 
+    Earth's orientation at the time of observation. The pole is subject to predictable precession and nutation, but also 
+    small irregular variations in the orientation of the rotational axis and the rotation period, which are referred to 
+    as the polar wobble. The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
+    provide up-to-date measurements, historical data and  and near-term projections for the polar offsets and the 
+    UT1-UTC time difference and leap-seconds. In SuperNOVAS you can use `cel_pole()` and `ut1_to_tt()` functions to 
+    apply / use the published values from these to improve the astrometic precision of calls such as `calc_pos()`, or 
+    `topo_star()`. Without setting and using the polar offset parameters, positions for Earth-based observations will
+    be accurate at the arcsecond level only.
+ 
+ 
+ 2. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
+    the target object as well as for Earth, and the Sun vs the Solar-system barycenter. By default SuperNOVAS can only 
+    provide  approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly not at 
+    the  sub-microarcsecond level, and not for other solar-system sources. You will need to provide a way to interface
+    SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from JPL) if you want to use it to 
+    obtain precise positions for planets. See the [section below](#solarsystem)
+    for more information how you can do that.
+    
+  3. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the option
+    to include optical refraction corrections in `equ2hor()` either for a standard atmosphere or more precisely using the 
+    weather parameters defined in the `on_surface` data structure that specifies the observer locations. Note, that 
+    refraction at radio wavelength is notably different from this optical value. In either case you may want to
+    skip the refraction corrections offered in this library, and instead implement your own a appropriate.
+ 
+
+-----------------------------------------------------------------------------
+
 <a name="solarsystem"></a>
 ## External Solar-system ephemeris data or services
 
@@ -184,4 +221,3 @@ when they become available to avoid unexpected suprises when the finalized relea
 are typically available for one week only before they are superseded either by another, or by the finalized release.
 
 
------------------------------------------------------------------------------

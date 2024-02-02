@@ -70,6 +70,12 @@
 /// [day] Julian date at J2000
 #define NOVAS_JD_J2000    2451545.0
 
+/// [day] Julian date at B1950
+#define NOVAS_JD_B1950    2433282.42345905
+
+/// [day] Julian date at B1900
+#define NOVAS_JD_B1900    15019.81352
+
 /// [m/s] Speed of light in meters/second is a defining physical constant.
 #define NOVAS_C           299792458.0
 
@@ -99,6 +105,14 @@
 
 /// [rad/s] Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003).
 #define NOVAS_ANGVEL      7.2921150e-5
+
+/// [s] TAI - GPS time offset
+#define NOVAS_GPS_TO_TAI  19.0
+
+/// [s] TT - TAI time offset
+#define NOVAS_TAI_TO_TT   32.187
+
+
 
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
 /// [0]: Earth/Moon barycenter, MASS[1] = Mercury, ...,
@@ -657,6 +671,8 @@ short vector2radec(const double *pos, double *ra, double *dec);
 int radec2vector(double ra, double dec, double dist, double *vector);
 
 int starvectors(const cat_entry *star, double *pos, double *vel);
+
+double ut1_to_tt(int leap_seconds, double dut1);
 
 int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff);
 

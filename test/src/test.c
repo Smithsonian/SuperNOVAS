@@ -23,7 +23,7 @@ static observer obs;
 static object source;
 static double tdb = J2000;
 static short accuracy = 1;
-static double ut1_to_tt = 69.0;
+static double ut12tt = 69.0;
 
 // Initialized quantities.
 static double lst, pos0[3], vel0[3], epos[3], evel[3], pobs[3], vobs[3];
@@ -237,17 +237,17 @@ static void test_cio_basis() {
 static void test_sidereal_time() {
   double h = 0.0;
   openfile("sidereal_time");
-  if(!is_ok(sidereal_time(tdb, 0.0, ut1_to_tt, 0, 0, accuracy, &h))) return;
+  if(!is_ok(sidereal_time(tdb, 0.0, ut12tt, 0, 0, accuracy, &h))) return;
   fprintf(fp, "%12.6f ", h);
 
-  if(!is_ok(sidereal_time(tdb, 0.0, ut1_to_tt, 0, 1, accuracy, &h))) return;
+  if(!is_ok(sidereal_time(tdb, 0.0, ut12tt, 0, 1, accuracy, &h))) return;
   fprintf(fp, "%12.6f", h);
 }
 
 static void test_geo_posvel() {
   double pos1[3], vel1[3];
   openfile("geo_posvel");
-  if(is_ok(geo_posvel(tdb, ut1_to_tt, accuracy, &obs, pos1, vel1))) {
+  if(is_ok(geo_posvel(tdb, ut12tt, accuracy, &obs, pos1, vel1))) {
     printvector(pos1);
     printvector(vel1);
   }
@@ -324,7 +324,7 @@ static int init() {
   printvector(evel);
   newline();
 
-  if(sidereal_time(tdb, 0.0, ut1_to_tt, 0, 1, accuracy, &lst) != 0) {
+  if(sidereal_time(tdb, 0.0, ut12tt, 0, 1, accuracy, &lst) != 0) {
     fprintf(stderr, "init: Failed sidereal_time\n");
     return -1;
   }
@@ -412,7 +412,7 @@ static void test_place() {
 
   for(i=0; i < 4; i++) {
     sky_pos out;
-    if(is_ok(place(tdb, &source, &obs, ut1_to_tt, i, accuracy, &out))) {
+    if(is_ok(place(tdb, &source, &obs, ut12tt, i, accuracy, &out))) {
       fprintf(fp, "%d %12.6f %12.6f", i, out.dis, out.rv);
       newline();
     }
