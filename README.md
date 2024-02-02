@@ -4,7 +4,7 @@
 ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 
 
-<img src="resources/CfA-logo.png" alt="CfA logo" width="40" height="33" align="right"><br clear="all">
+<img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="33" align="right"><br clear="all">
 
 
 # SuperNOVAS: the Naval Observatory NOVAS C library, made better.
