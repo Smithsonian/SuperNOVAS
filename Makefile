@@ -18,7 +18,7 @@ include config.mk
 api: static shared cio_file dox
 
 .PHONY: all
-all: api solsys tools test coverage
+all: api solsys tools test coverage check
 
 .PHONY: static
 static: lib/novas.a

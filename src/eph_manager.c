@@ -278,7 +278,7 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
   // and for target or center being the Earth-Moon barycenter.
   if((target == DE_EARTH) || (origin == DE_EARTH)) do_moon = 1;
   if((target == DE_MOON) || (origin == DE_MOON)) do_earth = 1;
-  if((target == DE_EMB) || (DE_EMB == 12)) do_earth = 1;
+  if((target == DE_EMB) || (origin == DE_EMB)) do_earth = 1;
 
   if(do_earth) {
     error = state(jed, DE_EARTH, pos_earth, vel_earth);

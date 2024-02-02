@@ -176,7 +176,6 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       velocity[i] = (p[2][i] - p[0][i]) / 0.2;
     }
   }
-
   else return 2;
 
   // If 'origin' = 0, move origin to solar system barycenter.
@@ -228,8 +227,8 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
     }
 
     for(i = 0; i < 3; i++) {
-      if(position) position[i] -= pbary[i];
-      if(velocity) velocity[i] -= vbary[i];
+      position[i] -= pbary[i];
+      velocity[i] -= vbary[i];
     }
   }
 
