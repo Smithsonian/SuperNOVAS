@@ -38,12 +38,13 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library by:
  - Fixing [outstanding issues](#fixed-issues)
  - Improving the ease of use by using `enum`s instead of integer constants, which also allows for some checking
    of use during compilations (such as using the incorrect `enum` type).
- - Improving API documentation with doxygen to provide browsable cross-referenced API docs. 
+ - Improving [API documentation](https://smithsonian.github.io/supernovas.github.io/apidoc/html/) with 
+   [Doxygen](https://www.doxygen.nl/) to provide browsable cross-referenced API docs. 
  - Streamlining calculations where possible
  - Adding `const` modifier to prototype arguments where appropriate
  - Checking arguments and setting `errno` as appropriate (and returning -1 unless another appropriate error code was 
    defined already) 
- - Adding [new API](#supernovas-features) to facilitate more accessible use
+ - Adding [new features](#supernovas-features) to facilitate more accessible use
  - Providing a GNU `Makefile` to build static and shared libraries from sources easily on POSIX platforms
    (including MaxOS X). (At this point we do not provide a similar build setup for Windows, but let us know if
    you would like to add it yourself!)
@@ -55,7 +56,7 @@ code.
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
  
-SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics | Harvard and Smithsonian, and it is 
+SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard and Smithsonian, and it is 
 available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repo on GitHub.
 
 Outside contributions are very welcome. See how you can contribute 
