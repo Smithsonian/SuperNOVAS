@@ -5,8 +5,7 @@
 
 
 <img src="resources/CfA-logo.png" alt="CfA logo" width="600" height="101" align="right">
-
------------------------------------------------------------------------------
+<p>
 
 
 # SuperNOVAS: the Naval Observatory NOVAS C library, made better.
