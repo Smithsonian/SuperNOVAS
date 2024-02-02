@@ -69,7 +69,7 @@ Outside contributions are very welcome. See how you can contribute
 
 Here are some links to SupeNOVAS related content online:
 
- - SuperNOVAS [API Documentation](https://github.com/Smithsonian/supernovas.github.io/apidocs/html)
+ - SuperNOVAS [API Documentation](https://github.com/Smithsonian/supernovas.github.io/apidoc/html)
  - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
  - [SuperNOVAS page](https://github.com/Smithsonian/supernovas.github.io/apidocs/novas.tag) page on github.io. 
  - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
