@@ -4,12 +4,11 @@
 ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 
 
-<img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right">
+<img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"><br clear="all">
 
 
 # SuperNOVAS 
 The Naval Observatory NOVAS C library, made better.
-<br clear="all">
 
 SuperNOVAS is a fork of the Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) package, with the overall aim of making it more user-friendly 
