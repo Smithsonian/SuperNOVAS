@@ -42,7 +42,7 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library by:
  - Fixing [outstanding issues](#fixed-issues)
  - Improving the ease of use by using `enum`s instead of integer constants, which also allows for some checking
    of use during compilations (such as using the incorrect `enum` type).
- - Improving [API documentation](https://smithsonian.github.io/supernovas.github.io/apidoc/html/) with 
+ - Improving [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) with 
    [Doxygen](https://www.doxygen.nl/) to provide browsable cross-referenced API docs. 
  - Streamlining calculations where possible
  - Adding `const` modifier to prototype arguments where appropriate
@@ -74,9 +74,9 @@ Outside contributions are very welcome. See how you can contribute
 
 Here are some links to SupeNOVAS related content online:
 
- - [API Documentation](https://smithsonian.github.io/supernovas.github.io/apidoc/html/)
+ - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/)
  - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
- - [SuperNOVAS page](https://smithsonian.github.io/supernovas.github.io) page on github.io. 
+ - [SuperNOVAS page](https://smithsonian.github.io/SuperNOVAS.home) page on github.io. 
  - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
  - The [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - The [NOVAS C](https://aa.usno.navy.mil/software/novasc_intro) library page. 
@@ -135,7 +135,7 @@ practical considerations before that level of accuracy is reached.
     small irregular variations in the orientation of the rotational axis and the rotation period, which are referred to 
     as the polar wobble. The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data and  and near-term projections for the polar offsets and the 
-    UT1-UTC time difference and leap-seconds. In SuperNOVAS you can use `cel_pole()` and `ut1_to_tt()` functions to 
+    UT1-UTC time difference and leap-seconds. In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` functions to 
     apply / use the published values from these to improve the astrometic precision of calls such as `calc_pos()`, or 
     `topo_star()`. Without setting and using the polar offset parameters, positions for Earth-based observations will
     be accurate at the arcsecond level only.

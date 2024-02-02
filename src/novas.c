@@ -356,7 +356,7 @@ int set_planet_calc_hp(novas_planet_calculator_hp f) {
  *
  * @sa calc_planet_pos()
  * @sa calc_star_pos()
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  *
  *
  * @author Attila Kovacs
@@ -445,7 +445,7 @@ int calc_frame_pos(const object *source, const astro_frame *frame, enum novas_ac
  *                  is invalid, or an error code &lt;10 if from function place().
  *
  * @sa calc_frame_pos()
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  *
  * @author Attila Kovacs
  * @since 1.0
@@ -748,7 +748,7 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  * @sa topo_star()
  * @sa virtual_star()
  * @sa astro_planet()
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  */
 short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec) {
@@ -791,7 +791,7 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_
  * @sa topo_star()
  * @sa virtual_star()
  * @sa astro_planet()
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  */
 short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec) {
@@ -833,7 +833,7 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
  * @sa topo_planet()
  * @sa virtual_planet()
  * @sa astro_star()
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  */
 short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec, double *dis) {
@@ -875,7 +875,7 @@ short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const o
  * @sa topo_planet()
  * @sa virtual_planet()
  * @sa app_star()
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  */
 short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec, double *dis) {
@@ -1023,7 +1023,7 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
  *                      80--90 errro is 80 + error from cio_location(), 90--100 error is 90 + error from cio_basis().
  *
  * @sa cel_pole()
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  */
 short place(double jd_tt, const object *cel_object, const observer *location, double ut1_to_tt, enum novas_reference_system coord_sys,
         enum novas_accuracy accuracy, sky_pos *output) {
@@ -2390,7 +2390,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  * @return          0 if successful, or else 1 if 'type' is invalid.
  *
  *
- * @sa ut1_to_tt()
+ * @sa get_ut1_to_tt()
  */
 short cel_pole(double tjd, enum novas_pole_offset_type type, double dpole1, double dpole2) {
   double dx, dy, t, mean_ob, sin_e, x, dz, dp1[3], dp2[3], dp3[3];
@@ -3902,14 +3902,14 @@ int starvectors(const cat_entry *star, double *pos, double *vel) {
  * @param leap_seconds  [s] Leap seconds at gthe time of observations
  * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5]
  * @return              [s] The TT - UT1 time difference that is suitable for used with all
- *                      calls in this library that require a <code>ut12tt</code> argument.
+ *                      calls in this library that require a <code>ut1_to_tt</code> argument.
  *
  * @sa cel_pole()
  *
  * @since 1.0
  * @author Attila Kovacs
  */
-double ut1_to_tt(int leap_seconds, double dut1) {
+double get_ut1_to_tt(int leap_seconds, double dut1) {
   return NOVAS_TAI_TO_TT + leap_seconds + dut1;
 }
 
