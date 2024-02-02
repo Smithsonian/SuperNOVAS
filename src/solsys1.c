@@ -55,9 +55,9 @@
  * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
  *                       -- relative to which to report positions and velocities.
- * @param position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
  *                       coordinates in AU referred to the ICRS.
- * @param velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem_hp().
  *
@@ -148,9 +148,9 @@ short planet_eph_manager_hp (const double jd_tdb[2], enum novas_planet body,
  * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
  *                       -- relative to which to report positions and velocities.
- * @param position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
  *                       coordinates in AU referred to the ICRS.
- * @param velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *

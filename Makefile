@@ -14,14 +14,32 @@ include config.mk
 # ===============================================================================
 
 
+.PHONY: api
+api: static shared cio_file dox
+
 .PHONY: all
-all: static shared dox
+all: api solsys tools test coverage
 
 .PHONY: static
 static: lib/novas.a
 
 .PHONY: shared
 shared: lib/novas.so
+
+.PHONY: solsys
+solsys: obj/solsys1.o obj/eph_manager.o obj/solsys2.o obj/jplint.o obj/solsys3.o obj/solsys-ephem.o
+
+.PHONY: tools
+tools: lib/novas.a
+	make -C tools
+
+.PHONY: test
+test: tools
+	make -C test run
+
+.PHONY: coverage
+coverage: test
+	make -C test coverage
 
 # Static library: novas.a
 lib/novas.a: $(OBJECTS) | lib
@@ -37,17 +55,9 @@ lib/novas.so: $(SOURCES) | lib
 cio_file:
 	make -C tools cio_file
 
-.PHONY: tools
-tools: lib/novas.a
-	make -C tools
+obj/jplint.o: $(SRC)/jplint.f
+	gfortran -c -o $@ $<
 
-.PHONY: test
-test: tools
-	make -C test run
-
-.PHONY: coverage
-coverage: test
-	make -C test coverage
 
 clean:
 	@make -C tools clean

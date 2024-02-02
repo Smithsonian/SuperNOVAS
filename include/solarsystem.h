@@ -26,7 +26,6 @@
 #include "novas.h"
 
 
-
 /**
  * Provides the position and velocity of major planets (as well as the Sun, Moon, and Solar-system
  * Baricenter position. This version provides positions and velocities at regular precision (see

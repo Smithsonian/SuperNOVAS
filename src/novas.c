@@ -904,7 +904,8 @@ short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const 
  * @param[out] ira      [h] ICRS right ascension in hours.
  * @param[out] idec     [deg] ICRS declination in degrees.
  * @return          0 if successful; -1 if the supplied output pointers are NULL, 1 if the iterative process did not
- *                  converge after 30 iterations, &gt; 10 if rror from vector2radec(), or else &gt; 20 if error from function app_star().
+ *                  converge after 30 iterations, &gt; 10 if rror from vector2radec(), or else &gt; 20 if error from
+ *                  app_star().
  *
  */
 short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accuracy, double *ira, double *idec) {
@@ -998,7 +999,7 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
- *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
+ *     <li> Klioner, S. (2003), Astronomical Journal 125, 1580-1597.</li>
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
@@ -2652,9 +2653,9 @@ int frame_tie(const double *pos1, enum novas_frametie_direction direction, doubl
  * star's position.
  *
  * REFERENCES:
- *  <ol>
+ * <ol>
  *  <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
- *  </ol>
+ * </ol>
  *
  * @param jd_tdb1   [day] Barycentric Dynamical Time (TDB) based Julian date of the first epoch.
  * @param pos       Position vector at first epoch.
@@ -4836,6 +4837,12 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
  * optical wavelengths.  This function can be used for planning observations or telescope pointing, but should not be used
  * for precise positioning.
  *
+ * REFERENCES:
+ * <ol>
+ * <li>Explanatory Supplement to the Astronomical Almanac, p. 144.</li>
+ * <li>Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259.</li>
+ * </ol>
+ *
  * @param location      Pointer to structure containing observer's location. It may also contains weather data (optional)
  *                      for the observer's location.
  * @param ref_option    NOVAS_STANDARD_ATMOSPHERE, or NOVAS_WEATHER_AT_LOCATION if to use the weather values contained in
@@ -4872,6 +4879,11 @@ double refract(const on_surface *location, enum novas_refraction_model ref_optio
  * Input calendar date must be Gregorian. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) -
  * output Julian date will have the same basis.
  *
+ * REFERENCES:
+ * <ol>
+ *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657.</li>
+ * </ol>
+ *
  * @param year    [yr] Gregorian calendar year
  * @param month   [month] Gregorian calendar month [1:12]
  * @param day     [day] Day of month [1:31]
@@ -4893,7 +4905,6 @@ double julian_date(short year, short month, short day, double hour) {
  * (UTC, UT1, TT, etc.) - output time value will have same basis.
  *
  * REFERENCES:
- *
  * <ol>
  *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657.</li>
  * </ol>

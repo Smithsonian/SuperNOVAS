@@ -1,13 +1,18 @@
-/*
- Naval Observatory Vector Astrometry Software (NOVAS)
- C Edition, Version 3.1
-
- solsys3.c: Self-contained Sun-Earth ephemeris
-
- U. S. Naval Observatory
- Astronomical Applications Dept.
- Washington, DC
- http://www.usno.navy.mil/USNO/astronomical-applications
+/**
+ * @file
+ *
+ * @author G. Kaplan and A. Kovacs
+ * @version 0.9.0
+ *
+ *  SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model based on the DE405
+ *  ephemerides by JPL.
+ *
+ *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
+ *  Astronomical Applications Dept.
+ *  Washington, DC
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ *  @sa solsys-ephem.c
  */
 
 #ifndef _NOVAS_
@@ -16,6 +21,7 @@
 
 #include <math.h>
 #include <string.h>
+#include <errno.h>
 
 /**
  * Whether the high-precision call is allowed to return a low-precision result. If set to 0
@@ -61,7 +67,8 @@ void sun_eph(double jd, double *ra, double *dec, double *dis);
  * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
  *                      system referred to the mean equator and equinox of J2000.0,
  *                      in AU/Day.
- * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS),
+ * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS)
+ *                      or if one of the output pointer arguments is NULL (errno set to EINVAL).
  *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid.
  *
  * @sa earth_sun_calc_hp()
@@ -71,14 +78,12 @@ void sun_eph(double jd, double *ra, double *dec, double *dis);
  *
  */
 short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
-  short i;
+  int i;
 
-  /*
-   The arrays below contain masses and orbital elements for the four
-   largest planets -- Jupiter, Saturn, Uranus, and Neptune --  (see
-   Explanatory Supplement (1992), p. 316) with angles in radians.  These
-   data are used for barycenter computations only.
-   */
+  // The arrays below contain masses and orbital elements for the four
+  // largest planets -- Jupiter, Saturn, Uranus, and Neptune --  (see
+  // Explanatory Supplement (1992), p. 316) with angles in radians.  These
+  // data are used for barycenter computations only.
 
   static const double pm[4] = { 1047.349, 3497.898, 22903.0, 19412.2 };
   static const double pa[4] = { 5.203363, 9.537070, 19.191264, 30.068963 };
@@ -89,19 +94,20 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   static const double pl[4] = { 0.600470, 0.871693, 5.466933, 5.321160 };
   static const double pn[4] = { 1.450138e-3, 5.841727e-4, 2.047497e-4, 1.043891e-4 };
 
-  /*
-   'obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
-   */
+  // 'obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
 
   static const double obl = 23.4392794444;
 
   static double tlast = 0.0;
   static double tmass, a[3][4], b[3][4], vbary[3];
 
-  /*
-   Initialize constants.
-   Initial value of 'tmass' is mass of Sun plus four inner planets.
-   */
+  // Initialize constants.
+  // Initial value of 'tmass' is mass of Sun plus four inner planets.
+
+  if(!position || !velocity) {
+    errno = EINVAL;
+    return -1;
+  }
 
   if(tlast < 1.0) {
     const double oblr = obl * TWOPI / 360.0;
@@ -111,20 +117,16 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
     tmass = 1.0 + 5.977e-6;
 
     for(i = 0; i < 4; i++) {
-      /*
-       Compute sine and cosine of orbital angles.
-       */
+      // Compute sine and cosine of orbital angles.
       const double si = sin(pj[i]);
       const double ci = cos(pj[i]);
       const double sn = sin(po[i]);
       const double cn = cos(po[i]);
       const double sw = sin(pw[i] - po[i]);
       const double cw = cos(pw[i] - po[i]);
-      /*
-       Compute p and q vectors (see Brouwer & Clemence (1961), Methods of
-       Celestial Mechanics, pp. 35-36.)
-       */
 
+      // Compute p and q vectors (see Brouwer & Clemence (1961), Methods of
+      // Celestial Mechanics, pp. 35-36.)
       const double p1 = cw * cn - sw * sn * ci;
       const double p2 = (cw * sn + sw * cn * ci) * ce - sw * si * se;
       const double p3 = (cw * sn + sw * cn * ci) * se + sw * si * ce;
@@ -146,24 +148,17 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
     tlast = 1.0;
   }
 
-  /*
-   Check if input Julian date is within range (within 3 centuries of J2000).
-   */
-
+  // Check if input Julian date is within range (within 3 centuries of J2000).
   if((jd_tdb < 2340000.5) || (jd_tdb > 2560000.5)) return 1;
 
-  /*
-   Form heliocentric coordinates of the Sun or Earth, depending on
-   'body'.  Velocities are obtained from crude numerical differentiation.
-   */
-
-  if((body == 0) || (body == 1) || (body == 10)) /* Sun */
-  {
+  // Form heliocentric coordinates of the Sun or Earth, depending on
+  // 'body'.  Velocities are obtained from crude numerical differentiation.
+  if((body == 0) || (body == 1) || (body == NOVAS_SUN)) { // Sun
     for(i = 0; i < 3; i++)
       position[i] = velocity[i] = 0.0;
   }
 
-  else if((body == 2) || (body == 3)) { /* Earth */
+  else if((body == 2) || (body == NOVAS_EARTH)) { /* Earth */
     double p[3][3];
     for(i = 0; i < 3; i++) {
       const double qjd = jd_tdb + (double) (i - 1) * 0.1;
@@ -184,14 +179,10 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
   else return 2;
 
-  /*
-   If 'origin' = 0, move origin to solar system barycenter.
-
-   Solar system barycenter coordinates are computed from Keplerian
-   approximations of the coordinates of the four largest planets.
-   */
-
-  if(origin == 0) {
+  // If 'origin' = 0, move origin to solar system barycenter.
+  // Solar system barycenter coordinates are computed from Keplerian
+  // approximations of the coordinates of the four largest planets.
+  if(origin == NOVAS_BARYCENTER) {
     static double pbary[3];
 
     if(fabs(jd_tdb - tlast) >= 1.0e-06) {
@@ -199,16 +190,11 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       for(i = 0; i < 3; i++)
         pbary[i] = vbary[i] = 0.0;
 
-      /*
-       The following loop cycles once for each of the four planets.
-       */
-
+      // The following loop cycles once for each of the four planets.
       for(i = 0; i < 4; i++) {
         double pplan[3], vplan[3], f;
-        /*
-         Compute mean longitude, mean anomaly, and eccentric anomaly.
-         */
 
+        // Compute mean longitude, mean anomaly, and eccentric anomaly.
         const double e = pe[i];
         const double mlon = pl[i] + pn[i] * (jd_tdb - T0);
         const double ma = remainder((mlon - pw[i]), TWOPI);
@@ -216,16 +202,10 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
         const double sinu = sin(u);
         const double cosu = cos(u);
 
-        /*
-         Compute velocity factor.
-         */
-
+        // Compute velocity factor.
         const double anr = pn[i] / (1.0 - e * cosu);
 
-        /*
-         Compute planet's position and velocity wrt eq & eq J2000.
-         */
-
+        // Compute planet's position and velocity wrt eq & eq J2000.
         pplan[0] = a[0][i] * (cosu - e) + b[0][i] * sinu;
         pplan[1] = a[1][i] * (cosu - e) + b[1][i] * sinu;
         pplan[2] = a[2][i] * (cosu - e) + b[2][i] * sinu;
@@ -233,10 +213,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
         vplan[1] = anr * (-a[1][i] * sinu + b[1][i] * cosu);
         vplan[2] = anr * (-a[2][i] * sinu + b[2][i] * cosu);
 
-        /*
-         Compute mass factor and add in to total displacement.
-         */
-
+        // Compute mass factor and add in to total displacement.
         f = 1.0 / (pm[i] * tmass);
 
         pbary[0] += pplan[0] * f;
@@ -291,6 +268,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
  *                      system referred to the mean equator and equinox of J2000.0,
  *                      in AU/Day.
  * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS),
+ *                      or if one of the output pointer arguments is NULL (errno set to EINVAL).
  *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3
  *                      if the high-precision orbital data cannot be produced (default return value).
  *
@@ -309,75 +287,34 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
   return ALLOW_LP_FOR_HP ? 0 : 3;
 }
 
-/********sun_eph */
-
-void sun_eph(double jd, double *ra, double *dec, double *dis)
-/*
- ------------------------------------------------------------------------
-
- PURPOSE:
- To compute equatorial spherical coordinates of Sun referred to
- the mean equator and equinox of date.
-
- REFERENCES:
- Bretagnon, P. and Simon, J.L. (1986).  Planetary Programs and
- Tables from -4000 to + 2800. (Richmond, VA: Willmann-Bell).
- Kaplan, G.H. (2005). US Naval Observatory Circular 179.
-
- INPUT
- ARGUMENTS:
- jd (double)
- Julian date on TDT or ET time scale.
-
- OUTPUT
- ARGUMENTS:
- ra (double)
- Right ascension referred to mean equator and equinox of date
- (hours).
- dec (double)
- Declination referred to mean equator and equinox of date
- (degrees).
- dis (double)
- Geocentric distance (AU).
-
- RETURNED
- VALUE:
- None.
-
- GLOBALS
- USED:
- T0, TWOPI, ASEC2RAD
-
- FUNCTIONS
- CALLED:
- sin           math.h
- cos           math.h
- asin          math.h
- atan2         math.h
-
- VER./DATE/
- PROGRAMMER:
- V1.0/08-94/JAB (USNO/AA)
- V1.1/05-96/JAB (USNO/AA): Compute mean coordinates instead of
- apparent.
- V1.2/01-07/JAB (USNO/AA): Use 'ASEC2RAD' instead of 'RAD2SEC'.
- V1.3/04-09/JAB (USNO/AA): Update the equation for mean
- obliquity of the ecliptic, and correct
- longitude based on a linear fit to DE405
- in the interval 1900-2100 (see notes).
-
- NOTES:
- 1. Quoted accuracy is 2.0 + 0.03 * T^2 arcsec, where T is
- measured in units of 1000 years from J2000.0.  See reference.
- 2. The obliquity equation is updated to equation 5.12 of the
- second reference.
- 3. The linear fit to DE405 primarily corrects for the
- difference between "old" (Lieske) and "new" (IAU 2006)
- precession.  The difference, new - old, is -0.3004 arcsec/cy.
-
- ------------------------------------------------------------------------
+/**
+ * Computes equatorial spherical coordinates of Sun referred to
+ * the mean equator and equinox of date.
+ *
+ * Quoted accuracy is 2.0 + 0.03 * T<sup>2</sup> arcsec, where T is
+ * measured in units of 1000 years from J2000.0.  See reference.
+ *
+ * The obliquity equation is updated to equation 5.12 of the second reference.
+ *
+ * The linear fit to DE405 primarily corrects for the
+ * difference between "old" (Lieske) and "new" (IAU 2006)
+ * precession.  The difference, new - old, is -0.3004 arcsec/cy.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Bretagnon, P. and Simon, J.L. (1986).  Planetary Programs and
+ * Tables from -4000 to + 2800. (Richmond, VA: Willmann-Bell).</li>
+ * <li>Kaplan, G.H. (2005). US Naval Observatory Circular 179.</li>
+ * </ol>
+ *
+ * @param jd      [day] jd (double) Julian date on TDT or ET time scale.
+ * @param[out] ra      [h] Right ascension referred to mean equator and equinox of date (hours).
+ * @param[out] dec     [deg] Declination referred to mean equator and equinox of date (degrees).
+ * @param[out] dis     [AU] Geocentric distance (AU).
+ *
+ * @sa earth_sun_calc()
  */
-{
+void sun_eph(double jd, double *ra, double *dec, double *dis) {
   short i;
 
   double sum_lon = 0.0;
@@ -444,30 +381,21 @@ void sun_eph(double jd, double *ra, double *dec, double *dis)
           { 10.0, 0.0, 1.50, 21463.25 }, //
           { 10.0, -9.0, 2.55, 157208.40 } };
 
-  /*
-   Define the time units 'u', measured in units of 10000 Julian years
-   from J2000.0, and 't', measured in Julian centuries from J2000.0.
-   */
-
+  // Define the time units 'u', measured in units of 10000 Julian years
+  // from J2000.0, and 't', measured in Julian centuries from J2000.0.
   u = (jd - T0) / 3652500.0;
   t = u * 100.0;
 
-  /*
-   Compute longitude and distance terms from the series.
-   */
-
+  // Compute longitude and distance terms from the series.
   for(i = 0; i < 50; i++) {
     const double arg = con[i].alpha + con[i].nu * u;
     sum_lon += con[i].l * sin(arg);
     sum_r += con[i].r * cos(arg);
   }
 
-  /*
-   Compute longitude, latitude, and distance referred to mean equinox
-   and ecliptic of date.  Apply correction to longitude based on a
-   linear fit to DE405 in the interval 1900-2100.
-   */
-
+  // Compute longitude, latitude, and distance referred to mean equinox
+  // and ecliptic of date.  Apply correction to longitude based on a
+  // linear fit to DE405 in the interval 1900-2100.
   lon = 4.9353929 + 62833.1961680 * u + factor * sum_lon;
   lon += ((-0.1371679461 - 0.2918293271 * t) * ASEC2RAD);
 
@@ -476,17 +404,11 @@ void sun_eph(double jd, double *ra, double *dec, double *dis)
 
   *dis = 1.0001026 + factor * sum_r;
 
-  /*
-   Compute mean obliquity of the ecliptic.
-   */
-
+  // Compute mean obliquity of the ecliptic.
   emean = (84381.406 + (-46.836769 + (-0.0001831 + 0.00200340 * t) * t) * t) * ASEC2RAD;
 
-  /*
-   Compute equatorial spherical coordinates referred to the mean equator
-   and equinox of date.
-   */
-
+  // Compute equatorial spherical coordinates referred to the mean equator
+  // and equinox of date.
   sin_lon = sin(lon);
   *ra = atan2((cos(emean) * sin_lon), cos(lon)) * RAD2DEG;
   *ra = remainder(*ra, 360.0);

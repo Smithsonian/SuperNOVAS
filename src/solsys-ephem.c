@@ -6,6 +6,9 @@
  *
  * @date Created  on Jan 29, 2024
  * @author Attila Kovacs
+ *
+ * @sa solsys1.c
+ * @sa solsys2.c
  */
 
 #include <errno.h>
@@ -22,9 +25,9 @@
  * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                       report positions and velocities.
- * @param position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
  *                       coordinates in AU referred to the ICRS.
- * @param velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem_hp().
  *
@@ -64,9 +67,9 @@ short planet_ephem_reader_hp(const double jd_tdb[2], enum novas_planet body, enu
   if(o != origin) {
     double pos0[3], vel0[3];
     int i;
-    int ref = origin == NOVAS_BARYCENTER : NOVAS_BARYCENTER_POS : NOVAS_SUN;
+    int ref = (origin == NOVAS_BARYCENTER) ? NOVAS_BARYCENTER_POS : NOVAS_SUN;
 
-    error = f(ref, ref[origin], jd_tdb[0], jd_tdb[1], pos0, vel0);
+    error = f(ref, names[origin], jd_tdb[0], jd_tdb[1], &o, pos0, vel0);
     if(error) return 2;
 
     for(i = 0; i < 3; i++) {
@@ -86,9 +89,9 @@ short planet_ephem_reader_hp(const double jd_tdb[2], enum novas_planet body, enu
  * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                       report positions and velocities.
- * @param position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
  *                       coordinates in AU referred to the ICRS.
- * @param velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
@@ -104,6 +107,7 @@ short planet_ephem_reader(double jd_tdb, enum novas_planet body, enum novas_orig
   return planet_ephem_reader_hp(jd_tdb2, body, origin, position, velocity);
 }
 
+#if !BUILTIN_SOLSYS_EPHEM_READER
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   return planet_ephem_reader(jd_tdb, body, origin, position, velocity);
 }
@@ -111,4 +115,5 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
   return planet_ephem_reader_hp(jd_tdb, body, origin, position, velocity);
 }
+#endif
 

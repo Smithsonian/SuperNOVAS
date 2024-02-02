@@ -24,7 +24,7 @@ CFLAGS = -Os -Wall -Wextra -I$(INC)
 #CFLAGS += -DDEFAULT_CIO_LOCATOR_FILE="/user/share/novas/cio_ra.bin"
 
 # Whether to build into the library specific versions of solarsystem()
-#BUILTIN_SOLSYS1 = 1
+BUILTIN_SOLSYS1 = 1
 #BUILTIN_SOLSYS2 = 1
 BUILTIN_SOLSYS3 = 1
 
