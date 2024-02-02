@@ -672,7 +672,7 @@ int radec2vector(double ra, double dec, double dist, double *vector);
 
 int starvectors(const cat_entry *star, double *pos, double *vel);
 
-double get_ut12tt(int leap_seconds, double dut1);
+double get_ut1_to_tt(int leap_seconds, double dut1);
 
 int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff);
 
