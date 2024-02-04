@@ -4,7 +4,15 @@
 ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 
 
-<img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"><br clear="all">
+<img ><br clear="all">
+
+<picture>
+  <!-- User prefers dark mode: -->
+  <source <source srcset="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: light)"/>media="(prefers-color-scheme: dark)"/>
+  
+  <!-- default: -->
+  <img <source srcset="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: light)"/>
+</picture>
 
 
 # SuperNOVAS 
@@ -124,37 +132,36 @@ Coming soon...
 -----------------------------------------------------------------------------
 
 <a name="precision"></a>
-## SuperNOVAS specific features
+## Notes on precision
 
 The SuperNOVAS library is in principle capable of calculating positions and velocities to sub-microarcsecond precision 
 for all types of celestial sources. However, there are certain pre-requisites and
 practical considerations before that level of accuracy is reached.
 
 
- 1. __Earth's polar motion__: Calculating positions for any Earth-based observations requires precise knowledge of the 
-    Earth's orientation at the time of observation. The pole is subject to predictable precession and nutation, but also 
-    small irregular variations in the orientation of the rotational axis and the rotation period, which are referred to 
-    as the polar wobble. The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
-    provide up-to-date measurements, historical data and  and near-term projections for the polar offsets and the 
-    UT1-UTC time difference and leap-seconds. In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` functions to 
-    apply / use the published values from these to improve the astrometic precision of calls such as `calc_pos()`, or 
-    `topo_star()`. Without setting and using the polar offset parameters, positions for Earth-based observations will
-    be accurate at the arcsecond level only.
- 
+ 1. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise knowledge 
+    of Earth orientation at the time of observation. The pole is subject to predictable precession and nutation, but 
+    also small irregular variations in the orientation of the rotational axis and the rotation period (a.k.a polar 
+    wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
+    provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
+    (DUT1) time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` 
+    functions to apply / use the published values from these to improve the astrometic precision of calls such as 
+    `calc_pos()`, or `topo_star()`. Without setting and using the actual polar offset values for the time of 
+    observation, positions for Earth-based observations will be accurate at the arcsecond level only.
  
  2. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun vs the Solar-system barycenter. By default SuperNOVAS can only 
     provide  approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly not at 
-    the  sub-microarcsecond level, and not for other solar-system sources. You will need to provide a way to interface
+    the sub-microarcsecond level, and not for other solar-system sources. You will need to provide a way to interface
     SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from JPL) if you want to use it to 
-    obtain precise positions for planets. See the [section below](#solarsystem)
-    for more information how you can do that.
+    obtain precise positions for Solar-system bodies. See the [section below](#solarsystem)for more information how 
+    you can do that.
     
   3. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the option
-    to include optical refraction corrections in `equ2hor()` either for a standard atmosphere or more precisely using the 
-    weather parameters defined in the `on_surface` data structure that specifies the observer locations. Note, that 
-    refraction at radio wavelength is notably different from this optical value. In either case you may want to
-    skip the refraction corrections offered in this library, and instead implement your own a appropriate.
+    to include _optical_ refraction corrections in `equ2hor()` either for a standard atmosphere or more precisely using 
+    the weather parameters defined in the `on_surface` data structure that specifies the observer locations. Note, that 
+    refraction at radio wavelengths is notably different from the included optical value. In either case you may want 
+    to skip the refraction corrections offered in this library, and instead implement your own as appropriate.
  
 
 -----------------------------------------------------------------------------
@@ -208,12 +215,11 @@ addresses these in the upcoming quarter. The dates are placeholders only, with n
 actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 
 being published.
 
-_Feature releases_ (e.g. __1.x.0__ version bumps), which may include some significant API changes, are provided at 
-least 6 months apart, to reduce stress on adopters who may need/want to tweak their code to integrate these. Between 
-feature releases, _bug fix releases_ (without significant API changes) may be provided as needed to address issues. 
-New features are generally reserved for the feature releases, although they may also be rolled out in bug-fix releases 
-as long as they do not affect the existing API -- in line with the desire to keep bug-fix releases fully backwards 
-compatible with their parent versions.
+_Feature releases_ (e.g. __1.x.0__ version bumps) are provided at least 6 months apart, to reduce stress on adopters 
+who may need/want to tweak their code to integrate these. Between feature releases, _bug fix releases_ (without 
+significant API changes) may be provided as needed to address issues. New features are generally reserved for the 
+feature releases, although they may also be rolled out in bug-fix releases as long as they do not affect the existing 
+API -- in line with the desire to keep bug-fix releases fully backwards compatible with their parent versions.
 
 In the month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be available on github
 briefly, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be tested by 
