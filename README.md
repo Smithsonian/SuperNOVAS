@@ -10,8 +10,11 @@
   <!-- User prefers dark mode: -->
   <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: dark)"/>
   
-  <!-- default: -->
+  <!-- User prefers light mode: -->
   <source srcset="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: light)"/>
+  
+  <!-- default: -->
+  <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"/>
 </picture>
 
 
