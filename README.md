@@ -8,10 +8,10 @@
 
 <picture>
   <!-- User prefers dark mode: -->
-  <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: dark)"/>
+  <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" media="(prefers-color-scheme: dark)"/>
   
   <!-- User prefers light mode: -->
-  <source srcset="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: light)"/>
+  <source srcset="resources/CfA-logo.png" alt="CfA logo" media="(prefers-color-scheme: light)"/>
   
   <!-- default: -->
   <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"/>
@@ -88,7 +88,7 @@ Here are some links to SupeNOVAS related content online:
 
  - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/)
  - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
- - [SuperNOVAS page](https://smithsonian.github.io/SuperNOVAS.home) page on github.io. 
+ - [SuperNOVAS home page](https://smithsonian.github.io/SuperNOVAS.home) page on github.io. 
  - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
  - The [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - The [NOVAS C](https://aa.usno.navy.mil/software/novasc_intro) library page. 
