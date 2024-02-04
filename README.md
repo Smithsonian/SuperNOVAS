@@ -8,10 +8,10 @@
 
 <picture>
   <!-- User prefers dark mode: -->
-  <source <source srcset="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: light)"/>
+  <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: dark)"/>
   
   <!-- default: -->
-  <img <source srcset="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: light)"/>
+  <source srcset="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right" media="(prefers-color-scheme: light)"/>
 </picture>
 
 
