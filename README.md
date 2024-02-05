@@ -23,12 +23,12 @@ and easier to use. It is entirely free to use without any licensing restrictions
  - [Introduction](#introduction)
  - [Related links](#related-links)
  - [Compatibility with NOVAS C 3.1](#compatibility)
+ - [Fixed NOVAS C 3.1 issues](#fixed-issues)
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#building-your-application)
  - [SuperNOVAS specific features](#supernovas-features)
  - [Notes on precision](#precision)
  - [External Solar-system ephemeris data or services](#solarsystem)
- - [Fixed NOVAS C 3.1 issues](#fixed-issues)
  - [Release schedule](#release-schedule)
 
 
@@ -106,6 +106,39 @@ in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID nu
 accomodate JPL NAIF values, which require a 32-bit width. 
 
 
+<a name="fixed-issues"></a>
+## Fixed NOVAS C 3.1 issues
+
+The SuperNOVAS library also fixes a number of issues with NOVAS C 3.1. Some are known (documented) issues already. 
+Others have surfaced anew. Here is a list of issues and fixes provided by SuperNOVAS over the upstream NOVAS C 3.1
+code:
+
+ - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
+   function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+   
+ - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+   `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+   
+ - Fixes antedating velocities for light travel time in `ephemeris()`. This issue has been reported, but has not
+   yet been fixed in NOVAS C. When getting positions and velocities for Solar-system sources, it is important
+   to use the values from the time light originated from the observed body rather than the position at the time
+   that light arrives to the observer. This correction was done properly for positions, but not for velocities,
+   resulting in incorrect observed radial velocities being reported for spectroscopic observations. 
+   
+ - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox if the the `equinox` 
+   argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected routines
+   downstream also, such as `sidereal_time()`.
+   
+ - Fixes accuracy bug in `ecl2equ_vec()`, `equ2ecl_vec()`, `geo_posvel()`, `place()`, and `sidereal_time()`, which 
+   could return a cached value for the other accuracy if the other input parameters are the same as a prior call, 
+   except the accuracy. 
+   
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
+   not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) 
+   for dates prior to J2000.
+   
+
+-----------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------
 
@@ -175,7 +208,7 @@ compiler flag when compiling your application:
 
 ```make
   myastroapp: myastroapp.c 
-  	cc -o $@ $(CFLAGS) $^ -DCOMPAT=1 -lm -lnovas
+  	cc -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lnovas
 ```
 
 To use your own `solarsystem()` implemetation for `ephemeris()`, you will want to build the library with
@@ -243,39 +276,6 @@ Coming soon...
 
 -----------------------------------------------------------------------------
 
-<a name="fixed-issues"></a>
-## Fixed NOVAS C 3.1 issues
-
-The SuperNOVAS library also fixes a number of issues with NOVAS C 3.1. Some are known (documented) issues already. 
-Others have surfaced anew. Here is a list of issues and fixes provided by SuperNOVAS over the upstream NOVAS C 3.1
-code:
-
- - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
-   function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
-   
- - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
-   
- - Fixes antedating velocities for light travel time in `ephemeris()`. This issue has been reported, but has not
-   yet been fixed in NOVAS C. When getting positions and velocities for Solar-system sources, it is important
-   to use the values from the time light originated from the observed body rather than the position at the time
-   that light arrives to the observer. This correction was done properly for positions, but not for velocities,
-   resulting in incorrect observed radial velocities being reported for spectroscopic observations. 
-   
- - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox if the the `equinox` 
-   argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected routines
-   downstream also, such as `sidereal_time()`.
-   
- - Fixes accuracy bug in `ecl2equ_vec()`, `equ2ecl_vec()`, `geo_posvel()`, `place()`, and `sidereal_time()`, which 
-   could return a cached value for the other accuracy if the other input parameters are the same as a prior call, 
-   except the accuracy. 
-   
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
-   not turned into a proper remainder. This affected `solsys3.c` (line 261) for dates prior to J2000. Fixed by 
-   using `remainder()` instead.
-   
-
------------------------------------------------------------------------------
 
 <a name="release-schedule"></a>
 ## Release schedule
