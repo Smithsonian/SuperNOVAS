@@ -23,6 +23,16 @@
 #include <string.h>
 #include <errno.h>
 
+
+
+/// \cond PRIVATE
+#define T0        NOVAS_JD_J2000
+/// \endcond
+
+// Additional local function prototypes
+void sun_eph(double jd, double *ra, double *dec, double *dis);
+void earth_sun_enable_hp(int value);
+
 /**
  * Whether the high-precision call is allowed to return a low-precision result. If set to 0
  * (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a
@@ -32,15 +42,25 @@
  *
  * @sa solarsystem_earth_sun_hp()
  */
-#define ALLOW_LP_FOR_HP       0
+static int allow_lp_for_hp = 0;
 
-/// \cond PRIVATE
-#define T0        NOVAS_JD_J2000
-/// \endcond
-
-// Additional local function prototype
-void sun_eph(double jd, double *ra, double *dec, double *dis);
-
+/**
+ * Specify whether the high-precision call is allowed to return a low-precision result. If set to 0
+ * (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a
+ * high-precision calculation is not possible. Otherise, a non-zero value (true) will
+ * let the function to be used without errors, returning the low-precison result of
+ * solarsystem_earth_sun() instead.
+ *
+ * @param value   (boolean) A non-zero value enables the error-free use of the earth_sun_calc_hp()
+ *                by allowing to return the low-precision result. Otherwise, earth_sun_calc_hp()
+ *                will return an error code 3 indicating that the high-precision result is not
+ *                available (this latter is the default behavior).
+ *
+ * @sa earth_sun_calc_hp()
+ */
+void earth_sun_enable_hp(int value) {
+  allow_lp_for_hp = (value != 0);
+}
 
 /**
  * Provides the position and velocity of the Earth and Sun only
@@ -85,14 +105,14 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Explanatory Supplement (1992), p. 316) with angles in radians.  These
   // data are used for barycenter computations only.
 
-  static const double pm[4] = { 1047.349, 3497.898, 22903.0, 19412.2 };
-  static const double pa[4] = { 5.203363, 9.537070, 19.191264, 30.068963 };
-  static const double pe[4] = { 0.048393, 0.054151, 0.047168, 0.008586 };
-  static const double pj[4] = { 0.022782, 0.043362, 0.013437, 0.030878 };
-  static const double po[4] = { 1.755036, 1.984702, 1.295556, 2.298977 };
-  static const double pw[4] = { 0.257503, 1.613242, 2.983889, 0.784898 };
-  static const double pl[4] = { 0.600470, 0.871693, 5.466933, 5.321160 };
-  static const double pn[4] = { 1.450138e-3, 5.841727e-4, 2.047497e-4, 1.043891e-4 };
+  static const float pm[4] = { 1047.349, 3497.898, 22903.0, 19412.2 };
+  static const float pa[4] = { 5.203363, 9.537070, 19.191264, 30.068963 };
+  static const float pe[4] = { 0.048393, 0.054151, 0.047168, 0.008586 };
+  static const float pj[4] = { 0.022782, 0.043362, 0.013437, 0.030878 };
+  static const float po[4] = { 1.755036, 1.984702, 1.295556, 2.298977 };
+  static const float pw[4] = { 0.257503, 1.613242, 2.983889, 0.784898 };
+  static const float pl[4] = { 0.600470, 0.871693, 5.466933, 5.321160 };
+  static const float pn[4] = { 1.450138e-3, 5.841727e-4, 2.047497e-4, 1.043891e-4 };
 
   // 'obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
 
@@ -239,7 +259,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
 /**
  * It may provide the position and velocity of the Earth and Sun,
- * the same as solarsystem_earth_sun(), if the ALLOW_LP_FOR_HP is set
+ * the same as solarsystem_earth_sun(), if earth_sun_enable_hp() is set
  * to true (non-zero). Otherwise, it will return with an error code
  * of 3, indicating that high-precision calculations are not
  * provided by this implementation.
@@ -271,7 +291,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
  *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3
  *                      if the high-precision orbital data cannot be produced (default return value).
  *
- * @sa ALLOW_LP_FOR_HP
+ * @sa earth_sun_enable_hp()
  * @sa earth_sun_calc()
  * @sa set_planet_calc()
  * @sa solarsystem_hp()
@@ -283,7 +303,7 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
   int error = earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity);
   if(error) return (error);
 
-  return ALLOW_LP_FOR_HP ? 0 : 3;
+  return allow_lp_for_hp ? 0 : 3;
 }
 
 /**
@@ -322,10 +342,10 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
   double u, lon, t, emean, sin_lon;
 
   struct sun_con {
-    double l;
-    double r;
-    double alpha;
-    double nu;
+    float l;
+    float r;
+    float alpha;
+    float nu;
   };
 
   static const struct sun_con con[50] = {
@@ -399,8 +419,6 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
   lon += ((-0.1371679461 - 0.2918293271 * t) * ASEC2RAD);
 
   lon = remainder(lon, TWOPI);
-  if(lon < 0.0) lon += TWOPI;
-
   *dis = 1.0001026 + factor * sum_r;
 
   // Compute mean obliquity of the ecliptic.
@@ -410,7 +428,6 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
   // and equinox of date.
   sin_lon = sin(lon);
   *ra = atan2((cos(emean) * sin_lon), cos(lon)) * RAD2DEG;
-  *ra = remainder(*ra, 360.0);
   if(*ra < 0.0) *ra += 360.0;
   *ra = *ra / 15.0;
 

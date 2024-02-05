@@ -1,8 +1,9 @@
 
-# ===============================================================================
-# Generic build targets and recipes. 
-# You can include this in your Makefile
-# ===============================================================================
+# ============================================================================
+# Generic build targets and recipes for SuperNOVAS.
+# 
+# You can include this in your Makefile also.
+# ============================================================================
 
 
 # Regular object files
@@ -18,7 +19,8 @@ dep obj lib bin apidoc:
 clean-local:
 	rm -rf obj dep
 
-# Remove all locally built files, effectively restoring the repo to its pristine state
+# Remove all locally built files, effectively restoring the repo to its 
+# pristine state
 .PHONY: distclean-local
 distclean-local: clean-local
 	rm -rf bin lib apidoc

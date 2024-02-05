@@ -1,7 +1,9 @@
-# ===============================================================================
-# Generic configuration options for 
-# You can include this in your Makefile
-# ===============================================================================
+# ============================================================================
+# Generic configuration options for building the SuperNOVAS libraries (both 
+# static and shared).
+#
+# You can include this snipplet in your Makefile also.
+# ============================================================================
 
 PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -15,42 +17,52 @@ CFLAGS = -Os -Wall -Wextra -I$(INC)
 # For maximum compatibility with NOVAS C 3.1, uncomment the line below
 #CFLAGS += -DCOMPAT=1
 
-# You can set the default CIO locator file to use depending on where you installed it.
-# By default, the library will assume '/usr/share/novas/cio_ra.bin', or simply 'cio_ra.bin'
-# if the COMPAT flag is set to a nonzero value (above). Some other good locations
-# for this file may be in '/usr/local/share/novas', or '/opt/share/novas' for system-wide
-# availability, or in '$(HOME)/.local/share/novas' for user-specific installation.
+# You can set the default CIO locator file to use depending on where you 
+# installed it. By default, the library will assume 
+# '/usr/share/novas/cio_ra.bin', or else 'cio_ra.bin' if the COMPAT flag is 
+# set to a nonzero value (above). Some other good locations for this file may 
+# be in '/usr/local/share/novas', or '/opt/share/novas' for system-wide
+# availability, or in '$(HOME)/.local/share/novas' for user-specific 
+# installation.
 #
 #CFLAGS += -DDEFAULT_CIO_LOCATOR_FILE="/user/share/novas/cio_ra.bin"
 
-# Whether to build into the library specific versions of solarsystem()
+# Whether to build into the library planet_eph_manager() routines provided in 
+# solsys1.c
 BUILTIN_SOLSYS1 = 1
+
+# Whether to build into the library planet_jplint() routines provided in 
+# solsys2.c.
 #BUILTIN_SOLSYS2 = 1
+
+# Whether to build into the library earth_sun_calc() routines provided in 
+# solsys3.c
 BUILTIN_SOLSYS3 = 1
 
-# Compile library with a default solarsystem() implementation, which will be used
-# only if the application does not define another implementation via calls to the
-# to set_solarsystem() type functions.
+# Whether to build into the library planet_ephem_reader() routines provided in 
+# solsys3.c
+BUILTIN_SOLSYS_EPHEM = 1
+
+# Compile library with a default solarsystem() implementation. If you want to
+# use your library with your own solarsystem() implementation, you should
+# not set this option. In that case you must always provide a solarsystem()
+# implementation when linking your application against this library.
 DEFAULT_SOLSYS = 3
 
 # Compile library with a default readeph() implementation, which will be used
-# only if the application does not define another implementation via calls to the
-# to set_ephem_reader() function.
+# only if the application does not define another implementation via calls to 
+# the to set_ephem_reader() function.
 DEFAULT_READEPH = readeph0
 
-# Compiler and linker options etc.
-ifeq ($(BUILD_MODE),debug)
-	CFLAGS += -g
-endif
-
 # cppcheck options
-CHECKOPTS = --enable=performance,warning,portability,style --language=c --error-exitcode=1
+CHECKOPTS = --enable=performance,warning,portability,style --language=c \
+            --error-exitcode=1
 
-# ===============================================================================
+# ============================================================================
 # END of user config section. 
 #
 # Below are some generated constants based on the one that were set above
-# ===============================================================================
+# ============================================================================
 
 ifeq ($(DEFAULT_SOLSYS), 1) 
   BUILTIN_SOLSYS1 = 1
@@ -84,12 +96,22 @@ ifeq ($(BUILTIN_SOLSYS3), 1)
   CFLAGS += -DBUILTIN_SOLSYS3=1
 endif
 
+ifeq ($(BUILTIN_SOLSYS_EPHEM), 1) 
+  SOURCES += $(SRC)/solsys-ephem.c
+endif
+
 ifdef (DEFAULT_READEPH) 
   SOURCES += $(SRC)/$(DEFAULT_READEPH).c
   CFLAGS += -DDEFAULT_READEPH=1
 endif
 
+
+# Compiler and linker options etc.
+ifeq ($(BUILD_MODE),debug)
+	CFLAGS += -g
+endif
+
+# Generate a list of object (obj/*.o) files from the input sources
 OBJECTS := $(subst $(SRC),obj,$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
-
 

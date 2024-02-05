@@ -7,8 +7,6 @@
 include config.mk
 
 
-
-
 # ===============================================================================
 # Specific build targets and recipes below...
 # ===============================================================================
@@ -16,9 +14,6 @@ include config.mk
 
 .PHONY: api
 api: static shared cio_file dox
-
-.PHONY: all
-all: api solsys tools test coverage check
 
 .PHONY: static
 static: lib/novas.a
@@ -41,6 +36,21 @@ test: tools
 coverage: test
 	make -C test coverage
 
+.PHONY: all
+all: api solsys tools test coverage check
+
+.PHONY: clean
+clean:
+	rm -f README-pruned.md
+	@make -C tools clean
+	@make -C test clean
+
+.PHONY: distclean
+distclean:
+	@make -C tools clean
+	@make -C test clean
+
+
 # Static library: novas.a
 lib/novas.a: $(OBJECTS) | lib
 	ar -rc $@ $^
@@ -58,14 +68,10 @@ cio_file: lib/novas.a
 obj/jplint.o: $(SRC)/jplint.f
 	gfortran -c -o $@ $<
 
+README-pruned.md: README.md
+	tail -n +`sed -n '/\# /{=;q;}' $<` $< > $@
 
-clean:
-	@make -C tools clean
-	@make -C test clean
-
-distclean:
-	@make -C tools clean
-	@make -C test clean
+dox: README-pruned.md
 
 
 # ===============================================================================

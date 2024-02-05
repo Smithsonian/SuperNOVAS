@@ -227,8 +227,8 @@ enum novas_observer_place {
  */
 enum novas_reference_system {
   NOVAS_GCRS = 0, ///< Geocentric Celestial Reference system. Essentially the same as ICRS, but with velocities referenced to Earth's orbiting frame.
-  NOVAS_TOD,     ///< True equinox Of Date: dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
-  NOVAS_CIRS, ///< Celestial Intermediate Reference System: dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
+  NOVAS_TOD,      ///< True equinox Of Date: dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
+  NOVAS_CIRS,     ///< Celestial Intermediate Reference System: dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
   NOVAS_ICRS      ///< International Celestiual Reference system. The equatorial system fixed to the frame of distant quasars.
 };
 
@@ -358,8 +358,12 @@ enum novas_cio_location_type {
  * @sa WOBBLE_ITRS_TO_TIRS
  */
 enum novas_wobble_direction {
-  WOBBLE_ITRS_TO_TIRS = 0,    ///< use for wobble() to change from ITRS to TIRS.
-  WOBBLE_TIRS_TO_ITRS         ///< to use for wobble() to change from TIRS to ITRS. (You can use any non-zero value as well.)
+  WOBBLE_ITRS_TO_PEF = 0,    ///< use for wobble() to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF).
+  /**
+   * use for wobble() to change from Pseudo Earth Fixed (PEF) to ITRS (actual rotating Earth).
+   * (You can use any non-zero value as well.)
+   */
+  WOBBLE_PEF_TO_ITRS
 };
 
 /**
@@ -726,24 +730,30 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *obs_space);
 
 // Added API in SuperNOVAS
-int calc_pos(const object *source, const observer *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
+
+int place_in_frame(const object *source, const astro_frame *frame, enum novas_accuracy accuracy, sky_pos *pos);
+
+int place_star(const cat_entry *star, const observer *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
         enum novas_accuracy accuracy, sky_pos *pos);
 
-int calc_frame_pos(const object *source, const astro_frame *frame, enum novas_accuracy accuracy, sky_pos *pos);
+int place_icrs(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
 
-int calc_star_pos(const cat_entry *star, const observer *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
-        enum novas_accuracy accuracy, sky_pos *pos);
+int place_gcrs(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
 
-int calc_icrs_pos(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
+int place_cirs(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
 
-int calc_gcrs_pos(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
+int place_tod(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
 
-int calc_dynamical_pos(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
 
 int cio_set_locator_file(const char *filename);
 
 int nutation_set_lp(novas_nutate_func f);
 
 #include "solarsystem.h"
+
+
+
+
+
 
 #endif /* _NOVAS_ */

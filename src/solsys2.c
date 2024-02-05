@@ -31,6 +31,9 @@
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
+/// Function prototype for the FORTRAN subroutine in jplint.f
+extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
+
 /**
  * Obtains planet positions via the JPL direct-access solar system
  * ephemerides, wtih normal (reduced) precision -- typically good to
@@ -78,9 +81,6 @@
  * @since 1.0
  */
 short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
-  // Dummy function prototype for Fortran subroutine 'jplint'.
-  extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
-
   long targ, cent, err_flg = 0;
   double posvel[6] = { };
   int i;
@@ -163,8 +163,6 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  * @since 1.0
  */
 short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
-  extern void jplihp_(const double *jed, long *targ, long *cent, double *posvel, long *err_flg);
-
   long targ, cent, err_flg = 0;
   double posvel[6] = { };
   int i;

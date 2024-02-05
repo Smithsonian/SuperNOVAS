@@ -2801,7 +2801,7 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 3, 0, 0, -1 } };
 
   novas_fundamental_args a;
-  double dp, de, arg, sarg, carg, factor, dpsils, depsls, dpsipl, depspl;
+  double dp, de, factor, dpsils, depsls, dpsipl, depspl;
 
   int i;
 
@@ -2840,7 +2840,8 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
-    arg = 0;
+    double arg = 0.0, sarg, carg;
+
     if(n[0]) arg += n[0] * a.l;
     if(n[1]) arg += n[1] * a.l1;
     if(n[2]) arg += n[2] * a.F;
@@ -2855,10 +2856,7 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     de += (c[3] + c[4] * t) * carg + c[5] * sarg;
   }
 
-  /*
-   Convert from 0.1 microarcsec units to radians.
-   */
-
+  // Convert from 0.1 microarcsec units to radians.
   factor = 1.0e-7 * ASEC2RAD;
   dpsils = dp * factor;
   depsls = de * factor;
@@ -2876,7 +2874,9 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     const short *c = &cpl_t[i][0];
 
     // Argument and functions.
-    arg = 0;
+    double arg = 0.0, sarg, carg;
+
+
     if(n[0]) arg += n[0] * a.l;
     if(n[1]) arg += n[1] * a.l1;
     if(n[2]) arg += n[2] * a.F;

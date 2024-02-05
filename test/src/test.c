@@ -22,7 +22,7 @@
 static observer obs;
 static object source;
 static double tdb = J2000;
-static short accuracy = 1;
+static short accuracy;
 static double ut12tt = 69.0;
 
 // Initialized quantities.
@@ -31,6 +31,7 @@ static double lst, pos0[3], vel0[3], epos[3], evel[3], pobs[3], vobs[3];
 static FILE *fp;
 static int idx = -1;
 
+static char *header;
 
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
@@ -53,12 +54,22 @@ static void openfile(const char *name) {
   }
 
   if(idx >= 0) newline();
+  else if(header) fprintf(fp, "%s", header);
 }
 
 
 static void printvector(double *v) {
   if(!v) fprintf(fp, "null ");
-  else fprintf(fp, "%12.6f %12.6f %12.6f ", v[0], v[1], v[2]);
+  fprintf(fp, "%12.6f %12.6f %12.6f ", v[0], v[1], v[2]);
+}
+
+static void printunitvector(double *v) {
+  if(!v) fprintf(fp, "null ");
+  else {
+    double l = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+    if(accuracy == 0) fprintf(fp, "%12.9f %12.9f %12.9f ", v[0] / l, v[1] / l, v[2] / l);
+    else fprintf(fp, "%9.6f %9.6f %9.6f ", v[0] / l, v[1] / l, v[2] / l);
+  }
 }
 
 static int is_ok(int error) {
@@ -141,9 +152,7 @@ static void test_era() {
 
 static void test_ee_ct() {
   openfile("ee_ct");
-
-
-  fprintf(fp, "%12.6f", ee_ct(tdb, 0.0, accuracy) / ARCSEC);
+  fprintf(fp, "A%d %12.6f", accuracy, ee_ct(tdb, 0.0, accuracy) / ARCSEC);
 }
 
 static void test_iau2000a() {
@@ -184,7 +193,6 @@ static void test_nutation_angles() {
   double dpsi = 0.0, deps = 0.0;
 
   openfile("nutation_angles");
-
   nutation_angles(t, accuracy, &dpsi, &deps);
   fprintf(fp, "%12.6f %12.6f", dpsi, deps);
 
@@ -204,7 +212,7 @@ static void test_nutation() {
   double pos1[3];
   openfile("nutation");
   nutation(tdb, 0, accuracy, pos0, pos1);
-  printvector(pos1);
+  printunitvector(pos1);
 }
 
 static void test_ira_equinox() {
@@ -229,9 +237,9 @@ static void test_cio_basis() {
   if(!is_ok(cio_location(tdb, accuracy, &h, &sys))) return;
   if(!is_ok(cio_basis(tdb, h, sys, accuracy, x, y, z))) return;
 
-  printvector(x);
-  printvector(y);
-  printvector(z);
+  printunitvector(x);
+  printunitvector(y);
+  printunitvector(z);
 }
 
 static void test_sidereal_time() {
@@ -254,7 +262,12 @@ static void test_geo_posvel() {
 }
 
 static void test_time_specific() {
+  static char th[40] = { };
+
   idx = -1;
+  sprintf(th, "%8.1f A%d: ", (tdb - J2000), accuracy);
+  header = th;
+
   test_ephemeris();
   test_era();
   test_ee_ct();
@@ -269,6 +282,8 @@ static void test_time_specific() {
   test_cio_basis();
   test_sidereal_time();
   test_geo_posvel();
+
+  header = NULL;
 }
 
 
@@ -291,7 +306,7 @@ static int init() {
   lst = 0.0;
 
   if(source.type == 0) {
-    int error = ephemeris(tdb2, &source, 0, accuracy, pos0, vel0);
+    int error = ephemeris(tdb2, &source, 0, 1, pos0, vel0);
     if(error) {
       fprintf(stderr, "init: Failed source ephemeris for %s: error %d\n", source.name, error);
       return -1;
@@ -314,7 +329,7 @@ static int init() {
     fprintf(stderr, "init: Failed make_object(Earth)\n");
     return -1;
   }
-  if(ephemeris(tdb2, &earth, 0, accuracy, epos, evel) != 0) {
+  if(ephemeris(tdb2, &earth, 0, 1, epos, evel) != 0) {
     fprintf(stderr, "init: Failed Earth ephemeris\n");
     return -1;
   }
@@ -363,7 +378,7 @@ static void test_frame_tie() {
 
   openfile("frame_tie");
   frame_tie(pos0, -1, pos1);
-  printvector(pos1);
+  printunitvector(pos1);
 }
 
 
@@ -374,7 +389,7 @@ static void test_wobble() {
   openfile("wobble");
 
   wobble(tdb, 0, 2.0, -3.0, pos0, pos1);
-  printvector(pos1);
+  printunitvector(pos1);
 }
 
 
@@ -383,7 +398,7 @@ static void test_precession() {
   openfile("precession");
 
   if(is_ok(precession(tdb, pos0, J2000, pos1)))
-    printvector(pos1);
+    printunitvector(pos1);
 }
 
 
@@ -401,7 +416,7 @@ static void test_grav_def() {
   openfile("grav_def");
 
   if(is_ok(grav_def(tdb, obs.where, accuracy, pos0, pobs, pos1))) {
-    printvector(pos1);
+    printunitvector(pos1);
   }
 }
 
@@ -413,7 +428,8 @@ static void test_place() {
   for(i=0; i < 4; i++) {
     sky_pos out;
     if(is_ok(place(tdb, &source, &obs, ut12tt, i, accuracy, &out))) {
-      fprintf(fp, "%d %12.6f %12.6f", i, out.dis, out.rv);
+      // Velocities to 0.1 m/s accuracy
+      fprintf(fp, "%d %12.6f %12.f", i, out.dis, out.rv);
       newline();
     }
   }
@@ -452,10 +468,10 @@ static int test_observers() {
   return 0;
 }
 
-static int test_all() {
+static int test_sources() {
   cat_entry star;
 
-  printf(" Testing date %.1f\n", tdb);
+  printf(" Testing date %.1f\n", (tdb - J2000));
 
   make_cat_entry("22+20", "TST", 1001, 22.0, 20.0, 3.0, -2.0, 5.0, 10.0, &star);
   if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
@@ -479,7 +495,7 @@ static int test_dates() {
 
     test_time_specific();
 
-    if(test_all() != 0) {
+    if(test_sources() != 0) {
       printf(" -- FAILED!\n");
       return -1;
     }
@@ -489,9 +505,13 @@ static int test_dates() {
   return 0;
 }
 
+static int test_accuracy() {
+  for(accuracy = 0; accuracy < 2; accuracy++) test_dates();
+}
+
 
 int main(int argc, char *argv[]) {
   test_basics();
-  test_dates();
+  test_accuracy();
   fclose(fp);
 }

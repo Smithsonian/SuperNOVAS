@@ -3,17 +3,9 @@
 ![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/check.yml/badge.svg)
 ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 
-
-<img ><br clear="all">
-
 <picture>
-  <!-- User prefers dark mode: -->
   <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" media="(prefers-color-scheme: dark)"/>
-  
-  <!-- User prefers light mode: -->
   <source srcset="resources/CfA-logo.png" alt="CfA logo" media="(prefers-color-scheme: light)"/>
-  
-  <!-- default: -->
   <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"/>
 </picture>
 <br clear="all">
@@ -196,12 +188,16 @@ code:
    resulting in incorrect observed radial velocities being reported for spectroscopic observations. 
    
  - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox if the the `equinox` 
-   argument was changing from 1 to 0, and back to 1 again with the date being held the same.
+   argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected routines
+   downstream also, such as `sidereal_time()`.
    
  - Fixes accuracy bug in `ecl2equ_vec()`, `equ2ecl_vec()`, `geo_posvel()`, `place()`, and `sidereal_time()`, which 
    could return a cached value for the other accuracy if the other input parameters are the same as a prior call, 
    except the accuracy. 
    
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative, since `fmod()` is 
+   not the mathematical definition of a modulus. This affected `solsys3.c` for dates prior to J2000. Fixed by using
+   `remainder()` instead of `fmod()` (throughout the library). 
 
 -----------------------------------------------------------------------------
 
