@@ -105,6 +105,7 @@ This is because some function signatures have changed, e.g. to use an `enum` arg
 in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of  `short` to 
 accomodate JPL NAIF values, which require a 32-bit width. 
 
+-----------------------------------------------------------------------------
 
 <a name="fixed-issues"></a>
 ## Fixed NOVAS C 3.1 issues
@@ -137,8 +138,6 @@ code:
    not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) 
    for dates prior to J2000.
    
-
------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------
 
