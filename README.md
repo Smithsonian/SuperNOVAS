@@ -24,6 +24,7 @@ and easier to use. It is entirely free to use without any licensing restrictions
  - [Related links](#related-links)
  - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Building and installation](#installation)
+ - [Building your application with SuperNOVAS](#building-your-application)
  - [SuperNOVAS specific features](#supernovas-features)
  - [Notes on precision](#precision)
  - [External Solar-system ephemeris data or services](#solarsystem)
@@ -111,9 +112,83 @@ accomodate JPL NAIF values, which require a 32-bit width.
 <a name="installation"></a>
 ## Building and installation
 
-Coming soon...
+
+The SuperNOVAS distibution contains a `Makefile` for GNU make, which is suitable for compiling the library (as well as 
+local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL on Windows.
+
+Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, such as:
+
+ - Choose which planet calculator function routines are built into the library (for example to provide 
+   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_reader()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
+   You can then specify these functions as the default planet calculator for `ephemeris()` in your application 
+   dynamically via `set_planet_calc()`.
+   
+ - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
+   `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
+   want to link your own `solarsystem()` implementation(s) against the library, you should not set `DEFAULT_SOLSYS` 
+   (i.e. delete or comment out the corresponding line).
+   
+ - If you are going to be using the functions of `solsys1.c` you may also want to specify the source file that will 
+   provide the `readeph()` implementation for it by setting `DEFAULT_READEPH` appropriately. (The default setting uses 
+   the dummy `readeph0.c` which simply returns an error if one tries to use the functions from `solsys1.c`.
+
+ - If you want ot use the CIO locator binary file for `cio_location()`, you can specify the path to the
+   binary file (e.g. `/usr/local/share/novas/cio_ra.bin`) where the file will be located at on your system.
+   (The CIO locator file is not at all necessary for the functioning of the library, unless you specifically
+   require CIO poistions relative to GCRS.)
+
+Now you are ready to build the library:
+
+```bash
+  $ make
+```
+
+will compile the static (`lib/novas.a`) and shared (`lib/novas.so`) libraries, produce a CIO locator data
+file (`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen`. Alternatively, 
+you can build select components of the above with the `make` targets `static`, `shared`, `cio_file`, and `dox`
+respectively.
+
+After building the library you can install the above components to the desired locations on your system. For
+a system-wide install you may place the static or shared library into `/usr/loval/lib/`, copy the CIO locator 
+file to the place you specified in `config.mk` etc. You may also want to copy the header files in `include/` to
+e.g. `/usr/local/include` so you can compile your application against SuperNOVAS easilyon your system.
 
 
+<a name="building-your-application"></a>
+## Building your application with SuperNOVAS
+
+Provided you have installed the SuperNOVAS headers into a standard location (such as `/usr/include` or 
+`/usr/local/include`) and the static or shared library into `usr/lib` (or `/usr/local/lib` or similar), you
+can build your application against it very easily. For example, to build `myastroapp.c` against SuperNOVAS, 
+you might have a `Makefile` with contents like:
+
+```make
+  myastroapp: myastroapp.c 
+  	cc -o $@ $(CFLAGS) $^ -lm -lnovas
+```
+
+If you have a legacy NOVAS C 3.1 application, it is possible that the compilation will give you errors due
+to missing includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`. This is because these were explicitly
+included in `novas.h` in NOVAS C 3.1, but not in SupeerNOVAS (at least not by default). You can fix it
+two ways: (1) Add the missing `#include` to your application source explicitly, or (2) set the `-DCOMPAT=1`
+compiler flag when compiling your application:
+
+```make
+  myastroapp: myastroapp.c 
+  	cc -o $@ $(CFLAGS) $^ -DCOMPAT=1 -lm -lnovas
+```
+
+To use your own `solarsystem()` implemetation for `ephemeris()`, you will want to build the library with
+`DEFAULT_SOLSYS` no set in `config.mk` (see section above), and your applications Makefile may contain 
+something like:
+
+```make
+  myastroapp: myastroapp.c my_solsys.c 
+  	cc -o $@ $(CFLAGS) $^ -lm -lnovas
+```
+
+The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` 
+being unset in `config.mk`).
 
 -----------------------------------------------------------------------------
 
@@ -195,9 +270,10 @@ code:
    could return a cached value for the other accuracy if the other input parameters are the same as a prior call, 
    except the accuracy. 
    
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative, since `fmod()` is 
-   not the mathematical definition of a modulus. This affected `solsys3.c` for dates prior to J2000. Fixed by using
-   `remainder()` instead of `fmod()` (throughout the library). 
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
+   not turned into a proper remainder. This affected `solsys3.c` (line 261) for dates prior to J2000. Fixed by 
+   using `remainder()` instead.
+   
 
 -----------------------------------------------------------------------------
 

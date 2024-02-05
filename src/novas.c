@@ -594,7 +594,7 @@ static int itrs_to_tod_pos(double jd_tt, double ut1_to_tt, double xp, double yp,
 
 
 /**
- * Set a custom function to use for regular precision (see NOVAS_REDUCED_PRECISION) ephemeris calculations
+ * Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculations
  * instead of the default solarsystem() routine.
  *
  * @param f       The function to use for solar system position/velocity calculations.
@@ -606,7 +606,7 @@ static int itrs_to_tod_pos(double jd_tt, double ut1_to_tt, double xp, double yp,
  *
  * @sa set_planet_calc_hp()
  * @sa solarsystem()
- * @sa NOVAS_REDUCED_PRECISION
+ * @sa NOVAS_REDUCED_ACCURACY
  */
 int set_planet_calc(novas_planet_calculator f) {
   if(!f) {
@@ -618,7 +618,7 @@ int set_planet_calc(novas_planet_calculator f) {
 }
 
 /**
- * Set a custom function to use for high precision (see NOVAS_FULL_PRECISION) ephemeris calculations
+ * Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations
  * instead of the default solarsystem_hp() routine.
  *
  * @param f       The function to use for solar system position/velocity calculations.
@@ -630,7 +630,7 @@ int set_planet_calc(novas_planet_calculator f) {
  *
  * @sa set_planet_calc()
  * @sa solarsystem_hp()
- * @sa NOVAS_FILL_PRECISION
+ * @sa NOVAS_FULL_ACCURACY
  */
 int set_planet_calc_hp(novas_planet_calculator_hp f) {
   if(!f) {
@@ -647,7 +647,7 @@ int set_planet_calc_hp(novas_planet_calculator_hp f) {
  *
  * @param source      Catalog source or solar_system body.
  * @param frame       Astronomical frame of observation.
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] pos    Calculated position data structure to populate
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
@@ -676,8 +676,9 @@ int place_in_frame(const object *source, const astro_frame *frame, enum novas_ac
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
  * @param system    The type of coordinate reference system in which coordinates are to be returned.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
- * @param[out] pos  The astrometric position of the celestial object
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos  The position and radial velocity of of the catalog source relative in the specified
+ *                  coordinate system and relative to the specified observer location (if applicable)
  * @return          0 if successful, or -1 if one of the required arguments is NULL, or else 1 if observer location
  *                  is invalid, or an error code &lt;10 if from function place().
  *
@@ -707,8 +708,10 @@ int place_star(const cat_entry *star, const observer *obs, double jd_tt, double 
  *
  * @param source      Catalog source or solar_system body.
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
- * @param[out] pos    Calculated position data structure to populate
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    Structure to populate with the calculated geocentric ICRS position data
+ *                    (Unlike place_gcrs(), the calculated coordinates do not account for aberration
+ *                    or gravitational deflection).
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
@@ -725,8 +728,8 @@ int place_icrs(const object *source, double jd_tt, enum novas_accuracy accuracy,
  *
  * @param source      Catalog source or solar_system body.
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
- * @param[out] pos    Calculated position data structure to populate
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    Structure to populate with the calculated GCRS position data
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
@@ -745,8 +748,8 @@ int place_gcrs(const object *source, double jd_tt, enum novas_accuracy accuracy,
  *
  * @param source      Catalog source or solar_system body.
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
- * @param[out] pos    Calculated position data structure to populate
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    Structure to populate with the calculated CIRS position data
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
@@ -763,8 +766,8 @@ int place_cirs(const object *source, double jd_tt, enum novas_accuracy accuracy,
  *
  * @param source      Catalog source or solar_system body.
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
- * @param[out] pos    Calculated position data structure to populate
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    Structure to populate with the calculated geocentric TOD position data
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
@@ -792,7 +795,7 @@ int place_tod(const object *source, double jd_tt, enum novas_accuracy accuracy, 
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param star      Pointer to catalog entry structure containing catalog data for
  *                  the object in the ICRS.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Apparent right ascension in hours, referred to true equator and equinox of date 'jd_tt'
  *                  (it may be NULL if not required).
  * @param[out] dec  [deg] Apparent declination in degrees, referred to true equator and equinox of date 'jd_tt'
@@ -835,7 +838,7 @@ short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
  * @param star      Pointer to catalog entry structure containing catalog data for
  *                  the object in the ICRS.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Virtual right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Virtual declination in degrees, referred to the GCRS (it may be NULL if not required).
  * @return          0 if successful, or else an error code  &lt; or the error from make_object(), or 10 + the
@@ -874,7 +877,7 @@ short virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accu
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
  * @param star      Pointer to catalog entry structure containing catalog data for
  *                  the object in the ICRS.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Astrometric right ascension in hours, referred to the ICRS, without light deflection
  *                  or aberration. (It may be NULL if not required)
  * @param[out] dec  [deg] Astrometric declination in degrees, referred to the ICRS, without light deflection
@@ -911,7 +914,7 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar system body.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Apparent right ascension in hours, referred to true equator and equinox of date 'jd_tt'.
  *                  (It may be NULL if not required)
  * @param[out] dec  [deg] Apparent declination in degrees, referred to true equator and equinox of date 'jd_tt'.
@@ -949,7 +952,7 @@ short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accura
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar system body.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Virtual right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Virtual declination in degrees, referred to the GCRS (it may be NULL if not required).
  * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (can be NULL if not needed).
@@ -986,7 +989,7 @@ short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy ac
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar system body.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Astrometric right ascension in hours, referred to the ICRS, without light deflection
  *                  or aberration. (It may be NULL if not required)
  * @param[out] dec  [deg] Astrometric declination in degrees, referred to the ICRS, without light deflection
@@ -1030,7 +1033,7 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  * @param star      Pointer to catalog entry structure containing catalog data for
  *                  the object in the ICRS.
  * @param position  Position of the observer
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Topocentric right ascension in hours, referred to true equator and equinox of
  *                  date 'jd_tt'. (It may be NULL if not required)
  * @param[out] dec  [deg] Topocentric declination in degrees, referred to true equator and equinox of
@@ -1078,7 +1081,7 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_
  * @param star      Pointer to catalog entry structure containing catalog data for
  *                  the object in the ICRS.
  * @param position  Position of the observer
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @return          0 if successful, or else an error code &lt; 1 if 'where' in structure 'location' is invalid;
@@ -1122,7 +1125,7 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
  * @param ss_body   Pointer to structure containing the body designation for the solar system body.
  * @param ut1_to_tt   [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
  * @param position  Position of the observer
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Topocentric apparent right ascension in hours, referred to the true equator and
  *                  equinox of date. (It may be NULL if not required)
  * @param[out] dec  [deg] Topocentric apparent declination in degrees referred to the true equator and
@@ -1169,7 +1172,7 @@ short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const o
  * @param ss_body   Pointer to structure containing the body designation for the solar system body.
  * @param ut1_to_tt   [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
  * @param position  Position of the observer
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (it may be NULL if not required).
@@ -1211,7 +1214,7 @@ short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const 
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
  * @param ra            [h]  Apparent right ascension in hours, referred to true equator and equinox of date.
  * @param dec           [deg] Apparent declination in degrees, referred to true equator and equinox of date.
- * @param accuracy      NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ira      [h] ICRS right ascension in hours.
  * @param[out] idec     [deg] ICRS declination in degrees.
  * @return          0 if successful; -1 if the supplied output pointers are NULL, 1 if the iterative process did not
@@ -1314,10 +1317,10 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
  * @param cel_object    Pointer to a celestrial object data structure
  * @param location      The observer location, relative to which the output positions and velocities are
  *                      to be calculated
- * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is NOVAS_OBSERVER_ON_EARTH or
- *                      NOVAS_OBSERVER_IN_EARTH_ORBIT.
+ * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is NOVAS_OBSERVER_ON_EARTH (1) or
+ *                      NOVAS_OBSERVER_IN_EARTH_ORBIT (2).
  * @param coord_sys     The coordinate system that defines the orientation of the celestial pole.
- * @param accuracy      NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] output   Data structure to populate with the result.
  * @return              0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid,
  *                      3 if Earth is the observed object, and the observer is either at the geocenter or on the Earth's
@@ -1584,13 +1587,14 @@ int equ2gal(double rai, double deci, double *glon, double *glat) {
 }
 
 /**
- * Convert right ascension and declination to ecliptic longitude and latitude.  To convert ICRS RA and dec to ecliptic coordinates
- * (mean ecliptic and equinox of J2000.0), set 'coord_sys' to NOVAS_ICRS_EQUATOR; in this case the value of 'jd_tt' can be set to anything,
- * since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.
+ * Convert right ascension and declination to ecliptic longitude and latitude.  To convert ICRS RA and dec to
+ * ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to NOVAS_ICRS_EQUATOR (2); in
+ * this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input
+ * coordinates are dynamical at 'jd_tt'.
  *
- * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR)
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR [2])
  * @param coord_sys   The astrometric reference system type in which to return coordinates
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param ra          [h] Right ascension in hours, referred to specified equator and equinox of date.
  * @param dec         [deg] Declination in degrees, referred to specified equator and equinox of date.
  * @param elon        [deg] Ecliptic longitude in degrees, referred to specified ecliptic and equinox of date.
@@ -1630,13 +1634,14 @@ short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accura
 }
 
 /**
- * Converts an equatorial position vector to an ecliptic position vector. To convert ICRS RA and dec to ecliptic coordinates
- * (mean ecliptic and equinox of J2000.0), set 'coord_sys' to NOVAS_ICRS_EQUATOR; in this case the value of 'jd_tt' can be set to anything,
- * since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.
+ * Converts an equatorial position vector to an ecliptic position vector. To convert ICRS RA and dec to
+ * ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to NOVAS_ICRS_EQUATOR (2);
+ * in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input
+ * coordinates are dynamical at 'jd_tt'.
  *
- * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR)
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR [2])
  * @param coord_sys   The astrometric reference system type in which to return coordinates
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param pos1        Position vector, referred to specified equator and equinox of date.
  * @param[out] pos2   Position vector, referred to specified ecliptic and equinox of date. It can be the same
  *                    vector as the input.
@@ -1696,12 +1701,12 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 
 /**
  * Converts an ecliptic position vector to an equatorial position vector. To convert ecliptic coordinates
- * (mean ecliptic and equinox of J2000.0) to ICRS RA and dec to, set 'coord_sys' to NOVAS_ICRS_EQUATOR; in this case the value of
+ * (mean ecliptic and equinox of J2000.0) to ICRS RA and dec to, set 'coord_sys' to NOVAS_ICRS_EQUATOR (2); in this case the value of
  * 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.
  *
- * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR)
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR [2])
  * @param coord_sys   The astrometric reference system type in which to return coordinates
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param pos1        Position vector, referred to specified ecliptic and equinox of date.
  * @param[out] pos2   Position vector, referred to specified equator and equinox of date. It can be the
  *                    same vector as the input.
@@ -1774,7 +1779,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *  from tpstar() or tpplan().</li>
  *  <li> The directions 'zd'= 0 (zenith) and 'az'= 0 (north) are here considered fixed in the terrestrial system.
  *  Specifically, the zenith is along the geodetic normal, and north is toward the ITRS pole.</li>
- *  <li>If 'ref_option' is NOVAS_STANDARD_ATMOSPHERE, then 'rar'='ra' and 'decr'='dec'.
+ *  <li>If 'ref_option' is NOVAS_STANDARD_ATMOSPHERE (0), then 'rar'='ra' and 'decr'='dec'.
  * </ul>
  *
  * REFERENCES:
@@ -1784,7 +1789,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *
  * @param jd_ut1      [day] UT1 based Julian date
  * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp          [arcsec] Conventionally-defined x coordinate of celestial intermediate pole with respect
  *                    to ITRS reference pole, in arcseconds.
  * @param yp          [arcsec] Conventionally-defined y coordinate of celestial intermediate pole with respect
@@ -1937,7 +1942,7 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR)
  * @param coord_sys   Dynamical equatorial system type
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY (unused if 'coord_sys' is not NOVAS_ICRS)
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) (unused if 'coord_sys' is not NOVAS_ICRS [3])
  * @param rag         [h] GCRS right ascension in hours.
  * @param decg        [deg] GCRS declination in degrees.
  * @param[out] ra     [h] Right ascension in hours, referred to specified equator and right ascension origin of date.
@@ -2017,11 +2022,11 @@ short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accur
  * @param jd_low      [day] Low-order part of UT1 Julian date. (You can leave it at zero if 'jd_high' specified
  *                    the date with sufficient precision)
  * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
- * @param gst_type    NOVAS_MEAN_EQUINOX or NOVAS_TRUE_EQUINOX, depending on whether wanting mean or apparent
+ * @param gst_type    NOVAS_MEAN_EQUINOX (0) or NOVAS_TRUE_EQUINOX (1), depending on whether wanting mean or apparent
  *                    GST, respectively.
- * @param method      EROT_GST or EROT_ERA, depending on whether to use GST relative to equinox of date (pre
+ * @param method      EROT_GST (0) or EROT_ERA (1), depending on whether to use GST relative to equinox of date (pre
  *                    IAU 2006) or ERA relative to the CIO (IAU 2006 standard).
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] gst    [h] Greenwich (mean or apparent) sidereal time, in hours [0:24]. (In case the returned error
  *                    code is &gt;1 the gst value will be set to NAN.
  * @return            0 if successful, or -1 if the 'gst' argument is NULL, 1 if 'accuracy' is invalid
@@ -2186,17 +2191,17 @@ double era(double jd_high, double jd_low) {
  * @param jd_ut_high    [day] High-order part of UT1 Julian date.
  * @param jd_ut_low     [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
- * @param method        EROT_GST or EROT_ERA, depending on whether to use GST relative to equinox of date (pre
+ * @param method        EROT_GST (0) or EROT_ERA (1), depending on whether to use GST relative to equinox of date (pre
  *                      IAU 2006) or ERA relative to the CIO (IAU 2006 standard).
- * @param accuracy      NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
- * @param option        NOVAS_GCRS or NOVAS_TOD. Used only when method is EROT_GST.
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param option        NOVAS_GCRS (0) or NOVAS_TOD (1). Used only when method is EROT_GST (0).
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param vec1          Position vector, geocentric equatorial rectangular coordinates,
  *                      referred to ITRS axes (terrestrial system) in the normal case
- *                      where 'option' is NOVAS_GCRS.
+ *                      where 'option' is NOVAS_GCRS (0).
  * @param[out] vec2     Position vector, geocentric equatorial rectangular coordinates,
  *                      referred to GCRS axes (celestial system) or with respect to
  *                      the equator and equinox of date, depending on 'option'.
@@ -2283,10 +2288,10 @@ short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_
  * @param jd_ut_high    [day] High-order part of UT1 Julian date.
  * @param jd_ut_low     [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
- * @param method        EROT_GST or EROT_ERA, depending on whether to use GST relative to equinox of date (pre
+ * @param method        EROT_GST (0) or EROT_ERA (1), depending on whether to use GST relative to equinox of date (pre
  *                      IAU 2006) or ERA relative to the CIO (IAU 2006 standard).
- * @param accuracy      NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
- * @param option        NOVAS_GCRS or NOVAS_TOD. Used only when method is EROT_GST.
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param option        NOVAS_GCRS (0) or NOVAS_TOD (1). Used only when method is EROT_GST (0).
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
@@ -2443,7 +2448,7 @@ int spin(double angle, const double *pos1, double *pos2) {
  * </ol>
  *
  * @param tjd           [day] Terrestrial Time (TT) based Julian date.
- * @param direction     WOBBLE_ITRS_TO_PEF or WOBBLE_PEF_TO_ITRS
+ * @param direction     WOBBLE_ITRS_TO_PEF (0) or WOBBLE_PEF_TO_ITRS (1; or nonzero)
  * @param xp            [arcsec] Conventionally-defined X coordinate of Celestial Intermediate Pole
  *                      with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of Celestial Intermediate Pole
@@ -2571,7 +2576,7 @@ int terra(const on_surface *location, double lst, double *pos, double *vel) {
  *
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date.
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] mobl      [deg] Mean obliquity of the ecliptic in degrees
  * @param[out] tobl      [deg] True obliquity of the ecliptic in degrees
  * @param[out] ee        [deg] Equation of the equinoxes in seconds of time
@@ -2645,10 +2650,10 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  * specified via a call to this function will be used until
  * explicitly changed.
  *
- * 'tjd' is used only if 'type' is POLE_OFFSETS_X_Y, to transform dx and dy to
+ * 'tjd' is used only if 'type' is POLE_OFFSETS_X_Y (2), to transform dx and dy to
  * the equivalent delta-delta-psi and delta-delta-epsilon values.
  *
- * If 'type' is POLE_OFFSETS_X_Y, dx and dy are unit vector component
+ * If 'type' is POLE_OFFSETS_X_Y (2), dx and dy are unit vector component
  * corrections, but are expressed in milliarcseconds simply by
  * multiplying by 206264806, the number of milliarcseconds in one radian.
  *
@@ -2667,7 +2672,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  * </ol>
  *
  * @param tjd       [day] Terrestrial Time (TT) based Julian date.
- * @param type      POLE_OFFSETS_DPSI_DEPS or POLE_OFFSETS_X_Y
+ * @param type      POLE_OFFSETS_DPSI_DEPS (1) or POLE_OFFSETS_X_Y (2)
  * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; or dx)
  *                  in milliarcseconds.
  * @param dpole2    [mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon; or dy)
@@ -2761,7 +2766,7 @@ short cel_pole(double tjd, enum novas_pole_offset_type type, double dpole1, doub
  *
  * @param jd_high     [day] High-order part of TT based Julian date.
  * @param jd_low      [day] Low-order part of TT based Julian date.
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @return            [rad] Complementary terms, in radians.
  */
 double ee_ct(double jd_high, double jd_low, enum novas_accuracy accuracy) {
@@ -2930,7 +2935,7 @@ double ee_ct(double jd_high, double jd_low, enum novas_accuracy accuracy) {
  * @param pos1        Position vector, equatorial rectangular coordinates.
  * @param direction   <0 for for dynamical to ICRS transformation, or else &gt;=0
  *                    for ICRS to dynamical transformation. Alternatively you may
- *                    used the constants TIE_J2000_TO_ICRS or TIE_ICRS_TO_J2000.
+ *                    used the constants TIE_J2000_TO_ICRS (0; or positive) or TIE_ICRS_TO_J2000 (-1; or negative).
  * @param[out] pos2   Position vector, equatorial rectangular coordinates.
  *                    It can be the same vector as the input.
  * @return            0 if successfor or -1 if either of the vector arguments is NULL.
@@ -2955,8 +2960,7 @@ int frame_tie(const double *pos1, enum novas_frametie_direction direction, doubl
 }
 
 /**
- * Applies proper motion, including foreshortening effects, to a
- * star's position.
+ * Applies proper motion, including foreshortening effects, to a star's position.
  *
  * REFERENCES:
  * <ol>
@@ -3030,7 +3034,7 @@ int bary2obs(const double *pos, const double *pos_obs, double *pos2, double *lig
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] TT - UT1 time difference in seconds
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param obs         Observer location
  * @param[out] pos    [AU] Position 3-vector of observer, with respect to origin at geocenter, referred to GCRS
  *                    axes, components in AU. (It may be NULL if not required.)
@@ -3120,7 +3124,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
  *                    origin at solar system barycenter, referred to ICRS axes,
  *                    components in AU.
  * @param tlight0     [day] First approximation to light-time, in days (can be set to 0.0 if unknown).
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] pos    [AU] Position 3-vector of body, with respect to origin at observer (or
  *                    the geocenter), referred to ICRS axes, components in AU. It can be the same
  *                    vector as either of the inputs.
@@ -3239,7 +3243,7 @@ double d_light(const double *pos1, const double *pos_obs) {
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param loc_code    The type of observer frame
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param pos1        [AU] Position 3-vector of observed object, with respect to origin at
  *                    observer (or the geocenter), referred to ICRS axes, components
  *                    in AU.
@@ -3772,8 +3776,8 @@ short precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos
  *
  *
  * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
- * @param direction   NUTATE_MEAN_TO_TRUE or NUTATE_TRUE_TO_MEAN
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param direction   NUTATE_MEAN_TO_TRUE (0) or NUTATE_TRUE_TO_MEAN (-1; or non-zero)
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param pos         Position 3-vector, geocentric equatorial rectangular coordinates,
  *                    referred to mean equator and equinox of epoch.
  * @param[out] pos2   Position vector, geocentric equatorial rectangular coordinates,
@@ -3858,7 +3862,7 @@ int nutation_set_lp(novas_nutate_func f) {
  * notes below for important details.
  *
  * This function selects the nutation model depending first upon
- * the input value of 'accuracy'.  If 'accuracy' is NOVAS_FILL_ACCURACY,
+ * the input value of 'accuracy'.  If 'accuracy' is NOVAS_FULL_ACCURACY (0),
  * the IAU 2000A nutation model is used.  Otherwise,
  * the model used depends upon the value of function local
  * variable 'low_acc_choice'. If local variable 'low_acc_choice' = 1
@@ -3875,7 +3879,7 @@ int nutation_set_lp(novas_nutate_func f) {
  * </ol>
  *
  * @param t           [cy] TDB time in Julian centuries since J2000.0
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] dpsi   [arcsec] Nutation in longitude in arcseconds.
  * @param[out] deps   [arcsec] Nutation in obliquity in arcseconds.
  *
@@ -4286,7 +4290,7 @@ double tt2tdb(double jd_tt) {
  * </ol>
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date
- * @param accuracy  NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param ra_cio    [h] Right ascension of the CIO, with respect to the true equinox
  *                  of date, in hours (+ or -).
  * @return          0 if successful, -1 if the output pointer argument is NULL,
@@ -4377,7 +4381,7 @@ int cio_set_locator_file(const char *filename) {
  *
  *
  * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra_cio      [h] Right ascension of the CIO, in hours.
  * @param[out] ref_sys     Pointer in which to return the reference system in which right ascension is given,
  *                         which is either CIO_VS_GCRS (1) if the location was obtained
@@ -4463,9 +4467,9 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
  *
  * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
  * @param ra_cio      [h] Right ascension of the CIO at epoch (hours).
- * @param ref_sys     CIO_VS_GCRS if the cio location is relative to the GCRS or else
- *                    CIO_VS_EQUINOX if relative to the true equinox of date.
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param ref_sys     CIO_VS_GCRS (1) if the cio location is relative to the GCRS or else
+ *                    CIO_VS_EQUINOX (2) if relative to the true equinox of date.
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] x      Unit 3-vector toward the CIO, equatorial rectangular
  *                    coordinates, referred to the GCRS.
  * @param[out] y      Unit 3-vector toward the y-direction, equatorial rectangular
@@ -4698,8 +4702,8 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
  * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
- * @param equinox     NOVAS_MEAN_EQUINOX or NOVAS_TRUE_EQUINOX
- * @param accuracy    NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param equinox     NOVAS_MEAN_EQUINOX (0) or NOVAS_TRUE_EQUINOX (1; or non-zero)
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @return            [h]  Intermediate right ascension of the equinox, in hours (+ or -).
  *                    If 'equinox' = 1 (i.e true equinox), then the returned value is
  *                    the equation of the origins.
@@ -5171,8 +5175,8 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
 
 /**
  * computes atmospheric refraction in zenith distance.  This version computes approximate refraction for
- * optical wavelengths.  This function can be used for planning observations or telescope pointing, but should not be used
- * for precise positioning.
+ * optical wavelengths.  This function can be used for planning observations or telescope pointing, but
+ * should not be used for precise positioning.
  *
  * REFERENCES:
  * <ol>
@@ -5180,10 +5184,10 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
  * <li>Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259.</li>
  * </ol>
  *
- * @param location      Pointer to structure containing observer's location. It may also contains weather data (optional)
- *                      for the observer's location.
- * @param ref_option    NOVAS_STANDARD_ATMOSPHERE, or NOVAS_WEATHER_AT_LOCATION if to use the weather values contained in
- *                      the 'location' data structure.
+ * @param location      Pointer to structure containing observer's location. It may also contains weather
+ *                      data (optional) for the observer's location.
+ * @param ref_option    NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
+ *                      values contained in the 'location' data structure.
  * @param zd_obs        [deg] Zenith distance angle of the direction of observation.
  * @return              [deg] the calculated optical refraction.
  */
@@ -5245,7 +5249,7 @@ double julian_date(short year, short month, short day, double hour) {
  *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657.</li>
  * </ol>
  *
- * @param tjd     [day] Julian date
+ * @param tjd          [day] Julian date
  * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
  * @param[out] month   [month] Gregorian calendat month [1:12]. It may be NULL if not required.
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
@@ -5355,7 +5359,7 @@ short make_cat_entry(const char *star_name, const char *catalog, long star_num, 
 /**
  * Populates and object data structure using the parameters provided.
  *
- * @param type          The type of object. NOVAS_MAJOR_PLANET, NOVAS_MINOR_PLANET or NOVAS_DISTANT_OBJECT
+ * @param type          The type of object. NOVAS_MAJOR_PLANET (0), NOVAS_MINOR_PLANET (1) or NOVAS_DISTANT_OBJECT (2)
  * @param number        The novas ID number (for solar-system bodies only, otherwise ignored)
  * @param name          The name of the object (case insensitive). It should be shorter than SIZE_OF_OBJ_NAME
  *                      or else an error will be returned.

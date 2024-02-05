@@ -236,9 +236,9 @@ enum novas_reference_system {
  * Constants that determine the type of equator to be used for the coordinate system.
  */
 enum novas_equator_type {
-  NOVAS_MEAN_EQUATOR, ///< True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
-  NOVAS_TRUE_EQUATOR, ///< Celestial Intermediate Reference System (CIRS): dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
-  NOVAS_ICRS_EQUATOR  ///< International Celestiual Reference system (ICRS). The equatorial system fixed to the frame of distant quasars.
+  NOVAS_MEAN_EQUATOR = 0, ///< True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
+  NOVAS_TRUE_EQUATOR,     ///< Celestial Intermediate Reference System (CIRS): dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
+  NOVAS_ICRS_EQUATOR      ///< International Celestiual Reference system (ICRS). The equatorial system fixed to the frame of distant quasars.
 };
 
 #define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ICRS + 1)    ///< The number of basic coordinate reference systems in NOVAS.

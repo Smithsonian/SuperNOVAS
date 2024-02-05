@@ -1,4 +1,4 @@
-# ============================================================================
+# ===========================================================================
 # Generic configuration options for building the SuperNOVAS libraries (both 
 # static and shared).
 #
@@ -28,11 +28,21 @@ CFLAGS = -Os -Wall -Wextra -I$(INC)
 #CFLAGS += -DDEFAULT_CIO_LOCATOR_FILE="/user/share/novas/cio_ra.bin"
 
 # Whether to build into the library planet_eph_manager() routines provided in 
-# solsys1.c
-BUILTIN_SOLSYS1 = 1
+# solsys1.c. Because the default readeph implementation (readeph0.c) does not
+# provide useful functionality, we do not include solsys1.c in the build
+# by default.
+#BUILTIN_SOLSYS1 = 1
+
+# Compile library with a default readeph() implementation for solsys1.c, which 
+# will be used only if the application does not define another implementation 
+# via calls to the to set_ephem_reader() function.
+DEFAULT_READEPH = $(SRC)/readeph0.c
 
 # Whether to build into the library planet_jplint() routines provided in 
-# solsys2.c.
+# solsys2.c. Note, that if you choose to build in the functionality of 
+# solsys2.c you will need to provide a jplint_() implementation and its
+# dependencies such as pleph_() as well when linking your application.
+# Therefore, we do not include solsys2.c by default...
 #BUILTIN_SOLSYS2 = 1
 
 # Whether to build into the library earth_sun_calc() routines provided in 
@@ -49,12 +59,8 @@ BUILTIN_SOLSYS_EPHEM = 1
 # implementation when linking your application against this library.
 DEFAULT_SOLSYS = 3
 
-# Compile library with a default readeph() implementation, which will be used
-# only if the application does not define another implementation via calls to 
-# the to set_ephem_reader() function.
-DEFAULT_READEPH = readeph0
 
-# cppcheck options
+# cppcheck options for 'check' target
 CHECKOPTS = --enable=performance,warning,portability,style --language=c \
             --error-exitcode=1
 
@@ -101,7 +107,7 @@ ifeq ($(BUILTIN_SOLSYS_EPHEM), 1)
 endif
 
 ifdef (DEFAULT_READEPH) 
-  SOURCES += $(SRC)/$(DEFAULT_READEPH).c
+  SOURCES += $(DEFAULT_READEPH)
   CFLAGS += -DDEFAULT_READEPH=1
 endif
 
