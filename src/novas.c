@@ -203,7 +203,7 @@ static int j2000_to_tod(double jd_tt, enum novas_accuracy accuracy, const double
 
   if(!time_equals(jd_tt, JD_J2000)) {
     double v[3];
-    const double jd_tdb = jd_tt + tt2tdb(jd_tt);
+    const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
     precession(JD_J2000, in, jd_tdb, v);
     nutation(jd_tdb, NUTATE_MEAN_TO_TRUE, accuracy, v, out);
 
@@ -240,7 +240,7 @@ static int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double
 
   if(!time_equals(jd_tt, JD_J2000)) {
     double v[3];
-    const double jd_tdb = jd_tt + tt2tdb(jd_tt);
+    const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
     nutation(jd_tdb, NUTATE_TRUE_TO_MEAN, accuracy, in, v);
     precession(jd_tdb, v, JD_J2000, out);
   }
@@ -327,7 +327,7 @@ static int gcrs_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double
   short rs;
   int error;
 
-  const double jd_tdb = jd_tt + tt2tdb(jd_tt);
+  const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
   if(!in || !out) {
     errno = EINVAL;
@@ -376,7 +376,7 @@ static int cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double
   short rs;
   int i;
 
-  const double jd_tdb = jd_tt + tt2tdb(jd_tt);
+  const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
   if(!in || !out) {
     errno = EINVAL;
@@ -1820,7 +1820,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  * @param xp          [arcsec] Conventionally-defined x coordinate of celestial intermediate pole with respect
  *                    to ITRS reference pole, in arcseconds.
  * @param yp          [arcsec] Conventionally-defined y coordinate of celestial intermediate pole with respect
- *                      to ITRS reference pole, in arcseconds.
+ *                    to ITRS reference pole, in arcseconds.
  * @param location    The observer location
  * @param ra          [h] Topocentric right ascension of object of interest, in hours, referred to true equator
  *                    and equinox of date.
@@ -5011,7 +5011,7 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
  * are ignored.
  *
  * If 'option' is CHANGE_EPOCH, input data can be in any fixed reference
- * system. If 'option' is CHANGE_EQUATOR_EQUINOX or CHANGE_EQUATOR_EQUINOX_EPOCH, this function assumes
+ * system. If 'option' is CHANGE_SYSTEM or CHANGE_EPOCH, this function assumes
  * the input data is in the dynamical system and produces output in
  * the dynamical system. If 'option' is CHANGE_J2000_TO_ICRS, the input data must be
  * on the dynamical equator and equinox of J2000.0. And if 'option' is CHANGE_ICRS_TO_J2000,
@@ -5031,10 +5031,9 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
  * @param date_newcat     [day|yr] Terrestrial Time (TT) based Julian date, or year, of output catalog data.
  * @param newcat_id       Catalog identifier (0 terminated)
  * @param[out] newcat     The transformed catalog entry, with units as given in the struct definition
- * @return                0 if successful, -1 if any of the pointer arguments is NULL or if the output
- *                        catalog is the same as the input, or else
- *                        1 if the input date is invalid for for option CHANGE_EQUATOR_EQUINOX or
- *                        CHANGE_EQUATOR_EQUINOX_EPOCH, or 2 if 'newcat_id' out of bounds.
+ * @return                0 if successful, -1 if any of the pointer arguments is NULL, or else
+ *                        1 if the input date is invalid for for option CHANGE_SYSTEM or
+ *                        CHANGE_EPOCH, or 2 if 'newcat_id' out of bounds.
  */
 short transform_cat(enum novas_transform_type option, double date_incat, const cat_entry *incat, double date_newcat, const char *newcat_id,
         cat_entry *newcat) {
@@ -5042,12 +5041,14 @@ short transform_cat(enum novas_transform_type option, double date_incat, const c
   double jd_incat, jd_newcat, paralx, dist, r, d, cra, sra, cdc, sdc, k;
   double pos1[3], term1, pmr, pmd, rvl, vel1[3], pos2[3], vel2[3], xyproj;
 
-  if(!incat || !newcat || !newcat_id || newcat == incat) {
+  if(!incat || !newcat || !newcat_id) {
     errno = EINVAL;
     return -1;
   }
 
   if(strlen(newcat_id) >= sizeof(newcat->starname)) return 2;
+
+  // TODO move frame tie up front...
 
   // If necessary, compute Julian dates.
 
@@ -5097,7 +5098,7 @@ short transform_cat(enum novas_transform_type option, double date_incat, const c
   memcpy(vel2, vel1, sizeof(vel2));
 
   // Update star's position vector for space motion (only if 'option' = 1 or 'option' = 3).
-  if((option == CHANGE_EPOCH) || (option == CHANGE_EQUATOR_EQUINOX_EPOCH)) {
+  if((option == PROPER_MOTION) || (option == CHANGE_EPOCH)) {
     int j;
     for(j = 0; j < 3; j++)
       pos2[j] = pos1[j] + vel1[j] * (jd_newcat - jd_incat);
@@ -5106,8 +5107,8 @@ short transform_cat(enum novas_transform_type option, double date_incat, const c
 
   switch(option) {
 
-    case CHANGE_EQUATOR_EQUINOX:
-    case CHANGE_EQUATOR_EQUINOX_EPOCH: {
+    case CHANGE_SYSTEM:
+    case CHANGE_EPOCH: {
       // Precess position and velocity vectors (only if 'option' = 2 or 'option' = 3).
       int error;
 
@@ -5153,7 +5154,6 @@ short transform_cat(enum novas_transform_type option, double date_incat, const c
   dist = vlen(pos2);
 
   paralx = asin(1.0 / dist) / MAS;
-  newcat->parallax = paralx;
 
   // Transform motion vector back to spherical polar system at star's new position.
   cra = cos(r);
@@ -5169,18 +5169,22 @@ short transform_cat(enum novas_transform_type option, double date_incat, const c
   newcat->promodec = pmd * paralx * JULIAN_YEAR_DAYS / k;
   newcat->radialvelocity = rvl * (AU_KM / DAY) / k;
 
-  // Take care of zero-parallax case.
-  if(newcat->parallax <= 1.01e-6) {
-    newcat->parallax = 0.0;
-    newcat->radialvelocity = incat->radialvelocity;
+
+  if(newcat != incat) {
+    // Take care of zero-parallax case.
+    if(incat->parallax <= 0.0) {
+      newcat->parallax = 0.0;
+      newcat->radialvelocity = incat->radialvelocity;
+    }
+    else newcat->parallax = incat->parallax;
+
+    // Set the catalog identification code for the transformed catalog entry.
+    strncpy(newcat->catalog, newcat_id, sizeof(newcat->catalog) - 1);
+
+    // Copy unchanged quantities from the input catalog entry to the transformed catalog entry.
+    strncpy(newcat->starname, incat->starname, sizeof(newcat->starname) - 1);
+    newcat->starnumber = incat->starnumber;
   }
-
-  // Set the catalog identification code for the transformed catalog entry.
-  strncpy(newcat->catalog, newcat_id, sizeof(newcat->catalog) - 1);
-
-  // Copy unchanged quantities from the input catalog entry to the transformed catalog entry.
-  strncpy(newcat->starname, incat->starname, sizeof(newcat->starname) - 1);
-  newcat->starnumber = incat->starnumber;
 
   return 0;
 }

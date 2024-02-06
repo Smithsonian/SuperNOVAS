@@ -26,6 +26,7 @@ and easier to use. It is entirely free to use without any licensing restrictions
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#building-your-application)
+ - [Example usage](#examples)
  - [SuperNOVAS specific features](#supernovas-features)
  - [Notes on precision](#precision)
  - [External Solar-system ephemeris data or services](#solarsystem)
@@ -222,6 +223,195 @@ The same principle applies to using your specific `readeph()` implementation (on
 being unset in `config.mk`).
 
 -----------------------------------------------------------------------------
+
+
+<a name="examples"></a>
+## Example usage
+
+### Calculating positions for a sidereal source
+
+Sidereal sources may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, 
+or a galactic molecular cloud, or a distant quasar. First, you must provide the coordinates (which may include
+proper motion and parallax). Let's assume we pick a star for which we have B1950 (i.e. FK4) coordinates:
+
+```c
+  cat_entry source; // Structure to contain information on sidereal source 
+
+  // Let's assume we have B1950 (FK4) coordinates...
+  // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year, parallax 5.89 mas, 
+  // radial velocity -3.4 km/s.
+  make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &source);
+```
+
+We must convert these coordinates to the now standard ICRS system for calculations in NOVAS, first by calculating 
+equivalent J2000 coordinates, by applying the proper motion and the appropriate precession. Then, we apply a small 
+adjustment to convert from J2000 to ICRS coordinates.
+
+```c
+  // First change the catalog coordinates (in place) to the J2000... 
+  transform_cat(CHANGE_EPOCH, NOVAS_B1950, &source, NOVAS_J2000, &source);
+  
+  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
+  transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source, 0.0, &source);
+```
+
+Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
+(temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):
+
+```c
+  observer obs;	 // Structure to contain observer location 
+
+  // Specify the location we are observing from
+  // 50.7374 deg N, 7.0982 deg E, 60m elevation
+  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
+```
+
+We also need to set the time of observation. Clocks usually measure UTC, but for NOVAS we usually need time measured
+based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. So 
+
+```c
+  // The current value for the leap seconds (UTC - TAI)
+  int leap_seconds = 37;
+
+  // Set the DUT1 = UT1 - UTC time difference in seconds (e.g. from IERS Bulletins)
+  int dut1 = ...
+
+  // Calculate the Terrestrial Time (TT) based Julian date of observation (in days)
+  // Let's say on 2024-02-06 at 14:53:06 UTC.
+  double jd_tt = julian_date(2024, 2, 6, tt_hour(14.885, leap_seconds)); 
+  
+  // We'll also need the TT - UT1 difference, which we can obtain from the above...
+  double ut1_to_tt = get_ut1_to_tt(jd_tt, dut1);
+```
+
+Now we can calculate the precise apparent position of the source, such as it's right ascension (R.A.) and declination, 
+and the equatorial _x,y,z_ unit vector pointing in the direction of the source (in the requested coordinate system 
+and for the specified observing location). We also get radial velocity (for spectroscopy), and distance (e.g. for 
+apparent-to-physical size conversion):
+
+```c
+  sky_pos pos;	// We'll return the topocantric apparent position in this structure
+  
+  // We calculate the topocentric position (in True of Date [TOD] coordinates), for the above 
+  // configuration
+  int status = place(jd_tt, &source, &obs, ut1_to_tt, NOVAS_TOD, NOVAS_FULL_ACCURACY, &pos);
+  
+  // You should always check that the calculation was successful...
+  if(status) {
+    // Ooops, something went wrong...
+    return -1;
+  }
+```
+
+Finally, we may want to calculate the azimuth and elevation at which the source is visible from the ground at the
+specified observing location (with or without refraction correction):
+
+```c
+  // Current polar offsets provided by the IERS Bulletins (in arcsec)
+  double dx = ... 
+  double dy = ...
+  
+  // Zenith distance and azimuth (in degrees) to populate...
+  double zd, az;
+  
+  // Convert to horizontal using the pole offsets, and a standard atmpsphere for
+  // the refraction. (We don't care to return refracted RA and dec coordinates).
+  equ2hor(jd_tt - ut1_to_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, &obs.on_surf, 
+  	pos.ra, pos.dec, NOVAS_STANDARD_ATMOSPHERE, &zd, &az, NULL, NULL);
+``` 
+
+In the example above we have calculated the apparent coordinates in the Pseudo Earth Fixed (PEF) system, which does 
+not include polar wobble corrections, and applied the small (arcsec-level) measured variation of the pole (dx, dy) 
+only when calculating the precise actual Az/El coordinates. Alternatively, you may set the pole offsets before calling 
+`place()` using `cel_pole()`. In this case `place()` will calculate precise coordinates in the International 
+Terrestrial Reference System (ITRS), which we can convert to horizontal directly (without applying polar wobble 
+corrections twice):
+
+```c
+  cel_pole(jd_tt, POLE_OFFSETS_X_Y, dx, dy);
+  ...
+  place(...);
+  ...
+  equ2hor(... NOVAS_FULL_ACCURACY, 0.0, 0.0, &obs.on_surf ...);
+```
+
+#### Reduced accuracy
+
+When one needs positions to the arcsecond level only (and not to the microarcsecond level), some shortcuts can
+be made to the recipe above:
+
+ - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
+   effect at the milliarcsecond level only, but may less computationally intense.
+ - You can skip the J2000 to ICRS conversion and use J2000 coordinates as a fair approximation (at the &lt;~ 22 mas
+   level).
+ - You can skip the pole offsets dx, dy. These may be a couple arcsec. 
+
+
+### Calculating positions for a Solar-system source
+
+Solar-system sources work similarly to the above with a few differences.
+
+First, You will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
+source of interest for the specific Barycentric Dynamical Time of observation. See Section on integrating 
+[External Solar-system ephemeris data or services](#solarsystem) with SuperNOVAS.
+
+You can use `tt2tdb()` to help convert Terrstrial Time (TT) to Barycentric Dynamic Time (TDB) for your ephemeris 
+provider function (they only differ when you really need extreme precision -- for most applications you can used TT 
+and TDB interchangeably in the present era). E.g. 
+
+```c
+  double jd_tdb = jd_tt + tt2tdb(jd_tt) / 86400.0;
+```
+
+Instead of `make_cat_entry` you define your source as an `object` with an ID number that is used by the ephemeris 
+service you provided. For major planets you might want to use type `NOVAS_MAJOR_PLANET` if they use a 
+`novas_planet_calculator` function to access ephemeris data with their NOVAS IDs, or else `NOVAS_MINOR_PLANET` for 
+more generic ephemeris handling via a user-provided `novas_ephem_reader_func`. 
+
+```c
+  object mars, ceres; // Hold data on solar-system bodies.
+  
+  // Mars will be handled by hte planet calculator function
+  make_object(NOVAS_MAJOR_PLANET_MARS, NOVAS_MARS, "Mars", NULL, &mars);
+  
+  // Ceres will be handled by the generic ephemeris reader, which say uses the 
+  // NAIF ID of 2000001
+  make_object(NOVAS_MINOR_PLANET, 2000001, "Ceres", NULL, &ceres);
+```
+
+You will want to specify the functions that will handle the respective ephemeris data before making the NOVAS 
+calls that need them, e.g.:
+
+```c
+  // Set the function to use for regular precision planet position calculations
+  set_planet_calc(my_planet_calcular_function);
+  
+  // Set the function for high-precision planet position calculations
+  set_planet_calc(my_very_precise_planet_calculator_function);
+  
+  // Set the function to use for calculating all sorts of solar-system bodies
+  set_ephem_reader(my_ephemeris_provider_function);
+```
+
+Other than that, it's the same spiel as before. E.g.:
+
+```c
+  sky_pos pos;	// We'll return the topocentric apparent position in this structure
+  
+  // We calculate the topocentric position (in True of Date [TOD] coordinates), for the above 
+  // configuration
+  int status = place(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_TOD, NOVAS_FULL_ACCURACY, &pos);
+  
+  // You should always check that the calculation was successful...
+  if(status) {
+    // Ooops, something went wrong...
+    return -1;
+  }
+```
+
+
+-----------------------------------------------------------------------------
+
 
 <a name="supernovas-features"></a>
 ## SuperNOVAS specific features

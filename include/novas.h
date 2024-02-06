@@ -310,15 +310,15 @@ enum novas_origin {
 enum novas_transform_type {
   /// Updates the star's data to account for the star's space motion between
   /// the first and second dates, within a fixed reference frame.
-  CHANGE_EPOCH = 1,
+  PROPER_MOTION = 1,
 
   /// applies a rotation of the reference frame
   /// corresponding to precession between the first and second dates,
   /// but leaves the star fixed in space.
-  CHANGE_EQUATOR_EQUINOX,
+  CHANGE_SYSTEM,
 
   /// The combined equivalent of CHANGE_EPOCH and CHANGE_EQUATOR_EQUINOX together.
-  CHANGE_EQUATOR_EQUINOX_EPOCH,
+  CHANGE_EPOCH,
 
   /// A fixed rotation about very small angles (<0.1 arcsecond) to take data from the
   /// dynamical system of J2000.0 to the ICRS.
@@ -731,6 +731,8 @@ int place_tod(const object *source, double jd_tt, enum novas_accuracy accuracy, 
 int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos, double *vel, double *tlight);
 
 double tt2tdb(double jd_tt);
+
+double tt_hour(double utchour, int leap_seconds);
 
 int cio_set_locator_file(const char *filename);
 
