@@ -18,8 +18,6 @@ run: clean test
 coverage: run
 	gcov test-novas.c
 	gcov test-nutation.c
-	gcov test-solsys1.c
-	gcov test-eph_manager.c
 	gcov test-solsys3.c
 
 test: src/test.c $(SOURCES) | Makefile

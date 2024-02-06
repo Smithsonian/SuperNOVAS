@@ -86,7 +86,7 @@
 #define NOVAS_AU_SEC      ( NOVAS_AU / NOVAS_C )
 
 /// [AU/day] Speed of light in AU/day.  Value is 86400 / AU_SEC.
-#define NOVAS_C_AU_PER_DAY     ( 86400.0 / AU_SEC )
+#define NOVAS_C_AU_PER_DAY  ( 86400.0 / AU_SEC )
 
 /// [km] Astronomical Unit in kilometers.
 #define NOVAS_AU_KM       ( 1e-3 * NOVAS_AU )
@@ -205,7 +205,7 @@ enum novas_planet {
  *
  */
 enum novas_observer_place {
-  NOVAS_OBSERVER_AT_GEOCENTER = 0, ///< Calculate coordinates as if observing from the geocenter for location and Earth rotation independent coordinates.
+  NOVAS_OBSERVER_AT_GEOCENTER = 0,    ///< Calculate coordinates as if observing from the geocenter for location and Earth rotation independent coordinates.
   NOVAS_OBSERVER_ON_EARTH,            ///< Observer is at a location that is in the rotating frame of Earth.
 
   /**
@@ -226,10 +226,10 @@ enum novas_observer_place {
  * @sa astro_frame
  */
 enum novas_reference_system {
-  NOVAS_GCRS = 0, ///< Geocentric Celestial Reference system. Essentially the same as ICRS, but with velocities referenced to Earth's orbiting frame.
+  NOVAS_GCRS = 0, ///< Geocentric Celestial Reference system. Essentially the same as ICRS but includes aberration and gravitational deflection.
   NOVAS_TOD,      ///< True equinox Of Date: dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
   NOVAS_CIRS,     ///< Celestial Intermediate Reference System: dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
-  NOVAS_ICRS      ///< International Celestiual Reference system. The equatorial system fixed to the frame of distant quasars.
+  NOVAS_ICRS      ///< International Celestial Reference system. The equatorial system fixed to the frame of distant quasars.
 };
 
 /**
@@ -259,8 +259,9 @@ enum novas_accuracy {
  * @sa on_surface
  */
 enum novas_refraction_model {
-  NOVAS_STANDARD_ATMOSPHERE = 0, ///< Uses a standard atmospheric model, ignoring all weather values defined for the specific observing location
-  NOVAS_WEATHER_AT_LOCATION       ///< Uses the weather parameters that are specified together with the observing location.
+  NOVAS_NO_ATMOSPHERE = 0,            ///< Do not apply atmospheric refraction correction
+  NOVAS_STANDARD_ATMOSPHERE,          ///< Uses a standard atmospheric model, ignoring all weather values defined for the specific observing location
+  NOVAS_WEATHER_AT_LOCATION           ///< Uses the weather parameters that are specified together with the observing location.
 };
 
 /**
@@ -493,19 +494,6 @@ typedef struct {
   double ra_cio;    ///< [arcsec] right ascension of the CIO with respect to the GCRS (arcseconds)
 } ra_of_cio;
 
-/**
- * Fully defines the astronomical frame for which coordinates (including velocities) are calculated.
- *
- * @author Attila Kovacs
- * @since 1.0
- */
-typedef struct {
-  enum novas_reference_system basis_system;     ///< Coordindate system type.
-  enum novas_origin origin;                     ///< Location of origin (if type is NOVAS_ICRS)
-  observer location;                            ///< Location of observer (if type is not NOVAS_ICRS)
-  double jd_tdb;                                ///< [day] Barycentric Dynamical Time (TDB) based Julian date of observation.
-  double ut1_to_tt;                            ///< [s] TT - UT1 time difference (if observer is on the surface of Earth, otherwise ignored.
-} astro_frame;
 
 /**
  * Macro for converting epoch year to TT-based Julian date
@@ -605,7 +593,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2);
 
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, short ref_option, double *zd, double *az, double *rar, double *decr);
+        double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr);
 
 short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
         double *dec);
@@ -680,8 +668,6 @@ double get_ut1_to_tt(int leap_seconds, double dut1);
 
 int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff);
 
-double tt2tdb(double jd_tt);
-
 short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio);
 
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, short *ref_sys);
@@ -731,8 +717,6 @@ int make_in_space(const double *sc_pos, const double *sc_vel, in_space *obs_spac
 
 // Added API in SuperNOVAS
 
-int place_in_frame(const object *source, const astro_frame *frame, enum novas_accuracy accuracy, sky_pos *pos);
-
 int place_star(const cat_entry *star, const observer *obs, double jd_tt, double ut1_to_tt, enum novas_reference_system system,
         enum novas_accuracy accuracy, sky_pos *pos);
 
@@ -744,6 +728,9 @@ int place_cirs(const object *source, double jd_tt, enum novas_accuracy accuracy,
 
 int place_tod(const object *source, double jd_tt, enum novas_accuracy accuracy, sky_pos *pos);
 
+int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos, double *vel, double *tlight);
+
+double tt2tdb(double jd_tt);
 
 int cio_set_locator_file(const char *filename);
 

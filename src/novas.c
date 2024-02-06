@@ -210,8 +210,6 @@ static int j2000_to_tod(double jd_tt, enum novas_accuracy accuracy, const double
   }
   else if(out != in) memcpy(out, in, XYZ_VECTOR_SIZE);
 
-
-
   return 0;
 }
 
@@ -393,7 +391,7 @@ static int cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double
   if(error) return (error + 10);
 
   // Transform position vector to GCRS system.
-  for (i = 0; i < 3; i++) {
+  for(i = 0; i < 3; i++) {
     out[i] = px[i] * in[0] + py[i] * in[1] + pz[i] * in[2];
   }
 
@@ -436,9 +434,9 @@ static int cirs_to_itrs_pos(double jd_tt, double ut1_to_tt, double xp, double yp
   double theta, pos[3];
 
   if(!in || !out) {
-      errno = EINVAL;
-      return -1;
-    }
+    errno = EINVAL;
+    return -1;
+  }
 
   // Compute and apply the Earth rotation angle, 'theta', transforming the
   // vector to the terrestrial intermediate system.
@@ -592,7 +590,6 @@ static int itrs_to_tod_pos(double jd_tt, double ut1_to_tt, double xp, double yp,
 
 #endif
 
-
 /**
  * Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculations
  * instead of the default solarsystem() routine.
@@ -641,25 +638,6 @@ int set_planet_calc_hp(novas_planet_calculator_hp f) {
   return 0;
 }
 
-
-/**
- * Computes the positions of a source in a specific astronomical reference frame
- *
- * @param source      Catalog source or solar_system body.
- * @param frame       Astronomical frame of observation.
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] pos    Calculated position data structure to populate
- * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
- *                    or else an error from place().
- */
-int place_in_frame(const object *source, const astro_frame *frame, enum novas_accuracy accuracy, sky_pos *pos) {
-  if(!frame) {
-    errno = EINVAL;
-    return -1;
-  }
-  return place(frame->jd_tdb, source, &frame->location, frame->ut1_to_tt, frame->basis_system, accuracy, pos);
-}
-
 /**
  * Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its
  * catalog mean place, proper motion, parallax, and radial velocity.
@@ -680,7 +658,7 @@ int place_in_frame(const object *source, const astro_frame *frame, enum novas_ac
  * @param[out] pos  The position and radial velocity of of the catalog source relative in the specified
  *                  coordinate system and relative to the specified observer location (if applicable)
  * @return          0 if successful, or -1 if one of the required arguments is NULL, or else 1 if observer location
- *                  is invalid, or an error code &lt;10 if from function place().
+ *                  is invalid, or an error code from place().
  *
  * @sa place_in_frame()
  * @sa get_ut1_to_tt()
@@ -800,8 +778,8 @@ int place_tod(const object *source, double jd_tt, enum novas_accuracy accuracy, 
  *                  (it may be NULL if not required).
  * @param[out] dec  [deg] Apparent declination in degrees, referred to true equator and equinox of date 'jd_tt'
  *                  (it may be NULL if not required).
- * @return          0 if successful, or else an error code  &lt; or the error from make_object(), or 10 + the
- *                  error from  place().
+ * @return          0 if successful, -1 if a required pointer argument is NULL, or else an error code  &lt;
+ *                  or the error from make_object(), or 20 + the error from place().
  *
  * @sa place_star()
  * @sa place_tod()
@@ -813,13 +791,15 @@ int place_tod(const object *source, double jd_tt, enum novas_accuracy accuracy, 
  */
 short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec) {
   sky_pos output = { };
-  int status;
+  int error;
 
-  status = place_star(star, NULL, jd_tt, 0.0, NOVAS_TOD, accuracy, &output);
+  error = place_star(star, NULL, jd_tt, 0.0, NOVAS_TOD, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
-  return status;
+
+  return error ? (20 + error) : 0;
 }
 
 /**
@@ -841,7 +821,7 @@ short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Virtual right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Virtual declination in degrees, referred to the GCRS (it may be NULL if not required).
- * @return          0 if successful, or else an error code  &lt; or the error from make_object(), or 10 + the
+ * @return          0 if successful, or -1 if a required pointer argument is NULL, or 20 + the
  *                  error from  place().
  *
  * @sa place_star()
@@ -854,11 +834,13 @@ short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy
  */
 short virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec) {
   sky_pos output = { };
-  int status = place_star(star, NULL, jd_tt, 0.0, NOVAS_GCRS, accuracy, &output);
+  int error = place_star(star, NULL, jd_tt, 0.0, NOVAS_GCRS, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
-  return status;
+
+  return error ? (20 + error) : 0;
 }
 
 /**
@@ -882,8 +864,8 @@ short virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accu
  *                  or aberration. (It may be NULL if not required)
  * @param[out] dec  [deg] Astrometric declination in degrees, referred to the ICRS, without light deflection
  *                  or aberration. (It may be NULL if not required)
- * @return          0 if successful, or else an error code  &lt; or the error from make_object(), or 10 + the
- *                  error from  place().
+ * @return          0 if successful, or -1 if a required pointer argument is NULL, or 20 + the
+ *                  error from place().
  *
  * @sa place_star()
  * @sa place_icrs()
@@ -895,11 +877,13 @@ short virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accu
  */
 short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec) {
   sky_pos output = { };
-  int status = place_star(star, NULL, jd_tt, 0.0, NOVAS_ICRS, accuracy, &output);
+  int error = place_star(star, NULL, jd_tt, 0.0, NOVAS_ICRS, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
-  return status;
+
+  return error ? (20 + error) : 0;
 }
 
 /**
@@ -920,8 +904,8 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
  * @param[out] dec  [deg] Apparent declination in degrees, referred to true equator and equinox of date 'jd_tt'.
  *                  (It may be NULL if not required)
  * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (can be NULL if not needed).
- * @return          0 if successful, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or an
- *                  error code from place().
+ * @return          0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'type' in structure
+ *                  'ss_body' is invalid, or 10 + the error code from place().
  *
  * @sa place_tod()
  * @sa astro_planet()
@@ -932,12 +916,25 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
  */
 short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
   sky_pos output = { };
-  int status = place(jd_tt, ss_body, NULL, 0.0, NOVAS_TOD, accuracy, &output);
+  int error;
+
+  if(!ss_body) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  if(ss_body->type != NOVAS_MAJOR_PLANET && ss_body->type != NOVAS_MINOR_PLANET) {
+    return 1;
+  }
+
+  error = place(jd_tt, ss_body, NULL, 0.0, NOVAS_TOD, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
   if(dis) *dis = output.dis;
-  return status;
+
+  return error ? (10 + error) : 0;
 }
 
 /**
@@ -956,8 +953,8 @@ short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accura
  * @param[out] ra   [h] Virtual right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Virtual declination in degrees, referred to the GCRS (it may be NULL if not required).
  * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (can be NULL if not needed).
- * @return          0 if successful, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or an
- *                  error code from place().
+ * @return          0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'type' in
+ *                  structure 'ss_body' is invalid, or 10 + the error code from place().
  *
  * @sa place_gcrs()
  * @sa app_planet()
@@ -968,12 +965,25 @@ short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accura
  */
 short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
   sky_pos output = { };
-  int status = place(jd_tt, ss_body, NULL, 0.0, NOVAS_GCRS, accuracy, &output);
+  int error;
+
+  if(!ss_body) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  if(ss_body->type != NOVAS_MAJOR_PLANET && ss_body->type != NOVAS_MINOR_PLANET) {
+    return 1;
+  }
+
+  error = place(jd_tt, ss_body, NULL, 0.0, NOVAS_GCRS, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
   if(dis) *dis = output.dis;
-  return status;
+
+  return error ? (10 + error) : 0;
 }
 
 /**
@@ -995,8 +1005,8 @@ short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy ac
  * @param[out] dec  [deg] Astrometric declination in degrees, referred to the ICRS, without light deflection
  *                  or aberration. (It may be NULL if not required)
  * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (can be NULL if not needed).
- * @return          0 if successful, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or an
- *                  error code from place().
+ * @return          0 if successful, or -1 if the object is NULL, or else 1 if the value of 'type' in structure
+ *                  'ss_body' is invalid, or 10 + the error code from place().
  *
  * @sa place_icrs()
  * @sa app_planet()
@@ -1007,12 +1017,25 @@ short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy ac
  */
 short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
   sky_pos output = { };
-  int status = place(jd_tt, ss_body, NULL, 0.0, NOVAS_ICRS, accuracy, &output);
+  int error;
+
+  if(!ss_body) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  if(ss_body->type != NOVAS_MAJOR_PLANET && ss_body->type != NOVAS_MINOR_PLANET) {
+    return 1;
+  }
+
+  error = place(jd_tt, ss_body, NULL, 0.0, NOVAS_ICRS, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
   if(dis) *dis = output.dis;
-  return status;
+
+  return error ? (10 + error) : 0;
 }
 
 /**
@@ -1038,7 +1061,8 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  *                  date 'jd_tt'. (It may be NULL if not required)
  * @param[out] dec  [deg] Topocentric declination in degrees, referred to true equator and equinox of
  *                  date 'jd_tt'. (It may be NULL if not required)
- * @return          0 if successful, or else an error code from place_star().
+ * @return          0 if successful, -1 if a required pointer argument is NULL, or else
+ *                  20 + the error code from place_star().
  *
  * @sa place_star()
  * @sa app_star()
@@ -1048,19 +1072,22 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  * @sa astro_planet()
  * @sa get_ut1_to_tt()
  */
-short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
-        double *ra, double *dec) {
+short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy, double *ra,
+        double *dec) {
   sky_pos output = { };
   observer obs = { };
+  int error;
 
   obs.where = NOVAS_OBSERVER_ON_EARTH;
   obs.on_surf = *position;
 
-  int status = place_star(star, &obs, jd_tt, ut1_to_tt, NOVAS_TOD, accuracy, &output);
+  error = place_star(star, &obs, jd_tt, ut1_to_tt, NOVAS_TOD, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
-  return status;
+
+  return error ? 20 + error : 0;
 }
 
 /**
@@ -1084,8 +1111,8 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
- * @return          0 if successful, or else an error code &lt; 1 if 'where' in structure 'location' is invalid;
- *                  10 if from function make_object(), or < 20 if from function place().
+ * @return          0 if successful, or -1 if any of the required pointer arguments is NULL, or else
+ *                  20 + the error from place().
  *
  * @sa place_star()
  * @sa app_star()
@@ -1099,15 +1126,18 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
         double *ra, double *dec) {
   sky_pos output = { };
   observer obs = { };
+  int error;
 
   obs.where = NOVAS_OBSERVER_ON_EARTH;
   obs.on_surf = *position;
 
-  int status = place_star(star, &obs, jd_tt, ut1_to_tt, NOVAS_GCRS, accuracy, &output);
+  error = place_star(star, &obs, jd_tt, ut1_to_tt, NOVAS_GCRS, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
-  return status;
+
+  return error ? (20 + error) : 0;
 }
 
 /**
@@ -1131,8 +1161,8 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
  * @param[out] dec  [deg] Topocentric apparent declination in degrees referred to the true equator and
  *                  equinox of date. (It may be NULL if not required)
  * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (may be NULL if not needed).
- * @return          0 if successful, or else 1 if the value of 'where' in structure 'location' is invalid, or an
- *                  error code &lt;10 if from function place().
+ * @return          0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'where'
+ *                  in structure 'location' is invalid, or 10 + the error code from place().
  *
  * @sa app_planet()
  * @sa local_planet()
@@ -1145,16 +1175,28 @@ short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const o
         double *ra, double *dec, double *dis) {
   sky_pos output = { };
   observer obs = { };
+  int error;
+
+  if(!ss_body) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  if(ss_body->type != NOVAS_MAJOR_PLANET && ss_body->type != NOVAS_MINOR_PLANET) {
+    return 1;
+  }
 
   obs.where = NOVAS_OBSERVER_ON_EARTH;
   obs.on_surf = *position;
 
-  int status = place(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_TOD, accuracy, &output);
+  error = place(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_TOD, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
-  if(*dis) *dis = output.dis;
-  return status;
+  if(dis) *dis = output.dis;
+
+  return error ? (10 + error) : 0;
 }
 
 /**
@@ -1176,8 +1218,8 @@ short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const o
  * @param[out] ra   [h] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dec  [deg] Local right ascension in hours, referred to the GCRS (it may be NULL if not required).
  * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (it may be NULL if not required).
- * @return          0 if successful, or else 1 if the value of 'where' in structure 'location' is invalid, or an
- *                  error code &lt;10 if from function place().
+ * @return          0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'where' in
+ *                  structure 'location' is invalid, or 10+ the error code from place().
  *
  * @sa astro_planet()
  * @sa topo_planet()
@@ -1189,16 +1231,28 @@ short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const 
         double *ra, double *dec, double *dis) {
   sky_pos output = { };
   observer obs = { };
+  int error;
+
+  if(!ss_body) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  if(ss_body->type != NOVAS_MAJOR_PLANET && ss_body->type != NOVAS_MINOR_PLANET) {
+    return 1;
+  }
 
   obs.where = NOVAS_OBSERVER_ON_EARTH;
   obs.on_surf = *position;
 
-  int status = place(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, &output);
+  error = place(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, &output);
+  if(error < 0) return -1;
 
   if(ra) *ra = output.ra;
   if(dec) *dec = output.dec;
-  if(*dis) *dis = output.dis;
-  return status;
+  if(dis) *dis = output.dis;
+
+  return error ? 10 + error : 0;
 }
 
 /**
@@ -1223,72 +1277,52 @@ short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const 
  *
  */
 short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accuracy, double *ira, double *idec) {
-  short error = 0;
-  int iter = 0;
-
-  double pos[3], dum[3], pos2[3], newira, newidec, oldira, oldidec, ra2, dec2;
-
-  cat_entry tempstar;
+  cat_entry star = { };
+  double pos[3];
+  int iter, error;
 
   if(!ira || !idec) {
     errno = EINVAL;
     return -1;
   }
 
-  // Set up the 'tempstar' structure, then use it to create a position
-  // vector based on the apparent RA and declination of the star.
-  make_cat_entry("dummy", "CAT", 0, ra, dec, 0.0, 0.0, 0.0, 0.0, &tempstar);
-  starvectors(&tempstar, pos, dum);
+  // Default return values...
+  *ira = 0.0;
+  *idec = 0.0;
+
+  // create a position vector based on the apparent RA and declination of the star.
+  star.ra = ra;
+  star.dec = dec;
+  starvectors(&star, pos, NULL);
 
   // Get initial approximation by precessing star position at 'jd_tt'
   // to its position at J2000.0.
-  precession(jd_tt, pos, JD_J2000, pos2);
-  error = vector2radec(pos2, &newira, &newidec);
+  precession(jd_tt, pos, JD_J2000, pos);
+  error = vector2radec(pos, &star.ra, &star.dec);
   if(error) return (error + 10);
 
   // Iteratively find ICRS coordinates that produce input apparent place
   // of star at date 'jd_tt'.
-  do {
-    double deltara, deltadec;
+  for(iter = 0; iter < 30; iter++) {
+    error = app_star(jd_tt, &star, accuracy, &ra, &dec);
+    if(error) return (error + 20);
 
-    oldira = newira;
-    oldidec = newidec;
-    tempstar.ra = oldira;
-    tempstar.dec = oldidec;
+    // Correct for overshoot
+    ra = star.ra - remainder(ra - star.ra, DAY_HOURS);
+    dec = star.dec - remainder(dec - star.dec, DAY_HOURS);
 
-    error = app_star(jd_tt, &tempstar, accuracy, &ra2, &dec2);
-    if(error) {
-      *ira = 0.0;
-      *idec = 0.0;
-      return (error + 20);
-    }
+    // If within tolerance, we are done
+    if(fabs(ra - star.ra) < 1.0e-12 && fabs(dec - star.dec) < 1.0e-11) break;
 
-    deltara = ra2 - oldira;
-    deltadec = dec2 - oldidec;
-    if(deltara < -12.0) deltara += DAY_HOURS;
-    if(deltara > 12.0) deltara -= DAY_HOURS;
-    newira = ra - deltara;
-    newidec = dec - deltadec;
-
-    if(iter >= 30) {
-      *ira = 0.0;
-      *idec = 0.0;
-      return 1;
-    }
-    else {
-      iter++;
-    }
+    star.ra = ra;
+    star.dec = dec;
   }
-  while(!(fabs(newira - oldira) <= 1.0e-12) || !(fabs(newidec - oldidec) <= 1.0e-11));
 
-  *ira = newira;
-  *idec = newidec;
-  if(*ira < 0.0) *ira += DAY_HOURS;
-  if(*ira >= DAY_HOURS) *ira -= DAY_HOURS;
+  *ira = remainder(star.ra, DAY_HOURS);
+  *idec = star.dec;
 
-  return 0;
+  return (iter >= 30) ? 1 : 0;
 }
-
 
 /**
  * Computes the apparent direction of a celestial object at a specified time and in a specified coordinate system and
@@ -1347,8 +1381,8 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
   static double peb[3], veb[3], psb[3];
 
   enum novas_observer_place loc;
-  double x, jd_tdb, jd[2], pog[3], vog[3], pob[3], vob[3], pos1[3], vel1[3], pos2[3], pos3[3], t_light, t_light0, frlimb;
-  double pos5[3], pos8[3];
+  double x, jd_tdb, pog[3] = { }, vog[3] = { }, pob[3], vob[3], pos[3] = {0}, vel[3], t_light, frlimb;
+  observer obs;
 
   int i, error = 0;
 
@@ -1356,6 +1390,9 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
   if((coord_sys < 0) || (coord_sys >= NOVAS_REFERENCE_SYSTEMS)) return 1;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY) return 2;
+
+  if(!location) make_observer_at_geocenter(&obs);
+  else obs = *location;
 
   // Create a null star 'cat_entry' and  Earth and Sun 'object's.
   if(first_time) {
@@ -1368,7 +1405,7 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
   // Check on Earth as an observed object.  Earth can only be an observed
   // object when 'location' is a near-Earth satellite.
   // ---------------------------------------------------------------------
-  if((cel_object->type == NOVAS_MAJOR_PLANET) && (cel_object->number == NOVAS_EARTH) && (location->where != NOVAS_OBSERVER_IN_EARTH_ORBIT))
+  if((cel_object->type == NOVAS_MAJOR_PLANET) && (cel_object->number == NOVAS_EARTH) && (obs.where != NOVAS_OBSERVER_IN_EARTH_ORBIT))
     return 3;
 
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
@@ -1382,8 +1419,7 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
 
     // Get position and velocity of Earth wrt barycenter of solar system,
     // in ICRS.
-    jd[0] = jd_tdb;
-    jd[1] = 0.0;
+    const double jd[2] = {jd_tdb };
 
     error = ephemeris(jd, &earth, NOVAS_BARYCENTER, accuracy, peb, veb);
     if(error) return error + 10;
@@ -1400,11 +1436,11 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
   // ---------------------------------------------------------------------
-  if((location->where == NOVAS_OBSERVER_ON_EARTH) || (location->where == NOVAS_OBSERVER_IN_EARTH_ORBIT)) {
+  if((obs.where == NOVAS_OBSERVER_ON_EARTH) || (obs.where == NOVAS_OBSERVER_IN_EARTH_ORBIT)) {
     // For topocentric place, get geocentric position and velocity vectors
     // of observer (observer is on surface of Earth or in a near-Earth
     // satellite).
-    error = geo_posvel(jd_tt, ut1_to_tt, accuracy, location, pog, vog);
+    error = geo_posvel(jd_tt, ut1_to_tt, accuracy, &obs, pog, vog);
     if(error) return error + 40;
 
     loc = NOVAS_OBSERVER_ON_EARTH;
@@ -1412,9 +1448,6 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
   else {
     // For geocentric place, there is nothing to do (observer is at
     // geocenter).
-    memset(pog, 0, sizeof(pog));
-    memset(vog, 0, sizeof(vog));
-
     loc = NOVAS_OBSERVER_AT_GEOCENTER;
   }
 
@@ -1425,106 +1458,94 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
     vob[i] = veb[i] + vog[i];
   }
 
-
   // ---------------------------------------------------------------------
-  // Find geometric position of observed object.
+  // Find geometric position of observed object (ICRS)
   // ---------------------------------------------------------------------
-  if(cel_object->type == NOVAS_DISTANT_OBJECT) // Observed object is star.
-  {
+  if(cel_object->type == NOVAS_DISTANT_OBJECT) {
+    // Observed object is star.
     double dt = 0.0;
 
     // Get position of star updated for its space motion.
-    starvectors(&cel_object->star, pos1, vel1);
+    starvectors(&cel_object->star, pos, vel);
 
-    dt = d_light(pos1, pob);
-    proper_motion(JD_J2000, pos1, vel1, (jd_tdb + dt), pos2);
+    dt = d_light(pos, pob);
+    proper_motion(JD_J2000, pos, vel, (jd_tdb + dt), pos);
 
     // Get position of star wrt observer (corrected for parallax).
-    bary2obs(pos2, pob, pos3, &t_light);
+    bary2obs(pos, pob, pos, &t_light);
     output->dis = 0.0;
   }
-  else // Observed object is solar system body.
-  {
-    // Get position of body wrt barycenter of solar system.
-    jd[0] = jd_tdb;
-    jd[1] = 0.0;
+  else {
+    // Observed object is solar system body.
+    double jd[2] = { jd_tdb };
+    double t_light0;
 
-    error = ephemeris(jd, cel_object, NOVAS_BARYCENTER, accuracy, pos1, vel1);
+    // Get position of body wrt barycenter of solar system.
+    error = ephemeris(jd, cel_object, NOVAS_BARYCENTER, accuracy, pos, vel);
     if(error) return (error + 10);
 
     // Get position of body wrt observer, and true (Euclidian) distance.
-    bary2obs(pos1, pob, pos2, &t_light0);
-    output->dis = t_light0 * C_AUDAY;
+    bary2obs(pos, pob, pos, &t_light0);
 
     // Get position of body wrt observer, antedated for light-time.
-    error = light_time(jd_tdb, cel_object, pob, t_light0, accuracy, pos3, &t_light);
+    error = light_time2(jd_tdb, cel_object, pob, t_light0, accuracy, pos, vel, &t_light);
     if(error) return (error + 50);
 
-    // AK: Fix for antedating velocities...
-    jd[0] -= t_light;
-    error = ephemeris(jd, cel_object, NOVAS_BARYCENTER, accuracy, pos1, vel1);
-    if(error) return (error + 50);
+    // AK: Fix for antedating distance and velocities...
+    output->dis = t_light * C_AUDAY;
   }
 
   // ---------------------------------------------------------------------
   // Apply gravitational deflection of light and aberration.
   // ---------------------------------------------------------------------
-  if(coord_sys == NOVAS_ICRS) {
-    // These calculations are skipped for astrometric place.
-    memcpy(pos5, pos3, sizeof(pos5));
-  }
-
-  else {
-    double pos4[3];
-
+  if(coord_sys != NOVAS_ICRS) {
     // Variable 'loc' determines whether Earth deflection is included.
     if(loc == NOVAS_OBSERVER_ON_EARTH) {
-      limb_angle(pos3, pog, NULL, &frlimb);
+      limb_angle(pos, pog, NULL, &frlimb);
       if(frlimb < 0.8) loc = NOVAS_OBSERVER_AT_GEOCENTER;
     }
 
     // Compute gravitational deflection and aberration.
-    error = grav_def(jd_tdb, loc, accuracy, pos3, pob, pos4);
+    error = grav_def(jd_tdb, loc, accuracy, pos, pob, pos);
     if(error) return (error + 70);
 
-    aberration(pos4, vob, t_light, pos5);
+    aberration(pos, vob, t_light, pos);
   }
+
+  // ---------------------------------------------------------------------
+  // Compute radial velocity (all vectors in ICRS).
+  // ---------------------------------------------------------------------
+  rad_vel(cel_object, pos, vel, vob, vdist(pob, peb), vdist(pob, psb), vdist(pos, psb), &output->rv);
+
 
   // ---------------------------------------------------------------------
   // Transform, if necessary, to output coordinate system.
   // ---------------------------------------------------------------------
   switch(coord_sys) {
-    case (NOVAS_TOD): // Transform to equator and equinox of date.
-      gcrs_to_tod(jd_tdb, accuracy, pos5, pos8);
+    case (NOVAS_TOD):
+      // Transform to equator and equinox of date.
+      gcrs_to_tod(jd_tdb, accuracy, pos, pos);
       break;
 
-    case (NOVAS_CIRS): // Transform to equator and CIO of date.
-      error = gcrs_to_cirs(jd_tdb, accuracy, pos5, pos8);
+    case (NOVAS_CIRS):
+      // Transform to equator and CIO of date.
+      error = gcrs_to_cirs(jd_tdb, accuracy, pos, pos);
       if(error) return error + 80;
       break;
 
     default:
-      // No transformation -- keep coordinates in GCRS
-      // or ICRS for astrometric coordinates.
-      memcpy(pos8, pos5, sizeof(pos8));
+      // Nothing else to do.
   }
 
 
-  // ---------------------------------------------------------------------
-  // Compute radial velocity.
-  // ---------------------------------------------------------------------
-  rad_vel(cel_object, pos3, vel1, vob, vdist(pob, peb), vdist(pob, psb), vdist(pos1, psb), &output->rv);
 
   // ---------------------------------------------------------------------
   // Finish up.
   // ---------------------------------------------------------------------
-  vector2radec(pos8, &output->ra, &output->dec);
+  vector2radec(pos, &output->ra, &output->dec);
 
-  x = vlen(pos8);
-
-  for(i = 0; i < 3; i++) {
-    output->r_hat[i] = pos8[i] / x;
-  }
+  x = vlen(pos);
+  for(i = 0; i < 3; i++) output->r_hat[i] = pos[i] / x;
 
   return 0;
 }
@@ -1546,14 +1567,14 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
  *
  */
 int equ2gal(double rai, double deci, double *glon, double *glat) {
-  double r, d, pos1[3], pos2[3], xyproj, g;
+  double r, d, pos1[3], pos2[3], xyproj, g, cosd;;
 
   // Rotation matrix A_g from Hipparcos documentation eq. 1.5.11.
   // AK: Transposed compared to NOVAS C 3.1 for dot product handling.
-  static const double ag[3][3] = { { -0.0548755604, -0.8734370902, -0.4838350155 }, //
+  static const double ag[3][3] = { //
+          { -0.0548755604, -0.8734370902, -0.4838350155 }, //
           { +0.4941094279, -0.4448296300, +0.7469822445 }, //
-          { -0.8676661490, -0.1980763734, +0.4559837762 }, //
-          };
+          { -0.8676661490, -0.1980763734, +0.4559837762 }};
 
   if(!glon || !glat) {
     errno = EINVAL;
@@ -1563,8 +1584,10 @@ int equ2gal(double rai, double deci, double *glon, double *glat) {
   // Form position vector in equatorial system from input coordinates
   r = rai * HOURANGLE;
   d = deci * DEGREE;
-  pos1[0] = cos(d) * cos(r);
-  pos1[1] = cos(d) * sin(r);
+
+  cosd = cos(d);
+  pos1[0] = cosd * cos(r);
+  pos1[1] = cosd * sin(r);
   pos1[2] = sin(d);
 
   // Rotate position vector to galactic system, using Hipparcos documentation eq. 1.5.13.
@@ -1574,7 +1597,6 @@ int equ2gal(double rai, double deci, double *glon, double *glat) {
 
   // Decompose galactic vector into longitude and latitude.
   xyproj = sqrt(pos2[0] * pos2[0] + pos2[1] * pos2[1]);
-
   if(xyproj > 0.0) g = atan2(pos2[1], pos2[0]);
   else g = 0.0;
 
@@ -1604,30 +1626,31 @@ int equ2gal(double rai, double deci, double *glon, double *glat) {
 short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec, double *elon,
         double *elat) {
 
-  double r, d, pos1[3], pos2[3], xyproj, e;
+  double r, d, cosd, pos[3], xyproj, e;
   int error;
 
   // Form position vector in equatorial system from input coordinates.
   r = ra * HOURANGLE;
   d = dec * DEGREE;
-  pos1[0] = cos(d) * cos(r);
-  pos1[1] = cos(d) * sin(r);
-  pos1[2] = sin(d);
+  cosd = cos(d);
+  pos[0] = cosd * cos(r);
+  pos[1] = cosd * sin(r);
+  pos[2] = sin(d);
 
   // Convert the vector from equatorial to ecliptic system.
-  error = equ2ecl_vec(jd_tt, coord_sys, accuracy, pos1, pos2);
+  error = equ2ecl_vec(jd_tt, coord_sys, accuracy, pos, pos);
   if(error) return error;
 
   // Decompose ecliptic vector into ecliptic longitude and latitude.
-  xyproj = sqrt(pos2[0] * pos2[0] + pos2[1] * pos2[1]);
+  xyproj = sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
 
-  if(xyproj > 0.0) e = atan2(pos2[1], pos2[0]);
+  if(xyproj > 0.0) e = atan2(pos[1], pos[0]);
   else e = 0.0;
 
   *elon = e / DEGREE;
   if(*elon < 0.0) *elon += DEG360;
 
-  e = atan2(pos2[2], xyproj);
+  e = atan2(pos[2], xyproj);
   *elat = e / DEGREE;
 
   return 0;
@@ -1720,7 +1743,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   static double t_last = 0.0, ob2000, oblm, oblt;
 
   const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;    // TDB date
-  double obl = 0.0;
+  double obl = 0.0, x, y, z;
 
   if(!pos1 || !pos2) {
     errno = EINVAL;
@@ -1752,10 +1775,14 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
       return 1;
   }
 
+  x = pos1[0];
+  y = pos1[1];
+  z = pos1[2];
+
   // Rotate position vector to ecliptic system.
-  pos2[0] = pos1[0];
-  pos2[1] = pos1[1] * cos(obl) - pos1[2] * sin(obl);
-  pos2[2] = pos1[1] * sin(obl) + pos1[2] * cos(obl);
+  pos2[0] = x;
+  pos2[1] = y * cos(obl) - z * sin(obl);
+  pos2[2] = y * sin(obl) + z * cos(obl);
 
   // Case where output vector is to be in ICRS, rotate from dynamical
   // system to ICRS.
@@ -1799,7 +1826,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *                    and equinox of date.
  * @param dec         [deg] Topocentric declination of object of interest, in degrees, referred to true equator
  *                    and equinox of date.
- * @param ref_option  (boolean) Whether to include refraction correction for the standard atmosphere
+ * @param ref_option  NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
  * @param[out] zd     [deg] Topocentric zenith distance in degrees, affected by refraction if 'ref_option' is non-zero.
  * @param[out] az     [deg] Topocentric azimuth (measured east from north) in degrees.
  * @param[out] rar    [h] Topocentric right ascension of object of interest, in hours, referred to true equator and
@@ -1809,13 +1836,13 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
  */
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, short ref_option, double *zd, double *az, double *rar, double *decr) {
+        double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
 
   double sinlat, coslat, sinlon, coslon, sindc, cosdc, sinra, cosra;
   double uze[3], une[3], uwe[3], uz[3], un[3], uw[3], p[3];
   double pz, pn, pw, proj, pr[3];
 
-  if(!zd || !az) {
+  if(!location || !zd || !az) {
     errno = EINVAL;
     return -1;
   }
@@ -2210,9 +2237,9 @@ double era(double jd_high, double jd_low) {
  *                      2 if 'method' is invalid 10--20 the error is 10 + the error from cio_location(),
  *                      or else 20 + error from cio_basis().
  */
-short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2) {
-  double jd_ut1, jd_tt, jd_tdb, gast, v1[3], v2[3];
+short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
+        enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2) {
+  double jd_ut1, jd_tt, jd_tdb, gast;
 
   if(!vec1 || !vec2) {
     errno = EINVAL;
@@ -2231,8 +2258,10 @@ short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
   // Apply polar motion
-  if((xp == 0.0) && (yp == 0.0)) memcpy(v1, vec1, sizeof(v1));
-  else wobble(jd_tdb, WOBBLE_ITRS_TO_PEF, xp, yp, vec1, v1);
+  if((xp == 0.0) && (yp == 0.0)) {
+    if(vec2 != vec1) memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
+  }
+  else wobble(jd_tdb, WOBBLE_ITRS_TO_PEF, xp, yp, vec1, vec2);
 
   switch(method) {
     case (EROT_GST): {
@@ -2243,22 +2272,19 @@ short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the celestial intermediate system.
       theta = era(jd_ut_high, jd_ut_low);
-      spin(-theta, v1, v2);
+      spin(-theta, vec2, vec2);
 
-      error = cirs_to_gcrs(jd_tdb, accuracy, v2, vec2);
+      error = cirs_to_gcrs(jd_tdb, accuracy, vec2, vec2);
       if(error) return 10 + error;
 
       break;
     }
     case (EROT_ERA):
       sidereal_time(jd_ut_high, jd_ut_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
-      spin(-gast * 15.0, v1, v2);
+      spin(-gast * 15.0, vec2, vec2);
 
-      if(option == NOVAS_TOD) {
-        memcpy(vec2, v2, sizeof(v2));         // skips remaining transformations.
-      }
-      else {
-        tod_to_gcrs(jd_tdb, accuracy, v2, vec2);
+      if(option != NOVAS_TOD) {
+        tod_to_gcrs(jd_tdb, accuracy, vec2, vec2);
       }
       break;
 
@@ -2315,10 +2341,10 @@ short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_
  * @sa gcrs_to_tod()
  * @sa tod_to_itrs_pos()
  */
-short cel2ter(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2) {
+short cel2ter(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
+        enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2) {
 
-  double jd_ut1, jd_tt, jd_tdb, gast, theta, v1[3], v2[3], v3[3], v4[3];
+  double jd_ut1, jd_tt, jd_tdb, gast, theta;
   short error = 0;
 
   if(!vec1 || !vec2) {
@@ -2339,28 +2365,28 @@ short cel2ter(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_
     case (EROT_GST):
       // IAU 2006 standard method
       // See second reference, eq. (3) and (4).
-      error = gcrs_to_cirs(jd_tdb, accuracy, vec1, v1);
+      error = gcrs_to_cirs(jd_tdb, accuracy, vec1, vec2);
       if(error) return 10 + error;
 
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the terrestrial intermediate system.
       theta = era(jd_ut_high, jd_ut_low);
-      spin(theta, v1, v2);
+      spin(theta, vec2, vec2);
 
       break;
 
     case (EROT_ERA):
       // Pre IAU 2006 method
       if(option == NOVAS_TOD) {
-        memcpy(v3, vec1, sizeof(v3));
+        if(vec2 != vec1) memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
       }
       else {
-        gcrs_to_tod(jd_tdb, accuracy, vec1, v3);
+        gcrs_to_tod(jd_tdb, accuracy, vec1, vec2);
       }
 
       // Apply Earth rotation.
       sidereal_time(jd_ut_high, jd_ut_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
-      spin(gast * 15.0, v3, v4);
+      spin(gast * 15.0, vec2, vec2);
 
       break;
 
@@ -2370,8 +2396,7 @@ short cel2ter(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_
   }
 
   // Apply polar motion, transforming the vector to the ITRS.
-  if((xp == 0.0) && (yp == 0.0)) memcpy(vec2, v2, sizeof(v2));
-  else wobble(jd_tdb, WOBBLE_PEF_TO_ITRS, xp, yp, v2, vec2);
+  if(xp || yp) wobble(jd_tdb, WOBBLE_PEF_TO_ITRS, xp, yp, vec2, vec2);
 
   return 0;
 }
@@ -2395,6 +2420,8 @@ int spin(double angle, const double *pos1, double *pos2) {
   static double ang_last = -999.0;
   static double xx, yx, xy, yy, zz = 1.0;
 
+  double x, y, z;
+
   if(!pos2) {
     errno = EINVAL;
     return -1;
@@ -2415,10 +2442,14 @@ int spin(double angle, const double *pos1, double *pos2) {
     ang_last = angle;
   }
 
+  x = pos1[0];
+  y = pos1[1];
+  z = pos1[2];
+
   // Perform rotation.
-  pos2[0] = xx * pos1[0] + yx * pos1[1];
-  pos2[1] = xy * pos1[0] + yy * pos1[1];
-  pos2[2] = zz * pos1[2];
+  pos2[0] = xx * x + yx * y;
+  pos2[1] = xy * x + yy * y;
+  pos2[2] = zz * z;
 
   return 0;
 }
@@ -2461,7 +2492,7 @@ int spin(double angle, const double *pos1, double *pos2) {
  * @return              0 if successful, or -1 if the output vector argument is NULL.
  */
 int wobble(double tjd, enum novas_wobble_direction direction, double xp, double yp, const double *pos1, double *pos2) {
-  double xpole, ypole, t, s1;
+  double xpole, ypole, t, s1, y1;
 
   if(!pos1 || !pos2) {
     errno = EINVAL;
@@ -2475,13 +2506,15 @@ int wobble(double tjd, enum novas_wobble_direction direction, double xp, double 
   t = (tjd - JD_J2000) / JULIAN_CENTURY_DAYS;
   s1 = -47.0e-6 * ARCSEC * t;
 
+  y1 = pos1[1];
+
   // Compute elements of rotation matrix.
   // Equivalent to R3(-s')R2(x)R1(y) as per IERS Conventions (2003).
   if(direction == WOBBLE_ITRS_TO_PEF) tiny_rotate(pos1, -ypole, -xpole, s1, pos2);
   else tiny_rotate(pos1, ypole, xpole, -s1, pos2);
 
   // Second-order correction for the non-negligible xp, yp product...
-  pos2[0] += xpole * ypole * pos1[1];
+  pos2[0] += xpole * ypole * y1;
 
   return 0;
 }
@@ -2661,7 +2694,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  * <ol>
  * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
  * projections are published in the
-   <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
  * </li>
  * </ol>
  *
@@ -2683,8 +2716,6 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  * @sa get_ut1_to_tt()
  */
 short cel_pole(double tjd, enum novas_pole_offset_type type, double dpole1, double dpole2) {
-  double dx, dy, t, mean_ob, sin_e, x, dz, dp1[3], dp2[3], dp3[3];
-
   switch(type) {
     case (POLE_OFFSETS_DPSI_DEPS):
 
@@ -2694,39 +2725,38 @@ short cel_pole(double tjd, enum novas_pole_offset_type type, double dpole1, doub
       EPS_COR = dpole2 * 1.0e-3;
       break;
 
-    case (POLE_OFFSETS_X_Y):
+    case (POLE_OFFSETS_X_Y): {
 
       // Components of modeled pole unit vector referred to GCRS axes, that is, dx and dy.
-      dx = dpole1;
-      dy = dpole2;
+      const double dx = dpole1;
+      const double dy = dpole2;
 
-      t = (tjd - JD_J2000) / JULIAN_CENTURY_DAYS;
+      const double t = (tjd - JD_J2000) / JULIAN_CENTURY_DAYS;
 
       // Compute sin_e of mean obliquity of date.
-      mean_ob = mean_obliq(tjd);
-      sin_e = sin(mean_ob * ARCSEC);
+      const double mean_ob = mean_obliq(tjd);
+      const double sin_e = sin(mean_ob * ARCSEC);
 
       // The following algorithm, to transform dx and dy to
       // delta-delta-psi and delta-delta-epsilon, is from eqs. (7)-(9) of the
       // second reference.
       //
       // Trivial model of pole trajectory in GCRS allows computation of dz.
-      x = (2004.190 * t) * ARCSEC;
-      dz = -(x + 0.5 * x * x * x) * dx;
+      const double x = (2004.190 * t) * ARCSEC;
+      const double dz = -(x + 0.5 * x * x * x) * dx;
 
       // Form pole offset vector (observed - modeled) in GCRS.
-      dp1[0] = dx * MAS;
-      dp1[1] = dy * MAS;
-      dp1[2] = dz * MAS;
+      double dp[3] = { dx * MAS, dy * MAS, dz * MAS };
 
       // Precess pole offset vector to mean equator and equinox of date.
-      frame_tie(dp1, TIE_ICRS_TO_J2000, dp2);
-      precession(JD_J2000, dp2, tjd, dp3);
+      frame_tie(dp, TIE_ICRS_TO_J2000, dp);
+      precession(JD_J2000, dp, tjd, dp);
 
       // Compute delta-delta-psi and delta-delta-epsilon in arcseconds.
-      PSI_COR = (dp3[0] / sin_e) / ARCSEC;
-      EPS_COR = dp3[1] / ARCSEC;
+      PSI_COR = (dp[0] / sin_e) / ARCSEC;
+      EPS_COR = dp[1] / ARCSEC;
       break;
+    }
 
     default:
       // Invalid value of 'type'.
@@ -2976,6 +3006,7 @@ int frame_tie(const double *pos1, enum novas_frametie_direction direction, doubl
  */
 int proper_motion(double jd_tdb1, const double *pos, const double *vel, double jd_tdb2, double *pos2) {
   int j;
+  const double dtdb = jd_tdb2 - jd_tdb1;
 
   if(!pos || !vel || !pos2) {
     errno = EINVAL;
@@ -2983,7 +3014,7 @@ int proper_motion(double jd_tdb1, const double *pos, const double *vel, double j
   }
 
   for(j = 0; j < 3; j++) {
-    pos2[j] = pos[j] + (vel[j] * (jd_tdb2 - jd_tdb1));
+    pos2[j] = pos[j] + vel[j] * dtdb;
   }
 
   return 0;
@@ -3115,8 +3146,9 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
 }
 
 /**
- * Computes the geocentric position of a solar system body, as antedated for light-time.
- *
+ * Computes the geocentric position and velocity of a solar system body, as antedated for light-time.
+ * It is effectively the same as the original NOVAS C light_time(), except that this returns the antedated
+ * source velocity vector also.
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param ss_object   Pointer to structure containing the designation for the solar system body
@@ -3126,20 +3158,27 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
  * @param tlight0     [day] First approximation to light-time, in days (can be set to 0.0 if unknown).
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] pos    [AU] Position 3-vector of body, with respect to origin at observer (or
- *                    the geocenter), referred to ICRS axes, components in AU. It can be the same
- *                    vector as either of the inputs.
+ *                    the geocenter), referred to ICRS axes, components in AU.
+ * @param[out] vel    [AU/day] Velocity 3-vector of body, with respect to origin at observer (or
+ *                    the geocenter), referred to ICRS axes, components in AU/day.
  * @param[out] tlight [day] Calculated light time
  *
- * @return            0 if successful, -1 if any of the poiinter arguments is NULL, 1 if the algorithm failed
- *                    to converge after 10 iterations, or 10 + the error from solarsystem().
+ * @return            0 if successful, -1 if any of the pointer arguments is NULL or if the output vectors
+ *                    are the same or if they are the same as pos_obs, 1 if the algorithm failed to converge
+ *                    after 10 iterations, or 10 + the error from ephemeris().
+ *
+ * @sa light_time()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
-short light_time(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
-        double *pos, double *tlight) {
+int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
+        double *pos, double *vel, double *tlight) {
   int iter = 0;
 
-  double tol, jd[2] = { }, t1, t2, t3 = 0.0, pos1[3], vel1[3];
+  double tol, jd[2] = { }, t1, t2;
 
-  if(!ss_object || !pos_obs) {
+  if(!ss_object || !pos_obs || pos == pos_obs || vel == pos_obs || pos == vel) {
     errno = EINVAL;
     return -1;
   }
@@ -3166,26 +3205,48 @@ short light_time(double jd_tdb, const object *ss_object, const double *pos_obs, 
   // Iterate to obtain correct light-time (usually converges rapidly).
   for(iter = 0; iter < 10; iter++) {
     int error;
-
-    if(iter > 0) {
-      t2 = t3;
-    }
+    double t3;
 
     jd[1] = t2;
-    error = ephemeris(jd, ss_object, 0, accuracy, pos1, vel1);
-
+    error = ephemeris(jd, ss_object, 0, accuracy, pos, vel);
     if(error != 0) return (error + 10);
 
-    bary2obs(pos1, pos_obs, pos, tlight);
+    bary2obs(pos, pos_obs, pos, tlight);
 
     t3 = t1 - *tlight;
-    iter++;
-
     if(fabs(t3 - t2) <= tol) return 0;
+
+    t2 = t3;
   }
 
   return 1;
 }
+
+/**
+ * Computes the geocentric position of a solar system body, as antedated for light-time.
+ *
+ *
+ * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date
+ * @param ss_object   Pointer to structure containing the designation for the solar system body
+ * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
+ *                    origin at solar system barycenter, referred to ICRS axes,
+ *                    components in AU.
+ * @param tlight0     [day] First approximation to light-time, in days (can be set to 0.0 if unknown).
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    [AU] Position 3-vector of body, with respect to origin at observer (or
+ *                    the geocenter), referred to ICRS axes, components in AU. It can be the same
+ *                    vector as either of the inputs.
+ * @param[out] tlight [day] Calculated light time
+ *
+ * @return            0 if successful, -1 if any of the poiinter arguments is NULL, 1 if the algorithm failed
+ *                    to converge after 10 iterations, or 10 + the error from solarsystem().
+ */
+short light_time(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos,
+        double *tlight) {
+  double vel[3];
+  return (short) light_time2(jd_tdb, ss_object, pos_obs, tlight0, accuracy, pos, vel, tlight);
+}
+
 
 /**
  * Teturns the difference in light-time, for a star,
@@ -3255,13 +3316,12 @@ double d_light(const double *pos1, const double *pos_obs) {
  *                    for gravitational deflection, components in AU. It can be the same
  *                    vector as the input, but not the same as pos_obs.
  * @return            0 if successful, -1 if any of the pointer arguments is NULL
- *                    or if the output vector is the same as pos_obs.
- *                    10--30 the error is 10 + the error from ephemeris(), or else
- *                    30 + the error from make_object().
+ *                    or if the output vector is the same as pos_obs, or the error from ephemeris(),
+ *                    or else 30 + the error from make_object().
  *
  */
-short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_accuracy accuracy, const double *pos1,
-        const double *pos_obs, double *pos2) {
+short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_accuracy accuracy, const double *pos1, const double *pos_obs,
+        double *pos2) {
 
   // The following list of body numbers identifies which gravitating bodies (aside from the Earth)
   // are potentially used -- list is taken from Klioner's table 1, the order based on area of sky
@@ -3272,8 +3332,8 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_acc
   static const double rmass[] = NOVAS_RMASS_INIT;
 
   static int first_time = 1;
-  static object body[7], earth;
-
+  static object body[7],
+  earth;
 
   // Set the number of bodies -- and hence the bodies used -- based on the value of the 'accuracy' flag.
 
@@ -3320,7 +3380,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_acc
 
     // Get position of gravitating body wrt ss barycenter at time 'jd_tdb'.
     error = ephemeris(jd, &body[i], NOVAS_BARYCENTER, accuracy, pbody, vbody);
-    if(error) return (10 + error);
+    if(error) return error;
 
     // Get position of gravitating body wrt observer at time 'jd_tdb'.
     bary2obs(pbody, pos_obs, pbodyo, &x);
@@ -3337,7 +3397,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_acc
 
     jd[0] = tclose;
     error = ephemeris(jd, &body[i], NOVAS_BARYCENTER, accuracy, pbody, vbody);
-    if(error) return (10 + error);
+    if(error) return error;
 
     // Compute deflection due to gravitating body.
     grav_vec(pos2, pos_obs, pbody, rmass[body_num[i]], pos2);
@@ -3349,7 +3409,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_acc
     // Get position of Earth wrt solar system barycenter at time 'jd_tdb'.
     jd[0] = jd_tdb;
     error = ephemeris(jd, &earth, NOVAS_BARYCENTER, accuracy, pbody, vbody);
-    if(error) return 10 + error;
+    if(error) return error;
 
     // Compute deflection due to Earth.
     grav_vec(pos2, pos_obs, pbody, rmass[NOVAS_EARTH], pos2);
@@ -3396,8 +3456,8 @@ int grav_vec(const double *pos1, const double *pos_obs, const double *pos_body, 
   // Construct vector 'pq' from gravitating body to observed object and
   // construct vector 'pe' from gravitating body to observer.
   for(i = 0; i < 3; i++) {
-    pq[i] = pos_obs[i] + pos1[i] - pos_body[i];
     pe[i] = pos_obs[i] - pos_body[i];
+    pq[i] = pe[i] + pos1[i];
   }
 
   // Compute vector magnitudes and unit vectors.
@@ -3467,14 +3527,19 @@ int aberration(const double *pos, const double *ve, double lighttime, double *po
     return -1;
   }
 
-  if(lighttime == 0.0) {
+  vemag = vlen(ve);
+  if(!vemag) {
+    memcpy(pos2, pos, XYZ_VECTOR_SIZE);
+    return 0;
+  }
+
+  beta = vemag / C_AUDAY;
+
+  if(lighttime <= 0.0) {
     p1mag = vlen(pos);
     lighttime = p1mag / C_AUDAY;
   }
   else p1mag = lighttime * C_AUDAY;
-
-  vemag = vlen(ve);
-  beta = vemag / C_AUDAY;
 
   cosd = vdot(pos, ve) / (p1mag * vemag);
   gammai = sqrt(1.0 - beta * beta);
@@ -3545,8 +3610,7 @@ int aberration(const double *pos, const double *ve, double lighttime, double *po
  */
 int rad_vel(const object *cel_object, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun,
         double d_obj_sun, double *rv) {
-  static int first_call = 1;
-  static double c2, toms, toms2;
+  static double c2 = C * C, toms = AU / DAY, toms2 = (AU / DAY) * (AU / DAY);
 
   double v[3], ra, dec, radvel, posmag, uk[3], v2, vo2, r, phigeo, phisun, rel, rar, dcr, cosdec, du[3], zc, kv, zb1, kvobs, zobs1;
   int i;
@@ -3554,15 +3618,6 @@ int rad_vel(const object *cel_object, const double *pos, const double *vel, cons
   if(!cel_object || !pos || !vel || !vel_obs || !rv) {
     errno = EINVAL;
     return -1;
-  }
-
-  // Set up local constants the first time this function is called.
-  if(first_call) {
-    c2 = C * C;
-    toms = AU / DAY;
-    toms2 = toms * toms;
-
-    first_call = 0;
   }
 
   // Initialize variables needed for radial velocity calculation.
@@ -3678,9 +3733,7 @@ int rad_vel(const object *cel_object, const double *pos, const double *vel, cons
  * @return            0 if successful, or -1 if either of the position vectors is NULL.
  */
 short precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos2) {
-  static int first_time = 1;
-
-  static double t_last = 0.0;
+  static double t_last = -1e100;
   static double xx, yx, zx, xy, yy, zy, xz, yz, zz;
   double t;
 
@@ -3707,7 +3760,7 @@ short precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos
 
   if(jd_tdb2 == JD_J2000) t = -t;
 
-  if((fabs(t - t_last) >= 1.0e-15) || (first_time == 1)) {
+  if(!time_equals(t, t_last)) {
     double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd;
     double eps0 = 84381.406;
 
@@ -3745,20 +3798,21 @@ short precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos
     zz = -sc * cb * sa + cc * ca;
 
     t_last = t;
-    first_time = 0;
   }
 
   if(jd_tdb2 == JD_J2000) {
+    const double x = pos1[0], y = pos1[1], z = pos1[2];
     // Perform rotation from epoch to J2000.0.
-    pos2[0] = xx * pos1[0] + xy * pos1[1] + xz * pos1[2];
-    pos2[1] = yx * pos1[0] + yy * pos1[1] + yz * pos1[2];
-    pos2[2] = zx * pos1[0] + zy * pos1[1] + zz * pos1[2];
+    pos2[0] = xx * x + xy * y + xz * z;
+    pos2[1] = yx * x + yy * y + yz * z;
+    pos2[2] = zx * x + zy * y + zz * z;
   }
   else {
+    const double x = pos1[0], y = pos1[1], z = pos1[2];
     // Perform rotation from J2000.0 to epoch.
-    pos2[0] = xx * pos1[0] + yx * pos1[1] + zx * pos1[2];
-    pos2[1] = xy * pos1[0] + yy * pos1[1] + zy * pos1[2];
-    pos2[2] = xz * pos1[0] + yz * pos1[1] + zz * pos1[2];
+    pos2[0] = xx * x + yx * y + zx * z;
+    pos2[1] = xy * x + yy * y + zy * z;
+    pos2[2] = xz * x + yz * y + zz * z;
   }
 
   return 0;
@@ -3788,7 +3842,6 @@ short precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos
  */
 int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *pos, double *pos2) {
   double oblm, oblt, psi;
-
   double cm, sm, ct, st, cp, sp;
   double xx, yx, zx, xy, yy, zy, xz, yz, zz;
 
@@ -3823,16 +3876,18 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
   zz = cp * sm * st + cm * ct;
 
   if(direction == NUTATE_MEAN_TO_TRUE) {
+    const double x = pos[0], y = pos[1], z = pos[2];
     // Perform rotation.
-    pos2[0] = xx * pos[0] + yx * pos[1] + zx * pos[2];
-    pos2[1] = xy * pos[0] + yy * pos[1] + zy * pos[2];
-    pos2[2] = xz * pos[0] + yz * pos[1] + zz * pos[2];
+    pos2[0] = xx * x + yx * y + zx * z;
+    pos2[1] = xy * x + yy * y + zy * z;
+    pos2[2] = xz * x + yz * y + zz * z;
   }
   else {
+    const double x = pos[0], y = pos[1], z = pos[2];
     // Perform inverse rotation.
-    pos2[0] = xx * pos[0] + xy * pos[1] + xz * pos[2];
-    pos2[1] = yx * pos[0] + yy * pos[1] + yz * pos[2];
-    pos2[2] = zx * pos[0] + zy * pos[1] + zz * pos[2];
+    pos2[0] = xx * x + xy * y + xz * z;
+    pos2[1] = yx * x + yy * y + yz * z;
+    pos2[2] = zx * x + zy * y + zz * z;
   }
 
   return 0;
@@ -3943,7 +3998,6 @@ int fund_args(double t, novas_fundamental_args *a) {
     a->D += t2 * (-6.3706 + t * (0.006593 + t * (-0.00003169)));
     a->Omega += t2 * (7.4722 + t * (0.007702 + t * (-0.00005939)));
   }
-
 
   a->l = norm_ang(a->l * ARCSEC);
   a->l1 = norm_ang(a->l1 * ARCSEC);
@@ -4127,16 +4181,16 @@ int radec2vector(double ra, double dec, double dist, double *vector) {
  *
  * @param star         Pointer to catalog entry structure containing ICRS catalog
  * @param[out] pos     [AU] Position vector, equatorial rectangular coordinates,
- *                     components in AU.
+ *                     components in AU. It may be NULL if not required.
  * @param[out] vel     [AU/day] Velocity vector, equatorial rectangular coordinates,
- *                     components in AU/Day.
+ *                     components in AU/Day. It may be NULL if not required.
  *
- * @return             0 if successful, or -1 f the output vectors are NULL.
+ * @return             0 if successful, or -1 if the star argument is NULL or the output vectors are the same pointer.
  */
 int starvectors(const cat_entry *star, double *pos, double *vel) {
-  double paralx, dist, r, d, cra, sra, cdc, sdc, pmr, pmd, rvl, k;
+  double paralx, r, d, cra, sra, cdc, sdc;
 
-  if(!pos || !vel) {
+  if(!star || pos == vel) {
     errno = EINVAL;
     return -1;
   }
@@ -4144,37 +4198,41 @@ int starvectors(const cat_entry *star, double *pos, double *vel) {
   // If parallax is unknown, undetermined, or zero, set it to 1e-6
   // milliarcsecond, corresponding to a distance of 1 gigaparsec.
   paralx = star->parallax;
-
   if(star->parallax <= 0.0) paralx = 1.0e-6;
 
-  // Convert right ascension, declination, and parallax to position vector
-  // in equatorial system with units of AU.
-  dist = 1.0 / sin(paralx * MAS);
-  r = (star->ra) * HOURANGLE;
-  d = (star->dec) * DEGREE;
+  r = star->ra * HOURANGLE;
+  d = star->dec * DEGREE;
+
   cra = cos(r);
   sra = sin(r);
   cdc = cos(d);
   sdc = sin(d);
 
-  pos[0] = dist * cdc * cra;
-  pos[1] = dist * cdc * sra;
-  pos[2] = dist * sdc;
+  // Convert right ascension, declination, and parallax to position vector
+  // in equatorial system with units of AU.
+  if(pos) {
+    const double dist = 1.0 / sin(paralx * MAS);
+    pos[0] = dist * cdc * cra;
+    pos[1] = dist * cdc * sra;
+    pos[2] = dist * sdc;
+  }
 
-  // Compute Doppler factor, which accounts for change in
-  // light travel time to star.
-  k = 1.0 / (1.0 - star->radialvelocity / C * 1000.0);
+  if(vel) {
+    // Compute Doppler factor, which accounts for change in
+    // light travel time to star.
+    const double k = 1.0 / (1.0 - 1000.0 * star->radialvelocity / C);
 
-  // Convert proper motion and radial velocity to orthogonal components of
-  // motion with units of AU/Day.
-  pmr = star->promora / (paralx * JULIAN_YEAR_DAYS) * k;
-  pmd = star->promodec / (paralx * JULIAN_YEAR_DAYS) * k;
-  rvl = star->radialvelocity * DAY / AU_KM * k;
+    // Convert proper motion and radial velocity to orthogonal components of
+    // motion with units of AU/day.
+    const double pmr = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
+    const double pmd = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
+    const double rvl = k * 1000.0 * star->radialvelocity / (AU / DAY);
 
-  // Transform motion vector to equatorial system.
-  vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
-  vel[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
-  vel[2] = pmd * cdc + rvl * sdc;
+    // Transform motion vector to equatorial system.
+    vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
+    vel[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
+    vel[2] = pmd * cdc + rvl * sdc;
+  }
 
   return 0;
 }
@@ -4187,7 +4245,7 @@ int starvectors(const cat_entry *star, double *pos, double *vel) {
  * <ol>
  * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
  * projections are published in the
-   <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
  * </li>
  * </ol>
  *
@@ -4978,8 +5036,8 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
  *                        1 if the input date is invalid for for option CHANGE_EQUATOR_EQUINOX or
  *                        CHANGE_EQUATOR_EQUINOX_EPOCH, or 2 if 'newcat_id' out of bounds.
  */
-short transform_cat(enum novas_transform_type option, double date_incat, const cat_entry *incat, double date_newcat,
-        const char *newcat_id, cat_entry *newcat) {
+short transform_cat(enum novas_transform_type option, double date_incat, const cat_entry *incat, double date_newcat, const char *newcat_id,
+        cat_entry *newcat) {
 
   double jd_incat, jd_newcat, paralx, dist, r, d, cra, sra, cdc, sdc, k;
   double pos1[3], term1, pmr, pmd, rvl, vel1[3], pos2[3], vel2[3], xyproj;
@@ -5234,8 +5292,7 @@ double refract(const on_surface *location, enum novas_refraction_model ref_optio
  * @sa calendar_date()
  */
 double julian_date(short year, short month, short day, double hour) {
-  long jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L
-          + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
+  long jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
           - 3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L;
   return jd12h - 0.5 + hour / DAY_HOURS;
 }
@@ -5310,9 +5367,9 @@ double norm_ang(double angle) {
 /**
  *
  *
- * @param star_name   Object name (less than SIZE_OF_OBJ_NAME in length).
+ * @param star_name   Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL if not relevant.
  * @param catalog     Catalog identifier (less than SIZE_OF_CAT_NAME in length). E.g.
- *                    'HIP' = Hipparcos, 'TY2' = Tycho-2.
+ *                    'HIP' = Hipparcos, 'TY2' = Tycho-2. It may be NULL if not relevant.
  * @param star_num    Object number in the catalog.
  * @param ra          [h] Right ascension of the object (hours).
  * @param dec         [deg] Declination of the object (degrees).
@@ -5336,14 +5393,15 @@ short make_cat_entry(const char *star_name, const char *catalog, long star_num, 
   memset(star, 0, sizeof(*star));
 
   // Set up the 'star' structure.
-  if(!star_name) return 1;
-  if(!catalog) return 2;
+  if(star_name) {
+    if(strlen(star_name) >= sizeof(star->starname)) return 1;
+    strncpy(star->starname, star_name, sizeof(star->starname) - 1);
+  }
 
-  if(strlen(star_name) >= sizeof(star->starname)) return 1;
-  strncpy(star->starname, star_name, sizeof(star->starname) - 1);
-
-  if(strlen(catalog) >= sizeof(star->catalog)) return 2;
-  strncpy(star->catalog, catalog, sizeof(star->catalog) - 1);
+  if(catalog) {
+    if(strlen(catalog) >= sizeof(star->catalog)) return 2;
+    strncpy(star->catalog, catalog, sizeof(star->catalog) - 1);
+  }
 
   star->starnumber = star_num;
   star->ra = ra;

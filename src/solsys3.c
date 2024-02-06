@@ -118,7 +118,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
   static const double obl = 23.4392794444;
 
-  static double tlast = 0.0;
+  static double tlast;
   static double tmass, a[3][4], b[3][4], vbary[3];
 
   // Initialize constants.
@@ -129,7 +129,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
     return -1;
   }
 
-  if(tlast < 1.0) {
+  if(!tlast) {
     const double oblr = obl * TWOPI / 360.0;
     const double se = sin(oblr);
     const double ce = cos(oblr);
@@ -165,7 +165,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       tmass += 1.0 / pm[i];
     }
 
-    tlast = 1.0;
+    tlast = -1e100;
   }
 
   // Check if input Julian date is within range (within 3 centuries of J2000).
@@ -174,10 +174,8 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Form heliocentric coordinates of the Sun or Earth, depending on
   // 'body'.  Velocities are obtained from crude numerical differentiation.
   if((body == 0) || (body == 1) || (body == NOVAS_SUN)) { // Sun
-    for(i = 0; i < 3; i++)
-      position[i] = velocity[i] = 0.0;
+    for(i = 0; i < 3; i++) position[i] = velocity[i] = 0.0;
   }
-
   else if((body == 2) || (body == NOVAS_EARTH)) { /* Earth */
     double p[3][3];
     for(i = 0; i < 3; i++) {

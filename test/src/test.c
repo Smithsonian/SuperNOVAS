@@ -73,7 +73,7 @@ static void printunitvector(double *v) {
 }
 
 static int is_ok(int error) {
-  if(error) fprintf(fp, "ERROR %d", error);
+  if(error) fprintf(fp, "ERROR %d ", error);
   return !error;
 }
 
@@ -320,6 +320,7 @@ static int init() {
     return -1;
   }
 
+  newline();
   fprintf(fp, "SOU ");
   printvector(pos0);
   printvector(vel0);
@@ -429,12 +430,99 @@ static void test_place() {
     sky_pos out;
     if(is_ok(place(tdb, &source, &obs, ut12tt, i, accuracy, &out))) {
       // Velocities to 0.1 m/s accuracy
-      fprintf(fp, "%d %12.6f %12.f", i, out.dis, out.rv);
+      fprintf(fp, "%d %12.6f %12.6f %12.6f %12.6f ", i, out.ra, out.dec, out.dis, out.rv);
       newline();
     }
   }
 }
 
+
+static void test_astro_place() {
+  double ra = 0.0, dec = 0.0, d = 0.0;
+
+  openfile("astro_place");
+
+  if(source.type == 2) {
+    if(is_ok(astro_star(tdb, &source.star, accuracy, &ra, &dec))) {
+      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
+      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+    }
+  }
+  else if(is_ok(astro_planet(tdb, &source, accuracy, &ra, &dec, &d))) {
+    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
+    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+  }
+}
+
+static void test_virtual_place() {
+  double ra = 0.0, dec = 0.0, d = 0.0;
+
+  openfile("virtual_place");
+
+  if(source.type == 2) {
+    if(is_ok(virtual_star(tdb, &source.star, accuracy, &ra, &dec))) {
+      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
+      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+    }
+  }
+  else if(is_ok(virtual_planet(tdb, &source, accuracy, &ra, &dec, &d))) {
+    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
+    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+  }
+}
+
+static void test_app_place() {
+  double ra = 0.0, dec = 0.0, d = 0.0;
+
+  openfile("local_place");
+
+  if(source.type == 2) {
+    if(is_ok(app_star(tdb, &source.star, accuracy, &ra, &dec))) {
+      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
+      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+    }
+  }
+  else if(is_ok(app_planet(tdb, &source, accuracy, &ra, &dec, &d))) {
+    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
+    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+  }
+
+}
+
+
+static void test_local_place() {
+  double ra = 0.0, dec = 0.0, d = 0.0;
+
+  openfile("local_place");
+
+  if(source.type == 2) {
+    if(is_ok(local_star(tdb, ut12tt, &source.star, &obs.on_surf, accuracy, &ra, &dec))) {
+      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
+      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+    }
+  }
+  else if(is_ok(local_planet(tdb, &source, ut12tt, &obs.on_surf, accuracy, &ra, &dec, &d))) {
+    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
+    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+  }
+}
+
+static void test_topo_place() {
+  double ra = 0.0, dec = 0.0, d = 0.0;
+
+  openfile("topo_place");
+
+  if(source.type == 2) {
+    if(is_ok(topo_star(tdb, ut12tt, &source.star, &obs.on_surf, accuracy, &ra, &dec))){
+      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
+      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+    }
+  }
+  else if(is_ok(topo_planet(tdb, &source, ut12tt, &obs.on_surf, accuracy, &ra, &dec, &d))) {
+    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
+    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+  }
+}
 
 static int test_source() {
   openfile("init");
@@ -450,8 +538,21 @@ static int test_source() {
   test_grav_def();
   test_place();
 
+  if(obs.where == 0) {
+    test_astro_place();
+    test_virtual_place();
+    test_app_place();
+  }
+
+  if(obs.where == 1) {
+    test_local_place();
+    test_topo_place();
+  }
+
   return 0;
 }
+
+
 
 static int test_observers() {
   double ps[3] = { 100.0, 30.0, 10.0 }, vs[3] = { 10.0 };
@@ -468,6 +569,11 @@ static int test_observers() {
   return 0;
 }
 
+
+
+
+
+
 static int test_sources() {
   cat_entry star;
 
@@ -481,7 +587,10 @@ static int test_sources() {
   if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
   if(test_observers() != 0) return -1;
 
-  if(make_object(0, 10, "Sun", &star, &source) != 0) return -1;
+  if(make_object(0, 10, "Sun", NULL, &source) != 0) return -1;
+  if(test_observers() != 0) return -1;
+
+  if(make_object(0, 3, "Earth", NULL, &source) != 0) return -1;
   if(test_observers() != 0) return -1;
 
   return 0;
@@ -506,12 +615,14 @@ static int test_dates() {
 }
 
 static int test_accuracy() {
-  for(accuracy = 0; accuracy < 2; accuracy++) test_dates();
+  for(accuracy = 0; accuracy < 2; accuracy++) if(test_dates() < 0) return -1;
+  return 0;
 }
 
 
 int main(int argc, char *argv[]) {
   test_basics();
   test_accuracy();
+  fprintf(fp, "\n");
   fclose(fp);
 }
