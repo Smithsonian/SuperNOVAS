@@ -234,9 +234,18 @@ enum novas_reference_system {
  * Constants that determine the type of equator to be used for the coordinate system.
  */
 enum novas_equator_type {
-  NOVAS_MEAN_EQUATOR = 0, ///< True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
-  NOVAS_CIRS_EQUATOR,     ///< Celestial Intermediate Reference System (CIRS): dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
+  NOVAS_MEAN_EQUATOR = 0, ///< Mean equator without nutation (pre IAU 2006 system).
+  NOVAS_TRUE_EQUATOR,     ///< True equator (pre IAU 2006 system).
   NOVAS_ICRS_EQUATOR      ///< International Celestiual Reference system (ICRS). The equatorial system fixed to the frame of distant quasars.
+};
+
+/**
+ * Constants that determine the type of dynamical system type for gcrs2equ()
+ */
+enum novas_dynamical_type {
+  NOVAS_DYNAMICAL_MOD = 0,     ///< Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
+  NOVAS_DYNAMICAL_TOD,         ///< True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
+  NOVAS_DYNAMICAL_CIRS         ///< Celestial Intermediate Reference System (CIRS): dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
 };
 
 #define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ICRS + 1)    ///< The number of basic coordinate reference systems in NOVAS.
@@ -603,7 +612,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
         double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr);
 
-short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
+short gcrs2equ(double jd_tt, enum novas_dynamical_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
         double *dec);
 
 short sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_equinox_type gst_type,

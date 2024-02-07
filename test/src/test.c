@@ -33,15 +33,11 @@ static int idx = -1;
 
 static char *header;
 
-// make_observer
-// cal_date
 // transform_cat
 // transform_hip
-// cio_array, cio_location (same time), cio_ra, tbd2tt
+// cio_array, cio_location (same time), cio_ra
 // cel_pole
-// gcrs2equ
 // ecl2equ_vec
-// mean_star
 
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
@@ -123,6 +119,42 @@ static void test_make_object() {
 }
 
 
+static void test_make_observer() {
+  observer obs, earth, space;
+  double pos[3] = {100.0, 200.0, 300.0};
+  double vel[3] = {-10.0, -20.0, -30.0};
+  on_surface *on = &earth.on_surf;
+  in_space *in = &space.near_earth;
+
+  openfile("make_observer");
+  make_observer(0, NULL, NULL, &obs);
+  fprintf(fp, "G1 %d ", obs.where);
+
+  openfile("make_observer");
+  make_observer_at_geocenter(&obs);
+  fprintf(fp, "G2 %d ", obs.where);
+
+  openfile("make_observer");
+  make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 5.0, &earth);
+  fprintf(fp, "E1 %d %8.3f %8.3f %8.3f %5.1f %5.1f ", earth.where, on->latitude, on->longitude, on->height, on->temperature, on->pressure);
+
+  openfile("make_observer");
+  make_observer(1, on, NULL, &obs);
+  on = &obs.on_surf;
+  fprintf(fp, "E2 %d %8.3f %8.3f %8.3f %5.1f %5.1f ", obs.where, on->latitude, on->longitude, on->height, on->temperature, on->pressure);
+
+  openfile("make_observer");
+  make_observer_in_space(pos, vel, &space);
+  fprintf(fp, "S1 %d %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f ", space.where, in->sc_pos[0], in->sc_pos[1], in->sc_pos[2], in->sc_vel[0], in->sc_vel[1], in->sc_vel[2]);
+
+  openfile("make_observer");
+  make_observer(2, NULL, in, &obs);
+  in = &obs.near_earth;
+  fprintf(fp, "S2 %d %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f ", obs.where, in->sc_pos[0], in->sc_pos[1], in->sc_pos[2], in->sc_vel[0], in->sc_vel[1], in->sc_vel[2]);
+}
+
+
+
 static void test_refract() {
   on_surface surf;
 
@@ -132,14 +164,32 @@ static void test_refract() {
   fprintf(fp, "%12.6f %12.6f ", refract(&surf, 1, 89.0), refract(&surf, 2, 89.0));
 }
 
+static void test_mean_star() {
+  double ra, dec;
+
+  mean_star(2433282.42345905, 10.0, -40.0, 0, &ra, &dec);
+  openfile("mean_star");
+  fprintf(fp, "1 %12.6f %12.6f ", ra, dec);
+
+  mean_star(2433282.42345905, 19.0, 30.0, 0, &ra, &dec);
+  openfile("mean_star");
+  fprintf(fp, "2 %12.6f %12.6f ", ra, dec);
+
+  mean_star(2433282.42345905, 2.7, 68.3, 0, &ra, &dec);
+  openfile("mean_star");
+  fprintf(fp, "3 %12.6f %12.6f ", ra, dec);
+}
 
 
 static void test_basics() {
   idx = -1;
   test_make_cat_entry();
   test_make_object();
+  test_make_observer();
   test_refract();
+  test_mean_star();
 }
+
 
 
 
@@ -148,6 +198,25 @@ static void test_basics() {
 // ======================================================================================
 // Time specific
 // ======================================================================================
+
+static void test_cal_date() {
+  short y, m, d;
+  double h;
+
+  if(accuracy != 0) return;
+
+  cal_date(tdb, &y, &m, &d, &h);
+  openfile("cal_date");
+  fprintf(fp, "%5d %02d %02d %10.6f ", y, m, d, h);
+}
+
+
+static void test_tdb2tt() {
+  double tt, dt;
+  openfile("tbd2tt");
+  tdb2tt(tdb, &tt, &dt);
+  fprintf(fp, "%12.6f ", dt);
+}
 
 static void test_ephemeris() {
   double pos1[3], vel1[3], tdb2[2] = {tdb};
@@ -286,6 +355,8 @@ static void test_geo_posvel() {
   }
 }
 
+
+
 static void test_time_specific() {
   static char th[40] = { };
 
@@ -293,6 +364,8 @@ static void test_time_specific() {
   sprintf(th, "%8.1f A%d: ", (tdb - J2000), accuracy);
   header = th;
 
+  test_cal_date();
+  test_tdb2tt();
   test_ephemeris();
   test_era();
   test_ee_ct();
@@ -633,6 +706,24 @@ static void test_equ2ecl() {
     fprintf(fp, "%12.6f %12.6f ", elon, elat);
 }
 
+static void test_gcrs2equ() {
+  double ra, dec;
+
+  if(source.type != 2 || obs.where != 0 || tdb != J2000) return;
+
+  openfile("gcrs2equ");
+  if(is_ok(gcrs2equ(tdb, 0, accuracy, source.star.ra, source.star.dec, &ra, &dec)))
+    fprintf(fp, "mean %12.6f %12.6f ", ra, dec);
+
+  openfile("gcrs2equ");
+  if(is_ok(gcrs2equ(tdb, 1, accuracy, source.star.ra, source.star.dec, &ra, &dec)))
+    fprintf(fp, "true %12.6f %12.6f ", ra, dec);
+
+  openfile("gcrs2equ");
+  if(is_ok(gcrs2equ(tdb, 2, accuracy, source.star.ra, source.star.dec, &ra, &dec)))
+    fprintf(fp, "cirs %12.6f %12.6f ", ra, dec);
+}
+
 static int test_source() {
   openfile("init");
 
@@ -655,6 +746,7 @@ static int test_source() {
     test_ter2cel();
     test_equ2gal();
     test_equ2ecl();
+    test_gcrs2equ();
   }
 
   if(obs.where == 1) {
@@ -710,6 +802,8 @@ static int test_sources() {
 
   return 0;
 }
+
+
 
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0 };

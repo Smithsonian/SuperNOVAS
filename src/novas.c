@@ -1480,7 +1480,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   // Get obliquity, depending upon the "system" of the input coordinates.
   switch(coord_sys) {
     case NOVAS_MEAN_EQUATOR: // Input: mean equator and equinox of date
-    case NOVAS_CIRS_EQUATOR: // Input: true equator and equinox of date
+    case NOVAS_TRUE_EQUATOR: // Input: true equator and equinox of date
       memcpy(pos0, pos1, sizeof(pos0));
 
       if(!time_equals(jd_tt, t_last) || accuracy != acc_last) {
@@ -1545,7 +1545,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   // Get obliquity, depending upon the "system" of the input coordinates.
   switch(coord_sys) {
     case NOVAS_MEAN_EQUATOR: // Output: mean equator and equinox of date
-    case NOVAS_CIRS_EQUATOR: // Output: true equator and equinox of date
+    case NOVAS_TRUE_EQUATOR: // Output: true equator and equinox of date
       if(!time_equals(jd_tt, t_last) || accuracy != acc_last) {
         e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
         t_last = jd_tt;
@@ -1810,11 +1810,12 @@ int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, d
  * @param decg        [deg] GCRS declination in degrees.
  * @param[out] ra     [h] Right ascension in hours, referred to specified equator and right ascension origin of date.
  * @param[out] dec    [deg] Declination in degrees, referred to specified equator of date.
- * @return            0 if successful, or -1 with errno set to EINVAL if the output pointers are NULL, otherwise
+ * @return            0 if successful, or -1 with errno set to EINVAL if the output pointers are NULL or the
+ *                    coord_sys is invalid, otherwise
  *                    <0 if an error from vector2radec(), 10--20 error is  10 + error cio_location(); or else
  *                    20 + error from cio_basis()
  */
-short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
+short gcrs2equ(double jd_tt, enum novas_dynamical_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
         double *dec) {
   double t1, r, d, pos1[3], pos2[3];
   int error = 0;
@@ -1835,24 +1836,32 @@ short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accur
   pos1[1] = cos(d) * sin(r);
   pos1[2] = sin(d);
 
+
   // Transform the position vector based on the value of 'coord_sys'.
-  if(coord_sys <= 1) {
+  switch(coord_sys) {
     // Transform the position vector from GCRS to mean equator and equinox
     // of date.
 
     // If requested, transform further to true equator and equinox of date.
-    if(coord_sys == NOVAS_CIRS_EQUATOR) {
+    case NOVAS_DYNAMICAL_TOD:
       gcrs_to_tod(t1, accuracy, pos1, pos2);
-    }
-    else {
+      break;
+
+    case NOVAS_DYNAMICAL_MOD: {
       double pos3[3];
       frame_tie(pos1, TIE_ICRS_TO_J2000, pos3);
       precession(JD_J2000, pos3, t1, pos2);
+      break;
     }
-  }
-  else {
-    error = gcrs_to_cirs(t1, accuracy, pos1, pos2);
-    if(error) return 10 + error;
+
+    case NOVAS_DYNAMICAL_CIRS:
+      error = gcrs_to_cirs(t1, accuracy, pos1, pos2);
+      if(error) return 10 + error;
+      break;
+
+    default:
+      errno = EINVAL;
+      return -1;
   }
 
   // Convert the position vector to equatorial spherical coordinates.
@@ -1864,6 +1873,7 @@ short gcrs2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accur
   }
 
   return 0;
+
 }
 
 /**
