@@ -603,10 +603,10 @@ short sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_
 
 double era(double jd_high, double jd_low);
 
-short ter2cel(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
+short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
         enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
 
-short cel2ter(double jd_ut_high, double jd_ut_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
+short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
         enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
 
 int spin(double angle, const double *pos1, double *pos2);
@@ -714,7 +714,13 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *obs_space);
 
+
+
 // Added API in SuperNOVAS
+
+int cio_set_locator_file(const char *filename);
+
+int nutation_set_lp_calc(novas_nutate_func f);
 
 int place_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt, enum novas_reference_system system,
         enum novas_accuracy accuracy, sky_pos *pos);
@@ -739,9 +745,29 @@ double get_ut1_to_tt(int leap_seconds, double dut1);
 
 double get_utc_to_tt(int leap_seconds);
 
-int cio_set_locator_file(const char *filename);
 
-int nutation_set_lp_calc(novas_nutate_func f);
+// GCRS - CIRS - ITRS conversions
+int gcrs_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+
+int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
+        const double *vec1, double *vec2);
+
+int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
+        const double *vec1, double *vec2);
+
+int cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+
+// J2000 - TOD - ITRS conversions
+int j2000_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+
+int tod_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+        double *vec2);
+
+int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+        double *vec2);
+
+int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+
 
 #include "solarsystem.h"
 
