@@ -260,7 +260,7 @@ adjustment to convert from J2000 to ICRS coordinates.
  transform_cat(CHANGE_EPOCH, NOVAS_B1950, &source, NOVAS_J2000, "FK5", &source);
   
  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
- transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source, 0.0, "ICR", &source);
+ transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source, 0.0, "ICRS", &source);
 ```
 
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
@@ -338,15 +338,15 @@ at the specified observing location (without refraction correction):
  double zd, az;
   
  // Convert CIRS to horizontal using the pole offsets.
- cirs_to_hor(jd_tt - ut1_to_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, &obs.on_surf, pos.ra, pos.dec, 
-             &zd, &az);
+ cirs_to_hor(jd_tt - ut1_to_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, &obs.on_surf, 
+             pos.ra, pos.dec, &zd, &az);
 ``` 
 
 In the example above we first calculated the apparent coordinates in the Celestial Intermediate Reference System 
 (CIRS). Then we used `cirs_to_hor()` function then convert first it to the Earth-fixed International Terrestrial 
 Reference system (ITRS) using the small (arcsec-level) measured variation of the pole (dx, dy) provided explicitly 
 since `cirs_to_hor()` does not use the values previously set via `cel_pole()`. Finally, `cirs_to_hor()` converts the 
-ITRScoordinates to the horizontal system at the observer location.
+ITRS coordinates to the horizontal system at the observer location.
 
 You can additionally apply an optical refraction correction for the astrometric (unrefracted) zenith angle, if you 
 want, e.g.:
@@ -474,7 +474,7 @@ on how they are appropriate for the old and new methodologies respectively.
    invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
    error code is returned for compatibility).
 
- - Many SuperNOVAS functions allow NULL arguments, both for optional input values as well as outputs that are not 
+ - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
    required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
    This eliminates the need to declare dummy variables in your application code.
 
@@ -487,10 +487,9 @@ on how they are appropriate for the old and new methodologies respectively.
    data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
    data modifications.
    
- - New `cirs_to_hor()` function similar to the existing `equ2hor()`. Whereas the latter converts from TOD to
-   to local horizontal (old methodology), the new function does the same from CIRS (new IAU standard methodology).
-   As such it can be used after `place()` is called with `NOVAS_CIRS` as the coordinate system. 
-
+ - Source names and catalog names can both be up to 64 bytes (including termination), up from 51 and 4 respectively
+   NOVAS C, while keeping `struct` layouts the same thanks to alignment.
+   
  - Runtime configurability:
 
    * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_calc()`, and
@@ -507,7 +506,20 @@ on how they are appropriate for the old and new methodologies respectively.
      approximation via `nutation_set_lp_calc()`. For example, the user may want to use the `iau2000b()` model instead 
      or some custom algorithm instead.
  
- - Added several new convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
+ - New intutitive XYZ coordinate coversion functions:
+   * for GCRS - CIRS - ITRS (IAU 2000 standard): `gcrs_to_cirs()`, `cirs_to_itrs()`, and `itrs_to_cirs()`, 
+     `cirs_to_gcrs()`.
+   * for J2000 - TOD - ITRS (old methodology): `j2000_to_tod()`, `tod_to_itrs()`, and `itrs_to_tod()`, 
+     `tod_to_j2000()`.
+   
+ - New `cirs_to_hor()` function similar to the existing `equ2hor()`. Whereas the latter converts from TOD to
+   to local horizontal (old methodology), the new function does the same from CIRS (new IAU standard methodology).
+   As such it can be used after `place()` is called with `NOVAS_CIRS` as the coordinate system. 
+   
+ - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted zenith angle
+   as its argument.
+
+ - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
    `place_gcrs()`, `place_cirs()`, `place_tod()`.
  
  - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB

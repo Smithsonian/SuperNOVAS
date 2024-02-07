@@ -258,7 +258,7 @@ enum novas_accuracy {
  */
 enum novas_refraction_model {
   NOVAS_NO_ATMOSPHERE = 0,            ///< Do not apply atmospheric refraction correction
-  NOVAS_STANDARD_ATMOSPHERE, ///< Uses a standard atmospheric model, ignoring all weather values defined for the specific observing location
+  NOVAS_STANDARD_ATMOSPHERE,          ///< Uses a standard atmospheric model, ignoring all weather values defined for the specific observing location
   NOVAS_WEATHER_AT_LOCATION           ///< Uses the weather parameters that are specified together with the observing location.
 };
 
@@ -266,8 +266,16 @@ enum novas_refraction_model {
  * Constants that determine the type of rotation measure to use.
  */
 enum novas_earth_rotation_measure {
-  EROT_GST = 0,                   ///< Use GST as the rotation measure, relative to the true equinox (before IAU 20006 standard)
-  EROT_ERA                        ///< Use Earth Rotation Angle (ERA) as the rotation measure, relative to the CIO (new IAU 2006 standard)
+  EROT_ERA = 0,              ///< Use Earth Rotation Angle (ERA) as the rotation measure, relative to the CIO (new IAU 2006 standard)
+  EROT_GST                   ///< Use GST as the rotation measure, relative to the true equinox (before IAU 20006 standard)
+};
+
+/**
+ * Constants for ter2cel() and cel2ter()
+ */
+enum novas_celestial_class {
+  CELESTIAL_GCRS = 0,        ///< Celestial coordinates are in GCRS
+  CELESTIAL_APPARENT         ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
 
 /**
@@ -604,10 +612,10 @@ short sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_
 double era(double jd_high, double jd_low);
 
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
-        enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
+        enum novas_celestial_class class, double xp, double yp, const double *vec1, double *vec2);
 
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy,
-        enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2);
+        enum novas_celestial_class class, double xp, double yp, const double *vec1, double *vec2);
 
 int spin(double angle, const double *pos1, double *pos2);
 
@@ -733,9 +741,6 @@ int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 double refract_astro(const on_surface *location, enum novas_refraction_model ref_option, double zd_calc);
 
-int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, double *zd, double *az);
-
 int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos,
         double *vel, double *tlight);
 
@@ -768,6 +773,9 @@ int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum no
 
 int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
+
+int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
+        double dec, double *zd, double *az);
 
 #include "solarsystem.h"
 

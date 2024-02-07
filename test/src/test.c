@@ -33,6 +33,16 @@ static int idx = -1;
 
 static char *header;
 
+// make_observer
+// cal_date
+// transform_cat
+// transform_hip
+// cio_array, cio_location (same time), cio_ra, tbd2tt
+// cel_pole
+// gcrs2equ
+// ecl2equ_vec
+// mean_star
+
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
 }
@@ -113,11 +123,26 @@ static void test_make_object() {
 }
 
 
+static void test_refract() {
+  on_surface surf;
+
+  openfile("refract");
+
+  make_on_surface(15.0, 20.0, 1200.0, -10.0, 1010.0, &surf);
+  fprintf(fp, "%12.6f %12.6f ", refract(&surf, 1, 89.0), refract(&surf, 2, 89.0));
+}
+
+
+
 static void test_basics() {
   idx = -1;
   test_make_cat_entry();
   test_make_object();
+  test_refract();
 }
+
+
+
 
 
 // ======================================================================================
@@ -377,6 +402,8 @@ static int init() {
 static void test_frame_tie() {
   double pos1[3];
 
+  if(source.type != 2) return;
+
   openfile("frame_tie");
   frame_tie(pos0, -1, pos1);
   printunitvector(pos1);
@@ -387,8 +414,9 @@ static void test_frame_tie() {
 static void test_wobble() {
   double pos1[3];
 
-  openfile("wobble");
+  if(source.type != 2) return;
 
+  openfile("wobble");
   wobble(tdb, 0, 2.0, -3.0, pos0, pos1);
   printunitvector(pos1);
 }
@@ -396,8 +424,10 @@ static void test_wobble() {
 
 static void test_precession() {
   double pos1[3];
-  openfile("precession");
 
+  if(source.type != 2) return;
+
+  openfile("precession");
   if(is_ok(precession(tdb, pos0, J2000, pos1)))
     printunitvector(pos1);
 }
@@ -414,8 +444,10 @@ static void test_light_time() {
 
 static void test_grav_def() {
   double pos1[3];
-  openfile("grav_def");
 
+  if(source.type != 2) return;
+
+  openfile("grav_def");
   if(is_ok(grav_def(tdb, obs.where, accuracy, pos0, pobs, pos1))) {
     printunitvector(pos1);
   }
@@ -524,6 +556,83 @@ static void test_topo_place() {
   }
 }
 
+
+static void test_cel2ter() {
+  double pos1[3];
+
+  if(source.type != 2) return;
+
+  openfile("cel2ter");
+
+  if(is_ok(cel2ter(tdb, 0.0, ut12tt, 0, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+    printunitvector(pos1);
+
+  if(is_ok(cel2ter(tdb, 0.0, ut12tt, 1, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+    printunitvector(pos1);
+}
+
+static void test_ter2cel() {
+  double pos1[3];
+
+  if(source.type != 2) return;
+
+  openfile("ter2cel");
+
+  if(is_ok(ter2cel(tdb, 0.0, ut12tt, 0, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+    printunitvector(pos1);
+
+  if(is_ok(ter2cel(tdb, 0.0, ut12tt, 1, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+    printunitvector(pos1);
+}
+
+
+static void test_equ2hor() {
+  double zd = 0.0, az = 0.0, rar = 0.0, decr = 0.0;
+
+  if(source.type != 2) return;
+
+  openfile("equ2hor");
+
+  equ2hor(tdb, ut12tt, accuracy, 0.1, -0.2, &obs.on_surf, source.star.ra, source.star.dec, 0, &zd, &az, &rar, &decr);
+  fprintf(fp, "%12.6f %12.6f %12.6f %12.6f ", zd, az, rar, decr);
+
+  openfile("equ2hor-refract");
+
+  equ2hor(tdb, ut12tt, accuracy, 0.1, -0.2, &obs.on_surf, source.star.ra, source.star.dec, 1, &zd, &az, &rar, &decr);
+  fprintf(fp, "%12.6f %12.6f %12.6f %12.6f ", zd, az, rar, decr);
+}
+
+
+static void test_equ2gal() {
+  double glon, glat;
+
+  if(source.type != 2) return;
+
+  openfile("equ2gal");
+
+  equ2gal(source.star.ra, source.star.dec, &glon, &glat);
+  fprintf(fp, "%12.6f %12.6f ", glon, glat);
+}
+
+
+
+static void test_equ2ecl() {
+  double elon, elat;
+
+  if(source.type != 2) return;
+
+  openfile("equ2ecl");
+
+  if(is_ok(equ2ecl(tdb, 0, accuracy, source.star.ra, source.star.dec, &elon, &elat)))
+    fprintf(fp, "%12.6f %12.6f ", elon, elat);
+
+  if(is_ok(equ2ecl(tdb, 1, accuracy, source.star.ra, source.star.dec, &elon, &elat)))
+    fprintf(fp, "%12.6f %12.6f ", elon, elat);
+
+  if(is_ok(equ2ecl(tdb, 2, accuracy, source.star.ra, source.star.dec, &elon, &elat)))
+    fprintf(fp, "%12.6f %12.6f ", elon, elat);
+}
+
 static int test_source() {
   openfile("init");
 
@@ -542,15 +651,21 @@ static int test_source() {
     test_astro_place();
     test_virtual_place();
     test_app_place();
+    test_cel2ter();
+    test_ter2cel();
+    test_equ2gal();
+    test_equ2ecl();
   }
 
   if(obs.where == 1) {
     test_local_place();
     test_topo_place();
+    test_equ2hor();
   }
 
   return 0;
 }
+
 
 
 

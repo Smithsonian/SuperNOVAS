@@ -838,7 +838,9 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  * <li>Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3.</li>
  * </ol>
  *
- * @deprecated Use place() with system NOVAS_CIRS is now preferred, especially for high accuracy calculations.
+ * @deprecated Using place() with system NOVAS_CIRS is now preferred for topocentric calculations, especially
+ *             when high precision is required. However, you will have to follow the IAU 2000 method
+ *             consistently to produce equivalent calculations throughout.
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
@@ -934,7 +936,9 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
  * as calling place() for the body for the same observer location and NOVAS_TOD as the reference system,
  * except the different set of return values used.
  *
- * @deprecated Use place() with system NOVAS_CIRS is now preferred, especially for high accuracy calculations.
+ * @deprecated Using place() with system NOVAS_CIRS is now preferred for topocentric calculations, especially
+ *             when high precision is required. However, you will have to follow the IAU 2000 method
+ *             consistently to produce equivalent calculations throughout.
  *
  * REFERENCES:
  * <ol>
@@ -1407,8 +1411,8 @@ int equ2gal(double rai, double deci, double *glon, double *glat) {
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param ra          [h] Right ascension in hours, referred to specified equator and equinox of date.
  * @param dec         [deg] Declination in degrees, referred to specified equator and equinox of date.
- * @param elon        [deg] Ecliptic longitude in degrees, referred to specified ecliptic and equinox of date.
- * @param elat        [deg] Ecliptic latitude in degrees, referred to specified ecliptic and equinox of date.
+ * @param[out] elon   [deg] Ecliptic longitude in degrees, referred to specified ecliptic and equinox of date.
+ * @param[out] elat   [deg] Ecliptic latitude in degrees, referred to specified ecliptic and equinox of date.
  * @return            0 if successful, or else 1 if the value of 'coord_sys' is invalid.
  */
 short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec, double *elon,
@@ -1583,12 +1587,12 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   return 0;
 }
 
-// Like equ2hor(), but with specifying whether from TOD or CIRS frame.
-static int equ2hor2(double jd_ut1, double ut1_to_tt, enum novas_reference_system app_sys, enum novas_accuracy accuracy, double xp,
-        double yp, const on_surface *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd, double *az,
-        double *rar, double *decr) {
+// Like equ2hor, but with the rotation measure type added as an argument.
+static int equ2hor_generic(double jd_ut1, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy,
+        double xp, double yp, const on_surface *location, double ra,
+        double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
 
-  double sinlat, coslat, sinlon, coslon, sindc, cosdc, sinra, cosra;
+  double sinlat, coslat, sinlon, coslon, cosdec;
   double uze[3], une[3], uwe[3], uz[3], un[3], uw[3], p[3];
   double pz, pn, pw, proj, pr[3];
 
@@ -1608,10 +1612,13 @@ static int equ2hor2(double jd_ut1, double ut1_to_tt, enum novas_reference_system
   ra *= HOURANGLE;
   dec *= DEGREE;
 
-  sindc = sin(dec);
-  cosdc = cos(dec);
-  sinra = sin(ra);
-  cosra = cos(ra);
+  cosdec = cos(dec);
+
+  // Define unit vector 'p' toward object in celestial system
+  // (wrt equator and equinox of date).
+  p[0] = cosdec * cos(ra);
+  p[1] = cosdec * sin(ra);
+  p[2] = sin(dec);
 
   // Set up orthonormal basis vectors in local Earth-fixed system.
 
@@ -1634,15 +1641,9 @@ static int equ2hor2(double jd_ut1, double ut1_to_tt, enum novas_reference_system
 
   // Rotate Earth-fixed orthonormal basis vectors to celestial system
   // (wrt equator and equinox of date).
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, app_sys, xp, yp, uze, uz);
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, app_sys, xp, yp, une, un);
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, app_sys, xp, yp, uwe, uw);
-
-  // Define unit vector 'p' toward object in celestial system
-  // (wrt equator and equinox of date).
-  p[0] = cosdc * cosra;
-  p[1] = cosdc * sinra;
-  p[2] = sindc;
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, erot, accuracy, CELESTIAL_APPARENT, xp, yp, uze, uz);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, erot, accuracy, CELESTIAL_APPARENT, xp, yp, une, un);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, erot, accuracy, CELESTIAL_APPARENT, xp, yp, uwe, uw);
 
   // Compute coordinates of object w.r.t orthonormal basis.
 
@@ -1699,17 +1700,19 @@ static int equ2hor2(double jd_ut1, double ut1_to_tt, enum novas_reference_system
 }
 
 /**
- * Transforms topocentric (TOD) right ascension and declination to zenith distance and azimuth.  It uses a method
- * that properly accounts for polar motion, which is significant at the sub-arcsecond level. This function can also
- * adjust coordinates for atmospheric refraction.
+ * Transforms topocentric (TOD) right ascension and declination to zenith distance and azimuth. This method should
+ * not be used to convert CIRS apparent coordinates (IAU 2000 standard) -- for those you should use cirs_to_hor()
+ * instead.
+ *
+ * It uses a method that properly accounts for polar motion, which is significant at the sub-arcsecond level.
+ * This function can also adjust coordinates for atmospheric refraction.
  *
  * NOTES:
  * <ul>
- *  <li>'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed. 'ra' and 'dec' can be obtained
- *  from tpstar() or tpplan().</li>
+ *  <li>'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed.</li>
  *  <li> The directions 'zd'= 0 (zenith) and 'az'= 0 (north) are here considered fixed in the terrestrial system.
  *  Specifically, the zenith is along the geodetic normal, and north is toward the ITRS pole.</li>
- *  <li>If 'ref_option' is NOVAS_STANDARD_ATMOSPHERE (0), then 'rar'='ra' and 'decr'='dec'.
+ *  <li>If 'ref_option' is NOVAS_STANDARD_ATMOSPHERE (1), then 'rar'='ra' and 'decr'='dec'.
  * </ul>
  *
  * REFERENCES:
@@ -1729,7 +1732,7 @@ static int equ2hor2(double jd_ut1, double ut1_to_tt, enum novas_reference_system
  *                    and equinox of date.
  * @param dec         [deg] Topocentric declination of object of interest, in degrees, referred to true equator
  *                    and equinox of date.
- * @param ref_option  NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
+ * @param ref_option  NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather
  * @param[out] zd     [deg] Topocentric zenith distance in degrees, affected by refraction if 'ref_option' is non-zero.
  * @param[out] az     [deg] Topocentric azimuth (measured east from north) in degrees.
  * @param[out] rar    [h] Topocentric right ascension of object of interest, in hours, referred to true equator and
@@ -1739,24 +1742,35 @@ static int equ2hor2(double jd_ut1, double ut1_to_tt, enum novas_reference_system
  * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
  *
  * @sa cirs_to_hor()
+ * @sa tod_to_itrs()
+ * @sa NOVAS_TOD
+ *
  */
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
         double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
-  return equ2hor2(jd_ut1, ut1_to_tt, NOVAS_TOD, accuracy, xp, yp, location, ra, dec, ref_option, zd, az, rar, decr);
+  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_GST, accuracy, xp, yp, location, ra, dec, ref_option, zd, az, rar, decr);
 }
 
+
 /**
- * Transforms topocentric (CIRS) right ascension and declination to zenith distance and azimuth.  It uses a method
- * that properly accounts for polar motion, which is significant at the sub-arcsecond level. This routine does not
- * calculate refraction, but you may call refract() with the returned zenith angle value, if you want to.
+ * Transform topocentric (CIRS) right ascension and declination to zenith distance and azimuth. It uses a method
+ * that properly accounts for polar motion, which is significant at the sub-arcsecond level.
+ *
+ * This function does not include atmospheric refraction calculation. If you want you can call refract_astro()
+ * after with the 'zd' output of this function to obtain a suitable correction that you can subtract from 'zd'
+ * to apply the correction explicitly after this call.
  *
  * NOTES:
  * <ul>
- *  <li>'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed. 'ra' and 'dec' can be obtained
- *  from tpstar() or tpplan().</li>
+ *  <li>'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed.</li>
  *  <li> The directions 'zd'= 0 (zenith) and 'az'= 0 (north) are here considered fixed in the terrestrial system.
  *  Specifically, the zenith is along the geodetic normal, and north is toward the ITRS pole.</li>
  * </ul>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Kaplan, G. (2008). USNO/AA Technical Note of 28 Apr 2008, "Refraction as a Vector."</li>
+ * </ol>
  *
  * @param jd_ut1      [day] UT1 based Julian date
  * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
@@ -1775,15 +1789,14 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
  * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
  *
  * @sa equ2hor()
- * @sa refract()
- *
- * @since 1.0
- * @author Attila Kovacs
+ * @sa cirs_ro_itrs()
+ * @sa NOVAS_CIRS
  */
 int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
         double dec, double *zd, double *az) {
-  return equ2hor2(jd_ut1, ut1_to_tt, NOVAS_CIRS, accuracy, xp, yp, location, ra, dec, NOVAS_NO_ATMOSPHERE, zd, az, NULL, NULL);
+  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_ERA, accuracy, xp, yp, location, ra, dec, NOVAS_NO_ATMOSPHERE, zd, az, NULL, NULL);
 }
+
 
 /**
  * Converts GCRS right ascension and declination to coordinates with respect to the equator of date (mean or true).
@@ -2028,7 +2041,7 @@ double era(double jd_high, double jd_low) {
  * applying rotations for polar motion, Earth rotation (for TOD); and
  * nutation, precession, and the dynamical-to-GCRS frame tie (for GCRS).
  *
- * If 'option' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'option'
+ * If 'system' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'system'
  * is NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included
@@ -2039,19 +2052,19 @@ double era(double jd_high, double jd_low) {
  *             instead. You can then follow these with other conversions to GCRS or
  *             J2000 as appropriate.
  *
- *  REFERENCES:
+ * REFERENCES:
  *  <ol>
  *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high    [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low     [day] Low-order part of UT1 Julian date.
+ * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
+ * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param method        EROT_GST (0) or EROT_ERA (1), depending on whether to use GST relative to equinox of date (pre
  *                      IAU 2006) or ERA relative to the CIO (IAU 2006 standard).
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param option        NOVAS_GCRS (0) or NOVAS_TOD (1), or NOVAS_CIRS (2). Used only when method is EROT_GST (0).
+ * @param class         Output coordinate class CELESTIAL_GCRS (0, or any value other than 1) or CELESTIAL_APPARENT (1).
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
@@ -2059,13 +2072,10 @@ double era(double jd_high, double jd_low) {
  * @param vec1          Position vector, geocentric equatorial rectangular coordinates,
  *                      referred to ITRS axes (terrestrial system) in the normal case
  *                      where 'option' is NOVAS_GCRS (0).
- * @param[out] vec2     Position vector, geocentric equatorial rectangular coordinates,
- *                      referred to GCRS axes (celestial system) or with respect to
- *                      the equator and equinox of date, depending on 'option'.
- *                      It can be the same vector as the input.
+ * @param[out] vec2     Position vector, equatorial rectangular coordinates in the specified output system
  * @return              0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid,
- *                      2 if 'method' is invalid 10--20, 3 if the method and option are mutually incompatible, or
- *                      else 10 + the error from cio_location(), or 20 + error from cio_basis().
+ *                      2 if 'method' is invalid 10--20, or else 10 + the error from cio_location(),
+ *                      or 20 + error from cio_basis().
  *
  * @sa itrs_to_cirs()
  * @sa cirs_to_gcrs()
@@ -2075,7 +2085,7 @@ double era(double jd_high, double jd_low) {
  * @sa cel2ter()
  */
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2) {
+        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1, double *vec2) {
   double jd_ut1, jd_tt, jd_tdb, gast;
 
   if(!vec1 || !vec2) {
@@ -2084,7 +2094,6 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   }
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY) return 1;
-  if(option < 0 || option >= NOVAS_ICRS) return 2;
 
   // Compute the TT Julian date corresponding to the input UT1 Julian
   // date.
@@ -2106,14 +2115,12 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       // 'CIO-TIO-THETA' method. See second reference, eq. (3) and (4).
       double theta;
 
-      if(option == NOVAS_TOD) return 3;
-
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the celestial intermediate system.
       theta = era(jd_ut1_high, jd_ut1_low);
       spin(-theta, vec2, vec2);
 
-      if(option != NOVAS_CIRS) {
+      if(class != CELESTIAL_APPARENT) {
         int error = cirs_to_gcrs(jd_tdb, accuracy, vec2, vec2);
         if(error) return 10 + error;
       }
@@ -2121,12 +2128,10 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
     }
     case (EROT_GST):
-      if(option == NOVAS_CIRS) return 3;
+      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
+      spin(-15.0 * gast, vec2, vec2);
 
-      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
-      spin(-gast * 15.0, vec2, vec2);
-
-      if(option != NOVAS_TOD) {
+      if(class != CELESTIAL_APPARENT) {
         tod_to_gcrs(jd_tdb, accuracy, vec2, vec2);
       }
       break;
@@ -2143,6 +2148,12 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 2000 standard method).
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
+ *
+ * REFERENCES:
+ *  <ol>
+ *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
+ *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16.</li>
+ *  </ol>
  *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
@@ -2168,13 +2179,19 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  */
 int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
         const double *vec1, double *vec2) {
-  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, NOVAS_CIRS, xp, yp, vec1, vec2);
+  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
  * Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame of date (pre IAU 2000 method).
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
+ *
+ * REFERENCES:
+ *  <ol>
+ *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
+ *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16.</li>
+ *  </ol>
  *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
@@ -2200,15 +2217,16 @@ int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  */
 int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2) {
-  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_GST, accuracy, NOVAS_TOD, xp, yp, vec1, vec2);
+  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
- * Rotates a vector from the celestial to the terrestrial system.  Specifically, it transforms a vector in the
- * GCRS, or the dynamcal CIRS or TOD frames to the ITRS (a rotating earth-fixed system) by applying rotations for the
- * GCRS-to-dynamical frame tie, precession, nutation, Earth rotation, and polar motion.
+ * Rotates a vector from the celestial to the terrestrial system.  Specifically, it transforms
+ * a vector in the GCRS, or the dynamcal CIRS or TOD frames to the ITRS (a rotating earth-fixed
+ * system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth
+ * rotation, and polar motion.
  *
- * If 'option' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'option'
+ * If 'system' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'system'
  * is NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
@@ -2224,25 +2242,25 @@ int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum no
  *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16.</li>
  *  </ol>
  *
+ *
+ *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param method        EROT_GST (0) or EROT_ERA (1), depending on whether to use GST relative to equinox of date (pre
  *                      IAU 2006) or ERA relative to the CIO (IAU 2006 standard).
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param option        NOVAS_GCRS (0) or NOVAS_TOD (1) or NOVAS_CIRS (2). Used only when method is EROT_GST (0).
+ * @param class         Input coordinate class, CELESTIAL_GCRS (0, or any value other than 1) or CELESTIAL_APPARENT (1).
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
- * @param vec1          Position vector, geocentric equatorial rectangular coordinates,
- *                      referred to GCRS axes (celestial system) or with respect to
- *                      the equator and equinox of date, depending on 'option'
+ * @param vec1          Position vector, geocentric equatorial rectangular coordinates in the specified
+ *                      input coordinate system.
  * @param[out] vec2     Position vector, geocentric equatorial rectangular coordinates,
  *                      referred to ITRS axes (terrestrial system). It can be the same vector as the input.
  * @return              0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid,
- *                      2 if 'method' is invalid, 3 if the 'method' is incompatible with the 'option', or else
- *                      10 + the error from cio_location(), or 20 + error from cio_basis().
+ *                      2 if 'method' is invalid, or else 10 + the error from cio_location(), or 20 + error from cio_basis().
  *
  * @sa gcrs_to_cirs()
  * @sa cirs_to_itrs()
@@ -2252,10 +2270,9 @@ int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum no
  * @sa ter2cel()
  */
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_reference_system option, double xp, double yp, const double *vec1, double *vec2) {
+        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1, double *vec2) {
 
   double jd_ut1, jd_tt, jd_tdb, gast, theta;
-  short error = 0;
 
   if(!vec1 || !vec2) {
     errno = EINVAL;
@@ -2272,11 +2289,13 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
   switch(method) {
-    case (EROT_GST):
+    case (EROT_ERA):
       // IAU 2006 standard method
-      // See second reference, eq. (3) and (4).
-      error = gcrs_to_cirs(jd_tdb, accuracy, vec1, vec2);
-      if(error) return 10 + error;
+      if (class != CELESTIAL_APPARENT) {
+        // See second reference, eq. (3) and (4).
+        int error = gcrs_to_cirs(jd_tdb, accuracy, vec1, vec2);
+        if(error) return 10 + error;
+      }
 
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the terrestrial intermediate system.
@@ -2285,9 +2304,9 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
       break;
 
-    case (EROT_ERA):
+    case (EROT_GST):
       // Pre IAU 2006 method
-      if(option == NOVAS_TOD) {
+      if(class == CELESTIAL_APPARENT) {
         if(vec2 != vec1) memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
       }
       else {
@@ -2295,7 +2314,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       }
 
       // Apply Earth rotation.
-      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
+      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(gast * 15.0, vec2, vec2);
 
       break;
@@ -2315,6 +2334,12 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 2000 standard method).
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
+ *
+ * REFERENCES:
+ *  <ol>
+ *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
+ *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16.</li>
+ *  </ol>
  *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
@@ -2341,13 +2366,19 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  */
 int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
         const double *vec1, double *vec2) {
-  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, NOVAS_CIRS, xp, yp, vec1, vec2);
+  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
  * Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method).
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
+ *
+ * REFERENCES:
+ *  <ol>
+ *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
+ *   <li>Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16.</li>
+ *  </ol>
  *
  * @param jd_ut1_high    [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low     [day] Low-order part of UT1 Julian date.
@@ -2374,7 +2405,7 @@ int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  */
 int tod_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2) {
-  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, NOVAS_CIRS, xp, yp, vec1, vec2);
+  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -5240,24 +5271,28 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
  *
  * @param location      Pointer to structure containing observer's location. It may also contains weather
  *                      data (optional) for the observer's location.
- * @param ref_option    NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
+ * @param ref_option    NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather
  *                      values contained in the 'location' data structure.
- * @param zd_calc       [deg] Astrometric (unrefracted) zenith distance angle of the source.
- * @return              [deg] the calculated optical refraction. (to ~0.1 arcsec accuracy)
+ * @param zd_astro      [deg] Astrometric (unrefracted) zenith distance angle of the source.
+ * @return              [deg] the calculated optical refraction. (to ~0.1 arcsec accuracy), ot 0.0 if
+ *                      the location is NULL or the ref_option is invalid.
  *
  * @sa refract()
  *
  * @since 1.0
  * @author Attila Kovacs
  */
-double refract_astro(const on_surface *location, enum novas_refraction_model ref_option, double zd_calc) {
+double refract_astro(const on_surface *location, enum novas_refraction_model ref_option, double zd_astro) {
   double refr = 0.0;
   int i;
 
+  if(!location) return 0.0;
+  if(ref_option != NOVAS_STANDARD_ATMOSPHERE && ref_option != NOVAS_WEATHER_AT_LOCATION) return 0.0;
+
   for(i = 0; i < 30; i++) {
-    double zd_obs = zd_calc - refr;
+    double zd_obs = zd_astro - refr;
     refr = refract(location, ref_option, zd_obs);
-    if(fabs(refr - (zd_calc - zd_obs)) < 3.0e-5) break;
+    if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5) break;
   }
 
   return refr;
@@ -5280,10 +5315,11 @@ double refract_astro(const on_surface *location, enum novas_refraction_model ref
  *
  * @param location      Pointer to structure containing observer's location. It may also contains weather
  *                      data (optional) for the observer's location.
- * @param ref_option    NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
+ * @param ref_option    NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather
  *                      values contained in the 'location' data structure.
  * @param zd_obs        [deg] Observed (already refracted!) zenith distance through the armosphere.
- * @return              [deg] the calculated optical refraction.
+ * @return              [deg] the calculated optical refraction or 0.0 if the location is NULL or the
+ *                      ref_option is invalid.
  *
  * @sa refract_astro()
  */
@@ -5291,6 +5327,9 @@ double refract(const on_surface *location, enum novas_refraction_model ref_optio
   // 's' is the approximate scale height of atmosphere in meters.
   const double s = 9.1e3;
   double p, t, h, r;
+
+  if(!location) return 0.0;
+  if(ref_option != NOVAS_STANDARD_ATMOSPHERE && ref_option != NOVAS_WEATHER_AT_LOCATION) return 0.0;
 
   // Compute refraction only for zenith distances between 0.1 and 91 degrees.
   if((zd_obs < 0.1) || (zd_obs > 91.0)) return 0.0;
@@ -5460,7 +5499,7 @@ short make_cat_entry(const char *star_name, const char *catalog, long star_num, 
  * @param type          The type of object. NOVAS_MAJOR_PLANET (0), NOVAS_MINOR_PLANET (1) or NOVAS_DISTANT_OBJECT (2)
  * @param number        The novas ID number (for solar-system bodies only, otherwise ignored)
  * @param name          The name of the object (case insensitive). It should be shorter than SIZE_OF_OBJ_NAME
- *                      or else an error will be returned.
+ *                      or else an error will be returned. The name is converted to upper internally.
  * @param star_data     Pointer to structure to populate with the catalog data for a celestial object located outside the solar system. Used only if type is NOVAS_DISTANT_OBJECT, otherwise ignored and can be NULL.
  * @param[out] cel_obj  Pointer to the celestial object data structure to be populated. Used only if 'type' is NOVAS_MAJOR_PLANET or NOVAS_MINOR_PLANET, otherwise ignored and may be NULL.
  * @return              0 if successful, or else 1 if 'type' is invalid, 2 if 'number' is out of range,
