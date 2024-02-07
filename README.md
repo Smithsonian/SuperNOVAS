@@ -233,7 +233,7 @@ to enable higher precision astrometry. (Super)NOVAS supports coordinate calculat
 ways, and in the new IAU standard.
 
  | Concept                    | Old standard                  | New IAU standard                                  |
- | ========================== | ============================= | ================================================= |
+ | -------------------------- | ----------------------------- | ------------------------------------------------- |
  | Catalog coordinates        | J2000 or B1950                | International Celestial Reference System (ICRS)   |
  | Dynamical system	      | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
