@@ -31,8 +31,11 @@
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
-/// Function prototype for the FORTRAN subroutine in jplint.f
+/// Function prototype for the FORTRAN subroutine in jplint_ in jplint.f
 extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
+
+/// Function prototype for the FORTRAN subroutine in jplihp_ in jplint.f
+extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
 /**
  * Obtains planet positions via the JPL direct-access solar system

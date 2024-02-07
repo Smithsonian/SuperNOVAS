@@ -597,10 +597,11 @@ static int test_sources() {
 }
 
 static int test_dates() {
+  double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0 };
   int i;
 
-  for(i = 0; i < 3; i++) {
-    tdb = J2000 + (i-1) * 10000.0;
+  for(i = 0; i < 4; i++) {
+    tdb = J2000 + offsets[i];
 
     test_time_specific();
 

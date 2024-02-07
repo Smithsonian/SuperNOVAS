@@ -41,7 +41,7 @@ all: api solsys tools test coverage check
 
 .PHONY: clean
 clean:
-	rm -f README-pruned.md
+	rm -f README-headless.md
 	@make -C tools clean
 	@make -C test clean
 
@@ -68,10 +68,10 @@ cio_file: lib/novas.a
 obj/jplint.o: $(SRC)/jplint.f
 	gfortran -c -o $@ $<
 
-README-pruned.md: README.md
+README-headless.md: README.md
 	tail -n +`sed -n '/\# /{=;q;}' $<` $< > $@
 
-dox: README-pruned.md
+dox: README-headless.md
 
 
 # ===============================================================================
