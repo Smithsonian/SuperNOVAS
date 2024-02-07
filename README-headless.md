@@ -216,23 +216,14 @@ being unset in `config.mk`).
 <a name="examples"></a>
 ## Basic usage examples
 
-The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
-to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
-ways, and in the new IAU standard.
-
- | Concept                    | Old standard                  | New IAU standard                                  |
- | ========================== | ============================= | ================================================= |
- | Catalog coordinates        | J2000 or B1950                | International Celestial Reference System (ICRS)   |
- | Dynamical system	      | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
- | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
- | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
- | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
- | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
- | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |
+ - [Calculating positions for a sidereal source](#sidereal-example)
+ - [Calculating positions for a Solar-system source](#solsys-example)
+ - [Reduced accuracy shortcuts](#accuracy-notes)
+ - [Performance considerations](#performance-note)
+ - [Note on alternative methodologies](#methodologies)
  
-See the various enums and constands defined in `novas.h`, as well as the descriptions on the various NOVAS routines
-on how they are appropriate for the old and new systems respectively.
 
+<a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
 
 Sidereal sources may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
@@ -286,8 +277,7 @@ measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. So
 
  // Calculate the Terrestrial Time (TT) based Julian date of observation (in days)
  // Let's say on 2024-02-06 at 14:53:06 UTC.
- double jd_tt = julian_date(2024, 2, 6, 14.885) 
-                + get_utc_to_tt(leap_seconds) / 86400.0; 
+ double jd_tt = julian_date(2024, 2, 6, 14.885) + get_utc_to_tt(leap_seconds) / 86400.0; 
   
  // We'll also need the TT - UT1 difference, which we can obtain from what we already
  // defined above
@@ -318,7 +308,7 @@ distance (e.g. for apparent-to-physical size conversion):
  sky_pos pos;	// We'll return the observable positions in this structure
   
  // Calculate the apparent (CIRS) topocentric positions for the above configuration
- int status = place_cirs(jd_tt, &source, &obs, ut1_to_tt, NOVAS_FULL_ACCURACY, &pos);
+ int status = place(jd_tt, &source, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
   
  // You should always check that the calculation was successful...
  if(status) {
@@ -327,49 +317,34 @@ distance (e.g. for apparent-to-physical size conversion):
  }
 ```
 
-Finally, we may want to calculate the azimuth and elevation at which the source is visible from the ground at the
-specified observing location (with or without refraction correction):
+Finally, we may want to calculate the astrometric zenith distance (= 90&deg; - azimuth) and elevation angles of the source
+at the specified observing location (without refraction correction):
 
 ```c
 
  // Zenith distance and azimuth (in degrees) to populate...
  double zd, az;
   
- // Convert to horizontal using the pole offsets, and a standard atmpsphere for
- // the refraction. (We don't care to return refracted RA and dec coordinates).
- equ2hor(jd_tt - ut1_to_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, &obs.on_surf, 
-         pos.ra, pos.dec, NOVAS_STANDARD_ATMOSPHERE, &zd, &az, NULL, NULL);
+ // Convert CIRS to horizontal using the pole offsets.
+ cirs_to_hor(jd_tt - ut1_to_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, &obs.on_surf, pos.ra, pos.dec, 
+             &zd, &az);
 ``` 
 
 In the example above we first calculated the apparent coordinates in the Celestial Intermediate Reference System 
-(CIRS). Then we used `equ2hor()` function then convert first it to the Earth-fixed International Terrestrial 
+(CIRS). Then we used `cirs_to_hor()` function then convert first it to the Earth-fixed International Terrestrial 
 Reference system (ITRS) using the small (arcsec-level) measured variation of the pole (dx, dy) provided explicitly 
-since `equ2hor()` does not use the values previously set via `cel_pole()`. Finally, `equ2hor()` converts the ITRS
-coordinates to the horizontal system at the observer location, and applies the requested optical refraction 
-correction for a standard atmosphere.
+since `cirs_to_hor()` does not use the values previously set via `cel_pole()`. Finally, `cirs_to_hor()` converts the 
+ITRScoordinates to the horizontal system at the observer location.
 
-#### Reduced accuracy
+You can additionally apply an optical refraction correction for the astrometric (unrefracted) zenith angle, if you 
+want, e.g.:
 
-When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
-
- - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
-   effect at the milliarcsecond level only, but may be much faster to calculate.
- - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
-   &lt;~ 22 mas level).
- - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
- 
-#### Note on performance
-
-Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
-however, NOVAS (and SuperNOVAS) has a trick up its sleve: it caches the last result of intensive calculations so they 
-may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy). 
-Therefore, when calculating positions for a large number of sources at different times:
-
- - It is best to iterate over the sources while keeping the time fixed in the inner loop. 
- - You probably want to stick to one accuracy morde (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
-   re-calculating the same quantities repeatedly to alternating precision.
+```c
+   zd -= refract_astro(&obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, zd);
+```
 
 
+<a name="solsys-example"></a>
 ### Calculating positions for a Solar-system source
 
 Solar-system sources work similarly to the above with a few important differences.
@@ -417,13 +392,59 @@ more generic ephemeris handling via a user-provided `novas_ephem_reader_func`. E
 Other than that, it's the same spiel as before. E.g.:
 
 ```c
- int status = place_cirs(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_FULL_ACCURACY, &pos);
+ int status = place(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
  if(status) {
    // Ooops, something went wrong...
    ...
  }
 ```
 
+
+<a name="accuracy-notes"></a>
+#### Reduced accuracy shortcuts
+
+When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
+
+ - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
+   effect at the milliarcsecond level only, but may be much faster to calculate.
+ - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
+   &lt;~ 22 mas level).
+ - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
+ 
+<a name="performance-note"></a>
+#### Performance considerations
+
+Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
+however, NOVAS (and SuperNOVAS) has a trick up its sleve: it caches the last result of intensive calculations so they 
+may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy). 
+Therefore, when calculating positions for a large number of sources at different times:
+
+ - It is best to iterate over the sources while keeping the time fixed in the inner loop. 
+ - You probably want to stick to one accuracy morde (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
+   re-calculating the same quantities repeatedly to alternating precision.
+ - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
+ 
+ 
+ 
+<a name="methodologies"></a>
+### Note on alternative methodologies
+
+The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
+to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
+ways, and in the new IAU standard method.
+
+ | Concept                    | Old standard                  | New IAU standard                                  |
+ | -------------------------- | ----------------------------- | ------------------------------------------------- |
+ | Catalog coordinate system  | J2000 or B1950                | International Celestial Reference System (ICRS)   |
+ | Dynamical system	      | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
+ | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
+ | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
+ | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
+ | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
+ | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |
+ 
+See the various enums and constands defined in `novas.h`, as well as the descriptions on the various NOVAS routines
+on how they are appropriate for the old and new methodologies respectively.
 
 -----------------------------------------------------------------------------
 
@@ -453,6 +474,10 @@ Other than that, it's the same spiel as before. E.g.:
  - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
    data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
    data modifications.
+   
+ - New `cirs_to_hor()` function similar to the existing `equ2hor()`. Whereas the latter converts from TOD to
+   to local horizontal (old methodology), the new function does the same from CIRS (new IAU standard methodology).
+   As such it can be used after `place()` is called with `NOVAS_CIRS` as the coordinate system. 
 
  - Runtime configurability:
 
@@ -489,36 +514,40 @@ Other than that, it's the same spiel as before. E.g.:
 <a name="precision"></a>
 ## Notes on precision
 
-The SuperNOVAS library is in principle capable of calculating positions and velocities to sub-microarcsecond precision 
-for all types of celestial sources. However, there are certain pre-requisites and practical considerations before that 
-level of accuracy is reached.
+The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s 
+precision for all types of celestial sources. However, there are certain pre-requisites and practical considerations 
+before that level of accuracy is reached.
 
 
- 1. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
+ 1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use SuperNOVAS with the
+    new IAU standard quantities and methods. The old ways were simply not suited for precisions much below the 
+    milliarcsecond level.
+
+ 2. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
     knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
     nutation, but  also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
     (DUT1) time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` 
-    functions to apply / use the published values from these to improve the astrometic precision of calls such as 
-    `calc_pos()`, or `topo_star()`. Without setting and using the actual polar offset values for the time of 
+    functions to apply / use the published values from these to improve the astrometic precision of Earth-orientation
+    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
     observation, positions for Earth-based observations will be accurate at the arcsecond level only.
  
- 2. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
+ 3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun vs the Solar-system barycenter. For the highest precision 
     calculations you also need positions for all major planets to calculate gravitational deflection precisely. By 
-    default SuperNOVAS can only  provide  approximate positions for the Earth and Sun (see `earth_sun_calc()` in 
-    `solsys3.c`), but certainly not at  the sub-microarcsecond level, and not for other solar-system sources. You will 
+    default SuperNOVAS can only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in 
+    `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
     need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
     JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
     [section below](#solarsystem)for more information how you can do that.
     
-  3. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
+  4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
     option to include _optical_ refraction corrections in `equ2hor()` either for a standard atmosphere or more 
     precisely using the weather parameters defined in the `on_surface` data structure that specifies the observer 
-    locations. Note, that refraction at radio wavelengths is notably different from the included optical value. In 
+    locations. Note, that refraction at radio wavelengths is notably different from the included optical model. In 
     either case you may want to skip the refraction corrections offered in this library, and instead implement your 
-    own as appropriate.
+    own as appropriate (or not at all).
  
 
 -----------------------------------------------------------------------------

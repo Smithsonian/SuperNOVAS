@@ -725,7 +725,10 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
-int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+double refract_astro(const on_surface *location, enum novas_refraction_model ref_option, double zd_calc);
+
+int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
+        double dec, double *zd, double *az);
 
 int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos,
         double *vel, double *tlight);

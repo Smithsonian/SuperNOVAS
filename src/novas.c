@@ -468,7 +468,6 @@ int set_planet_calc_hp(novas_planet_calculator_hp f) {
  * @return          0 if successful, or -1 if one of the required arguments is NULL, or else 1 if observer location
  *                  is invalid, or an error code from place().
  *
- * @sa place_in_frame()
  * @sa get_ut1_to_tt()
  *
  * @author Attila Kovacs
@@ -501,7 +500,6 @@ int place_star(double jd_tt, const cat_entry *star, const observer *obs, double 
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_in_frame()
  * @sa place_gcrs()
  * @sa place_cirs()
  */
@@ -519,10 +517,10 @@ int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_in_frame()
  * @sa place_icrs()
  * @sa place_cirs()
- * @sa place_tod()
+ * @sa virtual_star()
+ * @sa virtual_planet()
  */
 int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
   return place(jd_tt, source, NULL, 0.0, NOVAS_GCRS, accuracy, pos);
@@ -539,44 +537,25 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_tod()
- * @sa place_in_frame()
- *
  */
 int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
   return place(jd_tt, source, NULL, 0.0, NOVAS_CIRS, accuracy, pos);
 }
 
 /**
- * Computes the True of Date (TOD) dynamical position position of a source.
- *
- * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
- * @param source      Catalog source or solar_system body.
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] pos    Structure to populate with the calculated geocentric TOD position data
- * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
- *                    or else an error from place().
- *
- * @sa place_cirs()
- * @sa place_in_frame()
- *
- */
-int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
-  return place(jd_tt, source, NULL, 0.0, NOVAS_TOD, accuracy, pos);
-}
-
-/**
  * Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its
  * catalog mean place, proper motion, parallax, and radial velocity.
  *
- * Notwithstanding the different set of return values, this is the same as calling place_star with a NULL
- * observer location and NOVAS_TOD as the system, or place_tod() for an object that specifies the star.
+ * Notwithstanding the different set of return values, this is the same as calling place_star() with a NULL
+ * observer location and NOVAS_TOD as the system for an object that specifies the star.
  *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
  * </ol>
+ *
+ * @deprecated Use place_cirs() is now preferred, especially for high accuracy calculations.
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param star      Pointer to catalog entry structure containing catalog data for
@@ -590,7 +569,6 @@ int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
  *                  or the error from make_object(), or 20 + the error from place().
  *
  * @sa place_star()
- * @sa place_tod()
  * @sa astro_star()
  * @sa local_star()
  * @sa topo_star()
@@ -695,14 +673,16 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
 }
 
 /**
- * Computes the apparent place of a solar system body. This is the same as calling place_tod() for the body,
- * except the different set of return values used.
+ * Computes the apparent place of a solar system body. This is the same as calling place() for the body with
+ * NOVAS_TOD as the system, except the different set of return values used.
  *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
  * </ol>
+ *
+ * @deprecated Use place_cirs() is now preferred, especially for high accuracy calculations.
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar system body.
@@ -715,7 +695,6 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
  * @return          0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'type' in structure
  *                  'ss_body' is invalid, or 10 + the error code from place().
  *
- * @sa place_tod()
  * @sa astro_planet()
  * @sa local_planet()
  * @sa topo_planet()
@@ -847,8 +826,8 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
 }
 
 /**
- * Computes the topocentric apparent place of a star at date 'jd_tt', given its catalog mean place,
- * proper motion, parallax, and radial velocity.
+ * Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given its ICRS catalog
+ * place, proper motion, parallax, and radial velocity.
  *
  * Notwithstanding the different set of return values, this is the same as calling place_star() with
  * the same observer location and NOVAS_TOD for an object that specifies the star.
@@ -858,6 +837,8 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  * <li>Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3.</li>
  * </ol>
+ *
+ * @deprecated Use place() with system NOVAS_CIRS is now preferred, especially for high accuracy calculations.
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
@@ -952,6 +933,8 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
  * Computes the topocentric apparent place of a solar system body at the specified time. This is the same
  * as calling place() for the body for the same observer location and NOVAS_TOD as the reference system,
  * except the different set of return values used.
+ *
+ * @deprecated Use place() with system NOVAS_CIRS is now preferred, especially for high accuracy calculations.
  *
  * REFERENCES:
  * <ol>
@@ -1170,12 +1153,10 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
  *                      50--70 error is 50 + error from light_time(), 70--80 error is 70 + error from grav_def(),
  *                      80--90 errro is 80 + error from cio_location(), 90--100 error is 90 + error from cio_basis().
  *
- * @sa place_in_frame()
  * @sa place_star()
  * @sa place_icrs()
  * @sa place_gcrs()
  * @sa place_cirs()
- * @sa place_tod()
  * @sa cel_pole()
  * @sa get_ut1_to_tt()
  */
@@ -1603,48 +1584,10 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   return 0;
 }
 
-/**
- * Transforms topocentric right ascension and declination to zenith distance and azimuth.  It uses a method
- * that properly accounts for polar motion, which is significant at the sub-arcsecond level.  This function can also adjust
- * coordinates for atmospheric refraction.
- *
- * NOTES:
- * <ul>
- *  <li>'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed. 'ra' and 'dec' can be obtained
- *  from tpstar() or tpplan().</li>
- *  <li> The directions 'zd'= 0 (zenith) and 'az'= 0 (north) are here considered fixed in the terrestrial system.
- *  Specifically, the zenith is along the geodetic normal, and north is toward the ITRS pole.</li>
- *  <li>If 'ref_option' is NOVAS_STANDARD_ATMOSPHERE (0), then 'rar'='ra' and 'decr'='dec'.
- * </ul>
- *
- * REFERENCES:
- * <ol>
- * <li>Kaplan, G. (2008). USNO/AA Technical Note of 28 Apr 2008, "Refraction as a Vector."</li>
- * </ol>
- *
- * @param jd_ut1      [day] UT1 based Julian date
- * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param xp          [arcsec] Conventionally-defined x coordinate of celestial intermediate pole with respect
- *                    to ITRS reference pole, in arcseconds.
- * @param yp          [arcsec] Conventionally-defined y coordinate of celestial intermediate pole with respect
- *                    to ITRS reference pole, in arcseconds.
- * @param location    The observer location
- * @param ra          [h] Topocentric right ascension of object of interest, in hours, referred to true equator
- *                    and equinox of date.
- * @param dec         [deg] Topocentric declination of object of interest, in degrees, referred to true equator
- *                    and equinox of date.
- * @param ref_option  NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
- * @param[out] zd     [deg] Topocentric zenith distance in degrees, affected by refraction if 'ref_option' is non-zero.
- * @param[out] az     [deg] Topocentric azimuth (measured east from north) in degrees.
- * @param[out] rar    [h] Topocentric right ascension of object of interest, in hours, referred to true equator and
- *                    equinox of date, affected by refraction if 'ref_option' is non-zero. (It may be NULL if not required)
- * @param[out] decr   [deg] Topocentric declination of object of interest, in degrees, referred to true equator and
- *                    equinox of date. (It may be NULL if not required)
- * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
- */
-int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
+
+// Like equ2hor(), but with specifying whether from TOD or CIRS frame.
+static int equ2hor2(double jd_ut1, double ut1_to_tt, enum novas_reference_system app_sys, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
+          double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
 
   double sinlat, coslat, sinlon, coslon, sindc, cosdc, sinra, cosra;
   double uze[3], une[3], uwe[3], uz[3], un[3], uw[3], p[3];
@@ -1692,9 +1635,9 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
 
   // Rotate Earth-fixed orthonormal basis vectors to celestial system
   // (wrt equator and equinox of date).
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, NOVAS_TOD, xp, yp, uze, uz);
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, NOVAS_TOD, xp, yp, une, un);
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, NOVAS_TOD, xp, yp, uwe, uw);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, app_sys, xp, yp, uze, uz);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, app_sys, xp, yp, une, un);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_ERA, accuracy, app_sys, xp, yp, uwe, uw);
 
   // Define unit vector 'p' toward object in celestial system
   // (wrt equator and equinox of date).
@@ -1719,28 +1662,15 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
 
   *zd = atan2(proj, pz) / DEGREE;
 
+
   // Apply atmospheric refraction if requested.
   if(ref_option) {
-
     // Get refraction in zenith distance.
-
-    // Iterative process is required because refraction algorithms are
-    // always a function of observed (not computed) zenith distance.
-    // Require convergence to 0.1 arcsec (actual accuracy less).
-    double refr;
-
     const double zd0 = *zd;
-    double zd1;
-
-    do {
-      zd1 = *zd;
-      refr = refract(location, ref_option, *zd);
-      *zd = zd0 - refr;
-    }
-    while(fabs(*zd - zd1) > 3.0e-5);
+    const double refr = refract_astro(location, ref_option, *zd);
+    *zd -= refr;
 
     // Apply refraction to celestial coordinates of object.
-
     if((refr > 0.0) && (*zd > 3.0e-4)) {
       // Shift position vector of object in celestial system to account
       // for refraction (see USNO/AA Technical Note 1998-09).
@@ -1768,6 +1698,93 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
     }
   }
   return 0;
+}
+
+/**
+ * Transforms topocentric (TOD) right ascension and declination to zenith distance and azimuth.  It uses a method
+ * that properly accounts for polar motion, which is significant at the sub-arcsecond level. This function can also
+ * adjust coordinates for atmospheric refraction.
+ *
+ * NOTES:
+ * <ul>
+ *  <li>'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed. 'ra' and 'dec' can be obtained
+ *  from tpstar() or tpplan().</li>
+ *  <li> The directions 'zd'= 0 (zenith) and 'az'= 0 (north) are here considered fixed in the terrestrial system.
+ *  Specifically, the zenith is along the geodetic normal, and north is toward the ITRS pole.</li>
+ *  <li>If 'ref_option' is NOVAS_STANDARD_ATMOSPHERE (0), then 'rar'='ra' and 'decr'='dec'.
+ * </ul>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Kaplan, G. (2008). USNO/AA Technical Note of 28 Apr 2008, "Refraction as a Vector."</li>
+ * </ol>
+ *
+ * @param jd_ut1      [day] UT1 based Julian date
+ * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param xp          [arcsec] Conventionally-defined x coordinate of celestial intermediate pole with respect
+ *                    to ITRS reference pole, in arcseconds.
+ * @param yp          [arcsec] Conventionally-defined y coordinate of celestial intermediate pole with respect
+ *                    to ITRS reference pole, in arcseconds.
+ * @param location    The observer location
+ * @param ra          [h] Topocentric right ascension of object of interest, in hours, referred to true equator
+ *                    and equinox of date.
+ * @param dec         [deg] Topocentric declination of object of interest, in degrees, referred to true equator
+ *                    and equinox of date.
+ * @param ref_option  NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
+ * @param[out] zd     [deg] Topocentric zenith distance in degrees, affected by refraction if 'ref_option' is non-zero.
+ * @param[out] az     [deg] Topocentric azimuth (measured east from north) in degrees.
+ * @param[out] rar    [h] Topocentric right ascension of object of interest, in hours, referred to true equator and
+ *                    equinox of date, affected by refraction if 'ref_option' is non-zero. (It may be NULL if not required)
+ * @param[out] decr   [deg] Topocentric declination of object of interest, in degrees, referred to true equator and
+ *                    equinox of date. (It may be NULL if not required)
+ * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
+ *
+ * @sa cirs_to_hor()
+ */
+int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
+        double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
+  return equ2hor2(jd_ut1, ut1_to_tt, NOVAS_TOD, accuracy, xp, yp, location, ra, dec, ref_option, zd, az, rar, decr);
+}
+
+/**
+ * Transforms topocentric (CIRS) right ascension and declination to zenith distance and azimuth.  It uses a method
+ * that properly accounts for polar motion, which is significant at the sub-arcsecond level. This routine does not
+ * calculate refraction, but you may call refract() with the returned zenith angle value, if you want to.
+ *
+ * NOTES:
+ * <ul>
+ *  <li>'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed. 'ra' and 'dec' can be obtained
+ *  from tpstar() or tpplan().</li>
+ *  <li> The directions 'zd'= 0 (zenith) and 'az'= 0 (north) are here considered fixed in the terrestrial system.
+ *  Specifically, the zenith is along the geodetic normal, and north is toward the ITRS pole.</li>
+ * </ul>
+ *
+ * @param jd_ut1      [day] UT1 based Julian date
+ * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param xp          [arcsec] Conventionally-defined x coordinate of celestial intermediate pole with respect
+ *                    to ITRS reference pole, in arcseconds.
+ * @param yp          [arcsec] Conventionally-defined y coordinate of celestial intermediate pole with respect
+ *                    to ITRS reference pole, in arcseconds.
+ * @param location    The observer location
+ * @param ra          [h] Topocentric right ascension of object of interest, in hours, referred to true equator
+ *                    and equinox of date.
+ * @param dec         [deg] Topocentric declination of object of interest, in degrees, referred to true equator
+ *                    and equinox of date.
+ * @param[out] zd     [deg] Topocentric zenith distance in degrees, affected by refraction if 'ref_option' is non-zero.
+ * @param[out] az     [deg] Topocentric azimuth (measured east from north) in degrees.
+ * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
+ *
+ * @sa equ2hor()
+ * @sa refract()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
+        double dec, double *zd, double *az) {
+  return equ2hor2(jd_ut1, ut1_to_tt, NOVAS_CIRS, accuracy, xp, yp, location, ra, dec, NOVAS_NO_ATMOSPHERE, zd, az, NULL, NULL);
 }
 
 /**
@@ -5064,7 +5081,48 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
 }
 
 /**
- * computes atmospheric refraction in zenith distance.  This version computes approximate refraction for
+ * Computes the optical atmospheric refraction for a source at an astrometric zenith distance (e.g. calculated
+ * without accounting for an atmosphere). This is suitable for converting astrometric (unrefracted) zenith angles
+ * to observed (refracted) zenith angles. See refract() for the reverse correction.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Explanatory Supplement to the Astronomical Almanac, p. 144.</li>
+ * <li>Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259.</li>
+ * </ol>
+ *
+ * @param location      Pointer to structure containing observer's location. It may also contains weather
+ *                      data (optional) for the observer's location.
+ * @param ref_option    NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
+ *                      values contained in the 'location' data structure.
+ * @param zd_calc       [deg] Astrometric (unrefracted) zenith distance angle of the source.
+ * @return              [deg] the calculated optical refraction. (to ~0.1 arcsec accuracy)
+ *
+ * @sa refract()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double refract_astro(const on_surface *location, enum novas_refraction_model ref_option, double zd_calc) {
+  double refr = 0.0;
+  int i;
+
+  for(i = 0; i < 30; i++) {
+    double zd_obs = zd_calc - refr;
+    refr = refract(location, ref_option, zd_obs);
+    if(fabs(refr - (zd_calc - zd_obs)) < 3.0e-5) break;
+  }
+
+  return refr;
+}
+
+
+/**
+ * Computes atmospheric refraction for an observed (already refracted!) zenith distance through the atmosphere.
+ * In other words this is suitable to convert refracted zenith angles to astrometric (unrefracted) zenith angles.
+ * For the reverse, see refract_astro().
+ *
+ * This version computes approximate refraction for
  * optical wavelengths.  This function can be used for planning observations or telescope pointing, but
  * should not be used for precise positioning.
  *
@@ -5078,8 +5136,10 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
  *                      data (optional) for the observer's location.
  * @param ref_option    NOVAS_STANDARD_ATMOSPHERE (0), or NOVAS_WEATHER_AT_LOCATION (1) if to use the weather
  *                      values contained in the 'location' data structure.
- * @param zd_obs        [deg] Zenith distance angle of the direction of observation.
+ * @param zd_obs        [deg] Observed (already refracted!) zenith distance through the armosphere.
  * @return              [deg] the calculated optical refraction.
+ *
+ * @sa refract_nominal()
  */
 double refract(const on_surface *location, enum novas_refraction_model ref_option, double zd_obs) {
   // 's' is the approximate scale height of atmosphere in meters.
