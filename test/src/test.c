@@ -257,6 +257,9 @@ static void test_ephemeris() {
     openfile("ephemeris");
 
     if(is_ok(ephemeris(tdb2, &body[i], j, accuracy, pos1, vel1))) {
+      int j;
+      for(j = 0; j < 3; j++) vel1[j] *= 1e-3 * (1.4959787069098932e+11 / 86400.0);
+
       fprintf(fp, "%-10s %d ", body[i].name, j);
       printvector(pos1);
       printvector(vel1);
@@ -269,6 +272,11 @@ static void test_ephemeris() {
 static void test_era() {
   openfile("era");
   fprintf(fp, "%12.6f", era(tdb, 0.0));
+}
+
+static void test_mean_obliq() {
+  openfile("mean_obliq");
+  fprintf(fp, "%12.6f", mean_obliq(tdb));
 }
 
 static void test_ee_ct() {
@@ -336,15 +344,6 @@ static void test_cel_pole() {
   double a, b, c, dpsi = 0.0, deps = 0.0;
 
   openfile("cel_pole");
-  cel_pole(tdb, 0, 0.0, 0.0);
-  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
-  fprintf(fp, "XY %12.6f %12.6f ", dpsi, deps);
-
-  cel_pole(tdb, 0, -2.0, 3.0);
-  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
-
-  openfile("cel_pole");
   cel_pole(tdb, 1, 0.0, 0.0);
   e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
   fprintf(fp, "PE %12.6f %12.6f ", dpsi, deps);
@@ -353,7 +352,16 @@ static void test_cel_pole() {
   e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
   fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
 
-  cel_pole(tdb, 0, 0.0, 0.0);
+  openfile("cel_pole");
+  cel_pole(tdb, 2, 0.0, 0.0);
+  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
+  fprintf(fp, "XY %12.6f %12.6f ", dpsi, deps);
+
+  cel_pole(tdb, 2, -2.0, 3.0);
+  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
+  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+
+  cel_pole(tdb, 1, 0.0, 0.0);
 }
 
 static void test_nutation() {
@@ -391,6 +399,7 @@ static void test_cio_basis() {
   if(!is_ok(cio_location(tdb, accuracy, &h, &sys))) return;
   if(!is_ok(cio_basis(tdb, h, sys, accuracy, x, y, z))) return;
 
+  fprintf(fp, "%d ", sys);
   printunitvector(x);
   printunitvector(y);
   printunitvector(z);
@@ -439,6 +448,7 @@ static void test_time_specific() {
   test_tdb2tt();
   test_ephemeris();
   test_era();
+  test_mean_obliq();
   test_ee_ct();
   test_iau2000a();
   test_iau2000b();
@@ -619,7 +629,8 @@ static void test_place() {
     openfile("place");
     if(is_ok(place(tdb, &source, &obs, ut12tt, i, accuracy, &out))) {
       // Velocities to 0.1 m/s accuracy
-      fprintf(fp, "%d %12.6f %12.6f %12.6f %12.6f ", i, out.ra, out.dec, out.dis, out.rv);
+      if(accuracy == 0) fprintf(fp, "%d %12.8f %12.8f %12.8f %12.5f ", i, out.ra, out.dec, out.dis, out.rv);
+      else fprintf(fp, "%d %8.4f %8.3f %8.3f %12.1f ", i, out.ra, out.dec, out.dis, out.rv);
     }
   }
 }

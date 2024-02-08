@@ -750,8 +750,8 @@ int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 double refract_astro(const on_surface *location, enum novas_refraction_model ref_option, double zd_calc);
 
-int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos,
-        double *vel, double *tlight);
+int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *prel,
+        double *vsb, double *tlight);
 
 double tt2tdb(double jd_tt);
 

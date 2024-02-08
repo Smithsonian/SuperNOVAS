@@ -117,9 +117,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // 'obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
 
   static const double obl = 23.4392794444;
-
-  static double tlast;
-  static double tmass, a[3][4], b[3][4], vbary[3];
+  static double tmass, a[3][4], b[3][4];
 
   // Initialize constants.
   // Initial value of 'tmass' is mass of Sun plus four inner planets.
@@ -129,14 +127,14 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
     return -1;
   }
 
-  if(!tlast) {
+  if(!tmass) {
     const double oblr = obl * TWOPI / 360.0;
     const double se = sin(oblr);
     const double ce = cos(oblr);
 
     tmass = 1.0 + 5.977e-6;
 
-    for(i = 0; i < 4; i++) {
+    for(i = 4; --i >= 0; ) {
       // Compute sine and cosine of orbital angles.
       const double si = sin(pj[i]);
       const double ci = cos(pj[i]);
@@ -164,8 +162,6 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
       tmass += 1.0 / pm[i];
     }
-
-    tlast = -1e100;
   }
 
   // Check if input Julian date is within range (within 3 centuries of J2000).
@@ -178,13 +174,13 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   }
   else if((body == 2) || (body == NOVAS_EARTH)) { /* Earth */
     double p[3][3];
-    for(i = 0; i < 3; i++) {
+    for(i = 3; --i >= 0; ) {
       const double qjd = jd_tdb + (double) (i - 1) * 0.1;
-      double ras, decs, diss, pos1[3];
+      double ras, decs, diss;
 
       sun_eph(qjd, &ras, &decs, &diss);
-      radec2vector(ras, decs, diss, pos1);
-      precession(qjd, pos1, T0, position);
+      radec2vector(ras, decs, diss, position);
+      precession(qjd, position, T0, position);
       p[i][0] = -position[0];
       p[i][1] = -position[1];
       p[i][2] = -position[2];
@@ -200,16 +196,17 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Solar system barycenter coordinates are computed from Keplerian
   // approximations of the coordinates of the four largest planets.
   if(origin == NOVAS_BARYCENTER) {
-    static double pbary[3];
+    static double tlast;
+    static double pbary[3], vbary[3];
 
     if(fabs(jd_tdb - tlast) >= 1.0e-06) {
-
-      for(i = 0; i < 3; i++)
-        pbary[i] = vbary[i] = 0.0;
+      memset(pbary, 0, sizeof(pbary));
+      memset(vbary, 0, sizeof(vbary));
 
       // The following loop cycles once for each of the four planets.
-      for(i = 0; i < 4; i++) {
-        double pplan[3], vplan[3], f;
+      for(i = 4; --i >= 0; ) {
+        // Compute mass factor and add in to total displacement.
+        const double f = 1.0 / (pm[i] * tmass);
 
         // Compute mean longitude, mean anomaly, and eccentric anomaly.
         const double e = pe[i];
@@ -221,24 +218,16 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
         // Compute velocity factor.
         const double anr = pn[i] / (1.0 - e * cosu);
+        int k;
 
-        // Compute planet's position and velocity wrt eq & eq J2000.
-        pplan[0] = a[0][i] * (cosu - e) + b[0][i] * sinu;
-        pplan[1] = a[1][i] * (cosu - e) + b[1][i] * sinu;
-        pplan[2] = a[2][i] * (cosu - e) + b[2][i] * sinu;
-        vplan[0] = anr * (-a[0][i] * sinu + b[0][i] * cosu);
-        vplan[1] = anr * (-a[1][i] * sinu + b[1][i] * cosu);
-        vplan[2] = anr * (-a[2][i] * sinu + b[2][i] * cosu);
+        for (k = 3; --k >= 0; ) {
+          // Compute planet's position and velocity wrt eq & eq J2000.
+          const double p = a[k][i] * (cosu - e) + b[k][i] * sinu;
+          const double v = anr * (-a[k][i] * sinu + b[k][i] * cosu);
 
-        // Compute mass factor and add in to total displacement.
-        f = 1.0 / (pm[i] * tmass);
-
-        pbary[0] += pplan[0] * f;
-        pbary[1] += pplan[1] * f;
-        pbary[2] += pplan[2] * f;
-        vbary[0] += vplan[0] * f;
-        vbary[1] += vplan[1] * f;
-        vbary[2] += vplan[2] * f;
+          pbary[k] += f * p;
+          vbary[k] += f * v;
+        }
       }
 
       tlast = jd_tdb;
@@ -332,71 +321,71 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
  * @sa earth_sun_calc()
  */
 void sun_eph(double jd, double *ra, double *dec, double *dis) {
-  short i;
+  struct sun_con {
+    int l;
+    int r;
+    float alpha;
+    double nu;
+  };
 
   double sum_lon = 0.0;
   double sum_r = 0.0;
   const double factor = 1.0e-07;
   double u, lon, t, emean, sin_lon;
 
-  struct sun_con {
-    float l;
-    float r;
-    float alpha;
-    float nu;
-  };
+  int i;
 
   static const struct sun_con con[50] = {
-          { 403406.0, 0.0, 4.721964, 1.621043 }, //
-          { 195207.0, -97597.0, 5.937458, 62830.348067 }, //
-          { 119433.0, -59715.0, 1.115589, 62830.821524 }, //
-          { 112392.0, -56188.0, 5.781616, 62829.634302 }, //
-          { 3891.0, -1556.0, 5.5474, 125660.5691 }, //
-          { 2819.0, -1126.0, 1.5120, 125660.9845 }, //
-          { 1721.0, -861.0, 4.1897, 62832.4766 }, //
-          { 0.0, 941.0, 1.163, 0.813 }, //
-          { 660.0, -264.0, 5.415, 125659.310 }, //
-          { 350.0, -163.0, 4.315, 57533.850 }, //
-          { 334.0, 0.0, 4.553, -33.931 }, //
-          { 314.0, 309.0, 5.198, 777137.715 }, //
-          { 268.0, -158.0, 5.989, 78604.191 }, //
-          { 242.0, 0.0, 2.911, 5.412 }, //
-          { 234.0, -54.0, 1.423, 39302.098 }, //
-          { 158.0, 0.0, 0.061, -34.861 }, //
-          { 132.0, -93.0, 2.317, 115067.698 }, //
-          { 129.0, -20.0, 3.193, 15774.337 }, //
-          { 114.0, 0.0, 2.828, 5296.670 }, //
-          { 99.0, -47.0, 0.52, 58849.27 }, //
-          { 93.0, 0.0, 4.65, 5296.11 }, //
-          { 86.0, 0.0, 4.35, -3980.70 }, //
-          { 78.0, -33.0, 2.75, 52237.69 }, //
-          { 72.0, -32.0, 4.50, 55076.47 }, //
-          { 68.0, 0.0, 3.23, 261.08 }, //
-          { 64.0, -10.0, 1.22, 15773.85 }, //
-          { 46.0, -16.0, 0.14, 188491.03 }, //
-          { 38.0, 0.0, 3.44, -7756.55 }, //
-          { 37.0, 0.0, 4.37, 264.89 }, //
-          { 32.0, -24.0, 1.14, 117906.27 }, //
-          { 29.0, -13.0, 2.84, 55075.75 }, //
-          { 28.0, 0.0, 5.96, -7961.39 }, //
-          { 27.0, -9.0, 5.09, 188489.81 },
-          { 27.0, 0.0, 1.72, 2132.19 }, //
-          { 25.0, -17.0, 2.56, 109771.03 }, //
-          { 24.0, -11.0, 1.92, 54868.56 }, //
-          { 21.0, 0.0, 0.09, 25443.93 }, //
-          { 21.0, 31.0, 5.98, -55731.43 }, //
-          { 20.0, -10.0, 4.03, 60697.74 }, //
-          { 18.0, 0.0, 4.27, 2132.79 }, //
-          { 17.0, -12.0, 0.79, 109771.63 }, //
-          { 14.0, 0.0, 4.24, -7752.82 }, //
-          { 13.0, -5.0, 2.01, 188491.91 }, //
-          { 13.0, 0.0, 2.65, 207.81 }, //
-          { 13.0, 0.0, 4.98, 29424.63 }, //
-          { 12.0, 0.0, 0.93, -7.99 }, //
-          { 10.0, 0.0, 2.21, 46941.14 }, //
-          { 10.0, 0.0, 3.59, -68.29 }, //
-          { 10.0, 0.0, 1.50, 21463.25 }, //
-          { 10.0, -9.0, 2.55, 157208.40 } };
+          { 403406, 0, 4.721964, 1.621043 }, //
+          { 195207, -97597, 5.937458, 62830.348067 }, //
+          { 119433, -59715, 1.115589, 62830.821524 }, //
+          { 112392, -56188, 5.781616, 62829.634302 }, //
+          { 3891, -1556, 5.5474, 125660.5691 }, //
+          { 2819, -1126, 1.5120, 125660.9845 }, //
+          { 1721, -861, 4.1897, 62832.4766 }, //
+          { 0, 941, 1.163, 0.813 }, //
+          { 660, -264, 5.415, 125659.310 }, //
+          { 350, -163, 4.315, 57533.850 }, //
+          { 334, 0, 4.553, -33.931 }, //
+          { 314, 309, 5.198, 777137.715 }, //
+          { 268, -158, 5.989, 78604.191 }, //
+          { 242, 0, 2.911, 5.412 }, //
+          { 234, -54, 1.423, 39302.098 }, //
+          { 158, 0, 0.061, -34.861 }, //
+          { 132, -93, 2.317, 115067.698 }, //
+          { 129, -20, 3.193, 15774.337 }, //
+          { 114, 0, 2.828, 5296.670 }, //
+          { 99, -47, 0.52, 58849.27 }, //
+          { 93, 0, 4.65, 5296.11 }, //
+          { 86, 0, 4.35, -3980.70 }, //
+          { 78, -33, 2.75, 52237.69 }, //
+          { 72, -32, 4.50, 55076.47 }, //
+          { 68, 0, 3.23, 261.08 }, //
+          { 64, -10, 1.22, 15773.85 }, //
+          { 46, -16, 0.14, 188491.03 }, //
+          { 38, 0, 3.44, -7756.55 }, //
+          { 37, 0, 4.37, 264.89 }, //
+          { 32, -24, 1.14, 117906.27 }, //
+          { 29, -13, 2.84, 55075.75 }, //
+          { 28, 0, 5.96, -7961.39 }, //
+          { 27, -9, 5.09, 188489.81 },
+          { 27, 0, 1.72, 2132.19 }, //
+          { 25, -17, 2.56, 109771.03 }, //
+          { 24, -11, 1.92, 54868.56 }, //
+          { 21, 0, 0.09, 25443.93 }, //
+          { 21, 31, 5.98, -55731.43 }, //
+          { 20, -10, 4.03, 60697.74 }, //
+          { 18, 0, 4.27, 2132.79 }, //
+          { 17, -12, 0.79, 109771.63 }, //
+          { 14, 0, 4.24, -7752.82 }, //
+          { 13, -5, 2.01, 188491.91 }, //
+          { 13, 0, 2.65, 207.81 }, //
+          { 13, 0, 4.98, 29424.63 }, //
+          { 12, 0, 0.93, -7.99 }, //
+          { 10, 0, 2.21, 46941.14 }, //
+          { 10, 0, 3.59, -68.29 }, //
+          { 10, 0, 1.50, 21463.25 }, //
+          { 10, -9, 2.55, 157208.40 } };
 
   // Define the time units 'u', measured in units of 10000 Julian years
   // from J2000.0, and 't', measured in Julian centuries from J2000.0.
@@ -404,10 +393,11 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
   t = u * 100.0;
 
   // Compute longitude and distance terms from the series.
-  for(i = 0; i < 50; i++) {
-    const double arg = con[i].alpha + con[i].nu * u;
-    sum_lon += con[i].l * sin(arg);
-    sum_r += con[i].r * cos(arg);
+  for(i = 50; --i >= 0; ) {
+    const struct sun_con *c = &con[i];
+    const double arg = c->alpha + c->nu * u;
+    sum_lon += c->l * sin(arg);
+    if(c->r) sum_r += c->r * cos(arg);
   }
 
   // Compute longitude, latitude, and distance referred to mean equinox

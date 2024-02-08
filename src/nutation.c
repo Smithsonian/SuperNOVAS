@@ -54,7 +54,8 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
-  static const char nals_t[678][5] = { { 0, 0, 0, 0, 1 }, //
+  static const char nals_t[678][5] = { //
+          { 0, 0, 0, 0, 1 }, //
           { 0, 0, 2, -2, 2 }, //
           { 0, 0, 2, 0, 2 }, //
           { 0, 0, 0, 0, 2 }, //
@@ -1419,7 +1420,8 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   //Planetary argument multipliers:
   // L   L'  F   D   Om  Me  Ve  E  Ma  Ju  Sa  Ur  Ne  pre
-  static const char napl_t[687][14] = { { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 0 }, //
+  static const char napl_t[687][14] = { //
+          { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 0 }, //
           { 0, 0, 0, 0, 0, 0, 0, -8, 16, -4, -5, 0, 0, 2 }, //
           { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 2 }, //
           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 2, 2 }, //
@@ -2112,7 +2114,8 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Each row of coefficients in 'cpl_t' belongs with the corresponding
   // row of fundamental-argument multipliers in 'napl_t'.
-  static const short cpl_t[687][4] = { { 1440, 0, 0, 0 }, //
+  static const short cpl_t[687][4] = {
+          { 1440, 0, 0, 0 }, //
           { 56, -117, -42, -40 }, //
           { 125, -43, 0, -54 }, //
           { 0, 5, 0, 0 }, //
@@ -2800,16 +2803,14 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 3, 0, 0, -1 }, //
           { 3, 0, 0, -1 } };
 
-  novas_fundamental_args a;
-  double dp, de, factor, dpsils, depsls, dpsipl, depspl;
-
-  int i;
+  // Convert from 0.1 microarcsec units to radians.
+  const double factor = 1.0e-7 * ASEC2RAD;
 
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
   // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
-  // ecliptic and equinox of J2000, with high order terms omitted
+  // ecliptic and equinox of J2000
   // (Simon et al. 1994, 5.8.1-5.8.8).
   const double alme = planet_lon(t, NOVAS_MERCURY);
   const double alve = planet_lon(t, NOVAS_VENUS);
@@ -2820,20 +2821,18 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   const double alur = planet_lon(t, NOVAS_URANUS);
   const double alne = planet_lon(t, NOVAS_NEPTUNE);
 
-
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
   const double apa = accum_prec(t);
+
+  novas_fundamental_args a;
+  double dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
+  int i;
 
   // Compute fundamental arguments from Simon et al. (1994), in radians.
   fund_args(t, &a);
 
   // ** Luni-solar nutation. **
-
-  // Initialize the nutation values.
-  dp = 0.0;
-  de = 0.0;
-
   // Summation of luni-solar nutation series (in reverse order).
   for(i = 677; i >= 0; i--) {
     const char *n = &nals_t[i][0];
@@ -2852,30 +2851,19 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     carg = cos(arg);
 
     // Term.
-    dp += (c[0] + c[1] * t) * sarg + c[2] * carg;
-    de += (c[3] + c[4] * t) * carg + c[5] * sarg;
+    dpsils += (c[0] + c[1] * t) * sarg + c[2] * carg;
+    depsls += (c[3] + c[4] * t) * carg + c[5] * sarg;
   }
-
-  // Convert from 0.1 microarcsec units to radians.
-  factor = 1.0e-7 * ASEC2RAD;
-  dpsils = dp * factor;
-  depsls = de * factor;
-
 
   // ** Planetary nutation. **
 
-  // Initialize the nutation values.
-  dp = 0.0;
-  de = 0.0;
-
   // Summation of planetary nutation series (in reverse order).
-  for(i = 686; --i >= 0; ) {
+  for(i = 686; i >= 0; i--) {
     const char *n = &napl_t[i][0];
     const short *c = &cpl_t[i][0];
 
     // Argument and functions.
     double arg = 0.0, sarg, carg;
-
 
     if(n[0]) arg += n[0] * a.l;
     if(n[1]) arg += n[1] * a.l1;
@@ -2896,16 +2884,13 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     carg = cos(arg);
 
     // Term.
-    dp += c[0] * sarg + c[1] * carg;
-    de += c[2] * sarg + c[3] * carg;
+    dpsipl += c[0] * sarg + c[1] * carg;
+    depspl += c[2] * sarg + c[3] * carg;
   }
 
-  dpsipl = dp * factor;
-  depspl = de * factor;
-
   // Total: Add planetary and luni-solar components.
-  *dpsi = dpsipl + dpsils;
-  *deps = depspl + depsls;
+  *dpsi = (dpsils + dpsipl) * factor;
+  *deps = (depsls + depspl) * factor;
 
   return;
 }
@@ -2948,7 +2933,8 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
-  static const char nals_t[77][5] = { { 0, 0, 0, 0, 1 }, //
+  static const char nals_t[77][5] = { //
+          { 0, 0, 0, 0, 1 }, //
           { 0, 0, 2, -2, 2 }, //
           { 0, 0, 2, 0, 2 }, //
           { 0, 0, 0, 0, 2 }, //
@@ -3031,7 +3017,8 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Each row of coefficients in 'cls_t' belongs with the corresponding
   // row of fundamental-argument multipliers in 'nals_t'.
-  static const int32_t cls_t[77][6] = { { -172064161, -174666, 33386, 92052331, 9086, 15377 }, //
+  static const int32_t cls_t[77][6] = { //
+          { -172064161, -174666, 33386, 92052331, 9086, 15377 }, //
           { -13170906, -1675, -13696, 5730336, -3015, -4587 }, //
           { -2276413, -234, 2796, 978459, -485, 1374 }, //
           { 2074554, 207, -698, -897492, 470, -291 }, //
@@ -3109,21 +3096,21 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 1405, 0, 4, -610, 0, 2 }, //
           { 1290, 0, 0, -556, 0, 0 } };
 
-  const double dpplan = -0.000135;
-  const double deplan = 0.000388;
-
-  double dp, de, factor, dpsils, depsls, dpsipl, depspl;
-  novas_fundamental_args a;
+  const double dpplan = -0.000135 * ASEC2RAD;
+  const double deplan = 0.000388 * ASEC2RAD;
 
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
+  // Convert from 0.1 microarcsec units to radians.
+  const double factor = 1.0e-7 * ASEC2RAD;
+
+  double dpsils = 0.0, depsls = 0.0;
+  novas_fundamental_args a;
+
   // ** Luni-solar nutation. **
   fund_args(t, &a);
 
-  // Initialize the nutation values.
-  dp = 0.0;
-  de = 0.0;
 
   // Summation of luni-solar nutation series (in reverse order)
   for(i = 76; --i >= 0; ) {
@@ -3144,24 +3131,13 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     carg = cos(arg);
 
     // Term.
-    dp += (c[0] + c[1] * t) * sarg + c[2] * carg;
-    de += (c[3] + c[4] * t) * carg + c[5] * sarg;
+    dpsils += (c[0] + c[1] * t) * sarg + c[2] * carg;
+    depsls += (c[3] + c[4] * t) * carg + c[5] * sarg;
   }
 
-  // Convert from 0.1 microarcsec units to radians.
-  factor = 1.0e-7 * ASEC2RAD;
-  dpsils = dp * factor;
-  depsls = de * factor;
-
-  // ** Planetary nutation. **
-
-  // Fixed terms to allow for long-period nutation, in radians.
-  dpsipl = dpplan * ASEC2RAD;
-  depspl = deplan * ASEC2RAD;
-
   // Total: Add planetary and luni-solar components.
-  *dpsi = dpsipl + dpsils;
-  *deps = depspl + depsls;
+  *dpsi = dpsils * factor + dpplan;
+  *deps = depsls * factor + deplan;
 
   return;
 }
@@ -3208,7 +3184,8 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
-  static const char nals_t[323][5] = { { 0, 0, 0, 0, 1 }, //
+  static const char nals_t[323][5] = { //
+          { 0, 0, 0, 0, 1 }, //
           { 0, 0, 2, -2, 2 }, //
           { 0, 0, 2, 0, 2 }, //
           { 0, 0, 0, 0, 2 }, //
@@ -3537,7 +3514,8 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Each row of coefficients in 'cls_t' belongs with the corresponding
   // row of fundamental-argument multipliers in 'nals_t'.
-  static const int32_t cls_t[323][6] = { { -172064161, -174666, 33386, 92052331, 9086, 15377 }, //
+  static const int32_t cls_t[323][6] = { //
+          { -172064161, -174666, 33386, 92052331, 9086, 15377 }, //
           { -13170906, -1675, -13696, 5730336, -3015, -4587 }, //
           { -2276413, -234, 2796, 978459, -485, 1374 }, //
           { 2074554, 207, -698, -897492, 470, -291 }, //
@@ -3863,7 +3841,8 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Planetary argument multipliers:
   // L   L'  F   D   Om  Me  Ve  E  Ma  Ju  Sa  Ur  Ne  pre
-  static const char napl_t[165][14] = { { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 0 }, //
+  static const char napl_t[165][14] = { //
+          { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 0 }, //
           { 0, 0, 0, 0, 0, 0, 0, -8, 16, -4, -5, 0, 0, 2 }, //
           { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 2 }, //
           { 0, 0, 1, -1, 1, 0, 0, 3, -8, 3, 0, 0, 0, 0 }, //
@@ -4034,7 +4013,8 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Each row of coefficients in 'cpl_t' belongs with the corresponding
   // row of fundamental-argument multipliers in 'napl_t'.
-  static const short cpl_t[165][4] = { { 1440, 0, 0, 0 }, //
+  static const short cpl_t[165][4] = { //
+          { 1440, 0, 0, 0 }, //
           { 56, -117, -42, -40 }, //
           { 125, -43, 0, -54 }, //
           { -114, 0, 0, 61 }, //
@@ -4200,14 +4180,12 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 126, -63, -27, -55 }, //
           { -126, -63, -27, 55 } };
 
-  novas_fundamental_args a;
-
-  double dp, de, arg, sarg, carg, factor, dpsils, depsls, dpsipl, depspl;
-
-  int i;
 
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
+
+  // Convert from 0.1 microarcsec units to radians.
+  const double factor = 1.0e-7 * ASEC2RAD;
 
   // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
   // ecliptic and equinox of J2000, with high order terms omitted
@@ -4226,15 +4204,17 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // to 5028.8200 arcsec/cy at J2000.
   const double apa = accum_prec(t);
 
+  novas_fundamental_args a;
+
+  double arg, sarg, carg, dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
+
+  int i;
+
+
   // Compute fundamental arguments from Simon et al. (1994), in radians.
   fund_args(t, &a);
 
   // ** Luni-solar nutation. **
-
-  // Initialize the nutation values.
-  dp = 0.0;
-  de = 0.0;
-
   // Summation of luni-solar nutation series (in reverse order).
   for(i = 322; i >= 0; i--) {
     const char *n = &nals_t[i][0];
@@ -4252,20 +4232,12 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     carg = cos(arg);
 
     // Term.
-    dp += (c[0] + c[1] * t) * sarg + c[2] * carg;
-    de += (c[3] + c[4] * t) * carg + c[5] * sarg;
+    dpsils += (c[0] + c[1] * t) * sarg + c[2] * carg;
+    depsls += (c[3] + c[4] * t) * carg + c[5] * sarg;
   }
 
-  // Convert from 0.1 microarcsec units to radians.
-  factor = 1.0e-7 * ASEC2RAD;
-  dpsils = dp * factor;
-  depsls = de * factor;
 
   // ** Planetary nutation. **
-
-  // Initialize the nutation values.
-  dp = 0.0;
-  de = 0.0;
 
   // Summation of planetary nutation series (in reverse order).
   for(i = 164; i >= 0; i--) {
@@ -4293,16 +4265,14 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     carg = cos(arg);
 
     // Term.
-    dp += c[0] * sarg + c[1] * carg;
-    de += c[2] * sarg + c[3] * carg;
+    dpsipl += c[0] * sarg + c[1] * carg;
+    depspl += c[2] * sarg + c[3] * carg;
   }
 
-  dpsipl = dp * factor;
-  depspl = de * factor;
 
   // Total: Add planetary and luni-solar components.
-  *dpsi = dpsipl + dpsils;
-  *deps = depspl + depsls;
+  *dpsi = (dpsipl + dpsils) * factor;
+  *deps = (depspl + depsls) * factor;
 
   return;
 }
