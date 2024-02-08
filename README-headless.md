@@ -500,9 +500,11 @@ on how they are appropriate for the old and new methodologies respectively.
    * for J2000 - TOD - ITRS (old methodology): `j2000_to_tod()`, `tod_to_itrs()`, and `itrs_to_tod()`, 
      `tod_to_j2000()`.
    
- - New `cirs_to_hor()` function similar to the existing `equ2hor()`. Whereas the latter converts from TOD to
-   to local horizontal (old methodology), the new function does the same from CIRS (new IAU standard methodology).
-   As such it can be used after `place()` is called with `NOVAS_CIRS` as the coordinate system. 
+ - New `cirs_to_hor()` and `tod_to_hor()` functions similar to the existing `equ2hor()`. Whereas `tod_to_hor()` is
+   effectively a just better named bersion of `equ2hor()` for converting from TOD to to local horizontal (old 
+   methodology), the `cirs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no equivalent
+   in NOVAS C 3.1. As such, `cirs_to_hor()` may be used after `place()` is called with `NOVAS_CIRS` as the coordinate 
+   system. 
    
  - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted zenith angle
    as its argument.

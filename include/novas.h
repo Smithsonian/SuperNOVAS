@@ -236,7 +236,7 @@ enum novas_reference_system {
 enum novas_equator_type {
   NOVAS_MEAN_EQUATOR = 0, ///< Mean equator without nutation (pre IAU 2006 system).
   NOVAS_TRUE_EQUATOR,     ///< True equator (pre IAU 2006 system).
-  NOVAS_ICRS_EQUATOR      ///< International Celestiual Reference system (ICRS). The equatorial system fixed to the frame of distant quasars.
+  NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference system (GCRS).
 };
 
 /**
@@ -390,8 +390,8 @@ enum novas_wobble_direction {
  * @sa TIE_J2000_TO_ICRS
  */
 enum novas_frametie_direction {
-  TIE_ICRS_TO_J2000 = -1, ///< Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any negative value for the same effect).
-  TIE_J2000_TO_ICRS    ///< Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value &gt;=0 for the same effect).
+  TIE_J2000_TO_ICRS = -1,   ///< Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any negative value for the same effect).
+  TIE_ICRS_TO_J2000         ///< Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value &gt;=0 for the same effect).
 };
 
 /**
@@ -784,6 +784,9 @@ int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double *in, d
 
 
 int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
+        double dec, double *zd, double *az);
+
+int tod_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
         double dec, double *zd, double *az);
 
 #include "solarsystem.h"

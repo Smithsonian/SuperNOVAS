@@ -33,11 +33,7 @@ static int idx = -1;
 
 static char *header;
 
-// transform_cat
-// transform_hip
-// cio_array, cio_location (same time), cio_ra
-// cel_pole
-// ecl2equ_vec
+// cio_array
 
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
@@ -97,7 +93,32 @@ static void test_make_cat_entry() {
     fprintf(fp, "%s %s %ld %.3f %.3f %.3f %.3f %.3f %.3f ", star.starname, star.catalog, star.starnumber,
             star.ra, star.dec, star.promodec, star.promodec, star.parallax, star.radialvelocity);
   }
+}
 
+
+static void test_transform_cat() {
+  cat_entry star, tr;
+  int i;
+
+  if(!is_ok(make_cat_entry("Test", "TST", 1001, 1.1, -2.2, 3.3, -4.4, 5.5, -6.6, &star))) return;
+
+  for(i=1; i <= 5; i++) {
+    openfile("transform_cat");
+    transform_cat(i, J2000, &star, J2000 - 10000.0, "TR", &tr);
+    fprintf(fp, "%d %s %s %ld %.3f %.3f %.3f %.3f %.3f %.3f ", i, tr.starname, tr.catalog, tr.starnumber,
+            tr.ra, tr.dec, tr.promodec, tr.promodec, tr.parallax, tr.radialvelocity);
+  }
+}
+
+static void test_transform_hip() {
+  cat_entry star, tr;
+
+  if(!is_ok(make_cat_entry("Test", "TST", 1001, 1.1, -2.2, 3.3, -4.4, 5.5, -6.6, &star))) return;
+
+  openfile("transform_hip");
+  transform_hip(&star, &tr);
+  fprintf(fp, "%s %s %ld %.3f %.3f %.3f %.3f %.3f %.3f ", tr.starname, tr.catalog, tr.starnumber,
+          tr.ra, tr.dec, tr.promodec, tr.promodec, tr.parallax, tr.radialvelocity);
 }
 
 
@@ -108,14 +129,16 @@ static void test_make_object() {
   openfile("make_object");
 
   if(!is_ok(make_object(0, 3, "Earth", NULL, &object))) return;
-  fprintf(fp, "%-10s %d %ld\n", object.name, object.type, object.number);
+  fprintf(fp, "%-10s %d %ld ", object.name, object.type, object.number);
 
+  openfile("make_object");
   if(!is_ok(make_object(1, 501, "Io", NULL, &object))) return;
-  fprintf(fp, "%-10s %d %ld\n", object.name, object.type, object.number);
+  fprintf(fp, "%-10s %d %ld ", object.name, object.type, object.number);
 
+  openfile("make_object");
   if(!is_ok(make_cat_entry("Test", "TST", 1001, 1.1, -2.2, 3.3, -4.4, 5.5, -6.6, &star))) return;
   if(!is_ok(make_object(2, 1234567890, star.starname, &star, &object))) return;
-  fprintf(fp, "%-10s %d %ld\n", object.name, object.type, object.number);
+  fprintf(fp, "%-10s %d %ld ", object.name, object.type, object.number);
 }
 
 
@@ -186,6 +209,8 @@ static void test_basics() {
   test_make_cat_entry();
   test_make_object();
   test_make_observer();
+  test_transform_cat();
+  test_transform_hip();
   test_refract();
   test_mean_star();
 }
@@ -226,9 +251,11 @@ static void test_ephemeris() {
   if(!is_ok(make_object(0, 10, "Sun", NULL, &body[0]))) return;
   if(!is_ok(make_object(0, 3, "Earth", NULL, &body[1]))) return;
 
-  openfile("ephemeris");
+
 
   for(i = 0; i < 2; i++) for(j = 0; j < 2; j++) {
+    openfile("ephemeris");
+
     if(is_ok(ephemeris(tdb2, &body[i], j, accuracy, pos1, vel1))) {
       fprintf(fp, "%-10s %d ", body[i].name, j);
       printvector(pos1);
@@ -251,35 +278,37 @@ static void test_ee_ct() {
 
 static void test_iau2000a() {
   double dpsi = 0.0, deps = 0.0;
+
   openfile("iau2000a");
-
   iau2000a(tdb, 0.0, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "current %12.6f %12.6f ", dpsi, deps);
 
+  openfile("iau2000a");
   iau2000a(tdb + 100000, 0.0, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "future  %12.6f %12.6f ", dpsi, deps);
 }
 
 static void test_iau2000b() {
   double dpsi = 0.0, deps = 0.0;
+
   openfile("iau2000b");
-
   iau2000b(tdb, 0.0, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "current %12.6f %12.6f ", dpsi, deps);
 
+  openfile("iau2000b");
   iau2000b(tdb + 100000, 0.0, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "future  %12.6f %12.6f ", dpsi, deps);
 }
 
 static void test_nu2000k() {
   double dpsi = 0.0, deps = 0.0;
   openfile("nu2000k");
-
   nu2000k(tdb, 0.0, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "current %12.6f %12.6f ", dpsi, deps);
 
+  openfile("nu2000k");
   nu2000k(tdb + 100000, 0.0, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "future %12.6f %12.6f ", dpsi, deps);
 }
 
 static void test_nutation_angles() {
@@ -288,10 +317,11 @@ static void test_nutation_angles() {
 
   openfile("nutation_angles");
   nutation_angles(t, accuracy, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f", dpsi, deps);
+  fprintf(fp, "current %12.6f %12.6f", dpsi, deps);
 
+  openfile("nutation_angles");
   nutation_angles(t + 100.0, accuracy, &dpsi, &deps);
-  fprintf(fp, "%12.6f %12.6f", dpsi, deps);
+  fprintf(fp, "future  %12.6f %12.6f", dpsi, deps);
 }
 
 
@@ -300,6 +330,30 @@ static void test_e_tilt() {
   openfile("e_tilt");
   e_tilt(tdb, accuracy, &r1, &r2, &r3, &r4, &r5);
   fprintf(fp, "%12.6f %12.6f %12.6f %12.6f %12.6f", r1, r2, r3, r4, r5);
+}
+
+static void test_cel_pole() {
+  double a, b, c, dpsi = 0.0, deps = 0.0;
+
+  openfile("cel_pole");
+  cel_pole(tdb, 0, 0.0, 0.0);
+  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
+  fprintf(fp, "XY %12.6f %12.6f ", dpsi, deps);
+
+  cel_pole(tdb, 0, -2.0, 3.0);
+  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
+  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+
+  openfile("cel_pole");
+  cel_pole(tdb, 1, 0.0, 0.0);
+  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
+  fprintf(fp, "PE %12.6f %12.6f ", dpsi, deps);
+
+  cel_pole(tdb, 1, -2.0, 3.0);
+  e_tilt(tdb, accuracy, &a, &b, &c, &dpsi, &deps);
+  fprintf(fp, "%12.6f %12.6f ", dpsi, deps);
+
+  cel_pole(tdb, 0, 0.0, 0.0);
 }
 
 static void test_nutation() {
@@ -318,8 +372,14 @@ static void test_cio_location() {
   double h = 0.0;
   short sys = -1;
   openfile("cio_location");
+
   if(is_ok(cio_location(tdb, accuracy, &h, &sys)))
-    fprintf(fp, "%d %12.9f", sys, h);
+    fprintf(fp, "%d %12.9f ", sys, h);
+
+  // repeat.
+  if(is_ok(cio_location(tdb, accuracy, &h, &sys)))
+    fprintf(fp, "%d %12.9f ", sys, h);
+
 }
 
 static void test_cio_basis() {
@@ -336,14 +396,25 @@ static void test_cio_basis() {
   printunitvector(z);
 }
 
+static void test_cio_ra() {
+  double h = 0.0;
+  short sys = -1;
+  openfile("cio_ra");
+
+  if(is_ok(cio_ra(tdb, accuracy, &h)))
+    fprintf(fp, "%d %12.9f ", sys, h);
+
+}
+
 static void test_sidereal_time() {
   double h = 0.0;
   openfile("sidereal_time");
   if(!is_ok(sidereal_time(tdb, 0.0, ut12tt, 0, 0, accuracy, &h))) return;
-  fprintf(fp, "%12.6f ", h);
+  fprintf(fp, "ERA %12.6f ", h);
 
+  openfile("sidereal_time");
   if(!is_ok(sidereal_time(tdb, 0.0, ut12tt, 0, 1, accuracy, &h))) return;
-  fprintf(fp, "%12.6f", h);
+  fprintf(fp, "GST %12.6f", h);
 }
 
 static void test_geo_posvel() {
@@ -374,10 +445,12 @@ static void test_time_specific() {
   test_nu2000k();
   test_nutation_angles();
   test_e_tilt();
+  test_cel_pole();
   test_nutation();
   test_ira_equinox();
   test_cio_location();
   test_cio_basis();
+  test_cio_ra();
   test_sidereal_time();
   test_geo_posvel();
 
@@ -479,6 +552,12 @@ static void test_frame_tie() {
 
   openfile("frame_tie");
   frame_tie(pos0, -1, pos1);
+  fprintf(fp, "-1 ");
+  printunitvector(pos1);
+
+  openfile("frame_tie");
+  frame_tie(pos0, 1, pos1);
+  fprintf(fp, "+1 ");
   printunitvector(pos1);
 }
 
@@ -491,6 +570,12 @@ static void test_wobble() {
 
   openfile("wobble");
   wobble(tdb, 0, 2.0, -3.0, pos0, pos1);
+  fprintf(fp, "0 ");
+  printunitvector(pos1);
+
+  openfile("wobble");
+  wobble(tdb, 1, 2.0, -3.0, pos0, pos1);
+  fprintf(fp, "1 ");
   printunitvector(pos1);
 }
 
@@ -529,14 +614,12 @@ static void test_grav_def() {
 static void test_place() {
   int i;
 
-  openfile("place");
-
   for(i=0; i < 4; i++) {
     sky_pos out;
+    openfile("place");
     if(is_ok(place(tdb, &source, &obs, ut12tt, i, accuracy, &out))) {
       // Velocities to 0.1 m/s accuracy
       fprintf(fp, "%d %12.6f %12.6f %12.6f %12.6f ", i, out.ra, out.dec, out.dis, out.rv);
-      newline();
     }
   }
 }
@@ -636,12 +719,16 @@ static void test_cel2ter() {
   if(source.type != 2) return;
 
   openfile("cel2ter");
-
-  if(is_ok(cel2ter(tdb, 0.0, ut12tt, 0, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+  if(is_ok(cel2ter(tdb, 0.0, ut12tt, 0, accuracy, 0, 0.0, 0.0, pos0, pos1))) {
+    fprintf(fp, "ERA GCRS ");
     printunitvector(pos1);
+  }
 
-  if(is_ok(cel2ter(tdb, 0.0, ut12tt, 1, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+  openfile("cel2ter");
+  if(is_ok(cel2ter(tdb, 0.0, ut12tt, 1, accuracy, 0, 0.0, 0.0, pos0, pos1))) {
+    fprintf(fp, "GST GCRS ");
     printunitvector(pos1);
+  }
 }
 
 static void test_ter2cel() {
@@ -650,12 +737,22 @@ static void test_ter2cel() {
   if(source.type != 2) return;
 
   openfile("ter2cel");
-
-  if(is_ok(ter2cel(tdb, 0.0, ut12tt, 0, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+  if(is_ok(ter2cel(tdb, 0.0, ut12tt, 0, accuracy, 0, 0.0, 0.0, pos0, pos1))) {
+    fprintf(fp, "ERA GCRS ");
     printunitvector(pos1);
+  }
 
-  if(is_ok(ter2cel(tdb, 0.0, ut12tt, 1, accuracy, 0, 0.0, 0.0, pos0, pos1)))
+  openfile("ter2cel");
+  if(is_ok(ter2cel(tdb, 0.0, ut12tt, 1, accuracy, 0, 0.0, 0.0, pos0, pos1))) {
+    fprintf(fp, "GST GCRS ");
     printunitvector(pos1);
+  }
+
+  openfile("ter2cel");
+  if(is_ok(ter2cel(tdb, 0.0, ut12tt, 1, accuracy, 1, 0.0, 0.0, pos0, pos1))) {
+    fprintf(fp, "GST TOD  ");
+    printunitvector(pos1);
+  }
 }
 
 
@@ -665,12 +762,10 @@ static void test_equ2hor() {
   if(source.type != 2) return;
 
   openfile("equ2hor");
-
   equ2hor(tdb, ut12tt, accuracy, 0.1, -0.2, &obs.on_surf, source.star.ra, source.star.dec, 0, &zd, &az, &rar, &decr);
   fprintf(fp, "%12.6f %12.6f %12.6f %12.6f ", zd, az, rar, decr);
 
   openfile("equ2hor-refract");
-
   equ2hor(tdb, ut12tt, accuracy, 0.1, -0.2, &obs.on_surf, source.star.ra, source.star.dec, 1, &zd, &az, &rar, &decr);
   fprintf(fp, "%12.6f %12.6f %12.6f %12.6f ", zd, az, rar, decr);
 }
@@ -695,15 +790,41 @@ static void test_equ2ecl() {
   if(source.type != 2) return;
 
   openfile("equ2ecl");
-
   if(is_ok(equ2ecl(tdb, 0, accuracy, source.star.ra, source.star.dec, &elon, &elat)))
-    fprintf(fp, "%12.6f %12.6f ", elon, elat);
+    fprintf(fp, "mean %12.6f %12.6f ", elon, elat);
 
+  openfile("equ2ecl");
   if(is_ok(equ2ecl(tdb, 1, accuracy, source.star.ra, source.star.dec, &elon, &elat)))
-    fprintf(fp, "%12.6f %12.6f ", elon, elat);
+    fprintf(fp, "true %12.6f %12.6f ", elon, elat);
 
+  openfile("equ2ecl");
   if(is_ok(equ2ecl(tdb, 2, accuracy, source.star.ra, source.star.dec, &elon, &elat)))
-    fprintf(fp, "%12.6f %12.6f ", elon, elat);
+    fprintf(fp, "gcrs %12.6f %12.6f ", elon, elat);
+}
+
+static void test_ecl2equ_vec() {
+  double pos1[3];
+
+  if(source.type != 2) return;
+
+  openfile("ecl2equ_vec");
+  if(is_ok(ecl2equ_vec(tdb, 0, accuracy, pos0, pos1))) {
+    fprintf(fp, "mean ");
+    printunitvector(pos1);
+  }
+
+  openfile("ecl2equ_vec");
+  if(is_ok(ecl2equ_vec(tdb, 1, accuracy, pos0, pos1))) {
+    fprintf(fp, "true ");
+    printunitvector(pos1);
+  }
+
+  openfile("ecl2equ_vec");
+  if(is_ok(ecl2equ_vec(tdb, 2, accuracy, pos0, pos1))) {
+    fprintf(fp, "gcrs ");
+    printunitvector(pos1);
+  }
+
 }
 
 static void test_gcrs2equ() {
@@ -742,10 +863,11 @@ static int test_source() {
     test_astro_place();
     test_virtual_place();
     test_app_place();
-    test_cel2ter();
     test_ter2cel();
+    test_cel2ter();
     test_equ2gal();
     test_equ2ecl();
+    test_ecl2equ_vec();
     test_gcrs2equ();
   }
 
