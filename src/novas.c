@@ -4688,6 +4688,7 @@ int cio_set_locator_file(const char *filename) {
  * @sa gcrs_to_cirs()
  */
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, short *ref_sys) {
+  static int first_call = 1;
   static enum novas_accuracy acc_last = -1;
   static short ref_sys_last = -1;
   static double t_last = 0.0, ra_last = 0.0;
@@ -4710,11 +4711,17 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
     return 0;
   }
 
+  if(first_call) {
+    cio_set_locator_file(DEFAULT_CIO_LOCATOR_FILE);
+    first_call = 0;
+  }
+
   if(cio_file) {
     int j;
 
     int error = cio_array(jd_tdb, CIO_INTERP_POINTS, cio);
     if(error) {
+      if(error < 0) return error;
       *ra_cio = 0.0;
       return (error + 10);
     }
@@ -4935,10 +4942,10 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     cache_count = 0;
 
     // Read the file header
-    if(fread(&jd_beg, sizeof(double), 1, cio_file) != sizeof(double)) return -1;
-    if(fread(&jd_end, sizeof(double), 1, cio_file) != sizeof(double)) return -1;
-    if(fread(&t_int, sizeof(double), 1, cio_file) != sizeof(double)) return -1;
-    if(fread(&n_recs, sizeof(long), 1, cio_file) != sizeof(double)) return -1;
+    if(fread(&jd_beg, sizeof(double), 1, cio_file) != 1) return -1;
+    if(fread(&jd_end, sizeof(double), 1, cio_file) != 1) return -1;
+    if(fread(&t_int, sizeof(double), 1, cio_file) != 1) return -1;
+    if(fread(&n_recs, sizeof(long), 1, cio_file) != 1) return -1;
 
     last_file = cio_file;
   }
@@ -4963,24 +4970,23 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     const long N = n_recs - index_rec > NOVAS_CIO_CACHE_SIZE ? NOVAS_CIO_CACHE_SIZE : n_recs - index_rec;
 
     cache_count = 0;
-    index_cache = index_rec - (N >> 1);
+    index_cache = index_rec - (NOVAS_CIO_CACHE_SIZE >> 1);
     if(index_cache < 0) index_cache = 0;
 
-    // Read in cache from the requested position.
+    // Read in cache from the requested position
     if(fseek(cio_file, header_size + index_cache * sizeof(ra_of_cio), SEEK_SET) < 0) return -1;
-    if(fread(&cache, sizeof(ra_of_cio), n_pts, cio_file) != n_pts * sizeof(ra_of_cio)) return -1;
+    if(fread(cache, sizeof(ra_of_cio), N, cio_file) != N) return -1;
 
     cache_count = N;
   }
 
-  if(n_pts < cache_count) {
+  if(n_pts > cache_count) {
     errno = EOF;
     return 6; // Data requested beyond file...
   }
 
   // Copy the requested number of points in to the destination;
   memcpy(cio, &cache[index_rec - index_cache], n_pts * sizeof(ra_of_cio));
-
   return 0;
 }
 

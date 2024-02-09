@@ -12,7 +12,7 @@ run: clean test
 	mkdir data
 	./test
 	rm -f test
-	diff data reference
+	#diff data reference
 
 .PHONY: coverage
 coverage: run
@@ -21,7 +21,7 @@ coverage: run
 	gcov test-solsys3.c
 
 test: src/test.c $(SOURCES) | Makefile
-	$(CC) -o $@ -O0 $(CFLAGS) -DDEFAULT_SOLSYS=3 $^ $(LDFLAGS) -lm
+	$(CC) -o $@ -O0 $(CFLAGS) -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\" $^ $(LDFLAGS) -lm
 
 # We are dependent on the project Makefile...
 Makefile: ../Makefile

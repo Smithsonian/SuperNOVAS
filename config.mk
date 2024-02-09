@@ -25,7 +25,7 @@ CFLAGS = -Os -Wall -Wextra -I$(INC)
 # availability, or in '$(HOME)/.local/share/novas' for user-specific 
 # installation.
 #
-#CFLAGS += -DDEFAULT_CIO_LOCATOR_FILE="/user/share/novas/cio_ra.bin"
+#CFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"/user/share/novas/cio_ra.bin\"
 
 # Whether to build into the library planet_eph_manager() routines provided in 
 # solsys1.c. Because the default readeph implementation (readeph0.c) does not
