@@ -4702,8 +4702,6 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
   static double t_last = 0.0, ra_last = 0.0;
   static ra_of_cio cio[CIO_INTERP_POINTS];
 
-  int success = 0;
-
   if(!ra_cio || !ref_sys) {
     errno = EINVAL;
     return -1;
@@ -4980,7 +4978,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
 
     // Read in cache from the requested position
     if(fseek(cio_file, header_size + index_cache * sizeof(ra_of_cio), SEEK_SET) < 0) return -1;
-    if(fread(cache, sizeof(ra_of_cio), N, cio_file) != N) return -1;
+    if(fread(cache, sizeof(ra_of_cio), N, cio_file) != (size_t) N) return -1;
 
     cache_count = N;
   }
@@ -5755,12 +5753,10 @@ short make_cat_entry(const char *star_name, const char *catalog, long star_num, 
   return 0;
 }
 
-
-
 /**
- * Enables or disables case-sensitive processing of source name. The effect is not retroavtive. The setting will affect
- * only the celestial objects that are defined after the call via make_object(). Note, that catalog names, set via
- * make_cat_entry() are always case sensitive.
+ * Enables or disables case-sensitive processing of the object name. The effect is not retroactive. The setting will
+ * only affect the celestial objects that are defined after the call. Note, that catalog names, set via
+ * make_cat_entry() are always case sensitive regardless of this setting.
  *
  * @param value   (boolean) TRUE (non-zero) to enable case-sensitive object names, or else FALSE (0) to convert names
  *                to upper case only (NOVAS C compatible behavior).
