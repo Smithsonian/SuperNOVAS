@@ -34,7 +34,6 @@ static int idx = -1;
 static char *header;
 
 // cio_array
-// julian_date
 
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
@@ -233,6 +232,21 @@ static void test_cal_date() {
 
   cal_date(tdb, &y, &m, &d, &h);
   openfile("cal_date");
+  fprintf(fp, "%5d %02d %02d %10.6f ", y, m, d, h);
+}
+
+static void test_julian_date() {
+  short y, m, d;
+  double h;
+
+  if(accuracy != 0) return;
+
+  openfile("cal_date");
+  fprintf(fp, "%12.6f %12.6f %12.6f ", julian_date(2024, 2, 9, 12.954), julian_date(1903, 5, 31, 23.021),
+          julian_date(2111, 11, 11, 11.18642));
+
+  cal_date(tdb, &y, &m, &d, &h);
+
   fprintf(fp, "%5d %02d %02d %10.6f ", y, m, d, h);
 }
 
@@ -446,6 +460,7 @@ static void test_time_specific() {
   header = th;
 
   test_cal_date();
+  test_julian_date();
   test_tdb2tt();
   test_ephemeris();
   test_era();

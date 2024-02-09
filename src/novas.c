@@ -4645,10 +4645,15 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
  *
  */
 int cio_set_locator_file(const char *filename) {
+  FILE *old = cio_file;
+
   if(access(filename, R_OK) != 0) return -1;
 
-  if(cio_file) fclose(cio_file);
+  // Open new file first to ensure it has a distinct pointer from the old one...
   cio_file = fopen(filename, "rb");
+
+  // Close the old file.
+  if(old) fclose(old);
 
   return cio_file ? 0 : -1;
 }
@@ -4938,7 +4943,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     last_file = cio_file;
   }
 
-  //Check the input data against limits.
+  // Check the input data against limits.
   if((jd_tdb < jd_beg) || (jd_tdb > jd_end)) {
     errno = EOF;
     return 2;
