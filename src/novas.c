@@ -4671,6 +4671,15 @@ int cio_set_locator_file(const char *filename) {
  * relative to the true equinox. In either case the type of the location is returned
  * alogside the CIO location value.
  *
+ * NOTES:
+ * <ol>
+ * <li>
+ *   Unlike the NOVAS C version of this function, this version will always return a CIO
+ *   location as long as the pointer arguments are not NULL. The returned values will be
+ *   interpolated from the locator file if possible, otherwise it falls back to calculating
+ *   an equinox-based location per default.
+*  </li>
+ * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
@@ -4680,8 +4689,7 @@ int cio_set_locator_file(const char *filename) {
  *                         via interpolation of the available data file, or else CIO_VS_EQUINOX (2)
  *                         if it was calculated locally.
  *
- * @return            0 if successful, -1 if one of the pointer arguments is NULL or the accuracy is invalid, or else
- *                    10 + the error from cio_array().
+ * @return            0 if successful, -1 if one of the pointer arguments is NULL or the accuracy is invalid.
  *
  * @sa cio_set_locator_file()
  * @sa cio_ra()
@@ -4693,6 +4701,8 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
   static short ref_sys_last = -1;
   static double t_last = 0.0, ra_last = 0.0;
   static ra_of_cio cio[CIO_INTERP_POINTS];
+
+  int success = 0;
 
   if(!ra_cio || !ref_sys) {
     errno = EINVAL;
@@ -4716,18 +4726,12 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
     first_call = 0;
   }
 
-  if(cio_file) {
+  if(cio_file && cio_array(jd_tdb, CIO_INTERP_POINTS, cio) == 0) {
     int j;
-
-    int error = cio_array(jd_tdb, CIO_INTERP_POINTS, cio);
-    if(error) {
-      if(error < 0) return error;
-      *ra_cio = 0.0;
-      return (error + 10);
-    }
 
     // Perform Lagrangian interpolation for the RA at 'tdb_jd'.
     *ra_cio = 0.0;
+
     for(j = 0; j < CIO_INTERP_POINTS; j++) {
       double p = 1.0;
       int i;
@@ -4738,16 +4742,17 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
 
     *ra_cio /= 54000.0;
     *ref_sys = CIO_VS_GCRS;
-  }
-  else {
-    // Calculate the equation of origins.
-    *ra_cio = -1.0 * ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
-    *ref_sys = CIO_VS_EQUINOX;
+
+    t_last = jd_tdb;
+    ra_last = *ra_cio;
+    ref_sys_last = *ref_sys;
+
+    return 0;
   }
 
-  t_last = jd_tdb;
-  ra_last = *ra_cio;
-  ref_sys_last = *ref_sys;
+  // Calculate the equation of origins.
+  *ra_cio = -1.0 * ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
+  *ref_sys = CIO_VS_EQUINOX;
 
   return 0;
 }
