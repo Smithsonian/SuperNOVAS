@@ -14,7 +14,7 @@ run: clean test
 	rm -f test
 	diff data reference
 
-.PHONY: coverge
+.PHONY: coverage
 coverage: run
 	gcov test-novas.c
 	gcov test-nutation.c

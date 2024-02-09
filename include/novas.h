@@ -73,6 +73,9 @@
 /// [day] Julian date at B1950
 #define NOVAS_JD_B1950    2433282.42345905
 
+/// [day] Julian date for J1991.25, which the Hipparcos catalog is referred to
+#define NOVAS_JD_HIP      2448349.0625
+
 /// [day] Julian date at B1900
 #define NOVAS_JD_B1900    15019.81352
 
@@ -610,7 +613,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2);
 
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr);
+        double dec, enum novas_refraction_model option, double *zd, double *az, double *rar, double *decr);
 
 short gcrs2equ(double jd_tt, enum novas_dynamical_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
         double *dec);
@@ -705,7 +708,7 @@ short transform_cat(enum novas_transform_type, double date_in, const cat_entry *
 
 int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, double *nadir_ang);
 
-double refract(const on_surface *location, enum novas_refraction_model ref_option, double zd_obs);
+double refract(const on_surface *location, enum novas_refraction_model option, double zd_obs);
 
 double julian_date(short year, short month, short day, double hour);
 
@@ -718,22 +721,24 @@ short make_cat_entry(const char *star_name, const char *catalog, long star_num, 
 
 short make_object(enum novas_object_type, long number, const char *name, const cat_entry *star_data, object *cel_obj);
 
-short make_observer(enum novas_observer_place, const on_surface *obs_surface, const in_space *obs_space, observer *obs);
+short make_observer(enum novas_observer_place, const on_surface *loc_surface, const in_space *loc_space, observer *obs);
 
-int make_observer_at_geocenter(observer *obs_at_geocenter);
+int make_observer_at_geocenter(observer *obs);
 
 int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
-        observer *obs_on_surface);
+        observer *obs);
 
-int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer *obs_in_space);
+int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer *obs);
 
-int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure, on_surface *obs_surface);
+int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure, on_surface *loc);
 
-int make_in_space(const double *sc_pos, const double *sc_vel, in_space *obs_space);
+int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
 
 
 // Added API in SuperNOVAS
+
+void novas_case_sensitive(int value);
 
 int cio_set_locator_file(const char *filename);
 
@@ -748,7 +753,7 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
-double refract_astro(const on_surface *location, enum novas_refraction_model ref_option, double zd_calc);
+double refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_calc);
 
 int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *prel,
         double *vsb, double *tlight);

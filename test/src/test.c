@@ -34,6 +34,7 @@ static int idx = -1;
 static char *header;
 
 // cio_array
+// julian_date
 
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
@@ -328,7 +329,7 @@ static void test_nutation_angles() {
   fprintf(fp, "current %12.6f %12.6f", dpsi, deps);
 
   openfile("nutation_angles");
-  nutation_angles(t + 100.0, accuracy, &dpsi, &deps);
+  nutation_angles(t + 1.0, accuracy, &dpsi, &deps);
   fprintf(fp, "future  %12.6f %12.6f", dpsi, deps);
 }
 

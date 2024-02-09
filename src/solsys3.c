@@ -174,6 +174,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   }
   else if((body == 2) || (body == NOVAS_EARTH)) { /* Earth */
     double p[3][3];
+
     for(i = 3; --i >= 0; ) {
       const double qjd = jd_tdb + (double) (i - 1) * 0.1;
       double ras, decs, diss;
@@ -181,6 +182,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       sun_eph(qjd, &ras, &decs, &diss);
       radec2vector(ras, decs, diss, position);
       precession(qjd, position, T0, position);
+
       p[i][0] = -position[0];
       p[i][1] = -position[1];
       p[i][2] = -position[2];
