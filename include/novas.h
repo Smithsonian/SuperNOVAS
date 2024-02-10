@@ -753,6 +753,12 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
+int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
+        enum novas_accuracy accuracy, double *ra, double *dec, double *rv);
+
+int radec_planet(double jd_tt, const object *ss_body, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
+        enum novas_accuracy accuracy, double *ra, double *dec, double *dis, double *rv);
+
 double refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_calc);
 
 int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *prel,

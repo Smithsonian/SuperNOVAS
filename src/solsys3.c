@@ -15,14 +15,11 @@
  *  @sa solsys-ephem.c
  */
 
-#ifndef _NOVAS_
-#include "novas.h"
-#endif
-
 #include <math.h>
 #include <string.h>
 #include <errno.h>
 
+#include "novas.h"
 
 
 /// \cond PRIVATE
@@ -165,7 +162,10 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   }
 
   // Check if input Julian date is within range (within 3 centuries of J2000).
-  if((jd_tdb < 2340000.5) || (jd_tdb > 2560000.5)) return 1;
+  if((jd_tdb < 2340000.5) || (jd_tdb > 2560000.5)) {
+    errno = EDOM;
+    return 1;
+  }
 
   // Form heliocentric coordinates of the Sun or Earth, depending on
   // 'body'.  Velocities are obtained from crude numerical differentiation.
@@ -187,12 +187,16 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       p[i][1] = -position[1];
       p[i][2] = -position[2];
     }
-    for(i = 0; i < 3; i++) {
+
+    for(i = 3; --i >= 0; ) {
       position[i] = p[1][i];
       velocity[i] = (p[2][i] - p[0][i]) / 0.2;
     }
   }
-  else return 2;
+  else {
+    errno = EINVAL;
+    return 2;
+  }
 
   // If 'origin' = 0, move origin to solar system barycenter.
   // Solar system barycenter coordinates are computed from Keplerian
@@ -235,7 +239,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       tlast = jd_tdb;
     }
 
-    for(i = 0; i < 3; i++) {
+    for(i = 3; --i >= 0; ) {
       position[i] -= pbary[i];
       velocity[i] -= vbary[i];
     }

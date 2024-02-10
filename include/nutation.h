@@ -27,22 +27,23 @@
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
  * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ * @return            0 if successful, or else -1 (errno should be set to indicate the type of error).
  *
  * @sa nutation()
  * @sa iau2000a()
  * @sa iau2000b()
  * @sa iau2000k()
  */
-typedef void (*novas_nutate_func)(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+typedef int (*novas_nutate_func)(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
 
 
-void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
 
 
-void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
 
 
-void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
 
 
 

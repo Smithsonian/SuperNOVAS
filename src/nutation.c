@@ -41,7 +41,10 @@
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
+ *                    It may be NULL if not required.
  * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ *                    It may be NULL if not required.
+ * @return            0
  *
  * @sa nutation()
  * @sa novas_nutate_func
@@ -49,7 +52,7 @@
  * @sa iau2000k()
  *
  */
-void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
+int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
 
   // Luni-Solar argument multipliers:
@@ -2889,10 +2892,10 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   }
 
   // Total: Add planetary and luni-solar components.
-  *dpsi = (dpsils + dpsipl) * factor;
-  *deps = (depsls + depspl) * factor;
+  if(dpsi) *dpsi = (dpsils + dpsipl) * factor;
+  if(deps) *deps = (depsls + depspl) * factor;
 
-  return;
+  return 0;
 }
 
 /**
@@ -2915,7 +2918,10 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
+ *                    It may be NULL if not required.
  * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ *                    It may be NULL if not required.
+ * @return            0
  *
  * @sa nutation()
  * @sa novas_nutate_func
@@ -2925,7 +2931,7 @@ void iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *
  *
  */
-void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
+int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   short i;
 
   // Planetary nutation (arcsec).  These fixed terms account for the
@@ -3136,10 +3142,10 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   }
 
   // Total: Add planetary and luni-solar components.
-  *dpsi = dpsils * factor + dpplan;
-  *deps = depsls * factor + deplan;
+  if(dpsi) *dpsi = dpsils * factor + dpplan;
+  if(deps) *deps = depsls * factor + deplan;
 
-  return;
+  return 0;
 }
 
 /**
@@ -3172,7 +3178,10 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
+ *                    It may be NULL if not required.
  * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
+ *                    It may be NULL if not required.
+ * @return            0
  *
  * @sa nutation()
  * @sa novas_nutate_func
@@ -3180,7 +3189,7 @@ void iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  * @sa iau2000k()
  *
  */
-void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
+int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
@@ -4271,8 +4280,8 @@ void nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
 
   // Total: Add planetary and luni-solar components.
-  *dpsi = (dpsipl + dpsils) * factor;
-  *deps = (depspl + depsls) * factor;
+  if(dpsi) *dpsi = (dpsipl + dpsils) * factor;
+  if(deps) *deps = (depspl + depsls) * factor;
 
-  return;
+  return 0;
 }

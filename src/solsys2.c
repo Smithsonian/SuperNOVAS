@@ -23,9 +23,10 @@
  *  @sa solsys-ephem.c
  */
 
-#ifndef _NOVAS_
+#include <errno.h>
+
 #include "novas.h"
-#endif
+
 
 /// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
@@ -89,8 +90,14 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
   int i;
 
   // Perform sanity checks on the input body and origin.
-  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON)) return 1;
-  else if((origin < 0) || (origin >= NOVAS_ORIGIN_TYPES)) return 1;
+  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON)) {
+    errno = EINVAL;
+    return 1;
+  }
+  else if((origin < 0) || (origin >= NOVAS_ORIGIN_TYPES)) {
+    errno = EINVAL;
+    return 1;
+  }
 
   // Select 'targ' according to the value of 'body'.
   if(body == NOVAS_SUN) targ = 11L;
@@ -100,7 +107,10 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
   // Select 'cent' according to the value of 'origin'.
   if(origin == NOVAS_BARYCENTER) cent = 12L;
   else if(origin == NOVAS_HELIOCENTER) cent = 11L;
-  else return 1;
+  else {
+    errno = EINVAL;
+    return 1;
+  }
 
   // Call Fortran subroutine 'jplint' to obtain position and velocity
   // array 'posvel'.  This is the only point in the NOVAS-C package
@@ -108,10 +118,13 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
   // Note that arguments must be sent to Fortran by reference, not by
   // value.
   jplint_(&jd_tdb, &targ, &cent, posvel, &err_flg);
-  if(err_flg) return 2;
+  if(err_flg) {
+    errno = EAGAIN;
+    return 2;
+  }
 
   // Decompose 'posvel' into 'position' and 'velocity'.
-  for(i = 0; i < 3; i++) {
+  for(i = 3; --i >= 0; ) {
     position[i] = posvel[i];
     velocity[i] = posvel[i + 3];
   }
@@ -171,8 +184,14 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   int i;
 
   // Perform sanity checks on the input body and origin.
-  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON)) return 1;
-  else if((origin < 0) || (origin >= NOVAS_ORIGIN_TYPES)) return 1;
+  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON)) {
+    errno = EINVAL;
+    return 1;
+  }
+  else if((origin < 0) || (origin >= NOVAS_ORIGIN_TYPES)) {
+    errno = EINVAL;
+    return 1;
+  }
 
   // Select 'targ' according to the value of 'body'.
   if(body == NOVAS_SUN) targ = 11L;
@@ -182,7 +201,10 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   // Select 'cent' according to the value of 'origin'.
   if(origin == NOVAS_BARYCENTER) cent = 12L;
   else if(origin == NOVAS_HELIOCENTER) cent = 11L;
-  else return 1;
+  else {
+    errno = EINVAL;
+    return 1;
+  }
 
   // Call Fortran subroutine 'jplihp' to obtain position and velocity
   // array 'posvel'.  This is the only point in the NOVAS-C package
@@ -190,10 +212,13 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   // Note that arguments must be sent to Fortran by reference, not by
   // value.
   jplihp_(jd_tdb, &targ, &cent, posvel, &err_flg);
-  if(err_flg) return 2;
+  if(err_flg) {
+    errno = EAGAIN;
+    return 2;
+  }
 
   // Decompose 'posvel' into 'position' and 'velocity'.
-  for(i = 0; i < 3; i++) {
+  for(i = 3; --i >= 0; ) {
     position[i] = posvel[i];
     velocity[i] = posvel[i + 3];
   }
