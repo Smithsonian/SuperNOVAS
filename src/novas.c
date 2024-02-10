@@ -4265,7 +4265,7 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *dpsi, double
  * </ol>
  *
  * @param t       [cy] TDB time in Julian centuries since J2000.0
- * @param[out] a  [rad] Fundamental arguments data to populate (5 doubles)
+ * @param[out] a  [rad] Fundamental arguments data to populate (5 doubles) [0:2&pi;]
  *
  * @return        0 if successful, or -1 if the output pointer argument is NULL.
  *
@@ -4311,7 +4311,7 @@ int fund_args(double t, novas_fundamental_args *a) {
  *
  * @param t       [cy] Julian centuries since J2000
  * @param planet  Novas planet id, e.g. NOVAS_MARS.
- * @return        [rad] The approximate longitude of the planet in radians.
+ * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;].
  *
  * @sa accum_prec()
  * @sa nutation_angles()
@@ -4617,14 +4617,13 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @sa tt2tdb()
  */
 int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff) {
-  double t, d;
+  const double t =  (tdb_jd - JD_J2000) / JULIAN_CENTURY_DAYS;
+  double d;
 
   if(!tt_jd) {
     errno = EINVAL;
     return -1;
   }
-
-  t = (tdb_jd - JD_J2000) / JULIAN_CENTURY_DAYS;
 
   // Expression given in USNO Circular 179, eq. 2.6.
   d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
@@ -4658,8 +4657,8 @@ int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff) {
  * @author Attila Kovacs
  */
 double tt2tdb(double jd_tt) {
-  double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-  double g = TWOPI * (357.528 + 35999.050 * t) * DEGREE;
+  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
+  const double g = TWOPI * (357.528 + 35999.050 * t) * DEGREE;
   return 0.001658 * sin(g + 0.0167 * sin(g));
 }
 
@@ -5385,9 +5384,10 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
  *                    case the catalog name is inherited from the input.
  * @param[out] out    The transformed catalog entry, with units as given in the struct
  *                    definition
- * @return            0 if successful, -1 if any of the pointer arguments is NULL, or
- *                    else 1 if the input date is invalid for for option CHANGE_SYSTEM
- *                    or CHANGE_EPOCH, or 2 if 'out_id' out of bounds.
+ * @return            0 if successful, -1 if any of the pointer arguments is NULL or
+ *                    if the 'option' is invalid, or else 1 if the input date is
+ *                    invalid for option CHANGE_SYSTEM or CHANGE_EPOCH, or 2 if
+ *                    'out_id' out of bounds.
  * @sa transform_hip()
  * @sa make_cat_entry()
  * @sa precession()
@@ -5469,7 +5469,6 @@ short transform_cat(enum novas_transform_type option, double date_in, const cat_
   }
 
   switch(option) {
-
     case PROPER_MOTION:
       break;
 
@@ -5497,7 +5496,8 @@ short transform_cat(enum novas_transform_type option, double date_in, const cat_
 
     default:
       errno = EINVAL;
-      error = 1;
+      if(out != in) *out = *in;
+      error = -1;
   }
 
   // Convert vectors back to angular components for output.
