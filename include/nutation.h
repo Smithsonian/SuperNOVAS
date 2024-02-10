@@ -3,9 +3,9 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS prototypes for the IAU2000 nutation series calculations, with varying trade-offs between computational cost and
- *  precision. It provides support for both the IAU 2000A and IAU2000B series as well as a NOVAS-specific truncated low-precision
- *  version we call NU2000K.
+ *  SuperNOVAS prototypes for the IAU2000 nutation series calculations, with varying trade-offs
+ *  between computational cost and precision. It provides support for both the IAU 2000A and
+ *  IAU 2000B series as well as a NOVAS-specific truncated low-precision version we call NU2000K.
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.

@@ -5,9 +5,11 @@
  *
  *  SuperNOVAS header for numerical constants that used to be used internally in novas.c.
  *
- *  @deprecated Use your own version for the selection of the constant you need, expressed in whatever units your application
- *              desires. We should not force you to adopt the internally used convention of NOVAS, not to mention the high
- *              chance of namespace conglicts with the super-simplistic naming scheme here. You are better off without this.
+ *  @deprecated Use your own version for the selection of the constant you need, expressed in
+ *              whatever units your application desires. We should not force you to adopt the
+ *              internally used convention of NOVAS, not to mention the high chance of namespace
+ *              conflicts with the super-simplistic naming scheme here. You are better off
+ *              without this.
  *
  *  C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.
@@ -51,14 +53,17 @@ extern const double GE;
 /// @deprecated Radius of Earth in kilometers from IERS Conventions (2003). Use NOVAS_ERAD instead
 extern const double ERAD;
 
-/// @deprecated Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642. Use NOVAS_EARTH_FLATTENING instead.
+/// @deprecated Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
+///             Use NOVAS_EARTH_FLATTENING instead.
 extern const double F;
 
-/// @deprecated Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003). Use NOVAS_ANGVEL instead
+/// @deprecated Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003).
+///             Use NOVAS_ANGVEL instead
 extern const double ANGVEL;
 
 /// @deprecated Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
-///  MASS[0] = Earth/Moon barycenter, MASS[1] = Mercury, ..., MASS[9] = Pluto, MASS[10] = Sun, MASS[11] = Moon. Use NOVAS_RMASS_INIT instead.
+///             MASS[0] = Earth/Moon barycenter, MASS[1] = Mercury, ..., MASS[9] = Pluto, MASS[10] = Sun,
+///             MASS[11] = Moon. Use NOVAS_RMASS_INIT instead.
 extern const double RMASS[12];
 
 

@@ -65,7 +65,8 @@
 /// The version string of the upstream NOVAS library on which this library is based.
 #define NOVAS_VERSION_STRING      #NOVAS_MAJOR_VERSION "." NOVAS_MINOR_VERSION
 
-#define NOVAS_CIO_CACHE_SIZE      1024    ///< [pts] cache size for GCRS CIO locator data (16 bytes per point).
+/// [pts] cache size for GCRS CIO locator data (16 bytes per point).
+#define NOVAS_CIO_CACHE_SIZE      1024
 
 /// [day] Julian date at J2000
 #define NOVAS_JD_J2000    2451545.0
@@ -73,7 +74,8 @@
 /// [day] Julian date at B1950
 #define NOVAS_JD_B1950    2433282.42345905
 
-/// [day] Julian date for J1991.25, which the Hipparcos catalog is referred to
+/// [day] Julian date for J1991.25, which the Hipparcos catalog is
+/// referred to
 #define NOVAS_JD_HIP      2448349.0625
 
 /// [day] Julian date at B1900
@@ -94,19 +96,23 @@
 /// [km] Astronomical Unit in kilometers.
 #define NOVAS_AU_KM       ( 1e-3 * NOVAS_AU )
 
-/// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant in meters^3 / second^2, from DE-405.
+/// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant in
+/// meters^3 / second^2, from DE-405.
 #define NOVAS_GS          1.32712440017987e+20
 
-/// [m<sup>3</sup>/s<sup>2</sup>] Geocentric gravitational constant in meters^3 / second^2, from DE-405.
+/// [m<sup>3</sup>/s<sup>2</sup>] Geocentric gravitational constant in
+/// meters^3 / second^2, from DE-405.
 #define NOVAS_GE          3.98600433e+14
 
 /// [m] Radius of Earth in meters from IERS Conventions (2003).
 #define NOVAS_ERAD        6378136.6
 
-/// Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
+/// Earth ellipsoid flattening from IERS Conventions (2003). Value is
+/// 1 / 298.25642.
 #define NOVAS_EFLAT       (1.0 / 298.25642)
 
-/// [rad/s] Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003).
+/// [rad/s] Rotational angular velocity of Earth in radians/sec from IERS
+/// Conventions (2003).
 #define NOVAS_ANGVEL      7.2921150e-5
 
 /// [s] TAI - GPS time offset
@@ -158,12 +164,20 @@
  *
  */
 enum novas_object_type {
-  NOVAS_MAJOR_PLANET = 0,     ///< A major planet, and also including the Sun an the moon Moon. @sa novas_planets
-  NOVAS_MINOR_PLANET, ///< A minor planet, which may only be handled via ephemeris data, and may require specific user-provided implementation.
-  NOVAS_DISTANT_OBJECT        ///< Any non-solar system object that may be handled via 'catalog' coordinates, such as a star or a quasar.
+  /// A major planet, and also including the Sun an the moon Moon. @sa novas_planets
+  NOVAS_MAJOR_PLANET = 0,
+
+  /// A minor planet, which may only be handled via ephemeris data, and may require specific
+  /// user-provided implementation.
+  NOVAS_MINOR_PLANET,
+
+  /// Any non-solar system object that may be handled via 'catalog' coordinates, such as a star
+  /// or a quasar.
+  NOVAS_DISTANT_OBJECT
 };
 
-#define NOVAS_OBJECT_TYPES        (NOVAS_DISTANT_OBJECT + 1) ///< The number of object types distinguished by NOVAS.
+/// The number of object types distinguished by NOVAS.
+#define NOVAS_OBJECT_TYPES        (NOVAS_DISTANT_OBJECT + 1)
 
 /**
  * Enumeration for the 'major planet' numbers in NOVAS to use as the solar-system body number whenever
@@ -187,7 +201,8 @@ enum novas_planet {
   NOVAS_MOON            ///< Numerical ID for the Moon in NOVAS.
 };
 
-#define NOVAS_PLANETS       (NOVAS_MOON + 1)      ///< The number of major planets defined in NOVAS.
+/// The number of major planets defined in NOVAS.
+#define NOVAS_PLANETS       (NOVAS_MOON + 1)
 
 /**
  * String array initializer for Major planet names, matching the enum novas_planet. E.g.
@@ -206,8 +221,12 @@ enum novas_planet {
  *
  */
 enum novas_observer_place {
-  NOVAS_OBSERVER_AT_GEOCENTER = 0, ///< Calculate coordinates as if observing from the geocenter for location and Earth rotation independent coordinates.
-  NOVAS_OBSERVER_ON_EARTH,            ///< Observer is at a location that is in the rotating frame of Earth.
+  /// Calculate coordinates as if observing from the geocenter for location and Earth rotation
+  /// independent coordinates.
+  NOVAS_OBSERVER_AT_GEOCENTER = 0,
+
+  /// Observer is at a location that is in the rotating frame of Earth.
+  NOVAS_OBSERVER_ON_EARTH,
 
   /**
    * Observer is on Earth orbit, with a position and velocity vector relative to geocenter.
@@ -217,20 +236,33 @@ enum novas_observer_place {
   NOVAS_OBSERVER_IN_EARTH_ORBIT
 };
 
-#define NOVAS_OBSERVER_PLACES     (NOVAS_IN_SPACE + 1)  ///< The number of observer place types supported
+/// The number of observer place types supported
+#define NOVAS_OBSERVER_PLACES     (NOVAS_IN_SPACE + 1)
 
 /**
- * The basic types of positional coordinate reference systems supported by NOVAS. These determine only how the celestial pole
- * is to be located, but not how velocities are to be referenced. specific pos-vel coordinates are referenced to
- * an 'astro_frame', which must specify one of the values defined here.
+ * The basic types of positional coordinate reference systems supported by NOVAS. These
+ * determine only how the celestial pole is to be located, but not how velocities are to be
+ * referenced. specific pos-vel coordinates are referenced to an 'astro_frame', which must
+ * specify one of the values defined here.
  *
  * @sa astro_frame
  */
 enum novas_reference_system {
-  NOVAS_GCRS = 0, ///< Geocentric Celestial Reference system. Essentially the same as ICRS but includes aberration and gravitational deflection.
-  NOVAS_TOD,      ///< True equinox Of Date: dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
-  NOVAS_CIRS,     ///< Celestial Intermediate Reference System: dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
-  NOVAS_ICRS      ///< International Celestial Reference system. The equatorial system fixed to the frame of distant quasars.
+  /// Geocentric Celestial Reference system. Essentially the same as ICRS but includes
+  /// aberration and gravitational deflection.
+  NOVAS_GCRS = 0,
+
+  /// True equinox Of Date: dynamical system of the true equator, with its origin at the true
+  /// equinox (pre IAU 2006 system).
+  NOVAS_TOD,
+
+  /// Celestial Intermediate Reference System: dynamical system of the true equator, with its
+  /// origin at the CIO (preferred since IAU 2006)
+  NOVAS_CIRS,
+
+  /// International Celestial Reference system. The equatorial system fixed to the frame of
+  /// distant quasars.
+  NOVAS_ICRS
 };
 
 /**
@@ -246,40 +278,63 @@ enum novas_equator_type {
  * Constants that determine the type of dynamical system type for gcrs2equ()
  */
 enum novas_dynamical_type {
-  NOVAS_DYNAMICAL_MOD = 0,     ///< Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
-  NOVAS_DYNAMICAL_TOD,         ///< True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the true equinox (pre IAU 2006 system).
-  NOVAS_DYNAMICAL_CIRS         ///< Celestial Intermediate Reference System (CIRS): dynamical system of the true equator, with its origin at the CIO (preferred since IAU 2006)
+  /// Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
+  NOVAS_DYNAMICAL_MOD = 0,
+
+  /// True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the
+  /// true equinox (pre IAU 2006 system).
+  NOVAS_DYNAMICAL_TOD,
+
+  /// Celestial Intermediate Reference System (CIRS): dynamical system of the true equator,
+  /// with its origin at the CIO (preferred since IAU 2006)
+  NOVAS_DYNAMICAL_CIRS
 };
 
-#define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ICRS + 1)    ///< The number of basic coordinate reference systems in NOVAS.
+/// The number of basic coordinate reference systems in NOVAS.
+#define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ICRS + 1)
 
 /**
  * Constants to control the precision of NOVAS nutation calculations.
  *
  */
 enum novas_accuracy {
-  NOVAS_FULL_ACCURACY = 0, ///< Use full precision calculations to micro-arcsecond accuracy. It can be computationally intensive when using the dynamical equator.
-  NOVAS_REDUCED_ACCURACY ///< Calculate with truncated terms. It can be significantly faster if a few milliarcsecond accuracy is sufficient.
+  /// Use full precision calculations to micro-arcsecond accuracy. It can be computationally
+  /// intensive when using the dynamical equator.
+  NOVAS_FULL_ACCURACY = 0,
+
+  /// Calculate with truncated terms. It can be significantly faster if a few milliarcsecond
+  /// accuracy is sufficient.
+  NOVAS_REDUCED_ACCURACY
 };
 
 /**
- * Constants that determine whether refraction calculations should use a standard atmospheric model, or whatever
- * weather parameters have been been specified for the observing location.
+ * Constants that determine whether refraction calculations should use a standard atmospheric
+ * model, or whatever weather parameters have been been specified for the observing location.
  *
  * @sa on_surface
  */
 enum novas_refraction_model {
-  NOVAS_NO_ATMOSPHERE = 0,            ///< Do not apply atmospheric refraction correction
-  NOVAS_STANDARD_ATMOSPHERE,          ///< Uses a standard atmospheric model, ignoring all weather values defined for the specific observing location
-  NOVAS_WEATHER_AT_LOCATION           ///< Uses the weather parameters that are specified together with the observing location.
+  /// Do not apply atmospheric refraction correction
+  NOVAS_NO_ATMOSPHERE = 0,
+
+  /// Uses a standard atmospheric model, ignoring all weather values defined for the specific
+  /// observing location
+  NOVAS_STANDARD_ATMOSPHERE,
+
+  /// Uses the weather parameters that are specified together with the observing location.
+  NOVAS_WEATHER_AT_LOCATION
 };
 
 /**
  * Constants that determine the type of rotation measure to use.
  */
 enum novas_earth_rotation_measure {
-  EROT_ERA = 0,              ///< Use Earth Rotation Angle (ERA) as the rotation measure, relative to the CIO (new IAU 2006 standard)
-  EROT_GST                   ///< Use GST as the rotation measure, relative to the true equinox (before IAU 20006 standard)
+  /// Use Earth Rotation Angle (ERA) as the rotation measure, relative to the CIO (new IAU
+  /// 2006 standard)
+  EROT_ERA = 0,
+
+  /// Use GST as the rotation measure, relative to the true equinox (before IAU 20006 standard)
+  EROT_GST
 };
 
 /**
@@ -295,8 +350,12 @@ enum novas_celestial_class {
  *
  */
 enum novas_pole_offset_type {
-  POLE_OFFSETS_DPSI_DEPS = 1,     ///< Offsets are &Delta;d&psi;, &Delta;d&epsilon; pairs (pre IAU 2006 precession-nutation model).
-  POLE_OFFSETS_X_Y                ///< Offsets are dx, dy pairs (IAU 2006 precession-nutation model)
+  /// Offsets are &Delta;d&psi;, &Delta;d&epsilon; pairs (pre IAU 2006 precession-nutation
+  /// model).
+  POLE_OFFSETS_DPSI_DEPS = 1,
+
+  /// Offsets are dx, dy pairs (IAU 2006 precession-nutation model)
+  POLE_OFFSETS_X_Y
 };
 
 /**
@@ -315,10 +374,15 @@ enum novas_origin {
   NOVAS_BARYCENTER = 0,           ///< Origin at the Solar-system baricenter (i.e. BCRS)
   NOVAS_HELIOCENTER               ///< Origin at the center of the Sun.
 };
-#define NOVAS_ORIGIN_TYPES            (NOVAS_HELIOCENTER + 1)     ///< the number of different ICSR origins available in NOVAS.
 
-#define BARYC     NOVAS_BARYCENTER      ///< @deprecated Old definition of the Barycenter origin. Same as NOVAS_BARYCENTER.
-#define HELIOC    NOVAS_HELIOCENTER     ///< @deprecated Old definition of the Center of Sun as the origin. Same as NOVAS_HELIOCENTER.
+/// the number of different ICSR origins available in NOVAS.
+#define NOVAS_ORIGIN_TYPES            (NOVAS_HELIOCENTER + 1)
+
+/// @deprecated Old definition of the Barycenter origin. Same as NOVAS_BARYCENTER.
+#define BARYC     NOVAS_BARYCENTER
+
+/// @deprecated Old definition of the Center of Sun as the origin. Same as NOVAS_HELIOCENTER.
+#define HELIOC    NOVAS_HELIOCENTER
 
 /**
  * The types of coordinate transformations available for tranform_cat().
@@ -346,14 +410,18 @@ enum novas_transform_type {
   CHANGE_ICRS_TO_J2000
 };
 
-#define NOVAS_TRANSFORM_TYPES         (ICRS_TO_J2000 + 1)         ///< The number of coordinate transfor types in NOVAS.
+/// The number of coordinate transfor types in NOVAS.
+#define NOVAS_TRANSFORM_TYPES         (ICRS_TO_J2000 + 1)
 
 /**
  * System in which CIO location is calculated.
  */
 enum novas_cio_location_type {
-  CIO_VS_GCRS = 1,     ///< The location of the CIO relative to the GCRS frame.
-  CIO_VS_EQUINOX       ///< The location of the CIO relative to the true equinox in the dynamical frame
+  /// The location of the CIO relative to the GCRS frame.
+  CIO_VS_GCRS = 1,
+
+  /// The location of the CIO relative to the true equinox in the dynamical frame
+  CIO_VS_EQUINOX
 };
 
 #ifndef DEFAULT_CIO_LOCATOR_FILE
@@ -363,9 +431,9 @@ enum novas_cio_location_type {
      /// <code>CIO_RA.TXT</code> data (both are included in the distribution)
 #    define DEFAULT_CIO_LOCATOR_FILE      "cio_ra.bin"
 #  else
-/// Path / name of file to use for interpolating the CIO location relative to GCRS
-/// This file can be generated with the <code>cio_file.c</code> tool using the
-/// <code>CIO_RA.TXT</code> data (both are included in the distribution)
+    /// Path / name of file to use for interpolating the CIO location relative to GCRS
+    /// This file can be generated with the <code>cio_file.c</code> tool using the
+    /// <code>CIO_RA.TXT</code> data (both are included in the distribution)
 #    define DEFAULT_CIO_LOCATOR_FILE      "/usr/share/novas/cio_ra.bin"
 #  endif
 #endif
@@ -377,24 +445,29 @@ enum novas_cio_location_type {
  * @sa WOBBLE_ITRS_TO_TIRS
  */
 enum novas_wobble_direction {
-  WOBBLE_ITRS_TO_PEF = 0,    ///< use for wobble() to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF).
-  /**
-   * use for wobble() to change from Pseudo Earth Fixed (PEF) to ITRS (actual rotating Earth).
-   * (You can use any non-zero value as well.)
-   */
+  /// use for wobble() to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF).
+  WOBBLE_ITRS_TO_PEF = 0,
+
+  /// use for wobble() to change from Pseudo Earth Fixed (PEF) to ITRS (actual rotating Earth).
+  /// (You can use any non-zero value as well.)
   WOBBLE_PEF_TO_ITRS
 };
 
 /**
- * Direction constant to use for frame_tie(), to determine the direction of transformation between J2000 and
- * ICRS coordinates.
+ * Direction constant to use for frame_tie(), to determine the direction of transformation
+ * between J2000 and ICRS coordinates.
  *
  * @sa frame_tie()
  * @sa TIE_J2000_TO_ICRS
  */
 enum novas_frametie_direction {
-  TIE_J2000_TO_ICRS = -1,   ///< Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any negative value for the same effect).
-  TIE_ICRS_TO_J2000         ///< Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value &gt;=0 for the same effect).
+  /// Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any
+  /// negative value for the same effect).
+  TIE_J2000_TO_ICRS = -1,
+
+  /// Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value
+  /// &gt;=0 for the same effect).
+  TIE_ICRS_TO_J2000
 };
 
 /**
@@ -402,8 +475,12 @@ enum novas_frametie_direction {
  *
  */
 enum novas_nutation_direction {
-  NUTATE_TRUE_TO_MEAN = -1, ///< Change from true equator to mean equator (i.e. undo wobble corrections). You may use any non-zero value as well.
-  NUTATE_MEAN_TO_TRUE       ///< Change from mean equator to true equator (i.e. apply wobble corrections)
+  /// Change from true equator to mean equator (i.e. undo wobble corrections). You may use
+  /// any non-zero value as well.
+  NUTATE_TRUE_TO_MEAN = -1,
+
+  /// Change from mean equator to true equator (i.e. apply wobble corrections)
+  NUTATE_MEAN_TO_TRUE
 };
 
 /**
@@ -433,12 +510,12 @@ typedef struct {
   char starname[SIZE_OF_OBJ_NAME];  ///< name of celestial object
   char catalog[SIZE_OF_CAT_NAME];   ///< catalog designator (e.g., HIP)
   long starnumber;                  ///< integer identifier assigned to object
-  double ra;                        ///< [h] ICRS right ascension (hours)
-  double dec;                       ///< [deg] ICRS declination (degrees)
-  double promora;                   ///< [mas/yr] ICRS proper motion in right ascension (milliarcseconds/year)
-  double promodec;                  ///< [mas/yr] ICRS proper motion in declination (milliarcseconds/year)
-  double parallax;                  ///< [mas] parallax (milliarcseconds)
-  double radialvelocity;            ///< [km/s] radial velocity (km/s)
+  double ra;                        ///< [h] ICRS right ascension
+  double dec;                       ///< [deg] ICRS declination
+  double promora;                   ///< [mas/yr] ICRS proper motion in right ascension
+  double promodec;                  ///< [mas/yr] ICRS proper motion in declination
+  double parallax;                  ///< [mas] parallax
+  double radialvelocity;            ///< [km/s] radial velocity
 } cat_entry;
 
 /**
@@ -446,9 +523,9 @@ typedef struct {
  */
 typedef struct {
   enum novas_object_type type;    ///< NOVAS object type
-  long number;                ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
+  long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
-  cat_entry star;                 ///< basic astrometric data for any celestial objecr located outside the solar system, such as a star
+  cat_entry star;                 ///< basic astrometric data for any 'catalog' object.
 } object;
 
 /**
@@ -462,10 +539,10 @@ typedef struct {
  */
 typedef struct {
   double latitude;      ///< [deg] geodetic (ITRS) latitude; north positive
-  double longitude;     ///< [deg] geodetic (ITRS) longitude; east positive (degrees)
-  double height;        ///< [m] altitude above sea level (meters)
+  double longitude;     ///< [deg] geodetic (ITRS) longitude; east positive
+  double height;        ///< [m] altitude above sea level
   double temperature;   ///< [C] temperature (degrees Celsius); for optical refraction
-  double pressure;      ///< [mbar] atmospheric pressure (millibars); for optical refraction
+  double pressure;      ///< [mbar] atmospheric pressure for optical refraction
 } on_surface;
 
 /**
@@ -473,8 +550,8 @@ typedef struct {
  *
  */
 typedef struct {
-  double sc_pos[3];     ///< [km] geocentric position vector (x, y, z), component in km
-  double sc_vel[3];     ///< [km] geocentric velocity vector (x_dot, y_dot, z_dot), components in km/s
+  double sc_pos[3];     ///< [km] geocentric position vector (x, y, z)
+  double sc_vel[3];     ///< [km] geocentric velocity vector (x_dot, y_dot, z_dot)
 } in_space;
 
 /**
@@ -530,15 +607,15 @@ typedef struct {
 #define FRAME_INIT_BCRS                         { NOVAS_ICRS, NOVAS_BARICENTRIC }
 
 /**
- * Initializer for astro_frame for International Celestrial Reference System (ICRS), with its origin at the
- * center of the Sun
+ * Initializer for astro_frame for International Celestrial Reference System (ICRS), with its
+ * origin at the center of the Sun
  *
  */
 #define FRAME_INIT_ICRS                         { NOVAS_ICRS, NOVAS_HELIOCDENTRIC }
 
 /**
- * Initializer for astro_frame for Geocentric Celestrial Reference System (ICRS), with its origin at the
- * center of Earth
+ * Initializer for astro_frame for Geocentric Celestrial Reference System (ICRS), with its
+ * origin at the center of Earth
  *
  */
 #define FRAME_INIT_GCRS                         { NOVAS_GCRS }
@@ -558,19 +635,22 @@ typedef struct {
 #define FRAME_INIT_TOD(epoch)                   { NOVAS_TOD, -1, NOVAS_OBSERVER_AT_GEOCENTER, EPOCH_TO_JD(epoch) }
 
 /**
- * Initializer for astro_frame for a topocentric frame at a given location in Earth's rotating frame
- * and at a specific instant of time.
+ * Initializer for astro_frame for a topocentric frame at a given location in Earth's rotating
+ * frame and at a specific instant of time.
  *
  * @param jd_tt           [day] Precise Terrestrial Time (TT) based Julian date of observation
- * @param surface_loc     Pointer to an on_surface structure defining the observer location on Earth
+ * @param surface_loc     Pointer to an on_surface structure defining the observer location on
+ *                        Earth
  */
 #define FRAME_INIT_APPARENT_TOPO(jd_tt, surface_loc)        { NOVAS_CIRS, -1, { NOVAS_OBSERVER_ON_SURFACE, surface_loc}, jd_tt + tt2tdb(jd_tt) / 86400.0 }
 
 /**
  * Initializer for astro_frame for an Earth orbit frame.
  *
- * @param jd_tdb          [day] Precise Barycentric Dynamical Time (TDB) based Julian date of observation
- * @param space_loc       Pointer to an in_space structure defining the observer location in Earth orbit
+ * @param jd_tdb          [day] Precise Barycentric Dynamical Time (TDB) based Julian date of
+ *                        observation
+ * @param space_loc       Pointer to an in_space structure defining the observer location in Earth
+ *                        orbit
  */
 #define FRAME_INIT_APPARENT_NEAR_EARTH(jd_tdb, space_loc)    { NOVAS_CIRS, -1, { NOVAS_OBSERVER_IN_SPACE, space_loc}, jd_tdb }
 

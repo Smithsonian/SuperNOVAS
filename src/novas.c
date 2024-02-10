@@ -15,12 +15,13 @@
  */
 
 #if !COMPAT
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+#  include <stdio.h>
+#  include <stdlib.h>
+#  include <ctype.h>
 #endif
 
+#include <string.h>
+#include <math.h>
 #include <errno.h>
 #include <unistd.h>
 
@@ -63,6 +64,14 @@
 #  define NAN               (0.0/0.0)
 #endif
 
+/**
+ * Propagate an error (if any) with an offset. If the error is non-zero, it returns with the offset
+ * error value. Otherwise it keeps going as if it weren't even there...
+ *
+ * @param n     The error code
+ * @param d     the offset with which the error is propagated
+ *
+ */
 #define prop_error(n, d)    if(n) return (n < 0 ? -1 : n + d)
 
 /// \endcond
@@ -488,8 +497,8 @@ int set_planet_calc_hp(novas_planet_calculator_hp f) {
  * @author Attila Kovacs
  * @since 1.0
  */
-int place_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt, enum novas_reference_system system,
-        enum novas_accuracy accuracy, sky_pos *pos) {
+int place_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
+        enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *pos) {
   object source = { };
 
   if(!star || !pos) {
@@ -591,8 +600,8 @@ int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  * @since 1.0
  * @author Attila Kovacs
  */
-int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
-        enum novas_accuracy accuracy, double *ra, double *dec, double *rv) {
+int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
+        enum novas_reference_system sys, enum novas_accuracy accuracy, double *ra, double *dec, double *rv) {
   sky_pos output = { };
   int error = place_star(jd_tt, star, obs, ut1_to_tt, sys, accuracy, &output);
 
@@ -640,8 +649,8 @@ int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double 
  * @since 1.0
  * @author Attila Kovacs
  */
-int radec_planet(double jd_tt, const object *ss_body, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
-        enum novas_accuracy accuracy, double *ra, double *dec, double *dis, double *rv) {
+int radec_planet(double jd_tt, const object *ss_body, const observer *obs, double ut1_to_tt,
+        enum novas_reference_system sys, enum novas_accuracy accuracy, double *ra, double *dec, double *dis, double *rv) {
   sky_pos output = { };
   int error;
 
@@ -810,7 +819,8 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
  * @sa virtual_planet()
  * @sa app_star()
  */
-short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
+short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec,
+        double *dis) {
   return (short) radec_planet(jd_tt, ss_body, NULL, 0.0, NOVAS_TOD, accuracy, ra, dec, dis, NULL);
 }
 
@@ -845,7 +855,8 @@ short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accura
  * @sa topo_planet()
  * @sa app_star()
  */
-short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
+short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec,
+        double *dis) {
   return (short) radec_planet(jd_tt, ss_body, NULL, 0.0, NOVAS_GCRS, accuracy, ra, dec, dis, NULL);
 }
 
@@ -881,7 +892,8 @@ short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy ac
  * @sa virtual_planet()
  * @sa astro_star()
  */
-short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
+short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec,
+        double *dis) {
   return (short) radec_planet(jd_tt, ss_body, NULL, 0.0, NOVAS_ICRS, accuracy, ra, dec, dis, NULL);
 }
 
@@ -923,8 +935,8 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  * @sa astro_planet()
  * @sa get_ut1_to_tt()
  */
-short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy, double *ra,
-        double *dec) {
+short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position,
+        enum novas_accuracy accuracy, double *ra, double *dec) {
   observer obs = { };
   make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs);
   return (short) radec_star(jd_tt, star, &obs, ut1_to_tt, NOVAS_TOD, accuracy, ra, dec, NULL);
@@ -964,8 +976,8 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_
  * @sa astro_planet()
  * @sa get_ut1_to_tt()
  */
-short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
-        double *ra, double *dec) {
+short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position,
+        enum novas_accuracy accuracy, double *ra, double *dec) {
   observer obs = { };
   make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs);
   return (short) radec_star(jd_tt, star, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, ra, dec, NULL);
@@ -1010,8 +1022,8 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
  * @sa astro_star()
  * @sa get_ut1_to_tt()
  */
-short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
-        double *ra, double *dec, double *dis) {
+short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position,
+        enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
   observer obs = { };
   make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs);
   return (short) radec_planet(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_TOD, accuracy, ra, dec, dis, NULL);
@@ -1050,8 +1062,8 @@ short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const o
  * @sa app_star()
  * @sa get_ut1_to_tt()
  */
-short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
-        double *ra, double *dec, double *dis) {
+short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position,
+        enum novas_accuracy accuracy, double *ra, double *dec, double *dis) {
   observer obs = { };
   make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs);
   return (short) radec_planet(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, ra, dec, dis, NULL);
@@ -1188,8 +1200,8 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
  * @sa cel_pole()
  * @sa get_ut1_to_tt()
  */
-short place(double jd_tt, const object *cel_object, const observer *location, double ut1_to_tt, enum novas_reference_system coord_sys,
-        enum novas_accuracy accuracy, sky_pos *output) {
+short place(double jd_tt, const object *cel_object, const observer *location, double ut1_to_tt,
+        enum novas_reference_system coord_sys, enum novas_accuracy accuracy, sky_pos *output) {
   static object earth, sun;
 
   static int first_time = 1;
@@ -1228,7 +1240,8 @@ short place(double jd_tt, const object *cel_object, const observer *location, do
   // Check on Earth as an observed object.  Earth can only be an observed
   // object when 'location' is a near-Earth satellite.
   // ---------------------------------------------------------------------
-  if((cel_object->type == NOVAS_MAJOR_PLANET) && (cel_object->number == NOVAS_EARTH) && (obs.where != NOVAS_OBSERVER_IN_EARTH_ORBIT)) {
+  if((cel_object->type == NOVAS_MAJOR_PLANET) && (cel_object->number == NOVAS_EARTH)
+          && (obs.where != NOVAS_OBSERVER_IN_EARTH_ORBIT)) {
     errno = EINVAL;
     return 3;
   }
@@ -1459,8 +1472,8 @@ int equ2gal(double rai, double deci, double *glon, double *glat) {
  *
  * @sa ecl2equ_vec()
  */
-short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec, double *elon,
-        double *elat) {
+short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec,
+        double *elon, double *elat) {
 
   double r, d, cosd, pos[3], xyproj;
   int error;
@@ -1511,7 +1524,8 @@ short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accura
  * @sa ecl2equ_vec()
  * @sa equ2ecl()
  */
-short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2) {
+short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1,
+        double *pos2) {
   double pos0[3], obl, c, s;
 
   if(!pos1 || !pos2) {
@@ -1594,7 +1608,8 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *
  * @sa equ2ecl_vec()
  */
-short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1, double *pos2) {
+short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1,
+        double *pos2) {
   double obl = 0.0, c, s, x, y, z;
 
   if(!pos1 || !pos2) {
@@ -1664,9 +1679,9 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 }
 
 // Like equ2hor, but with the rotation measure type added as an argument.
-static int equ2hor_generic(double jd_ut1, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double xp,
-        double yp, const on_surface *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd, double *az,
-        double *rar, double *decr) {
+static int equ2hor_generic(double jd_ut1, double ut1_to_tt, enum novas_earth_rotation_measure erot,
+        enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra, double dec,
+        enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
 
   double sinlat, coslat, sinlon, coslon, cosdec;
   double uze[3], une[3], uwe[3], uz[3], un[3], uw[3], p[3];
@@ -1831,9 +1846,11 @@ static int equ2hor_generic(double jd_ut1, double ut1_to_tt, enum novas_earth_rot
  * @sa NOVAS_TOD
  *
  */
-int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
-  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_GST, accuracy, xp, yp, location, ra, dec, ref_option, zd, az, rar, decr);
+int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
+        const on_surface *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd,
+        double *az, double *rar, double *decr) {
+  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_GST, accuracy, xp, yp, location, ra, dec, ref_option, zd, az, rar,
+          decr);
 }
 
 /**
@@ -1879,9 +1896,10 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
  * @author Attila Kovacs
  *
  */
-int tod_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, double *zd, double *az) {
-  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_GST, accuracy, xp, yp, location, ra, dec, NOVAS_NO_ATMOSPHERE, zd, az, NULL, NULL);
+int tod_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
+        const on_surface *location, double ra, double dec, double *zd, double *az) {
+  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_GST, accuracy, xp, yp, location, ra, dec, NOVAS_NO_ATMOSPHERE, zd, az,
+          NULL, NULL);
 }
 
 /**
@@ -1927,9 +1945,10 @@ int tod_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, do
  * @since 1.0
  * @author Attila Kovacs
  */
-int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra,
-        double dec, double *zd, double *az) {
-  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_ERA, accuracy, xp, yp, location, ra, dec, NOVAS_NO_ATMOSPHERE, zd, az, NULL, NULL);
+int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
+        const on_surface *location, double ra, double dec, double *zd, double *az) {
+  return equ2hor_generic(jd_ut1, ut1_to_tt, EROT_ERA, accuracy, xp, yp, location, ra, dec, NOVAS_NO_ATMOSPHERE, zd, az,
+          NULL, NULL);
 }
 
 /**
@@ -1953,8 +1972,8 @@ int cirs_to_hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, d
  *                    vector2radec(), 10--20 error is  10 + error cio_location(); or else
  *                    20 + error from cio_basis()
  */
-short gcrs2equ(double jd_tt, enum novas_dynamical_type coord_sys, enum novas_accuracy accuracy, double rag, double decg, double *ra,
-        double *dec) {
+short gcrs2equ(double jd_tt, enum novas_dynamical_type coord_sys, enum novas_accuracy accuracy, double rag, double decg,
+        double *ra, double *dec) {
   double jd_tdb, r, d, pos1[3], pos2[3];
   int error = 0;
 
@@ -2140,7 +2159,8 @@ short sidereal_time(double jd_high, double jd_low, double ut1_to_tt, enum novas_
 
       // Precession-in-RA terms in mean sidereal time taken from third
       // reference, eq. (42), with coefficients in arcseconds.
-      st = eqeq + 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
+      st = eqeq + 0.014506
+              + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
 
       // Form the Greenwich sidereal time.
       *gst = remainder((st / 3600.0 + theta) / 15.0, DAY_HOURS);
@@ -2246,7 +2266,8 @@ double era(double jd_high, double jd_low) {
  * @sa cel2ter()
  */
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1, double *vec2) {
+        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        double *vec2) {
   double jd_ut1, jd_tt, jd_tdb, gast;
 
   if(!vec1 || !vec2) {
@@ -2344,8 +2365,8 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
-        const double *vec1, double *vec2) {
+int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *vec1, double *vec2) {
   return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
@@ -2385,8 +2406,8 @@ int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
-        const double *vec1, double *vec2) {
+int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *vec1, double *vec2) {
   return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
@@ -2444,7 +2465,8 @@ int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum no
  * @sa ter2cel()
  */
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1, double *vec2) {
+        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        double *vec2) {
 
   double jd_ut1, jd_tt, jd_tdb, gast, theta;
 
@@ -2545,8 +2567,8 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
-        const double *vec1, double *vec2) {
+int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *vec1, double *vec2) {
   return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
@@ -2587,8 +2609,8 @@ int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  * @since 1.0
  * @author Attila Kovacs
  */
-int tod_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
-        const double *vec1, double *vec2) {
+int tod_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *vec1, double *vec2) {
   return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
@@ -2821,7 +2843,8 @@ int terra(const on_surface *location, double lst, double *pos, double *vel) {
  * @sa equ2ecl()
  * @sa ecl2equ()
  */
-int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *tobl, double *ee, double *dpsi, double *deps) {
+int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *tobl, double *ee, double *dpsi,
+        double *deps) {
   static enum novas_accuracy acc_last = -1;
   static double jd_last = 0;
   static double d_psi, d_eps, mean_ob, true_ob, c_terms;
@@ -3289,7 +3312,8 @@ int bary2obs(const double *pos, const double *pos_obs, double *pos2, double *lig
  * @sa get_ut1_to_tt()
  * @sa cel_pole()
  */
-short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos, double *vel) {
+short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos,
+        double *vel) {
   static double t_last = 0;
   static enum novas_accuracy acc_last = -1;
   static double gast;
@@ -3400,8 +3424,8 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
  * @since 1.0
  * @author Attila Kovacs
  */
-int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *prel,
-        double *vsb, double *tlight) {
+int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0,
+        enum novas_accuracy accuracy, double *prel, double *vsb, double *tlight) {
   int iter = 0;
 
   double tol, jd[2] = { };
@@ -3478,8 +3502,8 @@ int light_time2(double jd_tdb, const object *ss_object, const double *pos_obs, d
  * @sa light_time2()
  * @sa place()
  */
-short light_time(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos,
-        double *tlight) {
+short light_time(double jd_tdb, const object *ss_object, const double *pos_obs, double tlight0,
+        enum novas_accuracy accuracy, double *pos, double *tlight) {
   double vel[3];
   return (short) light_time2(jd_tdb, ss_object, pos_obs, tlight0, accuracy, pos, vel, tlight);
 }
@@ -3567,14 +3591,14 @@ double d_light(const double *pos1, const double *pos_obs) {
  * @sa set_planet_calc()
  * @sa set_planet_calc_hp()
  */
-short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_accuracy accuracy, const double *pos1, const double *pos_obs,
-        double *pos2) {
+short grav_def(double jd_tdb, enum novas_observer_place loc_code, enum novas_accuracy accuracy, const double *pos1,
+        const double *pos_obs, double *pos2) {
 
   // The following list of body numbers identifies which gravitating bodies (aside from the Earth)
   // are potentially used -- list is taken from Klioner's table 1, the order based on area of sky
   // affected (col 2).  Order is Sun, Jupiter, Saturn, Moon, Venus, Uranus, Neptune.
-  static const enum novas_planet body_num[7] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_MOON, NOVAS_VENUS, NOVAS_URANUS,
-          NOVAS_NEPTUNE };
+  static const enum novas_planet body_num[7] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_MOON, NOVAS_VENUS,
+          NOVAS_URANUS, NOVAS_NEPTUNE };
 
   static const double rmass[] = NOVAS_RMASS_INIT;
 
@@ -3876,8 +3900,8 @@ int aberration(const double *pos, const double *ve, double lighttime, double *po
  *
  * @sa place()
  */
-int rad_vel(const object *cel_object, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun,
-        double d_obj_sun, double *rv) {
+int rad_vel(const object *cel_object, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo,
+        double d_obs_sun, double d_obj_sun, double *rv) {
   static double c2 = C * C, toms = AU / DAY, toms2 = (AU / DAY) * (AU / DAY);
 
   double v[3], posmag, uk[3], v2, vo2, r, phigeo, phisun, rel, kv, zb1, kvobs, zobs1;
@@ -4131,7 +4155,8 @@ short precession(double jd_tdb1, const double *pos1, double jd_tdb2, double *pos
  * @sa tt2tdb()
  * @sa NOVAS_TOD
  */
-int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *pos, double *pos2) {
+int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *pos,
+        double *pos2) {
   double oblm, oblt, psi;
   double cm, sm, ct, st, cp, sp;
   double xx, yx, zx, xy, yy, zy, xz, yz, zz;
@@ -4617,7 +4642,7 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @sa tt2tdb()
  */
 int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff) {
-  const double t =  (tdb_jd - JD_J2000) / JULIAN_CENTURY_DAYS;
+  const double t = (tdb_jd - JD_J2000) / JULIAN_CENTURY_DAYS;
   double d;
 
   if(!tt_jd) {
@@ -4626,8 +4651,9 @@ int tdb2tt(double tdb_jd, double *tt_jd, double *secdiff) {
   }
 
   // Expression given in USNO Circular 179, eq. 2.6.
-  d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
-          + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+  d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970)
+          + 0.000014 * sin(1256.6152 * t + 6.1969) + 0.000005 * sin(606.9777 * t + 4.0212)
+          + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
           + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
   *tt_jd = tdb_jd - d / DAY;
@@ -4886,8 +4912,8 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
  * @sa cio_location()
  * @sa gcrs_to_cirs()
  */
-short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type ref_sys, enum novas_accuracy accuracy, double *x, double *y,
-        double *z) {
+short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type ref_sys, enum novas_accuracy accuracy,
+        double *x, double *y, double *z) {
   static enum novas_accuracy acc_last = -1;
   static double t_last = 0.0;
   static double zz[3];
@@ -5210,8 +5236,8 @@ novas_ephem_reader_func get_ephem_reader() {
  * @sa set_ephem_reader()
  * @sa make_object()
  */
-short ephemeris(const double jd_tdb[2], const object *cel_obj, enum novas_origin origin, enum novas_accuracy accuracy, double *pos,
-        double *vel) {
+short ephemeris(const double jd_tdb[2], const object *cel_obj, enum novas_origin origin, enum novas_accuracy accuracy,
+        double *pos, double *vel) {
 
   double posvel[6] = { };
   int error = 0;
@@ -5395,8 +5421,8 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
  * @sa NOVAS_JD_J2000
  * @sa NOVAS_JD_B1950
  */
-short transform_cat(enum novas_transform_type option, double date_in, const cat_entry *in, double date_out, const char *out_id,
-        cat_entry *out) {
+short transform_cat(enum novas_transform_type option, double date_in, const cat_entry *in, double date_out,
+        const char *out_id, cat_entry *out) {
 
   double paralx, dist, r, d, cra, sra, cdc, sdc, k;
   double pos[3], vel[3], term1, pmr, pmd, rvl, xyproj;
@@ -5749,7 +5775,8 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  *
  */
 double julian_date(short year, short month, short day, double hour) {
-  long jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
+  long jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L
+          + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
           - 3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L;
   return jd12h - 0.5 + hour / DAY_HOURS;
 }
@@ -5846,8 +5873,8 @@ double norm_ang(double angle) {
  * @sa make_object()
  * @sa transform_cat()
  */
-short make_cat_entry(const char *star_name, const char *catalog, long star_num, double ra, double dec, double pm_ra, double pm_dec,
-        double parallax, double rad_vel, cat_entry *star) {
+short make_cat_entry(const char *star_name, const char *catalog, long star_num, double ra, double dec, double pm_ra,
+        double pm_dec, double parallax, double rad_vel, cat_entry *star) {
 
   if(!star) {
     errno = EINVAL;
@@ -5925,7 +5952,8 @@ void novas_case_sensitive(int value) {
  * @sa make_cat_entry()
  * @sa place()
  */
-short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star_data, object *cel_obj) {
+short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star_data,
+        object *cel_obj) {
 
   if(!cel_obj) {
     errno = EINVAL;
@@ -6002,7 +6030,8 @@ short make_object(enum novas_object_type type, long number, const char *name, co
  * @sa make_observer_on_surface()
  * @sa make_observer_in_space()
  */
-short make_observer(enum novas_observer_place where, const on_surface *loc_surface, const in_space *loc_space, observer *obs) {
+short make_observer(enum novas_observer_place where, const on_surface *loc_surface, const in_space *loc_space,
+        observer *obs) {
   if(!obs) {
     errno = EINVAL;
     return -1;
@@ -6075,7 +6104,8 @@ int make_observer_at_geocenter(observer *obs) {
  * @sa make_observer_at_geocenter()
  * @sa place()
  */
-int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure, observer *obs) {
+int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
+        observer *obs) {
   on_surface loc;
   make_on_surface(latitude, longitude, height, temperature, pressure, &loc);
   return make_observer(NOVAS_OBSERVER_ON_EARTH, &loc, NULL, obs);
@@ -6118,7 +6148,8 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * @sa make_observer_on_surface()
  * @sa make_in_space()
  */
-int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure, on_surface *loc) {
+int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
+        on_surface *loc) {
   if(!loc) {
     errno = EINVAL;
     return -1;

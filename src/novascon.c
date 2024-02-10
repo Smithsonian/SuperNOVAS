@@ -14,6 +14,7 @@
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
  */
+
 #include "novas.h"
 #include "novascon.h"
 

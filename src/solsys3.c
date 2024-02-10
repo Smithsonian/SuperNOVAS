@@ -295,7 +295,7 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
         double *velocity) {
 
   int error = earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity);
-  if(error) return (error);
+  if(error) return error;
 
   return allow_lp_for_hp ? 0 : 3;
 }
