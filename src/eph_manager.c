@@ -25,11 +25,9 @@
 
 
 /**
- * Flag that defines physical units of the output states.
- * 1: km and km/sec; 0: AU and AU/day.
+ * Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
  *
- * Default value is 0 (KM determines time unit for nutations.
- * Angle unit is always radians.)
+ * Default value is 0 (KM determines time unit for nutations. Angle unit is always radians.)
  */
 short KM;
 
@@ -61,7 +59,8 @@ FILE *EPHFILE = NULL;
  *
  * REFERENCES:
  * <ol>
- * <li>Standish, E.M. and Newhall, X X (1988). "The JPL Export Planetary Ephemeris"; JPL document dated 17 June 1988.</li>
+ * <li>Standish, E.M. and Newhall, X X (1988). "The JPL Export Planetary Ephemeris"; JPL document
+ * dated 17 June 1988.</li>
  * </ol>
  *
  * @param ephem_name      Name.path of the direct-access ephemeris file.
@@ -241,8 +240,10 @@ short ephem_close(void) {
  *                  are requested, e.g. DE_JUPITER.
  * @param origin    The integer code of the planet or position relative to
  *                  which coordinates are measured.
- * @param[out] position   [AU] Position vector array of target relative to center, measured in AU.
- * @param[out] velocity   [AU/day] Velocity vector array of target relative to center, measure in AU/day.
+ * @param[out] position   [AU] Position vector array of target relative to center, measured
+ *                        in AU.
+ * @param[out] velocity   [AU/day] Velocity vector array of target relative to center,
+ *                        measured in AU/day.
  * @return          0 if successful, or -1 if one of the pointer arguments is NULL, or
  *                  else the error returned from state().
  *
@@ -385,14 +386,11 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
 /**
  * Reads and interpolates the JPL planetary ephemeris file.
  *
- * For ease in programming, the user may put the entire epoch in
- * jed[0] and set jed[1] = 0. For maximum interpolation accuracy,
- * set jed[0] = the most recent midnight at or before
- * interpolation epoch, and set jed[1] = fractional part of a day
- * elapsed between jed[0] and epoch. As an alternative, it may
- * prove convenient to set jed[0] = some fixed epoch, such as
- * start of the integration and jed[1] = elapsed interval between
- * then and epoch.
+ * For ease in programming, the user may put the entire epoch in jed[0] and set jed[1] = 0.
+ * For maximum interpolation accuracy, set jed[0] = the most recent midnight at or before
+ * interpolation epoch, and set jed[1] = fractional part of a day elapsed between jed[0] and
+ * epoch. As an alternative, it may prove convenient to set jed[0] = some fixed epoch, such
+ * as start of the integration and jed[1] = elapsed interval between then and epoch.
  *
  * REFERENCES:
  * <ol>
@@ -406,8 +404,8 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
  *                    target (short)
  * @param target      The integer code (see above) for the planet for which coordinates
  *                    are requested, e.g. DE_JUPITER.
- * @param[out] target_pos   [AU] The barycentric position vector array of the requested object,
- *                          in AU.
+ * @param[out] target_pos   [AU] The barycentric position vector array of the requested
+ *                          object, in AU.
  * @param[out] target_vel   [AU/day] The barycentric velocity vector array of the
  *                          requested object, in AU/Day.
  *
@@ -482,12 +480,12 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
  * </ol>
  *
  * @param buf           Array of Chebyshev coefficients of position.
- * @param t             t[0] is fractional time interval covered by coefficients at
- *                      which interpolation is desired (0 <= t[0] <= 1).
- *                      t[1] is length of whole interval in input time units.
+ * @param t             t[0] is fractional time interval covered by coefficients at which
+ *                      interpolation is desired (0 <= t[0] <= 1). t[1] is length of whole
+ *                      interval in input time units.
  * @param ncf           Number of coefficients per component.
- * @param na            Number of sets of coefficients in full array
- *                      (i.e., number of sub-intervals in full interval).
+ * @param na            Number of sets of coefficients in full array (i.e., number of
+ *                      sub-intervals in full interval).
  * @param[out] position   Position array of requested object.
  * @param[out] velocity   Velocity array of requested object.
  *
@@ -569,9 +567,9 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
  *
  *
  * @param tt        Input number.
- * @param[out] fr   2-element output array; fr[0] contains integer part, fr[1] contains fractional part.
- *                  For negative input numbers, fr[0] contains the next more negative integer;
- *                  fr[1] contains a positive fraction.
+ * @param[out] fr   2-element output array; fr[0] contains integer part, fr[1] contains
+ *                  fractional part. For negative input numbers, fr[0] contains the next
+ *                  more negative integer; fr[1] contains a positive fraction.
  *
  * @return          0 if successful, or -1 if the output pointer argument is NULL.
  */

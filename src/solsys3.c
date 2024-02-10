@@ -4,8 +4,8 @@
  * @author G. Kaplan and A. Kovacs
  * @version 0.9.0
  *
- *  SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model based on the DE405
- *  ephemerides by JPL.
+ *  SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model
+ *  based on the DE405 ephemerides by JPL.
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.
@@ -33,8 +33,8 @@ void earth_sun_enable_hp(int value);
 /**
  * Whether the high-precision call is allowed to return a low-precision result. If set to 0
  * (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a
- * high-precision calculation is not possible. Otherise, a non-zero value (true) will
- * let the function to be used without errors, returning the low-precison result of
+ * high-precision calculation is not possible. Otherise, a non-zero value (true) will let the
+ * function to be used without errors, returning the low-precison result of
  * solarsystem_earth_sun() instead.
  *
  * @sa solarsystem_earth_sun_hp()
@@ -42,10 +42,10 @@ void earth_sun_enable_hp(int value);
 static int allow_lp_for_hp = 0;
 
 /**
- * Specify whether the high-precision call is allowed to return a low-precision result. If set to 0
- * (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a
- * high-precision calculation is not possible. Otherise, a non-zero value (true) will
- * let the function to be used without errors, returning the low-precison result of
+ * Specify whether the high-precision call is allowed to return a low-precision result. If set
+ * to 0 (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a
+ * high-precision calculation is not possible. Otherise, a non-zero value (true) will let the
+ * function to be used without errors, returning the low-precison result of
  * solarsystem_earth_sun() instead.
  *
  * @param value   (boolean) A non-zero value enables the error-free use of the earth_sun_calc_hp()
@@ -75,18 +75,19 @@ void earth_sun_enable_hp(int value) {
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          NOVAS_EARTH (3) or NOVAS_SUN (10) only.
- * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
- *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
- *                      NOVAS C argument type here).
+ * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return
+ *                      positions and velocities. (For compatibility with existing NOVAS C
+ *                      compatible user implementations, we keep the original NOVAS C argument
+ *                      type here).
  * @param[out] position [AU] Position vector of 'body' at 'tjd'; equatorial rectangular
- *                      coordinates in AU referred to the mean equator and equinox
- *                      of J2000.0.
+ *                      coordinates in AU referred to the mean equator and equinox of J2000.0.
  * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
- *                      system referred to the mean equator and equinox of J2000.0,
- *                      in AU/Day.
- * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS)
+ *                      system referred to the mean equator and equinox of J2000.0, in AU/Day.
+ * @return              0 if successful, -1 if there is a required function is not provided
+ *                      (errno set to ENOSYS)
  *                      or if one of the output pointer arguments is NULL (errno set to EINVAL).
- *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid.
+ *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is
+ *                      invalid.
  *
  * @sa earth_sun_calc_hp()
  * @sa set_planet_calc()
@@ -251,27 +252,26 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
 
 /**
- * It may provide the position and velocity of the Earth and Sun,
- * the same as solarsystem_earth_sun(), if earth_sun_enable_hp() is set
- * to true (non-zero). Otherwise, it will return with an error code
- * of 3, indicating that high-precision calculations are not
- * provided by this implementation.
+ * It may provide the position and velocity of the Earth and Sun, the same as
+ * solarsystem_earth_sun(), if earth_sun_enable_hp() is set to true (non-zero). Otherwise,
+ * it will return with an error code of 3, indicating that high-precision calculations are
+ * not provided by this implementation.
  *
  * NOTES:
  * <ol>
- * <li>This implementation will always propulate the output positione
- * and velocity vectors with the low-precision result, regardless of
- * the return error code, in order to reduce the chance of unpredictable
- * behavior, even if the user does not check the returned error status
- * (which of course they should).
+ * <li>This implementation will always propulate the output position and velocity vectors
+ * with the low-precision result, regardless of the return error code, in order to reduce
+ * the chance of unpredictable behavior, even if the user does not check the returned error
+ * status (which of course they should).
  * </li>
  * </ol>
  *
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          NOVAS_EARTH (3) or NOVAS_SUN (10) only.
- * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities.
- *                      (For compatibility with existing NOVAS C compatible user implementations, we keep the original
+ * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
+ *                      return positions and velocities. (For compatibility with existing
+ *                      NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
  * @param[out] position [AU] Position vector of 'body' at 'tjd'; equatorial rectangular
  *                      coordinates in AU referred to the mean equator and equinox
@@ -279,10 +279,11 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
  * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
  *                      system referred to the mean equator and equinox of J2000.0,
  *                      in AU/Day.
- * @return              0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS),
- *                      or if one of the output pointer arguments is NULL (errno set to EINVAL).
- *                      1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3
- *                      if the high-precision orbital data cannot be produced (default return value).
+ * @return              0 if successful, -1 if there is a required function is not provided
+ *                      (errno set to ENOSYS), or if one of the output pointer arguments is
+ *                      NULL (errno set to EINVAL). 1 if the input Julian date ('tjd') is
+ *                      out of range, 2 if 'body' is invalid, or 3 if the high-precision
+ *                      orbital data cannot be produced (default return value).
  *
  * @sa earth_sun_enable_hp()
  * @sa earth_sun_calc()
@@ -300,17 +301,16 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
 }
 
 /**
- * Computes equatorial spherical coordinates of Sun referred to
- * the mean equator and equinox of date.
+ * Computes equatorial spherical coordinates of Sun referred to the mean equator and equinox
+ * of date.
  *
- * Quoted accuracy is 2.0 + 0.03 * T<sup>2</sup> arcsec, where T is
- * measured in units of 1000 years from J2000.0.  See reference.
+ * Quoted accuracy is 2.0 + 0.03 * T<sup>2</sup> arcsec, where T is measured in units of
+ * 1000 years from J2000.0.  See reference.
  *
  * The obliquity equation is updated to equation 5.12 of the second reference.
  *
- * The linear fit to DE405 primarily corrects for the
- * difference between "old" (Lieske) and "new" (IAU 2006)
- * precession.  The difference, new - old, is -0.3004 arcsec/cy.
+ * The linear fit to DE405 primarily corrects for the difference between "old" (Lieske) and
+ * "new" (IAU 2006) precession.  The difference, new - old, is -0.3004 arcsec/cy.
  *
  * REFERENCES:
  * <ol>
@@ -319,7 +319,7 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
  * <li>Kaplan, G.H. (2005). US Naval Observatory Circular 179.</li>
  * </ol>
  *
- * @param jd      [day] jd (double) Julian date on TDT or ET time scale.
+ * @param jd           [day] jd (double) Julian date on TDT or ET time scale.
  * @param[out] ra      [h] Right ascension referred to mean equator and equinox of date (hours).
  * @param[out] dec     [deg] Declination referred to mean equator and equinox of date (degrees).
  * @param[out] dis     [AU] Geocentric distance (AU).

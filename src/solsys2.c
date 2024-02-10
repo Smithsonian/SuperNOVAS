@@ -39,22 +39,18 @@ extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel
 extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
 /**
- * Obtains planet positions via the JPL direct-access solar system
- * ephemerides, wtih normal (reduced) precision -- typically good to
- * the milliarcsecond level.
+ * Obtains planet positions via the JPL direct-access solar system ephemerides, wtih normal
+ * (reduced) precision -- typically good to the milliarcsecond level.
  *
- * It generalizes access to the JPL software by calling
- * a Fortran interface subroutine, 'jplint', instead of making a
- * direct call to the JPL subroutine 'pleph', whose arguments
- * have changed several times throughout the years.  This way,
- * any future change to the arguments can be accommodated in
- * 'jplint' rather than in this function.
+ * It generalizes access to the JPL software by calling a Fortran interface subroutine,
+ * 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments
+ * have changed several times throughout the years.  This way, any future change to the
+ * arguments can be accommodated in 'jplint' rather than in this function.
  *
- * For supporting JPL ephemerides more generally, including for
- * satellites, asteroids, and comets, you are probably better off using
- * planet_ephem_reader(), and provide an interface, e.g. to the
- * CSPICE library, via novas_ephem_reader_func instead, which you
- * can then activate dynamically with set_planet_calc().
+ * For supporting JPL ephemerides more generally, including for satellites, asteroids, and
+ * comets, you are probably better off using planet_ephem_reader(), and provide an interface,
+ * e.g. to the CSPICE library, via novas_ephem_reader_func instead, which you can then
+ * activate dynamically with set_planet_calc().
  *
  * REFERENCES:
  * <ol>
@@ -133,22 +129,18 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
 }
 
 /**
- * Obtains planet positions via the JPL direct-access solar system
- * ephemerides, wtih high precision -- typically good to
- * below the microarcsecond level.
+ * Obtains planet positions via the JPL direct-access solar system ephemerides, wtih high
+ * precision -- typically good to below the microarcsecond level.
  *
- * It generalizes access to the JPL software by calling
- * a Fortran interface subroutine, 'jplint', instead of making a
- * direct call to the JPL subroutine 'pleph', whose arguments
- * have changed several times throughout the years.  This way,
- * any future change to the arguments can be accommodated in
- * 'jplint' rather than in this function.
+ * It generalizes access to the JPL software by calling a Fortran interface subroutine,
+ * 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments
+ * have changed several times throughout the years.  This way, any future change to the
+ * arguments can be accommodated in 'jplint' rather than in this function.
  *
- * For supporting JPL ephemerides more generally, including for
- * satellites, asteroids, and comets, you are probably better off using
- * planet_ephem_reader(), and provide an interface, e.g. to the
- * CSPICE library, via novas_ephem_reader_func instead, which you
- * can then activate dynamically with set_planet_calc().
+ * For supporting JPL ephemerides more generally, including for satellites, asteroids, and
+ * comets, you are probably better off using planet_ephem_reader(), and provide an interface,
+ * e.g. to the CSPICE library, via novas_ephem_reader_func instead, which you can then
+ * activate dynamically with set_planet_calc().
  *
  * REFERENCES:
  * <ol>

@@ -97,7 +97,7 @@ static void test_make_cat_entry() {
 
 
 static void test_transform_cat() {
-  cat_entry star, tr;
+  cat_entry star, tr = { };
   int i;
 
   if(!is_ok(make_cat_entry("Test", "TST", 1001, 1.1, -2.2, 3.3, -4.4, 5.5, -6.6, &star))) return;
@@ -111,7 +111,7 @@ static void test_transform_cat() {
 }
 
 static void test_transform_hip() {
-  cat_entry star, tr;
+  cat_entry star, tr = { };
 
   if(!is_ok(make_cat_entry("Test", "TST", 1001, 1.1, -2.2, 3.3, -4.4, 5.5, -6.6, &star))) return;
 
@@ -190,17 +190,17 @@ static void test_refract() {
 static void test_mean_star() {
   double ra, dec;
 
-  mean_star(2433282.42345905, 10.0, -40.0, 0, &ra, &dec);
   openfile("mean_star");
-  fprintf(fp, "1 %12.6f %12.6f ", ra, dec);
+  if(is_ok(mean_star(2433282.42345905, 10.0, -40.0, 0, &ra, &dec)))
+    fprintf(fp, "1 %12.6f %12.6f ", ra, dec);
 
-  mean_star(2433282.42345905, 19.0, 30.0, 0, &ra, &dec);
   openfile("mean_star");
-  fprintf(fp, "2 %12.6f %12.6f ", ra, dec);
+  if(is_ok(mean_star(2433282.42345905, 19.0, 30.0, 0, &ra, &dec)))
+    fprintf(fp, "2 %12.6f %12.6f ", ra, dec);
 
-  mean_star(2433282.42345905, 2.7, 68.3, 0, &ra, &dec);
   openfile("mean_star");
-  fprintf(fp, "3 %12.6f %12.6f ", ra, dec);
+  if(is_ok(mean_star(2433282.42345905, 2.7, 68.3, 0, &ra, &dec)))
+    fprintf(fp, "3 %12.6f %12.6f ", ra, dec);
 }
 
 

@@ -3,8 +3,9 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS implementations for the IAU2000 nutation series calculations, with varying trade-offs between computational cost and
- *  precision. It provides support for both the IAU 2000A and IAU2000B series as well as a NOVAS-specific truncated low-precision
+ *  SuperNOVAS implementations for the IAU2000 nutation series calculations, with varying
+ *  trade-offs between computational cost and precision. It provides support for both the
+ *  IAU 2000A and IAU2000B series as well as a NOVAS-specific truncated low-precision
  *  version we call NU2000K.
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
@@ -22,11 +23,11 @@
 /// \endcond
 
 /**
- * Computes the IAU 2000A nutation high-precision series for the specified date.
- * It is rather expensive computationally.
+ * Computes the IAU 2000A nutation high-precision series for the specified date. It is rather
+ * expensive computationally.
  *
- * The IAU 2000A nutation model is MHB_2000 without the free core
- * nutation and without the corrections to Lieske precession.
+ * The IAU 2000A nutation model is MHB_2000 without the free core nutation and without the
+ * corrections to Lieske precession.
  *
  * REFERENCES:
  * <ol>
@@ -34,16 +35,16 @@
  *  <li>Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5.</li>
  * </ol>
  *
- * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date. Typically
- *                    it may be the integer part of a split date for the highest precision, or the
- *                    full date for normal (reduced) precision.
+ * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date.
+ *                    Typically it may be the integer part of a split date for the highest precision,
+ *                    or the full date for normal (reduced) precision.
  * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
  *                    it may be the fractional part of a split date for the highest precision, or 0.0
  *                    for normal (reduced) precision.
  * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
  *                    It may be NULL if not required.
- * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
- *                    It may be NULL if not required.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in
+ *                    radians. It may be NULL if not required.
  * @return            0
  *
  * @sa nutation()
@@ -2837,7 +2838,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // ** Luni-solar nutation. **
   // Summation of luni-solar nutation series (in reverse order).
-  for(i = 677; i >= 0; i--) {
+  for(i = 678; --i >= 0; ) {
     const char *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
@@ -2861,7 +2862,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // ** Planetary nutation. **
 
   // Summation of planetary nutation series (in reverse order).
-  for(i = 686; i >= 0; i--) {
+  for(i = 687; --i >= 0; ) {
     const char *n = &napl_t[i][0];
     const short *c = &cpl_t[i][0];
 
@@ -2899,9 +2900,11 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 }
 
 /**
- * Compute the forced nutation of the non-rigid Earth based on the IAU 2000B precession/nutation model.
+ * Compute the forced nutation of the non-rigid Earth based on the IAU 2000B precession /
+ * nutation model.
  *
- * IAU 2000B reproduces the IAU 2000A model to a precision of 1 milliarcsecond in the interval 1995-2020.
+ * IAU 2000B reproduces the IAU 2000A model to a precision of 1 milliarcsecond in the
+ * interval 1995-2020.
  *
  * REFERENCES:
  * <ol>
@@ -2911,16 +2914,16 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *     Jan. 2003, p. 37. (IAU 2000B) IERS Conventions (2003), Chapter 5.</li>
  * </ol>
  *
- * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date. Typically
- *                    it may be the integer part of a split date for the highest precision, or the
- *                    full date for normal (reduced) precision.
- * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
- *                    it may be the fractional part of a split date for the highest precision, or 0.0
- *                    for normal (reduced) precision.
- * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
- *                    It may be NULL if not required.
- * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
- *                    It may be NULL if not required.
+ * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date.
+ *                    Typically it may be the integer part of a split date for the highest
+ *                    precision, or the full date for normal (reduced) precision.
+ * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date.
+ *                    Typically it may be the fractional part of a split date for the highest
+ *                    precision, or 0.0 for normal (reduced) precision.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in
+ *                    radians. It may be NULL if not required.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity,
+ *                    in radians. It may be NULL if not required.
  * @return            0
  *
  * @sa nutation()
@@ -3102,9 +3105,6 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 1405, 0, 4, -610, 0, 2 }, //
           { 1290, 0, 0, -556, 0, 0 } };
 
-  const double dpplan = -0.000135 * ASEC2RAD;
-  const double deplan = 0.000388 * ASEC2RAD;
-
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
@@ -3119,7 +3119,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
 
   // Summation of luni-solar nutation series (in reverse order)
-  for(i = 76; --i >= 0; ) {
+  for(i = 77; --i >= 0; ) {
     const char *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
@@ -3142,26 +3142,22 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   }
 
   // Total: Add planetary and luni-solar components.
-  if(dpsi) *dpsi = dpsils * factor + dpplan;
-  if(deps) *deps = depsls * factor + deplan;
+  if(dpsi) *dpsi = dpsils * factor - 0.000135 * ASEC2RAD;
+  if(deps) *deps = depsls * factor + 0.000388 * ASEC2RAD;
 
   return 0;
 }
 
 /**
- * Computes the forced nutation of the non-rigid Earth:
- * Model NU2000K.  This model is a modified version of IAU 2000A,
- * which has been truncated for speed of execution, and uses Simon
- * et al. (1994) fundamental arguments throughout.  NU2000K agrees
- * with IAU 2000A at the 0.1 milliarcsecond level from 1700 to
- * 2300. It has the most modest computational cost among the
- * implementations provided in the NOVAS library.
+ * Computes the forced nutation of the non-rigid Earth: Model NU2000K.  This model is a
+ * modified version of IAU 2000A, which has been truncated for speed of execution, and uses
+ * Simon et al. (1994) fundamental arguments throughout.  NU2000K agrees with IAU 2000A at
+ * the 0.1 milliarcsecond level from 1700 to 2300. It has the most modest computational cost
+ * among the implementations provided in the NOVAS library.
  *
- * NU2000K was compared to IAU 2000A over six centuries (1700-
- * 2300).  The average error in dpsi is 20 microarcseconds, with 98%
- * of the errors < 60 microarcseconds;  the average error in deleps
- * is 8 microarcseconds, with 100% of the errors < 60
- * microarcseconds.
+ * NU2000K was compared to IAU 2000A over six centuries (1700-2300). The average error in
+ * d&psi; is 20 microarcseconds, with 98% of the errors < 60 microarcseconds;  the average
+ * error in d&epsilon;is 8 microarcseconds, with 100% of the errors < 60 microarcseconds.
  *
  * NU2000K was developed by G. Kaplan (USNO) in March 2004
  *
@@ -3171,16 +3167,16 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  * <li>Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5.</li>
  * </ol>
  *
- * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date. Typically
- *                    it may be the integer part of a split date for the highest precision, or the
- *                    full date for normal (reduced) precision.
- * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
- *                    it may be the fractional part of a split date for the highest precision, or 0.0
- *                    for normal (reduced) precision.
- * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
- *                    It may be NULL if not required.
- * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
- *                    It may be NULL if not required.
+ * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date.
+ *                    Typically it may be the integer part of a split date for the highest
+ *                    precision, or the full date for normal (reduced) precision.
+ * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date.
+ *                    Typically it may be the fractional part of a split date for the highest
+ *                    precision, or 0.0 for normal (reduced) precision.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in
+ *                    radians. It may be NULL if not required.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity,
+ *                    in radians. It may be NULL if not required.
  * @return            0
  *
  * @sa nutation()
@@ -4225,7 +4221,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // ** Luni-solar nutation. **
   // Summation of luni-solar nutation series (in reverse order).
-  for(i = 322; i >= 0; i--) {
+  for(i = 323; --i >= 0; ) {
     const char *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
@@ -4249,7 +4245,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // ** Planetary nutation. **
 
   // Summation of planetary nutation series (in reverse order).
-  for(i = 164; i >= 0; i--) {
+  for(i = 165; --i >= 0; ) {
     const char *n = &napl_t[i][0];
     const short *c = &cpl_t[i][0];
 
