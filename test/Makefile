@@ -8,7 +8,7 @@ CFLAGS += -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
 OBJECTS := $(subst obj/,,$(OBJECTS))
 
 .PHONY: run
-run: clean-cov clean-data test test_cio_file data
+run: clean-cov clean-data test test_cio_file data ../cio_ra.bin
 	./test
 	ln -s ../cio_ra.bin
 	./test_cio_file
@@ -29,6 +29,9 @@ data:
 %.gcno %.gcda: ../src/%.c
 	make clean
 	make run
+
+../cio_ra.bin:
+	make -C .. cio_ra.bin
 
 test: test.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
