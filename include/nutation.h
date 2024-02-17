@@ -34,7 +34,7 @@
  * @sa iau2000b()
  * @sa iau2000k()
  */
-typedef int (*novas_nutate_func)(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+typedef int (*novas_nutation_provider)(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
 
 
 int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);

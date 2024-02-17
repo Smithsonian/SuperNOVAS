@@ -1,0 +1,201 @@
+# Changelog
+
+## [Unreleased]
+
+Changes expected for the 1.0.0 production release only...
+
+
+### Added
+
+ - Add test for `cio_array()`
+
+ - Add debug mode, which can be activated via `novas_debug(1)`. When debug mode is enabled, all errors are printed to 
+   the console with a trace (the trace does not contain line numbers but provides information on the functions and 
+   locations within them where the error occurred.
+ 
+ - Add tests for all SuperNOVAS only functions
+ 
+ - Set up release workflow on GitHub
+ 
+### Changed
+
+ - Nutation angles to use cubic-spline interpolation to speed up nutation calculation when repeatedly needing it for
+   times that are close together (e.g. a within a day but TDB)
+ 
+ 
+
+## [0.9.0] - 2024-03-01
+
+This is a preview release before 1.0 comes out officially a little later. It allows us to change our minds on some of 
+the choices we made for SuperNOVAS in case there is some compelling reason why they should be done differently. Once 
+we proceed to 1.0, we'll stick to these choices. So this is the last chance to correct anything that may not be quite 
+right from a design perspective.
+
+### Fixed
+
+ - Fixed the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
+   function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+   
+ - Fixed the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+   `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+   
+ - Fixed antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
+   velocities for Solar-system sources, it is important to use the values from the time light originated from the 
+   observed body rather than at the time that light arrives to the observer. This correction was done properly for 
+   positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
+   distances being reported for spectroscopic observations or for angular-physical size conversions. 
+   
+ - Fixed bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
+   `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
+   routines downstream also, such as `sidereal_time()`.
+   
+ - Fixed accuracy switch bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
+   `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
+   accuracy if the other input parameters are the same as a prior call, except the accuracy. 
+   
+ - Fixed multiple bugs in using cached values in `cio_basis()` with alternating CIO location reference systems.
+   
+ - Fixed bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
+   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
+   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the
+   requested mean equinox of date coordinates.
+  
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
+   not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
+   and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
+   critically, it also was the reason `cal_date()` did not work for negative JD values.
+   
+
+### Added
+
+ - Added Doxygen markup of source code and header.
+  
+ - Added Makefile for GNU make.
+ 
+ - Added continuous integration on GitHub, including regression testing, static analysis, and doxygen validation.
+
+ - Added an number of precompiler constants and enums in `novas.h` to promote consistent usage and easier to read
+   code.
+
+ - Runtime configurability:
+
+   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, and
+     `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
+     `planet_ephem_provider_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
+     `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
+     (e.g. from a JPL ephemeris file).
+ 
+   * If CIO locations vs GSRS are important to the user, the user may call `cio_set_locator_file()` at runtime to
+     specify the location of the binary CIO interpolation table (e.g. `cio_ra.bin`) to use, even if the library was
+     compiled with the different default CIO locator path. 
+ 
+   * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
+     approximation via `nutation_set_lp_provider()`. For example, the user may want to use the `iau2000b()` model 
+     instead or some custom algorithm instead.
+ 
+ - New intutitive XYZ coordinate coversion functions:
+   * for GCRS - CIRS - ITRS (IAU 2000 standard): `gcrs_to_cirs()`, `cirs_to_itrs()`, and `itrs_to_cirs()`, 
+     `cirs_to_gcrs()`.
+   * for J2000 - TOD - ITRS (old methodology): `j2000_to_tod()`, `tod_to_itrs()`, and `itrs_to_tod()`, 
+     `tod_to_j2000()`.
+   
+ - New `itrs_to_hor()` and `hor_to_itrs()` functiona to convert ITRS coordinates to astrometric azimuth and elevation
+   or going back. Whereas  `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit version 
+   of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the `cirs_to_itrs()` 
+   followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no equivalent in NOVAS 
+   C 3.1.
+   
+ - New celestial coordinate conversion functions to go between GCRS, dynamical CIRS or TOD, and Earth-fixed ITRS 
+   coordinate systems.
+   
+ - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
+   
+ - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted (astrometric) 
+   zenith angle as its argument.
+
+ - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
+   `place_gcrs()`, `place_cirs()`, `place_tod()`.
+ 
+ - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods sych as `astro_star()`
+   `local_star()`, `topo_planet()` etc.
+ 
+ - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB
+   time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric calculations.
+ 
+ - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
+   provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
+   functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
+   `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on [Building and installation](#installation)
+   further above on including a selection of these in your library build.)
+
+ - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
+   default NOVAS object names were converted to upper-case, making them effectively case-insensitive.)
+
+
+### Changed
+
+ - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
+   `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
+   and make for more readable code that is easier to debug. They also make it easy to see what choices are available
+   for each function argument, without having to consult the documentation each and every time.
+
+ - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
+   duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
+   invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
+   error code is returned for compatibility).
+   
+ - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
+   use functions such as `perror()` ans `strerror()` to print human-readable error messages.
+   
+ - Output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
+   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned are
+   should not be used as if they were valid
+
+ - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
+   required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
+   This eliminates the need to declare dummy variables in your application code.
+
+ - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
+   be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
+   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
+   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
+
+ - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
+   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
+   data modifications.
+   
+ - Source names and catalog names can both be up to 64 bytes (including termination), up from 51 and 4 respectively
+   NOVAS C, while keeping `struct` layouts the same thanks to alignment.
+   
+
+### Deprecated
+
+ - `novascon.h` / `novascon.c`: These definitions of constants was troublesome fow two reasons: (1) They were 
+   primarily meant for use internally within the library itself. As the library clearly defines in what units input 
+   and output quantities are expressed, the user code can apply its own appropriate conversions that need not match 
+   the internal system used by the library. Hence exposing these constants to users was half baked. (2) The naming of 
+   constants was too simplistic (with names such as `C` or `F`) that it was rather prone to naming conflicts in user 
+   code. As a result, the constants have been moved to novas.h with more unique names (such as `NOVAS_C` and 
+   `NOVAS_EARTH_FLATTENING`. New code should rely on these definitions instead of the troubled constants of 
+   `novascon.c` / `.h` if at all necessary.
+
+ - `equ2hor()`: It's name does not make it clear that this function is suitable only for converting TOD (old 
+   methodology) to horizontal but not CIRS to horizontal (IAU 2000 standard). You should use the equivalent but more
+   specific `tod_to_itrs()`, or else the newly added `cirs_to_itrs()`, followed by `itrs_to_hor()` instead.
+   
+ - `cel2ter()` / `ter2cel()`: These function can be somewhat confusing to use. You are likely better off with 
+   `tod_to_itrs()` and `cirs_to_itrs()` instead.
+   
+ - `app_star()`, `app_planet()`, `topo_star()` and `topo_planet()`: These use the old (pre IAU 2000) methodology, 
+   which isn't clear from their naming. Use `place()` or `place_star()` with `NOVAS_TOD` or `NOVAS_CIRS` as the system 
+   instead, as appropriate.
+   
+ - `readeph()`: prone to memtoy leaks, and not flexible with its origin (e.g. barycenter vs heliocenter). Instead, use 
+   a similar `novas_ephem_provider` implementation and `set_ephem_provider()` instead for a more flexible and less 
+   troublesome equivalent, which also does not need to be baked into the library but can be configured at runtime.
+   
+ - `tdb2tt()`. Use `tt2tdb()` instead. It's both more intuitive (returning the time difference as a double) and faster
+   to calculate, not to mention that it implements the more standard approach.
+   
+
+

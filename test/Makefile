@@ -1,36 +1,63 @@
 include ../config.mk
 
+CFLAGS = -I../include -O0 -g -pg -fprofile-arcs -ftest-coverage
+LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
-CFLAGS += -O0 -g -pg -fprofile-arcs -ftest-coverage
-LDFLAGS += -pg -fprofile-arcs -ftest-coverage
+CFLAGS += -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
 
-SRC = ../src
+OBJECTS := $(subst obj/,,$(OBJECTS))
 
 .PHONY: run
-run: clean test
-	rm -rf data
-	mkdir data
+run: clean-cov clean-data test test_cio_file data
 	./test
-	rm -f test
-	#diff data reference
+	ln -s ../cio_ra.bin
+	./test_cio_file
+	diff data reference
 
 .PHONY: coverage
-coverage: run
-	gcov test-novas.c
-	gcov test-nutation.c
-	gcov test-solsys3.c
+coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov
+	make clean-test
 
-test: src/test.c $(SOURCES) | Makefile
-	$(CC) -o $@ -O0 $(CFLAGS) -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\" $^ $(LDFLAGS) -lm
+data:
+	mkdir data
 
-# We are dependent on the project Makefile...
-Makefile: ../Makefile
+.PRECIOUS: %.c.gcov
+%.c.gcov: %.gcno %.gcda
+	gcov $*
 
-# Remove intermediate files
+.PRECIOUS: %.gcno %.gcda
+%.gcno %.gcda: ../src/%.c
+	make clean
+	make run
+
+test: test.o $(OBJECTS) | Makefile data
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+test_cio_file: test_cio_file.o $(OBJECTS) | Makefile data
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+test%.o: src/test%.c | Makefile
+	$(CC) -c -o $@ -I../include $<
+
+%.o: ../src/%.c | Makefile
+	$(CC) -c -o $@ $(CFLAGS) $<
+
+.PHONY: clean-test
+clean-test:
+	rm -f test test_cio_file
+
+.PHONY: clean-cov
+clean-cov:
+	rm -rf gmon.out *.gcov *.gcda *.gcno
+
 .PHONY: clean-data
 clean-data:
-	rm -rf test obj data gmon.out *.gcov *.gcda *.gcno
+	rm -rf data cio_ra.bin
 
-clean: clean-data
+.PHONY: clean
+clean: clean-test clean-cov clean-data
+	rm -f *.o
 
-include ../build.mk
+vpath %.c ../src
+vpath %.c src
+

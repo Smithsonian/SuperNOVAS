@@ -7,7 +7,7 @@
 
 
 # Regular object files
-obj/%.o: $(SRC)/%.c dep/%.d obj Makefile
+obj/%.o: %.c dep/%.d obj Makefile
 	$(CC) -o $@ -c $(CFLAGS) $<
 
 # Create sub-directories for build targets
@@ -41,13 +41,13 @@ check:
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
-dox: $(SRC) $(INC) README.md | apidoc
+dox: README.md | apidoc
 	@echo "   [doxygen]"
 	@doxygen
 
 # Automatic dependence on included header files.
 .PRECIOUS: dep/%.d
-dep/%.d: $(SRC)/%.c dep
+dep/%.d: %.c dep
 	@echo " > $@" \
 	&& $(CC) -I$(INC) -MM -MG $< > $@.$$$$ \
 	&& sed 's|\w*\.o[ :]*| obj/&|g' < $@.$$$$ > $@; \

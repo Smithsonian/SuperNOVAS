@@ -191,15 +191,15 @@ static void test_mean_star() {
   double ra, dec;
 
   openfile("mean_star");
-  if(is_ok(mean_star(2433282.42345905, 10.0, -40.0, 0, &ra, &dec)))
+  if(is_ok(mean_star(2433282.42345905, 10.0, -40.0, 1, &ra, &dec)))
     fprintf(fp, "1 %12.6f %12.6f ", ra, dec);
 
   openfile("mean_star");
-  if(is_ok(mean_star(2433282.42345905, 19.0, 30.0, 0, &ra, &dec)))
+  if(is_ok(mean_star(2433282.42345905, 19.0, 30.0, 1, &ra, &dec)))
     fprintf(fp, "2 %12.6f %12.6f ", ra, dec);
 
   openfile("mean_star");
-  if(is_ok(mean_star(2433282.42345905, 2.7, 68.3, 0, &ra, &dec)))
+  if(is_ok(mean_star(2433282.42345905, 2.7, 68.3, 1, &ra, &dec)))
     fprintf(fp, "3 %12.6f %12.6f ", ra, dec);
 }
 
@@ -456,7 +456,7 @@ static void test_time_specific() {
   static char th[40] = { };
 
   idx = -1;
-  sprintf(th, "%8.1f A%d: ", (tdb - J2000), accuracy);
+  sprintf(th, "%12.3f A%d: ", (tdb - J2000), accuracy);
   header = th;
 
   test_cal_date();
@@ -955,10 +955,10 @@ static int test_sources() {
 
 
 static int test_dates() {
-  double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0 };
+  double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
   int i;
 
-  for(i = 0; i < 4; i++) {
+  for(i = 0; i < 5; i++) {
     tdb = J2000 + offsets[i];
 
     test_time_specific();

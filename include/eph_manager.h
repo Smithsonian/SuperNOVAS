@@ -4,7 +4,7 @@
  *
  *  SuperNOVAS header for managing 1997 version of JPL ephemerides specifically for solsys2.c.
  *
- *  Basded on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
+ *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>

@@ -9,11 +9,10 @@
  *  interface between the NOVAS planet calculator functions here and the pleph() call of the JPL
  *  library. (The sample source code of jplint.f is included in the distribution).
  *
- *  For supporting JPL ephemerides more generally, including for
- * satellites, asteroids, and comets, you are probably better off using
- * planet_ephem_reader(), and provide an interface, e.g. to the
- * CSPICE library, via novas_ephem_reader_func instead, which you
- * can then activate dynamically with set_planet_calc().
+ *  For supporting JPL ephemerides more generally, including for satellites, asteroids, and
+ *  comets, you are probably better off using planet_ephem_provider(), and provide an interface,
+ *  e.g. to the SPICE library, via novas_ephem_provider instead, which you can then activate
+ *  at runtime with set_planet_provider().
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.
@@ -48,9 +47,9 @@ extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel
  * arguments can be accommodated in 'jplint' rather than in this function.
  *
  * For supporting JPL ephemerides more generally, including for satellites, asteroids, and
- * comets, you are probably better off using planet_ephem_reader(), and provide an interface,
- * e.g. to the CSPICE library, via novas_ephem_reader_func instead, which you can then
- * activate dynamically with set_planet_calc().
+ * comets, you are probably better off using planet_ephem_provider(), and provide an interface,
+ * e.g. to the CSPICE library, via novas_ephem_provider instead, which you can then
+ * activate dynamically with set_planet_provider().
  *
  * REFERENCES:
  * <ol>
@@ -74,8 +73,8 @@ extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel
  * @return               0 if successful, or else an error code of solarsystem().
  *
  * @sa planet_jplint_hp()
- * @sa planet_ephem_reader()
- * @sa set_planet_calc()
+ * @sa planet_ephem_provider()
+ * @sa set_planet_provider()
  * @sa solarsystem()
  *
  * @since 1.0
@@ -138,9 +137,9 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  * arguments can be accommodated in 'jplint' rather than in this function.
  *
  * For supporting JPL ephemerides more generally, including for satellites, asteroids, and
- * comets, you are probably better off using planet_ephem_reader(), and provide an interface,
- * e.g. to the CSPICE library, via novas_ephem_reader_func instead, which you can then
- * activate dynamically with set_planet_calc().
+ * comets, you are probably better off using planet_ephem_provider(), and provide an interface,
+ * e.g. to the CSPICE library, via novas_ephem_provider instead, which you can then
+ * activate dynamically with set_planet_provider().
  *
  * REFERENCES:
  * <ol>
@@ -164,9 +163,9 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  * @return               0 if successful, or else an error code of solarsystem().
  *
  * @sa planet_jplint()
- * @sa planet_ephem_reader()
- * @sa set_planet_calc()
- * @sa solarsystem()
+ * @sa planet_ephem_provider_hp()
+ * @sa set_planet_provider_hp()
+ * @sa solarsystem_hp()
  *
  * @since 1.0
  */
@@ -219,8 +218,8 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
 }
 
 #if DEFAULT_SOLSYS == 2
-novas_planet_calculator default_planetcalc = planet_jplint;
-novas_planet_calculator_hp default_planetcalc_hp = planet_jplint;
+novas_planet_provider default_planetcalc = planet_jplint;
+novas_planet_provider_hp default_planetcalc_hp = planet_jplint;
 #elif !BUILTIN_SOLSYS2
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   return planet_jplint(jd_tdb, body, origin, position, velocity);

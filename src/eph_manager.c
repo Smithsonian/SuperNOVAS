@@ -64,9 +64,9 @@ FILE *EPHFILE = NULL;
  * </ol>
  *
  * @param ephem_name      Name.path of the direct-access ephemeris file.
- * @param[out] jd_begin   [day] Beginning Julian date of the ephemeris file.
- * @param[out] jd_end     [day] Ending Julian date of the ephemeris file.
- * @param[out] de_number  DE number of the ephemeris file opened.
+ * @param[out] jd_begin   [day] Beginning Julian date of the ephemeris file. It may be NULL if not required.
+ * @param[out] jd_end     [day] Ending Julian date of the ephemeris file. It may be NULL if not required.
+ * @param[out] de_number  DE number of the ephemeris file opened. It may be NULL if not required.
  *
  * @return    0 if successful, or -1 if any of the arhuments is NULL, or else
  *            1 if the file could no be opened, 2--10 if (= line + 1) if there
@@ -78,7 +78,7 @@ FILE *EPHFILE = NULL;
 short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number) {
   int ncon, denum;
 
-  if(!ephem_name || !jd_begin || !jd_end || !de_number) {
+  if(!ephem_name) {
     errno = EINVAL;
     return -1;
   }
@@ -171,9 +171,9 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
         break;
 
       default:            // An unknown DE file was opened. Close the file and return an error code.
-        *jd_begin = 0.0;
-        *jd_end = 0.0;
-        *de_number = 0;
+        if(jd_begin) *jd_begin = 0.0;
+        if(jd_end) *jd_end = 0.0;
+        if(de_number) *de_number = 0;
         fclose(EPHFILE);
         return 11;
         break;
@@ -181,9 +181,9 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
     BUFFER = (double*) calloc(RECORD_LENGTH / 8, sizeof(double));
 
-    *de_number = (short) denum;
-    *jd_begin = SS[0];
-    *jd_end = SS[1];
+    if(de_number) *de_number = (short) denum;
+    if(jd_begin) *jd_begin = SS[0];
+    if(jd_end) *jd_end = SS[1];
   }
 
   return 0;

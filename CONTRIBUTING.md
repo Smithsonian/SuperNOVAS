@@ -1,3 +1,6 @@
+# Contributing to SuperNOVAS
+
+
 The _SuperNOVAS_ library is for everyone. While I, Attila Kovacs, am the maintainer of this library at the 
 Smithsonian, I absolutely rely on developers like you to make it better. Whether there is a nagging issue you would 
 like to fix, or a new feature you'd like to  see, you can make a difference yourself. I very much encourange you to 
@@ -6,23 +9,22 @@ here are the typical steps for contributing to the project:
 
 1. Old or new __Issue__? Whether you just found a bug, or you are missing a much needed feature, start by checking 
 open (and closed) [Issues](https://github.com/Smithsonian/SuperNOVAS/issues). If an existing issue seems like a 
-good match to yours, feel free to raise your hand and comment on it, to make your voice heard, or to offer help in 
-resolving it. If you find no issues that match, go ahead and create a new one.
+good match to yours, feel free to speak up, comment, or to offer help in resolving it. If you find no issues that 
+match, go ahead and create a new one.
 
 2. __Fork__. Is it something you'd like to help resolve? Great! You should start by creating your own fork of the 
-repository so you can work freely on your solution. We also recommend that you place your work on a branch of your 
-fork, which is named either after the issue number, e.g. `issue-192`, or some other descriptive name, such as 
+repository so you can work freely on your solution. I recommend that you place your work on a branch of your fork, 
+which is named either after the issue number, e.g. `issue-192`, or some other descriptive name, such as 
 `fast-nutations`.
 
-3. __Develop__. Feel free to experiment on your fork/branch. If you run into a dead-end, you can always abandon it 
-(which is why branches are great) and start anew. You can run your own tests locally using `make test` 
-before committing your changes. If the tests pass, you should also try running `make all` and to ensure that 
-all components of the the package and its API documentation are also in order. Remember to synchronize your `master` 
-branch by fetching changes from upstream every once in a while, and merging them into your development branch. Don't 
-forget to:
+3. __Develop__. Experiment on your fork/branch freely. If you run into a dead-end, you can always abandon it (which is 
+why branches are great) and start anew. You can run your own tests locally using `make test` before committing your 
+changes. If the tests pass, you should also try running `make all` and to ensure that all components of the package 
+and its API documentation are also in order. Remember to synchronize your `master` branch by fetching changes from 
+upstream every once in a while, and merging them into your development branch. Don't forget to:
 
    - Add __doxygen__ markup your new code. You can keep it sweet and simple, but make sure it properly explains your 
-   global constants, functions, their arguments and return values. You should also cross-reference other functions / 
+   globally exposed functions, their arguments and return values. You should also cross-reference other functions / 
    constants that are similar, related, or relevant to what you just added.
 
    - Add __Unit Tests__. Make sure your new code has as close to full unit test coverage as possible. You can add

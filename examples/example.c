@@ -88,8 +88,8 @@ int main(void) {
   }
 
   // Set the planet calculator to the one using eph_manager
-  set_planet_calc(planet_eph_manager);
-  set_planet_calc_hp(planet_eph_manager_hp);
+  set_planet_provider(planet_eph_manager);
+  set_planet_provider_hp(planet_eph_manager_hp);
 
   // Write banner.
   printf("NOVAS Sample Calculations\n");

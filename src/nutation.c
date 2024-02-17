@@ -48,7 +48,7 @@
  * @return            0
  *
  * @sa nutation()
- * @sa novas_nutate_func
+ * @sa novas_nutation_provider
  * @sa iau2000b()
  * @sa iau2000k()
  *
@@ -2829,7 +2829,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // to 5028.8200 arcsec/cy at J2000.
   const double apa = accum_prec(t);
 
-  novas_fundamental_args a;
+  novas_delaunay_args a;
   double dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
   int i;
 
@@ -2927,7 +2927,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  * @return            0
  *
  * @sa nutation()
- * @sa novas_nutate_func
+ * @sa novas_nutation_provider
  * @sa iau2000a()
  * @sa iau2000k()
  *
@@ -3112,7 +3112,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   const double factor = 1.0e-7 * ASEC2RAD;
 
   double dpsils = 0.0, depsls = 0.0;
-  novas_fundamental_args a;
+  novas_delaunay_args a;
 
   // ** Luni-solar nutation. **
   fund_args(t, &a);
@@ -3180,7 +3180,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  * @return            0
  *
  * @sa nutation()
- * @sa novas_nutate_func
+ * @sa novas_nutation_provider
  * @sa iau2000a()
  * @sa iau2000k()
  *
@@ -4209,7 +4209,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // to 5028.8200 arcsec/cy at J2000.
   const double apa = accum_prec(t);
 
-  novas_fundamental_args a;
+  novas_delaunay_args a;
 
   double arg, sarg, carg, dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
 

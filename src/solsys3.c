@@ -90,9 +90,9 @@ void earth_sun_enable_hp(int value) {
  *                      invalid.
  *
  * @sa earth_sun_calc_hp()
- * @sa set_planet_calc()
- * @sa novas_solarsystem_func
+ * @sa set_planet_provider()
  * @sa solarsystem()
+ * @sa novas_planet_provider
  *
  */
 short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
@@ -287,8 +287,9 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
  *
  * @sa earth_sun_enable_hp()
  * @sa earth_sun_calc()
- * @sa set_planet_calc()
+ * @sa set_planet_provider()
  * @sa solarsystem_hp()
+ * @sa novas_planet_provider_hp
  *
  */
 short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
@@ -431,8 +432,8 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
 }
 
 #if DEFAULT_SOLSYS == 3
-  novas_planet_calculator default_planetcalc = earth_sun_calc;
-  novas_planet_calculator_hp default_planetcalc_hp = earth_sun_calc_hp;
+  novas_planet_provider default_planetcalc = earth_sun_calc;
+  novas_planet_provider_hp default_planetcalc_hp = earth_sun_calc_hp;
 #elif !BUILTIN_SOLSYS3
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   return earth_sun_calc(jd_tdb, body, origin, position, velocity);

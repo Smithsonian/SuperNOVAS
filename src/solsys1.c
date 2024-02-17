@@ -4,9 +4,9 @@
  * @author G. Kaplan and A. Kovacs
  * @version 0.9.0
  *
- *  SuperNOVAS major planet ephemeris lookup implementation using the 1997 ephemeris model, to be used together
- *  with eph_manager.c. A more generic solution is to implement a novas_ephem_reader_func (e.g. relying on the current
- *  version of the CSPICE library) and set it as the default ephemeris handler via set_ephem_reader(), and then
+ *  SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be used together
+ *  with eph_manager.c. A more generic solution is to implement a novas_ephem_provider (e.g. relying on the current
+ *  version of the CSPICE library) and set it as the default ephemeris handler via set_ephem_provider(), and then
  *  use solsys-ephem.c instead to use the same implementation for major planets.
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
@@ -59,9 +59,9 @@
  * @return               0 if successful, or else an error code of solarsystem_hp().
  *
  * @sa planet_eph_manager()
- * @sa planet_ephemeris()
+ * @sa planet_ephem_provider_hp()
  * @sa ephem_open()
- * @sa set_planet_calc()
+ * @sa set_planet_provider_hp()
  *
  * @since 1.0
  */
@@ -147,9 +147,9 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
  * @return               0 if successful, or else an error code of solarsystem().
  *
  * @sa planet_eph_manager_hp()
- * @sa planet_ephemeris()
+ * @sa planet_ephem_provider()
  * @sa ephem_open()
- * @sa set_planet_calc()
+ * @sa set_planet_provider()
  * @sa solarsystem()
  *
  * @since 1.0
@@ -160,8 +160,8 @@ short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origi
 }
 
 #if DEFAULT_SOLSYS == 1
-novas_planet_calculator default_planetcalc = planet_eph_manager;
-novas_planet_calculator_hp default_planetcalc_hp = planet_eph_manager_hp;
+novas_planet_provider default_planetcalc = planet_eph_manager;
+novas_planet_provider_hp default_planetcalc_hp = planet_eph_manager_hp;
 #elif !BUILTIN_SOLSYS1
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   return planet_eph_manager(jd_tdb, body, origin, position, velocity);

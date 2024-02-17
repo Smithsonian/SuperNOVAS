@@ -159,9 +159,9 @@ local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, such as:
 
  - Choose which planet calculator function routines are built into the library (for example to provide 
-   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_reader()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
+   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
    You can then specify these functions as the default planet calculator for `ephemeris()` in your application 
-   dynamically via `set_planet_calc()`.
+   dynamically via `set_planet_provider()`.
    
  - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
    `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
@@ -376,13 +376,13 @@ that will handle the respective ephemeris data at runtime before making the NOVA
 
 ```c
  // Set the function to use for regular precision planet position calculations
- set_planet_calc(my_planet_calcular_function);
+ set_planet_provider(my_planet_calcular_function);
   
  // Set the function for high-precision planet position calculations
- set_planet_calc(my_very_precise_planet_calculator_function);
+ set_planet_provider(my_very_precise_planet_calculator_function);
   
  // Set the function to use for calculating all sorts of solar-system bodies
- set_ephem_reader(my_ephemeris_provider_function);
+ set_ephem_provider(my_ephemeris_provider_function);
 ```
 
 You can use `tt2tdb()` to help convert Terrestrial Time (TT) to Barycentric Dynamic Time (TDB) for your ephemeris 
@@ -395,8 +395,8 @@ and TDB interchangeably in the present era):
 
 Instead of `make_cat_entry` you define your source as an `object` with an ID number that is used by the ephemeris 
 service you provided. For major planets you might want to use type `NOVAS_MAJOR_PLANET` if they use a 
-`novas_planet_calculator` function to access ephemeris data with their NOVAS IDs, or else `NOVAS_MINOR_PLANET` for 
-more generic ephemeris handling via a user-provided `novas_ephem_reader_func`. E.g.:
+`novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `NOVAS_EPHEM_OBJECT` for 
+more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
 
 ```c
  object mars, ceres; // Hold data on solar-system bodies.
@@ -406,7 +406,7 @@ more generic ephemeris handling via a user-provided `novas_ephem_reader_func`. E
   
  // Ceres will be handled by the generic ephemeris reader, which say uses the 
  // NAIF ID of 2000001
- make_object(NOVAS_MINOR_PLANET, 2000001, "Ceres", NULL, &ceres);
+ make_object(NOVAS_EPHEM_OBJECT, 2000001, "Ceres", NULL, &ceres);
 ```
 
 Other than that, it's the same spiel as before. E.g.:
@@ -487,7 +487,7 @@ on how they are appropriate for the old and new methodologies respectively.
    This eliminates the need to declare dummy variables in your application code.
 
  - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
-   be the same as the input vector argument. For example, `frame_time(pos, TIE_J2000_TO_ICRS, pos)` using the same 
+   be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
    `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
    This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
 
@@ -500,10 +500,10 @@ on how they are appropriate for the old and new methodologies respectively.
    
  - Runtime configurability:
 
-   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_calc()`, and
-     `set_planet_calc_hp` (for high precision calculations). Similarly, if `planet_ephem_reader()` or 
-     `planet_ephem_reader_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
-     `set_ephem_reader()` can set the user-specified function to use with these to actually read ephemeris data
+   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, and
+     `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
+     `planet_ephem_provider_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
+     `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
      (e.g. from a JPL ephemeris file).
  
    * If CIO locations vs GSRS are important to the user, the user may call `cio_set_locator_file()` at runtime to
@@ -511,7 +511,7 @@ on how they are appropriate for the old and new methodologies respectively.
      compiled with the different default CIO locator path. 
  
    * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
-     approximation via `nutation_set_lp_calc()`. For example, the user may want to use the `iau2000b()` model instead 
+     approximation via `nutation_set_lp_provider()`. For example, the user may want to use the `iau2000b()` model instead 
      or some custom algorithm instead.
  
  - New intutitive XYZ coordinate coversion functions:
@@ -519,15 +519,20 @@ on how they are appropriate for the old and new methodologies respectively.
      `cirs_to_gcrs()`.
    * for J2000 - TOD - ITRS (old methodology): `j2000_to_tod()`, `tod_to_itrs()`, and `itrs_to_tod()`, 
      `tod_to_j2000()`.
+
+ - New `itrs_to_hor()` and `hor_to_itrs()` functiona to convert ITRS coordinates to astrometric azimuth and elevation
+   or going back. Whereas  `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit version 
+   of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the `cirs_to_itrs()` 
+   followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no equivalent in NOVAS 
+   C 3.1.
    
- - New `cirs_to_hor()` and `tod_to_hor()` functions similar to the existing `equ2hor()`. Whereas `tod_to_hor()` is
-   effectively a just better named bersion of `equ2hor()` for converting from TOD to to local horizontal (old 
-   methodology), the `cirs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no equivalent
-   in NOVAS C 3.1. As such, `cirs_to_hor()` may be used after `place()` is called with `NOVAS_CIRS` as the coordinate 
-   system. 
+ - New celestial coordinate conversion functions to go between GCRS, dynamical CIRS or TOD, and Earth-fixed ITRS 
+   coordinate systems.
    
- - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted zenith angle
-   as its argument.
+ - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.  
+   
+ - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted (astrometric) 
+   zenith angle as its argument.
 
  - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
    `place_gcrs()`, `place_cirs()`, `place_tod()`.
@@ -538,7 +543,7 @@ on how they are appropriate for the old and new methodologies respectively.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_ephem_manager()` vs `planet_ephem_reader()`. See the section on [Building and installation](#installation)
+   `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on [Building and installation](#installation)
    further above on including a selection of these in your library build.)
 
 
@@ -574,7 +579,7 @@ before that level of accuracy is reached.
     `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
     need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
     JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
-    [section below](#solarsystem)for more information how you can do that.
+    [section below](#solarsystem) for more information how you can do that.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
     option to include _optical_ refraction corrections in `equ2hor()` either for a standard atmosphere or more 
@@ -589,7 +594,143 @@ before that level of accuracy is reached.
 <a name="solarsystem"></a>
 ## External Solar-system ephemeris data or services
 
-Coming soon...
+
+If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
+sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as JPL Horizons 
+or the Minor Planet Center. Given the NOVAS C heritage, and some added SuperNOVAS flexibility in this area, you have 
+several options on doing that. These are listed from the most flexible (and preferred) to the least flexible (old 
+ways).
+
+ 1. [Universal ephemeris data / service integration](#universal-ephemerides)
+ 2. [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
+ 3. [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
+
+
+<a name="universal-ephemerides"></a>
+### 1. Universal ephemeris data / service integration 
+
+Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
+`novas_ephem_provider`, e.g.:
+
+```c
+ int my_ephem_reader(long id, const char *name, double jd_tdb_high, double jd_tdb_low, 
+                     enum novas_origin *origin, double *pos, double *vel) {
+   // Your custom ephemeris reader implementation here
+   ...
+ }
+```
+
+which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, 
+and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied poiter locations. 
+The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate 
+for the implementation). The positions and velocities may be returned either relative to the SSB or relative to the 
+heliocenter, and accordingly, your function should set the value pointed at by origin to `NOVAS_BARYCENTER` or 
+`NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
+AU/day respectively. 
+
+This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the CSPICE toolkit, or for the 
+Minor Planet Center (MPC), or whatever other ephemeris service you prefer.
+
+Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
+
+```c
+ set_ephem_provider(my_ephem_reader);
+```
+
+By default, your custom `my_ephem_reader` funtion will be used for 'minor planets' only (i.e. anything other than the 
+major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use the same function for the mentioned 
+'major planets' also via:
+
+```c
+ set_planet_provider(planet_ephem_provider);
+ set_planet_provider_hp(planet_ephem_provider_hp);
+```
+
+provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
+`solsys-ephem.c` explicitly. Easy-peasy.
+
+
+<a name="builtin-ephem-readers"></a>
+### 2. Built-in support for (old) JPL major planet ephemerides
+
+If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
+distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (such as 
+DE 405), either via the `ephem_manager()` interface of `solsys1.c` or via the `jplint_()` interface of `solsys2.c`.
+
+#### 2.1. Planets via `eph_manager`
+
+To use the `eph_manager` interface for planet 1997 JPL planet ephemeris, you must either build superNOVAS with 
+`BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and `ephem_manager.c` from
+SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old way) you might also 
+want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set `eph_manager` as your 
+planetary ephemeris provider at runtime via:
+
+```c
+ set_planet_provider(planet_eph_manager);
+ set_planet_provider_hp(planet_eph_manager_hp);
+```
+
+Either way, before you can use the ephemeris, you must also open the relevant ephemeris data file with `ephem_open()`:
+
+```c
+ int de_number;	         // The DE number, e.g. 405 for DE 405
+ double from_jd, to_jd;  // [day] Julian date range of the ephemeris data
+  
+ ephem_open("path-to/de405.bsp", &from_jd, &to_jd, &de_number);
+```
+
+And, when you are done using the ephemeris file, you should close it with
+
+```c
+ ephem_close();
+```
+ 
+Note, that at any given time `eph_manager()` can have only one ephemeris data file opened. You cannot use it to 
+retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
+can integrate as discussed further above!)
+
+That's all, except the warning that there is no guarantee that this method will work with newer JPL ephemeris data,
+which may be in a different binary format.
+
+
+#### 2.b. Planets via JPL's `pleph` FORTRAN interface
+
+To use the `jplint_` interface for planet ephemerides, you must either build superNOVAS with `BUILTIN_SOLSYS2 = 1` in 
+`config.mk`, or else link your application with `solsys2.c` and `jplint.f` from SuperNOVAS explicitly (as well as 
+`pleph.f` etc. from the JPL library). If you want the JPL `pleph`-based interface  to be your default ephemeris provider 
+(the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. Otherwise, your application should set 
+your planetary ephemeris provider at runtime via:
+
+```c
+ set_planet_provider(planet_jplint);
+ set_planet_provider_hp(planet_jplint_hp);
+```
+
+Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end
+of the world), but you may also have to modify `jplint.f` to work with the version of `pleph.f` that you will be using.
+Unless you already have code that relies on this method, you are probably better off chosing one of the other ways
+for integrating planetary ephemeris data with SuperNOVAS.
+
+<a name="explicit-ephem-linking"></a>
+### 3. Explicit linking of custom ephemeris functions
+
+Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the 
+`DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own implemetation of
+`solarsystem()` and `solarsystem_hp()` calls with your application. 
+
+For Solar-system objects other than the major planets, you may also provide your own `readeph()` implementation. (In
+this case you will want to set `DEFAULT_READEPH` in `config.mk` to specify your source code for that function before
+building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link
+your application explicitly with your `readeph()` implementation.
+
+The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing a
+`solarsystem()` / `solarsystem_hp()` and/or `readeph()` implementations for _every_ application that you will want
+to use SuperNOVAS with. This is why the runtime configuration of the ephemeris povider functions is the best and
+most generic way to add your preferred implementations while also providing some minimum default implementations for
+_other users_ of the library, who may not need _your_ ephemeris service, or have no need for planet data beyond the 
+approximate positions for the Earth and Sun.
+
+
 
 -----------------------------------------------------------------------------
 

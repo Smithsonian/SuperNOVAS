@@ -11,7 +11,7 @@
  *              conflicts with the super-simplistic naming scheme here. You are better off
  *              without this.
  *
- *  C Edition, Version 3.1,  U. S. Naval Observatory
+ *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
@@ -44,13 +44,13 @@ extern const double AU;
 /// @deprecated Astronomical Unit in kilometers. Use NOVAS AU_KM instead.
 extern const double AU_KM;
 
-/// @deprecated Heliocentric gravitational constant in meters^3 / second^2, from DE-405. Use NOVAS_GS instead.
+/// @deprecated Heliocentric gravitational constant in meters^3 / second^2, from DE-405. Use NOVAS_G_SUN instead.
 extern const double GS;
 
-/// @deprecated Geocentric gravitational constant in meters^3 / second^2, from DE-405. Use NOVAS_GE instead.
+/// @deprecated Geocentric gravitational constant in meters^3 / second^2, from DE-405. Use NOVAS_G_EARTH instead.
 extern const double GE;
 
-/// @deprecated Radius of Earth in kilometers from IERS Conventions (2003). Use NOVAS_ERAD instead
+/// @deprecated Radius of Earth in kilometers from IERS Conventions (2003). Use NOVAS_EARTH_RADIUS instead
 extern const double ERAD;
 
 /// @deprecated Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
@@ -58,7 +58,7 @@ extern const double ERAD;
 extern const double F;
 
 /// @deprecated Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003).
-///             Use NOVAS_ANGVEL instead
+///             Use NOVAS_EARTH_ANGVEL instead
 extern const double ANGVEL;
 
 /// @deprecated Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).

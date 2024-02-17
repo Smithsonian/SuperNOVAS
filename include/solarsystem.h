@@ -55,11 +55,11 @@
  *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
  *                      produced for other reasons.
  *
- * @sa set_planet_calc()
+ * @sa set_planet_provider()
  * @sa ephemeris()
  * @sa novas_solarsystem_hp_func
  */
-typedef short (*novas_planet_calculator)(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 /**
@@ -90,11 +90,11 @@ typedef short (*novas_planet_calculator)(double jd_tdb, enum novas_planet body, 
  *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
  *                      produced for other reasons.
  *
- * @sa set_planet_calc_hp()
+ * @sa set_planet_provider_hp()
  * @sa novas_solarsystem_func
  * @sa ephemeris()
  */
-typedef short (*novas_planet_calculator_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 
 
@@ -104,7 +104,7 @@ typedef short (*novas_planet_calculator_hp)(const double jd_tdb[2], enum novas_p
  * can provide their own, either as a default statically compiled readeph() implementation,
  * or else a dynamically defined one via ephemeris_set_reader().
  *
- * @param mp            The ID number of the solar-system body for which the position in
+ * @param id            The ID number of the solar-system body for which the position in
  *                      desired.
  * @param name          The name of the solar-system body
  * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
@@ -126,14 +126,14 @@ typedef short (*novas_planet_calculator_hp)(const double jd_tdb[2], enum novas_p
  *                      non-zero value if the was an error s.t. the position and velocity
  *                      vector should not be used.
  *
- * @sa set_ephem_reader()
+ * @sa set_ephem_provider()
  * @sa ephemeris()
- * @sa NOVAS_MINOR_PLANET
+ * @sa NOVAS_EPHEM_OBJECT
  *
  * @since 1.0
  * @author Attila Kovacs
  */
-typedef int (*novas_ephem_reader_func)(int mp, const char *name, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel);
+typedef int (*novas_ephem_provider)(long id, const char *name, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel);
 
 
 
@@ -149,7 +149,7 @@ typedef int (*novas_ephem_reader_func)(int mp, const char *name, double jd_tdb_h
  *
  * @deprecated This old ephemeris reader is prone to memory leaks, and lacks some useful
  *             functionality. Users are strongly encouraged to use the new
- *             novas_ephem_reader_func instead, which can provide dynamically configured
+ *             `novas_ephem_provider` instead, which can provide dynamically configured
  *             implementations at runtime.
  *
  * @param mp            The ID number of the solar-system body for which the position are
@@ -167,9 +167,9 @@ typedef int (*novas_ephem_reader_func)(int mp, const char *name, double jd_tdb_h
  *                      is responsible for calling free() on the returned value when it is no
  *                      longer needed.
  *
- * @sa novas_ephem_reader_func()
+ * @sa novas_ephem_provider()
  * @sa ephemeris()
- * @sa NOVAS_MINOR_PLANET
+ * @sa NOVAS_EPHEM_OBJECT
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -177,20 +177,20 @@ typedef int (*novas_ephem_reader_func)(int mp, const char *name, double jd_tdb_h
 double *readeph(int mp, const char *name, double jd_tdb, int *error);
 
 
-int set_planet_calc(novas_planet_calculator f);
+int set_planet_provider(novas_planet_provider func);
 
-int set_planet_calc_hp(novas_planet_calculator_hp f);
+int set_planet_provider_hp(novas_planet_provider_hp func);
 
-int set_ephem_reader(novas_ephem_reader_func f);
+int set_ephem_provider(novas_ephem_provider func);
 
-novas_ephem_reader_func get_ephem_reader();
+novas_ephem_provider get_ephem_provider();
 
 
 /**
  * A default implementation for regular (reduced) precision handling of major planets, Sun,
  * Moon and the Solar-system barycenter. See DEFAULT_SOLSYS in Makefile to choose the
  * implementation that is built into with the library as a default. Applications can define
- * their own preferred implementations at runtime via set_planet_calc().
+ * their own preferred implementations at runtime via set_planet_provider().
  *
  * Since this is a function that may be provided by existing custom user implementations, we
  * keep the original argument types for compatibility, hence 'short' instead of the more
@@ -217,7 +217,7 @@ novas_ephem_reader_func get_ephem_reader();
  *
  * @sa novas_planet
  * @sa solarsystem_hp()
- * @sa set_planet_calc()
+ * @sa set_planet_provider()
  * @sa novas_solarsystem_func
  */
 short solarsystem (double jd_tdb, short body, short origin, double *position, double *velocity);
@@ -227,7 +227,7 @@ short solarsystem (double jd_tdb, short body, short origin, double *position, do
  * A default implementation for high precision handling of major planets, Sun, Moon and the
  * Solar-system barycenter. See DEFAULT_SOLSYS in Makefile to choose the implementation that
  * is built into the library as a default. Applications can define their own preferred
- * implementations at runtime via set_planet_calc_hp().
+ * implementations at runtime via set_planet_provider_hp().
  *
  * Since this is a function that may be provided by existing custom user implementations, we
  * keep the original argument types for compatibility, hence 'short' instead of the more
@@ -256,7 +256,7 @@ short solarsystem (double jd_tdb, short body, short origin, double *position, do
  *                      produced for other reasons.
  *
  * @sa solarsystem()
- * @sa set_planet_calc_hp()
+ * @sa set_planet_provider_hp()
  * @sa novas_solarsystem_hp_func
  */
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity);
@@ -266,9 +266,9 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
 short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short planet_ephem_reader(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
-short planet_ephem_reader_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
