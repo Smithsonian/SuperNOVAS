@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 1.0.0
+ * @version 0.9.0
  *
  *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -50,8 +50,8 @@
 
 #include "nutation.h"
 
-#define SUPERNOVAS_MAJOR_VERSION  1       ///< API major version
-#define SUPERNOVAS_MINOR_VERSION  0       ///< API minor version
+#define SUPERNOVAS_MAJOR_VERSION  0       ///< API major version
+#define SUPERNOVAS_MINOR_VERSION  9       ///< API minor version
 #define SUPERNOVAS_SUBVERSION     0       ///< Integer sub version of the release
 #define SUPERNOVAS_RELEASE_STRING ""      ///< Additional release information in version, e.g. "-1", or "-rc1".
 
