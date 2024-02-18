@@ -552,6 +552,11 @@ on how they are appropriate for the old and new methodologies respectively.
    `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on [Building and installation](#installation)
    further above on including a selection of these in your library build.)
 
+ - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
+   default NOVAS object names were converted to upper-case, making them effectively case-insensitive.)
+
+ - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
+
 
 
 -----------------------------------------------------------------------------
