@@ -65,12 +65,12 @@ int main(void) {
   // and motion of star FK6 1307.
   make_cat_entry("GMB 1830", "FK6", 1307, 11.88299133, 37.71867646, 4003.27, -5815.07, 109.21, -98.8, &star);
 
-  if((error = make_object(NOVAS_MAJOR_PLANET, NOVAS_MOON, "Moon", NULL, &moon)) != 0) {
+  if((error = make_object(NOVAS_PLANET, NOVAS_MOON, "Moon", NULL, &moon)) != 0) {
     printf("Error %d from make_object (Moon)\n", error);
     return (error);
   }
 
-  if((error = make_object(NOVAS_MAJOR_PLANET, NOVAS_MARS, "Mars", NULL, &mars)) != 0) {
+  if((error = make_object(NOVAS_PLANET, NOVAS_MARS, "Mars", NULL, &mars)) != 0) {
     printf("Error %d from make_object (Mars)\n", error);
     return (error);
   }

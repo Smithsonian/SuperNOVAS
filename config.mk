@@ -63,7 +63,7 @@ DEFAULT_SOLSYS = 3
 
 
 # cppcheck options for 'check' target
-CHECKOPTS = --enable=performance,warning,portability,style --language=c \
+CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
             --error-exitcode=1
 
 # ============================================================================

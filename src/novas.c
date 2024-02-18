@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 0.9.0
+ * @version 1.0.0
  *
  *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -700,9 +700,10 @@ int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double 
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar
  *                  system body.
+ * @param obs       Observer location. It may be NULL if not relevant.
  * @param ut1_to_tt [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
  * @param sys       Coordinate reference system in which to produce output values
- * @param obs       Observer location. It may be NULL if not relevant.
+
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Topocentric apparent right ascension in hours, referred to the
  *                  true equator and equinox of date. (It may be NULL if not required)
@@ -726,7 +727,7 @@ int radec_planet(double jd_tt, const object *ss_body, const observer *obs, doubl
   sky_pos output = { };
   int error;
 
-  if(ss_body->type != NOVAS_MAJOR_PLANET && ss_body->type != NOVAS_EPHEM_OBJECT) {
+  if(ss_body->type != NOVAS_PLANET && ss_body->type != NOVAS_EPHEM_OBJECT) {
     errno = EINVAL;
     return 1;
   }
@@ -1304,8 +1305,8 @@ short place(double jd_tt, const object *target, const observer *location, double
 
   // Create a null star 'cat_entry' and  Earth and Sun 'object's.
   if(first_time) {
-    make_object(NOVAS_MAJOR_PLANET, NOVAS_EARTH, "Earth", NULL, &earth);
-    make_object(NOVAS_MAJOR_PLANET, NOVAS_SUN, "Sun", NULL, &sun);
+    make_object(NOVAS_PLANET, NOVAS_EARTH, "Earth", NULL, &earth);
+    make_object(NOVAS_PLANET, NOVAS_SUN, "Sun", NULL, &sun);
     first_time = 0;
   }
 
@@ -1313,7 +1314,7 @@ short place(double jd_tt, const object *target, const observer *location, double
   // Check on Earth as an observed object.  Earth can only be an observed
   // object when 'location' is a near-Earth satellite.
   // ---------------------------------------------------------------------
-  if((target->type == NOVAS_MAJOR_PLANET) && (target->number == NOVAS_EARTH)
+  if((target->type == NOVAS_PLANET) && (target->number == NOVAS_EARTH)
           && (obs.where != NOVAS_OBSERVER_IN_EARTH_ORBIT)) {
     errno = EINVAL;
     return 3;
@@ -2443,7 +2444,7 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  * @sa cel2ter()
  */
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2) {
   double jd_ut1, jd_tt, jd_tdb, gast;
 
@@ -2519,8 +2520,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *   XXV Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
+ * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2542,9 +2542,9 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int itrs_to_cirs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -2560,8 +2560,7 @@ int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  *   XXV Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
+ * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2583,9 +2582,9 @@ int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int itrs_to_tod(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -2642,7 +2641,7 @@ int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum no
  * @sa ter2cel()
  */
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2) {
 
   double jd_ut1, jd_tt, jd_tdb, gast, theta;
@@ -2720,8 +2719,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *   Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
+ * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2744,9 +2742,9 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int cirs_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -2762,8 +2760,7 @@ int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  *   Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high    [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low     [day] Low-order part of UT1 Julian date.
+ * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2786,9 +2783,9 @@ int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  * @since 1.0
  * @author Attila Kovacs
  */
-int tod_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int tod_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -3808,11 +3805,11 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
     // Body names correspondig to their major planet ID numbers
     const char *name[] = NOVAS_PLANET_NAMES_INIT;
 
-    make_object(NOVAS_MAJOR_PLANET, NOVAS_EARTH, name[NOVAS_EARTH], NULL, &earth);
+    make_object(NOVAS_PLANET, NOVAS_EARTH, name[NOVAS_EARTH], NULL, &earth);
 
     for(i = 0; i < 7; i++) {
       int num = body_num[i];
-      error = make_object(NOVAS_MAJOR_PLANET, num, name[num], NULL, &body[i]);
+      error = make_object(NOVAS_PLANET, num, name[num], NULL, &body[i]);
       prop_error(error, 30);
     }
     first_time = 0;
@@ -4149,7 +4146,7 @@ int rad_vel(const object *target, const double *pos, const double *vel, const do
     }
 
       /* Objects in the solar system */
-    case NOVAS_MAJOR_PLANET:
+    case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
       // Compute solar potential at object, if within solar system.
       r = d_obj_sun * AU;
@@ -4395,7 +4392,7 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
  *
  * @sa nutation_angles()
  */
-int nutation_set_lp_provider(novas_nutation_provider func) {
+int set_nutation_lp_provider(novas_nutation_provider func) {
   if(!func) {
     errno = EINVAL;
     return -1;
@@ -4411,7 +4408,7 @@ int nutation_set_lp_provider(novas_nutation_provider func) {
  *
  * This function selects the nutation model depending first upon the input value of 'accuracy'.
  * If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used. Otherwise
- * the model set by nutation_set_lp_provider() is used, or else the default nu2000k().
+ * the model set by set_nutation_lp_provider() is used, or else the default nu2000k().
  *
  * See the prologs of the nutation functions in file 'nutation.c' for details concerning the
  * models.
@@ -4428,7 +4425,7 @@ int nutation_set_lp_provider(novas_nutation_provider func) {
  *
  * @return            0 if successful, or -1 if the output pointer arguments are NULL
  *
- * @sa nutation_set_lp_provider()
+ * @sa set_nutation_lp_provider()
  * @sa nutation()
  * @sa iau2000b()
  * @sa nu2000k()
@@ -4945,7 +4942,7 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
  * @author Attila Kovacs
  *
  */
-int cio_set_locator_file(const char *filename) {
+int set_cio_locator_file(const char *filename) {
   FILE *old = cio_file;
 
   // Open new file first to ensure it has a distinct pointer from the old one...
@@ -4963,7 +4960,7 @@ int cio_set_locator_file(const char *filename) {
  * equinox of date.  The CIO is always located on the true equator (= intermediate equator)
  * of date.
  *
- * The user may specify an interpolation file to use via cio_set_locator_file() prior to
+ * The user may specify an interpolation file to use via set_cio_locator_file() prior to
  * calling this function. In that case the call will return CIO location relative to GCRS.
  * In the absence of the table, it will calculate the CIO location relative to the true
  * equinox. In either case the type of the location is returnedalogside the CIO location
@@ -4990,7 +4987,7 @@ int cio_set_locator_file(const char *filename) {
  * @return            0 if successful, -1 if one of the pointer arguments is NULL or the
  *                    accuracy is invalid.
  *
- * @sa cio_set_locator_file()
+ * @sa set_cio_locator_file()
  * @sa cio_ra()
  * @sa gcrs_to_cirs()
  */
@@ -5178,7 +5175,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  * requested date.  The function obtains the data from an external data file.
  *
  * This function assumes that binary, random-access file has been created and is either in the
- * location specified at compilation; or set at runtime via cio_set_locator_file().
+ * location specified at compilation; or set at runtime via set_cio_locator_file().
  * This file is created by program 'cio_file.c'.
  *
  * NOTES:
@@ -5199,7 +5196,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  *                  internal 't' array, or 6 if 'jd_tdb' is too close to either end of the CIO
  *                  file do we are unable to put 'n_pts' data points into the output
  *
- * @sa cio_set_locator_file()
+ * @sa set_cio_locator_file()
  * @sa cio_location()
  */
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
@@ -5220,7 +5217,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     return 3;               // n_pts is out of bounds
   }
 
-  if(cio_file == NULL) cio_set_locator_file(DEFAULT_CIO_LOCATOR_FILE);  // Try default locator file.
+  if(cio_file == NULL) set_cio_locator_file(DEFAULT_CIO_LOCATOR_FILE);  // Try default locator file.
   if(cio_file == NULL) {
     errno = ENODEV;
     cache_count = 0;
@@ -5426,7 +5423,7 @@ short ephemeris(const double jd_tdb[2], const object *body, enum novas_origin or
   // type of object
   switch(body->type) {
 
-    case NOVAS_MAJOR_PLANET:
+    case NOVAS_PLANET:
       // Get the position and velocity of a major planet, Pluto, Sun, or Moon.
       // When high accuracy is specified, use function 'solarsystem_hp' rather
       // than 'solarsystem'.
@@ -5472,7 +5469,7 @@ short ephemeris(const double jd_tdb[2], const object *body, enum novas_origin or
       // Check and adjust the origins as necessary.
       if(origin != eph_origin) {
         double pos0[3] = { }, vel0[3] = { };
-        enum novas_planet refnum = (origin == NOVAS_BARYCENTER) ? NOVAS_BARYCENTER_POS : NOVAS_SUN;
+        enum novas_planet refnum = (origin == NOVAS_BARYCENTER) ? NOVAS_SSB : NOVAS_SUN;
         int i;
 
         error = planetcalc(jd_tdb[0] + jd_tdb[1], refnum, eph_origin, pos0, vel0);
@@ -5841,7 +5838,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
   }
 
   for(i = 0; i < 30; i++) {
-    double zd_obs = zd_astro + refr;
+    double zd_obs = zd_astro - refr;
     refr = refract(location, option, zd_obs);
     if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5) return refr;
   }
@@ -6097,7 +6094,7 @@ void novas_case_sensitive(int value) {
  * compatibility with NOVAS C) source names are converted to upper-case internally. You can
  * however enable case-sensitive processing by calling novas_case_sensitive() before.
  *
- * @param type          The type of object. NOVAS_MAJOR_PLANET (0), NOVAS_EPHEM_OBJECT (1) or
+ * @param type          The type of object. NOVAS_PLANET (0), NOVAS_EPHEM_OBJECT (1) or
  *                      NOVAS_CATALOG_OBJECT (2)
  * @param number        The novas ID number (for solar-system bodies only, otherwise ignored)
  * @param name          The name of the object (case insensitive). It should be shorter than
@@ -6108,7 +6105,7 @@ void novas_case_sensitive(int value) {
  *                      object located outside the solar system. Used only if type is
  *                      NOVAS_CATALOG_OBJECT, otherwise ignored and can be NULL.
  * @param[out] cel_obj  Pointer to the celestial object data structure to be populated. Used
- *                      only if 'type' is NOVAS_MAJOR_PLANET or NOVAS_EPHEM_OBJECT, otherwise
+ *                      only if 'type' is NOVAS_PLANET or NOVAS_EPHEM_OBJECT, otherwise
  *                      ignored and may be NULL.
  * @return              0 if successful, or else 1 if 'type' is invalid, 2 if 'number' is out
  *                      of range, 3 if cel_obj is NULL, 4 if star_data is NULL, or 5 if 'name'
@@ -6118,7 +6115,10 @@ void novas_case_sensitive(int value) {
  *
  * @sa novas_case_sensitive()
  * @sa make_cat_entry()
+ * @sa make_planet()
+ * @sa make_ephem_body()
  * @sa place()
+ *
  */
 short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star, object *cel_obj) {
 
@@ -6137,7 +6137,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
   else cel_obj->type = type;
 
   // Set the object number.
-  if(type == NOVAS_MAJOR_PLANET) {
+  if(type == NOVAS_PLANET) {
     if((number < 0) || (number >= NOVAS_PLANETS)) {
       errno = EINVAL;
       return 2;
@@ -6177,6 +6177,62 @@ short make_object(enum novas_object_type type, long number, const char *name, co
 
   return 0;
 }
+
+
+/**
+ * Sets a celestial object to be a major planet, or the Sun, Moon or Solar-system Barycenter.
+ *
+ * @param num           Planet ID number (NOVAS convention)
+ * @param[out] planet   Pointer to structure to populate.
+ * @return              0 if successful, or else -1 if the 'planet' pointer is NULL.
+ *
+ * @sa make_ephem_body()
+ * @sa make_cat_entry()
+ * @sa place()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+int make_planet(enum novas_planet num, object *planet) {
+  char *names[] = NOVAS_PLANET_NAMES_INIT;
+
+  if(!planet || num < 0 || num >= NOVAS_PLANETS) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  return make_object(NOVAS_PLANET, num, names[num], NULL, planet);
+}
+
+/**
+ * Sets a celestial object to be a Solar-system ephemeris body. Typically this would be used to define
+ * minor planets, asteroids, comets and planetary satellites.
+ *
+ * @param name          Name of object. By default converted to upper-case, unless novas_case_sensitive()
+ *                      was called with a non-zero argument. Max. SIZE_OF_OBJ_NAME long, including
+ *                      termination.
+ * @param num           Solar-system body ID number (e.g. NAIF)
+ * @param[out] body     Pointer to structure to populate.
+ * @return              0 if successful, or else -1 if the 'planet' pointer is NULL, or 5 if the name
+ *                      is too long.
+ *
+ *
+ * @sa make_planet()
+ * @sa make_cat_entry()
+ * @sa place()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+int make_ephem_body(const char *name, long num, object *body) {
+  if(!name || !body) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  return make_object(NOVAS_EPHEM_OBJECT, num, name, NULL, body);
+}
+
 
 /**
  * Populates an 'observer' data structure given the parameters. The output data structure may

@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 0.9.0
+ * @version 1.0.0
  *
  *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -50,8 +50,8 @@
 
 #include "nutation.h"
 
-#define SUPERNOVAS_MAJOR_VERSION  0       ///< API major version
-#define SUPERNOVAS_MINOR_VERSION  9       ///< API minor version
+#define SUPERNOVAS_MAJOR_VERSION  1       ///< API major version
+#define SUPERNOVAS_MINOR_VERSION  0       ///< API minor version
 #define SUPERNOVAS_SUBVERSION     0       ///< Integer sub version of the release
 #define SUPERNOVAS_RELEASE_STRING ""      ///< Additional release information in version, e.g. "-1", or "-rc1".
 
@@ -69,57 +69,57 @@
 #define NOVAS_CIO_CACHE_SIZE      1024
 
 /// [day] Julian date at J2000
-#define NOVAS_JD_J2000    2451545.0
+#define NOVAS_JD_J2000            2451545.0
 
 /// [day] Julian date at B1950
-#define NOVAS_JD_B1950    2433282.42345905
+#define NOVAS_JD_B1950            2433282.42345905
 
 /// [day] Julian date at B1900
-#define NOVAS_JD_B1900    15019.81352
+#define NOVAS_JD_B1900            15019.81352
 
 /// [day] Julian date for J1991.25, which the Hipparcos catalog is
 /// referred to
-#define NOVAS_JD_HIP      2448349.0625
+#define NOVAS_JD_HIP              2448349.0625
 
 /// [m/s] Speed of light in meters/second is a defining physical constant.
-#define NOVAS_C           299792458.0
+#define NOVAS_C                   299792458.0
 
 /// [m] Astronomical unit in meters.  Value is AU_SEC * C.
-#define NOVAS_AU          1.4959787069098932e+11
+#define NOVAS_AU                  1.4959787069098932e+11
 
 /// [AU] Light-time for one astronomical unit (AU) in seconds, from DE-405.
-#define NOVAS_AU_SEC     ( NOVAS_AU / NOVAS_C )
+#define NOVAS_AU_SEC              ( NOVAS_AU / NOVAS_C )
 
 /// [AU/day] Speed of light in AU/day.  Value is 86400 / AU_SEC.
-#define NOVAS_C_AU_PER_DAY  ( 86400.0 / AU_SEC )
+#define NOVAS_C_AU_PER_DAY        ( 86400.0 / AU_SEC )
 
 /// [km] Astronomical Unit in kilometers.
-#define NOVAS_AU_KM       ( 1e-3 * NOVAS_AU )
+#define NOVAS_AU_KM               ( 1e-3 * NOVAS_AU )
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant in
 /// meters^3 / second^2, from DE-405.
-#define NOVAS_G_SUN          1.32712440017987e+20
+#define NOVAS_G_SUN               1.32712440017987e+20
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Geocentric gravitational constant in
 /// meters^3 / second^2, from DE-405.
-#define NOVAS_G_EARTH          3.98600433e+14
+#define NOVAS_G_EARTH             3.98600433e+14
 
 /// [m] Radius of Earth in meters from IERS Conventions (2003).
 #define NOVAS_EARTH_RADIUS        6378136.6
 
 /// Earth ellipsoid flattening from IERS Conventions (2003). Value is
 /// 1 / 298.25642.
-#define NOVAS_EARTH_FLATTENING       (1.0 / 298.25642)
+#define NOVAS_EARTH_FLATTENING    (1.0 / 298.25642)
 
 /// [rad/s] Rotational angular velocity of Earth in radians/sec from IERS
 /// Conventions (2003).
-#define NOVAS_EARTH_ANGVEL      7.2921150e-5
+#define NOVAS_EARTH_ANGVEL        7.2921150e-5
 
 /// [s] TAI - GPS time offset
-#define NOVAS_GPS_TO_TAI  19.0
+#define NOVAS_GPS_TO_TAI          19.0
 
 /// [s] TT - TAI time offset
-#define NOVAS_TAI_TO_TT   32.187
+#define NOVAS_TAI_TO_TT           32.187
 
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
 /// [0]: Earth/Moon barycenter, MASS[1] = Mercury, ...,
@@ -134,27 +134,27 @@
 // them here
 
 #  ifndef TWOPI
-#    define TWOPI             (2.0 * M_PI)    ///< 2&pi;
+#    define TWOPI                 (2.0 * M_PI)    ///< 2&pi;
 #  endif
 
 #  ifndef ASEC360
 /// [arcsec] Number of arcseconds in 360 degrees.
-#    define ASEC360           (360 * 60 * 60)
+#    define ASEC360               (360 * 60 * 60)
 #  endif
 
 #  ifndef DEG2RAD
 /// [rad/deg] 1 degree in radians
-#    define DEG2RAD           (M_PI / 180.0)
+#    define DEG2RAD               (M_PI / 180.0)
 #  endif
 
 #  ifndef RAD2DEG
 /// [deg/rad] 1 radian in degrees
-#    define RAD2DEG           (1.0 / DEG2RAD)
+#    define RAD2DEG               (1.0 / DEG2RAD)
 #  endif
 
 #  ifndef ASEC2RAD
 /// [rad/arcsec] 1 arcsecond in radians
-#    define ASEC2RAD          (DEG2RAD / 3600.0)
+#    define ASEC2RAD              (DEG2RAD / 3600.0)
 #  endif
 
 #endif
@@ -168,7 +168,7 @@ enum novas_object_type {
   /// @sa enum novas_planet
   /// @sa novas_planet_provider
   /// @sa novas_planet_provider_hp
-  NOVAS_MAJOR_PLANET = 0,
+  NOVAS_PLANET = 0,
 
   /// A Solar-system body that does not fit the major planet type, and requires specific
   /// user-provided novas_ephem_provider implementation.
@@ -181,17 +181,17 @@ enum novas_object_type {
 };
 
 /// The number of object types distinguished by NOVAS.
-#define NOVAS_OBJECT_TYPES        (NOVAS_CATALOG_OBJECT + 1)
+#define NOVAS_OBJECT_TYPES      (NOVAS_CATALOG_OBJECT + 1)
 
 /**
  * Enumeration for the 'major planet' numbers in NOVAS to use as the solar-system body number whenever
- * the object type is NOVAS_MAJOR_PLANET.
+ * the object type is NOVAS_PLANET.
  *
- * @sa NOVAS_MAJOR_PLANET
- * @sa NOVAS_MAJOR_PLANET_NAMES_INIT
+ * @sa NOVAS_PLANET
+ * @sa NOVAS_PLANET_NAMES_INIT
  */
 enum novas_planet {
-  NOVAS_BARYCENTER_POS = 0, ///< Solar-system barycenter position ID
+  NOVAS_SSB = 0,        ///< Solar-system barycenter position ID
   NOVAS_MERCURY,        ///< Major planet number for the Mercury in NOVAS.
   NOVAS_VENUS,          ///< Major planet number for the Venus in NOVAS.
   NOVAS_EARTH,          ///< Major planet number for the Earth in NOVAS.
@@ -206,15 +206,14 @@ enum novas_planet {
 };
 
 /// The number of major planets defined in NOVAS.
-#define NOVAS_PLANETS       (NOVAS_MOON + 1)
+#define NOVAS_PLANETS             (NOVAS_MOON + 1)
 
 /**
  * String array initializer for Major planet names, matching the enum novas_planet. E.g.
  *
  * \code
- * char *planet_names[] = NOVAS_MAJOR_PLANET_NAMES_INIT;
+ * char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
  * \endcode
- *
  *
  * @sa novas_majot_planet
  */
@@ -295,8 +294,6 @@ enum novas_dynamical_type {
   NOVAS_DYNAMICAL_CIRS
 };
 
-
-
 /**
  * Constants to control the precision of NOVAS nutation calculations.
  *
@@ -344,7 +341,7 @@ enum novas_earth_rotation_measure {
 /**
  * Constants for ter2cel() and cel2ter()
  */
-enum novas_celestial_class {
+enum novas_celestial_type {
   CELESTIAL_GCRS = 0,        ///< Celestial coordinates are in GCRS
   CELESTIAL_APPARENT         ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
@@ -372,7 +369,7 @@ enum novas_equinox_type {
 };
 
 /**
- * The origin of the NOVAS_ICRS system for referencing velocities.
+ * The origin of the ICRS system for referencing positions and velocities for solar-system bodies.
  */
 enum novas_origin {
   NOVAS_BARYCENTER = 0,           ///< Origin at the Solar-system baricenter (i.e. BCRS)
@@ -380,13 +377,13 @@ enum novas_origin {
 };
 
 /// the number of different ICSR origins available in NOVAS.
-#define NOVAS_ORIGIN_TYPES            (NOVAS_HELIOCENTER + 1)
+#define NOVAS_ORIGIN_TYPES        (NOVAS_HELIOCENTER + 1)
 
 /// @deprecated Old definition of the Barycenter origin. NOVAS_BARYCENTER is preferred.
-#define BARYC     NOVAS_BARYCENTER
+#define BARYC                     NOVAS_BARYCENTER
 
 /// @deprecated Old definition of the Center of Sun as the origin. NOVAS_HELIOCENTER is preferred.
-#define HELIOC    NOVAS_HELIOCENTER
+#define HELIOC                    NOVAS_HELIOCENTER
 
 /**
  * The types of coordinate transformations available for tranform_cat().
@@ -415,7 +412,7 @@ enum novas_transform_type {
 };
 
 /// The number of coordinate transfor types in NOVAS.
-#define NOVAS_TRANSFORM_TYPES         (ICRS_TO_J2000 + 1)
+#define NOVAS_TRANSFORM_TYPES     (ICRS_TO_J2000 + 1)
 
 /**
  * System in which CIO location is calculated.
@@ -488,7 +485,8 @@ enum novas_nutation_direction {
 };
 
 /**
- * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3), precession = 5028.8200 arcsec/cy)
+ * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3),
+ * precession = 5028.8200 arcsec/cy)
  */
 typedef struct {
   double l;           ///< [rad] mean anomaly of the Moon
@@ -651,11 +649,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 double era(double jd_ut1_high, double jd_ut1_low);
 
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2);
 
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2);
 
 int spin(double angle, const double *pos1, double *pos2);
@@ -768,13 +766,18 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
-// Added API in SuperNOVAS
+// -------------------------------------------------------------------------------------------------------------------
+// SuperNOVAS API:
 
 void novas_case_sensitive(int value);
 
-int cio_set_locator_file(const char *filename);
+int make_planet(enum novas_planet num, object *planet);
 
-int nutation_set_lp_provider(novas_nutation_provider func);
+int make_ephem_body(const char *name, long num, object *body);
+
+int set_cio_locator_file(const char *filename);
+
+int set_nutation_lp_provider(novas_nutation_provider func);
 
 int place_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
         enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *pos);
@@ -809,11 +812,11 @@ int gal2equ(double glon, double glat, double *ra, double *dec);
 // GCRS - CIRS - ITRS conversions
 int gcrs_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
-int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
-        double yp, const double *vec1, double *vec2);
+int cirs_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+        double *vec2);
 
-int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
-        double yp, const double *vec1, double *vec2);
+int itrs_to_cirs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+        double *vec2);
 
 int cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
@@ -822,11 +825,11 @@ int gcrs_to_j2000(const double *in, double *out);
 
 int j2000_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
-int tod_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
-        double yp, const double *vec1, double *vec2);
+int tod_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+        double *vec2);
 
-int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
-        double yp, const double *vec1, double *vec2);
+int itrs_to_tod(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+        double *vec2);
 
 int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 

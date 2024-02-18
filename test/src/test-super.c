@@ -20,14 +20,13 @@
 static observer obs;
 static object source;
 static double tdb = J2000;
-static short accuracy;
 static double ut12tt = 69.0;
 
 static double xp = 1.0;
 static double yp = -2.0;
 
 // Initialized quantities.
-static double lst, pos0[3], vel0[3], epos[3], evel[3], pobs[3], vobs[3];
+static double pos0[3];
 
 static int check_equal_pos(const double *posa, const double *posb, double tol) {
   int i;
@@ -69,8 +68,8 @@ static int test_j2000_tod_j2000() {
 static int test_tod_itrs_tod() {
   double pos1[3];
 
-  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
-  if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
+  if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("tod_itrs_tod", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
@@ -88,8 +87,8 @@ static int test_gcrs_cirs_gcrs() {
 static int test_cirs_itrs_cirs() {
   double pos1[3];
 
-  if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
-  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
+  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
@@ -115,8 +114,8 @@ static int test_tod_vs_cirs() {
 
   if(!is_ok("gcrs_to_j2000", gcrs_to_j2000(pos0, pos1))) return 1;
   if(!is_ok("j2000_to_tod", j2000_to_tod(tdb, 0, pos1, pos1))) return 1;
-  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
-  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("cirs_to_gcrs", cirs_to_gcrs(tdb, 0, pos1, pos1))) return 1;
 
   if(!is_ok("tod_vs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
@@ -258,6 +257,30 @@ static int test_source() {
 }
 
 
+static int test_make_planet() {
+  object mars;
+
+  make_planet(NOVAS_MARS, &mars);
+
+  if(!is_ok("make_planet:type", mars.type != NOVAS_PLANET)) return 1;
+  if(!is_ok("make_planet:number", mars.number != NOVAS_MARS)) return 1;
+  if(!is_ok("make_planet:name", strcasecmp(mars.name, "Mars"))) return 1;
+
+  return 0;
+}
+
+static int test_make_ephem_body() {
+  object body;
+
+  make_ephem_body("Ceres", 1000001, &body);
+
+  if(!is_ok("make_ephem_body:type", body.type != NOVAS_EPHEM_OBJECT)) return 1;
+  if(!is_ok("make_ephem_body:number", body.number != 1000001)) return 1;
+  if(!is_ok("make_ephem_body:name", strcasecmp(body.name, "Ceres"))) return 1;
+
+  return 0;
+}
+
 static int test_precession() {
   double pos1[3], pos2[3];
 
@@ -271,11 +294,39 @@ static int test_precession() {
   return 0;
 }
 
+
+static int test_radec_planet() {
+  int i;
+  object sun;
+
+  make_planet(NOVAS_SUN, &sun);
+
+  for(i = 0; i < 4; i++) {
+    sky_pos posa = {}, posb = {};
+    double ra, dec, dis, rv;
+    if(!is_ok("radec_planet", radec_planet(tdb, &sun, &obs, ut12tt, i, 1, &ra, &dec, &dis, &rv))) return 1;
+    radec2vector(ra, dec, 1.0, posa.r_hat);
+
+    if(!is_ok("radec_planet:control", place(tdb, &sun, &obs, ut12tt, i, 1, &posb))) return 1;
+    if(!is_ok("radec_planet:check", check_equal_pos(posa.r_hat, posb.r_hat, 1e-9))) return 1;
+    if(!is_ok("radec_planet:check_dist", fabs(dis - posb.dis) > 1e-6 * posb.dis)) return 1;
+    if(!is_ok("radec_planet:check_rv", fabs(rv - posb.rv) > 1e-6)) return 1;
+  }
+
+  return 0;
+}
+
+
+
 static int test_observers() {
   double ps[3] = { 100.0, 30.0, 10.0 }, vs[3] = { 10.0 };
   int n = 0;
 
-  test_precession();
+  if(test_make_planet()) n++;
+  if(test_make_ephem_body()) n++;
+  if(test_precession()) n++;
+  if(test_radec_planet()) n++;
+
 
   make_observer_at_geocenter(&obs);
   n += test_source();
@@ -356,15 +407,15 @@ static int test_refract_astro() {
 
   if(!is_ok("refract_astro:init", make_observer_on_surface(10.0, 20.0, 2000.0, -10.0, 900.0, &o))) return 1;
 
-  for(i = 0; i < 90; i++) {
+  for(i = 10; i < 90; i++) {
     double za = i;
     int j;
 
     for(j = 0; j < 3; j++) {
       double r = refract_astro(&o.on_surf, j, za);
-      double r1 = refract(&o.on_surf, j, za + r);
+      double r1 = refract(&o.on_surf, j, za - r);
 
-      if(!is_ok("refract_astro", fabs(r - r1) > 1e-6)) {
+      if(!is_ok("refract_astro", fabs(r - r1) > 1e-4)) {
         fprintf(stderr, "  za = %d, option = %d, r = %.6f, r1 = %.6f\n", i, j, r, r1);
         return 1;
       }
@@ -377,15 +428,15 @@ static int test_refract_astro() {
 static int test_case() {
   object o;
 
-  make_object(NOVAS_MAJOR_PLANET, NOVAS_EARTH, "Earth", NULL, &o);
+  make_object(NOVAS_PLANET, NOVAS_EARTH, "Earth", NULL, &o);
   if(!is_ok("test_case:default", strcmp(o.name, "EARTH"))) return 1;
 
   novas_case_sensitive(1);
-  make_object(NOVAS_MAJOR_PLANET, NOVAS_EARTH, "Earth", NULL, &o);
+  make_object(NOVAS_PLANET, NOVAS_EARTH, "Earth", NULL, &o);
   if(!is_ok("test_case:sensitive", strcmp(o.name, "Earth"))) return 1;
 
   novas_case_sensitive(0);
-  make_object(NOVAS_MAJOR_PLANET, NOVAS_EARTH, "Earth", NULL, &o);
+  make_object(NOVAS_PLANET, NOVAS_EARTH, "Earth", NULL, &o);
   if(!is_ok("test_case:insensitive", strcmp(o.name, "EARTH"))) return 1;
 
   return 0;

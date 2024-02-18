@@ -58,7 +58,7 @@ test%.o: src/test%.c | Makefile
 
 .PHONY: clean-test
 clean-test:
-	rm -f test test_cio_file
+	rm -f test test_cio_file test-super
 
 .PHONY: clean-cov
 clean-cov:
