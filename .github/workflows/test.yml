@@ -9,6 +9,7 @@ on:
       - 'test/reference/**'
       - 'Makefile'
       - '*.mk'
+      - `test/Makefile`
       - '.github/workflows/test.yml'
 
 jobs:
