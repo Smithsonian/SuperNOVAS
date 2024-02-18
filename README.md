@@ -515,12 +515,12 @@ on how they are appropriate for the old and new methodologies respectively.
      `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
      (e.g. from a JPL ephemeris file).
  
-   * If CIO locations vs GSRS are important to the user, the user may call `cio_set_locator_file()` at runtime to
+   * If CIO locations vs GSRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
      specify the location of the binary CIO interpolation table (e.g. `cio_ra.bin`) to use, even if the library was
      compiled with the different default CIO locator path. 
  
    * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
-     approximation via `nutation_set_lp_provider()`. For example, the user may want to use the `iau2000b()` model 
+     approximation via `set_nutation_lp_provider()`. For example, the user may want to use the `iau2000b()` model 
      or some custom algorithm instead.
  
  - New intutitive XYZ coordinate coversion functions:

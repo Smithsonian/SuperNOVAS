@@ -4392,7 +4392,7 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
  *
  * @sa nutation_angles()
  */
-int nutation_set_lp_provider(novas_nutation_provider func) {
+int set_nutation_lp_provider(novas_nutation_provider func) {
   if(!func) {
     errno = EINVAL;
     return -1;
@@ -4408,7 +4408,7 @@ int nutation_set_lp_provider(novas_nutation_provider func) {
  *
  * This function selects the nutation model depending first upon the input value of 'accuracy'.
  * If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used. Otherwise
- * the model set by nutation_set_lp_provider() is used, or else the default nu2000k().
+ * the model set by set_nutation_lp_provider() is used, or else the default nu2000k().
  *
  * See the prologs of the nutation functions in file 'nutation.c' for details concerning the
  * models.
@@ -4425,7 +4425,7 @@ int nutation_set_lp_provider(novas_nutation_provider func) {
  *
  * @return            0 if successful, or -1 if the output pointer arguments are NULL
  *
- * @sa nutation_set_lp_provider()
+ * @sa set_nutation_lp_provider()
  * @sa nutation()
  * @sa iau2000b()
  * @sa nu2000k()
@@ -4942,7 +4942,7 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
  * @author Attila Kovacs
  *
  */
-int cio_set_locator_file(const char *filename) {
+int set_cio_locator_file(const char *filename) {
   FILE *old = cio_file;
 
   // Open new file first to ensure it has a distinct pointer from the old one...
@@ -4960,7 +4960,7 @@ int cio_set_locator_file(const char *filename) {
  * equinox of date.  The CIO is always located on the true equator (= intermediate equator)
  * of date.
  *
- * The user may specify an interpolation file to use via cio_set_locator_file() prior to
+ * The user may specify an interpolation file to use via set_cio_locator_file() prior to
  * calling this function. In that case the call will return CIO location relative to GCRS.
  * In the absence of the table, it will calculate the CIO location relative to the true
  * equinox. In either case the type of the location is returnedalogside the CIO location
@@ -4987,7 +4987,7 @@ int cio_set_locator_file(const char *filename) {
  * @return            0 if successful, -1 if one of the pointer arguments is NULL or the
  *                    accuracy is invalid.
  *
- * @sa cio_set_locator_file()
+ * @sa set_cio_locator_file()
  * @sa cio_ra()
  * @sa gcrs_to_cirs()
  */
@@ -5175,7 +5175,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  * requested date.  The function obtains the data from an external data file.
  *
  * This function assumes that binary, random-access file has been created and is either in the
- * location specified at compilation; or set at runtime via cio_set_locator_file().
+ * location specified at compilation; or set at runtime via set_cio_locator_file().
  * This file is created by program 'cio_file.c'.
  *
  * NOTES:
@@ -5196,7 +5196,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  *                  internal 't' array, or 6 if 'jd_tdb' is too close to either end of the CIO
  *                  file do we are unable to put 'n_pts' data points into the output
  *
- * @sa cio_set_locator_file()
+ * @sa set_cio_locator_file()
  * @sa cio_location()
  */
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
@@ -5217,7 +5217,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     return 3;               // n_pts is out of bounds
   }
 
-  if(cio_file == NULL) cio_set_locator_file(DEFAULT_CIO_LOCATOR_FILE);  // Try default locator file.
+  if(cio_file == NULL) set_cio_locator_file(DEFAULT_CIO_LOCATOR_FILE);  // Try default locator file.
   if(cio_file == NULL) {
     errno = ENODEV;
     cache_count = 0;

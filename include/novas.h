@@ -215,7 +215,6 @@ enum novas_planet {
  * char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
  * \endcode
  *
- *
  * @sa novas_majot_planet
  */
 #define NOVAS_PLANET_NAMES_INIT { "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Sun", "Moon" }
@@ -766,7 +765,6 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
-
 // -------------------------------------------------------------------------------------------------------------------
 // SuperNOVAS API:
 
@@ -776,9 +774,9 @@ int make_planet(enum novas_planet num, object *planet);
 
 int make_ephem_body(const char *name, long num, object *body);
 
-int cio_set_locator_file(const char *filename);
+int set_cio_locator_file(const char *filename);
 
-int nutation_set_lp_provider(novas_nutation_provider func);
+int set_nutation_lp_provider(novas_nutation_provider func);
 
 int place_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
         enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *pos);
