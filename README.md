@@ -16,8 +16,8 @@ The Naval Observatory NOVAS C astrometry library, made better.
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a positional astronomy library for the for the C 
 programming language, providing high-precision astrometry such as one might need for running an observatory or a 
 precise planetarium program. Its source code is compatible with the C90 standard, and hence should be suitable even 
-for most older platforms also. It is light-weight and relatively easy to use, with full support for the IAU 
-2000/2006 standards for sub-microarcsecond position calculations.
+for most older platforms also. It is light-weight and easy to use, with full support for the IAU 2000/2006 standards 
+for sub-microarcsecond position calculations.
 
 SuperNOVAS is a fork of the Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the overall aim of making it more user-friendly and 
@@ -64,10 +64,11 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library by:
  - Providing a GNU `Makefile` to build static and shared libraries from sources easily on POSIX platforms
    (including for MacOS X, Cygwin, or WSL). (At this point we do not provide a similar native build setup for Windows, 
    but speak up if you would like to add it yourself!)
+ - Adding regression testing and continuous integration on GitHub.
  
 At the same time, SuperNOVAS aims to be fully backward compatible with the upstream NOVAS C library, such that it can 
-be used as a drop-in, _link-time_ replacement for NOVAS in your application without having to change existing 
-code you may have written for NOVAS C.
+be used as a drop-in, _link-time_ replacement for NOVAS in your application without having to change existing code you 
+may have written for NOVAS C.
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
@@ -75,8 +76,8 @@ the NOVAS C library, if new releases become available.
 SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard and Smithsonian, and it is 
 available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repo on GitHub.
 
-Outside contributions are very welcome. See how you can contribute 
-[here](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md).
+Outside contributions are very welcome. See
+[how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
 
 
 -----------------------------------------------------------------------------
@@ -91,7 +92,6 @@ Here are some links to SuperNOVAS related content online:
  - [SuperNOVAS home page](https://smithsonian.github.io/SuperNOVAS.home) page on github.io. 
  - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
- - [NOVAS C](https://aa.usno.navy.mil/software/novasc_intro) library page. 
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via JPL HORIZONS.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
@@ -103,9 +103,10 @@ https://github.com/attipaci/attipaci.gitgub.io
 ## Compatibility with NOVAS C 3.1
 
 SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary 
-compatilibility. In practical terms it means that you cannot simply drop-in replace your static (e.g. `novas.a`) or 
-shared (e.g. `novas.so`) library, from NOVAS C 3.1 with that from SuperNOVAS. Instead, you will need to (re)compile 
-and or (re)link your application with the SuperNOVAS versions of these. 
+compatilibility. In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. 
+`novas.o`), or the static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from 
+SuperNOVAS. Instead, you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of 
+these. 
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
 `short int` argument of NOVAS C 3.1, or because we added a return value to a functions that was declared `void` 
@@ -136,7 +137,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
- - Fixes accuracy switch bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
+ - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
    `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
@@ -334,7 +335,7 @@ distance (e.g. for apparent-to-physical size conversion):
  sky_pos pos;	// We'll return the observable positions in this structure
   
  // Calculate the apparent (CIRS) topocentric positions for the above configuration
- int status = place(jd_tt, &source, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
+ int status = place_star(jd_tt, &source, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
   
  // You should always check that the calculation was successful...
  if(status) {
@@ -347,20 +348,21 @@ Finally, we may want to calculate the astrometric zenith distance (= 90&deg; - a
 at the specified observing location (without refraction correction):
 
 ```c
-
- // Zenith distance and azimuth (in degrees) to populate...
- double zd, az;
+ double itrs[3];  // ITRS position vector of source to populate
+ double az, zd;   // [deg] local azimuth and zenith distance angles to populate
   
- // Convert CIRS to horizontal using the pole offsets.
- cirs_to_hor(jd_tt - ut1_to_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, &obs.on_surf, 
-             pos.ra, pos.dec, &zd, &az);
+ // Convert CIRS to Earth-fixed ITRS using the pole offsets.
+ cirs_to_itrs(jd_tt, -ut1_to_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, itrs);
+ 
+ // Finally convert ITRS to local horizontal coordinates at the observing site
+ itrs_to_hor(itrs, &obs.on_surface, &az, &zd);
 ``` 
 
 In the example above we first calculated the apparent coordinates in the Celestial Intermediate Reference System 
-(CIRS). Then we used `cirs_to_hor()` function then convert first it to the Earth-fixed International Terrestrial 
+(CIRS). Then we used `cirs_to_itrs()` function then convert first it to the Earth-fixed International Terrestrial 
 Reference system (ITRS) using the small (arcsec-level) measured variation of the pole (dx, dy) provided explicitly 
-since `cirs_to_hor()` does not use the values previously set via `cel_pole()`. Finally, `cirs_to_hor()` converts the 
-ITRS coordinates to the horizontal system at the observer location.
+since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. Finally, `itrs_to_hor()` converts 
+the ITRS coordinates to the horizontal system at the observer location.
 
 You can additionally apply an optical refraction correction for the astrometric (unrefracted) zenith angle, if you 
 want, e.g.:
@@ -415,7 +417,8 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  make_object(NOVAS_EPHEM_OBJECT, 2000001, "Ceres", NULL, &ceres);
 ```
 
-Other than that, it's the same spiel as before. E.g.:
+Other than that, it's the same spiel as before, except using the appropriate `place()` for generic celestial
+targets instead of `place_star()` for the sidereal sources. E.g.:
 
 ```c
  int status = place(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
@@ -517,31 +520,28 @@ on how they are appropriate for the old and new methodologies respectively.
      compiled with the different default CIO locator path. 
  
    * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
-     approximation via `nutation_set_lp_provider()`. For example, the user may want to use the `iau2000b()` model instead 
+     approximation via `nutation_set_lp_provider()`. For example, the user may want to use the `iau2000b()` model 
      or some custom algorithm instead.
  
  - New intutitive XYZ coordinate coversion functions:
    * for GCRS - CIRS - ITRS (IAU 2000 standard): `gcrs_to_cirs()`, `cirs_to_itrs()`, and `itrs_to_cirs()`, 
      `cirs_to_gcrs()`.
-   * for J2000 - TOD - ITRS (old methodology): `j2000_to_tod()`, `tod_to_itrs()`, and `itrs_to_tod()`, 
-     `tod_to_j2000()`.
+   * for GCRS - J2000 - TOD - ITRS (old methodology): `gcrs_to_j2000()`, `j2000_to_tod()`, `tod_to_itrs()`, and 
+     `itrs_to_tod()`, `tod_to_j2000()`, `j2000_to_gcrs()`.
 
- - New `itrs_to_hor()` and `hor_to_itrs()` functiona to convert ITRS coordinates to astrometric azimuth and elevation
-   or going back. Whereas  `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit version 
-   of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the `cirs_to_itrs()` 
-   followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no equivalent in NOVAS 
-   C 3.1.
+ - New `itrs_to_hor()` and `hor_to_itrs()` functions to convert Earth-fixed ITRS coordinates to astrometric azimuth 
+   and elevation or back. Whereas `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit 
+   version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
+   `cirs_to_itrs()`  followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no 
+   equivalent in NOVAS C 3.1.
    
- - New celestial coordinate conversion functions to go between GCRS, dynamical CIRS or TOD, and Earth-fixed ITRS 
-   coordinate systems.
-   
- - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.  
+ - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
    
  - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted (astrometric) 
    zenith angle as its argument.
 
  - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
-   `place_gcrs()`, `place_cirs()`, `place_tod()`.
+   `place_gcrs()`, `place_cirs()`, and `place_tod()`.
  
  - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB
    time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric calculations.
@@ -660,8 +660,8 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 ### 2. Built-in support for (old) JPL major planet ephemerides
 
 If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
-distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (such as 
-DE 405), either via the `ephem_manager()` interface of `solsys1.c` or via the `jplint_()` interface of `solsys2.c`.
+distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
+either via the `ephem_manager()` interface of `solsys1.c` or via the `jplint_()` interface of `solsys2.c`.
 
 #### 2.1. Planets via `eph_manager`
 

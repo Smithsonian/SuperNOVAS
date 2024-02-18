@@ -7,21 +7,9 @@ Changes expected for the next release...
 
 ### Added
 
- - Add test for `cio_array()`
-
  - Add debug mode, which can be activated via `novas_debug(1)`. When debug mode is enabled, all errors are printed to 
    the console with a trace (the trace does not contain line numbers but provides information on the functions and 
    locations within them where the error occurred.
- 
- - Add tests for all SuperNOVAS only functions
- 
- - Set up release workflow on GitHub
- 
-### Changed
-
- - Nutation angles to use cubic-spline interpolation to speed up nutation calculation when repeatedly needing it for
-   times that are close together (e.g. a within a day but TDB)
- 
  
 
 ## [1.0.0] - 2024-03-01
@@ -46,7 +34,7 @@ This is the initial release of the SuperNOVAS library.
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
- - Fixed accuracy switch bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
+ - Fixed accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
    `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
@@ -93,17 +81,14 @@ This is the initial release of the SuperNOVAS library.
  - New intutitive XYZ coordinate coversion functions:
    * for GCRS - CIRS - ITRS (IAU 2000 standard): `gcrs_to_cirs()`, `cirs_to_itrs()`, and `itrs_to_cirs()`, 
      `cirs_to_gcrs()`.
-   * for J2000 - TOD - ITRS (old methodology): `j2000_to_tod()`, `tod_to_itrs()`, and `itrs_to_tod()`, 
-     `tod_to_j2000()`.
-   
- - New `itrs_to_hor()` and `hor_to_itrs()` functiona to convert ITRS coordinates to astrometric azimuth and elevation
-   or going back. Whereas  `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit version 
-   of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the `cirs_to_itrs()` 
-   followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no equivalent in NOVAS 
-   C 3.1.
-   
- - New celestial coordinate conversion functions to go between GCRS, dynamical CIRS or TOD, and Earth-fixed ITRS 
-   coordinate systems.
+   * for GCRS - J2000 - TOD - ITRS (old methodology): `gcrs_to_j2000()`, `j2000_to_tod()`, `tod_to_itrs()`, and 
+     `itrs_to_tod()`, `tod_to_j2000()`, `j2000_to_gcrs()`.
+
+ - New `itrs_to_hor()` and `hor_to_itrs()` functions to convert Earth-fixed ITRS coordinates to astrometric azimuth 
+   and elevation or back. Whereas `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit 
+   version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
+   `cirs_to_itrs()`  followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no 
+   equivalent in NOVAS C 3.1.
    
  - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
    
@@ -111,7 +96,7 @@ This is the initial release of the SuperNOVAS library.
    zenith angle as its argument.
 
  - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
-   `place_gcrs()`, `place_cirs()`, `place_tod()`.
+   `place_gcrs()`, `place_cirs()`, and `place_tod()`.
  
  - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods sych as `astro_star()`
    `local_star()`, `topo_planet()` etc.
