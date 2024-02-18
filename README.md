@@ -352,7 +352,7 @@ at the specified observing location (without refraction correction):
  double az, zd;   // [deg] local azimuth and zenith distance angles to populate
   
  // Convert CIRS to Earth-fixed ITRS using the pole offsets.
- cirs_to_itrs(jd_tt, 0.0, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, itrs);
+ cirs_to_itrs(jd_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, itrs);
  
  // Finally convert ITRS to local horizontal coordinates at the observing site
  itrs_to_hor(itrs, &obs.on_surface, &az, &zd);

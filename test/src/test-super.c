@@ -69,8 +69,8 @@ static int test_j2000_tod_j2000() {
 static int test_tod_itrs_tod() {
   double pos1[3];
 
-  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
-  if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
+  if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("tod_itrs_tod", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
@@ -88,8 +88,8 @@ static int test_gcrs_cirs_gcrs() {
 static int test_cirs_itrs_cirs() {
   double pos1[3];
 
-  if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
-  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
+  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
@@ -115,8 +115,8 @@ static int test_tod_vs_cirs() {
 
   if(!is_ok("gcrs_to_j2000", gcrs_to_j2000(pos0, pos1))) return 1;
   if(!is_ok("j2000_to_tod", j2000_to_tod(tdb, 0, pos1, pos1))) return 1;
-  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
-  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("cirs_to_gcrs", cirs_to_gcrs(tdb, 0, pos1, pos1))) return 1;
 
   if(!is_ok("tod_vs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
