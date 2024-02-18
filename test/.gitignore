@@ -5,4 +5,5 @@
 **/gmon.out
 test*
 !test*.c
+cov*
 

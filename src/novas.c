@@ -2519,8 +2519,8 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *   XXV Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
+ * @param jd_tt_high    [day] High-order part of UT1 Julian date.
+ * @param jd_tt_low     [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2542,9 +2542,9 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -2560,8 +2560,8 @@ int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  *   XXV Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
+ * @param jd_tt_high    [day] High-order part of Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_low     [day] Low-order part of Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2583,9 +2583,9 @@ int itrs_to_cirs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_tod(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -2720,8 +2720,8 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *   Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
+ * @param jd_tt_high    [day] High-order part of Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_low     [day] Low-order part of Terrestrial Time (TT) Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2744,9 +2744,9 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -2762,8 +2762,8 @@ int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  *   Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_ut1_high    [day] High-order part of UT1 Julian date.
- * @param jd_ut1_low     [day] Low-order part of UT1 Julian date.
+ * @param jd_tt_high    [day] High-order part of Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_low     [day] Low-order part of Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2786,9 +2786,9 @@ int cirs_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum n
  * @since 1.0
  * @author Attila Kovacs
  */
-int tod_to_itrs(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_ut1_high, jd_ut1_low, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
