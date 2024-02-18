@@ -38,12 +38,11 @@ all: api solsys test coverage check
 .PHONY: clean
 clean:
 	rm -f object README-headless.md bin/cio_file
-	@make -C test clean
+	make -C test clean
 
 .PHONY: distclean
 distclean: clean
 	rm -f lib cio_ra.bin
-	@make -C test clean
 
 
 # Static library: novas.a
