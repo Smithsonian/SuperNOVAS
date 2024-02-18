@@ -11,13 +11,13 @@
 <br clear="all">
 
 # SuperNOVAS 
-The Naval Observatory NOVAS C library, made better.
+The Naval Observatory NOVAS C astrometry library, made better.
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a positional astronomy library for the for the C 
 programming language, providing high-precision astrometry such as one might need for running an observatory or a 
 precise planetarium program. Its source code is compatible with the C90 standard, and hence should be suitable even 
-for most older platforms. It is light-weight and relatively easy to use, with full support for the IAU 2000/2006
-standards for sub-microarcsecond position calculations.
+for most older platforms also. It is light-weight and relatively easy to use, with full support for the IAU 
+2000/2006 standards for sub-microarcsecond position calculations.
 
 SuperNOVAS is a fork of the Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the overall aim of making it more user-friendly and 

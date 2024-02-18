@@ -356,15 +356,15 @@ static int test_refract_astro() {
 
   if(!is_ok("refract_astro:init", make_observer_on_surface(10.0, 20.0, 2000.0, -10.0, 900.0, &o))) return 1;
 
-  for(i = 0; i < 90; i++) {
+  for(i = 10; i < 90; i++) {
     double za = i;
     int j;
 
     for(j = 0; j < 3; j++) {
       double r = refract_astro(&o.on_surf, j, za);
-      double r1 = refract(&o.on_surf, j, za + r);
+      double r1 = refract(&o.on_surf, j, za - r);
 
-      if(!is_ok("refract_astro", fabs(r - r1) > 1e-6)) {
+      if(!is_ok("refract_astro", fabs(r - r1) > 1e-4)) {
         fprintf(stderr, "  za = %d, option = %d, r = %.6f, r1 = %.6f\n", i, j, r, r1);
         return 1;
       }

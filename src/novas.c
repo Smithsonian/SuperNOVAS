@@ -5841,7 +5841,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
   }
 
   for(i = 0; i < 30; i++) {
-    double zd_obs = zd_astro + refr;
+    double zd_obs = zd_astro - refr;
     refr = refract(location, option, zd_obs);
     if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5) return refr;
   }
