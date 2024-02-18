@@ -1,0 +1,46 @@
+name: Test
+
+on: 
+  push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'test/src/**'
+      - 'test/reference/**'
+      - 'Makefile'
+      - '*.mk'
+      - 'test/Makefile'
+      - '.github/workflows/test.yml'
+
+jobs:
+
+  test:
+    name: Test and coverage
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+    steps:
+    
+    - uses: actions/checkout@v3
+    
+    - name: install dependencies
+      run: sudo apt-get install -y lcov
+    
+    - name: Run regression tests
+      run: make test
+    
+    - name: Generate coverage data
+      run: make coverage
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      continue-on-error: true
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        fail_ci_if_error: false
+        flags: unittests
+        name: codecov
+        verbose: true
+   

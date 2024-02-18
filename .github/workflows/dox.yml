@@ -1,0 +1,36 @@
+name: API documentation
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'css/**'
+      - 'Doxyfile'
+      - '*.md'
+      - '.github/workflows/dox.yml'
+      
+jobs:   
+
+  apidocs:
+    name: Generate API documentation
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+    steps:
+    
+    - uses: actions/checkout@v3
+
+    - name: install dependencies
+      run: sudo apt-get install -y doxygen
+
+    - name: About this workflow...
+      run: |
+        echo github.event_name = ${{ github.event_name }}
+        echo github.repository_owner = ${{ github.repository_owner }}
+        echo github.ref_name = ${{ github.ref_name }}
+        
+    - name: Run doxygen
+      run: make dox
+ 

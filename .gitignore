@@ -1,0 +1,17 @@
+**/*.o
+**/*.a
+**/*.so
+**/*.d
+**/*.bin
+**/dep/**
+**/build/**
+**/obj/**
+**/bin/**
+**/sobj/**
+**/lib/**
+**/apidoc/**
+**/test/data/**
+**/*~
+README-pruned.md
+TODO
+

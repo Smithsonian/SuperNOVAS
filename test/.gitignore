@@ -1,0 +1,8 @@
+*.dat
+**/*.gcov
+**/*.gcda
+**/*.gcno
+**/gmon.out
+test*
+!test*.c
+
