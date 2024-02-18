@@ -1169,7 +1169,7 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
     star.dec = remainder(star.dec + (dec - dec1), DEG360);
   }
 
-  *ira = star.ra;
+  *ira = star.ra < 0.0 ? star.ra + 24.0 : star.ra;
   *idec = star.dec;
 
   if(iter < 0) {
@@ -5940,13 +5940,13 @@ double julian_date(short year, short month, short day, double hour) {
  */
 int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
   long jd, k, m, n;
-  short y, mo, d, h;
-  double djd;
+  short y, mo, d;
+  double djd, h;
 
   djd = tjd + 0.5;
   jd = (long) floor(djd);
 
-  h = (short) (remainder(djd, 1.0) * DAY_HOURS);
+  h = remainder(djd, 1.0) * DAY_HOURS;
   if(h < 0) h += 24;
 
   k = jd + 68569L;
