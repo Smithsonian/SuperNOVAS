@@ -766,13 +766,15 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
-// Added API in SuperNOVAS
+
+// -------------------------------------------------------------------------------------------------------------------
+// SuperNOVAS API:
+
+void novas_case_sensitive(int value);
 
 int make_planet(enum novas_planet num, object *planet);
 
 int make_ephem_body(const char *name, long num, object *body);
-
-void novas_case_sensitive(int value);
 
 int cio_set_locator_file(const char *filename);
 

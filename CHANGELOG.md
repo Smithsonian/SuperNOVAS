@@ -113,6 +113,8 @@ This is the initial release of the SuperNOVAS library.
  - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
    default NOVAS object names were converted to upper-case, making them effectively case-insensitive.)
 
+ - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
+
 
 ### Changed
 
