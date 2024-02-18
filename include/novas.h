@@ -341,7 +341,7 @@ enum novas_earth_rotation_measure {
 /**
  * Constants for ter2cel() and cel2ter()
  */
-enum novas_celestial_class {
+enum novas_celestial_type {
   CELESTIAL_GCRS = 0,        ///< Celestial coordinates are in GCRS
   CELESTIAL_APPARENT         ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
@@ -369,7 +369,7 @@ enum novas_equinox_type {
 };
 
 /**
- * The origin of the NOVAS_ICRS system for referencing velocities.
+ * The origin of the ICRS system for referencing positions and velocities for solar-system bodies.
  */
 enum novas_origin {
   NOVAS_BARYCENTER = 0,           ///< Origin at the Solar-system baricenter (i.e. BCRS)
@@ -377,13 +377,13 @@ enum novas_origin {
 };
 
 /// the number of different ICSR origins available in NOVAS.
-#define NOVAS_ORIGIN_TYPES            (NOVAS_HELIOCENTER + 1)
+#define NOVAS_ORIGIN_TYPES        (NOVAS_HELIOCENTER + 1)
 
 /// @deprecated Old definition of the Barycenter origin. NOVAS_BARYCENTER is preferred.
-#define BARYC     NOVAS_BARYCENTER
+#define BARYC                     NOVAS_BARYCENTER
 
 /// @deprecated Old definition of the Center of Sun as the origin. NOVAS_HELIOCENTER is preferred.
-#define HELIOC    NOVAS_HELIOCENTER
+#define HELIOC                    NOVAS_HELIOCENTER
 
 /**
  * The types of coordinate transformations available for tranform_cat().
@@ -485,7 +485,8 @@ enum novas_nutation_direction {
 };
 
 /**
- * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3), precession = 5028.8200 arcsec/cy)
+ * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3),
+ * precession = 5028.8200 arcsec/cy)
  */
 typedef struct {
   double l;           ///< [rad] mean anomaly of the Moon
@@ -648,11 +649,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 double era(double jd_ut1_high, double jd_ut1_low);
 
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2);
 
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2);
 
 int spin(double angle, const double *pos1, double *pos2);

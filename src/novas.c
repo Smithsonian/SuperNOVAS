@@ -2444,7 +2444,7 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  * @sa cel2ter()
  */
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2) {
   double jd_ut1, jd_tt, jd_tdb, gast;
 
@@ -2641,7 +2641,7 @@ int itrs_to_tod(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, do
  * @sa ter2cel()
  */
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_class class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
         double *vec2) {
 
   double jd_ut1, jd_tt, jd_tdb, gast, theta;

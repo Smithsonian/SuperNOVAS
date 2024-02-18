@@ -221,7 +221,7 @@ novas_ephem_provider get_ephem_provider();
  * @sa place()
  * @sa ephemeris()
  */
-short solarsystem (double jd_tdb, short body, short origin, double *position, double *velocity);
+short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity);
 
 
 /**
