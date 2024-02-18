@@ -3,5 +3,5 @@
 **/*.gcda
 **/*.gcno
 **/gmon.out
-test
+test*
 
