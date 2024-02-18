@@ -167,7 +167,7 @@ typedef int (*novas_ephem_provider)(long id, const char *name, double jd_tdb_hig
  *                      is responsible for calling free() on the returned value when it is no
  *                      longer needed.
  *
- * @sa novas_ephem_provider()
+ * @sa novas_ephem_provider
  * @sa ephemeris()
  * @sa NOVAS_EPHEM_OBJECT
  *
@@ -218,7 +218,8 @@ novas_ephem_provider get_ephem_provider();
  * @sa novas_planet
  * @sa solarsystem_hp()
  * @sa set_planet_provider()
- * @sa novas_solarsystem_func
+ * @sa place()
+ * @sa ephemeris()
  */
 short solarsystem (double jd_tdb, short body, short origin, double *position, double *velocity);
 
@@ -257,7 +258,8 @@ short solarsystem (double jd_tdb, short body, short origin, double *position, do
  *
  * @sa solarsystem()
  * @sa set_planet_provider_hp()
- * @sa novas_solarsystem_hp_func
+ * @sa place()
+ * @sa ephemeris()
  */
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity);
 

@@ -266,8 +266,6 @@ static void test_ephemeris() {
   if(!is_ok(make_object(0, 10, "Sun", NULL, &body[0]))) return;
   if(!is_ok(make_object(0, 3, "Earth", NULL, &body[1]))) return;
 
-
-
   for(i = 0; i < 2; i++) for(j = 0; j < 2; j++) {
     openfile("ephemeris");
 
@@ -933,7 +931,7 @@ static int test_observers() {
 static int test_sources() {
   cat_entry star;
 
-  printf(" Testing date %.1f\n", (tdb - J2000));
+  printf(" Testing date %.3f\n", (tdb - J2000));
 
   make_cat_entry("22+20", "TST", 1001, 22.0, 20.0, 3.0, -2.0, 5.0, 10.0, &star);
   if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
@@ -964,12 +962,12 @@ static int test_dates() {
     test_time_specific();
 
     if(test_sources() != 0) {
-      printf(" -- FAILED!\n");
+      fprintf(stderr, " -- FAILED!\n");
       return -1;
     }
   }
 
-  printf(" -- OK\n");
+  fprintf(stderr, " -- OK\n");
   return 0;
 }
 

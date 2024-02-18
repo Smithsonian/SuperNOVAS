@@ -193,7 +193,6 @@ static int time_equals(double jd1, double jd2) {
   return fabs(jd1 - jd2) <= 1.0e-8;
 }
 
-
 /**
  * Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the
  * True of Date (TOD) reference frame at the given epoch
@@ -547,6 +546,7 @@ int place_star(double jd_tt, const cat_entry *star, const observer *obs, double 
 
 /**
  * Computes the International Celestial Reference System (ICRS) position of a source.
+ * (from the geocenter)
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -559,13 +559,19 @@ int place_star(double jd_tt, const cat_entry *star, const observer *obs, double 
  *
  * @sa place_gcrs()
  * @sa place_cirs()
+ * @sa place_tod()
+ * @sa mean_star()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
   return place(jd_tt, source, NULL, 0.0, NOVAS_ICRS, accuracy, pos);
 }
 
 /**
- * Computes the Geocentric Celestial Reference System (GCRS) position of a source.
+ * Computes the Geocentric Celestial Reference System (GCRS) position of a source (from the
+ * geocenter).
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -576,16 +582,20 @@ int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  *
  * @sa place_icrs()
  * @sa place_cirs()
+ * @sa place_tod()
  * @sa virtual_star()
  * @sa virtual_planet()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
   return place(jd_tt, source, NULL, 0.0, NOVAS_GCRS, accuracy, pos);
 }
 
 /**
- * Computes the Celestial Intermediate Reference System (CIRS) mean equator dynamical position
- * position of a source.
+ * Computes the Celestial Intermediate Reference System (CIRS) dynamical position
+ * position of a source from the geocenter
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -594,9 +604,38 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
+ * @sa place_tod()
+ * @sa place_gcrs()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ *
  */
 int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
   return place(jd_tt, source, NULL, 0.0, NOVAS_CIRS, accuracy, pos);
+}
+
+/**
+ * Computes the True of Date (TOD) dynamical position position of a source from the geocenter.
+ *
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
+ * @param source      Catalog source or solar_system body.
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    Structure to populate with the calculated CIRS position data
+ * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
+ *                    or else an error from place().
+ *
+ * @sa place_cirs()
+ * @sa place_gcrs()
+ * @sa app_star()
+ * @sa app_planet()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ *
+ */
+int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+  return place(jd_tt, source, NULL, 0.0, NOVAS_TOD, accuracy, pos);
 }
 
 /**
@@ -731,6 +770,7 @@ int radec_planet(double jd_tt, const object *ss_body, const observer *obs, doubl
  * @return          0 if successful, -1 if a required pointer argument is NULL, or else an
  *                  the error from make_object(), or 20 + the error from place().
  *
+ * @sa place_tod()
  * @sa place_star()
  * @sa astro_star()
  * @sa local_star()
@@ -846,6 +886,7 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
  *                  the value of 'type' in structure 'ss_body' is invalid, or 10 + the
  *                  error code from place().
  *
+ * @sa place_tod()
  * @sa astro_planet()
  * @sa local_planet()
  * @sa topo_planet()
@@ -1446,8 +1487,8 @@ int equ2gal(double ra, double dec, double *glon, double *glat) {
   // AK: Transposed compared to NOVAS C 3.1 for dot product handling.
   static const double ag[3][3] = { //
           { -0.0548755604, -0.8734370902, -0.4838350155 }, //
-          { +0.4941094279, -0.4448296300, +0.7469822445 }, //
-          { -0.8676661490, -0.1980763734, +0.4559837762 } };
+                  { +0.4941094279, -0.4448296300, +0.7469822445 }, //
+                  { -0.8676661490, -0.1980763734, +0.4559837762 } };
 
   if(!glon || !glat) {
     errno = EINVAL;
@@ -1481,7 +1522,6 @@ int equ2gal(double ra, double dec, double *glon, double *glat) {
   return 0;
 }
 
-
 /**
  * Converts galactic longitude and latitude to ICRS right ascension and declination.
  *
@@ -1511,8 +1551,8 @@ int gal2equ(double glon, double glat, double *ra, double *dec) {
   // AK: Transposed compared to NOVAS C 3.1 for dot product handling.
   static const double ag[3][3] = { //
           { -0.0548755604, +0.4941094279, -0.8676661490 }, //
-          { -0.8734370902, -0.4448296300, -0.1980763734 }, //
-          { -0.4838350155, +0.7469822445, +0.4559837762 } };
+                  { -0.8734370902, -0.4448296300, -0.1980763734 }, //
+                  { -0.4838350155, +0.7469822445, +0.4559837762 } };
 
   if(!ra || !dec) {
     errno = EINVAL;
@@ -1777,7 +1817,6 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   return 0;
 }
 
-
 /**
  * Converts a position vector in the Earth-fixed ITRS frame to astrometric (unrefracted) azimuth
  * and zenith angles at the specified observer location.
@@ -1922,7 +1961,6 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs) 
   return 0;
 }
 
-
 /**
  * Transforms topocentric (TOD) right ascension and declination to zenith distance and
  * azimuth. This method should not be used to convert CIRS apparent coordinates (IAU
@@ -1980,9 +2018,9 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs) 
  * @sa NOVAS_TOD
  *
  */
-int equ2hor(double jd_ut1, double ut1_to_tt,
-        enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra, double dec,
-        enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr) {
+int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
+        const on_surface *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd,
+        double *az, double *rar, double *decr) {
 
   double sinlat, coslat, sinlon, coslon, cosdec;
   double uze[3], une[3], uwe[3], uz[3], un[3], uw[3], p[3];
@@ -2090,7 +2128,6 @@ int equ2hor(double jd_ut1, double ut1_to_tt,
   }
   return 0;
 }
-
 
 /**
  * Converts GCRS right ascension and declination to coordinates with respect to the equator
@@ -2238,7 +2275,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   // Compute the equation of the equinoxes if needed, depending upon the
   // input values of 'gst_type' and 'method'.  If not needed, set to zero.
   if(((gst_type == NOVAS_MEAN_EQUINOX) && (method == EROT_GST))                  // GMST; CIO-TIO
-          || ((gst_type == NOVAS_TRUE_EQUINOX) && (method == EROT_ERA))) {       // GAST; equinox
+  || ((gst_type == NOVAS_TRUE_EQUINOX) && (method == EROT_ERA))) {       // GAST; equinox
     static enum novas_accuracy acc_last = -1;
     static double jd_last = -1e100;
     static double ee;
@@ -2295,17 +2332,17 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 
     case (EROT_ERA):
 
-              // Use equinox method.  See Circular 179, Section 2.6.2.
+      // Use equinox method.  See Circular 179, Section 2.6.2.
 
-              // Precession-in-RA terms in mean sidereal time taken from third
-              // reference, eq. (42), with coefficients in arcseconds.
-              st = eqeq + 0.014506
+      // Precession-in-RA terms in mean sidereal time taken from third
+      // reference, eq. (42), with coefficients in arcseconds.
+      st = eqeq + 0.014506
               + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
 
-    // Form the Greenwich sidereal time.
-    *gst = remainder((st / 3600.0 + theta) / 15.0, DAY_HOURS);
-    if(*gst < 0.0) *gst += DAY_HOURS;
-    return 0;
+      // Form the Greenwich sidereal time.
+      *gst = remainder((st / 3600.0 + theta) / 15.0, DAY_HOURS);
+      if(*gst < 0.0) *gst += DAY_HOURS;
+      return 0;
 
     default:        // Invalid value of 'method'.
       errno = EINVAL;
@@ -2452,13 +2489,13 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
     }
     case (EROT_GST):
-              sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-    spin(-15.0 * gast, vec2, vec2);
+      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
+      spin(-15.0 * gast, vec2, vec2);
 
-    if(class != CELESTIAL_APPARENT) {
-      tod_to_gcrs(jd_tdb, accuracy, vec2, vec2);
-    }
-    break;
+      if(class != CELESTIAL_APPARENT) {
+        tod_to_gcrs(jd_tdb, accuracy, vec2, vec2);
+      }
+      break;
 
     default:
       // Invalid value of 'method'.
@@ -2629,34 +2666,34 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
   switch(method) {
     case (EROT_ERA):
-              // IAU 2006 standard method
-              if(class != CELESTIAL_APPARENT) {
-                // See second reference, eq. (3) and (4).
-                int error = gcrs_to_cirs(jd_tt, accuracy, vec1, vec2);
-                prop_error(error, 10);
-              }
+      // IAU 2006 standard method
+      if(class != CELESTIAL_APPARENT) {
+        // See second reference, eq. (3) and (4).
+        int error = gcrs_to_cirs(jd_tt, accuracy, vec1, vec2);
+        prop_error(error, 10);
+      }
 
-    // Compute and apply the Earth rotation angle, 'theta', transforming the
-    // vector to the terrestrial intermediate system.
-    theta = era(jd_ut1_high, jd_ut1_low);
-    spin(theta, vec2, vec2);
+      // Compute and apply the Earth rotation angle, 'theta', transforming the
+      // vector to the terrestrial intermediate system.
+      theta = era(jd_ut1_high, jd_ut1_low);
+      spin(theta, vec2, vec2);
 
-    break;
+      break;
 
     case (EROT_GST):
-              // Pre IAU 2006 method
-              if(class == CELESTIAL_APPARENT) {
-                if(vec2 != vec1) memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
-              }
-              else {
-                gcrs_to_tod(jd_tdb, accuracy, vec1, vec2);
-              }
+      // Pre IAU 2006 method
+      if(class == CELESTIAL_APPARENT) {
+        if(vec2 != vec1) memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
+      }
+      else {
+        gcrs_to_tod(jd_tdb, accuracy, vec1, vec2);
+      }
 
-    // Apply Earth rotation.
-    sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-    spin(gast * 15.0, vec2, vec2);
+      // Apply Earth rotation.
+      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
+      spin(gast * 15.0, vec2, vec2);
 
-    break;
+      break;
 
     default:
       // Invalid value of 'method'.
@@ -3164,38 +3201,38 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
   // Argument coefficients for t^0.
   const char ke0_t[33][14] = { //
           { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 1, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 1, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 4, -4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 1, -1, 1, 0, -8, 12, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 1, -2, 2, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 1, -2, 2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 0, 0, 0, 0, 8, -13, 0, 0, 0, 0, 0, -1 }, //
-          { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 2, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, 0, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 1, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, 0, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 4, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 0, 0, 2, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, -2, 0, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-          { 1, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+                  { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 1, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 1, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 4, -4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 1, -1, 1, 0, -8, 12, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 1, -2, 2, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 1, -2, 2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 0, 0, 0, 0, 8, -13, 0, 0, 0, 0, 0, -1 }, //
+                  { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 2, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, 0, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 1, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, 0, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 4, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 0, 0, 2, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, -2, 0, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+                  { 1, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 
   // Argument coefficients for t^1.
   //const char ke1[14] = {0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0};
@@ -3203,42 +3240,42 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
   // Sine and cosine coefficients for t^0.
   const float se0_t[33][2] = { //
           { +2640.96e-6, -0.39e-6 }, //
-          { +63.52e-6, -0.02e-6 }, //
-          { +11.75e-6, +0.01e-6 }, //
-          { +11.21e-6, +0.01e-6 }, //
-          { -4.55e-6, +0.00e-6 }, //
-          { +2.02e-6, +0.00e-6 }, //
-          { +1.98e-6, +0.00e-6 }, //
-          { -1.72e-6, +0.00e-6 }, //
-          { -1.41e-6, -0.01e-6 }, //
-          { -1.26e-6, -0.01e-6 }, //
-          { -0.63e-6, +0.00e-6 }, //
-          { -0.63e-6, +0.00e-6 }, //
-          { +0.46e-6, +0.00e-6 }, //
-          { +0.45e-6, +0.00e-6 }, //
-          { +0.36e-6, +0.00e-6 }, //
-          { -0.24e-6, -0.12e-6 }, //
-          { +0.32e-6, +0.00e-6 }, //
-          { +0.28e-6, +0.00e-6 }, //
-          { +0.27e-6, +0.00e-6 }, //
-          { +0.26e-6, +0.00e-6 }, //
-          { -0.21e-6, +0.00e-6 }, //
-          { +0.19e-6, +0.00e-6 }, //
-          { +0.18e-6, +0.00e-6 }, //
-          { -0.10e-6, +0.05e-6 }, //
-          { +0.15e-6, +0.00e-6 }, //
-          { -0.14e-6, +0.00e-6 }, //
-          { +0.14e-6, +0.00e-6 }, //
-          { -0.14e-6, +0.00e-6 }, //
-          { +0.14e-6, +0.00e-6 }, //
-          { +0.13e-6, +0.00e-6 }, //
-          { -0.11e-6, +0.00e-6 }, //
-          { +0.11e-6, +0.00e-6 }, //
-          { +0.11e-6, +0.00e-6 } };
+                  { +63.52e-6, -0.02e-6 }, //
+                  { +11.75e-6, +0.01e-6 }, //
+                  { +11.21e-6, +0.01e-6 }, //
+                  { -4.55e-6, +0.00e-6 }, //
+                  { +2.02e-6, +0.00e-6 }, //
+                  { +1.98e-6, +0.00e-6 }, //
+                  { -1.72e-6, +0.00e-6 }, //
+                  { -1.41e-6, -0.01e-6 }, //
+                  { -1.26e-6, -0.01e-6 }, //
+                  { -0.63e-6, +0.00e-6 }, //
+                  { -0.63e-6, +0.00e-6 }, //
+                  { +0.46e-6, +0.00e-6 }, //
+                  { +0.45e-6, +0.00e-6 }, //
+                  { +0.36e-6, +0.00e-6 }, //
+                  { -0.24e-6, -0.12e-6 }, //
+                  { +0.32e-6, +0.00e-6 }, //
+                  { +0.28e-6, +0.00e-6 }, //
+                  { +0.27e-6, +0.00e-6 }, //
+                  { +0.26e-6, +0.00e-6 }, //
+                  { -0.21e-6, +0.00e-6 }, //
+                  { +0.19e-6, +0.00e-6 }, //
+                  { +0.18e-6, +0.00e-6 }, //
+                  { -0.10e-6, +0.05e-6 }, //
+                  { +0.15e-6, +0.00e-6 }, //
+                  { -0.14e-6, +0.00e-6 }, //
+                  { +0.14e-6, +0.00e-6 }, //
+                  { -0.14e-6, +0.00e-6 }, //
+                  { +0.14e-6, +0.00e-6 }, //
+                  { +0.13e-6, +0.00e-6 }, //
+                  { -0.11e-6, +0.00e-6 }, //
+                  { +0.11e-6, +0.00e-6 }, //
+                  { +0.11e-6, +0.00e-6 } };
 
   // Sine and cosine coefficients for t^1.
   const double se1[2] = //
-  { -0.87e-6, +0.00e-6 };
+          { -0.87e-6, +0.00e-6 };
 
   novas_delaunay_args fa2;
   double fa[14];
@@ -3566,8 +3603,8 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
  * @since 1.0
  * @author Attila Kovacs
  */
-int light_time2(double jd_tdb, const object *body, const double *pos_obs, double tlight0,
-        enum novas_accuracy accuracy, double *prel, double *vsb, double *tlight) {
+int light_time2(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
+        double *prel, double *vsb, double *tlight) {
   int iter = 0;
 
   double tol, jd[2] = { };
@@ -3644,8 +3681,8 @@ int light_time2(double jd_tdb, const object *body, const double *pos_obs, double
  * @sa light_time2()
  * @sa place()
  */
-short light_time(double jd_tdb, const object *body, const double *pos_obs, double tlight0,
-        enum novas_accuracy accuracy, double *pos, double *tlight) {
+short light_time(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
+        double *pos, double *tlight) {
   double vel[3];
   return (short) light_time2(jd_tdb, body, pos_obs, tlight0, accuracy, pos, vel, tlight);
 }
@@ -3685,7 +3722,6 @@ double d_light(const double *pos1, const double *pos_obs) {
   // unit vector 'u1' (formed from 'pos1'), divided by the speed of light.
   return vdot(pos_obs, pos1) / vlen(pos1) / C_AUDAY;
 }
-
 
 /**
  * Computes the total gravitational deflection of light for the observed object due to the
@@ -3984,7 +4020,6 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
   return 0;
 }
 
-
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed
@@ -4114,7 +4149,7 @@ int rad_vel(const object *target, const double *pos, const double *vel, const do
       break;
     }
 
-    /* Objects in the solar system */
+      /* Objects in the solar system */
     case NOVAS_MAJOR_PLANET:
     case NOVAS_EPHEM_OBJECT:
       // Compute solar potential at object, if within solar system.
@@ -4795,9 +4830,9 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
 
   // Expression given in USNO Circular 179, eq. 2.6.
   d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970)
-  + 0.000014 * sin(1256.6152 * t + 6.1969) + 0.000005 * sin(606.9777 * t + 4.0212)
-  + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-  + 0.000010 * t * sin(628.3076 * t + 4.2490);
+          + 0.000014 * sin(1256.6152 * t + 6.1969) + 0.000005 * sin(606.9777 * t + 4.0212)
+          + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+          + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
   *jd_tt = jd_tdb - d / DAY;
 
@@ -5807,7 +5842,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
   }
 
   for(i = 0; i < 30; i++) {
-    double zd_obs = zd_astro - refr;
+    double zd_obs = zd_astro + refr;
     refr = refract(location, option, zd_obs);
     if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5) return refr;
   }
@@ -6086,8 +6121,7 @@ void novas_case_sensitive(int value) {
  * @sa make_cat_entry()
  * @sa place()
  */
-short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star,
-        object *cel_obj) {
+short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star, object *cel_obj) {
 
   if(!cel_obj) {
     errno = EINVAL;
@@ -6137,7 +6171,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
   if(type == NOVAS_CATALOG_OBJECT) {
     if(!star) {
       errno = EINVAL;
-      return 4;      // TODO different meaning than original...
+      return 4;
     }
     cel_obj->star = *star;
   }
@@ -6177,18 +6211,18 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
 
   // Populate the output structure based on the value of 'where'.
   switch(where) {
-    case (NOVAS_OBSERVER_AT_GEOCENTER): /* Geocentric */
-              break;
+    case (NOVAS_OBSERVER_AT_GEOCENTER):
+      break;
 
-    case (NOVAS_OBSERVER_ON_EARTH): /* On surface of Earth */
-              if(!loc_surface) {
-                errno = EINVAL;
-                return -1;
-              }
-    memcpy(&obs->on_surf, loc_surface, sizeof(obs->on_surf));
-    break;
+    case (NOVAS_OBSERVER_ON_EARTH):
+      if(!loc_surface) {
+        errno = EINVAL;
+        return -1;
+      }
+      memcpy(&obs->on_surf, loc_surface, sizeof(obs->on_surf));
+      break;
 
-    case NOVAS_OBSERVER_IN_EARTH_ORBIT: /* In near-Earth spacecraft */
+    case NOVAS_OBSERVER_IN_EARTH_ORBIT:
       if(!loc_space) {
         errno = EINVAL;
         return -1;

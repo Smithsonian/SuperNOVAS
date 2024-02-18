@@ -785,6 +785,8 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
+int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+
 int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
         enum novas_reference_system sys, enum novas_accuracy accuracy, double *ra, double *dec, double *rv);
 

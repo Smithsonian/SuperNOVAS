@@ -659,11 +659,11 @@ DE 405), either via the `ephem_manager()` interface of `solsys1.c` or via the `j
 
 #### 2.1. Planets via `eph_manager`
 
-To use the `eph_manager` interface for planet 1997 JPL planet ephemeris, you must either build superNOVAS with 
-`BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and `ephem_manager.c` from
-SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old way) you might also 
-want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set `eph_manager` as your 
-planetary ephemeris provider at runtime via:
+To use the `eph_manager` interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
+superNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
+`ephem_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
+way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
+`eph_manager` as your planetary ephemeris provider at runtime via:
 
 ```c
  set_planet_provider(planet_eph_manager);
@@ -673,7 +673,7 @@ planetary ephemeris provider at runtime via:
 Either way, before you can use the ephemeris, you must also open the relevant ephemeris data file with `ephem_open()`:
 
 ```c
- int de_number;	         // The DE number, e.g. 405 for DE 405
+ int de_number;	         // The DE number, e.g. 405 for DE405
  double from_jd, to_jd;  // [day] Julian date range of the ephemeris data
   
  ephem_open("path-to/de405.bsp", &from_jd, &to_jd, &de_number);
@@ -689,8 +689,7 @@ Note, that at any given time `eph_manager()` can have only one ephemeris data fi
 retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
 can integrate as discussed further above!)
 
-That's all, except the warning that there is no guarantee that this method will work with newer JPL ephemeris data,
-which may be in a different binary format.
+That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
 
 
 #### 2.b. Planets via JPL's `pleph` FORTRAN interface

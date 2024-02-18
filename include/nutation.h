@@ -29,7 +29,7 @@
  * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in radians.
  * @return            0 if successful, or else -1 (errno should be set to indicate the type of error).
  *
- * @sa nutation()
+ * @sa nutation_angles()
  * @sa iau2000a()
  * @sa iau2000b()
  * @sa iau2000k()

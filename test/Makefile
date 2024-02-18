@@ -8,11 +8,12 @@ CFLAGS += -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
 OBJECTS := $(subst obj/,,$(OBJECTS))
 
 .PHONY: run
-run: clean-cov clean-data test test_cio_file data ../cio_ra.bin
+run: clean-cov clean-data test test_cio_file test-super data ../cio_ra.bin
 	./test
 	ln -s ../cio_ra.bin
 	./test_cio_file
 	diff data reference
+	./test-super
 
 .PHONY: coverage
 coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov
@@ -37,6 +38,9 @@ test: test.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 test_cio_file: test_cio_file.o $(OBJECTS) | Makefile data
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+test-super: test-super.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 test%.o: src/test%.c | Makefile
