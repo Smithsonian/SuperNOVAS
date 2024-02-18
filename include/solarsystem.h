@@ -41,7 +41,7 @@
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system
  *                      Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS
- *                      (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
+ *                      (4), NOVAS_SUN (10) or NOVAS_SSB (0).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                      return positions and velocities. (For compatibility with existing NOVAS
  *                      C compatible user implementations, we keep the original NOVAS C argument
@@ -76,7 +76,7 @@ typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, en
  *                      and fractional parts for the highest precision.
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system
  *                      Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS
- *                      (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0).
+ *                      (4), NOVAS_SUN (10) or NOVAS_SSB (0).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                      return positions and velocities. (For compatibility with existing NOVAS
  *                      C compatible user implementations, we keep the original NOVAS C argument
@@ -199,7 +199,7 @@ novas_ephem_provider get_ephem_provider();
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system
  *                      Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS
- *                      (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0). (For compatibility
+ *                      (4), NOVAS_SUN (10) or NOVAS_SSB (0). (For compatibility
  *                      with existing NOVAS C compatible user implementations, we keep the
  *                      original NOVAS C argument type here).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
@@ -240,7 +240,7 @@ short solarsystem (double jd_tdb, short body, short origin, double *position, do
  *                      and fractional parts for the highest precision.
  * @param body          Major planet number (or that for the Sun, Moon, or Solar-system
  *                      Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS
- *                      (4), NOVAS_SUN (10) or NOVAS_BARYCENTER_POS (0). (For compatibility with
+ *                      (4), NOVAS_SUN (10) or NOVAS_SSB (0). (For compatibility with
  *                      existing NOVAS C compatible user implementations, we keep the original
  *                      NOVAS C argument type here).
  * @param origin        NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to

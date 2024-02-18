@@ -168,7 +168,7 @@ enum novas_object_type {
   /// @sa enum novas_planet
   /// @sa novas_planet_provider
   /// @sa novas_planet_provider_hp
-  NOVAS_MAJOR_PLANET = 0,
+  NOVAS_PLANET = 0,
 
   /// A Solar-system body that does not fit the major planet type, and requires specific
   /// user-provided novas_ephem_provider implementation.
@@ -185,13 +185,13 @@ enum novas_object_type {
 
 /**
  * Enumeration for the 'major planet' numbers in NOVAS to use as the solar-system body number whenever
- * the object type is NOVAS_MAJOR_PLANET.
+ * the object type is NOVAS_PLANET.
  *
- * @sa NOVAS_MAJOR_PLANET
- * @sa NOVAS_MAJOR_PLANET_NAMES_INIT
+ * @sa NOVAS_PLANET
+ * @sa NOVAS_PLANET_NAMES_INIT
  */
 enum novas_planet {
-  NOVAS_BARYCENTER_POS = 0, ///< Solar-system barycenter position ID
+  NOVAS_SSB = 0,        ///< Solar-system barycenter position ID
   NOVAS_MERCURY,        ///< Major planet number for the Mercury in NOVAS.
   NOVAS_VENUS,          ///< Major planet number for the Venus in NOVAS.
   NOVAS_EARTH,          ///< Major planet number for the Earth in NOVAS.
@@ -212,7 +212,7 @@ enum novas_planet {
  * String array initializer for Major planet names, matching the enum novas_planet. E.g.
  *
  * \code
- * char *planet_names[] = NOVAS_MAJOR_PLANET_NAMES_INIT;
+ * char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
  * \endcode
  *
  *
@@ -767,6 +767,10 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
 // Added API in SuperNOVAS
+
+int make_planet(enum novas_planet num, object *planet);
+
+int make_ephem_body(const char *name, long num, object *body);
 
 void novas_case_sensitive(int value);
 

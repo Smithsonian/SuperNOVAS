@@ -15,8 +15,8 @@ The Naval Observatory NOVAS C astrometry library, made better.
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a positional astronomy library for the for the C 
 programming language, providing high-precision astrometry such as one might need for running an observatory or a 
-precise planetarium program. Its source code is compatible with the C90 standard, and hence should be suitable even 
-for most older platforms also. It is light-weight and easy to use, with full support for the IAU 2000/2006 standards 
+precise planetarium program. Its source code is compatible with the C90 standard, and hence should be suitable for 
+many older platforms also. It is light-weight and easy to use, with full support for the IAU 2000/2006 standards 
 for sub-microarcsecond position calculations.
 
 SuperNOVAS is a fork of the Naval Observatory Vector Astrometry Software 
@@ -402,7 +402,7 @@ and TDB interchangeably in the present era):
 ```
 
 Instead of `make_cat_entry` you define your source as an `object` with an ID number that is used by the ephemeris 
-service you provided. For major planets you might want to use type `NOVAS_MAJOR_PLANET` if they use a 
+service you provided. For major planets you might want to use type `NOVAS_PLANET` if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `NOVAS_EPHEM_OBJECT` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
 
@@ -410,7 +410,7 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  object mars, ceres; // Hold data on solar-system bodies.
   
  // Mars will be handled by hte planet calculator function
- make_object(NOVAS_MAJOR_PLANET_MARS, NOVAS_MARS, "Mars", NULL, &mars);
+ make_object(NOVAS_PLANET_MARS, NOVAS_MARS, "Mars", NULL, &mars);
   
  // Ceres will be handled by the generic ephemeris reader, which say uses the 
  // NAIF ID of 2000001
