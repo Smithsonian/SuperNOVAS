@@ -7,6 +7,7 @@ on:
       - 'include/**'
       - 'css/**'
       - 'Doxyfile'
+      - '*.md'
       - '.github/workflows/dox.yml'
       
 jobs:   
