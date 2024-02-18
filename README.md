@@ -209,7 +209,7 @@ you might have a `Makefile` with contents like:
 
 ```make
   myastroapp: myastroapp.c 
-  	cc -o $@ $(CFLAGS) $^ -lm -lnovas
+  	$(CC) -o $@ $(CFLAGS) $^ -lm -lnovas
 ```
 
 If you have a legacy NOVAS C 3.1 application, it is possible that the compilation will give you errors due
@@ -221,7 +221,7 @@ directives to your application source explicitly, or if that's not an option for
 
 ```make
   myastroapp: myastroapp.c 
-  	cc -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lnovas
+  	$(CC) -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lnovas
 ```
 
 To use your own `solarsystem()` implemetation for `ephemeris()`, you will want to build the library with
@@ -230,7 +230,7 @@ To use your own `solarsystem()` implemetation for `ephemeris()`, you will want t
 
 ```make
   myastroapp: myastroapp.c my_solsys.c 
-  	cc -o $@ $(CFLAGS) $^ -lm -lnovas
+  	$(CC) -o $@ $(CFLAGS) $^ -lm -lnovas
 ```
 
 The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` 
