@@ -15,9 +15,16 @@ run: clean-cov clean-data test test_cio_file test-super data ../cio_ra.bin
 	diff data reference
 	./test-super
 
+cov: cov.info
+	genhtml $< -o $@
+
+cov.info:
+	geninfo . -b . -o $@
+
 .PHONY: coverage
 coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov
 	make clean-test
+	make cov
 
 data:
 	mkdir data
@@ -55,7 +62,7 @@ clean-test:
 
 .PHONY: clean-cov
 clean-cov:
-	rm -rf gmon.out *.gcov *.gcda *.gcno
+	rm -rf gmon.out *.gcov *.gcda *.gcno cov cov.info
 
 .PHONY: clean-data
 clean-data:
