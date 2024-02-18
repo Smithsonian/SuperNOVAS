@@ -2,7 +2,6 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 0.9.0
  *
  *  SuperNOVAS plane calculator functions for the Earth and Sun only, with an orbital model
  *  based on the DE405 ephemerides by JPL.

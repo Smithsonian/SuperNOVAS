@@ -2,7 +2,6 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 0.9.0
  *
  *  SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be used together
  *  with eph_manager.c. A more generic solution is to implement a novas_ephem_provider (e.g. relying on the current

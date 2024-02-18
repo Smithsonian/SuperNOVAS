@@ -2,7 +2,6 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 0.9.0
  *
  *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -3782,8 +3781,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   static const double rmass[] = NOVAS_RMASS_INIT;
 
   static int first_time = 1;
-  static object body[7],
-  earth;
+  static object body[7], earth;
 
   // Set the number of bodies -- and hence the bodies used -- based on the value of the 'accuracy' flag.
 
@@ -3794,7 +3792,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   const int nbodies = (accuracy == NOVAS_FULL_ACCURACY) ? 3 : 1;
 
   double jd[2] = { }, tlt, pbody[3], vbody[3], pbodyo[3], x;
-  int i, error;
+  int i, error = 0;
 
   if(!pos1 || !pos_obs || !pos2 || pos2 == pos_obs) {
     errno = EINVAL;

@@ -2,7 +2,6 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 0.9.0
  *
  *  SuperNOVAS major planet ephemeris lookup wrapper for JPL ephemerides accessed over `pleph()`.
  *  It is a top-level wrapper, with an  intermediate Fortran routine, jplint_() providing the

@@ -5,14 +5,16 @@
 # You can include this snipplet in your Makefile also.
 # ============================================================================
 
-PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 # Folders in which sources and headers are located, respectively
 SRC = src
-INC = $(PROJECT_ROOT)/include
+INC = include
 
 # Compiler options
-CFLAGS = -Os -Wall -Wextra -I$(INC)
+CFLAGS = -Os -Wall -I$(INC)
+
+# Extra warnings (not supported on all compilers)
+#CFLAGS += -Wextra
 
 # For maximum compatibility with NOVAS C 3.1, uncomment the line below
 #CFLAGS += -DCOMPAT=1

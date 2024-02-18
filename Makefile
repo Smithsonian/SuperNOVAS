@@ -78,4 +78,4 @@ vpath %.c $(SRC)
 # Generic targets and recipes below...
 # ===============================================================================
 
-include $(PROJECT_ROOT)/build.mk
+include build.mk

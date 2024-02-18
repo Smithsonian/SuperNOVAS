@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-Changes expected for the 1.0.0 production release only...
+Changes expected for the next release...
 
 
 ### Added
@@ -24,12 +24,9 @@ Changes expected for the 1.0.0 production release only...
  
  
 
-## [0.9.0] - 2024-03-01
+## [1.0.0] - 2024-03-01
 
-This is a preview release before 1.0 comes out officially a little later. It allows us to change our minds on some of 
-the choices we made for SuperNOVAS in case there is some compelling reason why they should be done differently. Once 
-we proceed to 1.0, we'll stick to these choices. So this is the last chance to correct anything that may not be quite 
-right from a design perspective.
+This is the initial release of the SuperNOVAS library.
 
 ### Fixed
 

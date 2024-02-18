@@ -2,7 +2,6 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 0.9.0
  *
  *  SuperNOVAS planetary ephemeris manager for the planet_eph_manager() and planet_eph_manager_hp()
  *  functions.
