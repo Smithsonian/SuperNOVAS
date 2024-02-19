@@ -392,6 +392,30 @@ static int test_get_utc_to_tt() {
   return 0;
 }
 
+static int test_nutation_lp_provider() {
+  double t = (tdb - NOVAS_JD_J2000) / 36525.0;
+  double de, dp, de0, dp0;
+
+  int status = 1;
+
+
+  if(!is_ok("nutation_lp_provider:set_nutation_lp_provider", set_nutation_lp_provider(iau2000b))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:nutation_angles", nutation_angles(t, NOVAS_REDUCED_ACCURACY, &de, &dp))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:iau2000b", iau2000b(tdb, 0.0, &de0, &dp0))) goto cleanup; // @suppress("Goto statement used")
+
+  de0 /= ASEC2RAD;
+  dp0 /= ASEC2RAD;
+
+  if(!is_ok("nutation_lp_provider:check_de", fabs(de - de0) > 1e-7)) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:check_dp", fabs(dp - dp0) > 1e-7)) goto cleanup; // @suppress("Goto statement used")
+
+  status = 0;
+
+  cleanup:
+
+  set_nutation_lp_provider(nu2000k);
+  return status;
+}
 
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
@@ -399,6 +423,7 @@ static int test_dates() {
 
   if(test_get_ut1_to_tt()) n++;
   if(test_get_utc_to_tt()) n++;
+  if(test_nutation_lp_provider()) n++;
 
   for(i = 0; i < 5; i++) {
     tdb = J2000 + offsets[i];
@@ -519,6 +544,8 @@ static int test_ephem_provider() {
   set_ephem_provider(prior);
   return status;
 }
+
+
 
 int main() {
   int n = 0;
