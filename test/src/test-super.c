@@ -28,6 +28,8 @@ static double yp = -2.0;
 // Initialized quantities.
 static double pos0[3];
 
+static enum novas_origin ephem_origin;
+
 static short dummy_planet_hp(const double *jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
   memset(position, 0, 3 * sizeof(double));
   memset(velocity, 0, 3 * sizeof(double));
@@ -42,7 +44,7 @@ static short dummy_planet(double jd_tdb, enum novas_planet body, enum novas_orig
 }
 
 static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
-  *origin = NOVAS_BARYCENTER;
+  *origin = ephem_origin;
   memset(pos, 0, 3 * sizeof(double));
   memset(vel, 0, 3 * sizeof(double));
   pos[0] = id % 100;
@@ -532,10 +534,22 @@ static int test_ephem_provider() {
 
   if(!is_ok("ephem_provider:set_ephem_provider", set_ephem_provider(dummy_ephem))) goto cleanup; // @suppress("Goto statement used")
 
-  if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &body, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
-  if(!is_ok("planet_provider:control", dummy_ephem(body.name, body.number, tdb, 0.0, &o, p0, v0))) goto cleanup; // @suppress("Goto statement used")
-  if(!is_ok("planet_provider:check_pos", check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
-  if(!is_ok("planet_provider:check_vel", check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+  for(ephem_origin = 0; ephem_origin < 2; ephem_origin++) {
+    if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &body, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
+    if(!is_ok("planet_provider:control", dummy_ephem(body.name, body.number, tdb, 0.0, &o, p0, v0))) goto cleanup; // @suppress("Goto statement used")
+    if(o == NOVAS_BARYCENTER) {
+      if(!is_ok("planet_provider:check_pos", check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+      if(!is_ok("planet_provider:check_vel", check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+    }
+
+    if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &body, NOVAS_HELIOCENTER, NOVAS_FULL_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
+    if(o == NOVAS_BARYCENTER) {
+      fprintf(stderr, " Expecing diffent A/B, twice:\n");
+      if(!is_ok("planet_provider:check_pos", !check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+      if(!is_ok("planet_provider:check_vel", !check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+      fprintf(stderr, " OK.\n");
+    }
+  }
 
   status = 0;
 
@@ -544,6 +558,7 @@ static int test_ephem_provider() {
   set_ephem_provider(prior);
   return status;
 }
+
 
 
 

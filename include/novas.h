@@ -341,9 +341,9 @@ enum novas_earth_rotation_measure {
 /**
  * Constants for ter2cel() and cel2ter()
  */
-enum novas_celestial_type {
-  CELESTIAL_GCRS = 0,        ///< Celestial coordinates are in GCRS
-  CELESTIAL_APPARENT         ///< Celestial coordinates are apparent values (CIRS or TOD)
+enum novas_equatorial_class {
+  GCRS_EQUATOR = 0,               ///< Celestial coordinates are in GCRS
+  DYNAMICAL_EQUATOR               ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
 
 /**
@@ -649,11 +649,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 double era(double jd_ut1_high, double jd_ut1_low);
 
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *vec1,
         double *vec2);
 
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
+        enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *vec1,
         double *vec2);
 
 int spin(double angle, const double *pos1, double *pos2);
@@ -729,7 +729,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio);
 
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy);
 
-short ephemeris(const double jd_tdb[2], const object *body, enum novas_origin origin, enum novas_accuracy accuracy,
+short ephemeris(const double *jd_tdb, const object *body, enum novas_origin origin, enum novas_accuracy accuracy,
         double *pos, double *vel);
 
 int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);

@@ -270,8 +270,8 @@ static void test_ephemeris() {
     openfile("ephemeris");
 
     if(is_ok(ephemeris(tdb2, &body[i], j, accuracy, pos1, vel1))) {
-      int j;
-      for(j = 0; j < 3; j++) vel1[j] *= 1e-3 * (1.4959787069098932e+11 / 86400.0);
+      int k;
+      for(k = 0; k < 3; k++) vel1[k] *= 1e-3 * (1.4959787069098932e+11 / 86400.0);
 
       fprintf(fp, "%-10s %d ", body[i].name, j);
       printvector(pos1);

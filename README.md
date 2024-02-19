@@ -16,8 +16,8 @@ The NOVAS C astrometry library, made better.
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a positional astronomy library for the for the C 
 programming language, providing high-precision astrometry such as one might need for running an observatory or a 
 precise planetarium program. It is a fork of the Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the overall aim of making it more user-friendly and 
-easier to use.
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the aim of making it more user-friendly and 
+easier to use overall.
 
 SuperNOVAS is entirely free to use without any licensing restrictions.  Its source code is compatible with the C90 
 standard, and hence should be suitable for many older platforms also. It is light-weight and easy to use, with full 
@@ -33,9 +33,9 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#building-your-application)
- - [Basic usage examples](#examples)
- - [SuperNOVAS specific features](#supernovas-features)
+ - [Example usage](#examples)
  - [Notes on precision](#precision)
+ - [SuperNOVAS specific features](#supernovas-features)
  - [External Solar-system ephemeris data or services](#solarsystem)
  - [Release schedule](#release-schedule)
 
@@ -242,14 +242,35 @@ being unset in `config.mk`).
 
 
 <a name="examples"></a>
-## Basic usage examples
+## Example usage
 
+ - [Note on alternative methodologies](#methodologies)
  - [Calculating positions for a sidereal source](#sidereal-example)
  - [Calculating positions for a Solar-system source](#solsys-example)
  - [Reduced accuracy shortcuts](#accuracy-notes)
  - [Performance considerations](#performance-note)
- - [Note on alternative methodologies](#methodologies)
+
+
+<a name="methodologies"></a>
+### Note on alternative methodologies
+
+The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
+to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
+ways, and in the new IAU standard method. Here is an overview of how the old and new methods define some of the
+terms differently:
+
+ | Concept                    | Old standard                  | New IAU standard                                  |
+ | -------------------------- | ----------------------------- | ------------------------------------------------- |
+ | Catalog coordinate system  | J2000 or B1950                | International Celestial Reference System (ICRS)   |
+ | Dynamical system	      | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
+ | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
+ | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
+ | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
+ | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
+ | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |
  
+See the various enums and constands defined in `novas.h`, as well as the descriptions on the various NOVAS routines
+on how they are appropriate for the old and new methodologies respectively.
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -457,27 +478,47 @@ Therefore, when calculating positions for a large number of sources at different
  - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
  
  
- 
-<a name="methodologies"></a>
-### Note on alternative methodologies
+-----------------------------------------------------------------------------
 
-The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
-to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
-ways, and in the new IAU standard method. Here is an overview of how the old and new methods define some of the
-terms differently:
+<a name="precision"></a>
+## Notes on precision
 
- | Concept                    | Old standard                  | New IAU standard                                  |
- | -------------------------- | ----------------------------- | ------------------------------------------------- |
- | Catalog coordinate system  | J2000 or B1950                | International Celestial Reference System (ICRS)   |
- | Dynamical system	      | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
- | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
- | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
- | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
- | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
- | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |
+The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s 
+precision for all types of celestial sources. However, there are certain pre-requisites and practical considerations 
+before that level of accuracy is reached.
+
+
+ 1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use SuperNOVAS with the
+    new IAU standard quantities and methods. The old ways were simply not suited for precisions much below the 
+    milliarcsecond level.
+
+ 2. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
+    knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
+    nutation, but  also small irregular variations in the orientation of the rotational axis and the rotation period 
+    (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
+    provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
+    (DUT1) time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` 
+    functions to apply / use the published values from these to improve the astrometic precision of Earth-orientation
+    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
+    observation, positions for Earth-based observations will be accurate at the arcsecond level only.
  
-See the various enums and constands defined in `novas.h`, as well as the descriptions on the various NOVAS routines
-on how they are appropriate for the old and new methodologies respectively.
+ 3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
+    the target object as well as for Earth, and the Sun vs the Solar-system barycenter. For the highest precision 
+    calculations you also need positions for all major planets to calculate gravitational deflection precisely. By 
+    default SuperNOVAS can only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in 
+    `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
+    need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
+    JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
+    [section below](#solarsystem) for more information how you can do that.
+    
+  4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
+    option to include _optical_ refraction corrections in `equ2hor()` either for a standard atmosphere or more 
+    precisely using the weather parameters defined in the `on_surface` data structure that specifies the observer 
+    locations. Note, that refraction at radio wavelengths is notably different from the included optical model. In 
+    either case you may want to skip the refraction corrections offered in this library, and instead implement your 
+    own as appropriate (or not at all).
+  
+
 
 -----------------------------------------------------------------------------
 
@@ -562,47 +603,6 @@ on how they are appropriate for the old and new methodologies respectively.
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
 
-
------------------------------------------------------------------------------
-
-<a name="precision"></a>
-## Notes on precision
-
-The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s 
-precision for all types of celestial sources. However, there are certain pre-requisites and practical considerations 
-before that level of accuracy is reached.
-
-
- 1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use SuperNOVAS with the
-    new IAU standard quantities and methods. The old ways were simply not suited for precisions much below the 
-    milliarcsecond level.
-
- 2. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
-    knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
-    nutation, but  also small irregular variations in the orientation of the rotational axis and the rotation period 
-    (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
-    provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
-    (DUT1) time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` 
-    functions to apply / use the published values from these to improve the astrometic precision of Earth-orientation
-    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
-    observation, positions for Earth-based observations will be accurate at the arcsecond level only.
- 
- 3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
-    the target object as well as for Earth, and the Sun vs the Solar-system barycenter. For the highest precision 
-    calculations you also need positions for all major planets to calculate gravitational deflection precisely. By 
-    default SuperNOVAS can only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in 
-    `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
-    need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
-    JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
-    [section below](#solarsystem) for more information how you can do that.
-    
-  4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
-    option to include _optical_ refraction corrections in `equ2hor()` either for a standard atmosphere or more 
-    precisely using the weather parameters defined in the `on_surface` data structure that specifies the observer 
-    locations. Note, that refraction at radio wavelengths is notably different from the included optical model. In 
-    either case you may want to skip the refraction corrections offered in this library, and instead implement your 
-    own as appropriate (or not at all).
- 
 
 -----------------------------------------------------------------------------
 

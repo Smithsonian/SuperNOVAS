@@ -26,7 +26,7 @@
 /// \endcond
 
 // Additional local function prototypes
-void sun_eph(double jd, double *ra, double *dec, double *dis);
+int sun_eph(double jd, double *ra, double *dec, double *dis);
 void earth_sun_enable_hp(int value);
 
 /**
@@ -323,10 +323,11 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
  * @param[out] ra      [h] Right ascension referred to mean equator and equinox of date (hours).
  * @param[out] dec     [deg] Declination referred to mean equator and equinox of date (degrees).
  * @param[out] dis     [AU] Geocentric distance (AU).
+ * @return             0 if successful, or else -1 if any of the pointer arguments are NULL.
  *
  * @sa earth_sun_calc()
  */
-void sun_eph(double jd, double *ra, double *dec, double *dis) {
+int sun_eph(double jd, double *ra, double *dec, double *dis) {
   struct sun_con {
     int l;
     int r;
@@ -393,6 +394,11 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
           { 10, 0, 1.50, 21463.25 }, //
           { 10, -9, 2.55, 157208.40 } };
 
+  if(!ra || !dec || !dis) {
+    errno = EINVAL;
+    return -1;
+  }
+
   // Define the time units 'u', measured in units of 10000 Julian years
   // from J2000.0, and 't', measured in Julian centuries from J2000.0.
   u = (jd - T0) / 3652500.0;
@@ -427,7 +433,7 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
 
   *dec = asin(sin(emean) * sin_lon) * RAD2DEG;
 
-  return;
+  return 0;
 }
 
 #if DEFAULT_SOLSYS == 3
