@@ -11,17 +11,18 @@
 <br clear="all">
 
 # SuperNOVAS 
-The Naval Observatory NOVAS C astrometry library, made better.
+The NOVAS C astrometry library, made better.
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a positional astronomy library for the for the C 
 programming language, providing high-precision astrometry such as one might need for running an observatory or a 
-precise planetarium program. Its source code is compatible with the C90 standard, and hence should be suitable for 
-many older platforms also. It is light-weight and easy to use, with full support for the IAU 2000/2006 standards 
-for sub-microarcsecond position calculations.
-
-SuperNOVAS is a fork of the Naval Observatory Vector Astrometry Software 
+precise planetarium program. It is a fork of the Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the overall aim of making it more user-friendly and 
-easier to use. It is entirely free to use without any licensing restrictions. 
+easier to use.
+
+SuperNOVAS is entirely free to use without any licensing restrictions.  Its source code is compatible with the C90 
+standard, and hence should be suitable for many older platforms also. It is light-weight and easy to use, with full 
+support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
+
 
 
 # Table of Contents
@@ -73,7 +74,7 @@ may have written for NOVAS C.
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
  
-SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard and Smithsonian, and it is 
+SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard & Smithsonian, and it is 
 available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repo on GitHub.
 
 Outside contributions are very welcome. See
@@ -334,7 +335,7 @@ coordinate system and for the specified observing location). We also get radial 
 distance (e.g. for apparent-to-physical size conversion):
 
 ```c
- sky_pos pos;	// We'll return the observable positions in this structure
+ sky_pos pos;	// We'll return the observable positions (in CIRS) in this structure
   
  // Calculate the apparent (CIRS) topocentric positions for the above configuration
  int status = place_star(jd_tt, &source, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
@@ -354,7 +355,7 @@ source at the specified observing location (without refraction correction):
  double az, zd;   // [deg] local azimuth and zenith distance angles to populate
   
  // Convert CIRS to Earth-fixed ITRS using the pole offsets.
- cirs_to_itrs(jd_tt, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, itrs);
+ cirs_to_itrs(jd_tt, 0.0, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, pos.r_hat, itrs);
  
  // Finally convert ITRS to local horizontal coordinates at the observing site
  itrs_to_hor(itrs, &obs.on_surface, &az, &zd);
@@ -627,7 +628,7 @@ Possibly the most universal way to integrate ephemeris data with SuperNOVAS is t
 `novas_ephem_provider`, e.g.:
 
 ```c
- int my_ephem_reader(long id, const char *name, double jd_tdb_high, double jd_tdb_low, 
+ int my_ephem_reader(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
                      enum novas_origin *origin, double *pos, double *vel) {
    // Your custom ephemeris reader implementation here
    ...
