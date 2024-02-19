@@ -268,6 +268,8 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
 short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
+void enable_earth_sun_hp(int value);
+
 short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);

@@ -27,7 +27,7 @@
 
 // Additional local function prototypes
 int sun_eph(double jd, double *ra, double *dec, double *dis);
-void earth_sun_enable_hp(int value);
+
 
 /**
  * Whether the high-precision call is allowed to return a low-precision result. If set to 0
@@ -54,7 +54,7 @@ static int allow_lp_for_hp = 0;
  *
  * @sa earth_sun_calc_hp()
  */
-void earth_sun_enable_hp(int value) {
+void enable_earth_sun_hp(int value) {
   allow_lp_for_hp = (value != 0);
 }
 
@@ -162,7 +162,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   }
 
   // Check if input Julian date is within range (within 3 centuries of J2000).
-  if((jd_tdb < 2340000.5) || (jd_tdb > 2560000.5)) {
+  if(jd_tdb < 2340000.5 || jd_tdb > 2560000.5) {
     errno = EDOM;
     return 1;
   }
@@ -252,7 +252,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
 /**
  * It may provide the position and velocity of the Earth and Sun, the same as
- * solarsystem_earth_sun(), if earth_sun_enable_hp() is set to true (non-zero). Otherwise,
+ * solarsystem_earth_sun(), if enable_earth_sun_hp() is set to true (non-zero). Otherwise,
  * it will return with an error code of 3, indicating that high-precision calculations are
  * not provided by this implementation.
  *
@@ -284,7 +284,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
  *                      out of range, 2 if 'body' is invalid, or 3 if the high-precision
  *                      orbital data cannot be produced (default return value).
  *
- * @sa earth_sun_enable_hp()
+ * @sa enable_earth_sun_hp()
  * @sa earth_sun_calc()
  * @sa set_planet_provider()
  * @sa solarsystem_hp()

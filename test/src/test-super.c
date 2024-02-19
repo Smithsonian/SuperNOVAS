@@ -560,7 +560,24 @@ static int test_ephem_provider() {
 }
 
 
+static int test_enable_earth_sun_calc_hp() {
+  double tdb2[2] = { tdb }, p[3], v[3], p0[3], v0[3];
+  int status = 1;
 
+  enable_earth_sun_hp(1);
+
+  if(!is_ok("enable_earth_sun_hp", earth_sun_calc(tdb, NOVAS_SUN, NOVAS_BARYCENTER, p0, v0))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("enable_earth_sun_hp", earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("enable_earth_sun_hp:check_pos", check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("enable_earth_sun_hp:check_vel", check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+
+  status = 0;
+
+  cleanup:
+
+  enable_earth_sun_hp(0);
+  return status;
+}
 
 int main() {
   int n = 0;
@@ -573,6 +590,7 @@ int main() {
   if(test_case()) n++;
   if(test_planet_provider()) n++;
   if(test_ephem_provider()) n++;
+  if(test_enable_earth_sun_calc_hp()) n++;
 
   n += test_dates();
 

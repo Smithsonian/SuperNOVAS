@@ -736,6 +736,32 @@ static int test_grav_def() {
   return n;
 }
 
+static int test_earth_sun_calc() {
+  double p[3], v[3];
+  int n = 0;
+
+  if(check("earth_sun_calc:pos", -1, earth_sun_calc(NOVAS_JD_J2000, NOVAS_SUN, NOVAS_BARYCENTER, NULL, v))) n++;
+  if(check("earth_sun_calc:vel", -1, earth_sun_calc(NOVAS_JD_J2000, NOVAS_SUN, NOVAS_BARYCENTER, p, NULL))) n++;
+  if(check("earth_sun_calc:tdb:lo", 1, earth_sun_calc(2340000.0, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
+  if(check("earth_sun_calc:tdb:hi", 1, earth_sun_calc(2560001.0, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
+  if(check("earth_sun_calc:number", 2, earth_sun_calc(NOVAS_JD_J2000, NOVAS_JUPITER, NOVAS_BARYCENTER, p, v))) n++;
+
+  return n;
+}
+
+static int test_sun_eph() {
+  extern int sun_eph(double jd, double *ra, double *dec, double *dis);
+
+  double ra, dec, dis;
+  int n = 0;
+
+  if(check("sun_eph", -1, sun_eph(NOVAS_JD_J2000, NULL, &dec, &dis))) n++;
+  if(check("sun_eph", -1, sun_eph(NOVAS_JD_J2000, &ra, NULL, &dis))) n++;
+  if(check("sun_eph", -1, sun_eph(NOVAS_JD_J2000, &ra, &dec, NULL))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -818,6 +844,9 @@ int main() {
   if(test_aberration()) n++;
   if(test_grav_vec()) n++;
   if(test_grav_def()) n++;
+
+  if(test_earth_sun_calc()) n++;
+  if(test_sun_eph()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

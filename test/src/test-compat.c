@@ -635,6 +635,19 @@ static void test_grav_def() {
   }
 }
 
+static void test_aberration() {
+  double v0[3] = {}, pos1[3];
+  int i;
+
+  openfile("aberration");
+  aberration(pos0, vobs, 0.0, pos1);
+  printunitvector(pos1);
+
+  openfile("aberration");
+  aberration(pos0, v0, 0.0, pos1);
+  for(i = 0; i < 3; i++) fprintf(fp, "%d ", pos0[i] == pos1[i]);
+}
+
 static void test_place() {
   int i;
 
@@ -883,6 +896,7 @@ static int test_source() {
   test_light_time();
   test_grav_def();
   test_place();
+  test_aberration();
 
   if(obs.where == 0) {
     test_astro_place();
