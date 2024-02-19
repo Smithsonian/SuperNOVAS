@@ -292,8 +292,10 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-We also need to set the time of observation. Out clocks usually measure UTC, but for NOVAS we usually need time 
-measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. So 
+We also need to set the time of observation. Our clocks usually measure UTC, but for NOVAS we usually need time 
+measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. Typically you will have to provide
+NOVAS with the TT - UT1 time difference, which can be calculated from the current leap seconds and the UT1 - UTC 
+time difference (a.k.a. DUT1): 
 
 ```c
  // The current value for the leap seconds (UTC - TAI)
@@ -344,8 +346,8 @@ distance (e.g. for apparent-to-physical size conversion):
  }
 ```
 
-Finally, we may want to calculate the astrometric zenith distance (= 90&deg; - azimuth) and elevation angles of the source
-at the specified observing location (without refraction correction):
+Finally, we may want to calculate the astrometric azimuth and zenith distance (= 90&deg; - azimuth) angles of the 
+source at the specified observing location (without refraction correction):
 
 ```c
  double itrs[3];  // ITRS position vector of source to populate
@@ -378,7 +380,7 @@ want, e.g.:
 Solar-system sources work similarly to the above with a few important differences.
 
 First, You will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
-source of interest for the specific Barycentric Dynamical Time (TDB) of observation. See Section on integrating 
+source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on integrating 
 [External Solar-system ephemeris data or services](#solarsystem) with SuperNOVAS. You can specify the functions
 that will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:
 
@@ -410,11 +412,11 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  object mars, ceres; // Hold data on solar-system bodies.
   
  // Mars will be handled by hte planet calculator function
- make_object(NOVAS_PLANET_MARS, NOVAS_MARS, "Mars", NULL, &mars);
+ make_planet(NOVAS_MARS, &mars);
   
  // Ceres will be handled by the generic ephemeris reader, which say uses the 
  // NAIF ID of 2000001
- make_object(NOVAS_EPHEM_OBJECT, 2000001, "Ceres", NULL, &ceres);
+ make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
 Other than that, it's the same spiel as before, except using the appropriate `place()` for generic celestial
@@ -460,7 +462,8 @@ Therefore, when calculating positions for a large number of sources at different
 
 The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
 to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
-ways, and in the new IAU standard method.
+ways, and in the new IAU standard method. Here is an overview of how the old and new methods define some of the
+terms differently:
 
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |

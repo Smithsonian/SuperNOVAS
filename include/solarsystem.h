@@ -133,7 +133,7 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  * @since 1.0
  * @author Attila Kovacs
  */
-typedef int (*novas_ephem_provider)(long id, const char *name, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel);
+typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel);
 
 
 

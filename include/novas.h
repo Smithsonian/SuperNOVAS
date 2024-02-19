@@ -773,7 +773,7 @@ void novas_case_sensitive(int value);
 
 int make_planet(enum novas_planet num, object *planet);
 
-int make_ephem_body(const char *name, long num, object *body);
+int make_ephem_object(const char *name, long num, object *body);
 
 int set_cio_locator_file(const char *filename);
 
@@ -812,10 +812,10 @@ int gal2equ(double glon, double glat, double *ra, double *dec);
 // GCRS - CIRS - ITRS conversions
 int gcrs_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
-int cirs_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
-int itrs_to_cirs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
 int cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
@@ -825,10 +825,10 @@ int gcrs_to_j2000(const double *in, double *out);
 
 int j2000_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
-int tod_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
-int itrs_to_tod(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
 int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);

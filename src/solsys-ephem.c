@@ -41,7 +41,7 @@
 short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
   static const char *names[] = NOVAS_PLANET_NAMES_INIT;
 
-  novas_ephem_provider f;
+  novas_ephem_provider ephem_call;
   enum novas_origin o = NOVAS_BARYCENTER;
   int error;
 
@@ -55,13 +55,13 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
     return -1;
   }
 
-  f = get_ephem_provider();
-  if(!f) {
+  ephem_call = get_ephem_provider();
+  if(!ephem_call) {
     errno = ENOSYS;
     return -1;
   }
 
-  error = f(body, names[body], jd_tdb[0], jd_tdb[1], &o, position, velocity);
+  error = ephem_call(names[body], body, jd_tdb[0], jd_tdb[1], &o, position, velocity);
   if(error) return 2;
 
   if(o != origin) {
@@ -69,7 +69,7 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
     int i;
     int ref = (origin == NOVAS_BARYCENTER) ? NOVAS_SSB : NOVAS_SUN;
 
-    error = f(ref, names[origin], jd_tdb[0], jd_tdb[1], &o, pos0, vel0);
+    error = ephem_call(names[origin], ref, jd_tdb[0], jd_tdb[1], &o, pos0, vel0);
     if(error) return 2;
 
     for(i = 0; i < 3; i++) {

@@ -2513,6 +2513,11 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
  *
+ * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
+ * use UTC-based Julian date the same way.for arcsec-level precision also.
+ *
+ *
  * REFERENCES:
  *  <ol>
  *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -2520,7 +2525,8 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *   XXV Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_high    [day] High-order part of Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_low     [day] Low-order part of Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2542,16 +2548,21 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_cirs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
+
 
 /**
  * Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date
  * (TOD) frame of date (pre IAU 2000 method).
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
+ *
+ * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
+ * use UTC-based Julian date the same way.for arcsec-level precision also.
  *
  * REFERENCES:
  *  <ol>
@@ -2560,7 +2571,8 @@ int itrs_to_cirs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, d
  *   XXV Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_high    [day] High-order part of Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_low     [day] Low-order part of Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2582,10 +2594,11 @@ int itrs_to_cirs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, d
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_tod(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_GST, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
+
 
 /**
  * Rotates a vector from the celestial to the terrestrial system.  Specifically, it transforms
@@ -2712,6 +2725,11 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
  *
+ * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
+ * use UTC-based Julian date the same way.for arcsec-level precision also.
+ *
+ *
  * REFERENCES:
  *  <ol>
  *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -2719,7 +2737,8 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *   Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_high    [day] High-order part of Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_low     [day] Low-order part of Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2742,16 +2761,21 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @since 1.0
  * @author Attila Kovacs
  */
-int cirs_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
+
 
 /**
  * Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed
  * ITRS frame (pre IAU 2000 method).
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
+ *
+ * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
+ * use UTC-based Julian date the same way.for arcsec-level precision also.
  *
  * REFERENCES:
  *  <ol>
@@ -2760,8 +2784,9 @@ int cirs_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, d
  *   Joint Discussion 16.</li>
  *  </ol>
  *
- * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
- * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
+ * @param jd_tt_high    [day] High-order part of Terrestrial Time (TT) based Julian date.
+ * @param jd_tt_low     [day] Low-order part of Terrestrial Time (TT) based Julian date.
+ * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
@@ -2783,9 +2808,9 @@ int cirs_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, d
  * @since 1.0
  * @author Attila Kovacs
  */
-int tod_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_tt, -ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, CELESTIAL_APPARENT, xp, yp, vec1, vec2);
 }
 
 /**
@@ -5414,7 +5439,7 @@ short ephemeris(const double jd_tdb[2], const object *body, enum novas_origin or
   }
 
   // Check the value of 'origin'.
-  if((origin < 0) || (origin >= NOVAS_ORIGIN_TYPES)) {
+  if(origin < 0 || origin >= NOVAS_ORIGIN_TYPES) {
     errno = EINVAL;
     return 1;
   }
@@ -5452,7 +5477,7 @@ short ephemeris(const double jd_tdb[2], const object *body, enum novas_origin or
       error = -1;
       if(readeph2_call) {
         // If there is a newstyle epehemeris access routine set, we will prefer it.
-        error = readeph2_call(body->number, body->name, jd_tdb[0], jd_tdb[1], &eph_origin, posvel, &posvel[3]);
+        error = readeph2_call(body->name, body->number, jd_tdb[0], jd_tdb[1], &eph_origin, posvel, &posvel[3]);
       }
 #     ifdef DEFAULT_READEPH
       else {
@@ -6116,7 +6141,7 @@ void novas_case_sensitive(int value) {
  * @sa novas_case_sensitive()
  * @sa make_cat_entry()
  * @sa make_planet()
- * @sa make_ephem_body()
+ * @sa make_ephem_object()
  * @sa place()
  *
  */
@@ -6186,7 +6211,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
  * @param[out] planet   Pointer to structure to populate.
  * @return              0 if successful, or else -1 if the 'planet' pointer is NULL.
  *
- * @sa make_ephem_body()
+ * @sa make_ephem_object()
  * @sa make_cat_entry()
  * @sa place()
  *
@@ -6224,7 +6249,7 @@ int make_planet(enum novas_planet num, object *planet) {
  * @since 1.0
  * @author Attila Kovacs
  */
-int make_ephem_body(const char *name, long num, object *body) {
+int make_ephem_object(const char *name, long num, object *body) {
   if(!name || !body) {
     errno = EINVAL;
     return -1;
