@@ -19,7 +19,7 @@ jobs:
     env:
       CC: gcc
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Build static library
       run: make static
