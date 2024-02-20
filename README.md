@@ -155,7 +155,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
  - Fixes `aberrattion()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
-   vector apprpriately.
+   vector appropriately.
    
  - Fixed potential string overflows and associated compiler warnings.
 
@@ -273,7 +273,7 @@ terms differently:
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
  | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |
  
-See the various enums and constands defined in `novas.h`, as well as the descriptions on the various NOVAS routines
+See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
 on how they are appropriate for the old and new methodologies respectively.
 
 <a name="sidereal-example"></a>
@@ -612,6 +612,11 @@ before that level of accuracy is reached.
  
  - Changed `make_object()` retains the specified number argument (which can be different from the `starnumber` value
    in the supplied `cat_entry` structure).
+   
+ - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
+   annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
+   guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
+   observing location.
 
 
 

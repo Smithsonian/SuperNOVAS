@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-Changes expected for the next release...
+Changes planned/expected for the next release...
 
 
 ### Added
@@ -10,7 +10,7 @@ Changes expected for the next release...
  - Add debug mode, which can be activated via `novas_debug(1)`. When debug mode is enabled, all errors are printed to 
    the console with a trace (the trace does not contain line numbers but provides information on the functions and 
    locations within them where the error occurred.
- 
+
 
 ## [1.0.0] - 2024-03-01
 
@@ -51,7 +51,7 @@ This is the initial release of the SuperNOVAS library.
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
  - Fixes `aberrattion()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
-   vector apprpriately.
+   vector appropriately.
    
  - Fixed potential string overflows and associated compiler warnings.
    
@@ -137,25 +137,26 @@ This is the initial release of the SuperNOVAS library.
  - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
    use functions such as `perror()` ans `strerror()` to print human-readable error messages.
    
- - Output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
-   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned are
-   should not be used as if they were valid
+ - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
+   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
+   should not be used as if they were valid.
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
    required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
-   This eliminates the need to declare dummy variables in your application code.
+   This eliminates the need to declare dummy variables in your application code for quantities you do not require.
 
  - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
    be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
    `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
-   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
+   This can greatly simplify usage, and can eliminate extraneous declarations, when intermediates are not required.
 
- - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
-   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
-   data modifications.
+ - SuperNOVAS declares function pointer arguments as `const` whenever the function does not modify the data content 
+   being referenced. This supports better programming practices that generally aim to avoid unintended data 
+   modifications.
  
  - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
-   the same as NOVAS C thanks to alignment.
+   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchage of `cat_entry` records
+   with NOVAS C 3.1.
    
  - Object ID numbers are `long` instead of `short` to accommodate NAIF IDs, which require minimum 32-bit integers.
  
@@ -165,6 +166,14 @@ This is the initial release of the SuperNOVAS library.
  - `make_object()` ignored the specified number argument for sidereal sources (set to 0), but we set it to the 
    specified value assuming the caller provided it for a reason. (It does not change the sepatate `starnumber` value 
    that is included in the `star` argument however)
+   
+ - `sun_eph()` in `solsysl3.c` evaluates the series in reverse order compared to NOVAS C 3.1, accumulating the least 
+   significant terms first, and thus resulting in higher precision result in the end
+   
+ - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
+   annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
+   guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
+   observing location.
    
 
 ### Deprecated
@@ -180,21 +189,21 @@ This is the initial release of the SuperNOVAS library.
 
  - `equ2hor()`: It's name does not make it clear that this function is suitable only for converting TOD (old 
    methodology) to horizontal but not CIRS to horizontal (IAU 2000 standard). You should use the equivalent but more
-   specific `tod_to_itrs()`, or else the newly added `cirs_to_itrs()`, followed by `itrs_to_hor()` instead.
+   specific `tod_to_itrs()` or the newly added `cirs_to_itrs()`, followed by `itrs_to_hor()` instead.
    
  - `cel2ter()` / `ter2cel()`: These function can be somewhat confusing to use. You are likely better off with 
-   `tod_to_itrs()` and `cirs_to_itrs()` instead.
+   `tod_to_itrs()` and `cirs_to_itrs()` instead, and possibly followed by further conversions if desired.
    
  - `app_star()`, `app_planet()`, `topo_star()` and `topo_planet()`: These use the old (pre IAU 2000) methodology, 
    which isn't clear from their naming. Use `place()` or `place_star()` with `NOVAS_TOD` or `NOVAS_CIRS` as the system 
    instead, as appropriate.
    
- - `readeph()`: prone to memtoy leaks, and not flexible with its origin (e.g. barycenter vs heliocenter). Instead, use 
-   a similar `novas_ephem_provider` implementation and `set_ephem_provider()` instead for a more flexible and less 
-   troublesome equivalent, which also does not need to be baked into the library but can be configured at runtime.
+ - `readeph()`: prone to memory leaks, and not flexible with its origin (necessarily at the barycenter). Instead, use 
+   a similar `novas_ephem_provider` implementation and `set_ephem_provider()` for a more flexible and less 
+   troublesome equivalent, which also does not need to be baked into the library and can be configured at runtime.
    
- - `tdb2tt()`. Use `tt2tdb()` instead. It's both more intuitive (returning the time difference as a double) and faster
-   to calculate, not to mention that it implements the more standard approach.
+ - `tdb2tt()`. Use `tt2tdb()` instead. It's both more intuitive to use (returning the time difference as a double) and 
+   faster to calculate, not to mention that it implements the more standard approach.
    
 
 

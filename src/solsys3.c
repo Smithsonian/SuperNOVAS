@@ -102,14 +102,14 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Explanatory Supplement (1992), p. 316) with angles in radians.  These
   // data are used for barycenter computations only.
 
-  static const float pm[4] = { 1047.349, 3497.898, 22903.0, 19412.2 };
-  static const float pa[4] = { 5.203363, 9.537070, 19.191264, 30.068963 };
-  static const float pe[4] = { 0.048393, 0.054151, 0.047168, 0.008586 };
-  static const float pj[4] = { 0.022782, 0.043362, 0.013437, 0.030878 };
-  static const float po[4] = { 1.755036, 1.984702, 1.295556, 2.298977 };
-  static const float pw[4] = { 0.257503, 1.613242, 2.983889, 0.784898 };
-  static const float pl[4] = { 0.600470, 0.871693, 5.466933, 5.321160 };
-  static const float pn[4] = { 1.450138e-3, 5.841727e-4, 2.047497e-4, 1.043891e-4 };
+  static const double pm[4] = { 1047.349, 3497.898, 22903.0, 19412.2 };
+  static const double pa[4] = { 5.203363, 9.537070, 19.191264, 30.068963 };
+  static const double pe[4] = { 0.048393, 0.054151, 0.047168, 0.008586 };
+  static const double pj[4] = { 0.022782, 0.043362, 0.013437, 0.030878 };
+  static const double po[4] = { 1.755036, 1.984702, 1.295556, 2.298977 };
+  static const double pw[4] = { 0.257503, 1.613242, 2.983889, 0.784898 };
+  static const double pl[4] = { 0.600470, 0.871693, 5.466933, 5.321160 };
+  static const double pn[4] = { 1.450138e-3, 5.841727e-4, 2.047497e-4, 1.043891e-4 };
 
   // 'obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
 
@@ -331,7 +331,7 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
   struct sun_con {
     int l;
     int r;
-    float alpha;
+    double alpha;
     double nu;
   };
 
