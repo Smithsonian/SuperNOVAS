@@ -283,15 +283,15 @@ enum novas_equator_type {
  */
 enum novas_dynamical_type {
   /// Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
-  NOVAS_DYNAMICAL_SYSTEM_MOD = 0,
+  NOVAS_DYNAMICAL_MOD = 0,
 
   /// True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the
   /// true equinox (pre IAU 2006 system).
-  NOVAS_DYNAMICAL_SYSTEM_TOD,
+  NOVAS_DYNAMICAL_TOD,
 
   /// Celestial Intermediate Reference System (CIRS): dynamical system of the true equator,
   /// with its origin at the CIO (preferred since IAU 2006)
-  NOVAS_DYNAMICAL_SYSTEM_CIRS
+  NOVAS_DYNAMICAL_CIRS
 };
 
 /**

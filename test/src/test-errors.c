@@ -364,8 +364,8 @@ static int test_gcrs2equ() {
   double ra, dec;
   int n = 0;
 
-  if(check("gcrs2equ:ra", -1, gcrs2equ(0.0, NOVAS_DYNAMICAL_SYSTEM_MOD, NOVAS_FULL_ACCURACY, 0.0, 0.0, NULL, &dec))) n++;
-  if(check("gcrs2equ:dec", -1, gcrs2equ(0.0, NOVAS_DYNAMICAL_SYSTEM_MOD, NOVAS_FULL_ACCURACY, 0.0, 0.0, &ra, NULL))) n++;
+  if(check("gcrs2equ:ra", -1, gcrs2equ(0.0, NOVAS_DYNAMICAL_MOD, NOVAS_FULL_ACCURACY, 0.0, 0.0, NULL, &dec))) n++;
+  if(check("gcrs2equ:dec", -1, gcrs2equ(0.0, NOVAS_DYNAMICAL_MOD, NOVAS_FULL_ACCURACY, 0.0, 0.0, &ra, NULL))) n++;
   if(check("gcrs2equ:sys", -1, gcrs2equ(0.0, -1, NOVAS_FULL_ACCURACY, 0.0, 0.0, &ra, &dec))) n++;
 
   return n;

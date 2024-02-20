@@ -2195,18 +2195,18 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
     // of date.
 
     // If requested, transform further to true equator and equinox of date.
-    case NOVAS_DYNAMICAL_SYSTEM_TOD:
+    case NOVAS_DYNAMICAL_TOD:
       gcrs_to_tod(jd_tdb, accuracy, pos1, pos2);
       break;
 
-    case NOVAS_DYNAMICAL_SYSTEM_MOD: {
+    case NOVAS_DYNAMICAL_MOD: {
       double pos3[3];
       frame_tie(pos1, ICRS_TO_J2000, pos3);
       precession(JD_J2000, pos3, jd_tdb, pos2);
       break;
     }
 
-    case NOVAS_DYNAMICAL_SYSTEM_CIRS:
+    case NOVAS_DYNAMICAL_CIRS:
       error = gcrs_to_cirs(jd_tdb, accuracy, pos1, pos2);
       prop_error(error, 10);
       break;
