@@ -166,7 +166,7 @@ int main(void) {
   printf("\n");
 
   // Greenwich and local apparent sidereal time and Earth Rotation Angle.
-  error = sidereal_time(jd_ut1, 0.0, delta_t, NOVAS_TRUE_EQUINOX, EROT_GST, NOVAS_FULL_ACCURACY, &gast);
+  error = sidereal_time(jd_ut1, 0.0, delta_t, NOVAS_TRUE_EQUINOX, EROT_ERA, NOVAS_FULL_ACCURACY, &gast);
   if(error != 0) {
     printf("Error %d from sidereal_time.", error);
     return (error);
@@ -225,7 +225,7 @@ int main(void) {
   vter[2] = sin_lat;
 
   // Transform vector to GCRS.
-  error = ter2cel(jd_ut1, 0.0, delta_t, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_GCRS, x_pole, y_pole, vter, vcel);
+  error = ter2cel(jd_ut1, 0.0, delta_t, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_GCRS, x_pole, y_pole, vter, vcel);
   if(error != 0) {
     printf("Error %d from ter2cel.", error);
     return (error);
