@@ -33,7 +33,10 @@ static int idx = -1;
 
 static char *header;
 
-// cio_array
+
+static double vlen(double *pos) {
+  return sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]);
+}
 
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
@@ -636,16 +639,20 @@ static void test_grav_def() {
 }
 
 static void test_aberration() {
-  double v0[3] = {}, pos1[3];
+  double vo[3] = {}, v0[3] = {}, pos1[3];
   int i;
 
-  openfile("aberration");
-  aberration(pos0, vobs, 0.0, pos1);
-  printunitvector(pos1);
+  // Calculate for sidereal sources only.
+  if (source.type != 2) return;
+
+  for(i = 0; i < 3; i++) vo[i] = evel[i] + vobs[i];
 
   openfile("aberration");
+  aberration(pos0, vo, 0.0, pos1);
+  printunitvector(pos1);
+
   aberration(pos0, v0, 0.0, pos1);
-  for(i = 0; i < 3; i++) fprintf(fp, "%d ", pos0[i] == pos1[i]);
+  for(i = 0; i < 3; i++) fprintf(fp, "%d ", fabs(pos0[i] - pos1[i]) < 1e-9 * vlen(pos0));
 }
 
 static void test_place() {

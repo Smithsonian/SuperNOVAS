@@ -267,7 +267,7 @@ enum novas_reference_system {
 };
 
 /// The number of basic coordinate reference systems in NOVAS.
-#define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ICRS + 1)
+#define NOVAS_REFERENCE_SYSTEM_SYSTEMS   (NOVAS_ICRS + 1)
 
 /**
  * Constants that determine the type of equator to be used for the coordinate system.
@@ -275,7 +275,7 @@ enum novas_reference_system {
 enum novas_equator_type {
   NOVAS_MEAN_EQUATOR = 0, ///< Mean equator without nutation (pre IAU 2006 system).
   NOVAS_TRUE_EQUATOR,     ///< True equator (pre IAU 2006 system).
-  NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference system (GCRS).
+  NOVAS_NOVAS_REFERENCE_SYSTEM      ///< Geocentric Celestial Reference system (GCRS).
 };
 
 /**
@@ -283,15 +283,15 @@ enum novas_equator_type {
  */
 enum novas_dynamical_type {
   /// Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
-  NOVAS_DYNAMICAL_MOD = 0,
+  NOVAS_DYNAMICAL_SYSTEM_MOD = 0,
 
   /// True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the
   /// true equinox (pre IAU 2006 system).
-  NOVAS_DYNAMICAL_TOD,
+  NOVAS_DYNAMICAL_SYSTEM_TOD,
 
   /// Celestial Intermediate Reference System (CIRS): dynamical system of the true equator,
   /// with its origin at the CIO (preferred since IAU 2006)
-  NOVAS_DYNAMICAL_CIRS
+  NOVAS_DYNAMICAL_SYSTEM_CIRS
 };
 
 /**
@@ -334,7 +334,7 @@ enum novas_earth_rotation_measure {
   /// 2006 standard)
   EROT_ERA = 0,
 
-  /// Use GST as the rotation measure, relative to the true equinox (before IAU 20006 standard)
+  /// Use GST as the rotation measure, relative to the true equinox (pre IAU 20006 standard)
   EROT_GST
 };
 
@@ -342,8 +342,8 @@ enum novas_earth_rotation_measure {
  * Constants for ter2cel() and cel2ter()
  */
 enum novas_equatorial_class {
-  GCRS_EQUATOR = 0,               ///< Celestial coordinates are in GCRS
-  DYNAMICAL_EQUATOR               ///< Celestial coordinates are apparent values (CIRS or TOD)
+  NOVAS_REFERENCE_SYSTEM = 0,        ///< Celestial coordinates are in GCRS
+  NOVAS_DYNAMICAL_SYSTEM             ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
 
 /**
@@ -653,11 +653,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 
 double era(double jd_ut1_high, double jd_ut1_low);
 
-short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
+short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
         enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *vec1,
         double *vec2);
 
-short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
+short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
         enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *vec1,
         double *vec2);
 

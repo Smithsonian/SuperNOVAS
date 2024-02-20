@@ -154,6 +154,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
+ - Fixes `aberrattion()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
+   vector apprpriately.
+   
  - Fixed potential string overflows and associated compiler warnings.
 
 -----------------------------------------------------------------------------
@@ -263,7 +266,7 @@ terms differently:
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
  | Catalog coordinate system  | J2000 or B1950                | International Celestial Reference System (ICRS)   |
- | Dynamical system	      | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
+ | Dynamical system	          | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
  | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
@@ -595,13 +598,20 @@ before that level of accuracy is reached.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on [Building and installation](#installation)
-   further above on including a selection of these in your library build.)
+   `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on 
+   [Building and installation](#installation) further above on including a selection of these in your library 
+   build.)
 
  - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
    default NOVAS object names were converted to upper-case, making them effectively case-insensitive.)
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
+ 
+ - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_SYSTEM`) regardless of the
+   methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
+ 
+ - Changed `make_object()` retains the specified number argument (which can be different from the `starnumber` value
+   in the supplied `cat_entry` structure).
 
 
 
