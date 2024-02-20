@@ -1607,14 +1607,14 @@ int gal2equ(double glon, double glat, double *ra, double *dec) {
 /**
  * Convert right ascension and declination to ecliptic longitude and latitude.  To convert
  * GCRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000.0), set
- * 'coord_sys' to NOVAS_NOVAS_REFERENCE_SYSTEM (2); in this case the value of 'jd_tt' can be set to
+ * 'coord_sys' to NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to
  * anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at
  * 'jd_tt'.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys'
- *                    is NOVAS_NOVAS_REFERENCE_SYSTEM [2])
+ *                    is NOVAS_GCRS_EQUATOR[2])
  * @param coord_sys   The astrometric reference system of the coordinates. If 'coord_sys' is
- *                    NOVAS_NOVAS_REFERENCE_SYSTEM (2), the input GCRS coordinates are converted to
+ *                    NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to
  *                    J2000 ecliptic coordinates.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param ra          [h] Right ascension in hours, referred to specified equator and equinox
@@ -1662,18 +1662,18 @@ short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accura
 /**
  * Converts an equatorial position vector to an ecliptic position vector. To convert
  * ICRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000.0), set
- * 'coord_sys' to NOVAS_NOVAS_REFERENCE_SYSTEM (2); in this case the value of 'jd_tt' can be set
+ * 'coord_sys' to NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set
  * to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical
  * at 'jd_tt'.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys'
- *                    is NOVAS_NOVAS_REFERENCE_SYSTEM [2])
+ *                    is NOVAS_GCRS_EQUATOR[2])
  * @param coord_sys   The astrometric reference system type of the coordinates.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param pos1        Position vector, referred to specified equator and equinox of date.
  * @param[out] pos2   Position vector, referred to specified ecliptic and equinox of date.
  *                    It can be the same vector as the input. If 'coord_sys' is
- *                    NOVAS_NOVAS_REFERENCE_SYSTEM (2), the input GCRS coordinates are converted to
+ *                    NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to
  *                    J2000 ecliptic coordinates.
  * @return            0 if successful, -1 if either vector argument is NULL or the accuracy
  *                    is invalid, or else 1 if the value of 'coord_sys' is invalid.
@@ -1749,12 +1749,12 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 /**
  * Converts an ecliptic position vector to an equatorial position vector. To convert
  * ecliptic coordinates (mean ecliptic and equinox of J2000.0) to GCRS RA and dec to, set
- * 'coord_sys' to NOVAS_NOVAS_REFERENCE_SYSTEM (2); in this case the value of 'jd_tt' can be set to
+ * 'coord_sys' to NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to
  * anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at
  * 'jd_tt'.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys'
- *                    is NOVAS_NOVAS_REFERENCE_SYSTEM [2])
+ *                    is NOVAS_GCRS_EQUATOR[2])
  * @param coord_sys   The astrometric reference system type of the coordinates
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param pos1        Position vector, referred to specified ecliptic and equinox of date.

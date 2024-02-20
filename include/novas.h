@@ -275,7 +275,7 @@ enum novas_reference_system {
 enum novas_equator_type {
   NOVAS_MEAN_EQUATOR = 0, ///< Mean equator without nutation (pre IAU 2006 system).
   NOVAS_TRUE_EQUATOR,     ///< True equator (pre IAU 2006 system).
-  NOVAS_NOVAS_REFERENCE_SYSTEM      ///< Geocentric Celestial Reference system (GCRS).
+  NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference System (GCRS).
 };
 
 /**
