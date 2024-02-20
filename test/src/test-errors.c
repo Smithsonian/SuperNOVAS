@@ -58,8 +58,8 @@ static int test_make_ephem_object() {
   object o;
   int n = 0;
 
-  char longname[SIZE_OF_CAT_NAME + 1];
-  memset(longname, 'A', SIZE_OF_CAT_NAME);
+  char longname[SIZE_OF_OBJ_NAME + 1];
+  memset(longname, 'A', SIZE_OF_OBJ_NAME);
 
   if(check("make_ephem_object", -1, make_ephem_object("dummy", 1, NULL))) n++;
   if(check("make_ephem_object:name", -1, make_ephem_object(longname, 1, &o))) n++;
@@ -81,12 +81,15 @@ static int test_make_cat_entry() {
   cat_entry c;
   int n = 0;
 
-  char longname[SIZE_OF_CAT_NAME + 1];
-  memset(longname, 'A', SIZE_OF_CAT_NAME);
+  char longname[SIZE_OF_OBJ_NAME + 1];
+  char longcat[SIZE_OF_CAT_NAME + 1];
+
+  memset(longname, 'A', SIZE_OF_OBJ_NAME);
+  memset(longcat, 'A', SIZE_OF_CAT_NAME);
 
   if(check("make_cat_entry", -1, make_cat_entry("dummy", "cat", 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, NULL))) n++;
   if(check("make_cat_entry:name", 1, make_cat_entry(longname, "cat", 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, &c))) n++;
-  if(check("make_cat_entry:catname", 2, make_cat_entry("dummy", longname, 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, &c))) n++;
+  if(check("make_cat_entry:catname", 2, make_cat_entry("dummy", longcat, 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, &c))) n++;
 
   return n;
 }
@@ -96,8 +99,8 @@ static int test_make_object() {
   object o;
   int n = 0;
 
-  char longname[SIZE_OF_CAT_NAME + 1];
-  memset(longname, 'A', SIZE_OF_CAT_NAME);
+  char longname[SIZE_OF_OBJ_NAME + 1];
+  memset(longname, 'A', SIZE_OF_OBJ_NAME);
 
   if(check("make_object", -1, make_object(NOVAS_PLANET, 1, "dummy", &s, NULL))) n++;
   if(check("make_object:star", -1, make_object(NOVAS_CATALOG_OBJECT, 1, "dummy", NULL, &o))) n++;
@@ -143,8 +146,8 @@ static int test_transform_cat() {
   cat_entry c, c1;
   int n = 0;
 
-  char longname[SIZE_OF_CAT_NAME + 1];
-  memset(longname, 'A', SIZE_OF_CAT_NAME);
+  char longname[SIZE_OF_OBJ_NAME + 1];
+  memset(longname, 'A', SIZE_OF_OBJ_NAME);
 
   if(check("transform_cat:in", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, NULL, NOVAS_JD_J2000, "FK5", &c))) n++;
   if(check("transform_cat:out", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", NULL))) n++;

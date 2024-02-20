@@ -5,6 +5,7 @@ LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
 CFLAGS += -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
 
+#OBJECTS := $(subst obj/,,$(OBJECTS))
 OBJECTS := novas.o nutation.o solsys3.o
 
 .PHONY: run

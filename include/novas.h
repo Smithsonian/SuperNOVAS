@@ -496,15 +496,16 @@ typedef struct {
   double Omega;       ///< [rad] mean longitude of the Moon's ascending node.
 } novas_delaunay_args;
 
-// These sit next to 64-bit values in structures, which means the structure is aligned to 64-bytes. So we
-// might as well define names to contain up to 64 bytes, including termination.
-#define SIZE_OF_OBJ_NAME 64     ///< Maximum bytes in object names including string termination.
-#define SIZE_OF_CAT_NAME 64     ///< Maximum bytes in catalog IDs including string termination.
+
+#define SIZE_OF_OBJ_NAME 50     ///< Maximum bytes in object names including string termination.
+#define SIZE_OF_CAT_NAME 6      ///< Maximum bytes in catalog IDs including string termination.
 
 /**
- * Basic astrometric data for any celestial object
- * located outside the solar system; the catalog
- * data for a star
+ * Basic astrometric data for any sidereal object located outside the solar system.
+ *
+ * Note, that despite the slightly expanded catalog name, this has the same memory footprint
+ * as the original NOVAS C version, allowing for cross-compatible binary exchange (I/O) of
+ * these structures.
  *
  */
 typedef struct {
@@ -520,7 +521,11 @@ typedef struct {
 } cat_entry;
 
 /**
- * Celestial object of interest
+ * Celestial object of interest.
+ *
+ * Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type'
+ * and the long vs. short 'number' values -- hence it is not cross-compatible for binary data
+ * exchange with NOVAS C 3.1.
  */
 typedef struct {
   enum novas_object_type type;    ///< NOVAS object type

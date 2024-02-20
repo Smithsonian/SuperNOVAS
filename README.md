@@ -154,6 +154,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
+ - Fixed potential string overflows and associated compiler warnings.
 
 -----------------------------------------------------------------------------
 

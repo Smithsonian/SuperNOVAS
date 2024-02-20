@@ -50,6 +50,8 @@ This is the initial release of the SuperNOVAS library.
    and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
+ - Fixed potential string overflows and associated compiler warnings.
+   
 
 ### Added
 
@@ -147,9 +149,9 @@ This is the initial release of the SuperNOVAS library.
  - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
    data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
    data modifications.
-   
- - Source names and catalog names can both be up to 64 bytes (including termination), up from 51 and 4 respectively
-   NOVAS C, while keeping `struct` layouts the same thanks to alignment.
+ 
+ - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
+   the same as NOVAS C thanks to alignment.
    
  - Object ID numbers are `long` instead of `short` to accommodate NAIF IDs, which require minimum 32-bit integers.
    

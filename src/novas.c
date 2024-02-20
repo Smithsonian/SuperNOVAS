@@ -667,11 +667,13 @@ int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
  * @param sys       Coordinate reference system in which to produce output values
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Topocentric right ascension in hours, referred to true equator and
- *                  equinox of date 'jd_tt'. (It may be NULL if not required)
+ *                  equinox of date 'jd_tt' or NAN when returning with an error code.
+ *                  (It may be NULL if not required)
  * @param[out] dec  [deg] Topocentric declination in degrees, referred to true equator and
- *                  equinox of date 'jd_tt'. (It may be NULL if not required)
- * @param[out] rv   [AU/day] radial velocity relative ot observer. (It may be NULL if not
- *                  required)
+ *                  equinox of date 'jd_tt' or NAN when returning with an error code.
+ *                  (It may be NULL if not required)
+ * @param[out] rv   [AU/day] radial velocity relative ot observer, or NAN when returning with
+ *                  an error code. (It may be NULL if not required)
  * @return          0 if successful, -1 if a required pointer argument is NULL, or else
  *                  20 + the error code from place_star().
  *
@@ -714,13 +716,15 @@ int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double 
 
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra   [h] Topocentric apparent right ascension in hours, referred to the
- *                  true equator and equinox of date. (It may be NULL if not required)
+ *                  true equator and equinox of date, or NAN when returning with an error
+ *                  code. (It may be NULL if not required)
  * @param[out] dec  [deg] Topocentric apparent declination in degrees referred to the
- *                  true equator and equinox of date. (It may be NULL if not required)
- * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU (may be
- *                  NULL if not needed).
- * @param[out] rv   [AU/day] radial velocity relative ot observer. (It may be NULL if
- *                  not required)
+ *                  true equator and equinox of date, or NAN when returning with an error
+ *                  code. (It may be NULL if not required)
+ * @param[out] dis  [AU] True distance from Earth to the body at 'jd_tt' in AU, or NAN when
+ *                  returning with an error code. (It may be NULL if not needed).
+ * @param[out] rv   [AU/day] radial velocity relative ot observer, or NAN when returning with
+ *                  an error code. (It may be NULL if not required)
  * @return          0 if successful, or -1 if the object argument is NULL or if
  *                  the value of 'where' in structure 'location' is invalid, or 10 + the
  *                  error code from place().
@@ -1168,8 +1172,8 @@ short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const 
  * @param dec           [deg] Apparent (TOD) declination in degrees, referred to true equator
  *                      and equinox of date.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] ira      [h] ICRS right ascension in hours.
- * @param[out] idec     [deg] ICRS declination in degrees.
+ * @param[out] ira      [h] ICRS right ascension in hours, or NAN when returning with an error code.
+ * @param[out] idec     [deg] ICRS declination in degrees, or NAN when returning with an error code.
  * @return              0 if successful; -1 if the supplied output pointers are NULL,
  *                      1 if the iterative process did not converge after 30 iterations, or an
  *                      error from vector2radec(), or else &gt; 10 + an error from app_star().
@@ -2247,7 +2251,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  *                    standard).
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] gst    [h] Greenwich (mean or apparent) sidereal time, in hours [0:24]. (In case
- *                    the returned error code is &gt;1 the gst value will be set to NAN.
+ *                    the returned error code is &gt;1 the gst value will be set to NAN.)
  * @return            0 if successful, or -1 if the 'gst' argument is NULL, 1 if 'accuracy' is
  *                    invalid 2 if 'method' is invalid, or else 10--30 with 10 + the error from
  *                    cio_location().
@@ -3625,7 +3629,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
  *                    geocenter), referred to ICRS axes, components in AU.
  * @param[out] vsb    [AU/day] Velocity 3-vector of body, with respect to the Solar-system
  *                    barycenter, referred to ICRS axes, components in AU/day.
- * @param[out] tlight [day] Calculated light time
+ * @param[out] tlight [day] Calculated light time, or NAN when returning with an error code.
  *
  * @return            0 if successful, -1 if any of the pointer arguments is NULL or if the
  *                    output vectors are the same or if they are the same as pos_obs, 1 if
@@ -4548,7 +4552,8 @@ int fund_args(double t, novas_delaunay_args *a) {
  *
  * @param t       [cy] Julian centuries since J2000
  * @param planet  Novas planet id, e.g. NOVAS_MARS.
- * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;].
+ * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;],
+ *                or NAN if the `planet` id is out of range.
  *
  * @sa accum_prec()
  * @sa nutation_angles()
@@ -4912,7 +4917,7 @@ double tt2tdb(double jd_tt) {
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] ra_cio [h] Right ascension of the CIO, with respect to the true equinox of
- *                    date, in hours (+ or -).
+ *                    date, in hours (+ or -), or NAN when returning with an error code.
  * @return            0 if successful, -1 if the output pointer argument is NULL,
  *                    1 if 'accuracy' is invalid, 10--20: 10 + error code from cio_location(),
  *                    or else 20 + error from cio_basis()
