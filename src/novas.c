@@ -1715,7 +1715,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
       break;
     }
 
-    case NOVAS_REFERENCE_SYSTEM: /* Input: GCRS */{
+    case NOVAS_GCRS_EQUATOR: /* Input: GCRS */{
       static enum novas_accuracy acc_2000 = -1;
       static double ob2000;
 
@@ -1798,7 +1798,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
       break;
     }
 
-    case NOVAS_REFERENCE_SYSTEM: {      // Output: GCRS
+    case NOVAS_GCRS_EQUATOR: {      // Output: GCRS
       static double ob2000;
 
       if(ob2000 == 0.0) {
@@ -1828,7 +1828,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 
   // Case where output vector is to be in ICRS, rotate from dynamical
   // system to ICRS.
-  if(coord_sys == NOVAS_REFERENCE_SYSTEM) {
+  if(coord_sys == NOVAS_GCRS_EQUATOR) {
     frame_tie(pos2, J2000_TO_ICRS, pos2);
   }
 
@@ -2089,9 +2089,9 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
 
   // Rotate Earth-fixed orthonormal basis vectors to celestial system
   // (wrt equator and equinox of date).
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_SYSTEM, xp, yp, uze, uz);
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_SYSTEM, xp, yp, une, un);
-  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_SYSTEM, xp, yp, uwe, uw);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, uze, uz);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, une, un);
+  ter2cel(jd_ut1, 0.0, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, uwe, uw);
 
   // Compute coordinates of object w.r.t orthonormal basis.
 
@@ -2438,10 +2438,10 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  *                      to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006
  *                      standard) as the Earth rotation measure. The main effect of this option
  *                      is that it selects the output coordinate system as CIRS or TOD if
- *                      the output coordinate class is NOVAS_DYNAMICAL_SYSTEM.
+ *                      the output coordinate class is NOVAS_DYNAMICAL_CLASS.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param class         Output coordinate class NOVAS_REFERENCE_SYSTEM (0, or any value other than 1)
- *                      or NOVAS_DYNAMICAL_SYSTEM (1). Use the former if the output coordinates are
+ * @param class         Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1)
+ *                      or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates are
  *                      to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot'
  *                      parameter selects which dynamical system to use for the output.)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
@@ -2452,7 +2452,7 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  *                      referred to ITRS axes (terrestrial system) in the normal case
  *                      where 'option' is NOVAS_GCRS (0).
  * @param[out] vec2     Position vector, equatorial rectangular coordinates in the specified
- *                      output system (GCRS if 'class' is NOVAS_REFERENCE_SYSTEM;
+ *                      output system (GCRS if 'class' is NOVAS_REFERENCE_CLASS;
  *                      or else either CIRS if 'erot' is EROT_ERA, or TOD if 'erot' is EROT_GST).
  * @return              0 if successful, -1 if either of the vector arguments is NULL, 1 if
  *                      'accuracy' is invalid, 2 if 'method' is invalid 10--20, or else 10 + the
@@ -2504,7 +2504,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       const double theta = era(jd_ut1_high, jd_ut1_low);
       spin(-theta, vec2, vec2);
 
-      if(class != NOVAS_DYNAMICAL_SYSTEM) {
+      if(class != NOVAS_DYNAMICAL_CLASS) {
         const int error = cirs_to_gcrs(jd_tdb, accuracy, vec2, vec2);
         prop_error(error, 10);
       }
@@ -2515,7 +2515,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(-15.0 * gast, vec2, vec2);
 
-      if(class != NOVAS_DYNAMICAL_SYSTEM) {
+      if(class != NOVAS_DYNAMICAL_CLASS) {
         tod_to_gcrs(jd_tdb, accuracy, vec2, vec2);
       }
       break;
@@ -2572,7 +2572,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  */
 int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, NOVAS_DYNAMICAL_SYSTEM, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, vec1, vec2);
 }
 
 
@@ -2618,7 +2618,7 @@ int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  */
 int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_SYSTEM, xp, yp, vec1, vec2);
+  return ter2cel(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, vec1, vec2);
 }
 
 
@@ -2654,18 +2654,18 @@ int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  *                      equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard)
  *                      as the Earth rotation measure. The main effect of this option
  *                      is that it specifies the input coordinate system as CIRS or TOD when
- *                      the input coordinate class is NOVAS_DYNAMICAL_SYSTEM.
+ *                      the input coordinate class is NOVAS_DYNAMICAL_CLASS.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param class         Input coordinate class, NOVAS_REFERENCE_SYSTEM (0, or any value other than 1) or
- *                      NOVAS_DYNAMICAL_SYSTEM (1). Use the former if the input coordinates are in the
- *                      GCRS, and the latter if they are CIRS or TOD (the 'erot' parameter selects which
- *                      dynamical system the input is specified in.)
+ * @param class         Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1).
+ *                      Use the former if the input coordinates are in the GCRS, and the latter if they
+ *                      are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is
+ *                      specified in.)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param vec1          Input position vector, geocentric equatorial rectangular coordinates in the
- *                      specified input coordinate system (GCRS if 'class' is NOVAS_REFERENCE_SYSTEM;
+ *                      specified input coordinate system (GCRS if 'class' is NOVAS_REFERENCE_CLASS;
  *                      or else either CIRS if 'erot' is EROT_ERA, or TOD if 'erot' is EROT_GST).
  * @param[out] vec2     ITRS position vector, geocentric equatorial rectangular coordinates
  *                      (terrestrial system). It can be the same vector as the input.
@@ -2706,7 +2706,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   switch(erot) {
     case (EROT_ERA):
       // IAU 2006 standard method
-      if(class != NOVAS_DYNAMICAL_SYSTEM) {
+      if(class != NOVAS_DYNAMICAL_CLASS) {
         // See second reference, eq. (3) and (4).
         int error = gcrs_to_cirs(jd_tt, accuracy, vec1, vec2);
         prop_error(error, 10);
@@ -2721,7 +2721,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
     case (EROT_GST):
       // Pre IAU 2006 method
-      if(class == NOVAS_DYNAMICAL_SYSTEM) {
+      if(class == NOVAS_DYNAMICAL_CLASS) {
         if(vec2 != vec1) memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
       }
       else {
@@ -2790,7 +2790,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  */
 int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, NOVAS_DYNAMICAL_SYSTEM, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, vec1, vec2);
 }
 
 
@@ -2837,7 +2837,7 @@ int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  */
 int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
         double yp, const double *vec1, double *vec2) {
-  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, NOVAS_DYNAMICAL_SYSTEM, xp, yp, vec1, vec2);
+  return cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt, ut1_to_tt, EROT_ERA, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, vec1, vec2);
 }
 
 /**

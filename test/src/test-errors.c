@@ -386,10 +386,10 @@ static int test_ter2cel() {
   double p[3];
   int n = 0;
 
-  if(check("ter2cel:in", -1, ter2cel(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, NULL, p))) n++;
-  if(check("ter2cel:out", -1, ter2cel(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, p, NULL))) n++;
-  if(check("ter2cel:accuracy", 1, ter2cel(0.0, 0.0, 0.0, EROT_GST, -1, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, p, p))) n++;
-  if(check("ter2cel:erot", 2, ter2cel(0.0, 0.0, 0.0, -1, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, p, p))) n++;
+  if(check("ter2cel:in", -1, ter2cel(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, NULL, p))) n++;
+  if(check("ter2cel:out", -1, ter2cel(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, NULL))) n++;
+  if(check("ter2cel:accuracy", 1, ter2cel(0.0, 0.0, 0.0, EROT_GST, -1, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) n++;
+  if(check("ter2cel:erot", 2, ter2cel(0.0, 0.0, 0.0, -1, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) n++;
 
   return n;
 }
@@ -398,10 +398,10 @@ static int test_cel2ter() {
   double p[3];
   int n = 0;
 
-  if(check("cel2ter:in", -1, cel2ter(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, NULL, p))) n++;
-  if(check("cel2ter:out", -1, cel2ter(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, p, NULL))) n++;
-  if(check("cel2ter:accuracy", 1, cel2ter(0.0, 0.0, 0.0, EROT_GST, -1, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, p, p))) n++;
-  if(check("cel2ter:erot", 2, cel2ter(0.0, 0.0, 0.0, -1, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_SYSTEM, 0.0, 0.0, p, p))) n++;
+  if(check("cel2ter:in", -1, cel2ter(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, NULL, p))) n++;
+  if(check("cel2ter:out", -1, cel2ter(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, NULL))) n++;
+  if(check("cel2ter:accuracy", 1, cel2ter(0.0, 0.0, 0.0, EROT_GST, -1, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) n++;
+  if(check("cel2ter:erot", 2, cel2ter(0.0, 0.0, 0.0, -1, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) n++;
 
   return n;
 }

@@ -159,7 +159,7 @@ This is the initial release of the SuperNOVAS library.
    
  - Object ID numbers are `long` instead of `short` to accommodate NAIF IDs, which require minimum 32-bit integers.
  
- - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_SYSTEM`) regardless of the
+ - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
  
  - `make_object()` ignored the specified number argument for sidereal sources (set to 0), but we set it to the 

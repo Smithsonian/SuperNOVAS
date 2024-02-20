@@ -607,7 +607,7 @@ before that level of accuracy is reached.
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
  
- - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_SYSTEM`) regardless of the
+ - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
  
  - Changed `make_object()` retains the specified number argument (which can be different from the `starnumber` value

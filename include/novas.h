@@ -342,8 +342,8 @@ enum novas_earth_rotation_measure {
  * Constants for ter2cel() and cel2ter()
  */
 enum novas_equatorial_class {
-  NOVAS_REFERENCE_SYSTEM = 0,        ///< Celestial coordinates are in GCRS
-  NOVAS_DYNAMICAL_SYSTEM             ///< Celestial coordinates are apparent values (CIRS or TOD)
+  NOVAS_REFERENCE_CLASS = 0,        ///< Celestial coordinates are in GCRS
+  NOVAS_DYNAMICAL_CLASS             ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
 
 /**
