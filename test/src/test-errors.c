@@ -254,7 +254,7 @@ static int test_place() {
 
   if(check("place:object", -1, place(0.0, NULL, &loc, 0.0, NOVAS_GCRS, NOVAS_FULL_ACCURACY, &pos))) n++;
   if(check("place:sys:lo", 1, place(0.0, &o, &loc, 0.0, -1, NOVAS_FULL_ACCURACY, &pos))) n++;
-  if(check("place:sys:hi", 1, place(0.0, &o, &loc, 0.0, NOVAS_REFERENCE_SYSTEM_SYSTEMS, NOVAS_FULL_ACCURACY, &pos))) n++;
+  if(check("place:sys:hi", 1, place(0.0, &o, &loc, 0.0, NOVAS_REFERENCE_SYSTEMS, NOVAS_FULL_ACCURACY, &pos))) n++;
   if(check("place:accuracy", 2, place(0.0, &o, &loc, 0.0, NOVAS_GCRS, -1, &pos))) n++;
 
   return n;

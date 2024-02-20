@@ -1307,7 +1307,7 @@ short place(double jd_tt, const object *target, const observer *location, double
   }
 
   // Check for invalid value of 'coord_sys' or 'accuracy'.
-  if(coord_sys < 0 || coord_sys >= NOVAS_REFERENCE_SYSTEM_SYSTEMS) {
+  if(coord_sys < 0 || coord_sys >= NOVAS_REFERENCE_SYSTEMS) {
     errno = EINVAL;
     return 1;
   }
@@ -1715,7 +1715,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
       break;
     }
 
-    case NOVAS_NOVAS_REFERENCE_SYSTEM: /* Input: GCRS */{
+    case NOVAS_REFERENCE_SYSTEM: /* Input: GCRS */{
       static enum novas_accuracy acc_2000 = -1;
       static double ob2000;
 
@@ -1798,7 +1798,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
       break;
     }
 
-    case NOVAS_NOVAS_REFERENCE_SYSTEM: {      // Output: GCRS
+    case NOVAS_REFERENCE_SYSTEM: {      // Output: GCRS
       static double ob2000;
 
       if(ob2000 == 0.0) {
@@ -1828,7 +1828,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 
   // Case where output vector is to be in ICRS, rotate from dynamical
   // system to ICRS.
-  if(coord_sys == NOVAS_NOVAS_REFERENCE_SYSTEM) {
+  if(coord_sys == NOVAS_REFERENCE_SYSTEM) {
     frame_tie(pos2, J2000_TO_ICRS, pos2);
   }
 

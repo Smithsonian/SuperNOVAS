@@ -267,7 +267,7 @@ enum novas_reference_system {
 };
 
 /// The number of basic coordinate reference systems in NOVAS.
-#define NOVAS_REFERENCE_SYSTEM_SYSTEMS   (NOVAS_ICRS + 1)
+#define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ICRS + 1)
 
 /**
  * Constants that determine the type of equator to be used for the coordinate system.
