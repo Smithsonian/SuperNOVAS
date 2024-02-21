@@ -609,15 +609,6 @@ static int test_cio_ra() {
   return n;
 }
 
-static int test_tdb2tt() {
-  double dt;
-  int n = 0;
-
-  if(check("tdb2tt", -1, tdb2tt(0.0, NULL, &dt))) n++;
-
-  return n;
-}
-
 static int test_starvectors() {
   cat_entry star;
   double p[3], v[3];
@@ -855,7 +846,6 @@ int main() {
   if(test_cio_location()) n++;
   if(test_cio_ra()) n++;
 
-  if(test_tdb2tt()) n++;
   if(test_starvectors()) n++;
   if(test_radec2vector()) n++;
   if(test_vector2radec()) n++;

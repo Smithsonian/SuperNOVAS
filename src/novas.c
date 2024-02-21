@@ -3599,9 +3599,7 @@ int bary2obs(const double *pos, const double *pos_obs, double *pos2, double *lig
   }
 
   // Translate vector to geocentric coordinates.
-  for(j = 3; --j >= 0;) {
-    pos2[j] = pos[j] - pos_obs[j];
-  }
+  for(j = 3; --j >= 0;) pos2[j] = pos[j] - pos_obs[j];
 
   // Calculate length of vector in terms of light time.
   if(lighttime) *lighttime = vlen(pos2) / C_AUDAY;
@@ -3754,6 +3752,7 @@ int light_time2(double jd_tdb, const object *body, const double *pos_obs, double
     return -1;
   }
 
+  // Default return value.
   *tlight = NAN;
 
   if(!body || !pos_obs || prel == pos_obs || vsb == pos_obs || prel == vsb) {
@@ -4766,12 +4765,11 @@ double mean_obliq(double jd_tdb) {
 short vector2radec(const double *pos, double *ra, double *dec) {
   double xyproj;
 
-  if(!ra || !dec) {
-    errno = EINVAL;
-    return -1;
-  }
+  // Default return values.
+  if(ra) *ra = NAN;
+  if(dec) *dec = NAN;
 
-  if(!pos) {
+  if(!pos || !ra || !dec) {
     errno = EINVAL;
     return -1;
   }
@@ -4779,7 +4777,6 @@ short vector2radec(const double *pos, double *ra, double *dec) {
   xyproj = sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
   if(xyproj == 0.0) {
     if(pos[2] == 0) {
-      *ra = *dec = NAN;
       errno = EINVAL;
       return 1;
     }
@@ -4959,7 +4956,8 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * </ol>
  *
  * @param jd_tdb         [day] Barycentric Dynamic Time (TDB) based Julian date
- * @param[out] jd_tt     [day] Terrestrial Time (TT) based Julian date
+ * @param[out] jd_tt     [day] Terrestrial Time (TT) based Julian date. (It may be NULL
+ *                       if not required)
  * @param[out] secdiff   [s] Difference 'tdb_jd'-'tt_jd', in seconds. (It may be NULL if
  *                       not required)
  * @return               0 if successful, or -1 if the tt_jd pointer argument is NULL.
@@ -4968,21 +4966,14 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  */
 int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
   const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
-  double d;
-
-  if(!jd_tt) {
-    errno = EINVAL;
-    return -1;
-  }
 
   // Expression given in USNO Circular 179, eq. 2.6.
-  d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970)
+  const double d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970)
           + 0.000014 * sin(1256.6152 * t + 6.1969) + 0.000005 * sin(606.9777 * t + 4.0212)
           + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
           + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
-  *jd_tt = jd_tdb - d / DAY;
-
+  if(jd_tt) *jd_tt = jd_tdb - d / DAY;
   if(secdiff) *secdiff = d;
 
   return 0;
@@ -5042,6 +5033,7 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
     return -1;
   }
 
+  // Default return value.
   *ra_cio = NAN;
 
   // Check for valid value of 'accuracy'.
@@ -5129,11 +5121,13 @@ int set_cio_locator_file(const char *filename) {
  *
  * @param jd_tdb           [day] Barycentric Dynamic Time (TDB) based Julian date
  * @param accuracy         NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] ra_cio      [h] Right ascension of the CIO, in hours.
+ * @param[out] ra_cio      [h] Right ascension of the CIO, in hours, or NAN if returning
+ *                         with an error.
  * @param[out] loc_type    Pointer in which to return the reference system in which right
  *                         ascension is given, which is either CIO_VS_GCRS (1) if the
  *                         location was obtained via interpolation of the available data
  *                         file, or else CIO_VS_EQUINOX (2) if it was calculated locally.
+ *                         It is set to -1 if retrurning with an error.
  *
  * @return            0 if successful, -1 if one of the pointer arguments is NULL or the
  *                    accuracy is invalid.
@@ -5147,6 +5141,10 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
   static short ref_sys_last = -1;
   static double t_last = 0.0, ra_last = 0.0;
   static ra_of_cio cio[CIO_INTERP_POINTS];
+
+  // Default return values...
+  if(ra_cio) *ra_cio = NAN;
+  if(loc_type) *loc_type = -1;
 
   if(!ra_cio || !loc_type) {
     errno = EINVAL;
@@ -5900,11 +5898,12 @@ short transform_cat(enum novas_transform_type option, double date_in, const cat_
  *                        geocenter, components in AU.
  * @param pos_obs         [AU] Position 3-vector of observer, with respect to origin at
  *                        geocenter, components in AU.
- * @param[out] limb_ang   [deg] Angle of observed object above (+) or below (-) limb in degrees.
- *                        It may be NULL if not required.
+ * @param[out] limb_ang   [deg] Angle of observed object above (+) or below (-) limb in degrees,
+ *                        or NAN if reurning with an error. It may be NULL if not required.
  * @param[out] nadir_ang  [deg] Nadir angle of observed object as a fraction of apparent radius
  *                        of limb: %lt;1.0 if below the limb; 1.0 on the limb; or &gt;1.0 if
- *                        above the limb. It may be NULL if not required.
+ *                        above the limb. Returns NAN in case of an error return.
+ *                        It may be NULL if not required.
  *
  * @return    0 if successful, or -1 if either of the input vectors is NULL.
  *
