@@ -88,10 +88,6 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
     errno = EINVAL;
     return 1;
   }
-  else if((origin < 0) || (origin >= NOVAS_ORIGIN_TYPES)) {
-    errno = EINVAL;
-    return 1;
-  }
 
   // Select 'targ' according to the value of 'body'.
   if(body == NOVAS_SUN) targ = 11L;
@@ -119,8 +115,8 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
 
   // Decompose 'posvel' into 'position' and 'velocity'.
   for(i = 3; --i >= 0; ) {
-    position[i] = posvel[i];
-    velocity[i] = posvel[i + 3];
+    if(position) position[i] = posvel[i];
+    if(velocity) velocity[i] = posvel[i + 3];
   }
 
   return 0;

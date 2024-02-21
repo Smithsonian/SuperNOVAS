@@ -15,6 +15,7 @@
  */
 
 #include <stdint.h>
+#include <errno.h>
 
 #include "novas.h"
 
@@ -4214,7 +4215,6 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   double arg, sarg, carg, dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
 
   int i;
-
 
   // Compute fundamental arguments from Simon et al. (1994), in radians.
   fund_args(t, &a);

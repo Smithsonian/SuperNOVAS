@@ -53,11 +53,12 @@
 #define SUPERNOVAS_MAJOR_VERSION  1       ///< API major version
 #define SUPERNOVAS_MINOR_VERSION  0       ///< API minor version
 #define SUPERNOVAS_SUBVERSION     0       ///< Integer sub version of the release
-#define SUPERNOVAS_RELEASE_STRING ""      ///< Additional release information in version, e.g. "-1", or "-rc1".
+#define SUPERNOVAS_RELEASE_STRING "-rc2"  ///< Additional release information in version, e.g. "-1", or "-rc1".
 
 /// The version string for this library
-#define SUPERNOVAS_VERSION_STRING #SUPERNOVAS_MAJOR_VERSION "." #SUPERNOVAS_MINOR_VERSION "." \
-                                  #SUPERNOVAS_SUBVERSION SUPERNOVAS_RELEASE_STRING
+#define SUPERNOVAS_VERSION_STRING #SUPERNOVAS_MAJOR_VERSION "." #SUPERNOVAS_MINOR_VERSION \
+                                  (#SUPERNOVAS_SUBVERSION ? "." #SUPERNOVAS_SUBVERSION : "") \
+                                  SUPERNOVAS_RELEASE_STRING
 
 #define NOVAS_MAJOR_VERSION       3       ///< Major version of NOVAS on which this library is based
 #define NOVAS_MINOR_VERSION       1       ///< Minor version of NOVAS on which this library is based
@@ -275,7 +276,7 @@ enum novas_reference_system {
 enum novas_equator_type {
   NOVAS_MEAN_EQUATOR = 0, ///< Mean equator without nutation (pre IAU 2006 system).
   NOVAS_TRUE_EQUATOR,     ///< True equator (pre IAU 2006 system).
-  NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference system (GCRS).
+  NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference System (GCRS).
 };
 
 /**
@@ -334,16 +335,16 @@ enum novas_earth_rotation_measure {
   /// 2006 standard)
   EROT_ERA = 0,
 
-  /// Use GST as the rotation measure, relative to the true equinox (before IAU 20006 standard)
+  /// Use GST as the rotation measure, relative to the true equinox (pre IAU 20006 standard)
   EROT_GST
 };
 
 /**
  * Constants for ter2cel() and cel2ter()
  */
-enum novas_celestial_type {
-  CELESTIAL_GCRS = 0,        ///< Celestial coordinates are in GCRS
-  CELESTIAL_APPARENT         ///< Celestial coordinates are apparent values (CIRS or TOD)
+enum novas_equatorial_class {
+  NOVAS_REFERENCE_CLASS = 0,        ///< Celestial coordinates are in GCRS
+  NOVAS_DYNAMICAL_CLASS             ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
 
 /**
@@ -496,15 +497,16 @@ typedef struct {
   double Omega;       ///< [rad] mean longitude of the Moon's ascending node.
 } novas_delaunay_args;
 
-// These sit next to 64-bit values in structures, which means the structure is aligned to 64-bytes. So we
-// might as well define names to contain up to 64 bytes, including termination.
-#define SIZE_OF_OBJ_NAME 64     ///< Maximum bytes in object names including string termination.
-#define SIZE_OF_CAT_NAME 64     ///< Maximum bytes in catalog IDs including string termination.
+
+#define SIZE_OF_OBJ_NAME 50     ///< Maximum bytes in object names including string termination.
+#define SIZE_OF_CAT_NAME 6      ///< Maximum bytes in catalog IDs including string termination.
 
 /**
- * Basic astrometric data for any celestial object
- * located outside the solar system; the catalog
- * data for a star
+ * Basic astrometric data for any sidereal object located outside the solar system.
+ *
+ * Note, that despite the slightly expanded catalog name, this has the same memory footprint
+ * as the original NOVAS C version, allowing for cross-compatible binary exchange (I/O) of
+ * these structures.
  *
  */
 typedef struct {
@@ -520,7 +522,11 @@ typedef struct {
 } cat_entry;
 
 /**
- * Celestial object of interest
+ * Celestial object of interest.
+ *
+ * Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type'
+ * and the long vs. short 'number' values -- hence it is not cross-compatible for binary data
+ * exchange with NOVAS C 3.1.
  */
 typedef struct {
   enum novas_object_type type;    ///< NOVAS object type
@@ -648,12 +654,12 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 
 double era(double jd_ut1_high, double jd_ut1_low);
 
-short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
+short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
+        enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *vec1,
         double *vec2);
 
-short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure method,
-        enum novas_accuracy accuracy, enum novas_celestial_type class, double xp, double yp, const double *vec1,
+short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
+        enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *vec1,
         double *vec2);
 
 int spin(double angle, const double *pos1, double *pos2);
@@ -729,7 +735,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio);
 
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy);
 
-short ephemeris(const double jd_tdb[2], const object *body, enum novas_origin origin, enum novas_accuracy accuracy,
+short ephemeris(const double *jd_tdb, const object *body, enum novas_origin origin, enum novas_accuracy accuracy,
         double *pos, double *vel);
 
 int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);
@@ -773,7 +779,7 @@ void novas_case_sensitive(int value);
 
 int make_planet(enum novas_planet num, object *planet);
 
-int make_ephem_body(const char *name, long num, object *body);
+int make_ephem_object(const char *name, long num, object *body);
 
 int set_cio_locator_file(const char *filename);
 
@@ -807,15 +813,18 @@ double get_ut1_to_tt(int leap_seconds, double dut1);
 
 double get_utc_to_tt(int leap_seconds);
 
+int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
+        double *ra, double *dec);
+
 int gal2equ(double glon, double glat, double *ra, double *dec);
 
 // GCRS - CIRS - ITRS conversions
 int gcrs_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
-int cirs_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
-int itrs_to_cirs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
 int cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
@@ -825,10 +834,10 @@ int gcrs_to_j2000(const double *in, double *out);
 
 int j2000_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
-int tod_to_itrs(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
-int itrs_to_tod(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
+int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *vec1,
         double *vec2);
 
 int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);

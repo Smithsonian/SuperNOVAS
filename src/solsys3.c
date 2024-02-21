@@ -26,8 +26,8 @@
 /// \endcond
 
 // Additional local function prototypes
-void sun_eph(double jd, double *ra, double *dec, double *dis);
-void earth_sun_enable_hp(int value);
+int sun_eph(double jd, double *ra, double *dec, double *dis);
+
 
 /**
  * Whether the high-precision call is allowed to return a low-precision result. If set to 0
@@ -54,7 +54,7 @@ static int allow_lp_for_hp = 0;
  *
  * @sa earth_sun_calc_hp()
  */
-void earth_sun_enable_hp(int value) {
+void enable_earth_sun_hp(int value) {
   allow_lp_for_hp = (value != 0);
 }
 
@@ -102,14 +102,14 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Explanatory Supplement (1992), p. 316) with angles in radians.  These
   // data are used for barycenter computations only.
 
-  static const float pm[4] = { 1047.349, 3497.898, 22903.0, 19412.2 };
-  static const float pa[4] = { 5.203363, 9.537070, 19.191264, 30.068963 };
-  static const float pe[4] = { 0.048393, 0.054151, 0.047168, 0.008586 };
-  static const float pj[4] = { 0.022782, 0.043362, 0.013437, 0.030878 };
-  static const float po[4] = { 1.755036, 1.984702, 1.295556, 2.298977 };
-  static const float pw[4] = { 0.257503, 1.613242, 2.983889, 0.784898 };
-  static const float pl[4] = { 0.600470, 0.871693, 5.466933, 5.321160 };
-  static const float pn[4] = { 1.450138e-3, 5.841727e-4, 2.047497e-4, 1.043891e-4 };
+  static const double pm[4] = { 1047.349, 3497.898, 22903.0, 19412.2 };
+  static const double pa[4] = { 5.203363, 9.537070, 19.191264, 30.068963 };
+  static const double pe[4] = { 0.048393, 0.054151, 0.047168, 0.008586 };
+  static const double pj[4] = { 0.022782, 0.043362, 0.013437, 0.030878 };
+  static const double po[4] = { 1.755036, 1.984702, 1.295556, 2.298977 };
+  static const double pw[4] = { 0.257503, 1.613242, 2.983889, 0.784898 };
+  static const double pl[4] = { 0.600470, 0.871693, 5.466933, 5.321160 };
+  static const double pn[4] = { 1.450138e-3, 5.841727e-4, 2.047497e-4, 1.043891e-4 };
 
   // 'obl' is the obliquity of ecliptic at epoch J2000.0 in degrees.
 
@@ -162,7 +162,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   }
 
   // Check if input Julian date is within range (within 3 centuries of J2000).
-  if((jd_tdb < 2340000.5) || (jd_tdb > 2560000.5)) {
+  if(jd_tdb < 2340000.5 || jd_tdb > 2560000.5) {
     errno = EDOM;
     return 1;
   }
@@ -252,7 +252,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
 /**
  * It may provide the position and velocity of the Earth and Sun, the same as
- * solarsystem_earth_sun(), if earth_sun_enable_hp() is set to true (non-zero). Otherwise,
+ * solarsystem_earth_sun(), if enable_earth_sun_hp() is set to true (non-zero). Otherwise,
  * it will return with an error code of 3, indicating that high-precision calculations are
  * not provided by this implementation.
  *
@@ -284,7 +284,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
  *                      out of range, 2 if 'body' is invalid, or 3 if the high-precision
  *                      orbital data cannot be produced (default return value).
  *
- * @sa earth_sun_enable_hp()
+ * @sa enable_earth_sun_hp()
  * @sa earth_sun_calc()
  * @sa set_planet_provider()
  * @sa solarsystem_hp()
@@ -323,14 +323,15 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
  * @param[out] ra      [h] Right ascension referred to mean equator and equinox of date (hours).
  * @param[out] dec     [deg] Declination referred to mean equator and equinox of date (degrees).
  * @param[out] dis     [AU] Geocentric distance (AU).
+ * @return             0 if successful, or else -1 if any of the pointer arguments are NULL.
  *
  * @sa earth_sun_calc()
  */
-void sun_eph(double jd, double *ra, double *dec, double *dis) {
+int sun_eph(double jd, double *ra, double *dec, double *dis) {
   struct sun_con {
     int l;
     int r;
-    float alpha;
+    double alpha;
     double nu;
   };
 
@@ -393,6 +394,11 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
           { 10, 0, 1.50, 21463.25 }, //
           { 10, -9, 2.55, 157208.40 } };
 
+  if(!ra || !dec || !dis) {
+    errno = EINVAL;
+    return -1;
+  }
+
   // Define the time units 'u', measured in units of 10000 Julian years
   // from J2000.0, and 't', measured in Julian centuries from J2000.0.
   u = (jd - T0) / 3652500.0;
@@ -427,7 +433,7 @@ void sun_eph(double jd, double *ra, double *dec, double *dis) {
 
   *dec = asin(sin(emean) * sin_lon) * RAD2DEG;
 
-  return;
+  return 0;
 }
 
 #if DEFAULT_SOLSYS == 3

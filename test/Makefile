@@ -5,15 +5,18 @@ LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
 CFLAGS += -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
 
-OBJECTS := $(subst obj/,,$(OBJECTS))
+#OBJECTS := $(subst obj/,,$(OBJECTS))
+OBJECTS := novas.o nutation.o solsys3.o
 
 .PHONY: run
-run: clean-cov clean-data test test_cio_file test-super data ../cio_ra.bin
-	./test
+run: clean-cov clean-data test-compat test-cio_file test-super test-errors data ../cio_ra.bin
+	./test-compat
 	ln -s ../cio_ra.bin
-	./test_cio_file
+	./test-cio_file
 	diff data reference
 	./test-super
+	rm -f cio_ra.bin
+	./test-errors
 
 cov: cov.info
 	genhtml $< -o $@
@@ -41,24 +44,18 @@ data:
 ../cio_ra.bin:
 	make -C .. cio_ra.bin
 
-test: test.o $(OBJECTS) | Makefile data
+test-%: test-%.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-test_cio_file: test_cio_file.o $(OBJECTS) | Makefile data
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-test-super: test-super.o $(OBJECTS) | Makefile data
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-test%.o: src/test%.c | Makefile
-	$(CC) -c -o $@ -I../include $<
+test-%.o: src/test-%.c | Makefile
+	$(CC) -c -o $@ -g -I../include $<
 
 %.o: ../src/%.c | Makefile
 	$(CC) -c -o $@ $(CFLAGS) $<
 
 .PHONY: clean-test
 clean-test:
-	rm -f test test_cio_file test-super
+	rm -f test-*
 
 .PHONY: clean-cov
 clean-cov:

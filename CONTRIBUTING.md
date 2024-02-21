@@ -31,14 +31,14 @@ upstream every once in a while, and merging them into your development branch. D
    tests to `test/src/test.c` as appropriate, and if you add new source files, you may need to adjust `test/Makefile`
    so that `gcov` coverage is generated for your new source files. 
    You should aim for 100% diff coverage. When pushing changes to your fork, you can get a coverage report by checking 
-   the Github Actions result of your commit (click the Codecov link), and you can analyze what line(s) of code need to 
-   have tests added. Try to create tests that are simple but meaningful (i.e. check for valid results, rather than just 
-   confirm existing behavior), and try to cover as many realistic scenarios as appropriate. Write lots of tests if you 
-   need to.
+   the Github Actions result of your commit (click the Coveralls link), and you can analyze what line(s) of code need 
+   to have tests added. Try to create tests that are simple but meaningful (i.e. check for valid results, rather than 
+   just confirm existing behavior), and try to cover as many realistic scenarios as appropriate. Write lots of tests 
+   if you need to.
 
 4. __Pull Request__. Once you feel your work can be integrated, create a pull request from your fork/branch. You can 
 do that easily from the github page of your fork/branch directly. In the pull request, provide a concise description 
-of what you added or changed. Your pull request will be reviwed. You may get some feedback at this point, and maybe 
+of what you added or changed. Your pull request will be reviewed. You may get some feedback at this point, and maybe 
 there will be discussions about possible improvements or regressions etc. It's a good thing too, and your changes will 
 likely end up with added polish as a result. You can be all the more proud of it in the end!
 

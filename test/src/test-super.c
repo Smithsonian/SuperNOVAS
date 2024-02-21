@@ -28,6 +28,30 @@ static double yp = -2.0;
 // Initialized quantities.
 static double pos0[3];
 
+static enum novas_origin ephem_origin;
+
+static short dummy_planet_hp(const double *jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+  memset(position, 0, 3 * sizeof(double));
+  memset(velocity, 0, 3 * sizeof(double));
+  position[0] = body % 10;
+  velocity[1] = 0.01 * (body % 10);
+  return 0;
+}
+
+static short dummy_planet(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+  double tdb2[2] = { tdb };
+  return dummy_planet_hp(tdb2, body, origin, position, velocity);
+}
+
+static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
+  *origin = ephem_origin;
+  memset(pos, 0, 3 * sizeof(double));
+  memset(vel, 0, 3 * sizeof(double));
+  pos[0] = id % 100;
+  vel[1] = 0.01 * (id % 100);
+  return 0;
+}
+
 static int check_equal_pos(const double *posa, const double *posb, double tol) {
   int i;
 
@@ -68,8 +92,8 @@ static int test_j2000_tod_j2000() {
 static int test_tod_itrs_tod() {
   double pos1[3];
 
-  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
-  if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
+  if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("tod_itrs_tod", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
@@ -87,8 +111,8 @@ static int test_gcrs_cirs_gcrs() {
 static int test_cirs_itrs_cirs() {
   double pos1[3];
 
-  if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
-  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
+  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
@@ -114,14 +138,28 @@ static int test_tod_vs_cirs() {
 
   if(!is_ok("gcrs_to_j2000", gcrs_to_j2000(pos0, pos1))) return 1;
   if(!is_ok("j2000_to_tod", j2000_to_tod(tdb, 0, pos1, pos1))) return 1;
-  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
-  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
+  if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
   if(!is_ok("cirs_to_gcrs", cirs_to_gcrs(tdb, 0, pos1, pos1))) return 1;
 
   if(!is_ok("tod_vs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
 
   return 0;
 }
+
+static int test_equ_ecl() {
+  double ra, dec, elon, elat, pos1[3];
+
+  vector2radec(pos0, &ra, &dec);
+  if(!is_ok("equ2ecl", equ2ecl(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, ra, dec, &elon, &elat))) return 1;
+  if(!is_ok("ecl2equ", ecl2equ(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, elon, elat, &ra, &dec))) return 1;
+  radec2vector(ra, dec, vlen(pos0), pos1);
+
+  if(!is_ok("equ_ecl_equ", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
 
 static int test_equ_gal() {
   double ra, dec, glon, glat, pos1[3];
@@ -131,7 +169,7 @@ static int test_equ_gal() {
   if(!is_ok("gal2equ", gal2equ(glon, glat, &ra, &dec))) return 1;
   radec2vector(ra, dec, vlen(pos0), pos1);
 
-  if(!is_ok("tod_vs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("equ_gal_equ", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
 
   return 0;
 }
@@ -243,6 +281,7 @@ static int test_source() {
 
   if(test_itrs_hor_itrs()) n++;
 
+  if(test_equ_ecl()) n++;
   if(test_equ_gal()) n++;
 
   if(test_place_star()) n++;
@@ -269,17 +308,6 @@ static int test_make_planet() {
   return 0;
 }
 
-static int test_make_ephem_body() {
-  object body;
-
-  make_ephem_body("Ceres", 1000001, &body);
-
-  if(!is_ok("make_ephem_body:type", body.type != NOVAS_EPHEM_OBJECT)) return 1;
-  if(!is_ok("make_ephem_body:number", body.number != 1000001)) return 1;
-  if(!is_ok("make_ephem_body:name", strcasecmp(body.name, "Ceres"))) return 1;
-
-  return 0;
-}
 
 static int test_precession() {
   double pos1[3], pos2[3];
@@ -293,6 +321,7 @@ static int test_precession() {
 
   return 0;
 }
+
 
 
 static int test_radec_planet() {
@@ -322,11 +351,8 @@ static int test_observers() {
   double ps[3] = { 100.0, 30.0, 10.0 }, vs[3] = { 10.0 };
   int n = 0;
 
-  if(test_make_planet()) n++;
-  if(test_make_ephem_body()) n++;
   if(test_precession()) n++;
   if(test_radec_planet()) n++;
-
 
   make_observer_at_geocenter(&obs);
   n += test_source();
@@ -383,6 +409,30 @@ static int test_get_utc_to_tt() {
   return 0;
 }
 
+static int test_nutation_lp_provider() {
+  double t = (tdb - NOVAS_JD_J2000) / 36525.0;
+  double de, dp, de0, dp0;
+
+  int status = 1;
+
+
+  if(!is_ok("nutation_lp_provider:set_nutation_lp_provider", set_nutation_lp_provider(iau2000b))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:nutation_angles", nutation_angles(t, NOVAS_REDUCED_ACCURACY, &de, &dp))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:iau2000b", iau2000b(tdb, 0.0, &de0, &dp0))) goto cleanup; // @suppress("Goto statement used")
+
+  de0 /= ASEC2RAD;
+  dp0 /= ASEC2RAD;
+
+  if(!is_ok("nutation_lp_provider:check_de", fabs(de - de0) > 1e-7)) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:check_dp", fabs(dp - dp0) > 1e-7)) goto cleanup; // @suppress("Goto statement used")
+
+  status = 0;
+
+  cleanup:
+
+  set_nutation_lp_provider(nu2000k);
+  return status;
+}
 
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
@@ -390,6 +440,7 @@ static int test_dates() {
 
   if(test_get_ut1_to_tt()) n++;
   if(test_get_utc_to_tt()) n++;
+  if(test_nutation_lp_provider()) n++;
 
   for(i = 0; i < 5; i++) {
     tdb = J2000 + offsets[i];
@@ -442,13 +493,120 @@ static int test_case() {
   return 0;
 }
 
+static int test_make_ephem_object() {
+  object body;
+
+  make_ephem_object("Ceres", 1000001, &body);
+
+  if(!is_ok("make_ephem_object:type", body.type != NOVAS_EPHEM_OBJECT)) return 1;
+  if(!is_ok("make_ephem_object:number", body.number != 1000001)) return 1;
+  if(!is_ok("make_ephem_object:name", strcasecmp(body.name, "Ceres"))) return 1;
+
+  return 0;
+}
+
+static int test_planet_provider() {
+  int status = 1;
+  object mars;
+  double p[3], v[3], p0[3], v0[3];
+  double tdb2[2] = { tdb };
+
+  make_planet(NOVAS_MARS, &mars);
+
+  if(!is_ok("planet_provider:set_planet_provider", set_planet_provider(dummy_planet))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:set_planet_provider_hp", set_planet_provider_hp(dummy_planet_hp))) goto cleanup; // @suppress("Goto statement used")
+
+  if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &mars, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:control", dummy_planet(tdb, NOVAS_MARS, NOVAS_BARYCENTER, p0, v0))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:check_pos", check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:check_vel", check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+
+  if(!is_ok("planet_provider:ephemeris_hp", ephemeris(tdb2, &mars, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:control_hp", dummy_planet_hp(tdb2, NOVAS_MARS, NOVAS_BARYCENTER, p0, v0))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:check_pos_hp", check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:check_vel_hp", check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+
+  status = 0;
+
+  cleanup:
+
+  set_planet_provider(earth_sun_calc);
+  set_planet_provider_hp(earth_sun_calc_hp);
+  return status;
+}
+
+
+static int test_ephem_provider() {
+  novas_ephem_provider prior = get_ephem_provider();
+
+  object body;
+  double p[3], v[3], p0[3], v0[3];
+  double tdb2[2] = { tdb };
+  int status = 1;
+  enum novas_origin o;
+
+  make_ephem_object("Dummy", 1000001, &body);
+
+  if(!is_ok("ephem_provider:set_ephem_provider", set_ephem_provider(dummy_ephem))) goto cleanup; // @suppress("Goto statement used")
+
+  for(ephem_origin = 0; ephem_origin < 2; ephem_origin++) {
+    if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &body, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
+    if(!is_ok("planet_provider:control", dummy_ephem(body.name, body.number, tdb, 0.0, &o, p0, v0))) goto cleanup; // @suppress("Goto statement used")
+    if(o == NOVAS_BARYCENTER) {
+      if(!is_ok("planet_provider:check_pos", check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+      if(!is_ok("planet_provider:check_vel", check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+    }
+
+    if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &body, NOVAS_HELIOCENTER, NOVAS_FULL_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
+    if(o == NOVAS_BARYCENTER) {
+      fprintf(stderr, " Expecing diffent A/B, twice:\n");
+      if(!is_ok("planet_provider:check_pos", !check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+      if(!is_ok("planet_provider:check_vel", !check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+      fprintf(stderr, " OK.\n");
+    }
+  }
+
+  status = 0;
+
+  cleanup:
+
+  set_ephem_provider(prior);
+  return status;
+}
+
+
+static int test_enable_earth_sun_calc_hp() {
+  double tdb2[2] = { tdb }, p[3], v[3], p0[3], v0[3];
+  int status = 1;
+
+  enable_earth_sun_hp(1);
+
+  if(!is_ok("enable_earth_sun_hp", earth_sun_calc(tdb, NOVAS_SUN, NOVAS_BARYCENTER, p0, v0))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("enable_earth_sun_hp", earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("enable_earth_sun_hp:check_pos", check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("enable_earth_sun_hp:check_vel", check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
+
+  status = 0;
+
+  cleanup:
+
+  enable_earth_sun_hp(0);
+  return status;
+}
+
 int main() {
   int n = 0;
 
   make_object(NOVAS_CATALOG_OBJECT, 0, "None", NULL, &source);
 
+  if(test_make_planet()) n++;
+  if(test_make_ephem_object()) n++;
   if(test_refract_astro()) n++;
   if(test_case()) n++;
+  if(test_planet_provider()) n++;
+  if(test_ephem_provider()) n++;
+  if(test_enable_earth_sun_calc_hp()) n++;
+
   n += test_dates();
 
   return n;

@@ -33,7 +33,10 @@ static int idx = -1;
 
 static char *header;
 
-// cio_array
+
+static double vlen(double *pos) {
+  return sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]);
+}
 
 static void newline() {
   fprintf(fp, "\n%8.1f %-10s S%d O%d A%d: ", (tdb - J2000), source.name, source.type, obs.where, accuracy);
@@ -270,8 +273,8 @@ static void test_ephemeris() {
     openfile("ephemeris");
 
     if(is_ok(ephemeris(tdb2, &body[i], j, accuracy, pos1, vel1))) {
-      int j;
-      for(j = 0; j < 3; j++) vel1[j] *= 1e-3 * (1.4959787069098932e+11 / 86400.0);
+      int k;
+      for(k = 0; k < 3; k++) vel1[k] *= 1e-3 * (1.4959787069098932e+11 / 86400.0);
 
       fprintf(fp, "%-10s %d ", body[i].name, j);
       printvector(pos1);
@@ -635,6 +638,23 @@ static void test_grav_def() {
   }
 }
 
+static void test_aberration() {
+  double vo[3] = {}, v0[3] = {}, pos1[3];
+  int i;
+
+  // Calculate for sidereal sources only.
+  if (source.type != 2) return;
+
+  for(i = 0; i < 3; i++) vo[i] = evel[i] + vobs[i];
+
+  openfile("aberration");
+  aberration(pos0, vo, 0.0, pos1);
+  printunitvector(pos1);
+
+  aberration(pos0, v0, 0.0, pos1);
+  for(i = 0; i < 3; i++) fprintf(fp, "%d ", fabs(pos0[i] - pos1[i]) < 1e-9 * vlen(pos0));
+}
+
 static void test_place() {
   int i;
 
@@ -883,6 +903,7 @@ static int test_source() {
   test_light_time();
   test_grav_def();
   test_place();
+  test_aberration();
 
   if(obs.where == 0) {
     test_astro_place();
