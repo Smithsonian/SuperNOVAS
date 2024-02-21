@@ -53,11 +53,12 @@
 #define SUPERNOVAS_MAJOR_VERSION  1       ///< API major version
 #define SUPERNOVAS_MINOR_VERSION  0       ///< API minor version
 #define SUPERNOVAS_SUBVERSION     0       ///< Integer sub version of the release
-#define SUPERNOVAS_RELEASE_STRING ""      ///< Additional release information in version, e.g. "-1", or "-rc1".
+#define SUPERNOVAS_RELEASE_STRING "-rc2"  ///< Additional release information in version, e.g. "-1", or "-rc1".
 
 /// The version string for this library
-#define SUPERNOVAS_VERSION_STRING #SUPERNOVAS_MAJOR_VERSION "." #SUPERNOVAS_MINOR_VERSION "." \
-                                  #SUPERNOVAS_SUBVERSION SUPERNOVAS_RELEASE_STRING
+#define SUPERNOVAS_VERSION_STRING #SUPERNOVAS_MAJOR_VERSION "." #SUPERNOVAS_MINOR_VERSION \
+                                  (#SUPERNOVAS_SUBVERSION ? "." #SUPERNOVAS_SUBVERSION : "") \
+                                  SUPERNOVAS_RELEASE_STRING
 
 #define NOVAS_MAJOR_VERSION       3       ///< Major version of NOVAS on which this library is based
 #define NOVAS_MINOR_VERSION       1       ///< Minor version of NOVAS on which this library is based
@@ -811,6 +812,9 @@ double tt2tdb(double jd_tt);
 double get_ut1_to_tt(int leap_seconds, double dut1);
 
 double get_utc_to_tt(int leap_seconds);
+
+int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
+        double *ra, double *dec);
 
 int gal2equ(double glon, double glat, double *ra, double *dec);
 

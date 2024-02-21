@@ -110,9 +110,9 @@ SuperNOVAS. Instead, you will need to (re)compile and or (re)link your applicati
 these. 
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
-`short int` argument of NOVAS C 3.1, or because we added a return value to a functions that was declared `void` 
-in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of  `short` to 
-accommodate JPL NAIF values, which require a 32-bit width. 
+`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` 
+in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to 
+accommodate JPL NAIF codes, and for which 16-bit storage is insufficient. 
 
 -----------------------------------------------------------------------------
 
@@ -142,7 +142,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
- - Fix multiple bugs in using cached values in `cio_basis()` with alternating CIO location reference systems.
+ - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
+   systems.
    
  - Fix bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
@@ -154,10 +155,10 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
- - Fixes `aberrattion()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
-   vector appropriately.
+ - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
+   vector appropriately instead.
    
- - Fixed potential string overflows and associated compiler warnings.
+ - Fixes potential string overflows and eliminates associated compiler warnings.
 
 -----------------------------------------------------------------------------
 
@@ -539,6 +540,13 @@ before that level of accuracy is reached.
    duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
    invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
    error code is returned for compatibility).
+   
+ - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
+   use functions such as `perror()` ans `strerror()` to print human-readable error messages.
+   
+ - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
+   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
+   should not be used as if they were valid. (No more sneaky silent errors.)
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
    required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
@@ -583,6 +591,8 @@ before that level of accuracy is reached.
    version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
    `cirs_to_itrs()`  followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no 
    equivalent in NOVAS C 3.1.
+   
+ - New `ecl2equ()` for converting ecliptic coordinates to equatorial, complementing existing `equ2ecl()`.
    
  - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
    

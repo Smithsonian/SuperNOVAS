@@ -301,6 +301,27 @@ static int test_gal2equ() {
   return n;
 }
 
+static int test_equ2ecl() {
+  double x;
+  int n = 0;
+
+  if(check("equ2ecl:lon", -1, equ2ecl(0.0, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 0.0, 0.0, NULL, &x))) n++;
+  if(check("equ2ecl:lat", -1, equ2ecl(0.0, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 0.0, 0.0, &x, NULL))) n++;
+
+  return n;
+}
+
+
+static int test_ecl2equ() {
+  double x;
+  int n = 0;
+
+  if(check("ecl2equ:lon", -1, ecl2equ(0.0, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 0.0, 0.0, NULL, &x))) n++;
+  if(check("ecl2equ:lat", -1, ecl2equ(0.0, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, 0.0, 0.0, &x, NULL))) n++;
+
+  return n;
+}
+
 static int test_equ2ecl_vec() {
   double p[3];
   int n = 0;
@@ -802,6 +823,8 @@ int main() {
 
   if(test_equ2ecl_vec()) n++;
   if(test_ecl2equ_vec()) n++;
+  if(test_equ2ecl()) n++;
+  if(test_ecl2equ()) n++;
 
   if(test_itrs_to_hor()) n++;
   if(test_hor_to_itrs()) n++;

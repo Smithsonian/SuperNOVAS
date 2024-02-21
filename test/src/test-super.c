@@ -147,6 +147,20 @@ static int test_tod_vs_cirs() {
   return 0;
 }
 
+static int test_equ_ecl() {
+  double ra, dec, elon, elat, pos1[3];
+
+  vector2radec(pos0, &ra, &dec);
+  if(!is_ok("equ2ecl", equ2ecl(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, ra, dec, &elon, &elat))) return 1;
+  if(!is_ok("ecl2equ", ecl2equ(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, elon, elat, &ra, &dec))) return 1;
+  radec2vector(ra, dec, vlen(pos0), pos1);
+
+  if(!is_ok("equ_ecl_equ", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
+
 static int test_equ_gal() {
   double ra, dec, glon, glat, pos1[3];
 
@@ -155,7 +169,7 @@ static int test_equ_gal() {
   if(!is_ok("gal2equ", gal2equ(glon, glat, &ra, &dec))) return 1;
   radec2vector(ra, dec, vlen(pos0), pos1);
 
-  if(!is_ok("tod_vs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("equ_gal_equ", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
 
   return 0;
 }
@@ -267,6 +281,7 @@ static int test_source() {
 
   if(test_itrs_hor_itrs()) n++;
 
+  if(test_equ_ecl()) n++;
   if(test_equ_gal()) n++;
 
   if(test_place_star()) n++;

@@ -7,8 +7,8 @@ Changes planned/expected for the next release...
 
 ### Added
 
- - Add debug mode, which can be activated via `novas_debug(1)`. When debug mode is enabled, all errors are printed to 
-   the console with a trace (the trace does not contain line numbers but provides information on the functions and 
+ - Add debug mode, which can be activated via `novas_debug(1)`. When debug mode is enabled, all errors will be printed 
+   to  the console with a trace (the trace does not contain line numbers but provides information on the functions and 
    locations within them where the error occurred.
 
 
@@ -18,29 +18,30 @@ This is the initial release of the SuperNOVAS library.
 
 ### Fixed
 
- - Fixed the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
+ - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
    function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
    
- - Fixed the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+ - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
    `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
    
- - Fixed antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
+ - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
    observed body rather than at the time that light arrives to the observer. This correction was done properly for 
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
- - Fixed bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
+ - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
- - Fixed accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
+ - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
    `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
- - Fixed multiple bugs in using cached values in `cio_basis()` with alternating CIO location reference systems.
+ - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
+   systems.
    
- - Fixed bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
+ - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
    `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the
    requested mean equinox of date coordinates.
@@ -50,10 +51,10 @@ This is the initial release of the SuperNOVAS library.
    and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
- - Fixes `aberrattion()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
-   vector appropriately.
+ - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
+   vector appropriately instead.
    
- - Fixed potential string overflows and associated compiler warnings.
+ - Fixes potential string overflows and eliminates associated compiler warnings.
    
 
 ### Added
@@ -94,6 +95,8 @@ This is the initial release of the SuperNOVAS library.
    version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
    `cirs_to_itrs()`  followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no 
    equivalent in NOVAS C 3.1.
+
+ - New `ecl2equ()` for converting ecliptic coordinates to equatorial, complementing existing `equ2ecl()`.
    
  - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
    
@@ -139,7 +142,7 @@ This is the initial release of the SuperNOVAS library.
    
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
    `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
-   should not be used as if they were valid.
+   should not be used as if they were valid. (No more sneaky silent errors.)
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
    required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
@@ -168,7 +171,9 @@ This is the initial release of the SuperNOVAS library.
    that is included in the `star` argument however)
    
  - `sun_eph()` in `solsysl3.c` evaluates the series in reverse order compared to NOVAS C 3.1, accumulating the least 
-   significant terms first, and thus resulting in higher precision result in the end
+   significant terms first, and thus resulting in higher precision result in the end.
+   
+ - Changed `vector2radec()` to return NAN values if the input is a null-vector (i.e. all components are zero).
    
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 

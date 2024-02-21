@@ -685,13 +685,21 @@ int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
 int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
         enum novas_reference_system sys, enum novas_accuracy accuracy, double *ra, double *dec, double *rv) {
   sky_pos output = { };
-  int error = place_star(jd_tt, star, obs, ut1_to_tt, sys, accuracy, &output);
+  int error;
 
-  if(ra) *ra = error ? NAN : output.ra;
-  if(dec) *dec = error ? NAN : output.dec;
-  if(rv) *rv = error ? NAN : output.rv;
+  // Default return values in case of error.
+  if(ra) *ra = NAN;
+  if(dec) *dec = NAN;
+  if(rv) *rv = NAN;
 
+  error = place_star(jd_tt, star, obs, ut1_to_tt, sys, accuracy, &output);
   prop_error(error, 20);
+
+  if(ra) *ra = output.ra;
+  if(dec) *dec = output.dec;
+  if(rv) *rv = output.rv;
+
+
 
   return 0;
 }
@@ -739,19 +747,24 @@ int radec_planet(double jd_tt, const object *ss_body, const observer *obs, doubl
   sky_pos output = { };
   int error;
 
+  // Default return values in case of error.
+  if(ra) *ra = NAN;
+  if(dec) *dec = NAN;
+  if(dis) *dis = NAN;
+  if(rv) *rv = NAN;
+
   if(ss_body->type != NOVAS_PLANET && ss_body->type != NOVAS_EPHEM_OBJECT) {
     errno = EINVAL;
     return -1;
   }
 
   error = place(jd_tt, ss_body, obs, ut1_to_tt, sys, accuracy, &output);
-
-  if(ra) *ra = error ? NAN : output.ra;
-  if(dec) *dec = error ? NAN : output.dec;
-  if(dis) *dis = error ? NAN : output.dis;
-  if(rv) *rv = error ? NAN : output.rv;
-
   prop_error(error, 10);
+
+  if(ra) *ra = output.ra;
+  if(dec) *dec = output.dec;
+  if(dis) *dis = output.dis;
+  if(rv) *rv = output.rv;
 
   return 0;
 }
@@ -1627,22 +1640,29 @@ int gal2equ(double glon, double glat, double *ra, double *dec) {
  *                    equinox of date.
  * @return            0 if successful, or else 1 if the value of 'coord_sys' is invalid.
  *
- * @sa ecl2equ_vec()
+ * @sa equ2ecl_vec()
+ * @sa ecl2equ()
+ *
  */
 short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec,
         double *elon, double *elat) {
 
-  double r, d, cosd, pos[3], xyproj;
+  double cosd, pos[3], xyproj;
   int error;
 
-  // Form position vector in equatorial system from input coordinates.
-  r = ra * HOURANGLE;
-  d = dec * DEGREE;
-  cosd = cos(d);
+  if(!elon || !elat) {
+    errno = EINVAL;
+    return -1;
+  }
 
-  pos[0] = cosd * cos(r);
-  pos[1] = cosd * sin(r);
-  pos[2] = sin(d);
+  // Form position vector in equatorial system from input coordinates.
+  ra *= HOURANGLE;
+  dec *= DEGREE;
+  cosd = cos(dec);
+
+  pos[0] = cosd * cos(ra);
+  pos[1] = cosd * sin(ra);
+  pos[2] = sin(dec);
 
   // Convert the vector from equatorial to ecliptic system.
   error = equ2ecl_vec(jd_tt, coord_sys, accuracy, pos, pos);
@@ -1655,6 +1675,70 @@ short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accura
   if(*elon < 0.0) *elon += DEG360;
 
   *elat = atan2(pos[2], xyproj) / DEGREE;
+
+  return 0;
+}
+
+/**
+ * Convert ecliptic longitude and latitude to right ascension and declination.  To convert
+ * GCRS ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to
+ * NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to anything, since
+ * J2000.0 is assumed. Otherwise, all input coordinates are dynamical at'jd_tt'.
+ *
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys'
+ *                    is NOVAS_GCRS_EQUATOR[2])
+ * @param coord_sys   The astrometric reference system of the coordinates. If 'coord_sys' is
+ *                    NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to
+ *                    J2000 ecliptic coordinates.
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param elon        [deg] Ecliptic longitude in degrees, referred to specified ecliptic and
+ *                    equinox of date.
+ * @param elat        [deg] Ecliptic latitude in degrees, referred to specified ecliptic and
+ *                    equinox of date.
+ * @param[out] ra     [h] Right ascension in hours, referred to specified equator and equinox
+ *                    of date.
+ * @param[out] dec    [deg] Declination in degrees, referred to specified equator and equinox
+ *                    of date.
+
+ * @return            0 if successful, or else 1 if the value of 'coord_sys' is invalid.
+ *
+ * @sa ecl2equ_vec()
+ * @sa equ2ecl()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
+        double *ra, double *dec) {
+
+  double coslat, pos[3], xyproj;
+  int error;
+
+  if(!ra || !dec) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  // Form position vector in equatorial system from input coordinates.
+  elon *= DEGREE;
+  elat *= DEGREE;
+  coslat = cos(elat);
+
+  pos[0] = coslat * cos(elon);
+  pos[1] = coslat * sin(elon);
+  pos[2] = sin(elat);
+
+  // Convert the vector from equatorial to ecliptic system.
+  error = ecl2equ_vec(jd_tt, coord_sys, accuracy, pos, pos);
+  if(error) return error;
+
+  // Decompose ecliptic vector into ecliptic longitude and latitude.
+  xyproj = sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
+
+  *ra = (xyproj > 0.0) ? atan2(pos[1], pos[0]) / HOURANGLE : 0.0;
+  if(*ra < 0.0) *ra += 24.0;
+
+  *dec = atan2(pos[2], xyproj) / DEGREE;
 
   return 0;
 }
@@ -1678,8 +1762,8 @@ short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accura
  * @return            0 if successful, -1 if either vector argument is NULL or the accuracy
  *                    is invalid, or else 1 if the value of 'coord_sys' is invalid.
  *
- * @sa ecl2equ_vec()
  * @sa equ2ecl()
+ * @sa ecl2equ_vec()
  */
 short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1,
         double *pos2) {
@@ -1763,6 +1847,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  * @return            0 if successful, -1 if either vector argument is NULL or the accuracy
  *                    is invalid, or else 1 if the value of 'coord_sys' is invalid.
  *
+ * @sa ecl2equ()
  * @sa equ2ecl_vec()
  */
 short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *pos1,
@@ -1850,6 +1935,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  * @sa hor_to_itrs()
  * @sa cirs_to_itrs()
  * @sa tod_to_itrs()
+ * @sa refract_astro()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -1860,6 +1946,8 @@ int itrs_to_hor(const on_surface *location, const double *in, double *az, double
   double pn, pw, pz, proj;
 
   if(!location || !in) {
+    if(az) *az = NAN;
+    if(za) *za = NAN;
     errno = EINVAL;
     return -1;
   }
@@ -1926,6 +2014,7 @@ int itrs_to_hor(const on_surface *location, const double *in, double *az, double
  * @sa itrs_to_hor()
  * @sa itrs_to_cirs()
  * @sa itrs_to_tod()
+ * @sa refract()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -2272,6 +2361,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
     return -1;
   }
 
+  // Default return value
   *gst = NAN;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY) {
@@ -3503,6 +3593,7 @@ int bary2obs(const double *pos, const double *pos_obs, double *pos2, double *lig
   int j;
 
   if(!pos || !pos_obs || !pos2) {
+    if(lighttime) *lighttime = NAN;
     errno = EINVAL;
     return -1;
   }
@@ -4134,6 +4225,7 @@ int rad_vel(const object *target, const double *pos, const double *vel, const do
   int i;
 
   if(!target || !pos || !vel || !vel_obs || !rv) {
+    if(rv) *rv = NAN;
     errno = EINVAL;
     return -1;
   }
@@ -4487,6 +4579,8 @@ int set_nutation_lp_provider(novas_nutation_provider func) {
  */
 int nutation_angles(double t, enum novas_accuracy accuracy, double *dpsi, double *deps) {
   if(!dpsi || !deps) {
+    if(dpsi) *dpsi = NAN;
+    if(deps) *deps = NAN;
     errno = EINVAL;
     return -1;
   }
@@ -4659,34 +4753,38 @@ double mean_obliq(double jd_tdb) {
  * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  * </ol>
  *
- * @param pos   Position 3-vector, equatorial rectangular coordinates.
- * @param ra    [h] Right ascension in hours [0:24].
- * @param dec   [deg] Declination in degrees [-90:90].
- * @return      0 if successful, -1 of any of the arguments are NULL, or
- *              1 if all input components are 0 so 'ra' and 'dec' are indeterminate,
- *              or else 2 if both x and y are zero, but z is nonzero, and so 'ra' is
- *              indeterminate.
+ * @param pos       Position 3-vector, equatorial rectangular coordinates.
+ * @param[out] ra   [h] Right ascension in hours [0:24] or NAN if the position vector is NULL or a null-vector.
+ * @param[out] dec  [deg] Declination in degrees [-90:90] or NAN if the position vector is NULL or a null-vector.
+ * @return          0 if successful, -1 of any of the arguments are NULL, or
+ *                  1 if all input components are 0 so 'ra' and 'dec' are indeterminate,
+ *                  or else 2 if both x and y are zero, but z is nonzero, and so 'ra' is
+ *                  indeterminate.
  *
  * @sa radec2vector()
  */
 short vector2radec(const double *pos, double *ra, double *dec) {
   double xyproj;
 
-  if(!pos || !ra || !dec) {
+  if(!ra || !dec) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  if(!pos) {
     errno = EINVAL;
     return -1;
   }
 
   xyproj = sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
   if(xyproj == 0.0) {
-    *ra = 0.0;
-
     if(pos[2] == 0) {
-      *dec = 0.0;
+      *ra = *dec = NAN;
       errno = EINVAL;
       return 1;
     }
 
+    *ra = 0.0;
     *dec = (pos[2] < 0.0) ? -90.0 : 90.0;
     errno = EDOM;
     return 2;
@@ -5406,7 +5504,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @since 1.0
  * @author Attila Kovacs
  *
- * @sa get_ephem_reasder()
+ * @sa get_ephem_provider()
  * @sa ephemeris()
  *
  */
@@ -5448,11 +5546,12 @@ novas_ephem_provider get_ephem_provider() {
  *                  10 + the error code from solarsystem(), or 20 + the error code from
  *                  readeph().
  *
- * @sa ephem_open()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  * @sa set_ephem_provider()
- * @sa make_object()
+ * @sa ephem_open()
+ * @sa make_planet()
+ * @sa make_ephem_object()
  */
 short ephemeris(const double *jd_tdb, const object *body, enum novas_origin origin, enum novas_accuracy accuracy,
         double *pos, double *vel) {
@@ -5562,8 +5661,8 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
  *
  * @return            0 if successful, or -1 if either of the input pointer arguments is NULL.
  *
- * @sa transform_cat()
  * @sa make_cat_entry()
+ * @sa NOVAS_JD_HIP
  */
 int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
   cat_entry scratch;
@@ -5631,10 +5730,9 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
  *
  * @sa transform_hip()
  * @sa make_cat_entry()
- * @sa precession()
- * @sa frame_tie()
  * @sa NOVAS_JD_J2000
  * @sa NOVAS_JD_B1950
+ * @sa NOVAS_JD_HIP
  */
 short transform_cat(enum novas_transform_type option, double date_in, const cat_entry *in, double date_out,
         const char *out_id, cat_entry *out) {
@@ -5796,7 +5894,7 @@ short transform_cat(enum novas_transform_type option, double date_in, const cat_
  * Determines the angle of an object above or below the Earth's limb (horizon).  The geometric
  * limb is computed, assuming the Earth to be an airless sphere (no refraction or oblateness
  * is included).  The observer can be on or above the Earth.  For an observer on the surface
- * of the Earth, this function returns the approximate unrefracted altitude.
+ * of the Earth, this function returns the approximate unrefracted elevation.
  *
  * @param pos_obj         [AU] Position 3-vector of observed object, with respect to origin at
  *                        geocenter, components in AU.
@@ -5816,6 +5914,8 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
   double disobj, disobs, aprad, zdlim, coszd, zdobj;
 
   if(!pos_obj || !pos_obs) {
+    if(limb_ang) *limb_ang = NAN;
+    if(nadir_ang) *nadir_ang = NAN;
     errno = EINVAL;
     return -1;
   }
@@ -5870,6 +5970,7 @@ int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, d
  *                      or 0.0 if the location is NULL or the option is invalid.
  *
  * @sa refract()
+ * @sa itrs_to_hor()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -5921,6 +6022,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
  *                      NULL or the option is invalid or the 'zd_obs' is invalid (&lt;90&deg;).
  *
  * @sa refract_astro()
+ * @sa hor_to_itrs()
  */
 double refract(const on_surface *location, enum novas_refraction_model option, double zd_obs) {
   // 's' is the approximate scale height of atmosphere in meters.
