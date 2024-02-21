@@ -2,6 +2,8 @@
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 ![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/check.yml/badge.svg)
 ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/Smithsonian/SuperNOVAS/badge.svg?branch=main)]
+(https://coveralls.io/github/Smithsonian/SuperNOVAS?branch=main)
 
 <picture>
   <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" media="(prefers-color-scheme: dark)"/>
