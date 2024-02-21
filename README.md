@@ -59,7 +59,7 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library by:
  - Improving the ease of use by using `enum`s instead of integer constants, which also allows for some checking
    of use during compilations (such as using the incorrect `enum` type).
  - Improving [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) with 
-   [Doxygen](https://www.doxygen.nl/) to provide browseable cross-referenced API docs. 
+   [Doxygen](https://www.doxygen.nl/) to provide browsable cross-referenced API docs. 
  - Streamlining calculations where possible to improve performance.
  - Adding `const` modifier to prototype arguments where appropriate
  - Checking arguments and setting `errno` as appropriate (and returning -1 unless another appropriate error code was 
@@ -78,7 +78,7 @@ SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOV
 the NOVAS C library, if new releases become available.
  
 SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard & Smithsonian, and it is 
-available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repo on GitHub.
+available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repository on GitHub.
 
 Outside contributions are very welcome. See
 [how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
@@ -108,7 +108,7 @@ https://github.com/attipaci/attipaci.gitgub.io
 ## Compatibility with NOVAS C 3.1
 
 SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary 
-compatilibility. In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. 
+compatibility. In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. 
 `novas.o`), or the static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from 
 SuperNOVAS. Instead, you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of 
 these. 
@@ -156,10 +156,10 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
   
  - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
    not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
-   and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
+   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
- - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
+ - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input
    vector appropriately instead.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
@@ -170,7 +170,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 ## Building and installation
 
 
-The SuperNOVAS distibution contains a `Makefile` for GNU make, which is suitable for compiling the library (as well as 
+The SuperNOVAS distribution contains a `Makefile` for GNU make, which is suitable for compiling the library (as well as 
 local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL on Windows.
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, such as:
@@ -271,7 +271,7 @@ terms differently:
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
  | Catalog coordinate system  | J2000 or B1950                | International Celestial Reference System (ICRS)   |
- | Dynamical system	          | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
+ | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
  | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
@@ -417,10 +417,10 @@ that will handle the respective ephemeris data at runtime before making the NOVA
 
 ```c
  // Set the function to use for regular precision planet position calculations
- set_planet_provider(my_planet_calcular_function);
+ set_planet_provider(my_planet_function);
   
  // Set the function for high-precision planet position calculations
- set_planet_provider(my_very_precise_planet_calculator_function);
+ set_planet_provider(my_very_precise_planet_function);
   
  // Set the function to use for calculating all sorts of solar-system bodies
  set_ephem_provider(my_ephemeris_provider_function);
@@ -477,12 +477,12 @@ When one does not need positions at the microarcsecond level, some shortcuts can
 #### Performance considerations
 
 Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
-however, NOVAS (and SuperNOVAS) has a trick up its sleve: it caches the last result of intensive calculations so they 
+however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they 
 may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy). 
 Therefore, when calculating positions for a large number of sources at different times:
 
  - It is best to iterate over the sources while keeping the time fixed in the inner loop. 
- - You probably want to stick to one accuracy morde (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
+ - You probably want to stick to one accuracy mode (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
    re-calculating the same quantities repeatedly to alternating precision.
  - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
  
@@ -493,12 +493,12 @@ Therefore, when calculating positions for a large number of sources at different
 ## Notes on precision
 
 The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s 
-precision for all types of celestial sources. However, there are certain pre-requisites and practical considerations 
+precision for all types of celestial sources. However, there are certain prerequisites and practical considerations 
 before that level of accuracy is reached.
 
 
  1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use SuperNOVAS with the
-    new IAU standard quantities and methods. The old ways were simply not suited for precisions much below the 
+    new IAU standard quantities and methods. The old ways were simply not suited for precision much below the 
     milliarcsecond level.
 
  2. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
@@ -568,7 +568,7 @@ before that level of accuracy is reached.
  - Source names and catalog names can both be up to 64 bytes (including termination), up from 51 and 4 respectively
    NOVAS C, while keeping `struct` layouts the same thanks to alignment.
    
- - Runtime configurability:
+ - Runtime configuration:
 
    * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, and
      `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
@@ -584,7 +584,7 @@ before that level of accuracy is reached.
      approximation via `set_nutation_lp_provider()`. For example, the user may want to use the `iau2000b()` model 
      or some custom algorithm instead.
  
- - New intutitive XYZ coordinate coversion functions:
+ - New intuitive XYZ coordinate conversion functions:
    * for GCRS - CIRS - ITRS (IAU 2000 standard): `gcrs_to_cirs()`, `cirs_to_itrs()`, and `itrs_to_cirs()`, 
      `cirs_to_gcrs()`.
    * for GCRS - J2000 - TOD - ITRS (old methodology): `gcrs_to_j2000()`, `j2000_to_tod()`, `tod_to_itrs()`, and 
@@ -605,6 +605,9 @@ before that level of accuracy is reached.
 
  - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
    `place_gcrs()`, `place_cirs()`, and `place_tod()`.
+   
+ - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods such as `astro_star()`
+   `local_star()`, `topo_planet()` etc.
  
  - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB
    time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric calculations.
@@ -752,7 +755,7 @@ your planetary ephemeris provider at runtime via:
 
 Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end
 of the world), but you may also have to modify `jplint.f` to work with the version of `pleph.f` that you will be using.
-Unless you already have code that relies on this method, you are probably better off chosing one of the other ways
+Unless you already have code that relies on this method, you are probably better off choosing one of the other ways
 for integrating planetary ephemeris data with SuperNOVAS.
 
 <a name="explicit-ephem-linking"></a>
@@ -801,7 +804,7 @@ API -- in line with the desire to keep bug-fix releases fully backwards compatib
 In the month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be available on github
 briefly, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be tested by 
 adopters before the releases are finalized. Please use due diligence to test such release candidates with your code 
-when they become available to avoid unexpected suprises when the finalized release is published. Release candidates 
+when they become available to avoid unexpected surprises when the finalized release is published. Release candidates 
 are typically available for one week only before they are superseded either by another, or by the finalized release.
 
 

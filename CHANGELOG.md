@@ -48,10 +48,10 @@ This is the initial release of the SuperNOVAS library.
   
  - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
    not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
-   and the fundamental arguments calculted in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
+   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
    critically, it also was the reason `cal_date()` did not work for negative JD values.
    
- - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the un-modified input
+ - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input
    vector appropriately instead.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
@@ -84,7 +84,7 @@ This is the initial release of the SuperNOVAS library.
      approximation via `set_nutation_lp_provider()`. For example, the user may want to use the `iau2000b()` model 
      instead or some custom algorithm instead.
  
- - New intutitive XYZ coordinate coversion functions:
+ - New intutitive XYZ coordinate conversion functions:
    * for GCRS - CIRS - ITRS (IAU 2000 standard): `gcrs_to_cirs()`, `cirs_to_itrs()`, and `itrs_to_cirs()`, 
      `cirs_to_gcrs()`.
    * for GCRS - J2000 - TOD - ITRS (old methodology): `gcrs_to_j2000()`, `j2000_to_tod()`, `tod_to_itrs()`, and 
@@ -106,7 +106,7 @@ This is the initial release of the SuperNOVAS library.
  - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
    `place_gcrs()`, `place_cirs()`, and `place_tod()`.
  
- - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods sych as `astro_star()`
+ - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods such as `astro_star()`
    `local_star()`, `topo_planet()` etc.
  
  - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB
@@ -167,7 +167,7 @@ This is the initial release of the SuperNOVAS library.
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
  
  - `make_object()` ignored the specified number argument for sidereal sources (set to 0), but we set it to the 
-   specified value assuming the caller provided it for a reason. (It does not change the sepatate `starnumber` value 
+   specified value assuming the caller provided it for a reason. (It does not change the separate `starnumber` value 
    that is included in the `star` argument however)
    
  - `sun_eph()` in `solsysl3.c` evaluates the series in reverse order compared to NOVAS C 3.1, accumulating the least 
@@ -183,7 +183,7 @@ This is the initial release of the SuperNOVAS library.
 
 ### Deprecated
 
- - `novascon.h` / `novascon.c`: These definitions of constants was troublesome fow two reasons: (1) They were 
+ - `novascon.h` / `novascon.c`: These definitions of constants was troublesome for two reasons: (1) They were 
    primarily meant for use internally within the library itself. As the library clearly defines in what units input 
    and output quantities are expressed, the user code can apply its own appropriate conversions that need not match 
    the internal system used by the library. Hence exposing these constants to users was half baked. (2) The naming of 
