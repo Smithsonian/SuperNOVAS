@@ -3,7 +3,7 @@
 
 The _SuperNOVAS_ library is for everyone. While I, Attila Kovacs, am the maintainer of this library at the 
 Smithsonian, I absolutely rely on developers like you to make it better. Whether there is a nagging issue you would 
-like to fix, or a new feature you'd like to  see, you can make a difference yourself. I very much encourange you to 
+like to fix, or a new feature you'd like to see, you can make a difference yourself. I very much encourage you to 
 make this project a little bit your own, by submitting pull requests with fixes and enhancement. When you are ready, 
 here are the typical steps for contributing to the project:
 
