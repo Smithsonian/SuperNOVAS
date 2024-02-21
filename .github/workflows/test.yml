@@ -33,7 +33,7 @@ jobs:
     - name: Generate coverage data
       run: make coverage
       
-    - name: Upload coverage to Codecov
+    - name: Upload coverage to Codecov.io
       uses: codecov/codecov-action@v3
       continue-on-error: true
       with:
@@ -42,4 +42,8 @@ jobs:
         name: codecov
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
-   
+             
+    - name: Upload coverage to Coveralls.io
+      continue-on-error: true
+      uses: coverallsapp/github-action@v2
+      
