@@ -25,7 +25,6 @@
 
 #include "novas.h"
 
-
 /// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
@@ -90,13 +89,18 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
   }
 
   // Select 'targ' according to the value of 'body'.
-  if(body == NOVAS_SUN) targ = 11L;
-  else if(body == NOVAS_MOON) targ = 10L;
-  else targ = (long) body;
+  if(body == NOVAS_SUN)
+    targ = 11L;
+  else if(body == NOVAS_MOON)
+    targ = 10L;
+  else
+    targ = (long) body;
 
   // Select 'cent' according to the value of 'origin'.
-  if(origin == NOVAS_BARYCENTER) cent = 12L;
-  else if(origin == NOVAS_HELIOCENTER) cent = 11L;
+  if(origin == NOVAS_BARYCENTER)
+    cent = 12L;
+  else if(origin == NOVAS_HELIOCENTER)
+    cent = 11L;
   else {
     errno = EINVAL;
     return 1;
@@ -114,9 +118,11 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
   }
 
   // Decompose 'posvel' into 'position' and 'velocity'.
-  for(i = 3; --i >= 0; ) {
-    if(position) position[i] = posvel[i];
-    if(velocity) velocity[i] = posvel[i + 3];
+  for(i = 3; --i >= 0;) {
+    if(position)
+      position[i] = posvel[i];
+    if(velocity)
+      velocity[i] = posvel[i + 3];
   }
 
   return 0;
@@ -164,7 +170,8 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  *
  * @since 1.0
  */
-short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
   long targ, cent, err_flg = 0;
   double posvel[6] = { };
   int i;
@@ -180,13 +187,18 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   }
 
   // Select 'targ' according to the value of 'body'.
-  if(body == NOVAS_SUN) targ = 11L;
-  else if(body == NOVAS_MOON) targ = 10L;
-  else targ = (long) body;
+  if(body == NOVAS_SUN)
+    targ = 11L;
+  else if(body == NOVAS_MOON)
+    targ = 10L;
+  else
+    targ = (long) body;
 
   // Select 'cent' according to the value of 'origin'.
-  if(origin == NOVAS_BARYCENTER) cent = 12L;
-  else if(origin == NOVAS_HELIOCENTER) cent = 11L;
+  if(origin == NOVAS_BARYCENTER)
+    cent = 12L;
+  else if(origin == NOVAS_HELIOCENTER)
+    cent = 11L;
   else {
     errno = EINVAL;
     return 1;
@@ -204,7 +216,7 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   }
 
   // Decompose 'posvel' into 'position' and 'velocity'.
-  for(i = 3; --i >= 0; ) {
+  for(i = 3; --i >= 0;) {
     position[i] = posvel[i];
     velocity[i] = posvel[i + 3];
   }

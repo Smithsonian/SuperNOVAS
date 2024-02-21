@@ -2839,18 +2839,23 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // ** Luni-solar nutation. **
   // Summation of luni-solar nutation series (in reverse order).
-  for(i = 678; --i >= 0; ) {
+  for(i = 678; --i >= 0;) {
     const char *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
     double arg = 0.0, sarg, carg;
 
-    if(n[0]) arg += n[0] * a.l;
-    if(n[1]) arg += n[1] * a.l1;
-    if(n[2]) arg += n[2] * a.F;
-    if(n[3]) arg += n[3] * a.D;
-    if(n[4]) arg += n[4] * a.Omega;
+    if(n[0])
+      arg += n[0] * a.l;
+    if(n[1])
+      arg += n[1] * a.l1;
+    if(n[2])
+      arg += n[2] * a.F;
+    if(n[3])
+      arg += n[3] * a.D;
+    if(n[4])
+      arg += n[4] * a.Omega;
 
     sarg = sin(arg);
     carg = cos(arg);
@@ -2863,27 +2868,41 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // ** Planetary nutation. **
 
   // Summation of planetary nutation series (in reverse order).
-  for(i = 687; --i >= 0; ) {
+  for(i = 687; --i >= 0;) {
     const char *n = &napl_t[i][0];
     const short *c = &cpl_t[i][0];
 
     // Argument and functions.
     double arg = 0.0, sarg, carg;
 
-    if(n[0]) arg += n[0] * a.l;
-    if(n[1]) arg += n[1] * a.l1;
-    if(n[2]) arg += n[2] * a.F;
-    if(n[3]) arg += n[3] * a.D;
-    if(n[4]) arg += n[4] * a.Omega;
-    if(n[5]) arg += n[5] * alme;
-    if(n[6]) arg += n[6] * alve;
-    if(n[7]) arg += n[7] * alea;
-    if(n[8]) arg += n[8] * alma;
-    if(n[9]) arg += n[9] * alju;
-    if(n[10]) arg += n[10] * alsa;
-    if(n[11]) arg += n[11] * alur;
-    if(n[12]) arg += n[12] * alne;
-    if(n[13]) arg += n[13] * apa;
+    if(n[0])
+      arg += n[0] * a.l;
+    if(n[1])
+      arg += n[1] * a.l1;
+    if(n[2])
+      arg += n[2] * a.F;
+    if(n[3])
+      arg += n[3] * a.D;
+    if(n[4])
+      arg += n[4] * a.Omega;
+    if(n[5])
+      arg += n[5] * alme;
+    if(n[6])
+      arg += n[6] * alve;
+    if(n[7])
+      arg += n[7] * alea;
+    if(n[8])
+      arg += n[8] * alma;
+    if(n[9])
+      arg += n[9] * alju;
+    if(n[10])
+      arg += n[10] * alsa;
+    if(n[11])
+      arg += n[11] * alur;
+    if(n[12])
+      arg += n[12] * alne;
+    if(n[13])
+      arg += n[13] * apa;
 
     sarg = sin(arg);
     carg = cos(arg);
@@ -2894,8 +2913,10 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   }
 
   // Total: Add planetary and luni-solar components.
-  if(dpsi) *dpsi = (dpsils + dpsipl) * factor;
-  if(deps) *deps = (depsls + depspl) * factor;
+  if(dpsi)
+    *dpsi = (dpsils + dpsipl) * factor;
+  if(deps)
+    *deps = (depsls + depspl) * factor;
 
   return 0;
 }
@@ -3118,9 +3139,8 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // ** Luni-solar nutation. **
   fund_args(t, &a);
 
-
   // Summation of luni-solar nutation series (in reverse order)
-  for(i = 77; --i >= 0; ) {
+  for(i = 77; --i >= 0;) {
     const char *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
@@ -3128,11 +3148,16 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     double arg = 0.0;
     double sarg, carg;
 
-    if(n[0]) arg += n[0] * a.l;
-    if(n[1]) arg += n[1] * a.l1;
-    if(n[2]) arg += n[2] * a.F;
-    if(n[3]) arg += n[3] * a.D;
-    if(n[4]) arg += n[4] * a.Omega;
+    if(n[0])
+      arg += n[0] * a.l;
+    if(n[1])
+      arg += n[1] * a.l1;
+    if(n[2])
+      arg += n[2] * a.F;
+    if(n[3])
+      arg += n[3] * a.D;
+    if(n[4])
+      arg += n[4] * a.Omega;
 
     sarg = sin(arg);
     carg = cos(arg);
@@ -3143,8 +3168,10 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   }
 
   // Total: Add planetary and luni-solar components.
-  if(dpsi) *dpsi = dpsils * factor - 0.000135 * ASEC2RAD;
-  if(deps) *deps = depsls * factor + 0.000388 * ASEC2RAD;
+  if(dpsi)
+    *dpsi = dpsils * factor - 0.000135 * ASEC2RAD;
+  if(deps)
+    *deps = depsls * factor + 0.000388 * ASEC2RAD;
 
   return 0;
 }
@@ -4205,7 +4232,6 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   const double alur = planet_lon(t, NOVAS_URANUS);
   const double alne = planet_lon(t, NOVAS_NEPTUNE);
 
-
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
   const double apa = accum_prec(t);
@@ -4221,17 +4247,22 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // ** Luni-solar nutation. **
   // Summation of luni-solar nutation series (in reverse order).
-  for(i = 323; --i >= 0; ) {
+  for(i = 323; --i >= 0;) {
     const char *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
     arg = 0.0;
-    if(n[0]) arg += n[0] * a.l;
-    if(n[1]) arg += n[1] * a.l1;
-    if(n[2]) arg += n[2] * a.F;
-    if(n[3]) arg += n[3] * a.D;
-    if(n[4]) arg += n[4] * a.Omega;
+    if(n[0])
+      arg += n[0] * a.l;
+    if(n[1])
+      arg += n[1] * a.l1;
+    if(n[2])
+      arg += n[2] * a.F;
+    if(n[3])
+      arg += n[3] * a.D;
+    if(n[4])
+      arg += n[4] * a.Omega;
 
     sarg = sin(arg);
     carg = cos(arg);
@@ -4241,30 +4272,43 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     depsls += (c[3] + c[4] * t) * carg + c[5] * sarg;
   }
 
-
   // ** Planetary nutation. **
 
   // Summation of planetary nutation series (in reverse order).
-  for(i = 165; --i >= 0; ) {
+  for(i = 165; --i >= 0;) {
     const char *n = &napl_t[i][0];
     const short *c = &cpl_t[i][0];
 
     // Argument and functions.
     arg = 0.0;
-    if(n[0]) arg += n[0] * a.l;
-    if(n[1]) arg += n[1] * a.l1;
-    if(n[2]) arg += n[2] * a.F;
-    if(n[3]) arg += n[3] * a.D;
-    if(n[4]) arg += n[4] * a.Omega;
-    if(n[5]) arg += n[5] * alme;
-    if(n[6]) arg += n[6] * alve;
-    if(n[7]) arg += n[7] * alea;
-    if(n[8]) arg += n[8] * alma;
-    if(n[9]) arg += n[9] * alju;
-    if(n[10]) arg += n[10] * alsa;
-    if(n[11]) arg += n[11] * alur;
-    if(n[12]) arg += n[12] * alne;
-    if(n[13]) arg += n[13] * apa;
+    if(n[0])
+      arg += n[0] * a.l;
+    if(n[1])
+      arg += n[1] * a.l1;
+    if(n[2])
+      arg += n[2] * a.F;
+    if(n[3])
+      arg += n[3] * a.D;
+    if(n[4])
+      arg += n[4] * a.Omega;
+    if(n[5])
+      arg += n[5] * alme;
+    if(n[6])
+      arg += n[6] * alve;
+    if(n[7])
+      arg += n[7] * alea;
+    if(n[8])
+      arg += n[8] * alma;
+    if(n[9])
+      arg += n[9] * alju;
+    if(n[10])
+      arg += n[10] * alsa;
+    if(n[11])
+      arg += n[11] * alur;
+    if(n[12])
+      arg += n[12] * alne;
+    if(n[13])
+      arg += n[13] * apa;
 
     sarg = sin(arg);
     carg = cos(arg);
@@ -4274,10 +4318,11 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     depspl += c[2] * sarg + c[3] * carg;
   }
 
-
   // Total: Add planetary and luni-solar components.
-  if(dpsi) *dpsi = (dpsipl + dpsils) * factor;
-  if(deps) *deps = (depspl + depsls) * factor;
+  if(dpsi)
+    *dpsi = (dpsipl + dpsils) * factor;
+  if(deps)
+    *deps = (depspl + depsls) * factor;
 
   return 0;
 }

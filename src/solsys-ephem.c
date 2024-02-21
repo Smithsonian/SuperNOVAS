@@ -38,7 +38,8 @@
  * @since 1.0
  * @author Attila Kovacs
  */
-short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
+        double *position, double *velocity) {
   static const char *names[] = NOVAS_PLANET_NAMES_INIT;
 
   novas_ephem_provider ephem_call;
@@ -62,7 +63,8 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
   }
 
   error = ephem_call(names[body], body, jd_tdb[0], jd_tdb[1], &o, position, velocity);
-  if(error) return 2;
+  if(error)
+    return 2;
 
   if(o != origin) {
     double pos0[3], vel0[3];
@@ -70,11 +72,14 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
     int ref = (o == NOVAS_BARYCENTER) ? NOVAS_SUN : NOVAS_SSB;
 
     error = ephem_call(names[ref], ref, jd_tdb[0], jd_tdb[1], &o, pos0, vel0);
-    if(error) return 2;
+    if(error)
+      return 2;
 
     for(i = 0; i < 3; i++) {
-      if(position) position[i] -= pos0[i];
-      if(velocity) velocity[i] -= vel0[i];
+      if(position)
+        position[i] -= pos0[i];
+      if(velocity)
+        velocity[i] -= vel0[i];
     }
   }
 
@@ -103,7 +108,8 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
  * @since 1.0
  * @author Attila Kovacs
  */
-short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
   const double jd_tdb2[2] = { jd_tdb };
   return planet_ephem_provider_hp(jd_tdb2, body, origin, position, velocity);
 }

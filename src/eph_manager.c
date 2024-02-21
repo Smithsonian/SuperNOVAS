@@ -21,8 +21,6 @@
 
 #include "eph_manager.h"
 
-
-
 /**
  * Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
  *
@@ -49,7 +47,6 @@ double *BUFFER;     ///< (<i>for internal use</i>) Array containing Chebyshev co
 
 /** The currently opened JPL DE planetary ephemeris file */
 FILE *EPHFILE = NULL;
-
 
 /**
  * This function opens a JPL planetary ephemeris file and
@@ -170,9 +167,12 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
         break;
 
       default:            // An unknown DE file was opened. Close the file and return an error code.
-        if(jd_begin) *jd_begin = 0.0;
-        if(jd_end) *jd_end = 0.0;
-        if(de_number) *de_number = 0;
+        if(jd_begin)
+          *jd_begin = 0.0;
+        if(jd_end)
+          *jd_end = 0.0;
+        if(de_number)
+          *de_number = 0;
         fclose(EPHFILE);
         return 11;
         break;
@@ -180,14 +180,16 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
     BUFFER = (double*) calloc(RECORD_LENGTH / 8, sizeof(double));
 
-    if(de_number) *de_number = (short) denum;
-    if(jd_begin) *jd_begin = SS[0];
-    if(jd_end) *jd_end = SS[1];
+    if(de_number)
+      *de_number = (short) denum;
+    if(jd_begin)
+      *jd_begin = SS[0];
+    if(jd_end)
+      *jd_end = SS[1];
   }
 
   return 0;
 }
-
 
 /**
  * Closes a JPL planetary ephemeris file and frees the memory.
@@ -248,7 +250,8 @@ short ephem_close(void) {
  *
  * @sa ephem_open()
  */
-short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position, double *velocity) {
+short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position,
+        double *velocity) {
   int i, error = 0;
   int do_earth = 0, do_moon = 0;
 
@@ -276,18 +279,23 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
 
   // Check for instances of target or center being Earth or Moon,
   // and for target or center being the Earth-Moon barycenter.
-  if((target == DE_EARTH) || (origin == DE_EARTH)) do_moon = 1;
-  if((target == DE_MOON) || (origin == DE_MOON)) do_earth = 1;
-  if((target == DE_EMB) || (origin == DE_EMB)) do_earth = 1;
+  if((target == DE_EARTH) || (origin == DE_EARTH))
+    do_moon = 1;
+  if((target == DE_MOON) || (origin == DE_MOON))
+    do_earth = 1;
+  if((target == DE_EMB) || (origin == DE_EMB))
+    do_earth = 1;
 
   if(do_earth) {
     error = state(jed, DE_EARTH, pos_earth, vel_earth);
-    if(error) return error;
+    if(error)
+      return error;
   }
 
   if(do_moon) {
     error = state(jed, DE_MOON, pos_moon, vel_moon);
-    if(error) return error;
+    if(error)
+      return error;
   }
 
   // Make call to State for target object.
@@ -303,9 +311,11 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
       target_vel[i] = vel_earth[i];
     }
   }
-  else error = state(jed, target, target_pos, target_vel);
+  else
+    error = state(jed, target, target_pos, target_vel);
 
-  if(error) return error;
+  if(error)
+    return error;
 
   // Make call to State for center object.
 
@@ -325,9 +335,11 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
       center_vel[i] = vel_earth[i];
     }
   }
-  else error = state(jed, origin, center_pos, center_vel);
+  else
+    error = state(jed, origin, center_pos, center_vel);
 
-  if(error) return error;
+  if(error)
+    return error;
 
   // Check for cases of Earth as target and Moon as center or vice versa.
   if((target == DE_EARTH) && (origin == DE_MOON)) {
@@ -423,7 +435,8 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
   }
 
   // Set units based on value of the 'KM' flag.
-  if(KM) t[1] = SS[2] * 86400.0;
+  if(KM)
+    t[1] = SS[2] * 86400.0;
   else {
     t[1] = SS[2];
     aufac = 1.0 / JPLAU;
@@ -439,11 +452,13 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
   jd[0] += jd[2];
 
   // Return error code if date is out of range.
-  if((jd[0] < SS[0]) || ((jd[0] + jd[3]) > SS[1])) return 2;
+  if((jd[0] < SS[0]) || ((jd[0] + jd[3]) > SS[1]))
+    return 2;
 
   // Calculate record number and relative time interval.
   nr = (long) ((jd[0] - SS[0]) / SS[2]) + 3;
-  if(jd[0] == SS[1]) nr -= 2;
+  if(jd[0] == SS[1])
+    nr -= 2;
   t[0] = ((jd[0] - ((double) (nr - 3) * SS[2] + SS[0])) + jd[3]) / SS[2];
 
   // Read correct record if it is not already in memory.
@@ -573,7 +588,7 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
  * @return          0 if successful, or -1 if the output pointer argument is NULL.
  */
 int split(double tt, double *fr) {
-  if (!fr) {
+  if(!fr) {
     errno = EINVAL;
     return -1;
   }

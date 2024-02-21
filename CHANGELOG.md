@@ -108,9 +108,10 @@ This is the initial release of the SuperNOVAS library.
  
  - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods such as `astro_star()`
    `local_star()`, `topo_planet()` etc.
- 
- - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB
-   time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric calculations.
+   
+ - New time conversion utilities `tt2tdb()`, `get_utc_to_tt()`, and `get_ut1_to_tt()` make it simpler to convert 
+   between UTC, UT1, TT, and TDB time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric 
+   calculations.
  
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
@@ -120,7 +121,7 @@ This is the initial release of the SuperNOVAS library.
    build.)
 
  - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
-   default NOVAS object names were converted to upper-case, making them effectively case-insensitive.)
+   default NOVAS `object` names were converted to upper-case, making them effectively case-insensitive.)
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
@@ -138,14 +139,14 @@ This is the initial release of the SuperNOVAS library.
    error code is returned for compatibility).
    
  - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
-   use functions such as `perror()` ans `strerror()` to print human-readable error messages.
+   use functions such as `perror()` and `strerror()` to print human-readable error messages.
    
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
    `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
    should not be used as if they were valid. (No more sneaky silent errors.)
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
-   required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
+   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
    This eliminates the need to declare dummy variables in your application code for quantities you do not require.
 
  - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
@@ -166,9 +167,10 @@ This is the initial release of the SuperNOVAS library.
  - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
  
- - `make_object()` ignored the specified number argument for sidereal sources (set to 0), but we set it to the 
-   specified value assuming the caller provided it for a reason. (It does not change the separate `starnumber` value 
-   that is included in the `star` argument however)
+ - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
+   in the supplied `cat_entry` structure).
+   
+ - `cio_location()` will always return a valid value as long as neither the output pointer arguments is NULL. 
    
  - `sun_eph()` in `solsysl3.c` evaluates the series in reverse order compared to NOVAS C 3.1, accumulating the least 
    significant terms first, and thus resulting in higher precision result in the end.

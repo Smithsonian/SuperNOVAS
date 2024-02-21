@@ -64,7 +64,8 @@
  *
  * @since 1.0
  */
-short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
   short target, center = 0;
 
   /*
@@ -99,9 +100,12 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
    Select 'center' according to the value of 'origin'.
    */
 
-  if(origin == NOVAS_BARYCENTER) center = 11;
-  else if(origin == NOVAS_HELIOCENTER) center = 10;
-  else if(origin == 2) center = 2;
+  if(origin == NOVAS_BARYCENTER)
+    center = 11;
+  else if(origin == NOVAS_HELIOCENTER)
+    center = 10;
+  else if(origin == 2)
+    center = 2;
 
   /*
    Obtain position and velocity vectors.  The Julian date is split
@@ -153,7 +157,8 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
  *
  * @since 1.0
  */
-short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
   const double tjd[2] = { jd_tdb, 0.0 };
   return planet_eph_manager_hp(tjd, body, origin, position, velocity);
 }

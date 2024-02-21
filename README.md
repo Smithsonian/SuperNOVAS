@@ -272,7 +272,7 @@ terms differently:
 
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
- | Catalog coordinate system  | J2000 or B1950                | International Celestial Reference System (ICRS)   |
+ | Catalog coordinate system  | FK5 (B1950) or FK5 (J2000)    | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
@@ -548,14 +548,14 @@ before that level of accuracy is reached.
    error code is returned for compatibility).
    
  - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
-   use functions such as `perror()` ans `strerror()` to print human-readable error messages.
+   use functions such as `perror()` and `strerror()` to print human-readable error messages.
    
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
    `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
    should not be used as if they were valid. (No more sneaky silent errors.)
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
-   required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
+   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
    This eliminates the need to declare dummy variables in your application code.
 
  - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
@@ -567,16 +567,17 @@ before that level of accuracy is reached.
    data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
    data modifications.
    
- - Source names and catalog names can both be up to 64 bytes (including termination), up from 51 and 4 respectively
-   NOVAS C, while keeping `struct` layouts the same thanks to alignment.
+ - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
+   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchage of `cat_entry` records
+   with NOVAS C 3.1.
    
  - Runtime configuration:
 
-   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, and
-     `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
+   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, 
+     and `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
      `planet_ephem_provider_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
      `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
-     (e.g. from a JPL ephemeris file).
+     (e.g. from a JPL `.bsp` file).
  
    * If CIO locations vs GSRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
      specify the location of the binary CIO interpolation table (e.g. `cio_ra.bin`) to use, even if the library was
@@ -611,8 +612,9 @@ before that level of accuracy is reached.
  - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods such as `astro_star()`
    `local_star()`, `topo_planet()` etc.
  
- - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB
-   time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric calculations.
+ - New time conversion utilities `tt2tdb()`, `get_utc_to_tt()`, and `get_ut1_to_tt()` make it simpler to convert 
+   between UTC, UT1, TT, and TDB time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric 
+   calculations.
  
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
@@ -622,15 +624,17 @@ before that level of accuracy is reached.
    build.)
 
  - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
-   default NOVAS object names were converted to upper-case, making them effectively case-insensitive.)
+   default NOVAS `object` names were converted to upper-case, making them effectively case-insensitive.)
+
+ - `cio_location()` will always return a valid value as long as neither the output pointer arguments is NULL.
+
+ - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
+   in the supplied `cat_entry` structure).
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
- 
+
  - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
- 
- - Changed `make_object()` retains the specified number argument (which can be different from the `starnumber` value
-   in the supplied `cat_entry` structure).
    
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
@@ -646,10 +650,11 @@ before that level of accuracy is reached.
 
 
 If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
-sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as JPL Horizons 
-or the Minor Planet Center. Given the NOVAS C heritage, and some added SuperNOVAS flexibility in this area, you have 
-several options on doing that. These are listed from the most flexible (and preferred) to the least flexible (old 
-ways).
+sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as 
+[JPL Horizons](https://ssd.jpl.nasa.gov/horizons/app.html#/) or the 
+[Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html). Given the NOVAS C heritage, and some added 
+SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most flexible 
+(and preferred) to the least flexible (old ways).
 
  1. [Universal ephemeris data / service integration](#universal-ephemerides)
  2. [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
@@ -793,7 +798,7 @@ alike.
 Releases of the library shall follow a quarterly release schedule. You may expect upcoming releases 
 to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as needed
 basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that 
-addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a release will 
+addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a new release will 
 actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 
 being published.
 
@@ -803,10 +808,11 @@ significant API changes) may be provided as needed to address issues. New featur
 feature releases, although they may also be rolled out in bug-fix releases as long as they do not affect the existing 
 API -- in line with the desire to keep bug-fix releases fully backwards compatible with their parent versions.
 
-In the month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be available on github
-briefly, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be tested by 
-adopters before the releases are finalized. Please use due diligence to test such release candidates with your code 
-when they become available to avoid unexpected surprises when the finalized release is published. Release candidates 
-are typically available for one week only before they are superseded either by another, or by the finalized release.
+In the weeks and month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be published 
+temporarily on github, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be 
+tested by adopters before the releases are finalized. Please use due diligence to test such release candidates with 
+your code when they become available to avoid unexpected surprises when the finalized release is published. Release 
+candidates are typically available for one week only before they are superseded either by another, or by the finalized 
+release.
 
 

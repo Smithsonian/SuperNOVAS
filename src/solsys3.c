@@ -20,14 +20,12 @@
 
 #include "novas.h"
 
-
 /// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
 // Additional local function prototypes
 int sun_eph(double jd, double *ra, double *dec, double *dis);
-
 
 /**
  * Whether the high-precision call is allowed to return a low-precision result. If set to 0
@@ -94,7 +92,8 @@ void enable_earth_sun_hp(int value) {
  * @sa novas_planet_provider
  *
  */
-short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
   int i;
 
   // The arrays below contain masses and orbital elements for the four
@@ -131,7 +130,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
     tmass = 1.0 + 5.977e-6;
 
-    for(i = 4; --i >= 0; ) {
+    for(i = 4; --i >= 0;) {
       // Compute sine and cosine of orbital angles.
       const double si = sin(pj[i]);
       const double ci = cos(pj[i]);
@@ -170,12 +169,13 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Form heliocentric coordinates of the Sun or Earth, depending on
   // 'body'.  Velocities are obtained from crude numerical differentiation.
   if((body == 0) || (body == 1) || (body == NOVAS_SUN)) { // Sun
-    for(i = 0; i < 3; i++) position[i] = velocity[i] = 0.0;
+    for(i = 0; i < 3; i++)
+      position[i] = velocity[i] = 0.0;
   }
   else if((body == 2) || (body == NOVAS_EARTH)) { /* Earth */
     double p[3][3];
 
-    for(i = 3; --i >= 0; ) {
+    for(i = 3; --i >= 0;) {
       const double qjd = jd_tdb + (double) (i - 1) * 0.1;
       double ras, decs, diss;
 
@@ -188,7 +188,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       p[i][2] = -position[2];
     }
 
-    for(i = 3; --i >= 0; ) {
+    for(i = 3; --i >= 0;) {
       position[i] = p[1][i];
       velocity[i] = (p[2][i] - p[0][i]) / 0.2;
     }
@@ -210,7 +210,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       memset(vbary, 0, sizeof(vbary));
 
       // The following loop cycles once for each of the four planets.
-      for(i = 4; --i >= 0; ) {
+      for(i = 4; --i >= 0;) {
         // Compute mass factor and add in to total displacement.
         const double f = 1.0 / (pm[i] * tmass);
 
@@ -226,7 +226,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
         const double anr = pn[i] / (1.0 - e * cosu);
         int k;
 
-        for (k = 3; --k >= 0; ) {
+        for(k = 3; --k >= 0;) {
           // Compute planet's position and velocity wrt eq & eq J2000.
           const double p = a[k][i] * (cosu - e) + b[k][i] * sinu;
           const double v = anr * (-a[k][i] * sinu + b[k][i] * cosu);
@@ -239,7 +239,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       tlast = jd_tdb;
     }
 
-    for(i = 3; --i >= 0; ) {
+    for(i = 3; --i >= 0;) {
       position[i] -= pbary[i];
       velocity[i] -= vbary[i];
     }
@@ -247,8 +247,6 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
   return 0;
 }
-
-
 
 /**
  * It may provide the position and velocity of the Earth and Sun, the same as
@@ -295,7 +293,8 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
         double *velocity) {
 
   int error = earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity);
-  if(error) return error;
+  if(error)
+    return error;
 
   return allow_lp_for_hp ? 0 : 3;
 }
@@ -342,8 +341,7 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
 
   int i;
 
-  static const struct sun_con con[50] = {
-          { 403406, 0, 4.721964, 1.621043 }, //
+  static const struct sun_con con[50] = { { 403406, 0, 4.721964, 1.621043 }, //
           { 195207, -97597, 5.937458, 62830.348067 }, //
           { 119433, -59715, 1.115589, 62830.821524 }, //
           { 112392, -56188, 5.781616, 62829.634302 }, //
@@ -375,8 +373,7 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
           { 32, -24, 1.14, 117906.27 }, //
           { 29, -13, 2.84, 55075.75 }, //
           { 28, 0, 5.96, -7961.39 }, //
-          { 27, -9, 5.09, 188489.81 },
-          { 27, 0, 1.72, 2132.19 }, //
+          { 27, -9, 5.09, 188489.81 }, { 27, 0, 1.72, 2132.19 }, //
           { 25, -17, 2.56, 109771.03 }, //
           { 24, -11, 1.92, 54868.56 }, //
           { 21, 0, 0.09, 25443.93 }, //
@@ -405,11 +402,12 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
   t = u * 100.0;
 
   // Compute longitude and distance terms from the series.
-  for(i = 50; --i >= 0; ) {
+  for(i = 50; --i >= 0;) {
     const struct sun_con *c = &con[i];
     const double arg = c->alpha + c->nu * u;
     sum_lon += c->l * sin(arg);
-    if(c->r) sum_r += c->r * cos(arg);
+    if(c->r)
+      sum_r += c->r * cos(arg);
   }
 
   // Compute longitude, latitude, and distance referred to mean equinox
@@ -428,7 +426,8 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
   // and equinox of date.
   sin_lon = sin(lon);
   *ra = atan2((cos(emean) * sin_lon), cos(lon)) * RAD2DEG;
-  if(*ra < 0.0) *ra += 360.0;
+  if(*ra < 0.0)
+    *ra += 360.0;
   *ra = *ra / 15.0;
 
   *dec = asin(sin(emean) * sin_lon) * RAD2DEG;
@@ -437,8 +436,8 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
 }
 
 #if DEFAULT_SOLSYS == 3
-  novas_planet_provider default_planetcalc = earth_sun_calc;
-  novas_planet_provider_hp default_planetcalc_hp = earth_sun_calc_hp;
+novas_planet_provider default_planetcalc = earth_sun_calc;
+novas_planet_provider_hp default_planetcalc_hp = earth_sun_calc_hp;
 #elif !BUILTIN_SOLSYS3
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   return earth_sun_calc(jd_tdb, body, origin, position, velocity);
