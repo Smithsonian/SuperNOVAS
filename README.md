@@ -105,7 +105,7 @@ Here are some links to SuperNOVAS related content online:
    of ephemeris data.
 
 -----------------------------------------------------------------------------
-https://github.com/attipaci/attipaci.gitgub.io
+
 <a name="compatibility"></a>
 ## Compatibility with NOVAS C 3.1
 
