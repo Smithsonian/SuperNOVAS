@@ -138,6 +138,38 @@ static int test_itrs_hor_itrs() {
   return 0;
 }
 
+static int test_cel2ter2cel() {
+  double l = vlen(pos0), p0[3], p[3];
+  int i;
+
+  for(i=0; i < 3; i++) p0[i] = pos0[i] / l;
+
+  if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
+
+  if(!is_ok("cel2ter2cel:cel2ter:1", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:1", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p, p))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:2", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:2", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p, p))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:3", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:3", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p, p))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:dyn", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:dyn", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:era", cel2ter(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:era", ter2cel(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p, p))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+
+  return 0;
+}
+
+
 static int test_equ2hor() {
   int a;
 
@@ -459,6 +491,7 @@ static int test_observers() {
   if(test_terra()) n++;
   if(test_geo_posvel()) n++;
   if(test_bary2obs()) n++;
+  if(test_cel2ter2cel()) n++;
 
   make_observer_in_space(ps, vs, &obs);
   n += test_source();
