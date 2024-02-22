@@ -34,7 +34,7 @@ data:
 
 .PRECIOUS: %.c.gcov
 %.c.gcov: %.gcno %.gcda
-	gcov $*
+	gcov -b $*
 
 .PRECIOUS: %.gcno %.gcda
 %.gcno %.gcda: ../src/%.c
