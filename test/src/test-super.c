@@ -143,13 +143,13 @@ static int test_equ2hor() {
 
   if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
 
-  for(a = 0; a < 24.0; a += 3) {
+  for(a = 0; a < 24.0; a += 2) {
     int d;
     for(d = -90; d <= 90; d += 30) {
       double ra = a, dec = d, az, za, rar, decr;
 
-      if(!is_ok("itrs_to_hor:rar:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, NULL, &decr))) return 1;
-      if(!is_ok("itrs_to_hor:decr:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, &rar, NULL))) return 1;
+      if(!is_ok("equ2hor:rar:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, NULL, &decr))) return 1;
+      if(!is_ok("equ2hor:decr:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, &rar, NULL))) return 1;
     }
   }
 
@@ -228,13 +228,16 @@ static int test_tod_vs_cirs() {
 static int test_equ_ecl() {
   int a;
 
-  for(a = 0; a < 24; a += 3) {
-    double ra0 = a, dec0 = 0.0, elon, elat, ra, dec;
+  for(a = 0; a < 24; a += 2) {
+    int d;
+    for(d = -90; d <= 90; d += 30) {
+      double ra0 = a, dec0 = d, elon, elat, ra, dec;
 
-    if(!is_ok("equ2ecl", equ2ecl(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, ra0, dec0, &elon, &elat))) return 1;
-    if(!is_ok("ecl2equ", ecl2equ(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, elon, elat, &ra, &dec))) return 1;
-    if(!is_ok("equ_ecl_equ:ra", fabs(remainder(ra - ra0, 24.0)) > 1e-8)) return 1;
-    if(!is_ok("equ_ecl_equ:dec", fabs(dec - dec0) > 1e-7)) return 1;
+      if(!is_ok("equ2ecl", equ2ecl(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, ra0, dec0, &elon, &elat))) return 1;
+      if(!is_ok("ecl2equ", ecl2equ(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, elon, elat, &ra, &dec))) return 1;
+      if(!is_ok("equ_ecl_equ:ra", fabs(remainder((ra - ra0), 24.0) * cos(dec0 * DEG2RAD)) > 1e-8)) return 1;
+      if(!is_ok("equ_ecl_equ:dec", fabs(dec - dec0) > 1e-7)) return 1;
+    }
   }
 
   return 0;
@@ -244,13 +247,16 @@ static int test_equ_ecl() {
 static int test_equ_gal() {
   int a;
 
-  for(a = 0; a < 24; a += 3) {
-    double ra0 = a, dec0 = 0.0, glon, glat, ra, dec;
+  for(a = 0; a < 24; a += 2) {
+    int d;
+    for(d = -90; d <= 90; d += 30) {
+      double ra0 = a, dec0 = d, glon, glat, ra, dec;
 
-    if(!is_ok("equ2gal", equ2gal(ra0, dec0, &glon, &glat))) return 1;
-    if(!is_ok("gal2equ", gal2equ(glon, glat, &ra, &dec))) return 1;
-    if(!is_ok("equ_gal_equ:ra", fabs(remainder(ra - ra0, 24.0)) > 1e-8)) return 1;
-    if(!is_ok("equ_gal_equ:dec", fabs(dec - dec0) > 1e-7)) return 1;
+      if(!is_ok("equ2gal", equ2gal(ra0, dec0, &glon, &glat))) return 1;
+      if(!is_ok("gal2equ", gal2equ(glon, glat, &ra, &dec))) return 1;
+      if(!is_ok("equ_gal_equ:ra", fabs(remainder((ra - ra0), 24.0) * cos(dec0 * DEG2RAD)) > 1e-8)) return 1;
+      if(!is_ok("equ_gal_equ:dec", fabs(dec - dec0) > 1e-7)) return 1;
+    }
   }
 
   return 0;

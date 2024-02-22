@@ -2200,11 +2200,10 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
   if(ref_option) {
     // Get refraction in zenith distance.
     const double zd0 = *zd;
-    const double refr = refract_astro(location, ref_option, *zd);
-    *zd -= refr;
+    const double refr = refract_astro(location, ref_option, zd0);
 
     // Apply refraction to celestial coordinates of object.
-    if((refr > 0.0) && (*zd > 3.0e-4)) {
+    if(refr > 0.0) {
       // Shift position vector of object in celestial system to account
       // for refraction (see USNO/AA Technical Note 1998-09).
       const double sinzd = sin(*zd * DEGREE);
@@ -2213,6 +2212,8 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
       const double coszd0 = cos(zd0 * DEGREE);
 
       int j;
+
+      *zd -= refr;
 
       // Compute refracted position vector.
       for(j = 3; --j >= 0;)
