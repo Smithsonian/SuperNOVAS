@@ -2,8 +2,8 @@
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 ![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/check.yml/badge.svg)
 ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
-<a href="https://coveralls.io/github/Smithsonian/SuperNOVAS?branch=main">
- ![Coverage Status](https://coveralls.io/repos/github/Smithsonian/SuperNOVAS/badge.svg?branch=main)
+<a href="https://codecov.io/gh/Smithsonian/SuperNOVAS">
+ ![Coverage Status](https://codecov.io/gh/Smithsonian/SuperNOVAS/graph/badge.svg?token=E11OFOISMW)
 </a>
 
 <picture>
