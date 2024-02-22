@@ -118,15 +118,15 @@ static int test_refract() {
 
   errno = 0;
   double r = refract(NULL, NOVAS_STANDARD_ATMOSPHERE, 30.0);
-  if(check("refract_loc", 1, r == 0.0 && errno == EINVAL)) n++;
+  if(check("refract:loc", 1, r == 0.0 && errno == EINVAL)) n++;
 
   errno = 0;
   r = refract(&o, -1, 30.0);
-  if(check("refract_loc", 1, r == 0.0 && errno == EINVAL)) n++;
+  if(check("refract:model", 1, r == 0.0 && errno == EINVAL)) n++;
 
   errno = 0;
-  r = refract(&o, NOVAS_STANDARD_ATMOSPHERE, 90.11);
-  if(check("refract_loc", 1, r == 0.0 && errno == EINVAL)) n++;
+  r = refract(&o, NOVAS_STANDARD_ATMOSPHERE, 91.0);
+  if(check("refract:zd", 1, r == 0.0)) n++;
 
   return n;
 }

@@ -6103,17 +6103,17 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
     errno = EINVAL;
     return 0.0;
   }
+
   if(option != NOVAS_STANDARD_ATMOSPHERE && option != NOVAS_WEATHER_AT_LOCATION) {
     errno = EINVAL;
     return 0.0;
   }
 
-  // Compute refraction only for zenith distances between -0.1 and 90.1 degrees.
-  if((zd_obs < -0.1) || (zd_obs > 90.1)) {
-    if(zd_obs > 0)
-      errno = EINVAL;
+  zd_obs = fabs(zd_obs);
+
+  // Compute refraction up to zenith distance 90.1 degrees.
+  if(zd_obs > 90.1)
     return 0.0;
-  }
 
   // If observed weather data are available, use them.  Otherwise, use
   // crude estimates of average conditions.
