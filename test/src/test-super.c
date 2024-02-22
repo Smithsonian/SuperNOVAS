@@ -148,8 +148,8 @@ static int test_equ2hor() {
     for(d = -90; d <= 90; d += 30) {
       double ra = a, dec = d, az, za, rar, decr;
 
-      if(!is_ok("equ2hor:rar:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, NULL, &decr))) return 1;
-      if(!is_ok("equ2hor:decr:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, &rar, NULL))) return 1;
+      if(!is_ok("equ2hor:rar:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, ra, dec, NOVAS_STANDARD_ATMOSPHERE, &az, &za, NULL, &decr))) return 1;
+      if(!is_ok("equ2hor:decr:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, ra, dec, NOVAS_STANDARD_ATMOSPHERE, &az, &za, &rar, NULL))) return 1;
     }
   }
 
