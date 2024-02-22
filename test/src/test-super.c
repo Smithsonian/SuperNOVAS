@@ -131,7 +131,78 @@ static int test_itrs_hor_itrs() {
     if(!is_ok("itrs_to_hor", itrs_to_hor(&obs.on_surf, p, &az, &za))) return 1;
     if(!is_ok("hor_to_itrs", hor_to_itrs(&obs.on_surf, az, za, pos1))) return 1;
     if(!is_ok("itrs_hor_itrs", check_equal_pos(p, pos1, 1e-9))) return 1;
+
+    if(!is_ok("itrs_to_hor:az:null", itrs_to_hor(&obs.on_surf, p, NULL, &za))) return 1;
+    if(!is_ok("itrs_to_hor:za:null", itrs_to_hor(&obs.on_surf, p, &az, NULL))) return 1;
   }
+  return 0;
+}
+
+static int test_equ2hor() {
+  double az, za, ra, dec, rar, decr;
+
+  if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
+
+  vector2radec(pos0, &ra, &dec);
+
+  if(!is_ok("itrs_to_hor:rar:null", equ2hor(tdb, 0.0, NOVAS_FULL_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, NULL, &decr))) return 1;
+  if(!is_ok("itrs_to_hor:decr:null", equ2hor(tdb, 0.0, NOVAS_FULL_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, &rar, NULL))) return 1;
+
+  return 0;
+}
+
+static int test_aberration() {
+  double p[3], v[3] = {};
+
+  if(source.type != NOVAS_PLANET) return 0;
+
+  memcpy(p, pos0, sizeof(p));
+  if(!is_ok("aberration:corner", aberration(p, v, 0.0, p))) return 1;
+
+  return 0;
+}
+
+static int test_starvectors() {
+  double p[3], v[3] = {};
+
+  if(source.type != NOVAS_CATALOG_OBJECT) return 0;
+
+  if(!is_ok("starvectors:pos:null", starvectors(&source.star, NULL, v))) return 1;
+  if(!is_ok("starvectors:vel:null", starvectors(&source.star, p, NULL))) return 1;
+
+  return 0;
+}
+
+static int test_terra() {
+  double p[3], v[3];
+
+  if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
+
+  if(!is_ok("terra:pos:null", terra(&obs.on_surf, 0.0, NULL, v))) return 1;
+  if(!is_ok("terra:vel:null", terra(&obs.on_surf, 0.0, p, NULL))) return 1;
+
+  return 0;
+}
+
+static int test_geo_posvel() {
+  double p[3], v[3];
+
+  if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
+
+  if(!is_ok("geo_posvel:pos:null", geo_posvel(tdb, 0.0, NOVAS_FULL_ACCURACY, &obs, NULL, v))) return 1;
+  if(!is_ok("geo_posvel:vel:null", geo_posvel(tdb, 0.0, NOVAS_FULL_ACCURACY, &obs, p, NULL))) return 1;
+
+  return 0;
+}
+
+static int test_bary2obs() {
+  double pobs[3];
+
+  if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
+
+  if(!is_ok("bary2obs:terra", geo_posvel(tdb, 0.0, NOVAS_FULL_ACCURACY, &obs, pobs, NULL))) return 1;
+  if(!is_ok("bary2obs:lighttime:null", bary2obs(pos0, pobs, pobs, NULL))) return 1;
+
   return 0;
 }
 
@@ -266,11 +337,14 @@ static int test_radec_star() {
     if(!is_ok("radec_star:control", place(tdb, &source, &obs, ut12tt, i, 1, &posb))) return 1;
     if(!is_ok("radec_star:check", check_equal_pos(posa.r_hat, posb.r_hat, 1e-9))) return 1;
     if(!is_ok("radec_star:check_rv", fabs(rv - posb.rv) > 1e-6)) return 1;
+
+    if(!is_ok("radec_star:ra:null", radec_star(tdb, &source.star, &obs, ut12tt, i, 1, NULL, &dec, &rv))) return 1;
+    if(!is_ok("radec_star:dec:null", radec_star(tdb, &source.star, &obs, ut12tt, i, 1, &ra, NULL, &rv))) return 1;
+    if(!is_ok("radec_star:rv:null", radec_star(tdb, &source.star, &obs, ut12tt, i, 1, &ra, &dec, NULL))) return 1;
   }
 
   return 0;
 }
-
 
 static int test_source() {
   int n = 0;
@@ -291,6 +365,10 @@ static int test_source() {
   if(test_place_tod()) n++;
 
   if(test_radec_star()) n++;
+
+  if(test_equ2hor()) n++;
+  if(test_aberration()) n++;
+  if(test_starvectors()) n++;
 
   return n;
 }
@@ -340,6 +418,11 @@ static int test_radec_planet() {
     if(!is_ok("radec_planet:check", check_equal_pos(posa.r_hat, posb.r_hat, 1e-9))) return 1;
     if(!is_ok("radec_planet:check_dist", fabs(dis - posb.dis) > 1e-6 * posb.dis)) return 1;
     if(!is_ok("radec_planet:check_rv", fabs(rv - posb.rv) > 1e-6)) return 1;
+
+    if(!is_ok("radec_planet:ra:null", radec_planet(tdb, &sun, &obs, ut12tt, i, 1, NULL, &dec, &dis, &rv))) return 1;
+    if(!is_ok("radec_planet:dec:null", radec_planet(tdb, &sun, &obs, ut12tt, i, 1, &ra, NULL, &dis, &rv))) return 1;
+    if(!is_ok("radec_planet:dis:null", radec_planet(tdb, &sun, &obs, ut12tt, i, 1, &ra, &dec, NULL, &rv))) return 1;
+    if(!is_ok("radec_planet:rv:null", radec_planet(tdb, &sun, &obs, ut12tt, i, 1, &ra, &dec, &dis, NULL))) return 1;
   }
 
   return 0;
@@ -362,6 +445,9 @@ static int test_observers() {
   make_observer_on_surface(20.0, -15.0, 0.0, 0.0, 1000.0, &obs);
   n += test_source();
   if(test_itrs_hor_itrs()) n++;
+  if(test_terra()) n++;
+  if(test_geo_posvel()) n++;
+  if(test_bary2obs()) n++;
 
   make_observer_in_space(ps, vs, &obs);
   n += test_source();
@@ -437,6 +523,19 @@ static int test_nutation_lp_provider() {
   return status;
 }
 
+
+static int test_cal_date() {
+  short y, m, d;
+  double h;
+
+  if(!is_ok("cal_date:y:null", cal_date(tdb, NULL, &m, &d, &h))) return 1;
+  if(!is_ok("cal_date:m:null", cal_date(tdb, &y, NULL, &d, &h))) return 1;
+  if(!is_ok("cal_date:d:null", cal_date(tdb, &y, &m, NULL, &h))) return 1;
+  if(!is_ok("cal_date:h:null", cal_date(tdb, &y, &m, &d, NULL))) return 1;
+
+  return 0;
+}
+
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
   int i, n = 0;
@@ -444,6 +543,7 @@ static int test_dates() {
   if(test_get_ut1_to_tt()) n++;
   if(test_get_utc_to_tt()) n++;
   if(test_nutation_lp_provider()) n++;
+  if(test_cal_date()) n++;
 
   for(i = 0; i < 5; i++) {
     tdb = J2000 + offsets[i];
@@ -508,10 +608,29 @@ static int test_make_ephem_object() {
   return 0;
 }
 
+static int test_make_cat_entry() {
+  cat_entry c;
+
+  if(!is_ok("make_cat_entry:name:null", make_cat_entry(NULL, "TST", 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, &c))) return 1;
+  if(!is_ok("make_cat_entry:cat:null", make_cat_entry("test", NULL, 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, &c))) return 1;
+
+  return 0;
+}
+
+static int test_make_object() {
+  object o;
+  cat_entry c;
+
+  if(!is_ok("make_object:name:null", make_object(NOVAS_CATALOG_OBJECT, 1, NULL, &c, &o))) return 1;
+
+  return 0;
+}
+
 static int test_transform_cat() {
   cat_entry in, out;
 
-  if(!is_ok("transform_cat::noid", transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &in, 0.0, NULL, &out))) return 1;
+  if(!is_ok("transform_cat:noid", transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &in, 0.0, NULL, &out))) return 1;
+  if(!is_ok("transform_cat:same", transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &in, 0.0, "TR", &in))) return 1;
 
   return 0;
 }
@@ -613,11 +732,50 @@ static int test_ira_equinox() {
   return 0;
 }
 
+
+static int test_iau2000a() {
+  double dpsi, deps;
+
+  if(!is_ok("iau2000a:dspi:null", iau2000a(tdb, 0.0, NULL, &deps))) return 1;
+  if(!is_ok("iau2000a:deps:null", iau2000a(tdb, 0.0, &dpsi, NULL))) return 1;
+
+  return 0;
+}
+
+static int test_iau2000b() {
+  double dpsi, deps;
+
+  if(!is_ok("iau2000a:dspi:null", iau2000a(tdb, 0.0, NULL, &deps))) return 1;
+  if(!is_ok("iau2000a:deps:null", iau2000a(tdb, 0.0, &dpsi, NULL))) return 1;
+
+  return 0;
+}
+
+static int test_nu2000k() {
+  double dpsi, deps;
+
+  if(!is_ok("iau2000a:dspi:null", nu2000k(tdb, 0.0, NULL, &deps))) return 1;
+  if(!is_ok("iau2000a:deps:null", nu2000k(tdb, 0.0, &dpsi, NULL))) return 1;
+
+  return 0;
+}
+
+static int test_tdb2tt() {
+  double tt, d;
+
+  if(!is_ok("tdb2tt:tt:null", tdb2tt(tdb, NULL, &d))) return 1;
+  if(!is_ok("tdb2tt:dt:null", tdb2tt(tdb, &tt, NULL))) return 1;
+
+  return 0;
+}
+
 int main() {
   int n = 0;
 
   make_object(NOVAS_CATALOG_OBJECT, 0, "None", NULL, &source);
 
+  if(test_make_cat_entry()) n++;
+  if(test_make_object()) n++;
   if(test_make_planet()) n++;
   if(test_make_ephem_object()) n++;
   if(test_transform_cat()) n++;
@@ -627,6 +785,10 @@ int main() {
   if(test_ephem_provider()) n++;
   if(test_enable_earth_sun_calc_hp()) n++;
   if(test_ira_equinox()) n++;
+  if(test_iau2000a()) n++;
+  if(test_iau2000b()) n++;
+  if(test_nu2000k()) n++;
+  if(test_tdb2tt()) n++;
 
   n += test_dates();
 

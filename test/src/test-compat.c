@@ -243,6 +243,8 @@ static void test_cal_date() {
   cal_date(tdb, &y, &m, &d, &h);
   openfile("cal_date");
   fprintf(fp, "%5d %02d %02d %10.6f ", y, m, d, h);
+  cal_date(tdb + 0.5, &y, &m, &d, &h);
+  fprintf(fp, "%10.6f ", h);
 }
 
 static void test_julian_date() {

@@ -2575,12 +2575,10 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
   // Apply polar motion
-  if((xp == 0.0) && (yp == 0.0)) {
-    if(vec2 != vec1)
-      memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
-  }
-  else
+  if(xp || yp)
     wobble(jd_tt, WOBBLE_ITRS_TO_PEF, xp, yp, vec1, vec2);
+  else if(vec2 != vec1)
+    memcpy(vec2, vec1, XYZ_VECTOR_SIZE);
 
   switch(erot) {
     case (EROT_ERA): {

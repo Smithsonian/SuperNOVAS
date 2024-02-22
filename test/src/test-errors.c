@@ -161,6 +161,7 @@ static int test_transform_cat() {
   if(check("transform_cat:in", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, NULL, NOVAS_JD_J2000, "FK5", &c))) n++;
   if(check("transform_cat:out", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", NULL))) n++;
   if(check("transform_cat:option", -1, transform_cat(-1, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", &c1))) n++;
+  if(check("transform_cat:option:same", -1, transform_cat(-1, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", &c))) n++;
   if(check("transform_cat:name", 2, transform_cat(PRECESSION, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, longname, &c))) n++;
 
   return n;
@@ -645,10 +646,14 @@ static int test_vector2radec() {
 
   if(check("vector2radec:vec", -1, vector2radec(NULL, &ra, &dec))) n++;
 
-  if(check("vector2radec:vec", 1, vector2radec(p, &ra, &dec))) n++;
+  if(check("vector2radec:zero", 1, vector2radec(p, &ra, &dec))) n++;
 
   p[2] = 1.0;
-  if(check("vector2radec:vec", 2, vector2radec(p, &ra, &dec))) n++;
+  if(check("vector2radec:pole", 2, vector2radec(p, &ra, &dec))) n++;
+
+  p[1] = 1.0;
+  if(check("vector2radec:ra:null", -1, vector2radec(p, NULL, &dec))) n++;
+  if(check("vector2radec:dec:null", -1, vector2radec(p, &ra, NULL))) n++;
 
   return n;
 }
