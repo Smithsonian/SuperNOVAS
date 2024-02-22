@@ -189,13 +189,14 @@ static int test_equ2hor() {
 }
 
 static int test_aberration() {
-  double p[3], v[3] = {};
+  double p[3], v[3] = {}, out[3];
 
   if(source.type != NOVAS_PLANET) return 0;
 
   memcpy(p, pos0, sizeof(p));
-  if(!is_ok("aberration:corner", aberration(p, v, 0.0, p))) return 1;
 
+  if(!is_ok("aberration:corner:diff", aberration(p, v, 0.0, out))) return 1;
+  if(!is_ok("aberration:corner:same", aberration(p, v, 0.0, p))) return 1;
   return 0;
 }
 
