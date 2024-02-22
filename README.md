@@ -4,8 +4,8 @@
 <a href="https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/">
  ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 </a>
-<a href="https://coveralls.io/github/Smithsonian/SuperNOVAS?branch=main">
- ![Coverage Status](https://coveralls.io/repos/github/Smithsonian/SuperNOVAS/badge.svg?branch=main)
+<a href="https://codecov.io/gh/Smithsonian/SuperNOVAS">
+ ![Coverage Status](https://codecov.io/gh/Smithsonian/SuperNOVAS/graph/badge.svg?token=E11OFOISMW)
 </a>
 
 <picture>
