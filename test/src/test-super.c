@@ -118,18 +118,20 @@ static int test_cirs_itrs_cirs() {
 }
 
 static int test_itrs_hor_itrs() {
-  double az = 0.0, za = 0.0, pos1[3], l = vlen(pos0);
-  int i;
+  int a;
 
   if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
 
+  for(a = 0; a < 360; a += 30) {
+    double az = 0.0, za = 0.0, p[3] = {}, pos1[3];
 
-  if(!is_ok("itrs_to_hor", itrs_to_hor(&obs.on_surf, pos0, &az, &za))) return 1;
-  if(!is_ok("hor_to_itrs", hor_to_itrs(&obs.on_surf, az, za, pos1))) return 1;
+    p[0] = cos(a * DEG2RAD);
+    p[1] = sin(a * DEG2RAD);
 
-  for(i=0; i < 3; i++) pos1[i] *= l;
-
-  if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-9 * l))) return 1;
+    if(!is_ok("itrs_to_hor", itrs_to_hor(&obs.on_surf, p, &az, &za))) return 1;
+    if(!is_ok("hor_to_itrs", hor_to_itrs(&obs.on_surf, az, za, pos1))) return 1;
+    if(!is_ok("itrs_hor_itrs", check_equal_pos(p, pos1, 1e-9))) return 1;
+  }
   return 0;
 }
 
@@ -148,28 +150,32 @@ static int test_tod_vs_cirs() {
 }
 
 static int test_equ_ecl() {
-  double ra, dec, elon, elat, pos1[3];
+  int a;
 
-  vector2radec(pos0, &ra, &dec);
-  if(!is_ok("equ2ecl", equ2ecl(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, ra, dec, &elon, &elat))) return 1;
-  if(!is_ok("ecl2equ", ecl2equ(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, elon, elat, &ra, &dec))) return 1;
-  radec2vector(ra, dec, vlen(pos0), pos1);
+  for(a = 0; a < 24; a += 3) {
+    double ra0 = a, dec0 = 0.0, elon, elat, ra, dec;
 
-  if(!is_ok("equ_ecl_equ", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+    if(!is_ok("equ2ecl", equ2ecl(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, ra0, dec0, &elon, &elat))) return 1;
+    if(!is_ok("ecl2equ", ecl2equ(tdb, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, elon, elat, &ra, &dec))) return 1;
+    if(!is_ok("equ_ecl_equ:ra", fabs(remainder(ra - ra0, 24.0)) > 1e-8)) return 1;
+    if(!is_ok("equ_ecl_equ:dec", fabs(dec - dec0) > 1e-7)) return 1;
+  }
 
   return 0;
 }
 
 
 static int test_equ_gal() {
-  double ra, dec, glon, glat, pos1[3];
+  int a;
 
-  vector2radec(pos0, &ra, &dec);
-  if(!is_ok("equ2gal", equ2gal(ra, dec, &glon, &glat))) return 1;
-  if(!is_ok("gal2equ", gal2equ(glon, glat, &ra, &dec))) return 1;
-  radec2vector(ra, dec, vlen(pos0), pos1);
+  for(a = 0; a < 24; a += 3) {
+    double ra0 = a, dec0 = 0.0, glon, glat, ra, dec;
 
-  if(!is_ok("equ_gal_equ", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+    if(!is_ok("equ2gal", equ2gal(ra0, dec0, &glon, &glat))) return 1;
+    if(!is_ok("gal2equ", gal2equ(glon, glat, &ra, &dec))) return 1;
+    if(!is_ok("equ_gal_equ:ra", fabs(remainder(ra - ra0, 24.0)) > 1e-8)) return 1;
+    if(!is_ok("equ_gal_equ:dec", fabs(dec - dec0) > 1e-7)) return 1;
+  }
 
   return 0;
 }
@@ -278,11 +284,6 @@ static int test_source() {
 
   if(test_tod_vs_cirs()) n++;
 
-  if(test_itrs_hor_itrs()) n++;
-
-  if(test_equ_ecl()) n++;
-  if(test_equ_gal()) n++;
-
   if(test_place_star()) n++;
   if(test_place_icrs()) n++;
   if(test_place_gcrs()) n++;
@@ -352,11 +353,15 @@ static int test_observers() {
   if(test_precession()) n++;
   if(test_radec_planet()) n++;
 
+  if(test_equ_ecl()) n++;
+  if(test_equ_gal()) n++;
+
   make_observer_at_geocenter(&obs);
   n += test_source();
 
   make_observer_on_surface(20.0, -15.0, 0.0, 0.0, 1000.0, &obs);
   n += test_source();
+  if(test_itrs_hor_itrs()) n++;
 
   make_observer_in_space(ps, vs, &obs);
   n += test_source();
