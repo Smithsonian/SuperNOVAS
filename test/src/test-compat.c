@@ -100,14 +100,21 @@ static void test_make_cat_entry() {
 
 
 static void test_transform_cat() {
-  cat_entry star, tr = { };
+  cat_entry tr = { };
   int i;
 
-  if(!is_ok(make_cat_entry("Test", "TST", 1001, 1.1, -2.2, 3.3, -4.4, 5.5, -6.6, &star))) return;
+  if(source.type != 2) return;
 
   for(i=1; i <= 5; i++) {
+    // Use Julian dates
     openfile("transform_cat");
-    transform_cat(i, J2000, &star, J2000 - 10000.0, "TR", &tr);
+    transform_cat(i, J2000, &source.star, J2000 - 10000.0, "TR", &tr);
+    fprintf(fp, "%d %s %s %ld %.3f %.3f %.3f %.3f %.3f %.3f ", i, tr.starname, tr.catalog, tr.starnumber,
+            tr.ra, tr.dec, tr.promodec, tr.promodec, tr.parallax, tr.radialvelocity);
+
+    // Use epoch years
+    openfile("transform_cat");
+    transform_cat(i, 2000.0, &source.star, 1950.0, "FK4", &tr);
     fprintf(fp, "%d %s %s %ld %.3f %.3f %.3f %.3f %.3f %.3f ", i, tr.starname, tr.catalog, tr.starnumber,
             tr.ra, tr.dec, tr.promodec, tr.promodec, tr.parallax, tr.radialvelocity);
   }
@@ -774,6 +781,12 @@ static void test_cel2ter() {
     fprintf(fp, "GST GCRS ");
     printunitvector(pos1);
   }
+
+  openfile("cel2ter");
+  if(is_ok(cel2ter(tdb, 0.0, ut12tt, 1, accuracy, 1, 0.0, 0.0, pos0, pos1))) {
+    fprintf(fp, "GST APP  ");
+    printunitvector(pos1);
+  }
 }
 
 static void test_ter2cel() {
@@ -931,6 +944,8 @@ static int test_source() {
 
 static int test_observers() {
   double ps[3] = { 100.0, 30.0, 10.0 }, vs[3] = { 10.0 };
+
+  test_transform_cat();
 
   make_observer_at_geocenter(&obs);
   if(test_source() != 0) return -1;

@@ -266,7 +266,6 @@ static int test_radec_star() {
 }
 
 
-
 static int test_source() {
   int n = 0;
 
@@ -344,7 +343,6 @@ static int test_radec_planet() {
 
   return 0;
 }
-
 
 
 static int test_observers() {
@@ -505,6 +503,14 @@ static int test_make_ephem_object() {
   return 0;
 }
 
+static int test_transform_cat() {
+  cat_entry in, out;
+
+  if(!is_ok("transform_cat::noid", transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &in, 0.0, NULL, &out))) return 1;
+
+  return 0;
+}
+
 static int test_planet_provider() {
   int status = 1;
   object mars;
@@ -594,6 +600,14 @@ static int test_enable_earth_sun_calc_hp() {
   return status;
 }
 
+static int test_ira_equinox() {
+  double e1 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_FULL_ACCURACY);
+  double e2 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_FULL_ACCURACY);
+
+  if(!is_ok("ira_equinox", e1 != e2)) return 1;
+  return 0;
+}
+
 int main() {
   int n = 0;
 
@@ -601,11 +615,13 @@ int main() {
 
   if(test_make_planet()) n++;
   if(test_make_ephem_object()) n++;
+  if(test_transform_cat()) n++;
   if(test_refract_astro()) n++;
   if(test_case()) n++;
   if(test_planet_provider()) n++;
   if(test_ephem_provider()) n++;
   if(test_enable_earth_sun_calc_hp()) n++;
+  if(test_ira_equinox()) n++;
 
   n += test_dates();
 

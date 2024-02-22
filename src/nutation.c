@@ -55,7 +55,7 @@
  *
  */
 int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
-
+  // @formatter:off
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
@@ -2808,6 +2808,8 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 3, 0, 0, -1 }, //
           { 3, 0, 0, -1 } };
 
+    // @formatter:on
+
   // Convert from 0.1 microarcsec units to radians.
   const double factor = 1.0e-7 * ASEC2RAD;
 
@@ -2877,8 +2879,10 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
     if(n[0])
       arg += n[0] * a.l;
+    /* The series does not contain terms for l1
     if(n[1])
       arg += n[1] * a.l1;
+    */
     if(n[2])
       arg += n[2] * a.F;
     if(n[3])
@@ -2958,6 +2962,8 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  */
 int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   short i;
+
+  // @formatter:off
 
   // Planetary nutation (arcsec).  These fixed terms account for the
   // omission of the long-period planetary terms in the truncated model.
@@ -3127,6 +3133,8 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 1405, 0, 4, -610, 0, 2 }, //
           { 1290, 0, 0, -556, 0, 0 } };
 
+    // @formatter:on
+
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
@@ -3214,6 +3222,8 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *
  */
 int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
+
+  // @formatter:off
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
@@ -4213,6 +4223,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
           { 126, -63, -27, -55 }, //
           { -126, -63, -27, 55 } };
 
+    // @formatter:on
 
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
@@ -4223,14 +4234,14 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
   // ecliptic and equinox of J2000, with high order terms omitted
   // (Simon et al. 1994, 5.8.1-5.8.8).
-  const double alme = planet_lon(t, NOVAS_MERCURY);
+  //const double alme = planet_lon(t, NOVAS_MERCURY);
   const double alve = planet_lon(t, NOVAS_VENUS);
   const double alea = planet_lon(t, NOVAS_EARTH);
   const double alma = planet_lon(t, NOVAS_MARS);
   const double alju = planet_lon(t, NOVAS_JUPITER);
   const double alsa = planet_lon(t, NOVAS_SATURN);
-  const double alur = planet_lon(t, NOVAS_URANUS);
-  const double alne = planet_lon(t, NOVAS_NEPTUNE);
+  //const double alur = planet_lon(t, NOVAS_URANUS);
+  //const double alne = planet_lon(t, NOVAS_NEPTUNE);
 
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
@@ -4283,16 +4294,20 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     arg = 0.0;
     if(n[0])
       arg += n[0] * a.l;
+    /* This version of Nutation does not contain terms for l1
     if(n[1])
       arg += n[1] * a.l1;
+    */
     if(n[2])
       arg += n[2] * a.F;
     if(n[3])
       arg += n[3] * a.D;
     if(n[4])
       arg += n[4] * a.Omega;
+    /* This version of Nutation does not contain terms for Mercury
     if(n[5])
       arg += n[5] * alme;
+    */
     if(n[6])
       arg += n[6] * alve;
     if(n[7])
@@ -4303,10 +4318,12 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
       arg += n[9] * alju;
     if(n[10])
       arg += n[10] * alsa;
+    /* This version of Nutation does not contain terms for Uranus and Neptune
     if(n[11])
       arg += n[11] * alur;
     if(n[12])
       arg += n[12] * alne;
+    */
     if(n[13])
       arg += n[13] * apa;
 

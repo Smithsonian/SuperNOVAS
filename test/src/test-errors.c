@@ -132,11 +132,20 @@ static int test_refract() {
 }
 
 static int test_limb_angle() {
-  double pos[3], a, b;
+  double pos[3] = { 0.01 }, pn[3] = { -0.01 }, pz[3] = {}, a, b;
   int n = 0;
 
   if(check("limb_angle:pos_obj", -1, limb_angle(NULL, pos, &a, &b))) n++;
   if(check("limb_angle:pos_obs", -1, limb_angle(pos, NULL, &a, &b))) n++;
+  if(check("limb_angle:obj:0", -1, limb_angle(pz, pos, &a, &b))) n++;
+  if(check("limb_angle:obj:0", -1, limb_angle(pos, pz, &a, &b))) n++;
+
+  // Null outputs OK
+  if(check("limb_angle:limb", 0, limb_angle(pos, pos, NULL, &b))) n++;
+  if(check("limb_angle:nadir", 0, limb_angle(pos, pos, &a, NULL))) n++;
+
+  // corner case (cosd = -1)
+  if(check("limb_angle:corner", 0, limb_angle(pos, pn, &a, NULL))) n++;
 
   return n;
 }
@@ -491,6 +500,7 @@ static int test_frame_tie() {
   return n;
 }
 
+
 static int test_proper_motion() {
   double p[3], v[3];
   int n = 0;
@@ -566,6 +576,7 @@ static int test_cio_array() {
   if(check("cio_array:file", 1, cio_array(0.0, 5, x))) n++;
 
   set_cio_locator_file("../cio_ra.bin");
+  set_cio_locator_file("../cio_ra.bin"); // Test reopen also...
   if(check("cio_array:beg", 2, cio_array(0.0, 5, x))) n++;
   if(check("cio_array:end", 2, cio_array(1e20, 5, x))) n++;
 

@@ -54,6 +54,9 @@ This is the initial release of the SuperNOVAS library.
  - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input
    vector appropriately instead.
    
+ - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results
+   in irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
+   
  - Fixes potential string overflows and eliminates associated compiler warnings.
    
 
