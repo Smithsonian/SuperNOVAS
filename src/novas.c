@@ -1226,23 +1226,19 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
     prop_error(app_star(jd_tt, &star, accuracy, &ra1, &dec1), 20);
 
     // If within tolerance, we are done
-    if(fabs(ra - ra1) < 1.0e-12 && fabs(dec - dec1) < 1.0e-11)
-      break;
+    if(fabs(ra - ra1) < 1.0e-12 && fabs(dec - dec1) < 1.0e-11) {
+      *ira = star.ra < 0.0 ? star.ra + DAY_HOURS : star.ra;
+      *idec = star.dec;
+      return 0;
+    }
 
     // Correct for overshoot
     star.ra = remainder(star.ra + (ra - ra1), DAY_HOURS);
     star.dec = remainder(star.dec + (dec - dec1), DEG360);
   }
 
-  *ira = star.ra < 0.0 ? star.ra + DAY_HOURS : star.ra;
-  *idec = star.dec;
-
-  if(iter < 0) {
-    errno = ECANCELED;
-    return 1;
-  }
-
-  return 0;
+  errno = ECANCELED;
+  return 1;
 }
 
 /**
@@ -1932,11 +1928,13 @@ int itrs_to_hor(const on_surface *location, const double *in, double *az, double
   double lat, lon, coslat, sinlat, coslon, sinlon;
   double pn, pw, pz, proj;
 
+  // Default output values in case of error return.
+  if(az)
+    *az = NAN;
+  if(za)
+    *za = NAN;
+
   if(!location || !in) {
-    if(az)
-      *az = NAN;
-    if(za)
-      *za = NAN;
     errno = EINVAL;
     return -1;
   }
@@ -2123,15 +2121,20 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
   double uze[3], une[3], uwe[3], uz[3], un[3], uw[3], p[3];
   double pz, pn, pw, proj, pr[3];
 
-  if(!location || !zd || !az) {
-    errno = EINVAL;
-    return -1;
-  }
-
+  // Default output values in case of error return;
+  if(az)
+    *az = NAN;
+  if(zd)
+    *zd = NAN;
   if(rar)
     *rar = ra;
   if(decr)
     *decr = dec;
+
+  if(!location || !zd || !az) {
+    errno = EINVAL;
+    return -1;
+  }
 
   lon = location->longitude * DEGREE;
   lat = location->latitude * DEGREE;
@@ -2219,8 +2222,7 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
       proj = sqrt(pr[0] * pr[0] + pr[1] * pr[1]);
 
       if(rar) {
-        if(proj > 0.0)
-          *rar = atan2(pr[1], pr[0]) / HOURANGLE;
+        *rar = proj ? atan2(pr[1], pr[0]) / HOURANGLE : 0.0;
         if(*rar < 0.0)
           *rar += DAY_HOURS;
       }

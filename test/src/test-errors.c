@@ -272,12 +272,12 @@ static int test_place() {
 
 static int test_radec_planet() {
   object o;
-  observer loc;
+  observer loc = {};
   double ra, dec, dis, rv;
 
   o.type = NOVAS_CATALOG_OBJECT;
+  if(check("radec_planet:cat", -1, radec_planet(NOVAS_JD_J2000, &o, &loc, 0.0, NOVAS_GCRS, NOVAS_REDUCED_ACCURACY, &ra, &dec, &dis, &rv))) return 1;
 
-  if(check("radec_planet", -1, radec_planet(0.0, &o, &loc, 0.0, NOVAS_GCRS, NOVAS_FULL_ACCURACY, &ra, &dec, &dis, &rv))) return 1;
   return 0;
 }
 

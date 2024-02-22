@@ -139,14 +139,16 @@ static int test_itrs_hor_itrs() {
 }
 
 static int test_equ2hor() {
-  double az, za, ra, dec, rar, decr;
+  int a;
 
   if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
 
-  vector2radec(pos0, &ra, &dec);
+  for(a = 0; a < 24.0; a += 3) {
+    double ra = a, dec = 0.0, az, za, rar, decr;
 
-  if(!is_ok("itrs_to_hor:rar:null", equ2hor(tdb, 0.0, NOVAS_FULL_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, NULL, &decr))) return 1;
-  if(!is_ok("itrs_to_hor:decr:null", equ2hor(tdb, 0.0, NOVAS_FULL_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, &rar, NULL))) return 1;
+    if(!is_ok("itrs_to_hor:rar:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, NULL, &decr))) return 1;
+    if(!is_ok("itrs_to_hor:decr:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, ra, dec, &az, &za, &rar, NULL))) return 1;
+  }
 
   return 0;
 }
@@ -745,8 +747,8 @@ static int test_iau2000a() {
 static int test_iau2000b() {
   double dpsi, deps;
 
-  if(!is_ok("iau2000a:dspi:null", iau2000a(tdb, 0.0, NULL, &deps))) return 1;
-  if(!is_ok("iau2000a:deps:null", iau2000a(tdb, 0.0, &dpsi, NULL))) return 1;
+  if(!is_ok("iau2000a:dspi:null", iau2000b(tdb, 0.0, NULL, &deps))) return 1;
+  if(!is_ok("iau2000a:deps:null", iau2000b(tdb, 0.0, &dpsi, NULL))) return 1;
 
   return 0;
 }
