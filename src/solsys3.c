@@ -292,6 +292,11 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
         double *velocity) {
 
+  if(!jd_tdb) {
+    errno = EINVAL;
+    return -1;
+  }
+
   int error = earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity);
   if(error)
     return error;

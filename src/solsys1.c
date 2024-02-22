@@ -172,6 +172,10 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
 }
 
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+  if(!jd_tdb) {
+    errno = EINVAL;
+    return -1;
+  }
   return planet_eph_manager_hp(jd_tdb, body, origin, position, velocity);
 }
 #endif

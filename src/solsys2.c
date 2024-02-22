@@ -176,6 +176,11 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   double posvel[6] = { };
   int i;
 
+  if(!jd_tdb) {
+    errno = EINVAL;
+    return -1;
+  }
+
   // Perform sanity checks on the input body and origin.
   if((body < NOVAS_MERCURY) || (body > NOVAS_MOON)) {
     errno = EINVAL;

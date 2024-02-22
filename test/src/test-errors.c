@@ -775,6 +775,22 @@ static int test_earth_sun_calc() {
   return n;
 }
 
+static int test_earth_sun_calc_hp() {
+  double p[3], v[3], tdb2[2] = { NOVAS_JD_J2000 };
+  int n = 0;
+
+  enable_earth_sun_hp(1);
+
+  if(check("earth_sun_calc_hp:tdb", -1, earth_sun_calc_hp(NULL, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
+  if(check("earth_sun_calc_hp:pos", -1, earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, NULL, v))) n++;
+  if(check("earth_sun_calc_hp:vel", -1, earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, p, NULL))) n++;
+  if(check("earth_sun_calc_hp:number", 2, earth_sun_calc_hp(tdb2, NOVAS_JUPITER, NOVAS_BARYCENTER, p, v))) n++;
+
+  enable_earth_sun_hp(0);
+
+  return n;
+}
+
 static int test_sun_eph() {
   extern int sun_eph(double jd, double *ra, double *dec, double *dis);
 
@@ -873,6 +889,7 @@ int main() {
   if(test_grav_def()) n++;
 
   if(test_earth_sun_calc()) n++;
+  if(test_earth_sun_calc_hp()) n++;
   if(test_sun_eph()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
