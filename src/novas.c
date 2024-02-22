@@ -3701,10 +3701,8 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
 
       // Convert units to AU and AU/day.
       for(i = 3; --i >= 0;) {
-        if(pos)
-          pos1[i] = obs->near_earth.sc_pos[i] / AU_KM;
-        if(vel)
-          vel1[i] = obs->near_earth.sc_vel[i] * ivu;
+        pos1[i] = obs->near_earth.sc_pos[i] / AU_KM;
+        vel1[i] = obs->near_earth.sc_vel[i] * ivu;
       }
 
       break;

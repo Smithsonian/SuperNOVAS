@@ -224,8 +224,6 @@ static int test_terra() {
 static int test_geo_posvel() {
   double p[3], v[3];
 
-  if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
-
   if(!is_ok("geo_posvel:pos:null", geo_posvel(tdb, 0.0, NOVAS_FULL_ACCURACY, &obs, NULL, v))) return 1;
   if(!is_ok("geo_posvel:vel:null", geo_posvel(tdb, 0.0, NOVAS_FULL_ACCURACY, &obs, p, NULL))) return 1;
 
