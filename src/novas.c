@@ -3603,9 +3603,11 @@ int proper_motion(double jd_tdb1, const double *pos, const double *vel, double j
 int bary2obs(const double *pos, const double *pos_obs, double *pos2, double *lighttime) {
   int j;
 
+  // Default output value in case of error return
+  if(lighttime)
+    *lighttime = NAN;
+
   if(!pos || !pos_obs || !pos2) {
-    if(lighttime)
-      *lighttime = NAN;
     errno = EINVAL;
     return -1;
   }
