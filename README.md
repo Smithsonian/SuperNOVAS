@@ -61,17 +61,8 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
  - [New features](#supernovas-features)
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
- - Promoting best programing practices, for example via:
-   * the use of `enum`s instead of raw integer options, also allowing additional compiler checking of proper use,
-   * checking call arguments and setting `errno` as appropriate (and returning -1 unless another appropriate error 
-     code was defined already),
-   * adding `const` modifiers to function pointer arguments as appropriate,
-   * eliminating silent failures through `int` return status for _every_ call that can fail, and setting NaN values 
-     as appropriate s.t. failures do not end up producing normal looking outputs.
- - A GNU `Makefile` to build static and shared libraries from sources easily on POSIX platforms (including Linux, BSD, 
-   MacOS X, Cygwin, or WSL). (At this point we do not provide a similar native build setup for Windows, but speak up 
-   if you would like to add it yourself!)
- 
+ - Promoting best programing practices via evolving the API. 
+
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a drop-in, _link-time_ replacement for NOVAS in your application without 
 having to change existing (functional) code you may have written for NOVAS C.
@@ -175,8 +166,11 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 ## Building and installation
 
 
-The SuperNOVAS distribution contains a `Makefile` for GNU make, which is suitable for compiling the library (as well as 
-local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL on Windows.
+The SuperNOVAS distribution contains a `Makefile` for GNU make, which is suitable for compiling the library (as well 
+as local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this 
+point we do not provide a similar native build setup for Windows, but speak up if you would like to add it 
+yourself!)
+
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, such as:
 
