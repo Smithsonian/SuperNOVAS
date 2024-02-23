@@ -587,6 +587,8 @@ static int test_cio_array() {
   if(check("cio_array:corner:lo", 6, cio_array(2341952.6, 5, x))) n++;
   if(check("cio_array:corner:hi", 6, cio_array(2561137.4, 5, x))) n++;
 
+  if(check("cio_array:corner:near", 0, cio_array(2341962.6, 5, x))) n++;
+
   return n;
 }
 
