@@ -16,7 +16,7 @@
 <br clear="all">
 
 # SuperNOVAS 
-The NOVAS C astrometry library, made better.
+The NOVAS C astrometry software library, made better.
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a positional astronomy library for the for the C 
 programming language, providing high-precision astrometry such as one might need for running an observatory or a 
@@ -555,7 +555,7 @@ before that level of accuracy is reached.
    
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
    `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
-   should not be used as if they were valid. (No more sneaky silent errors.)
+   should not be used as if they were valid. (No more sneaky silent failures.)
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
    required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
@@ -629,12 +629,12 @@ before that level of accuracy is reached.
  - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
    default NOVAS `object` names were converted to upper-case, making them effectively case-insensitive.)
 
- - `cio_location()` will always return a valid value as long as neither the output pointer arguments is NULL.
+ - `cio_location()` will always return a valid value as long as neither output pointer arguments is NULL.
+
+ - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
  - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
    in the supplied `cat_entry` structure).
-
- - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
  - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.

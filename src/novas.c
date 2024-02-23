@@ -5384,10 +5384,19 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  * @sa cio_location()
  */
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
+
+  // Packed struct in case long is not the same width a double
+  struct __attribute__ ((packed)) header {
+    double jd_start;
+    double jd_end;
+    double jd_interval;
+    long n_recs;
+  };
+
   static FILE *last_file;
+  static struct header properties;
   static ra_of_cio cache[NOVAS_CIO_CACHE_SIZE];
-  static long index_cache, cache_count, n_recs;
-  static double jd_beg, jd_end, t_int;
+  static long index_cache, cache_count;
 
   long index_rec;
 
@@ -5414,26 +5423,20 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     cache_count = 0;
 
     // Read the file header
-    if(fread(&jd_beg, sizeof(double), 1, cio_file) != 1)
-      return -1;
-    if(fread(&jd_end, sizeof(double), 1, cio_file) != 1)
-      return -1;
-    if(fread(&t_int, sizeof(double), 1, cio_file) != 1)
-      return -1;
-    if(fread(&n_recs, sizeof(long), 1, cio_file) != 1)
+    if(fread(&properties, sizeof(struct header), 1, cio_file) != 1)
       return -1;
 
     last_file = cio_file;
   }
 
   // Check the input data against limits.
-  if((jd_tdb < jd_beg) || (jd_tdb > jd_end)) {
+  if((jd_tdb < properties.jd_start) || (jd_tdb > properties.jd_end)) {
     errno = EOF;
     return 2;
   }
 
   // Calculate the record index from which data is requested.
-  index_rec = (long) ((jd_tdb - jd_beg) / t_int) - (n_pts >> 1);
+  index_rec = (long) ((jd_tdb - properties.jd_start) / properties.jd_interval) - (n_pts >> 1);
   if(index_rec < 0) {
     errno = EOF;
     return 6;  // Data requested before file...
@@ -5443,7 +5446,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
   if((index_rec < index_cache) || (index_rec + n_pts > index_cache + cache_count)) {
     // Load cache centered on requested range.
     const size_t header_size = 3 * sizeof(double) + sizeof(long);
-    const long N = n_recs - index_rec > NOVAS_CIO_CACHE_SIZE ? NOVAS_CIO_CACHE_SIZE : n_recs - index_rec;
+    const long N = properties.n_recs - index_rec > NOVAS_CIO_CACHE_SIZE ? NOVAS_CIO_CACHE_SIZE : properties.n_recs - index_rec;
 
     cache_count = 0;
     index_cache = index_rec - (NOVAS_CIO_CACHE_SIZE >> 1);
