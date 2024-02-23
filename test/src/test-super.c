@@ -813,6 +813,26 @@ static int test_tdb2tt() {
   return 0;
 }
 
+static int test_grav_vec() {
+  double pz[3] = {}, p1[] = {1.0, 0.0, 0.0}, pm[] = {0.5, 0.0, 0.0}, pn[] = {0.0, 1.0, 0.0}, out[3];
+
+  // Observing null vector pos...
+
+  // 1. gravitating body is observed object (observer not aligned)
+  if(!is_ok("grav_vec:pos:obj", grav_vec(pz, pn, pz, 1000.0, out))) return 1;
+  if(!is_ok("grav_vec:check_obj", check_equal_pos(pz, out, 1e-9))) return 1;
+
+  // 2. gravitating body is observer (target not aligned)
+  if(!is_ok("grav_vec:pos:obs", grav_vec(pz, pn, pn, 1000.0, out))) return 1;
+  if(!is_ok("grav_vec:check_obs", check_equal_pos(pz, out, 1e-9))) return 1;
+
+  // 3. gravitating body is aligned
+  if(!is_ok("grav_vec:pos:align", grav_vec(pz, p1, pm, 1000.0, out))) return 1;
+  if(!is_ok("grav_vec:check_align", check_equal_pos(pz, out, 1e-9))) return 1;
+
+  return 0;
+}
+
 int main() {
   int n = 0;
 
@@ -833,6 +853,7 @@ int main() {
   if(test_iau2000b()) n++;
   if(test_nu2000k()) n++;
   if(test_tdb2tt()) n++;
+  if(test_grav_vec()) n++;
 
   n += test_dates();
 
