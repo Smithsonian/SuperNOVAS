@@ -1330,8 +1330,8 @@ short place(double jd_tt, const object *target, const observer *location, double
 
   // Create a null star 'cat_entry' and  Earth and Sun 'object's.
   if(first_time) {
-    make_object(NOVAS_PLANET, NOVAS_EARTH, "Earth", NULL, &earth);
-    make_object(NOVAS_PLANET, NOVAS_SUN, "Sun", NULL, &sun);
+    make_planet(NOVAS_EARTH, &earth);
+    make_planet(NOVAS_SUN, &sun);
     first_time = 0;
   }
 
@@ -3937,14 +3937,13 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   // The following list of body numbers identifies which gravitating bodies (aside from the Earth)
   // are potentially used -- list is taken from Klioner's table 1, the order based on area of sky
   // affected (col 2).  Order is Sun, Jupiter, Saturn, Moon, Venus, Uranus, Neptune.
-  static const enum novas_planet body_num[7] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_MOON, NOVAS_VENUS,
+  static const enum novas_planet body_num[] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_MOON, NOVAS_VENUS,
           NOVAS_URANUS, NOVAS_NEPTUNE };
 
   static const double rmass[] = NOVAS_RMASS_INIT;
 
   static int first_time = 1;
-  static object body[7],
-  earth;
+  static object earth, body[7];
 
   // Set the number of bodies -- and hence the bodies used -- based on the value of the 'accuracy' flag.
 
@@ -3954,7 +3953,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   // 'nbodies' = 3: Sun + Jupiter + Saturn.
   const int nbodies = (accuracy == NOVAS_FULL_ACCURACY) ? 3 : 1;
 
-  double jd[2] = { }, tlt, pbody[3], vbody[3], pbodyo[3], x;
+  double jd[2] = { jd_tdb }, tlt, pbody[3], vbody[3], pbodyo[3], x;
   int i;
 
   if(!pos1 || !pos_obs || !pos2) {
@@ -3968,15 +3967,10 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
 
   // Set up the structures of type 'object' containing the body information.
   if(first_time) {
-    // Body names correspondig to their major planet ID numbers
-    const char *name[] = NOVAS_PLANET_NAMES_INIT;
+    make_planet(NOVAS_EARTH, &earth);
+    for(i = 0; i < 7; i++)
+      prop_error(make_planet(body_num[i], &body[i]), 30);
 
-    make_object(NOVAS_PLANET, NOVAS_EARTH, name[NOVAS_EARTH], NULL, &earth);
-
-    for(i = 0; i < 7; i++) {
-      int num = body_num[i];
-      prop_error(make_object(NOVAS_PLANET, num, name[num], NULL, &body[i]), 30);
-    }
     first_time = 0;
   }
 
@@ -3985,9 +3979,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
 
   // Cycle through gravitating bodies.
   for(i = 0; i < nbodies; i++) {
-    double dlt, tclose;
-
-    jd[0] = jd_tdb;
+    double dlt;
 
     // Get position of gravitating body wrt ss barycenter at time 'jd_tdb'.
     prop_error(ephemeris(jd, &body[i], NOVAS_BARYCENTER, accuracy, pbody, vbody), 0);
@@ -4000,14 +3992,13 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
 
     // Get position of gravitating body wrt ss barycenter at time when
     // incoming photons were closest to it.
-    tclose = jd_tdb;
+    jd[1] = 0.0;
 
     if(dlt > 0.0)
-      tclose = jd_tdb - dlt;
+      jd[1] -= dlt;
     if(tlt < dlt)
-      tclose = jd_tdb - tlt;
+      jd[1] -= tlt;
 
-    jd[0] = tclose;
     prop_error(ephemeris(jd, &body[i], NOVAS_BARYCENTER, accuracy, pbody, vbody), 0);
 
     // Compute deflection due to gravitating body.
@@ -4067,7 +4058,7 @@ int grav_vec(const double *pos1, const double *pos_obs, const double *pos_body, 
   double pq[3], pe[3], pmag, emag, qmag, phat[3], ehat[3], qhat[3];
   int i;
 
-  if(!pos1 || !pos_obs || !pos_body || !pos2) {
+  if(!pos1 || !pos2) {
     errno = EINVAL;
     return -1;
   }
@@ -4075,6 +4066,11 @@ int grav_vec(const double *pos1, const double *pos_obs, const double *pos_body, 
   // Default output in case of error
   if(pos2 != pos1)
     memcpy(pos2, pos1, XYZ_VECTOR_SIZE);
+
+  if(!pos_obs || !pos_body) {
+    errno = EINVAL;
+    return -1;
+  }
 
   // Construct vector 'pq' from gravitating body to observed object and
   // construct vector 'pe' from gravitating body to observer.
