@@ -61,7 +61,7 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
  - [New features](#supernovas-features)
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
- - Promoting best programing practices via evolving the API. 
+ - Promoting best programing practices by refining the API. 
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a drop-in, _link-time_ replacement for NOVAS in your application without 
@@ -534,40 +534,13 @@ before that level of accuracy is reached.
 <a name="supernovas-features"></a>
 ## SuperNOVAS specific features
 
- - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
-   `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
-   and make for more readable code that is easier to debug. They also make it easy to see what choices are available
-   for each function argument, without having to consult the documentation each and every time.
+- [Newly added functionality](#added-functionality)
+- [Refinements to the NOVAS C API](#api-changes)
 
- - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
-   duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
-   invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
-   error code is returned for compatibility).
-   
- - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
-   use functions such as `perror()` and `strerror()` to print human-readable error messages.
-   
- - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
-   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
-   should not be used as if they were valid. (No more sneaky silent failures.)
 
- - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
-   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
-   This eliminates the need to declare dummy variables in your application code.
+<a name="added-functionality"></a>
+### A. Newly added functionality
 
- - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
-   be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
-   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
-   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
-
- - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
-   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
-   data modifications.
-   
- - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
-   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchage of `cat_entry` records
-   with NOVAS C 3.1.
-   
  - Runtime configuration:
 
    * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, 
@@ -623,12 +596,50 @@ before that level of accuracy is reached.
  - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
    default NOVAS `object` names were converted to upper-case, making them effectively case-insensitive.)
 
- - `cio_location()` will always return a valid value as long as neither output pointer arguments is NULL.
-
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
+
+
+<a name="api-changes"></a>
+### B. Refinements to the NOVAS C API
+
+ - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
+   `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
+   and make for more readable code that is easier to debug. They also make it easy to see what choices are available
+   for each function argument, without having to consult the documentation each and every time.
+
+ - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
+   duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
+   invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
+   error code is returned for compatibility).
+   
+ - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
+   use functions such as `perror()` and `strerror()` to print human-readable error messages.
+
+ - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
+   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
+   data modifications.
+
+ - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
+   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
+   This eliminates the need to declare dummy variables in your application code.   
+  
+ - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
+   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
+   should not be used as if they were valid. (No more sneaky silent failures.)
+
+ - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
+   be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
+   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
+   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
+
+ - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
+   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchage of `cat_entry` records
+   with NOVAS C 3.1.
 
  - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
    in the supplied `cat_entry` structure).
+   
+ - `cio_location()` will always return a valid value as long as neither output pointer arguments is NULL.
 
  - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
