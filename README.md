@@ -61,7 +61,7 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
  - [New features](#added-functionality)
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
- - Promoting best programing practices by [refining the API]((#api-changes)). 
+ - Promoting best programing practices by [refining the existing API]((#api-changes)). 
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a drop-in, _link-time_ replacement for NOVAS in your application without 
