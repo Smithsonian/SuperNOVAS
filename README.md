@@ -140,6 +140,11 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
+   not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
+   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
+   critically, it also was the reason `cal_date()` did not work for negative JD values.
+   
  - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
@@ -155,13 +160,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
    `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the
    requested mean equinox of date coordinates.
-  
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
-   not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
-   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
-   critically, it also was the reason `cal_date()` did not work for negative JD values.
-   
- - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input
+ 
+ - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input
    vector appropriately instead.
    
  - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results
@@ -190,14 +190,14 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
    want to link your own `solarsystem()` implementation(s) against the library, you should not set `DEFAULT_SOLSYS` 
    (i.e. delete or comment out the corresponding line or else set `DEFAULT_SOLSYS` to 0).
    
- - If you are going to be using the functions of `solsys1.c` you may also want to specify the source file that will 
-   provide the `readeph()` implementation for it by setting `DEFAULT_READEPH` appropriately. (The default setting uses 
-   the dummy `readeph0.c` which simply returns an error if one tries to use the functions from `solsys1.c`.
+ - You may also want to specify the source file that will provide the `readeph()` implementation for it by setting 
+   `DEFAULT_READEPH` appropriately. (The default setting uses the dummy `readeph0.c` which simply returns an error if 
+   one tries to use the functions from `solsys1.c`). Note, that a `readeph()` implementation is not always necessary 
+   and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
 
  - If you want ot use the CIO locator binary file for `cio_location()`, you can specify the path to the binary file 
-   (e.g. `/usr/local/share/novas/cio_ra.bin`) where the file will be located at on your system. (The CIO locator file 
-   is not at all necessary for the functioning of the library, unless you specifically require CIO poistions relative 
-   to GCRS.)
+   (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system. (The CIO locator file is not at all necessary for the 
+   functioning of the library, unless you specifically require CIO poistions relative to GCRS.)
 
 Now you are ready to build the library:
 

@@ -5414,7 +5414,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     set_cio_locator_file(DEFAULT_CIO_LOCATOR_FILE);  // Try default locator file.
   if(cio_file == NULL) {
     errno = ENODEV;
-    cache_count = 0;
     return 1;
   }
 
