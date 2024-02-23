@@ -59,9 +59,9 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues)
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
- - [New features](#supernovas-features)
+ - [New features](#added-functionality)
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
- - Promoting best programing practices by refining the API. 
+ - Promoting best programing practices by [refining the API]((#api-changes)). 
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a drop-in, _link-time_ replacement for NOVAS in your application without 
@@ -539,7 +539,7 @@ before that level of accuracy is reached.
 
 
 <a name="added-functionality"></a>
-### A. Newly added functionality
+### Newly added functionality
 
  - Runtime configuration:
 
@@ -600,7 +600,7 @@ before that level of accuracy is reached.
 
 
 <a name="api-changes"></a>
-### B. Refinements to the NOVAS C API
+### Refinements to the NOVAS C API
 
  - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
    `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
