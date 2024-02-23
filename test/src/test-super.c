@@ -412,6 +412,8 @@ static int test_source() {
   if(test_aberration()) n++;
   if(test_starvectors()) n++;
 
+  if(test_geo_posvel()) n++;
+
   return n;
 }
 
@@ -488,7 +490,6 @@ static int test_observers() {
   n += test_source();
   if(test_itrs_hor_itrs()) n++;
   if(test_terra()) n++;
-  if(test_geo_posvel()) n++;
   if(test_bary2obs()) n++;
   if(test_cel2ter2cel()) n++;
 

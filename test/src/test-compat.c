@@ -905,6 +905,14 @@ static void test_gcrs2equ() {
     fprintf(fp, "cirs %12.6f %12.6f ", ra, dec);
 }
 
+static void test_rad_vel() {
+  double rv = 0.0;
+
+  openfile("rad_vel");
+  rad_vel(&source, pos0, vel0, vobs, 0.0, 0.0, 0.0, &rv);
+  fprintf(fp, "%12.6f ", rv);
+}
+
 static int test_source() {
   openfile("init");
 
@@ -919,6 +927,7 @@ static int test_source() {
   test_grav_def();
   test_place();
   test_aberration();
+  test_rad_vel();
 
   if(obs.where == 0) {
     test_astro_place();

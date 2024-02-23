@@ -3957,7 +3957,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   double jd[2] = { }, tlt, pbody[3], vbody[3], pbodyo[3], x;
   int i;
 
-  if(!pos1 || !pos_obs || !pos2 || pos2 == pos_obs) {
+  if(!pos1 || !pos_obs || !pos2) {
     errno = EINVAL;
     return -1;
   }
@@ -4064,13 +4064,17 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
  * @sa grav_def()
  */
 int grav_vec(const double *pos1, const double *pos_obs, const double *pos_body, double rmass, double *pos2) {
-  double pq[3], pe[3], pmag, emag, qmag, phat[3], ehat[3], qhat[3], pdotq, edotp, qdote;
+  double pq[3], pe[3], pmag, emag, qmag, phat[3], ehat[3], qhat[3];
   int i;
 
-  if(!pos1 || !pos_obs || !pos_body || !pos2 || pos2 == pos_obs) {
+  if(!pos1 || !pos_obs || !pos_body || !pos2) {
     errno = EINVAL;
     return -1;
   }
+
+  // Default output in case of error
+  if(pos2 != pos1)
+    memcpy(pos2, pos1, XYZ_VECTOR_SIZE);
 
   // Construct vector 'pq' from gravitating body to observed object and
   // construct vector 'pe' from gravitating body to observer.
@@ -4084,35 +4088,31 @@ int grav_vec(const double *pos1, const double *pos_obs, const double *pos_body, 
   emag = vlen(pe);
   qmag = vlen(pq);
 
-  for(i = 0; i < 3; i++) {
-    phat[i] = pos1[i] / pmag;
+  // Gravitating body is the observer or the observed object. No deflection.
+  if(!emag || !qmag)
+    return 0;
+
+  for(i = 3; --i >= 0;) {
+    if(pmag)
+      phat[i] = pos1[i] / pmag;
     ehat[i] = pe[i] / emag;
     qhat[i] = pq[i] / qmag;
   }
 
-  // Compute dot products of vectors.
-  pdotq = vdot(phat, qhat);
-  edotp = vdot(ehat, phat);
-  qdote = vdot(qhat, ehat);
+  // Deflection calculation...
+  {
+    // Compute dot products of vectors
+    const double edotp = vdot(ehat, phat);
+    const double pdotq = vdot(phat, qhat);
+    const double qdote = vdot(qhat, ehat);
 
-  // If gravitating body is observed object, or is on a straight line
-  // toward or away from observed object to within 1 arcsec, deflection
-  // is set to zero; set 'pos2' equal to 'pos1'.
-  if(fabs(edotp) > 0.99999999999) {
-    if(pos2 != pos1)
-      memcpy(pos2, pos1, XYZ_VECTOR_SIZE);
-  }
-
-  else {
     // Compute scalar factors.
     const double fac1 = 2.0 * GS / (C * C * emag * AU * rmass);
     const double fac2 = 1.0 + qdote;
 
     // Construct corrected position vector 'pos2'.
-    for(i = 3; --i >= 0;) {
-      const double p2i = phat[i] + fac1 * (pdotq * ehat[i] - edotp * qhat[i]) / fac2;
-      pos2[i] = p2i * pmag;
-    }
+    for(i = 3; --i >= 0;)
+      pos2[i] += pmag * fac1 * (pdotq * ehat[i] - edotp * qhat[i]) / fac2;
   }
 
   return 0;

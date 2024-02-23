@@ -180,12 +180,15 @@ static int test_transform_hip() {
 static int test_ephemeris() {
   double p[3], v[3];
   double tdb[2] = { NOVAS_JD_J2000 };
-  object mars;
+  object ceres;
   int n = 0;
 
+  make_ephem_object("Ceres", 2000001, &ceres);
+
   if(check("ephemeris:body", -1, ephemeris(tdb, NULL, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
-  if(check("ephemeris:jd", -1, ephemeris(NULL, &mars, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
-  if(check("ephemeris:origin", 1, ephemeris(tdb, &mars, -1, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:jd", -1, ephemeris(NULL, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:origin", 1, ephemeris(tdb, &ceres, -1, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:noephem", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
 
   return n;
 }
@@ -750,7 +753,6 @@ static int test_grav_vec() {
   if(check("grav_vec:po", -1, grav_vec(p, NULL, pb, 1.0, p))) n++;
   if(check("grav_vec:pb", -1, grav_vec(p, po, NULL, 1.0, p))) n++;
   if(check("grav_vec:out", -1, grav_vec(p, po, pb, 1.0, NULL))) n++;
-  if(check("grav_vec:same", -1, grav_vec(p, po, pb, 1.0, po))) n++;
 
   return n;
 }
@@ -762,7 +764,6 @@ static int test_grav_def() {
   if(check("grav_def:pos", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
   if(check("grav_def:po", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
   if(check("grav_def:out", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
-  if(check("grav_def:same", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, po))) n++;
 
   return n;
 }
