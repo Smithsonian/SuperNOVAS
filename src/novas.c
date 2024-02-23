@@ -5386,7 +5386,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
 
   // Packed struct in case long is not the same width a double
-  struct __attribute__ ((packed)) header {
+  struct __attribute__ ((packed)) cio_file_header {
     double jd_start;
     double jd_end;
     double jd_interval;
@@ -5394,7 +5394,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
   };
 
   static FILE *last_file;
-  static struct header properties;
+  static struct cio_file_header properties;
   static ra_of_cio cache[NOVAS_CIO_CACHE_SIZE];
   static long index_cache, cache_count;
 
@@ -5423,7 +5423,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     cache_count = 0;
 
     // Read the file header
-    if(fread(&properties, sizeof(struct header), 1, cio_file) != 1)
+    if(fread(&properties, sizeof(struct cio_file_header), 1, cio_file) != 1)
       return -1;
 
     last_file = cio_file;
