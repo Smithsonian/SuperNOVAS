@@ -60,8 +60,8 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Fixing [outstanding issues](#fixed-issues)
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
  - [New features](#added-functionality)
+ - [Refining the existing API]((#api-changes)) to promote best programing practices. 
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
- - Promoting best programing practices by [refining the existing API]((#api-changes)). 
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a drop-in, _link-time_ replacement for NOVAS in your application without 
@@ -301,7 +301,7 @@ equivalent J2000 coordinates, by applying the proper motion and the appropriate 
 adjustment to convert from J2000 to ICRS coordinates.
 
 ```c
- // First change the catalog coordinates (in place) to the J2000 (FK5)... 
+ // First change the catalog coordinates (in place) to the J2000 (FK5) system... 
  transform_cat(CHANGE_EPOCH, NOVAS_B1950, &source, NOVAS_J2000, "FK5", &source);
   
  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
@@ -322,17 +322,17 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-We also need to set the time of observation. Our clocks usually measure UTC, but for NOVAS we usually need time 
-measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. Typically you will have to provide
-NOVAS with the TT - UT1 time difference, which can be calculated from the current leap seconds and the UT1 - UTC 
-time difference (a.k.a. DUT1): 
+We also need to set the time of observation. Our clocks usually measure UTC, but for astrometry we usually need time 
+measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. Typically you will have to provide NOVAS 
+with the TT - UT1 time difference, which can be calculated from the current leap seconds and the UT1 - UTC time 
+difference (a.k.a. DUT1): 
 
 ```c
  // The current value for the leap seconds (UTC - TAI)
  int leap_seconds = 37;
 
  // Set the DUT1 = UT1 - UTC time difference in seconds (e.g. from IERS Bulletins)
- int dut1 = ...
+ int dut1 = ...;
 
  // Calculate the Terrestrial Time (TT) based Julian date of observation (in days)
  // Let's say on 2024-02-06 at 14:53:06 UTC.
@@ -352,8 +352,8 @@ early on:
 
 ```c
  // Current polar offsets provided by the IERS Bulletins (in arcsec)
- double dx = ... 
- double dy = ...
+ double dx = ...;
+ double dy = ...;
   
  cel_pole(jd_tt, POLE_OFFSETS_X_Y, dx, dy);
 ```
@@ -480,7 +480,7 @@ however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last re
 may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy). 
 Therefore, when calculating positions for a large number of sources at different times:
 
- - It is best to iterate over the sources while keeping the time fixed in the inner loop. 
+ - It is best to iterate over the sources in the inner loop while keeping the time fixed. 
  - You probably want to stick to one accuracy mode (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
    re-calculating the same quantities repeatedly to alternating precision.
  - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
@@ -643,6 +643,8 @@ before that level of accuracy is reached.
 
  - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
+   
+ - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
    
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 

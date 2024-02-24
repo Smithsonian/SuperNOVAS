@@ -180,6 +180,8 @@ This is the initial release of the SuperNOVAS library.
    
  - Changed `vector2radec()` to return NAN values if the input is a null-vector (i.e. all components are zero).
    
+ - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
+ 
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
    guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
