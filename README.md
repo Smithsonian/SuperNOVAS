@@ -33,9 +33,8 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
 # Table of Contents
 
  - [Introduction](#introduction)
- - [Related links](#related-links)
- - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
+ - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#building-your-application)
  - [Example usage](#examples)
@@ -76,13 +75,7 @@ available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/Su
 Outside contributions are very welcome. See
 [how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
 
-
------------------------------------------------------------------------------
-
-<a name="related-links"></a>
-## Related links
-
-Here are some links to SuperNOVAS related content online:
+Here are some links to other SuperNOVAS related content online:
 
  - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/)
  - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
@@ -95,20 +88,6 @@ Here are some links to SuperNOVAS related content online:
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
    of ephemeris data.
 
------------------------------------------------------------------------------
-
-<a name="compatibility"></a>
-## Compatibility with NOVAS C 3.1
-
-SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. 
-In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. `novas.o`), or the 
-static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from SuperNOVAS. Instead, 
-you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of these. 
-
-This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
-`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
-NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to accommodate 
-JPL NAIF codes, and for which 16-bit storage is insufficient. 
 
 -----------------------------------------------------------------------------
 
@@ -160,6 +139,23 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes potential string overflows and eliminates associated compiler warnings.
 
 -----------------------------------------------------------------------------
+
+<a name="compatibility"></a>
+## Compatibility with NOVAS C 3.1
+
+SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. 
+In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. `novas.o`), or the 
+static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from SuperNOVAS. Instead, 
+you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of these. 
+
+This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
+`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
+NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to accommodate 
+JPL NAIF codes, and for which 16-bit storage is insufficient. 
+
+
+-----------------------------------------------------------------------------
+
 
 <a name="installation"></a>
 ## Building and installation
