@@ -260,7 +260,7 @@ terms differently:
 
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
- | Catalog coordinate system  | FK5, FK5, HIP...              | International Celestial Reference System (ICRS)   |
+ | Catalog coordinate system  | FK4, FK5, HIP...              | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
