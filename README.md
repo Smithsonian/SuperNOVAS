@@ -135,21 +135,21 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it also 
    was the reason `cal_date()` did not work for negative JD values.
    
+ - Fix bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
+   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
+   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
+   equinox of date coordinates.
+   
  - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
  - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
-   `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
+   `geo_posvel()`, `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
  - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
    systems.
-   
- - Fix bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
-   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
-   equinox of date coordinates.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.

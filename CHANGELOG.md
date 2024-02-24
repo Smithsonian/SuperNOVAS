@@ -30,6 +30,16 @@ This is the initial release of the SuperNOVAS library.
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was not 
+   turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and the 
+   fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it also 
+   was the reason `cal_date()` did not work for negative JD values.
+ 
+ - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the 
+   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
+   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
+   equinox of date coordinates.
+   
  - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
@@ -40,16 +50,6 @@ This is the initial release of the SuperNOVAS library.
    
  - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
    systems.
-   
- - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the 
-   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
-   equinox of date coordinates.
-  
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was not 
-   turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and the 
-   fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it also 
-   was the reason `cal_date()` did not work for negative JD values.
    
  - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
