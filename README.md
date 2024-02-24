@@ -36,7 +36,6 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
  - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Building and installation](#installation)
- - [Building your application with SuperNOVAS](#building-your-application)
  - [Example usage](#examples)
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
@@ -202,8 +201,7 @@ the place you specified in `config.mk` etc. You may also want to copy the header
 `/usr/local/include` so you can compile your application against SuperNOVAS easily on your system.
 
 
-<a name="building-your-application"></a>
-## Building your application with SuperNOVAS
+### Building your application with SuperNOVAS
 
 Provided you have installed the SuperNOVAS headers into a standard location (such as `/usr/include` or 
 `/usr/local/include`) and the static or shared library into `usr/lib` (or `/usr/local/lib` or similar), you
