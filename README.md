@@ -266,9 +266,9 @@ terms differently:
 
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
- | Catalog coordinate system  | FK5 (B1950) or FK5 (J2000)    | International Celestial Reference System (ICRS)   |
+ | Catalog coordinate system  | FK5, FK5, HIP...              | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
- | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
+ | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
  | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
@@ -276,6 +276,11 @@ terms differently:
  
 See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
 on how they are appropriate for the old and new methodologies respectively.
+
+In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS. The origin for
+positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
+Earth (at the geocenter, on the surface, or in Earth orbit).
+
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -373,6 +378,11 @@ distance (e.g. for apparent-to-physical size conversion):
  }
 ```
 
+The _placement_ of the celestial target in the observer's frame includes appropriate aberration corrections for the
+observer's motion, as well as appropriate gravitational deflection corrections due to the Sun and Earth, and 
+for other major gravitating solar system bodies (in full precision mode; and if a planet provider function
+is available).
+
 Finally, we may want to calculate the astrometric azimuth and zenith distance (= 90&deg; - azimuth) angles of the 
 source at the specified observing location (without refraction correction):
 
@@ -388,10 +398,10 @@ source at the specified observing location (without refraction correction):
 ``` 
 
 In the example above we first calculated the apparent coordinates in the Celestial Intermediate Reference System 
-(CIRS). Then we used `cirs_to_itrs()` function then convert first it to the Earth-fixed International Terrestrial 
-Reference system (ITRS) using the small (arcsec-level) measured variation of the pole (dx, dy) provided explicitly 
-since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. Finally, `itrs_to_hor()` converts 
-the ITRS coordinates to the horizontal system at the observer location.
+(CIRS) for an observer located on Earth's surface. Then we used `cirs_to_itrs()` function then convert first it to the 
+Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) measured variation of the 
+pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. 
+Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer location.
 
 You can additionally apply an optical refraction correction for the astrometric (unrefracted) zenith angle, if you 
 want, e.g.:
@@ -422,9 +432,9 @@ that will handle the respective ephemeris data at runtime before making the NOVA
  set_ephem_provider(my_ephemeris_provider_function);
 ```
 
-You can use `tt2tdb()` to help convert Terrestrial Time (TT) to Barycentric Dynamic Time (TDB) for your ephemeris 
-provider functions (they only differ when you really need extreme precision -- for most applications you can used TT 
-and TDB interchangeably in the present era):
+You can use `tt2tdb()` to convert Terrestrial Time (TT) to Barycentric Dynamic Time (TDB) for your ephemeris provider 
+functions (they only differ when you really need extreme precision -- for most applications you can used TT and TDB 
+interchangeably in the present era):
 
 ```c
  double jd_tdb = jd_tt + tt2tdb(jd_tt) / 86400.0;
@@ -438,11 +448,11 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
 ```c
  object mars, ceres; // Hold data on solar-system bodies.
   
- // Mars will be handled by hte planet calculator function
+ // Mars will be handled by the planet provider function
  make_planet(NOVAS_MARS, &mars);
   
- // Ceres will be handled by the generic ephemeris reader, which say uses the 
- // NAIF ID of 2000001
+ // Ceres will be handled by the generic ephemeris provider function, which let's say 
+ // uses the NAIF ID of 2000001
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
@@ -499,13 +509,13 @@ before that level of accuracy is reached.
 
  2. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
     knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
-    nutation, but  also small irregular variations in the orientation of the rotational axis and the rotation period 
+    nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
     (DUT1) time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` 
     functions to apply / use the published values from these to improve the astrometic precision of Earth-orientation
     based coordinate calculations. Without setting and using the actual polar offset values for the time of 
-    observation, positions for Earth-based observations will be accurate at the arcsecond level only.
+    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
  
  3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun vs the Solar-system barycenter. For the highest precision 
@@ -514,14 +524,14 @@ before that level of accuracy is reached.
     `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
     need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
     JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
-    [section below](#solarsystem) for more information how you can do that.
+    [section further below](#solarsystem) for more information how you can do that.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
-    option to include _optical_ refraction corrections in `equ2hor()` either for a standard atmosphere or more 
-    precisely using the weather parameters defined in the `on_surface` data structure that specifies the observer 
-    locations. Note, that refraction at radio wavelengths is notably different from the included optical model. In 
-    either case you may want to skip the refraction corrections offered in this library, and instead implement your 
-    own as appropriate (or not at all).
+    option to include _optical_ refraction corrections either for a standard atmosphere or more precisely using the 
+    weather parameters defined in the `on_surface` data structure that specifies the observer locations. Note, that 
+    refraction at radio wavelengths is notably different from the included optical model. In either case you may want 
+    to skip the refraction corrections offered in this library, and instead implement your own as appropriate (or not 
+    at all).
   
 
 
@@ -803,7 +813,7 @@ A predictable release schedule and process can help manage expectations and redu
 alike.
 
 Releases of the library shall follow a quarterly release schedule. You may expect upcoming releases 
-to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as needed
+to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as-needed
 basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that 
 addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a new release will 
 actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 
