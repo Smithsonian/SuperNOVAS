@@ -60,7 +60,7 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Fixing [outstanding issues](#fixed-issues)
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
  - [New features](#added-functionality)
- - [Refining the existing API]((#api-changes)) to promote best programing practices. 
+ - [Refining the API]((#api-changes)) to promote best programing practices. 
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
@@ -100,16 +100,15 @@ Here are some links to SuperNOVAS related content online:
 <a name="compatibility"></a>
 ## Compatibility with NOVAS C 3.1
 
-SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary 
-compatibility. In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. 
-`novas.o`), or the static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from 
-SuperNOVAS. Instead, you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of 
-these. 
+SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. 
+In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. `novas.o`), or the 
+static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from SuperNOVAS. Instead, 
+you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of these. 
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
-`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` 
-in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to 
-accommodate JPL NAIF codes, and for which 16-bit storage is insufficient. 
+`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
+NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to accommodate 
+JPL NAIF codes, and for which 16-bit storage is insufficient. 
 
 -----------------------------------------------------------------------------
 
@@ -119,8 +118,8 @@ accommodate JPL NAIF codes, and for which 16-bit storage is insufficient.
 The SuperNOVAS library fixes a number of outstanding issues with NOVAS C 3.1. Here is a list of issues and fixes 
 provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 
- - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
-   function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+ - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
+   had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
    
  - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
    `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
@@ -131,10 +130,10 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
-   not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
-   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
-   critically, it also was the reason `cal_date()` did not work for negative JD values.
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was not 
+   turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and the 
+   fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it also 
+   was the reason `cal_date()` did not work for negative JD values.
    
  - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
@@ -149,14 +148,14 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fix bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the
-   requested mean equinox of date coordinates.
+   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
+   equinox of date coordinates.
  
- - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input
-   vector appropriately instead.
+ - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
+   appropriately instead.
    
- - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results
-   in irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
+ - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results in 
+   irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
 
@@ -166,11 +165,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 ## Building and installation
 
 
-The SuperNOVAS distribution contains a `Makefile` for GNU make, which is suitable for compiling the library (as well 
-as local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this 
-point we do not provide a similar native build setup for Windows, but speak up if you would like to add it 
-yourself!)
-
+The SuperNOVAS distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as local 
+documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point we do 
+not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, such as:
 

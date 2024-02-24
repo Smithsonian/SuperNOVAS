@@ -18,8 +18,8 @@ This is the initial release of the SuperNOVAS library.
 
 ### Fixed
 
- - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
-   function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+ - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
+   had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
    
  - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
    `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
@@ -41,21 +41,21 @@ This is the initial release of the SuperNOVAS library.
  - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
    systems.
    
- - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
+ - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the 
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the
-   requested mean equinox of date coordinates.
+   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
+   equinox of date coordinates.
   
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
-   not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
-   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
-   critically, it also was the reason `cal_date()` did not work for negative JD values.
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was not 
+   turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and the 
+   fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it also 
+   was the reason `cal_date()` did not work for negative JD values.
    
- - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input
-   vector appropriately instead.
+ - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
+   appropriately instead.
    
- - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results
-   in irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
+ - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results in 
+   irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
    
@@ -141,11 +141,11 @@ This is the initial release of the SuperNOVAS library.
    invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
    error code is returned for compatibility).
    
- - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
-   use functions such as `perror()` and `strerror()` to print human-readable error messages.
+ - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and use 
+   functions such as `perror()` and `strerror()` to print human-readable error messages.
    
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
-   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
+   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned 
    should not be used as if they were valid. (No more sneaky silent errors.)
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
