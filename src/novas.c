@@ -500,7 +500,8 @@ int set_planet_provider_hp(novas_planet_provider_hp func) {
 
 /**
  * Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt',
- * given its catalog mean place, proper motion, parallax, and radial velocity.
+ * given its catalog mean place, proper motion, parallax, and radial velocity. See `place()`
+ * for more information.
  *
  * REFERENCES:
  * <ol>
@@ -545,7 +546,8 @@ int place_star(double jd_tt, const cat_entry *star, const observer *obs, double 
 
 /**
  * Computes the International Celestial Reference System (ICRS) position of a source.
- * (from the geocenter)
+ * (from the geocenter). Unlike `place_gcrs()`, this version does not include
+ * aberration or gravitational deflection corrections.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -570,7 +572,9 @@ int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 /**
  * Computes the Geocentric Celestial Reference System (GCRS) position of a source (from the
- * geocenter).
+ * geocenter). Unlike `place_icrs()`, this includes aberration for the moving frame of the
+ * geocenter as well as gravitational deflections calulated for a virtual observer located
+ * at the geocenter. See `place()` for more information.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -594,7 +598,8 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 /**
  * Computes the Celestial Intermediate Reference System (CIRS) dynamical position
- * position of a source from the geocenter
+ * position of a source from the geocenter at the given time of observation. See `place()` for
+ * more information.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -615,7 +620,8 @@ int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 }
 
 /**
- * Computes the True of Date (TOD) dynamical position position of a source from the geocenter.
+ * Computes the True of Date (TOD) dynamical position position of a source from the geocenter at
+ * thee given time of observation. See `place()` for more information.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -1249,16 +1255,21 @@ short mean_star(double jd_tt, double ra, double dec, enum novas_accuracy accurac
  * coordinate system, <code>location->where</code> sets the origin of the reference place relative
  * to which positions and velocities are reported.
  *
+ * The calculated positions and velocities include aberration corrections for the moving frame of
+ * the observer as well as gravitational deflection due to the Sun and Earth and other major
+ * gravitating bodies in the Solar system, provided planet positions are available via a
+ * novas_planet_provider function.
+ *
  * In case of a dynamical equatorial system (such as CIRS or TOD) and an Earth-based observer, the
  * polar wobble parameters set via a prior call to cel_pole() together with he ut1_to_tt argument
  * decide whether the resulting 'topocentric' output frame is Pseudo Earth Fixed (PEF; if
  * cel_pole() was not set and DUT1 is 0) or ITRS (actual rotating Earth; if cel_pole() was set
- * and ut1_to_tt contains the DUT1 component).
+ * and ut1_to_tt includes the DUT1 component).
  *
  * NOTES:
  * <ol>
- * <li>This version fixes a NOVAS C 3.1 issue that velocities were not antedated for light-travel
- * time.</li>
+ * <li>This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not
+ * antedated for light-travel time.</li>
  * </ol>
  *
  * REFERENCES:
