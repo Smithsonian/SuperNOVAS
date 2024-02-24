@@ -571,10 +571,10 @@ int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 }
 
 /**
- * Computes the Geocentric Celestial Reference System (GCRS) position of a source (from the
- * geocenter). Unlike `place_icrs()`, this includes aberration for the moving frame of the
- * geocenter as well as gravitational deflections calulated for a virtual observer located
- * at the geocenter. See `place()` for more information.
+ * Computes the Geocentric Celestial Reference System (GCRS) position of a source (as 'seen'
+ * from the geocenter) at the given time of observation. Unlike `place_icrs()`, this includes
+ * aberration for the moving frame of the geocenter as well as gravitational deflections
+ * calculated for a virtual observer located at the geocenter. See `place()` for more information.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -598,8 +598,8 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 
 /**
  * Computes the Celestial Intermediate Reference System (CIRS) dynamical position
- * position of a source from the geocenter at the given time of observation. See `place()` for
- * more information.
+ * position of a source as 'seen' from the geocenter at the given time of observation. See
+ * `place()` for more information.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.
@@ -620,8 +620,8 @@ int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy,
 }
 
 /**
- * Computes the True of Date (TOD) dynamical position position of a source from the geocenter at
- * thee given time of observation. See `place()` for more information.
+ * Computes the True of Date (TOD) dynamical position position of a source as 'seen' from the
+ * geocenter at the given time of observation. See `place()` for more information.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
  * @param source      Catalog source or solar_system body.

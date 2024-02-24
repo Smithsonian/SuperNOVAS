@@ -58,7 +58,7 @@ The primary goals of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Fixing [outstanding issues](#fixed-issues)
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
  - [New features](#added-functionality)
- - [Refining the API]((#api-changes)) to promote best programing practices. 
+ - [Refining the API](#api-changes) to promote best programing practices. 
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
@@ -470,7 +470,7 @@ When one does not need positions at the microarcsecond level, some shortcuts can
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at the milliarcsecond level only, but may be much faster to calculate.
  - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
-   &lt;~ 22 mas level).
+   &lt;= 22 mas level).
  - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
  
 <a name="performance-note"></a>
