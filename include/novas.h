@@ -881,12 +881,12 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
  * @sa error_return
  */
 #  define prop_error(loc, n, d) { \
-  const int status = n; \
-  const int offset = d; \
-  if(status != 0) { \
+  const int __status = (n); \
+  const int __offset = (d); \
+  if(__status != 0) { \
     if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) \
-      fprintf(stderr, "   @ %s [=> %d]\n", loc, status + offset); \
-    return (status < 0 ? -1 : status + offset); \
+      fprintf(stderr, "   @ %s [=> %d]\n", loc, __status + __offset); \
+    return (__status < 0 ? -1 : __status + __offset); \
   } \
 }
 
@@ -901,9 +901,9 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
  * @sa novas_debug()
  */
 #  define set_error(en, from, desc...) { \
-  errno = en; \
+  errno = (en); \
   if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) { \
-    fprintf(stderr, "\n  ERROR! %s: ", from); \
+    fprintf(stderr, "\n  ERROR! %s: ", (from)); \
     fprintf(stderr, desc); \
   } \
 }
@@ -919,15 +919,15 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
  *
  * @sa set_error
  */
-#  define error_return(ret, en, from, desc...) {\
-  errno = en; \
-  int rv = ret; \
+#  define error_return(ret, en, from, desc...) { \
+  const int __ret = (ret); \
+  errno = (en); \
   if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) { \
-    fprintf(stderr, "\n  ERROR! %s: ", from); \
+    fprintf(stderr, "\n  ERROR! %s: ", (from)); \
     fprintf(stderr, desc); \
-    fprintf(stderr, " [=> %d]\n", rv); \
+    fprintf(stderr, " [=> %d]\n", __ret); \
   } \
-  return rv; \
+  return __ret; \
 }
 
 #  ifndef THREAD_LOCAL
