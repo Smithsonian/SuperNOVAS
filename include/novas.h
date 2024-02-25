@@ -869,37 +869,40 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
 /// \cond PRIVATE
 #ifdef __NOVAS_INTERNAL_API__
 
-#include <stdio.h>
+#  include <stdio.h>
 
 /**
  * Propagate an error (if any) with an offset. If the error is non-zero, it returns with the offset
  * error value. Otherwise it keeps going as if it weren't even there...
  *
- * @param n     The error code
- * @param d     the offset with which the error is propagated
+ * @param n     {int} error code or the call that produces the error code
+ * @param d     {int} offset with which the error is propagated
  *
  * @sa error_return
  */
-#define prop_error(loc, n, d) \
-  if(n != 0) { \
-    if(novas_get_debug_mode()) \
-      fprintf(stderr, "   @ %s [=> %d]\n", loc, n); \
-    return (n < 0 ? -1 : n + d); \
-  }
+#  define prop_error(loc, n, d) { \
+  const int status = n; \
+  const int offset = d; \
+  if(status != 0) { \
+    if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) \
+      fprintf(stderr, "   @ %s [=> %d]\n", loc, status + offset); \
+    return (status < 0 ? -1 : status + offset); \
+  } \
+}
 
 /**
  * Set an errno and report errors to the standard error, depending on the current debug mode.
  *
- * @param en    UNIX error number (see errno.h)
- * @param from  Function (:location) where error originated
- * @param desc  Description of error, with information to convey to user.
+ * @param en    {int} UNIX error number (see errno.h)
+ * @param from  {string} Function (:location) where error originated
+ * @param desc  {string} Description of error, with information to convey to user.
  *
  * @sa error_return
  * @sa novas_debug()
  */
-#define set_error(en, from, desc...) { \
+#  define set_error(en, from, desc...) { \
   errno = en; \
-  if(novas_get_debug_mode()) { \
+  if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) { \
     fprintf(stderr, "\n  ERROR! %s: ", from); \
     fprintf(stderr, desc); \
   } \
@@ -909,22 +912,33 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
  * Return with an error code, but not before setting errno and reporting errors to the standard error,
  * depending on the current debug mode.
  *
- * @param ret   Return value
- * @param en    UNIX error number (see errno.h)
- * @param from  Function (:location) where error originated
- * @param desc  Description of error, with information to convey to user.
+ * @param ret   {int} return value
+ * @param en    {int} UNIX error number (see errno.h)
+ * @param from  {string} Function (:location) where error originated
+ * @param desc  {string} Description of error, with information to convey to user.
  *
  * @sa set_error
  */
-#define error_return(ret, en, from, desc...) {\
+#  define error_return(ret, en, from, desc...) {\
   errno = en; \
-  if(novas_get_debug_mode()) { \
+  int rv = ret; \
+  if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) { \
     fprintf(stderr, "\n  ERROR! %s: ", from); \
     fprintf(stderr, desc); \
-    fprintf(stderr, " [=> %d]\n", ret); \
+    fprintf(stderr, " [=> %d]\n", rv); \
   } \
-  return ret; \
+  return rv; \
 }
+
+#  ifndef THREAD_LOCAL
+#    if __STDC_VERSION__ > 201112L
+#      define THREAD_LOCAL _Thread_local          ///< C11 standard for thread local variables
+#    elif __GNUC__ >= 3 && __GNUC_MINOR__ >= 3
+#      define THREAD_LOCAL __thread               ///< pre C11 gcc >= 3.3 standard for thread-local variables
+#    else
+#      define THREAD_LOCAL                        ///< no thread-local variables
+#    endif
+#  endif
 
 #endif /* __NOVAS_INTERNAL_API__ */
 /// \endcond

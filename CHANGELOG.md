@@ -69,8 +69,6 @@ This is the initial release of the SuperNOVAS library.
    be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can have
    a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing
    `NOVAS_DEBUF_OFF` (0) as the argument to the same call.
- 
- - New [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
 
  - Added Doxygen markup of source code and header.
   
@@ -140,6 +138,12 @@ This is the initial release of the SuperNOVAS library.
 
 
 ### Changed
+
+ - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
+   This works using the C11 standard `_Thread_local` or else the earlier GNU C &lt;= 3.3 standard `__thread` modifier.
+   You can also pass the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
+   `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
+   thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
 
  - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
    `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 

@@ -76,7 +76,7 @@
  * @sa EPS_COR
  * @sa cel_pole()
  */
-static __thread double PSI_COR = 0.0;
+static THREAD_LOCAL double PSI_COR = 0.0;
 
 /**
  * Celestial pole offset &epsilon; for high-precision applications.
@@ -84,28 +84,28 @@ static __thread double PSI_COR = 0.0;
  * @sa PSI_COR
  * @sa cel_pole()
  */
-static __thread double EPS_COR = 0.0;
+static THREAD_LOCAL double EPS_COR = 0.0;
 
 /// Current debugging state for reporting errors and traces to stderr.
-static __thread enum novas_debug_mode novas_debug_state = 0;
+static THREAD_LOCAL enum novas_debug_mode novas_debug_state = 0;
 
 ///< Opened CIO locator data file, or NULL.
-static __thread FILE *cio_file;
+static THREAD_LOCAL FILE *cio_file;
 
 /// function to use for calculating positions for major planets
-static __thread novas_planet_provider planetcalc = NULL;
+static THREAD_LOCAL novas_planet_provider planetcalc = NULL;
 
 /// function to use for calculating positions for major planets with high precison
-static __thread novas_planet_provider_hp planetcalc_hp = NULL;
+static THREAD_LOCAL novas_planet_provider_hp planetcalc_hp = NULL;
 
 /// function to use for reading ephemeris data for all types of solar system sources
-static __thread novas_ephem_provider readeph2_call = NULL;
+static THREAD_LOCAL novas_ephem_provider readeph2_call = NULL;
 
 /// Function to use for reduced-precision calculations. (The full IAU 2000A model is used
 /// always for high-precision calculations)
-static __thread novas_nutation_provider nutate_lp = nu2000k;
+static THREAD_LOCAL novas_nutation_provider nutate_lp = nu2000k;
 
-static __thread int is_case_sensitive = 0; ///< (boolean) whether object names are case-sensitive.
+static THREAD_LOCAL int is_case_sensitive = 0; ///< (boolean) whether object names are case-sensitive.
 
 /**
  * Enables or disables reporting errors and traces to the standard error stream. The debug setting is specific
@@ -1358,9 +1358,9 @@ short place(double jd_tt, const object *source, const observer *location, double
   static object earth, sun;
 
   static int first_time = 1;
-  static __thread enum novas_accuracy acc_last = -1;
-  static __thread double tlast1 = 0.0;
-  static __thread double peb[3], veb[3], psb[3];
+  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL double tlast1 = 0.0;
+  static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
   enum novas_observer_place loc;
   double x, jd_tdb, pog[3] = { }, vog[3] = { }, pob[3], vob[3], pos[3] = { 0 }, vel[3], t_light, d_sb, frlimb;
@@ -1804,8 +1804,8 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   switch(coord_sys) {
     case NOVAS_MEAN_EQUATOR:      // Input: mean equator and equinox of date
     case NOVAS_TRUE_EQUATOR: {    // Input: true equator and equinox of date
-      static __thread enum novas_accuracy acc_last = -1;
-      static __thread double t_last = 0.0, oblm, oblt;
+      static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+      static THREAD_LOCAL double t_last = 0.0, oblm, oblt;
 
       memcpy(pos0, in, sizeof(pos0));
 
@@ -1821,8 +1821,8 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
     }
 
     case NOVAS_GCRS_EQUATOR: /* Input: GCRS */{
-      static __thread enum novas_accuracy acc_2000 = -1;
-      static __thread double ob2000;
+      static THREAD_LOCAL enum novas_accuracy acc_2000 = -1;
+      static THREAD_LOCAL double ob2000;
 
       frame_tie(in, ICRS_TO_J2000, pos0);
 
@@ -1886,8 +1886,8 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 
     case NOVAS_MEAN_EQUATOR:        // Output: mean equator and equinox of date
     case NOVAS_TRUE_EQUATOR: {      // Output: true equator and equinox of date
-      static __thread enum novas_accuracy acc_last = -1;
-      static __thread double t_last = 0.0, oblm, oblt;
+      static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+      static THREAD_LOCAL double t_last = 0.0, oblm, oblt;
 
       if(!oblm || !time_equals(jd_tt, t_last) || accuracy != acc_last) {
         const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;    // TDB date
@@ -1901,7 +1901,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
     }
 
     case NOVAS_GCRS_EQUATOR: {      // Output: GCRS
-      static __thread double ob2000;
+      static THREAD_LOCAL double ob2000;
 
       if(ob2000 == 0.0) {
         ob2000 = mean_obliq(JD_J2000);
@@ -2401,9 +2401,9 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   // input values of 'gst_type' and 'method'.  If not needed, set to zero.
   if(((gst_type == NOVAS_MEAN_EQUINOX) && (erot == EROT_ERA))       // GMST; CIO-TIO
   || ((gst_type == NOVAS_TRUE_EQUINOX) && (erot == EROT_GST))) {    // GAST; equinox
-    static __thread enum novas_accuracy acc_last = -1;
-    static __thread double jd_last;
-    static __thread double ee;
+    static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+    static THREAD_LOCAL double jd_last;
+    static THREAD_LOCAL double ee;
 
     if(!time_equals(jd_tdb, jd_last) || accuracy != acc_last) {
       e_tilt(jd_tdb, accuracy, NULL, NULL, &ee, NULL, NULL);
@@ -2961,8 +2961,8 @@ int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  *
  */
 int spin(double angle, const double *in, double *out) {
-  static __thread double ang_last = -999.0;
-  static __thread double xx, yx, xy, yy, zz = 1.0;
+  static THREAD_LOCAL double ang_last = -999.0;
+  static THREAD_LOCAL double xx, yx, xy, yy, zz = 1.0;
 
   double x, y, z;
 
@@ -3175,9 +3175,9 @@ int terra(const on_surface *location, double lst, double *pos, double *vel) {
  */
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *tobl, double *ee, double *dpsi,
         double *deps) {
-  static __thread enum novas_accuracy acc_last = -1;
-  static __thread double jd_last = 0;
-  static __thread double d_psi, d_eps, mean_ob, true_ob, c_terms;
+  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL double jd_last = 0;
+  static THREAD_LOCAL double d_psi, d_eps, mean_ob, true_ob, c_terms;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     error_return(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
@@ -3650,9 +3650,9 @@ int bary2obs(const double *pos, const double *pos_obs, double *out, double *ligh
 short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos,
         double *vel) {
   static const char *fn = "geo_posvel";
-  static __thread double t_last = 0;
-  static __thread enum novas_accuracy acc_last = -1;
-  static __thread double gast;
+  static THREAD_LOCAL double t_last = 0;
+  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL double gast;
 
   double gmst, eqeq, pos1[3], vel1[3], jd_tdb, jd_ut1;
 
@@ -3986,7 +3986,6 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
     if(error)
       break;
 
-
     // Get position of gravitating body wrt observer at time 'jd_tdb'.
     bary2obs(pbody, pos_obs, pbodyo, NULL);
 
@@ -4022,12 +4021,12 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   if(i == 0)
     prop_error("grav_def:sun", error, 0);
 
-  // If could not calculate deflection to other solar system body then
-  // return error only if in full debug mode...
-  if(i < nbodies && novas_debug_state == NOVAS_DEBUG_EXTRA) {
+  // If could not calculate deflection to another solar system body then
+  // return error only if in extra debug mode...
+  if(i < nbodies && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA) {
     const char *names[] = NOVAS_PLANET_NAMES_INIT;
     char from[40];
-    sprintf(from, "%s:%s", fn, names[i]);
+    sprintf(from, "%s:%s", fn, names[body_num[i]]);
     prop_error(from, error, 0);
   }
 
@@ -4391,8 +4390,8 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
  * @sa NOVAS_TOD
  */
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
-  static __thread double t_last;
-  static __thread double xx, yx, zx, xy, yy, zy, xz, yz, zz;
+  static THREAD_LOCAL double t_last;
+  static THREAD_LOCAL double xx, yx, zx, xy, yy, zy, xz, yz, zz;
   double t;
 
   if(!in || !out)
@@ -5166,10 +5165,10 @@ int set_cio_locator_file(const char *filename) {
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, short *loc_type) {
   static const char *fn = "cio_location";
 
-  static __thread enum novas_accuracy acc_last = -1;
-  static __thread short ref_sys_last = -1;
-  static __thread double t_last = 0.0, ra_last = 0.0;
-  static __thread ra_of_cio cio[CIO_INTERP_POINTS];
+  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL short ref_sys_last = -1;
+  static THREAD_LOCAL double t_last = 0.0, ra_last = 0.0;
+  static THREAD_LOCAL ra_of_cio cio[CIO_INTERP_POINTS];
 
   const enum novas_debug_mode saved_debug_state = novas_debug_state;
 
@@ -5271,9 +5270,9 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *x, double *y, double *z) {
   static const char *fn = "cio_basis";
-  static __thread enum novas_accuracy acc_last = -1;
-  static __thread double t_last = 0.0;
-  static __thread double zz[3];
+  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL double t_last = 0.0;
+  static THREAD_LOCAL double zz[3];
 
   if(!x || !y || !z)
     error_return(-1, EINVAL, fn, "NULL output 3-vector: x=%p, y=%p, z=%p", x, y, z);
@@ -5316,8 +5315,8 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
     }
 
     case CIO_VS_EQUINOX: {
-      static __thread double last_ra = 0.0;
-      static __thread double xx[3] = { 0.0, 0.0, 1.0 };
+      static THREAD_LOCAL double last_ra = 0.0;
+      static THREAD_LOCAL double xx[3] = { 0.0, 0.0, 1.0 };
 
       if(xx[2] || fabs(ra_cio - last_ra) > 1e-12) {
         // Construct unit vector toward CIO in equator-and-equinox-of-date
@@ -5493,9 +5492,9 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
  * @sa gcrs_to_cirs()
  */
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy) {
-  static __thread enum novas_equinox_type last_type = -999;
-  static __thread enum novas_accuracy acc_last = NOVAS_FULL_ACCURACY;
-  static __thread double t_last = 0.0, last_ra;
+  static THREAD_LOCAL enum novas_equinox_type last_type = -999;
+  static THREAD_LOCAL enum novas_accuracy acc_last = NOVAS_FULL_ACCURACY;
+  static THREAD_LOCAL double t_last = 0.0, last_ra;
 
   double t, eqeq = 0.0, prec_ra;
 

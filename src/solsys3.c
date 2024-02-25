@@ -167,11 +167,11 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
   // Form heliocentric coordinates of the Sun or Earth, depending on
   // 'body'.  Velocities are obtained from crude numerical differentiation.
-  if((body == 0) || (body == 1) || (body == NOVAS_SUN)) { // Sun
+  if(body == NOVAS_SSB || body == NOVAS_SUN) { // Sun
     for(i = 0; i < 3; i++)
       position[i] = velocity[i] = 0.0;
   }
-  else if((body == 2) || (body == NOVAS_EARTH)) { /* Earth */
+  else if(body == NOVAS_EARTH) { // Earth
     double p[3][3];
 
     for(i = 3; --i >= 0;) {
@@ -200,8 +200,8 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Solar system barycenter coordinates are computed from Keplerian
   // approximations of the coordinates of the four largest planets.
   if(origin == NOVAS_BARYCENTER) {
-    static __thread double tlast;
-    static __thread double pbary[3], vbary[3];
+    static THREAD_LOCAL double tlast;
+    static THREAD_LOCAL double pbary[3], vbary[3];
 
     if(fabs(jd_tdb - tlast) >= 1.0e-06) {
       memset(pbary, 0, sizeof(pbary));
@@ -290,6 +290,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
         double *velocity) {
   static const char *fn = "earth_sun_calc_hp";
+  int error;
 
   if(!jd_tdb)
     error_return(-1, EINVAL, fn, "NULL jd_tdb parameter");

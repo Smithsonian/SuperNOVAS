@@ -763,9 +763,18 @@ static int test_grav_def() {
   double p[3], po[3], pb[3];
   int n = 0;
 
-  if(check("grav_def:pos", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
-  if(check("grav_def:po", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
-  if(check("grav_def:out", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
+  if(check("grav_def:pos", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
+  if(check("grav_def:po", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
+  if(check("grav_def:out", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
+
+  if(check("grav_def:sun", 13, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, p))) n++;
+
+  fprintf(stderr, ">> Now expecting an error and trace next:");
+  novas_debug(NOVAS_DEBUG_EXTRA);
+  enable_earth_sun_hp(1);
+  if(check("grav_def:planets", 12, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, p))) n++;
+  enable_earth_sun_hp(0);
+  novas_debug(NOVAS_DEBUG_OFF);
 
   return n;
 }
