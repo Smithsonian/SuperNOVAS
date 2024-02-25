@@ -20,11 +20,15 @@ double * readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
   static const char *fn = "readeph_dummy";
   double *pv;
 
-  if(!name || !error)
-    error_return(-1, EINVAL, fn, "NULL parameter: name=%p, error=%p", name, error);
+  if(!name || !error) {
+    set_error(-1, EINVAL, fn, "NULL parameter: name=%p, error=%p", name, error);
+    return NULL;
+  }
 
-  if(isnanf(jd_tdb))
-    error_return(-1, EINVAL, fn, "NaN jd_tdb");
+  if(isnanf(jd_tdb)) {
+    set_error(-1, EINVAL, fn, "NaN jd_tdb");
+    return NULL;
+  }
 
   pv = (double*) calloc(6, sizeof(double));
   *error = 9;
