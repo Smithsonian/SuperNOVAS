@@ -1,16 +1,5 @@
 # Changelog
 
-## [Unreleased]
-
-Changes planned/expected for the next release...
-
-
-### Added
-
- - Add debug mode, which can be activated via `novas_debug(1)`. When debug mode is enabled, all errors will be printed 
-   to  the console with a trace (the trace does not contain line numbers but provides information on the functions and 
-   locations within them where the error occurred).
-
 
 ## [1.0.0] - 2024-03-01
 
@@ -187,7 +176,7 @@ This is the initial release of the SuperNOVAS library.
  - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
    in the supplied `cat_entry` structure).
    
- - `cio_location()` will always return a valid value as long as neither the output pointer arguments is NULL. 
+ - `cio_location()` will always return a valid value as long as neither output pointer arguments is NULL. 
    
  - `sun_eph()` in `solsysl3.c` evaluates the series in reverse order compared to NOVAS C 3.1, accumulating the least 
    significant terms first, and thus resulting in higher precision result in the end.
