@@ -833,11 +833,34 @@ static int test_grav_vec() {
   return 0;
 }
 
+static int test_novas_debug() {
+  int n = 0;
+
+  novas_debug(NOVAS_DEBUG_OFF);
+  if(!is_ok("novas_debug:off", novas_get_debug_mode() != NOVAS_DEBUG_OFF)) n++;
+
+  novas_debug(NOVAS_DEBUG_ON);
+  if(!is_ok("novas_debug:on", novas_get_debug_mode() != NOVAS_DEBUG_ON)) n++;
+
+  novas_debug(NOVAS_DEBUG_EXTRA);
+  if(!is_ok("novas_debug:full", novas_get_debug_mode() != NOVAS_DEBUG_EXTRA)) n++;
+
+  novas_debug(3);
+  if(!is_ok("novas_debug:3", novas_get_debug_mode() != NOVAS_DEBUG_EXTRA)) n++;
+
+  cleanup:
+
+  novas_debug(NOVAS_DEBUG_OFF);
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
   make_object(NOVAS_CATALOG_OBJECT, 0, "None", NULL, &source);
 
+  if(test_novas_debug()) n++;
   if(test_make_cat_entry()) n++;
   if(test_make_object()) n++;
   if(test_make_planet()) n++;

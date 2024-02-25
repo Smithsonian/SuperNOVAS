@@ -56,7 +56,9 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Fixing [outstanding issues](#fixed-issues)
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
  - [New features](#added-functionality)
- - [Refining the API](#api-changes) to promote best programing practices. 
+ - [Refining the API](#api-changes) to promote best programing practices.
+ - [Thread-safe calculations](#multi-threading).
+ - [Debug mode](#debug-mode) with informative error tracing.
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
@@ -134,6 +136,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
+ 
+ - [Supports calculations in parallel threads](#multi-threading) by making cached results thread-local.
+
 
 -----------------------------------------------------------------------------
 
@@ -484,6 +489,18 @@ Therefore, when calculating positions for a large number of sources at different
    re-calculating the same quantities repeatedly to alternating precision.
  - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
  
+<a name="multi-threading"></a>
+#### Multi-threaded calculations
+ 
+A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as 
+implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one 
+set of input parameters while, at the same time, another thread is saving cached values for a different set of 
+parameters. Thus, when running calculations in more than one thread, the results returned may be sometime incorrect, 
+or more precisely they may not correspond to the requested input parameters.
+ 
+While NOVAS C should never be used in multiple threads at the same time, SuperNOVAS caches the results in thread
+local variables, and is therefore safe to use in multi-threaded applications.
+ 
  
 -----------------------------------------------------------------------------
 
@@ -540,7 +557,16 @@ before that level of accuracy is reached.
 <a name="added-functionality"></a>
 ### Newly added functionality
 
- - Runtime configuration:
+ <a name="debug-mode"></a>
+ - New debug mode and error traces. Simply call `novas_debug(NOVAS_DEBUG_ON)` or `novas_debug(NOVAS_DEBUG_EXTRA)`
+   to enable. When enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
+   be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can have
+   a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing
+   `NOVAS_DEBUF_OFF` (0) as the argument to the same call.
+
+ - New [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
+
+ - New runtime configuration:
 
    * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, 
      and `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 

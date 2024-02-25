@@ -18,8 +18,11 @@
 
 #include <errno.h>
 
-#include "novas.h"
 #include "eph_manager.h"
+
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+#include "novas.h"
+
 
 /// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
@@ -51,11 +54,13 @@
  * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
  *                       -- relative to which to report positions and velocities.
- * @param[out] position       [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
  *                       coordinates in AU referred to the ICRS.
- * @param[out] velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
+ * @param[out] velocity  [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
- * @return               0 if successful, or else an error code of solarsystem_hp().
+ * @return               0 if successful, or else 1 if the 'body' is invalid, or 2 if the
+ *                       'origin' is invalid, or 3 if there was an error providing ephemeris
+ *                       data.
  *
  * @sa planet_eph_manager()
  * @sa planet_ephem_provider_hp()
@@ -66,20 +71,18 @@
  */
 short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
         double *velocity) {
+  static const char *fn = "planet_eph_manager_hp";
   short target, center = 0;
 
   /*
    Perform sanity checks on the input body and origin.
    */
 
-  if(body < 1 || body >= NOVAS_PLANETS) {
-    errno = EINVAL;
-    return 1;
-  }
-  else if(origin < 0 || origin > 2) {
-    errno = EINVAL;
-    return 2;
-  }
+  if(body < 1 || body >= NOVAS_PLANETS)
+    error_return(1, EINVAL, fn, "input body number %d is out of range [0:%d]", body, NOVAS_PLANETS-1);
+
+  if(origin < 0 || origin > 2)
+    error_return(2, EINVAL, fn, "invalid origin type: %d", origin);
 
   /*
    Select 'target' according to value of 'body'.
@@ -112,7 +115,7 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
    between two double-precision elements for highest precision.
    */
 
-  planet_ephemeris(jd_tdb, target, center, position, velocity);
+  prop_error(fn, planet_ephemeris(jd_tdb, target, center, position, velocity) == 0 ? 0 : 3, 0);
 
   return 0;
 }
@@ -160,7 +163,8 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
 short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
         double *velocity) {
   const double tjd[2] = { jd_tdb, 0.0 };
-  return planet_eph_manager_hp(tjd, body, origin, position, velocity);
+  prop_error("planet_eph_manager", planet_eph_manager_hp(tjd, body, origin, position, velocity), 0);
+  return 0;
 }
 
 #if DEFAULT_SOLSYS == 1
@@ -168,7 +172,8 @@ novas_planet_provider default_planetcalc = planet_eph_manager;
 novas_planet_provider_hp default_planetcalc_hp = planet_eph_manager_hp;
 #elif !BUILTIN_SOLSYS1
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
-  return planet_eph_manager(jd_tdb, body, origin, position, velocity);
+  prop_error("solarsystem", planet_eph_manager(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
 }
 
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
@@ -176,6 +181,7 @@ short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *p
     errno = EINVAL;
     return -1;
   }
-  return planet_eph_manager_hp(jd_tdb, body, origin, position, velocity);
+  prop_error("solarsystem_hp", planet_eph_manager_hp(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
 }
 #endif

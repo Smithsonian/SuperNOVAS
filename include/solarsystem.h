@@ -252,9 +252,8 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
  * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
  *                      system referred to the mean equator and equinox of J2000.0, in AU/Day.
  * @return              0 if successful, -1 if there is a required function is not provided
- *                      (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of
- *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
- *                      produced for other reasons.
+ *                      (errno set to ENOSYS), or some other error code (NOVAS C was not very
+ *                      consistent here...)
  *
  * @sa solarsystem()
  * @sa set_planet_provider_hp()

@@ -16,10 +16,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <errno.h>
 
 #include "eph_manager.h"
+
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+#include "novas.h"
+
 
 /**
  * Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
@@ -59,7 +64,7 @@ FILE *EPHFILE = NULL;
  * dated 17 June 1988.</li>
  * </ol>
  *
- * @param ephem_name      Name.path of the direct-access ephemeris file.
+ * @param ephem_name      Name/path of the direct-access ephemeris file.
  * @param[out] jd_begin   [day] Beginning Julian date of the ephemeris file. It may be NULL if not required.
  * @param[out] jd_end     [day] Ending Julian date of the ephemeris file. It may be NULL if not required.
  * @param[out] de_number  DE number of the ephemeris file opened. It may be NULL if not required.
@@ -72,12 +77,11 @@ FILE *EPHFILE = NULL;
  * @sa ephem_close()
  */
 short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number) {
+  static const char *fn = "ephem_open";
   int ncon, denum;
 
-  if(!ephem_name) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!ephem_name)
+    error_return(-1, EINVAL, fn, "NULL input file name/path");
 
   if(EPHFILE) {
     fclose(EPHFILE);
@@ -86,7 +90,7 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
   // Open file ephem_name.
   if((EPHFILE = fopen(ephem_name, "rb")) == NULL) {
-    return 1;
+    error_return(1, errno, fn, "cannot open '%s': %s", ephem_name, strerror(errno));
   }
   else {
     char ttl[252], cnam[2400];
@@ -114,41 +118,41 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
     if(fread(ttl, sizeof ttl, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 2;
+      error_return(2, errno, fn, "reading 'ttl' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(cnam, sizeof cnam, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 3;
+      error_return(4, errno, fn, "reading 'cnam' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(SS, sizeof SS, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 4;
+      error_return(4, errno, fn, "reading 'SS' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&ncon, sizeof ncon, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 5;
+      error_return(5, errno, fn, "reading 'ncon' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&JPLAU, sizeof JPLAU, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 6;
+      error_return(6, errno, fn, "reading 'JPLAU' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&EM_RATIO, sizeof EM_RATIO, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 7;
+      error_return(7, errno, fn, "reading 'EM_RATIO' from '%s': %s", ephem_name, strerror(errno));
     }
     for(i = 0; i < 12; i++)
       for(j = 0; j < 3; j++)
         if(fread(&IPT[j][i], sizeof(int), 1, EPHFILE) != 1) {
           fclose(EPHFILE);
-          return 8;
+          error_return(8, errno, fn, "reading 'IPT[%d][%d]' from '%s': %s", j, i, ephem_name, strerror(errno));
         }
     if(fread(&denum, sizeof denum, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 9;
+      error_return(9, errno, fn, "reading 'denum' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(LPT, sizeof LPT, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 10;
+      error_return(10, errno, fn, "reading 'LPT' from '%s': %s", ephem_name, strerror(errno));
     }
 
     // Set the value of the record length according to what JPL ephemeris is being opened.
@@ -174,7 +178,7 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
         if(de_number)
           *de_number = 0;
         fclose(EPHFILE);
-        return 11;
+        error_return(11, errno, fn, "Unknown record size for DE number: %d in '%s'", denum, ephem_name);
         break;
     }
 
@@ -212,15 +216,15 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
  *
  */
 short ephem_close(void) {
-  short error = 0;
-
   if(EPHFILE) {
-    error = (short) fclose(EPHFILE);
+    int error = fclose(EPHFILE);
     EPHFILE = NULL;
     free(BUFFER);
+    error_return(error, errno, "ephem_close", strerror(errno));
   }
-  return error;
+  return 0;
 }
+
 
 /**
  * Retries planet position and velocity data from the JPL planetary ephemeris
@@ -252,17 +256,17 @@ short ephem_close(void) {
  */
 short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position,
         double *velocity) {
-  int i, error = 0;
+  static const char *fn = "planet_ephemeris";
+
+  int i;
   int do_earth = 0, do_moon = 0;
 
   double jed[2];
   double pos_moon[3] = { }, vel_moon[3] = { }, pos_earth[3] = { }, vel_earth[3] = { };
   double target_pos[3] = { }, target_vel[3] = { }, center_pos[3] = { }, center_vel[3] = { };
 
-  if(!tjd || !position || !velocity) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!tjd || !position || !velocity)
+    error_return(-1, EINVAL, "planet_ephemeris", "NULL parameter: tjd=%p, position=%p, velocity=%p", tjd, position, velocity);
 
   // Initialize 'jed' for 'state' and set up component count.
   jed[0] = tjd[0];
@@ -286,17 +290,11 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
   if((target == DE_EMB) || (origin == DE_EMB))
     do_earth = 1;
 
-  if(do_earth) {
-    error = state(jed, DE_EARTH, pos_earth, vel_earth);
-    if(error)
-      return error;
-  }
+  if(do_earth)
+    prop_error(fn, state(jed, DE_EARTH, pos_earth, vel_earth), 0);
 
-  if(do_moon) {
-    error = state(jed, DE_MOON, pos_moon, vel_moon);
-    if(error)
-      return error;
-  }
+  if(do_moon)
+    prop_error(fn, state(jed, DE_MOON, pos_moon, vel_moon), 0);
 
   // Make call to State for target object.
   if(target == DE_SSB) {
@@ -312,10 +310,7 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
     }
   }
   else
-    error = state(jed, target, target_pos, target_vel);
-
-  if(error)
-    return error;
+    prop_error(fn, state(jed, target, target_pos, target_vel), 0);
 
   // Make call to State for center object.
 
@@ -336,10 +331,7 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
     }
   }
   else
-    error = state(jed, origin, center_pos, center_vel);
-
-  if(error)
-    return error;
+    prop_error(fn, state(jed, origin, center_pos, center_vel), 0);
 
   // Check for cases of Earth as target and Moon as center or vice versa.
   if((target == DE_EARTH) && (origin == DE_MOON)) {
@@ -425,14 +417,13 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
  *                    or 2 if the epoch is out of range.
  */
 short state(const double *jed, enum de_planet target, double *target_pos, double *target_vel) {
+  static const char *fn = "state";
   long nr;
   double t[2], aufac = 1.0, jd[4], s;
   int i;
 
-  if(!jed || !target_pos || !target_vel) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!jed || !target_pos || !target_vel)
+    error_return(-1, EINVAL, fn, "NULL parameter: jed=%p, target_pos=%p, target_vel=%p", jed, target_pos, target_vel);
 
   // Set units based on value of the 'KM' flag.
   if(KM)
@@ -453,7 +444,7 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
 
   // Return error code if date is out of range.
   if((jd[0] < SS[0]) || ((jd[0] + jd[3]) > SS[1]))
-    return 2;
+    error_return(2, EDOM, fn, "date (JD=%.1f) is out of range", jed[0] + jed[1]);
 
   // Calculate record number and relative time interval.
   nr = (long) ((jd[0] - SS[0]) / SS[2]) + 3;
@@ -469,7 +460,7 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
     fseek(EPHFILE, rec, SEEK_SET);
     if(!fread(BUFFER, RECORD_LENGTH, 1, EPHFILE)) {
       ephem_close();
-      return 1;
+      error_return(1, errno, fn, "reading record %ld: %s", nr, strerror(errno));
     }
   }
 
@@ -511,10 +502,8 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
 
   double dna, dt1, temp, tc, vfac;
 
-  if(!buf || !t || !position || !velocity) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!buf || !t || !position || !velocity)
+    error_return(-1, EINVAL, "interpolate", "NULL parameter: buf=%p, t=%p, position=%p, velocity=%p", buf, t, position, velocity);
 
   // Get correct sub-interval number for this set of coefficients and
   // then get normalized Chebyshev time within that subinterval.
@@ -588,10 +577,8 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
  * @return          0 if successful, or -1 if the output pointer argument is NULL.
  */
 int split(double tt, double *fr) {
-  if(!fr) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!fr)
+    error_return(-1, EINVAL, "split", "NULL output pointer");
 
   // Get integer and fractional parts.
   fr[0] = (int) floor(tt);

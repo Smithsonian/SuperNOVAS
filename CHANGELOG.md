@@ -9,7 +9,7 @@ Changes planned/expected for the next release...
 
  - Add debug mode, which can be activated via `novas_debug(1)`. When debug mode is enabled, all errors will be printed 
    to  the console with a trace (the trace does not contain line numbers but provides information on the functions and 
-   locations within them where the error occurred.
+   locations within them where the error occurred).
 
 
 ## [1.0.0] - 2024-03-01
@@ -59,8 +59,18 @@ This is the initial release of the SuperNOVAS library.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
    
+ - Supports calculations in parallel threads by making cached results thread-local.
+ 
 
 ### Added
+
+ - New debug mode and error traces. Simply call `novas_debug(NOVAS_DEBUG_ON)` or `novas_debug(NOVAS_DEBUG_EXTRA)`
+   to enable. When enabled, any error conditions (such as NULL pointer arguments, or invalid input values etc.) will
+   be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can have
+   a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing
+   `NOVAS_DEBUF_OFF` (0) as the argument to the same call.
+ 
+ - New [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
 
  - Added Doxygen markup of source code and header.
   
@@ -71,7 +81,7 @@ This is the initial release of the SuperNOVAS library.
  - Added an number of precompiler constants and enums in `novas.h` to promote consistent usage and easier to read
    code.
 
- - Runtime configurability:
+ - New runtime configurability:
 
    * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, and
      `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 

@@ -161,6 +161,17 @@
 #endif
 
 /**
+ * Settings for 'novas_debug()'
+ *
+ * @sa novas_debug
+ */
+enum novas_debug_mode {
+ NOVAS_DEBUG_OFF = 0,     ///< Do not print errors and traces to the standard error (default).
+ NOVAS_DEBUG_ON,          ///< Print errors and traces to the standard error.
+ NOVAS_DEBUG_EXTRA         ///< Print all errors and traces, even if they may be 'normal' behavior, to the standard error.
+};
+
+/**
  * The type of astronomical objects distinguied by the NOVAS library.
  *
  */
@@ -743,7 +754,7 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);
 short transform_cat(enum novas_transform_type, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id,
         cat_entry *out);
 
-int limb_angle(const double *pos_obj, const double *pos_obs, double *limb_ang, double *nadir_ang);
+int limb_angle(const double *pos_src, const double *pos_obs, double *limb_ang, double *nadir_ang);
 
 double refract(const on_surface *location, enum novas_refraction_model option, double zd_obs);
 
@@ -774,6 +785,10 @@ int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
 // -------------------------------------------------------------------------------------------------------------------
 // SuperNOVAS API:
+
+void novas_debug(enum novas_debug_mode mode);
+
+enum novas_debug_mode novas_get_debug_mode();
 
 void novas_case_sensitive(int value);
 
@@ -850,5 +865,68 @@ int itrs_to_hor(const on_surface *location, const double *itrs, double *az, doub
 int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
 
 #include "solarsystem.h"
+
+/// \cond PRIVATE
+#ifdef __NOVAS_INTERNAL_API__
+
+#include <stdio.h>
+
+/**
+ * Propagate an error (if any) with an offset. If the error is non-zero, it returns with the offset
+ * error value. Otherwise it keeps going as if it weren't even there...
+ *
+ * @param n     The error code
+ * @param d     the offset with which the error is propagated
+ *
+ * @sa error_return
+ */
+#define prop_error(loc, n, d) \
+  if(n != 0) { \
+    if(novas_get_debug_mode()) \
+      fprintf(stderr, "   @ %s [=> %d]\n", loc, n); \
+    return (n < 0 ? -1 : n + d); \
+  }
+
+/**
+ * Set an errno and report errors to the standard error, depending on the current debug mode.
+ *
+ * @param en    UNIX error number (see errno.h)
+ * @param from  Function (:location) where error originated
+ * @param desc  Description of error, with information to convey to user.
+ *
+ * @sa error_return
+ * @sa novas_debug()
+ */
+#define set_error(en, from, desc...) { \
+  errno = en; \
+  if(novas_get_debug_mode()) { \
+    fprintf(stderr, "\n  ERROR! %s: ", from); \
+    fprintf(stderr, desc); \
+  } \
+}
+
+/**
+ * Return with an error code, but not before setting errno and reporting errors to the standard error,
+ * depending on the current debug mode.
+ *
+ * @param ret   Return value
+ * @param en    UNIX error number (see errno.h)
+ * @param from  Function (:location) where error originated
+ * @param desc  Description of error, with information to convey to user.
+ *
+ * @sa set_error
+ */
+#define error_return(ret, en, from, desc...) {\
+  errno = en; \
+  if(novas_get_debug_mode()) { \
+    fprintf(stderr, "\n  ERROR! %s: ", from); \
+    fprintf(stderr, desc); \
+    fprintf(stderr, " [=> %d]\n", ret); \
+  } \
+  return ret; \
+}
+
+#endif /* __NOVAS_INTERNAL_API__ */
+/// \endcond
 
 #endif /* _NOVAS_ */

@@ -13,20 +13,18 @@
 #include <stdlib.h>
 #include <errno.h>
 
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-double* readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
+double * readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
+  static const char *fn = "readeph_dummy";
   double *pv;
 
-  if(mp < 0 || !name || !error) {
-    errno = EINVAL;
-    return NULL;
-  }
+  if(!name || !error)
+    error_return(-1, EINVAL, fn, "NULL parameter: name=%p, error=%p", name, error);
 
-  if(isnanf(jd_tdb)) {
-    errno = EINVAL;
-    return NULL;
-  }
+  if(isnanf(jd_tdb))
+    error_return(-1, EINVAL, fn, "NaN jd_tdb");
 
   pv = (double*) calloc(6, sizeof(double));
   *error = 9;
@@ -39,7 +37,7 @@ double *readeph(int mp, const char *name, double jd_tdb, int *error) {
   return readeph_dummy(mp, name, jd_tdb, error);
 }
 #else
-double* default_readeph(int mp, const char *name, double jd_tdb, int *error) {
+double * default_readeph(int mp, const char *name, double jd_tdb, int *error) {
   return readeph_dummy(mp, name, jd_tdb, error);
 }
 #endif
