@@ -769,7 +769,7 @@ static int test_grav_def() {
 
   if(check("grav_def:sun", 13, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, p))) n++;
 
-  fprintf(stderr, ">> Now expecting an error and trace next:");
+  fprintf(stderr, ">>> Expecting an error and trace...\n");
   novas_debug(NOVAS_DEBUG_EXTRA);
   enable_earth_sun_hp(1);
   if(check("grav_def:planets", 12, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, p))) n++;

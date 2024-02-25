@@ -733,7 +733,7 @@ static int test_ephem_provider() {
 
     if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &body, NOVAS_HELIOCENTER, NOVAS_FULL_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
     if(o == NOVAS_BARYCENTER) {
-      fprintf(stderr, " Expecing diffent A/B, twice:\n");
+      fprintf(stderr, ">>> Expecting diffent A/B, twice:\n");
       if(!is_ok("planet_provider:check_pos", !check_equal_pos(p, p0, 1e-9 * vlen(p0)))) goto cleanup; // @suppress("Goto statement used")
       if(!is_ok("planet_provider:check_vel", !check_equal_pos(v, v0, 1e-9 * vlen(v0)))) goto cleanup; // @suppress("Goto statement used")
       fprintf(stderr, " OK.\n");

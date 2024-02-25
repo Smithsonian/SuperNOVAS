@@ -107,6 +107,15 @@ static THREAD_LOCAL novas_nutation_provider nutate_lp = nu2000k;
 
 static THREAD_LOCAL int is_case_sensitive = 0; ///< (boolean) whether object names are case-sensitive.
 
+#ifndef DEFAULT_SOLSYS
+#  define DEFAULT_SOLSYS 0
+#endif
+
+#if !DEFAULT_SOLSYS
+novas_planet_provider default_planetcalc = (novas_planet_provider) solarsystem;
+novas_planet_provider_hp default_planetcalc_hp = (novas_planet_provider_hp) solarsystem_hp;
+#endif
+
 /**
  * Enables or disables reporting errors and traces to the standard error stream. The debug setting is specific
  * to the thread from which the call is made, and will not change the debug mode for other threads.
