@@ -192,8 +192,8 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
       velocity[i] = (p[2][i] - p[0][i]) / 0.2;
     }
   }
-  else {
-    error_return(2, EINVAL, fn, "invalid planet number: %d", body);
+  else if(body >= 0 && body < NOVAS_PLANETS) {
+    error_return(2, EINVAL, fn, "invalid or unsupported planet number: %d", body);
   }
 
   // If 'origin' = 0, move origin to solar system barycenter.

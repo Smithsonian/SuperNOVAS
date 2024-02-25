@@ -184,6 +184,11 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
  - If you want ot use the CIO locator binary file for `cio_location()`, you can specify the path to the binary file 
    (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system. (The CIO locator file is not at all necessary for the 
    functioning of the library, unless you specifically require CIO poistions relative to GCRS.)
+   
+ - If your compiler does not support the C11 standard and it is not GCC &lt;=3.3, but provides some non-standard
+   support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
+   thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
+   quotes.)
 
 Now you are ready to build the library:
 
@@ -492,11 +497,13 @@ Therefore, when calculating positions for a large number of sources at different
 A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as 
 implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one 
 set of input parameters while, at the same time, another thread is saving cached values for a different set of 
-parameters. Thus, when running calculations in more than one thread, the results returned may be sometime incorrect, 
+parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, 
 or more precisely they may not correspond to the requested input parameters.
  
-While NOVAS C should never be used in multiple threads at the same time, SuperNOVAS caches the results in thread
-local variables, and is therefore safe to use in multi-threaded applications.
+While you should never call NOVAS C from in multiple threads simultaneously, SuperNOVAS caches the results in thread
+local variables (provided the compiler supports it), and is therefore safe to use in multi-threaded applications.
+Just make sure that your compiler supports C11, or is GCC &lt;= 3.3, or else you set the appropriate non-standard
+keyword to use for declating thread-local variables for your compiler in `config.mk`.
  
  
 -----------------------------------------------------------------------------
@@ -557,7 +564,7 @@ before that level of accuracy is reached.
  <a name="debug-mode"></a>
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
    This works using the C11 standard `_Thread_local` or else the earlier GNU C &lt;= 3.3 standard `__thread` modifier.
-   You can also pass the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
+   You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
    `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
    thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
  
