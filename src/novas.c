@@ -93,8 +93,6 @@ static enum novas_debug_mode novas_debug_state = 0;
 ///< Opened CIO locator data file, or NULL.
 static FILE *cio_file;
 
-
-
 /// function to use for reading ephemeris data for all types of solar system sources
 static novas_ephem_provider readeph2_call = NULL;
 
