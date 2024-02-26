@@ -1,7 +1,7 @@
 ![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 ![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/check.yml/badge.svg)
-<a href="https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/">
+<a href="https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/files.html">
  ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 </a>
 <a href="https://codecov.io/gh/Smithsonian/SuperNOVAS">
@@ -54,7 +54,7 @@ SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software
 The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues)
- - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
+ - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/files.html).
  - [New features](#added-functionality)
  - [Refining the API](#api-changes) to promote best programing practices.
  - [Thread-safe calculations](#multi-threading).
@@ -76,7 +76,7 @@ Outside contributions are very welcome. See
 
 Here are some links to other SuperNOVAS related content online:
 
- - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/)
+ - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/files.html)
  - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
  - [SuperNOVAS home page](https://smithsonian.github.io/SuperNOVAS.home) page on github.io.
  - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
