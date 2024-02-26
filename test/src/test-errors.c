@@ -117,7 +117,7 @@ static int test_refract() {
   int n = 0;
 
   novas_debug(NOVAS_DEBUG_ON);
-  fprintf(stderr, ">>> Expecting error message...");
+  fprintf(stderr, ">>> Expecting error message...\n");
   errno = 0;
   double r = refract(NULL, NOVAS_STANDARD_ATMOSPHERE, 30.0);
   if(check("refract:loc", 1, r == 0.0 && errno == EINVAL)) n++;

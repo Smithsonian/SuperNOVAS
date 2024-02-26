@@ -281,11 +281,15 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
 
 short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
+/// \cond PRIVATE
+
+#  ifdef __NOVAS_INTERNAL_API__
+
 /**
- * The function to use to provide planet epehemeris data.
+ * The function to use to provide planet ephemeris data.
  *
- * @sa novas_set_planet_provider()
- * @sa default_planet_provider_hp
+ * @sa set_planet_provider()
+ * @sa planet_call_hp
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -293,15 +297,18 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
 extern novas_planet_provider planet_call;
 
 /**
- * The default 'fallback' function to use to provide high-precision planet epehemeris data.
+ * The default 'fallback' function to use to provide high-precision planet ephemeris data.
  *
- * @sa novas_set_planet_provider_hp()
- * @sa default_planet
+ * @sa set_planet_provider_hp()
+ * @sa planet_call
  *
  * @since 1.0
  * @author Attila Kovacs
  */
 extern novas_planet_provider_hp planet_call_hp;
 
+#  endif /* __NOVAS_INTERNAL_API__ */
+
+/// \endcond
 
 #endif

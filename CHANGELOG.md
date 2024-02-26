@@ -11,7 +11,7 @@ This is the initial release of the SuperNOVAS library.
    had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
    
  - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
    
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
@@ -33,7 +33,7 @@ This is the initial release of the SuperNOVAS library.
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
- - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
+ - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ()`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
    `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
@@ -43,7 +43,7 @@ This is the initial release of the SuperNOVAS library.
  - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
    
- - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results in 
+ - Fixes unpopulated `az` output value in `equ2hor()` at zenith. While any azimuth is acceptable really, it results in 
    irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
@@ -70,8 +70,8 @@ This is the initial release of the SuperNOVAS library.
 
  - New runtime configurability:
 
-   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, and
-     `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
+   * The planet position calculator function used by `ephemeris()` can be set at runtime via `set_planet_provider()`, 
+     and `set_planet_provider_hp()` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
      `planet_ephem_provider_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
      `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
      (e.g. from a JPL ephemeris file).
@@ -116,7 +116,7 @@ This is the initial release of the SuperNOVAS library.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on 
+   `planet_eph_manager` vs `planet_ephem_provider()`. See the section on 
    [Building and installation](#installation) further above on including a selection of these in your library 
    build.)
 
@@ -156,7 +156,7 @@ This is the initial release of the SuperNOVAS library.
    This eliminates the need to declare dummy variables in your application code for quantities you do not require.
 
  - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
-   be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
+   be the same as the input vector argument. For example, `frame_tie(pos, J2000_TO_ICRS, pos)` using the same 
    `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
    This can greatly simplify usage, and can eliminate extraneous declarations, when intermediates are not required.
 
@@ -170,7 +170,7 @@ This is the initial release of the SuperNOVAS library.
    
  - Object ID numbers are `long` instead of `short` to accommodate NAIF IDs, which require minimum 32-bit integers.
  
- - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
+ - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
  
  - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value

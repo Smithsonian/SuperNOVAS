@@ -13,18 +13,18 @@
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa solsys-ephem.c
+ * @sa solsys-ephem.c
+ * @sa solsys1.c
  */
 
 #include <errno.h>
 
 #include "eph_manager.h"
 
+/// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-
-/// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
@@ -62,7 +62,7 @@
  *                       'origin' is invalid, or 3 if there was an error providing ephemeris
  *                       data.
  *
- * @sa planet_eph_manager()
+ * @sa planet_eph_manager
  * @sa planet_ephem_provider_hp()
  * @sa ephem_open()
  * @sa set_planet_provider_hp()
@@ -168,8 +168,10 @@ short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origi
 }
 
 #if DEFAULT_SOLSYS == 1
+/// \cond PRIVATE
 novas_planet_provider planet_call = planet_eph_manager;
 novas_planet_provider_hp planet_call_hp = planet_eph_manager_hp;
+/// \endcond
 #elif !BUILTIN_SOLSYS1
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   prop_error("solarsystem", planet_eph_manager(jd_tdb, body, origin, position, velocity), 0);

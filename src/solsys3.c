@@ -18,10 +18,10 @@
 #include <string.h>
 #include <errno.h>
 
+/// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-/// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
@@ -437,8 +437,10 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
 }
 
 #if DEFAULT_SOLSYS == 3
+/// \cond PRIVATE
 novas_planet_provider planet_call = earth_sun_calc;
 novas_planet_provider_hp planet_call_hp = earth_sun_calc_hp;
+/// \endcond
 #elif !BUILTIN_SOLSYS3
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   prop_error("solarsystem", earth_sun_calc(jd_tdb, body, origin, position, velocity), 0);

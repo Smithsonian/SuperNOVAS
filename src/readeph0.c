@@ -13,7 +13,10 @@
 #include <stdlib.h>
 #include <errno.h>
 
+/// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
+
 #include "novas.h"
 
 double * readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {

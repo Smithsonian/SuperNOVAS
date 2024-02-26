@@ -18,22 +18,23 @@
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa solsys-ephem.c
+ * @sa solsys-ephem.c
+ * @sa solsys1.c
  */
 
 #include <errno.h>
 
+/// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-/// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
-/// Function prototype for the FORTRAN subroutine in jplint_ in jplint.f
+/// Function prototype for the FORTRAN subroutine <code>jplint</code> in jplint.f
 extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
-/// Function prototype for the FORTRAN subroutine in jplihp_ in jplint.f
+/// Function prototype for the FORTRAN subroutine <code>jplihp</code> in jplint.f
 extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
 /**
@@ -220,8 +221,10 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
 }
 
 #if DEFAULT_SOLSYS == 2
+/// \cond PRIVATE
 novas_planet_provider planet_call = planet_jplint;
 novas_planet_provider_hp planet_call_hp = planet_jplint;
+/// \endcond
 #elif !BUILTIN_SOLSYS2
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   prop_error("solarsystem", planet_jplint(jd_tdb, body, origin, position, velocity), 0);

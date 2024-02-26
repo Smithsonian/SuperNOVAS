@@ -100,7 +100,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
    
  - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
    
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
@@ -122,7 +122,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
- - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
+ - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ()`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
    `geo_posvel()`, `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
@@ -132,7 +132,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
    
- - Fixes unpopulated `az` output value in `equ2hor` at zenith. While any azimuth is acceptable really, it results in 
+ - Fixes unpopulated `az` output value in `equ2hor()` at zenith. While any azimuth is acceptable really, it results in 
    irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
@@ -576,8 +576,8 @@ before that level of accuracy is reached.
 
  - New runtime configuration:
 
-   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, 
-     and `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
+   * The planet position calculator function used by `ephemeris()` can be set at runtime via `set_planet_provider()`, 
+     and `set_planet_provider_hp()` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
      `planet_ephem_provider_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
      `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
      (e.g. from a JPL `.bsp` file).
@@ -622,7 +622,7 @@ before that level of accuracy is reached.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on 
+   `planet_eph_manager` vs `planet_ephem_provider()`. See the section on 
    [Building and installation](#installation) further above on including a selection of these in your library 
    build.)
 
@@ -661,7 +661,7 @@ before that level of accuracy is reached.
    should not be used as if they were valid. (No more sneaky silent failures.)
 
  - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
-   be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
+   be the same as the input vector argument. For example, `frame_tie(pos, J2000_TO_ICRS, pos)` using the same 
    `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
    This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
 
@@ -674,7 +674,7 @@ before that level of accuracy is reached.
    
  - `cio_location()` will always return a valid value as long as neither output pointer arguments is NULL.
 
- - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
+ - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
    
  - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
@@ -753,13 +753,14 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 
 If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
 distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
-either via the `ephem_manager()` interface of `solsys1.c` or via the `jplint_()` interface of `solsys2.c`.
+either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `jplint_()` / `jplihp_()` interface of 
+`solsys2.c`.
 
 #### 2.1. Planets via `eph_manager`
 
 To use the `eph_manager` interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
 superNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
-`ephem_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
+`eph_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
 way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
 `eph_manager` as your planetary ephemeris provider at runtime via:
 
@@ -783,7 +784,7 @@ And, when you are done using the ephemeris file, you should close it with
  ephem_close();
 ```
  
-Note, that at any given time `eph_manager()` can have only one ephemeris data file opened. You cannot use it to 
+Note, that at any given time `eph_manager` can have only one ephemeris data file opened. You cannot use it to 
 retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
 can integrate as discussed further above!)
 
@@ -792,11 +793,11 @@ That's all, except the warning that this method will not work with newer JPL eph
 
 #### 2.b. Planets via JPL's `pleph` FORTRAN interface
 
-To use the `jplint_` interface for planet ephemerides, you must either build superNOVAS with `BUILTIN_SOLSYS2 = 1` in 
-`config.mk`, or else link your application with `solsys2.c` and `jplint.f` from SuperNOVAS explicitly (as well as 
-`pleph.f` etc. from the JPL library). If you want the JPL `pleph`-based interface  to be your default ephemeris provider 
-(the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. Otherwise, your application should set 
-your planetary ephemeris provider at runtime via:
+To use the `jplint_` / `jplihp_()` interface for planet ephemerides, you must either build superNOVAS with 
+`BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and `jplint.f` from SuperNOVAS 
+explicitly (as well as `pleph.f` etc. from the JPL library). If you want the JPL `pleph`-based interface  to be your 
+default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. Otherwise, 
+your application should set your planetary ephemeris provider at runtime via:
 
 ```c
  set_planet_provider(planet_jplint);

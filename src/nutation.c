@@ -48,10 +48,10 @@
  *                    radians. It may be NULL if not required.
  * @return            0
  *
- * @sa nutation()
- * @sa novas_nutation_provider
  * @sa iau2000b()
- * @sa iau2000k()
+ * @sa nu2000k()
+ * @sa nutation_angles()
+ * @sa novas_nutation_provider
  *
  */
 int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
@@ -2952,12 +2952,10 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *                    in radians. It may be NULL if not required.
  * @return            0
  *
- * @sa nutation()
- * @sa novas_nutation_provider
  * @sa iau2000a()
- * @sa iau2000k()
- *
- *
+ * @sa nu2000k()
+ * @sa set_nutation_lp_provider()
+ * @sa nutation_angles()
  *
  */
 int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
@@ -3215,10 +3213,10 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *                    in radians. It may be NULL if not required.
  * @return            0
  *
- * @sa nutation()
- * @sa novas_nutation_provider
  * @sa iau2000a()
- * @sa iau2000k()
+ * @sa iau2000b()
+ * @sa nutation_angles()
+ * @sa novas_nutation_provider
  *
  */
 int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {

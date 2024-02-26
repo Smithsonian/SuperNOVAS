@@ -3,8 +3,12 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS planetary ephemeris manager for the planet_eph_manager() and planet_eph_manager_hp()
+ *  SuperNOVAS planetary ephemeris manager for the planet_eph_manager and planet_eph_manager_hp()
  *  functions.
+ *
+ *  This module exposes a lot of its own internal state variables globally. You probably should
+ *  not access them from outside this module, but they are kept ad globals to ensure compatibility
+ *  with existing NOVAS C applications that do tinker with those values.
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.
@@ -22,16 +26,15 @@
 
 #include "eph_manager.h"
 
+/// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
+
 #include "novas.h"
 
-
-/**
- * Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
- *
- * Default value is 0 (KM determines time unit for nutations. Angle unit is always radians.)
- */
-short KM;
+/// Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
+/// Its default value is 0 (KM determines time unit for nutations. Angle unit is always radians.)
+short KM;           ///< Flag that defines physical units of the output states.
 
 // IPT and LPT defined as int to support 64 bit systems.
 int IPT[3][12];     ///< (<i>for internal use</i>)
@@ -50,8 +53,8 @@ double TWOT;        ///< (<i>for internal use</i>)
 double EM_RATIO;    ///< (<i>for internal use</i>)
 double *BUFFER;     ///< (<i>for internal use</i>) Array containing Chebyshev coefficients of position.
 
-/** The currently opened JPL DE planetary ephemeris file */
-FILE *EPHFILE = NULL;
+
+FILE *EPHFILE = NULL;     ///< (<i>for internal use</i>) The currently open JPL DE planetary ephemeris file
 
 /**
  * This function opens a JPL planetary ephemeris file and

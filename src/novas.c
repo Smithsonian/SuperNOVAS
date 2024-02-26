@@ -26,10 +26,10 @@
 #include <unistd.h>
 #include <stdarg.h>
 
+/// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-/// \cond PRIVATE
 #define HALF_PI             (0.5 * M_PI)
 #define ERAD_AU             (ERAD/AU)
 
@@ -66,6 +66,15 @@
 #  define NAN               (0.0/0.0)
 #endif
 
+#ifndef DEFAULT_SOLSYS
+/// Will use solarsystem() and solarsystem_hp() that is linked with application
+#  define DEFAULT_SOLSYS 0
+#endif
+
+#if !DEFAULT_SOLSYS
+novas_planet_provider planet_call = (novas_planet_provider) solarsystem;
+novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem_hp;
+#endif
 
 /// \endcond
 
@@ -102,21 +111,15 @@ static novas_nutation_provider nutate_lp = nu2000k;
 
 static int is_case_sensitive = 0; ///< (boolean) whether object names are case-sensitive.
 
-#ifndef DEFAULT_SOLSYS
-/// Will use solarsystem() and solarsystem_hp() that is linked with application
-#  define DEFAULT_SOLSYS 0
-#endif
 
-#if !DEFAULT_SOLSYS
-novas_planet_provider planet_call = (novas_planet_provider) solarsystem;
-novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem_hp;
-#endif
+
 
 /// \cond PRIVATE
 
 /**
- * Propagate an error (if any) with an offset. If the error is non-zero, it returns with the offset
- * error value. Otherwise it keeps going as if it weren't even there...
+ * (<i>for internal use</i>) Propagates an error (if any) with an offset. If the error is
+ * non-zero, it returns with the offset error value. Otherwise it keeps going as if it weren't
+ * even there...
  *
  * @param loc     Function [:location] where error was produced.
  * @param n       error code that was received.
@@ -128,13 +131,14 @@ int novas_trace(const char *loc, int n, int offset) {
   if (n != 0) {
     n = n < 0 ? -1 : n + offset;
     if(novas_get_debug_mode() != NOVAS_DEBUG_OFF)
-      fprintf(stderr, "   @ %s [=> %d]\n", loc, n);
+      fprintf(stderr, "       @ %s [=> %d]\n", loc, n);
   }
   return n;
 }
 
 /**
- * Set an errno and report errors to the standard error, depending on the current debug mode.
+ * (<i>for internal use</i>) Sets an errno and report errors to the standard error, depending
+ * on the current debug mode.
  *
  * @param en    {int} UNIX error number (see errno.h)
  * @param from  {string} Function (:location) where error originated
@@ -153,6 +157,7 @@ void novas_set_errno(int en, const char *from, const char *desc, ...) {
   if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) {
     fprintf(stderr, "\n  ERROR! %s: ", from);
     vfprintf(stderr, desc, varg);
+    fprintf(stderr, "\n");
   }
   va_end(varg);
 
@@ -160,8 +165,8 @@ void novas_set_errno(int en, const char *from, const char *desc, ...) {
 }
 
 /**
- * Return with an error code, but not before setting errno and reporting errors to the standard error,
- * depending on the current debug mode.
+ * (<i>for internal use</i>) Sets errno and reports errors to the standard error, depending
+ * on the current debug mode, before returning the supplied return code.
  *
  * @param ret   return value
  * @param en    UNIX error code (see errno.h)
@@ -323,8 +328,9 @@ static int time_equals(double jd1, double jd2) {
  * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
  *                  accuracy is invalid.
  *
+ * @sa j2000_to_gcrs()
  * @sa tod_to_j2000()
- * @sa gcrs_to_tod()
+ * @sa gcrs_to_j2000()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -361,7 +367,7 @@ int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  *                  'accuracy' is invalid.
  *
  * @sa j2000_to_tod()
- * @sa tod_to_gcrs()
+ * @sa j2000_to_gcrs()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -484,7 +490,7 @@ static int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double
  *                  accuracy is invalid, or an error from cio_location(), or
  *                  else 10 + the error from cio_basis().
  *
- * @sa gcrs_to_tod()
+ * @sa gcrs_to_j2000()
  * @sa cirs_to_gcrs()
  *
  *
@@ -531,7 +537,6 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  *
  * @sa tod_to_gcrs()
  * @sa gcrs_to_cirs()
- * @sa cirs_to_itrs_pos()
  *
  *
  * @since 1.0
@@ -2215,7 +2220,7 @@ int hor_to_itrs(const on_surface *location, double az, double za, double *itrs) 
  *                    to true equator and equinox of date. (It may be NULL if not required)
  * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
  *
- * @sa cirs_to_hor()
+ * @sa itrs_to_hor()
  * @sa tod_to_itrs()
  * @sa NOVAS_TOD
  *
@@ -2576,7 +2581,6 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
  * @return              [deg] The Earth Rotation Angle (theta) in degrees [0:360].
  *
  * @sa sidereal_time()
- * @sa cirs_to_hor()
  * @sa cirs_to_itrs()
  * @sa itrs_to_cirs()
  */
@@ -3602,11 +3606,11 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
  *                    vector as the input.
  * @return            0 if successfor or -1 if either of the vector arguments is NULL.
  *
- * @sa j2000_to_icrs()
- * @sa icrs_to_j2000()
- * @sa precession()
- * @sa tod_to_gcrs()
- * @sa gcrs_to_tod()
+ * @sa j2000_to_gcrs()
+ * @sa gcrs_to_j2000()
+ * @sa tod_to_j2000()
+ * @sa j2000_to_tod()
+ * @sa j2000_to_gcrs()
  */
 int frame_tie(const double *in, enum novas_frametie_direction direction, double *out) {
 
@@ -5031,9 +5035,7 @@ double get_utc_to_tt(int leap_seconds) {
  *
  * @sa get_utc_to_tt()
  * @sa place()
- * @sa place_frame()
  * @sa cel_pole()
- * @sa tt_hout()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -6199,6 +6201,9 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  * @return        [day] the fractional Julian date for the input calendar date
  *
  * @sa cal_date()
+ * @sa get_utc_to_tt()
+ * @sa get_ut1_to_tt()
+ * @sa tt2tdb()
  *
  */
 double julian_date(short year, short month, short day, double hour) {
@@ -6229,7 +6234,9 @@ double julian_date(short year, short month, short day, double hour) {
  * @return              0
  *
  * @sa julian_date()
- * @sa tt_hour()
+ * @sa get_utc_to_tt()
+ * @sa get_ut1_to_tt()
+ * @sa tt2tdb()
  */
 int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
   long jd, k, m, n;
