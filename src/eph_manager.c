@@ -81,7 +81,7 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
   int ncon, denum;
 
   if(!ephem_name)
-    error_return(-1, EINVAL, fn, "NULL input file name/path");
+    return novas_error(-1, EINVAL, fn, "NULL input file name/path");
 
   if(EPHFILE) {
     fclose(EPHFILE);
@@ -90,7 +90,7 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
   // Open file ephem_name.
   if((EPHFILE = fopen(ephem_name, "rb")) == NULL) {
-    error_return(1, errno, fn, "cannot open '%s': %s", ephem_name, strerror(errno));
+    return novas_error(1, errno, fn, "cannot open '%s': %s", ephem_name, strerror(errno));
   }
   else {
     char ttl[252], cnam[2400];
@@ -118,41 +118,41 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
     if(fread(ttl, sizeof ttl, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(2, errno, fn, "reading 'ttl' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(2, errno, fn, "reading 'ttl' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(cnam, sizeof cnam, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(4, errno, fn, "reading 'cnam' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(4, errno, fn, "reading 'cnam' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(SS, sizeof SS, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(4, errno, fn, "reading 'SS' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(4, errno, fn, "reading 'SS' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&ncon, sizeof ncon, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(5, errno, fn, "reading 'ncon' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(5, errno, fn, "reading 'ncon' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&JPLAU, sizeof JPLAU, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(6, errno, fn, "reading 'JPLAU' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(6, errno, fn, "reading 'JPLAU' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&EM_RATIO, sizeof EM_RATIO, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(7, errno, fn, "reading 'EM_RATIO' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(7, errno, fn, "reading 'EM_RATIO' from '%s': %s", ephem_name, strerror(errno));
     }
     for(i = 0; i < 12; i++)
       for(j = 0; j < 3; j++)
         if(fread(&IPT[j][i], sizeof(int), 1, EPHFILE) != 1) {
           fclose(EPHFILE);
-          error_return(8, errno, fn, "reading 'IPT[%d][%d]' from '%s': %s", j, i, ephem_name, strerror(errno));
+          return novas_error(8, errno, fn, "reading 'IPT[%d][%d]' from '%s': %s", j, i, ephem_name, strerror(errno));
         }
     if(fread(&denum, sizeof denum, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(9, errno, fn, "reading 'denum' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(9, errno, fn, "reading 'denum' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(LPT, sizeof LPT, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      error_return(10, errno, fn, "reading 'LPT' from '%s': %s", ephem_name, strerror(errno));
+      return novas_error(10, errno, fn, "reading 'LPT' from '%s': %s", ephem_name, strerror(errno));
     }
 
     // Set the value of the record length according to what JPL ephemeris is being opened.
@@ -178,7 +178,7 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
         if(de_number)
           *de_number = 0;
         fclose(EPHFILE);
-        error_return(11, errno, fn, "Unknown record size for DE number: %d in '%s'", denum, ephem_name);
+        return novas_error(11, errno, fn, "Unknown record size for DE number: %d in '%s'", denum, ephem_name);
         break;
     }
 
@@ -220,7 +220,7 @@ short ephem_close(void) {
     int error = fclose(EPHFILE);
     EPHFILE = NULL;
     free(BUFFER);
-    error_return(error, errno, "ephem_close", strerror(errno));
+    return novas_error(error, errno, "ephem_close", strerror(errno));
   }
   return 0;
 }
@@ -266,7 +266,7 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
   double target_pos[3] = { }, target_vel[3] = { }, center_pos[3] = { }, center_vel[3] = { };
 
   if(!tjd || !position || !velocity)
-    error_return(-1, EINVAL, "planet_ephemeris", "NULL parameter: tjd=%p, position=%p, velocity=%p", tjd, position, velocity);
+    return novas_error(-1, EINVAL, "planet_ephemeris", "NULL parameter: tjd=%p, position=%p, velocity=%p", tjd, position, velocity);
 
   // Initialize 'jed' for 'state' and set up component count.
   jed[0] = tjd[0];
@@ -423,7 +423,7 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
   int i;
 
   if(!jed || !target_pos || !target_vel)
-    error_return(-1, EINVAL, fn, "NULL parameter: jed=%p, target_pos=%p, target_vel=%p", jed, target_pos, target_vel);
+    return novas_error(-1, EINVAL, fn, "NULL parameter: jed=%p, target_pos=%p, target_vel=%p", jed, target_pos, target_vel);
 
   // Set units based on value of the 'KM' flag.
   if(KM)
@@ -444,7 +444,7 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
 
   // Return error code if date is out of range.
   if((jd[0] < SS[0]) || ((jd[0] + jd[3]) > SS[1]))
-    error_return(2, EDOM, fn, "date (JD=%.1f) is out of range", jed[0] + jed[1]);
+    return novas_error(2, EDOM, fn, "date (JD=%.1f) is out of range", jed[0] + jed[1]);
 
   // Calculate record number and relative time interval.
   nr = (long) ((jd[0] - SS[0]) / SS[2]) + 3;
@@ -460,7 +460,7 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
     fseek(EPHFILE, rec, SEEK_SET);
     if(!fread(BUFFER, RECORD_LENGTH, 1, EPHFILE)) {
       ephem_close();
-      error_return(1, errno, fn, "reading record %ld: %s", nr, strerror(errno));
+      return novas_error(1, errno, fn, "reading record %ld: %s", nr, strerror(errno));
     }
   }
 
@@ -503,7 +503,7 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
   double dna, dt1, temp, tc, vfac;
 
   if(!buf || !t || !position || !velocity)
-    error_return(-1, EINVAL, "interpolate", "NULL parameter: buf=%p, t=%p, position=%p, velocity=%p", buf, t, position, velocity);
+    return novas_error(-1, EINVAL, "interpolate", "NULL parameter: buf=%p, t=%p, position=%p, velocity=%p", buf, t, position, velocity);
 
   // Get correct sub-interval number for this set of coefficients and
   // then get normalized Chebyshev time within that subinterval.
@@ -578,7 +578,7 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
  */
 int split(double tt, double *fr) {
   if(!fr)
-    error_return(-1, EINVAL, "split", "NULL output pointer");
+    return novas_error(-1, EINVAL, "split", "NULL output pointer");
 
   // Get integer and fractional parts.
   fr[0] = (int) floor(tt);

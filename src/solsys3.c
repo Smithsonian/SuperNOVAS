@@ -122,7 +122,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
   // Initial value of 'tmass' is mass of Sun plus four inner planets.
 
   if(!position || !velocity)
-    error_return(-1, EINVAL, fn, "NULL output 3-vector: position=%p, velocity=%p", position, velocity);
+    return novas_error(-1, EINVAL, fn, "NULL output 3-vector: position=%p, velocity=%p", position, velocity);
 
   if(!tmass) {
     const double oblr = obl * TWOPI / 360.0;
@@ -163,7 +163,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
   // Check if input Julian date is within range (within 3 centuries of J2000).
   if(jd_tdb < 2340000.5 || jd_tdb > 2560000.5)
-    error_return(1, EDOM, fn, "date (JD=%.1f) is out of range", jd_tdb);
+    return novas_error(1, EDOM, fn, "date (JD=%.1f) is out of range", jd_tdb);
 
   // Form heliocentric coordinates of the Sun or Earth, depending on
   // 'body'.  Velocities are obtained from crude numerical differentiation.
@@ -193,7 +193,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
     }
   }
   else if(body >= 0 && body < NOVAS_PLANETS) {
-    error_return(2, EINVAL, fn, "invalid or unsupported planet number: %d", body);
+    return novas_error(2, EINVAL, fn, "invalid or unsupported planet number: %d", body);
   }
 
   // If 'origin' = 0, move origin to solar system barycenter.
@@ -292,12 +292,12 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
   static const char *fn = "earth_sun_calc_hp";
 
   if(!jd_tdb)
-    error_return(-1, EINVAL, fn, "NULL jd_tdb parameter");
+    return novas_error(-1, EINVAL, fn, "NULL jd_tdb parameter");
 
   prop_error(fn, earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity), 0);
 
   if(!allow_lp_for_hp)
-    error_return(3, EAGAIN, fn, "low-precision calculation is not currently allowed as a substitute");
+    return novas_error(3, EAGAIN, fn, "low-precision calculation is not currently allowed as a substitute");
 
   return 0;
 }
@@ -395,7 +395,7 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
           { 10, -9, 2.55, 157208.40 } };
 
   if(!ra || !dec || !dis)
-    error_return(-1, EINVAL, "sun_eph", "NULL output pointer: ra=%p, dec=%p, dis=%p", ra, dec, dis);
+    return novas_error(-1, EINVAL, "sun_eph", "NULL output pointer: ra=%p, dec=%p, dis=%p", ra, dec, dis);
 
   // Define the time units 'u', measured in units of 10000 Julian years
   // from J2000.0, and 't', measured in Julian centuries from J2000.0.
@@ -437,8 +437,8 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
 }
 
 #if DEFAULT_SOLSYS == 3
-novas_planet_provider default_planetcalc = earth_sun_calc;
-novas_planet_provider_hp default_planetcalc_hp = earth_sun_calc_hp;
+novas_planet_provider planet_call = earth_sun_calc;
+novas_planet_provider_hp planet_call_hp = earth_sun_calc_hp;
 #elif !BUILTIN_SOLSYS3
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   prop_error("solarsystem", earth_sun_calc(jd_tdb, body, origin, position, velocity), 0);

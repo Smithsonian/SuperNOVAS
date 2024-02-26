@@ -281,5 +281,27 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
 
 short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
+/**
+ * The function to use to provide planet epehemeris data.
+ *
+ * @sa novas_set_planet_provider()
+ * @sa default_planet_provider_hp
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+extern novas_planet_provider planet_call;
+
+/**
+ * The default 'fallback' function to use to provide high-precision planet epehemeris data.
+ *
+ * @sa novas_set_planet_provider_hp()
+ * @sa default_planet
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+extern novas_planet_provider_hp planet_call_hp;
+
 
 #endif

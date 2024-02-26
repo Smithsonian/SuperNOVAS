@@ -79,10 +79,10 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
    */
 
   if(body < 1 || body >= NOVAS_PLANETS)
-    error_return(1, EINVAL, fn, "input body number %d is out of range [0:%d]", body, NOVAS_PLANETS-1);
+    return novas_error(1, EINVAL, fn, "input body number %d is out of range [0:%d]", body, NOVAS_PLANETS-1);
 
   if(origin < 0 || origin > 2)
-    error_return(2, EINVAL, fn, "invalid origin type: %d", origin);
+    return novas_error(2, EINVAL, fn, "invalid origin type: %d", origin);
 
   /*
    Select 'target' according to value of 'body'.
@@ -168,8 +168,8 @@ short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origi
 }
 
 #if DEFAULT_SOLSYS == 1
-novas_planet_provider default_planetcalc = planet_eph_manager;
-novas_planet_provider_hp default_planetcalc_hp = planet_eph_manager_hp;
+novas_planet_provider planet_call = planet_eph_manager;
+novas_planet_provider_hp planet_call_hp = planet_eph_manager_hp;
 #elif !BUILTIN_SOLSYS1
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
   prop_error("solarsystem", planet_eph_manager(jd_tdb, body, origin, position, velocity), 0);
