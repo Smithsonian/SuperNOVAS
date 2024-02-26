@@ -19,6 +19,17 @@ CFLAGS = -Os -Wall -I$(INC)
 # For maximum compatibility with NOVAS C 3.1, uncomment the line below
 #CFLAGS += -DCOMPAT=1
 
+# To make SuperNOVAS thread-safe, we use thread-local storage modifier
+# keywords. These were not standardized prior to C11. So while we automatically
+# recognize C11 or CC >= 3.3 to use the correct thread-local modifier keyword,
+# for other compilers (e.g. Intel C, LLVM) you may need to specify it 
+# explicitly here by passing the keyword via the THREAD_LOCAL definition
+#
+# E.g. 
+#CFLAGS += -DTHREAD_LOCAL=\"__thread\"
+#or
+#CFLAGS += -DTHREAD_LOCAL=\"__declspec(thread)\"
+
 # You can set the default CIO locator file to use depending on where you 
 # installed it. By default, the library will assume 
 # '/usr/share/novas/cio_ra.bin', or else 'cio_ra.bin' if the COMPAT flag is 

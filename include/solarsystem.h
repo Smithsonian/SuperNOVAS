@@ -252,9 +252,8 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
  * @param[out] velocity [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular
  *                      system referred to the mean equator and equinox of J2000.0, in AU/Day.
  * @return              0 if successful, -1 if there is a required function is not provided
- *                      (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of
- *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
- *                      produced for other reasons.
+ *                      (errno set to ENOSYS), or some other error code (NOVAS C was not very
+ *                      consistent here...)
  *
  * @sa solarsystem()
  * @sa set_planet_provider_hp()
@@ -282,5 +281,34 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
 
 short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
+/// \cond PRIVATE
+
+#  ifdef __NOVAS_INTERNAL_API__
+
+/**
+ * The function to use to provide planet ephemeris data.
+ *
+ * @sa set_planet_provider()
+ * @sa planet_call_hp
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+extern novas_planet_provider planet_call;
+
+/**
+ * The default 'fallback' function to use to provide high-precision planet ephemeris data.
+ *
+ * @sa set_planet_provider_hp()
+ * @sa planet_call
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+extern novas_planet_provider_hp planet_call_hp;
+
+#  endif /* __NOVAS_INTERNAL_API__ */
+
+/// \endcond
 
 #endif

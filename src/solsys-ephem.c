@@ -13,6 +13,10 @@
 
 #include <errno.h>
 
+/// \cond PRIVATE
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
+
 #include "novas.h"
 
 /**
@@ -38,43 +42,37 @@
  * @since 1.0
  * @author Attila Kovacs
  */
-short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
+        double *position, double *velocity) {
+  static const char *fn = "planet_ephem_provider_hp";
   static const char *names[] = NOVAS_PLANET_NAMES_INIT;
 
-  novas_ephem_provider ephem_call;
+  novas_ephem_provider ephem_call = get_ephem_provider();
   enum novas_origin o = NOVAS_BARYCENTER;
-  int error;
 
-  if(origin != NOVAS_BARYCENTER && origin != NOVAS_HELIOCENTER) {
-    errno = EINVAL;
-    return 1;
-  }
+  if(!ephem_call)
+    return novas_error(1, EAGAIN, fn, "No ephem provider. Use set_ephem_provider() to specify one.");
 
-  if(body < 0 || body >= NOVAS_PLANETS) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(origin != NOVAS_BARYCENTER && origin != NOVAS_HELIOCENTER)
+    return novas_error(1, EINVAL, fn, "invalid origin: %d", origin);
 
-  ephem_call = get_ephem_provider();
-  if(!ephem_call) {
-    errno = ENOSYS;
-    return -1;
-  }
+  if(body < 0 || body >= NOVAS_PLANETS)
+    return novas_error(-1, EINVAL, fn, "planet number %d out of range [0:%d]", body, NOVAS_PLANETS - 1);
 
-  error = ephem_call(names[body], body, jd_tdb[0], jd_tdb[1], &o, position, velocity);
-  if(error) return 2;
+  prop_error(fn, ephem_call(names[body], body, jd_tdb[0], jd_tdb[1], &o, position, velocity), 0);
 
   if(o != origin) {
     double pos0[3], vel0[3];
     int i;
     int ref = (o == NOVAS_BARYCENTER) ? NOVAS_SUN : NOVAS_SSB;
 
-    error = ephem_call(names[ref], ref, jd_tdb[0], jd_tdb[1], &o, pos0, vel0);
-    if(error) return 2;
+    prop_error(fn, ephem_call(names[ref], ref, jd_tdb[0], jd_tdb[1], &o, pos0, vel0), 0);
 
     for(i = 0; i < 3; i++) {
-      if(position) position[i] -= pos0[i];
-      if(velocity) velocity[i] -= vel0[i];
+      if(position)
+        position[i] -= pos0[i];
+      if(velocity)
+        velocity[i] -= vel0[i];
     }
   }
 
@@ -103,18 +101,22 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
  * @since 1.0
  * @author Attila Kovacs
  */
-short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
   const double jd_tdb2[2] = { jd_tdb };
-  return planet_ephem_provider_hp(jd_tdb2, body, origin, position, velocity);
+  prop_error("planet_ephem_provider", planet_ephem_provider_hp(jd_tdb2, body, origin, position, velocity), 0);
+  return 0;
 }
 
 #if !BUILTIN_SOLSYS_EPHEM_READER
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
-  return planet_ephem_provider(jd_tdb, body, origin, position, velocity);
+  prop_error("solarsystem", planet_ephem_provider(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
 }
 
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
-  return planet_ephem_provider_hp(jd_tdb, body, origin, position, velocity);
+  prop_error("solarsystem_hp", planet_ephem_provider_hp(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
 }
 #endif
 

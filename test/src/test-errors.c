@@ -116,27 +116,39 @@ static int test_refract() {
   on_surface o;
   int n = 0;
 
+  novas_debug(NOVAS_DEBUG_ON);
+  fprintf(stderr, ">>> Expecting error message...\n");
   errno = 0;
   double r = refract(NULL, NOVAS_STANDARD_ATMOSPHERE, 30.0);
-  if(check("refract_loc", 1, r == 0.0 && errno == EINVAL)) n++;
+  if(check("refract:loc", 1, r == 0.0 && errno == EINVAL)) n++;
+  novas_debug(NOVAS_DEBUG_OFF);
 
   errno = 0;
   r = refract(&o, -1, 30.0);
-  if(check("refract_loc", 1, r == 0.0 && errno == EINVAL)) n++;
+  if(check("refract:model", 1, r == 0.0 && errno == EINVAL)) n++;
 
   errno = 0;
-  r = refract(&o, NOVAS_STANDARD_ATMOSPHERE, 90.11);
-  if(check("refract_loc", 1, r == 0.0 && errno == EINVAL)) n++;
+  r = refract(&o, NOVAS_STANDARD_ATMOSPHERE, 91.0);
+  if(check("refract:zd", 1, r == 0.0)) n++;
 
   return n;
 }
 
 static int test_limb_angle() {
-  double pos[3], a, b;
+  double pos[3] = { 0.01 }, pn[3] = { -0.01 }, pz[3] = {}, a, b;
   int n = 0;
 
   if(check("limb_angle:pos_obj", -1, limb_angle(NULL, pos, &a, &b))) n++;
   if(check("limb_angle:pos_obs", -1, limb_angle(pos, NULL, &a, &b))) n++;
+  if(check("limb_angle:obj:0", -1, limb_angle(pz, pos, &a, &b))) n++;
+  if(check("limb_angle:obj:0", -1, limb_angle(pos, pz, &a, &b))) n++;
+
+  // Null outputs OK
+  if(check("limb_angle:limb", 0, limb_angle(pos, pos, NULL, &b))) n++;
+  if(check("limb_angle:nadir", 0, limb_angle(pos, pos, &a, NULL))) n++;
+
+  // corner case (cosd = -1)
+  if(check("limb_angle:corner", 0, limb_angle(pos, pn, &a, NULL))) n++;
 
   return n;
 }
@@ -152,6 +164,7 @@ static int test_transform_cat() {
   if(check("transform_cat:in", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, NULL, NOVAS_JD_J2000, "FK5", &c))) n++;
   if(check("transform_cat:out", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", NULL))) n++;
   if(check("transform_cat:option", -1, transform_cat(-1, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", &c1))) n++;
+  if(check("transform_cat:option:same", -1, transform_cat(-1, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", &c))) n++;
   if(check("transform_cat:name", 2, transform_cat(PRECESSION, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, longname, &c))) n++;
 
   return n;
@@ -170,12 +183,15 @@ static int test_transform_hip() {
 static int test_ephemeris() {
   double p[3], v[3];
   double tdb[2] = { NOVAS_JD_J2000 };
-  object mars;
+  object ceres;
   int n = 0;
 
+  make_ephem_object("Ceres", 2000001, &ceres);
+
   if(check("ephemeris:body", -1, ephemeris(tdb, NULL, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
-  if(check("ephemeris:jd", -1, ephemeris(NULL, &mars, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
-  if(check("ephemeris:origin", 1, ephemeris(tdb, &mars, -1, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:jd", -1, ephemeris(NULL, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:origin", 1, ephemeris(tdb, &ceres, -1, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:noephem", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
 
   return n;
 }
@@ -262,12 +278,12 @@ static int test_place() {
 
 static int test_radec_planet() {
   object o;
-  observer loc;
+  observer loc = {};
   double ra, dec, dis, rv;
 
   o.type = NOVAS_CATALOG_OBJECT;
+  if(check("radec_planet:cat", -1, radec_planet(NOVAS_JD_J2000, &o, &loc, 0.0, NOVAS_GCRS, NOVAS_REDUCED_ACCURACY, &ra, &dec, &dis, &rv))) return 1;
 
-  if(check("radec_planet", -1, radec_planet(0.0, &o, &loc, 0.0, NOVAS_GCRS, NOVAS_FULL_ACCURACY, &ra, &dec, &dis, &rv))) return 1;
   return 0;
 }
 
@@ -491,6 +507,7 @@ static int test_frame_tie() {
   return n;
 }
 
+
 static int test_proper_motion() {
   double p[3], v[3];
   int n = 0;
@@ -566,11 +583,14 @@ static int test_cio_array() {
   if(check("cio_array:file", 1, cio_array(0.0, 5, x))) n++;
 
   set_cio_locator_file("../cio_ra.bin");
+  set_cio_locator_file("../cio_ra.bin"); // Test reopen also...
   if(check("cio_array:beg", 2, cio_array(0.0, 5, x))) n++;
   if(check("cio_array:end", 2, cio_array(1e20, 5, x))) n++;
 
   if(check("cio_array:corner:lo", 6, cio_array(2341952.6, 5, x))) n++;
   if(check("cio_array:corner:hi", 6, cio_array(2561137.4, 5, x))) n++;
+
+  if(check("cio_array:corner:near", 0, cio_array(2341962.6, 5, x))) n++;
 
   return n;
 }
@@ -634,10 +654,14 @@ static int test_vector2radec() {
 
   if(check("vector2radec:vec", -1, vector2radec(NULL, &ra, &dec))) n++;
 
-  if(check("vector2radec:vec", 1, vector2radec(p, &ra, &dec))) n++;
+  if(check("vector2radec:zero", 1, vector2radec(p, &ra, &dec))) n++;
 
   p[2] = 1.0;
-  if(check("vector2radec:vec", 2, vector2radec(p, &ra, &dec))) n++;
+  if(check("vector2radec:pole", 2, vector2radec(p, &ra, &dec))) n++;
+
+  p[1] = 1.0;
+  if(check("vector2radec:ra:null", -1, vector2radec(p, NULL, &dec))) n++;
+  if(check("vector2radec:dec:null", -1, vector2radec(p, &ra, NULL))) n++;
 
   return n;
 }
@@ -734,7 +758,6 @@ static int test_grav_vec() {
   if(check("grav_vec:po", -1, grav_vec(p, NULL, pb, 1.0, p))) n++;
   if(check("grav_vec:pb", -1, grav_vec(p, po, NULL, 1.0, p))) n++;
   if(check("grav_vec:out", -1, grav_vec(p, po, pb, 1.0, NULL))) n++;
-  if(check("grav_vec:same", -1, grav_vec(p, po, pb, 1.0, po))) n++;
 
   return n;
 }
@@ -743,10 +766,18 @@ static int test_grav_def() {
   double p[3], po[3], pb[3];
   int n = 0;
 
-  if(check("grav_def:pos", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
-  if(check("grav_def:po", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
-  if(check("grav_def:out", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
-  if(check("grav_def:same", -1, grav_def(0.0, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, po))) n++;
+  if(check("grav_def:pos", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
+  if(check("grav_def:po", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
+  if(check("grav_def:out", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
+
+  if(check("grav_def:sun", 13, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, p))) n++;
+
+  fprintf(stderr, ">>> Expecting an error and trace...\n");
+  novas_debug(NOVAS_DEBUG_EXTRA);
+  enable_earth_sun_hp(1);
+  if(check("grav_def:planets", 12, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, p))) n++;
+  enable_earth_sun_hp(0);
+  novas_debug(NOVAS_DEBUG_OFF);
 
   return n;
 }
@@ -760,6 +791,22 @@ static int test_earth_sun_calc() {
   if(check("earth_sun_calc:tdb:lo", 1, earth_sun_calc(2340000.0, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
   if(check("earth_sun_calc:tdb:hi", 1, earth_sun_calc(2560001.0, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
   if(check("earth_sun_calc:number", 2, earth_sun_calc(NOVAS_JD_J2000, NOVAS_JUPITER, NOVAS_BARYCENTER, p, v))) n++;
+
+  return n;
+}
+
+static int test_earth_sun_calc_hp() {
+  double p[3], v[3], tdb2[2] = { NOVAS_JD_J2000 };
+  int n = 0;
+
+  enable_earth_sun_hp(1);
+
+  if(check("earth_sun_calc_hp:tdb", -1, earth_sun_calc_hp(NULL, NOVAS_SUN, NOVAS_BARYCENTER, p, v))) n++;
+  if(check("earth_sun_calc_hp:pos", -1, earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, NULL, v))) n++;
+  if(check("earth_sun_calc_hp:vel", -1, earth_sun_calc_hp(tdb2, NOVAS_SUN, NOVAS_BARYCENTER, p, NULL))) n++;
+  if(check("earth_sun_calc_hp:number", 2, earth_sun_calc_hp(tdb2, NOVAS_JUPITER, NOVAS_BARYCENTER, p, v))) n++;
+
+  enable_earth_sun_hp(0);
 
   return n;
 }
@@ -862,6 +909,7 @@ int main() {
   if(test_grav_def()) n++;
 
   if(test_earth_sun_calc()) n++;
+  if(test_earth_sun_calc_hp()) n++;
   if(test_sun_eph()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);

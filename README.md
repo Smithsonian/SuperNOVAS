@@ -1,7 +1,9 @@
 ![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 ![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/check.yml/badge.svg)
-![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
+<a href="https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/">
+ ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
+</a>
 <a href="https://codecov.io/gh/Smithsonian/SuperNOVAS">
  ![Coverage Status](https://codecov.io/gh/Smithsonian/SuperNOVAS/graph/badge.svg?token=E11OFOISMW)
 </a>
@@ -14,10 +16,10 @@
 <br clear="all">
 
 # SuperNOVAS 
-The NOVAS C astrometry library, made better.
+The NOVAS C astrometry software library, made better.
 
-[SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a positional astronomy library for the for the C 
-programming language, providing high-precision astrometry such as one might need for running an observatory or a 
+[SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a high-precision positional astronomy library for the for 
+the C programming language, providing high-precision astrometry such as one might need for running an observatory or a 
 precise planetarium program. It is a fork of the Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the aim of making it more user-friendly and 
 easier to use overall.
@@ -31,11 +33,9 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
 # Table of Contents
 
  - [Introduction](#introduction)
- - [Related links](#related-links)
- - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
+ - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Building and installation](#installation)
- - [Building your application with SuperNOVAS](#building-your-application)
  - [Example usage](#examples)
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
@@ -49,30 +49,21 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
 ## Introduction
 
 SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)). NOVAS is a light-weight but capable C library for precise 
-positional astronomy calculations, such as one might need for an observatory, where apparent coordinates must be 
-calculated to high precision. 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)).
 
-The primary goals of SuperNOVAS is to improve on the stock NOVAS C library by:
+The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues)
- - Improving the ease of use by using `enum`s instead of integer constants, which also allows for some checking
-   of use during compilations (such as using the incorrect `enum` type).
- - Improving [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) with 
-   [Doxygen](https://www.doxygen.nl/) to provide browsable cross-referenced API docs. 
- - Streamlining calculations where possible to improve performance.
- - Adding `const` modifier to prototype arguments where appropriate
- - Checking arguments and setting `errno` as appropriate (and returning -1 unless another appropriate error code was 
-   defined already) 
- - Adding [new features](#supernovas-features) to facilitate more accessible use
- - Providing a GNU `Makefile` to build static and shared libraries from sources easily on POSIX platforms
-   (including for MacOS X, Cygwin, or WSL). (At this point we do not provide a similar native build setup for Windows, 
-   but speak up if you would like to add it yourself!)
- - Adding regression testing and continuous integration on GitHub.
- 
-At the same time, SuperNOVAS aims to be fully backward compatible with the upstream NOVAS C library, such that it can 
-be used as a drop-in, _link-time_ replacement for NOVAS in your application without having to change existing code you 
-may have written for NOVAS C.
+ - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/).
+ - [New features](#added-functionality)
+ - [Refining the API](#api-changes) to promote best programing practices.
+ - [Thread-safe calculations](#multi-threading).
+ - [Debug mode](#debug-mode) with informative error tracing.
+ - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
+
+At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
+NOVAS C library, such that it can be used as a drop-in, _link-time_ replacement for NOVAS in your application without 
+having to change existing (functional) code you may have written for NOVAS C.
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
@@ -83,13 +74,7 @@ available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/Su
 Outside contributions are very welcome. See
 [how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
 
-
------------------------------------------------------------------------------
-
-<a name="related-links"></a>
-## Related links
-
-Here are some links to SuperNOVAS related content online:
+Here are some links to other SuperNOVAS related content online:
 
  - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/)
  - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
@@ -102,21 +87,6 @@ Here are some links to SuperNOVAS related content online:
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
    of ephemeris data.
 
------------------------------------------------------------------------------
-https://github.com/attipaci/attipaci.gitgub.io
-<a name="compatibility"></a>
-## Compatibility with NOVAS C 3.1
-
-SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary 
-compatibility. In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. 
-`novas.o`), or the static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from 
-SuperNOVAS. Instead, you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of 
-these. 
-
-This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
-`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` 
-in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to 
-accommodate JPL NAIF codes, and for which 16-bit storage is insufficient. 
 
 -----------------------------------------------------------------------------
 
@@ -126,11 +96,11 @@ accommodate JPL NAIF codes, and for which 16-bit storage is insufficient.
 The SuperNOVAS library fixes a number of outstanding issues with NOVAS C 3.1. Here is a list of issues and fixes 
 provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 
- - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` 
-   function had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+ - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
+   had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
    
  - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `ephem_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
    
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
@@ -138,40 +108,61 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
+ - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was not 
+   turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and the 
+   fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it also 
+   was the reason `cal_date()` did not work for negative JD values.
+   
+ - Fix bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
+   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
+   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
+   equinox of date coordinates.
+   
  - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
- - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
-   `geo_posvel()`,  `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
+ - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ()`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
+   `geo_posvel()`, `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
  - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
    systems.
+ 
+ - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
+   appropriately instead.
    
- - Fix bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
-   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the
-   requested mean equinox of date coordinates.
-  
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was
-   not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261)
-   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less 
-   critically, it also was the reason `cal_date()` did not work for negative JD values.
-   
- - Fixes `aberration()` returning NAN vectors if the `ve` argument is 0. It now returns the unmodified input
-   vector appropriately instead.
+ - Fixes unpopulated `az` output value in `equ2hor()` at zenith. While any azimuth is acceptable really, it results in 
+   irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
 
 -----------------------------------------------------------------------------
 
+<a name="compatibility"></a>
+## Compatibility with NOVAS C 3.1
+
+SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. 
+In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. `novas.o`), or the 
+static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from SuperNOVAS. Instead, 
+you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of these. 
+
+This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
+`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
+NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to accommodate 
+JPL NAIF codes, and for which 16-bit storage is insufficient. 
+
+
+-----------------------------------------------------------------------------
+
+
 <a name="installation"></a>
 ## Building and installation
 
 
-The SuperNOVAS distribution contains a `Makefile` for GNU make, which is suitable for compiling the library (as well as 
-local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL on Windows.
+The SuperNOVAS distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as local 
+documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point we do 
+not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, such as:
 
@@ -185,14 +176,19 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
    want to link your own `solarsystem()` implementation(s) against the library, you should not set `DEFAULT_SOLSYS` 
    (i.e. delete or comment out the corresponding line or else set `DEFAULT_SOLSYS` to 0).
    
- - If you are going to be using the functions of `solsys1.c` you may also want to specify the source file that will 
-   provide the `readeph()` implementation for it by setting `DEFAULT_READEPH` appropriately. (The default setting uses 
-   the dummy `readeph0.c` which simply returns an error if one tries to use the functions from `solsys1.c`.
+ - You may also want to specify the source file that will provide the `readeph()` implementation for it by setting 
+   `DEFAULT_READEPH` appropriately. (The default setting uses the dummy `readeph0.c` which simply returns an error if 
+   one tries to use the functions from `solsys1.c`). Note, that a `readeph()` implementation is not always necessary 
+   and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
 
  - If you want ot use the CIO locator binary file for `cio_location()`, you can specify the path to the binary file 
-   (e.g. `/usr/local/share/novas/cio_ra.bin`) where the file will be located at on your system. (The CIO locator file 
-   is not at all necessary for the functioning of the library, unless you specifically require CIO poistions relative 
-   to GCRS.)
+   (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system. (The CIO locator file is not at all necessary for the 
+   functioning of the library, unless you specifically require CIO poistions relative to GCRS.)
+   
+ - If your compiler does not support the C11 standard and it is not GCC &lt;=3.3, but provides some non-standard
+   support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
+   thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
+   quotes.)
 
 Now you are ready to build the library:
 
@@ -210,8 +206,7 @@ the place you specified in `config.mk` etc. You may also want to copy the header
 `/usr/local/include` so you can compile your application against SuperNOVAS easily on your system.
 
 
-<a name="building-your-application"></a>
-## Building your application with SuperNOVAS
+### Building your application with SuperNOVAS
 
 Provided you have installed the SuperNOVAS headers into a standard location (such as `/usr/include` or 
 `/usr/local/include`) and the static or shared library into `usr/lib` (or `/usr/local/lib` or similar), you
@@ -270,9 +265,9 @@ terms differently:
 
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
- | Catalog coordinate system  | J2000 or B1950                | International Celestial Reference System (ICRS)   |
+ | Catalog coordinate system  | FK4, FK5, HIP...              | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
- | Dynamical R.A. origin      | true equinox of date          | Celestial Intermediate Origin (CIO)               |
+ | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
  | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
@@ -280,6 +275,11 @@ terms differently:
  
 See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
 on how they are appropriate for the old and new methodologies respectively.
+
+In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS. The origin for
+positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
+Earth (at the geocenter, on the surface, or in Earth orbit).
+
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -302,7 +302,7 @@ equivalent J2000 coordinates, by applying the proper motion and the appropriate 
 adjustment to convert from J2000 to ICRS coordinates.
 
 ```c
- // First change the catalog coordinates (in place) to the J2000 (FK5)... 
+ // First change the catalog coordinates (in place) to the J2000 (FK5) system... 
  transform_cat(CHANGE_EPOCH, NOVAS_B1950, &source, NOVAS_J2000, "FK5", &source);
   
  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
@@ -323,17 +323,17 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-We also need to set the time of observation. Our clocks usually measure UTC, but for NOVAS we usually need time 
-measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. Typically you will have to provide
-NOVAS with the TT - UT1 time difference, which can be calculated from the current leap seconds and the UT1 - UTC 
-time difference (a.k.a. DUT1): 
+We also need to set the time of observation. Our clocks usually measure UTC, but for astrometry we usually need time 
+measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. Typically you will have to provide NOVAS 
+with the TT - UT1 time difference, which can be calculated from the current leap seconds and the UT1 - UTC time 
+difference (a.k.a. DUT1): 
 
 ```c
  // The current value for the leap seconds (UTC - TAI)
  int leap_seconds = 37;
 
  // Set the DUT1 = UT1 - UTC time difference in seconds (e.g. from IERS Bulletins)
- int dut1 = ...
+ int dut1 = ...;
 
  // Calculate the Terrestrial Time (TT) based Julian date of observation (in days)
  // Let's say on 2024-02-06 at 14:53:06 UTC.
@@ -353,8 +353,8 @@ early on:
 
 ```c
  // Current polar offsets provided by the IERS Bulletins (in arcsec)
- double dx = ... 
- double dy = ...
+ double dx = ...;
+ double dy = ...;
   
  cel_pole(jd_tt, POLE_OFFSETS_X_Y, dx, dy);
 ```
@@ -377,6 +377,11 @@ distance (e.g. for apparent-to-physical size conversion):
  }
 ```
 
+The _placement_ of the celestial target in the observer's frame includes appropriate aberration corrections for the
+observer's motion, as well as appropriate gravitational deflection corrections due to the Sun and Earth, and 
+for other major gravitating solar system bodies (in full precision mode; and if a planet provider function
+is available).
+
 Finally, we may want to calculate the astrometric azimuth and zenith distance (= 90&deg; - azimuth) angles of the 
 source at the specified observing location (without refraction correction):
 
@@ -392,10 +397,10 @@ source at the specified observing location (without refraction correction):
 ``` 
 
 In the example above we first calculated the apparent coordinates in the Celestial Intermediate Reference System 
-(CIRS). Then we used `cirs_to_itrs()` function then convert first it to the Earth-fixed International Terrestrial 
-Reference system (ITRS) using the small (arcsec-level) measured variation of the pole (dx, dy) provided explicitly 
-since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. Finally, `itrs_to_hor()` converts 
-the ITRS coordinates to the horizontal system at the observer location.
+(CIRS) for an observer located on Earth's surface. Then we used `cirs_to_itrs()` function then convert first it to the 
+Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) measured variation of the 
+pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. 
+Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer location.
 
 You can additionally apply an optical refraction correction for the astrometric (unrefracted) zenith angle, if you 
 want, e.g.:
@@ -426,9 +431,9 @@ that will handle the respective ephemeris data at runtime before making the NOVA
  set_ephem_provider(my_ephemeris_provider_function);
 ```
 
-You can use `tt2tdb()` to help convert Terrestrial Time (TT) to Barycentric Dynamic Time (TDB) for your ephemeris 
-provider functions (they only differ when you really need extreme precision -- for most applications you can used TT 
-and TDB interchangeably in the present era):
+You can use `tt2tdb()` to convert Terrestrial Time (TT) to Barycentric Dynamic Time (TDB) for your ephemeris provider 
+functions (they only differ when you really need extreme precision -- for most applications you can used TT and TDB 
+interchangeably in the present era):
 
 ```c
  double jd_tdb = jd_tt + tt2tdb(jd_tt) / 86400.0;
@@ -442,11 +447,11 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
 ```c
  object mars, ceres; // Hold data on solar-system bodies.
   
- // Mars will be handled by hte planet calculator function
+ // Mars will be handled by the planet provider function
  make_planet(NOVAS_MARS, &mars);
   
- // Ceres will be handled by the generic ephemeris reader, which say uses the 
- // NAIF ID of 2000001
+ // Ceres will be handled by the generic ephemeris provider function, which let's say 
+ // uses the NAIF ID of 2000001
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
@@ -470,7 +475,7 @@ When one does not need positions at the microarcsecond level, some shortcuts can
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at the milliarcsecond level only, but may be much faster to calculate.
  - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
-   &lt;~ 22 mas level).
+   &lt;= 22 mas level).
  - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
  
 <a name="performance-note"></a>
@@ -481,10 +486,24 @@ however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last re
 may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy). 
 Therefore, when calculating positions for a large number of sources at different times:
 
- - It is best to iterate over the sources while keeping the time fixed in the inner loop. 
+ - It is best to iterate over the sources in the inner loop while keeping the time fixed. 
  - You probably want to stick to one accuracy mode (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
    re-calculating the same quantities repeatedly to alternating precision.
  - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
+ 
+<a name="multi-threading"></a>
+#### Multi-threaded calculations
+ 
+A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as 
+implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one 
+set of input parameters while, at the same time, another thread is saving cached values for a different set of 
+parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, 
+or more precisely they may not correspond to the requested input parameters.
+ 
+While you should never call NOVAS C from in multiple threads simultaneously, SuperNOVAS caches the results in thread
+local variables (provided the compiler supports it), and is therefore safe to use in multi-threaded applications.
+Just make sure that your compiler supports C11, or is GCC &lt;= 3.3, or else you set the appropriate non-standard
+keyword to use for declating thread-local variables for your compiler in `config.mk`.
  
  
 -----------------------------------------------------------------------------
@@ -503,13 +522,13 @@ before that level of accuracy is reached.
 
  2. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
     knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
-    nutation, but  also small irregular variations in the orientation of the rotational axis and the rotation period 
+    nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
     (DUT1) time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` 
     functions to apply / use the published values from these to improve the astrometic precision of Earth-orientation
     based coordinate calculations. Without setting and using the actual polar offset values for the time of 
-    observation, positions for Earth-based observations will be accurate at the arcsecond level only.
+    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
  
  3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun vs the Solar-system barycenter. For the highest precision 
@@ -518,14 +537,14 @@ before that level of accuracy is reached.
     `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
     need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
     JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
-    [section below](#solarsystem) for more information how you can do that.
+    [section further below](#solarsystem) for more information how you can do that.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
-    option to include _optical_ refraction corrections in `equ2hor()` either for a standard atmosphere or more 
-    precisely using the weather parameters defined in the `on_surface` data structure that specifies the observer 
-    locations. Note, that refraction at radio wavelengths is notably different from the included optical model. In 
-    either case you may want to skip the refraction corrections offered in this library, and instead implement your 
-    own as appropriate (or not at all).
+    option to include _optical_ refraction corrections either for a standard atmosphere or more precisely using the 
+    weather parameters defined in the `on_surface` data structure that specifies the observer locations. Note, that 
+    refraction at radio wavelengths is notably different from the included optical model. In either case you may want 
+    to skip the refraction corrections offered in this library, and instead implement your own as appropriate (or not 
+    at all).
   
 
 
@@ -535,46 +554,43 @@ before that level of accuracy is reached.
 <a name="supernovas-features"></a>
 ## SuperNOVAS specific features
 
- - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
-   `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
-   and make for more readable code that is easier to debug. They also make it easy to see what choices are available
-   for each function argument, without having to consult the documentation each and every time.
+- [Newly added functionality](#added-functionality)
+- [Refinements to the NOVAS C API](#api-changes)
 
- - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
-   duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
-   invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
-   error code is returned for compatibility).
+
+<a name="added-functionality"></a>
+### Newly added functionality
+
+ <a name="debug-mode"></a>
+ - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
+   This works using the C11 standard `_Thread_local` or else the earlier GNU C &lt;= 3.3 standard `__thread` modifier.
+   You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
+   `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
+   thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
+ 
+ - New debug mode and error traces. Simply call `novas_debug(NOVAS_DEBUG_ON)` or `novas_debug(NOVAS_DEBUG_EXTRA)`
+   to enable. When enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
+   be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can have
+   a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing
+   `NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application
+   calls `grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug 
+   mode is `NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to 
+   planets):
+   ```
+    ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
+           @ earth_sun_calc_hp [=> 2]
+           @ solarsystem_hp [=> 2]
+           @ ephemeris:planet [=> 12]
+           @ grav_def:Jupiter [=> 12]
+   ```
    
- - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
-   use functions such as `perror()` ans `strerror()` to print human-readable error messages.
-   
- - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
-   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
-   should not be used as if they were valid. (No more sneaky silent errors.)
+ - New runtime configuration:
 
- - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
-   required. See the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
-   This eliminates the need to declare dummy variables in your application code.
-
- - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
-   be the same as the input vector argument. For example, `frame_time(pos, J2000_TO_ICRS, pos)` using the same 
-   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
-   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
-
- - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
-   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
-   data modifications.
-   
- - Source names and catalog names can both be up to 64 bytes (including termination), up from 51 and 4 respectively
-   NOVAS C, while keeping `struct` layouts the same thanks to alignment.
-   
- - Runtime configuration:
-
-   * The planet position calculator function used by `ephemeris` can be set at runtime via `set_planet_provider()`, and
-     `set_planet_provider_hp` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
+   * The planet position calculator function used by `ephemeris()` can be set at runtime via `set_planet_provider()`, 
+     and `set_planet_provider_hp()` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
      `planet_ephem_provider_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
      `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
-     (e.g. from a JPL ephemeris file).
+     (e.g. from a JPL `.bsp` file).
  
    * If CIO locations vs GSRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
      specify the location of the binary CIO interpolation table (e.g. `cio_ra.bin`) to use, even if the library was
@@ -609,26 +625,69 @@ before that level of accuracy is reached.
  - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods such as `astro_star()`
    `local_star()`, `topo_planet()` etc.
  
- - New time conversion utilities `tt2tdb()` and `get_ut1_to_tt()` make it simpler to convert between UT1, TT, and TDB
-   time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric calculations.
+ - New time conversion utilities `tt2tdb()`, `get_utc_to_tt()`, and `get_ut1_to_tt()` make it simpler to convert 
+   between UTC, UT1, TT, and TDB time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric 
+   calculations.
  
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_ephem_manager()` vs `planet_ephem_provider()`. See the section on 
+   `planet_eph_manager` vs `planet_ephem_provider()`. See the section on 
    [Building and installation](#installation) further above on including a selection of these in your library 
    build.)
 
  - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
-   default NOVAS object names were converted to upper-case, making them effectively case-insensitive.)
+   default NOVAS `object` names were converted to upper-case, making them effectively case-insensitive.)
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
- 
- - `cel2ter()` and `tel2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
-   methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
- 
- - Changed `make_object()` retains the specified number argument (which can be different from the `starnumber` value
+
+
+<a name="api-changes"></a>
+### Refinements to the NOVAS C API
+
+ - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
+   `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
+   and make for more readable code that is easier to debug. They also make it easy to see what choices are available
+   for each function argument, without having to consult the documentation each and every time.
+
+ - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
+   duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
+   invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
+   error code is returned for compatibility).
+   
+ - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
+   use functions such as `perror()` and `strerror()` to print human-readable error messages.
+
+ - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
+   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
+   data modifications.
+
+ - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
+   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
+   This eliminates the need to declare dummy variables in your application code.   
+  
+ - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
+   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
+   should not be used as if they were valid. (No more sneaky silent failures.)
+
+ - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
+   be the same as the input vector argument. For example, `frame_tie(pos, J2000_TO_ICRS, pos)` using the same 
+   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
+   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
+
+ - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
+   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchage of `cat_entry` records
+   with NOVAS C 3.1.
+
+ - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
    in the supplied `cat_entry` structure).
+   
+ - `cio_location()` will always return a valid value as long as neither output pointer arguments is NULL.
+
+ - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
+   methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
+   
+ - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
    
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
@@ -644,10 +703,11 @@ before that level of accuracy is reached.
 
 
 If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
-sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as JPL Horizons 
-or the Minor Planet Center. Given the NOVAS C heritage, and some added SuperNOVAS flexibility in this area, you have 
-several options on doing that. These are listed from the most flexible (and preferred) to the least flexible (old 
-ways).
+sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as 
+[JPL Horizons](https://ssd.jpl.nasa.gov/horizons/app.html#/) or the 
+[Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html). Given the NOVAS C heritage, and some added 
+SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most flexible 
+(and preferred) to the least flexible (old ways).
 
  1. [Universal ephemeris data / service integration](#universal-ephemerides)
  2. [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
@@ -703,13 +763,14 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 
 If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
 distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
-either via the `ephem_manager()` interface of `solsys1.c` or via the `jplint_()` interface of `solsys2.c`.
+either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `jplint_()` / `jplihp_()` interface of 
+`solsys2.c`.
 
 #### 2.1. Planets via `eph_manager`
 
 To use the `eph_manager` interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
 superNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
-`ephem_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
+`eph_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
 way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
 `eph_manager` as your planetary ephemeris provider at runtime via:
 
@@ -733,7 +794,7 @@ And, when you are done using the ephemeris file, you should close it with
  ephem_close();
 ```
  
-Note, that at any given time `eph_manager()` can have only one ephemeris data file opened. You cannot use it to 
+Note, that at any given time `eph_manager` can have only one ephemeris data file opened. You cannot use it to 
 retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
 can integrate as discussed further above!)
 
@@ -742,11 +803,11 @@ That's all, except the warning that this method will not work with newer JPL eph
 
 #### 2.b. Planets via JPL's `pleph` FORTRAN interface
 
-To use the `jplint_` interface for planet ephemerides, you must either build superNOVAS with `BUILTIN_SOLSYS2 = 1` in 
-`config.mk`, or else link your application with `solsys2.c` and `jplint.f` from SuperNOVAS explicitly (as well as 
-`pleph.f` etc. from the JPL library). If you want the JPL `pleph`-based interface  to be your default ephemeris provider 
-(the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. Otherwise, your application should set 
-your planetary ephemeris provider at runtime via:
+To use the `jplint_` / `jplihp_()` interface for planet ephemerides, you must either build superNOVAS with 
+`BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and `jplint.f` from SuperNOVAS 
+explicitly (as well as `pleph.f` etc. from the JPL library). If you want the JPL `pleph`-based interface  to be your 
+default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. Otherwise, 
+your application should set your planetary ephemeris provider at runtime via:
 
 ```c
  set_planet_provider(planet_jplint);
@@ -789,9 +850,9 @@ A predictable release schedule and process can help manage expectations and redu
 alike.
 
 Releases of the library shall follow a quarterly release schedule. You may expect upcoming releases 
-to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as needed
+to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as-needed
 basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that 
-addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a release will 
+addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a new release will 
 actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 
 being published.
 
@@ -801,10 +862,11 @@ significant API changes) may be provided as needed to address issues. New featur
 feature releases, although they may also be rolled out in bug-fix releases as long as they do not affect the existing 
 API -- in line with the desire to keep bug-fix releases fully backwards compatible with their parent versions.
 
-In the month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be available on github
-briefly, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be tested by 
-adopters before the releases are finalized. Please use due diligence to test such release candidates with your code 
-when they become available to avoid unexpected surprises when the finalized release is published. Release candidates 
-are typically available for one week only before they are superseded either by another, or by the finalized release.
+In the weeks and month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be published 
+temporarily on github, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be 
+tested by adopters before the releases are finalized. Please use due diligence to test such release candidates with 
+your code when they become available to avoid unexpected surprises when the finalized release is published. Release 
+candidates are typically available for one week only before they are superseded either by another, or by the finalized 
+release.
 
 

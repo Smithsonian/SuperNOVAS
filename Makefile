@@ -33,7 +33,7 @@ coverage:
 	make -C test coverage
 
 .PHONY: all
-all: api solsys test coverage check
+all: api solsys obj/novascon.o test coverage check
 
 .PHONY: clean
 clean:
@@ -71,6 +71,7 @@ README-headless.md: README.md
 
 dox: README-headless.md
 
+Makefile: config.mk build.mk
 
 vpath %.c $(SRC)
 

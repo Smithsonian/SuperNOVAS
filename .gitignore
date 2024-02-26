@@ -12,6 +12,7 @@
 **/apidoc/**
 **/test/data/**
 **/*~
+*.swp
 README-headless.md
 TODO
 

@@ -18,22 +18,23 @@
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa solsys-ephem.c
+ * @sa solsys-ephem.c
+ * @sa solsys1.c
  */
 
 #include <errno.h>
 
+/// \cond PRIVATE
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-
-/// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
-/// Function prototype for the FORTRAN subroutine in jplint_ in jplint.f
+/// Function prototype for the FORTRAN subroutine <code>jplint</code> in jplint.f
 extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
-/// Function prototype for the FORTRAN subroutine in jplihp_ in jplint.f
+/// Function prototype for the FORTRAN subroutine <code>jplihp</code> in jplint.f
 extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
 /**
@@ -69,7 +70,8 @@ extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel
  *                       coordinates in AU referred to the ICRS.
  * @param[out] velocity       [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
  *                       system referred to the ICRS, in AU/day.
- * @return               0 if successful, or else an error code of solarsystem().
+ * @return               0 if successful, or else 1 if the 'body' or 'origin' argument is
+ *                       invalid, or else 2 if the 'jplint_()' call failed.
  *
  * @sa planet_jplint_hp()
  * @sa planet_ephem_provider()
@@ -79,44 +81,49 @@ extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel
  * @since 1.0
  */
 short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+  static const char *fn = "planet_jplint";
+
   long targ, cent, err_flg = 0;
   double posvel[6] = { };
+  const double jd2[2] = { jd_tdb };
   int i;
 
+  if(!jd_tdb)
+    return novas_error(1, EINVAL, fn, "NULL jd_tdb array");
+
   // Perform sanity checks on the input body and origin.
-  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON)) {
-    errno = EINVAL;
-    return 1;
-  }
+  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON))
+    return novas_error(1, EINVAL, fn, "planet number %d is out of range [%d:%d]", body, NOVAS_MERCURY, NOVAS_MOON);
 
   // Select 'targ' according to the value of 'body'.
-  if(body == NOVAS_SUN) targ = 11L;
-  else if(body == NOVAS_MOON) targ = 10L;
-  else targ = (long) body;
+  if(body == NOVAS_SUN)
+    targ = 11L;
+  else if(body == NOVAS_MOON)
+    targ = 10L;
+  else
+    targ = (long) body;
 
   // Select 'cent' according to the value of 'origin'.
-  if(origin == NOVAS_BARYCENTER) cent = 12L;
-  else if(origin == NOVAS_HELIOCENTER) cent = 11L;
-  else {
-    errno = EINVAL;
-    return 1;
-  }
+  if(origin == NOVAS_BARYCENTER)
+    cent = 12L;
+  else if(origin == NOVAS_HELIOCENTER)
+    cent = 11L;
+  else
+    return novas_error(1, EINVAL, fn, "invalid origin type %d", origin);
 
-  // Call Fortran subroutine 'jplint' to obtain position and velocity
+  // Call Fortran subroutine 'jplihp' to obtain position and velocity
   // array 'posvel'.  This is the only point in the NOVAS-C package
   // where the Fortran/C interface occurs.
   // Note that arguments must be sent to Fortran by reference, not by
   // value.
-  jplint_(&jd_tdb, &targ, &cent, posvel, &err_flg);
-  if(err_flg) {
-    errno = EAGAIN;
-    return 2;
-  }
+  jplint_(jd2, &targ, &cent, posvel, &err_flg);
+  if(err_flg)
+    return novas_error(2, EAGAIN, fn, "FORTRAN jplint_() error: %ld", err_flg);
 
   // Decompose 'posvel' into 'position' and 'velocity'.
-  for(i = 3; --i >= 0; ) {
-    if(position) position[i] = posvel[i];
-    if(velocity) velocity[i] = posvel[i + 3];
+  for(i = 3; --i >= 0;) {
+    position[i] = posvel[i];
+    velocity[i] = posvel[i + 3];
   }
 
   return 0;
@@ -164,33 +171,36 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  *
  * @since 1.0
  */
-short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
+  static const char *fn = "planet_jplint_hp";
+
   long targ, cent, err_flg = 0;
   double posvel[6] = { };
   int i;
 
+  if(!jd_tdb)
+    return novas_error(1, EINVAL, fn, "NULL jd_tdb array");
+
   // Perform sanity checks on the input body and origin.
-  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON)) {
-    errno = EINVAL;
-    return 1;
-  }
-  else if((origin < 0) || (origin >= NOVAS_ORIGIN_TYPES)) {
-    errno = EINVAL;
-    return 1;
-  }
+  if((body < NOVAS_MERCURY) || (body > NOVAS_MOON))
+    return novas_error(1, EINVAL, fn, "planet number %d is out of range [%d:%d]", body, NOVAS_MERCURY, NOVAS_MOON);
 
   // Select 'targ' according to the value of 'body'.
-  if(body == NOVAS_SUN) targ = 11L;
-  else if(body == NOVAS_MOON) targ = 10L;
-  else targ = (long) body;
+  if(body == NOVAS_SUN)
+    targ = 11L;
+  else if(body == NOVAS_MOON)
+    targ = 10L;
+  else
+    targ = (long) body;
 
   // Select 'cent' according to the value of 'origin'.
-  if(origin == NOVAS_BARYCENTER) cent = 12L;
-  else if(origin == NOVAS_HELIOCENTER) cent = 11L;
-  else {
-    errno = EINVAL;
-    return 1;
-  }
+  if(origin == NOVAS_BARYCENTER)
+    cent = 12L;
+  else if(origin == NOVAS_HELIOCENTER)
+    cent = 11L;
+  else
+    return novas_error(1, EINVAL, fn, "invalid origin type %d", origin);
 
   // Call Fortran subroutine 'jplihp' to obtain position and velocity
   // array 'posvel'.  This is the only point in the NOVAS-C package
@@ -198,13 +208,11 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   // Note that arguments must be sent to Fortran by reference, not by
   // value.
   jplihp_(jd_tdb, &targ, &cent, posvel, &err_flg);
-  if(err_flg) {
-    errno = EAGAIN;
-    return 2;
-  }
+  if(err_flg)
+    return novas_error(2, EAGAIN, fn, "FORTRAN jplint_() error: %ld", err_flg);
 
   // Decompose 'posvel' into 'position' and 'velocity'.
-  for(i = 3; --i >= 0; ) {
+  for(i = 3; --i >= 0;) {
     position[i] = posvel[i];
     velocity[i] = posvel[i + 3];
   }
@@ -213,14 +221,18 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
 }
 
 #if DEFAULT_SOLSYS == 2
-novas_planet_provider default_planetcalc = planet_jplint;
-novas_planet_provider_hp default_planetcalc_hp = planet_jplint;
+/// \cond PRIVATE
+novas_planet_provider planet_call = planet_jplint;
+novas_planet_provider_hp planet_call_hp = planet_jplint;
+/// \endcond
 #elif !BUILTIN_SOLSYS2
 short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
-  return planet_jplint(jd_tdb, body, origin, position, velocity);
+  prop_error("solarsystem", planet_jplint(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
 }
 
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
-  return planet_jplint_hp(jd_tdb, body, origin, position, velocity);
+  prop_error("solarsystem_hp", planet_jplint_hp(jd_tdb, body, origin, position, velocity), 0);
+  return 0;
 }
 #endif

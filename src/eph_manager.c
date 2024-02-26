@@ -3,8 +3,12 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS planetary ephemeris manager for the planet_eph_manager() and planet_eph_manager_hp()
+ *  SuperNOVAS planetary ephemeris manager for the planet_eph_manager and planet_eph_manager_hp()
  *  functions.
+ *
+ *  This module exposes a lot of its own internal state variables globally. You probably should
+ *  not access them from outside this module, but they are kept ad globals to ensure compatibility
+ *  with existing NOVAS C applications that do tinker with those values.
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.
@@ -16,19 +20,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <errno.h>
 
 #include "eph_manager.h"
 
+/// \cond PRIVATE
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
 
+#include "novas.h"
 
-/**
- * Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
- *
- * Default value is 0 (KM determines time unit for nutations. Angle unit is always radians.)
- */
-short KM;
+/// Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
+/// Its default value is 0 (KM determines time unit for nutations. Angle unit is always radians.)
+short KM;           ///< Flag that defines physical units of the output states.
 
 // IPT and LPT defined as int to support 64 bit systems.
 int IPT[3][12];     ///< (<i>for internal use</i>)
@@ -47,9 +53,8 @@ double TWOT;        ///< (<i>for internal use</i>)
 double EM_RATIO;    ///< (<i>for internal use</i>)
 double *BUFFER;     ///< (<i>for internal use</i>) Array containing Chebyshev coefficients of position.
 
-/** The currently opened JPL DE planetary ephemeris file */
-FILE *EPHFILE = NULL;
 
+FILE *EPHFILE = NULL;     ///< (<i>for internal use</i>) The currently open JPL DE planetary ephemeris file
 
 /**
  * This function opens a JPL planetary ephemeris file and
@@ -62,7 +67,7 @@ FILE *EPHFILE = NULL;
  * dated 17 June 1988.</li>
  * </ol>
  *
- * @param ephem_name      Name.path of the direct-access ephemeris file.
+ * @param ephem_name      Name/path of the direct-access ephemeris file.
  * @param[out] jd_begin   [day] Beginning Julian date of the ephemeris file. It may be NULL if not required.
  * @param[out] jd_end     [day] Ending Julian date of the ephemeris file. It may be NULL if not required.
  * @param[out] de_number  DE number of the ephemeris file opened. It may be NULL if not required.
@@ -75,12 +80,11 @@ FILE *EPHFILE = NULL;
  * @sa ephem_close()
  */
 short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number) {
+  static const char *fn = "ephem_open";
   int ncon, denum;
 
-  if(!ephem_name) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!ephem_name)
+    return novas_error(-1, EINVAL, fn, "NULL input file name/path");
 
   if(EPHFILE) {
     fclose(EPHFILE);
@@ -89,7 +93,7 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
   // Open file ephem_name.
   if((EPHFILE = fopen(ephem_name, "rb")) == NULL) {
-    return 1;
+    return novas_error(1, errno, fn, "cannot open '%s': %s", ephem_name, strerror(errno));
   }
   else {
     char ttl[252], cnam[2400];
@@ -117,41 +121,41 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
 
     if(fread(ttl, sizeof ttl, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 2;
+      return novas_error(2, errno, fn, "reading 'ttl' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(cnam, sizeof cnam, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 3;
+      return novas_error(4, errno, fn, "reading 'cnam' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(SS, sizeof SS, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 4;
+      return novas_error(4, errno, fn, "reading 'SS' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&ncon, sizeof ncon, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 5;
+      return novas_error(5, errno, fn, "reading 'ncon' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&JPLAU, sizeof JPLAU, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 6;
+      return novas_error(6, errno, fn, "reading 'JPLAU' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(&EM_RATIO, sizeof EM_RATIO, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 7;
+      return novas_error(7, errno, fn, "reading 'EM_RATIO' from '%s': %s", ephem_name, strerror(errno));
     }
     for(i = 0; i < 12; i++)
       for(j = 0; j < 3; j++)
         if(fread(&IPT[j][i], sizeof(int), 1, EPHFILE) != 1) {
           fclose(EPHFILE);
-          return 8;
+          return novas_error(8, errno, fn, "reading 'IPT[%d][%d]' from '%s': %s", j, i, ephem_name, strerror(errno));
         }
     if(fread(&denum, sizeof denum, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 9;
+      return novas_error(9, errno, fn, "reading 'denum' from '%s': %s", ephem_name, strerror(errno));
     }
     if(fread(LPT, sizeof LPT, 1, EPHFILE) != 1) {
       fclose(EPHFILE);
-      return 10;
+      return novas_error(10, errno, fn, "reading 'LPT' from '%s': %s", ephem_name, strerror(errno));
     }
 
     // Set the value of the record length according to what JPL ephemeris is being opened.
@@ -170,24 +174,29 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
         break;
 
       default:            // An unknown DE file was opened. Close the file and return an error code.
-        if(jd_begin) *jd_begin = 0.0;
-        if(jd_end) *jd_end = 0.0;
-        if(de_number) *de_number = 0;
+        if(jd_begin)
+          *jd_begin = 0.0;
+        if(jd_end)
+          *jd_end = 0.0;
+        if(de_number)
+          *de_number = 0;
         fclose(EPHFILE);
-        return 11;
+        return novas_error(11, errno, fn, "Unknown record size for DE number: %d in '%s'", denum, ephem_name);
         break;
     }
 
     BUFFER = (double*) calloc(RECORD_LENGTH / 8, sizeof(double));
 
-    if(de_number) *de_number = (short) denum;
-    if(jd_begin) *jd_begin = SS[0];
-    if(jd_end) *jd_end = SS[1];
+    if(de_number)
+      *de_number = (short) denum;
+    if(jd_begin)
+      *jd_begin = SS[0];
+    if(jd_end)
+      *jd_end = SS[1];
   }
 
   return 0;
 }
-
 
 /**
  * Closes a JPL planetary ephemeris file and frees the memory.
@@ -210,15 +219,15 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
  *
  */
 short ephem_close(void) {
-  short error = 0;
-
   if(EPHFILE) {
-    error = (short) fclose(EPHFILE);
+    int error = fclose(EPHFILE);
     EPHFILE = NULL;
     free(BUFFER);
+    return novas_error(error, errno, "ephem_close", strerror(errno));
   }
-  return error;
+  return 0;
 }
+
 
 /**
  * Retries planet position and velocity data from the JPL planetary ephemeris
@@ -248,18 +257,19 @@ short ephem_close(void) {
  *
  * @sa ephem_open()
  */
-short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position, double *velocity) {
-  int i, error = 0;
+short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position,
+        double *velocity) {
+  static const char *fn = "planet_ephemeris";
+
+  int i;
   int do_earth = 0, do_moon = 0;
 
   double jed[2];
   double pos_moon[3] = { }, vel_moon[3] = { }, pos_earth[3] = { }, vel_earth[3] = { };
   double target_pos[3] = { }, target_vel[3] = { }, center_pos[3] = { }, center_vel[3] = { };
 
-  if(!tjd || !position || !velocity) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!tjd || !position || !velocity)
+    return novas_error(-1, EINVAL, "planet_ephemeris", "NULL parameter: tjd=%p, position=%p, velocity=%p", tjd, position, velocity);
 
   // Initialize 'jed' for 'state' and set up component count.
   jed[0] = tjd[0];
@@ -276,19 +286,18 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
 
   // Check for instances of target or center being Earth or Moon,
   // and for target or center being the Earth-Moon barycenter.
-  if((target == DE_EARTH) || (origin == DE_EARTH)) do_moon = 1;
-  if((target == DE_MOON) || (origin == DE_MOON)) do_earth = 1;
-  if((target == DE_EMB) || (origin == DE_EMB)) do_earth = 1;
+  if((target == DE_EARTH) || (origin == DE_EARTH))
+    do_moon = 1;
+  if((target == DE_MOON) || (origin == DE_MOON))
+    do_earth = 1;
+  if((target == DE_EMB) || (origin == DE_EMB))
+    do_earth = 1;
 
-  if(do_earth) {
-    error = state(jed, DE_EARTH, pos_earth, vel_earth);
-    if(error) return error;
-  }
+  if(do_earth)
+    prop_error(fn, state(jed, DE_EARTH, pos_earth, vel_earth), 0);
 
-  if(do_moon) {
-    error = state(jed, DE_MOON, pos_moon, vel_moon);
-    if(error) return error;
-  }
+  if(do_moon)
+    prop_error(fn, state(jed, DE_MOON, pos_moon, vel_moon), 0);
 
   // Make call to State for target object.
   if(target == DE_SSB) {
@@ -303,9 +312,8 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
       target_vel[i] = vel_earth[i];
     }
   }
-  else error = state(jed, target, target_pos, target_vel);
-
-  if(error) return error;
+  else
+    prop_error(fn, state(jed, target, target_pos, target_vel), 0);
 
   // Make call to State for center object.
 
@@ -325,9 +333,8 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
       center_vel[i] = vel_earth[i];
     }
   }
-  else error = state(jed, origin, center_pos, center_vel);
-
-  if(error) return error;
+  else
+    prop_error(fn, state(jed, origin, center_pos, center_vel), 0);
 
   // Check for cases of Earth as target and Moon as center or vice versa.
   if((target == DE_EARTH) && (origin == DE_MOON)) {
@@ -413,17 +420,17 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
  *                    or 2 if the epoch is out of range.
  */
 short state(const double *jed, enum de_planet target, double *target_pos, double *target_vel) {
+  static const char *fn = "state";
   long nr;
   double t[2], aufac = 1.0, jd[4], s;
   int i;
 
-  if(!jed || !target_pos || !target_vel) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!jed || !target_pos || !target_vel)
+    return novas_error(-1, EINVAL, fn, "NULL parameter: jed=%p, target_pos=%p, target_vel=%p", jed, target_pos, target_vel);
 
   // Set units based on value of the 'KM' flag.
-  if(KM) t[1] = SS[2] * 86400.0;
+  if(KM)
+    t[1] = SS[2] * 86400.0;
   else {
     t[1] = SS[2];
     aufac = 1.0 / JPLAU;
@@ -439,11 +446,13 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
   jd[0] += jd[2];
 
   // Return error code if date is out of range.
-  if((jd[0] < SS[0]) || ((jd[0] + jd[3]) > SS[1])) return 2;
+  if((jd[0] < SS[0]) || ((jd[0] + jd[3]) > SS[1]))
+    return novas_error(2, EDOM, fn, "date (JD=%.1f) is out of range", jed[0] + jed[1]);
 
   // Calculate record number and relative time interval.
   nr = (long) ((jd[0] - SS[0]) / SS[2]) + 3;
-  if(jd[0] == SS[1]) nr -= 2;
+  if(jd[0] == SS[1])
+    nr -= 2;
   t[0] = ((jd[0] - ((double) (nr - 3) * SS[2] + SS[0])) + jd[3]) / SS[2];
 
   // Read correct record if it is not already in memory.
@@ -454,7 +463,7 @@ short state(const double *jed, enum de_planet target, double *target_pos, double
     fseek(EPHFILE, rec, SEEK_SET);
     if(!fread(BUFFER, RECORD_LENGTH, 1, EPHFILE)) {
       ephem_close();
-      return 1;
+      return novas_error(1, errno, fn, "reading record %ld: %s", nr, strerror(errno));
     }
   }
 
@@ -496,10 +505,8 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
 
   double dna, dt1, temp, tc, vfac;
 
-  if(!buf || !t || !position || !velocity) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!buf || !t || !position || !velocity)
+    return novas_error(-1, EINVAL, "interpolate", "NULL parameter: buf=%p, t=%p, position=%p, velocity=%p", buf, t, position, velocity);
 
   // Get correct sub-interval number for this set of coefficients and
   // then get normalized Chebyshev time within that subinterval.
@@ -573,10 +580,8 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
  * @return          0 if successful, or -1 if the output pointer argument is NULL.
  */
 int split(double tt, double *fr) {
-  if (!fr) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!fr)
+    return novas_error(-1, EINVAL, "split", "NULL output pointer");
 
   // Get integer and fractional parts.
   fr[0] = (int) floor(tt);

@@ -3,7 +3,7 @@ include ../config.mk
 CFLAGS = -I../include -O0 -g -pg -fprofile-arcs -ftest-coverage
 LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
-CFLAGS += -DDEFAULT_SOLSYS=3 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
+CFLAGS += -DDEFAULT_SOLSYS=0 -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
 OBJECTS := novas.o nutation.o solsys3.o

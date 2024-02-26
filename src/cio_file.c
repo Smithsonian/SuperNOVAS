@@ -43,8 +43,10 @@ int main(int argc, const char *argv[]) {
   header_size = (long) ((size_t) 3 * double_size + long_size);
   record_size = (long) ((size_t) 2 * double_size);
 
-  if(argc > 1) filename = argv[1];
-  if(argc > 2) outname = argv[2];
+  if(argc > 1)
+    filename = argv[1];
+  if(argc > 2)
+    outname = argv[2];
 
   /*
    Open the input formatted text file.
@@ -106,7 +108,8 @@ int main(int argc, const char *argv[]) {
      input data points, assuming a constant interval.
      */
 
-    if(i == 2L) interval = jd_tdb - jd_first;
+    if(i == 2L)
+      interval = jd_tdb - jd_first;
 
     /*
      Capture the value of the Julian date of the last data point.
