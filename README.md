@@ -18,11 +18,11 @@
 # SuperNOVAS 
 The NOVAS C astrometry software library, made better.
 
-[SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is an astronomy software library for the for 
-the C programming language, providing high-precision astrometry such as one might need for running an observatory or a 
-precise planetarium program. It is a fork of the Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the aim of making it more user-friendly and 
-easier to use overall.
+[SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is an astronomy software library for the C programming 
+language, providing high-precision astrometry such as one might need for running an observatory or a precise 
+planetarium program. It is a fork of the Naval Observatory Vector Astrometry Software 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)), with the aim of making it more user-friendly and easier to 
+use overall.
 
 SuperNOVAS is entirely free to use without any licensing restrictions.  Its source code is compatible with the C90 
 standard, and hence should be suitable for many older platforms also. It is light-weight and easy to use, with full 
@@ -99,24 +99,16 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
    
- - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+ - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which led to the wrong results 
+   when the numerator was negative. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and 
+   the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it 
+   also was the reason `cal_date()` did not work for negative JD values.
    
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
    observed body rather than at the time that light arrives to the observer. This correction was done properly for 
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
-   
- - Fixes the use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result 
-   was not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) 
-   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, 
-   it also was the reason `cal_date()` did not work for negative JD values.
-   
- - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
-   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
-   equinox of date coordinates.
    
  - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
@@ -128,6 +120,11 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
    systems.
+   
+ - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
+   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
+   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
+   equinox of date coordinates.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
@@ -136,6 +133,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    unpredictable behavior. Hence, we set `az` to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
+ 
+ - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
 
 -----------------------------------------------------------------------------
 
