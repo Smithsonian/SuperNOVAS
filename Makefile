@@ -71,6 +71,7 @@ README-headless.md: README.md
 
 dox: README-headless.md
 
+Makefile: config.mk build.mk
 
 vpath %.c $(SRC)
 

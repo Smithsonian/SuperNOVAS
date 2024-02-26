@@ -52,12 +52,12 @@
 
 #define SUPERNOVAS_MAJOR_VERSION  1       ///< API major version
 #define SUPERNOVAS_MINOR_VERSION  0       ///< API minor version
-#define SUPERNOVAS_SUBVERSION     0       ///< Integer sub version of the release
+#define SUPERNOVAS_PATCHLEVEL     0       ///< Integer sub version of the release
 #define SUPERNOVAS_RELEASE_STRING ""      ///< Additional release information in version, e.g. "-1", or "-rc1".
 
 /// The version string for this library
 #define SUPERNOVAS_VERSION_STRING #SUPERNOVAS_MAJOR_VERSION "." #SUPERNOVAS_MINOR_VERSION \
-                                  (#SUPERNOVAS_SUBVERSION ? "." #SUPERNOVAS_SUBVERSION : "") \
+                                  (#SUPERNOVAS_PATCHLEVEL ? "." #SUPERNOVAS_PATCHLEVEL : "") \
                                   SUPERNOVAS_RELEASE_STRING
 
 #define NOVAS_MAJOR_VERSION       3       ///< Major version of NOVAS on which this library is based

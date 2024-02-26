@@ -572,8 +572,18 @@ before that level of accuracy is reached.
    to enable. When enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
    be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can have
    a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing
-   `NOVAS_DEBUF_OFF` (0) as the argument to the same call.
-
+   `NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application
+   calls `grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug 
+   mode is `NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to 
+   planets):
+   ```
+    ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
+           @ earth_sun_calc_hp [=> 2]
+           @ solarsystem_hp [=> 2]
+           @ ephemeris:planet [=> 12]
+           @ grav_def:Jupiter [=> 12]
+   ```
+   
  - New runtime configuration:
 
    * The planet position calculator function used by `ephemeris()` can be set at runtime via `set_planet_provider()`, 
