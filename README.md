@@ -577,10 +577,10 @@ before that level of accuracy is reached.
    planets):
    ```
     ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
-           @ earth_sun_calc_hp [=> 2]
-           @ solarsystem_hp [=> 2]
-           @ ephemeris:planet [=> 12]
-           @ grav_def:Jupiter [=> 12]
+         @ earth_sun_calc_hp [=> 2]
+         @ solarsystem_hp [=> 2]
+         @ ephemeris:planet [=> 12]
+         @ grav_def:Jupiter [=> 12]
    ```
    
  - New runtime configuration:
