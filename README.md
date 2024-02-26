@@ -79,7 +79,6 @@ Here are some links to other SuperNOVAS related content online:
  - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/)
  - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
  - [SuperNOVAS home page](https://smithsonian.github.io/SuperNOVAS.home) page on github.io.
- - [Regression Test Coverage](https://coveralls.io/github/Smithsonian/SuperNOVAS?branch=main) at Coveralls.io.
  - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
