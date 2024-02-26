@@ -502,7 +502,7 @@ or more precisely they may not correspond to the requested input parameters.
  
 While you should never call NOVAS C from in multiple threads simultaneously, SuperNOVAS caches the results in thread
 local variables (provided the compiler supports it), and is therefore safe to use in multi-threaded applications.
-Just make sure that your compiler supports C11, or is GCC &lt;= 3.3, or else you set the appropriate non-standard
+Just make sure that your compiler supports C11, or is GCC &gt;= 3.3, or else you set the appropriate non-standard
 keyword to use for declaring thread-local variables for your compiler in `config.mk`.
  
  
