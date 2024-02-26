@@ -19,10 +19,10 @@ This is the initial release of the SuperNOVAS library.
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
- - The use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result was not 
-   turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and the 
-   fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it also 
-   was the reason `cal_date()` did not work for negative JD values.
+ - Fixes the use of `fmod()` in NOVAS C 3.1 led to the wrong results when the numerator was negative and the result 
+   was not turned into a proper remainder. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) 
+   and the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, 
+   it also was the reason `cal_date()` did not work for negative JD values.
  
  - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the 
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
@@ -44,7 +44,7 @@ This is the initial release of the SuperNOVAS library.
    appropriately instead.
    
  - Fixes unpopulated `az` output value in `equ2hor()` at zenith. While any azimuth is acceptable really, it results in 
-   irreproducible behavior. Hence, we set az to 0.0 for zenith to be consistent.
+   unpredictable behavior. Hence, we set `az` to 0.0 for zenith to be consistent.
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
    
@@ -165,7 +165,7 @@ This is the initial release of the SuperNOVAS library.
    modifications.
  
  - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
-   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchage of `cat_entry` records
+   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchange of `cat_entry` records
    with NOVAS C 3.1.
    
  - Object ID numbers are `long` instead of `short` to accommodate NAIF IDs, which require minimum 32-bit integers.
@@ -176,7 +176,7 @@ This is the initial release of the SuperNOVAS library.
  - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
    in the supplied `cat_entry` structure).
    
- - `cio_location()` will always return a valid value as long as neither output pointer arguments is NULL. 
+ - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL. 
    
  - `sun_eph()` in `solsysl3.c` evaluates the series in reverse order compared to NOVAS C 3.1, accumulating the least 
    significant terms first, and thus resulting in higher precision result in the end.
