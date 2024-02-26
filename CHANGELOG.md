@@ -129,7 +129,7 @@ This is the initial release of the SuperNOVAS library.
 ### Changed
 
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
-   This works using the C11 standard `_Thread_local` or else the earlier GNU C &lt;= 3.3 standard `__thread` modifier.
+   This works using the C11 standard `_Thread_local` or else the earlier GNU C &gt;= 3.3 standard `__thread` modifier.
    You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
    `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
    thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.

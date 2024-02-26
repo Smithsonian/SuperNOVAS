@@ -185,7 +185,7 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
    (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system. (The CIO locator file is not at all necessary for the 
    functioning of the library, unless you specifically require CIO positions relative to GCRS.)
    
- - If your compiler does not support the C11 standard and it is not GCC &lt;=3.3, but provides some non-standard
+ - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
    quotes.)
@@ -563,7 +563,7 @@ before that level of accuracy is reached.
 
  <a name="debug-mode"></a>
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
-   This works using the C11 standard `_Thread_local` or else the earlier GNU C &lt;= 3.3 standard `__thread` modifier.
+   This works using the C11 standard `_Thread_local` or else the earlier GNU C &gt;= 3.3 standard `__thread` modifier.
    You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
    `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
    thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
