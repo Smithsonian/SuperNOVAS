@@ -21,7 +21,7 @@ This is the initial release of the SuperNOVAS library.
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
- - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
+ - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
@@ -30,7 +30,7 @@ This is the initial release of the SuperNOVAS library.
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
  - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
-   systems.
+   systems. This affected many CIRS-based position calculations downstream.
    
  - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with

@@ -93,7 +93,7 @@ The SuperNOVAS library fixes a number of outstanding issues with NOVAS C 3.1. He
 provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
-   had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+   had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
    
  - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which led to the wrong results 
    when the numerator was negative. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and 
@@ -106,7 +106,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
    distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
- - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the the 
+ - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the 
    `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
    routines downstream also, such as `sidereal_time()`.
    
@@ -115,7 +115,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
  - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
-   systems.
+   systems. This affected many CIRS-based position calculations downstream.
    
  - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
@@ -131,7 +131,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes potential string overflows and eliminates associated compiler warnings.
  
  - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This was a documented issue of NOVAS C 3.1.
 
 -----------------------------------------------------------------------------
 
@@ -146,7 +146,7 @@ you will need to (re)compile and or (re)link your application with the SuperNOVA
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
 `short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
 NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to accommodate 
-JPL NAIF codes, and for which 16-bit storage is insufficient. 
+JPL NAIF codes, for which 16-bit storage is insufficient. 
 
 
 -----------------------------------------------------------------------------
@@ -401,7 +401,7 @@ et. al. 1977) thus far, calculating TOD coordinates, you are done here.
 
 If, however, you calculated the position in CIRS with the more precise IAU 2006 methodology (as we did in the example 
 above), you have one more step to go still. The CIRS equator is the true equator of date, however its origin (CIO) is 
-not the true equinox of date. Thus, we must correct for the diffetence of the origins to get the true apparent R.A.:
+not the true equinox of date. Thus, we must correct for the difference of the origins to get the true apparent R.A.:
 
 ```c
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
@@ -431,13 +431,14 @@ obtained from `place_star()` as:
  itrs_to_hor(itrs, &obs.on_surface, &az, &zd);
 ``` 
 
-Above we used `cirs_to_itrs()` function then convert the `sky_pos` ve calculated before in CIRS to the Earth-fixed 
-International Terrestrial Reference system (ITRS) using the small (arcsec-level) measured variation of the pole 
-(dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. Finally, 
-`itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer location.
+Above we used `cirs_to_itrs()` function then convert the `sky_pos` rectangular equatorial unit vector calculated 
+in CIRS to the Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) measured 
+variation of the pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously set via 
+`cel_pole()`. Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer 
+location.
 
-If you followed the old (Lieske et al. 1977) method instead to calculate `sky_pos` in the less precise TOD, then you'd 
-simply replace the `cirs_to_itrs()` call above with `tod_to_itrs()` accordingly. 
+If you followed the old (Lieske et al. 1977) method instead to calculate `sky_pos` in the less precise TOD coordinate
+system, then you'd  simply replace the `cirs_to_itrs()` call above with `tod_to_itrs()` accordingly. 
 
 You can additionally apply an approximate optical refraction correction for the astrometric (unrefracted) zenith angle, 
 if you want, e.g.:
@@ -476,9 +477,9 @@ interchangeably in the present era):
  double jd_tdb = jd_tt + tt2tdb(jd_tt) / 86400.0;
 ```
 
-Instead of `make_cat_entry` you define your source as an `object` with an ID number that is used by the ephemeris 
-service you provided. For major planets you might want to use type `NOVAS_PLANET` if they use a 
-`novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `NOVAS_EPHEM_OBJECT` for 
+Instead of `make_cat_entry()` you define your source as an `object` with an name or ID number that is used by the 
+ephemeris service you provided. For major planets you might want to use `make_planet(), if they use a 
+`novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
 
 ```c
@@ -493,7 +494,8 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
 ```
 
 Other than that, it's the same spiel as before, except using the appropriate `place()` for generic celestial
-targets instead of `place_star()` for the sidereal sources. E.g.:
+targets instead of `place_star()` for the sidereal sources (or else `radec_planet()` instead of `radec_star()`). 
+E.g.:
 
 ```c
  int status = place(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
@@ -538,10 +540,14 @@ set of input parameters while, at the same time, another thread is saving cached
 parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, 
 or more precisely they may not correspond to the requested input parameters.
  
-While you should never call NOVAS C from in multiple threads simultaneously, SuperNOVAS caches the results in thread
-local variables (provided the compiler supports it), and is therefore safe to use in multi-threaded applications.
-Just make sure that your compiler supports C11, or is GCC &gt;= 3.3, or else you set the appropriate non-standard
-keyword to use for declaring thread-local variables for your compiler in `config.mk`.
+While you should never call NOVAS C from  multiple threads simultaneously, SuperNOVAS caches the results in thread
+local variables (provided your compiler supports it), and is therefore safe to use in multi-threaded applications.
+Just make sure that you:
+
+ - use a compiler which supports the C11 language standard;
+ - or, compile with GCC &gt;= 3.3;
+ - or else, set the appropriate non-standard keyword to use for declaring thread-local variables for your compiler in 
+   `config.mk` or in your equivalent build setup.
  
  
 -----------------------------------------------------------------------------
@@ -580,11 +586,11 @@ before that level of accuracy is reached.
     [section further below](#solarsystem) for more information how you can do that.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
-    option to include _optical_ refraction corrections either for a standard atmosphere or more precisely using the 
-    weather parameters defined in the `on_surface` data structure that specifies the observer locations. Note, that 
-    refraction at radio wavelengths is notably different from the included optical model. In either case you may want 
-    to skip the refraction corrections offered in this library, and instead implement your own as appropriate (or not 
-    at all).
+    option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
+    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations. 
+    Note, that refraction at radio wavelengths is notably different from the included optical model. In any case you 
+    may want to skip the refraction corrections offered in this library, and instead implement your own as appropriate 
+    (or not at all).
   
 
 
