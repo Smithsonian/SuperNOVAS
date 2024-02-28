@@ -92,22 +92,22 @@ This is the initial release of the SuperNOVAS library.
 
  - New `itrs_to_hor()` and `hor_to_itrs()` functions to convert Earth-fixed ITRS coordinates to astrometric azimuth 
    and elevation or back. Whereas `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit 
-   version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
+   2-step version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
    `cirs_to_itrs()`  followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no 
-   equivalent in NOVAS C 3.1.
+   prior equivalent in NOVAS C 3.1.
 
  - New `ecl2equ()` for converting ecliptic coordinates to equatorial, complementing existing `equ2ecl()`.
    
  - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
    
- - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted (astrometric) 
-   zenith angle as its argument.
+ - New `refract_astro()` complements the existing `refract()` but takes an unrefracted (astrometric) zenith angle as 
+   its argument.
 
  - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
    `place_gcrs()`, `place_cirs()`, and `place_tod()`.
  
- - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods such as `astro_star()`
-   `local_star()`, `topo_planet()` etc.
+ - New `radec_star()` and `radec_planet()` as the common point for existing functions such as `astro_star()`
+   `local_star()`, `virtual_planet()`, `topo_planet()` etc.
    
  - New time conversion utilities `tt2tdb()`, `get_utc_to_tt()`, and `get_ut1_to_tt()` make it simpler to convert 
    between UTC, UT1, TT, and TDB time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric 
@@ -120,8 +120,8 @@ This is the initial release of the SuperNOVAS library.
    [Building and installation](#installation) further above on including a selection of these in your library 
    build.)
 
- - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
-   default NOVAS `object` names were converted to upper-case, making them effectively case-insensitive.)
+ - New `novas_case_sensitive(int)` to enable (or disable) case-sensitive processing of object names. (By default NOVAS 
+   `object` names were converted to upper-case, making them effectively case-insensitive.)
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
@@ -182,6 +182,13 @@ This is the initial release of the SuperNOVAS library.
    significant terms first, and thus resulting in higher precision result in the end.
    
  - Changed `vector2radec()` to return NAN values if the input is a null-vector (i.e. all components are zero).
+   
+ - IAU 2000A nutation model uses higher-order Delaunay arguments provided by `fund_args()`, instead of the linear
+   model in NOVAS C 3.1.
+   
+ - IAU 2000 nutation made a bit faster, reducing the the number of floating-point multiplications necessary by 
+   skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, resulting in a
+   smaller foortprint.
    
  - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
  

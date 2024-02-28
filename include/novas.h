@@ -265,8 +265,10 @@ enum novas_reference_system {
   /// aberration and gravitational deflection for an observer around Earth.
   NOVAS_GCRS = 0,
 
-  /// True equinox Of Date: dynamical system of the true equator, with its origin at the true
-  /// equinox (pre IAU 2006 system).
+  /// True equinox Of Date: dynamical system of the 'true' equator, with its origin at the
+  /// 'true' equinox (pre IAU 2006 system). It is inherently less precise than the new standard
+  /// CIRS because mainly because it is based on separate, and less-precise, precession
+  /// and nutation models (Lieske et. al. 1977).
   NOVAS_TOD,
 
   /// Celestial Intermediate Reference System: dynamical system of the true equator, with its
@@ -297,8 +299,8 @@ enum novas_dynamical_type {
   /// Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
   NOVAS_DYNAMICAL_MOD = 0,
 
-  /// True equinox Of Date (TOD): dynamical system of the true equator, with its origin at the
-  /// true equinox (pre IAU 2006 system).
+  /// True equinox Of Date (TOD): dynamical system of the 'true' equator, with its origin at the
+  /// true equinox (pre IAU 2006 system; Lieske et. al. 1977).
   NOVAS_DYNAMICAL_TOD,
 
   /// Celestial Intermediate Reference System (CIRS): dynamical system of the true equator,
@@ -499,6 +501,9 @@ enum novas_nutation_direction {
 /**
  * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3),
  * precession = 5028.8200 arcsec/cy)
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 typedef struct {
   double l;           ///< [rad] mean anomaly of the Moon

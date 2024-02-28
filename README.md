@@ -76,10 +76,7 @@ Outside contributions are very welcome. See
 
 Here are some links to other SuperNOVAS related content online:
 
- - [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/files.html)
- - [Project site](https://github.com/Smithsonian/SuperNOVAS/) on GitHUB. 
- - [SuperNOVAS home page](https://smithsonian.github.io/SuperNOVAS.home) page on github.io.
- - [How to Contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) guide
+ - [SuperNOVAS.home](https://smithsonian.github.io/SuperNOVAS.home) page on github.io.
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via JPL HORIZONS.
@@ -381,8 +378,47 @@ observer's motion, as well as appropriate gravitational deflection corrections d
 for other major gravitating solar system bodies (in full precision mode; and if a planet provider function
 is available).
 
-Finally, we may want to calculate the astrometric azimuth and zenith distance (= 90&deg; - azimuth) angles of the 
-source at the specified observing location (without refraction correction):
+The calculated `sky_pos` structure contains all the information needed about the apparent position of the source
+at the given date/time of observation. We may use it to get true apparent R.A. and declination from it, or to 
+calculate azimuth and elevation at the observing location. We'll consider these two cases separately below.
+
+
+#### A. True apparent R.A. and declination
+
+If you want to know the apparent R.A. and declination coordinates from the `sky_pos` structure you obtained, then you 
+can follow with:
+
+```c
+  double ra, dec; // [h, deg] We'll return the apparent R.A. [h] and declination [deg] in these
+ 
+  // Convert the rectangular equatorial unit vector to R.A. [h] and declination [deg]
+  vector2radec(pos.r_hat, &ra, &dec);
+```
+
+Alternatively, you can simply call `radec_star()` instead of `place_star()` to get apparent R.A. and declination in a 
+single step if you do not need the `sky_pos` data otherwise. If you followed the less-precise old methodology (Lieske 
+et. al. 1977) thus far, calculating TOD coordinates, you are done here. 
+
+If, however, you calculated the position in CIRS with the more precise IAU 2006 methodology (as we did in the example 
+above), you have one more step to go still. The CIRS equator is the true equator of date, however its origin (CIO) is 
+not the true equinox of date. Thus, we must correct for the diffetence of the origins to get the true apparent R.A.:
+
+```c
+  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
+
+  // Obtain the R.A. [h] of the CIO at the given date
+  cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio);
+  
+  // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
+  ra = remainder(ra - ra_cio, 24.0);
+  if(ra < 0.0) ra += 24.0;
+```
+
+#### B. Azimuth and elevation angles at the observing location
+
+If your goal is to calculate the astrometric azimuth and zenith distance (= 90&deg; - elevation) angles of the source 
+at the specified observing location (without refraction correction), you can proceed from the `sky_pos` data you 
+obtained from `place_star()` as:
 
 ```c
  double itrs[3];  // ITRS position vector of source to populate
@@ -395,11 +431,13 @@ source at the specified observing location (without refraction correction):
  itrs_to_hor(itrs, &obs.on_surface, &az, &zd);
 ``` 
 
-In the example above we first calculated the apparent coordinates in the Celestial Intermediate Reference System 
-(CIRS) for an observer located on Earth's surface. Then we used `cirs_to_itrs()` function then convert first it to the 
-Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) measured variation of the 
-pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. 
-Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer location.
+Above we used `cirs_to_itrs()` function then convert the `sky_pos` ve calculated before in CIRS to the Earth-fixed 
+International Terrestrial Reference system (ITRS) using the small (arcsec-level) measured variation of the pole 
+(dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously set via `cel_pole()`. Finally, 
+`itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer location.
+
+If you followed the old (Lieske et al. 1977) method instead to calculate `sky_pos` in the less precise TOD, then you'd 
+simply replace the `cirs_to_itrs()` call above with `tod_to_itrs()` accordingly. 
 
 You can additionally apply an optical refraction correction for the astrometric (unrefracted) zenith angle, if you 
 want, e.g.:
@@ -467,7 +505,7 @@ targets instead of `place_star()` for the sidereal sources. E.g.:
 
 
 <a name="accuracy-notes"></a>
-#### Reduced accuracy shortcuts
+### Reduced accuracy shortcuts
 
 When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
 
@@ -478,7 +516,7 @@ When one does not need positions at the microarcsecond level, some shortcuts can
  - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
  
 <a name="performance-note"></a>
-#### Performance considerations
+### Performance considerations
 
 Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
 however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they 
@@ -491,7 +529,7 @@ Therefore, when calculating positions for a large number of sources at different
  - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
  
 <a name="multi-threading"></a>
-#### Multi-threaded calculations
+### Multi-threaded calculations
  
 A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as 
 implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one 
@@ -605,24 +643,24 @@ before that level of accuracy is reached.
    * for GCRS - J2000 - TOD - ITRS (old methodology): `gcrs_to_j2000()`, `j2000_to_tod()`, `tod_to_itrs()`, and 
      `itrs_to_tod()`, `tod_to_j2000()`, `j2000_to_gcrs()`.
 
- - New `itrs_to_hor()` and `hor_to_itrs()` functions to convert Earth-fixed ITRS coordinates to astrometric azimuth 
-   and elevation or back. Whereas `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit 
+ - New `itrs_to_hor()` and `hor_to_itrs()` to convert Earth-fixed ITRS coordinates to astrometric azimuth and 
+   elevation or back. Whereas `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit 2-step 
    version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
    `cirs_to_itrs()`  followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no 
-   equivalent in NOVAS C 3.1.
+   prior equivalent in NOVAS C 3.1.
    
  - New `ecl2equ()` for converting ecliptic coordinates to equatorial, complementing existing `equ2ecl()`.
    
  - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
    
- - New `refract_astro()` function that complements the existing `refract()` but takes an unrefracted (astrometric) 
-   zenith angle as its argument.
+ - New `refract_astro()` complements the existing `refract()` but takes an unrefracted (astrometric) zenith angle as 
+   its argument.
 
  - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
    `place_gcrs()`, `place_cirs()`, and `place_tod()`.
    
- - New `radec_star()` and `radec_planet()` methods as the common point for all existing methods such as `astro_star()`
-   `local_star()`, `topo_planet()` etc.
+ - New `radec_star()` and `radec_planet()` as the common point for existing functions such as `astro_star()`, 
+   `local_star()`, `virtual_planet()`, `topo_planet()` etc.
  
  - New time conversion utilities `tt2tdb()`, `get_utc_to_tt()`, and `get_ut1_to_tt()` make it simpler to convert 
    between UTC, UT1, TT, and TDB time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric 
@@ -635,8 +673,8 @@ before that level of accuracy is reached.
    [Building and installation](#installation) further above on including a selection of these in your library 
    build.)
 
- - New `novas_case_sensitive(int)` method to enable (or disable) case-sensitive processing of object names. (By
-   default NOVAS `object` names were converted to upper-case, making them effectively case-insensitive.)
+ - New `novas_case_sensitive(int)` to enable (or disable) case-sensitive processing of object names. (By default NOVAS 
+   `object` names were converted to upper-case, making them effectively case-insensitive.)
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
@@ -687,6 +725,13 @@ before that level of accuracy is reached.
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
    
  - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
+ 
+ - IAU 2000A nutation model uses higher-order Delaunay arguments provided by `fund_args()`, instead of the linear
+   model in NOVAS C 3.1.
+   
+ - IAU 2000 nutation made a bit faster, reducing the the number of floating-point multiplications necessary by 
+   skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, resulting in a
+   smaller foortprint.
    
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
@@ -795,7 +840,6 @@ And, when you are done using the ephemeris file, you should close it with
 Note, that at any given time `eph_manager` can have only one ephemeris data file opened. You cannot use it to 
 retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
 can integrate as discussed further above!)
-
 That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
 
 
