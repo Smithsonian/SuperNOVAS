@@ -320,9 +320,9 @@ Next, we define the location where we observe from. Here we can (but don't have 
 ```
 
 We also need to set the time of observation. Our clocks usually measure UTC, but for astrometry we usually need time 
-measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. Typically you will have to provide NOVAS 
-with the TT - UT1 time difference, which can be calculated from the current leap seconds and the UT1 - UTC time 
-difference (a.k.a. DUT1): 
+measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. For a ground-based observer, you will often
+have to provide NOVAS with the TT - UT1 time difference, which can be calculated from the current leap seconds and the 
+UT1 - UTC time difference (a.k.a. DUT1): 
 
 ```c
  // The current value for the leap seconds (UTC - TAI)
@@ -410,7 +410,7 @@ not the true equinox of date. Thus, we must correct for the diffetence of the or
   cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio);
   
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
-  ra = remainder(ra - ra_cio, 24.0);
+  ra = remainder(ra + ra_cio, 24.0);
   if(ra < 0.0) ra += 24.0;
 ```
 
@@ -439,8 +439,8 @@ International Terrestrial Reference system (ITRS) using the small (arcsec-level)
 If you followed the old (Lieske et al. 1977) method instead to calculate `sky_pos` in the less precise TOD, then you'd 
 simply replace the `cirs_to_itrs()` call above with `tod_to_itrs()` accordingly. 
 
-You can additionally apply an optical refraction correction for the astrometric (unrefracted) zenith angle, if you 
-want, e.g.:
+You can additionally apply an approximate optical refraction correction for the astrometric (unrefracted) zenith angle, 
+if you want, e.g.:
 
 ```c
    zd -= refract_astro(&obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, zd);
@@ -509,6 +509,7 @@ targets instead of `place_star()` for the sidereal sources. E.g.:
 
 When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
 
+ - You can use TT and TDB timescales interchangably in the present era unless you require the utmost precision.
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at the milliarcsecond level only, but may be much faster to calculate.
  - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
@@ -544,6 +545,8 @@ keyword to use for declaring thread-local variables for your compiler in `config
  
  
 -----------------------------------------------------------------------------
+
+## Usage 
 
 <a name="precision"></a>
 ## Notes on precision
