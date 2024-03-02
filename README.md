@@ -16,7 +16,7 @@
 <br clear="all">
 
 # SuperNOVAS 
-The NOVAS C astrometry software library, made better.
+The NOVAS C software library, made better.
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is an astronomy software library for the C programming 
 language, providing high-precision astrometry such as one might need for running an observatory or a precise 
