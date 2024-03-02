@@ -280,7 +280,7 @@ Earth (at the geocenter, on the surface, or in Earth orbit).
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
 
-Sidereal sources may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
+A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
 galactic molecular cloud, or a distant quasar. First, you must provide the coordinates (which may include proper 
 motion and parallax). Let's assume we pick a star for which we have B1950 (i.e. FK4) coordinates:
 
@@ -374,13 +374,12 @@ distance (e.g. for apparent-to-physical size conversion):
 ```
 
 The _placement_ of the celestial target in the observer's frame includes appropriate aberration corrections for the
-observer's motion, as well as appropriate gravitational deflection corrections due to the Sun and Earth, and 
-for other major gravitating solar system bodies (in full precision mode; and if a planet provider function
-is available).
+observer's motion, as well as appropriate gravitational deflection corrections due to the Sun and Earth, and for other 
+major gravitating solar system bodies (in full precision mode and if a suitable planet provider function is available).
 
-The calculated `sky_pos` structure contains all the information needed about the apparent position of the source
-at the given date/time of observation. We may use it to get true apparent R.A. and declination from it, or to 
-calculate azimuth and elevation at the observing location. We'll consider these two cases separately below.
+The calculated `sky_pos` structure contains all the information needed about the apparent position of the source at 
+the given date/time of observation. We may use it to get true apparent R.A. and declination from it, or to calculate 
+azimuth and elevation at the observing location. We'll consider these two cases separately below.
 
 
 #### A. True apparent R.A. and declination
@@ -455,8 +454,8 @@ Solar-system sources work similarly to the above with a few important difference
 
 First, You will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
 source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on integrating 
-[External Solar-system ephemeris data or services](#solarsystem) with SuperNOVAS. You can specify the functions
-that will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:
+[External Solar-system ephemeris data or services](#solarsystem) with SuperNOVAS. You can specify the functions that 
+will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:
 
 ```c
  // Set the function to use for regular precision planet position calculations
