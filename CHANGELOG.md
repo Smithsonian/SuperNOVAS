@@ -7,46 +7,46 @@ This is the initial release of the SuperNOVAS library.
 
 ### Fixed
 
- - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
-   had an incorrect unit cast. This is a known issue of NOVAS C 3.1.
+ - Fixes the NOVAS C 3.1 [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the 
+   `sidereal_time()` function had an incorrect unit cast.
    
  - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which led to the wrong results 
    when the numerator was negative. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and 
    the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it 
    also was the reason `cal_date()` did not work for negative JD values.
    
- - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
-   velocities for Solar-system sources, it is important to use the values from the time light originated from the 
-   observed body rather than at the time that light arrives to the observer. This correction was done properly for 
-   positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent 
-   distances being reported for spectroscopic observations or for angular-physical size conversions. 
+ - Fixes antedating velocities and distances for light travel time in NOVAS C 3.1 `ephemeris()`. When getting 
+   positions and velocities for Solar-system sources, it is important to use the values from the time light originated 
+   from the observed body rather than at the time that light arrives to the observer. This correction was done 
+   properly for positions, but not for velocities or distances, resulting in incorrect observed radial velocities or 
+   apparent distances being reported for spectroscopic observations or for angular-physical size conversions. 
    
- - Fixes bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) if the 
-   `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This affected 
-   routines downstream also, such as `sidereal_time()`.
+ - Fixes NOVAS C 3.1 bug in `ira_equinox()` which may return the result for the wrong type of equinox (mean vs. true) 
+   if the `equinox` argument was changing from 1 to 0, and back to 1 again with the date being held the same. This 
+   affected NOVAS C 3.1 routines downstream also, such as `sidereal_time()`.
    
- - Fixes accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ()`, `equ2ecl_vec()`, `ecl2equ_vec()`, 
-   `geo_posvel()`, `place()`, and `sidereal_time()`. All these functions returned a cached value for the other 
-   accuracy if the other input parameters are the same as a prior call, except the accuracy. 
+ - Fixes NOVAS C 3.1 accuracy switching bug in `cio_basis()`, `cio_location()`, `ecl2equ()`, `equ2ecl_vec()`, 
+   `ecl2equ_vec()`, `geo_posvel()`, `place()`, and `sidereal_time()`. All these functions returned a cached value for 
+   the other accuracy if the other input parameters are the same as a prior call, except the accuracy. 
    
- - Fixes multiple bugs related to using cached values in `cio_basis()` with alternating CIO location reference 
-   systems. This affected many CIRS-based position calculations downstream.
+ - Fixes multiple NOVAS C 3.1 bugs related to using cached values in `cio_basis()` with alternating CIO location 
+   reference systems. This affected many CIRS-based position calculations downstream.
    
- - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
-   cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
-   equinox of date coordinates.
+ - Fixes NOVAS C 3.1 buga in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has 
+   overwritten the cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent 
+   call with `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the 
+   requested mean equinox of date coordinates.
  
- - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
-   appropriately instead.
+ - Fixes NOVAS C 3.1 `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified 
+   input vector  appropriately instead.
    
- - Fixes unpopulated `az` output value in `equ2hor()` at zenith. While any azimuth is acceptable really, it results in 
-   unpredictable behavior. Hence, we set `az` to 0.0 for zenith to be consistent.
+ - Fixes unpopulated `az` output value in `equ2hor()` at zenith in NOVAS C 3.1. While any azimuth is acceptable 
+   really, it results in unpredictable behavior. Hence, we set `az` to 0.0 for zenith to be consistent.
    
- - Fixes potential string overflows and eliminates associated compiler warnings.
+ - Fixes potential NOVAS C 3.1 string overflows and eliminates associated compiler warnings.
  
- - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This is a known issue of NOVAS C 3.1.
+ - Fixes the NOVAS C 3.1 [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL.
    
  - Supports calculations in parallel threads by making cached results thread-local.
  
