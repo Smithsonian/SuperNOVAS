@@ -126,69 +126,78 @@ This is the initial release of the SuperNOVAS library.
 
 ### Changed
 
- - Changed to support for calculations in parallel threads by making cached results thread-local.
-   This works using the C11 standard `_Thread_local` or else the earlier GNU C &gt;= 3.3 standard `__thread` modifier.
-   You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
-   `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
-   thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
+ - Changed to support for calculations in parallel threads by making cached results thread-local (as opposed to the 
+   globally cached values in NOVAS C 3.1). This works using the C11 standard `_Thread_local` or else the earlier GNU C 
+   &gt;= 3.3 standard `__thread` modifier. You can also set the preferred thread-local keyword for your compiler by 
+   passing it via `-DTHREAD_LOCAL=...` in `config.mk` to ensure that your build is thread-safe. And, if your compiler 
+   has no support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C 
+   isn't.
 
- - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
-   `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
-   and make for more readable code that is easier to debug. They also make it easy to see what choices are available
-   for each function argument, without having to consult the documentation each and every time.
+ - SuperNOVAS functions take `enum`s as their option arguments instead of the raw integers in NOVAS C 3.1. These enums 
+   are defined in `novas.h`. The same header also defines a number of useful constants. The enums allow for some 
+   compiler checking, and make for more readable code that is easier to debug. They also make it easy to see what 
+   choices are available for each function argument, without having to consult the documentation each and every time.
 
  - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
    duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
    invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
-   error code is returned for compatibility).
+   error code is returned for compatibility). There were no such checks performed in NOVAS C 3.1.
    
  - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and use 
-   functions such as `perror()` and `strerror()` to print human-readable error messages.
+   functions such as `perror()` and `strerror()` to print human-readable error messages. (NOVAS C 3.1 did not set 
+   `errno`).
    
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
    `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned 
-   should not be used as if they were valid. (No more sneaky silent errors.)
+   should not be used as if they were valid. (No more sneaky silent errors, which were common in NOVAS C 3.1.)
 
- - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
-   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
-   This eliminates the need to declare dummy variables in your application code for quantities you do not require.
+ - Many SuperNOVAS functions allow `NULL` arguments (unlike NOVAS C 3.1), both for optional input values as well as 
+   outputs that are not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) 
+   for specifics). This eliminates the need to declare dummy variables in your application code for quantities you do 
+   not require.
 
  - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
-   be the same as the input vector argument. For example, `frame_tie(pos, J2000_TO_ICRS, pos)` using the same 
-   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
-   This can greatly simplify usage, and can eliminate extraneous declarations, when intermediates are not required.
-
+   be the same as the input vector argument (unlike in NOVAS C 3.1 where this was not consistently implented). For 
+   example, `frame_tie(pos, J2000_TO_ICRS, pos)` using the same `pos` vector both as the input and the output. In this 
+   case the `pos` vector is modified in place by the call. This can greatly simplify usage, and can eliminate 
+   extraneous declarations, when intermediates are not required.
+   
  - SuperNOVAS declares function pointer arguments as `const` whenever the function does not modify the data content 
    being referenced. This supports better programming practices that generally aim to avoid unintended data 
-   modifications.
+   modifications. (The passing of `const` arguments to NOVAS C 3.1 calls would result in compiler warnings.)
  
- - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
-   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchange of `cat_entry` records
-   with NOVAS C 3.1.
+ - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C 3.1, while keeping `struct` 
+   layouts the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchange of `cat_entry` 
+   records with NOVAS C 3.1.
    
- - Object ID numbers are `long` instead of `short` to accommodate NAIF IDs, which require minimum 32-bit integers.
+ - Object ID numbers are `long` instead of `short` (in NOVAS C 3.1) to accommodate NAIF IDs, which require minimum 
+   32-bit integers.
  
  - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
-   methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
+   methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS (unlike in NOVAS C 3.1).
  
  - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
-   in the supplied `cat_entry` structure).
+   in the supplied `cat_entry` structure), in contrast to NOVAS C 3.1, which set `object->number` to 0 for `cat_entry`
+   arguments.
    
- - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL. 
+ - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL. (NOVAS C
+   3.1 would return an error if a CIO locator file was previously opened but cannot provide the data for whatever
+   reason). 
    
  - `sun_eph()` in `solsysl3.c` evaluates the series in reverse order compared to NOVAS C 3.1, accumulating the least 
    significant terms first, and thus resulting in higher precision result in the end.
    
- - Changed `vector2radec()` to return NAN values if the input is a null-vector (i.e. all components are zero).
+ - Changed `vector2radec()` to return NAN values if the input is a null-vector (i.e. all components are zero), as
+   opposed to NOVAS C 3.1, which left the input vector argument unchanged.
    
  - IAU 2000A nutation model uses higher-order Delaunay arguments provided by `fund_args()`, instead of the linear
    model in NOVAS C 3.1.
    
- - IAU 2000 nutation made a bit faster, reducing the the number of floating-point multiplications necessary by 
-   skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, resulting in a
-   smaller foortprint.
+ - IAU 2000 nutation made a bit faster vs NOVAS C 3.1, via reducing the the number of floating-point multiplications 
+   necessary by skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, 
+   resulting in a smaller foortprint than in NOVAS C 3.1.
    
- - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
+ - More efficient paging (cache management) for `cio_array()` vs NOVAS C 3.1, including I/O error checking.
  
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
@@ -198,12 +207,12 @@ This is the initial release of the SuperNOVAS library.
 
 ### Deprecated
 
- - `novascon.h` / `novascon.c`: These definitions of constants was troublesome for two reasons: (1) They were 
-   primarily meant for use internally within the library itself. As the library clearly defines in what units input 
-   and output quantities are expressed, the user code can apply its own appropriate conversions that need not match 
-   the internal system used by the library. Hence exposing these constants to users was half baked. (2) The naming of 
-   constants was too simplistic (with names such as `C` or `F`) that it was rather prone to naming conflicts in user 
-   code. As a result, the constants have been moved to novas.h with more unique names (such as `NOVAS_C` and 
+ - `novascon.h` / `novascon.c`: These definitions of constants in NOVAS C 3.1 was troublesome for two reasons: (1) 
+   They were primarily meant for use internally within the library itself. As the library clearly defines in what 
+   units input and output quantities are expressed, the user code can apply its own appropriate conversions that need 
+   not match the internal system used by the library. Hence exposing these constants to users was half baked. (2) The 
+   naming of constants was too simplistic (with names such as `C` or `F`) that it was rather prone to naming conflicts 
+   in user code. As a result, the constants have been moved to novas.h with more unique names (such as `NOVAS_C` and 
    `NOVAS_EARTH_FLATTENING`. New code should rely on these definitions instead of the troubled constants of 
    `novascon.c` / `.h` if at all necessary.
 
@@ -211,19 +220,20 @@ This is the initial release of the SuperNOVAS library.
    methodology) to horizontal but not CIRS to horizontal (IAU 2000 standard). You should use the equivalent but more
    specific `tod_to_itrs()` or the newly added `cirs_to_itrs()`, followed by `itrs_to_hor()` instead.
    
- - `cel2ter()` / `ter2cel()`: These function can be somewhat confusing to use. You are likely better off with 
-   `tod_to_itrs()` and `cirs_to_itrs()` instead, and possibly followed by further conversions if desired.
+ - `cel2ter()` / `ter2cel()`: These NOVAS C 3.1 function can be somewhat confusing to use. You are likely better off 
+   with `tod_to_itrs()` and `cirs_to_itrs()` instead, and possibly followed by further conversions if desired.
    
- - `app_star()`, `app_planet()`, `topo_star()` and `topo_planet()`: These use the old (pre IAU 2000) methodology, 
-   which isn't clear from their naming. Use `place()` or `place_star()` with `NOVAS_TOD` or `NOVAS_CIRS` as the system 
-   instead, as appropriate.
+ - `app_star()`, `app_planet()`, `topo_star()` and `topo_planet()`: These NOVAS C 3.1 function use the old (pre IAU 
+   2000) methodology, which isn't clear from their naming. Use `place()` or `place_star()` with `NOVAS_TOD` or 
+   `NOVAS_CIRS` as the system instead, as appropriate.
    
- - `readeph()`: prone to memory leaks, and not flexible with its origin (necessarily at the barycenter). Instead, use 
-   a similar `novas_ephem_provider` implementation and `set_ephem_provider()` for a more flexible and less 
-   troublesome equivalent, which also does not need to be baked into the library and can be configured at runtime.
+ - `readeph()`: This NOVAS C 3.1 function is prone to memory leaks, and not flexible with its origin (necessarily at 
+   the barycenter). Instead, use a similar `novas_ephem_provider` implementation and `set_ephem_provider()` for a more 
+   flexible and less troublesome equivalent, which also does not need to be baked into the library and can be 
+   configured at runtime.
    
  - `tdb2tt()`. Use `tt2tdb()` instead. It's both more intuitive to use (returning the time difference as a double) and 
-   faster to calculate, not to mention that it implements the more standard approach.
+   faster to calculate than the NOVAS C function, not to mention that it implements the more standard approach.
    
 
 
