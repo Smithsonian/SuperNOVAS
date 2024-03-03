@@ -116,9 +116,7 @@ This is the initial release of the SuperNOVAS library.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_eph_manager` vs `planet_ephem_provider()`. See the section on 
-   [Building and installation](#installation) further above on including a selection of these in your library 
-   build.)
+   `planet_eph_manager` vs `planet_ephem_provider()`.
 
  - New `novas_case_sensitive(int)` to enable (or disable) case-sensitive processing of object names. (By default NOVAS 
    `object` names were converted to upper-case, making them effectively case-insensitive.)
@@ -128,7 +126,7 @@ This is the initial release of the SuperNOVAS library.
 
 ### Changed
 
- - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
+ - Changed to support for calculations in parallel threads by making cached results thread-local.
    This works using the C11 standard `_Thread_local` or else the earlier GNU C &gt;= 3.3 standard `__thread` modifier.
    You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
    `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
