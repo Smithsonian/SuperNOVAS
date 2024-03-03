@@ -11,7 +11,7 @@
 <picture>
   <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" media="(prefers-color-scheme: dark)"/>
   <source srcset="resources/CfA-logo.png" alt="CfA logo" media="(prefers-color-scheme: light)"/>
-  <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"/>
+  <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"/>
 </picture>
 <br clear="all">
 
