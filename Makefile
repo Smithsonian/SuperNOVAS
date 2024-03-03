@@ -67,7 +67,7 @@ obj/jplint.o: $(SRC)/jplint.f
 	gfortran -c -o $@ $<
 
 README-headless.md: README.md
-	tail -n +`sed -n '/\# /{=;q;}' $<` $< > $@
+	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
 
 dox: README-headless.md
 
