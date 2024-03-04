@@ -1,0 +1,850 @@
+.TH "include/solarsystem.h" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+include/solarsystem.h
+.SH SYNOPSIS
+.br
+.PP
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef int(* \fBnovas_ephem_provider\fP) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *origin, double *pos, double *vel)"
+.br
+.ti -1c
+.RI "typedef short(* \fBnovas_planet_provider\fP) (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "typedef short(* \fBnovas_planet_provider_hp\fP) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "short \fBearth_sun_calc\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short \fBearth_sun_calc_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "void \fBenable_earth_sun_hp\fP (int value)"
+.br
+.ti -1c
+.RI "\fBnovas_ephem_provider\fP \fBget_ephem_provider\fP ()"
+.br
+.ti -1c
+.RI "short \fBplanet_eph_manager\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short \fBplanet_eph_manager_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short \fBplanet_ephem_provider\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short \fBplanet_ephem_provider_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short \fBplanet_jplint\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short \fBplanet_jplint_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "double * \fBreadeph\fP (int mp, const char *name, double jd_tdb, int *error)"
+.br
+.ti -1c
+.RI "int \fBset_ephem_provider\fP (\fBnovas_ephem_provider\fP func)"
+.br
+.ti -1c
+.RI "int \fBset_planet_provider\fP (\fBnovas_planet_provider\fP func)"
+.br
+.ti -1c
+.RI "int \fBset_planet_provider_hp\fP (\fBnovas_planet_provider_hp\fP func)"
+.br
+.ti -1c
+.RI "short \fBsolarsystem\fP (double jd_tdb, short body, short origin, double *position, double *velocity)"
+.br
+.ti -1c
+.RI "short \fBsolarsystem_hp\fP (const double jd_tdb[2], short body, short origin, double *position, double *velocity)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBAuthor\fP
+.RS 4
+G\&. Kaplan and A\&. Kovacs
+.RE
+.PP
+SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter\&. The source files \fBsolsys1\&.c\fP, \fBsolsys2\&.c\fP, \fBsolsys3\&.c\fP and \fBsolsys-ephem\&.c\fP provide various standard implementations that users may use (some require additional sources, or user-specific implementations), or you can write your own version if that seems more appropriate\&.
+.PP
+If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see Makefile), then the library is compiled with that version providing a built-in default implementation (the default is to use solsys3, which is a self-contained orbital calculation)\&.
+.PP
+Additionally, users may set their custom choice of major planet ephemeris handler at runtime via the set_ephem_size()\&.
+.PP
+Based on the NOVAS C Edition, Version 3\&.1, U\&. S\&. Naval Observatory Astronomical Applications Dept\&. Washington, DC \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef int(* novas_ephem_provider) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *origin, double *pos, double *vel)"
+Function to obtain ephemeris data for minor planets, which are not handled by the \fBsolarsystem()\fP type calls\&. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled \fBreadeph()\fP implementation, or else a dynamically defined one via ephemeris_set_reader()\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The ID number of the solar-system body for which the position in desired\&. 
+.br
+\fIname\fP The name of the solar-system body 
+.br
+\fIjd_tdb_high\fP [day] The high-order part of Barycentric Dynamical Time (TDB) based Julian date for which to find the position and velocity\&. Typically this may be the integer part of the Julian date for high-precision calculations, or else the entire Julian date for reduced precision\&. 
+.br
+\fIjd_tdb_low\fP [day] The low-order part of Barycentric Dynamical Time (TDB) based Julian date for which to find the position and velocity\&. Typically this may be the fractional part of the Julian date for high-precision calculations, or else 0\&.0 if the date is defined entirely by the high-order component for reduced precision\&. 
+.br
+\fIorigin\fP Set to NOVAS_BARYCENTER or NOVAS_HELIOCENTER to indicate relative to which the ephemeris positions/velocities are reported\&. 
+.br
+\fIpos\fP [AU] position 3-vector to populate with rectangular equatorial coordinates in AU\&. It may be NULL if position is not required\&. 
+.br
+\fIvel\fP [AU/day] velocity 3-vector to populate in rectangular equatorial coordinates in AU/day\&. It may be NULL if velocities are not required\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments are NULL, or some non-zero value if the was an error s\&.t\&. the position and velocity vector should not be used\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_ephem_provider()\fP 
+.PP
+\fBephemeris()\fP 
+.PP
+\fBNOVAS_EPHEM_OBJECT\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "typedef short(* novas_planet_provider) (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+Provides the position and velocity of major planets (as well as the Sun, Moon, and Solar-system Barycenter position\&. This version provides positions and velocities at regular precision (see NOVAS_REDUCED_PRECISION)\&.
+.PP
+Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
+.br
+\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000\&.0\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000\&.0, in AU/Day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider()\fP 
+.PP
+\fBephemeris()\fP 
+.PP
+novas_solarsystem_hp_func 
+.RE
+.PP
+
+.SS "typedef short(* novas_planet_provider_hp) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+Provides the position and velocity of major planets (as well as the Sun, Moon, and Solar-system Barycenter position\&. This version provides positions and velocities at high precision (see NOVAS_FULL_PRECISION)\&.
+.PP
+Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order components, respectively\&. Typically, as the integer and fractional parts for the highest precision\&. 
+.br
+\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000\&.0\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000\&.0, in AU/Day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider_hp()\fP 
+.PP
+novas_solarsystem_func 
+.PP
+\fBephemeris()\fP 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "short earth_sun_calc (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+Provides the position and velocity of the Earth and Sun only at epoch 'jd_tdb' by evaluating a closed-form theory without reference to an external file\&. This function can also provide the position and velocity of the Sun\&.
+.PP
+REFERENCES: 
+.PD 0
+
+.IP "1." 4
+Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
+    Subroutines'; USNO internal document dated 20 Oct 1988; revised 15 Mar 1990\&. 
+.IP "2." 4
+Explanatory Supplement to The Astronomical Almanac (1992)\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
+.br
+\fIbody\fP NOVAS_EARTH (3) or NOVAS_SUN (10) only\&. 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000\&.0\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000\&.0, in AU/Day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS) or if one of the output pointer arguments is NULL (errno set to EINVAL)\&. 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBearth_sun_calc_hp()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBsolarsystem()\fP 
+.PP
+\fBnovas_planet_provider\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBprecession()\fP, \fBradec2vector()\fP, \fBsun_eph()\fP, \fBT0\fP, and \fBTWOPI\fP\&.
+.SS "short earth_sun_calc_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(), if \fBenable_earth_sun_hp()\fP is set to true (non-zero)\&. Otherwise, it will return with an error code of 3, indicating that high-precision calculations are not provided by this implementation\&.
+.PP
+NOTES: 
+.PD 0
+
+.IP "1." 4
+This implementation will always propulate the output position and velocity vectors with the low-precision result, regardless of the return error code, in order to reduce the chance of unpredictable behavior, even if the user does not check the returned error status (which of course they should)\&.  
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
+.br
+\fIbody\fP NOVAS_EARTH (3) or NOVAS_SUN (10) only\&. 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000\&.0\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000\&.0, in AU/Day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), or if one of the output pointer arguments is NULL (errno set to EINVAL)\&. 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the high-precision orbital data cannot be produced (default return value)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBenable_earth_sun_hp()\fP 
+.PP
+\fBearth_sun_calc()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBsolarsystem_hp()\fP 
+.PP
+\fBnovas_planet_provider_hp\fP 
+.RE
+.PP
+
+.PP
+References \fBearth_sun_calc()\fP\&.
+.SS "void enable_earth_sun_hp (int value)"
+Specify whether the high-precision call is allowed to return a low-precision result\&. If set to 0 (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a high-precision calculation is not possible\&. Otherise, a non-zero value (true) will let the function to be used without errors, returning the low-precison result of solarsystem_earth_sun() instead\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP (boolean) A non-zero value enables the error-free use of the \fBearth_sun_calc_hp()\fP by allowing to return the low-precision result\&. Otherwise, \fBearth_sun_calc_hp()\fP will return an error code 3 indicating that the high-precision result is not available (this latter is the default behavior)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBearth_sun_calc_hp()\fP 
+.RE
+.PP
+
+.SS "\fBnovas_ephem_provider\fP get_ephem_provider ()"
+Returns the user-defined ephemeris accessor function\&.
+.PP
+\fBReturns\fP
+.RS 4
+the currently defined function for accessing ephemeris data for minor planets or satellites, ot NULL if no function was set via \fBset_ephem_provider()\fP previously\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_ephem_provider()\fP 
+.PP
+\fBephemeris()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "short planet_eph_manager (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for regular (reduced) precision applications\&.
+.PP
+This function and \fBplanet_ephemeris()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
+.PP
+The user must create the binary ephemeris files using software from JPL, and open the file using function \fBephem_open()\fP, prior to calling this function\&.
+.PP
+REFERENCES: 
+.PD 0
+
+.IP "1." 4
+JPL\&. 2007, 'JPL Planetary and Lunar Ephemerides: Export Information,' (Pasadena, CA: JPL) http://ssd.jpl.nasa.gov/?planet_eph_export\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
+ Subroutines'; USNO internal document dated 20 Oct 1988; revised 15 Mar 1990\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
+.br
+\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error code of \fBsolarsystem()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplanet_eph_manager_hp()\fP 
+.PP
+\fBplanet_ephem_provider()\fP 
+.PP
+\fBephem_open()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBsolarsystem()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+
+.PP
+References \fBplanet_eph_manager_hp()\fP\&.
+.SS "short planet_eph_manager_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for highest precision applications\&.
+.PP
+This function and \fBplanet_ephemeris()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
+.PP
+The user must create the binary ephemeris files using software from JPL, and open the file using function \fBephem_open()\fP, prior to calling this function\&.
+.PP
+REFERENCES: 
+.PD 0
+
+.IP "1." 4
+JPL\&. 2007, 'JPL Planetary and Lunar Ephemerides: Export Information,' (Pasadena, CA: JPL) http://ssd.jpl.nasa.gov/?planet_eph_export\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
+ Subroutines'; USNO internal document dated 20 Oct 1988; revised 15 Mar 1990\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
+.br
+\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else 1 if the 'body' is invalid, or 2 if the 'origin' is invalid, or 3 if there was an error providing ephemeris data\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplanet_eph_manager\fP 
+.PP
+\fBplanet_ephem_provider_hp()\fP 
+.PP
+\fBephem_open()\fP 
+.PP
+\fBset_planet_provider_hp()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SUN\fP, and \fBplanet_ephemeris()\fP\&.
+.SS "short planet_ephem_provider (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the regular (reduced) precision version\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date\&. 
+.br
+\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to report positions and velocities\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error code of \fBsolarsystem()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplanet_ephem_provider_hp()\fP 
+.PP
+\fBset_ephem_provider()\fP 
+.PP
+\fBsolarsystem()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBplanet_ephem_provider_hp()\fP\&.
+.SS "short planet_ephem_provider_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the highest precision version\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date, split into high and low order components (e\&.g\&. integer and fractional parts) for high-precision calculations\&. 
+.br
+\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to report positions and velocities\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error code of \fBsolarsystem_hp()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplanet_ephem_provider()\fP 
+.PP
+\fBset_ephem_provider()\fP 
+.PP
+\fBsolarsystem_hp()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBget_ephem_provider()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+.SS "short planet_jplint (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+Obtains planet positions via the JPL direct-access solar system ephemerides, wtih normal (reduced) precision -- typically good to the milliarcsecond level\&.
+.PP
+It generalizes access to the JPL software by calling a Fortran interface subroutine, 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments have changed several times throughout the years\&. This way, any future change to the arguments can be accommodated in 'jplint' rather than in this function\&.
+.PP
+For supporting JPL ephemerides more generally, including for satellites, asteroids, and comets, you are probably better off using \fBplanet_ephem_provider()\fP, and provide an interface, e\&.g\&. to the CSPICE library, via novas_ephem_provider instead, which you can then activate dynamically with \fBset_planet_provider()\fP\&.
+.PP
+REFERENCES: 
+.PD 0
+
+.IP "1." 4
+JPL\&. 2007, JPL Planetary and Lunar Ephemerides: Export Information, (Pasadena, CA: JPL) http://ssd.jpl.nasa.gov/?planet_eph_export\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
+    Subroutines'; USNO internal document dated 20 Oct 1988; revised 15 Mar 1990\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
+.br
+\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else 1 if the 'body' or 'origin' argument is invalid, or else 2 if the '\fBjplint_()\fP' call failed\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplanet_jplint_hp()\fP 
+.PP
+\fBplanet_ephem_provider()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBsolarsystem()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+
+.PP
+References \fBjplint_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
+.SS "short planet_jplint_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+Obtains planet positions via the JPL direct-access solar system ephemerides, wtih high precision -- typically good to below the microarcsecond level\&.
+.PP
+It generalizes access to the JPL software by calling a Fortran interface subroutine, 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments have changed several times throughout the years\&. This way, any future change to the arguments can be accommodated in 'jplint' rather than in this function\&.
+.PP
+For supporting JPL ephemerides more generally, including for satellites, asteroids, and comets, you are probably better off using \fBplanet_ephem_provider()\fP, and provide an interface, e\&.g\&. to the CSPICE library, via novas_ephem_provider instead, which you can then activate dynamically with \fBset_planet_provider()\fP\&.
+.PP
+REFERENCES: 
+.PD 0
+
+.IP "1." 4
+JPL\&. 2007, JPL Planetary and Lunar Ephemerides: Export Information, (Pasadena, CA: JPL) http://ssd.jpl.nasa.gov/?planet_eph_export\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
+    Subroutines'; USNO internal document dated 20 Oct 1988; revised 15 Mar 1990\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
+.br
+\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error code of \fBsolarsystem()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplanet_jplint()\fP 
+.PP
+\fBplanet_ephem_provider_hp()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBsolarsystem_hp()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+
+.PP
+References \fBjplihp_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
+.SS "double * readeph (int mp, const char * name, double jd_tdb, int * error)"
+Provides a default ephemeris implementation to handle position and velocity calculations for minor planets, which are not handled by the \fBsolarsystem()\fP type calls\&. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled \fBreadeph()\fP implementation, or else a dynamically defined one via ephemeris_set_reader()\&.
+.PP
+You can set the built-in implementation for the library by setting the DEFAULT_READEPH variable in the Makefile\&.
+.PP
+\fBDeprecated\fP
+.RS 4
+This old ephemeris reader is prone to memory leaks, and lacks some useful functionality\&. Users are strongly encouraged to use the new \fCnovas_ephem_provider\fP instead, which can provide dynamically configured implementations at runtime\&.
+.RE
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fImp\fP The ID number of the solar-system body for which the position are desired\&. 
+.br
+\fIname\fP The name of the solar-system body (usually upper-case) 
+.br
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date for which to find the position and velocity\&. 
+.br
+\fIerror\fP Pointer to integer to populate with the error status: 0 if successful, -1 if any of the pointer arguments are NULL, or some non-zero value if the was an error s\&.t\&. the position and velocity vector should not be used\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[AU, AU/day] A newly allocated 6-vector in rectangular equatorial coordinates, containing the heliocentric position coordinates in AU, followed by hte heliocentric velocity components in AU/day\&. The caller is responsible for calling free() on the returned value when it is no longer needed\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_ephem_provider\fP 
+.PP
+\fBephemeris()\fP 
+.PP
+\fBNOVAS_EPHEM_OBJECT\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "int set_ephem_provider (\fBnovas_ephem_provider\fP func)"
+Sets the function to use for obtaining position / velocity information for minor planets, or sattelites\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP new function to use for accessing ephemeris data for minor planets or satellites\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the function argument is NULL\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBget_ephem_provider()\fP 
+.PP
+\fBephemeris()\fP 
+.RE
+.PP
+
+.SS "int set_planet_provider (\fBnovas_planet_provider\fP func)"
+Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculations instead of the default \fBsolarsystem()\fP routine\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP The function to use for solar system position/velocity calculations\&. See \fBsolarsystem()\fP for further details on what is required of this function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBsolarsystem()\fP 
+.PP
+\fBNOVAS_REDUCED_ACCURACY\fP 
+.RE
+.PP
+
+.SS "int set_planet_provider_hp (\fBnovas_planet_provider_hp\fP func)"
+Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations instead of the default \fBsolarsystem_hp()\fP routine\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP The function to use for solar system position/velocity calculations\&. See \fBsolarsystem_hp()\fP for further details on what is required of this function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider()\fP 
+.PP
+\fBsolarsystem_hp()\fP 
+.PP
+\fBNOVAS_FULL_ACCURACY\fP 
+.RE
+.PP
+
+.SS "short solarsystem (double jd_tdb, short body, short origin, double * position, double * velocity)"
+A default implementation for regular (reduced) precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into with the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider()\fP\&.
+.PP
+Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
+.br
+\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000\&.0\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000\&.0, in AU/Day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_planet\fP 
+.PP
+\fBsolarsystem_hp()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBephemeris()\fP 
+.RE
+.PP
+
+.PP
+References \fBearth_sun_calc()\fP, \fBplanet_eph_manager()\fP, \fBplanet_ephem_provider()\fP, and \fBplanet_jplint()\fP\&.
+.SS "short solarsystem_hp (const double jd_tdb[2], short body, short origin, double * position, double * velocity)"
+A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
+.PP
+Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order components, respectively\&. Typically, as the integer and fractional parts for the highest precision\&. 
+.br
+\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+.br
+\fIposition\fP [AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000\&.0\&. 
+.br
+\fIvelocity\fP [AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000\&.0, in AU/Day\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), or some other error code (NOVAS C was not very consistent here\&.\&.\&.)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsolarsystem()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBephemeris()\fP 
+.RE
+.PP
+
+.PP
+References \fBearth_sun_calc_hp()\fP, \fBplanet_eph_manager_hp()\fP, \fBplanet_ephem_provider_hp()\fP, and \fBplanet_jplint_hp()\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

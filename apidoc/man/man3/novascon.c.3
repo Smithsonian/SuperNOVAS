@@ -1,0 +1,179 @@
+.TH "src/novascon.c" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/novascon.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const double \fBANGVEL\fP = \fBNOVAS_EARTH_ANGVEL\fP"
+.br
+.ti -1c
+.RI "const double \fBAU\fP = \fBNOVAS_AU\fP"
+.br
+.ti -1c
+.RI "const double \fBAU_KM\fP = \fBNOVAS_AU_KM\fP"
+.br
+.ti -1c
+.RI "const double \fBAU_SEC\fP = \fBNOVAS_AU_SEC\fP"
+.br
+.ti -1c
+.RI "const double \fBC\fP = \fBNOVAS_C\fP"
+.br
+.ti -1c
+.RI "const double \fBC_AUDAY\fP = \fBNOVAS_C_AU_PER_DAY\fP"
+.br
+.ti -1c
+.RI "const double \fBERAD\fP = \fBNOVAS_EARTH_RADIUS\fP"
+.br
+.ti -1c
+.RI "const double \fBF\fP = \fBNOVAS_EARTH_FLATTENING\fP"
+.br
+.ti -1c
+.RI "const double \fBGE\fP = \fBNOVAS_G_EARTH\fP"
+.br
+.ti -1c
+.RI "const double \fBGS\fP = \fBNOVAS_G_SUN\fP"
+.br
+.ti -1c
+.RI "const double \fBRMASS\fP [12] = \fBNOVAS_RMASS_INIT\fP"
+.br
+.ti -1c
+.RI "const double \fBT0\fP = \fBNOVAS_JD_J2000\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBAuthor\fP
+.RS 4
+G\&. Kaplan and A\&. Kovacs
+.RE
+.PP
+SuperNOVAS implementation for numerical constants that were used internally in \fBnovas\&.c\fP\&. In SuperNOVAS it is no longer needed by \fBnovas\&.c\fP, and you probably don't want to use it either with your application code\&.
+.PP
+\fBDeprecated\fP
+.RS 4
+Use your own version for the selection of the constant you need, expressed in whatever units your application desires\&. We should not force you to adopt the internally used convention of NOVAS, not to mention the high chance of namespace conflicts with the super-simplistic naming scheme here\&. You are better off without this\&.
+.RE
+.PP
+.PP
+Based on the NOVAS C Edition, Version 3\&.1, U\&. S\&. Naval Observatory Astronomical Applications Dept\&. Washington, DC \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP 
+.SH "Variable Documentation"
+.PP 
+.SS "const double ANGVEL = \fBNOVAS_EARTH_ANGVEL\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003)\&. Use NOVAS_EARTH_ANGVEL instead 
+.RE
+.PP
+
+.SS "const double AU = \fBNOVAS_AU\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Astronomical unit in meters\&. Use NOVAS_AU instead\&. 
+.RE
+.PP
+
+.SS "const double AU_KM = \fBNOVAS_AU_KM\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Astronomical Unit in kilometers\&. Use NOVAS AU_KM instead\&. 
+.RE
+.PP
+
+.SS "const double AU_SEC = \fBNOVAS_AU_SEC\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Light-time for one astronomical unit (AU) in seconds, from DE-405\&. Use NOVAS_AU_SEC instead\&. 
+.RE
+.PP
+
+.SS "const double C = \fBNOVAS_C\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Speed of light in meters/second is a defining physical constant\&. Use NOVAS_C instead\&. 
+.RE
+.PP
+
+.SS "const double C_AUDAY = \fBNOVAS_C_AU_PER_DAY\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Speed of light in AU/day\&. Use NOVAS_AUDAY instead\&. 
+.RE
+.PP
+
+.SS "const double ERAD = \fBNOVAS_EARTH_RADIUS\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Radius of Earth in kilometers from IERS Conventions (2003)\&. Use NOVAS_EARTH_RADIUS instead 
+.RE
+.PP
+
+.SS "const double F = \fBNOVAS_EARTH_FLATTENING\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Earth ellipsoid flattening from IERS Conventions (2003)\&. Value is 1 / 298\&.25642\&. Use NOVAS_EARTH_FLATTENING instead\&. 
+.RE
+.PP
+
+.SS "const double GE = \fBNOVAS_G_EARTH\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Geocentric gravitational constant in meters^3 / second^2, from DE-405\&. Use NOVAS_G_EARTH instead\&. 
+.RE
+.PP
+
+.SS "const double GS = \fBNOVAS_G_SUN\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Heliocentric gravitational constant in meters^3 / second^2, from DE-405\&. Use NOVAS_G_SUN instead\&. 
+.RE
+.PP
+
+.SS "const double RMASS[12] = \fBNOVAS_RMASS_INIT\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass)\&. MASS[0] = Earth/Moon barycenter, MASS[1] = Mercury, \&.\&.\&., MASS[9] = Pluto, MASS[10] = Sun, MASS[11] = Moon\&. Use NOVAS_RMASS_INIT instead\&. 
+.RE
+.PP
+
+.SS "const double T0 = \fBNOVAS_JD_J2000\fP"
+
+.PP
+\fBDeprecated\fP
+.RS 4
+TDB Julian date of epoch J2000\&.0\&. Use NOVAS_JD_J2000 instead\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

@@ -1,0 +1,39 @@
+.TH "object" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+object
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <novas\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char \fBname\fP [\fBSIZE_OF_OBJ_NAME\fP]"
+.br
+.RI "name of the object (0-terminated) "
+.ti -1c
+.RI "long \fBnumber\fP"
+.br
+.RI "enum novas_planet, or minor planet ID (e\&.g\&. NAIF), or star catalog ID\&. "
+.ti -1c
+.RI "\fBcat_entry\fP \fBstar\fP"
+.br
+.RI "basic astrometric data for any 'catalog' object\&. "
+.ti -1c
+.RI "enum \fBnovas_object_type\fP \fBtype\fP"
+.br
+.RI "NOVAS object type\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Celestial object of interest\&.
+.PP
+Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type' and the long vs\&. short 'number' values -- hence it is not cross-compatible for binary data exchange with NOVAS C 3\&.1\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

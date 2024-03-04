@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['norm_5fang_0',['norm_ang',['../novas_8c.html#a416fd587496210c45028352f409fd73f',1,'norm_ang(double angle):&#160;novas.c'],['../novas_8h.html#a416fd587496210c45028352f409fd73f',1,'norm_ang(double angle):&#160;novas.c']]],
+  ['novas_5fcase_5fsensitive_1',['novas_case_sensitive',['../novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2',1,'novas_case_sensitive(int value):&#160;novas.c'],['../novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2',1,'novas_case_sensitive(int value):&#160;novas.c']]],
+  ['novas_5fdebug_2',['novas_debug',['../novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3',1,'novas_debug(enum novas_debug_mode mode):&#160;novas.c'],['../novas_8h.html#a5f35633b872751df4dacd2fb2cbe4ac3',1,'novas_debug(enum novas_debug_mode mode):&#160;novas.c']]],
+  ['novas_5fget_5fdebug_5fmode_3',['novas_get_debug_mode',['../novas_8c.html#a29cad12337acfce5f1e370320dcefb79',1,'novas_get_debug_mode():&#160;novas.c'],['../novas_8h.html#a29cad12337acfce5f1e370320dcefb79',1,'novas_get_debug_mode():&#160;novas.c']]],
+  ['nu2000k_4',['nu2000k',['../nutation_8c.html#ab17083c5bc84987d4dda1172a4dab843',1,'nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps):&#160;nutation.c'],['../nutation_8h.html#ab17083c5bc84987d4dda1172a4dab843',1,'nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps):&#160;nutation.c']]],
+  ['nutation_5',['nutation',['../novas_8c.html#a69df5671751c09a7575963b94ad1151e',1,'nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out):&#160;novas.c'],['../novas_8h.html#a69df5671751c09a7575963b94ad1151e',1,'nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out):&#160;novas.c']]],
+  ['nutation_5fangles_6',['nutation_angles',['../novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e',1,'nutation_angles(double t, enum novas_accuracy accuracy, double *dpsi, double *deps):&#160;novas.c'],['../novas_8h.html#a0dc364ae1963da0b916ed5a9d0862d3e',1,'nutation_angles(double t, enum novas_accuracy accuracy, double *dpsi, double *deps):&#160;novas.c']]]
+];

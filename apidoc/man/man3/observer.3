@@ -1,0 +1,37 @@
+.TH "observer" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+observer
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <novas\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBin_space\fP \fBnear_earth\fP"
+.br
+.ti -1c
+.RI "\fBon_surface\fP \fBon_surf\fP"
+.br
+.ti -1c
+.RI "enum \fBnovas_observer_place\fP \fBwhere\fP"
+.br
+.RI "observer location type "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Observer location (somewhere around Earth)\&. 
+.SH "Field Documentation"
+.PP 
+.SS "\fBin_space\fP near_earth"
+data for an observer's location on Earth orbit\&. (if where = NOVAS_OBSERVER_IN_SPACE) 
+.SS "\fBon_surface\fP on_surf"
+structure containing data for an observer's location on the surface of the Earth (if where = NOVAS_OBSERVER_ON_EARTH) 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

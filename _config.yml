@@ -1,0 +1,10 @@
+theme: jekyll-theme-Tactile
+author: Attila Kovacs
+title: SuperNOVAS
+description: The NOVAS C library, made better
+show_downloads: false
+google_analytics: G-KLH8B274YR
+url: "https://smithsonian.github.io/SuperNOVAS.home"
+plugins:
+  - jekyll-sitemap
+
