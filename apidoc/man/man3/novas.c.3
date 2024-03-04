@@ -1,4 +1,4 @@
-.TH "src/novas.c" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/novas.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -355,14 +355,12 @@ Corrects position vector for aberration of light\&. Algorithm includes relativis
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This function is called by \fBplace()\fP to account for aberration when calculating the position of the source\&. 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Murray, C\&. A\&. (1981) Mon\&. Notices Royal Ast\&. Society 195, 639-648\&. 
 .IP "2." 4
@@ -425,7 +423,6 @@ Computes the apparent place of a solar system body\&. This is the same as callin
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -483,7 +480,6 @@ Notwithstanding the different set of return values, this is the same as calling 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -539,7 +535,6 @@ Computes the astrometric place of a solar system body, referenced to the ICRS wi
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -591,7 +586,6 @@ Notwithstanding the different set of return values, this is the same as calling 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -641,7 +635,6 @@ Moves the origin of coordinates from the barycenter of the solar system to the o
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .PP
@@ -677,7 +670,6 @@ This function will compute a broken down date on the Gregorian calendar for give
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, October 1968, p\&. 657\&. 
 .PP
@@ -727,7 +719,6 @@ This function can be confusing to use due to the input coordinate system being s
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -793,14 +784,12 @@ If 'type' is POLE_OFFSETS_X_Y (2), dx and dy are unit vector component correctio
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 The current UT1 - UTC time difference, and polar offsets, historical data and near-term projections are published in the <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins  
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
 .IP "2." 4
@@ -850,7 +839,6 @@ This function assumes that binary, random-access file has been created and is ei
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This function has been completely re-written by A\&. Kovacs to provide much more efficient caching and I/O\&. 
 .PP
@@ -886,7 +874,6 @@ This function effectively constructs the matrix C in eq\&. (3) of the reference\
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
 .PP
@@ -930,7 +917,6 @@ The user may specify an interpolation file to use via \fBset_cio_locator_file()\
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 Unlike the NOVAS C version of this function, this version will always return a CIO location as long as the pointer arguments are not NULL\&. The returned values will be interpolated from the locator file if possible, otherwise it falls back to calculating an equinox-based location per default\&.  
 .PP
@@ -968,7 +954,6 @@ Computes the true right ascension of the celestial intermediate origin (CIO) at 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
 .PP
@@ -1038,7 +1023,6 @@ If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -1098,7 +1082,6 @@ Alternatively, this function returns the light-time from the observer (or the ge
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This function is called by \fBplace()\fP 
 .PP
@@ -1249,7 +1232,6 @@ The low-accuracy series used in this function is a simple implementation derived
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Capitaine, N\&., Wallace, P\&.T\&., and McCarthy, D\&.D\&. (2003)\&. Astron\&. & Astrophys\&. 406, p\&. 1135-1149\&. Table 3\&. 
 .IP "2." 4
@@ -1400,7 +1382,6 @@ Converts ICRS right ascension and declination to galactic longitude and latitude
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Hipparcos and Tycho Catalogues, Vol\&. 1, Section 1\&.5\&.3\&. 
 .PP
@@ -1440,7 +1421,6 @@ The name of this function does not reveal what type of equatorial coordinates it
 .PP
 NOTES: 
 .PD 0
-
 .IP "\(bu" 2
 'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed\&. 
 .IP "\(bu" 2
@@ -1451,7 +1431,6 @@ If 'ref_option' is NOVAS_STANDARD_ATMOSPHERE (1), then 'rar'='ra' and 'decr'='de
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. (2008)\&. USNO/AA Technical Note of 28 Apr 2008, 'Refraction as a Vector\&.' 
 .PP
@@ -1509,7 +1488,6 @@ The algorithm used here is equivalent to the canonical theta = 0\&.7790572732640
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 IAU Resolution B1\&.8, adopted at the 2000 IAU General Assembly, Manchester, UK\&. 
 .IP "2." 4
@@ -1545,14 +1523,12 @@ For geocentric coordinates, the same transformation is used between the dynamica
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 More efficient 3D rotation implementation for small angles by A\&. Kovacs 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Hilton, J\&. and Hohenkerk, C\&. (2004), Astronomy and Astrophysics 413, 765-770, eq\&. (6) and (8)\&. 
 .IP "2." 4
@@ -1592,7 +1568,6 @@ Compute the fundamental arguments (mean elements) of the Sun and Moon\&.
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Simon et al\&. (1994) Astronomy and Astrophysics 282, 663-683, esp\&. Sections 3\&.4-3\&.5\&. 
 .PP
@@ -1626,7 +1601,6 @@ Converts galactic longitude and latitude to ICRS right ascension and declination
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Hipparcos and Tycho Catalogues, Vol\&. 1, Section 1\&.5\&.3\&. 
 .PP
@@ -1831,7 +1805,6 @@ Returns the TT - UT1 time difference given the leap seconds and the actual UT1 -
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 The current UT1 - UTC time difference, and polar offsets, historical data and near-term projections are published in the <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins  
 .PP
@@ -1902,14 +1875,12 @@ The number of bodies used at full and reduced accuracy can be set by making a ch
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This function is called by \fBplace()\fP to calculate gravitational deflections as appropriate for positioning sources precisely\&. The gravitational deflection due to planets requires a planet calculator function to be configured, e\&.g\&. via \fBset_planet_provider()\fP\&.  
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&. 
 .PP
@@ -1951,14 +1922,12 @@ Corrects position vector for the deflection of light in the gravitational field 
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This function is called by \fBgrav_def()\fP to calculate appropriate gravitational deflections for sources\&.  
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Murray, C\&.A\&. (1981) Mon\&. Notices Royal Ast\&. Society 195, 639-648\&. 
 .IP "2." 4
@@ -2043,14 +2012,12 @@ Compute the intermediate right ascension of the equinox at the input Julian date
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 Fixes bug in NOVAS C 3\&.1, which returned the value for the wrong 'equinox' if 'equinox = 1' was requested for the same 'jd_tbd' and 'accuracy' as a the preceding call with 'equinox = 0'\&. As a result, the caller ended up with the mean instead of the expected true equinox R\&.A\&. value\&. 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Capitaine, N\&. et al\&. (2003), Astronomy and Astrophysics 412, 567-586, eq\&. (42)\&. 
 .PP
@@ -2088,7 +2055,6 @@ If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -2193,7 +2159,6 @@ If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -2325,7 +2290,6 @@ Returns the Julian date for a given Gregorian calendar date\&. This function mak
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, October 1968, p\&. 657\&. 
 .PP
@@ -2398,7 +2362,6 @@ Computes the geocentric position and velocity of a solar system body, as antedat
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This function is called by \fBplace()\fP to calculate observed positions, radial velocity, and distance for the time when the observed light originated from the source\&. 
 .PP
@@ -2477,7 +2440,6 @@ Computes the local apparent place of a solar system body, in the GCRS\&. This is
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -2531,7 +2493,6 @@ Notwithstanding the different set of return values, this is the same as calling 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -2919,7 +2880,6 @@ Computes the mean obliquity of the ecliptic\&.
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Capitaine et al\&. (2003), Astronomy and Astrophysics 412, 567-586\&. 
 .PP
@@ -2951,7 +2911,6 @@ Computes the ICRS position of a star, given its True of Date (TOD) apparent plac
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -3087,7 +3046,6 @@ This is the old (pre IAU 2006) method of nutation calculation\&. If you follow t
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Explanatory Supplement To The Astronomical Almanac, pp\&. 114-115\&. 
 .PP
@@ -3131,7 +3089,6 @@ See the prologs of the nutation functions in file '\fBnutation\&.c\fP' for detai
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
 .PP
@@ -3183,14 +3140,12 @@ In case of a dynamical equatorial system (such as CIRS or TOD) and an Earth-base
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This version fixes a NOVAS C 3\&.1 issue that velocities and solar-system distances were not antedated for light-travel time\&. 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -3373,7 +3328,6 @@ Computes the apparent place of a star, referenced to dynamical equator at date '
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -3499,14 +3453,12 @@ This function calculates precession for the old (pre IAU 2000) methodology\&. It
 .PP
 NOTE: 
 .PD 0
-
 .IP "1." 4
 Unlike the original NOVAS C 3\&.1 version, this one does not require that one of the time arguments must be J2000\&. You can precess from any date to any other date, and the intermediate epoch of J2000 will be handled internally as needed\&. 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Explanatory Supplement To The Astronomical Almanac, pp\&. 103-104\&. 
 .IP "2." 4
@@ -3552,7 +3504,6 @@ Applies proper motion, including foreshortening effects, to a star's position\&.
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .PP
@@ -3592,14 +3543,12 @@ Any of the distances (last three input arguments) can be set to zero (0\&.0) if 
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This function is called by \fBplace()\fP to calculate radial velocities long with the position of the source\&. 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201\&. 
 .PP
@@ -3668,7 +3617,6 @@ Computes the place of a solar system body at the specified time for an observer 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -3728,7 +3676,6 @@ Notwithstanding the different set of return values, this is the same as calling 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -3786,14 +3733,12 @@ The returned value is the approximate refraction for optical wavelengths\&. This
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 The standard temeperature model includes a very rough estimate of the mean annual temeprature for the ovserver's latitude and elevation, rather than the 10 C everywhere assumption in NOVAS C 3\&.1\&.<\&.li> 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Explanatory Supplement to the Astronomical Almanac, p\&. 144\&. 
 .IP "2." 4
@@ -3831,7 +3776,6 @@ The returned value is the approximate refraction for optical wavelengths\&. This
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Explanatory Supplement to the Astronomical Almanac, p\&. 144\&. 
 .IP "2." 4
@@ -4014,14 +3958,12 @@ Computes the Greenwich sidereal time, either mean or apparent, at the specified 
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 Contains fix for known \fCsidereal time units bug\&.\fP 
 .PP
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
 .PP
@@ -4069,7 +4011,6 @@ Transforms a vector from one coordinate system to another with same origin and a
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .PP
@@ -4096,7 +4037,6 @@ Converts angular quantities for stars to vectors\&.
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .PP
@@ -4136,7 +4076,6 @@ Use the less computationally intensive an more accurate \fBtt2tdb()\fP routine i
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Fairhead, L\&. & Bretagnon, P\&. (1990) Astron\&. & Astrophys\&. 229, 240\&. 
 .IP "2." 4
@@ -4178,7 +4117,6 @@ This function can be confusing to use due to the output coordinate system being 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -4240,7 +4178,6 @@ The true equator and equinox of date do not form an inertial system\&. Therefore
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .PP
@@ -4282,7 +4219,6 @@ If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -4385,7 +4321,6 @@ Using \fBplace()\fP with system NOVAS_CIRS is now preferred for topocentric calc
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -4441,7 +4376,6 @@ Notwithstanding the different set of return values, this is the same as calling 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -4571,7 +4505,6 @@ Returns the TDB - TT time difference in seconds for a given TT date\&.
 .PP
 REFERENCES 
 .PD 0
-
 .IP "1." 4
 <href='https://gssc\&.esa\&.int/navipedia/index\&.php/Transformations_between_Time_Systems'> https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems  
 .PP
@@ -4609,7 +4542,6 @@ Converts an vector in equatorial rectangular coordinates to equatorial spherical
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .PP
@@ -4639,7 +4571,6 @@ Computes the virtual place of a solar system body, referenced to the GCRS\&. Thi
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -4691,7 +4622,6 @@ Notwithstanding the different set of return values, this is the same as calling 
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
@@ -4741,7 +4671,6 @@ Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, an
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4

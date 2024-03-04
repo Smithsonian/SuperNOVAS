@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<tagfile doxygen_version="1.9.7">
+<tagfile doxygen_version="1.9.8">
   <compound kind="file">
     <name>novas.h</name>
     <path>include/</path>
     <filename>novas_8h.html</filename>
-    <includes id="nutation_8h" name="nutation.h" local="yes" imported="no">nutation.h</includes>
-    <includes id="solarsystem_8h" name="solarsystem.h" local="yes" imported="no">solarsystem.h</includes>
+    <includes id="nutation_8h" name="nutation.h" local="yes" import="no" module="no" objc="no">nutation.h</includes>
+    <includes id="solarsystem_8h" name="solarsystem.h" local="yes" import="no" module="no" objc="no">solarsystem.h</includes>
     <class kind="struct">cat_entry</class>
     <class kind="struct">in_space</class>
     <class kind="struct">novas_delaunay_args</class>
@@ -1658,7 +1658,7 @@
     <name>solarsystem.h</name>
     <path>include/</path>
     <filename>solarsystem_8h.html</filename>
-    <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
+    <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
     <member kind="typedef">
       <type>int(*</type>
       <name>novas_ephem_provider</name>
@@ -1797,7 +1797,7 @@
     <name>eph_manager.c</name>
     <path>src/</path>
     <filename>eph__manager_8c.html</filename>
-    <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
+    <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
     <member kind="function">
       <type>short</type>
       <name>ephem_close</name>
@@ -2704,8 +2704,8 @@
     <name>novascon.c</name>
     <path>src/</path>
     <filename>novascon_8c.html</filename>
-    <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
-    <includes id="novascon_8h" name="novascon.h" local="yes" imported="no">novascon.h</includes>
+    <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
+    <includes id="novascon_8h" name="novascon.h" local="yes" import="no" module="no" objc="no">novascon.h</includes>
     <member kind="variable">
       <type>const double</type>
       <name>ANGVEL</name>
@@ -2795,7 +2795,7 @@
     <name>nutation.c</name>
     <path>src/</path>
     <filename>nutation_8c.html</filename>
-    <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
+    <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
     <member kind="function">
       <type>int</type>
       <name>iau2000a</name>
@@ -2822,7 +2822,7 @@
     <name>solsys-ephem.c</name>
     <path>src/</path>
     <filename>solsys-ephem_8c.html</filename>
-    <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
+    <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
     <member kind="function">
       <type>short</type>
       <name>planet_ephem_provider</name>

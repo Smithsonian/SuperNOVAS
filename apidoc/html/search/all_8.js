@@ -1,13 +1,14 @@
 var searchData=
 [
-  ['iau2000a_0',['iau2000a',['../nutation_8c.html#a63ac0d33e3f774cd89281a00e2918b98',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps):&#160;nutation.c'],['../nutation_8h.html#a63ac0d33e3f774cd89281a00e2918b98',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps):&#160;nutation.c']]],
-  ['iau2000b_1',['iau2000b',['../nutation_8c.html#ae1a30706385dd901d96d28c816b51c87',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps):&#160;nutation.c'],['../nutation_8h.html#ae1a30706385dd901d96d28c816b51c87',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps):&#160;nutation.c']]],
-  ['icrs_5fto_5fj2000_2',['ICRS_TO_J2000',['../novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999',1,'novas.h']]],
-  ['in_5fspace_3',['in_space',['../structin__space.html',1,'']]],
-  ['interpolate_4',['interpolate',['../eph__manager_8c.html#aeda97db4dfac1a80c97ab2f3fb42b4a9',1,'eph_manager.c']]],
-  ['ipt_5',['IPT',['../eph__manager_8c.html#a3e671032c94fa64bb397d6166fef36f7',1,'eph_manager.c']]],
-  ['ira_5fequinox_6',['ira_equinox',['../novas_8c.html#aea0e1028baf14d16d9de800e36a17086',1,'ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy):&#160;novas.c'],['../novas_8h.html#aea0e1028baf14d16d9de800e36a17086',1,'ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy):&#160;novas.c']]],
-  ['itrs_5fto_5fcirs_7',['itrs_to_cirs',['../novas_8c.html#a12953f66c0f774284f0700ae785784d0',1,'itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;novas.c'],['../novas_8h.html#a12953f66c0f774284f0700ae785784d0',1,'itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;novas.c']]],
-  ['itrs_5fto_5fhor_8',['itrs_to_hor',['../novas_8c.html#a296fcf0239f66eb19732f5072fed6d6e',1,'itrs_to_hor(const on_surface *location, const double *itrs, double *az, double *za):&#160;novas.c'],['../novas_8h.html#a296fcf0239f66eb19732f5072fed6d6e',1,'itrs_to_hor(const on_surface *location, const double *itrs, double *az, double *za):&#160;novas.c']]],
-  ['itrs_5fto_5ftod_9',['itrs_to_tod',['../novas_8c.html#a3f6ae564cfac3766a21e0754905e5f7c',1,'itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;novas.c'],['../novas_8h.html#a3f6ae564cfac3766a21e0754905e5f7c',1,'itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;novas.c']]]
+  ['d_0',['D',['../structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9',1,'novas_delaunay_args']]],
+  ['d_5flight_1',['d_light',['../novas_8c.html#a25e1ba14b69ef837cc7a5da21b27e5c6',1,'d_light(const double *pos, const double *pos_obs):&#160;novas.c'],['../novas_8h.html#a25e1ba14b69ef837cc7a5da21b27e5c6',1,'d_light(const double *pos, const double *pos_obs):&#160;novas.c']]],
+  ['data_20or_20services_2',['External Solar-system ephemeris data or services',['../index.html#autotoc_md47',1,'']]],
+  ['data_20service_20integration_3',['1. Universal ephemeris data / service integration',['../index.html#autotoc_md48',1,'']]],
+  ['dec_4',['dec',['../structcat__entry.html#ac4ae7989694321b540abb75c30eec690',1,'cat_entry::dec'],['../structsky__pos.html#ac4ae7989694321b540abb75c30eec690',1,'sky_pos::dec']]],
+  ['declination_5',['A. True apparent R.A. and declination',['../index.html#autotoc_md33',1,'']]],
+  ['default_5fcio_5flocator_5ffile_6',['DEFAULT_CIO_LOCATOR_FILE',['../novas_8h.html#a4caf1f6e33a208827eb99df7e387d6d1',1,'novas.h']]],
+  ['deg2rad_7',['DEG2RAD',['../novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022',1,'novas.h']]],
+  ['deprecated_8',['Deprecated',['../md_CHANGELOG.html#autotoc_md5',1,'']]],
+  ['deprecated_20list_9',['Deprecated List',['../deprecated.html',1,'']]],
+  ['dis_10',['dis',['../structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0',1,'sky_pos']]]
 ];

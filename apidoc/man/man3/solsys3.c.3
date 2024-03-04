@@ -1,4 +1,4 @@
-.TH "src/solsys3.c" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/solsys3.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -54,7 +54,6 @@ Provides the position and velocity of the Earth and Sun only at epoch 'jd_tdb' b
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
     Subroutines'; USNO internal document dated 20 Oct 1988; revised 15 Mar 1990\&. 
@@ -99,7 +98,6 @@ It may provide the position and velocity of the Earth and Sun, the same as solar
 .PP
 NOTES: 
 .PD 0
-
 .IP "1." 4
 This implementation will always propulate the output position and velocity vectors with the low-precision result, regardless of the return error code, in order to reduce the chance of unpredictable behavior, even if the user does not check the returned error status (which of course they should)\&.  
 .PP
@@ -239,7 +237,6 @@ The linear fit to DE405 primarily corrects for the difference between 'old' (Lie
 .PP
 REFERENCES: 
 .PD 0
-
 .IP "1." 4
 Bretagnon, P\&. and Simon, J\&.L\&. (1986)\&. Planetary Programs and Tables from -4000 to + 2800\&. (Richmond, VA: Willmann-Bell)\&. 
 .IP "2." 4

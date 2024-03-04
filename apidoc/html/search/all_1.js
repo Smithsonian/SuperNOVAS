@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['bary2obs_0',['bary2obs',['../novas_8c.html#aada778ddcc75a355b6753f5372775094',1,'bary2obs(const double *pos, const double *pos_obs, double *out, double *lighttime):&#160;novas.c'],['../novas_8h.html#aada778ddcc75a355b6753f5372775094',1,'bary2obs(const double *pos, const double *pos_obs, double *out, double *lighttime):&#160;novas.c']]],
-  ['baryc_1',['BARYC',['../novas_8h.html#a0c92a54a656043a455ea8ae0ace6c57e',1,'novas.h']]],
-  ['buffer_2',['BUFFER',['../eph__manager_8c.html#af1da4b8e59393e73ef0711920e920753',1,'eph_manager.c']]]
+  ['1_0',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md25',1,'']]],
+  ['1_200_200_202024_2003_2001_1',['[1.0.0] - 2024-03-01',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
+  ['1_20correction_2',['1. Correction',['../md_CODE__OF__CONDUCT.html#autotoc_md13',1,'']]],
+  ['1_20issues_3',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md23',1,'']]],
+  ['1_20planets_20via_20tt_20eph_5fmanager_20tt_4',['2.1. Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;',['../index.html#autotoc_md50',1,'']]],
+  ['1_20universal_20ephemeris_20data_20service_20integration_5',['1. Universal ephemeris data / service integration',['../index.html#autotoc_md48',1,'']]]
 ];
