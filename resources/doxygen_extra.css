@@ -67,9 +67,11 @@ span.comment {
   color: #555D68;
 }
 
+
 div.line.glow {
   background-color: auto;
   box-shadow: none;
+  font-weight: bold;
 }
 
 hr {
@@ -99,20 +101,22 @@ a:visited, a.dark-mode {
 }
 
 /* 80% red A4335D */
+/* 50% blue #959ABA
+/* 40% blue #AAAEC8 */
 html {
   --fragment-foreground-color: #283266;
   --page-link-color: #283266;
   --code-link-color: #5C1B55;
-  --code-type-keyword-color: #BB0085;
+  --code-type-keyword-color: #BB6685;
   --memdef-proto-text-color: #8d0034;
 }
 
 html.dark-mode {
-  --fragment-foreground-color: #555DA3;
+  --fragment-foreground-color: #959ABA;
   --page-link-color: #555DA3;
   --code-link-color: #8D6088;
   --page-visited-link-color: #8086AC;
-  --code-type-keyword-color: #BB0085;
+  --code-type-keyword-color: #BB6685;
   --memdef-proto-text-color: #8d0034;
 }
 
