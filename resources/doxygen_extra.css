@@ -101,7 +101,8 @@ a:visited, a.dark-mode {
 }
 
 /* 80% red A4335D */
-/* 50% blue #959ABA
+/* 70% blue 6B719E */
+/* 50% blue #959ABA */
 /* 40% blue #AAAEC8 */
 html {
   --fragment-foreground-color: #283266;
@@ -113,7 +114,7 @@ html {
 
 html.dark-mode {
   --fragment-foreground-color: #959ABA;
-  --page-link-color: #555DA3;
+  --page-link-color: #6B719E;
   --code-link-color: #8D6088;
   --page-visited-link-color: #8086AC;
   --code-type-keyword-color: #BB6685;

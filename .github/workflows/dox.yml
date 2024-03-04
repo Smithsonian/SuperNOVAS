@@ -19,16 +19,14 @@ jobs:
     env:
       CC: gcc
     steps:
+
+    - name: install doxygen
+      run: apt-get install doxygen
    
-    
     - uses: actions/checkout@v4
 
-    - name: Generate headless README
-      run: make README-headless.md
-
-    - uses: mattnotmitt/doxygen-action@v1.9.8
-      with:
-        additional-packages: font-roboto
+    - name: Generate docs
+      run: make dox
  
   site-update:
     name: Update github pages
