@@ -20,10 +20,10 @@
 <meta name="robots" content="index,follow"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>'
-<link rel="shortcut icon" type="image/x-icon" href="/SuperNOVAS.home/favicon.ico" />
-<link rel="icon" type="image/png" sizes="192x192" href="/SuperNOVAS.home/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/SuperNOVAS.home/android-chrome-512x512.png" />
-<link rel="apple-touch-icon" type="image/png" href="/SuperNOVAS.home/apple-touch-icon.png" />
+<link rel="shortcut icon" type="image/x-icon" href="/SuperNOVAS/favicon.ico" />
+<link rel="icon" type="image/png" sizes="192x192" href="/SuperNOVAS/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/SuperNOVAS/android-chrome-512x512.png" />
+<link rel="apple-touch-icon" type="image/png" href="/SuperNOVAS/apple-touch-icon.png" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KLH8B274YR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -144,7 +144,7 @@ Introduction</h2>
 <p>The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:</p>
 <ul>
 <li>Fixing <a class="el" href="index.html#fixed-issues">outstanding issues</a></li>
-<li>Improved <a href="https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/files.html">API documentation</a>.</li>
+<li>Improved <a href="https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html">API documentation</a>.</li>
 <li><a class="el" href="index.html#added-functionality">New features</a></li>
 <li><a class="el" href="index.html#api-changes">Refining the API</a> to promote best programing practices.</li>
 <li><a class="el" href="index.html#multi-threading">Thread-safe calculations</a>.</li>
@@ -157,7 +157,7 @@ Introduction</h2>
 <p>Outside contributions are very welcome. See <a href="https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md">how you can contribute</a> to make SuperNOVAS even better.</p>
 <p>Here are some links to other SuperNOVAS related content online:</p>
 <ul>
-<li><a href="https://smithsonian.github.io/SuperNOVAS.home">SuperNOVAS.home</a> page on github.io.</li>
+<li><a href="https://smithsonian.github.io/SuperNOVAS">SuperNOVAS</a> page on github.io.</li>
 <li><a href="https://aa.usno.navy.mil/software/novas_info">NOVAS</a> home page at the US Naval Observatory.</li>
 <li><a href="https://naif.jpl.nasa.gov/naif/toolkit.html">SPICE toolkit</a> for integrating Solar-system ephemeris via JPL HORIZONS.</li>
 <li><a href="https://www.minorplanetcenter.net/iau/mpc.html">IAU Minor Planet Center</a> provides another source of ephemeris data.</li>
@@ -492,7 +492,7 @@ Refinements to the NOVAS C API</h3>
 <li>All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal duplicate arguments) and will return -1 (with <code>errno</code> set, usually to <code>EINVAL</code>) if the arguments supplied are invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C error code is returned for compatibility).</li>
 <li>All erroneous returns now set <code>errno</code> so that users can track the source of the error in the standard C way and use functions such as <code>perror()</code> and <code>strerror()</code> to print human-readable error messages.</li>
 <li>SuperNOVAS prototypes declare function pointer arguments as <code>const</code> whenever the function does not modify the data content being pointed at. This supports better programming practices that generally aim to avoid unintended data modifications.</li>
-<li>Many SuperNOVAS functions allow <code>NULL</code> arguments, both for optional input values as well as outputs that are not required (see the <a href="https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/">API Documentation</a> for specifics). This eliminates the need to declare dummy variables in your application code.</li>
+<li>Many SuperNOVAS functions allow <code>NULL</code> arguments, both for optional input values as well as outputs that are not required (see the <a href="https://smithsonian.github.io/SuperNOVAS/apidoc/html/">API Documentation</a> for specifics). This eliminates the need to declare dummy variables in your application code.</li>
 <li>Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as <code>NAN</code> so that even if the caller forgets to check the error code, it becomes obvious that the values returned should not be used as if they were valid. (No more sneaky silent failures.)</li>
 <li>All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument be the same as the input vector argument. For example, <code>frame_tie(pos, J2000_TO_ICRS, pos)</code> using the same <code>pos</code> vector both as the input and the output. In this case the <code>pos</code> vector is modified in place by the call. This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.</li>
 <li>Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping <code>struct</code> layouts the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchange of <code><a class="el" href="structcat__entry.html">cat_entry</a></code> records with NOVAS C 3.1.</li>
