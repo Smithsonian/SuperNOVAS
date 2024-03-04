@@ -19,8 +19,12 @@ jobs:
     env:
       CC: gcc
     steps:
+   
     
     - uses: actions/checkout@v4
+
+    - name: Generate headless README
+      run: make README-headless.md
 
     - uses: mattnotmitt/doxygen-action@v1.9.8
       with:
@@ -36,6 +40,9 @@ jobs:
     
     - name: Checkout source
       uses: actions/checkout@v4
+        
+    - name: Generate headless README
+      run: make README-headless.md
         
     - uses: mattnotmitt/doxygen-action@v1.9.8
       with:
