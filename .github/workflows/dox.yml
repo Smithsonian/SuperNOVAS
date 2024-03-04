@@ -60,7 +60,7 @@ jobs:
       run: cp CHANGELOG.md site/doc/
       
     - name: Copy API documentation
-      roun: cp -a apidoc site/
+      run: cp -a apidoc site/
         
     - name: Push to pages
       run: |
