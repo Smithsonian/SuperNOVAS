@@ -24,7 +24,7 @@ jobs:
 
     - uses: mattnotmitt/doxygen-action@v1.9.8
       with:
-        additional-packages: fonts-roboto
+        additional-packages: font-roboto
         
     - name: Run doxygen
       run: make dox
@@ -42,7 +42,7 @@ jobs:
         
     - uses: mattnotmitt/doxygen-action@v1.9.8
       with:
-        additional-packages: fonts-roboto
+        additional-packages: font-roboto
        
     - name: Run doxygen
       run: make dox
