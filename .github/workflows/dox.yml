@@ -57,6 +57,7 @@ jobs:
     - name: Copy README
       run: |
         echo '<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right">' > site/doc/README.md
+        echo '<br clear="all">' >> site/doc/README.md
         cat README-headless.md >> site/doc/README.md
         
     - name: Copy CHANGELOG
