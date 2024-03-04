@@ -477,7 +477,7 @@ interchangeably in the present era):
 ```
 
 Instead of `make_cat_entry()` you define your source as an `object` with an name or ID number that is used by the 
-ephemeris service you provided. For major planets you might want to use `make_planet(), if they use a 
+ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
 
