@@ -39,6 +39,9 @@ jobs:
     - name: Checkout main
       uses: actions/checkout@v4
         
+    - name: install dependencies
+      run: sudo apt-get install -y doxygen
+        
     - name: Run doxygen
       run: make dox
     
