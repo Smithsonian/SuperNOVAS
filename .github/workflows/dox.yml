@@ -21,7 +21,7 @@ jobs:
     steps:
 
     - name: install doxygen
-      run: apt-get install doxygen
+      run: sudo apt-get install doxygen
    
     - uses: actions/checkout@v4
 
