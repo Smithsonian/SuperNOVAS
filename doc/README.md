@@ -1,4 +1,4 @@
-<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right">
+<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is an astronomy software library for the C programming 
