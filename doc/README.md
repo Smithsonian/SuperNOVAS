@@ -1,4 +1,5 @@
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right">
+<br clear="all">
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is an astronomy software library for the C programming 
 language, providing high-precision astrometry such as one might need for running an observatory or a precise 
