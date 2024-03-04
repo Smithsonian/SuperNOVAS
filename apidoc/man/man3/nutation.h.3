@@ -1,4 +1,4 @@
-.TH "include/nutation.h" 3 "Mon Mar 4 2024" "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "include/nutation.h" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -116,7 +116,7 @@ Simon et al\&. (1994) Astronomy and Astrophysics 282, 663-683, esp\&. Sections 3
 .PP
 
 .PP
-References accum_prec(), ASEC2RAD, novas_delaunay_args::D, novas_delaunay_args::F, fund_args(), novas_delaunay_args::l, novas_delaunay_args::l1, NOVAS_EARTH, NOVAS_JUPITER, NOVAS_MARS, NOVAS_MERCURY, NOVAS_NEPTUNE, NOVAS_SATURN, NOVAS_URANUS, NOVAS_VENUS, novas_delaunay_args::Omega, planet_lon(), and T0\&.
+References \fBaccum_prec()\fP, \fBASEC2RAD\fP, \fBnovas_delaunay_args::D\fP, \fBnovas_delaunay_args::F\fP, \fBfund_args()\fP, \fBnovas_delaunay_args::l\fP, \fBnovas_delaunay_args::l1\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_MARS\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_NEPTUNE\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_URANUS\fP, \fBNOVAS_VENUS\fP, \fBnovas_delaunay_args::Omega\fP, \fBplanet_lon()\fP, and \fBT0\fP\&.
 .SS "int iau2000b (double jd_tt_high, double jd_tt_low, double * dpsi, double * deps)"
 Compute the forced nutation of the non-rigid Earth based on the IAU 2000B precession / nutation model\&.
 .PP
@@ -159,7 +159,7 @@ McCarthy, D\&. and Luzum, B\&. (2003)\&. 'An Abridged Model of the
 .PP
 
 .PP
-References ASEC2RAD, novas_delaunay_args::D, novas_delaunay_args::F, fund_args(), novas_delaunay_args::l, novas_delaunay_args::l1, novas_delaunay_args::Omega, and T0\&.
+References \fBASEC2RAD\fP, \fBnovas_delaunay_args::D\fP, \fBnovas_delaunay_args::F\fP, \fBfund_args()\fP, \fBnovas_delaunay_args::l\fP, \fBnovas_delaunay_args::l1\fP, \fBnovas_delaunay_args::Omega\fP, and \fBT0\fP\&.
 .SS "int nu2000k (double jd_tt_high, double jd_tt_low, double * dpsi, double * deps)"
 Computes the forced nutation of the non-rigid Earth: Model NU2000K\&. This model is a modified version of IAU 2000A, which has been truncated for speed of execution, and uses Simon et al\&. (1994) fundamental arguments throughout\&. NU2000K agrees with IAU 2000A at the 0\&.1 milliarcsecond level from 1700 to 2300\&. It has the most modest computational cost among the implementations provided in the NOVAS library\&.
 .PP
@@ -205,7 +205,7 @@ Simon et al\&. (1994) Astronomy and Astrophysics 282, 663-683, esp\&. Sections 3
 .PP
 
 .PP
-References accum_prec(), ASEC2RAD, novas_delaunay_args::D, novas_delaunay_args::F, fund_args(), novas_delaunay_args::l, novas_delaunay_args::l1, NOVAS_EARTH, NOVAS_JUPITER, NOVAS_MARS, NOVAS_SATURN, NOVAS_VENUS, novas_delaunay_args::Omega, planet_lon(), and T0\&.
+References \fBaccum_prec()\fP, \fBASEC2RAD\fP, \fBnovas_delaunay_args::D\fP, \fBnovas_delaunay_args::F\fP, \fBfund_args()\fP, \fBnovas_delaunay_args::l\fP, \fBnovas_delaunay_args::l1\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_MARS\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_VENUS\fP, \fBnovas_delaunay_args::Omega\fP, \fBplanet_lon()\fP, and \fBT0\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.

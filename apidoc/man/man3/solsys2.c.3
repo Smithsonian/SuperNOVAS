@@ -1,4 +1,4 @@
-.TH "src/solsys2.c" 3 "Mon Mar 4 2024" "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/solsys2.c" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -108,7 +108,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .PP
 
 .PP
-References jplint_(), NOVAS_BARYCENTER, NOVAS_HELIOCENTER, NOVAS_MERCURY, NOVAS_MOON, and NOVAS_SUN\&.
+References \fBjplint_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
 .SS "short planet_jplint_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Obtains planet positions via the JPL direct-access solar system ephemerides, wtih high precision -- typically good to below the microarcsecond level\&.
 .PP
@@ -162,7 +162,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .PP
 
 .PP
-References jplihp_(), NOVAS_BARYCENTER, NOVAS_HELIOCENTER, NOVAS_MERCURY, NOVAS_MOON, and NOVAS_SUN\&.
+References \fBjplihp_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
 .SS "short solarsystem (double jd_tdb, short body, short origin, double * position, double * velocity)"
 A default implementation for regular (reduced) precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into with the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider()\fP\&.
 .PP
@@ -201,7 +201,7 @@ Since this is a function that may be provided by existing custom user implementa
 .PP
 
 .PP
-References planet_jplint()\&.
+References \fBplanet_jplint()\fP\&.
 .SS "short solarsystem_hp (const double jd_tdb[2], short body, short origin, double * position, double * velocity)"
 A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
 .PP
@@ -238,7 +238,7 @@ Since this is a function that may be provided by existing custom user implementa
 .PP
 
 .PP
-References planet_jplint_hp()\&.
+References \fBplanet_jplint_hp()\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.

@@ -1,4 +1,4 @@
-.TH "include/solarsystem.h" 3 "Mon Mar 4 2024" "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "include/solarsystem.h" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -246,7 +246,7 @@ Explanatory Supplement to The Astronomical Almanac (1992)\&.
 .PP
 
 .PP
-References NOVAS_BARYCENTER, NOVAS_EARTH, NOVAS_PLANETS, NOVAS_SSB, NOVAS_SUN, precession(), radec2vector(), sun_eph(), T0, and TWOPI\&.
+References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBprecession()\fP, \fBradec2vector()\fP, \fBsun_eph()\fP, \fBT0\fP, and \fBTWOPI\fP\&.
 .SS "short earth_sun_calc_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(), if \fBenable_earth_sun_hp()\fP is set to true (non-zero)\&. Otherwise, it will return with an error code of 3, indicating that high-precision calculations are not provided by this implementation\&.
 .PP
@@ -290,7 +290,7 @@ This implementation will always propulate the output position and velocity vecto
 .PP
 
 .PP
-References earth_sun_calc()\&.
+References \fBearth_sun_calc()\fP\&.
 .SS "void enable_earth_sun_hp (int value)"
 Specify whether the high-precision call is allowed to return a low-precision result\&. If set to 0 (false) solarsystem_earth_sun_hp() will return with an error code 3 indicating that a high-precision calculation is not possible\&. Otherise, a non-zero value (true) will let the function to be used without errors, returning the low-precison result of solarsystem_earth_sun() instead\&.
 .PP
@@ -386,7 +386,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .PP
 
 .PP
-References planet_eph_manager_hp()\&.
+References \fBplanet_eph_manager_hp()\fP\&.
 .SS "short planet_eph_manager_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for highest precision applications\&.
 .PP
@@ -440,7 +440,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .PP
 
 .PP
-References NOVAS_BARYCENTER, NOVAS_HELIOCENTER, NOVAS_MOON, NOVAS_PLANETS, NOVAS_SUN, and planet_ephemeris()\&.
+References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SUN\fP, and \fBplanet_ephemeris()\fP\&.
 .SS "short planet_ephem_provider (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the regular (reduced) precision version\&.
 .PP
@@ -483,7 +483,7 @@ Attila Kovacs
 .PP
 
 .PP
-References planet_ephem_provider_hp()\&.
+References \fBplanet_ephem_provider_hp()\fP\&.
 .SS "short planet_ephem_provider_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the highest precision version\&.
 .PP
@@ -526,7 +526,7 @@ Attila Kovacs
 .PP
 
 .PP
-References get_ephem_provider(), NOVAS_BARYCENTER, NOVAS_HELIOCENTER, NOVAS_PLANET_NAMES_INIT, NOVAS_PLANETS, NOVAS_SSB, and NOVAS_SUN\&.
+References \fBget_ephem_provider()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SS "short planet_jplint (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Obtains planet positions via the JPL direct-access solar system ephemerides, wtih normal (reduced) precision -- typically good to the milliarcsecond level\&.
 .PP
@@ -580,7 +580,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .PP
 
 .PP
-References jplint_(), NOVAS_BARYCENTER, NOVAS_HELIOCENTER, NOVAS_MERCURY, NOVAS_MOON, and NOVAS_SUN\&.
+References \fBjplint_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
 .SS "short planet_jplint_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Obtains planet positions via the JPL direct-access solar system ephemerides, wtih high precision -- typically good to below the microarcsecond level\&.
 .PP
@@ -634,8 +634,8 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .PP
 
 .PP
-References jplihp_(), NOVAS_BARYCENTER, NOVAS_HELIOCENTER, NOVAS_MERCURY, NOVAS_MOON, and NOVAS_SUN\&.
-.SS "double* readeph (int mp, const char * name, double jd_tdb, int * error)"
+References \fBjplihp_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
+.SS "double * readeph (int mp, const char * name, double jd_tdb, int * error)"
 Provides a default ephemeris implementation to handle position and velocity calculations for minor planets, which are not handled by the \fBsolarsystem()\fP type calls\&. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled \fBreadeph()\fP implementation, or else a dynamically defined one via ephemeris_set_reader()\&.
 .PP
 You can set the built-in implementation for the library by setting the DEFAULT_READEPH variable in the Makefile\&.
@@ -807,7 +807,7 @@ Since this is a function that may be provided by existing custom user implementa
 .PP
 
 .PP
-References earth_sun_calc(), planet_eph_manager(), planet_ephem_provider(), and planet_jplint()\&.
+References \fBearth_sun_calc()\fP, \fBplanet_eph_manager()\fP, \fBplanet_ephem_provider()\fP, and \fBplanet_jplint()\fP\&.
 .SS "short solarsystem_hp (const double jd_tdb[2], short body, short origin, double * position, double * velocity)"
 A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
 .PP
@@ -844,7 +844,7 @@ Since this is a function that may be provided by existing custom user implementa
 .PP
 
 .PP
-References earth_sun_calc_hp(), planet_eph_manager_hp(), planet_ephem_provider_hp(), and planet_jplint_hp()\&.
+References \fBearth_sun_calc_hp()\fP, \fBplanet_eph_manager_hp()\fP, \fBplanet_ephem_provider_hp()\fP, and \fBplanet_jplint_hp()\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.
