@@ -152,7 +152,7 @@ This is the initial release of the SuperNOVAS library.
    should not be used as if they were valid. (No more sneaky silent errors, which were common in NOVAS C 3.1.)
 
  - Many SuperNOVAS functions allow `NULL` arguments (unlike NOVAS C 3.1), both for optional input values as well as 
-   outputs that are not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) 
+   outputs that are not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/) 
    for specifics). This eliminates the need to declare dummy variables in your application code for quantities you do 
    not require.
 

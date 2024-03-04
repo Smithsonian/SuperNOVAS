@@ -67,19 +67,19 @@ var NAVTREE =
         [ "Deprecated", "md_CHANGELOG.html#autotoc_md5", null ]
       ] ]
     ] ],
-    [ "Contributor Covenant Code of Conduct", "md_CODE__OF__CONDUCT.html", [
-      [ "Our Pledge", "md_CODE__OF__CONDUCT.html#autotoc_md7", null ],
-      [ "Our Standards", "md_CODE__OF__CONDUCT.html#autotoc_md8", null ],
-      [ "Enforcement Responsibilities", "md_CODE__OF__CONDUCT.html#autotoc_md9", null ],
-      [ "Scope", "md_CODE__OF__CONDUCT.html#autotoc_md10", null ],
-      [ "Enforcement", "md_CODE__OF__CONDUCT.html#autotoc_md11", null ],
-      [ "Enforcement Guidelines", "md_CODE__OF__CONDUCT.html#autotoc_md12", [
-        [ "1. Correction", "md_CODE__OF__CONDUCT.html#autotoc_md13", null ],
-        [ "2. Warning", "md_CODE__OF__CONDUCT.html#autotoc_md14", null ],
-        [ "3. Temporary Ban", "md_CODE__OF__CONDUCT.html#autotoc_md15", null ],
-        [ "4. Permanent Ban", "md_CODE__OF__CONDUCT.html#autotoc_md16", null ]
+    [ "Contributor Covenant Code of Conduct", "md_CODE_OF_CONDUCT.html", [
+      [ "Our Pledge", "md_CODE_OF_CONDUCT.html#autotoc_md7", null ],
+      [ "Our Standards", "md_CODE_OF_CONDUCT.html#autotoc_md8", null ],
+      [ "Enforcement Responsibilities", "md_CODE_OF_CONDUCT.html#autotoc_md9", null ],
+      [ "Scope", "md_CODE_OF_CONDUCT.html#autotoc_md10", null ],
+      [ "Enforcement", "md_CODE_OF_CONDUCT.html#autotoc_md11", null ],
+      [ "Enforcement Guidelines", "md_CODE_OF_CONDUCT.html#autotoc_md12", [
+        [ "1. Correction", "md_CODE_OF_CONDUCT.html#autotoc_md13", null ],
+        [ "2. Warning", "md_CODE_OF_CONDUCT.html#autotoc_md14", null ],
+        [ "3. Temporary Ban", "md_CODE_OF_CONDUCT.html#autotoc_md15", null ],
+        [ "4. Permanent Ban", "md_CODE_OF_CONDUCT.html#autotoc_md16", null ]
       ] ],
-      [ "Attribution", "md_CODE__OF__CONDUCT.html#autotoc_md17", null ]
+      [ "Attribution", "md_CODE_OF_CONDUCT.html#autotoc_md17", null ]
     ] ],
     [ "Contributing to SuperNOVAS", "md_CONTRIBUTING.html", null ],
     [ "Deprecated List", "deprecated.html", null ],

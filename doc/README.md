@@ -1,4 +1,4 @@
-<img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right"><br clear="all">
+<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="66" align="right">
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is an astronomy software library for the C programming 
 language, providing high-precision astrometry such as one might need for running an observatory or a precise 
@@ -459,7 +459,7 @@ interchangeably in the present era):
 ```
 
 Instead of `make_cat_entry()` you define your source as an `object` with an name or ID number that is used by the 
-ephemeris service you provided. For major planets you might want to use `make_planet(), if they use a 
+ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
 

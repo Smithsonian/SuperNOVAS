@@ -41,19 +41,19 @@
       <topic label="Deprecated" href="md_CHANGELOG.html#autotoc_md5"/>
     </topic>
   </topic>
-  <topic label="Contributor Covenant Code of Conduct" href="md_CODE__OF__CONDUCT.html">
-    <topic label="Our Pledge" href="md_CODE__OF__CONDUCT.html#autotoc_md7"/>
-    <topic label="Our Standards" href="md_CODE__OF__CONDUCT.html#autotoc_md8"/>
-    <topic label="Enforcement Responsibilities" href="md_CODE__OF__CONDUCT.html#autotoc_md9"/>
-    <topic label="Scope" href="md_CODE__OF__CONDUCT.html#autotoc_md10"/>
-    <topic label="Enforcement" href="md_CODE__OF__CONDUCT.html#autotoc_md11"/>
-    <topic label="Enforcement Guidelines" href="md_CODE__OF__CONDUCT.html#autotoc_md12">
-      <topic label="1. Correction" href="md_CODE__OF__CONDUCT.html#autotoc_md13"/>
-      <topic label="2. Warning" href="md_CODE__OF__CONDUCT.html#autotoc_md14"/>
-      <topic label="3. Temporary Ban" href="md_CODE__OF__CONDUCT.html#autotoc_md15"/>
-      <topic label="4. Permanent Ban" href="md_CODE__OF__CONDUCT.html#autotoc_md16"/>
+  <topic label="Contributor Covenant Code of Conduct" href="md_CODE_OF_CONDUCT.html">
+    <topic label="Our Pledge" href="md_CODE_OF_CONDUCT.html#autotoc_md7"/>
+    <topic label="Our Standards" href="md_CODE_OF_CONDUCT.html#autotoc_md8"/>
+    <topic label="Enforcement Responsibilities" href="md_CODE_OF_CONDUCT.html#autotoc_md9"/>
+    <topic label="Scope" href="md_CODE_OF_CONDUCT.html#autotoc_md10"/>
+    <topic label="Enforcement" href="md_CODE_OF_CONDUCT.html#autotoc_md11"/>
+    <topic label="Enforcement Guidelines" href="md_CODE_OF_CONDUCT.html#autotoc_md12">
+      <topic label="1. Correction" href="md_CODE_OF_CONDUCT.html#autotoc_md13"/>
+      <topic label="2. Warning" href="md_CODE_OF_CONDUCT.html#autotoc_md14"/>
+      <topic label="3. Temporary Ban" href="md_CODE_OF_CONDUCT.html#autotoc_md15"/>
+      <topic label="4. Permanent Ban" href="md_CODE_OF_CONDUCT.html#autotoc_md16"/>
     </topic>
-    <topic label="Attribution" href="md_CODE__OF__CONDUCT.html#autotoc_md17"/>
+    <topic label="Attribution" href="md_CODE_OF_CONDUCT.html#autotoc_md17"/>
   </topic>
   <topic label="Contributing to SuperNOVAS" href="md_CONTRIBUTING.html"/>
   <topic label="Deprecated List" href="deprecated.html"/>
@@ -452,7 +452,7 @@
           <topic label="planet_ephem_provider_hp" href="solarsystem_8h.html#ae19eb2bcaaa2deb9fe27fba8090724e1"/>
           <topic label="planet_jplint" href="solarsystem_8h.html#aceb7bc6823b1823d8a8360517ff58f29"/>
           <topic label="planet_jplint_hp" href="solarsystem_8h.html#a399a5363ddf93d662886e6e4692d03ad"/>
-          <topic label="readeph" href="solarsystem_8h.html#abb70fdad016c3a2ea45990eaa16b9245"/>
+          <topic label="readeph" href="solarsystem_8h.html#a949e7f46c65d270722b6a3467b376443"/>
           <topic label="set_ephem_provider" href="solarsystem_8h.html#a6097083c438a8d1872c2e00a66360030"/>
           <topic label="set_planet_provider" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973"/>
           <topic label="set_planet_provider_hp" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640"/>

@@ -1,4 +1,4 @@
-.TH "include/novas.h" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "include/novas.h" 3 "Mon Mar 4 2024" "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -639,21 +639,22 @@ novas_majot_planet
 .PP
 
 .SS "#define NOVAS_RMASS_INIT"
-\fBValue:\fP.PP
+\fBValue:\fP
+.PP
 .nf
-      { \\
-      328900\&.561400, 6023600\&.0, 408523\&.71, 332946\&.050895, 3098708\&.0, 1047\&.3486, 3497\&.898, \\
+      { \
+      328900\&.561400, 6023600\&.0, 408523\&.71, 332946\&.050895, 3098708\&.0, 1047\&.3486, 3497\&.898, \
       22902\&.98, 19412\&.24, 135200000\&.0, 1\&.0, 27068700\&.387534 }
 .fi
 Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass)\&. [0]: Earth/Moon barycenter, MASS[1] = Mercury, \&.\&.\&., [9]: Pluto, [10]: Sun, [11]: Moon\&. 
 .SS "#define SUPERNOVAS_VERSION_STRING"
-\fBValue:\fP.PP
+\fBValue:\fP
+.PP
 .nf
-                                  #SUPERNOVAS_MAJOR_VERSION "\&." #SUPERNOVAS_MINOR_VERSION \\
-                                  (#SUPERNOVAS_PATCHLEVEL ? "\&." #SUPERNOVAS_PATCHLEVEL : "") \\
+                                  #SUPERNOVAS_MAJOR_VERSION "\&." #SUPERNOVAS_MINOR_VERSION \
+                                  (#SUPERNOVAS_PATCHLEVEL ? "\&." #SUPERNOVAS_PATCHLEVEL : "") \
                                   SUPERNOVAS_RELEASE_STRING
 .fi
-
 .PP
 The version string for this library\&. 
 .SH "Enumeration Type Documentation"
@@ -1043,8 +1044,6 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .RE
 .PP
 
-.PP
-References \fBC_AUDAY\fP\&.
 .SS "double accum_prec (double t)"
 Returns the general precession in longitude (Simon et al\&. 1994), equivalent to 5028\&.8200 arcsec/cy at J2000\&.
 .PP
@@ -1071,7 +1070,7 @@ Returns the general precession in longitude (Simon et al\&. 1994), equivalent to
 .PP
 
 .PP
-References \fBTWOPI\fP\&.
+References TWOPI\&.
 .SS "short app_planet (double jd_tt, const \fBobject\fP * ss_body, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * dis)"
 Computes the apparent place of a solar system body\&. This is the same as calling \fBplace()\fP for the body with NOVAS_TOD as the system, except the different set of return values used\&.
 .PP
@@ -1127,7 +1126,7 @@ Use \fBplace_cirs()\fP is now preferred, especially for high accuracy calculatio
 .PP
 
 .PP
-References \fBNOVAS_TOD\fP, and \fBradec_planet()\fP\&.
+References NOVAS_TOD, and radec_planet()\&.
 .SS "short app_star (double jd_tt, const \fBcat_entry\fP * star, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec)"
 Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity\&.
 .PP
@@ -1185,7 +1184,7 @@ Use \fBplace_cirs()\fP is now preferred, especially for high accuracy calculatio
 .PP
 
 .PP
-References \fBNOVAS_TOD\fP, and \fBradec_star()\fP\&.
+References NOVAS_TOD, and radec_star()\&.
 .SS "short astro_planet (double jd_tt, const \fBobject\fP * ss_body, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * dis)"
 Computes the astrometric place of a solar system body, referenced to the ICRS without light deflection or aberration\&. This is the same as calling \fBplace_icrs()\fP for the body, except the different set of return values used\&.
 .PP
@@ -1235,7 +1234,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&.
 .PP
 
 .PP
-References \fBNOVAS_ICRS\fP, and \fBradec_planet()\fP\&.
+References NOVAS_ICRS, and radec_planet()\&.
 .SS "short astro_star (double jd_tt, const \fBcat_entry\fP * star, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec)"
 Computes the astrometric place of a star, referred to the ICRS without light deflection or aberration, at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity\&.
 .PP
@@ -1287,7 +1286,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3\&.
 .PP
 
 .PP
-References \fBNOVAS_ICRS\fP, and \fBradec_star()\fP\&.
+References NOVAS_ICRS, and radec_star()\&.
 .SS "int bary2obs (const double * pos, const double * pos_obs, double * out, double * lighttime)"
 Moves the origin of coordinates from the barycenter of the solar system to the observer (or the geocenter); i\&.e\&., this function accounts for parallax (annual+geocentric or just annual)\&.
 .PP
@@ -1322,8 +1321,6 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .RE
 .PP
 
-.PP
-References \fBC_AUDAY\fP\&.
 .SS "int cal_date (double tjd, short * year, short * month, short * day, double * hour)"
 This function will compute a broken down date on the Gregorian calendar for given the Julian date input\&. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output time value will have same basis\&.
 .PP
@@ -1431,7 +1428,7 @@ Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of
 .PP
 
 .PP
-References \fBera()\fP, \fBEROT_ERA\fP, \fBEROT_GST\fP, \fBgcrs_to_cirs()\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBsidereal_time()\fP, \fBspin()\fP, \fBtt2tdb()\fP, \fBwobble()\fP, and \fBWOBBLE_PEF_TO_ITRS\fP\&.
+References era(), EROT_ERA, EROT_GST, gcrs_to_cirs(), NOVAS_DYNAMICAL_CLASS, NOVAS_FULL_ACCURACY, NOVAS_REDUCED_ACCURACY, spin(), and tt2tdb()\&.
 .SS "short cel_pole (double jd_tt, enum \fBnovas_pole_offset_type\fP type, double dpole1, double dpole2)"
 specifies the celestial pole offsets for high-precision applications\&. Each set of offsets is a correction to the modeled position of the pole for a specific date, derived from observations and published by the IERS\&.
 .PP
@@ -1494,7 +1491,7 @@ Kaplan, G\&. (2003), USNO/AA Technical Note 2003-03\&.
 .PP
 
 .PP
-References \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBmean_obliq()\fP, \fBPOLE_OFFSETS_DPSI_DEPS\fP, \fBPOLE_OFFSETS_X_Y\fP, and \fBprecession()\fP\&.
+References POLE_OFFSETS_DPSI_DEPS\&.
 .SS "short cio_array (double jd_tdb, long n_pts, \fBra_of_cio\fP * cio)"
 Given an input TDB Julian date and the number of data points desired, this function returns a set of Julian dates and corresponding values of the GCRS right ascension of the celestial intermediate origin (CIO)\&. The range of dates is centered (at least approximately) on the requested date\&. The function obtains the data from an external data file\&.
 .PP
@@ -1530,7 +1527,7 @@ This function has been completely re-written by A\&. Kovacs to provide much more
 .PP
 
 .PP
-References \fBDEFAULT_CIO_LOCATOR_FILE\fP, \fBNOVAS_CIO_CACHE_SIZE\fP, and \fBset_cio_locator_file()\fP\&.
+References NOVAS_CIO_CACHE_SIZE\&.
 .SS "short cio_basis (double jd_tdb, double ra_cio, enum \fBnovas_cio_location_type\fP loc_type, enum \fBnovas_accuracy\fP accuracy, double * x, double * y, double * z)"
 Computes the orthonormal basis vectors, with respect to the GCRS (geocentric ICRS), of the celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z direction) and the celestial intermediate origin (CIO) (in the x direction)\&. A TDB Julian date and the right ascension of the CIO at that date is required as input\&. The right ascension of the CIO can be with respect to either the GCRS origin or the true equinox of date -- different algorithms are used in the two cases\&.
 .PP
@@ -1574,7 +1571,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 
 .PP
-References \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBNOVAS_REDUCED_ACCURACY\fP\&.
+References NOVAS_FULL_ACCURACY, and NOVAS_REDUCED_ACCURACY\&.
 .SS "short cio_location (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double * ra_cio, short * loc_type)"
 Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of date\&. The CIO is always located on the true equator (= intermediate equator) of date\&.
 .PP
@@ -1613,8 +1610,6 @@ Unlike the NOVAS C version of this function, this version will always return a C
 .RE
 .PP
 
-.PP
-References \fBcio_array()\fP, \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBira_equinox()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DEBUG_ON\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBNOVAS_TRUE_EQUINOX\fP\&.
 .SS "short cio_ra (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double * ra_cio)"
 Computes the true right ascension of the celestial intermediate origin (CIO) at a given TT Julian date\&. This is the negative value for the equation of the origins\&.
 .PP
@@ -1641,7 +1636,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 
 .PP
-References \fBcio_basis()\fP, \fBcio_location()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBtt2tdb()\fP\&.
+References cio_basis(), cio_location(), NOVAS_FULL_ACCURACY, NOVAS_REDUCED_ACCURACY, and tt2tdb()\&.
 .SS "int cirs_to_gcrs (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the Geocentric Celestial Reference System (GCRS)\&.
 .PP
@@ -1680,7 +1675,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_basis()\fP, and \fBcio_location()\fP\&.
+References cio_basis(), and cio_location()\&.
 .SS "int cirs_to_itrs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 2000 standard method)\&.
 .PP
@@ -1742,7 +1737,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcel2ter()\fP, \fBEROT_ERA\fP, and \fBNOVAS_DYNAMICAL_CLASS\fP\&.
+References cel2ter(), EROT_ERA, and NOVAS_DYNAMICAL_CLASS\&.
 .SS "double d_light (const double * pos, const double * pos_obs)"
 Returns the difference in light-time, for a star, between the barycenter of the solar system and the observer (or the geocenter)\&.
 .PP
@@ -1773,8 +1768,6 @@ This function is called by \fBplace()\fP
 .RE
 .PP
 
-.PP
-References \fBC_AUDAY\fP\&.
 .SS "int e_tilt (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double * mobl, double * tobl, double * ee, double * dpsi, double * deps)"
 Computes quantities related to the orientation of the Earth's rotation axis at Julian date 'jd_tdb'\&.
 .PP
@@ -1815,15 +1808,15 @@ Values of the celestial pole offsets 'PSI_COR' and 'EPS_COR' are set using funct
 .PP
 
 .PP
-References \fBee_ct()\fP, \fBmean_obliq()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBnutation_angles()\fP\&.
+References NOVAS_FULL_ACCURACY, and NOVAS_REDUCED_ACCURACY\&.
 .SS "int ecl2equ (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double elon, double elat, double * ra, double * dec)"
-Convert ecliptic longitude and latitude to right ascension and declination\&. To convert GCRS ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at'jd_tt'\&.
+Convert ecliptic longitude and latitude to right ascension and declination\&. To convert GCRS ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at'jd_tt'\&.
 .PP
 \fBParameters\fP
 .RS 4
 \fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date\&. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) 
 .br
-\fIcoord_sys\fP The astrometric reference system of the coordinates\&. If 'coord_sys' is \fBNOVAS_GCRS_EQUATOR(2)\fP, the input GCRS coordinates are converted to J2000 ecliptic coordinates\&. 
+\fIcoord_sys\fP The astrometric reference system of the coordinates\&. If 'coord_sys' is NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to J2000 ecliptic coordinates\&. 
 .br
 \fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
 .br
@@ -1860,9 +1853,9 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBecl2equ_vec()\fP\&.
+References ecl2equ_vec()\&.
 .SS "short ecl2equ_vec (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
-Converts an ecliptic position vector to an equatorial position vector\&. To convert ecliptic coordinates (mean ecliptic and equinox of J2000\&.0) to GCRS RA and dec to, set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
+Converts an ecliptic position vector to an equatorial position vector\&. To convert ecliptic coordinates (mean ecliptic and equinox of J2000\&.0) to GCRS RA and dec to, set 'coord_sys' to NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -1891,7 +1884,7 @@ Converts an ecliptic position vector to an equatorial position vector\&. To conv
 .PP
 
 .PP
-References \fBe_tilt()\fP, \fBframe_tie()\fP, \fBJ2000_TO_ICRS\fP, \fBmean_obliq()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_GCRS_EQUATOR\fP, \fBNOVAS_MEAN_EQUATOR\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUATOR\fP, and \fBtt2tdb()\fP\&.
+References NOVAS_FULL_ACCURACY, NOVAS_MEAN_EQUATOR, NOVAS_REDUCED_ACCURACY, and NOVAS_TRUE_EQUATOR\&.
 .SS "double ee_ct (double jd_tt_high, double jd_tt_low, enum \fBnovas_accuracy\fP accuracy)"
 Computes the 'complementary terms' of the equation of the equinoxes\&. The input Julian date can be split into high and low order parts for improved accuracy\&. Typically, the split is into integer and fractiona parts\&. If the precision of a single part is sufficient, you may set the low order part to 0\&.
 .PP
@@ -1937,7 +1930,7 @@ IERS Conventions (2010), Chapter 5, p\&. 60, Table 5\&.2e\&.
 .PP
 
 .PP
-References \fBaccum_prec()\fP, \fBnovas_delaunay_args::D\fP, \fBnovas_delaunay_args::F\fP, \fBfund_args()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_NEPTUNE\fP, \fBnovas_delaunay_args::Omega\fP, and \fBplanet_lon()\fP\&.
+References accum_prec(), novas_delaunay_args::D, novas_delaunay_args::F, fund_args(), NOVAS_FULL_ACCURACY, NOVAS_MERCURY, NOVAS_NEPTUNE, novas_delaunay_args::Omega, and planet_lon()\&.
 .SS "short ephemeris (const double * jd_tdb, const \fBobject\fP * body, enum \fBnovas_origin\fP origin, enum \fBnovas_accuracy\fP accuracy, double * pos, double * vel)"
 Retrieves the position and velocity of a solar system body from a fundamental ephemeris\&.
 .PP
@@ -1980,15 +1973,15 @@ It is recommended that the input structure 'cel_obj' be created using \fBmake_ob
 .PP
 
 .PP
-References \fBobject::name\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_ORIGIN_TYPES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBobject::number\fP, \fBreadeph()\fP, and \fBobject::type\fP\&.
+References NOVAS_EPHEM_OBJECT, NOVAS_FULL_ACCURACY, NOVAS_HELIOCENTER, NOVAS_ORIGIN_TYPES, NOVAS_PLANET, object::number, and object::type\&.
 .SS "short equ2ecl (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double ra, double dec, double * elon, double * elat)"
-Convert right ascension and declination to ecliptic longitude and latitude\&. To convert GCRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
+Convert right ascension and declination to ecliptic longitude and latitude\&. To convert GCRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
 .PP
 \fBParameters\fP
 .RS 4
 \fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date\&. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) 
 .br
-\fIcoord_sys\fP The astrometric reference system of the coordinates\&. If 'coord_sys' is \fBNOVAS_GCRS_EQUATOR(2)\fP, the input GCRS coordinates are converted to J2000 ecliptic coordinates\&. 
+\fIcoord_sys\fP The astrometric reference system of the coordinates\&. If 'coord_sys' is NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to J2000 ecliptic coordinates\&. 
 .br
 \fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
 .br
@@ -2015,9 +2008,9 @@ Convert right ascension and declination to ecliptic longitude and latitude\&. To
 .PP
 
 .PP
-References \fBequ2ecl_vec()\fP\&.
+References equ2ecl_vec()\&.
 .SS "short equ2ecl_vec (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
-Converts an equatorial position vector to an ecliptic position vector\&. To convert ICRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
+Converts an equatorial position vector to an ecliptic position vector\&. To convert ICRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -2029,7 +2022,7 @@ Converts an equatorial position vector to an ecliptic position vector\&. To conv
 .br
 \fIin\fP Position vector, referred to specified equator and equinox of date\&. 
 .br
-\fIout\fP Position vector, referred to specified ecliptic and equinox of date\&. It can be the same vector as the input\&. If 'coord_sys' is \fBNOVAS_GCRS_EQUATOR(2)\fP, the input GCRS coordinates are converted to J2000 ecliptic coordinates\&. 
+\fIout\fP Position vector, referred to specified ecliptic and equinox of date\&. It can be the same vector as the input\&. If 'coord_sys' is NOVAS_GCRS_EQUATOR(2), the input GCRS coordinates are converted to J2000 ecliptic coordinates\&. 
 .RE
 .PP
 \fBReturns\fP
@@ -2046,7 +2039,7 @@ Converts an equatorial position vector to an ecliptic position vector\&. To conv
 .PP
 
 .PP
-References \fBe_tilt()\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBmean_obliq()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_GCRS_EQUATOR\fP, \fBNOVAS_MEAN_EQUATOR\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUATOR\fP, and \fBtt2tdb()\fP\&.
+References NOVAS_FULL_ACCURACY, NOVAS_MEAN_EQUATOR, NOVAS_REDUCED_ACCURACY, and NOVAS_TRUE_EQUATOR\&.
 .SS "int equ2gal (double ra, double dec, double * glon, double * glat)"
 Converts ICRS right ascension and declination to galactic longitude and latitude\&.
 .PP
@@ -2153,7 +2146,7 @@ Kaplan, G\&. (2008)\&. USNO/AA Technical Note of 28 Apr 2008, 'Refraction as a V
 .PP
 
 .PP
-References \fBEROT_GST\fP, \fBon_surface::latitude\fP, \fBon_surface::longitude\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, \fBrefract_astro()\fP, and \fBter2cel()\fP\&.
+References EROT_GST, on_surface::latitude, on_surface::longitude, NOVAS_DYNAMICAL_CLASS, and ter2cel()\&.
 .SS "double era (double jd_ut1_high, double jd_ut1_low)"
 Returns the value of the Earth Rotation Angle (theta) for a given UT1 Julian date\&. The expression used is taken from the note to IAU Resolution B1\&.8 of 2000\&. The input Julian date cane be split into an into high and low order parts (e\&.g\&. integer and fractional parts) for improved accuracy, or else one of the components (e\&.g\&. the low part) can be set to zero if no split is desired\&.
 .PP
@@ -2272,7 +2265,7 @@ Simon et al\&. (1994) Astronomy and Astrophysics 282, 663-683, esp\&. Sections 3
 .PP
 
 .PP
-References \fBnovas_delaunay_args::D\fP, \fBnovas_delaunay_args::F\fP, \fBnovas_delaunay_args::l\fP, \fBnovas_delaunay_args::l1\fP, \fBnorm_ang()\fP, and \fBnovas_delaunay_args::Omega\fP\&.
+References novas_delaunay_args::D, novas_delaunay_args::F, novas_delaunay_args::l, novas_delaunay_args::l1, norm_ang(), and novas_delaunay_args::Omega\&.
 .SS "int gal2equ (double glon, double glat, double * ra, double * dec)"
 Converts galactic longitude and latitude to ICRS right ascension and declination\&.
 .PP
@@ -2342,7 +2335,7 @@ Converts GCRS right ascension and declination to coordinates with respect to the
 .PP
 
 .PP
-References \fBDEG2RAD\fP, \fBframe_tie()\fP, \fBgcrs_to_cirs()\fP, \fBICRS_TO_J2000\fP, \fBNOVAS_DYNAMICAL_CIRS\fP, \fBNOVAS_DYNAMICAL_MOD\fP, \fBNOVAS_DYNAMICAL_TOD\fP, \fBprecession()\fP, \fBtt2tdb()\fP, and \fBvector2radec()\fP\&.
+References DEG2RAD, NOVAS_DYNAMICAL_TOD, and tt2tdb()\&.
 .SS "int gcrs_to_cirs (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the Celestial Intermediate Reference System (CIRS) frame at the given epoch
 .PP
@@ -2381,7 +2374,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_basis()\fP, and \fBcio_location()\fP\&.
+References cio_basis(), and cio_location()\&.
 .SS "int gcrs_to_j2000 (const double * in, double * out)"
 Change GCRS coordinates to J2000 coordinates\&. Same as \fBframe_tie()\fP called with ICRS_TO_J2000
 .PP
@@ -2414,7 +2407,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBframe_tie()\fP, and \fBJ2000_TO_ICRS\fP\&.
+References frame_tie(), and J2000_TO_ICRS\&.
 .SS "short geo_posvel (double jd_tt, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP * obs, double * pos, double * vel)"
 Computes the geocentric position and velocity of an observer on the surface of the earth or on a near-earth spacecraft\&. The final vectors are expressed in the GCRS\&.
 .PP
@@ -2451,7 +2444,7 @@ Computes the geocentric position and velocity of an observer on the surface of t
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBe_tilt()\fP, \fBEROT_ERA\fP, \fBobserver::near_earth\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBobserver::on_surf\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
+References NOVAS_FULL_ACCURACY, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_OBSERVER_ON_EARTH, NOVAS_REDUCED_ACCURACY, tt2tdb(), and observer::where\&.
 .SS "double get_ut1_to_tt (int leap_seconds, double dut1)"
 Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time difference as measured and published by IERS\&.
 .PP
@@ -2495,7 +2488,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBget_utc_to_tt()\fP\&.
+References get_utc_to_tt()\&.
 .SS "double get_utc_to_tt (int leap_seconds)"
 Returns the difference between Terrestrial Time (TT) and Universal Coordinated Time (UTC)
 .PP
@@ -2518,7 +2511,7 @@ Returns the difference between Terrestrial Time (TT) and Universal Coordinated T
 .PP
 
 .PP
-References \fBNOVAS_TAI_TO_TT\fP\&.
+References NOVAS_TAI_TO_TT\&.
 .SS "short grav_def (double jd_tdb, enum \fBnovas_observer_place\fP loc_type, enum \fBnovas_accuracy\fP accuracy, const double * pos_src, const double * pos_obs, double * out)"
 Computes the total gravitational deflection of light for the observed object due to the major gravitating bodies in the solar system\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
@@ -2571,7 +2564,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&.
 .PP
 
 .PP
-References \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBephemeris()\fP, \fBgrav_vec()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_DEBUG_EXTRA\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_MOON\fP, \fBNOVAS_NEPTUNE\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_RMASS_INIT\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_SUN\fP, \fBNOVAS_URANUS\fP, and \fBNOVAS_VENUS\fP\&.
+References make_planet(), NOVAS_EARTH, NOVAS_FULL_ACCURACY, NOVAS_JUPITER, NOVAS_MOON, NOVAS_NEPTUNE, NOVAS_RMASS_INIT, NOVAS_SATURN, NOVAS_SUN, NOVAS_URANUS, and NOVAS_VENUS\&.
 .SS "int grav_vec (const double * pos_src, const double * pos_obs, const double * pos_body, double rmass, double * out)"
 Corrects position vector for the deflection of light in the gravitational field of an arbitrary body\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
@@ -2619,8 +2612,6 @@ Kaplan, G\&. et al\&. (1989) Astronomical Journal 97, 1197-1210, section iii f\&
 .RE
 .PP
 
-.PP
-References \fBAU\fP, \fBC\fP, and \fBGS\fP\&.
 .SS "int hor_to_itrs (const \fBon_surface\fP * location, double az, double za, double * itrs)"
 Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location to a unit position vector in the Earth-fixed ITRS frame\&.
 .PP
@@ -2663,7 +2654,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBon_surface::latitude\fP, and \fBon_surface::longitude\fP\&.
+References on_surface::latitude, and on_surface::longitude\&.
 .SS "double ira_equinox (double jd_tdb, enum \fBnovas_equinox_type\fP equinox, enum \fBnovas_accuracy\fP accuracy)"
 Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical expression for the accumulated precession in right ascension\&. For the true equinox, the result is the equation of the origins\&.
 .PP
@@ -2704,7 +2695,7 @@ Capitaine, N\&. et al\&. (2003), Astronomy and Astrophysics 412, 567-586, eq\&. 
 .PP
 
 .PP
-References \fBe_tilt()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBNOVAS_TRUE_EQUINOX\fP\&.
+References NOVAS_FULL_ACCURACY, and NOVAS_REDUCED_ACCURACY\&.
 .SS "int itrs_to_cirs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 2000 standard method)\&.
 .PP
@@ -2766,7 +2757,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBEROT_ERA\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, and \fBter2cel()\fP\&.
+References EROT_ERA, NOVAS_DYNAMICAL_CLASS, and ter2cel()\&.
 .SS "int itrs_to_hor (const \fBon_surface\fP * location, const double * itrs, double * az, double * za)"
 Converts a position vector in the Earth-fixed ITRS frame to astrometric (unrefracted) azimuth and zenith angles at the specified observer location\&.
 .PP
@@ -2809,7 +2800,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBon_surface::latitude\fP, and \fBon_surface::longitude\fP\&.
+References on_surface::latitude, and on_surface::longitude\&.
 .SS "int itrs_to_tod (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame of date (pre IAU 2000 method)\&.
 .PP
@@ -2871,7 +2862,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBEROT_GST\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, and \fBter2cel()\fP\&.
+References EROT_GST, NOVAS_DYNAMICAL_CLASS, and ter2cel()\&.
 .SS "int j2000_to_gcrs (const double * in, double * out)"
 Change J2000 coordinates to GCRS coordinates\&. Same as \fBframe_tie()\fP called with J2000_TO_ICRS
 .PP
@@ -2904,7 +2895,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBframe_tie()\fP, and \fBJ2000_TO_ICRS\fP\&.
+References frame_tie(), and J2000_TO_ICRS\&.
 .SS "int j2000_to_tod (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD) reference frame at the given epoch
 .PP
@@ -2945,7 +2936,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNUTATE_MEAN_TO_TRUE\fP, \fBnutation()\fP, and \fBprecession()\fP\&.
+References NOVAS_FULL_ACCURACY, NOVAS_REDUCED_ACCURACY, NUTATE_MEAN_TO_TRUE, nutation(), and precession()\&.
 .SS "double julian_date (short year, short month, short day, double hour)"
 Returns the Julian date for a given Gregorian calendar date\&. This function makes no checks for a valid input calendar date\&. Input calendar date must be Gregorian\&. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output Julian date will have the same basis\&.
 .PP
@@ -3018,7 +3009,7 @@ Computes the geocentric position of a solar system body, as antedated for light-
 .PP
 
 .PP
-References \fBlight_time2()\fP\&.
+References light_time2()\&.
 .SS "int light_time2 (double jd_tdb, const \fBobject\fP * body, const double * pos_obs, double tlight0, enum \fBnovas_accuracy\fP accuracy, double * p_src_obs, double * v_ssb, double * tlight)"
 Computes the geocentric position and velocity of a solar system body, as antedated for light-time\&. It is effectively the same as the original NOVAS C \fBlight_time()\fP, except that this returns the antedated source velocity vector also\&.
 .PP
@@ -3072,7 +3063,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBbary2obs()\fP, \fBephemeris()\fP, \fBNOVAS_BARYCENTER\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
+References bary2obs(), ephemeris(), NOVAS_BARYCENTER, and NOVAS_FULL_ACCURACY\&.
 .SS "int limb_angle (const double * pos_src, const double * pos_obs, double * limb_ang, double * nadir_ang)"
 Determines the angle of an object above or below the Earth's limb (horizon)\&. The geometric limb is computed, assuming the Earth to be an airless sphere (no refraction or oblateness is included)\&. The observer can be on or above the Earth\&. For an observer on the surface of the Earth, this function returns the approximate unrefracted elevation\&.
 .PP
@@ -3149,7 +3140,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&.
 .PP
 
 .PP
-References \fBmake_observer()\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, and \fBradec_planet()\fP\&.
+References make_observer(), NOVAS_GCRS, NOVAS_OBSERVER_ON_EARTH, and radec_planet()\&.
 .SS "short local_star (double jd_tt, double ut1_to_tt, const \fBcat_entry\fP * star, const \fBon_surface\fP * position, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec)"
 Computes the local apparent place of a star at date 'jd_tt', in the GCRS, given its catalog mean place, proper motion, parallax, and radial velocity\&.
 .PP
@@ -3205,7 +3196,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3\&.
 .PP
 
 .PP
-References \fBmake_observer()\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, and \fBradec_star()\fP\&.
+References make_observer(), NOVAS_GCRS, NOVAS_OBSERVER_ON_EARTH, and radec_star()\&.
 .SS "short make_cat_entry (const char * star_name, const char * catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, \fBcat_entry\fP * star)"
 Populates the data structure for a 'catalog' source, such as a star\&.
 .PP
@@ -3246,7 +3237,7 @@ Populates the data structure for a 'catalog' source, such as a star\&.
 .PP
 
 .PP
-References \fBcat_entry::catalog\fP, \fBcat_entry::dec\fP, \fBcat_entry::parallax\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBcat_entry::ra\fP, \fBrad_vel()\fP, \fBcat_entry::radialvelocity\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
+References cat_entry::catalog, cat_entry::dec, cat_entry::parallax, cat_entry::promodec, cat_entry::promora, cat_entry::ra, rad_vel(), cat_entry::radialvelocity, cat_entry::starname, and cat_entry::starnumber\&.
 .SS "int make_ephem_object (const char * name, long num, \fBobject\fP * body)"
 Sets a celestial object to be a Solar-system ephemeris body\&. Typically this would be used to define minor planets, asteroids, comets and planetary satellites\&.
 .PP
@@ -3285,7 +3276,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBmake_object()\fP, and \fBNOVAS_EPHEM_OBJECT\fP\&.
+References make_object(), and NOVAS_EPHEM_OBJECT\&.
 .SS "int make_in_space (const double * sc_pos, const double * sc_vel, \fBin_space\fP * loc)"
 Populates an '\fBin_space\fP' data structure, for an observer situated on a near-Earth spacecraft, with the provided position and velocity components\&. Both input vectors are assumed with respect to true equator and equinox of date\&.
 .PP
@@ -3312,7 +3303,7 @@ Populates an '\fBin_space\fP' data structure, for an observer situated on a near
 .PP
 
 .PP
-References \fBin_space::sc_pos\fP, and \fBin_space::sc_vel\fP\&.
+References in_space::sc_pos, and in_space::sc_vel\&.
 .SS "short make_object (enum \fBnovas_object_type\fP type, long number, const char * name, const \fBcat_entry\fP * star, \fBobject\fP * source)"
 Populates and object data structure using the parameters provided\&. By default (for compatibility with NOVAS C) source names are converted to upper-case internally\&. You can however enable case-sensitive processing by calling \fBnovas_case_sensitive()\fP before\&.
 .PP
@@ -3349,7 +3340,7 @@ Populates and object data structure using the parameters provided\&. By default 
 .PP
 
 .PP
-References \fBobject::name\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_OBJECT_TYPES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANETS\fP, \fBobject::number\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References object::name, NOVAS_OBJECT_TYPES, NOVAS_PLANET, NOVAS_PLANETS, object::number, and object::type\&.
 .SS "short make_observer (enum \fBnovas_observer_place\fP where, const \fBon_surface\fP * loc_surface, const \fBin_space\fP * loc_space, \fBobserver\fP * obs)"
 Populates an 'observer' data structure given the parameters\&. The output data structure may be used an the the inputs to NOVAS-C function '\fBplace()\fP'\&.
 .PP
@@ -3380,7 +3371,7 @@ Populates an 'observer' data structure given the parameters\&. The output data s
 .PP
 
 .PP
-References \fBobserver::near_earth\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBobserver::on_surf\fP, and \fBobserver::where\fP\&.
+References observer::near_earth, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_OBSERVER_IN_EARTH_ORBIT, NOVAS_OBSERVER_ON_EARTH, observer::on_surf, and observer::where\&.
 .SS "int make_observer_at_geocenter (\fBobserver\fP * obs)"
 Populates an 'observer' data structure for a hypothetical observer located at Earth's geocenter\&. The output data structure may be used an the the inputs to NOVAS-C function '\fBplace()\fP'\&.
 .PP
@@ -3405,7 +3396,7 @@ Populates an 'observer' data structure for a hypothetical observer located at Ea
 .PP
 
 .PP
-References \fBmake_observer()\fP, and \fBNOVAS_OBSERVER_AT_GEOCENTER\fP\&.
+References make_observer(), and NOVAS_OBSERVER_AT_GEOCENTER\&.
 .SS "int make_observer_in_space (const double * sc_pos, const double * sc_vel, \fBobserver\fP * obs)"
 Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft, with the specified geocentric position and velocity vectors\&. Both input vectors are with respect to true equator and equinox of date\&. The output data structure may be used an the the inputs to NOVAS-C function '\fBplace()\fP'\&.
 .PP
@@ -3434,7 +3425,7 @@ Populates an 'observer' data structure, for an observer situated on a near-Earth
 .PP
 
 .PP
-References \fBmake_in_space()\fP, \fBmake_observer()\fP, and \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP\&.
+References make_in_space(), make_observer(), and NOVAS_OBSERVER_IN_EARTH_ORBIT\&.
 .SS "int make_observer_on_surface (double latitude, double longitude, double height, double temperature, double pressure, \fBobserver\fP * obs)"
 Populates and '\fBon_surface\fP' data structure with the specified location defining parameters of the observer\&. The output data structure may be used an the the inputs to NOVAS-C function '\fBplace()\fP'\&.
 .PP
@@ -3469,7 +3460,7 @@ Populates and '\fBon_surface\fP' data structure with the specified location defi
 .PP
 
 .PP
-References \fBmake_observer()\fP, \fBmake_on_surface()\fP, and \fBNOVAS_OBSERVER_ON_EARTH\fP\&.
+References make_observer(), make_on_surface(), and NOVAS_OBSERVER_ON_EARTH\&.
 .SS "int make_on_surface (double latitude, double longitude, double height, double temperature, double pressure, \fBon_surface\fP * loc)"
 Populates an '\fBon_surface\fP' data structure, for an observer on the surface of the Earth, with the given parameters\&.
 .PP
@@ -3502,7 +3493,7 @@ Populates an '\fBon_surface\fP' data structure, for an observer on the surface o
 .PP
 
 .PP
-References \fBon_surface::height\fP, \fBon_surface::latitude\fP, \fBon_surface::longitude\fP, \fBon_surface::pressure\fP, and \fBon_surface::temperature\fP\&.
+References on_surface::height, on_surface::latitude, on_surface::longitude, on_surface::pressure, and on_surface::temperature\&.
 .SS "int make_planet (enum \fBnovas_planet\fP num, \fBobject\fP * planet)"
 Sets a celestial object to be a major planet, or the Sun, Moon or Solar-system Barycenter\&.
 .PP
@@ -3539,7 +3530,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBmake_object()\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, and \fBNOVAS_PLANETS\fP\&.
+References make_object(), NOVAS_PLANET, NOVAS_PLANET_NAMES_INIT, and NOVAS_PLANETS\&.
 .SS "double mean_obliq (double jd_tdb)"
 Computes the mean obliquity of the ecliptic\&.
 .PP
@@ -3615,7 +3606,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&.
 .PP
 
 .PP
-References \fBapp_star()\fP, \fBcat_entry::dec\fP, \fBprecession()\fP, \fBcat_entry::ra\fP, \fBstarvectors()\fP, and \fBvector2radec()\fP\&.
+References app_star(), cat_entry::dec, precession(), cat_entry::ra, starvectors(), and vector2radec()\&.
 .SS "double norm_ang (double angle)"
 Returns the normalized angle in the [0:2) range\&.
 .PP
@@ -3631,7 +3622,7 @@ Returns the normalized angle in the [0:2) range\&.
 .PP
 
 .PP
-References \fBTWOPI\fP\&.
+References TWOPI\&.
 .SS "void novas_case_sensitive (int value)"
 Enables or disables case-sensitive processing of the object name\&. The effect is not retroactive\&. The setting will only affect the celestial objects that are defined after the call\&. Note, that catalog names, set via \fBmake_cat_entry()\fP are always case sensitive regardless of this setting\&.
 .PP
@@ -3681,7 +3672,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_DEBUG_EXTRA\fP\&.
+References NOVAS_DEBUG_EXTRA\&.
 .SS "enum \fBnovas_debug_mode\fP novas_get_debug_mode ()"
 Returns the current, thread-local, mode for reporting errors encountered (and traces)\&.
 .PP
@@ -3747,7 +3738,7 @@ Explanatory Supplement To The Astronomical Almanac, pp\&. 114-115\&.
 .PP
 
 .PP
-References \fBe_tilt()\fP, and \fBNUTATE_MEAN_TO_TRUE\fP\&.
+References e_tilt(), and NUTATE_MEAN_TO_TRUE\&.
 .SS "int nutation_angles (double t, enum \fBnovas_accuracy\fP accuracy, double * dpsi, double * deps)"
 Returns the values for nutation in longitude and nutation in obliquity for a given TDB Julian date\&. The nutation model selected depends upon the input value of 'accuracy'\&. See notes below for important details\&.
 .PP
@@ -3797,7 +3788,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 
 .PP
-References \fBiau2000a()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
+References iau2000a(), and NOVAS_FULL_ACCURACY\&.
 .SS "short place (double jd_tt, const \fBobject\fP * source, const \fBobserver\fP * location, double ut1_to_tt, enum \fBnovas_reference_system\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * output)"
 Computes the apparent direction of a celestial object at a specified time and in a specified coordinate system and a specific near-Earth origin\&.
 .PP
@@ -3866,7 +3857,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597\&.
 .PP
 
 .PP
-References \fBaberration()\fP, \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgeo_posvel()\fP, \fBgrav_def()\fP, \fBlight_time2()\fP, \fBlimb_angle()\fP, \fBmake_observer_at_geocenter()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TOD\fP, \fBobject::number\fP, \fBproper_motion()\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBrad_vel()\fP, \fBsky_pos::rv\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, \fBobject::type\fP, \fBvector2radec()\fP, and \fBobserver::where\fP\&.
+References make_observer_at_geocenter(), make_planet(), NOVAS_EARTH, NOVAS_FULL_ACCURACY, NOVAS_OBSERVER_IN_EARTH_ORBIT, NOVAS_PLANET, NOVAS_REDUCED_ACCURACY, NOVAS_REFERENCE_SYSTEMS, NOVAS_SUN, object::number, tt2tdb(), object::type, and observer::where\&.
 .SS "int place_cirs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the Celestial Intermediate Reference System (CIRS) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
@@ -3905,7 +3896,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_CIRS\fP, and \fBplace()\fP\&.
+References NOVAS_CIRS, and place()\&.
 .SS "int place_gcrs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the Geocentric Celestial Reference System (GCRS) position of a source (as 'seen' from the geocenter) at the given time of observation\&. Unlike \fC\fBplace_icrs()\fP\fP, this includes aberration for the moving frame of the geocenter as well as gravitational deflections calculated for a virtual observer located at the geocenter\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
@@ -3950,7 +3941,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_GCRS\fP, and \fBplace()\fP\&.
+References NOVAS_GCRS, and place()\&.
 .SS "int place_icrs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the International Celestial Reference System (ICRS) position of a source\&. (from the geocenter)\&. Unlike \fC\fBplace_gcrs()\fP\fP, this version does not include aberration or gravitational deflection corrections\&.
 .PP
@@ -3993,7 +3984,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_ICRS\fP, and \fBplace()\fP\&.
+References NOVAS_ICRS, and place()\&.
 .SS "int place_star (double jd_tt, const \fBcat_entry\fP * star, const \fBobserver\fP * obs, double ut1_to_tt, enum \fBnovas_reference_system\fP system, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
@@ -4045,7 +4036,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_CATALOG_OBJECT\fP, \fBplace()\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References NOVAS_CATALOG_OBJECT, place(), object::star, and object::type\&.
 .SS "int place_tod (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the True of Date (TOD) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
@@ -4088,7 +4079,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_TOD\fP, and \fBplace()\fP\&.
+References NOVAS_TOD, and place()\&.
 .SS "double planet_lon (double t, enum \fBnovas_planet\fP planet)"
 Returns the planetary longitude, for Mercury through Neptune, w\&.r\&.t\&. mean dynamical ecliptic and equinox of J2000, with high order terms omitted (Simon et al\&. 1994, 5\&.8\&.1-5\&.8\&.8)\&.
 .PP
@@ -4117,7 +4108,7 @@ Returns the planetary longitude, for Mercury through Neptune, w\&.r\&.t\&. mean 
 .PP
 
 .PP
-References \fBNOVAS_EARTH\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_MARS\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_NEPTUNE\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_URANUS\fP, \fBNOVAS_VENUS\fP, and \fBTWOPI\fP\&.
+References NOVAS_EARTH, NOVAS_JUPITER, NOVAS_MARS, NOVAS_MERCURY, NOVAS_NEPTUNE, NOVAS_SATURN, NOVAS_URANUS, NOVAS_VENUS, and TWOPI\&.
 .SS "short precession (double jd_tdb_in, const double * in, double jd_tdb_out, double * out)"
 Precesses equatorial rectangular coordinates from one epoch to another\&. Unlike the original NOVAS routine, this routine works for any pairing of the time arguments\&.
 .PP
@@ -4171,8 +4162,6 @@ Hilton, J\&. L\&. et al\&. (2006), IAU WG report, Celest\&. Mech\&., 94, pp\&. 3
 .RE
 .PP
 
-.PP
-References \fBprecession()\fP\&.
 .SS "int proper_motion (double jd_tdb_in, const double * pos, const double * vel, double jd_tdb_out, double * out)"
 Applies proper motion, including foreshortening effects, to a star's position\&.
 .PP
@@ -4261,7 +4250,7 @@ Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201\&.
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References AU, and C\&.
 .SS "int radec2vector (double ra, double dec, double dist, double * pos)"
 Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates)\&.
 .PP
@@ -4346,7 +4335,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBplace()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBobject::type\fP\&.
+References sky_pos::dec, sky_pos::dis, NOVAS_EPHEM_OBJECT, NOVAS_PLANET, place(), sky_pos::ra, sky_pos::rv, and object::type\&.
 .SS "int radec_star (double jd_tt, const \fBcat_entry\fP * star, const \fBobserver\fP * obs, double ut1_to_tt, enum \fBnovas_reference_system\fP sys, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * rv)"
 Computes the place of a star at date 'jd_tt', for an observer in the specified coordinate system, given the star's ICRS catalog place, proper motion, parallax, and radial velocity\&.
 .PP
@@ -4404,7 +4393,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBplace_star()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+References sky_pos::dec, place_star(), sky_pos::ra, and sky_pos::rv\&.
 .SS "double refract (const \fBon_surface\fP * location, enum \fBnovas_refraction_model\fP option, double zd_obs)"
 Computes atmospheric optical refraction for an observed (already refracted!) zenith distance through the atmosphere\&. In other words this is suitable to convert refracted zenith angles to astrometric (unrefracted) zenith angles\&. For the reverse, see \fBrefract_astro()\fP\&.
 .PP
@@ -4449,7 +4438,7 @@ Bennett, G\&. (1982), Journal of Navigation (Royal Institute) 35, pp\&. 255-259\
 .PP
 
 .PP
-References \fBon_surface::height\fP, \fBon_surface::latitude\fP, \fBNOVAS_NO_ATMOSPHERE\fP, \fBNOVAS_STANDARD_ATMOSPHERE\fP, \fBNOVAS_WEATHER_AT_LOCATION\fP, \fBon_surface::pressure\fP, and \fBon_surface::temperature\fP\&.
+References on_surface::height, on_surface::latitude, NOVAS_NO_ATMOSPHERE, NOVAS_STANDARD_ATMOSPHERE, NOVAS_WEATHER_AT_LOCATION, on_surface::pressure, and on_surface::temperature\&.
 .SS "double refract_astro (const \fBon_surface\fP * location, enum \fBnovas_refraction_model\fP option, double zd_astro)"
 Computes atmospheric optical refraction for a source at an astrometric zenith distance (e\&.g\&. calculated without accounting for an atmosphere)\&. This is suitable for converting astrometric (unrefracted) zenith angles to observed (refracted) zenith angles\&. See \fBrefract()\fP for the reverse correction\&.
 .PP
@@ -4497,7 +4486,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBrefract()\fP\&.
+References refract()\&.
 .SS "int set_cio_locator_file (const char * filename)"
 Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS\&. The necessary binary data file may be obtained via the \fCcio_file\&.c\fP utility provided in this distribution under \fCtools/\fP\&.
 .PP
@@ -4602,7 +4591,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 
 .PP
-References \fBcio_basis()\fP, \fBcio_location()\fP, \fBe_tilt()\fP, \fBera()\fP, \fBEROT_ERA\fP, \fBEROT_GST\fP, \fBframe_tie()\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBNUTATE_TRUE_TO_MEAN\fP, \fBnutation()\fP, \fBprecession()\fP, and \fBtt2tdb()\fP\&.
+References era(), NOVAS_FULL_ACCURACY, NOVAS_REDUCED_ACCURACY, and tt2tdb()\&.
 .SS "int spin (double angle, const double * in, double * out)"
 Transforms a vector from one coordinate system to another with same origin and axes rotated about the z-axis\&.
 .PP
@@ -4629,7 +4618,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBTWOPI\fP\&.
+References TWOPI\&.
 .SS "int starvectors (const \fBcat_entry\fP * star, double * pos, double * vel)"
 Converts angular quantities for stars to vectors\&.
 .PP
@@ -4661,7 +4650,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBcat_entry::dec\fP, \fBcat_entry::parallax\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBcat_entry::ra\fP, and \fBcat_entry::radialvelocity\fP\&.
+References AU, C, cat_entry::dec, cat_entry::parallax, cat_entry::promodec, cat_entry::promora, cat_entry::ra, and cat_entry::radialvelocity\&.
 .SS "int tdb2tt (double jd_tdb, double * jd_tt, double * secdiff)"
 Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date corresponding to a Barycentric Dynamical Time (TDB) Julian date\&.
 .PP
@@ -4769,7 +4758,7 @@ Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of
 .PP
 
 .PP
-References \fBcirs_to_gcrs()\fP, \fBera()\fP, \fBEROT_ERA\fP, \fBEROT_GST\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBsidereal_time()\fP, \fBspin()\fP, \fBtt2tdb()\fP, \fBwobble()\fP, and \fBWOBBLE_ITRS_TO_PEF\fP\&.
+References cirs_to_gcrs(), era(), EROT_ERA, EROT_GST, NOVAS_DYNAMICAL_CLASS, NOVAS_FULL_ACCURACY, NOVAS_REDUCED_ACCURACY, NOVAS_TRUE_EQUINOX, sidereal_time(), spin(), tt2tdb(), wobble(), and WOBBLE_ITRS_TO_PEF\&.
 .SS "int terra (const \fBon_surface\fP * location, double lst, double * pos, double * vel)"
 Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth\&.
 .PP
@@ -4811,7 +4800,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBANGVEL\fP, \fBAU_KM\fP, \fBERAD\fP, \fBon_surface::height\fP, \fBon_surface::latitude\fP, and \fBon_surface::longitude\fP\&.
+References ANGVEL, AU_KM, ERAD, on_surface::height, on_surface::latitude, and on_surface::longitude\&.
 .SS "int tod_to_itrs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method)\&.
 .PP
@@ -4873,7 +4862,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcel2ter()\fP, \fBEROT_ERA\fP, and \fBNOVAS_DYNAMICAL_CLASS\fP\&.
+References cel2ter(), EROT_ERA, and NOVAS_DYNAMICAL_CLASS\&.
 .SS "int tod_to_j2000 (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the J2000 coordinates\&.
 .PP
@@ -4912,7 +4901,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNUTATE_TRUE_TO_MEAN\fP, \fBnutation()\fP, and \fBprecession()\fP\&.
+References NOVAS_FULL_ACCURACY, NOVAS_REDUCED_ACCURACY, NUTATE_TRUE_TO_MEAN, nutation(), and precession()\&.
 .SS "short topo_planet (double jd_tt, const \fBobject\fP * ss_body, double ut1_to_tt, const \fBon_surface\fP * position, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * dis)"
 Computes the topocentric apparent place of a solar system body at the specified time\&. This is the same as calling \fBplace()\fP for the body for the same observer location and NOVAS_TOD as the reference system, except the different set of return values used\&.
 .PP
@@ -4972,7 +4961,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&.
 .PP
 
 .PP
-References \fBmake_observer()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_TOD\fP, and \fBradec_planet()\fP\&.
+References make_observer(), NOVAS_OBSERVER_ON_EARTH, NOVAS_TOD, and radec_planet()\&.
 .SS "short topo_star (double jd_tt, double ut1_to_tt, const \fBcat_entry\fP * star, const \fBon_surface\fP * position, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec)"
 Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given its ICRS catalog place, proper motion, parallax, and radial velocity\&.
 .PP
@@ -5034,7 +5023,7 @@ Using \fBplace()\fP with system NOVAS_CIRS is now preferred for topocentric calc
 .PP
 
 .PP
-References \fBmake_observer()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_TOD\fP, and \fBradec_star()\fP\&.
+References make_observer(), NOVAS_OBSERVER_ON_EARTH, NOVAS_TOD, and radec_star()\&.
 .SS "short transform_cat (enum \fBnovas_transform_type\fP option, double jd_tt_in, const \fBcat_entry\fP * in, double jd_tt_out, const char * out_id, \fBcat_entry\fP * out)"
 Transform a star's catalog quantities for a change the coordinate system and/or the date for which the positions are calculated\&. Also used to rotate catalog quantities on the dynamical equator and equinox of J2000\&.0 to the ICRS or vice versa\&.
 .PP
@@ -5079,7 +5068,7 @@ This function cannot be properly used to bring data from old star catalogs into 
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBC\fP, \fBcat_entry::catalog\fP, \fBCHANGE_EPOCH\fP, \fBCHANGE_ICRS_TO_J2000\fP, \fBCHANGE_J2000_TO_ICRS\fP, \fBcat_entry::dec\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, \fBcat_entry::parallax\fP, \fBPRECESSION\fP, \fBprecession()\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBPROPER_MOTION\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
+References AU_KM, C, CHANGE_EPOCH, CHANGE_ICRS_TO_J2000, CHANGE_J2000_TO_ICRS, cat_entry::dec, frame_tie(), ICRS_TO_J2000, J2000_TO_ICRS, NOVAS_JD_J2000, cat_entry::parallax, PRECESSION, precession(), cat_entry::promodec, cat_entry::promora, PROPER_MOTION, cat_entry::ra, cat_entry::radialvelocity, and cat_entry::starname\&.
 .SS "int transform_hip (const \fBcat_entry\fP * hipparcos, \fBcat_entry\fP * hip_2000)"
 Convert Hipparcos catalog data at epoch J1991\&.25 to epoch J2000\&.0, for use within NOVAS\&. To be used only for Hipparcos or Tycho stars with linear space motion\&. Both input and output data is in the ICRS\&.
 .PP
@@ -5104,7 +5093,7 @@ Convert Hipparcos catalog data at epoch J1991\&.25 to epoch J2000\&.0, for use w
 .PP
 
 .PP
-References \fBcat_entry::catalog\fP, \fBNOVAS_JD_HIP\fP, \fBcat_entry::ra\fP, and \fBtransform_cat()\fP\&.
+References cat_entry::catalog, NOVAS_JD_HIP, cat_entry::ra, and transform_cat()\&.
 .SS "double tt2tdb (double jd_tt)"
 Returns the TDB - TT time difference in seconds for a given TT date\&.
 .PP
@@ -5142,7 +5131,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBTWOPI\fP\&.
+References TWOPI\&.
 .SS "short vector2radec (const double * pos, double * ra, double * dec)"
 Converts an vector in equatorial rectangular coordinates to equatorial spherical coordinates\&.
 .PP
@@ -5222,7 +5211,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&.
 .PP
 
 .PP
-References \fBNOVAS_GCRS\fP, and \fBradec_planet()\fP\&.
+References NOVAS_GCRS, and radec_planet()\&.
 .SS "short virtual_star (double jd_tt, const \fBcat_entry\fP * star, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec)"
 Computes the virtual place of a star, referenced to GCRS, at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity\&.
 .PP
@@ -5274,7 +5263,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3\&.
 .PP
 
 .PP
-References \fBNOVAS_GCRS\fP, and \fBradec_star()\fP\&.
+References NOVAS_GCRS, and radec_star()\&.
 .SS "int wobble (double jd_tt, enum \fBnovas_wobble_direction\fP direction, double xp, double yp, const double * in, double * out)"
 Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin (TIO)\&. The ITRS vector is thereby transformed to the terrestrial intermediate system, based on the true (rotational) equator and TIO\&. Because the true equator is the plane orthogonal to the direction of the Celestial Intermediate Pole (CIP), the components of the output vector are referred to z and x axes toward the CIP and TIO, respectively\&.
 .PP
@@ -5326,7 +5315,7 @@ Lambert & Bizouard (2002), Astronomy and Astrophysics 394, 317-321\&.
 .PP
 
 .PP
-References \fBWOBBLE_ITRS_TO_PEF\fP\&.
+References WOBBLE_ITRS_TO_PEF\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.

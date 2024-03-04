@@ -1,4 +1,4 @@
-.TH "src/eph_manager.c" 3Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/eph_manager.c" 3 "Mon Mar 4 2024" "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -145,7 +145,7 @@ Includes fix for the known resource leak issue in NOVAS C 3\&.1\&.
 .PP
 
 .PP
-References \fBBUFFER\fP, and \fBEPHFILE\fP\&.
+References BUFFER, and EPHFILE\&.
 .SS "short ephem_open (const char * ephem_name, double * jd_begin, double * jd_end, short * de_number)"
 This function opens a JPL planetary ephemeris file and sets initial values\&. This function must be called prior to calls to the other JPL ephemeris functions\&.
 .PP
@@ -179,7 +179,7 @@ Standish, E\&.M\&. and Newhall, X X (1988)\&. 'The JPL Export Planetary Ephemeri
 .PP
 
 .PP
-References \fBBUFFER\fP, \fBEM_RATIO\fP, \fBEPHFILE\fP, \fBIPT\fP, \fBJPLAU\fP, \fBKM\fP, \fBLPT\fP, \fBNP\fP, \fBNRL\fP, \fBNV\fP, \fBPC\fP, \fBRECORD_LENGTH\fP, \fBSS\fP, \fBTWOT\fP, and \fBVC\fP\&.
+References BUFFER, EM_RATIO, EPHFILE, IPT, JPLAU, KM, LPT, NP, NRL, NV, PC, RECORD_LENGTH, SS, TWOT, and VC\&.
 .SS "int interpolate (const double * buf, const double * t, long ncf, long na, double * position, double * velocity)"
 Differentiates and interpolates a set of Chebyshev coefficients to give position and velocity\&.
 .PP
@@ -213,7 +213,7 @@ Standish, E\&.M\&. and Newhall, X X (1988)\&. 'The JPL Export
 .PP
 
 .PP
-References \fBNP\fP, \fBNV\fP, \fBPC\fP, \fBTWOT\fP, and \fBVC\fP\&.
+References NP, NV, PC, TWOT, and VC\&.
 .SS "short planet_ephemeris (const double tjd[2], enum de_planet target, enum de_planet origin, double * position, double * velocity)"
 Retries planet position and velocity data from the JPL planetary ephemeris
 .PP
@@ -252,7 +252,7 @@ Standish, E\&.M\&. and Newhall, X X (1988)\&. 'The JPL Export
 .PP
 
 .PP
-References \fBEM_RATIO\fP, and \fBstate()\fP\&.
+References EM_RATIO, and state()\&.
 .SS "int split (double tt, double * fr)"
 reaks up a double number into a double integer part and a fractional part\&.
 .PP
@@ -300,7 +300,7 @@ Standish, E\&.M\&. and Newhall, X X (1988)\&. 'The JPL Export
 .PP
 
 .PP
-References \fBBUFFER\fP, \fBephem_close()\fP, \fBEPHFILE\fP, \fBinterpolate()\fP, \fBIPT\fP, \fBJPLAU\fP, \fBKM\fP, \fBNRL\fP, \fBRECORD_LENGTH\fP, \fBsplit()\fP, and \fBSS\fP\&.
+References BUFFER, ephem_close(), EPHFILE, interpolate(), IPT, JPLAU, KM, NRL, RECORD_LENGTH, split(), and SS\&.
 .SH "Variable Documentation"
 .PP 
 .SS "short KM"

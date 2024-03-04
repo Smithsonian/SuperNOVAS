@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<tagfile doxygen_version="1.9.7">
+<tagfile doxygen_version="1.9.1">
   <compound kind="file">
     <name>novas.h</name>
-    <path>include/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/include/</path>
     <filename>novas_8h.html</filename>
     <includes id="nutation_8h" name="nutation.h" local="yes" imported="no">nutation.h</includes>
     <includes id="solarsystem_8h" name="solarsystem.h" local="yes" imported="no">solarsystem.h</includes>
@@ -1520,7 +1520,7 @@
   </compound>
   <compound kind="file">
     <name>novascon.h</name>
-    <path>include/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/include/</path>
     <filename>novascon_8h.html</filename>
     <member kind="variable">
       <type>const double</type>
@@ -1623,7 +1623,7 @@
   </compound>
   <compound kind="file">
     <name>nutation.h</name>
-    <path>include/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/include/</path>
     <filename>nutation_8h.html</filename>
     <member kind="typedef">
       <type>int(*</type>
@@ -1656,7 +1656,7 @@
   </compound>
   <compound kind="file">
     <name>solarsystem.h</name>
-    <path>include/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/include/</path>
     <filename>solarsystem_8h.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
     <member kind="typedef">
@@ -1754,7 +1754,7 @@
       <type>double *</type>
       <name>readeph</name>
       <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>abb70fdad016c3a2ea45990eaa16b9245</anchor>
+      <anchor>a949e7f46c65d270722b6a3467b376443</anchor>
       <arglist>(int mp, const char *name, double jd_tdb, int *error)</arglist>
     </member>
     <member kind="function">
@@ -1795,7 +1795,7 @@
   </compound>
   <compound kind="file">
     <name>eph_manager.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>eph__manager_8c.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
     <member kind="function">
@@ -1948,7 +1948,7 @@
   </compound>
   <compound kind="file">
     <name>novas.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>novas_8c.html</filename>
     <member kind="function">
       <type>int</type>
@@ -2702,7 +2702,7 @@
   </compound>
   <compound kind="file">
     <name>novascon.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>novascon_8c.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
     <includes id="novascon_8h" name="novascon.h" local="yes" imported="no">novascon.h</includes>
@@ -2793,7 +2793,7 @@
   </compound>
   <compound kind="file">
     <name>nutation.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>nutation_8c.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
     <member kind="function">
@@ -2820,7 +2820,7 @@
   </compound>
   <compound kind="file">
     <name>solsys-ephem.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>solsys-ephem_8c.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" imported="no">novas.h</includes>
     <member kind="function">
@@ -2854,7 +2854,7 @@
   </compound>
   <compound kind="file">
     <name>solsys1.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>solsys1_8c.html</filename>
     <member kind="function">
       <type>short</type>
@@ -2887,7 +2887,7 @@
   </compound>
   <compound kind="file">
     <name>solsys2.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>solsys2_8c.html</filename>
     <member kind="function">
       <type>void</type>
@@ -2934,7 +2934,7 @@
   </compound>
   <compound kind="file">
     <name>solsys3.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/SuperNOVAS/SuperNOVAS/src/</path>
     <filename>solsys3_8c.html</filename>
     <member kind="function">
       <type>short</type>
@@ -3262,9 +3262,9 @@
     <filename>md_CHANGELOG.html</filename>
   </compound>
   <compound kind="page">
-    <name>md_CODE__OF__CONDUCT</name>
+    <name>md_CODE_OF_CONDUCT</name>
     <title>Contributor Covenant Code of Conduct</title>
-    <filename>md_CODE__OF__CONDUCT.html</filename>
+    <filename>md_CODE_OF_CONDUCT.html</filename>
   </compound>
   <compound kind="page">
     <name>md_CONTRIBUTING</name>
@@ -3273,29 +3273,8 @@
   </compound>
   <compound kind="page">
     <name>index</name>
-    <title>SuperNOVAS</title>
+    <title></title>
     <filename>index.html</filename>
-    <docanchor file="index.html">md_README-headless</docanchor>
-    <docanchor file="index.html">introduction</docanchor>
-    <docanchor file="index.html">fixed-issues</docanchor>
-    <docanchor file="index.html">compatibility</docanchor>
-    <docanchor file="index.html">installation</docanchor>
-    <docanchor file="index.html">examples</docanchor>
-    <docanchor file="index.html">methodologies</docanchor>
-    <docanchor file="index.html">sidereal-example</docanchor>
-    <docanchor file="index.html">solsys-example</docanchor>
-    <docanchor file="index.html">accuracy-notes</docanchor>
-    <docanchor file="index.html">performance-note</docanchor>
-    <docanchor file="index.html">multi-threading</docanchor>
-    <docanchor file="index.html">precision</docanchor>
-    <docanchor file="index.html">supernovas-features</docanchor>
-    <docanchor file="index.html">added-functionality</docanchor>
-    <docanchor file="index.html">debug-mode</docanchor>
-    <docanchor file="index.html">api-changes</docanchor>
-    <docanchor file="index.html">solarsystem</docanchor>
-    <docanchor file="index.html">universal-ephemerides</docanchor>
-    <docanchor file="index.html">builtin-ephem-readers</docanchor>
-    <docanchor file="index.html">explicit-ephem-linking</docanchor>
-    <docanchor file="index.html">release-schedule</docanchor>
+    <docanchor file="index.html">md_README_headless</docanchor>
   </compound>
 </tagfile>

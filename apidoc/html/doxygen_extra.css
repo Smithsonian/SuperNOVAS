@@ -1,39 +1,56 @@
+* {
+  font-family: "Roboto", "Calibri", "Arial", sans-serif;
+}
+
+.headertitle {
+  font-size: 125%;
+}
+
+#nav-tree .label {
+  font-size: 110%;
+}
+
+p, li {
+  font-size: 110%;
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin-top: 24px;
   margin-bottom: 16px;
   font-weight: 600;
   line-height: 1.25;
+  color: #8d0034;
 }
 
 h1 {
-  font-size: 1.5em;
+  font-size: 200%;
   padding-top: 1em;
   padding-bottom: 0.3em;
   border-bottom: 2px solid;
 }
 
 h2 {
+  font-size: 170%;
   padding-top: 0.3em;
   padding-bottom: 0.2em;
-  font-size: 1.3em;
   border-bottom: 1px solid;
 }
 
 h3 {
-  font-size: 1.1em;
+  font-size: 150%;
 }
 
 h4 {
-  font-size: 1em;
+  font-size: 125%;
 }
 
 h5 {
-  font-size: 0.875em;
+  font-size: 110%;
 }
 
 h6 {
-  font-size: 0.85em;
-  color: #57606a;
+  font-size: 87.5%;
+  color: #283266;
 }
 
 div.fragment {
@@ -41,24 +58,82 @@ div.fragment {
   border: 0px solid;
 }
 
-div.line {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 85%;
+.line, .keywordflow {
+  font-family: "Roboto Mono", "Calibri Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   line-height: 1.8;
-  color: #d07020;
 }
 
-code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 85%;
-  margin: 0px 2px 0px 2px;
-  font-weight: bold;
-  color: #b05010;
+span.comment {
+  color: #555D68;
 }
+
 
 div.line.glow {
   background-color: auto;
   box-shadow: none;
+  font-weight: bold;
+}
+
+hr {
+  display: none;
+}
+
+code {
+  font-family: "Roboto Mono", "Calibri Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  margin: 0px 2px 0px 2px;
+  font-weight: bold;
+}
+
+a.hl_function, a.hl_struct, span.keywordtype, span.keywordflow {
+  font-weight: bold;
+}
+
+span.keywordflow {
+  color: #C6809A;
+}
+
+a {
+  color: var(--page-link-color); 
+}
+
+a:visited, a.dark-mode {
+  color: #555DA3;
+}
+
+/* 80% red A4335D */
+/* 50% blue #959ABA
+/* 40% blue #AAAEC8 */
+html {
+  --fragment-foreground-color: #283266;
+  --page-link-color: #283266;
+  --code-link-color: #5C1B55;
+  --code-type-keyword-color: #BB6685;
+  --memdef-proto-text-color: #8d0034;
+}
+
+html.dark-mode {
+  --fragment-foreground-color: #959ABA;
+  --page-link-color: #555DA3;
+  --code-link-color: #8D6088;
+  --page-visited-link-color: #8086AC;
+  --code-type-keyword-color: #BB6685;
+  --memdef-proto-text-color: #8d0034;
+}
+
+.label: {
+  font-size: 200%;
+}
+
+.paramname {
+   color: #BB0085;
+}
+
+.memtitle {
+  font-weight: bold;
+}
+
+.memname {
+  font-weight: bold;
 }
 
 blockquote {
