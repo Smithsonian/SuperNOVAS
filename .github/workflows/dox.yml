@@ -64,8 +64,8 @@ jobs:
     - name: Copy CHANGELOG
       run: cp CHANGELOG.md site/doc/
       
-#    - name: Copy API documentation
-#      run: cp -a apidoc site/
+    - name: Copy API documentation
+      run: cp -a apidoc site/
         
     - name: Push to pages
       run: |
