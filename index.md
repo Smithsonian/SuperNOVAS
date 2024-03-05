@@ -16,14 +16,14 @@ SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harv
 This site contains various online resources that support the library:
 
  
-## Downloads
+__Downloads__
 
  - Download [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub.
  - Doxygen [tag file](apidoc/novas.tag) (`novas.tag`) for linking 
    your [Doxygen](https://www.doxygen.nl/) documentation to that of SuperNOVAS.
 
 
-## Documentation
+__Documentation__
 
  - [User's guide](doc/README.md) (`README.md`)
  - [API Documentation](apidoc/html/files.html)
