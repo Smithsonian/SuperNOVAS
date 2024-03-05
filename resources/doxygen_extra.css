@@ -97,28 +97,36 @@ a {
 }
 
 a:visited, a.dark-mode {
-  color: #555DA3;
+  color: #894270;
 }
 
+/* tint 15/85           80%: 894270  */ 
+/* tint 30/70 482562 -> 80%: 6D5182  */
+/* tint 50/50 5C1B55 */
+/* tint 70/30 701048 */
 /* 80% red A4335D */
+/* 100% blue 283266 */
+/* 80% blue 555DA3 */
 /* 70% blue 6B719E */
-/* 50% blue #959ABA */
-/* 40% blue #AAAEC8 */
+/* 60% blue 8086AC */
+/* 50% blue 959ABA */
+/* 40% blue AAAEC8 */
 html {
   --fragment-foreground-color: #283266;
-  --page-link-color: #283266;
-  --code-link-color: #5C1B55;
-  --code-type-keyword-color: #BB6685;
-  --memdef-proto-text-color: #8d0034;
+  --page-link-color: #8d0034;
+  --code-link-color: #8d0034;
+  --page-visited-link-color: #701048;
+  --code-type-keyword-color: #5C1B55;
+  --memdef-proto-text-color: #555DA3;
 }
 
 html.dark-mode {
   --fragment-foreground-color: #959ABA;
-  --page-link-color: #6B719E;
-  --code-link-color: #8D6088;
-  --page-visited-link-color: #8086AC;
-  --code-type-keyword-color: #BB6685;
-  --memdef-proto-text-color: #8d0034;
+  --page-link-color: #A4335D;
+  --code-link-color: #A4335D;
+  --page-visited-link-color: #894270; 
+  --code-type-keyword-color: #6D5182;
+  --memdef-proto-text-color: #555DA3;
 }
 
 .label: {
