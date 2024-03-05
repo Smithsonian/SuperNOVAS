@@ -3262,11 +3262,6 @@
     <filename>md_CHANGELOG.html</filename>
   </compound>
   <compound kind="page">
-    <name>md_CODE__OF__CONDUCT</name>
-    <title>Contributor Covenant Code of Conduct</title>
-    <filename>md_CODE__OF__CONDUCT.html</filename>
-  </compound>
-  <compound kind="page">
     <name>md_CONTRIBUTING</name>
     <title>Contributing to SuperNOVAS</title>
     <filename>md_CONTRIBUTING.html</filename>

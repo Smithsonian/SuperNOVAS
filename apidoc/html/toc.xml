@@ -1,37 +1,37 @@
 <toc label="SuperNOVAS" topic="index.html">
-  <topic label="Table of Contents" href="index.html#autotoc_md19">
-    <topic label="Introduction" href="index.html#autotoc_md21"/>
-    <topic label="Fixed NOVAS C 3.1 issues" href="index.html#autotoc_md23"/>
-    <topic label="Compatibility with NOVAS C 3.1" href="index.html#autotoc_md25"/>
-    <topic label="Building and installation" href="index.html#autotoc_md27">
-      <topic label="Building your application with SuperNOVAS" href="index.html#autotoc_md28"/>
+  <topic label="Table of Contents" href="index.html#autotoc_md7">
+    <topic label="Introduction" href="index.html#autotoc_md9"/>
+    <topic label="Fixed NOVAS C 3.1 issues" href="index.html#autotoc_md11"/>
+    <topic label="Compatibility with NOVAS C 3.1" href="index.html#autotoc_md13"/>
+    <topic label="Building and installation" href="index.html#autotoc_md15">
+      <topic label="Building your application with SuperNOVAS" href="index.html#autotoc_md16"/>
     </topic>
-    <topic label="Example usage" href="index.html#autotoc_md30">
-      <topic label="Note on alternative methodologies" href="index.html#autotoc_md31"/>
-      <topic label="Calculating positions for a sidereal source" href="index.html#autotoc_md32">
-        <topic label="A. True apparent R.A. and declination" href="index.html#autotoc_md33"/>
-        <topic label="B. Azimuth and elevation angles at the observing location" href="index.html#autotoc_md34"/>
+    <topic label="Example usage" href="index.html#autotoc_md18">
+      <topic label="Note on alternative methodologies" href="index.html#autotoc_md19"/>
+      <topic label="Calculating positions for a sidereal source" href="index.html#autotoc_md20">
+        <topic label="A. True apparent R.A. and declination" href="index.html#autotoc_md21"/>
+        <topic label="B. Azimuth and elevation angles at the observing location" href="index.html#autotoc_md22"/>
       </topic>
-      <topic label="Calculating positions for a Solar-system source" href="index.html#autotoc_md35"/>
-      <topic label="Reduced accuracy shortcuts" href="index.html#autotoc_md36"/>
-      <topic label="Performance considerations" href="index.html#autotoc_md37"/>
-      <topic label="Multi-threaded calculations" href="index.html#autotoc_md38"/>
+      <topic label="Calculating positions for a Solar-system source" href="index.html#autotoc_md23"/>
+      <topic label="Reduced accuracy shortcuts" href="index.html#autotoc_md24"/>
+      <topic label="Performance considerations" href="index.html#autotoc_md25"/>
+      <topic label="Multi-threaded calculations" href="index.html#autotoc_md26"/>
     </topic>
-    <topic label="Usage" href="index.html#autotoc_md40"/>
-    <topic label="Notes on precision" href="index.html#autotoc_md41"/>
-    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md43">
-      <topic label="Newly added functionality" href="index.html#autotoc_md44"/>
-      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md45"/>
+    <topic label="Usage" href="index.html#autotoc_md28"/>
+    <topic label="Notes on precision" href="index.html#autotoc_md29"/>
+    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md31">
+      <topic label="Newly added functionality" href="index.html#autotoc_md32"/>
+      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md33"/>
     </topic>
-    <topic label="External Solar-system ephemeris data or services" href="index.html#autotoc_md47">
-      <topic label="1. Universal ephemeris data / service integration" href="index.html#autotoc_md48"/>
-      <topic label="2. Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md49">
-        <topic label="2.1. Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md50"/>
-        <topic label="2.b. Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md51"/>
+    <topic label="External Solar-system ephemeris data or services" href="index.html#autotoc_md35">
+      <topic label="1. Universal ephemeris data / service integration" href="index.html#autotoc_md36"/>
+      <topic label="2. Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md37">
+        <topic label="2.1. Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md38"/>
+        <topic label="2.b. Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md39"/>
       </topic>
-      <topic label="3. Explicit linking of custom ephemeris functions" href="index.html#autotoc_md52"/>
+      <topic label="3. Explicit linking of custom ephemeris functions" href="index.html#autotoc_md40"/>
     </topic>
-    <topic label="Release schedule" href="index.html#autotoc_md54"/>
+    <topic label="Release schedule" href="index.html#autotoc_md42"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[1.0.0] - 2024-03-01" href="md_CHANGELOG.html#autotoc_md1">
@@ -40,20 +40,6 @@
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
       <topic label="Deprecated" href="md_CHANGELOG.html#autotoc_md5"/>
     </topic>
-  </topic>
-  <topic label="Contributor Covenant Code of Conduct" href="md_CODE__OF__CONDUCT.html">
-    <topic label="Our Pledge" href="md_CODE__OF__CONDUCT.html#autotoc_md7"/>
-    <topic label="Our Standards" href="md_CODE__OF__CONDUCT.html#autotoc_md8"/>
-    <topic label="Enforcement Responsibilities" href="md_CODE__OF__CONDUCT.html#autotoc_md9"/>
-    <topic label="Scope" href="md_CODE__OF__CONDUCT.html#autotoc_md10"/>
-    <topic label="Enforcement" href="md_CODE__OF__CONDUCT.html#autotoc_md11"/>
-    <topic label="Enforcement Guidelines" href="md_CODE__OF__CONDUCT.html#autotoc_md12">
-      <topic label="1. Correction" href="md_CODE__OF__CONDUCT.html#autotoc_md13"/>
-      <topic label="2. Warning" href="md_CODE__OF__CONDUCT.html#autotoc_md14"/>
-      <topic label="3. Temporary Ban" href="md_CODE__OF__CONDUCT.html#autotoc_md15"/>
-      <topic label="4. Permanent Ban" href="md_CODE__OF__CONDUCT.html#autotoc_md16"/>
-    </topic>
-    <topic label="Attribution" href="md_CODE__OF__CONDUCT.html#autotoc_md17"/>
   </topic>
   <topic label="Contributing to SuperNOVAS" href="md_CONTRIBUTING.html"/>
   <topic label="Deprecated List" href="deprecated.html"/>

@@ -1,17 +1,15 @@
 var searchData=
 [
-  ['f_0',['f',['../novascon_8c.html#a480d6423b1e9ca40c69c5a83458b49b0',1,'F:&#160;novascon.c'],['../novascon_8h.html#a480d6423b1e9ca40c69c5a83458b49b0',1,'F:&#160;novascon.c'],['../structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040',1,'novas_delaunay_args::F']]],
-  ['features_1',['SuperNOVAS specific features',['../index.html#autotoc_md43',1,'']]],
-  ['fixed_2',['Fixed',['../md_CHANGELOG.html#autotoc_md2',1,'']]],
-  ['fixed_20novas_20c_203_201_20issues_3',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md23',1,'']]],
-  ['fn0_4',['FN0',['../novascon_8h.html#a2d8f405dc66e829e1869bea6ffb86a44',1,'novascon.h']]],
-  ['fn1_5',['FN1',['../novascon_8h.html#af275414414fd105a1702ca74374d1f70',1,'novascon.h']]],
-  ['for_20a_20sidereal_20source_6',['Calculating positions for a sidereal source',['../index.html#autotoc_md32',1,'']]],
-  ['for_20a_20solar_20system_20source_7',['Calculating positions for a Solar-system source',['../index.html#autotoc_md35',1,'']]],
-  ['for_20old_20jpl_20major_20planet_20ephemerides_8',['2. Built-in support for (old) JPL major planet ephemerides',['../index.html#autotoc_md49',1,'']]],
-  ['fortran_20interface_9',['2.b. Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md51',1,'']]],
-  ['frame_5ftie_10',['frame_tie',['../novas_8c.html#aa11d2253a44261370af8d0c32f0715e9',1,'frame_tie(const double *in, enum novas_frametie_direction direction, double *out):&#160;novas.c'],['../novas_8h.html#aa11d2253a44261370af8d0c32f0715e9',1,'frame_tie(const double *in, enum novas_frametie_direction direction, double *out):&#160;novas.c']]],
-  ['functionality_11',['Newly added functionality',['../index.html#autotoc_md44',1,'']]],
-  ['functions_12',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md52',1,'']]],
-  ['fund_5fargs_13',['fund_args',['../novas_8c.html#aaac686274606e79ba666f94306eece8b',1,'fund_args(double t, novas_delaunay_args *a):&#160;novas.c'],['../novas_8h.html#aaac686274606e79ba666f94306eece8b',1,'fund_args(double t, novas_delaunay_args *a):&#160;novas.c']]]
+  ['gal2equ_0',['gal2equ',['../novas_8h.html#af4cce5aa6c74794a0b89176037305181',1,'gal2equ(double glon, double glat, double *ra, double *dec):&#160;novas.c'],['../novas_8c.html#af4cce5aa6c74794a0b89176037305181',1,'gal2equ(double glon, double glat, double *ra, double *dec):&#160;novas.c']]],
+  ['gcrs2equ_1',['gcrs2equ',['../novas_8c.html#a41f6507aa31cd35eff54f9c430ce78c0',1,'gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg, double *ra, double *dec):&#160;novas.c'],['../novas_8h.html#a41f6507aa31cd35eff54f9c430ce78c0',1,'gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg, double *ra, double *dec):&#160;novas.c']]],
+  ['gcrs_5fto_5fcirs_2',['gcrs_to_cirs',['../novas_8c.html#a51ea4a016336dd3cf7783061c14d165c',1,'gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out):&#160;novas.c'],['../novas_8h.html#ac27c155ecd4c28aaf9cac12dfd72ddb8',1,'gcrs_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out):&#160;novas.c']]],
+  ['gcrs_5fto_5fj2000_3',['gcrs_to_j2000',['../novas_8c.html#aeea4b5085c7267714492fae6108fb975',1,'gcrs_to_j2000(const double *in, double *out):&#160;novas.c'],['../novas_8h.html#aeea4b5085c7267714492fae6108fb975',1,'gcrs_to_j2000(const double *in, double *out):&#160;novas.c']]],
+  ['ge_4',['ge',['../novascon_8c.html#a0ee5d7a271610d60ec10f180747886eb',1,'GE:&#160;novascon.c'],['../novascon_8h.html#a0ee5d7a271610d60ec10f180747886eb',1,'GE:&#160;novascon.c']]],
+  ['geo_5fposvel_5',['geo_posvel',['../novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97',1,'geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos, double *vel):&#160;novas.c'],['../novas_8h.html#a581ef7bb3d2261a105d7086fc1768c97',1,'geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos, double *vel):&#160;novas.c']]],
+  ['get_5fephem_5fprovider_6',['get_ephem_provider',['../novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1',1,'get_ephem_provider():&#160;novas.c'],['../solarsystem_8h.html#aa6fad38297a49ba78a6bd49cedf889b1',1,'get_ephem_provider():&#160;novas.c']]],
+  ['get_5fut1_5fto_5ftt_7',['get_ut1_to_tt',['../novas_8c.html#a4d7470ca705efa1953e8b4beab77c6b6',1,'get_ut1_to_tt(int leap_seconds, double dut1):&#160;novas.c'],['../novas_8h.html#a4d7470ca705efa1953e8b4beab77c6b6',1,'get_ut1_to_tt(int leap_seconds, double dut1):&#160;novas.c']]],
+  ['get_5futc_5fto_5ftt_8',['get_utc_to_tt',['../novas_8c.html#ab7611704bab9ce717744a8b5575c5378',1,'get_utc_to_tt(int leap_seconds):&#160;novas.c'],['../novas_8h.html#ab7611704bab9ce717744a8b5575c5378',1,'get_utc_to_tt(int leap_seconds):&#160;novas.c']]],
+  ['grav_5fdef_9',['grav_def',['../novas_8c.html#a525de0742ee25bd3fbe9ee0ea5494ac4',1,'grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs, double *out):&#160;novas.c'],['../novas_8h.html#a525de0742ee25bd3fbe9ee0ea5494ac4',1,'grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs, double *out):&#160;novas.c']]],
+  ['grav_5fvec_10',['grav_vec',['../novas_8c.html#a08a008572e2746a70bec19739b5fb7e6',1,'grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out):&#160;novas.c'],['../novas_8h.html#a08a008572e2746a70bec19739b5fb7e6',1,'grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out):&#160;novas.c']]],
+  ['gs_11',['gs',['../novascon_8c.html#a5060445c439eb63c5fb506fa625ca343',1,'GS:&#160;novascon.c'],['../novascon_8h.html#a5060445c439eb63c5fb506fa625ca343',1,'GS:&#160;novascon.c']]]
 ];
