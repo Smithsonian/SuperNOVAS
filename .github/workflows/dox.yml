@@ -19,13 +19,13 @@ jobs:
     env:
       CC: gcc
     steps:
-    
+
+    - name: install doxygen
+      run: sudo apt-get install doxygen
+   
     - uses: actions/checkout@v4
 
-    - name: install dependencies
-      run: sudo apt-get install -y doxygen
-        
-    - name: Run doxygen
+    - name: Generate docs
       run: make dox
  
   site-update:
@@ -36,15 +36,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - name: Checkout main
+    - name: Checkout source
       uses: actions/checkout@v4
         
-    - name: install dependencies
-      run: sudo apt-get install -y doxygen
+    - name: Generate headless README
+      run: make README-headless.md
         
-    - name: Run doxygen
-      run: make dox
-    
+    - uses: mattnotmitt/doxygen-action@v1.9.8
+      with:
+        additional-packages: font-roboto
+       
     - name: Checkout gh-pages
       uses: actions/checkout@v4
       with:

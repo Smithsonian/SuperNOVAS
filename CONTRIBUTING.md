@@ -1,11 +1,10 @@
 # Contributing to SuperNOVAS
 
 
-The _SuperNOVAS_ library is for everyone. While I, Attila Kovacs, am the maintainer of this library at the 
-Smithsonian, I absolutely rely on developers like you to make it better. Whether there is a nagging issue you would 
-like to fix, or a new feature you'd like to see, you can make a difference yourself. I very much encourage you to 
-make this project a little bit your own, by submitting pull requests with fixes and enhancement. When you are ready, 
-here are the typical steps for contributing to the project:
+The _SuperNOVAS_ library is for everyone. And, it is developers like you who can make it better. Whether there is a 
+nagging issue you would like to fix, or a new feature you'd like to see, you can make a difference yourself. Make this 
+project a little bit your own, by submitting pull requests with fixes and enhancement. When you are ready, here are 
+the typical steps for contributing to the project:
 
 1. Old or new __Issue__? Whether you just found a bug, or you are missing a much needed feature, start by checking 
 open (and closed) [Issues](https://github.com/Smithsonian/SuperNOVAS/issues). If an existing issue seems like a 

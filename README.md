@@ -1,7 +1,7 @@
 ![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 ![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/check.yml/badge.svg)
-<a href="https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/files.html">
+<a href="https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html">
  ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 </a>
 <a href="https://codecov.io/gh/Smithsonian/SuperNOVAS">
@@ -54,7 +54,7 @@ SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software
 The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues)
- - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/files.html).
+ - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
  - [New features](#added-functionality)
  - [Refining the API](#api-changes) to promote best programing practices.
  - [Thread-safe calculations](#multi-threading).
@@ -76,7 +76,7 @@ Outside contributions are very welcome. See
 
 Here are some links to other SuperNOVAS related content online:
 
- - [SuperNOVAS.home](https://smithsonian.github.io/SuperNOVAS.home) page on github.io.
+ - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io.
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via JPL HORIZONS.
@@ -708,7 +708,7 @@ before that level of accuracy is reached.
    data modifications.
 
  - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
-   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS.home/apidoc/html/) for specifics).
+   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/) for specifics).
    This eliminates the need to declare dummy variables in your application code.
   
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
