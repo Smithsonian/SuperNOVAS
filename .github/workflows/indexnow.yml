@@ -7,6 +7,9 @@ jobs:
   indexnow:
     runs-on: ubuntu-latest
     steps:
+      - name: create IndexNow key
+        run: echo ${{ secrets.INDEXNOW_KEY }} > ${{ secrets.INDEXNOW_KEY }}.txt
+        
       - name: IndexNow
         uses: bojieyang/indexnow-action@v2
         with:

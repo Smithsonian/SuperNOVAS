@@ -119,8 +119,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
-   equinox of date coordinates.
+   `coord_sys = 0` and the same date as before would return the results in GCRS coordinates instead of the requested 
+   mean equinox of date coordinates.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
