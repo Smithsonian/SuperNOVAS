@@ -1,0 +1,17 @@
+name: IndexNow
+
+on:
+  page_build
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: IndexNow
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: 'https://smithsonian.github.io/SuperNOVAS/sitemap.xml'
+          key: ${{ secrets.INDEXNOW_KEY }}
+          since-unit: week
+          limit: 200
+
