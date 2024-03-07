@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Stay tuned...
+
 ### Added
 
  - Added `cirs_to_app_ra()` and `app_to_cirs_ra()` for convenience to convert between right ascensions measured from
@@ -21,7 +23,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [1.0.0] - 2024-03-01
 
-This is the initial release of the SuperNOVAS library.
+This is the initial release of the SuperNOVAS library. Changes are indicated w.r.t. the upstream NOVAS C 3.1 library 
+from which SuperNOVAS is forked from.
 
 ### Fixed
 
