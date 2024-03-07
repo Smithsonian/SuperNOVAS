@@ -1,3 +1,8 @@
+---
+title: SuperNOVAS
+description: The NOVAS C library, made better
+---
+
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
 
