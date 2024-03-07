@@ -2,10 +2,10 @@
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"><br clear="all">
 
 
-__SuperNOVAS__ is an astronomy software library for the for the C programming language, providing high-precision 
-astrometry such as one might need for running an observatory or a precise planetarium program. It is a fork of the 
-Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) version 3.1, 
-providing bug fixes and making it safer and easier to use overall.
+__SuperNOVAS__ is a C/C++ astronomy software library, providing high-precision astrometry such as one might need 
+for running an observatory or a precise planetarium program. It is a fork of the Naval Observatory Vector Astrometry 
+Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, providing bug fixes and making it safer 
+and easier to use overall.
 
 SuperNOVAS is entirely free to use without any licensing restrictions.  Its source code is compatible with the C90 
 standard, and hence should be suitable for many older platforms also. It is light-weight and easy to use, with full 
