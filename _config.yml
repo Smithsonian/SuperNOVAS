@@ -1,5 +1,6 @@
 theme: jekyll-theme-Tactile
 author: Attila Kovacs
+github_username: attipaci
 title: SuperNOVAS
 description: The NOVAS C library, made better
 excerpt: SuperNOVAS is a light-weight, high-precision astrometry library for the C programming language. It is a fork of NOVAS C 3.1.
