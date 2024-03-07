@@ -75,3 +75,36 @@ jobs:
         git add -A
         git commit -m "[automated site update]" && git push || true
         
+        
+  changelog-update:
+    name: Update CHANGELOG on github pages
+    if: github.repository_owner == 'Smithsonian' && contains(github.event.head_commit.message, 'changelog update')
+   
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Checkout source
+      uses: actions/checkout@v4
+       
+    - name: Checkout gh-pages
+      uses: actions/checkout@v4
+      with:
+        ref: 'gh-pages'
+        path: site
+
+    - name: Assert site/doc/
+      run: mkdir -p site/doc 
+        
+    - name: Copy CHANGELOG
+      run: cp CHANGELOG.md site/doc/
+        
+    - name: Push to pages
+      run: |
+        cd site
+        git config --global user.email "$GITHUB_JOB+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions"
+        git add -A
+        git commit -m "[automated site update]" && git push || true
+    
+ 
+        
