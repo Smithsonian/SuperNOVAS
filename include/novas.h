@@ -869,7 +869,18 @@ int itrs_to_hor(const on_surface *location, const double *itrs, double *az, doub
 
 int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
 
+// ---------------------- Added in 1.0.1 -------------------------
+double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
+
+double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
+
+
+// <================= END of SuperNOVAS API =====================>
+
 #include "solarsystem.h"
+
+
+// <================= SuperNOVAS internals ======================>
 
 /// \cond PRIVATE
 #ifdef __NOVAS_INTERNAL_API__

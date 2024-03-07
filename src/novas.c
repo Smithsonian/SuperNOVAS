@@ -5168,6 +5168,60 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
 }
 
 /**
+ * Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R.A.
+ * measured from the true equinox of date.
+ *
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param ra          [h] The CIRS right ascension coordinate, measured from the CIO.
+ * @return            [h] the apparent R.A. coordinate measured from the true equinox of date [0:24].
+ *
+ * @see app_to_cirs_ra()
+ *
+ * @since 1.0.1
+ * @author Attila Kovacs
+ */
+double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
+  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
+
+  // Obtain the R.A. [h] of the CIO at the given date
+  cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio);
+
+  // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
+  ra = remainder(ra + ra_cio, 24.0);
+  if(ra < 0.0) ra += 24.0;
+
+  return ra;
+}
+
+/**
+ * Converts an apparent right ascension coordinate (measured from the true equinox of date) to a
+ * CIRS R.A., measured from the CIO.
+ *
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param ra          [h] the apparent R.A. coordinate measured from the true equinox of date.
+ * @return            [h] The CIRS right ascension coordinate, measured from the CIO [0:24].
+ *
+ * @see cirs_to_app_ra()
+ *
+ * @since 1.0.1
+ * @author Attila Kovacs
+ */
+double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
+  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
+
+  // Obtain the R.A. [h] of the CIO at the given date
+  cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio);
+
+  // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
+  ra = remainder(ra - ra_cio, 24.0);
+  if(ra < 0.0) ra += 24.0;
+
+  return ra;
+}
+
+/**
  * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS.
  * The necessary binary data file may be obtained via the <code>cio_file.c</code> utility
  * provided in this distribution under <code>tools/</code>.

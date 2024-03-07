@@ -405,14 +405,7 @@ above), you have one more step to go still. The CIRS equator is the true equator
 not the true equinox of date. Thus, we must correct for the difference of the origins to get the true apparent R.A.:
 
 ```c
-  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
-
-  // Obtain the R.A. [h] of the CIO at the given date
-  cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio);
-  
-  // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
-  ra = remainder(ra + ra_cio, 24.0);
-  if(ra < 0.0) ra += 24.0;
+  ra = cirs_to_app_ra(jd_tt, NOVAS_FULL_ACCURACY, ra);
 ```
 
 #### B. Azimuth and elevation angles at the observing location
