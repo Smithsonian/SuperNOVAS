@@ -1,3 +1,6 @@
+---
+excerpt: SuperNOVAS is a light-weight, high-precision astrometry library for the C programming language. It is a fork of NOVAS C 3.1.
+---
 
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"><br clear="all">
 
