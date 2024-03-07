@@ -4,7 +4,7 @@ title: SuperNOVAS
 description: The NOVAS C library, made better
 show_downloads: false
 google_analytics: G-HLFWKSM8V9
-url: "https://smithsonian.github.io/SuperNOVAS"
+url: "https://smithsonian.github.io"
 plugins:
   - jekyll-sitemap
 
