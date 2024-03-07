@@ -4,9 +4,9 @@ github_username: attipaci
 title: SuperNOVAS
 description: The NOVAS C library, made better
 excerpt: SuperNOVAS is a light-weight, high-precision astrometry library for the C programming language. It is a fork of NOVAS C 3.1.
-image-path: /resources/SuperNOVAS-1200x691.png
-image-width: 1200
-image-height: 691
+image.path: /SuperNOVAS/resources/SuperNOVAS-1200x691.png
+image.width: 1200
+image.height: 691
 show_downloads: false
 google_analytics: G-HLFWKSM8V9
 url: "https://smithsonian.github.io"
