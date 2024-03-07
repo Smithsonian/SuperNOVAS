@@ -3,10 +3,6 @@ author: Attila Kovacs
 github_username: attipaci
 title: SuperNOVAS
 description: The NOVAS C library, made better
-og_image: images/SuperNOVAS-800x460.png
-og_image_type: image/png
-og_image_width: 800
-og_image_height: 460
 show_downloads: false
 google_analytics: G-HLFWKSM8V9
 url: "https://smithsonian.github.io"
