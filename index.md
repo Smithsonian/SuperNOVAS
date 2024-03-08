@@ -21,9 +21,9 @@ This site contains various online resources that support the library:
  
 __Downloads__
 
- - Download [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub.
+ - Download [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub
  - Doxygen [tag file](apidoc/novas.tag) (`novas.tag`) for linking 
-   your [Doxygen](https://www.doxygen.nl/) documentation to that of SuperNOVAS.
+   your [Doxygen](https://www.doxygen.nl/) documentation to that of SuperNOVAS
 
 
 __Documentation__
@@ -31,8 +31,8 @@ __Documentation__
  - [User's guide](doc/README.md) (`README.md`)
  - [API Documentation](apidoc/html/files.html)
  - [History of changes](doc/CHANGELOG.md) (`CHANGELOG.md`)
- - [Issues](https://github.com/Smithsonian/SuperNOVAS/issues) affecting SuperNOVAS releases in the past or present.
- - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/issues). Ask a question, provide feedback or check 
-   announcements.
+ - [Issues](https://github.com/Smithsonian/SuperNOVAS/issues) affecting SuperNOVAS releases (past and/or present)
+ - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/issues) &ndash; Ask a question, provide feedback, or 
+   check announcements.
 
  
