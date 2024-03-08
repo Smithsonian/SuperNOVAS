@@ -1,11 +1,15 @@
 theme: jekyll-theme-Tactile
 author: Attila Kovacs
 github_username: attipaci
-description: SuperNOVAS C/C++ astrometry library
+title: SuperNOVAS
+description: A C/C++ astrometry library
 show_downloads: false
 google_analytics: G-HLFWKSM8V9
 url: "https://smithsonian.github.io"
 read_time: true
+titles_from_headings:
+  strip_title: true
 plugins:
   - jekyll-sitemap
+  - jekyll-titles-from-headings
 

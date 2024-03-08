@@ -1,7 +1,3 @@
----
-title: SuperNOVAS
-description: The NOVAS C library, made better
----
 
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
@@ -18,7 +14,7 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
 
 
 
-# Table of Contents
+## Table of Contents
 
  - [Introduction](#introduction)
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
