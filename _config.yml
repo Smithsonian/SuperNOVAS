@@ -9,9 +9,6 @@ url: "https://smithsonian.github.io"
 read_time: true
 titles_from_headings:
   strip_title: true
-toc:
-  min_level: 2
-  max_level: 2
 plugins:
   - jekyll-sitemap
   - jekyll-titles-from-headings
