@@ -14,14 +14,16 @@ SuperNOVAS is entirely free to use without any licensing restrictions.  Its sour
 standard, and hence should be suitable for many older platforms also. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
-SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard & Smithsonian.
+SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard & Smithsonian, and it available
+via the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) GitHub repository.
 
 This site contains various online resources that support the library:
 
  
 __Downloads__
 
- - Download [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub
+ - [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub
+
  - Doxygen [tag file](apidoc/novas.tag) (`novas.tag`) for linking 
    your [Doxygen](https://www.doxygen.nl/) documentation to that of SuperNOVAS
 
