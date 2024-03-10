@@ -23,7 +23,6 @@ This site contains various online resources that support the library:
 __Downloads__
 
  - [Releases](https://github.com/Smithsonian/SuperNOVAS/releases) from GitHub
-
  - Doxygen [tag file](apidoc/novas.tag) (`novas.tag`) for linking 
    your [Doxygen](https://www.doxygen.nl/) documentation to that of SuperNOVAS
 
