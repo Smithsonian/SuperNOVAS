@@ -193,6 +193,9 @@ from which SuperNOVAS is forked from.
    
  - Object ID numbers are `long` instead of `short` (in NOVAS C 3.1) to accommodate NAIF IDs, which require minimum 
    32-bit integers.
+   
+ - `precession()` can now take arbitrary input and output epochs. Unlike NOVAS C 3.1, it is not required that either 
+   of those epochs be J2000.
  
  - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS (unlike in NOVAS C 3.1).
