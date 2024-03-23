@@ -81,6 +81,7 @@ hr {
 code {
   font-family: "Roboto Mono", "Calibri Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   margin: 0px 2px 0px 2px;
+  font-size: 87.5%;
   font-weight: bold;
 }
 
@@ -154,10 +155,6 @@ html.dark-mode {
   --memdef-proto-text-color: #555DA3;
 }
 
-.label: {
-  font-size: 200%;
-}
-
 .paramtype {
    color: var(--code-type-keyword-color);
 }
@@ -174,6 +171,7 @@ html.dark-mode {
   font-weight: bold;
   color: var(--fragment-foreground-color);
 }
+
 
 blockquote {
   border-left: 2px solid #606060;

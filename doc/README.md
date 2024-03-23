@@ -1,4 +1,3 @@
-
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
 
@@ -14,7 +13,7 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
 
 
 
-## Table of Contents
+# Table of Contents
 
  - [Introduction](#introduction)
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
@@ -103,8 +102,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has overwritten the
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
-   `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the requested mean 
-   equinox of date coordinates.
+   `coord_sys = 0` and the same date as before would return the results in GCRS coordinates instead of the requested 
+   mean equinox of date coordinates.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
@@ -321,7 +320,7 @@ UT1 - UTC time difference (a.k.a. DUT1):
   
  // We'll also need the TT - UT1 difference, which we can obtain from what we already
  // defined above
- double ut1_to_tt = get_ut1_to_tt(jd_tt, dut1);
+ double ut1_to_tt = get_ut1_to_tt(leap_seconds, dut1);
 ```
 
 Next, you may want to set the small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
