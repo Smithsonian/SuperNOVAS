@@ -1599,6 +1599,7 @@ short place(double jd_tt, const object *source, const observer *location, double
     }
 
     default:
+      break;
       // Nothing else to do.
   }
 
