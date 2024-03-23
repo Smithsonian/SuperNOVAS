@@ -1,9 +1,37 @@
 # Changelog
 
+All notable changes to the SuperNOVAS library will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [Unreleased]
+
+Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Stay tuned...
+
+### Fixed
+
+ - `cirs_to_itrs()`, `itrs_to_cirs()`, `tod_to_itrs()`, and `itrs_to_tod()` all had a unit conversion bug in using the 
+  `ut1_to_tt` argument [s] when converting TT-based Julian date to UT1-based JD [day] internally.
+
+### Added
+
+ - Added `cirs_to_app_ra()` and `app_to_cirs_ra()` for convenience to convert between right ascensions measured from
+   the CIO (for CIRS) vs measured from the true equinox of date, on the same true equator of date.
+
+ - Planning to add further timescale conversion utilities.
+   
+### Changes
+
+ - Various corrections and changes to documentation.
+
+
 
 ## [1.0.0] - 2024-03-01
 
-This is the initial release of the SuperNOVAS library.
+This is the initial release of the SuperNOVAS library. Changes are indicated w.r.t. the upstream NOVAS C 3.1 library 
+from which SuperNOVAS is forked from.
 
 ### Fixed
 
@@ -32,13 +60,13 @@ This is the initial release of the SuperNOVAS library.
  - Fixes multiple NOVAS C 3.1 bugs related to using cached values in `cio_basis()` with alternating CIO location 
    reference systems. This affected many CIRS-based position calculations downstream.
    
- - Fixes NOVAS C 3.1 buga in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has 
+ - Fixes NOVAS C 3.1 bug in `equ2ecl_vec()` and `ecl2equ_vec()` whereby a query with `coord_sys = 2` (GCRS) has 
    overwritten the cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent 
    call with `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the 
    requested mean equinox of date coordinates.
  
  - Fixes NOVAS C 3.1 `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified 
-   input vector  appropriately instead.
+   input vector appropriately instead.
    
  - Fixes unpopulated `az` output value in `equ2hor()` at zenith in NOVAS C 3.1. While any azimuth is acceptable 
    really, it results in unpredictable behavior. Hence, we set `az` to 0.0 for zenith to be consistent.
@@ -76,7 +104,7 @@ This is the initial release of the SuperNOVAS library.
      `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
      (e.g. from a JPL ephemeris file).
  
-   * If CIO locations vs GSRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
+   * If CIO locations vs GCRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
      specify the location of the binary CIO interpolation table (e.g. `cio_ra.bin`) to use, even if the library was
      compiled with the different default CIO locator path. 
  
@@ -119,7 +147,7 @@ This is the initial release of the SuperNOVAS library.
    `planet_eph_manager` vs `planet_ephem_provider()`.
 
  - New `novas_case_sensitive(int)` to enable (or disable) case-sensitive processing of object names. (By default NOVAS 
-   `object` names were converted to upper-case, making them effectively case-insensitive.)
+   `object` names are converted to upper-case, making them effectively case-insensitive.)
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
@@ -172,6 +200,9 @@ This is the initial release of the SuperNOVAS library.
    
  - Object ID numbers are `long` instead of `short` (in NOVAS C 3.1) to accommodate NAIF IDs, which require minimum 
    32-bit integers.
+   
+ - `precession()` can now take arbitrary input and output epochs. Unlike NOVAS C 3.1, it is not required that either 
+   of those epochs be J2000.
  
  - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS (unlike in NOVAS C 3.1).
@@ -195,7 +226,7 @@ This is the initial release of the SuperNOVAS library.
    
  - IAU 2000 nutation made a bit faster vs NOVAS C 3.1, via reducing the the number of floating-point multiplications 
    necessary by skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, 
-   resulting in a smaller foortprint than in NOVAS C 3.1.
+   resulting in a smaller footprint than in NOVAS C 3.1.
    
  - More efficient paging (cache management) for `cio_array()` vs NOVAS C 3.1, including I/O error checking.
  
