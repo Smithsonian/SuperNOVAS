@@ -15,13 +15,13 @@ Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Sta
  - `cirs_to_itrs()`, `itrs_to_cirs()`, `tod_to_itrs()`, and `itrs_to_tod()` all had a unit conversion bug in using the 
   `ut1_to_tt` argument [s] when converting TT-based Julian date to UT1-based JD [day] internally.
 
+ - Fixed errors in `example.c` [by @hannorrein].
+
 ### Added
 
  - Added `cirs_to_app_ra()` and `app_to_cirs_ra()` for convenience to convert between right ascensions measured from
    the CIO (for CIRS) vs measured from the true equinox of date, on the same true equator of date.
 
- - Planning to add further timescale conversion utilities.
-   
 ### Changes
 
  - Various corrections and changes to documentation.
