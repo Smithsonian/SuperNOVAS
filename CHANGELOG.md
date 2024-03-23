@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Stay tuned...
 
+### Fixed
+
+ - `cirs_to_itrs()`, `itrs_to_cirs()`, `tod_to_itrs()`, and `itrs_to_tod()` all had a unit conversion bug in using the 
+  `ut1_to_tt` argument [s] when converting TT-based Julian date to UT1-based JD [day] internally.
+
 ### Added
 
  - Added `cirs_to_app_ra()` and `app_to_cirs_ra()` for convenience to convert between right ascensions measured from
