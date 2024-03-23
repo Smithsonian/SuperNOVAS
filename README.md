@@ -337,7 +337,7 @@ UT1 - UTC time difference (a.k.a. DUT1):
   
  // We'll also need the TT - UT1 difference, which we can obtain from what we already
  // defined above
- double ut1_to_tt = get_ut1_to_tt(jd_tt, dut1);
+ double ut1_to_tt = get_ut1_to_tt(leap_seconds, dut1);
 ```
 
 Next, you may want to set the small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
