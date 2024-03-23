@@ -15,6 +15,7 @@
 #include <math.h>
 
 #include "novas.h"
+#include "novascon.h"
 #include "eph_manager.h"  // For solsys1.c
 
 int main(void) {
@@ -53,13 +54,14 @@ int main(void) {
   object moon, mars;
   sky_pos t_place;
 
-  int error = 0, de_num = 0;
+  int error = 0;
+  short de_num = 0;
 
   // Make structures of type 'on_surface' and 'observer-on-surface' containing
   // the observer's position and weather (latitude, longitude, height,
   //temperature, and atmospheric pressure)
   make_observer_on_surface(latitude, longitude, height, temperature, pressure, &obs_loc);
-  geo_loc = &obs_loc->on_surf;
+  geo_loc = &obs_loc.on_surf;
 
   // Make a structure of type 'cat_entry' containing the ICRS position
   // and motion of star FK6 1307.
@@ -118,7 +120,7 @@ int main(void) {
     return (error);
   }
 
-  error = topo_star(jd_tt, delta_t, &star, &obs_loc->on_surf, NOVAS_FULL_ACCURACY, &rat, &dect);
+  error = topo_star(jd_tt, delta_t, &star, &obs_loc.on_surf, NOVAS_FULL_ACCURACY, &rat, &dect);
   if(error != 0) {
     printf("Error %d from topo_star.\n", error);
     return (error);
@@ -136,7 +138,7 @@ int main(void) {
     return (error);
   }
 
-  error = topo_planet(jd_tt, &moon, delta_t, &obs_loc->on_surf, NOVAS_FULL_ACCURACY, &rat, &dect, &dist);
+  error = topo_planet(jd_tt, &moon, delta_t, &obs_loc.on_surf, NOVAS_FULL_ACCURACY, &rat, &dect, &dist);
   if(error != 0) {
     printf("Error %d from topo_planet.", error);
     return (error);
@@ -158,7 +160,7 @@ int main(void) {
   printf("\n");
 
   // Position of the Moon in local horizon coordinates.  (Polar motion ..ignored here.)
-  equ2hor(jd_ut1, delta_t, NOVAS_FULL_ACCURACY, 0.0, 0.0, &obs_loc->on_surf, rat, dect, NOVAS_STANDARD_ATMOSPHERE, //
+  equ2hor(jd_ut1, delta_t, NOVAS_FULL_ACCURACY, 0.0, 0.0, &obs_loc.on_surf, rat, dect, NOVAS_STANDARD_ATMOSPHERE, //
           &zd, &az, &rar, &decr);
 
   printf("Moon zenith distance and azimuth:\n");
@@ -193,7 +195,7 @@ int main(void) {
     return (error);
   }
 
-  error = equ2ecl_vec(T0, NOVAS_CIRS, NOVAS_FULL_ACCURACY, pos, pose);
+  error = equ2ecl_vec(T0, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, pos, pose);
   if(error != 0) {
     printf("Error %d from equ2ecl_vec.", error);
     return (error);
@@ -225,7 +227,7 @@ int main(void) {
   vter[2] = sin_lat;
 
   // Transform vector to GCRS.
-  error = ter2cel(jd_ut1, 0.0, delta_t, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_GCRS, x_pole, y_pole, vter, vcel);
+  error = ter2cel(jd_ut1, 0.0, delta_t, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, x_pole, y_pole, vter, vcel);
   if(error != 0) {
     printf("Error %d from ter2cel.", error);
     return (error);
