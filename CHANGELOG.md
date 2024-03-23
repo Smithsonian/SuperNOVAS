@@ -14,6 +14,8 @@ Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Sta
 
  - Added `cirs_to_app_ra()` and `app_to_cirs_ra()` for convenience to convert between right ascensions measured from
    the CIO (for CIRS) vs measured from the true equinox of date, on the same true equator of date.
+
+ - Planning to add further timescale conversion utilities.
    
 ### Changes
 
