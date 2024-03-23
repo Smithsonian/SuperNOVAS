@@ -1,6 +1,9 @@
 name: API documentation
 
 on:
+  release:
+    types: [published]
+
   push:
     paths:
       - 'src/**'
