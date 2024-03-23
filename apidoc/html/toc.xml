@@ -1,11 +1,10 @@
 <toc label="SuperNOVAS" topic="index.html">
-  <topic label="Table of Contents" href="index.html#autotoc_md7">
+    <topic label="Table of Contents" href="index.html#autotoc_md7"/>
     <topic label="Introduction" href="index.html#autotoc_md9"/>
     <topic label="Fixed NOVAS C 3.1 issues" href="index.html#autotoc_md11"/>
     <topic label="Compatibility with NOVAS C 3.1" href="index.html#autotoc_md13"/>
     <topic label="Building and installation" href="index.html#autotoc_md15">
       <topic label="Building your application with SuperNOVAS" href="index.html#autotoc_md16"/>
-    </topic>
     <topic label="Example usage" href="index.html#autotoc_md18">
       <topic label="Note on alternative methodologies" href="index.html#autotoc_md19"/>
       <topic label="Calculating positions for a sidereal source" href="index.html#autotoc_md20">

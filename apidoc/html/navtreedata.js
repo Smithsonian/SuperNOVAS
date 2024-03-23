@@ -25,7 +25,8 @@
 var NAVTREE =
 [
   [ "SuperNOVAS", "index.html", [
-    [ "Table of Contents", "index.html#autotoc_md7", [
+    [ "Changelog", "md_CHANGELOG.html", [
+      [ "Table of Contents", "index.html#autotoc_md7", null ],
       [ "Introduction", "index.html#autotoc_md9", null ],
       [ "Fixed NOVAS C 3.1 issues", "index.html#autotoc_md11", null ],
       [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md13", null ],
@@ -57,9 +58,7 @@ var NAVTREE =
         ] ],
         [ "3. Explicit linking of custom ephemeris functions", "index.html#autotoc_md40", null ]
       ] ],
-      [ "Release schedule", "index.html#autotoc_md42", null ]
-    ] ],
-    [ "Changelog", "md_CHANGELOG.html", [
+      [ "Release schedule", "index.html#autotoc_md42", null ],
       [ "[1.0.0] - 2024-03-01", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ],
