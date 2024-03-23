@@ -16,21 +16,20 @@
 <br clear="all">
 
 # SuperNOVAS 
-The NOVAS C software library, made better.
+The NOVAS C astrometry library, made better.
 
-[SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is an astronomy software library for the C programming 
-language, providing high-precision astrometry such as one might need for running an observatory or a precise 
-planetarium program. It is a fork of the Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)) version 3.1, providing bug fixes and making it easier to use 
-overall.
+[SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
+high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
+fork of the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) 
+C version 3.1, providing bug fixes and making it easier to use overall.
 
-SuperNOVAS is entirely free to use without any licensing restrictions.  Its source code is compatible with the C90 
-standard, and hence should be suitable for many older platforms also. It is light-weight and easy to use, with full 
+SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C90 
+standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
 
 
-# Table of Contents
+## Table of Contents
 
  - [Introduction](#introduction)
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
@@ -53,23 +52,24 @@ SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software
 
 The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
- - Fixing [outstanding issues](#fixed-issues)
+ - Fixing [outstanding issues](#fixed-issues).
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
- - [New features](#added-functionality)
+ - [New features](#added-functionality).
  - [Refining the API](#api-changes) to promote best programing practices.
  - [Thread-safe calculations](#multi-threading).
  - [Debug mode](#debug-mode) with informative error tracing.
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
-NOVAS C library, such that it can be used as a drop-in, _link-time_ replacement for NOVAS in your application without 
+NOVAS C library, such that it can be used as a drop-in, _build-time_ replacement for NOVAS in your application without 
 having to change existing (functional) code you may have written for NOVAS C.
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
  
-SuperNOVAS is maintained by Attila Kovacs at the Center for Astrophysics \| Harvard & Smithsonian, and it is 
-available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) repository on GitHub.
+SuperNOVAS is maintained by [Attila Kovacs](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
+&amp; Smithsonian, and it is available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) 
+repository on GitHub.
 
 Outside contributions are very welcome. See
 [how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
@@ -141,7 +141,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. 
 In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. `novas.o`), or the 
 static (e.g. `novas.a`) or shared (e.g. `novas.so`) libraries, from NOVAS C 3.1 with that from SuperNOVAS. Instead, 
-you will need to (re)compile and or (re)link your application with the SuperNOVAS versions of these. 
+you will need to (re)build your application with the SuperNOVAS versions of these. 
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
 `short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
@@ -259,6 +259,7 @@ to enable higher precision astrometry. (Super)NOVAS supports coordinate calculat
 ways, and in the new IAU standard method. Here is an overview of how the old and new methods define some of the
 terms differently:
 
+
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
  | Catalog coordinate system  | FK4, FK5, HIP...              | International Celestial Reference System (ICRS)   |
@@ -268,6 +269,7 @@ terms differently:
  | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
  | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |
+ 
  
 See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
 on how they are appropriate for the old and new methodologies respectively.
@@ -430,10 +432,10 @@ obtained from `place_star()` as:
  itrs_to_hor(itrs, &obs.on_surface, &az, &zd);
 ``` 
 
-Above we used `cirs_to_itrs()` function then convert the `sky_pos` rectangular equatorial unit vector calculated 
-in CIRS to the Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) measured 
-variation of the pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously set via 
-`cel_pole()`. Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer 
+Above we used `cirs_to_itrs()` function, and then converted the `sky_pos` rectangular equatorial unit vector 
+calculated in CIRS to the Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) 
+measured variation of the pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously 
+set via `cel_pole()`. Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer 
 location.
 
 If you followed the old (Lieske et al. 1977) method instead to calculate `sky_pos` in the less precise TOD coordinate
@@ -462,7 +464,7 @@ will handle the respective ephemeris data at runtime before making the NOVAS cal
  set_planet_provider(my_planet_function);
   
  // Set the function for high-precision planet position calculations
- set_planet_provider(my_very_precise_planet_function);
+ set_planet_provider_hp(my_very_precise_planet_function);
   
  // Set the function to use for calculating all sorts of solar-system bodies
  set_ephem_provider(my_ephemeris_provider_function);
@@ -510,7 +512,7 @@ E.g.:
 
 When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
 
- - You can use TT and TDB timescales interchangably in the present era unless you require the utmost precision.
+ - You can use TT and TDB timescales interchangeably in the present era unless you require the utmost precision.
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at the milliarcsecond level only, but may be much faster to calculate.
  - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
@@ -637,7 +639,7 @@ before that level of accuracy is reached.
      `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
      (e.g. from a JPL `.bsp` file).
  
-   * If CIO locations vs GSRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
+   * If CIO locations vs GCRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
      specify the location of the binary CIO interpolation table (e.g. `cio_ra.bin`) to use, even if the library was
      compiled with the different default CIO locator path. 
  
@@ -682,7 +684,7 @@ before that level of accuracy is reached.
    build.)
 
  - New `novas_case_sensitive(int)` to enable (or disable) case-sensitive processing of object names. (By default NOVAS 
-   `object` names were converted to upper-case, making them effectively case-insensitive.)
+   `object` names are converted to upper-case, making them effectively case-insensitive.)
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
@@ -727,7 +729,9 @@ before that level of accuracy is reached.
  - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
    in the supplied `cat_entry` structure).
    
- - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL.
+ - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL. (NOVAS C
+   3.1 would return an error if a CIO locator file was previously opened but cannot provide the data for whatever
+   reason). 
 
  - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
    methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
@@ -739,7 +743,7 @@ before that level of accuracy is reached.
    
  - IAU 2000 nutation made a bit faster, reducing the the number of floating-point multiplications necessary by 
    skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, resulting in a
-   smaller foortprint.
+   smaller footprint.
    
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
