@@ -845,6 +845,7 @@ And, when you are done using the ephemeris file, you should close it with
 Note, that at any given time `eph_manager` can have only one ephemeris data file opened. You cannot use it to 
 retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
 can integrate as discussed further above!)
+
 That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
 
 
@@ -862,10 +863,11 @@ your application should set your planetary ephemeris provider at runtime via:
 ```
 
 Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end
-of the world), but you may also have to modify `jplint.f` (providing the intermediate FORTRAN `jplint_` / `jplihp_()`
-interfaces to `pleph`) to work with the version of `pleph.f` that you will be using. Unless you already have code that 
-relies on this method, you are probably better off choosing one of the other ways for integrating planetary ephemeris 
-data with SuperNOVAS.
+of the world), but you may also have to modify `jplint.f` (providing the intermediate FORTRAN `jplint_()` / 
+`jplihp_()` interfaces to `pleph`) to work with the version of `pleph.f` that you will be using. Unless you already 
+have code that relies on this method, you are probably better off choosing one of the other ways for integrating 
+planetary ephemeris data with SuperNOVAS.
+
 
 <a name="explicit-ephem-linking"></a>
 ### 3. Explicit linking of custom ephemeris functions
