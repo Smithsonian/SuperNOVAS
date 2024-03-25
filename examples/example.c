@@ -15,7 +15,6 @@
 #include <math.h>
 
 #include "novas.h"
-#include "novascon.h"
 #include "eph_manager.h"  // For solsys1.c
 
 int main(void) {
@@ -195,7 +194,7 @@ int main(void) {
     return (error);
   }
 
-  error = equ2ecl_vec(T0, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, pos, pose);
+  error = equ2ecl_vec(NOVAS_JD_J2000, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, pos, pose);
   if(error != 0) {
     printf("Error %d from equ2ecl_vec.", error);
     return (error);
