@@ -1,0 +1,24 @@
+name: Example
+
+on: 
+  push:
+    paths:
+      - 'examples/**'
+      - '.github/workflows/example.yml'
+
+jobs:
+
+  build:
+    name: Build library
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Compile example.c
+      run: |
+        cd examples
+        gcc -c -Wall -Werror -I ../include example.c 
+
+      
+   

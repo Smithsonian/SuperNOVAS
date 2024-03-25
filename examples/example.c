@@ -103,6 +103,7 @@ int main(void) {
 
   // Establish time arguments.
   jd_utc = julian_date(2008, 4, 24, 10.605);
+  jd_tt = jd_utc + ((double) leap_secs + 32.184) / 86400.0;
   jd_ut1 = jd_utc + ut1_utc / 86400.0;
   delta_t = get_ut1_to_tt(leap_secs, ut1_utc);
 
