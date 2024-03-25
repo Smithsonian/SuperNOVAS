@@ -24,6 +24,7 @@ Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Sta
 
 ### Changes
 
+ - Changed definition of `AU` to the IAU definition of exactly 1.495978707e+11 m.
  - Various corrections and changes to documentation.
 
 
