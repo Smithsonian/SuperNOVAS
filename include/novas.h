@@ -86,6 +86,7 @@
 #define NOVAS_C                   299792458.0
 
 /// [m] Astronomical unit in meters.  Value is AU_SEC * C. IAU definition.
+/// See <a href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">IAU 2012 Resolution B2</a>.
 #define NOVAS_AU                  1.495978707e+11
 
 /*
