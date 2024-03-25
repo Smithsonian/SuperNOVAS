@@ -580,6 +580,20 @@ static int test_cal_date() {
   return 0;
 }
 
+static int test_cirs_app_ra() {
+  double cio_dra, ra0;
+
+  if(!is_ok("cirs_app_ra:cio_ra", cio_ra(tdb, NOVAS_FULL_ACCURACY, &cio_dra))) return 1;
+
+  for (ra0 = -12.0; ra0 < 36.0; ra0 += 2.0) {
+    double ra1 = cirs_to_app_ra(tdb, NOVAS_FULL_ACCURACY, ra0);
+    if (!is_ok("cirs_app_ra:cirs_to_app", fabs(ra1 - ra0 - cio_dra) < 1e-12)) return 1;
+    ra1 = app_to_cirs_ra(tdb, NOVAS_FULL_ACCURACY, ra1);
+    if (!is_ok("cirs_app_ra:app_to_cirs", fabs(ra1 - ra0) < 1e-12)) return 1;
+  }
+  return 0;
+}
+
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
   int i, n = 0;
@@ -588,6 +602,7 @@ static int test_dates() {
   if(test_get_utc_to_tt()) n++;
   if(test_nutation_lp_provider()) n++;
   if(test_cal_date()) n++;
+  if(test_cirs_app_ra()) n++;
 
   for(i = 0; i < 5; i++) {
     tdb = J2000 + offsets[i];
