@@ -4,10 +4,31 @@
 .SH NAME
 md_CHANGELOG \- Changelog 
 .PP
-
+ All notable changes to the SuperNOVAS library will be documented in this file\&.
+.PP
+The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
+.SH "[1\&.0\&.1-rc1]"
+.PP
+Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024\&. Stay tuned\&.\&.\&.
+.SS "Fixed"
+.IP "\(bu" 2
+\fC\fBcirs_to_itrs()\fP\fP, \fC\fBitrs_to_cirs()\fP\fP, \fC\fBtod_to_itrs()\fP\fP, and \fC\fBitrs_to_tod()\fP\fP all had a unit conversion bug in using the \fCut1_to_tt\fP argument [s] when converting TT-based Julian date to UT1-based JD [day] internally\&.
+.IP "\(bu" 2
+Fixed errors in \fCexample\&.c\fP [by hannorein]\&.
+.PP
+.SS "Added"
+.IP "\(bu" 2
+Added \fC\fBcirs_to_app_ra()\fP\fP and \fC\fBapp_to_cirs_ra()\fP\fP for convenience to convert between right ascensions measured from the CIO (for CIRS) vs measured from the true equinox of date, on the same true equator of date\&.
+.PP
+.SS "Changes"
+.IP "\(bu" 2
+Changed definition of \fCAU\fP to the IAU definition of exactly 1\&.495978707e+11 m\&.
+.IP "\(bu" 2
+Various corrections and changes to documentation\&.
+.PP
 .SH "[1\&.0\&.0] - 2024-03-01"
 .PP
-This is the initial release of the SuperNOVAS library\&.
+This is the initial release of the SuperNOVAS library\&. Changes are indicated w\&.r\&.t\&. the upstream NOVAS C 3\&.1 library from which SuperNOVAS is forked from\&.
 .SS "Fixed"
 .IP "\(bu" 2
 Fixes the NOVAS C 3\&.1 \fCsidereal_time bug\fP, whereby the \fC\fBsidereal_time()\fP\fP function had an incorrect unit cast\&.
@@ -22,7 +43,7 @@ Fixes NOVAS C 3\&.1 accuracy switching bug in \fC\fBcio_basis()\fP\fP, \fC\fBcio
 .IP "\(bu" 2
 Fixes multiple NOVAS C 3\&.1 bugs related to using cached values in \fC\fBcio_basis()\fP\fP with alternating CIO location reference systems\&. This affected many CIRS-based position calculations downstream\&.
 .IP "\(bu" 2
-Fixes NOVAS C 3\&.1 buga in \fC\fBequ2ecl_vec()\fP\fP and \fC\fBecl2equ_vec()\fP\fP whereby a query with \fCcoord_sys = 2\fP (GCRS) has overwritten the cached mean obliquity value for \fCcoord_sys = 0\fP (mean equinox of date)\&. As a result, a subsequent call with \fCcoord_sys = 0\fP and the same date as before would return the results GCRS coordinates instead of the requested mean equinox of date coordinates\&.
+Fixes NOVAS C 3\&.1 bug in \fC\fBequ2ecl_vec()\fP\fP and \fC\fBecl2equ_vec()\fP\fP whereby a query with \fCcoord_sys = 2\fP (GCRS) has overwritten the cached mean obliquity value for \fCcoord_sys = 0\fP (mean equinox of date)\&. As a result, a subsequent call with \fCcoord_sys = 0\fP and the same date as before would return the results GCRS coordinates instead of the requested mean equinox of date coordinates\&.
 .IP "\(bu" 2
 Fixes NOVAS C 3\&.1 \fC\fBaberration()\fP\fP returning NaN vectors if the \fCve\fP argument is 0\&. It now returns the unmodified input vector appropriately instead\&.
 .IP "\(bu" 2
@@ -50,7 +71,7 @@ New runtime configurability:
 .IP "  \(bu" 4
 The planet position calculator function used by \fC\fBephemeris()\fP\fP can be set at runtime via \fC\fBset_planet_provider()\fP\fP, and \fC\fBset_planet_provider_hp()\fP\fP (for high precision calculations)\&. Similarly, if \fC\fBplanet_ephem_provider()\fP\fP or \fC\fBplanet_ephem_provider_hp()\fP\fP (defined in \fC\fBsolsys-ephem\&.c\fP\fP) are set as the planet calculator functions, then \fC\fBset_ephem_provider()\fP\fP can set the user-specified function to use with these to actually read ephemeris data (e\&.g\&. from a JPL ephemeris file)\&.
 .IP "  \(bu" 4
-If CIO locations vs GSRS are important to the user, the user may call \fC\fBset_cio_locator_file()\fP\fP at runtime to specify the location of the binary CIO interpolation table (e\&.g\&. \fCcio_ra\&.bin\fP) to use, even if the library was compiled with the different default CIO locator path\&.
+If CIO locations vs GCRS are important to the user, the user may call \fC\fBset_cio_locator_file()\fP\fP at runtime to specify the location of the binary CIO interpolation table (e\&.g\&. \fCcio_ra\&.bin\fP) to use, even if the library was compiled with the different default CIO locator path\&.
 .IP "  \(bu" 4
 The default low-precision nutation calculator \fC\fBnu2000k()\fP\fP can be replaced by another suitable IAU 2006 nutation approximation via \fC\fBset_nutation_lp_provider()\fP\fP\&. For example, the user may want to use the \fC\fBiau2000b()\fP\fP model instead or some custom algorithm instead\&.
 .PP
@@ -80,7 +101,7 @@ New time conversion utilities \fC\fBtt2tdb()\fP\fP, \fC\fBget_utc_to_tt()\fP\fP,
 .IP "\(bu" 2
 Co-existing \fC\fBsolarsystem()\fP\fP variants\&. It is possible to use the different \fC\fBsolarsystem()\fP\fP implementations provided by \fC\fBsolsys1\&.c\fP\fP, \fC\fBsolsys2\&.c\fP\fP, \fC\fBsolsys3\&.c\fP\fP and/or \fC\fBsolsys-ephem\&.c\fP\fP side-by-side, as they define their functionalities with distinct, non-conflicting names, e\&.g\&. \fC\fBearth_sun_calc()\fP\fP vs \fC\fBplanet_jplint()\fP\fP vs \fCplanet_eph_manager\fP vs \fC\fBplanet_ephem_provider()\fP\fP\&.
 .IP "\(bu" 2
-New \fC\fBnovas_case_sensitive(int)\fP\fP to enable (or disable) case-sensitive processing of object names\&. (By default NOVAS \fCobject\fP names were converted to upper-case, making them effectively case-insensitive\&.)
+New \fC\fBnovas_case_sensitive(int)\fP\fP to enable (or disable) case-sensitive processing of object names\&. (By default NOVAS \fCobject\fP names are converted to upper-case, making them effectively case-insensitive\&.)
 .IP "\(bu" 2
 New \fC\fBmake_planet()\fP\fP and \fC\fBmake_ephem_object()\fP\fP to make it simpler to configure Solar-system objects\&.
 .PP
@@ -106,6 +127,8 @@ Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C
 .IP "\(bu" 2
 Object ID numbers are \fClong\fP instead of \fCshort\fP (in NOVAS C 3\&.1) to accommodate NAIF IDs, which require minimum 32-bit integers\&.
 .IP "\(bu" 2
+\fC\fBprecession()\fP\fP can now take arbitrary input and output epochs\&. Unlike NOVAS C 3\&.1, it is not required that either of those epochs be J2000\&.
+.IP "\(bu" 2
 \fC\fBcel2ter()\fP\fP and \fC\fBter2cel()\fP\fP can now process 'option'/'class' = 1 (\fCNOVAS_REFERENCE_CLASS\fP) regardless of the methodology (\fCEROT_ERA\fP or \fCEROT_GST\fP) used to input or output coordinates in GCRS (unlike in NOVAS C 3\&.1)\&.
 .IP "\(bu" 2
 Changed \fC\fBmake_object()\fP\fP to retain the specified number argument (which can be different from the \fCstarnumber\fP value in the supplied \fC\fBcat_entry\fP\fP structure), in contrast to NOVAS C 3\&.1, which set \fCobject->number\fP to 0 for \fC\fBcat_entry\fP\fP arguments\&.
@@ -118,7 +141,7 @@ Changed \fC\fBvector2radec()\fP\fP to return NAN values if the input is a null-v
 .IP "\(bu" 2
 IAU 2000A nutation model uses higher-order Delaunay arguments provided by \fC\fBfund_args()\fP\fP, instead of the linear model in NOVAS C 3\&.1\&.
 .IP "\(bu" 2
-IAU 2000 nutation made a bit faster vs NOVAS C 3\&.1, via reducing the the number of floating-point multiplications necessary by skipping terms that do not contribute\&. Its coefficients are also packed more frugally in memory, resulting in a smaller foortprint than in NOVAS C 3\&.1\&.
+IAU 2000 nutation made a bit faster vs NOVAS C 3\&.1, via reducing the the number of floating-point multiplications necessary by skipping terms that do not contribute\&. Its coefficients are also packed more frugally in memory, resulting in a smaller footprint than in NOVAS C 3\&.1\&.
 .IP "\(bu" 2
 More efficient paging (cache management) for \fC\fBcio_array()\fP\fP vs NOVAS C 3\&.1, including I/O error checking\&.
 .IP "\(bu" 2

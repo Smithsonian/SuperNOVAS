@@ -59,9 +59,8 @@ include/novas.h
 .RI "#define \fBHELIOC\fP   \fBNOVAS_HELIOCENTER\fP"
 .br
 .ti -1c
-.RI "#define \fBNOVAS_AU\fP   1\&.4959787069098932e+11"
+.RI "#define \fBNOVAS_AU\fP   1\&.495978707e+11"
 .br
-.RI "[m] Astronomical unit in meters\&. Value is AU_SEC * C\&. "
 .ti -1c
 .RI "#define \fBNOVAS_AU_KM\fP   ( 1e\-3 * \fBNOVAS_AU\fP )"
 .br
@@ -69,7 +68,7 @@ include/novas.h
 .ti -1c
 .RI "#define \fBNOVAS_AU_SEC\fP   ( \fBNOVAS_AU\fP / \fBNOVAS_C\fP )"
 .br
-.RI "[AU] Light-time for one astronomical unit (AU) in seconds, from DE-405\&. "
+.RI "[AU] Light-time for one astronomical unit (AU) in seconds\&. "
 .ti -1c
 .RI "#define \fBNOVAS_C\fP   299792458\&.0"
 .br
@@ -184,11 +183,11 @@ include/novas.h
 .br
 .RI "API minor version\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_PATCHLEVEL\fP   0"
+.RI "#define \fBSUPERNOVAS_PATCHLEVEL\fP   1"
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   ''"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1'\&. "
 .ti -1c
@@ -277,6 +276,9 @@ include/novas.h
 .RI "short \fBapp_star\fP (double jd_tt, const \fBcat_entry\fP *star, enum \fBnovas_accuracy\fP accuracy, double *ra, double *dec)"
 .br
 .ti -1c
+.RI "double \fBapp_to_cirs_ra\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
+.br
+.ti -1c
 .RI "short \fBastro_planet\fP (double jd_tt, const \fBobject\fP *ss_body, enum \fBnovas_accuracy\fP accuracy, double *ra, double *dec, double *dis)"
 .br
 .ti -1c
@@ -305,6 +307,9 @@ include/novas.h
 .br
 .ti -1c
 .RI "short \fBcio_ra\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double *ra_cio)"
+.br
+.ti -1c
+.RI "double \fBcirs_to_app_ra\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
 .br
 .ti -1c
 .RI "int \fBcirs_to_gcrs\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
@@ -613,6 +618,8 @@ Old definition of the Center of Sun as the origin\&. NOVAS_HELIOCENTER is prefer
 .RE
 .PP
 
+.SS "#define NOVAS_AU   1\&.495978707e+11"
+[m] Astronomical unit in meters\&. IAU definition\&. See \fCIAU 2012 Resolution B2\fP\&. 
 .SS "#define NOVAS_EARTH_ANGVEL   7\&.2921150e\-5"
 [rad/s] Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003)\&. 
 .SS "#define NOVAS_EARTH_FLATTENING   (1\&.0 / 298\&.25642)"
@@ -1182,6 +1189,41 @@ Use \fBplace_cirs()\fP is now preferred, especially for high accuracy calculatio
 
 .PP
 References \fBNOVAS_TOD\fP, and \fBradec_star()\fP\&.
+.SS "double app_to_cirs_ra (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
+Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R\&.A\&., measured from the CIO\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIra\fP [h] the apparent R\&.A\&. coordinate measured from the true equinox of date\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[h] The CIRS right ascension coordinate, measured from the CIO [0:24]\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcirs_to_app_ra()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_ra()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
 .SS "short astro_planet (double jd_tt, const \fBobject\fP * ss_body, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * dis)"
 Computes the astrometric place of a solar system body, referenced to the ICRS without light deflection or aberration\&. This is the same as calling \fBplace_icrs()\fP for the body, except the different set of return values used\&.
 .PP
@@ -1627,6 +1669,41 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 
 .PP
 References \fBcio_basis()\fP, \fBcio_location()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBtt2tdb()\fP\&.
+.SS "double cirs_to_app_ra (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
+Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R\&.A\&. measured from the true equinox of date\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIra\fP [h] The CIRS right ascension coordinate, measured from the CIO\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[h] the apparent R\&.A\&. coordinate measured from the true equinox of date [0:24]\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBapp_to_cirs_ra()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_ra()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
 .SS "int cirs_to_gcrs (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the Geocentric Celestial Reference System (GCRS)\&.
 .PP

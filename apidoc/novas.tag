@@ -825,6 +825,13 @@
       <arglist>(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>app_to_cirs_ra</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a3fa57a154f2f423612736e5e3a5addbf</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
+    </member>
+    <member kind="function">
       <type>short</type>
       <name>astro_planet</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -893,6 +900,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a94ffd7dee2728748af9159d92e1efb6c</anchor>
       <arglist>(double jd_tt, enum novas_accuracy accuracy, double *ra_cio)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>cirs_to_app_ra</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>af90d52a6527d9b62b8ac35d8c1ac7c6b</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1979,6 +1993,13 @@
       <arglist>(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>app_to_cirs_ra</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a3fa57a154f2f423612736e5e3a5addbf</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
+    </member>
+    <member kind="function">
       <type>short</type>
       <name>astro_planet</name>
       <anchorfile>novas_8c.html</anchorfile>
@@ -2047,6 +2068,13 @@
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>a94ffd7dee2728748af9159d92e1efb6c</anchor>
       <arglist>(double jd_tt, enum novas_accuracy accuracy, double *ra_cio)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>cirs_to_app_ra</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>af90d52a6527d9b62b8ac35d8c1ac7c6b</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta charset="utf-8"/>
-<meta name="description" content="The NOVAS C library, made better. SuperNOVAS is a light-weight, high-precision astrometry library for the C programming language."/>
+<meta name="description" content="SuperNOVAS C/C++ astrometry library"/>
 <meta name="keywords" content="astronomy, astrometry, C, C++, library, NOVAS"/>
 <meta name="author" content="Attila Kovacs"/>
 <meta name="copyright" content="(C)2024 Attila Kovacs" />
@@ -27,10 +27,10 @@
   gtag('js', new Date());
   gtag('config', 'G-HLFWKSM8V9');
 </script>
-<link rel="shortcut icon" type="image/x-icon" href="/SuperNOVAS/favicon.ico" />
-<link rel="icon" type="image/png" sizes="192x192" href="/SuperNOVAS/android-chrome-192x192.png" />
-<link rel="icon" type="image/png" sizes="512x512" href="/SuperNOVAS/android-chrome-512x512.png" />
-<link rel="apple-touch-icon" type="image/png" href="/SuperNOVAS/apple-touch-icon.png" />
+<link rel="shortcut icon" type="image/x-icon" href="/SuperNOVAS/resources/favicon.ico" />
+<link rel="icon" type="image/png" sizes="192x192" href="/SuperNOVAS/resources/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/SuperNOVAS/resources/android-chrome-512x512.png" />
+<link rel="apple-touch-icon" type="image/png" href="/SuperNOVAS/resources/apple-touch-icon.png" />
 <title>SuperNOVAS: include/novas.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -167,9 +167,7 @@ Macros</h2></td></tr>
 <tr class="separator:af7e8592d0a634bd3642e9fd508ea8022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5414c24d23ad004a73ec69b1aad9f3e2" id="r_a5414c24d23ad004a73ec69b1aad9f3e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2">HELIOC</a>&#160;&#160;&#160;<a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a></td></tr>
 <tr class="separator:a5414c24d23ad004a73ec69b1aad9f3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc8f275a2d431e59a1ec9e276abaca1a" id="r_abc8f275a2d431e59a1ec9e276abaca1a"><td class="memItemLeft" align="right" valign="top"><a id="abc8f275a2d431e59a1ec9e276abaca1a" name="abc8f275a2d431e59a1ec9e276abaca1a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_AU</b>&#160;&#160;&#160;1.4959787069098932e+11</td></tr>
-<tr class="memdesc:abc8f275a2d431e59a1ec9e276abaca1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">[m] Astronomical unit in meters. Value is AU_SEC * C. <br /></td></tr>
+<tr class="memitem:abc8f275a2d431e59a1ec9e276abaca1a" id="r_abc8f275a2d431e59a1ec9e276abaca1a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>&#160;&#160;&#160;1.495978707e+11</td></tr>
 <tr class="separator:abc8f275a2d431e59a1ec9e276abaca1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab94b49a9d44c6078c5ea12171029eb96" id="r_ab94b49a9d44c6078c5ea12171029eb96"><td class="memItemLeft" align="right" valign="top"><a id="ab94b49a9d44c6078c5ea12171029eb96" name="ab94b49a9d44c6078c5ea12171029eb96"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_AU_KM</b>&#160;&#160;&#160;( 1e-3 * <a class="el" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a> )</td></tr>
@@ -177,7 +175,7 @@ Macros</h2></td></tr>
 <tr class="separator:ab94b49a9d44c6078c5ea12171029eb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a610c7260c1879f89913bf7a5549b4649" id="r_a610c7260c1879f89913bf7a5549b4649"><td class="memItemLeft" align="right" valign="top"><a id="a610c7260c1879f89913bf7a5549b4649" name="a610c7260c1879f89913bf7a5549b4649"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_AU_SEC</b>&#160;&#160;&#160;( <a class="el" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a> / <a class="el" href="novas_8h.html#a5fb4713ad9802152e40a83bf3c1ee242">NOVAS_C</a> )</td></tr>
-<tr class="memdesc:a610c7260c1879f89913bf7a5549b4649"><td class="mdescLeft">&#160;</td><td class="mdescRight">[AU] Light-time for one astronomical unit (AU) in seconds, from DE-405. <br /></td></tr>
+<tr class="memdesc:a610c7260c1879f89913bf7a5549b4649"><td class="mdescLeft">&#160;</td><td class="mdescRight">[AU] Light-time for one astronomical unit (AU) in seconds. <br /></td></tr>
 <tr class="separator:a610c7260c1879f89913bf7a5549b4649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fb4713ad9802152e40a83bf3c1ee242" id="r_a5fb4713ad9802152e40a83bf3c1ee242"><td class="memItemLeft" align="right" valign="top"><a id="a5fb4713ad9802152e40a83bf3c1ee242" name="a5fb4713ad9802152e40a83bf3c1ee242"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_C</b>&#160;&#160;&#160;299792458.0</td></tr>
@@ -286,11 +284,11 @@ Macros</h2></td></tr>
 <tr class="memdesc:aaed93e356acfc0d15d0f64ae0793b4f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">API minor version. <br /></td></tr>
 <tr class="separator:aaed93e356acfc0d15d0f64ae0793b4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b926427954233b94ebd6925d86f9f81" id="r_a9b926427954233b94ebd6925d86f9f81"><td class="memItemLeft" align="right" valign="top"><a id="a9b926427954233b94ebd6925d86f9f81" name="a9b926427954233b94ebd6925d86f9f81"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_PATCHLEVEL</b>&#160;&#160;&#160;0</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_PATCHLEVEL</b>&#160;&#160;&#160;1</td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release. <br /></td></tr>
 <tr class="separator:a9b926427954233b94ebd6925d86f9f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft" align="right" valign="top"><a id="aadef42ba39811e058ee9efe2c6f7d151" name="aadef42ba39811e058ee9efe2c6f7d151"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-devel&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1". <br /></td></tr>
 <tr class="separator:aadef42ba39811e058ee9efe2c6f7d151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a44de9d1672290d153a1dfb0685886208">SUPERNOVAS_VERSION_STRING</a></td></tr>
@@ -418,6 +416,8 @@ Functions</h2></td></tr>
 <tr class="separator:a84516e14b76ec0b8ad5b9a9049a2db81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abceec12c6cac2693b45b7778374455f4" id="r_abceec12c6cac2693b45b7778374455f4"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#abceec12c6cac2693b45b7778374455f4">app_star</a> (double jd_tt, const <a class="el" href="structcat__entry.html">cat_entry</a> *star, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *ra, double *dec)</td></tr>
 <tr class="separator:abceec12c6cac2693b45b7778374455f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fa57a154f2f423612736e5e3a5addbf" id="r_a3fa57a154f2f423612736e5e3a5addbf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a3fa57a154f2f423612736e5e3a5addbf">app_to_cirs_ra</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double ra)</td></tr>
+<tr class="separator:a3fa57a154f2f423612736e5e3a5addbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ee352727a9c2d181d6bd7d097f965d6" id="r_a5ee352727a9c2d181d6bd7d097f965d6"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a5ee352727a9c2d181d6bd7d097f965d6">astro_planet</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *ss_body, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *ra, double *dec, double *dis)</td></tr>
 <tr class="separator:a5ee352727a9c2d181d6bd7d097f965d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60ea97a77320c52b566f8e8fb5faf304" id="r_a60ea97a77320c52b566f8e8fb5faf304"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a60ea97a77320c52b566f8e8fb5faf304">astro_star</a> (double jd_tt, const <a class="el" href="structcat__entry.html">cat_entry</a> *star, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *ra, double *dec)</td></tr>
@@ -438,6 +438,8 @@ Functions</h2></td></tr>
 <tr class="separator:a43141f0ea4598d6c87193c3ea594dd6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94ffd7dee2728748af9159d92e1efb6c" id="r_a94ffd7dee2728748af9159d92e1efb6c"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a94ffd7dee2728748af9159d92e1efb6c">cio_ra</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *ra_cio)</td></tr>
 <tr class="separator:a94ffd7dee2728748af9159d92e1efb6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af90d52a6527d9b62b8ac35d8c1ac7c6b" id="r_af90d52a6527d9b62b8ac35d8c1ac7c6b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double ra)</td></tr>
+<tr class="separator:af90d52a6527d9b62b8ac35d8c1ac7c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0db0cf9077844f6f1df94a46972c8f2" id="r_ad0db0cf9077844f6f1df94a46972c8f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#ad0db0cf9077844f6f1df94a46972c8f2">cirs_to_gcrs</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
 <tr class="separator:ad0db0cf9077844f6f1df94a46972c8f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2768d89d499a7155f90a6fd8c176d8d" id="r_aa2768d89d499a7155f90a6fd8c176d8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs</a> (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double xp, double yp, const double *in, double *out)</td></tr>
@@ -668,6 +670,21 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="abc8f275a2d431e59a1ec9e276abaca1a" name="abc8f275a2d431e59a1ec9e276abaca1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc8f275a2d431e59a1ec9e276abaca1a">&#9670;&#160;</a></span>NOVAS_AU</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_AU&#160;&#160;&#160;1.495978707e+11</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>[m] Astronomical unit in meters. IAU definition. See <a href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">IAU 2012 Resolution B2</a>. </p>
+
+</div>
+</div>
 <a id="ac50f27bc66238525124427551a956ec3" name="ac50f27bc66238525124427551a956ec3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac50f27bc66238525124427551a956ec3">&#9670;&#160;</a></span>NOVAS_EARTH_ANGVEL</h2>
 
@@ -756,7 +773,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>String array initializer for Major planet names, matching the enum novas_planet. E.g.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">char</span> *planet_names[] = <a class="code hl_define" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>;</div>
-<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdef"><b>Definition</b> novas.h:232</div></div>
+<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdef"><b>Definition</b> novas.h:238</div></div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>novas_majot_planet </dd></dl>
 
 </div>
@@ -1522,6 +1539,55 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 
 </div>
 </div>
+<a id="a3fa57a154f2f423612736e5e3a5addbf" name="a3fa57a154f2f423612736e5e3a5addbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fa57a154f2f423612736e5e3a5addbf">&#9670;&#160;</a></span>app_to_cirs_ra()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double app_to_cirs_ra </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ra</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R.A., measured from the CIO.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date </td></tr>
+    <tr><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramname">ra</td><td>[h] the apparent R.A. coordinate measured from the true equinox of date. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[h] The CIRS right ascension coordinate, measured from the CIO [0:24].</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a94ffd7dee2728748af9159d92e1efb6c">cio_ra()</a>, and <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>.</p>
+
+</div>
+</div>
 <a id="a5ee352727a9c2d181d6bd7d097f965d6" name="a5ee352727a9c2d181d6bd7d097f965d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ee352727a9c2d181d6bd7d097f965d6">&#9670;&#160;</a></span>astro_planet()</h2>
 
@@ -2256,6 +2322,55 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if the output pointer argument is NULL, 1 if 'accuracy' is invalid, 10&ndash;20: 10 + error code from <a class="el" href="novas_8c.html#a43141f0ea4598d6c87193c3ea594dd6c">cio_location()</a>, or else 20 + error from <a class="el" href="novas_8c.html#a07f83fbb8a57cf442c264ecdc979475e">cio_basis()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8c.html#a07f83fbb8a57cf442c264ecdc979475e">cio_basis()</a>, <a class="el" href="novas_8c.html#a43141f0ea4598d6c87193c3ea594dd6c">cio_location()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>.</p>
+
+</div>
+</div>
+<a id="af90d52a6527d9b62b8ac35d8c1ac7c6b" name="af90d52a6527d9b62b8ac35d8c1ac7c6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af90d52a6527d9b62b8ac35d8c1ac7c6b">&#9670;&#160;</a></span>cirs_to_app_ra()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double cirs_to_app_ra </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ra</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R.A. measured from the true equinox of date.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date </td></tr>
+    <tr><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramname">ra</td><td>[h] The CIRS right ascension coordinate, measured from the CIO. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[h] the apparent R.A. coordinate measured from the true equinox of date [0:24].</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a3fa57a154f2f423612736e5e3a5addbf">app_to_cirs_ra()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a94ffd7dee2728748af9159d92e1efb6c">cio_ra()</a>, and <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>.</p>
 
 </div>
 </div>

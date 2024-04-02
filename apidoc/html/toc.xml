@@ -1,43 +1,48 @@
 <toc label="SuperNOVAS" topic="index.html">
-    <topic label="Table of Contents" href="index.html#autotoc_md7"/>
-    <topic label="Introduction" href="index.html#autotoc_md9"/>
-    <topic label="Fixed NOVAS C 3.1 issues" href="index.html#autotoc_md11"/>
-    <topic label="Compatibility with NOVAS C 3.1" href="index.html#autotoc_md13"/>
-    <topic label="Building and installation" href="index.html#autotoc_md15">
-      <topic label="Building your application with SuperNOVAS" href="index.html#autotoc_md16"/>
-    <topic label="Example usage" href="index.html#autotoc_md18">
-      <topic label="Note on alternative methodologies" href="index.html#autotoc_md19"/>
-      <topic label="Calculating positions for a sidereal source" href="index.html#autotoc_md20">
-        <topic label="A. True apparent R.A. and declination" href="index.html#autotoc_md21"/>
-        <topic label="B. Azimuth and elevation angles at the observing location" href="index.html#autotoc_md22"/>
+    <topic label="Table of Contents" href="index.html#autotoc_md11"/>
+    <topic label="Introduction" href="index.html#autotoc_md13"/>
+    <topic label="Fixed NOVAS C 3.1 issues" href="index.html#autotoc_md15"/>
+    <topic label="Compatibility with NOVAS C 3.1" href="index.html#autotoc_md17"/>
+    <topic label="Building and installation" href="index.html#autotoc_md19">
+      <topic label="Building your application with SuperNOVAS" href="index.html#autotoc_md20"/>
+    <topic label="Example usage" href="index.html#autotoc_md22">
+      <topic label="Note on alternative methodologies" href="index.html#autotoc_md23"/>
+      <topic label="Calculating positions for a sidereal source" href="index.html#autotoc_md24">
+        <topic label="A. True apparent R.A. and declination" href="index.html#autotoc_md25"/>
+        <topic label="B. Azimuth and elevation angles at the observing location" href="index.html#autotoc_md26"/>
       </topic>
-      <topic label="Calculating positions for a Solar-system source" href="index.html#autotoc_md23"/>
-      <topic label="Reduced accuracy shortcuts" href="index.html#autotoc_md24"/>
-      <topic label="Performance considerations" href="index.html#autotoc_md25"/>
-      <topic label="Multi-threaded calculations" href="index.html#autotoc_md26"/>
+      <topic label="Calculating positions for a Solar-system source" href="index.html#autotoc_md27"/>
+      <topic label="Reduced accuracy shortcuts" href="index.html#autotoc_md28"/>
+      <topic label="Performance considerations" href="index.html#autotoc_md29"/>
+      <topic label="Multi-threaded calculations" href="index.html#autotoc_md30"/>
     </topic>
-    <topic label="Usage" href="index.html#autotoc_md28"/>
-    <topic label="Notes on precision" href="index.html#autotoc_md29"/>
-    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md31">
-      <topic label="Newly added functionality" href="index.html#autotoc_md32"/>
-      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md33"/>
+    <topic label="Usage" href="index.html#autotoc_md32"/>
+    <topic label="Notes on precision" href="index.html#autotoc_md33"/>
+    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md35">
+      <topic label="Newly added functionality" href="index.html#autotoc_md36"/>
+      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md37"/>
     </topic>
-    <topic label="External Solar-system ephemeris data or services" href="index.html#autotoc_md35">
-      <topic label="1. Universal ephemeris data / service integration" href="index.html#autotoc_md36"/>
-      <topic label="2. Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md37">
-        <topic label="2.1. Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md38"/>
-        <topic label="2.b. Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md39"/>
+    <topic label="External Solar-system ephemeris data or services" href="index.html#autotoc_md39">
+      <topic label="1. Universal ephemeris data / service integration" href="index.html#autotoc_md40"/>
+      <topic label="2. Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md41">
+        <topic label="2.1. Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md42"/>
+        <topic label="2.b. Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md43"/>
       </topic>
-      <topic label="3. Explicit linking of custom ephemeris functions" href="index.html#autotoc_md40"/>
+      <topic label="3. Explicit linking of custom ephemeris functions" href="index.html#autotoc_md44"/>
     </topic>
-    <topic label="Release schedule" href="index.html#autotoc_md42"/>
+    <topic label="Release schedule" href="index.html#autotoc_md46"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.0.0] - 2024-03-01" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.0.1-rc1]" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
-      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
-      <topic label="Deprecated" href="md_CHANGELOG.html#autotoc_md5"/>
+      <topic label="Changes" href="md_CHANGELOG.html#autotoc_md4"/>
+    </topic>
+    <topic label="[1.0.0] - 2024-03-01" href="md_CHANGELOG.html#autotoc_md5">
+      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md6"/>
+      <topic label="Added" href="md_CHANGELOG.html#autotoc_md7"/>
+      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md8"/>
+      <topic label="Deprecated" href="md_CHANGELOG.html#autotoc_md9"/>
     </topic>
   </topic>
   <topic label="Contributing to SuperNOVAS" href="md_CONTRIBUTING.html"/>
@@ -301,6 +306,7 @@
           <topic label="accum_prec" href="novas_8h.html#ad1de5b481e41cf193c199bd0dc5084bd"/>
           <topic label="app_planet" href="novas_8h.html#a84516e14b76ec0b8ad5b9a9049a2db81"/>
           <topic label="app_star" href="novas_8h.html#abceec12c6cac2693b45b7778374455f4"/>
+          <topic label="app_to_cirs_ra" href="novas_8h.html#a3fa57a154f2f423612736e5e3a5addbf"/>
           <topic label="astro_planet" href="novas_8h.html#a5ee352727a9c2d181d6bd7d097f965d6"/>
           <topic label="astro_star" href="novas_8h.html#a60ea97a77320c52b566f8e8fb5faf304"/>
           <topic label="bary2obs" href="novas_8h.html#aada778ddcc75a355b6753f5372775094"/>
@@ -311,6 +317,7 @@
           <topic label="cio_basis" href="novas_8h.html#a07f83fbb8a57cf442c264ecdc979475e"/>
           <topic label="cio_location" href="novas_8h.html#a43141f0ea4598d6c87193c3ea594dd6c"/>
           <topic label="cio_ra" href="novas_8h.html#a94ffd7dee2728748af9159d92e1efb6c"/>
+          <topic label="cirs_to_app_ra" href="novas_8h.html#af90d52a6527d9b62b8ac35d8c1ac7c6b"/>
           <topic label="cirs_to_gcrs" href="novas_8h.html#ad0db0cf9077844f6f1df94a46972c8f2"/>
           <topic label="cirs_to_itrs" href="novas_8h.html#aa2768d89d499a7155f90a6fd8c176d8d"/>
           <topic label="d_light" href="novas_8h.html#a25e1ba14b69ef837cc7a5da21b27e5c6"/>
@@ -474,6 +481,7 @@
           <topic label="accum_prec" href="novas_8c.html#ad1de5b481e41cf193c199bd0dc5084bd"/>
           <topic label="app_planet" href="novas_8c.html#a84516e14b76ec0b8ad5b9a9049a2db81"/>
           <topic label="app_star" href="novas_8c.html#abceec12c6cac2693b45b7778374455f4"/>
+          <topic label="app_to_cirs_ra" href="novas_8c.html#a3fa57a154f2f423612736e5e3a5addbf"/>
           <topic label="astro_planet" href="novas_8c.html#a5ee352727a9c2d181d6bd7d097f965d6"/>
           <topic label="astro_star" href="novas_8c.html#a60ea97a77320c52b566f8e8fb5faf304"/>
           <topic label="bary2obs" href="novas_8c.html#aada778ddcc75a355b6753f5372775094"/>
@@ -484,6 +492,7 @@
           <topic label="cio_basis" href="novas_8c.html#a07f83fbb8a57cf442c264ecdc979475e"/>
           <topic label="cio_location" href="novas_8c.html#a43141f0ea4598d6c87193c3ea594dd6c"/>
           <topic label="cio_ra" href="novas_8c.html#a94ffd7dee2728748af9159d92e1efb6c"/>
+          <topic label="cirs_to_app_ra" href="novas_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b"/>
           <topic label="cirs_to_gcrs" href="novas_8c.html#ac0ba048cd1732d0d0398397396d158bc"/>
           <topic label="cirs_to_itrs" href="novas_8c.html#aa2768d89d499a7155f90a6fd8c176d8d"/>
           <topic label="d_light" href="novas_8c.html#a25e1ba14b69ef837cc7a5da21b27e5c6"/>
