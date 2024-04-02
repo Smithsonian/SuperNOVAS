@@ -13,16 +13,15 @@ plugins:
   - jekyll-sitemap
   - jekyll-titles-from-headings
   - jekyll-toc
-
-# Exclude search pages from sitemap
-- scope:
-    path: apidoc/html/search/**
-  values:
-    sitemap: false
-
-# Exclude google site verification from sitemap
-- scope:
-    path: google*.html
-  values:
-    sitemap:false
+defaults:
+  # Exclude search pages from sitemap
+  - scope:
+      path: apidoc/html/search/**
+    values:
+      sitemap: false
+  # Exclude google site verification from sitemap
+  - scope:
+      path: google*.html
+    values:
+      sitemap: false
 
