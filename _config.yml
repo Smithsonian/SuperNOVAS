@@ -9,11 +9,20 @@ url: "https://smithsonian.github.io"
 read_time: true
 titles_from_headings:
   strip_title: true
-toc:
-  min_level: 2
-  max_level: 2
 plugins:
   - jekyll-sitemap
   - jekyll-titles-from-headings
   - jekyll-toc
+
+# Exclude search pages from sitemap
+- scope:
+    path: apidoc/html/search/**
+  values:
+    sitemap: false
+
+# Exclude google site verification from sitemap
+- scope:
+    path: google*.html
+  values:
+    sitemap:false
 
