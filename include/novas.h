@@ -85,16 +85,16 @@
 /// [m/s] Speed of light in meters/second is a defining physical constant.
 #define NOVAS_C                   299792458.0
 
-/// [m] Astronomical unit in meters.  Value is AU_SEC * C. IAU definition.
+/// [m] Astronomical unit in meters. IAU definition.
 /// See <a href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">IAU 2012 Resolution B2</a>.
 #define NOVAS_AU                  1.495978707e+11
 
 /*
-/// [m] Astronomical unit in meters.  Value is AU_SEC * C. (Old definition)
+/// [m] Astronomical unit in meters.  Value is AU_SEC * C, based on DE-405. (Old definition)
 #define NOVAS_AU                  1.4959787069098932e+11
 */
 
-/// [AU] Light-time for one astronomical unit (AU) in seconds, from DE-405.
+/// [AU] Light-time for one astronomical unit (AU) in seconds.
 #define NOVAS_AU_SEC              ( NOVAS_AU / NOVAS_C )
 
 /// [AU/day] Speed of light in AU/day.  Value is 86400 / AU_SEC.

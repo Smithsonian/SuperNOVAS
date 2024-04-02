@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.0.1-rc1]
 
 Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Stay tuned...
 
@@ -24,8 +24,7 @@ Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024. Sta
 
 ### Changes
 
- - Changed definition of `NOVAS_AU` to the IAU definition of exactly 149597870.7 km (a &lt;10 m change from the 
-   previously defined value).
+ - Changed definition of `AU` to the IAU definition of exactly 1.495978707e+11 m.
  - Various corrections and changes to documentation.
 
 
