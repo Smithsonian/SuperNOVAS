@@ -15,7 +15,6 @@
 #include <math.h>
 
 #include "novas.h"
-#include "novascon.h"
 #include "eph_manager.h"  // For solsys1.c
 
 int main(void) {
@@ -104,6 +103,7 @@ int main(void) {
 
   // Establish time arguments.
   jd_utc = julian_date(2008, 4, 24, 10.605);
+  jd_tt = jd_utc + ((double) leap_secs + 32.184) / 86400.0;
   jd_ut1 = jd_utc + ut1_utc / 86400.0;
   delta_t = get_ut1_to_tt(leap_secs, ut1_utc);
 
@@ -195,7 +195,7 @@ int main(void) {
     return (error);
   }
 
-  error = equ2ecl_vec(T0, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, pos, pose);
+  error = equ2ecl_vec(NOVAS_JD_J2000, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, pos, pose);
   if(error != 0) {
     printf("Error %d from equ2ecl_vec.", error);
     return (error);

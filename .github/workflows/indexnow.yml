@@ -15,6 +15,6 @@ jobs:
         with:
           sitemap-location: 'https://smithsonian.github.io/SuperNOVAS/sitemap.xml'
           key: ${{ secrets.INDEXNOW_KEY }}
-          since-unit: week
+          key-location: 'https://smithsonian.github.io/SuperNOVAS/${{ secrets.INDEXNOW_KEY }}.txt'
           limit: 200
 

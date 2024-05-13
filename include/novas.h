@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 1.0.0
+ * @version 1.0.1
  *
  *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -53,7 +53,7 @@
 #define SUPERNOVAS_MAJOR_VERSION  1             ///< API major version
 #define SUPERNOVAS_MINOR_VERSION  0             ///< API minor version
 #define SUPERNOVAS_PATCHLEVEL     1             ///< Integer sub version of the release
-#define SUPERNOVAS_RELEASE_STRING "-devel"      ///< Additional release information in version, e.g. "-1", or "-rc1".
+#define SUPERNOVAS_RELEASE_STRING ""            ///< Additional release information in version, e.g. "-1", or "-rc1".
 
 /// The version string for this library
 #define SUPERNOVAS_VERSION_STRING #SUPERNOVAS_MAJOR_VERSION "." #SUPERNOVAS_MINOR_VERSION \
@@ -85,10 +85,16 @@
 /// [m/s] Speed of light in meters/second is a defining physical constant.
 #define NOVAS_C                   299792458.0
 
-/// [m] Astronomical unit in meters.  Value is AU_SEC * C.
-#define NOVAS_AU                  1.4959787069098932e+11
+/// [m] Astronomical unit. IAU definition.
+/// See <a href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">IAU 2012 Resolution B2</a>.
+/// @sa DE405_AU
+#define NOVAS_AU                  1.495978707e+11
 
-/// [AU] Light-time for one astronomical unit (AU) in seconds, from DE-405.
+/// [m] Astronomical unit. based on DE-405. (old definition)
+/// @sa NOVAS_AU
+#define DE405_AU                  1.4959787069098932e+11
+
+/// [AU] Light-time for one astronomical unit (AU) in seconds.
 #define NOVAS_AU_SEC              ( NOVAS_AU / NOVAS_C )
 
 /// [AU/day] Speed of light in AU/day.  Value is 86400 / AU_SEC.
@@ -869,7 +875,18 @@ int itrs_to_hor(const on_surface *location, const double *itrs, double *az, doub
 
 int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
 
+// ---------------------- Added in 1.0.1 -------------------------
+double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
+
+double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
+
+
+// <================= END of SuperNOVAS API =====================>
+
 #include "solarsystem.h"
+
+
+// <================= SuperNOVAS internals ======================>
 
 /// \cond PRIVATE
 #ifdef __NOVAS_INTERNAL_API__
