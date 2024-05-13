@@ -33,7 +33,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md46"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.0.1-rc1]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.0.1] &amp;ndash; 2024-05-13" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changes" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -165,6 +165,7 @@
           <topic label="ASEC2RAD" href="novas_8h.html#a8a0ef80e44076b86bc707e9414d85d76"/>
           <topic label="ASEC360" href="novas_8h.html#a320b4181c798436981b4520175baad89"/>
           <topic label="BARYC" href="novas_8h.html#a0c92a54a656043a455ea8ae0ace6c57e"/>
+          <topic label="DE405_AU" href="novas_8h.html#af303bf91582509624aa40c6a87eb95ac"/>
           <topic label="DEFAULT_CIO_LOCATOR_FILE" href="novas_8h.html#a4caf1f6e33a208827eb99df7e387d6d1"/>
           <topic label="DEG2RAD" href="novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022"/>
           <topic label="HELIOC" href="novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2"/>

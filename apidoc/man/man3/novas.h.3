@@ -49,6 +49,9 @@ include/novas.h
 .RI "#define \fBBARYC\fP   \fBNOVAS_BARYCENTER\fP"
 .br
 .ti -1c
+.RI "#define \fBDE405_AU\fP   1\&.4959787069098932e+11"
+.br
+.ti -1c
 .RI "#define \fBDEFAULT_CIO_LOCATOR_FILE\fP   '/usr/share/novas/cio_ra\&.bin'"
 .br
 .ti -1c
@@ -187,7 +190,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   ''"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1'\&. "
 .ti -1c
@@ -590,7 +593,7 @@ G\&. Kaplan and A\&. Kovacs
 .PP
 \fBVersion\fP
 .RS 4
-1\&.0\&.0
+1\&.0\&.1
 .RE
 .PP
 SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS)\&. It has been modified to fix outstanding issues and to make it easier to use\&.
@@ -607,6 +610,15 @@ Old definition of the Barycenter origin\&. NOVAS_BARYCENTER is preferred\&.
 .RE
 .PP
 
+.SS "#define DE405_AU   1\&.4959787069098932e+11"
+[m] Astronomical unit\&. based on DE-405\&. (old definition) 
+.PP
+\fBSee also\fP
+.RS 4
+\fBNOVAS_AU\fP 
+.RE
+.PP
+
 .SS "#define DEFAULT_CIO_LOCATOR_FILE   '/usr/share/novas/cio_ra\&.bin'"
 Path / name of file to use for interpolating the CIO location relative to GCRS This file can be generated with the \fCcio_file\&.c\fP tool using the \fCCIO_RA\&.TXT\fP data (both are included in the distribution) 
 .SS "#define HELIOC   \fBNOVAS_HELIOCENTER\fP"
@@ -619,7 +631,14 @@ Old definition of the Center of Sun as the origin\&. NOVAS_HELIOCENTER is prefer
 .PP
 
 .SS "#define NOVAS_AU   1\&.495978707e+11"
-[m] Astronomical unit in meters\&. IAU definition\&. See \fCIAU 2012 Resolution B2\fP\&. 
+[m] Astronomical unit\&. IAU definition\&. See \fCIAU 2012 Resolution B2\fP\&. 
+.PP
+\fBSee also\fP
+.RS 4
+\fBDE405_AU\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_EARTH_ANGVEL   7\&.2921150e\-5"
 [rad/s] Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003)\&. 
 .SS "#define NOVAS_EARTH_FLATTENING   (1\&.0 / 298\&.25642)"

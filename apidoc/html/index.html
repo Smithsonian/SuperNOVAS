@@ -185,7 +185,9 @@ Fixed NOVAS C 3.1 issues</h2>
 <p><a class="anchor" id="compatibility"></a> </p>
 <h2><a class="anchor" id="autotoc_md17"></a>
 Compatibility with NOVAS C 3.1</h2>
-<p>SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. In practical terms it means that you cannot simply drop-in replace your compiled objects (e.g. <code>novas.o</code>), or the static (e.g. <code>novas.a</code>) or shared (e.g. <code>novas.so</code>) libraries, from NOVAS C 3.1 with that from SuperNOVAS. Instead, you will need to (re)build your application with the SuperNOVAS versions of these.</p>
+<p>SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility.</p>
+<p>If you have code that was written for NOVAS C 3.1, it should work with SuperNOVAS as is, without modifications. Simply (re)build your application against SuperNOVAS, and you are good to go.</p>
+<p>The lack of binary compatibility just means that you cannot drop-in replace your compiled objects (e.g. <code>novas.o</code>, or the static <code>novas.a</code>, or the shared <code>novas.so</code>) libraries, from NOVAS C 3.1 with those from SuperNOVAS. Instead, you will have to build (compile) your application referencing the SuperNOVAS headers and/or libraries from the start.</p>
 <p>This is because some function signatures have changed, e.g. to use an <code>enum</code> argument instead of the nondescript <code>short int</code> argument of NOVAS C 3.1, or because we added a return value to a function that was declared <code>void</code> in NOVAS C 3.1. We also changed the <code>object</code> structure to contain a <code>long</code> ID number instead of <code>short</code> to accommodate JPL NAIF codes, for which 16-bit storage is insufficient.</p>
 <hr  />
 <p><a class="anchor" id="installation"></a> </p>

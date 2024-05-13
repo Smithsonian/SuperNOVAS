@@ -37,6 +37,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>DE405_AU</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>af303bf91582509624aa40c6a87eb95ac</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>DEFAULT_CIO_LOCATOR_FILE</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a4caf1f6e33a208827eb99df7e387d6d1</anchor>

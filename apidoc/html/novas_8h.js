@@ -11,6 +11,7 @@ var novas_8h =
     [ "ASEC2RAD", "novas_8h.html#a8a0ef80e44076b86bc707e9414d85d76", null ],
     [ "ASEC360", "novas_8h.html#a320b4181c798436981b4520175baad89", null ],
     [ "BARYC", "novas_8h.html#a0c92a54a656043a455ea8ae0ace6c57e", null ],
+    [ "DE405_AU", "novas_8h.html#af303bf91582509624aa40c6a87eb95ac", null ],
     [ "DEFAULT_CIO_LOCATOR_FILE", "novas_8h.html#a4caf1f6e33a208827eb99df7e387d6d1", null ],
     [ "DEG2RAD", "novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022", null ],
     [ "HELIOC", "novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2", null ],

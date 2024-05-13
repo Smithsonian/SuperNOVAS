@@ -7,9 +7,9 @@ md_CHANGELOG \- Changelog
  All notable changes to the SuperNOVAS library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.0\&.1-rc1]"
+.SH "[1\&.0\&.1] &ndash; 2024-05-13"
 .PP
-Changes for the upcoming release of SuperNOVAS, possibly around 1 June 2024\&. Stay tuned\&.\&.\&.
+Bug fix release with minor changes\&.
 .SS "Fixed"
 .IP "\(bu" 2
 \fC\fBcirs_to_itrs()\fP\fP, \fC\fBitrs_to_cirs()\fP\fP, \fC\fBtod_to_itrs()\fP\fP, and \fC\fBitrs_to_tod()\fP\fP all had a unit conversion bug in using the \fCut1_to_tt\fP argument [s] when converting TT-based Julian date to UT1-based JD [day] internally\&.
@@ -22,7 +22,7 @@ Added \fC\fBcirs_to_app_ra()\fP\fP and \fC\fBapp_to_cirs_ra()\fP\fP for convenie
 .PP
 .SS "Changes"
 .IP "\(bu" 2
-Changed definition of \fCAU\fP to the IAU definition of exactly 1\&.495978707e+11 m\&.
+Changed definition of \fCNOVAS_AU\fP to the IAU definition of exactly 1\&.495978707e+11 m\&. The old definition is also available as \fCDE405_AU\fP\&.
 .IP "\(bu" 2
 Various corrections and changes to documentation\&.
 .PP
