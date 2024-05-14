@@ -5,6 +5,16 @@
 # You can include this snipplet in your Makefile also.
 # ============================================================================
 
+# The targets to build by default if not otherwise specified to 'make'
+DEFAULT_TARGETS := static shared cio_ra.bin
+
+# Check if there is a doxygen we can run
+DOXYGEN := $(shell which doxygen)
+
+# If there is doxygen, build the API documentation also by default
+ifeq ($(.SHELLSTATUS),0)
+  DEFAULT_TARGETS += dox
+endif
 
 # Folders in which sources and headers are located, respectively
 SRC = src
