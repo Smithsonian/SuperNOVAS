@@ -86,6 +86,31 @@ README-headless.md: README.md
 
 dox: README-headless.md
 
+.PHONY: help
+help:
+	@echo
+	@echo "Syntax: make [target]"
+	@echo
+	@echo "The following targets are available:"
+	@echo
+	@echo "  api           (default) 'static', 'shared', 'cio_ra.bin' targets, and also" 
+	@echo "                'dox' if 'doxygen' is available, or was specified via the"
+	@echo "                DOXYGEN variable (e.g. in 'config.mk')."
+	@echo "  static        Builds the static 'lib/novas.a' library."
+	@echo "  shared        Builds the shared 'lib/novas.so' library."
+	@echo "  cio_ra.bin    Generates the CIO locator lookup data file 'cio_ra.bin', in the"
+	@echo "                destination specified in 'config.mk'."
+	@echo "  dox           Compiles HTML API documentation using 'doxygen'."
+	@echo "  solsys        Builds only the objects that may provide 'solarsystem()' call"
+	@echo "                implemtations (e.g. 'solsys1.o', 'eph_manager.o'...)."
+	@echo "  check         Performs static analysis with 'cppcheck'."
+	@echo "  test          Runs regression tests."
+	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
+	@echo "  all           All of the above."
+	@echo "  clean         Removes intermediate products."
+	@echo "  distclean     Deletes all generated files."
+	@echo
+
 Makefile: config.mk build.mk
 
 vpath %.c $(SRC)
