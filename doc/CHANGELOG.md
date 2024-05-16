@@ -12,14 +12,14 @@ Changes coming to the next quarterly release. Some or all of these may be readil
 
 ### Added
 
- - `make help` support to provide a brief list and explanation of the available build targets. (Thanks to @teuben for 
-   suggesting.)
+ - `make help` support to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` 
+   for suggesting.)
 
 ### Changed
 
  - Default `make` to skip `dox` target unless `doxygen` is available (either in the default `PATH` or else specified 
    via the `DOXYGEN` variable, e.g. in `config.mk`). This way the default build does not have unexpected dependencies.
-   (see Issue #22, thanks to @teuben).
+   (see Issue #22, thanks to `@teuben`).
   
 
 ## [1.0.1] -- 2024-05-13
