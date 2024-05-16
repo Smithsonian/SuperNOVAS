@@ -6,14 +6,29 @@
 
 include config.mk
 
-
 # ===============================================================================
 # Specific build targets and recipes below...
 # ===============================================================================
 
+# The targets to build by default if not otherwise specified to 'make'
+DEFAULT_TARGETS := static shared cio_ra.bin
+
+# Check if there is a doxygen we can run
+ifndef DOXYGEN
+  DOXYGEN := $(shell which doxygen)
+else
+  $(shell test -f $(DOXYGEN))
+endif
+
+# If there is doxygen, build the API documentation also by default
+ifeq ($(.SHELLSTATUS),0)
+  DEFAULT_TARGETS += dox
+else
+  $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
+endif
 
 .PHONY: api
-api: static shared cio_ra.bin dox
+api: $(DEFAULT_TARGETS)
 
 .PHONY: static
 static: lib/novas.a

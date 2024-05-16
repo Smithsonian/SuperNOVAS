@@ -5,23 +5,15 @@
 # You can include this snipplet in your Makefile also.
 # ============================================================================
 
-# The targets to build by default if not otherwise specified to 'make'
-DEFAULT_TARGETS := static shared cio_ra.bin
-
-# Check if there is a doxygen we can run
-DOXYGEN := $(shell which doxygen)
-
-# If there is doxygen, build the API documentation also by default
-ifeq ($(.SHELLSTATUS),0)
-  DEFAULT_TARGETS += dox
-endif
-
 # Folders in which sources and headers are located, respectively
 SRC = src
 INC = include
 
 # Compiler options
 CFLAGS = -Os -Wall -I$(INC)
+
+# Specific Doxygen to use if not the default one
+#DOXYGEN = /opt/bin/doxygen
 
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra
@@ -31,7 +23,7 @@ CFLAGS = -Os -Wall -I$(INC)
 
 # To make SuperNOVAS thread-safe, we use thread-local storage modifier
 # keywords. These were not standardized prior to C11. So while we automatically
-# recognize C11 or CC >= 3.3 to use the correct thread-local modifier keyword,
+# recognize C11 or GCC >= 3.3 to use the correct thread-local modifier keyword,
 # for other compilers (e.g. Intel C, LLVM) you may need to specify it 
 # explicitly here by passing the keyword via the THREAD_LOCAL definition
 #
