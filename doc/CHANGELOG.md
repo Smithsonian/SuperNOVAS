@@ -8,12 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Changes coming to the next quarterly release. Some or all of these may be readily available to the `main` branch.
+Changes coming to the next quarterly release. Some or all of these may be readily available on the `main` branch.
 
 ### Added
 
- - `make help` support to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` 
-   for suggesting.)
+ - `make help` to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` for 
+   suggesting.)
 
 ### Changed
 
