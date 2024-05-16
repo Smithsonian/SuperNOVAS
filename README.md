@@ -197,8 +197,9 @@ Now you are ready to build the library:
 ```
 
 will compile the static (`lib/novas.a`) and shared (`lib/novas.so`) libraries, produce a CIO locator data file 
-(`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen`. Alternatively, you can 
-build select components of the above with the `make` targets `static`, `shared`, `cio_file`, and `dox` respectively.
+(`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
+Alternatively, you can build select components of the above with the `make` targets `static`, `shared`, `cio_file`, 
+and `dox` respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
 system-wide install you may place the static or shared library into `/usr/loval/lib/`, copy the CIO locator file to 
