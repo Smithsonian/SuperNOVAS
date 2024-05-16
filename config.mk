@@ -5,13 +5,15 @@
 # You can include this snipplet in your Makefile also.
 # ============================================================================
 
-
 # Folders in which sources and headers are located, respectively
 SRC = src
 INC = include
 
 # Compiler options
 CFLAGS = -Os -Wall -I$(INC)
+
+# Specific Doxygen to use if not the default one
+#DOXYGEN = /opt/bin/doxygen
 
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra
@@ -21,7 +23,7 @@ CFLAGS = -Os -Wall -I$(INC)
 
 # To make SuperNOVAS thread-safe, we use thread-local storage modifier
 # keywords. These were not standardized prior to C11. So while we automatically
-# recognize C11 or CC >= 3.3 to use the correct thread-local modifier keyword,
+# recognize C11 or GCC >= 3.3 to use the correct thread-local modifier keyword,
 # for other compilers (e.g. Intel C, LLVM) you may need to specify it 
 # explicitly here by passing the keyword via the THREAD_LOCAL definition
 #

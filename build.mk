@@ -43,7 +43,7 @@ check:
 .PHONY: dox
 dox: README.md | apidoc
 	@echo "   [doxygen]"
-	@doxygen
+	@$(DOXYGEN)
 
 # Automatic dependence on included header files.
 .PRECIOUS: dep/%.d
