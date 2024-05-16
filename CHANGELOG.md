@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+Changes coming to the next quarterly release. Some or all of these may be readily available to the `main` branch.
+
+### Added
+
+ - `make help` support to provide a brief list and explanation of the available build targets. (Thanks to @teuben for 
+   suggesting.)
+
+### Changed
+
+ - Default `make` to skip `dox` target unless `doxygen` is available (either in the default `PATH` or else specified 
+   via the `DOXYGEN` variable, e.g. in `config.mk`). This way the default build does not have unexpected dependencies.
+   (see Issue #22, thanks to @teuben).
+  
+
 ## [1.0.1] -- 2024-05-13
 
 Bug fix release with minor changes.
@@ -22,7 +38,7 @@ Bug fix release with minor changes.
  - Added `cirs_to_app_ra()` and `app_to_cirs_ra()` for convenience to convert between right ascensions measured from
    the CIO (for CIRS) vs measured from the true equinox of date, on the same true equator of date.
 
-### Changes
+### Changed
 
  - Changed definition of `NOVAS_AU` to the IAU definition of exactly 1.495978707e+11 m. The old definition is also
    available as `DE405_AU`.
