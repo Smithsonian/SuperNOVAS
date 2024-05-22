@@ -67,22 +67,22 @@ lib/novas.a: $(OBJECTS) | lib
 
 # Shared library: novas.so -- same as supernovas.so except the builtin SONAME
 lib/novas.so: $(SOURCES) | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libnovas.so.$(shell VERSION)
+	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libnovas.so.$(shell VERSION) $(LDFLAGS)
 
 # Shared library: supernovas.so -- same as novas.so except the builtin SONAME
 lib/supernovas.so: $(SOURCES) | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsupernovas.so.$(shell VERSION)
+	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsupernovas.so.$(shell VERSION) $(LDFLAGS)
 
 
 # Shared library: solsys1.so (standalone solsys1.c functionality)
 lib/solsys1.so: BUILTIN_SOLSYS1 := 0
 lib/solsys1.so: $(SRC)/solsys1.c $(SRC)/eph_manager.c | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsolsys1.so.$(shell VERSION)
+	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsolsys1.so.$(shell VERSION) $(LDFLAGS)
 
 # Shared library: solsys2.so (standalone solsys2.c functionality)
 lib/solsys2.so: BUILTIN_SOLSYS2 := 0
 lib/solsys2.so: $(SRC)/solsys2.c $(SRC)/jplint.f | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsolsys2.so.$(shell VERSION)
+	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsolsys2.so.$(shell VERSION) $(LDFLAGS)
 
 VERSION: bin/version
 	$< >> $@
@@ -119,12 +119,12 @@ help:
 	@echo "                'dox' if 'doxygen' is available, or was specified via the"
 	@echo "                DOXYGEN variable (e.g. in 'config.mk')."
 	@echo "  static        Builds the static 'lib/novas.a' library."
-	@echo "  shared        Builds the shared 'lib/novas.so' library."
+	@echo "  shared        Builds the shared 'novas.so', 'solsys1.so', and 'solsys2.so'."
 	@echo "  cio_ra.bin    Generates the CIO locator lookup data file 'cio_ra.bin', in the"
 	@echo "                destination specified in 'config.mk'."
 	@echo "  dox           Compiles HTML API documentation using 'doxygen'."
 	@echo "  solsys        Builds only the objects that may provide 'solarsystem()' call"
-	@echo "                implemtations (e.g. 'solsys1.o', 'eph_manager.o'...)."
+	@echo "                implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
 	@echo "  check         Performs static analysis with 'cppcheck'."
 	@echo "  test          Runs regression tests."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
