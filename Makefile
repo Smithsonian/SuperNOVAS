@@ -56,7 +56,7 @@ endif
 api: $(DEFAULT_TARGETS)
 
 .PHONY: static
-static: lib/novas.a $(SOLSYS_TARGETS)
+static: lib/novas.a solsys
 
 .PHONY: shared
 shared: $(SHARED_TARGETS)
@@ -120,6 +120,7 @@ lib/solsys-ephem.so: $(SRC)/solsys-ephem.c
 lib/%.so: | lib VERSION
 	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(shell cat VERSION) $(LDFLAGS)
 
+# A VERSION string extracted from novas.h version constants
 VERSION: bin/version
 	$< >> $@
 
