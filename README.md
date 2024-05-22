@@ -164,7 +164,8 @@ The SuperNOVAS distribution contains a GNU `Makefile`, which is suitable for com
 documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point we do 
 not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)
 
-Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, such as:
+Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, or else define
+the necessary variables in the shell prior to invoking `make`. For example:
 
  - Choose which planet calculator function routines are built into the library (for example to provide 
    `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
@@ -182,13 +183,14 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
    and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
 
  - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the binary file 
-   (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system. (The CIO locator file is not at all necessary for the 
-   functioning of the library, unless you specifically require CIO positions relative to GCRS.)
+   (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable
+   prior to calling `make`. (The CIO locator file is not at all necessary for the functioning of the library, unless 
+   you specifically require CIO positions relative to GCRS.)
    
  - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
-   quotes.)
+   quotes in `config.mk`, or unescaped if defining the `THREAD_LOCAL` shell variable prior to invoking `make`.)
 
 Now you are ready to build the library:
 
