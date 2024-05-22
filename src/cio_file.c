@@ -71,7 +71,11 @@ int main(int argc, const char *argv[]) {
    Read input file identifier.
    */
 
-  fgets(identifier, sizeof(identifier), in_file);
+  if(fgets(identifier, sizeof(identifier), in_file) == NULL) {
+    printf("Empty input file.\n");
+    fclose(in_file);
+    return (1);
+  }
 
   /*
    Read the input file and write the output file.
@@ -160,16 +164,18 @@ int main(int argc, const char *argv[]) {
    */
 
   rewind(out_file);
-  fread(&jd_beg, double_size, (size_t) 1, out_file);
-  fread(&jd_end, double_size, (size_t) 1, out_file);
-  fread(&t_int, double_size, (size_t) 1, out_file);
-  fread(&n_recs, long_size, (size_t) 1, out_file);
+  if(fread(&jd_beg, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
+  if(fread(&jd_end, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
+  if(fread(&t_int, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
+  if(fread(&n_recs, long_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
 
-  fread(&jd_1, double_size, (size_t) 1, out_file);
-  fread(&ra_1, double_size, (size_t) 1, out_file);
+  if(fread(&jd_1, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
+  if(fread(&ra_1, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
+
   fseek(out_file, -(record_size), SEEK_END);
-  fread(&jd_n, double_size, (size_t) 1, out_file);
-  fread(&ra_n, double_size, (size_t) 1, out_file);
+
+  if(fread(&jd_n, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
+  if(fread(&ra_n, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
 
   printf("Results from program cio_file:\n\n");
   printf("Input file identifier: %s\n", identifier);
@@ -189,4 +195,9 @@ int main(int argc, const char *argv[]) {
   fclose(out_file);
 
   return (0);
+
+  read_error:
+
+  perror("read error");
+  return (1);
 }
