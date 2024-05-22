@@ -28,17 +28,41 @@ else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
+SOLSYS_TARGETS :=
+SHARED_TARGETS := lib/novas.so
+
+ifneq ($(BUILTIN_SOLSYS1),1)
+  SOLSYS_TARGETS += obj/solsys1.o obj/eph_manager.o
+  SHARED_TARGETS += lib/solsys1.so
+endif
+
+ifneq ($(BUILTIN_SOLSYS2),1)
+  SOLSYS_TARGETS += obj/solsys2.o obj/jplint.o
+  SHARED_TARGETS += lib/solsys2.so
+endif
+
+ifneq ($(BUILTIN_SOLSYS3),1)
+  SOLSYS_TARGETS += obj/solsys3.o
+  SHARED_TARGETS += lib/solsys3.so
+endif
+
+ifneq ($(BUILTIN_SOLSYS_EPHEM),1)
+  SOLSYS_TARGETS += obj/solsys-ephem.o
+  SHARED_TARGETS += lib/solsys-ephem.so
+endif
+
+
 .PHONY: api
 api: $(DEFAULT_TARGETS)
 
 .PHONY: static
-static: lib/novas.a
+static: lib/novas.a $(SOLSYS_TARGETS)
 
 .PHONY: shared
-shared: lib/novas.so lib/solsys1.so lib/solsys2.so
+shared: $(SHARED_TARGETS)
 
 .PHONY: solsys
-solsys: obj/solsys1.o obj/eph_manager.o obj/solsys2.o obj/jplint.o obj/solsys3.o obj/solsys-ephem.o
+solsys: $(SOLSYS_TARGETS)
 
 .PHONY: test
 test:
@@ -66,23 +90,35 @@ lib/novas.a: $(OBJECTS) | lib
 	ranlib $@
 
 # Shared library: novas.so -- same as supernovas.so except the builtin SONAME
-lib/novas.so: $(SOURCES) | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libnovas.so.$(shell VERSION) $(LDFLAGS)
+lib/novas.so: LIBNAME := novas
+lib/novas.so: $(SOURCES)
 
 # Shared library: supernovas.so -- same as novas.so except the builtin SONAME
-lib/supernovas.so: $(SOURCES) | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsupernovas.so.$(shell VERSION) $(LDFLAGS)
-
+lib/supernovas.so: LIBNAME := supernovas
+lib/supernovas.so: $(SOURCES)
 
 # Shared library: solsys1.so (standalone solsys1.c functionality)
 lib/solsys1.so: BUILTIN_SOLSYS1 := 0
-lib/solsys1.so: $(SRC)/solsys1.c $(SRC)/eph_manager.c | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsolsys1.so.$(shell VERSION) $(LDFLAGS)
+lib/solsys1.so: LIBNAME := solsys1
+lib/solsys1.so: $(SRC)/solsys1.c $(SRC)/eph_manager.c
 
 # Shared library: solsys2.so (standalone solsys2.c functionality)
 lib/solsys2.so: BUILTIN_SOLSYS2 := 0
-lib/solsys2.so: $(SRC)/solsys2.c $(SRC)/jplint.f | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,libsolsys2.so.$(shell VERSION) $(LDFLAGS)
+lib/solsys2.so: LIBNAME := solsys2
+lib/solsys2.so: $(SRC)/solsys2.c $(SRC)/jplint.f
+
+# Shared library: solsys1.so (standalone solsys1.c functionality)
+lib/solsys3.so: BUILTIN_SOLSYS3 := 0
+lib/solsys3.so: LIBNAME := solsys3
+lib/solsys3.so: $(SRC)/solsys3.c
+
+# Shared library: solsys2.so (standalone solsys2.c functionality)
+lib/solsys-ephem.so: BUILTIN_SOLSYS_EPHEM := 0
+lib/solsys-ephem.so: LIBNAME := solsys-ephem
+lib/solsys-ephem.so: $(SRC)/solsys-ephem.c
+
+lib/%.so: | lib VERSION
+	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(shell cat VERSION) $(LDFLAGS)
 
 VERSION: bin/version
 	$< >> $@
@@ -123,8 +159,8 @@ help:
 	@echo "  cio_ra.bin    Generates the CIO locator lookup data file 'cio_ra.bin', in the"
 	@echo "                destination specified in 'config.mk'."
 	@echo "  dox           Compiles HTML API documentation using 'doxygen'."
-	@echo "  solsys        Builds only the objects that may provide 'solarsystem()' call"
-	@echo "                implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
+	@echo "  solsys        Builds only the objects that may provide external 'solarsystem()'"
+	@echo "                call implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
 	@echo "  check         Performs static analysis with 'cppcheck'."
 	@echo "  test          Runs regression tests."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."

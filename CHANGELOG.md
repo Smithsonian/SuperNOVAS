@@ -37,8 +37,10 @@ Changes coming to the next quarterly release. Some or all of these may be readil
    ones as in `config.mk` prior to invoking `make`. As such standard `CFLAGS` and `LDFLAGS` will be used if defined
    externally.
   
- - `make shared` now also build `lib/solsys1.so` and `lib/solsys2.so` shared libraries that can be used by programs
+ - `make shared` now also builds `lib/solsys1.so` and `lib/solsys2.so` shared libraries that can be used by programs
    that need solsys1 (via `eph_manager`) or solsys2 (via `jplint`) functionality.
+   
+ - `make solsys` now generates only the `solarsystem()` implementation objects that are external (not built in).
 
  - `make` now generates `.so` shared libraries with `SONAME` set to `lib<name>.so.$(VERSION)` where `VERSION` is the
    library version as printed by `version.c`. E.g. `novas.so` will have `SONAME` set to `libnovas.so.1.0.2` for 
