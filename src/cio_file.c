@@ -74,6 +74,7 @@ int main(int argc, const char *argv[]) {
   if(fgets(identifier, sizeof(identifier), in_file) == NULL) {
     printf("Empty input file.\n");
     fclose(in_file);
+    fclose(out_file);
     return (1);
   }
 
@@ -198,6 +199,8 @@ int main(int argc, const char *argv[]) {
 
   read_error:
 
+  fclose(in_file);
+  fclose(out_file);
   perror("read error");
   return (1);
 }
