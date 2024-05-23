@@ -6,10 +6,21 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "novas.h"
 
-int main() {
+int main(int argc, char *argv[]) {
+  if (argc > 1) {
+    const char *arg = argv[1];
+    if (strcmp("major", arg) == 0) printf("%d\n", SUPERNOVAS_MAJOR_VERSION);
+    else if (strcmp("minor", arg) == 0) printf("%d\n", SUPERNOVAS_MINOR_VERSION);
+    else if (strcmp("patch", arg) == 0) printf("%d\n", SUPERNOVAS_PATCHLEVEL);
+    else if (strcmp("release", arg) == 0) printf("%d\n", SUPERNOVAS_RELEASE_STRING);
+    else return 1;
+    return 0;
+  }
+
   printf("%s\n", SUPERNOVAS_VERSION_STRING);
   return 0;
 }

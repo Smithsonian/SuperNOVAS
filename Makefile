@@ -10,9 +10,6 @@ include config.mk
 # Specific build targets and recipes below...
 # ===============================================================================
 
-# Ideally we'd extract this from novas.h...
-MAJOR_VERSION = 1
-
 # The targets to build by default if not otherwise specified to 'make'
 DEFAULT_TARGETS := static shared cio_ra.bin
 
@@ -120,12 +117,8 @@ lib/solsys-ephem.so: BUILTIN_SOLSYS_EPHEM := 0
 lib/solsys-ephem.so: LIBNAME := solsys-ephem
 lib/solsys-ephem.so: $(SRC)/solsys-ephem.c
 
-lib/%.so: | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(MAJOR_VERSION) $(LDFLAGS)
-
-# A VERSION string extracted from novas.h version constants
-VERSION: bin/version
-	$< >> $@
+lib/%.so: | lib bin/version
+	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(shell bin/version major) $(LDFLAGS)
 
 .INTERMEDIATE: bin/version
 bin/version: $(SRC)/version.c | bin
@@ -135,8 +128,8 @@ bin/version: $(SRC)/version.c | bin
 .PHONY: cio_ra.bin
 cio_ra.bin: bin/cio_file lib/novas.a data/CIO_RA.TXT
 	bin/cio_file data/CIO_RA.TXT $@
-	rm -f bin/cio_file
 
+.INTERMEDIATE: bin/cio_file
 bin/cio_file: obj/cio_file.o | bin
 	$(CC) -o $@ $^ $(LFLAGS)
 
