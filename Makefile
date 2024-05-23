@@ -10,6 +10,8 @@ include config.mk
 # Specific build targets and recipes below...
 # ===============================================================================
 
+# Ideally we'd extract this from novas.h...
+MAJOR_VERSION = 1
 
 # The targets to build by default if not otherwise specified to 'make'
 DEFAULT_TARGETS := static shared cio_ra.bin
@@ -50,6 +52,7 @@ ifneq ($(BUILTIN_SOLSYS_EPHEM),1)
   SOLSYS_TARGETS += obj/solsys-ephem.o
   SHARED_TARGETS += lib/solsys-ephem.so
 endif
+
 
 
 .PHONY: api
@@ -118,7 +121,7 @@ lib/solsys-ephem.so: LIBNAME := solsys-ephem
 lib/solsys-ephem.so: $(SRC)/solsys-ephem.c
 
 lib/%.so: | lib VERSION
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(shell cat VERSION) $(LDFLAGS)
+	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(MAJOR_VERSION) $(LDFLAGS)
 
 # A VERSION string extracted from novas.h version constants
 VERSION: bin/version
