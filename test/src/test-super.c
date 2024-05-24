@@ -678,7 +678,7 @@ static int test_make_cat_entry() {
 
 static int test_make_object() {
   object o;
-  cat_entry c;
+  cat_entry c = {};
 
   if(!is_ok("make_object:name:null", make_object(NOVAS_CATALOG_OBJECT, 1, NULL, &c, &o))) return 1;
 
@@ -862,8 +862,6 @@ static int test_novas_debug() {
 
   novas_debug(3);
   if(!is_ok("novas_debug:3", novas_get_debug_mode() != NOVAS_DEBUG_EXTRA)) n++;
-
-  cleanup:
 
   novas_debug(NOVAS_DEBUG_OFF);
 
