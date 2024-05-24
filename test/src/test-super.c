@@ -587,9 +587,9 @@ static int test_cirs_app_ra() {
 
   for (ra0 = -12.0; ra0 < 36.0; ra0 += 2.0) {
     double ra1 = cirs_to_app_ra(tdb, NOVAS_FULL_ACCURACY, ra0);
-    if (!is_ok("cirs_app_ra:cirs_to_app", fabs(ra1 - ra0 - cio_dra) < 1e-12)) return 1;
+    if (!is_ok("cirs_app_ra:cirs_to_app", fabs(remainder(ra1 - ra0 - cio_dra, 24.0)) > 1e-12)) return 1;
     ra1 = app_to_cirs_ra(tdb, NOVAS_FULL_ACCURACY, ra1);
-    if (!is_ok("cirs_app_ra:app_to_cirs", fabs(ra1 - ra0) < 1e-12)) return 1;
+    if (!is_ok("cirs_app_ra:app_to_cirs", fabs(remainder(ra1 - ra0, 24.0)) > 1e-12)) return 1;
   }
   return 0;
 }
