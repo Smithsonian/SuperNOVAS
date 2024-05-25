@@ -198,13 +198,13 @@ Now you are ready to build the library:
   $ make
 ```
 
-will compile the static (`lib/libnovas.a`) and shared (`lib/libnovas.so`) libraries, produce a CIO locator data 
-file (`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
-Alternatively, you can build select components of the above with the `make` targets `static`, `shared`, `cio_file`, 
-and `dox` respectively. And, if unsure, you can always call `make help` to see what build targets are available.
+will compile the shared (e.g. `lib/libsupernovas.so`) libraries, produce a CIO locator data file (e.g. 
+`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
+Alternatively, you can build select components of the above with the `make` targets `shared`, `cio_file`, and `dox` 
+respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
-system-wide install you may place the static or shared library into `/usr/loval/lib/`, copy the CIO locator file to 
+system-wide install you may place the static or shared library into `/usr/local/lib/`, copy the CIO locator file to 
 the place you specified in `config.mk` etc. You may also want to copy the header files in `include/` to e.g. 
 `/usr/local/include` so you can compile your application against SuperNOVAS easily on your system.
 
