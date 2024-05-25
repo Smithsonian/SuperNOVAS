@@ -147,7 +147,7 @@ lib/libnovas.a: $(OBJECTS) | lib
 
 # CIO locator data
 .PHONY: cio_ra.bin
-cio_ra.bin: bin/cio_file lib/novas.a data/CIO_RA.TXT
+cio_ra.bin: bin/cio_file lib/libnovas.a data/CIO_RA.TXT
 	bin/cio_file data/CIO_RA.TXT $@
 
 .INTERMEDIATE: bin/cio_file
