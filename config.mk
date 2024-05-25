@@ -112,13 +112,16 @@ ifeq ($(COMPAT),1)
 endif
 
 # If the CIO_LOCATOR_FILE variable is defined, the use its definition
-ifdef $(CIO_LOCATOR_FILE)
+ifdef CIO_LOCATOR_FILE
   CFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(CIO_LOCATOR_FILE)\"
+else
+  $(info WARNING! No default CIO_LOCATOR_FILE defined.)
+  $(info .        Will use local 'cio_ra.bin' if present.)
 endif
 
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
 # specify the thread local keyword to use. 
-ifdef $(THREAD_LOCAL)
+ifdef THREAD_LOCAL
   CFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)"
 endif
 
