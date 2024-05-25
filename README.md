@@ -144,8 +144,8 @@ If you have code that was written for NOVAS C 3.1, it should work with SuperNOVA
 (re)build your application against SuperNOVAS, and you are good to go. 
 
 The lack of binary compatibility just means that you cannot drop-in replace your compiled objects (e.g. `novas.o`, or 
-the static `novas.a`, or the shared `novas.so`) libraries, from NOVAS C 3.1 with those from SuperNOVAS. Instead, you 
-will have to build (compile) your application referencing the SuperNOVAS headers and/or libraries from the start.
+the static `libnovas.a`, or the shared `libnovas.so`) libraries, from NOVAS C 3.1 with those from SuperNOVAS. Instead, 
+you will have to build (compile) your application referencing the SuperNOVAS headers and/or libraries from the start.
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
 `short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
@@ -198,8 +198,8 @@ Now you are ready to build the library:
   $ make
 ```
 
-will compile the static (`lib/novas.a`) and shared (`lib/novas.so`) libraries, produce a CIO locator data file 
-(`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
+will compile the static (`lib/libnovas.a`) and shared (`lib/libnovas.so`) libraries, produce a CIO locator data 
+file (`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
 Alternatively, you can build select components of the above with the `make` targets `static`, `shared`, `cio_file`, 
 and `dox` respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
@@ -218,7 +218,7 @@ you might have a `Makefile` with contents like:
 
 ```make
   myastroapp: myastroapp.c 
-  	$(CC) -o $@ $(CFLAGS) $^ -lm -lnovas
+  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas
 ```
 
 If you have a legacy NOVAS C 3.1 application, it is possible that the compilation will give you errors due
@@ -230,7 +230,15 @@ directives to your application source explicitly, or if that's not an option for
 
 ```make
   myastroapp: myastroapp.c 
-  	$(CC) -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lnovas
+  	$(CC) -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lsupernovas
+```
+
+If your application uses the legacy `solsys1.c` or `solsys2.c` implementations for `solarsystem()` calls
+you may additionally specify the appropriate optional shared library also:
+
+```make
+  myastroapp: myastroapp.c 
+  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys1
 ```
 
 To use your own `solarsystem()` implemetation for `ephemeris()`, you will want to build the library with
@@ -239,7 +247,7 @@ To use your own `solarsystem()` implemetation for `ephemeris()`, you will want t
 
 ```make
   myastroapp: myastroapp.c my_solsys.c 
-  	$(CC) -o $@ $(CFLAGS) $^ -lm -lnovas
+  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas
 ```
 
 The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` 
