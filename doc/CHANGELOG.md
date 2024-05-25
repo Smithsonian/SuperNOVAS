@@ -20,34 +20,38 @@ Changes coming to the next quarterly release. Some or all of these may be readil
  - `make help` to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` for 
    suggesting this.)
 
- - `version.c` utility code for printing version info, e.g. for versioned `SONAME` in shared libraries during the 
-   build.
-
- - `lib/supernovas.so` target for `make`, which generates the same library as `lib/novas.so`, except that the `SONAME`
-   is also `supernovas.so.$(VERSION)` instead of `novas.so.$(VERSION)`, and might be preferred for packaging with
-   inconsistent naming.
+ - `lib/libnovas.so` is now just a symlink to `lib/libsupernovas.so`, with `SONAME` being `libsupernovas.so.1` for
+   both.
 
 ### Changed
 
+ - The default make target is now `distro`. It's similar to the deprecated `api` target from before except that it 
+   skips building `static` libraries.
+   
+ - `lib/*.so` files are no just symlinks to the actual versioned libraries `lib/*.so.1`. This conforms more closely
+   to what Linux distros would expect.
+     
+ - `make` now generates `.so` shared libraries with `SONAME` set to `lib<name>.so.$(VERSION)` where `VERSION` is the
+   library version as printed by `version.c`. E.g. `novas.so` will have `SONAME` set to `libsupernovas.so.1.0.2` for 
+   version 1.0.2 of the library.
+ 
  - Default `make` to skip `dox` target unless `doxygen` is available (either in the default `PATH` or else specified 
    via the `DOXYGEN` variable, e.g. in `config.mk`). This way the default build does not have unexpected dependencies.
    (see Issue #22, thanks to `@teuben`).
   
  - `make` can be configured without editing `config.mk` simply by setting the appropriate shell variables (the same
    ones as in `config.mk` prior to invoking `make`. As such standard `CFLAGS` and `LDFLAGS` will be used if defined
-   externally.
+   externally, and one may also preset other variables for `config.mk` prior to invoking `make`.
   
- - `make shared` now also build `lib/solsys1.so` and `lib/solsys2.so` shared libraries that can be used by programs
-   that need solsys1 (via `eph_manager`) or solsys2 (via `jplint`) functionality.
-
- - `make` now generates `.so` shared libraries with `SONAME` set to `lib<name>.so.$(VERSION)` where `VERSION` is the
-   library version as printed by `version.c`. E.g. `novas.so` will have `SONAME` set to `libnovas.so.1.0.2` for 
-   version 1.0.2 of the library.
+ - `make shared` now also builds `lib/libsolsys1.so` and `lib/libsolsys2.so` shared libraries that can be used by 
+   programs that need solsys1 (via `eph_manager`) or solsys2 (via `jplint`) functionality.
    
- - `make` now uses `LDFLAGS` (if defined) also when generating `.so` shared libs.
+ - `make solsys` now generates only the `solarsystem()` implementation objects that are external (not built in).
 
  - Eliminate unchecked return value compiler warnings from `cio_file` (used typically at build time only to generate
    `cio_ra.bin`).
+   
+ - Doxygen tag file renamed to `supernovas.tag` for consistency.
    
 
 ## [1.0.1] -- 2024-05-13
