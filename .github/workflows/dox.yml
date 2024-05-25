@@ -43,7 +43,7 @@ jobs:
       uses: actions/checkout@v4
         
     - name: Generate headless README
-      run: make README-headless.md
+      run: make README-orig.md
         
     - uses: mattnotmitt/doxygen-action@v1.9.8
       with:
@@ -62,7 +62,7 @@ jobs:
       run: |
         echo '<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">' > site/doc/README.md
         echo '<br clear="all">' >> site/doc/README.md
-        cat README-headless.md >> site/doc/README.md
+        cat README-orig.md >> site/doc/README.md
         
     - name: Copy CHANGELOG
       run: cp CHANGELOG.md site/doc/
