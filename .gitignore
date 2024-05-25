@@ -15,5 +15,6 @@
 site/**
 *.swp
 README-headless.md
+README-orig.md
 TODO
 VERSION
