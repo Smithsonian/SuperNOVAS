@@ -1,7 +1,9 @@
 
 # ===============================================================================
 # WARNING! You should leave this Makefile alone probably
-#          To configure the build, you can edit config.mk
+#          To configure the build, you can edit config.mk, or else you export the 
+#          equivalent shell variables prior to invoking 'make' to adjust the
+#          build configuration. 
 # ===============================================================================
 
 include config.mk
