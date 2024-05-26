@@ -12,6 +12,7 @@
 **/apidoc/**
 **/test/data/**
 **/*~
+**/gmon.out
 site/**
 *.swp
 README-headless.md

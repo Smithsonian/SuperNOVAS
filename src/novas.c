@@ -3935,10 +3935,10 @@ short light_time(double jd_tdb, const object *body, const double *pos_obs, doubl
  *
  * Alternatively, this function returns the light-time from the observer (or the geocenter) to
  * a point on a light ray that is closest to a specific solar system body.  For this purpose,
- * 'pos1' is the position vector toward observed object, with respect to origin at observer (or
+ * 'pos' is the position vector toward observed object, with respect to origin at observer (or
  * the geocenter); 'pos_obs' is the position vector of solar system body, with respect to origin
  * at observer (or the geocenter), components in AU; and the returned value is the light time to
- * point on line defined by 'pos1' that is closest to solar system body (positive if light
+ * point on line defined by 'pos' that is closest to solar system body (positive if light
  * passes body before hitting observer, i.e., if 'pos1' is within 90 degrees of 'pos_obs').
  *
  * NOTES:
@@ -3955,14 +3955,18 @@ short light_time(double jd_tdb, const object *body, const double *pos_obs, doubl
  * @sa place()
  */
 double d_light(const double *pos, const double *pos_obs) {
+  double d;
+
   if(!pos || !pos_obs) {
     novas_set_errno(EINVAL, "d_light", "NULL input 3-vector: pos=%p, pos_obs=%p [=> NAN]", pos, pos_obs);
     return NAN;
   }
 
+  d = vlen(pos);
+
   // Light-time returned is the projection of vector 'pos_obs' onto the
   // unit vector 'u1' (formed from 'pos1'), divided by the speed of light.
-  return vdot(pos_obs, pos) / vlen(pos) / C_AUDAY;
+  return d > 0.0 ? vdot(pos_obs, pos) / vlen(pos) / C_AUDAY : vlen(pos_obs) / C_AUDAY;
 }
 
 /**
