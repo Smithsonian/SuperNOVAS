@@ -4,7 +4,7 @@ BUILTIN_DEFAULT_SOLSYS := 0
 CIO_LOCATOR_FILE := cio_ra.bin
 
 # Use above config in sub-makes also
-export
+export BUILTIN_SOLSYS3 BUILTIN_DEFAULT_SOLSYS CIO_LOCATOR_FILE
 
 CFLAGS += -I../include -g -pg -fprofile-arcs -ftest-coverage
 LDFLAGS += -fprofile-arcs -ftest-coverage -lm
