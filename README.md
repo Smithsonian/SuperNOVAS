@@ -132,6 +132,10 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  
  - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
    `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This was a documented issue of NOVAS C 3.1.
+   
+ - __v1.0.2__ Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
+   position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
+    the gravitational deflection due to the Sun being skipped.
 
 -----------------------------------------------------------------------------
 

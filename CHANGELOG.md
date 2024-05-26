@@ -13,6 +13,10 @@ Changes coming to the next quarterly release. Some or all of these may be readil
 
 ### Fixed
 
+ - Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris reference
+   position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
+   the gravitational deflection due to the Sun being skipped.
+
  - Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
 
 ### Added
@@ -40,8 +44,8 @@ Changes coming to the next quarterly release. Some or all of these may be readil
    (see Issue #22, thanks to `@teuben`).
   
  - `make` can be configured without editing `config.mk` simply by setting the appropriate shell variables (the same
-   ones as in `config.mk` prior to invoking `make`. As such standard `CFLAGS` and `LDFLAGS` will be used if defined
-   externally, and one may also preset other variables for `config.mk` prior to invoking `make`.
+   ones as in `config.mk` prior to invoking `make`. As such standard `CPPFLAGS`, `CFLAGS` and `LDFLAGS` will be used 
+   if defined externally, and one may also preset other variables for `config.mk` prior to invoking `make`.
   
  - `make shared` now also builds `lib/libsolsys1.so` and `lib/libsolsys2.so` shared libraries that can be used by 
    programs that need solsys1 (via `eph_manager`) or solsys2 (via `jplint`) functionality.
