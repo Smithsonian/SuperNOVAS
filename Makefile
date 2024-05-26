@@ -27,7 +27,7 @@ endif
 
 # If there is doxygen, build the API documentation also by default
 ifeq ($(.SHELLSTATUS),0)
-  DOC_TARGETS += dox
+  DOC_TARGETS += local-dox
 else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
@@ -113,11 +113,11 @@ lib/libsolsys2.so: lib/libsolsys2.so.$(SO_VERSION)
 
 lib/libnovas.so: lib/libsupernovas.so
 
-SO_LINK := -lm
+SO_LINK := $(LDFLAGS) -lm
 
 # Share librarry recipe
 lib/%.so.$(SO_VERSION) : | lib
-	$(CC) -o $@ $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(SO_VERSION) $(SO_LINK)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(SO_VERSION) $(SO_LINK)
 
 # Shared library: supernovas.so -- same as novas.so except the builtin SONAME
 lib/libsupernovas.so.$(SO_VERSION): LIBNAME := supernovas
@@ -160,7 +160,7 @@ cio_ra.bin: bin/cio_file lib/libnovas.a data/CIO_RA.TXT
 
 .INTERMEDIATE: bin/cio_file
 bin/cio_file: obj/cio_file.o | bin
-	$(CC) -o $@ $^ $(LFLAGS)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
 
 obj/jplint.o: $(SRC)/jplint.f
 	gfortran -c -o $@ $<
@@ -169,6 +169,16 @@ README-orig.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
 
 dox: README-orig.md
+
+.INTERMEDIATE: Doxyfile.local
+Doxyfile.local:
+	sed "s:resources/header.html::g" Doxyfile > $@
+
+# Local documentation without specialized headers. The resulting HTML documents do not have
+# Google Search or Analytics tracking info.
+local-dox: README-orig.md Doxyfile.local
+	doxygen Doxyfile.local
+
 
 .PHONY: help
 help:
@@ -180,11 +190,12 @@ help:
 	@echo "  distro        (default) 'shared', 'cio_ra.bin' targets, and also 'dox'" 
 	@echo "                if 'doxygen' is available, or was specified via the DOXYGEN"
 	@echo "                variable (e.g. in 'config.mk')."
-	@echo "  static        Builds the static 'lib/novas.a' library."
-	@echo "  shared        Builds the shared 'novas.so', 'solsys1.so', and 'solsys2.so'."
+	@echo "  static        Builds the static 'lib/libsupernovas.a' library."
+	@echo "  shared        Builds the shared 'libsupernovas.so', 'libsolsys1.so', and" 
+	@echo "                'libsolsys2.so' libraries (linked to versioned ones)."
 	@echo "  cio_ra.bin    Generates the CIO locator lookup data file 'cio_ra.bin', in the"
 	@echo "                destination specified in 'config.mk'."
-	@echo "  dox           Compiles HTML API documentation using 'doxygen'."
+	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  solsys        Builds only the objects that may provide external 'solarsystem()'"
 	@echo "                call implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
 	@echo "  check         Performs static analysis with 'cppcheck'."

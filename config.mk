@@ -108,12 +108,12 @@ CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
 
 # If the COMPAT variable is set to one, then force set compatibility mode
 ifeq ($(COMPAT),1)
-  CFLAGS += -DCOMPAT=1
+  CPPFLAGS += -DCOMPAT=1
 endif
 
 # If the CIO_LOCATOR_FILE variable is defined, the use its definition
 ifdef CIO_LOCATOR_FILE
-  CFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(CIO_LOCATOR_FILE)\"
+  CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(CIO_LOCATOR_FILE)\"
 else
   $(info WARNING! No default CIO_LOCATOR_FILE defined.)
   $(info .        Will use local 'cio_ra.bin' if present.)
@@ -122,39 +122,39 @@ endif
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
 # specify the thread local keyword to use. 
 ifdef THREAD_LOCAL
-  CFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)"
+  CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)"
 endif
 
 ifeq ($(DEFAULT_SOLSYS), 1) 
   BUILTIN_SOLSYS1 = 1
-  CFLAGS += -DDEFAULT_SOLSYS=1
+  CPPFLAGS += -DDEFAULT_SOLSYS=1
 endif
 
 ifeq ($(DEFAULT_SOLSYS), 2)
   BUILTIN_SOLSYS2 = 1
-  CFLAGS += -DDEFAULT_SOLSYS=2
+  CPPFLAGS += -DDEFAULT_SOLSYS=2
 endif
 
 ifeq ($(DEFAULT_SOLSYS), 3)
   BUILTIN_SOLSYS3 = 1
-  CFLAGS += -DDEFAULT_SOLSYS=3
+  CPPFLAGS += -DDEFAULT_SOLSYS=3
 endif
 
 SOURCES = $(SRC)/novas.c $(SRC)/nutation.c
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
   SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 
-  CFLAGS += -DBUILTIN_SOLSYS1=1
+  CPPFLAGS += -DBUILTIN_SOLSYS1=1
 endif
 
 ifeq ($(BUILTIN_SOLSYS2), 1) 
   SOURCES += $(SRC)/solsys2.c
-  CFLAGS += -DBUILTIN_SOLSYS2=1
+  CPPFLAGS += -DBUILTIN_SOLSYS2=1
 endif
 
 ifeq ($(BUILTIN_SOLSYS3), 1) 
   SOURCES += $(SRC)/solsys3.c
-  CFLAGS += -DBUILTIN_SOLSYS3=1
+  CPPFLAGS += -DBUILTIN_SOLSYS3=1
 endif
 
 ifeq ($(BUILTIN_SOLSYS_EPHEM), 1) 
@@ -163,7 +163,7 @@ endif
 
 ifdef (DEFAULT_READEPH) 
   SOURCES += $(DEFAULT_READEPH)
-  CFLAGS += -DDEFAULT_READEPH=1
+  CPPFLAGS += -DDEFAULT_READEPH=1
 endif
 
 

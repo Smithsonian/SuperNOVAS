@@ -8,7 +8,7 @@
 
 # Regular object files
 obj/%.o: %.c dep/%.d obj Makefile
-	$(CC) -o $@ -c $(CFLAGS) $<
+	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
 # Create sub-directories for build targets
 dep obj lib bin apidoc:
@@ -49,7 +49,7 @@ dox: README.md | apidoc
 .PRECIOUS: dep/%.d
 dep/%.d: %.c dep
 	@echo " > $@" \
-	&& $(CC) -I$(INC) -MM -MG $< > $@.$$$$ \
+	&& $(CC) $(CPPFLAGS) -I$(INC) -MM -MG $< > $@.$$$$ \
 	&& sed 's|\w*\.o[ :]*| obj/&|g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 

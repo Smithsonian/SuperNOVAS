@@ -200,8 +200,8 @@ Now you are ready to build the library:
 
 will compile the shared (e.g. `lib/libsupernovas.so`) libraries, produce a CIO locator data file (e.g. 
 `tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
-Alternatively, you can build select components of the above with the `make` targets `shared`, `cio_file`, and `dox` 
-respectively. And, if unsure, you can always call `make help` to see what build targets are available.
+Alternatively, you can build select components of the above with the `make` targets `shared`, `cio_file`, and 
+`local-dox` respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
 system-wide install you may place the static or shared library into `/usr/local/lib/`, copy the CIO locator file to 

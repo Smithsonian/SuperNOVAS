@@ -1,11 +1,10 @@
 # Adjusted configuration for test builds
-CIO_LOCATOR_FILE := cio_ra.bin
 
-CFLAGS = -I../include -O0 -g -pg -fprofile-arcs -ftest-coverage
+
+CFLAGS += -I../include -g -pg -fprofile-arcs -ftest-coverage
 LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
-# Now configure the build with the above tweaks...
-include ../config.mk
+CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
 OBJECTS := novas.o nutation.o solsys3.o
@@ -50,10 +49,10 @@ test-%: test-%.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 test-%.o: src/test-%.c | Makefile
-	$(CC) -c -o $@ -g -I../include $<
+	$(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
 
 %.o: ../src/%.c | Makefile
-	$(CC) -c -o $@ $(CFLAGS) $<
+	$(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
 
 .PHONY: clean-test
 clean-test:
