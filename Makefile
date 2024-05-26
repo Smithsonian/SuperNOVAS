@@ -88,7 +88,7 @@ coverage:
 # Remove intermediates
 .PHONY: clean
 clean:
-	rm -f obj README-orig.md bin/cio_file
+	rm -f obj README-orig.md bin/cio_file gmon.out
 	make -C test clean
 
 # Remove all generated files

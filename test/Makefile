@@ -1,10 +1,15 @@
 # Adjusted configuration for test builds
+BUILTIN_SOLSYS3 := 0 
+BUILTIN_DEFAULT_SOLSYS := 0 
+CIO_LOCATOR_FILE := cio_ra.bin
 
+# Use above config in sub-makes also
+export
 
 CFLAGS += -I../include -g -pg -fprofile-arcs -ftest-coverage
 LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
-CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"cio_ra.bin\"
+include ../config.mk
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
 OBJECTS := novas.o nutation.o solsys3.o
