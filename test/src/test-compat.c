@@ -314,11 +314,11 @@ static void test_iau2000a() {
 
   openfile("iau2000a");
   iau2000a(tdb, 0.0, &dpsi, &deps);
-  fprintf(fp, "current %12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "current %12.6f %12.6f ", dpsi / ARCSEC, deps / ARCSEC);
 
   openfile("iau2000a");
   iau2000a(tdb + 100000, 0.0, &dpsi, &deps);
-  fprintf(fp, "future  %12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "future  %12.6f %12.6f ", dpsi / ARCSEC, deps / ARCSEC);
 }
 
 static void test_iau2000b() {
@@ -326,22 +326,22 @@ static void test_iau2000b() {
 
   openfile("iau2000b");
   iau2000b(tdb, 0.0, &dpsi, &deps);
-  fprintf(fp, "current %12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "current %12.6f %12.6f ", dpsi / ARCSEC, deps / ARCSEC);
 
   openfile("iau2000b");
   iau2000b(tdb + 100000, 0.0, &dpsi, &deps);
-  fprintf(fp, "future  %12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "future  %12.6f %12.6f ", dpsi / ARCSEC, deps / ARCSEC);
 }
 
 static void test_nu2000k() {
   double dpsi = 0.0, deps = 0.0;
   openfile("nu2000k");
   nu2000k(tdb, 0.0, &dpsi, &deps);
-  fprintf(fp, "current %12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "current %12.6f %12.6f ", dpsi / ARCSEC, deps / ARCSEC);
 
   openfile("nu2000k");
   nu2000k(tdb + 100000, 0.0, &dpsi, &deps);
-  fprintf(fp, "future %12.6f %12.6f ", dpsi, deps);
+  fprintf(fp, "future %12.6f %12.6f ", dpsi / ARCSEC, deps / ARCSEC);
 }
 
 static void test_nutation_angles() {

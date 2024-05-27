@@ -2539,7 +2539,6 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
     }
 
     case EROT_GST:
-
       // Use equinox method.  See Circular 179, Section 2.6.2.
 
       // Precession-in-RA terms in mean sidereal time taken from third
@@ -2587,8 +2586,8 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 double era(double jd_ut1_high, double jd_ut1_low) {
   double theta, thet1, thet2, thet3;
 
-  thet1 = 0.7790572732640 + 0.00273781191135448 * (jd_ut1_high - JD_J2000);
-  thet2 = 0.00273781191135448 * jd_ut1_low;
+  thet1 = remainder(0.7790572732640 + 0.00273781191135448 * (jd_ut1_high - JD_J2000), 1.0);
+  thet2 = remainder(0.00273781191135448 * jd_ut1_low, 1.0);
   thet3 = remainder(jd_ut1_high, 1.0) + remainder(jd_ut1_low, 1.0);
 
   theta = remainder(thet1 + thet2 + thet3, 1.0) * DEG360;
@@ -3435,7 +3434,7 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) {
 
   // Argument coefficients for t^0.
-  const char ke0_t[33][14] = { //
+  const int8_t ke0_t[33][14] = { //
           { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
                   { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
                   { 0, 0, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
@@ -3538,7 +3537,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
 
     // Evaluate the complementary terms.
     for(i = 33; --i >= 0;) {
-      const char *ke = &ke0_t[i][0];
+      const int8_t *ke = &ke0_t[i][0];
       const float *se = &se0_t[i][0];
 
       double a = 0.0;
@@ -4737,21 +4736,22 @@ int fund_args(double t, novas_delaunay_args *a) {
   if(!a)
     return novas_error(-1, EINVAL, "fund_args", "NULL output pointer");
 
-  a->l = 485868.249036 + t * 1717915923.2178;
-  a->l1 = 1287104.793048 + t * 129596581.0481;
-  a->F = 335779.526232 + t * 1739527262.8478;
-  a->D = 1072260.703692 + t * 1602961601.2090;
-  a->Omega = 450160.398036 - t * 6962890.5431;
-
   // higher order terms (for 0.1 uas precision) only if |t| > 0.0001
   if(fabs(t) > 1e-4) {
     const double t2 = t * t;
-    a->l += t2 * (31.8792 + t * (0.051635 + t * (-0.00024470)));
-    a->l1 += t2 * (-0.5532 + t * (0.000136 + t * (-0.00001149)));
-    a->F += t2 * (-12.7512 + t * (-0.001037 + t * (0.00000417)));
-    a->D += t2 * (-6.3706 + t * (0.006593 + t * (-0.00003169)));
-    a->Omega += t2 * (7.4722 + t * (0.007702 + t * (-0.00005939)));
+    a->l = t2 * (31.8792 + t * (0.051635 + t * (-0.00024470)));
+    a->l1 = t2 * (-0.5532 + t * (0.000136 + t * (-0.00001149)));
+    a->F = t2 * (-12.7512 + t * (-0.001037 + t * (0.00000417)));
+    a->D = t2 * (-6.3706 + t * (0.006593 + t * (-0.00003169)));
+    a->Omega = t2 * (7.4722 + t * (0.007702 + t * (-0.00005939)));
   }
+  else memset(a, 0, sizeof(*a));
+
+  a->l += 485868.249036 + t * 1717915923.2178;
+  a->l1 += 1287104.793048 + t * 129596581.0481;
+  a->F += 335779.526232 + t * 1739527262.8478;
+  a->D += 1072260.703692 + t * 1602961601.2090;
+  a->Omega += 450160.398036 - t * 6962890.5431;
 
   a->l = norm_ang(a->l * ARCSEC);
   a->l1 = norm_ang(a->l1 * ARCSEC);
@@ -4782,28 +4782,28 @@ double planet_lon(double t, enum novas_planet planet) {
 
   switch(planet) {
     case NOVAS_MERCURY:
-      lon = 4.402608842461 + 2608.790314157421 * t;
+      lon = 4.402608842461 + remainder(2608.790314157421 * t, TWOPI);
       break;
     case NOVAS_VENUS:
-      lon = 3.176146696956 + 1021.328554621099 * t;
+      lon = 3.176146696956 + remainder(1021.328554621099 * t, TWOPI);
       break;
     case NOVAS_EARTH:
-      lon = 1.753470459496 + 628.307584999142 * t;
+      lon = 1.753470459496 + remainder(628.307584999142 * t, TWOPI);
       break;
     case NOVAS_MARS:
-      lon = 6.203476112911 + 334.061242669982 * t;
+      lon = 6.203476112911 + remainder(334.061242669982 * t, TWOPI);
       break;
     case NOVAS_JUPITER:
-      lon = 0.599547105074 + 52.969096264064 * t;
+      lon = 0.599547105074 + remainder(52.969096264064 * t, TWOPI);
       break;
     case NOVAS_SATURN:
-      lon = 0.874016284019 + 21.329910496032 * t;
+      lon = 0.874016284019 + remainder(21.329910496032 * t, TWOPI);
       break;
     case NOVAS_URANUS:
-      lon = 5.481293871537 + 7.478159856729 * t;
+      lon = 5.481293871537 + remainder(7.478159856729 * t, TWOPI);
       break;
     case NOVAS_NEPTUNE:
-      lon = 5.311886286677 + 3.813303563778 * t;
+      lon = 5.311886286677 + remainder(3.813303563778 * t, TWOPI);
       break;
     default:
       errno = EINVAL;
@@ -4828,7 +4828,7 @@ double planet_lon(double t, enum novas_planet planet) {
 double accum_prec(double t) {
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
-  return remainder((0.000005391235 * t + 0.024380407358) * t, TWOPI);
+  return remainder(remainder(0.000005391235 * t, TWOPI) + remainder (0.024380407358 * t * t, TWOPI), TWOPI);
 }
 
 /**

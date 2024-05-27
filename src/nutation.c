@@ -59,7 +59,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
-  static const char nals_t[678][5] = { //
+  static const int8_t nals_t[678][5] = { //
           { 0, 0, 0, 0, 1 }, //
           { 0, 0, 2, -2, 2 }, //
           { 0, 0, 2, 0, 2 }, //
@@ -1425,7 +1425,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   //Planetary argument multipliers:
   // L   L'  F   D   Om  Me  Ve  E  Ma  Ju  Sa  Ur  Ne  pre
-  static const char napl_t[687][14] = { //
+  static const int8_t napl_t[687][14] = { //
           { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 0 }, //
           { 0, 0, 0, 0, 0, 0, 0, -8, 16, -4, -5, 0, 0, 2 }, //
           { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 2 }, //
@@ -2119,7 +2119,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Each row of coefficients in 'cpl_t' belongs with the corresponding
   // row of fundamental-argument multipliers in 'napl_t'.
-  static const short cpl_t[687][4] = {
+  static const int16_t cpl_t[687][4] = {
           { 1440, 0, 0, 0 }, //
           { 56, -117, -42, -40 }, //
           { 125, -43, 0, -54 }, //
@@ -2842,7 +2842,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // ** Luni-solar nutation. **
   // Summation of luni-solar nutation series (in reverse order).
   for(i = 678; --i >= 0;) {
-    const char *n = &nals_t[i][0];
+    const int8_t *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
@@ -2871,8 +2871,8 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Summation of planetary nutation series (in reverse order).
   for(i = 687; --i >= 0;) {
-    const char *n = &napl_t[i][0];
-    const short *c = &cpl_t[i][0];
+    const int8_t *n = &napl_t[i][0];
+    const int16_t *c = &cpl_t[i][0];
 
     // Argument and functions.
     double arg = 0.0, sarg, carg;
@@ -2959,7 +2959,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  *
  */
 int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
-  short i;
+  int16_t i;
 
   // @formatter:off
 
@@ -2968,7 +2968,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
-  static const char nals_t[77][5] = { //
+  static const int8_t nals_t[77][5] = { //
           { 0, 0, 0, 0, 1 }, //
           { 0, 0, 2, -2, 2 }, //
           { 0, 0, 2, 0, 2 }, //
@@ -3147,7 +3147,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Summation of luni-solar nutation series (in reverse order)
   for(i = 77; --i >= 0;) {
-    const char *n = &nals_t[i][0];
+    const int8_t *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
@@ -3225,7 +3225,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Luni-Solar argument multipliers:
   // L     L'    F     D     Om
-  static const char nals_t[323][5] = { //
+  static const int8_t nals_t[323][5] = { //
           { 0, 0, 0, 0, 1 }, //
           { 0, 0, 2, -2, 2 }, //
           { 0, 0, 2, 0, 2 }, //
@@ -3882,7 +3882,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Planetary argument multipliers:
   // L   L'  F   D   Om  Me  Ve  E  Ma  Ju  Sa  Ur  Ne  pre
-  static const char napl_t[165][14] = { //
+  static const int8_t napl_t[165][14] = { //
           { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 0 }, //
           { 0, 0, 0, 0, 0, 0, 0, -8, 16, -4, -5, 0, 0, 2 }, //
           { 0, 0, 0, 0, 0, 0, 0, 8, -16, 4, 5, 0, 0, 2 }, //
@@ -4054,7 +4054,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Each row of coefficients in 'cpl_t' belongs with the corresponding
   // row of fundamental-argument multipliers in 'napl_t'.
-  static const short cpl_t[165][4] = { //
+  static const int16_t cpl_t[165][4] = { //
           { 1440, 0, 0, 0 }, //
           { 56, -117, -42, -40 }, //
           { 125, -43, 0, -54 }, //
@@ -4257,7 +4257,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   // ** Luni-solar nutation. **
   // Summation of luni-solar nutation series (in reverse order).
   for(i = 323; --i >= 0;) {
-    const char *n = &nals_t[i][0];
+    const int8_t *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
@@ -4285,8 +4285,8 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // Summation of planetary nutation series (in reverse order).
   for(i = 165; --i >= 0;) {
-    const char *n = &napl_t[i][0];
-    const short *c = &cpl_t[i][0];
+    const int8_t *n = &napl_t[i][0];
+    const int16_t *c = &cpl_t[i][0];
 
     // Argument and functions.
     arg = 0.0;

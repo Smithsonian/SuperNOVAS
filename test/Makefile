@@ -19,6 +19,7 @@ run: clean-cov clean-data test-compat test-cio_file test-super test-errors data 
 	./test-compat
 	ln -s ../cio_ra.bin
 	./test-cio_file
+	sed -i "s:-nan: nan:g" data/*
 	diff data reference
 	./test-super
 	rm -f cio_ra.bin
