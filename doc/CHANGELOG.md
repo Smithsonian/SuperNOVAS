@@ -55,6 +55,9 @@ Changes coming to the next quarterly release. Some or all of these may be readil
  - Eliminate unchecked return value compiler warnings from `cio_file` (used typically at build time only to generate
    `cio_ra.bin`).
    
+ - `jplint.f` is moved to `examples/` since it rovides only a default implementation that typically needs to be
+   tweaked for the particualr JPL PLEPH library one intends to use.
+
  - Doxygen tag file renamed to `supernovas.tag` for consistency.
    
 
