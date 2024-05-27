@@ -13,9 +13,17 @@ Changes coming to the next quarterly release. Some or all of these may be readil
 
 ### Fixed
 
+ - Fix portability to non-Intel x86 platforms (see Issue #29). We previously used `char` for storing integer 
+   coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
+   which broke many calculations badly for such platforms. As of now, we use the explicit platform-independent 
+   `int8_t` storage type for these coefficients.
+
  - Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
-   the gravitational deflection due to the Sun being skipped.
+   the gravitational deflection due to the Sun being skipped. See Issue #28.
+
+ - Adjusted regression testing to treat `nan` and `-nan` effectively the same. They both represent an equally invalid 
+   result regardless of the sign.
 
  - Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
 
@@ -29,19 +37,23 @@ Changes coming to the next quarterly release. Some or all of these may be readil
 
 ### Changed
 
+ - Improved precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being more careful
+   about the order in which terms are accumulated and combined, resulting in a small improvement on the 10 uas 
+   (micro-arcsecond) level.
+
  - The default make target is now `distro`. It's similar to the deprecated `api` target from before except that it 
    skips building `static` libraries.
    
- - `lib/*.so` files are no just symlinks to the actual versioned libraries `lib/*.so.1`. This conforms more closely
-   to what Linux distros would expect.
+ - `lib/*.so` files are now just symlinks to the actual versioned libraries `lib/*.so.1`. This conforms more closely
+   to what Linux distros expect.
      
  - `make` now generates `.so` shared libraries with `SONAME` set to `lib<name>.so.$(VERSION)` where `VERSION` is the
    library version as printed by `version.c`. E.g. `novas.so` will have `SONAME` set to `libsupernovas.so.1.0.2` for 
    version 1.0.2 of the library.
  
- - Default `make` to skip `dox` target unless `doxygen` is available (either in the default `PATH` or else specified 
-   via the `DOXYGEN` variable, e.g. in `config.mk`). This way the default build does not have unexpected dependencies.
-   (see Issue #22, thanks to `@teuben`).
+ - Default `make` skips `local-dox` target unless `doxygen` is available (either in the default `PATH` or else 
+   specified via the `DOXYGEN` variable, e.g. in `config.mk`). This way the default build does not have unexpected 
+   dependencies. (see Issue #22, thanks to `@teuben`).
   
  - `make` can be configured without editing `config.mk` simply by setting the appropriate shell variables (the same
    ones as in `config.mk` prior to invoking `make`. As such standard `CPPFLAGS`, `CFLAGS` and `LDFLAGS` will be used 
