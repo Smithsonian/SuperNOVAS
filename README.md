@@ -870,11 +870,11 @@ That's all, except the warning that this method will not work with newer JPL eph
 
 #### 2.b. Planets via JPL's `pleph` FORTRAN interface
 
-To use the FORTRAN `pleph` interface for planet ephemerides, you must either build SuperNOVAS with 
-`BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and `jplint.f` from SuperNOVAS 
-explicitly (as well as `pleph.f` etc. from the JPL library). If you want the JPL `pleph`-based interface  to be your 
-default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. Otherwise, 
-your application should set your planetary ephemeris provider at runtime via:
+To interface eith the JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS with 
+`BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your appropriately modified 
+`jplint.f` (from the `examples` sub-directory) explicitly, together with the JPL PLEPH library. If you want this to 
+be your default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. 
+Otherwise, your application should set your planetary ephemeris provider at runtime via:
 
 ```c
  set_planet_provider(planet_jplint);
@@ -883,7 +883,7 @@ your application should set your planetary ephemeris provider at runtime via:
 
 Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end
 of the world), but you may also have to modify `jplint.f` (providing the intermediate FORTRAN `jplint_()` / 
-`jplihp_()` interfaces to `pleph`) to work with the version of `pleph.f` that you will be using. Unless you already 
+`jplihp_()` interfaces to `pleph_()`) to work with the version of `pleph.f` that you will be using. Unless you already 
 have code that relies on this method, you are probably better off choosing one of the other ways for integrating 
 planetary ephemeris data with SuperNOVAS.
 
