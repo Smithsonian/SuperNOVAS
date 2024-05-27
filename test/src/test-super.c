@@ -55,6 +55,9 @@ static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_
 static int check_equal_pos(const double *posa, const double *posb, double tol) {
   int i;
 
+  tol = fabs(tol);
+  if(tol < 1e-30) tol = 1e-30;
+
   for(i = 0; i < 3; i++) if(fabs(posa[i] - posb[i]) > tol) {
     fprintf(stderr, "  A[%d] = %.9g vs B[%d] = %.9g\n", i, posa[i], i, posb[i]);
     return i + 1;
