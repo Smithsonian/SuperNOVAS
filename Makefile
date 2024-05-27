@@ -41,7 +41,7 @@ ifneq ($(BUILTIN_SOLSYS1),1)
 endif
 
 ifneq ($(BUILTIN_SOLSYS2),1)
-  SOLSYS_TARGETS += obj/solsys2.o obj/jplint.o
+  SOLSYS_TARGETS += obj/solsys2.o
   SHARED_TARGETS += lib/libsolsys2.so
 endif
 
@@ -133,7 +133,7 @@ lib/libsolsys1.so.$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c | lib/lib
 lib/libsolsys2.so.$(SO_VERSION): BUILTIN_SOLSYS2 := 0
 lib/libsolsys2.so.$(SO_VERSION): LIBNAME := solsys2
 lib/libsolsys1.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
-lib/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c $(SRC)/jplint.f | lib/libsupernovas.so
+lib/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c | lib/libsupernovas.so
 
 # Shared library: solsys1.so (standalone solsys1.c functionality)
 lib/libsolsys3.so.$(SO_VERSION): BUILTIN_SOLSYS3 := 0
@@ -161,9 +161,6 @@ cio_ra.bin: bin/cio_file lib/libnovas.a data/CIO_RA.TXT
 .INTERMEDIATE: bin/cio_file
 bin/cio_file: obj/cio_file.o | bin
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
-
-obj/jplint.o: $(SRC)/jplint.f
-	gfortran -c -o $@ $<
 
 README-orig.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
