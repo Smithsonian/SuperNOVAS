@@ -4785,28 +4785,28 @@ double planet_lon(double t, enum novas_planet planet) {
 
   switch(planet) {
     case NOVAS_MERCURY:
-      lon = 4.402608842461 + remainder(2608.790314157421 * t, TWOPI);
+      lon = 4.402608842461 + 2608.790314157421 * t;
       break;
     case NOVAS_VENUS:
-      lon = 3.176146696956 + remainder(1021.328554621099 * t, TWOPI);
+      lon = 3.176146696956 + 1021.328554621099 * t;
       break;
     case NOVAS_EARTH:
-      lon = 1.753470459496 + remainder(628.307584999142 * t, TWOPI);
+      lon = 1.753470459496 + 628.307584999142 * t;
       break;
     case NOVAS_MARS:
-      lon = 6.203476112911 + remainder(334.061242669982 * t, TWOPI);
+      lon = 6.203476112911 + 334.061242669982 * t;
       break;
     case NOVAS_JUPITER:
-      lon = 0.599547105074 + remainder(52.969096264064 * t, TWOPI);
+      lon = 0.599547105074 + 52.969096264064 * t;
       break;
     case NOVAS_SATURN:
-      lon = 0.874016284019 + remainder(21.329910496032 * t, TWOPI);
+      lon = 0.874016284019 + 21.329910496032 * t;
       break;
     case NOVAS_URANUS:
-      lon = 5.481293871537 + remainder(7.478159856729 * t, TWOPI);
+      lon = 5.481293871537 + 7.478159856729 * t;
       break;
     case NOVAS_NEPTUNE:
-      lon = 5.311886286677 + remainder(3.813303563778 * t, TWOPI);
+      lon = 5.311886286677 + 3.813303563778 * t;
       break;
     default:
       errno = EINVAL;
@@ -4831,7 +4831,7 @@ double planet_lon(double t, enum novas_planet planet) {
 double accum_prec(double t) {
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
-  return remainder(remainder(0.000005391235 * t, TWOPI) + remainder (0.024380407358 * t * t, TWOPI), TWOPI);
+  return remainder(remainder(0.000005391235 * t, TWOPI) + remainder(0.024380407358 * t * t, TWOPI), TWOPI);
 }
 
 /**
