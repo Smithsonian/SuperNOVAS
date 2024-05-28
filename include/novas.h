@@ -732,7 +732,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
 short light_time(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
         double *pos_src_obs, double *tlight);
 
-double d_light(const double *pos, const double *pos_obs);
+double d_light(const double *pos_src, const double *pos_body);
 
 short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_src,
         const double *pos_obs, double *out);

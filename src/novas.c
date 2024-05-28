@@ -3930,42 +3930,45 @@ short light_time(double jd_tdb, const object *body, const double *pos_obs, doubl
 
 /**
  * Returns the difference in light-time, for a star, between the barycenter of the solar system
- * and the observer (or the geocenter).
+ * and the observer (or the geocenter) (<i>Usage A</i>).
  *
- * Alternatively, this function returns the light-time from the observer (or the geocenter) to
- * a point on a light ray that is closest to a specific solar system body.  For this purpose,
- * 'pos' is the position vector toward observed object, with respect to origin at observer (or
- * the geocenter); 'pos_obs' is the position vector of solar system body, with respect to origin
- * at observer (or the geocenter), components in AU; and the returned value is the light time to
- * point on line defined by 'pos' that is closest to solar system body (positive if light
- * passes body before hitting observer, i.e., if 'pos1' is within 90 degrees of 'pos_obs').
+ * Alternatively (<i>Usage B</i>), this function returns the light-time from the observer (or the
+ * geocenter) to a point on a light ray that is closest to a specific solar system body.  For this
+ * purpose, 'pos_src' is the position vector toward observed object, with respect to origin at
+ * observer (or the geocenter); 'pos_body' is the position vector of solar system body, with
+ * respect to origin at observer (or the geocenter), components in AU; and the returned value is
+ * the light time to point on line defined by 'pos' that is closest to solar system body (positive
+ * if light passes body before hitting observer, i.e., if 'pos1' is within 90 degrees of 'pos_obs').
  *
  * NOTES:
  * <ol>
  * <li>This function is called by place()</li>
  * </ol>
  *
- * @param pos       Position vector of star, with respect to origin at solar system barycenter.
- * @param pos_obs   [AU] Position vector of observer (or the geocenter), with respect to origin
- *                  at solar system barycenter, components in AU.
- * @return          [day] Difference in light time, in the sense star to barycenter minus
- *                  star to earth, in days, or NAN if either of the input arguments is NULL.
+ * @param pos_src   Position vector towards observed object, with respect to the SSB
+ *                  (<i>Usage A</i>), relative to the observer / geocenter (<i>Usage B</i>).
+ * @param pos_body  [AU] Position of observer relative to SSB (<i>Usage A</i>), or position of
+ *                  intermediate solar-system body with respect to the observer / geocenter
+ *                  (<i>Usage B</i>).
+ * @return          [day] Difference in light time to observer, either relative to SSB
+ *                  (<i>Usage A</i>) or relative intermediate solar-system body
+ *                  (<i>Usage B</i>); or else NAN if either of the input arguments is NULL.
  *
  * @sa place()
  */
-double d_light(const double *pos, const double *pos_obs) {
+double d_light(const double *pos_src, const double *pos_body) {
   double d;
 
-  if(!pos || !pos_obs) {
-    novas_set_errno(EINVAL, "d_light", "NULL input 3-vector: pos=%p, pos_obs=%p [=> NAN]", pos, pos_obs);
+  if(!pos_src || !pos_body) {
+    novas_set_errno(EINVAL, "d_light", "NULL input 3-vector: pos_src=%p, pos_body=%p [=> NAN]", pos_src, pos_body);
     return NAN;
   }
 
-  d = vlen(pos);
+  d = vlen(pos_src);
 
   // Light-time returned is the projection of vector 'pos_obs' onto the
   // unit vector 'u1' (formed from 'pos1'), divided by the speed of light.
-  return d > 0.0 ? vdot(pos_obs, pos) / vlen(pos) / C_AUDAY : vlen(pos_obs) / C_AUDAY;
+  return d > 1e-30 ? vdot(pos_body, pos_src) / vlen(pos_src) / C_AUDAY : 0.0;
 }
 
 /**
