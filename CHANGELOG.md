@@ -8,12 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Changes coming to the next quarterly release. Some or all of these may be readily available on the `main` branch.
+Changes coming to the next quarterly release, expected around 1 September 2024. Some or all of these may be readily 
+available on the `main` branch.
 
 
 ### Fixed
 
- - Fix portability to non-Intel x86 platforms (see Issue #29). We previously used `char` for storing integer 
+ - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
    coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
    which broke many calculations badly for such platforms. As of now, we use the explicit platform-independent 
    `int8_t` storage type for these coefficients.
@@ -34,11 +35,14 @@ Changes coming to the next quarterly release. Some or all of these may be readil
 
  - `lib/libnovas.so` is now just a symlink to `lib/libsupernovas.so`, with `SONAME` being `libsupernovas.so.1` for
    both.
+   
+ - Added GitHub CI regression testing for non-x86 platforms: `armv7`, `aarch64`, `riscv64`, `ppc64le`. Thus, we
+   should avoid misphaps, like the platform specific bug Issue #29, in the future. 
 
 ### Changed
 
  - Improved precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being more careful
-   about the order in which terms are accumulated and combined, resulting in a small improvement on the 10 uas 
+   about the order in which terms are accumulated and combined, resulting in a small improvement on the few uas 
    (micro-arcsecond) level.
 
  - The default make target is now `distro`. It's similar to the deprecated `api` target from before except that it 
