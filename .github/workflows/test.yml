@@ -74,5 +74,8 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
+          install: |
+            apt-get update -q -y
+            apt-get install make gcc gfortran
           run: make test
 
