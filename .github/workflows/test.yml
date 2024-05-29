@@ -48,3 +48,31 @@ jobs:
       continue-on-error: true
       uses: coverallsapp/github-action@v2
       
+      
+  test-platforms:
+    name: Test on ${{ matrix.distro }} ${{ matrix.arch }}
+    # The host should always be linux
+    runs-on: ubuntu-latest
+
+    # Run steps on a matrix of 4 arch/distro combinations
+    strategy:
+      matrix:
+        include:
+          - arch: armv7
+            distro: ubuntu_latest
+          - arch: aarch64
+            distro: ubuntu_latest
+          - arch: riscv64
+            distro: ubuntu_latest 
+          - arch: ppc64le
+            distro: ubuntu_latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run regression tests
+        id: test
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+          run: make test
+
