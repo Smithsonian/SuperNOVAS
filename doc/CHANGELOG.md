@@ -33,9 +33,6 @@ available on the `main` branch.
  - `make help` to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` for 
    suggesting this.)
 
- - `lib/libnovas.so` is now just a symlink to `lib/libsupernovas.so`, with `SONAME` being `libsupernovas.so.1` for
-   both.
-   
  - Added GitHub CI regression testing for non-x86 platforms: `armv7`, `aarch64`, `riscv64`, `ppc64le`. Thus, we
    should avoid misphaps, like the platform specific bug Issue #29, in the future. 
 
@@ -48,22 +45,21 @@ available on the `main` branch.
  - The default make target is now `distro`. It's similar to the deprecated `api` target from before except that it 
    skips building `static` libraries.
    
+ - `make` now generates `.so` shared libraries with `SONAME` set to `lib<name>.so.1` where the `.1` indicates that it
+   is major version 1 of the `ABI`. All 1.x.x releases are expected to be ABI compatible with earlier releases.
+   
  - `lib/*.so` files are now just symlinks to the actual versioned libraries `lib/*.so.1`. This conforms more closely
    to what Linux distros expect.
-     
- - `make` now generates `.so` shared libraries with `SONAME` set to `lib<name>.so.$(VERSION)` where `VERSION` is the
-   library version as printed by `version.c`. E.g. `novas.so` will have `SONAME` set to `libsupernovas.so.1.0.2` for 
-   version 1.0.2 of the library.
  
  - Default `make` skips `local-dox` target unless `doxygen` is available (either in the default `PATH` or else 
    specified via the `DOXYGEN` variable, e.g. in `config.mk`). This way the default build does not have unexpected 
    dependencies. (see Issue #22, thanks to `@teuben`).
   
  - `make` can be configured without editing `config.mk` simply by setting the appropriate shell variables (the same
-   ones as in `config.mk` prior to invoking `make`. As such standard `CPPFLAGS`, `CFLAGS` and `LDFLAGS` will be used 
-   if defined externally, and one may also preset other variables for `config.mk` prior to invoking `make`.
+   ones as in `config.mk`) prior to invoking `make`. Standard `CC`, `CPPFLAGS`, `CFLAGS` and `LDFLAGS` will also be 
+   used if defined externally.
   
- - `make shared` now also builds `lib/libsolsys1.so` and `lib/libsolsys2.so` shared libraries that can be used by 
+ - `make shared` now also builds `lib/libsolsys1.so.1` and `lib/libsolsys2.so.1` shared libraries that can be used by 
    programs that need solsys1 (via `eph_manager`) or solsys2 (via `jplint`) functionality.
    
  - `make solsys` now generates only the `solarsystem()` implementation objects that are external (not built in).
@@ -71,7 +67,7 @@ available on the `main` branch.
  - Eliminate unchecked return value compiler warnings from `cio_file` (used typically at build time only to generate
    `cio_ra.bin`).
    
- - `jplint.f` is moved to `examples/` since it rovides only a default implementation that typically needs to be
+ - `jplint.f` is moved to `examples/` since it provides only a default implementation that typically needs to be
    tweaked for the particualr JPL PLEPH library one intends to use.
 
  - Doxygen tag file renamed to `supernovas.tag` for consistency.
