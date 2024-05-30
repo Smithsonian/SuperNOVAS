@@ -57,10 +57,10 @@
 #define SUPERNOVAS_MINOR_VERSION  0
 
 /// Integer sub version of the release
-#define SUPERNOVAS_PATCHLEVEL     2
+#define SUPERNOVAS_PATCHLEVEL     1
 
 /// Additional release information in version, e.g. "-1", or "-rc1".
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING "-2"
 
 
 
