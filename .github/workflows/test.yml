@@ -50,7 +50,7 @@ jobs:
       
       
   test-platforms:
-    name: Test on ${{ matrix.distro }} ${{ matrix.arch }}
+    name: Test on ${{ matrix.arch }}
     # The host should always be linux
     runs-on: ubuntu-latest
 
