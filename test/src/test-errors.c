@@ -29,7 +29,7 @@ static int test_make_on_surface() {
 }
 
 static int test_make_in_space() {
-  double p[3], v[3];
+  double p[3] = {1.0}, v[3] = {};
   in_space sp;
   int n = 0;
 
@@ -113,7 +113,7 @@ static int test_make_object() {
 }
 
 static int test_refract() {
-  on_surface o;
+  on_surface o = {};
   int n = 0;
 
   novas_debug(NOVAS_DEBUG_ON);
@@ -155,7 +155,7 @@ static int test_limb_angle() {
 
 
 static int test_transform_cat() {
-  cat_entry c, c1;
+  cat_entry c = {}, c1;
   int n = 0;
 
   char longname[SIZE_OF_OBJ_NAME + 1];
@@ -171,7 +171,7 @@ static int test_transform_cat() {
 }
 
 static int test_transform_hip() {
-  cat_entry c;
+  cat_entry c = {};
   int n = 0;
 
   if(check("transform_hip:in", -1, transform_hip(NULL, &c))) n++;
@@ -208,7 +208,7 @@ static int test_j2000_to_tod() {
 }
 
 static int test_tod_to_j2000() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("tod_to_j2000:in", -1, tod_to_j2000(0.0, NOVAS_FULL_ACCURACY, NULL, p))) n++;
@@ -219,7 +219,7 @@ static int test_tod_to_j2000() {
 }
 
 static int test_gcrs_to_cirs() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("gcrs_to_cirs:in", -1, gcrs_to_cirs(0.0, NOVAS_FULL_ACCURACY, NULL, p))) n++;
@@ -251,8 +251,8 @@ static int test_set_planet_provider_hp() {
 }
 
 static int test_place_star() {
-  cat_entry c;
-  observer loc;
+  cat_entry c = {};
+  observer loc = {};
   sky_pos pos;
   int n = 0;
 
@@ -263,8 +263,8 @@ static int test_place_star() {
 }
 
 static int test_place() {
-  object o;
-  observer loc;
+  object o = {};
+  observer loc = {};
   sky_pos pos;
   int n = 0;
 
@@ -277,7 +277,7 @@ static int test_place() {
 }
 
 static int test_radec_planet() {
-  object o;
+  object o = {};
   observer loc = {};
   double ra, dec, dis, rv;
 
@@ -339,7 +339,7 @@ static int test_ecl2equ() {
 }
 
 static int test_equ2ecl_vec() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("equ2ecl_vec:in", -1, equ2ecl_vec(0.0, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, NULL, p))) n++;
@@ -351,7 +351,7 @@ static int test_equ2ecl_vec() {
 }
 
 static int test_ecl2equ_vec() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("ecl2equ_vec:in", -1, ecl2equ_vec(0.0, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, NULL, p))) n++;
@@ -364,7 +364,7 @@ static int test_ecl2equ_vec() {
 
 
 static int test_itrs_to_hor() {
-  on_surface loc;
+  on_surface loc = {};
   double p[3], az, za;
   int n = 0;
 
@@ -375,7 +375,7 @@ static int test_itrs_to_hor() {
 }
 
 static int test_hor_to_itrs() {
-  on_surface loc;
+  on_surface loc = {};
   double p[3];
   int n = 0;
 
@@ -387,7 +387,7 @@ static int test_hor_to_itrs() {
 
 static int test_equ2hor() {
   on_surface loc;
-  double p[3], az, za, rar, decr;
+  double az, za, rar, decr;
   int n = 0;
 
   if(check("equ2hor:loc", -1, equ2hor(0.0, 0.0, NOVAS_FULL_ACCURACY, 0.0, 0.0, NULL, 0.0, 0.0, NOVAS_STANDARD_ATMOSPHERE, &az, &za, &rar, &decr))) n++;
@@ -420,7 +420,7 @@ static int test_sidereal_time() {
 }
 
 static int test_ter2cel() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("ter2cel:in", -1, ter2cel(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, NULL, p))) n++;
@@ -432,7 +432,7 @@ static int test_ter2cel() {
 }
 
 static int test_cel2ter() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("cel2ter:in", -1, cel2ter(0.0, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, NULL, p))) n++;
@@ -445,7 +445,7 @@ static int test_cel2ter() {
 
 
 static int test_spin() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("spin:in", -1, spin(0.0, NULL, p))) n++;
@@ -455,7 +455,7 @@ static int test_spin() {
 }
 
 static int test_wobble() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("wobble:in", -1, wobble(0.0, WOBBLE_ITRS_TO_PEF, 0.0, 0.0, NULL, p))) n++;
@@ -465,7 +465,7 @@ static int test_wobble() {
 }
 
 static int test_terra() {
-  on_surface loc;
+  on_surface loc = {};
   double p[3], v[3];
   int n = 0;
 
@@ -476,8 +476,6 @@ static int test_terra() {
 }
 
 static int test_e_tilt() {
-  on_surface loc;
-  double p[3], v[3];
   int n = 0;
 
   if(check("e_tilt:accuracy", -1, e_tilt(0.0, -1, NULL, NULL, NULL, NULL, NULL))) n++;
@@ -488,8 +486,6 @@ static int test_e_tilt() {
 
 
 static int test_cel_pole() {
-  on_surface loc;
-  double p[3], v[3];
   int n = 0;
 
   if(check("cel_pole:type", 1, cel_pole(0.0, -1, 0.0, 0.0))) n++;
@@ -498,7 +494,7 @@ static int test_cel_pole() {
 }
 
 static int test_frame_tie() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("frame_tie:in", -1, frame_tie(NULL, 0, p))) n++;
@@ -509,7 +505,7 @@ static int test_frame_tie() {
 
 
 static int test_proper_motion() {
-  double p[3], v[3];
+  double p[3] = {1.0}, v[3] = {1.0};
   int n = 0;
 
   if(check("frame_tie:p", -1, proper_motion(0.0, NULL, v, 1.0, p))) n++;
@@ -520,7 +516,7 @@ static int test_proper_motion() {
 }
 
 static int test_bary2obs() {
-  double p[3], po[3], out[3], lt;
+  double p[3] = {}, po[3] = {}, out[3], lt;
   int n = 0;
 
   if(check("bary2obs:pos", -1, bary2obs(NULL, po, out, &lt))) n++;
@@ -548,7 +544,7 @@ static int test_geo_posvel() {
 
 static int test_light_time2() {
   object o;
-  double pos[3], p[3], v[3], t;
+  double pos[3] = {1.0}, p[3], v[3], t;
   int n = 0;
 
   if(check("light_time2:tout", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, NULL))) n++;
@@ -562,7 +558,7 @@ static int test_light_time2() {
 }
 
 static int test_d_light() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("d_light:1", 1, isnan(d_light(NULL, p)))) n++;
@@ -649,7 +645,7 @@ static int test_radec2vector() {
 }
 
 static int test_vector2radec() {
-  double p[3] = { }, ra, dec;
+  double p[3] = {}, ra, dec;
   int n = 0;
 
   if(check("vector2radec:vec", -1, vector2radec(NULL, &ra, &dec))) n++;
@@ -701,7 +697,7 @@ static int test_set_nutation_lp_provider() {
 }
 
 static int test_nutation() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("nutation:in", -1, nutation(0.0, NUTATE_MEAN_TO_TRUE, NOVAS_FULL_ACCURACY, NULL, p))) n++;
@@ -711,7 +707,7 @@ static int test_nutation() {
 }
 
 static int test_precession() {
-  double p[3];
+  double p[3] = {1.0};
   int n = 0;
 
   if(check("precesion:in", -1, precession(0.0, NULL, 1.0, p))) n++;
@@ -722,7 +718,7 @@ static int test_precession() {
 
 static int test_rad_vel() {
   object o;
-  double p[3], v[3], vo[3], rv;
+  double p[3] = {}, v[3] = {}, vo[3] = {}, rv;
   int n = 0;
 
   o.type = NOVAS_PLANET;
@@ -740,7 +736,7 @@ static int test_rad_vel() {
 }
 
 static int test_aberration() {
-  double p[3], v[3] = {};
+  double p[3] = {1.0}, v[3] = {};
   int n = 0;
 
   if(check("aberration:pos", -1, aberration(NULL, v, 0.0, p))) n++;
@@ -751,7 +747,7 @@ static int test_aberration() {
 }
 
 static int test_grav_vec() {
-  double p[3], po[3], pb[3];
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {};
   int n = 0;
 
   if(check("grav_vec:pos", -1, grav_vec(NULL, po, pb, 1.0, p))) n++;
@@ -763,7 +759,7 @@ static int test_grav_vec() {
 }
 
 static int test_grav_def() {
-  double p[3], po[3], pb[3];
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {};
   int n = 0;
 
   if(check("grav_def:pos", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;

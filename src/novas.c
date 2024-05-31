@@ -3946,7 +3946,7 @@ short light_time(double jd_tdb, const object *body, const double *pos_obs, doubl
  * </ol>
  *
  * @param pos_src   Position vector towards observed object, with respect to the SSB
- *                  (<i>Usage A</i>), relative to the observer / geocenter (<i>Usage B</i>).
+ *                  (<i>Usage A</i>), or relative to the observer / geocenter (<i>Usage B</i>).
  * @param pos_body  [AU] Position of observer relative to SSB (<i>Usage A</i>), or position of
  *                  intermediate solar-system body with respect to the observer / geocenter
  *                  (<i>Usage B</i>).
@@ -3957,18 +3957,18 @@ short light_time(double jd_tdb, const object *body, const double *pos_obs, doubl
  * @sa place()
  */
 double d_light(const double *pos_src, const double *pos_body) {
-  double d;
+  double d_src;
 
   if(!pos_src || !pos_body) {
     novas_set_errno(EINVAL, "d_light", "NULL input 3-vector: pos_src=%p, pos_body=%p [=> NAN]", pos_src, pos_body);
     return NAN;
   }
 
-  d = vlen(pos_src);
+  d_src = vlen(pos_src);
 
   // Light-time returned is the projection of vector 'pos_obs' onto the
-  // unit vector 'u1' (formed from 'pos1'), divided by the speed of light.
-  return d > 1e-30 ? vdot(pos_body, pos_src) / vlen(pos_src) / C_AUDAY : 0.0;
+  // unit vector 'u1' (formed from 'pos_body'), divided by the speed of light.
+  return d_src > 1e-30 ? vdot(pos_body, pos_src) / d_src / C_AUDAY : 0.0;
 }
 
 /**
