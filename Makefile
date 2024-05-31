@@ -117,34 +117,27 @@ SO_LINK := $(LDFLAGS) -lm
 
 # Share librarry recipe
 lib/%.so.$(SO_VERSION) : | lib
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,lib$(LIBNAME).so.$(SO_VERSION) $(SO_LINK)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst lib/,,$@) $(SO_LINK)
+
+lib/libsolsys%.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
 
 # Shared library: supernovas.so -- same as novas.so except the builtin SONAME
-lib/libsupernovas.so.$(SO_VERSION): LIBNAME := supernovas
 lib/libsupernovas.so.$(SO_VERSION): $(SOURCES)
 
 # Shared library: solsys1.so (standalone solsys1.c functionality)
 lib/libsolsys1.so.$(SO_VERSION): BUILTIN_SOLSYS1 := 0
-lib/libsolsys1.so.$(SO_VERSION): LIBNAME := solsys1
-lib/libsolsys1.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
 lib/libsolsys1.so.$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c | lib/libsupernovas.so
 
 # Shared library: solsys2.so (standalone solsys2.c functionality)
 lib/libsolsys2.so.$(SO_VERSION): BUILTIN_SOLSYS2 := 0
-lib/libsolsys2.so.$(SO_VERSION): LIBNAME := solsys2
-lib/libsolsys1.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
 lib/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c | lib/libsupernovas.so
 
 # Shared library: solsys1.so (standalone solsys1.c functionality)
 lib/libsolsys3.so.$(SO_VERSION): BUILTIN_SOLSYS3 := 0
-lib/libsolsys3.so.$(SO_VERSION): LIBNAME := solsys3
-lib/libsolsys1.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
 lib/libsolsys3.so.$(SO_VERSION): $(SRC)/solsys3.c | lib/libsupernovas.so
 
 # Shared library: solsys2.so (standalone solsys2.c functionality)
 lib/libsolsys-ephem.so.$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
-lib/libsolsys-ephem.so.$(SO_VERSION): LIBNAME := solsys-ephem
-lib/libsolsys1.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
 lib/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c | lib/libsupernovas.so
 
 
