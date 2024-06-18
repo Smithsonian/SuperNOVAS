@@ -851,6 +851,29 @@ static int test_grav_vec() {
   return 0;
 }
 
+static int test_grav_undef() {
+  double pos_src[3], pos_obs[3], pos_app[3] = {}, pos0[3] = {}, v[3];
+  double tdb2[2] = { tdb };
+  object earth = {};
+  int i;
+
+  if(!is_ok("grav_invdef:make_planet", make_planet(NOVAS_EARTH, &earth))) return 1;
+  if(!is_ok("grav_invdef:ephemeris", ephemeris(tdb2, &earth, NOVAS_HELIOCENTER, NOVAS_REDUCED_ACCURACY, pos_obs, v))) return 1;
+
+  for(i = 0; i < 3; i++) pos_src[i] = -(2.001 * pos_obs[i]);
+
+  if(!is_ok("grav_invdef:def", grav_def(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_src, pos_obs, pos_app))) return 1;
+  if(!is_ok("grav_invdef:undef", grav_undef(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
+
+  if(!is_ok("grav_invdef:check", check_equal_pos(pos_src, pos0, 1e-9))) return 1;
+
+  memset(pos_app, 0, sizeof(pos_app));
+  if(!is_ok("grav_invdef:undef:zero", grav_undef(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
+  if(!is_ok("grav_invdef:check:zero", check_equal_pos(pos0, pos_app, 1e-9))) return 1;
+
+  return 0;
+}
+
 static int test_novas_debug() {
   int n = 0;
 
@@ -893,6 +916,7 @@ int main() {
   if(test_nu2000k()) n++;
   if(test_tdb2tt()) n++;
   if(test_grav_vec()) n++;
+  if(test_grav_undef()) n++;
 
   n += test_dates();
 

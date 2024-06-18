@@ -71,6 +71,8 @@
 #  define DEFAULT_SOLSYS 0
 #endif
 
+#define INV_MAX_ITER        100
+
 #if !DEFAULT_SOLSYS
 novas_planet_provider planet_call = (novas_planet_provider) solarsystem;
 novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem_hp;
@@ -1358,7 +1360,7 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 
   // Iteratively find ICRS coordinates that produce input apparent place
   // of star at date 'jd_tt'.
-  for(iter = 30; --iter >= 0;) {
+  for(iter = INV_MAX_ITER; --iter >= 0;) {
     double ra1, dec1;
 
     prop_error(fn, app_star(jd_tt, &star, accuracy, &ra1, &dec1), 20);
@@ -4014,6 +4016,7 @@ double d_light(const double *pos_src, const double *pos_body) {
  *                    or if the output vector is the same as pos_obs, or the error from
  *                    ephemeris(), or else 30 + the error from make_object().
  *
+ * @sa grav_invdef()
  * @sa place()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
@@ -4122,6 +4125,85 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
 }
 
 /**
+ * Computes the gravitationally undeflected position of an observed source position due to the
+ * major gravitating bodies in the solar system.  This function valid for an observed body within
+ * the solar system as well as for a star.
+ *
+ * If 'accuracy' is set to zero (full accuracy), three bodies (Sun, Jupiter, and Saturn) are
+ * used in the calculation.  If the reduced-accuracy option is set, only the Sun is used in
+ * the calculation.  In both cases, if the observer is not at the geocenter, the deflection
+ * due to the Earth is included.
+ *
+ * The number of bodies used at full and reduced accuracy can be set by making a change to
+ * the code in this function as indicated in the comments.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6.</li>
+ * </ol>
+ *
+ * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date
+ * @param loc_type    The type of observer frame
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param pos_app     [AU] Apparent position 3-vector of observed object, with respect to origin at
+ *                    observer (or the geocenter), referred to ICRS axes, components
+ *                    in AU.
+ * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
+ *                    origin at solar system barycenter, referred to ICRS axes,
+ *                    components in AU.
+ * @param[out] out    [AU] Nominal position vector of observed object, with respect to origin at
+ *                    observer (or the geocenter), referred to ICRS axes, without gravitational
+ *                    deflection, components in AU. It can be the same vector as the input, but not
+ *                    the same as pos_obs.
+ * @return            0 if successful, -1 if any of the pointer arguments is NULL
+ *                    or if the output vector is the same as pos_obs, or the error from
+ *                    ephemeris(), or else 30 + the error from make_object().
+ *
+ * @sa grav_def()
+ * @sa set_planet_provider()
+ * @sa set_planet_provider_hp()
+ *
+ * @since 1.1.0
+ */
+int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_app,
+        const double *pos_obs, double *out) {
+  static const char *fn = "grav_invdef";
+
+  double pos_def[3] = {}, pos0[3] = {};
+  double l;
+  double tol = accuracy == NOVAS_REDUCED_ACCURACY ? 1e-10 : 1e-13;
+  int i;
+
+  if(!pos_app || !pos_obs || !out)
+     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: pos_app=%p, pos_obs=%p, out=%p", pos_app, pos_obs, out);
+
+  l = vlen(pos_app);
+  if(l == 0.0) {
+    if(out != pos_app) memcpy(out, pos_app, XYZ_VECTOR_SIZE);
+    return 0;        // Source is same as observer. No deflection.
+  }
+
+  memcpy(pos0, pos_app, sizeof(pos0));
+
+
+  for(i=0; i < INV_MAX_ITER; i++) {
+    int j;
+
+    grav_def(jd_tdb, loc_type, accuracy, pos0, pos_obs, pos_def);
+
+    if(vdist(pos_def, pos_app) / l < tol) {
+      memcpy(out, pos0, sizeof(pos0));
+      return 0;
+    }
+
+    for(j=3; --j >= 0; ) pos0[j] -= pos_def[j] - pos_app[j];
+  }
+
+  novas_set_errno(ECANCELED, fn, "failed to converge");
+  return -1;
+}
+
+/**
  * Corrects position vector for the deflection of light in the gravitational field of an
  * arbitrary body.  This function valid for an observed body within the solar system as
  * well as for a star.
@@ -4158,7 +4240,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
  */
 int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out) {
   static const char *fn = "grav_vec";
-  double pq[3], pe[3], pmag, emag, qmag, phat[3], ehat[3], qhat[3];
+  double pq[3], pe[3], pmag, emag, qmag, phat[3] = {}, ehat[3], qhat[3];
   int i;
 
   if(!pos_src || !out)
@@ -5532,7 +5614,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     long n_recs;
   };
 
-  static FILE *last_file;
+  static const FILE *last_file;
   static struct cio_file_header lookup;
   static ra_of_cio cache[NOVAS_CIO_CACHE_SIZE];
   static long index_cache, cache_count;
@@ -6151,7 +6233,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
   double refr = 0.0;
   int i;
 
-  for(i = 0; i < 30; i++) {
+  for(i = 0; i < INV_MAX_ITER; i++) {
     double zd_obs = zd_astro - refr;
     refr = refract(location, option, zd_obs);
     if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5)

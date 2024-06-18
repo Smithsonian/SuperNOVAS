@@ -903,6 +903,10 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
+// ---------------------- Added in 1.1.0 -------------------------
+int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_app,
+        const double *pos_obs, double *out);
+
 
 // <================= END of SuperNOVAS API =====================>
 
