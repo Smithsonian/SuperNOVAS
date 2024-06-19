@@ -871,6 +871,10 @@ static int test_grav_undef() {
   if(!is_ok("grav_invdef:undef:zero", grav_undef(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
   if(!is_ok("grav_invdef:check:zero", check_equal_pos(pos0, pos_app, 1e-9))) return 1;
 
+  memset(pos_app, 0, sizeof(pos_app));
+  if(!is_ok("grav_invdef:undef:zero", grav_undef(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos_app))) return 1;
+  if(!is_ok("grav_invdef:check:zero", check_equal_pos(pos0, pos_app, 1e-9))) return 1;
+
   return 0;
 }
 
