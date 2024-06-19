@@ -778,6 +778,17 @@ static int test_grav_def() {
   return n;
 }
 
+static int test_grav_undef() {
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {};
+  int n = 0;
+
+  if(check("grav_def:pos", -1, grav_undef(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
+  if(check("grav_def:po", -1, grav_undef(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
+  if(check("grav_def:out", -1, grav_undef(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
+
+  return n;
+}
+
 static int test_earth_sun_calc() {
   double p[3], v[3];
   int n = 0;
@@ -903,6 +914,7 @@ int main() {
   if(test_aberration()) n++;
   if(test_grav_vec()) n++;
   if(test_grav_def()) n++;
+  if(test_grav_undef()) n++;
 
   if(test_earth_sun_calc()) n++;
   if(test_earth_sun_calc_hp()) n++;

@@ -99,6 +99,8 @@ DEFAULT_SOLSYS ?= 3
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
             --error-exitcode=1
 
+# Exhaustive checking for newer cppcheck
+#CHECKOPTS += --check-level=exhaustive
 
 # ============================================================================
 # END of user config section. 
