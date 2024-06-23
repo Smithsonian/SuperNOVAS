@@ -35,6 +35,8 @@ available on the `main` branch.
 
  - Added GitHub CI regression testing for non-x86 platforms: `armv7`, `aarch64`, `riscv64`, `ppc64le`. Thus, we
    should avoid misphaps, like the platform specific bug Issue #29, in the future. 
+   
+ - Added `grav_undef()` to undo gravitational bending of the observed light to obtain nominal astrometric positions
 
 ### Changed
 
@@ -72,6 +74,9 @@ available on the `main` branch.
 
  - Doxygen tag file renamed to `supernovas.tag` for consistency.
    
+ - Initialize test variable for reproducibility
+   
+
 
 ## [1.0.1] -- 2024-05-13
 
