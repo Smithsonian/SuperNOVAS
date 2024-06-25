@@ -677,12 +677,12 @@ typedef struct {
  * @since 1.1
  */
 enum novas_timescale {
-  NOVAS_TDB = 0,    /// Barycentric Dynamical Time (TDB)
-  NOVAS_TT,         /// Terrestrial Time (TT)
-  NOVAS_TAI,        /// Innternational Atomic Time (TAI)
-  NOVAS_GPS,        /// GPS Time
-  NOVAS_UTC,        /// Universal Coordinated Time (UTC)
-  NOVAS_UT1,        /// UT1 earth rotation time, based on the measured Earth orientation parameters published in IERS Bulletin A.
+  NOVAS_TDB = 0,    ///< Barycentric Dynamical Time (TDB)
+  NOVAS_TT,         ///< Terrestrial Time (TT)
+  NOVAS_TAI,        ///< Innternational Atomic Time (TAI)
+  NOVAS_GPS,        ///< GPS Time
+  NOVAS_UTC,        ///< Universal Coordinated Time (UTC)
+  NOVAS_UT1,        ///< UT1 earth rotation time, based on the measured Earth orientation parameters published in IERS Bulletin A.
 };
 
 /**
@@ -720,7 +720,11 @@ typedef struct {
 
 /**
  * A set of parameters that uniquely define a the place and time of observation. The user may
- * initialize the frame with novas_set_frame().
+ * initialize the frame with novas_set_frame(). Once the observer frame is set up, it can be
+ * used repeatedly to perform efficient calculations of multiple objects in the coordinate
+ * system of choice, much faster than what place() can do. Frames also allow for transforming
+ * coordinates calculated for one coordinate syste, into another coordinate system with
+ * little effort.
  *
  * @since 1.1
  *
@@ -753,7 +757,8 @@ typedef struct {
 
 /**
  * A transformation between two astronomical coordinate systems for the same observer
- * location and time.
+ * location and time. This allows for more elegant, generic, and efficient coordinate
+ * transformations than using the low-level NOVAS functions.
  *
  * @since 1.1
  */
