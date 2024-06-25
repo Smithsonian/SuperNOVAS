@@ -6,17 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+
 ## [Unreleased]
 
 Changes coming to the next quarterly release, expected around 1 September 2024. Some or all of these may be readily 
 available on the `main` branch.
 
-
 ### Fixed
-
- - The positions and velocities calculated for a near-Earth spacecraft by `place()` were incorrect, as it did not 
-   take into account the spacecraft position and velocity relative to the geocenter. This is another NOVAS C bug that 
-   is now fixed.
    
  - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
    that is observed is in the geometric direction towards the source (unaffected by aberration). A proper accounting 
