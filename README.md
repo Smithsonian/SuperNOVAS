@@ -767,6 +767,10 @@ before that level of accuracy is reached.
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
    guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
    observing location.
+   
+ - __v1.1__ Improved precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being more 
+   careful about the order in which terms are accumulated and combined, resulting in a small improvement on the few 
+   uas (micro-arcsecond) level.
 
 
 
