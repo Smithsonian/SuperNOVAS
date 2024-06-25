@@ -32,12 +32,8 @@ static int matrix_transform(const double *in, const novas_matrix *matrix, double
 
   memcpy(orig, in, sizeof(orig));
 
-  for(i = 3; --i >= 0;) {
-    int j;
-    out[i] = 0.0;
-    for(j = 3; --j >= 0;)
-      out[i] += matrix->M[i][j] * orig[j];
-  }
+  for(i = 3; --i >= 0;)
+    out[i] = matrix->M[i][0] * orig[0] + matrix->M[i][1] * orig[1] + matrix->M[i][2] * orig[2];
 
   return 0;
 }
@@ -59,9 +55,9 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   idet = 1.0 / (A->M[0][0] * I->M[0][0] + A->M[1][1] * I->M[1][1] + A->M[2][2] * I->M[2][2]);
 
   for(i = 3; --i >= 0;) {
-    int j;
-    for(j = 3; --j >= 0;)
-      I->M[i][j] *= idet;
+    I->M[i][0] *= idet;
+    I->M[i][1] *= idet;
+    I->M[i][2] *= idet;
   }
 
   return 0;
@@ -104,9 +100,9 @@ static int set_gcrs_to_cirs(novas_frame *frame) {
   prop_error(fn, cio_basis(jd_tdb, r_cio, sys, frame->accuracy, &T[0][0], &T[1][0], &T[2][0]), 10);
 
   for(i = 3; --i >= 0;) {
-    int j;
-    for(j = 3; --j >= 0;)
-      frame->gcrs_to_cirs.M[i][j] = T[j][i];
+    frame->gcrs_to_cirs.M[i][0] = T[0][i];
+    frame->gcrs_to_cirs.M[i][1] = T[1][i];
+    frame->gcrs_to_cirs.M[i][2] = T[2][i];
   }
 
   return 0;
@@ -220,15 +216,16 @@ static int set_aberration(novas_frame *frame) {
 }
 
 /**
- * Sets up a observing frame for a specific observer location, time of observation, and accuracy requirement.
+ * Sets up a observing frame for a specific observer location, time of observation, and accuracy
+ * requirement.
  *
  * @param accuracy    Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or
  *                    NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient.
  * @param obs         Observer location
  * @param time        Time of observation
  * @param[out] frame  Pointer to the observing frame to set up.
- * @return            0 if successful, or else -1 if there was an error (errno will indicate the type of
- *                    error).
+ * @return            0 if successful, or else -1 if there was an error (errno will indicate the
+ *                    type of error).
  *
  * @sa novas_geometric_posvel()
  * @sa novas_set_transform()
@@ -289,18 +286,21 @@ int novas_set_frame(enum novas_accuracy accuracy, const observer *obs, const nov
 }
 
 /**
- * Calculates the geometric position and velocity vectors for a source in the given observing frame. The geometric position is that
- * for a stationary observer (i.e. no aberration correction), and it does not include gravitational deflection. You can convert
- * the geometric position to an apparent location in a seconds step, to includes aberration and deflection, by passing the results onto
- * novas_skypos().
+ * Calculates the geometric position and velocity vectors for a source in the given observing
+ * frame. The geometric position does not include aberration correction, nor gravitational
+ * deflection. You can convert the geometric position to an apparent location in a seconds step,
+ * to includes aberration and deflection, by passing the results onto novas_skypos().
  *
  *
  * @param source    Pointer to a celestial source data structure that is observed
  * @param frame     The observer frame, defining the location and time of observation
  * @param sys       The desired reference coordinate system in which to return the coordinates
- * @param[out] pos  [AU] The calculated nominal position vector of the source relative to a non-moving observer location.
- * @param[out] vel  [AU/day] The calculated nominal velocity vector of the source relative to a non-moving observer location.
- * @return          0 if successful, or an error from light_time2(), or else -1 (errno will indicate the type of error).
+ * @param[out] pos  [AU] The calculated nominal position vector of the source relative to a
+ *                  non-moving observer location.
+ * @param[out] vel  [AU/day] The calculated nominal velocity vector of the source relative to a
+ *                  non-moving observer location.
+ * @return          0 if successful, or an error from light_time2(), or else -1 (errno will
+ *                  indicate the type of error).
  *
  * @sa novas_skypos()
  * @sa novas_set_transform()
@@ -363,17 +363,21 @@ int novas_geometric_posvel(const object *source, const novas_frame *frame, enum 
   return 0;
 }
 
+
 /**
- * Converts nominal positions to apparent location on sky, by applying an aberration correction and gravitational
- * deflection.
+ * Converts nominal positions to apparent location on sky, by applying an aberration correction
+ * and gravitational deflection.
  *
  * @param object        Pointer to a celestial object data structure that is observed
- * @param pos           [AU] Geometric position 3-vector of the observed source relative to the observer
- * @param vel           [AU/day] Geometric velocity 3-vector of the observed source relative to the observer
+ * @param pos           [AU] Geometric position 3-vector of the observed source relative to the
+ *                      observer
+ * @param vel           [AU/day] Geometric velocity 3-vector of the observed source relative to
+ *                      the observer
  * @param frame         The observer frame, defining the location and time of observation
- * @param[out] output   Pointer to the data structure which is populated with the calculated apparent location.
- * @return              0 if successful, or an error from grav_def(), or else -1 (errno will indicate the type
- *                      of error).
+ * @param[out] output   Pointer to the data structure which is populated with the calculated
+ *                      apparent location.
+ * @return              0 if successful, or an error from grav_def(), or else -1 (errno will
+ *                      indicate the type of error).
  *
  * @sa novas_geometric_posvel()
  * @sa novas_apparent_to_geometric()
@@ -459,11 +463,12 @@ int novas_skypos(const object *object, const double *pos, const double *vel, con
  * the gravitational deflection and aberration corrections.
  *
  *
- * @param app_pos       [AU] Apparent observed position of source (appropriately scaled to distance)
+ * @param app_pos       [AU] Apparent observed position of source (appropriately scaled to
+ *                      distance)
  * @param frame         The observer frame, defining the location and time of observation
  * @param[out] geom_pos [AU] The corresponding geometric position for the source.
  * @return              0 if successful, or else an error from grav_undef(), or -1 (errno will
- *                      indicate the type of error.
+ *                      indicate the type of error).
  *
  * @sa novas_skypos()
  * @sa place()
@@ -545,8 +550,8 @@ static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b)
  * @param to_system       New coordinate reference system
  * @param frame           Observer frame, defining the location and time of observation
  * @param[out] transform  Pointer to the transform data structure to populate.
- * @return                0 if successful, or else -1 if there was an error (errno will indicate the
- *                        type of error).
+ * @return                0 if successful, or else -1 if there was an error (errno will indicate
+ *                        the type of error).
  *
  * @sa novas_transform_pos()
  * @sa novas_transform_vel()
@@ -566,6 +571,8 @@ int novas_set_transform(enum novas_reference_system from_system, enum novas_refe
   transform->frame = *frame;
   transform->from_system = from_system;
   transform->to_system = to_system;
+
+  memset(transform->matrix, 0, sizeof(transform->matrix));
 
   // Identity matrix
   for(i = 3; --i >= 0;)
@@ -651,9 +658,10 @@ int novas_set_transform(enum novas_reference_system from_system, enum novas_refe
  * Inverts a novas coordinate transformation matrix.
  *
  * @param transform     Pointer to a coordinate transformation matrix.
- * @param[out] inverse  Pointer to a coordinate transformation matrix to populate with the inverse transform.
- * @return              0 if successful, or else -1 if the was an error (errno will indicate the type of
- *                      error).
+ * @param[out] inverse  Pointer to a coordinate transformation matrix to populate with the inverse
+ *                      transform.
+ * @return              0 if successful, or else -1 if the was an error (errno will indicate the
+ *                      type of error).
  *
  * @sa novas_calc_transform()
  *
@@ -674,88 +682,14 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
   return 0;
 }
 
-static int frame_pos(const novas_frame *frame, int dir, double *pos) {
-  static const char *fn = "bary2frame_vel";
-  int i;
-  double epos[3];
-  const observer *obs = &frame->observer;
-
-  if(!frame->contains_planet[NOVAS_EARTH])
-    return novas_error(-1, EINVAL, fn, "Uninitialized frame");
-
-  if(obs->where == NOVAS_OBSERVER_ON_EARTH) {
-    double lst = novas_get_time(&frame->time, NOVAS_UT1) * 24.0;
-    prop_error(fn, terra(&obs->on_surf, lst, epos, NULL), 0);
-  }
-  else if(obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
-    return novas_error(-1, EINVAL, fn, "NULL spacecraft position");
-  }
-
-  for(i = 3; --i >= 0;) {
-    // Earth orbital velocity...
-    pos[i] += dir * frame->pos[NOVAS_EARTH][i];
-
-    switch(obs->where) {
-      case NOVAS_OBSERVER_ON_EARTH:
-        pos[i] += dir * epos[i];
-        break;
-      case NOVAS_OBSERVER_IN_EARTH_ORBIT:
-        // Spacecraft velocity
-        pos[i] += dir * obs->near_earth.sc_pos[i];
-        break;
-      default:
-        // Nothing to do.
-    }
-  }
-
-  return 0;
-}
-
-static int frame_vel(const novas_frame *frame, int dir, double *v) {
-  static const char *fn = "bary2frame_vel";
-  const observer *obs = &frame->observer;
-  int i;
-  double vrot[3];
-
-  if(!frame->contains_planet[NOVAS_EARTH])
-    return novas_error(-1, EINVAL, fn, "Uninitialized frame");
-
-  if(obs->where == NOVAS_OBSERVER_ON_EARTH) {
-    double lst = novas_get_time(&frame->time, NOVAS_UT1) * 24.0;
-    prop_error(fn, terra(&obs->on_surf, lst, NULL, vrot), 0);
-  }
-  else if(obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
-    return novas_error(-1, EINVAL, fn, "NULL spacecraft velocity");
-  }
-
-  for(i = 3; --i >= 0;) {
-    // Earth orbital velocity...
-    v[i] += dir * frame->vel[NOVAS_EARTH][i];
-
-    switch(obs->where) {
-      case NOVAS_OBSERVER_ON_EARTH:
-        v[i] += dir * vrot[i];
-        break;
-      case NOVAS_OBSERVER_IN_EARTH_ORBIT:
-        // Spacecraft velocity
-        v[i] += dir * obs->near_earth.sc_vel[i];
-        break;
-      default:
-        // nothing to do...
-    }
-  }
-
-  return 0;
-}
-
 /**
  * Transforms a position vector from one coordinate reference system to another.
  *
  * @param in          Input position 3-vector in the original coordinate reference system
  * @param transform   Pointer to a coordinate transformation matrix
  * @param[out] out    Output position 3-vector in the new coordinate reference system
- * @return            0 if successful, or else -1 if there was an error (errno will
- *                    indicate the type of error).
+ * @return            0 if successful, or else -1 if there was an error (errno will indicate the
+ *                    type of error).
  *
  * @sa novas_calc_transform()
  * @sa novas_transform_vel()
@@ -769,10 +703,7 @@ int novas_transform_pos(const double *in, const novas_transform *transform, doub
   if(!transform)
     return novas_error(-1, EINVAL, fn, "NULL transform pointer");
 
-  memcpy(out, in, XYZ_VECTOR_SIZE);
-  prop_error(fn, frame_pos(&transform->frame, -1, out), 0);
   prop_error(fn, matrix_transform(out, &transform->matrix, out), 0);
-  prop_error(fn, frame_pos(&transform->frame, 1, out), 0);
 
   return 0;
 }
@@ -783,8 +714,8 @@ int novas_transform_pos(const double *in, const novas_transform *transform, doub
  * @param in          Input velocity 3-vector in the original coordinate reference system
  * @param transform   Pointer to a coordinate transformation matrix
  * @param[out] out    Output velocity 3-vector in the new coordinate reference system
- * @return            0 if successful, or else -1 if there was an error (errno will
- *                    indicate the type of error).
+ * @return            0 if successful, or else -1 if there was an error (errno will indicate the
+ *                    type of error).
  *
  * @sa novas_calc_transform()
  * @sa novas_transform_pos()
@@ -798,10 +729,7 @@ int novas_transform_vel(const double *in, const novas_transform *transform, doub
   if(!transform)
     return novas_error(-1, EINVAL, fn, "NULL transform pointer");
 
-  memcpy(out, in, XYZ_VECTOR_SIZE);
-  prop_error(fn, frame_vel(&transform->frame, -1, out), 0);
   prop_error(fn, matrix_transform(out, &transform->matrix, out), 0);
-  prop_error(fn, frame_vel(&transform->frame, 1, out), 0);
 
   return 0;
 }

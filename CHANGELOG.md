@@ -6,7 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-
 ## [Unreleased]
 
 Changes coming to the next quarterly release, expected around 1 September 2024. Some or all of these may be readily 
@@ -32,10 +31,8 @@ available on the `main` branch.
    the gravitational deflection due to the Sun being skipped. See Issue #28.
    
  - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
-   that is observed is in the geometric direction towards the source (unaffected by aberration). A proper accounting 
-   for the gravitational bending around some intermediate mass would require calculating the direction of light that 
-   left the source. However, short of doing that the geometric direction is at least closer to it than the direction 
-   in which the bent light is observed (and we should do this more properly in the future).
+   that is observed is in the geometric direction towards the source (unaffected by aberration), and `rad_vel()` 
+   requires geometric directions also to account for the gravitational effects of the Sun and Earth. 
 
  - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
    coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 

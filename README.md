@@ -137,11 +137,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
     the gravitational deflection due to the Sun being skipped.
    
- - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial 
-   velocity that is observed is in the geometric direction towards the source (unaffected by aberration). A proper 
-   accounting for the gravitational bending around some intermediate mass would require calculating the direction of 
-   light that left the source. However, short of doing that the geometric direction is at least closer to it than the 
-   direction in which the bent light is observed (and we should do this more properly in the future).
+ - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the 
+   radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration), and 
+   `rad_vel()` requires geometric directions also to account for the gravitational effects of the Sun and Earth.
 
 -----------------------------------------------------------------------------
 
