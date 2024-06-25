@@ -572,7 +572,7 @@ int novas_set_transform(enum novas_reference_system from_system, enum novas_refe
   transform->from_system = from_system;
   transform->to_system = to_system;
 
-  memset(transform->matrix, 0, sizeof(transform->matrix));
+  memset(&transform->matrix, 0, sizeof(transform->matrix));
 
   // Identity matrix
   for(i = 3; --i >= 0;)
