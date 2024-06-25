@@ -39,7 +39,7 @@ available on the `main` branch.
  - Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
  
  - Bungled definition of `NOVAS_OBSERVER_PLACES` in `novas.h`. 
- 
+
 
 ### Added
 
