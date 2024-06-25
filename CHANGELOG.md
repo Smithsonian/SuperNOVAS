@@ -14,6 +14,16 @@ available on the `main` branch.
 
 ### Fixed
 
+ - The positions and velocities calculated for a near-Earth spacecraft by `place()` were incorrect, as it did not 
+   take into account the spacecraft position and velocity relative to the geocenter. This is another NOVAS C bug that 
+   is now fixed.
+   
+ - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
+   that is observed is in the geometric direction towards the source (unaffected by aberration). A proper accounting 
+   for the gravitational bending around some intermediate mass would require calculating the direction of light that 
+   left the source. However, short of doing that the geometric direction is at least closer to it than the direction 
+   in which the bent light is observed (and we should do this more properly in the future).
+
  - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
    coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
    which broke many calculations badly for such platforms. As of now, we use the explicit platform-independent 
@@ -27,6 +37,9 @@ available on the `main` branch.
    result regardless of the sign.
 
  - Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
+ 
+ - Bungled definition of `NOVAS_OBSERVER_PLACES` in `novas.h`. 
+ 
 
 ### Added
 
