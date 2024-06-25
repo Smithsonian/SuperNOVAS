@@ -1055,15 +1055,15 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos);
 // frames.c
 int novas_set_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, novas_frame *frame);
 
-int novas_calc_geometric_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos,
+int novas_geometric_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos,
         double *vel);
 
-int novas_calc_apparent(const object *object, const double *pos, const double *vel, const novas_frame *frame,
+int novas_skypos(const object *object, const double *pos, const double *vel, const novas_frame *frame,
         sky_pos *output);
 
-int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame, double *nom_pos);
+int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame, double *geom_pos);
 
-int novas_calc_transform(enum novas_reference_system from_system, enum novas_reference_system to_system,
+int novas_set_transform(enum novas_reference_system from_system, enum novas_reference_system to_system,
         const novas_frame *frame, novas_transform *transform);
 
 int novas_invert_transform(const novas_transform *transform, novas_transform *inverse);

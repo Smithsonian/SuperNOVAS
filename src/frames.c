@@ -20,7 +20,6 @@
 #include <math.h>
 #include "novas.h"
 
-
 static int matrix_transform(const double *in, const novas_matrix *matrix, double *out) {
   static const char *fn = "novas_matrix_transform";
   double orig[3];
@@ -178,7 +177,6 @@ static int set_nutation(novas_frame *frame) {
   return 0;
 }
 
-
 static int set_obs_posvel(novas_frame *frame) {
   return obs_posvel(novas_get_time(&frame->time, NOVAS_TDB), frame->time.ut1_to_tt, &frame->observer, frame->accuracy,
           &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0], frame->obs_pos, frame->obs_vel);
@@ -232,17 +230,18 @@ static int set_aberration(novas_frame *frame) {
  * @return            0 if successful, or else -1 if there was an error (errno will indicate the type of
  *                    error).
  *
- * @sa novas_calc_geometric_posvel()
- * @sa novas_calc_transform()
+ * @sa novas_geometric_posvel()
+ * @sa novas_set_transform()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_set_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, novas_frame *frame) {
   static const char *fn = "novas_create_frame";
   static const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
   static const object sun = { NOVAS_PLANET, NOVAS_SUN, "Sun" };
 
-  const double tdb2[2];
+  double tdb2[2];
   double mobl, tobl, ee, dpsi, deps;
 
   if(accuracy < 0 || accuracy > NOVAS_REDUCED_ACCURACY)
@@ -278,8 +277,10 @@ int novas_set_frame(enum novas_accuracy accuracy, const observer *obs, const nov
   prop_error(fn, set_gcrs_to_cirs(frame), 0);
 
   // Barycentric Earth and Sun positions and velocities
-  prop_error(fn, ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_SUN][0], &frame->vel[NOVAS_SUN][0]), 0);
-  prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0]),
+  prop_error(fn,
+          ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_SUN][0], &frame->vel[NOVAS_SUN][0]), 0);
+  prop_error(fn,
+          ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0]),
           0);
 
   set_obs_posvel(frame);
@@ -291,7 +292,7 @@ int novas_set_frame(enum novas_accuracy accuracy, const observer *obs, const nov
  * Calculates the geometric position and velocity vectors for a source in the given observing frame. The geometric position is that
  * for a stationary observer (i.e. no aberration correction), and it does not include gravitational deflection. You can convert
  * the geometric position to an apparent location in a seconds step, to includes aberration and deflection, by passing the results onto
- * novas_calc_apparent().
+ * novas_skypos().
  *
  *
  * @param source    Pointer to a celestial source data structure that is observed
@@ -301,13 +302,14 @@ int novas_set_frame(enum novas_accuracy accuracy, const observer *obs, const nov
  * @param[out] vel  [AU/day] The calculated nominal velocity vector of the source relative to a non-moving observer location.
  * @return          0 if successful, or an error from light_time2(), or else -1 (errno will indicate the type of error).
  *
- * @sa novas_calc_apparent()
- * @sa novas_calc_trasform()
+ * @sa novas_skypos()
+ * @sa novas_set_transform()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
-int novas_calc_geometric_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos,
-        double *vel) {
+int novas_geometric_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys,
+        double *pos, double *vel) {
   static const char *fn = "novas_calc_posvel";
 
   double jd_tdb, t_light;
@@ -317,17 +319,16 @@ int novas_calc_geometric_posvel(const object *source, const novas_frame *frame, 
   if(!source || !frame || !pos || !vel)
     return novas_error(-1, EINVAL, fn, "NULL argument: source=%p, frame=%p, pos=%p, vel=%p", source, frame);
 
-  obs = (observer *) &frame->observer;
+  obs = (observer*) &frame->observer;
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
   // ---------------------------------------------------------------------
-  // Check on Earth as an observed object.  Earth can only be an observed
-  // object when 'location' is not on Earth.
+  // Earth can only be an observed object when 'location' is not on Earth.
   // ---------------------------------------------------------------------
-  if((source->type == NOVAS_PLANET) && (source->number == NOVAS_EARTH) &&
-          (obs->where != NOVAS_OBSERVER_AT_GEOCENTER) && (obs->where != NOVAS_OBSERVER_ON_EARTH))
+  if((source->type == NOVAS_PLANET) && (source->number == NOVAS_EARTH) && (obs->where != NOVAS_OBSERVER_AT_GEOCENTER)
+          && (obs->where != NOVAS_OBSERVER_ON_EARTH))
     return novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
 
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
@@ -374,22 +375,23 @@ int novas_calc_geometric_posvel(const object *source, const novas_frame *frame, 
  * @return              0 if successful, or an error from grav_def(), or else -1 (errno will indicate the type
  *                      of error).
  *
- * @sa novas_calc_geometric_posvel()
+ * @sa novas_geometric_posvel()
  * @sa novas_apparent_to_geometric()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
-int novas_calc_apparent(const object *object, const double *pos, const double *vel, const novas_frame *frame,
+int novas_skypos(const object *object, const double *pos, const double *vel, const novas_frame *frame,
         sky_pos *output) {
   static const char *fn = "novas_calc_apparent";
   enum novas_observer_place loc;
   double jd_tdb, id, d_sb;
+  double pos1[3];
   int i;
 
-  double pos1[3];
-
   if(!object || !pos || !frame || !output)
-    return novas_error(-1, EINVAL, "NULL argument: object=%p, pos=%p, frame=%p, output=%p", (void *) object, pos, frame, output);
+    return novas_error(-1, EINVAL, "NULL argument: object=%p, pos=%p, frame=%p, output=%p", (void*) object, pos, frame,
+            output);
 
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
@@ -440,7 +442,6 @@ int novas_calc_apparent(const object *object, const double *pos, const double *v
   for(i = 3; --i >= 0;)
     pos1[i] += frame->aberration_offset[i];
 
-
   // ---------------------------------------------------------------------
   // Finish up.
   // ---------------------------------------------------------------------
@@ -460,30 +461,31 @@ int novas_calc_apparent(const object *object, const double *pos, const double *v
  *
  * @param app_pos       [AU] Apparent observed position of source (appropriately scaled to distance)
  * @param frame         The observer frame, defining the location and time of observation
- * @param[out] nom_pos  [AU] The corresponding geometric position for the source.
+ * @param[out] geom_pos [AU] The corresponding geometric position for the source.
  * @return              0 if successful, or else an error from grav_undef(), or -1 (errno will
  *                      indicate the type of error.
  *
- * @sa novas_calc_apparent()
+ * @sa novas_skypos()
  * @sa place()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
-int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame, double *nom_pos) {
+int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame, double *geom_pos) {
   static const char *fn = "novas_apparent_to_nominal";
   enum novas_observer_place loc;
   double jd_tdb;
   int i;
 
-  if(!app_pos || !frame || !nom_pos)
-    return novas_error(-1, EINVAL, "NULL argument: app_pos=%p, frame=%p, nom_pos=%p", (void *) app_pos, frame, nom_pos);
+  if(!app_pos || !frame || !geom_pos)
+    return novas_error(-1, EINVAL, "NULL argument: app_pos=%p, frame=%p, nom_pos=%p", (void*) app_pos, frame, geom_pos);
 
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
   for(i = 3; --i >= 0;)
-      nom_pos[i] -= frame->aberration_offset[i];
+    geom_pos[i] -= frame->aberration_offset[i];
 
-  matrix_transform(app_pos, &frame->inv_aberration, nom_pos);
+  matrix_transform(app_pos, &frame->inv_aberration, geom_pos);
 
   // ---------------------------------------------------------------------
   // Apply gravitational deflection of light and aberration.
@@ -492,13 +494,13 @@ int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame,
   loc = frame->observer.where;
   if(loc == NOVAS_OBSERVER_ON_EARTH) {
     double frlimb;
-    limb_angle(nom_pos, &frame->pos[NOVAS_EARTH][0], NULL, &frlimb);
+    limb_angle(geom_pos, &frame->pos[NOVAS_EARTH][0], NULL, &frlimb);
     if(frlimb < 0.8)
       loc = NOVAS_OBSERVER_AT_GEOCENTER;
   }
 
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_undef(jd_tdb, loc, frame->accuracy, nom_pos, frame->obs_pos, nom_pos), 0);
+  prop_error(fn, grav_undef(jd_tdb, loc, frame->accuracy, geom_pos, frame->obs_pos, geom_pos), 0);
 
   return 0;
 }
@@ -535,7 +537,6 @@ static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b)
   return index[a] < index[b] ? -1 : 1;
 }
 
-
 /**
  * Calculates a transformation matrix that can be used to convert positions and velocities from
  * one coordinate reference system to another.
@@ -549,12 +550,13 @@ static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b)
  *
  * @sa novas_transform_pos()
  * @sa novas_transform_vel()
- * @sa novas_calc_geometric_posvel()
+ * @sa novas_geometric_posvel()
  * @sa novas_invert_transform()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
-int novas_calc_transform(enum novas_reference_system from_system, enum novas_reference_system to_system,
+int novas_set_transform(enum novas_reference_system from_system, enum novas_reference_system to_system,
         const novas_frame *frame, novas_transform *transform) {
   int i, dir;
 
@@ -645,7 +647,6 @@ int novas_calc_transform(enum novas_reference_system from_system, enum novas_ref
   return 0; /* NOT REACHED */
 }
 
-
 /**
  * Inverts a novas coordinate transformation matrix.
  *
@@ -657,12 +658,14 @@ int novas_calc_transform(enum novas_reference_system from_system, enum novas_ref
  * @sa novas_calc_transform()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_invert_transform(const novas_transform *transform, novas_transform *inverse) {
   novas_transform orig;
 
   if(!transform || !inverse)
-    return novas_error(-1, EINVAL, "novas_invert_transform", "NULL argument: transform=%p, inverse=%p", transform, inverse);
+    return novas_error(-1, EINVAL, "novas_invert_transform", "NULL argument: transform=%p, inverse=%p", transform,
+            inverse);
 
   orig = *transform;
   *inverse = orig;
@@ -670,7 +673,6 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
 
   return 0;
 }
-
 
 static int frame_pos(const novas_frame *frame, int dir, double *pos) {
   static const char *fn = "bary2frame_vel";
@@ -759,6 +761,7 @@ static int frame_vel(const novas_frame *frame, int dir, double *v) {
  * @sa novas_transform_vel()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_transform_pos(const double *in, const novas_transform *transform, double *out) {
   static const char *fn = "novas_matrix_transform";
@@ -770,7 +773,6 @@ int novas_transform_pos(const double *in, const novas_transform *transform, doub
   prop_error(fn, frame_pos(&transform->frame, -1, out), 0);
   prop_error(fn, matrix_transform(out, &transform->matrix, out), 0);
   prop_error(fn, frame_pos(&transform->frame, 1, out), 0);
-
 
   return 0;
 }
@@ -788,6 +790,7 @@ int novas_transform_pos(const double *in, const novas_transform *transform, doub
  * @sa novas_transform_pos()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_transform_vel(const double *in, const novas_transform *transform, double *out) {
   static const char *fn = "novas_transform_vel";
@@ -803,52 +806,3 @@ int novas_transform_vel(const double *in, const novas_transform *transform, doub
   return 0;
 }
 
-/**
- * Populates an 'observer' data structure for a hypothetical observer located at Earth's
- * geocenter. The output data structure may be used an the the inputs to NOVAS-C function
- * 'place()'.
- *
- * @param[out] obs    Pointer to data structure to populate.
- * @return          0 if successful, or -1 if the output argument is NULL.
- *
- * @sa make_observer_at geocenter()
- * @sa make_observer_in_space()
- * @sa make_observer_on_surface()
- * @sa make_solar_system_observer()
- * @sa novas_calc_geometric_position()
- * @sa place()
- *
- * @since 1.1
- */
-int make_observer_at_barycenter(observer *obs) {
-  prop_error("make_observer_at_geocenter", make_observer(NOVAS_OBSERVER_AT_BARYCENTER, NULL, NULL, obs), 0);
-  return 0;
-}
-
-/**
- * Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft,
- * with the specified geocentric position and velocity vectors. Both input vectors are with
- * respect to true equator and equinox of date. The output data structure may be used an the
- * the inputs to NOVAS-C function 'place()'.
- *
- * @param sc_pos        [km] Geocentric (x, y, z) position vector in km.
- * @param sc_vel        [km/s] Geocentric (x, y, z) velocity vector in km/s.
- * @param[out] obs      Pointer to the data structure to populate
- * @return          0 if successful, or -1 if the output argument is NULL.
- *
- * @sa make_observer_in_space()
- * @sa make_observer_on_surface()
- * @sa make_observer_at_geocenter()
- * @sa make_observer_at_barycenter()
- * @sa novas_calc_geometric_position()
- * @sa place()
- *
- * @since 1.1
- */
-int make_solar_system_observer(const double *sc_pos, const double *sc_vel, observer *obs) {
-  static const char *fn = "make_observer_in_space";
-  in_space loc;
-  prop_error(fn, make_in_space(sc_pos, sc_vel, &loc), 0);
-  prop_error(fn, make_observer(NOVAS_SOLAR_SYSTEM_OBSERVER, NULL, &loc, obs), 0);
-  return 0;
-}

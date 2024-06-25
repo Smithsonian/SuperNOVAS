@@ -1420,7 +1420,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
   // ---------------------------------------------------------------------
-  if(obs->where == NOVAS_OBSERVER_ON_EARTH) {
+  if(obs->where == NOVAS_OBSERVER_ON_EARTH || obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
     double pog[3] = { }, vog[3] = { };
     int i;
 
@@ -1432,17 +1432,6 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
         pos[i] += pog[i];
       if(vel)
         vel[i] += vog[i];
-    }
-  }
-  else if(obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
-    int i;
-
-    // observer is in a near-Earth satellite.
-    for(i = 3; --i >= 0;) {
-      if(pos)
-        pos[i] += obs->near_earth.sc_pos[i] / NOVAS_AU_KM;
-      if(vel)
-        vel[i] += obs->near_earth.sc_vel[i] * DAY / NOVAS_AU_KM;
     }
   }
 
@@ -1623,7 +1612,7 @@ short place(double jd_tt, const object *source, const observer *location, double
     enum novas_observer_place loc = obs.where;
 
     // Variable 'loc' determines whether Earth deflection is included.
-    if(loc == NOVAS_OBSERVER_ON_EARTH) {
+    if(obs.where == NOVAS_OBSERVER_ON_EARTH) {
       double pog[3];
 
       for(i = 3; --i >= 0;)
@@ -6833,6 +6822,58 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
   in_space loc;
   prop_error(fn, make_in_space(sc_pos, sc_vel, &loc), 0);
   prop_error(fn, make_observer(NOVAS_OBSERVER_IN_EARTH_ORBIT, NULL, &loc, obs), 0);
+  return 0;
+}
+
+/**
+ * Populates an 'observer' data structure for a hypothetical observer located at Earth's
+ * geocenter. The output data structure may be used an the the inputs to NOVAS-C function
+ * 'place()'.
+ *
+ * @param[out] obs    Pointer to data structure to populate.
+ * @return          0 if successful, or -1 if the output argument is NULL.
+ *
+ * @sa make_observer_at geocenter()
+ * @sa make_observer_in_space()
+ * @sa make_observer_on_surface()
+ * @sa make_solar_system_observer()
+ * @sa novas_calc_geometric_position()
+ * @sa place()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int make_observer_at_barycenter(observer *obs) {
+  prop_error("make_observer_at_geocenter", make_observer(NOVAS_OBSERVER_AT_BARYCENTER, NULL, NULL, obs), 0);
+  return 0;
+}
+
+/**
+ * Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft,
+ * with the specified geocentric position and velocity vectors. Both input vectors are with
+ * respect to true equator and equinox of date. The output data structure may be used an the
+ * the inputs to NOVAS-C function 'place()'.
+ *
+ * @param sc_pos        [km] Geocentric (x, y, z) position vector in km.
+ * @param sc_vel        [km/s] Geocentric (x, y, z) velocity vector in km/s.
+ * @param[out] obs      Pointer to the data structure to populate
+ * @return          0 if successful, or -1 if the output argument is NULL.
+ *
+ * @sa make_observer_in_space()
+ * @sa make_observer_on_surface()
+ * @sa make_observer_at_geocenter()
+ * @sa make_observer_at_barycenter()
+ * @sa novas_calc_geometric_position()
+ * @sa place()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int make_solar_system_observer(const double *sc_pos, const double *sc_vel, observer *obs) {
+  static const char *fn = "make_observer_in_space";
+  in_space loc;
+  prop_error(fn, make_in_space(sc_pos, sc_vel, &loc), 0);
+  prop_error(fn, make_observer(NOVAS_SOLAR_SYSTEM_OBSERVER, NULL, &loc, obs), 0);
   return 0;
 }
 

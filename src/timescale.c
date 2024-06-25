@@ -20,7 +20,6 @@
 #include <math.h>
 #include "novas.h"
 
-
 /// \cond PRIVATE
 #define DTA         (32.184 / DAY)        ///< [day] TT - UTC time difference
 #define GPS2TAI     (19.0 / DAY)          ///< [day] GPS to TAI time difference
@@ -50,6 +49,7 @@
  * @sa novas_get_time()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time) {
   return novas_set_split_time(timescale, 0, jd, leap, dut1, time);
@@ -75,6 +75,7 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @sa novas_get_split_time()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, int leap, double dut1,
         novas_timespec *time) {
@@ -124,7 +125,6 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   return 0;
 }
 
-
 /**
  * Returns the fractional Julian date of an astronomical time in the specified timescale.
  *
@@ -136,6 +136,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
  * @sa novas_get_split_time()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 double novas_get_time(const novas_timespec *time, enum novas_timescale timescale) {
   long ijd;
@@ -157,6 +158,7 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * @sa novas_get_time()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 double novas_get_split_time(const novas_timespec *time, enum novas_timescale timescale, long *ijd) {
   static const char *fn = "novas_get_time";
@@ -227,6 +229,7 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  * @sa novas_get_unix_time()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *time) {
   long jd, sojd;
@@ -255,6 +258,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  * @sa novas_get_time()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
   long ijd, isod;
