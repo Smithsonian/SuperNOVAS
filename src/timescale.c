@@ -5,7 +5,8 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *   A set of routines to make handling of astronomical timescale and conversions between them easier.
+ *   A set of routines to make handling of astronomical timescale and conversions between them
+ *   easier.
  */
 
 /// \cond PRIVATE
@@ -33,16 +34,17 @@
 /// \endcond
 
 /**
- * Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale
+ * Sets an astronomical time to the fractional Julian Date value, defined in the specified
+ * timescale
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
  * @param leap          [s] Leap seconds
  * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
- * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time for
- *                      all applications.
- * @return              0 if successful, or else -1 if there was an error (errno will be set to indicate
- *                      the type of error).
+ * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
+ *                      for all applications.
+ * @return              0 if successful, or else -1 if there was an error (errno will be set to
+ *                      indicate the type of error).
  *
  * @sa novas_set_split_time()
  * @sa novas_set_unix_time()
@@ -65,10 +67,10 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @param fjd           [day] fractional part Julian day value in the specified timescale
  * @param leap          [s] Leap seconds
  * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
- * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time for
- *                      all applications.
- * @return              0 if successful, or else -1 if there was an error (errno will be set to indicate
- *                      the type of error).
+ * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
+ *                      for all applications.
+ * @return              0 if successful, or else -1 if there was an error (errno will be set to
+ *                      indicate the type of error).
  *
  * @sa novas_set_time()
  * @sa novas_set_unix_time()
@@ -129,7 +131,8 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
  * Returns the fractional Julian date of an astronomical time in the specified timescale.
  *
  * @param time        Pointer to the astronimical time specification data structure.
- * @param timescale   The astronomical time scale in which the returned Julian Date is to be provided
+ * @param timescale   The astronomical time scale in which the returned Julian Date is to be
+ *                    provided
  * @return            [day] The Julian date in the requested timescale.
  *
  * @sa novas_set_time()
@@ -145,13 +148,14 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
 }
 
 /**
- * Returns the fractional Julian date of an astronomical time in the specified timescale, as an integer
- * and fractional part.
+ * Returns the fractional Julian date of an astronomical time in the specified timescale, as an
+ * integer and fractional part.
  *
  * @param time        Pointer to the astronimical time specification data structure.
- * @param timescale   The astronomical time scale in which the returned Julian Date is to be provided
- * @param[out] ijd    [day] The integer part of the Julian date in the requested timescale. It may be
- *                    NULL if not required.
+ * @param timescale   The astronomical time scale in which the returned Julian Date is to be
+ *                    provided
+ * @param[out] ijd    [day] The integer part of the Julian date in the requested timescale. It may
+ *                    be NULL if not required.
  * @return            [day] The fractional part of the Julian date in the requested timescale.
  *
  * @sa novas_set_split_time()
@@ -220,10 +224,10 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  * @param nanos       [ns] UTC sub-second component
  * @param leap        [s] Leap seconds
  * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
- * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time for
- *                    all applications.
- * @return            0 if successful, or else -1 if there was an error (errno will be set to indicate
- *                    the type of error).
+ * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
+ *                    for all applications.
+ * @return            0 if successful, or else -1 if there was an error (errno will be set to
+ *                    indicate the type of error).
  *
  * @sa novas_set_time()
  * @sa novas_get_unix_time()
