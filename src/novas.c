@@ -1615,12 +1615,10 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     // Variable 'loc' determines whether Earth deflection is included.
     if(loc == NOVAS_OBSERVER_ON_EARTH) {
-      double pog[3], vog[3];
+      double pog[3];
 
-      for(i = 3; --i >= 0;) {
+      for(i = 3; --i >= 0;)
         pog[i] = pob[i] - peb[i];
-        vog[i] = vob[i] - veb[i];
-      }
 
       limb_angle(pos, pog, NULL, &frlimb);
       if(frlimb < 0.8)
