@@ -1505,12 +1505,17 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
   // ---------------------------------------------------------------------
-  if((obs.where == NOVAS_OBSERVER_ON_EARTH) || (obs.where == NOVAS_OBSERVER_IN_EARTH_ORBIT)) {
+  if(obs.where == NOVAS_OBSERVER_ON_EARTH) {
     // For topocentric place, get geocentric position and velocity vectors
     // of observer (observer is on surface of Earth or in a near-Earth
     // satellite).
     prop_error(fn, geo_posvel(jd_tt, ut1_to_tt, accuracy, &obs, pog, vog), 40);
-
+    loc = NOVAS_OBSERVER_ON_EARTH;
+  }
+  else if(obs.where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
+    // Use earth orbiting spacecraft velocities
+    memcpy(pog, obs.near_earth.sc_pos, sizeof(pog));
+    memcpy(vog, obs.near_earth.sc_vel, sizeof(vog));
     loc = NOVAS_OBSERVER_ON_EARTH;
   }
   else {
@@ -1563,6 +1568,11 @@ short place(double jd_tt, const object *source, const observer *location, double
   }
 
   // ---------------------------------------------------------------------
+  // Compute radial velocity (all vectors in ICRS).
+  // ---------------------------------------------------------------------
+  rad_vel(source, pos, vel, vob, vdist(pob, peb), vdist(pob, psb), d_sb, &output->rv);
+
+  // ---------------------------------------------------------------------
   // Apply gravitational deflection of light and aberration.
   // ---------------------------------------------------------------------
   if(coord_sys != NOVAS_ICRS) {
@@ -1578,11 +1588,6 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     aberration(pos, vob, t_light, pos);
   }
-
-  // ---------------------------------------------------------------------
-  // Compute radial velocity (all vectors in ICRS).
-  // ---------------------------------------------------------------------
-  rad_vel(source, pos, vel, vob, vdist(pob, peb), vdist(pob, psb), d_sb, &output->rv);
 
   // ---------------------------------------------------------------------
   // Transform, if necessary, to output coordinate system.
