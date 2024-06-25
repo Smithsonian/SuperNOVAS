@@ -279,7 +279,7 @@ enum novas_observer_place {
 };
 
 /// The number of observer place types supported
-#define NOVAS_OBSERVER_PLACES     (NOVAS_IN_SPACE + 1)
+#define NOVAS_OBSERVER_PLACES     (NOVAS_OBSERVER_IN_EARTH_ORBIT + 1)
 
 /**
  * The basic types of positional coordinate reference systems supported by NOVAS. These
