@@ -55,6 +55,14 @@ available on the `main` branch.
 
 
 ### Added
+   
+ - Added `grav_undef()` to undo gravitational bending of the observed light to obtain nominal astrometric positions
+ 
+ - Added new observer locations `NOVAS_SOLAR_SYSTEM_OBSERVER` (for spacecraft orbiting the Sun), and 
+   `NOVAS_OBSERVER_AT_BARYCENTER` for an imaginary observe at the Solar System Baricenter.
+   
+ - Added coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
+   `NOVAS_J2000` for the J2000 dynamical reference system.
 
  - `make help` to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` for 
    suggesting this.)
@@ -62,7 +70,6 @@ available on the `main` branch.
  - Added GitHub CI regression testing for non-x86 platforms: `armv7`, `aarch64`, `riscv64`, `ppc64le`. Thus, we
    should avoid misphaps, like the platform specific bug Issue #29, in the future. 
    
- - Added `grav_undef()` to undo gravitational bending of the observed light to obtain nominal astrometric positions
 
 ### Changed
 

@@ -30,34 +30,6 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-#define HALF_PI             (0.5 * M_PI)
-#define ERAD_AU             (ERAD/AU)
-
-#define XYZ_VECTOR_SIZE     (3 * sizeof(double))
-
-// Use shorthand definitions for our constants
-#define JD_J2000            NOVAS_JD_J2000
-#define C                   NOVAS_C
-#define AU_SEC              NOVAS_AU_SEC
-#define C_AUDAY             NOVAS_C_AU_PER_DAY
-#define AU                  NOVAS_AU
-#define AU_KM               NOVAS_AU_KM
-#define GS                  NOVAS_G_SUN
-#define GE                  NOVAS_G_EARTH
-#define ERAD                NOVAS_EARTH_RADIUS
-#define EF                  NOVAS_EARTH_FLATTENING
-#define ANGVEL              NOVAS_EARTH_ANGVEL
-
-// Various locally used physical units
-#define DAY                 86400.0         ///< [s] seconds in a day
-#define DAY_HOURS           24.0
-#define DEG360              360.0
-#define JULIAN_YEAR_DAYS    365.25
-#define JULIAN_CENTURY_DAYS 36525.0
-#define ARCSEC              ASEC2RAD
-#define DEGREE              DEG2RAD
-#define HOURANGLE           (M_PI / 12.0)
-#define MAS                 (1e-3 * ASEC2RAD)
 
 #define CIO_INTERP_POINTS   6     ///< Number of points to load from CIO interpolation table at once.
 
@@ -230,6 +202,7 @@ enum novas_debug_mode novas_get_debug_mode() {
   return novas_debug_state;
 }
 
+/// \cond PRIVATE
 
 /**
  * Calculates the length of a 3-vector
@@ -240,9 +213,10 @@ enum novas_debug_mode novas_get_debug_mode() {
  * @sa vdot
  * @sa vdist
  */
-static double vlen(const double *v) {
+double novas_vlen(const double *v) {
   return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
+
 
 /**
  * Calculates the distance between two 3-vectors.
@@ -255,7 +229,7 @@ static double vlen(const double *v) {
  * @sa vlen()
  * @sa vdot()
  */
-static double vdist(const double *v1, const double *v2) {
+double novas_vdist(const double *v1, const double *v2) {
   double d2 = 0.0;
   int i;
   for(i = 3; --i >= 0;) {
@@ -264,6 +238,7 @@ static double vdist(const double *v1, const double *v2) {
   }
   return sqrt(d2);
 }
+
 
 /**
  * Calculates the dot product between two 3-vectors.
@@ -276,9 +251,11 @@ static double vdist(const double *v1, const double *v2) {
  * @sa vlen()
  * @sa vdist()
  */
-static double vdot(const double *v1, const double *v2) {
+double novas_vdot(const double *v1, const double *v2) {
   return (v1[0] * v2[0]) + (v1[1] * v2[1]) + (v1[2] * v2[2]);
 }
+
+/// \endcond
 
 /**
  * Computationally efficient implementation of 3D rotation with small angles.
@@ -515,9 +492,9 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
   prop_error(fn, cio_basis(jd_tdb, r_cio, sys, accuracy, x, y, z), 10);
 
   // Transform position vector to celestial intermediate system.
-  out[0] = vdot(x, v);
-  out[1] = vdot(y, v);
-  out[2] = vdot(z, v);
+  out[0] = novas_vdot(x, v);
+  out[1] = novas_vdot(y, v);
+  out[2] = novas_vdot(z, v);
 
   return 0;
 }
@@ -1383,6 +1360,87 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 }
 
 /**
+ * Calculates the position and velocity of the observer relative to the Solar System Barycenter (SSB).
+ *
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
+ * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
+ *                      NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2).
+ * @param obs           The observer location, relative to which the output positions and velocities
+ *                      are to be calculated
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param geo_pos       [AU] Position 3-vector of the geocenter w.r.t. the Solar System Barycenter (SSB)
+ * @param geo_vel       [AU/day] Velocity 3-vector of the geocenter w.r.t. the Solar System Barycenter (SSB)
+ * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter (SSB)
+ * @param[out] vel      [AU/day] Velocity 3-vector of the observer w.r.t. the Solar System Barycenter (SSB)
+ * @return              0 if successful, or the error from geo_posvel(), or else -1 (with errno indicating
+ *                      the type of error).
+ *
+ * @author Attila Kovacs
+ * @since 1.1
+ *
+ * @see place()
+ */
+int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_accuracy accuracy,
+        const double *geo_pos, const double *geo_vel, double *pos, double *vel) {
+  static const char *fn = "get_obs_posvel";
+
+  if(!pos && !vel)
+    return novas_error(-1, EINVAL, fn, "NULL output pointers (both)");
+
+  if(obs->where == NOVAS_OBSERVER_AT_BARYCENTER) {
+    if(pos)
+      memset(pos, 0, XYZ_VECTOR_SIZE);
+    if(vel)
+      memset(vel, 0, XYZ_VECTOR_SIZE);
+    return 0;
+  }
+
+  if(obs->where == NOVAS_SOLAR_SYSTEM_OBSERVER) {
+    if(pos)
+      memcpy(pos, obs->near_earth.sc_pos, XYZ_VECTOR_SIZE);
+    if(vel)
+      memcpy(vel, obs->near_earth.sc_vel, XYZ_VECTOR_SIZE);
+    return 0;
+  }
+
+  if(pos)
+    memcpy(pos, geo_pos, XYZ_VECTOR_SIZE);
+  if(vel)
+    memcpy(vel, geo_vel, XYZ_VECTOR_SIZE);
+
+  // ---------------------------------------------------------------------
+  // Get position and velocity of observer.
+  // ---------------------------------------------------------------------
+  if(obs->where == NOVAS_OBSERVER_ON_EARTH) {
+    double pog[3] = { }, vog[3] = { };
+    int i;
+
+    // For topocentric place, get geocentric position and velocity vectors
+    // of observer
+    prop_error(fn, geo_posvel(jd_tdb, ut1_to_tt, accuracy, obs, pog, vog), 0);
+    for(i = 3; --i >= 0;) {
+      if(pos)
+        pos[i] += pog[i];
+      if(vel)
+        vel[i] += vog[i];
+    }
+  }
+  else if(obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
+    int i;
+
+    // observer is in a near-Earth satellite.
+    for(i = 3; --i >= 0;) {
+      if(pos)
+        pos[i] += obs->near_earth.sc_pos[i] / NOVAS_AU_KM;
+      if(vel)
+        vel[i] += obs->near_earth.sc_vel[i] * DAY / NOVAS_AU_KM;
+    }
+  }
+
+  return 0;
+}
+
+/**
  * Computes the apparent direction of a celestial object at a specified time and in a specified
  * coordinate system and a specific near-Earth origin.
  *
@@ -1449,8 +1507,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   static THREAD_LOCAL double tlast1 = 0.0;
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
-  enum novas_observer_place loc;
-  double x, jd_tdb, pog[3] = { }, vog[3] = { }, pob[3], vob[3], pos[3] = { 0 }, vel[3], t_light, d_sb, frlimb;
+  double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], t_light, d_sb, frlimb;
   observer obs;
   int i;
 
@@ -1507,25 +1564,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
   // ---------------------------------------------------------------------
-  if(obs.where == NOVAS_OBSERVER_ON_EARTH || obs.where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
-    // For topocentric place, get geocentric position and velocity vectors
-    // of observer (observer is on surface of Earth or in a near-Earth
-    // satellite).
-    prop_error(fn, geo_posvel(jd_tt, ut1_to_tt, accuracy, &obs, pog, vog), 40);
-    loc = NOVAS_OBSERVER_ON_EARTH;
-  }
-  else {
-    // For geocentric place, there is nothing to do (observer is at
-    // geocenter).
-    loc = NOVAS_OBSERVER_AT_GEOCENTER;
-  }
-
-  // Compute position and velocity of observer wrt barycenter of
-  // solar system (Galilean transformation).
-  for(i = 3; --i >= 0;) {
-    pob[i] = peb[i] + pog[i];
-    vob[i] = veb[i] + vog[i];
-  }
+  prop_error(fn, obs_posvel(jd_tdb, ut1_to_tt, &obs, accuracy, peb, veb, pob, vob), 40);
 
   // ---------------------------------------------------------------------
   // Find geometric position of observed object (ICRS)
@@ -1543,7 +1582,7 @@ short place(double jd_tt, const object *source, const observer *location, double
     // Get position of star wrt observer (corrected for parallax).
     bary2obs(pos, pob, pos, &t_light);
     output->dis = 0.0;
-    d_sb = vlen(pos);
+    d_sb = novas_vlen(pos);
   }
   else {
     int k;
@@ -1566,14 +1605,23 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   // Compute radial velocity (all vectors in ICRS).
   // ---------------------------------------------------------------------
-  rad_vel(source, pos, vel, vob, vdist(pob, peb), vdist(pob, psb), d_sb, &output->rv);
+  rad_vel(source, pos, vel, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb, &output->rv);
 
   // ---------------------------------------------------------------------
   // Apply gravitational deflection of light and aberration.
   // ---------------------------------------------------------------------
   if(coord_sys != NOVAS_ICRS) {
+    enum novas_observer_place loc = obs.where;
+
     // Variable 'loc' determines whether Earth deflection is included.
     if(loc == NOVAS_OBSERVER_ON_EARTH) {
+      double pog[3], vog[3];
+
+      for(i = 3; --i >= 0;) {
+        pog[i] = pob[i] - peb[i];
+        vog[i] = vob[i] - veb[i];
+      }
+
       limb_angle(pos, pog, NULL, &frlimb);
       if(frlimb < 0.8)
         loc = NOVAS_OBSERVER_AT_GEOCENTER;
@@ -1610,7 +1658,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   vector2radec(pos, &output->ra, &output->dec);
 
-  x = vlen(pos);
+  x = novas_vlen(pos);
   for(i = 3; --i >= 0;)
     output->r_hat[i] = pos[i] / x;
 
@@ -1659,9 +1707,9 @@ int equ2gal(double ra, double dec, double *glon, double *glat) {
   pos1[2] = sin(dec);
 
   // Rotate position vector to galactic system, using Hipparcos documentation eq. 1.5.13.
-  pos2[0] = vdot(ag[0], pos1);
-  pos2[1] = vdot(ag[1], pos1);
-  pos2[2] = vdot(ag[2], pos1);
+  pos2[0] = novas_vdot(ag[0], pos1);
+  pos2[1] = novas_vdot(ag[1], pos1);
+  pos2[2] = novas_vdot(ag[2], pos1);
 
   // Decompose galactic vector into longitude and latitude.
   xyproj = sqrt(pos2[0] * pos2[0] + pos2[1] * pos2[1]);
@@ -1719,9 +1767,9 @@ int gal2equ(double glon, double glat, double *ra, double *dec) {
   pos1[2] = sin(glat);
 
   // Rotate position vector to galactic system, using Hipparcos documentation eq. 1.5.13.
-  pos2[0] = vdot(ag[0], pos1);
-  pos2[1] = vdot(ag[1], pos1);
-  pos2[2] = vdot(ag[2], pos1);
+  pos2[0] = novas_vdot(ag[0], pos1);
+  pos2[1] = novas_vdot(ag[1], pos1);
+  pos2[2] = novas_vdot(ag[2], pos1);
 
   // Decompose galactic vector into longitude and latitude.
   xyproj = sqrt(pos2[0] * pos2[0] + pos2[1] * pos2[1]);
@@ -2085,9 +2133,9 @@ int itrs_to_hor(const on_surface *location, const double *itrs, double *az, doub
 
   // Compute components of 'p' - projections of 'p' onto rotated
   // Earth-fixed basis vectors.
-  pn = vdot(itrs, une);
-  pw = vdot(itrs, uwe);
-  pz = vdot(itrs, uze);
+  pn = novas_vdot(itrs, une);
+  pw = novas_vdot(itrs, uwe);
+  pz = novas_vdot(itrs, uze);
 
   // Compute azimuth and zenith distance.
   proj = sqrt(pn * pn + pw * pw);
@@ -2297,9 +2345,9 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
 
   // Compute components of 'p' - projections of 'p' onto rotated
   // Earth-fixed basis vectors.
-  pz = vdot(p, uz);
-  pn = vdot(p, un);
-  pw = vdot(p, uw);
+  pz = novas_vdot(p, uz);
+  pn = novas_vdot(p, un);
+  pw = novas_vdot(p, uw);
 
   // Compute azimuth and zenith distance.
   proj = sqrt(pn * pn + pw * pw);
@@ -2526,7 +2574,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 
       // Compute the hour angle of the equinox wrt the TIO meridian
       // (near Greenwich, but passes through the CIP and TIO).
-      ha_eq = theta - atan2(vdot(eq, y), vdot(eq, x)) / DEGREE;
+      ha_eq = theta - atan2(novas_vdot(eq, y), novas_vdot(eq, x)) / DEGREE;
 
       // For mean sidereal time, subtract the equation of the equinoxes.
 
@@ -3704,7 +3752,7 @@ int bary2obs(const double *pos, const double *pos_obs, double *out, double *ligh
 
   // Calculate length of vector in terms of light time.
   if(lighttime)
-    *lighttime = vlen(out) / C_AUDAY;
+    *lighttime = novas_vlen(out) / C_AUDAY;
 
   return 0;
 }
@@ -3967,11 +4015,11 @@ double d_light(const double *pos_src, const double *pos_body) {
     return NAN;
   }
 
-  d_src = vlen(pos_src);
+  d_src = novas_vlen(pos_src);
 
   // Light-time returned is the projection of vector 'pos_obs' onto the
   // unit vector 'u1' (formed from 'pos_body'), divided by the speed of light.
-  return d_src > 1e-30 ? vdot(pos_body, pos_src) / d_src / C_AUDAY : 0.0;
+  return d_src > 1e-30 ? novas_vdot(pos_body, pos_src) / d_src / C_AUDAY : 0.0;
 }
 
 /**
@@ -4066,7 +4114,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   }
 
   // Compute light-time to observed object.
-  tlt = vlen(pos_src) / C_AUDAY;
+  tlt = novas_vlen(pos_src) / C_AUDAY;
 
   // Cycle through gravitating bodies.
   for(i = 0; i < nbodies; i++) {
@@ -4178,7 +4226,7 @@ int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   if(!pos_app || !pos_obs || !out)
      return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: pos_app=%p, pos_obs=%p, out=%p", pos_app, pos_obs, out);
 
-  l = vlen(pos_app);
+  l = novas_vlen(pos_app);
   if(l == 0.0) {
     if(out != pos_app) memcpy(out, pos_app, XYZ_VECTOR_SIZE);
     return 0;        // Source is same as observer. No deflection.
@@ -4186,13 +4234,12 @@ int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
 
   memcpy(pos0, pos_app, sizeof(pos0));
 
-
   for(i=0; i < INV_MAX_ITER; i++) {
     int j;
 
-    grav_def(jd_tdb, loc_type, accuracy, pos0, pos_obs, pos_def);
+    prop_error(fn, grav_def(jd_tdb, loc_type, accuracy, pos0, pos_obs, pos_def), 0);
 
-    if(vdist(pos_def, pos_app) / l < tol) {
+    if(novas_vdist(pos_def, pos_app) / l < tol) {
       memcpy(out, pos0, sizeof(pos0));
       return 0;
     }
@@ -4262,9 +4309,9 @@ int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_bod
   }
 
   // Compute vector magnitudes and unit vectors.
-  pmag = vlen(pos_src);
-  emag = vlen(pe);
-  qmag = vlen(pq);
+  pmag = novas_vlen(pos_src);
+  emag = novas_vlen(pe);
+  qmag = novas_vlen(pq);
 
   // Gravitating body is the observer or the observed object. No deflection.
   if(!emag || !qmag)
@@ -4280,9 +4327,9 @@ int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_bod
   // Deflection calculation...
   {
     // Compute dot products of vectors
-    const double edotp = vdot(ehat, phat);
-    const double pdotq = vdot(phat, qhat);
-    const double qdote = vdot(qhat, ehat);
+    const double edotp = novas_vdot(ehat, phat);
+    const double pdotq = novas_vdot(phat, qhat);
+    const double qdote = novas_vdot(qhat, ehat);
 
     // Compute scalar factors.
     const double fac1 = 2.0 * GS / (C * C * emag * AU * rmass);
@@ -4330,7 +4377,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
   if(!pos || !vobs || !out)
     return novas_error(-1, EINVAL, "aberration", "NULL input or output 3-vector: pos=%p, vobs=%p, out=%p", pos, vobs, out);
 
-  vemag = vlen(vobs);
+  vemag = novas_vlen(vobs);
   if(!vemag) {
     if(out != pos)
       memcpy(out, pos, XYZ_VECTOR_SIZE);
@@ -4340,13 +4387,13 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
   beta = vemag / C_AUDAY;
 
   if(lighttime <= 0.0) {
-    p1mag = vlen(pos);
+    p1mag = novas_vlen(pos);
     lighttime = p1mag / C_AUDAY;
   }
   else
     p1mag = lighttime * C_AUDAY;
 
-  cosd = vdot(pos, vobs) / (p1mag * vemag);
+  cosd = novas_vdot(pos, vobs) / (p1mag * vemag);
   gammai = sqrt(1.0 - beta * beta);
   p = beta * cosd;
   q = (1.0 + p / (1.0 + gammai)) * lighttime;
@@ -4435,7 +4482,7 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
   memcpy(v, vel, sizeof(v));
 
   // Compute length of position vector = distance to object in AU.
-  posmag = vlen(pos);
+  posmag = novas_vlen(pos);
 
   // Compute unit vector toward object.
   for(i = 0; i < 3; i++) {
@@ -4443,8 +4490,8 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
   }
 
   // Compute velocity-squared factors.
-  v2 = vdot(v, v) * toms2;
-  vo2 = vdot(vel_obs, vel_obs) * toms2;
+  v2 = novas_vdot(v, v) * toms2;
+  vo2 = novas_vdot(vel_obs, vel_obs) * toms2;
 
   // Compute geopotential at observer, unless observer is geocentric.
   r = d_obs_geo * AU;
@@ -4483,7 +4530,7 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
       du[0] = uk[0] - (cosdec * cos(ra));
       du[1] = uk[1] - (cosdec * sin(ra));
       du[2] = uk[2] - sin(dec);
-      zc = radvel * 1.0e3 + vdot(v, du) * toms;
+      zc = radvel * 1.0e3 + novas_vdot(v, du) * toms;
 
       // Compute observed radial velocity measure of a star (inverse of
       // Lindegren & Dravins eq. (41)).
@@ -4503,7 +4550,7 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
       // velocity vector is known and gravitational red shift is negligible
       // (Lindegren & Dravins eq. (40), applied as per S. Klioner private
       // communication (2006)).
-      kv = vdot(uk, vel) * toms;
+      kv = novas_vdot(uk, vel) * toms;
       zb1 = (1.0 + kv / C) / (1.0 - phisun / c2 - 0.5 * v2 / c2);
       break;
 
@@ -4511,7 +4558,7 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
       return novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
   }
 
-  kvobs = vdot(uk, vel_obs) * toms;
+  kvobs = novas_vdot(uk, vel_obs) * toms;
   zobs1 = zb1 * rel / (1.0 + kvobs / C);
 
   // Convert observed radial velocity measure to kilometers/second.
@@ -5118,7 +5165,7 @@ double get_utc_to_tt(int leap_seconds) {
  * </li>
  * </ol>
  *
- * @param leap_seconds  [s] Leap seconds at gthe time of observations
+ * @param leap_seconds  [s] Leap seconds at the time of observations
  * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5]
  * @return              [s] The TT - UT1 time difference that is suitable for used with all
  *                      calls in this library that require a <code>ut1_to_tt</code> argument.
@@ -5261,7 +5308,7 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
 
   // Compute the RA-like coordinate of the true equinox in the celestial
   // intermediate system, in radians
-  az = atan2(vdot(eq, y), vdot(eq, x));
+  az = atan2(novas_vdot(eq, y), novas_vdot(eq, x));
 
   // The RA of the CIO is minus this coordinate, cast as hour-angle
   *ra_cio = -az / HOURANGLE;
@@ -5537,7 +5584,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
       x[2] = -zz[0] * cosra - zz[1] * sinra;
 
       // Normalize vector x.
-      l = vlen(x);
+      l = novas_vlen(x);
       x[0] /= l;
       x[1] /= l;
       x[2] /= l;
@@ -6099,7 +6146,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   d = atan2(pos[2], xyproj);
   out->dec = d / DEGREE;
 
-  dist = vlen(pos);
+  dist = novas_vlen(pos);
 
   paralx = asin(1.0 / dist) / MAS;
 
@@ -6176,8 +6223,8 @@ int limb_angle(const double *pos_src, const double *pos_obs, double *limb_ang, d
     return novas_error(-1, EINVAL, fn, "NULL input 3-vector: pos_src=%p, pos_obs=%p", pos_src, pos_obs);
 
   // Compute the distance to the object and the distance to the observer.
-  d_src = vlen(pos_src);
-  d_obs = vlen(pos_obs);
+  d_src = novas_vlen(pos_src);
+  d_obs = novas_vlen(pos_obs);
 
   if(!d_src)
     return novas_error(-1, EINVAL, fn, "looking at geocenter");
@@ -6192,7 +6239,7 @@ int limb_angle(const double *pos_src, const double *pos_obs, double *limb_ang, d
   zdlim = M_PI - aprad;
 
   // Compute zenith distance of observed object.
-  coszd = vdot(pos_src, pos_obs) / (d_src * d_obs);
+  coszd = novas_vdot(pos_src, pos_obs) / (d_src * d_obs);
 
   if(coszd <= -1.0)
     zdobj = M_PI;
@@ -6828,3 +6875,6 @@ int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc) {
 
   return 0;
 }
+
+
+

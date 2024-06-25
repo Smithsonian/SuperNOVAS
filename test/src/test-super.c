@@ -380,7 +380,7 @@ static int test_radec_star() {
     radec2vector(ra, dec, 1.0, posa.r_hat);
 
     if(!is_ok("radec_star:control", place(tdb, &source, &obs, ut12tt, i, 1, &posb))) return 1;
-    if(!is_ok("radec_star:check", check_equal_pos(posa.r_hat, posb.r_hat, 1e-9))) return 1;
+    if(!is_ok("radec_star:check_pos", check_equal_pos(posa.r_hat, posb.r_hat, 1e-9))) return 1;
     if(!is_ok("radec_star:check_rv", fabs(rv - posb.rv) > 1e-6)) return 1;
 
     if(!is_ok("radec_star:ra:null", radec_star(tdb, &source.star, &obs, ut12tt, i, 1, NULL, &dec, &rv))) return 1;
