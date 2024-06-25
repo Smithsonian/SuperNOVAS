@@ -1514,8 +1514,10 @@ short place(double jd_tt, const object *source, const observer *location, double
   }
   else if(obs.where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
     // Use earth orbiting spacecraft velocities
-    memcpy(pog, obs.near_earth.sc_pos, sizeof(pog));
-    memcpy(vog, obs.near_earth.sc_vel, sizeof(vog));
+    for(i = 3; --i >= 0;) {
+      pog[i] += obs.near_earth.sc_pos[i] / NOVAS_AU_KM;
+      vog[i] += obs.near_earth.sc_vel[i] * DAY / NOVAS_AU_KM;
+    }
     loc = NOVAS_OBSERVER_ON_EARTH;
   }
   else {
