@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 Changes coming to the next quarterly release, expected around 1 September 2024. Some or all of these may be readily 
 available on the `main` branch.
 
+
 ### Fixed
 
  - `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
@@ -29,19 +30,14 @@ available on the `main` branch.
  - Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
    the gravitational deflection due to the Sun being skipped. See Issue #28.
-   
+
  - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
-   that is observed is in the geometric direction towards the source (unaffected by aberration), and `rad_vel()` 
-   requires geometric directions also to account for the gravitational effects of the Sun and Earth. 
-
- - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
-   coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
-   which broke many calculations badly for such platforms. As of now, we use the explicit platform-independent 
-   `int8_t` storage type for these coefficients.
-
- - Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris reference
-   position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
-   the gravitational deflection due to the Sun being skipped. See Issue #28.
+   that is observed is in the geometric direction towards the source (unaffected by aberration). A precise accounting 
+   of the gravitational effects would require figuring out the direction in which the observed light was emitted from 
+   the source before it was bent by gravitating bodies along the way. In practice, this may be difficult to 
+   generalize, but it may be feasible for a single dominant gravitating body... The geometric direction of the source 
+   is between the direction in which the light is emitted, and the observed deflected direction. Therefore, for the 
+   time being, the radial velocity calculated via the geometric direction is closer to the actual value.
 
  - Adjusted regression testing to treat `nan` and `-nan` effectively the same. They both represent an equally invalid 
    result regardless of the sign.
