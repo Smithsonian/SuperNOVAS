@@ -1083,6 +1083,8 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
 
 #  include <stdio.h>
 
+#define _CONSTS_
+
 #define HALF_PI             (0.5 * M_PI)
 #define ERAD_AU             (ERAD/AU)
 
