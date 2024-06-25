@@ -13,10 +13,6 @@ available on the `main` branch.
 
 
 ### Fixed
-
- - The positions and velocities calculated for a near-Earth spacecraft by `place()` were incorrect, as it did not 
-   take into account the spacecraft position and velocity relative to the geocenter. This is another NOVAS C bug that 
-   is now fixed.
    
  - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
    that is observed is in the geometric direction towards the source (unaffected by aberration). A proper accounting 

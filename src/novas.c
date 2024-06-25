@@ -1505,19 +1505,11 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
   // ---------------------------------------------------------------------
-  if(obs.where == NOVAS_OBSERVER_ON_EARTH) {
+  if(obs.where == NOVAS_OBSERVER_ON_EARTH || obs.where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
     // For topocentric place, get geocentric position and velocity vectors
     // of observer (observer is on surface of Earth or in a near-Earth
     // satellite).
     prop_error(fn, geo_posvel(jd_tt, ut1_to_tt, accuracy, &obs, pog, vog), 40);
-    loc = NOVAS_OBSERVER_ON_EARTH;
-  }
-  else if(obs.where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
-    // Use earth orbiting spacecraft velocities
-    for(i = 3; --i >= 0;) {
-      pog[i] += obs.near_earth.sc_pos[i] / NOVAS_AU_KM;
-      vog[i] += obs.near_earth.sc_vel[i] * DAY / NOVAS_AU_KM;
-    }
     loc = NOVAS_OBSERVER_ON_EARTH;
   }
   else {
