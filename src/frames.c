@@ -317,7 +317,7 @@ int novas_geometric_posvel(const object *source, const novas_frame *frame, enum 
   double pos1[3], vel1[3];
 
   if(!source || !frame || !pos || !vel)
-    return novas_error(-1, EINVAL, fn, "NULL argument: source=%p, frame=%p, pos=%p, vel=%p", source, frame);
+    return novas_error(-1, EINVAL, fn, "NULL argument: source=%p, frame=%p, pos=%p, vel=%p", source, frame, pos, vel);
 
   obs = (observer*) &frame->observer;
 
