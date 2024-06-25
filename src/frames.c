@@ -233,6 +233,7 @@ static int set_aberration(novas_frame *frame) {
  *                    error).
  *
  * @sa novas_calc_geometric_posvel()
+ * @sa novas_calc_transform()
  *
  * @since 1.1
  */

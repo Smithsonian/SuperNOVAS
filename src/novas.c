@@ -210,8 +210,11 @@ enum novas_debug_mode novas_get_debug_mode() {
  * @param v     Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @return      the length of the vector
  *
- * @sa vdot
- * @sa vdist
+ * @sa vdot()
+ * @sa vdist()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 double novas_vlen(const double *v) {
   return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
@@ -228,6 +231,9 @@ double novas_vlen(const double *v) {
  *
  * @sa vlen()
  * @sa vdot()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 double novas_vdist(const double *v1, const double *v2) {
   double d2 = 0.0;
@@ -250,6 +256,9 @@ double novas_vdist(const double *v1, const double *v2) {
  *
  * @sa vlen()
  * @sa vdist()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 double novas_vdot(const double *v1, const double *v2) {
   return (v1[0] * v2[0]) + (v1[1] * v2[1]) + (v1[2] * v2[2]);
@@ -4210,7 +4219,7 @@ short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  *
- * @since 1.1.0
+ * @since 1.1
  */
 int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_app,
         const double *pos_obs, double *out) {
@@ -4779,6 +4788,9 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
  * @return      0 if successful, or -1 if the input argument is NULL
  *
  * @sa nutation_angles()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 int set_nutation_lp_provider(novas_nutation_provider func) {
   if(!func)
@@ -4907,6 +4919,9 @@ int fund_args(double t, novas_delaunay_args *a) {
  * @sa nutation_angles()
  * @sa ee_ct()
  * @sa NOVAS_JD_J2000
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 double planet_lon(double t, enum novas_planet planet) {
   double lon;
@@ -4955,6 +4970,9 @@ double planet_lon(double t, enum novas_planet planet) {
  * @sa nutation_angles()
  * @sa ee_ct()
  * @sa NOVAS_JD_J2000
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 double accum_prec(double t) {
   // General precession in longitude (Simon et al. 1994), equivalent
@@ -4977,6 +4995,7 @@ double accum_prec(double t) {
  * @sa equ2ecl()
  * @sa ecl2equ()
  * @sa tt2tdb()
+ *
  */
 double mean_obliq(double jd_tdb) {
   // Compute time in Julian centuries from epoch J2000.0.
@@ -5146,6 +5165,9 @@ int starvectors(const cat_entry *star, double *pos, double *vel) {
  *
  * @sa get_ut1_to_tt()
  * @sa julian_date()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 double get_utc_to_tt(int leap_seconds) {
   return leap_seconds + NOVAS_TAI_TO_TT;
@@ -5274,7 +5296,6 @@ double tt2tdb(double jd_tt) {
  * @return            0 if successful, -1 if the output pointer argument is NULL,
  *                    1 if 'accuracy' is invalid, 10--20: 10 + error code from cio_location(),
  *                    or else 20 + error from cio_basis()
- *
  */
 short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
   static const char *fn = "cio_ra";
@@ -6482,6 +6503,9 @@ int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
  *
  * @param angle   [rad] an angle in radians.
  * @return        [rad] the normalized angle in the [0:2&pi;) range.
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 double norm_ang(double angle) {
   double a;
