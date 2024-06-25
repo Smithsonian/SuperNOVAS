@@ -16,6 +16,9 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
  */
 
+// We shall never use these in the internal API. We define precompiler constants instead...
+#ifndef __NOVAS_INTERNAL_API__
+
 #include "novas.h"
 #include "novascon.h"
 
@@ -33,9 +36,7 @@ const double ANGVEL = NOVAS_EARTH_ANGVEL;
 const double RMASS[12] = NOVAS_RMASS_INIT;
 
 
-
-
-
+#endif /* __NOVAS_INTERNAL_API__ */
 
 
 

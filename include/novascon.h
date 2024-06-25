@@ -67,4 +67,4 @@ extern const double ANGVEL;
 extern const double RMASS[12];
 
 
-#endif
+#endif /* _CONSTS_ */
