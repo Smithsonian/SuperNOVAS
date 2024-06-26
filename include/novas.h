@@ -791,17 +791,6 @@ enum novas_refraction_type {
 };
 
 /**
- * Astrometric position type, depending on whether it is purely geometric, or else if it contains
- * corrections for aberration (moving observer frame) and gravitational deflection around the major
- * solar-system bodies.
- *
- */
-enum novas_position_type {
-  NOVAS_POSITION_GEOMETRIC = 0, ///< Geometric position, not including aberration and gravitational deflection
-  NOVAS_POSITION_APPARENT       ///< Apparent position, including aberration and gravitational deflection
-};
-
-/**
  * A function that returns a refraction correction for a given date/time of observation at the
  * given site on earth, and for a given astrometric source elevation
  *
@@ -1088,6 +1077,8 @@ int make_observer_at_barycenter(observer *obs);
 
 int make_solar_system_observer(const double *sc_pos, const double *sc_vel, observer *obs);
 
+int make_cat_object(const cat_entry *star, object *object);
+
 // in timescale.c
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time);
 
@@ -1107,17 +1098,13 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
 
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out);
 
-int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, enum novas_position_type type,
-        double *pos, double *vel);
-
-int novas_cat_posvel(const cat_entry *source, const novas_frame *frame, enum novas_reference_system sys, enum novas_position_type type,
-        double *pos, double *vel);
+int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel);
 
 int novas_transform_vector(const double *in, const novas_transform *transform, double *out);
 
 int novas_sky_pos(const object *object, const novas_frame *frame, const double *pos, const double *vel, sky_pos *output);
 
-int novas_to_horizontal(double ra, double dec, enum novas_reference_system sys, const novas_frame *frame, RefractionModel ref_model,
+int novas_to_horizontal(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
         double *az, double *el);
 
 int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame, double *geom_pos);
@@ -1129,7 +1116,9 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
 
 int novas_transform_vector(const double *in, const novas_transform *transform, double *out);
 
+double novas_standard_refraction(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
+double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 
 // <================= END of SuperNOVAS API =====================>
