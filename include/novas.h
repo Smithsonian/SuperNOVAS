@@ -781,12 +781,21 @@ typedef struct {
   novas_matrix matrix;          ///< Transformation matrix elements
 } novas_transform;
 
-
+/**
+ * The type of elevation value for which to calculate a refraction.
+ *
+ */
 enum novas_refraction_type {
   NOVAS_REFRACT_OBSERVED = -1,  ///< Refract observed elevation value
   NOVAS_REFRACT_ASTROMETRIC     ///< Refract astrometric elevation value
 };
 
+/**
+ * Astrometric position type, depending on whether it is purely geometric, or else if it contains
+ * corrections for aberration (moving observer frame) and gravitational deflection around the major
+ * solar-system bodies.
+ *
+ */
 enum novas_position_type {
   NOVAS_POSITION_GEOMETRIC = 0, ///< Geometric position, not including aberration and gravitational deflection
   NOVAS_POSITION_APPARENT       ///< Apparent position, including aberration and gravitational deflection
@@ -1118,7 +1127,7 @@ int novas_make_transform(enum novas_reference_system from_system, enum novas_ref
 
 int novas_invert_transform(const novas_transform *transform, novas_transform *inverse);
 
-int novas_transform_vec(const double *in, const novas_transform *transform, double *out);
+int novas_transform_vector(const double *in, const novas_transform *transform, double *out);
 
 
 
