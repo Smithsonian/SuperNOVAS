@@ -6630,15 +6630,13 @@ void novas_case_sensitive(int value) {
  * @param star          Pointer to structure to populate with the catalog data for a celestial
  *                      object located outside the solar system. Used only if type is
  *                      NOVAS_CATALOG_OBJECT, otherwise ignored and can be NULL.
- * @param[out] source   Pointer to the celestial object data structure to be populated. Used
- *                      only if 'type' is NOVAS_PLANET or NOVAS_EPHEM_OBJECT, otherwise
- *                      ignored and may be NULL.
+ * @param[out] source   Pointer to the celestial object data structure to be populated.
  * @return              0 if successful, or -1 if 'cel_obj' is NULL or when type is
  *                      NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is
  *                      invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.
  *
  * @sa novas_case_sensitive()
- * @sa make_cat_entry()
+ * @sa make_cat_object()
  * @sa make_planet()
  * @sa make_ephem_object()
  * @sa place()
@@ -6685,6 +6683,32 @@ short make_object(enum novas_object_type type, long number, const char *name, co
     source->star = *star;
   }
 
+  return 0;
+}
+
+/**
+ * Populates and object data structure with the data for a catalog source.
+ *
+ * @param star          Pointer to structure to populate with the catalog data for a celestial
+ *                      object located outside the solar system.
+ * @param[out] object   Pointer to the celestial object data structure to be populated.
+ * @return              0 if successful, or -1 if 'cel_obj' is NULL or when type is
+ *                      NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is
+ *                      invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.
+ *
+ * @sa make_cat_entry()
+ * @sa make_planet()
+ * @sa make_ephem_object()
+ * @sa place()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ *
+ */
+int make_cat_object(const cat_entry *star, object *object) {
+  if(!star || !object)
+    return novas_error(-1, EINVAL, "make_cat_object", "NULL parameter: star=%p, object=%p", star, object);
+  make_object(NOVAS_CATALOG_OBJECT, star->starnumber, star->starname, star, object);
   return 0;
 }
 

@@ -360,19 +360,21 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 }
 
 /**
- * Calculates the position and velocity vectors for a source in the given observing frame, in the
- * specified coordinate system of choice. Geometric position include proper motion, but does not
- * include aberration correction, nor gravitational deflection. If apparent positions are
- * requested they include both corrections.
+ * Calculates the geomtric position and velocity vectors for a source in the given observing
+ * frame, in the specified coordinate system of choice. The geomtreic position includes proper
+ * motion, and for solar-system bodies it is antedated for light travel time, so it effectively
+ * represents the geometric position as seen by the observer. However, the geometric does not
+ * include aberration correction, nor gravitational deflection.
  *
- * You can use novas_transform_posvel() to convert the output ICRS position and velocity vectors
+ * If you want apparent positions, which account for aberration and gravitational deflection,
+ * you can pass the result to novas_skypos() after.
+ *
+ * You can also use novas_transform_posvel() to convert the output ICRS position and velocity vectors
  * to a dfferent coordinate system of choice after also.
  *
  * @param source    Pointer to a celestial source data structure that is observed
  * @param frame     Observer frame, defining the location and time of observation
  * @param sys       Desired reference coordinate system in which to return the coordinates
- * @param type      Whether to include aberration and gravitational deflection corrections
- *                  (NOVAS_POSITION_APPARENT) or not (NOVAS_POSITION_GEOMETRIC).
  * @param[out] pos  [AU] Calculated position vector of the source relative to the observer
  *                  location. It may be NULL if not required.
  * @param[out] vel  [AU/day] The calculated velocity vector of the source relative to the
@@ -380,8 +382,6 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
  * @return          0 if successful, or an error from light_time2(), or else -1 (errno will
  *                  indicate the type of error).
  *
- *
- * @sa novas_cat_posvel()
  * @sa novas_make_frame()
  * @sa novas_sky_pos()
  * @sa novas_transform_vector()
@@ -389,8 +389,7 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, enum novas_position_type type,
-        double *pos, double *vel) {
+int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel) {
   static const char *fn = "novas_icrs_posvel";
 
   double jd_tdb, t_light;
@@ -468,40 +467,6 @@ int novas_posvel(const object *source, const novas_frame *frame, enum novas_refe
   return 0;
 }
 
-
-/**
- * Calculates the position and velocity vectors for a source in the given observing frame, in the
- * specified coordinate system of choice. It is essentially the same as novas_posvel(), except
- * that the source is specified by a catalog entry.
- *
- * @param source    Pointer to the catalog entry of the observed source.
- * @param frame     Observer frame, defining the location and time of observation
- * @param sys       Desired reference coordinate system in which to return the coordinates
- * @param type      Whether to include aberration and gravitational deflection corrections
- *                  (NOVAS_POSITION_APPARENT) or not (NOVAS_POSITION_GEOMETRIC).
- * @param[out] pos  [AU] Calculated position vector of the source relative to the observer
- *                  location. It may be NULL if not required.
- * @param[out] vel  [AU/day] Calculated velocity vector of the source relative to the observer.
- *                  It may be NULL if not required.
- * @return          0 if successful, or an error from light_time2(), or else -1 (errno will
- *                  indicate the type of error).
- *
- * @sa novas_posvel()
- * @sa novas_make_frame()
- * @sa novas_sky_pos()
- * @sa novas_transform_vector()
- *
- * @since 1.1
- * @author Attila Kovacs
- */
-int novas_cat_posvel(const cat_entry *source, const novas_frame *frame, enum novas_reference_system sys, enum novas_position_type type,
-        double *pos, double *vel) {
-  object obj = { NOVAS_CATALOG_OBJECT, 0, {}, *source };
-
-  prop_error("novas_cat_posvel", novas_posvel(&obj, frame, sys, type, pos, vel), 0);
-  return 0;
-}
-
 /**
  * Converts geometric positions to apparent location on sky, by applying an aberration correction
  * and gravitational deflection. To calculate corresponding local horizontal coordinates, you can
@@ -518,7 +483,7 @@ int novas_cat_posvel(const cat_entry *source, const novas_frame *frame, enum nov
  * @return              0 if successful, or an error from grav_def(), or else -1 (errno will
  *                      indicate the type of error).
  *
- * @sa novas_to_horizontal();
+ * @sa novas_to_horizontal()
  * @sa novas_posvel()
  * @sa novas_apparent_to_geometric()
  *
@@ -598,6 +563,7 @@ int novas_sky_pos(const object *object, const novas_frame *frame, const double *
 
   return 0;
 }
+
 
 static double novas_refraction(enum novas_refraction_model model, const on_surface *loc, enum novas_refraction_type type, double el) {
   if(!loc)
@@ -682,7 +648,7 @@ double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_r
  * @sa novas_standard_refraction()
  * @sa novas_optical_refraction()
  */
-int novas_to_horizontal(double ra, double dec, enum novas_reference_system sys, const novas_frame *frame, RefractionModel ref_model,
+int novas_to_horizontal(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
         double *az, double *el) {
   static const char *fn = "novas_horizontal";
   const novas_timespec *time;
