@@ -1687,8 +1687,8 @@ int equ2gal(double ra, double dec, double *glon, double *glat) {
   // AK: Transposed compared to NOVAS C 3.1 for dot product handling.
   static const double ag[3][3] = { //
           { -0.0548755604, -0.8734370902, -0.4838350155 }, //
-                  { +0.4941094279, -0.4448296300, +0.7469822445 }, //
-                  { -0.8676661490, -0.1980763734, +0.4559837762 } };
+          { +0.4941094279, -0.4448296300, +0.7469822445 }, //
+          { -0.8676661490, -0.1980763734, +0.4559837762 } };
 
   if(!glon || !glat)
     return novas_error(-1, EINVAL, "equ2gal", "NULL output pointer: glon=%p, glat=%p", glon, glat);
@@ -1747,8 +1747,8 @@ int gal2equ(double glon, double glat, double *ra, double *dec) {
   // AK: Transposed compared to NOVAS C 3.1 for dot product handling.
   static const double ag[3][3] = { //
           { -0.0548755604, +0.4941094279, -0.8676661490 }, //
-                  { -0.8734370902, -0.4448296300, -0.1980763734 }, //
-                  { -0.4838350155, +0.7469822445, +0.4559837762 } };
+          { -0.8734370902, -0.4448296300, -0.1980763734 }, //
+          { -0.4838350155, +0.7469822445, +0.4559837762 } };
 
   if(!ra || !dec)
     return novas_error(-1, EINVAL, "gal2equ", "NULL output pointer: ra=%p, dec=%p", ra, dec);
@@ -2530,7 +2530,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   // Compute the equation of the equinoxes if needed, depending upon the
   // input values of 'gst_type' and 'method'.  If not needed, set to zero.
   if(((gst_type == NOVAS_MEAN_EQUINOX) && (erot == EROT_ERA))       // GMST; CIO-TIO
-  || ((gst_type == NOVAS_TRUE_EQUINOX) && (erot == EROT_GST))) {    // GAST; equinox
+          || ((gst_type == NOVAS_TRUE_EQUINOX) && (erot == EROT_GST))) {    // GAST; equinox
     static THREAD_LOCAL enum novas_accuracy acc_last = -1;
     static THREAD_LOCAL double jd_last;
     static THREAD_LOCAL double ee;
@@ -2591,7 +2591,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
       // Precession-in-RA terms in mean sidereal time taken from third
       // reference, eq. (42), with coefficients in arcseconds.
       st = eqeq + 0.014506
-              + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
+      + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
 
       // Form the Greenwich sidereal time.
       *gst = remainder((st / 3600.0 + theta) / 15.0, DAY_HOURS);
@@ -2744,13 +2744,13 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
     }
     case (EROT_GST):
-      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-      spin(-15.0 * gast, out, out);
+              sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
+    spin(-15.0 * gast, out, out);
 
-      if(class != NOVAS_DYNAMICAL_CLASS) {
-        tod_to_gcrs(jd_tdb, accuracy, out, out);
-      }
-      break;
+    if(class != NOVAS_DYNAMICAL_CLASS) {
+      tod_to_gcrs(jd_tdb, accuracy, out, out);
+    }
+    break;
 
     default:
       return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
@@ -3348,6 +3348,66 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
   return 0;
 }
 
+
+/**
+ * Converts <i>dx,dy</i> pole offsets to d&psi; d&epsilon;. The latter set includes seasonal tidal variations,
+ * while the former are residuals on top of the modeled tidal terms.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
+ * projections are published in the
+ * <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ * </li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ *  <li>Kaplan, G. (2003), USNO/AA Technical Note 2003-03.</li>
+ * </ol>
+ *
+ * @param jd_tt
+ * @param dx          [mas]
+ * @param dy          [mas]
+ * @param[out] dpsi   [arcsec]
+ * @param[out] deps   [arcsec]
+ * @return            0
+ *
+ * @sa cel_pole()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps) {
+  // Components of modeled pole unit vector referred to GCRS axes, that is, dx and dy.
+  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
+
+  // Compute sin_e of mean obliquity of date.
+  const double sin_e = sin(mean_obliq(jd_tt) * ARCSEC);
+
+  // The following algorithm, to transform dx and dy to
+  // delta-delta-psi and delta-delta-epsilon, is from eqs. (7)-(9) of the
+  // second reference.
+  //
+  // Trivial model of pole trajectory in GCRS allows computation of dz.
+  const double x = (2004.190 * t) * ARCSEC;
+  const double dz = -(x + 0.5 * x * x * x) * dx;
+
+  // Form pole offset vector (observed - modeled) in GCRS.
+  double dp[3] = { dx * MAS, dy * MAS, dz * MAS };
+
+  // Precess pole offset vector to mean equator and equinox of date.
+  frame_tie(dp, ICRS_TO_J2000, dp);
+  precession(JD_J2000, dp, jd_tt, dp);
+
+  // Compute delta-delta-psi and delta-delta-epsilon in arcseconds.
+  if(dpsi) *dpsi = (dp[0] / sin_e) / ARCSEC;
+  if(deps) *deps = dp[1] / ARCSEC;
+
+  return 0;
+}
+
 /**
  * specifies the celestial pole offsets for high-precision applications.  Each set of offsets is
  * a correction to the modeled position of the pole for a specific date, derived from observations
@@ -3407,31 +3467,7 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
       break;
 
     case POLE_OFFSETS_X_Y: {
-
-      // Components of modeled pole unit vector referred to GCRS axes, that is, dx and dy.
-      const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-
-      // Compute sin_e of mean obliquity of date.
-      const double sin_e = sin(mean_obliq(jd_tt) * ARCSEC);
-
-      // The following algorithm, to transform dx and dy to
-      // delta-delta-psi and delta-delta-epsilon, is from eqs. (7)-(9) of the
-      // second reference.
-      //
-      // Trivial model of pole trajectory in GCRS allows computation of dz.
-      const double x = (2004.190 * t) * ARCSEC;
-      const double dz = -(x + 0.5 * x * x * x) * dpole1;
-
-      // Form pole offset vector (observed - modeled) in GCRS.
-      double dp[3] = { dpole1 * MAS, dpole2 * MAS, dz * MAS };
-
-      // Precess pole offset vector to mean equator and equinox of date.
-      frame_tie(dp, ICRS_TO_J2000, dp);
-      precession(JD_J2000, dp, jd_tt, dp);
-
-      // Compute delta-delta-psi and delta-delta-epsilon in arcseconds.
-      PSI_COR = (dp[0] / sin_e) / ARCSEC;
-      EPS_COR = dp[1] / ARCSEC;
+      novas_dxdy_to_dpsideps(jd_tt, dpole1, dpole2, &PSI_COR, &EPS_COR);
       break;
     }
 
@@ -3483,38 +3519,38 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
   // Argument coefficients for t^0.
   const int8_t ke0_t[33][14] = { //
           { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 1, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 1, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 4, -4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 1, -1, 1, 0, -8, 12, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 1, -2, 2, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 1, -2, 2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 0, 0, 0, 0, 8, -13, 0, 0, 0, 0, 0, -1 }, //
-                  { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 2, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, 0, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 1, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, 0, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 4, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 0, 0, 2, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, -2, 0, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
-                  { 1, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+          { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 1, 2, -2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 1, 2, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 4, -4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 1, -1, 1, 0, -8, 12, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 1, -2, 2, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 1, -2, 2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 0, 0, 0, 0, 8, -13, 0, 0, 0, 0, 0, -1 }, //
+          { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 2, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, 0, -2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 1, 2, -2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, 0, -2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 4, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 0, 0, 2, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, -2, 0, -3, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, //
+          { 1, 0, -2, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 
   // Argument coefficients for t^1.
   //const char ke1[14] = {0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0};
@@ -3522,42 +3558,42 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
   // Sine and cosine coefficients for t^0.
   const float se0_t[33][2] = { //
           { +2640.96e-6, -0.39e-6 }, //
-                  { +63.52e-6, -0.02e-6 }, //
-                  { +11.75e-6, +0.01e-6 }, //
-                  { +11.21e-6, +0.01e-6 }, //
-                  { -4.55e-6, +0.00e-6 }, //
-                  { +2.02e-6, +0.00e-6 }, //
-                  { +1.98e-6, +0.00e-6 }, //
-                  { -1.72e-6, +0.00e-6 }, //
-                  { -1.41e-6, -0.01e-6 }, //
-                  { -1.26e-6, -0.01e-6 }, //
-                  { -0.63e-6, +0.00e-6 }, //
-                  { -0.63e-6, +0.00e-6 }, //
-                  { +0.46e-6, +0.00e-6 }, //
-                  { +0.45e-6, +0.00e-6 }, //
-                  { +0.36e-6, +0.00e-6 }, //
-                  { -0.24e-6, -0.12e-6 }, //
-                  { +0.32e-6, +0.00e-6 }, //
-                  { +0.28e-6, +0.00e-6 }, //
-                  { +0.27e-6, +0.00e-6 }, //
-                  { +0.26e-6, +0.00e-6 }, //
-                  { -0.21e-6, +0.00e-6 }, //
-                  { +0.19e-6, +0.00e-6 }, //
-                  { +0.18e-6, +0.00e-6 }, //
-                  { -0.10e-6, +0.05e-6 }, //
-                  { +0.15e-6, +0.00e-6 }, //
-                  { -0.14e-6, +0.00e-6 }, //
-                  { +0.14e-6, +0.00e-6 }, //
-                  { -0.14e-6, +0.00e-6 }, //
-                  { +0.14e-6, +0.00e-6 }, //
-                  { +0.13e-6, +0.00e-6 }, //
-                  { -0.11e-6, +0.00e-6 }, //
-                  { +0.11e-6, +0.00e-6 }, //
-                  { +0.11e-6, +0.00e-6 } };
+          { +63.52e-6, -0.02e-6 }, //
+          { +11.75e-6, +0.01e-6 }, //
+          { +11.21e-6, +0.01e-6 }, //
+          { -4.55e-6, +0.00e-6 }, //
+          { +2.02e-6, +0.00e-6 }, //
+          { +1.98e-6, +0.00e-6 }, //
+          { -1.72e-6, +0.00e-6 }, //
+          { -1.41e-6, -0.01e-6 }, //
+          { -1.26e-6, -0.01e-6 }, //
+          { -0.63e-6, +0.00e-6 }, //
+          { -0.63e-6, +0.00e-6 }, //
+          { +0.46e-6, +0.00e-6 }, //
+          { +0.45e-6, +0.00e-6 }, //
+          { +0.36e-6, +0.00e-6 }, //
+          { -0.24e-6, -0.12e-6 }, //
+          { +0.32e-6, +0.00e-6 }, //
+          { +0.28e-6, +0.00e-6 }, //
+          { +0.27e-6, +0.00e-6 }, //
+          { +0.26e-6, +0.00e-6 }, //
+          { -0.21e-6, +0.00e-6 }, //
+          { +0.19e-6, +0.00e-6 }, //
+          { +0.18e-6, +0.00e-6 }, //
+          { -0.10e-6, +0.05e-6 }, //
+          { +0.15e-6, +0.00e-6 }, //
+          { -0.14e-6, +0.00e-6 }, //
+          { +0.14e-6, +0.00e-6 }, //
+          { -0.14e-6, +0.00e-6 }, //
+          { +0.14e-6, +0.00e-6 }, //
+          { +0.13e-6, +0.00e-6 }, //
+          { -0.11e-6, +0.00e-6 }, //
+          { +0.11e-6, +0.00e-6 }, //
+          { +0.11e-6, +0.00e-6 } };
 
   // Sine and cosine coefficients for t^1.
   const double se1[2] = //
-          { -0.87e-6, +0.00e-6 };
+  { -0.87e-6, +0.00e-6 };
 
   novas_delaunay_args fa2;
   double fa[14];
@@ -4220,7 +4256,7 @@ int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_acc
   int i;
 
   if(!pos_app || !pos_obs || !out)
-     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: pos_app=%p, pos_obs=%p, out=%p", pos_app, pos_obs, out);
+    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: pos_app=%p, pos_obs=%p, out=%p", pos_app, pos_obs, out);
 
   l = novas_vlen(pos_app);
   if(l == 0.0) {
@@ -4534,7 +4570,7 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
       break;
     }
 
-      /* Objects in the solar system */
+    /* Objects in the solar system */
     case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
       // Compute solar potential at object, if within solar system.
@@ -5220,9 +5256,9 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
 
   // Expression given in USNO Circular 179, eq. 2.6.
   const double d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970)
-          + 0.000014 * sin(1256.6152 * t + 6.1969) + 0.000005 * sin(606.9777 * t + 4.0212)
-          + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-          + 0.000010 * t * sin(628.3076 * t + 4.2490);
+  + 0.000014 * sin(1256.6152 * t + 6.1969) + 0.000005 * sin(606.9777 * t + 4.0212)
+  + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+  + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
   if(jd_tt)
     *jd_tt = jd_tdb - d / DAY;
@@ -6735,14 +6771,14 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
   // Populate the output structure based on the value of 'where'.
   switch(where) {
     case (NOVAS_OBSERVER_AT_GEOCENTER):
-      break;
+              break;
 
     case (NOVAS_OBSERVER_ON_EARTH):
-      if(!loc_surface)
-        return novas_error(-1, EINVAL, fn, "NULL on surface location");
+              if(!loc_surface)
+                return novas_error(-1, EINVAL, fn, "NULL on surface location");
 
-      memcpy(&obs->on_surf, loc_surface, sizeof(obs->on_surf));
-      break;
+    memcpy(&obs->on_surf, loc_surface, sizeof(obs->on_surf));
+    break;
 
     case NOVAS_OBSERVER_IN_EARTH_ORBIT:
       if(!loc_space)
