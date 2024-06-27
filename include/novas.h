@@ -754,13 +754,13 @@ typedef struct {
   double geo_vel[3];              ///< [AU/day] Observer movement rel. to geocenter
   double obs_pos[3];              ///< [AU] Observer position rel. to barycenter
   double obs_vel[3];              ///< [AU/day] Observer movement rel. to barycenter
+  double v_obs;
+  double beta;
+  double gamma;
   double contains_planet[NOVAS_PLANETS];  ///< (boolean) whether contrains planet coordinates
   double pos[NOVAS_PLANETS][3];   ///< [AU] (optional) planet positions w.r.t. solar system reference, or NULL if not available
   double vel[NOVAS_PLANETS][3];   ///< [AU/day] (optional) planet velocities w.r.t. solar system reference, or NULL if not available
   novas_matrix icrs_to_j2000;     ///< ICRS to J2000 matrix
-  double aberration_offset[3];    ///< Aberration offset components.
-  novas_matrix aberration;        ///< aberration matrix
-  novas_matrix inv_aberration;    ///< inverse aberration matrix
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
