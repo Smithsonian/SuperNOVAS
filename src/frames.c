@@ -215,41 +215,38 @@ static int set_obs_posvel(novas_frame *frame) {
 }
 
 static int set_aberration(novas_frame *frame) {
-  novas_matrix *T;
-  double *O, vemag, beta;
-  int i;
-
   if(!frame)
     return novas_error(-1, EINVAL, "set_aberration", "NULL frame argument");
 
-  T = &frame->aberration;
-  O = frame->aberration_offset;
-
-  memset(O, 0, XYZ_VECTOR_SIZE);
-
-  vemag = novas_vlen(frame->obs_vel);
-  beta = vemag / C_AUDAY;
-
-  for(i = 0; i < 3; i++) {
-    double cosd, gammai, p, q, r;
-    int j;
-
-    cosd = frame->obs_vel[i] / vemag;
-    gammai = sqrt(1.0 - beta * beta);
-    p = beta * cosd;
-    q = (1.0 + p / (1.0 + gammai));
-    r = 1.0 + p;
-
-    for(j = 3; --j >= 0;) {
-      T->M[j][i] = gammai / r;
-      O[j] += q * frame->obs_vel[j] / r;
-    }
-  }
-
-  invert_matrix(&frame->aberration, &frame->inv_aberration);
+  frame->v_obs = novas_vlen(frame->obs_vel);
+  frame->beta = frame->v_obs / C_AUDAY;
+  frame->gamma = sqrt(1.0 - frame->beta * frame->beta);
 
   return 0;
 }
+
+static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
+  double d, p, q, r;
+
+  d = novas_vlen(pos);
+  p = frame->beta * novas_vdot(pos, frame->obs_vel) / (d * frame->v_obs);
+  q = (1.0 + p / (1.0 + frame->gamma)) * d / C_AUDAY;
+  r = 1.0 + p;
+
+  if(dir < 0) {
+    pos[0] = (r * pos[0] - q * frame->obs_vel[0]) / frame->gamma;
+    pos[1] = (r * pos[1] - q * frame->obs_vel[1]) / frame->gamma;
+    pos[2] = (r * pos[2] - q * frame->obs_vel[2]) / frame->gamma;
+  }
+  else {
+    pos[0] = (frame->gamma * pos[0] + q * frame->obs_vel[0]) / r;
+    pos[1] = (frame->gamma * pos[1] + q * frame->obs_vel[1]) / r;
+    pos[2] = (frame->gamma * pos[2] + q * frame->obs_vel[2]) / r;
+  }
+
+  return 0;
+}
+
 
 static int is_frame_initialized(const novas_frame *frame) {
   if(!frame) return 0;
@@ -587,10 +584,8 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   // Compute gravitational deflection and aberration.
   prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos), 0);
 
-  matrix_transform(pos, &frame->aberration, pos);
 
-  for(i = 3; --i >= 0;)
-    pos[i] += frame->aberration_offset[i];
+  frame_aberration(frame, 1, pos);
 
 
   // Transform position to output system
@@ -781,7 +776,6 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   static const char *fn = "novas_apparent_to_nominal";
   enum novas_observer_place loc;
   double jd_tdb, app_pos[3];
-  int i;
 
   if(!frame || !geom_icrs)
     return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, nom_pos=%p", frame, geom_icrs);
@@ -819,10 +813,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   }
 
   // Undo aberration correction
-  for(i = 3; --i >= 0;)
-    app_pos[i] -= frame->aberration_offset[i];
-
-  matrix_transform(app_pos, &frame->inv_aberration, app_pos);
+  frame_aberration(frame, -1, app_pos);
 
   // ---------------------------------------------------------------------
   // Undo gravitational deflection of light.
