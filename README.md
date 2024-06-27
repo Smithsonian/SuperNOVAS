@@ -344,7 +344,7 @@ start.) Once the catalog entry is defined in ICRS, you can proceed qrapping it i
 handles both catalog and ephemeris sources).
 
 ```c
- object source;  // Common structure for a sidereal or an ephemeris source
+ object source;   // Common structure for a sidereal or an ephemeris source
   
  // Wrap it in a generic source data structure
  make_cat_object(&star, &source);
@@ -356,7 +356,7 @@ Next, we define the location where we observe from. Here we can (but don't have 
 (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):
 
 ```c
- observer obs;	 // Structure to contain observer location 
+ observer obs;    // Structure to contain observer location 
 
  // Specify the location we are observing from
  // 50.7374 deg N, 7.0982 deg E, 60m elevation
@@ -382,8 +382,8 @@ UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds.
 Now we can set a standard UNIX time, for example, using the current time:
 
 ```c
- novas_timescale t_obs;		// Structure that will define astrometric time
- struct timespec unix_time;	// Standard precision UNIX time structure
+ novas_timescale t_obs;	        // Structure that will define astrometric time
+ struct timespec unix_time;     // Standard precision UNIX time structure
 
  // Get the current system time, with up to nanosecond resolution...
  clock_gettime(CLOCK_REALTIME, &unix_time);
@@ -395,7 +395,7 @@ Now we can set a standard UNIX time, for example, using the current time:
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI):
 
 ```c
- double jd_tai = ...  // TAI-based Julian Date 
+ double jd_tai = ...     // TAI-based Julian Date 
 
  novas_set_time(NOVAS_TAI, jd_tai, leap_seconds, dut1, &t_obs);
 ```
@@ -415,9 +415,9 @@ Next, we set up an observing frame, which is defined for a unique combination of
 observation:
 
 ```c
- novas_frame obs_frame; // Structure that will define the observing frame
- double dx = ...	// [mas] Earth polar offset x, e.g. from IERS Bulletin A.
- double dy = ...	// [mas] Earth polar offset y, from same source as above.
+ novas_frame obs_frame;  // Structure that will define the observing frame
+ double dx = ...         // [mas] Earth polar offset x, e.g. from IERS Bulletin A.
+ double dy = ...         // [mas] Earth polar offset y, from same source as above.
   
  // Initialize the observing frame with the given observing parameters
  novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &obs_time, dx, dy, &obs_frame);
@@ -428,16 +428,19 @@ in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bull
 these values comes later, when converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. 
 You may ignore these and set zeroes if sub-arcsecond precision is not required.
 
+The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
+in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it 
+will be way faster than using the low-level NOVAS C routines.
+
 #### Calculate geometric positions and velocities
 
-Now we can calculate the precise geomertric position and velocity (in the coordinate reference system of choice) of the 
-source, for example in ICRS (but it could also be J2000, TOD, MOD, or CIRS if that's what you prefer):
+Now we can calculate the precise geometric position and velocity of the source in ICRS:
 
 ```c
- double pos[3], vel[3];    // [AU, AU/day] 3-vectors that will be populated with the position and velocity
+ double pos_icrs[3], vel_icrs[3];    // [AU, AU/day] 3-vectors that will be populated with the position and velocity
 
- // Calculate the geometric position of the source in the CIRS coordinate system.
- int status = novas_posvel(&source, &obs_frame, NOVAS_CIRS, pos, vel);
+ // Calculate the geometric position of the source in the ICRS coordinate system.
+ int status = novas_icrs_posvel(&source, &obs_frame, pos_icrs, vel_icrs);
   
  // You should always check that the calculation was successful...
  if(status) {
@@ -446,47 +449,66 @@ source, for example in ICRS (but it could also be J2000, TOD, MOD, or CIRS if th
  }
 ```
 
-#### Calculate an apparent place on sky
-
-Sometimes a 3D geometric position is all you need. But often you want an apparent R.A. and declination, which
-includes aberration corrections for the moving observer and gravitational deflection around the major Solar System
-bodies also. You can get these in a consecutive step:
+If you want geometric coordinates in another system (e.g. TOD) you can create an appropriate reusable transform, and 
+apply it to the results, e.g.:
 
 ```c
-  sky_pos apparent;	// Structure containing the precise observed position
-  
-  novas_sky_pos(&source, &obs_frame, pos, vel, &skypos);
+ novas_transform to_tod;         // Coordinate transformation for frame
+ double pos_tod[3], vel_tod[3];	 // True-of-Date (TOD) position and velocity 3-vectors 
+ 
+ // Set up the transformation from ICRS to TOD for the observing frame
+ novas_make_transform(&obs_frame, NOVAS_ICRS, NOVAS_TOD, &to_tod);
+ 
+ // Apply it to position and velocity
+ novas_transform_vector(pos_icrs, &to_tod, pos_tod);
+ novas_transform_vector(vel_icrs, &to_tod, vel_tod);
+ 
 ```
-Apart from providing precise apparent astrometric R.A. and declination coordinates in the same coordinate system 
-as `pos` and `vel` were calculated, the `sky_pos` structure also provides the _x,y,z_ unit vector pointing in the 
-direction of the source (in the mentioned coordinate system). We also get radial velocity (for spectroscopy), and 
-distance (e.g. for apparent-to-physical size conversion):
 
-The apparent coordinates of the celestial target in the observer's frame include appropriate aberration corrections 
-for the observer's motion, as well as appropriate gravitational deflection corrections due to the Sun and Earth, and 
-for other major gravitating solar system bodies (in full precision mode and if a suitable planet provider function is 
-available).
+#### Calculate an apparent place on sky
 
+Sometimes a 3D geometric position is all you need. But often you want an apparent R.A. and declination, which includes 
+aberration corrections for the moving observer and gravitational deflection around the major Solar System bodies also. 
+You can get these in a consecutive step, using the geometric ICRS coordinates from above as the input:
+
+```c
+  sky_pos apparent_icrs;    // Structure containing the precise observed position
+  
+  novas_icrs_sky_pos(&source, &obs_frame, pos_icrs, vel_icrs, &apparent_icrs);
+```
+
+Apart from providing precise apparent R.A. and declination coordinates (still in ICRS), the `sky_pos` structure also 
+provides the _x,y,z_ unit vector (in ICRS) pointing in the direction of the source (in the mentioned coordinate 
+system). We also get radial velocity (for spectroscopy), and distance (e.g. for apparent-to-physical size conversion).
+
+You may convert the `sky_pos` result from ICRS to the coordinate system of choice similarly to above. After defining 
+the transformation the same way as above, you can simply call, e.g.:
+
+```c
+  sky_pos apparent_tod;   // Apparent sky position in True-of_Date (TOD) coordinates
+
+  // Calculate observing location, including R.A. and declination in TOD.
+  novas_transform_skypos(&apparent_icrs, to_tod, &apparent_tod);
+```
 
 #### Calculate azimuth and elevation angles at the observing location
 
-If your goal is to calculate the astrometric azimuth and elevation angles of the source at the specified observing 
-location, you can proceed from the `sky_pos` data you obtained above as:
+If your ultimate goal is to calculate the azimuth and elevation angles of the source at the specified observing 
+location, you can proceed from the `sky_pos` data you obtained above (in whichever coordinate system!) as:
 
 ```c
  double itrs[3];  // ITRS position vector of source to populate
  double az, el;   // [deg] local azimuth and elevation angles to populate
   
- // Convert the apparent position on sky to horizontal coordinates
+ // Convert the apparent position in CIRS on sky to horizontal coordinates
  novas_to_horizontal(NOVAS_CIRS, apparent.ra, apparent.dec, &obs_frame, novas_standard_refraction, &az, &el);
 ``` 
 
-Above we converted the apparent coordinates, from whichever system they were calculated for, to refracted azimuth and 
+Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and 
 elevation coordinates at the observing location, using the `novas_standard_refraction()` function to provide a 
 suitable refraction correction. We could have also used `novas_optical_refraction()` instead to use the weather data 
 embedded in the frame's `observer` stucture, or some user-defined refraction model, or else `NULL` to calculate 
 unrefracted elevation angles.
-
 
 <a name="solsys-example"></a>
 ### Calculating positions for a Solar-system source
