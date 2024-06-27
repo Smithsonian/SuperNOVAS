@@ -228,7 +228,13 @@ static int set_aberration(novas_frame *frame) {
 static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
   double d, p, q, r;
 
+  if(frame->v_obs == 0.0)
+    return 0;
+
   d = novas_vlen(pos);
+  if(d == 0.0)
+    return 0;
+
   p = frame->beta * novas_vdot(pos, frame->obs_vel) / (d * frame->v_obs);
   q = (1.0 + p / (1.0 + frame->gamma)) * d / C_AUDAY;
   r = 1.0 + p;
@@ -584,9 +590,8 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   // Compute gravitational deflection and aberration.
   prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos), 0);
 
-
+  // Aberration correction
   frame_aberration(frame, 1, pos);
-
 
   // Transform position to output system
   icrs_to_sys(frame, pos, sys);

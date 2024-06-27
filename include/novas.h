@@ -750,13 +750,11 @@ typedef struct {
   double dy;                      ///< [mas] Polar wobble parameter dy.
   double era;                     ///< [rad] Earth Rotation Angle (ERA);
   double gst;                     ///< [rad] Greenwich (Apparent) Sidereal Time (GST / GAST)
-  double geo_pos[3];              ///< [AU] Observer position rel. to geocenter
-  double geo_vel[3];              ///< [AU/day] Observer movement rel. to geocenter
   double obs_pos[3];              ///< [AU] Observer position rel. to barycenter
   double obs_vel[3];              ///< [AU/day] Observer movement rel. to barycenter
-  double v_obs;
-  double beta;
-  double gamma;
+  double v_obs;                   ///< [AU/day] Magnitude of observer motion rel. to barycenter
+  double beta;                    ///< Observer relativistic &beta; rel SSB
+  double gamma;                   ///< Observer Lorentz factor &Gamma; rel SSB
   double contains_planet[NOVAS_PLANETS];  ///< (boolean) whether contrains planet coordinates
   double pos[NOVAS_PLANETS][3];   ///< [AU] (optional) planet positions w.r.t. solar system reference, or NULL if not available
   double vel[NOVAS_PLANETS][3];   ///< [AU/day] (optional) planet velocities w.r.t. solar system reference, or NULL if not available
