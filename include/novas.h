@@ -727,9 +727,14 @@ typedef struct {
  * coordinates calculated for one coordinate syste, into another coordinate system with
  * little effort.
  *
+ * You should never set or change fields in this structure manually. Instead the structure
+ * should always be initialized by an appropriate call to novas_make_frame(). After that you
+ * may change the observer location, if need be, with novas_change_observer().
+ *
  * @since 1.1
  *
  * @see novas_make_frame()
+ * @see novas_change_observer()
  */
 typedef struct {
   long state;                     ///< An internal state for checking validity.
@@ -789,6 +794,7 @@ enum novas_refraction_type {
   NOVAS_REFRACT_OBSERVED = -1,  ///< Refract observed elevation value
   NOVAS_REFRACT_ASTROMETRIC     ///< Refract astrometric elevation value
 };
+
 
 /**
  * A function that returns a refraction correction for a given date/time of observation at the
@@ -1100,21 +1106,21 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
 int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel);
 
-int novas_transform_vector(const double *in, const novas_transform *transform, double *out);
+int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *output);
 
-int novas_sky_pos(const object *object, const novas_frame *frame, const double *pos, const double *vel, sky_pos *output);
-
-int novas_to_horizontal(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
+int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
         double *az, double *el);
 
-int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame, double *geom_pos);
+int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs);
 
-int novas_make_transform(enum novas_reference_system from_system, enum novas_reference_system to_system, const novas_frame *frame,
+int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system,
         novas_transform *transform);
 
 int novas_invert_transform(const novas_transform *transform, novas_transform *inverse);
 
 int novas_transform_vector(const double *in, const novas_transform *transform, double *out);
+
+int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform, sky_pos *out);
 
 double novas_standard_refraction(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 

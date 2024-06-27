@@ -57,6 +57,26 @@ static int matrix_transform(const double *in, const novas_matrix *matrix, double
   return 0;
 }
 
+
+static int matrix_inv_transform(const double *in, const novas_matrix *matrix, double *out) {
+  // IMPORTANT! use only with unitary matrices.
+  static const char *fn = "novas_matrix_transform";
+  double orig[3];
+  int i;
+
+  if(!in || !out)
+    return novas_error(-1, EINVAL, fn, "NULL coordinate: in=%p, out=%p", in, out);
+  if(!matrix)
+    return novas_error(-1, EINVAL, fn, "NULL matrix pointer");
+
+  memcpy(orig, in, sizeof(orig));
+
+  for(i = 3; --i >= 0;)
+    out[i] = matrix->M[0][i] * orig[0] + matrix->M[1][i] * orig[1] + matrix->M[2][i] * orig[2];
+
+  return 0;
+}
+
 static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   double idet;
   int i;
@@ -252,7 +272,7 @@ static int is_frame_initialized(const novas_frame *frame) {
  *                    type of error).
  *
  * @sa novas_change_observer()
- * @sa novas_icrs_posvel()
+ * @sa novas_posvel()
  * @sa novas_make_transform()
  *
  * @since 1.1
@@ -359,26 +379,51 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
   return 0;
 }
 
+static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_reference_system sys) {
+
+  if(sys == NOVAS_CIRS) {
+    matrix_transform(pos, &frame->gcrs_to_cirs, pos);
+    matrix_transform(pos, &frame->gcrs_to_cirs, pos);
+  }
+  else if(cmp_sys(sys, NOVAS_ICRS) != 0) {
+    matrix_transform(pos, &frame->icrs_to_j2000, pos);
+    matrix_transform(pos, &frame->icrs_to_j2000, pos);
+    if(sys == NOVAS_J2000) return 0;
+
+    matrix_transform(pos, &frame->precession, pos);
+    matrix_transform(pos, &frame->precession, pos);
+    if(sys == NOVAS_MOD) return 0;
+
+    matrix_transform(pos, &frame->nutation, pos);
+    matrix_transform(pos, &frame->nutation, pos);
+  }
+
+  return 0;
+}
+
 /**
- * Calculates the geomtric position and velocity vectors for a source in the given observing
- * frame, in the specified coordinate system of choice. The geomtreic position includes proper
+ * Calculates the geometric position and velocity vectors for a source in the given observing
+ * frame, in the specified coordinate system of choice. The geometric position includes proper
  * motion, and for solar-system bodies it is antedated for light travel time, so it effectively
  * represents the geometric position as seen by the observer. However, the geometric does not
  * include aberration correction, nor gravitational deflection.
  *
  * If you want apparent positions, which account for aberration and gravitational deflection,
- * you can pass the result to novas_skypos() after.
+ * use novas_skypos() instead.
  *
- * You can also use novas_transform_posvel() to convert the output ICRS position and velocity vectors
- * to a dfferent coordinate system of choice after also.
+ * You can also use novas_transform_vector() to convert the output position and velocity vectors
+ * to a dfferent coordinate system of choice afterwards if you want the results expressed in
+ * more than one coordinate system.
  *
- * @param source    Pointer to a celestial source data structure that is observed
- * @param frame     Observer frame, defining the location and time of observation
- * @param sys       Desired reference coordinate system in which to return the coordinates
- * @param[out] pos  [AU] Calculated position vector of the source relative to the observer
- *                  location. It may be NULL if not required.
- * @param[out] vel  [AU/day] The calculated velocity vector of the source relative to the
- *                  observer. It may be NULL if not required.
+ * @param source          Pointer to a celestial source data structure that is observed
+ * @param frame           Observer frame, defining the location and time of observation
+ * @param sys             The coordinate system in which to return positions and velocities.
+ * @param[out] pos        [AU] Calculated geometric position vector of the source relative
+ *                        to the observer location, in the designated coordinate system. It may be
+ *                        NULL if not required.
+ * @param[out] vel        [AU/day] The calculated velocity vector of the source relative to
+ *                        the observer in the designated coordinate system. It may be NULL if not
+ *                        required.
  * @return          0 if successful, or an error from light_time2(), or else -1 (errno will
  *                  indicate the type of error).
  *
@@ -390,7 +435,7 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
  * @author Attila Kovacs
  */
 int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel) {
-  static const char *fn = "novas_icrs_posvel";
+  static const char *fn = "novas_posvel";
 
   double jd_tdb, t_light;
   const observer *obs;
@@ -406,6 +451,9 @@ int novas_posvel(const object *source, const novas_frame *frame, enum novas_refe
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
+
+  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
 
   // ---------------------------------------------------------------------
   // Earth can only be an observed object when 'location' is not on Earth.
@@ -438,81 +486,76 @@ int novas_posvel(const object *source, const novas_frame *frame, enum novas_refe
     prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 0);
   }
 
-  if(sys == NOVAS_CIRS) {
-    matrix_transform(pos1, &frame->gcrs_to_cirs, pos1);
-    matrix_transform(pos1, &frame->gcrs_to_cirs, pos1);
-  }
-  else if(cmp_sys(sys, NOVAS_ICRS) != 0) {
-    matrix_transform(pos1, &frame->icrs_to_j2000, pos1);
-    matrix_transform(pos1, &frame->icrs_to_j2000, pos1);
-    if(sys == NOVAS_J2000)
-      goto finished; // @suppress("Goto statement used")
-
-    matrix_transform(pos1, &frame->precession, pos1);
-    matrix_transform(pos1, &frame->precession, pos1);
-    if(sys == NOVAS_MOD)
-      goto finished; // @suppress("Goto statement used")
-
-    matrix_transform(pos1, &frame->nutation, pos1);
-    matrix_transform(pos1, &frame->nutation, pos1);
-  }
-
-  finished:
-
-  if(pos)
+  if(pos) {
+    icrs_to_sys(frame, pos1, sys);
     memcpy(pos, pos1, sizeof(pos1));
-  if(vel)
+  }
+  if(vel) {
+    icrs_to_sys(frame, vel1, sys);
     memcpy(vel, vel1, sizeof(vel1));
+  }
 
   return 0;
 }
 
 /**
- * Converts geometric positions to apparent location on sky, by applying an aberration correction
- * and gravitational deflection. To calculate corresponding local horizontal coordinates, you can
- * pass the output RA/Dec coordinates to novas_to_horizontal().
+ * Calculates an apparent location on sky for the source. The position takes into account the
+ * proper motion (for sidereal soure), or is antedated for light-travel time (for Solar-System
+ * bodies). It also applies an appropriate aberration correction and gravitational deflection of
+ * the light.
+ *
+ * To calculate corresponding local horizontal coordinates, you can pass the output RA/Dec
+ * coordinates to novas_app_to_hor(). Or to calculate apparent coordinates in other systems,
+ * you may pass the result to novas_transform_sy_pos() after.
+ *
+ * And if you want geometric positions instead (not corrected for aberration or gravitational
+ * deflection), you may want to use novas_posvel() instead.
+ *
+ * The approximate 'inverse' of this function is novas_app_to_geom().
  *
  * @param object        Pointer to a celestial object data structure that is observed
  * @param frame         The observer frame, defining the location and time of observation
- * @param pos           [AU] Geometric position 3-vector of the observed source relative to the
- *                      observer
- * @param vel           [AU/day] Geometric velocity 3-vector of the observed source relative to
- *                      the observer
- * @param[out] output   Pointer to the data structure which is populated with the calculated
- *                      apparent location.
+ * @param sys           The coordinate system in which to return the apparent sky location
+ * @param[out] out      Pointer to the data structure which is populated with the calculated
+ *                      apparent location in the designated coordinate system.
  * @return              0 if successful, or an error from grav_def(), or else -1 (errno will
  *                      indicate the type of error).
  *
- * @sa novas_to_horizontal()
  * @sa novas_posvel()
- * @sa novas_apparent_to_geometric()
+ * @sa novas_app_to_hor()
+ * @sa novas_app_to_geom()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_sky_pos(const object *object, const novas_frame *frame, const double *pos, const double *vel, sky_pos *output) {
+int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *out) {
   static const char *fn = "novas_calc_apparent";
   enum novas_observer_place loc;
   double jd_tdb, id, d_sb;
-  double pos1[3];
+  double pos[3], vel[3];
   int i;
 
-  if(!object || !pos || !frame || !output)
-    return novas_error(-1, EINVAL, "NULL argument: object=%p, pos=%p, frame=%p, output=%p", (void*) object, pos, frame, output);
+  if(!object || !frame || !out)
+    return novas_error(-1, EINVAL, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
 
   if(!is_frame_initialized(frame))
       return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
+  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
+
+  prop_error(fn, novas_posvel(object, frame, NOVAS_ICRS, pos, vel), 0);
+
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
   if(object->type == NOVAS_CATALOG_OBJECT) {
-    output->dis = 0.0;
+    out->dis = 0.0;
     d_sb = novas_vlen(pos);
   }
   else {
     int k;
 
-    output->dis = novas_vlen(pos) * C_AUDAY;
+    out->dis = novas_vlen(pos) * C_AUDAY;
 
     // Calculate distance to Sun.
     d_sb = 0.0;
@@ -526,11 +569,8 @@ int novas_sky_pos(const object *object, const novas_frame *frame, const double *
   // ---------------------------------------------------------------------
   // Compute radial velocity (all vectors in ICRS).
   // ---------------------------------------------------------------------
-  if(vel)
-    rad_vel(object, pos, vel, frame->obs_vel, novas_vdist(frame->obs_pos, &frame->pos[NOVAS_EARTH][0]),
-            novas_vdist(frame->obs_pos, &frame->pos[NOVAS_SUN][0]), d_sb, &output->rv);
-  else
-    output->rv = NAN;
+  rad_vel(object, pos, vel, frame->obs_vel, novas_vdist(frame->obs_pos, &frame->pos[NOVAS_EARTH][0]),
+          novas_vdist(frame->obs_pos, &frame->pos[NOVAS_SUN][0]), d_sb, &out->rv);
 
   // ---------------------------------------------------------------------
   // Apply gravitational deflection of light and aberration.
@@ -545,21 +585,25 @@ int novas_sky_pos(const object *object, const novas_frame *frame, const double *
   }
 
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos1), 0);
+  prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos), 0);
 
-  matrix_transform(pos1, &frame->aberration, pos1);
+  matrix_transform(pos, &frame->aberration, pos);
 
   for(i = 3; --i >= 0;)
-    pos1[i] += frame->aberration_offset[i];
+    pos[i] += frame->aberration_offset[i];
+
+
+  // Transform position to output system
+  icrs_to_sys(frame, pos, sys);
 
   // ---------------------------------------------------------------------
   // Finish up.
   // ---------------------------------------------------------------------
-  vector2radec(pos1, &output->ra, &output->dec);
+  vector2radec(pos, &out->ra, &out->dec);
 
-  id = 1.0 / novas_vlen(pos1);
+  id = 1.0 / novas_vlen(pos);
   for(i = 3; --i >= 0;)
-    output->r_hat[i] = pos1[i] * id;
+    out->r_hat[i] = pos[i] * id;
 
   return 0;
 }
@@ -586,7 +630,7 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
  * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
- * @sa novas_to_horizontal()
+ * @sa novas_app_to_hor()
  * @sa novas_optical_refraction()
  * @sa NOVAS_STANDARD_ATMOSPHERE()
  * @sa refract()
@@ -610,7 +654,7 @@ double novas_standard_refraction(double j_tt, const on_surface *loc, enum novas_
  * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
- * @sa novas_to_horizontal()
+ * @sa novas_app_to_hor()
  * @sa novas_optical_refraction()
  * @sa NOVAS_STANDARD_ATMOSPHERE()
  * @sa refract()
@@ -624,20 +668,20 @@ double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_r
 }
 
 /**
- * Converts an observed position vector in the specified coordinate system to local horizontal
- * coordinates in the specified observer frame. The observer must be located on the surface of
- * Earth, or else the call will return with an error. The caller may optionally supply a
- * refraction model of choice to calculate an appropriate elevation angle that includes a
+ * Converts an observed apparent position vector in the specified coordinate system to local
+ * horizontal coordinates in the specified observer frame. The observer must be located on the
+ * surface of Earth, or else the call will return with an error. The caller may optionally supply
+ * a refraction model of choice to calculate an appropriate elevation angle that includes a
  * refraction correction for Earth's atmosphere. If no such model is provided the calculated
  * elevation will be the astrometric elevation without a refraction correction.
  *
- * @param ra          [h] Right ascension coordinate
- * @param dec         [deg] Declination angle
- * @param sys         Astronomical coordinate system in which the position is supplied.
+ * @param sys         Astronomical coordinate system in which the observed position is given.
+ * @param ra          [h] Observed apparent right ascension (R.A.) coordinate
+ * @param dec         [deg] Observed apparent declination coordinate
  * @param frame       Observer frame, defining the time and place of observation (on Earth).
  * @param ref_model   An appropriate refraction model, or NULL to calculate unrefracted elevation.
- *                    If you use a refraction model, you might want to make sure that the weather
- *                    parameters were set when the observing frame was defined.
+ *                    Depending on the refraction model, you might want to make sure that the
+ *                    weather parameters were set when the observing frame was defined.
  * @param[out] az     [deg] Calculated azimuth angle. It may be NULL if not required.
  * @param[out] el     [deg] Calculated elevation angle. It may be NULL if not required.
  * @return            0 if successful, or else an error from tod_to_itrs() or cirs_to_itrs(), or
@@ -648,7 +692,7 @@ double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_r
  * @sa novas_standard_refraction()
  * @sa novas_optical_refraction()
  */
-int novas_to_horizontal(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
+int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
         double *az, double *el) {
   static const char *fn = "novas_horizontal";
   const novas_timespec *time;
@@ -668,6 +712,9 @@ int novas_to_horizontal(enum novas_reference_system sys, double ra, double dec, 
   if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH) {
     return novas_error(-1, EINVAL, fn, "observer not on Earth: where=%d", frame->observer.where);
   }
+
+  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
 
   time = (novas_timespec *) &frame->time;
 
@@ -712,60 +759,89 @@ int novas_to_horizontal(enum novas_reference_system sys, double ra, double dec, 
 }
 
 /**
- * Convers an observed apparent position for a source to a geometric position, by undoing
- * the gravitational deflection and aberration corrections.
+ * Converts an observed apparent sky position of a source to an ICRS geometric position, by
+ * undoing the gravitational deflection and aberration corrections.
  *
- *
- * @param app_pos       [AU] Apparent observed position of source (appropriately scaled to
- *                      distance)
- * @param frame         The observer frame, defining the location and time of observation
- * @param[out] geom_pos [AU] The corresponding geometric position for the source. It may be the
- *                      same as the input.
+ * @param frame           The observer frame, defining the location and time of observation
+ * @param sys             The reference system in which the observed position is specified.
+ * @param ra              [h] Observed ICRS right-ascension of the source
+ * @param dec             [deg] Observed ICRS declination of the source
+ * @param dist            [AU] Observed distance from observer. A value of &lt;=0 will translate
+ *                        to 10<sup>15</sup> AU (around 5 Gpc).
+ * @param[out] geom_icrs  [AU] The corresponding geometric position for the source, in ICRS.
  * @return              0 if successful, or else an error from grav_undef(), or -1 (errno will
  *                      indicate the type of error).
  *
- * @sa novas_sky_pos()
- * @sa place()
+ * @sa novas_transform_skypos()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_apparent_to_geometric(const double *app_pos, const novas_frame *frame, double *geom_pos) {
+int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs) {
   static const char *fn = "novas_apparent_to_nominal";
   enum novas_observer_place loc;
-  double jd_tdb;
+  double jd_tdb, app_pos[3];
   int i;
 
-  if(!app_pos || !frame || !geom_pos)
-    return novas_error(-1, EINVAL, "NULL argument: app_pos=%p, frame=%p, nom_pos=%p", (void*) app_pos, frame, geom_pos);
+  if(!frame || !geom_icrs)
+    return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, nom_pos=%p", frame, geom_icrs);
 
   if(!is_frame_initialized(frame))
       return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
+  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
+
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
-  for(i = 3; --i >= 0;)
-    geom_pos[i] -= frame->aberration_offset[i];
+  if(dist <= 0.0) dist = 1e15;
 
-  matrix_transform(app_pos, &frame->inv_aberration, geom_pos);
+  // 3D apparent position
+  radec2vector(ra, dec, dist, app_pos);
+
+  // Convert apparent position to ICRS...
+  switch(sys) {
+    case NOVAS_CIRS:
+      matrix_inv_transform(app_pos, &frame->gcrs_to_cirs, app_pos);
+      break;
+
+    case NOVAS_TOD:
+      matrix_inv_transform(app_pos, &frame->nutation, app_pos);
+      /* no break */
+    case NOVAS_MOD:
+      matrix_inv_transform(app_pos, &frame->precession, app_pos);
+      /* no break */
+    case NOVAS_J2000:
+      matrix_inv_transform(app_pos, &frame->icrs_to_j2000, app_pos);
+      break;
+    default:
+      // nothing to do.
+  }
+
+  // Undo aberration correction
+  for(i = 3; --i >= 0;)
+    app_pos[i] -= frame->aberration_offset[i];
+
+  matrix_transform(app_pos, &frame->inv_aberration, app_pos);
 
   // ---------------------------------------------------------------------
-  // Apply gravitational deflection of light and aberration.
+  // Undo gravitational deflection of light.
   // ---------------------------------------------------------------------
   // Variable 'loc' determines whether Earth deflection is included.
   loc = frame->observer.where;
   if(loc == NOVAS_OBSERVER_ON_EARTH) {
     double frlimb;
-    limb_angle(geom_pos, &frame->pos[NOVAS_EARTH][0], NULL, &frlimb);
+    limb_angle(app_pos, &frame->pos[NOVAS_EARTH][0], NULL, &frlimb);
     if(frlimb < 0.8)
       loc = NOVAS_OBSERVER_AT_GEOCENTER;
   }
 
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_undef(jd_tdb, loc, frame->accuracy, geom_pos, frame->obs_pos, geom_pos), 0);
+  prop_error(fn, grav_undef(jd_tdb, loc, frame->accuracy, app_pos, frame->obs_pos, geom_icrs), 0);
 
   return 0;
 }
+
 
 static int cat_transform(novas_transform *transform, const novas_matrix *component, int dir) {
   int i;
@@ -791,21 +867,21 @@ static int cat_transform(novas_transform *transform, const novas_matrix *compone
  * Calculates a transformation matrix that can be used to convert positions and velocities from
  * one coordinate reference system to another.
  *
+ * @param frame           Observer frame, defining the location and time of observation
  * @param from_system     Original coordinate reference system
  * @param to_system       New coordinate reference system
- * @param frame           Observer frame, defining the location and time of observation
  * @param[out] transform  Pointer to the transform data structure to populate.
  * @return                0 if successful, or else -1 if there was an error (errno will indicate
  *                        the type of error).
  *
  * @sa novas_transform_vector()
- * @sa novas_icrs_posvel()
+ * @sa novas_posvel()
  * @sa novas_invert_transform()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_make_transform(enum novas_reference_system from_system, enum novas_reference_system to_system, const novas_frame *frame,
+int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system,
         novas_transform *transform) {
   static const char *fn = "novas_calc_transform";
   int i, dir;
@@ -912,7 +988,7 @@ int novas_make_transform(enum novas_reference_system from_system, enum novas_ref
  *                      type of error).
  *
  * @sa novas_make_transform()
- * @sa novas_icrs_posvel()
+ * @sa novas_posvel()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -941,6 +1017,7 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
  *                    type of error).
  *
  * @sa novas_make_transform()
+ * @sa novas_transform_skypos()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -948,11 +1025,38 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
 int novas_transform_vector(const double *in, const novas_transform *transform, double *out) {
   static const char *fn = "novas_matrix_transform";
 
-  if(!transform)
-    return novas_error(-1, EINVAL, fn, "NULL transform pointer");
+  if(!transform || !in  || !out)
+    return novas_error(-1, EINVAL, fn, "NULL parameter: in=%p, transform=%p, out=%p", in, transform, out);
 
   prop_error(fn, matrix_transform(in, &transform->matrix, out), 0);
 
   return 0;
 }
 
+/**
+ * Transforms a position or velocity 3-vector from one coordinate reference system to another.
+ *
+ * @param in          Input apparent position on sky in the original coordinate reference system
+ * @param transform   Pointer to a coordinate transformation matrix
+ * @param[out] out    Output apparent position on sky in the new coordinate reference system.
+ *                    It may be the same as the input.
+ * @return            0 if successful, or else -1 if there was an error (errno will indicate the
+ *                    type of error).
+ *
+ * @sa novas_make_transform()
+ * @sa novas_transform_vector()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform, sky_pos *out) {
+  static const char *fn = "novas_matrix_transform";
+
+  if(!transform || !in  || !out)
+    return novas_error(-1, EINVAL, fn, "NULL parameter: in=%p, transform=%p, out=%p", in, transform, out);
+
+  prop_error(fn, matrix_transform(in->r_hat, &transform->matrix, out->r_hat), 0);
+  vector2radec(out->r_hat, &out->ra, &out->dec);
+
+  return 0;
+}
