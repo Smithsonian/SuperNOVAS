@@ -1051,6 +1051,17 @@ static int test_dxdy_to_dpsideps() {
   return 0;
 }
 
+static int test_cio_location() {
+  double loc;
+  short type;
+
+  novas_debug(NOVAS_DEBUG_ON);
+  cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc, &type);
+  novas_debug(NOVAS_DEBUG_OFF);
+
+  return 0;
+}
+
 static int test_novas_debug() {
   int n = 0;
 
@@ -1102,6 +1113,7 @@ int main() {
   if(test_solar_system_observer()) n++;
   if(test_obs_posvel()) n++;
   if(test_dxdy_to_dpsideps()) n++;
+  if(test_cio_location()) n++;
 
   n += test_dates();
 
