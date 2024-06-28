@@ -430,66 +430,33 @@ You may ignore these and set zeroes if sub-arcsecond precision is not required.
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
 in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it 
-will be way faster than using the low-level NOVAS C routines.
+will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames
+for different observer locations, if need be, via `novas_change_observer()`.
 
-#### Calculate geometric positions and velocities
-
-Now we can calculate the precise geometric position and velocity of the source in ICRS:
-
-```c
- double pos_icrs[3], vel_icrs[3];    // [AU, AU/day] 3-vectors that will be populated with the position and velocity
-
- // Calculate the geometric position of the source in the ICRS coordinate system.
- int status = novas_icrs_posvel(&source, &obs_frame, pos_icrs, vel_icrs);
-  
- // You should always check that the calculation was successful...
- if(status) {
-   // Oops, something went wrong...
-   return -1;
- }
-```
-
-If you want geometric coordinates in another system (e.g. TOD) you can create an appropriate reusable transform, and 
-apply it to the results, e.g.:
-
-```c
- novas_transform to_tod;         // Coordinate transformation for frame
- double pos_tod[3], vel_tod[3];	 // True-of-Date (TOD) position and velocity 3-vectors 
- 
- // Set up the transformation from ICRS to TOD for the observing frame
- novas_make_transform(&obs_frame, NOVAS_ICRS, NOVAS_TOD, &to_tod);
- 
- // Apply it to position and velocity
- novas_transform_vector(pos_icrs, &to_tod, pos_tod);
- novas_transform_vector(vel_icrs, &to_tod, vel_tod);
- 
-```
 
 #### Calculate an apparent place on sky
 
-Sometimes a 3D geometric position is all you need. But often you want an apparent R.A. and declination, which includes 
-aberration corrections for the moving observer and gravitational deflection around the major Solar System bodies also. 
-You can get these in a consecutive step, using the geometric ICRS coordinates from above as the input:
+Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal
+sources) or light-time correction (for Solar-system bodies), and also aberration corrections for the moving observer 
+and gravitational deflection around the major Solar System bodies. You can calculate an apparent location in the 
+coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, or TOD):
 
 ```c
-  sky_pos apparent_icrs;    // Structure containing the precise observed position
+  sky_pos apparent;    // Structure containing the precise observed position
   
-  novas_icrs_sky_pos(&source, &obs_frame, pos_icrs, vel_icrs, &apparent_icrs);
+  novas_sky_pos(&source, &obs_frame, NOVAS_CIRS, &apparent);
 ```
 
-Apart from providing precise apparent R.A. and declination coordinates (still in ICRS), the `sky_pos` structure also 
-provides the _x,y,z_ unit vector (in ICRS) pointing in the direction of the source (in the mentioned coordinate 
-system). We also get radial velocity (for spectroscopy), and distance (e.g. for apparent-to-physical size conversion).
+Apart from providing precise apparent R.A. and declination coordinates, the `sky_pos` structure also provides the 
+_x,y,z_ unit vector pointing in the observed direction of the source (in the designated coordinate system). We also 
+get radial velocity (for spectroscopy), and apparent distance for Solar-system bodies (e.g. for apparent-to-physical 
+size conversion).
 
-You may convert the `sky_pos` result from ICRS to the coordinate system of choice similarly to above. After defining 
-the transformation the same way as above, you can simply call, e.g.:
+Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational 
+deflection, you might use `novas_posvel()` instead. And regardless, which function you use you can always easily and 
+efficienty change the coordinate system in which your results are expressed by creating an appropriate transform via
+`novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
 
-```c
-  sky_pos apparent_tod;   // Apparent sky position in True-of_Date (TOD) coordinates
-
-  // Calculate observing location, including R.A. and declination in TOD.
-  novas_transform_skypos(&apparent_icrs, to_tod, &apparent_tod);
-```
 
 #### Calculate azimuth and elevation angles at the observing location
 
@@ -497,16 +464,15 @@ If your ultimate goal is to calculate the azimuth and elevation angles of the so
 location, you can proceed from the `sky_pos` data you obtained above (in whichever coordinate system!) as:
 
 ```c
- double itrs[3];  // ITRS position vector of source to populate
  double az, el;   // [deg] local azimuth and elevation angles to populate
   
  // Convert the apparent position in CIRS on sky to horizontal coordinates
- novas_to_horizontal(NOVAS_CIRS, apparent.ra, apparent.dec, &obs_frame, novas_standard_refraction, &az, &el);
+ novas_app_to_hor(NOVAS_CIRS, apparent.ra, apparent.dec, &obs_frame, novas_standard_refraction, &az, &el);
 ``` 
 
 Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and 
 elevation coordinates at the observing location, using the `novas_standard_refraction()` function to provide a 
-suitable refraction correction. We could have also used `novas_optical_refraction()` instead to use the weather data 
+suitable refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data 
 embedded in the frame's `observer` stucture, or some user-defined refraction model, or else `NULL` to calculate 
 unrefracted elevation angles.
 
@@ -550,7 +516,7 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
 Other than that, it's the same spiel as before, e.g.:
 
 ```c
- int status = novas_posvel(&mars, &obs_frame, NOVAS_TOD, pos, vel);
+ int status = novas_sky_pos(&mars, &obs_frame, NOVAS_TOD, &apparent);
  if(status) {
    // Oops, something went wrong...
    ...

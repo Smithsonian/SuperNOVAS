@@ -43,8 +43,6 @@
 #  define DEFAULT_SOLSYS 0
 #endif
 
-#define INV_MAX_ITER        100
-
 #if !DEFAULT_SOLSYS
 novas_planet_provider planet_call = (novas_planet_provider) solarsystem;
 novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem_hp;
@@ -1396,14 +1394,6 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
   if(!pos && !vel)
     return novas_error(-1, EINVAL, fn, "NULL output pointers (both)");
 
-  if(obs->where == NOVAS_OBSERVER_AT_BARYCENTER) {
-    if(pos)
-      memset(pos, 0, XYZ_VECTOR_SIZE);
-    if(vel)
-      memset(vel, 0, XYZ_VECTOR_SIZE);
-    return 0;
-  }
-
   if(obs->where == NOVAS_SOLAR_SYSTEM_OBSERVER) {
     if(pos)
       memcpy(pos, obs->near_earth.sc_pos, XYZ_VECTOR_SIZE);
@@ -1420,7 +1410,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
   // ---------------------------------------------------------------------
-  if(obs->where == NOVAS_OBSERVER_ON_EARTH || obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
+  if(obs->where == NOVAS_OBSERVER_ON_EARTH || obs->where == NOVAS_AIRBORNE_OBSERVER || obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
     double pog[3] = { }, vog[3] = { };
     int i;
 
@@ -1633,6 +1623,19 @@ short place(double jd_tt, const object *source, const observer *location, double
   // Transform, if necessary, to output coordinate system.
   // ---------------------------------------------------------------------
   switch(coord_sys) {
+    case (NOVAS_J2000): {
+      // Transform to equator and equinox of date.
+      gcrs_to_j2000(pos, pos);
+      break;
+    }
+
+    case (NOVAS_MOD): {
+      // Transform to equator and equinox of date.
+      gcrs_to_j2000(pos, pos);
+      precession(NOVAS_JD_J2000, pos, jd_tdb, pos);
+      break;
+    }
+
     case (NOVAS_TOD): {
       // Transform to equator and equinox of date.
       gcrs_to_tod(jd_tdb, accuracy, pos, pos);
@@ -2744,7 +2747,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
     }
     case (EROT_GST):
-              sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
+                      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
     spin(-15.0 * gast, out, out);
 
     if(class != NOVAS_DYNAMICAL_CLASS) {
@@ -3790,8 +3793,7 @@ int bary2obs(const double *pos, const double *pos_obs, double *out, double *ligh
 }
 
 /**
- * Computes the geocentric position and velocity of an observer on the surface of the earth
- * or on a near-earth spacecraft.  The final vectors are expressed in the GCRS.
+ * Computes the geocentric position and velocity of an observer. The final vectors are expressed in the GCRS.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] TT - UT1 time difference in seconds
@@ -3833,6 +3835,8 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
+
+
   switch(obs->where) {
 
     case NOVAS_OBSERVER_AT_GEOCENTER:                   // Observer at geocenter.  Trivial case.
@@ -3861,13 +3865,45 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       break;
 
     case NOVAS_OBSERVER_IN_EARTH_ORBIT: {               // Observer on near-earth spacecraft.
+      const double ivu = DAY / AU_KM;
       int i;
-      double ivu = DAY / AU_KM;
 
       // Convert units to AU and AU/day.
       for(i = 3; --i >= 0;) {
         pos1[i] = obs->near_earth.sc_pos[i] / AU_KM;
         vel1[i] = obs->near_earth.sc_vel[i] * ivu;
+      }
+
+      break;
+    }
+
+    case NOVAS_AIRBORNE_OBSERVER: {
+      const double ivu = DAY / AU_KM;
+      int i;
+
+      // Get the stationary observer velocity at the location
+      prop_error(fn, geo_posvel(jd_tt, ut1_to_tt, accuracy, obs, pos1, vel1), 0);
+
+      // Add in the aircraft motion
+      for(i = 3; --i >= 0;)
+        vel1[i] += obs->near_earth.sc_vel[i] * ivu;
+
+      break;
+    }
+
+    case NOVAS_SOLAR_SYSTEM_OBSERVER: {
+      const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
+      const double ivu = DAY / AU_KM;
+      const double tdb[2] = { jd_tt, tt2tdb(jd_tt) };
+      int i;
+
+      // Get the position and velocity of the geocenter rel. to SSB
+      prop_error(fn, ephemeris(tdb, &earth, NOVAS_BARYCENTER, accuracy, pos1, vel1), 0);
+
+      // Return velocities w.r.t. the geocenter.
+      for(i = 3; --i >= 0;) {
+        pos1[i] = obs->near_earth.sc_pos[i] / AU_KM - pos1[i];
+        vel1[i] = obs->near_earth.sc_vel[i] * ivu - vel1[i];
       }
 
       break;
@@ -5042,8 +5078,10 @@ double mean_obliq(double jd_tdb) {
  * </ol>
  *
  * @param pos       Position 3-vector, equatorial rectangular coordinates.
- * @param[out] ra   [h] Right ascension in hours [0:24] or NAN if the position vector is NULL or a null-vector.
- * @param[out] dec  [deg] Declination in degrees [-90:90] or NAN if the position vector is NULL or a null-vector.
+ * @param[out] ra   [h] Right ascension in hours [0:24] or NAN if the position vector is NULL or a
+ *                  null-vector. It may be NULL if notrequired.
+ * @param[out] dec  [deg] Declination in degrees [-90:90] or NAN if the position vector is NULL or
+ *                  a null-vector. It may be NULL if not required.
  * @return          0 if successful, -1 of any of the arguments are NULL, or
  *                  1 if all input components are 0 so 'ra' and 'dec' are indeterminate,
  *                  or else 2 if both x and y are zero, but z is nonzero, and so 'ra' is
@@ -5061,7 +5099,7 @@ short vector2radec(const double *pos, double *ra, double *dec) {
   if(dec)
     *dec = NAN;
 
-  if(!pos || !ra || !dec)
+  if(!pos)
     return novas_error(-1, EINVAL, fn, "NULL input or output pointer: pos=%p, ra=%p, dec=%p", pos, ra, dec);
 
   xyproj = sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
@@ -5069,16 +5107,21 @@ short vector2radec(const double *pos, double *ra, double *dec) {
     if(pos[2] == 0)
       return novas_error(1, EINVAL, fn, "all input components are zero");
 
-    *ra = 0.0;
-    *dec = (pos[2] < 0.0) ? -90.0 : 90.0;
+    if(ra)
+      *ra = 0.0;
+    if(dec)
+      *dec = (pos[2] < 0.0) ? -90.0 : 90.0;
 
     return novas_error(2, EDOM, fn, "indeterminate RA for equatorial pole input");
   }
 
-  *ra = atan2(pos[1], pos[0]) / HOURANGLE;
-  *dec = atan2(pos[2], xyproj) / DEGREE;
-  if(*ra < 0.0)
-    *ra += DAY_HOURS;
+  if(ra) {
+    *ra = atan2(pos[1], pos[0]) / HOURANGLE;
+    if(*ra < 0.0)
+      *ra += DAY_HOURS;
+  }
+  if(dec)
+    *dec = atan2(pos[2], xyproj) / DEGREE;
 
   return 0;
 }
@@ -6691,7 +6734,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
  *
  * @param star          Pointer to structure to populate with the catalog data for a celestial
  *                      object located outside the solar system.
- * @param[out] object   Pointer to the celestial object data structure to be populated.
+ * @param[out] source   Pointer to the celestial object data structure to be populated.
  * @return              0 if successful, or -1 if 'cel_obj' is NULL or when type is
  *                      NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is
  *                      invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.
@@ -6705,10 +6748,10 @@ short make_object(enum novas_object_type type, long number, const char *name, co
  * @author Attila Kovacs
  *
  */
-int make_cat_object(const cat_entry *star, object *object) {
-  if(!star || !object)
-    return novas_error(-1, EINVAL, "make_cat_object", "NULL parameter: star=%p, object=%p", star, object);
-  make_object(NOVAS_CATALOG_OBJECT, star->starnumber, star->starname, star, object);
+int make_cat_object(const cat_entry *star, object *source) {
+  if(!star || !source)
+    return novas_error(-1, EINVAL, "make_cat_object", "NULL parameter: star=%p, source=%p", star, source);
+  make_object(NOVAS_CATALOG_OBJECT, star->starnumber, star->starname, star, source);
   return 0;
 }
 
@@ -6795,11 +6838,11 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
   // Populate the output structure based on the value of 'where'.
   switch(where) {
     case (NOVAS_OBSERVER_AT_GEOCENTER):
-              break;
+                      break;
 
     case (NOVAS_OBSERVER_ON_EARTH):
-              if(!loc_surface)
-                return novas_error(-1, EINVAL, fn, "NULL on surface location");
+                      if(!loc_surface)
+                        return novas_error(-1, EINVAL, fn, "NULL on surface location");
 
     memcpy(&obs->on_surf, loc_surface, sizeof(obs->on_surf));
     break;
@@ -6886,12 +6929,15 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
 }
 
 /**
- * Populates an 'observer' data structure for a hypothetical observer located at Earth's
- * geocenter. The output data structure may be used an the the inputs to NOVAS-C function
- * 'place()'.
+ * Populates an 'observer' data structure for an observer moving relative to the surface of Earth,
+ * such as an airborne observer. Airborne observers have an earth fixed momentary location,
+ * defined by longitude, latitude, and altitude, the same was as for a stationary observer on
+ * Earth, but are moving relative to the surface, such as in an aircraft or balloon observatory.
  *
+ * @param location    Current longitude, latitude and altitude, and local weather (temperature and pressure)
+ * @param vel         [km/s] Surface velocity.
  * @param[out] obs    Pointer to data structure to populate.
- * @return          0 if successful, or -1 if the output argument is NULL.
+ * @return            0 if successful, or -1 if the output argument is NULL.
  *
  * @sa make_observer_at geocenter()
  * @sa make_observer_in_space()
@@ -6903,26 +6949,33 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * @since 1.1
  * @author Attila Kovacs
  */
-int make_observer_at_barycenter(observer *obs) {
-  prop_error("make_observer_at_geocenter", make_observer(NOVAS_OBSERVER_AT_BARYCENTER, NULL, NULL, obs), 0);
+int make_airborne_observer(const on_surface *location, const double *vel, observer *obs) {
+  in_space motion = {};
+
+  if(!location || !vel || !obs)
+    return novas_error(-1, EINVAL, "make_airborne_observer", "NULL parameter: location=%p, vel=%p, obs=%p", location, vel, obs);
+
+  memcpy(motion.sc_vel, vel, sizeof(motion.sc_vel));
+
+  prop_error("make_observer_at_geocenter", make_observer(NOVAS_AIRBORNE_OBSERVER, location, &motion, obs), 0);
   return 0;
 }
 
 /**
  * Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft,
- * with the specified geocentric position and velocity vectors. Both input vectors are with
- * respect to true equator and equinox of date. The output data structure may be used an the
- * the inputs to NOVAS-C function 'place()'.
+ * with the specified geocentric position and velocity vectors. Solar-system observers are similar
+ * to observers in Earth-orbit but their momentary position and velocity is defined relative to
+ * the Solar System Barycenter, instead of the geocenter.
  *
- * @param sc_pos        [km] Geocentric (x, y, z) position vector in km.
- * @param sc_vel        [km/s] Geocentric (x, y, z) velocity vector in km/s.
+ * @param sc_pos        [km] Solar-system barycentric (x, y, z) position vector in km.
+ * @param sc_vel        [km/s] Solar-system barycentric (x, y, z) velocity vector in km/s.
  * @param[out] obs      Pointer to the data structure to populate
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
  * @sa make_observer_in_space()
  * @sa make_observer_on_surface()
  * @sa make_observer_at_geocenter()
- * @sa make_observer_at_barycenter()
+ * @sa make_airborne_observer()
  * @sa novas_calc_geometric_position()
  * @sa place()
  *
@@ -6940,6 +6993,11 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
 /**
  * Populates an 'on_surface' data structure, for an observer on the surface of the Earth, with
  * the given parameters.
+ *
+ * Note, that because this is an original NOVAS C routine, it does not have an argument to set
+ * a humidity value (e.g. for radio refraction). As such the call will set humidity to 0.0.
+ * To set the humidity, set the output structure's field after calling this funcion. Its unit
+ * is [%], and so the range is 0.0--100.0.
  *
  * @param latitude      [deg] Geodetic (ITRS) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (ITRS) longitude in degrees; east positive.
@@ -6963,6 +7021,7 @@ int make_on_surface(double latitude, double longitude, double height, double tem
   loc->height = height;
   loc->temperature = temperature;
   loc->pressure = pressure;
+  loc->humidity = 0.0;
 
   return 0;
 }

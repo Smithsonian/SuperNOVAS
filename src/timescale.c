@@ -33,6 +33,8 @@
 #define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + IHALFDAY)
 /// \endcond
 
+
+
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
  * timescale
@@ -127,6 +129,42 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   return 0;
 }
 
+
+/**
+ * Increments the astrometric time by a given amount.
+ *
+ * @param time        Original time specification
+ * @param seconds     [s] Seconds to add to the original
+ * @param[out] out    New incremented time specification. It may be the same as the input.
+ * @return            0 if successful, or else -1 if either the input or the output is NULL
+ *                    (errno will be set to EINVAL).
+ *
+ * @sa novas_set_time()
+ * @sa novas_diff_time()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int novas_increment_time(const novas_timespec *time, double seconds, novas_timespec *out) {
+  int dd;
+
+  if(!time || !out)
+    return novas_error(-1, EINVAL, "novas_increment_time", "NULL parameter: time=%p, out=%p", time, out);
+
+  if(out != time)
+    *out = *time;
+
+  out->fjd_tt += seconds / DAY;
+  dd = (int) floor(out->fjd_tt);
+  if(dd) {
+    out->fjd_tt -= dd * DAY;
+    out->ijd_tt += dd;
+  }
+
+  return 0;
+}
+
+
 /**
  * Returns the fractional Julian date of an astronomical time in the specified timescale.
  *
@@ -214,6 +252,30 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
 
   return f;
 }
+
+/**
+ * Returns the time difference (t1 - t2) in days between two astronomical time specifications.
+ *
+ * @param t1    First time
+ * @param t2    Second time
+ * @return      [day] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno
+ *              will be set to EINVAL)
+ *
+ * @sa novas_set_time()
+ * @sa novas_increment_time()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
+  if(!t1 || !t2) {
+    novas_error(-1, EINVAL, "novas_diff_time", "NULL parameter: t1=%p, t2=%p", t1, t2);
+    return NAN;
+  }
+
+  return (t1->ijd_tt - t2->ijd_tt) + (t1->fjd_tt - t2->fjd_tt);
+}
+
 
 /**
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.

@@ -272,7 +272,7 @@ enum novas_observer_place {
   /// independent coordinates.
   NOVAS_OBSERVER_AT_GEOCENTER = 0,
 
-  /// Observer is at a location that is in the rotating frame of Earth.
+  /// Stationary observer in the corotating frame of Earth.
   NOVAS_OBSERVER_ON_EARTH,
 
   /// Observer is on Earth orbit, with a position and velocity vector relative to geocenter.
@@ -280,19 +280,17 @@ enum novas_observer_place {
   /// points.
   NOVAS_OBSERVER_IN_EARTH_ORBIT,
 
-  /// Observer is orbiting the Sun
+  /// Observer airborne, moving relative to the surface of Earth.
   /// @since 1.1
-  /// TODO implement support as necessary
-  NOVAS_SOLAR_SYSTEM_OBSERVER,
+  NOVAS_AIRBORNE_OBSERVER,
 
-  /// Observer is at the Solar System Barycenter (SSB)
+  /// Observer is orbiting the Sun.
   /// @since 1.1
-  /// TODO implement support as necessary
-  NOVAS_OBSERVER_AT_BARYCENTER
+  NOVAS_SOLAR_SYSTEM_OBSERVER
 };
 
 /// The number of observer place types supported
-#define NOVAS_OBSERVER_PLACES     (NOVAS_OBSERVER_AT_BARYCENTER + 1)
+#define NOVAS_OBSERVER_PLACES     (NOVAS_SOLAR_SYSTEM_OBSERVER + 1)
 
 /**
  * The basic types of positional coordinate reference systems supported by NOVAS. These
@@ -323,15 +321,13 @@ enum novas_reference_system {
 
   /// The J2000 dynamical reference system
   /// @since 1.1
-  /// TODO implement in place()
   NOVAS_J2000,
 
   /// Mean equinox of date:  dynamical system of the 'mean' equator, with its origin at the
   /// 'mean' equinox (pre IAU 2006 system). It includes precession (Lieske et. al. 1977),
   /// but no nutation.
   /// @since 1.1
-  /// TODO implement in place()
-  NOVAS_MOD
+  NOVAS_MOD,
 };
 
 /// The number of basic coordinate reference systems in NOVAS.
@@ -620,6 +616,7 @@ typedef struct {
   double height;        ///< [m] altitude above sea level
   double temperature;   ///< [C] temperature (degrees Celsius); for optical refraction
   double pressure;      ///< [mbar] atmospheric pressure for optical refraction
+  double humidity;      ///< [%] Relative humidity. @since 1.1
 } on_surface;
 
 /**
@@ -1077,11 +1074,11 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
 
 int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
 
-int make_observer_at_barycenter(observer *obs);
+int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 
 int make_solar_system_observer(const double *sc_pos, const double *sc_vel, observer *obs);
 
-int make_cat_object(const cat_entry *star, object *object);
+int make_cat_object(const cat_entry *star, object *source);
 
 // in timescale.c
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time);
@@ -1096,13 +1093,18 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
 
 time_t novas_get_unix_time(const novas_timespec *time, long *nanos);
 
-// frames.c
+double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2);
+
+int novas_increment_time(const novas_timespec *time, double seconds, novas_timespec *out);
+
+
+// in frames.c
 int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double dx, double dy,
         novas_frame *frame);
 
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out);
 
-int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel);
+int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel);
 
 int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *output);
 
@@ -1110,6 +1112,9 @@ int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, con
         double *az, double *el);
 
 int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs);
+
+int novas_hor_to_app(double az, double el, const novas_frame *frame, RefractionModel ref_model, enum novas_reference_system sys,
+        double *ra, double *dec);
 
 int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system,
         novas_transform *transform);
@@ -1120,10 +1125,12 @@ int novas_transform_vector(const double *in, const novas_transform *transform, d
 
 int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform, sky_pos *out);
 
-double novas_standard_refraction(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
+// in refract.c
+double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
-double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
+double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
+double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 // <================= END of SuperNOVAS API =====================>
 
@@ -1167,6 +1174,8 @@ double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_r
 #define DEGREE              DEG2RAD
 #define HOURANGLE           (M_PI / 12.0)
 #define MAS                 (1e-3 * ASEC2RAD)
+
+#define INV_MAX_ITER        100
 
 #  ifndef THREAD_LOCAL
 #    if __STDC_VERSION__ >= 201112L
