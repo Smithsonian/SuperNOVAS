@@ -337,11 +337,9 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
     *nanos = round(1e9 * (sod - isod));
     if(*nanos == E9) {
       seconds++;
-      nanos = 0;
+      *nanos = 0;
     }
   }
-
-
 
   return seconds;
 }
