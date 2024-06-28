@@ -194,7 +194,7 @@ static int test_equ2hor() {
 static int test_aberration() {
   double p[3], v[3] = {}, out[3];
 
-  if(source.type != NOVAS_PLANET) return 0;
+  //if(source.type != NOVAS_PLANET) return 0;
 
   memcpy(p, pos0, sizeof(p));
 
@@ -1042,6 +1042,15 @@ static int test_obs_posvel() {
 }
 
 
+static int test_dxdy_to_dpsideps() {
+  double x;
+
+  if(!is_ok("dxdy_to_dpsideps:dpsi:null", novas_dxdy_to_dpsideps(NOVAS_JD_J2000, 1.0, 2.0, NULL, &x))) return 1;
+  if(!is_ok("dxdy_to_dpsideps:deps:null", novas_dxdy_to_dpsideps(NOVAS_JD_J2000, 1.0, 2.0, &x, NULL))) return 1;
+
+  return 0;
+}
+
 static int test_novas_debug() {
   int n = 0;
 
@@ -1092,6 +1101,7 @@ int main() {
   if(test_airborne_observer()) n++;
   if(test_solar_system_observer()) n++;
   if(test_obs_posvel()) n++;
+  if(test_dxdy_to_dpsideps()) n++;
 
   n += test_dates();
 
