@@ -21,8 +21,8 @@
 #include "novas.h"
 
 /// \cond PRIVATE
-#define FRAME_DEFAULT       0           ///< frame.state value we set to indicate the frame is not configured
-#define FRAME_INITIALIZED   0xcafecafe  ///< frame.state for a properly initialized frame.
+#define FRAME_DEFAULT       0                   ///< frame.state value we set to indicate the frame is not configured
+#define FRAME_INITIALIZED   0xdeadbeadcafeba5e  ///< frame.state for a properly initialized frame.
 /// \endcond
 
 static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b) {
@@ -58,7 +58,7 @@ static int matrix_transform(const double *in, const novas_matrix *matrix, double
 }
 
 
-static int matrix_inv_transform(const double *in, const novas_matrix *matrix, double *out) {
+static int matrix_inv_rotate(const double *in, const novas_matrix *matrix, double *out) {
   // IMPORTANT! use only with unitary matrices.
   static const char *fn = "novas_matrix_transform";
   double orig[3];
@@ -210,7 +210,7 @@ static int set_nutation(novas_frame *frame) {
 }
 
 static int set_obs_posvel(novas_frame *frame) {
-  return obs_posvel(novas_get_time(&frame->time, NOVAS_TDB), frame->time.ut1_to_tt, &frame->observer, frame->accuracy,
+  return obs_posvel(novas_get_time(&frame->time, NOVAS_TDB), frame->time.ut1_to_tt, frame->accuracy, &frame->observer,
           &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0], frame->obs_pos, frame->obs_vel);
 }
 
@@ -309,7 +309,7 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   frame->time = *time;
 
   tdb2[0] = time->ijd_tt;
-  tdb2[1] = time->fjd_tt + tt2tdb(time->ijd_tt + time->fjd_tt);
+  tdb2[1] = time->fjd_tt + tt2tdb(time->ijd_tt + time->fjd_tt) / DAY;
 
   // Various calculated quantities for frame transformations
   e_tilt(tdb2[0] + tdb2[1], frame->accuracy, &mobl, &tobl, &ee, &dpsi, &deps);
@@ -608,7 +608,6 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   return 0;
 }
 
-
 /**
  * Converts an observed apparent position vector in the specified coordinate system to local
  * horizontal coordinates in the specified observer frame. The observer must be located on the
@@ -772,12 +771,12 @@ int novas_hor_to_app(double az, double el, const novas_frame *frame, RefractionM
       break;
 
     case NOVAS_MOD:
-      matrix_inv_transform(pos, &frame->nutation, pos);
+      matrix_inv_rotate(pos, &frame->nutation, pos);
       break;
 
     case NOVAS_J2000:
-      matrix_inv_transform(pos, &frame->nutation, pos);
-      matrix_inv_transform(pos, &frame->precession, pos);
+      matrix_inv_rotate(pos, &frame->nutation, pos);
+      matrix_inv_rotate(pos, &frame->precession, pos);
       break;
 
     case NOVAS_CIRS:
@@ -785,7 +784,7 @@ int novas_hor_to_app(double az, double el, const novas_frame *frame, RefractionM
 
     case NOVAS_ICRS:
     case NOVAS_GCRS:
-      matrix_inv_transform(pos, &frame->gcrs_to_cirs, pos);
+      matrix_inv_rotate(pos, &frame->gcrs_to_cirs, pos);
       break;
 
     default:
@@ -795,7 +794,6 @@ int novas_hor_to_app(double az, double el, const novas_frame *frame, RefractionM
   vector2radec(pos, ra, dec);
   return 0;
 }
-
 
 /**
  * Converts an observed apparent sky position of a source to an ICRS geometric position, by
@@ -840,17 +838,17 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   // Convert apparent position to ICRS...
   switch(sys) {
     case NOVAS_CIRS:
-      matrix_inv_transform(app_pos, &frame->gcrs_to_cirs, app_pos);
+      matrix_inv_rotate(app_pos, &frame->gcrs_to_cirs, app_pos);
       break;
 
     case NOVAS_TOD:
-      matrix_inv_transform(app_pos, &frame->nutation, app_pos);
+      matrix_inv_rotate(app_pos, &frame->nutation, app_pos);
       /* no break */
     case NOVAS_MOD:
-      matrix_inv_transform(app_pos, &frame->precession, app_pos);
+      matrix_inv_rotate(app_pos, &frame->precession, app_pos);
       /* no break */
     case NOVAS_J2000:
-      matrix_inv_transform(app_pos, &frame->icrs_to_j2000, app_pos);
+      matrix_inv_rotate(app_pos, &frame->icrs_to_j2000, app_pos);
       break;
     default:
       // nothing to do.
@@ -895,8 +893,6 @@ static int cat_transform(novas_transform *transform, const novas_matrix *compone
 
   return 0;
 }
-
-
 
 /**
  * Calculates a transformation matrix that can be used to convert positions and velocities from
@@ -1040,6 +1036,7 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
 
   return 0;
 }
+
 
 /**
  * Transforms a position or velocity 3-vector from one coordinate reference system to another.
