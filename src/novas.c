@@ -1405,7 +1405,7 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 }
 
 /**
- * Calculates the position and velocity of the observer relative to the Solar System Barycenter (SSB).
+ * Calculates the ICRS position and velocity of the observer relative to the Solar System Barycenter (SSB).
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
@@ -1413,10 +1413,10 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param obs           The observer location, relative to which the output positions and velocities
  *                      are to be calculated
- * @param geo_pos       [AU] Position 3-vector of the geocenter w.r.t. the Solar System Barycenter
- *                      (SSB). If either geo_pos or geo_vel is NULL, it will be calculated when
- *                      needed.
- * @param geo_vel       [AU/day] Velocity 3-vector of the geocenter w.r.t. the Solar System
+ * @param geo_pos       [AU] ICRS position vector of the geocenter w.r.t. the Solar System
+ *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be calculated
+ *                      when needed.
+ * @param geo_vel       [AU/day] ICRS velocity vector of the geocenter w.r.t. the Solar System
  *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be
  *                      calculated when needed.
  * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter
@@ -1488,8 +1488,9 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
         if(vel)
           vel[i] += vog[i];
       }
-    }
+
       break;
+    }
 
     default:
       // Nothing to do
