@@ -1453,8 +1453,8 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
   }
 
   if(!geo_pos || !geo_vel) {
+    const double tdb2[2] = { jd_tdb };
     object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
-    double tdb2[2] = { jd_tdb };
     double gpos[3], gvel[3];
     prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, gpos, gvel), 0);
     if(pos)
