@@ -370,6 +370,37 @@ static int test_place_tod() {
   return 0;
 }
 
+static int test_place_mod() {
+  int i;
+
+  if(obs.where != NOVAS_OBSERVER_AT_GEOCENTER) return 0;
+
+  for(i = 0; i < 4; i++) {
+    sky_pos posa = {}, posb = {};
+    if(!is_ok("place_mod", place_mod(tdb, &source, 1, &posa))) return 1;
+    if(!is_ok("place_mod:control", place(tdb, &source, &obs, ut12tt, NOVAS_MOD, 1, &posb))) return 1;
+    if(!is_ok("place_mod:check", check_equal_pos(posa.r_hat, posb.r_hat, 1e-9))) return 1;
+  }
+
+  return 0;
+}
+
+static int test_place_j2000() {
+  int i;
+
+  if(obs.where != NOVAS_OBSERVER_AT_GEOCENTER) return 0;
+
+  for(i = 0; i < 4; i++) {
+    sky_pos posa = {}, posb = {};
+    if(!is_ok("place_j2000", place_j2000(tdb, &source, 1, &posa))) return 1;
+    if(!is_ok("place_j2000:control", place(tdb, &source, &obs, ut12tt, NOVAS_J2000, 1, &posb))) return 1;
+    if(!is_ok("place_j2000:check", check_equal_pos(posa.r_hat, posb.r_hat, 1e-9))) return 1;
+  }
+
+  return 0;
+}
+
+
 static int test_radec_star() {
   int i;
 
@@ -408,6 +439,8 @@ static int test_source() {
   if(test_place_gcrs()) n++;
   if(test_place_cirs()) n++;
   if(test_place_tod()) n++;
+  if(test_place_mod()) n++;
+  if(test_place_j2000()) n++;
 
   if(test_radec_star()) n++;
 
@@ -879,11 +912,12 @@ static int test_grav_undef() {
 }
 
 static int test_vector2radec() {
-  double pos[3] = {1.0};
+  double pos[3] = {1.0}, z[3] = {0.0, 0.0, 1.0};
   double x;
 
   if(!is_ok("vector2radec:ra:null", vector2radec(pos, NULL, &x))) return 1;
   if(!is_ok("vector2radec:dec:null", vector2radec(pos, &x, NULL))) return 1;
+
   return 0;
 }
 
@@ -921,8 +955,8 @@ static int test_airborne_observer() {
     gvel[i] += evel[i];
   }
 
-  if(!is_ok("airborne_observer:check:result:pos", check_equal_pos(gpos, opos, 1e-8))) return 1;
-  if(!is_ok("airborne_observer:check:result:vel", check_equal_pos(gvel, ovel, 1e-8))) return 1;
+  if(!is_ok("airborne_observer:check:result:pos", check_equal_pos(gpos, opos, 1e-9))) return 1;
+  if(!is_ok("airborne_observer:check:result:vel", check_equal_pos(gvel, ovel, 1e-9))) return 1;
 
   return 0;
 }
@@ -950,10 +984,17 @@ static int test_solar_system_observer() {
     gvel[i] += evel[i];
   }
 
-  if(!is_ok("solar_system_observer:check:result:pos:1", check_equal_pos(opos, pos, 1e-8))) return 1;
-  if(!is_ok("solar_system_observer:check:result:vel:1", check_equal_pos(ovel, vel, 1e-8))) return 1;
-  if(!is_ok("solar_system_observer:check:result:pos:2", check_equal_pos(gpos, pos, 1e-8))) return 1;
-  if(!is_ok("solar_system_observer:check:result:vel:2", check_equal_pos(gvel, vel, 1e-8))) return 1;
+  if(!is_ok("solar_system_observer:check:result:pos:1", check_equal_pos(opos, pos, 1e-9))) return 1;
+  if(!is_ok("solar_system_observer:check:result:vel:1", check_equal_pos(ovel, vel, 1e-9))) return 1;
+  if(!is_ok("solar_system_observer:check:result:pos:2", check_equal_pos(gpos, pos, 1e-9))) return 1;
+  if(!is_ok("solar_system_observer:check:result:vel:2", check_equal_pos(gvel, vel, 1e-9))) return 1;
+
+  if(!is_ok("solar_system_observer:obs_posvel:pos:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, ovel))) return 1;
+  if(!is_ok("solar_system_observer:obs_posvel:vel:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, opos, NULL))) return 1;
+
+  if(!is_ok("solar_system_observer:geo_posvel:pos:null", geo_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, ovel))) return 1;
+  if(!is_ok("solar_system_observer:geo_posvel:vel:null", geo_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, opos, NULL))) return 1;
+
 
   return 0;
 }
@@ -961,14 +1002,32 @@ static int test_solar_system_observer() {
 static int test_obs_posvel() {
   double epos[3] = {}, evel[3] = {}, x[3];
   observer obs;
+  object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth"};
+  double tdb2[2] = { tdb, 0.0 };
+
+  if(!is_ok("obs_posvel:ephemeris:earth", ephemeris(tdb2, &earth, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, epos, evel))) return 1;
 
   make_observer_at_geocenter(&obs);
 
   if(!is_ok("obs_posvel:pos:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, epos, evel, NULL, x))) return 1;
-  if(!is_ok("obs_posvel:vel:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, epos, evel, x, NULL))) return 1;
-  if(!is_ok("obs_posvel:no_earth:pos:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, x))) return 1;
-  if(!is_ok("obs_posvel:no_earth:vel:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, x, NULL))) return 1;
+  if(!is_ok("obs_posvel:check:vel:1", check_equal_pos(evel, x, 1e-9))) return 1;
 
+  if(!is_ok("obs_posvel:vel:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, epos, evel, x, NULL))) return 1;
+  if(!is_ok("obs_posvel:check:pos:1", check_equal_pos(epos, x, 1e-9))) return 1;
+
+  if(!is_ok("obs_posvel:no_epos:pos:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, x))) return 1;
+  if(!is_ok("obs_posvel:check:vel:2", check_equal_pos(evel, x, 1e-9))) return 1;
+
+  if(!is_ok("obs_posvel:no_evel:vel:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, x, NULL))) return 1;
+  if(!is_ok("obs_posvel:check:pos:2", check_equal_pos(epos, x, 1e-9))) return 1;
+
+  if(!is_ok("obs_posvel:no_earth:pos:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, x))) return 1;
+  if(!is_ok("obs_posvel:check:vel:3", check_equal_pos(evel, x, 1e-9))) return 1;
+
+  if(!is_ok("obs_posvel:no_earth:vel:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, x, NULL))) return 1;
+  if(!is_ok("obs_posvel:check:pos:3", check_equal_pos(epos, x, 1e-9))) return 1;
+
+  // Observer in orbit...
 
   return 0;
 }

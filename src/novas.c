@@ -743,6 +743,56 @@ int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
 }
 
 /**
+ * Computes the Mean of Date (MOD) dynamical position position of a source as 'seen' from the
+ * geocenter at the given time of observation. See `place()` for more information.
+ *
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
+ * @param source      Catalog source or solar_system body.
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    Structure to populate with the calculated CIRS position data
+ * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
+ *                    or else an error from place().
+ *
+ * @sa place_cirs()
+ * @sa place_gcrs()
+ * @sa app_star()
+ * @sa app_planet()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ *
+ */
+int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+  prop_error("place_mod", place(jd_tt, source, NULL, 0.0, NOVAS_MOD, accuracy, pos), 0);
+  return 0;
+}
+
+/**
+ * Computes the J2000 dynamical position position of a source as 'seen' from the
+ * geocenter at the given time of observation. See `place()` for more information.
+ *
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date of observation.
+ * @param source      Catalog source or solar_system body.
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] pos    Structure to populate with the calculated CIRS position data
+ * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
+ *                    or else an error from place().
+ *
+ * @sa place_cirs()
+ * @sa place_gcrs()
+ * @sa app_star()
+ * @sa app_planet()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ *
+ */
+int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+  prop_error("place_j2000", place(jd_tt, source, NULL, 0.0, NOVAS_J2000, accuracy, pos), 0);
+  return 0;
+}
+
+/**
  * Computes the place of a star at date 'jd_tt', for an observer in the specified coordinate
  * system, given the star's ICRS catalog place, proper motion, parallax, and radial velocity.
  *
@@ -1360,17 +1410,21 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
  *                      NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2).
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param obs           The observer location, relative to which the output positions and velocities
  *                      are to be calculated
- * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param geo_pos       [AU] Position 3-vector of the geocenter w.r.t. the Solar System Barycenter
- *                      (SSB). If either geo_pos or geo_vel is NULL, it will be calculated.
+ *                      (SSB). If either geo_pos or geo_vel is NULL, it will be calculated when
+ *                      needed.
  * @param geo_vel       [AU/day] Velocity 3-vector of the geocenter w.r.t. the Solar System
- *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be calculated.
- * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter (SSB)
- * @param[out] vel      [AU/day] Velocity 3-vector of the observer w.r.t. the Solar System Barycenter (SSB)
- * @return              0 if successful, or the error from geo_posvel(), or else -1 (with errno indicating
- *                      the type of error).
+ *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be
+ *                      calculated when needed.
+ * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter
+ *                      (SSB)
+ * @param[out] vel      [AU/day] Velocity 3-vector of the observer w.r.t. the Solar System
+ *                      Barycenter (SSB)
+ * @return              0 if successful, or the error from geo_posvel(), or else -1 (with errno
+ *                      indicating the type of error).
  *
  * @author Attila Kovacs
  * @since 1.1
@@ -6972,8 +7026,8 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs) {
   in_space motion = { };
 
-  if(!location || !vel || !obs)
-    return novas_error(-1, EINVAL, "make_airborne_observer", "NULL parameter: location=%p, vel=%p, obs=%p", location, vel, obs);
+  if(!vel)
+    return novas_error(-1, EINVAL, "make_airborne_observer", "NULL velocity");
 
   memcpy(motion.sc_vel, vel, sizeof(motion.sc_vel));
 
