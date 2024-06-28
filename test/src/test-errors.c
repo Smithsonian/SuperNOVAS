@@ -655,10 +655,6 @@ static int test_vector2radec() {
   p[2] = 1.0;
   if(check("vector2radec:pole", 2, vector2radec(p, &ra, &dec))) n++;
 
-  p[1] = 1.0;
-  if(check("vector2radec:ra:null", -1, vector2radec(p, NULL, &dec))) n++;
-  if(check("vector2radec:dec:null", -1, vector2radec(p, &ra, NULL))) n++;
-
   return n;
 }
 

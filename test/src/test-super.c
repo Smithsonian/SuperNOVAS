@@ -878,6 +878,15 @@ static int test_grav_undef() {
   return 0;
 }
 
+static int test_vector2radec() {
+  double pos[3] = {1.0};
+  double x;
+
+  if(!is_ok("vector2radec:ra:null", vector2radec(pos, NULL, &x))) return 1;
+  if(!is_ok("vector2radec:dec:null", vector2radec(pos, &x, NULL))) return 1;
+  return 0;
+}
+
 static int test_novas_debug() {
   int n = 0;
 
@@ -921,6 +930,7 @@ int main() {
   if(test_tdb2tt()) n++;
   if(test_grav_vec()) n++;
   if(test_grav_undef()) n++;
+  if(test_vector2radec()) n++;
 
   n += test_dates();
 
