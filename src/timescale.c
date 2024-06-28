@@ -25,14 +25,11 @@
 #define DTA         (32.184 / DAY)        ///< [day] TT - UTC time difference
 #define GPS2TAI     (19.0 / DAY)          ///< [day] GPS to TAI time difference
 
-#define HOUR        3600.0                ///< [s] 1 hour
 #define IDAY        86400                 ///< [s] 1 day
-#define IHALFDAY    (DAY / 2)             ///< [s] 12 hours
 
 #define UNIX_SECONDS_0UTC_1JAN2000  946684800    ///< [s] UNIX time at J2000.0
-#define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + IHALFDAY)
+#define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + (IDAY / 2))
 /// \endcond
-
 
 
 /**
@@ -124,11 +121,10 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
     time->fjd_tt += 1.0;
 
   if(isnan(time->tt2tdb))
-    time->tt2tdb = tt2tdb(time->ijd_tt + time->fjd_tt);
+    time->tt2tdb = tt2tdb(time->ijd_tt + time->fjd_tt) / DAY;
 
   return 0;
 }
-
 
 /**
  * Increments the astrometric time by a given amount.
@@ -163,7 +159,6 @@ int novas_increment_time(const novas_timespec *time, double seconds, novas_times
 
   return 0;
 }
-
 
 /**
  * Returns the fractional Julian date of an astronomical time in the specified timescale.

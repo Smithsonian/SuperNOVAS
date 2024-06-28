@@ -19,6 +19,7 @@
 
 #include <math.h>   // for M_PI
 #include <stdlib.h> // NULL
+#include <stdint.h>
 
 // The upstream NOVAS library had a set of include statements that really were not necessary
 // First, including standard libraries here meant that those libraries were included in the
@@ -624,8 +625,8 @@ typedef struct {
  *
  */
 typedef struct {
-  double sc_pos[3];     ///< [km] geocentric (or heliocentric) position vector (x, y, z)
-  double sc_vel[3];     ///< [km/s] geocentric (or heliocentric) velocity vector (x_dot, y_dot, z_dot)
+  double sc_pos[3];     ///< [km] geocentric (or [AU] ICRS barycentric) position vector (x, y, z)
+  double sc_vel[3];     ///< [km/s] geocentric (or [AU/day] ICRS barycentric) velocity vector (x_dot, y_dot, z_dot)
 } in_space;
 
 /**
@@ -734,7 +735,7 @@ typedef struct {
  * @see novas_change_observer()
  */
 typedef struct {
-  long state;                     ///< An internal state for checking validity.
+  int64_t state;                  ///< An internal state for checking validity.
   enum novas_accuracy accuracy;   ///< NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
   novas_timespec time;            ///< The instant of time for the positions of major Solar-system bodies
   observer observer;              ///< The observer location, or NULL for barycentric
@@ -1069,7 +1070,7 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_app,
         const double *pos_obs, double *out);
 
-int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_accuracy accuracy,
+int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
 
 int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);

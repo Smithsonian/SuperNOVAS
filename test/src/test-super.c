@@ -887,6 +887,79 @@ static int test_vector2radec() {
   return 0;
 }
 
+static int test_make_cat_object() {
+  cat_entry star = {};
+  object source = {};
+
+  make_cat_entry("test", "FK4", 123, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, &star);
+
+  if(!is_ok("make_cat_object", make_cat_object(&star, &source))) return 1;
+  if(!is_ok("make_cat_object:check", memcmp(&source.star, &star, sizeof(star)))) return 1;
+  return 0;
+}
+
+static int test_airborne_observer() {
+  on_surface loc = {};
+  observer obs = {}, gc = {};
+  double vel[3] = { 10.0, 11.0, 12.0 };
+  double epos[3], evel[3], gpos[3], gvel[3], opos[3], ovel[3];
+  int i;
+
+  if(!is_ok("airborne_observer:make_on_surface", make_on_surface(1.0, 2.0, 3.0, 4.0, 5.0, &loc))) return 1;
+
+  if(!is_ok("airborne_observer:make", make_airborne_observer(&loc, vel, &obs))) return 1;
+  if(!is_ok("airborne_observer:check:on_surf", memcmp(&obs.on_surf, &loc, sizeof(loc)))) return 1;
+  if(!is_ok("airborne_observer:check:vel", memcmp(&obs.near_earth.sc_vel, &vel, sizeof(vel)))) return 1;
+
+  if(!is_ok("airborne_observer:make_observer_at_geocenter", make_observer_at_geocenter(&gc))) return 1;
+  if(!is_ok("airborne_observer:geo_posvel:gc", geo_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &gc, epos, evel))) return 1;
+  if(!is_ok("airborne_observer:geo_posvel:obs", geo_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, gpos, gvel))) return 1;
+  if(!is_ok("airborne_observer:obs_posvel", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, epos, evel, opos, ovel))) return 1;
+
+  for(i = 0; i < 3; i++) {
+    gpos[i] += epos[i];
+    gvel[i] += evel[i];
+  }
+
+  if(!is_ok("airborne_observer:check:result:pos", check_equal_pos(gpos, opos, 1e-8))) return 1;
+  if(!is_ok("airborne_observer:check:result:vel", check_equal_pos(gvel, ovel, 1e-8))) return 1;
+
+  return 0;
+}
+
+static int test_solar_system_observer() {
+  on_surface loc = {};
+  observer obs = {}, gc = {};
+  object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth"};
+  double pos[3] = {1.0, 2.0, 3.0}, vel[3] = { 10.0, 11.0, 12.0 };
+  double epos[3], evel[3], gpos[3], gvel[3], opos[3], ovel[3];
+  double tdb2[2] = { tdb, 0.0 };
+  int i;
+
+  if(!is_ok("solar_system_observer:make", make_solar_system_observer(pos, vel, &obs))) return 1;
+  if(!is_ok("solar_system_observer:check:pos", memcmp(&obs.near_earth.sc_pos, &pos, sizeof(pos)))) return 1;
+  if(!is_ok("solar_system_observer:check:vel", memcmp(&obs.near_earth.sc_vel, &vel, sizeof(vel)))) return 1;
+
+  if(!is_ok("solar_system_observer:make_observer_at_geocenter", make_observer_at_geocenter(&gc))) return 1;
+  if(!is_ok("solar_system_observer:obs_posvel", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, opos, ovel))) return 1;
+  if(!is_ok("solar_system_observer:geo_posvel:obs", geo_posvel(tdb - tt2tdb(tdb) / 86400.0, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, gpos, gvel))) return 1;
+  if(!is_ok("solar_system_observer:ephemeris:earth", ephemeris(tdb2, &earth, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, epos, evel))) return 1;
+
+  for(i = 0; i < 3; i++) {
+    printf("### [%d] %.6f  %.6f -> %.6f\n", i, epos[i], gpos[i], pos[i]);
+    gpos[i] += epos[i];
+    gvel[i] += evel[i];
+  }
+
+  if(!is_ok("solar_system_observer:check:result:pos:1", check_equal_pos(opos, pos, 1e-8))) return 1;
+  if(!is_ok("solar_system_observer:check:result:vel:1", check_equal_pos(ovel, vel, 1e-8))) return 1;
+  if(!is_ok("solar_system_observer:check:result:pos:2", check_equal_pos(gpos, pos, 1e-8))) return 1;
+  if(!is_ok("solar_system_observer:check:result:vel:2", check_equal_pos(gvel, vel, 1e-8))) return 1;
+
+  return 0;
+}
+
+
 static int test_novas_debug() {
   int n = 0;
 
@@ -906,6 +979,8 @@ static int test_novas_debug() {
 
   return n;
 }
+
+
 
 int main() {
   int n = 0;
@@ -931,6 +1006,9 @@ int main() {
   if(test_grav_vec()) n++;
   if(test_grav_undef()) n++;
   if(test_vector2radec()) n++;
+  if(test_make_cat_object()) n++;
+  if(test_airborne_observer()) n++;
+  if(test_solar_system_observer()) n++;
 
   n += test_dates();
 
