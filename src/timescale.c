@@ -29,6 +29,8 @@
 
 #define UNIX_SECONDS_0UTC_1JAN2000  946684800    ///< [s] UNIX time at J2000.0
 #define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + (IDAY / 2))
+
+#define E9          1000000000
 /// \endcond
 
 
@@ -87,7 +89,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
 
   time->tt2tdb = NAN;
   time->dut1 = dut1;
-  time->ut1_to_tt = leap - dut1 + DTA;    // TODO check!
+  time->ut1_to_tt = leap - dut1 + DTA * DAY;    // TODO check!
 
   switch(timescale) {
     case NOVAS_TT:
@@ -121,7 +123,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
     time->fjd_tt += 1.0;
 
   if(isnan(time->tt2tdb))
-    time->tt2tdb = tt2tdb(time->ijd_tt + time->fjd_tt) / DAY;
+    time->tt2tdb = tt2tdb(time->ijd_tt + time->fjd_tt);
 
   return 0;
 }
@@ -206,8 +208,10 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
     return NAN;
   }
   if(timescale < 0 || timescale > NOVAS_TIMESCALES)
-    if(ijd)
-      *ijd = time->ijd_tt;
+    novas_error(-1, EINVAL, fn, "invalid timescale: %d", timescale);
+
+  if(ijd)
+    *ijd = time->ijd_tt;
 
   f = time->fjd_tt;
 
@@ -224,10 +228,10 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
       f -= (DTA + GPS2TAI);
       break;
     case NOVAS_UTC:
-      f -= (time->ut1_to_tt + time->dut1);
+      f -= (time->ut1_to_tt + time->dut1) / DAY;
       break;
     case NOVAS_UT1:
-      f -= time->ut1_to_tt;
+      f -= time->ut1_to_tt / DAY;
       break;
     default:
       novas_error(-1, EINVAL, fn, "Invalid timescale: %d", timescale);
@@ -304,8 +308,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
   if(sojd < 0)
     sojd += IDAY;
 
-  return novas_set_split_time(NOVAS_UTC, jd, (sojd + 1e-9 * nanos + time->dut1 + time->ut1_to_tt) / DAY, leap, dut1,
-          time);
+  return novas_set_split_time(NOVAS_UTC, jd, (sojd + 1e-9 * nanos) / DAY, leap, dut1, time);
 }
 
 /**
@@ -330,7 +333,15 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
   isod = floor(sod);
   seconds = UNIX_J2000 + (ijd - NOVAS_JD_J2000) * DAY + isod;
 
-  if(nanos)
-    *nanos = floor(1e9 * (sod - isod));
+  if(nanos) {
+    *nanos = round(1e9 * (sod - isod));
+    if(*nanos == E9) {
+      seconds++;
+      nanos = 0;
+    }
+  }
+
+
+
   return seconds;
 }
