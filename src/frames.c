@@ -86,7 +86,7 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   I->M[2][0] = A->M[1][0] * A->M[2][1] - A->M[2][0] * A->M[1][1];
   I->M[0][1] = A->M[2][1] * A->M[0][2] - A->M[0][1] * A->M[2][2];
   I->M[1][1] = A->M[0][0] * A->M[2][2] - A->M[2][0] * A->M[0][2];
-  I->M[2][1] = A->M[2][1] * A->M[0][2] - A->M[0][1] * A->M[2][2];
+  I->M[2][1] = A->M[2][0] * A->M[0][1] - A->M[0][0] * A->M[2][1];
   I->M[0][2] = A->M[0][1] * A->M[1][2] - A->M[1][1] * A->M[0][2];
   I->M[1][2] = A->M[1][0] * A->M[0][2] - A->M[0][0] * A->M[1][2];
   I->M[2][2] = A->M[0][0] * A->M[1][1] - A->M[1][0] * A->M[0][1];
@@ -275,7 +275,7 @@ static int is_frame_initialized(const novas_frame *frame) {
  *                    type of error).
  *
  * @sa novas_change_observer()
- * @sa novas_posvel()
+ * @sa novas_geom_posvel()
  * @sa novas_make_transform()
  *
  * @since 1.1
@@ -437,8 +437,8 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel) {
-  static const char *fn = "novas_posvel";
+int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel) {
+  static const char *fn = "novas_geom_posvel";
 
   double jd_tdb, t_light;
   const observer *obs;
@@ -450,7 +450,7 @@ int novas_posvel(const object *source, const novas_frame *frame, enum novas_refe
   obs = (observer*) &frame->observer;
 
   if(!is_frame_initialized(frame))
-      return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+    return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
@@ -512,7 +512,7 @@ int novas_posvel(const object *source, const novas_frame *frame, enum novas_refe
  * you may pass the result to novas_transform_sy_pos() after.
  *
  * And if you want geometric positions instead (not corrected for aberration or gravitational
- * deflection), you may want to use novas_posvel() instead.
+ * deflection), you may want to use novas_geom_posvel() instead.
  *
  * The approximate 'inverse' of this function is novas_app_to_geom().
  *
@@ -524,7 +524,7 @@ int novas_posvel(const object *source, const novas_frame *frame, enum novas_refe
  * @return              0 if successful, or an error from grav_def(), or else -1 (errno will
  *                      indicate the type of error).
  *
- * @sa novas_posvel()
+ * @sa novas_geom_posvel()
  * @sa novas_app_to_hor()
  * @sa novas_app_to_geom()
  *
@@ -542,12 +542,12 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
     return novas_error(-1, EINVAL, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
 
   if(!is_frame_initialized(frame))
-      return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+    return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
     return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
 
-  prop_error(fn, novas_posvel(object, frame, NOVAS_ICRS, pos, vel), 0);
+  prop_error(fn, novas_geom_posvel(object, frame, NOVAS_ICRS, pos, vel), 0);
 
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
@@ -609,64 +609,6 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
 }
 
 
-static double novas_refraction(enum novas_refraction_model model, const on_surface *loc, enum novas_refraction_type type, double el) {
-  if(!loc)
-    return novas_error(-1, EINVAL, "novas_refraction", "NULL on surface observer location");
-
-  if(type == NOVAS_REFRACT_OBSERVED)
-    return refract(loc, NOVAS_WEATHER_AT_LOCATION, 90.0 - el);
-
-  return refract_astro(loc, NOVAS_WEATHER_AT_LOCATION, 90.0 - el);
-}
-
-/**
- * Returns an optical refraction correction for a standard atmosphere.
- *
- * @param j_tt      [day] Terrestrial Time (TT) based Julian data of observation
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
- * @param el        [deg] Astrometric (unrefracted) source elevation
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
- *                  set errno to indicate the type of error).
- *
- * @sa novas_app_to_hor()
- * @sa novas_optical_refraction()
- * @sa NOVAS_STANDARD_ATMOSPHERE()
- * @sa refract()
- * @sa refract_astro()
- */
-double novas_standard_refraction(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
-  double dz = novas_refraction(NOVAS_STANDARD_ATMOSPHERE, loc, type, el);
-  if(isnan(dz))
-    novas_trace("novas_optical_refraction", -1, 0);
-  return dz;
-}
-
-/**
- * Returns an optical refraction correction using the weather parameters defined for the observer location.
- *
- * @param j_tt      [day] Terrestrial Time (TT) based Julian data of observation
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
- * @param el        [deg] Astrometric (unrefracted) source elevation
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
- *                  set errno to indicate the type of error).
- *
- * @sa novas_app_to_hor()
- * @sa novas_optical_refraction()
- * @sa NOVAS_STANDARD_ATMOSPHERE()
- * @sa refract()
- * @sa refract_astro()
- */
-double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
-  double dz = novas_refraction(NOVAS_WEATHER_AT_LOCATION, loc, type, el);
-  if(isnan(dz))
-    novas_trace("novas_optical_refraction", -1, 0);
-  return dz;
-}
-
 /**
  * Converts an observed apparent position vector in the specified coordinate system to local
  * horizontal coordinates in the specified observer frame. The observer must be located on the
@@ -687,17 +629,18 @@ double novas_optical_refraction(double j_tt, const on_surface *loc, enum novas_r
  * @return            0 if successful, or else an error from tod_to_itrs() or cirs_to_itrs(), or
  *                    -1 (errno will indicate the type of error).
  *
- * @sa novas_posvel()
+ * @sa novas_geom_posvel()
  * @sa novas_sky_pos()
  * @sa novas_standard_refraction()
  * @sa novas_optical_refraction()
+ * @sa novas_hor_to_app();
  */
 int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
         double *az, double *el) {
-  static const char *fn = "novas_horizontal";
+  static const char *fn = "novas_app_to_hor";
   const novas_timespec *time;
   double pos[3];
-  double az0, za0, del = 0.0;
+  double az0, za0;
 
   if(!frame)
     return novas_error(-1, EINVAL, fn, "NULL observing frame");
@@ -707,14 +650,11 @@ int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, con
   }
 
   if(!is_frame_initialized(frame))
-      return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+    return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH) {
     return novas_error(-1, EINVAL, fn, "observer not on Earth: where=%d", frame->observer.where);
   }
-
-  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
 
   time = (novas_timespec *) &frame->time;
 
@@ -738,6 +678,7 @@ int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, con
     case NOVAS_CIRS:
       prop_error(fn, cirs_to_itrs(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
       break;
+
     default:
       return novas_error(-1, EINVAL, fn, "invalid coordinate system: %d", sys);
   }
@@ -745,18 +686,116 @@ int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, con
   itrs_to_hor(&frame->observer.on_surf, pos, &az0, &za0);
 
   if(ref_model) {
-    del = ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_ASTROMETRIC, 90.0 - za0);
+    double del = ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_ASTROMETRIC, 90.0 - za0);
     if(isnan(del))
       return novas_trace(fn, -1, 0);
+    za0 -= del;
   }
 
   if(az)
     *az = az0;
   if(el)
-    *el = 90.0 - za0 + del;
+    *el = 90.0 - za0;
 
   return 0;
 }
+
+/**
+ * Converts an observed azimuth and elevation coordinate to right ascension (R.A.) and declination
+ * coordinates expressed in the coordinate system of choice. The observer must be located on the
+ * surface of Earth, or else the call will return with an error. The caller may optionally supply
+ * a refraction model of choice to calculate an appropriate elevation angle that includes a
+ * refraction correction for Earth's atmosphere. If no such model is provided, the provided
+ * elevation value will be assumed to be an astrometric elevation without a refraction correction.
+ *
+ * @param az          [deg] Observed azimuth angle. It may be NULL if not required.
+ * @param el          [deg] Observed elevation angle. It may be NULL if not required.
+ * @param frame       Observer frame, defining the time and place of observation (on Earth).
+ * @param ref_model   An appropriate refraction model, or NULL to assume unrefracted elevation.
+ *                    Depending on the refraction model, you might want to make sure that the
+ *                    weather parameters were set when the observing frame was defined.
+ * @param sys         Astronomical coordinate system in which the output is R.A. and declination
+ *                    values are to be calculated.
+ * @param[out] ra     [h] Calculated apparent right ascension (R.A.) coordinate
+ * @param[out] dec    [deg] Calculated apparent declination coordinate
+ * @return            0 if successful, or else an error from itrs_to_tod() or itrs_to_cirs(), or
+ *                    -1 (errno will indicate the type of error).
+ *
+ * @sa novas_app_to_hor()
+ * @sa novas_make_frame()
+ */
+int novas_hor_to_app(double az, double el, const novas_frame *frame, RefractionModel ref_model, enum novas_reference_system sys,
+        double *ra, double *dec) {
+  static const char *fn = "novas_hor_to_app";
+  const novas_timespec *time;
+  double pos[3];
+
+  if(!frame)
+    return novas_error(-1, EINVAL, fn, "NULL observing frame");
+
+  if(!ra && !dec) {
+    return novas_error(-1, EINVAL, fn, "Both output pointers (ra, dec) are NULL");
+  }
+
+  if(!is_frame_initialized(frame))
+    return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+
+  if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH) {
+    return novas_error(-1, EINVAL, fn, "observer not on Earth: where=%d", frame->observer.where);
+  }
+
+  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-1, EINVAL, fn, "invalid reference system", sys);
+
+  time = (novas_timespec *) &frame->time;
+
+  if(ref_model) {
+    double del = ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
+    if(isnan(del))
+      return novas_trace(fn, -1, 0);
+    el -= del;
+  }
+
+  hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
+
+  // ITRS to TOD or CIRS...
+  if(cmp_sys(sys, NOVAS_GCRS) < 0) {
+    prop_error(fn, itrs_to_tod(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
+  }
+  else {
+    prop_error(fn, itrs_to_cirs(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
+  }
+
+  // Continue to convert to output system....
+  switch(sys) {
+    case NOVAS_TOD:
+      break;
+
+    case NOVAS_MOD:
+      matrix_inv_transform(pos, &frame->nutation, pos);
+      break;
+
+    case NOVAS_J2000:
+      matrix_inv_transform(pos, &frame->nutation, pos);
+      matrix_inv_transform(pos, &frame->precession, pos);
+      break;
+
+    case NOVAS_CIRS:
+      break;
+
+    case NOVAS_ICRS:
+    case NOVAS_GCRS:
+      matrix_inv_transform(pos, &frame->gcrs_to_cirs, pos);
+      break;
+
+    default:
+      return novas_error(-1, EINVAL, fn, "invalid coordinate system: %d", sys);
+  }
+
+  vector2radec(pos, ra, dec);
+  return 0;
+}
+
 
 /**
  * Converts an observed apparent sky position of a source to an ICRS geometric position, by
@@ -786,7 +825,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
     return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, nom_pos=%p", frame, geom_icrs);
 
   if(!is_frame_initialized(frame))
-      return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+    return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
     return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
@@ -871,7 +910,7 @@ static int cat_transform(novas_transform *transform, const novas_matrix *compone
  *                        the type of error).
  *
  * @sa novas_transform_vector()
- * @sa novas_posvel()
+ * @sa novas_geom_posvel()
  * @sa novas_invert_transform()
  *
  * @since 1.1
@@ -886,7 +925,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
     return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, transform=%p", frame, transform);
 
   if(!is_frame_initialized(frame))
-      return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+    return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   transform->frame = *frame;
   transform->from_system = from_system;
@@ -984,7 +1023,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
  *                      type of error).
  *
  * @sa novas_make_transform()
- * @sa novas_posvel()
+ * @sa novas_geom_posvel()
  *
  * @since 1.1
  * @author Attila Kovacs
