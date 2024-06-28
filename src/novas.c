@@ -1391,6 +1391,12 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
         const double *geo_pos, const double *geo_vel, double *pos, double *vel) {
   static const char *fn = "get_obs_posvel";
 
+  if(!obs)
+    return novas_error(-1, EINVAL, fn, "NULL observer parameter");
+
+  if(obs->where < 0 || obs->where >= NOVAS_OBSERVER_PLACES)
+    return novas_error(-1, EINVAL, fn, "Invalid observer location: %d", obs->where);
+
   if(!pos && !vel)
     return novas_error(-1, EINVAL, fn, "NULL output pointers (both)");
 
@@ -1402,6 +1408,9 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
     return 0;
   }
 
+  if(!geo_pos && !geo_vel)
+    return novas_error(-1, EINVAL, fn, "NULL geocenter position/velocity: geo_pos=%p, geo_vel=%p", geo_pos, geo_vel);
+
   if(pos)
     memcpy(pos, geo_pos, XYZ_VECTOR_SIZE);
   if(vel)
@@ -1410,19 +1419,27 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, const observer *obs, enum novas_
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
   // ---------------------------------------------------------------------
-  if(obs->where == NOVAS_OBSERVER_ON_EARTH || obs->where == NOVAS_AIRBORNE_OBSERVER || obs->where == NOVAS_OBSERVER_IN_EARTH_ORBIT) {
-    double pog[3] = { }, vog[3] = { };
-    int i;
+  switch(obs->where) {
+    case NOVAS_OBSERVER_ON_EARTH:
+    case NOVAS_AIRBORNE_OBSERVER:
+    case NOVAS_OBSERVER_IN_EARTH_ORBIT: {
+      double pog[3] = { }, vog[3] = { };
+      int i;
 
-    // For topocentric place, get geocentric position and velocity vectors
-    // of observer
-    prop_error(fn, geo_posvel(jd_tdb, ut1_to_tt, accuracy, obs, pog, vog), 0);
-    for(i = 3; --i >= 0;) {
-      if(pos)
-        pos[i] += pog[i];
-      if(vel)
-        vel[i] += vog[i];
+      // For topocentric place, get geocentric position and velocity vectors
+      // of observer
+      prop_error(fn, geo_posvel(jd_tdb, ut1_to_tt, accuracy, obs, pog, vog), 0);
+      for(i = 3; --i >= 0;) {
+        if(pos)
+          pos[i] += pog[i];
+        if(vel)
+          vel[i] += vog[i];
+      }
     }
+    break;
+
+    default:
+      // Nothing to do
   }
 
   return 0;
@@ -2747,7 +2764,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
     }
     case (EROT_GST):
-                      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
+                                      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
     spin(-15.0 * gast, out, out);
 
     if(class != NOVAS_DYNAMICAL_CLASS) {
@@ -6838,11 +6855,11 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
   // Populate the output structure based on the value of 'where'.
   switch(where) {
     case (NOVAS_OBSERVER_AT_GEOCENTER):
-                      break;
+                                      break;
 
     case (NOVAS_OBSERVER_ON_EARTH):
-                      if(!loc_surface)
-                        return novas_error(-1, EINVAL, fn, "NULL on surface location");
+                                      if(!loc_surface)
+                                        return novas_error(-1, EINVAL, fn, "NULL on surface location");
 
     memcpy(&obs->on_surf, loc_surface, sizeof(obs->on_surf));
     break;

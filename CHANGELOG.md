@@ -66,6 +66,8 @@ available on the `main` branch.
    `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, `novas_invert_transform()`, 
    `novas_transform_vector()`, and `novas_transform_sky_pos()`.
    
+ - Added `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
+   
  - Added `grav_undef()` to undo gravitational bending of the observed light to obtain geometric positions from
    observed ones.
  
@@ -77,11 +79,11 @@ available on the `main` branch.
    `NOVAS_J2000` for the J2000 dynamical reference system.
 
  - New observer locations `NOVAS_AIRBORNE_OBSERVER` and `NOVAS_SOLAR_SYSTEM_OBSERVER`, and corresponding
-   `make_airborne_observer()` and `make_solar_system_observer()` functions. Airborne observers have an earth fixed
-   momentary location, defined by longitude, latitude, and altitude, the same was as for a stationary observer on
-   Earth, but are moving relative to the surface, such as in an aircraft or balloon observatory. Solar-system
+   `make_airborne_observer()` and `make_solar_system_observer()` functions. Airborne observers have an Earth-fixed
+   momentary location, defined by longitude, latitude, and altitude, the same way as for a stationary observer on
+   Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system
    observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative
-   to the Solar System Barycenter, instead of the geocenter.
+   to the Solar System Barycenter (SSB), instead of the geocenter.
 
  - Added humidity field to `on_surface` structure, e.g. for refraction calculations at radio wavelengths. The
    `make_on_surface()` function will set humidity to 0.0, but the user can set the field appropriately afterwards.
