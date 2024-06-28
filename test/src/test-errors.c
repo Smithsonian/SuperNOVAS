@@ -41,15 +41,27 @@ static int test_make_in_space() {
 }
 
 static int test_make_observer() {
-  in_space sp;
-  on_surface on;
-  observer obs;
+  in_space sp = {};
+  on_surface on = {};
+  observer obs = {};
   int n = 0;
 
   if(check("make_observer:where", 1, make_observer(-1, &on, &sp, &obs))) n++;
   if(check("make_observer", -1, make_observer(NOVAS_OBSERVER_AT_GEOCENTER, &on, &sp, NULL))) n++;
   if(check("make_observer:on", -1, make_observer(NOVAS_OBSERVER_ON_EARTH, NULL, &sp, &obs))) n++;
-  if(check("make_observer:sp", -1, make_observer(NOVAS_OBSERVER_IN_EARTH_ORBIT, &on, NULL, &obs))) n++;
+  if(check("make_observer:eorb", -1, make_observer(NOVAS_OBSERVER_IN_EARTH_ORBIT, &on, NULL, &obs))) n++;
+  if(check("make_observer:air:surf", -1, make_observer(NOVAS_AIRBORNE_OBSERVER, NULL, &sp, &obs))) n++;
+  if(check("make_observer:air:vel", -1, make_observer(NOVAS_AIRBORNE_OBSERVER, &on, NULL, &obs))) n++;
+
+  return n;
+}
+
+static int test_make_airborne_observer() {
+  on_surface on = {};
+  observer obs = {};
+  int n = 0;
+
+  if(check("make_airborne_observer:vel", -1, make_airborne_observer(&on, NULL, &obs))) n++;
 
   return n;
 }
@@ -111,6 +123,20 @@ static int test_make_object() {
 
   return n;
 }
+
+static int test_make_cat_object() {
+  cat_entry s;
+  object source;
+  int n = 0;
+
+  make_cat_entry("test", "TST", 1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, &s);
+
+  if(check("make_cat_object", -1, make_cat_object(&s, NULL))) n++;
+  if(check("make_cat_object:star", -1, make_cat_object(NULL, &source))) n++;
+
+  return n;
+}
+
 
 static int test_refract() {
   on_surface o = {};
@@ -654,6 +680,8 @@ static int test_vector2radec() {
 
   p[2] = 1.0;
   if(check("vector2radec:pole", 2, vector2radec(p, &ra, &dec))) n++;
+  if(check("vector2radec:pole:ra:null", 2, vector2radec(p, NULL, &dec))) n++;
+  if(check("vector2radec:pole:dec:null", 2, vector2radec(p, &ra, NULL))) n++;
 
   return n;
 }
@@ -820,12 +848,32 @@ static int test_sun_eph() {
   double ra, dec, dis;
   int n = 0;
 
-  if(check("sun_eph", -1, sun_eph(NOVAS_JD_J2000, NULL, &dec, &dis))) n++;
-  if(check("sun_eph", -1, sun_eph(NOVAS_JD_J2000, &ra, NULL, &dis))) n++;
-  if(check("sun_eph", -1, sun_eph(NOVAS_JD_J2000, &ra, &dec, NULL))) n++;
+  if(check("sun_eph:ra:null", -1, sun_eph(NOVAS_JD_J2000, NULL, &dec, &dis))) n++;
+  if(check("sun_eph:dec:null", -1, sun_eph(NOVAS_JD_J2000, &ra, NULL, &dis))) n++;
+  if(check("sun_eph:dis:null", -1, sun_eph(NOVAS_JD_J2000, &ra, &dec, NULL))) n++;
 
   return n;
 }
+
+static int test_obs_posvel() {
+  observer obs;
+  double x;
+  int n = 0;
+
+  make_observer_at_geocenter(&obs);
+
+  if(check("obs_posvel:obs:null", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, NULL, NULL, NULL, &x, NULL))) n++;
+  if(check("obs_posvel:obs:pos+vel:null", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, NULL))) n++;
+
+  obs.where = -1;
+  if(check("obs_posvel:obs:where:-1", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, &x, NULL))) n++;
+
+  obs.where = NOVAS_OBSERVER_PLACES;
+  if(check("obs_posvel:obs:where:hi", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, &x, NULL))) n++;
+
+  return n;
+}
+
 
 int main() {
   int n = 0;
@@ -833,8 +881,10 @@ int main() {
   if(test_make_on_surface()) n++;
   if(test_make_in_space()) n++;
   if(test_make_observer()) n++;
+  if(test_make_airborne_observer()) n++;
 
   if(test_make_object()) n++;
+  if(test_make_cat_object()) n++;
   if(test_make_ephem_object()) n++;
   if(test_make_planet()) n++;
   if(test_make_cat_entry()) n++;
@@ -915,6 +965,8 @@ int main() {
   if(test_earth_sun_calc()) n++;
   if(test_earth_sun_calc_hp()) n++;
   if(test_sun_eph()) n++;
+
+  if(test_obs_posvel()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
