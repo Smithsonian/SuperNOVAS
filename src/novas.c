@@ -1363,8 +1363,10 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
  * @param obs           The observer location, relative to which the output positions and velocities
  *                      are to be calculated
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param geo_pos       [AU] Position 3-vector of the geocenter w.r.t. the Solar System Barycenter (SSB)
- * @param geo_vel       [AU/day] Velocity 3-vector of the geocenter w.r.t. the Solar System Barycenter (SSB)
+ * @param geo_pos       [AU] Position 3-vector of the geocenter w.r.t. the Solar System Barycenter
+ *                      (SSB). If either geo_pos or geo_vel is NULL, it will be calculated.
+ * @param geo_vel       [AU/day] Velocity 3-vector of the geocenter w.r.t. the Solar System
+ *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be calculated.
  * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter (SSB)
  * @param[out] vel      [AU/day] Velocity 3-vector of the observer w.r.t. the Solar System Barycenter (SSB)
  * @return              0 if successful, or the error from geo_posvel(), or else -1 (with errno indicating
@@ -1396,13 +1398,22 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
     return 0;
   }
 
-  if(!geo_pos && !geo_vel)
-    return novas_error(-1, EINVAL, fn, "NULL geocenter position/velocity: geo_pos=%p, geo_vel=%p", geo_pos, geo_vel);
-
-  if(pos)
-    memcpy(pos, geo_pos, XYZ_VECTOR_SIZE);
-  if(vel)
-    memcpy(vel, geo_vel, XYZ_VECTOR_SIZE);
+  if(!geo_pos || !geo_vel) {
+    object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
+    double tdb2[2] = { jd_tdb };
+    double gpos[3], gvel[3];
+    prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, gpos, gvel), 0);
+    if(pos)
+      memcpy(pos, gpos, XYZ_VECTOR_SIZE);
+    if(vel)
+      memcpy(vel, gvel, XYZ_VECTOR_SIZE);
+  }
+  else {
+    if(pos)
+      memcpy(pos, geo_pos, XYZ_VECTOR_SIZE);
+    if(vel)
+      memcpy(vel, geo_vel, XYZ_VECTOR_SIZE);
+  }
 
   // ---------------------------------------------------------------------
   // Get position and velocity of observer.
@@ -5983,8 +5994,7 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
       else
         error = planet_call(jd_tdb[0] + jd_tdb[1], body->number, origin, pos, vel);
 
-      prop_error("ephemeris:planet", error, 10)
-      ;
+      prop_error("ephemeris:planet", error, 10);
       break;
 
     case NOVAS_EPHEM_OBJECT: {
