@@ -12,7 +12,7 @@ LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 include ../config.mk
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
-OBJECTS := novas.o nutation.o solsys3.o
+OBJECTS := novas.o nutation.o solsys3.o frames.o timescale.o refract.o
 
 .PHONY: run
 run: clean-cov clean-data test-compat test-cio_file test-super test-errors data ../cio_ra.bin
@@ -32,7 +32,7 @@ cov.info:
 	geninfo . -b . -o $@
 
 .PHONY: coverage
-coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov
+coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov timescale.c.gcov
 	make clean-test
 	make cov
 

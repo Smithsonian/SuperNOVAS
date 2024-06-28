@@ -11,6 +11,8 @@
 #include <errno.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
+#include <unistd.h>
 
 #include "novas.h"
 
@@ -1082,6 +1084,41 @@ static int test_novas_debug() {
   return n;
 }
 
+static int test_set_unix_time() {
+  time_t sec = time(NULL);
+  long nanos = 1;
+  novas_timespec t;
+  long nsec = -1;
+
+  if(!is_ok("set_unix_time", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
+  if(!is_ok("set_unix_time:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
+    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), sec);
+    return 1;
+  }
+  if(!is_ok("set_unix_time:check:nsec", abs(nsec - nanos) > 0)) {
+    printf("!!! nsec %ld  %ld\n", nsec, nanos);
+    return 1;
+  }
+
+  if(!is_ok("set_unix_time:check2:sec", novas_get_unix_time(&t, NULL) != sec)) {
+    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, NULL), (long) sec);
+    return 1;
+  }
+
+  // Offset by half a second (to test rounding other way)
+  nanos += 500000000;
+  if(!is_ok("set_unix_time", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
+  if(!is_ok("set_unix_time:offset:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
+    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), (long) sec);
+    return 1;
+  }
+  if(!is_ok("set_unix_time:offset:check:nsec", abs(nsec - nanos) > 0)) {
+    printf("!!! nsec %ld  %ld\n", nsec, nanos);
+    return 1;
+  }
+
+  return 0;
+}
 
 
 int main() {
@@ -1114,6 +1151,8 @@ int main() {
   if(test_obs_posvel()) n++;
   if(test_dxdy_to_dpsideps()) n++;
   if(test_cio_location()) n++;
+
+  if(test_set_unix_time()) n++;
 
   n += test_dates();
 
