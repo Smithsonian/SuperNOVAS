@@ -13,6 +13,11 @@ available on the `main` branch.
 
 
 ### Fixed
+
+ - `tt2tdb()` Had a wrong scaling in sinusoidal period., resulting in an error of up to +/- 1.7 ms.
+ 
+ - `tdb2tt()` had the wrong time offset in NOVAS C 3.1. Its zero was defined at J2000, whereas it should have been
+   1977 January 1, 0h 0m 0s TAI, corrssponding to JD<sub>TT</sub> = 2443144.5003725.
    
  - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
    coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
@@ -43,10 +48,10 @@ available on the `main` branch.
    
  - New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). You 
    can set the time via `novas_set_time()` or `novas_set_split_time()` to a JD date in the timescale of choice (UTC, 
-   UT1, GPS, TAI, or TT), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an expression of 
-   that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or `novas_get_unix_time()`.
-   And, you can create a new time specification by incrementing an existing one, using `novas_increment_time()`, or 
-   measure time differences via `novas_diff_time()`. 
+   UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an 
+   expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
+   `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
+   `novas_increment_time()`, or measure time differences via `novas_diff_time()`. 
    
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
    place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
@@ -103,6 +108,8 @@ available on the `main` branch.
    (micro-arcsecond) level.
    
  - The `ra` or `dec` arguments passed to `vector2radec()` may now be NULL if not required.
+
+ - `tt2tdb()` Now uses the same more precise series as the original NOVAS C `tdb2tt()`.
 
  - The default make target is now `distro`. It's similar to the deprecated `api` target from before except that it 
    skips building `static` libraries.

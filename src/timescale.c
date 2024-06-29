@@ -22,13 +22,18 @@
 #include "novas.h"
 
 /// \cond PRIVATE
-#define DTA         (32.184 / DAY)        ///< [day] TT - UTC time difference
-#define GPS2TAI     (19.0 / DAY)          ///< [day] GPS to TAI time difference
+#define DTA         (32.184 / DAY)        ///< [day] TT - TAI time difference
+#define GPS2TAI     (19.0 / DAY)          ///< [day] TAI - GPS time difference
 
 #define IDAY        86400                 ///< [s] 1 day
 
 #define UNIX_SECONDS_0UTC_1JAN2000  946684800    ///< [s] UNIX time at J2000.0
 #define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + (IDAY / 2))
+
+// IAU 2006 Resolution B3
+#define TCB_T0      2443144.5003725       ///< 1977 January 1, 0h 0m 0s TAI
+#define TCB_LB      1.550519768e-8
+#define TCB_TDB0    (6.55e-5 / DAY)
 
 #define E9          1000000000
 /// \endcond
@@ -94,9 +99,17 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
   switch(timescale) {
     case NOVAS_TT:
       break;
+    case NOVAS_TCB:
+      fjd -= time->tt2tdb / DAY - TCB_TDB0;
+      fjd -= TCB_LB * ((ijd - TCB_T0) + fjd); // -> TDB
+      time->tt2tdb = tt2tdb(ijd + fjd);
+      fjd -= time->tt2tdb / DAY;                // -> TT
+      break;
+    case NOVAS_TCG:
+      fjd -= TCB_LB * ((ijd - TCB_T0) + fjd);
+      break;
     case NOVAS_TDB: {
-      tdb2tt(ijd + fjd, NULL, &time->tt2tdb);
-      time->tt2tdb = -time->tt2tdb;
+      time->tt2tdb = tt2tdb(ijd + fjd);
       fjd -= time->tt2tdb / DAY;
       break;
     }
@@ -221,6 +234,12 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
     case NOVAS_TDB:
       f += time->tt2tdb / DAY;
       break;
+    case NOVAS_TCB:
+      f += time->tt2tdb / DAY - TCB_TDB0;
+      /* no break */
+    case NOVAS_TCG:
+      f += TCB_LB * ((time->ijd_tt - TCB_T0) + f);
+      break;
     case NOVAS_TAI:
       f -= DTA;
       break;
@@ -253,7 +272,8 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
 }
 
 /**
- * Returns the time difference (t1 - t2) in days between two astronomical time specifications.
+ * Returns the Terrestrial Time (TT) based time difference (t1 - t2) in days between two
+ * astronomical time specifications.
  *
  * @param t1    First time
  * @param t2    Second time
@@ -262,6 +282,7 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  *
  * @sa novas_set_time()
  * @sa novas_increment_time()
+ * @sa novas_diff_coordinate_time()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -272,7 +293,26 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
     return NAN;
   }
 
-  return (t1->ijd_tt - t2->ijd_tt) + (t1->fjd_tt - t2->fjd_tt);
+  return ((t1->ijd_tt - t2->ijd_tt) + (t1->fjd_tt - t2->fjd_tt)) * DAY;
+}
+
+/**
+ * Returns the Coordinate Time based time difference (t1 - t2) in days between two
+ * astronomical time specifications. Coordinate time such as TCG or TCB progress slightly faster
+ * than time on Earth due to the lack og gravitational time dilation.
+ *
+ * @param t1    First time
+ * @param t2    Second time
+ * @return      [day] Precise coordinate time difference (t1-t2), or NAN if one of the inputs was
+ *              NULL (errno will be set to EINVAL)
+ *
+ * @sa novas_diff_time()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+double novas_diff_coordinate_time(const novas_timespec *t1, const novas_timespec *t2) {
+  return novas_diff_time(t1, t2) * (1.0 + TCB_LB);
 }
 
 
