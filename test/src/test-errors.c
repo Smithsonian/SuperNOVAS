@@ -22,6 +22,14 @@ static int check(const char *func, int exp, int error) {
   return 0;
 }
 
+static int check_nan(const char *func, double value) {
+  if(!isnan(value)) {
+    fprintf(stderr, "ERROR! %s: expected NAN, got %f\n", func, value);
+    return 1;
+  }
+  return 0;
+}
+
 static int test_make_on_surface() {
   on_surface loc;
   if(check("make_on_surface", -1, make_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, NULL))) return 1;
@@ -587,8 +595,8 @@ static int test_d_light() {
   double p[3] = {1.0};
   int n = 0;
 
-  if(check("d_light:1", 1, isnan(d_light(NULL, p)))) n++;
-  if(check("d_light:2", 1, isnan(d_light(p, NULL)))) n++;
+  if(check_nan("d_light:1", d_light(NULL, p))) n++;
+  if(check_nan("d_light:2", d_light(p, NULL))) n++;
 
   return n;
 }
@@ -689,7 +697,7 @@ static int test_vector2radec() {
 static int test_planet_lon() {
   int n = 0;
 
-  if(check("planet_lon", 1, isnan(planet_lon(0.0, -1)))) n++;
+  if(check_nan("planet_lon", planet_lon(0.0, -1))) n++;
 
   return n;
 }
@@ -882,17 +890,17 @@ static int test_time() {
   if(check("time:set:scale:-1", -1, novas_set_time(-1, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
   if(check("time:set:scale:hi", -1, novas_set_time(NOVAS_TIMESCALES, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
 
-  if(check("time:get:time", -1, novas_get_time(NULL, NOVAS_TT))) n++;
-  if(check("time:get:scale:-1", -1, novas_get_time(&time, -1))) n++;
-  if(check("time:get:scale:hi", -1, novas_get_time(&time, NOVAS_TIMESCALES))) n++;
+  if(check_nan("time:get:time", novas_get_time(NULL, NOVAS_TT))) n++;
+  if(check_nan("time:get:scale:-1", novas_get_time(&time, -1))) n++;
+  if(check_nan("time:get:scale:hi", novas_get_time(&time, NOVAS_TIMESCALES))) n++;
 
   if(check("time:offset:time", -1, novas_offset_time(NULL, 0.1, &time))) n++;
   if(check("time:offset:out", -1, novas_offset_time(&time, 0.1, NULL))) n++;
   if(check("time:offset:both", -1, novas_offset_time(NULL, 0.1, NULL))) n++;
 
-  if(check("time:diff:t1", -1, novas_diff_time(NULL, &time))) n++;
-  if(check("time:diff:t2", -1, novas_diff_time(&time, NULL))) n++;
-  if(check("time:diff:both", -1, novas_diff_time(NULL, NULL))) n++;
+  if(check_nan("time:diff:t1", novas_diff_time(NULL, &time))) n++;
+  if(check_nan("time:diff:t2", novas_diff_time(&time, NULL))) n++;
+  if(check_nan("time:diff:both", novas_diff_time(NULL, NULL))) n++;
 
   return n;
 }
@@ -989,6 +997,7 @@ int main() {
   if(test_sun_eph()) n++;
 
   if(test_obs_posvel()) n++;
+  if(test_time()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
