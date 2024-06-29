@@ -392,7 +392,8 @@ Now we can set a standard UNIX time, for example, using the current time:
  novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, leap_seconds, dut1, &t_obs);
 ```
 
-Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI):
+Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
+or TCB):
 
 ```c
  double jd_tai = ...     // TAI-based Julian Date 

@@ -675,7 +675,9 @@ typedef struct {
  * @since 1.1
  */
 enum novas_timescale {
-  NOVAS_TDB = 0,    ///< Barycentric Dynamical Time (TDB)
+  NOVAS_TCB = 0,    ///< Barycentric Coordinate Time (TCB)
+  NOVAS_TDB,        ///< Barycentric Dynamical Time (TDB)
+  NOVAS_TCG,        ///< Geocentric Coordinate Time (TCG)
   NOVAS_TT,         ///< Terrestrial Time (TT)
   NOVAS_TAI,        ///< Innternational Atomic Time (TAI)
   NOVAS_GPS,        ///< GPS Time
@@ -1100,6 +1102,8 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
 time_t novas_get_unix_time(const novas_timespec *time, long *nanos);
 
 double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2);
+
+double novas_diff_coordinate_time(const novas_timespec *t1, const novas_timespec *t2);
 
 int novas_increment_time(const novas_timespec *time, double seconds, novas_timespec *out);
 
