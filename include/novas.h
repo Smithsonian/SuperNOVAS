@@ -1105,7 +1105,7 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2);
 
 double novas_diff_coordinate_time(const novas_timespec *t1, const novas_timespec *t2);
 
-int novas_increment_time(const novas_timespec *time, double seconds, novas_timespec *out);
+int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec *out);
 
 
 // in frames.c

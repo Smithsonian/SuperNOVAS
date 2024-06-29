@@ -27,6 +27,8 @@
 
 #define IDAY        86400                 ///< [s] 1 day
 
+#define IJD_J2000   2451545
+
 #define UNIX_SECONDS_0UTC_1JAN2000  946684800    ///< [s] UNIX time at J2000.0
 #define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + (IDAY / 2))
 
@@ -156,11 +158,11 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_increment_time(const novas_timespec *time, double seconds, novas_timespec *out) {
+int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec *out) {
   int dd;
 
   if(!time || !out)
-    return novas_error(-1, EINVAL, "novas_increment_time", "NULL parameter: time=%p, out=%p", time, out);
+    return novas_error(-1, EINVAL, "novas_offset_time", "NULL parameter: time=%p, out=%p", time, out);
 
   if(out != time)
     *out = *time;
@@ -168,7 +170,7 @@ int novas_increment_time(const novas_timespec *time, double seconds, novas_times
   out->fjd_tt += seconds / DAY;
   dd = (int) floor(out->fjd_tt);
   if(dd) {
-    out->fjd_tt -= dd * DAY;
+    out->fjd_tt -= dd;
     out->ijd_tt += dd;
   }
 
@@ -220,8 +222,6 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
     novas_error(-1, EINVAL, fn, "NULL input time specification");
     return NAN;
   }
-  if(timescale < 0 || timescale > NOVAS_TIMESCALES)
-    novas_error(-1, EINVAL, fn, "invalid timescale: %d", timescale);
 
   if(ijd)
     *ijd = time->ijd_tt;
@@ -281,7 +281,7 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  *              will be set to EINVAL)
  *
  * @sa novas_set_time()
- * @sa novas_increment_time()
+ * @sa novas_offset_time()
  * @sa novas_diff_coordinate_time()
  *
  * @since 1.1
@@ -341,12 +341,14 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
 
   // UTC based integer JD
   unix_time -= UNIX_J2000;
-  jd = NOVAS_JD_J2000 + unix_time / IDAY;
+  jd = IJD_J2000 + unix_time / IDAY;
 
   // seconds of JD date
   sojd = unix_time % IDAY;
-  if(sojd < 0)
+  if(sojd < 0) {
     sojd += IDAY;
+    jd--;
+  }
 
   return novas_set_split_time(NOVAS_UTC, jd, (sojd + 1e-9 * nanos) / DAY, leap, dut1, time);
 }
@@ -371,7 +373,7 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
 
   sod = novas_get_split_time(time, NOVAS_UTC, &ijd) * DAY;
   isod = floor(sod);
-  seconds = UNIX_J2000 + (ijd - NOVAS_JD_J2000) * DAY + isod;
+  seconds = UNIX_J2000 + (ijd - IJD_J2000) * IDAY + isod;
 
   if(nanos) {
     *nanos = round(1e9 * (sod - isod));

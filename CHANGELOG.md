@@ -14,7 +14,7 @@ available on the `main` branch.
 
 ### Fixed
 
- - `tt2tdb()` Had a wrong scaling in sinusoidal period., resulting in an error of up to +/- 1.7 ms.
+ - `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
  
  - `tdb2tt()` had the wrong time offset in NOVAS C 3.1. Its zero was defined at J2000, whereas it should have been
    1977 January 1, 0h 0m 0s TAI, corrssponding to JD<sub>TT</sub> = 2443144.5003725.

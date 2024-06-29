@@ -633,6 +633,153 @@ static int test_cirs_app_ra() {
   return 0;
 }
 
+static int test_set_time() {
+  novas_timespec tt, tt1, tai, gps, TDB, tcb, tcg, utc, ut1;
+  int leap = 32;
+  double dut1 = 0.1;
+  double ut1_to_tt = get_ut1_to_tt(leap, dut1);
+  long ijd = (long) tdb;
+  double fjd = 0.25;
+  double dt;
+
+  const double CT0 = 2443144.5003725;
+  const double LB = 1.550519768e-8;
+  const double TDB0 = 6.55e-5;
+
+  tdb2tt(ijd, NULL, &dt);
+
+  if(!is_ok("set_time:set:tt", novas_set_split_time(NOVAS_TT, ijd, fjd, leap, dut1, &tt))) return 1;
+  if(!is_ok("set_time:check:tt:int", tt.ijd_tt != ijd)) return 1;
+  if(!is_ok("set_time:check:tt:frac", fabs(tt.fjd_tt - fjd) > 1e-9)) return 1;
+
+  if(!is_ok("set_time:set:tt1", novas_set_time(NOVAS_TT, ijd + fjd, leap, dut1, &tt1))) return 1;
+  dt = novas_get_time(&tt, NOVAS_TT) - novas_get_time(&tt1, NOVAS_TT);
+  if(!is_ok("set_time:check:nosplit", fabs(dt * DAY) > 1e-5)) {
+    printf("!!! Delta split: %.9f\n", dt * DAY);
+    return 1;
+  }
+
+  if(!is_ok("set_time:set:tdb", novas_set_split_time(NOVAS_TDB, ijd, fjd, leap, dut1, &TDB))) return 1;
+  if(!is_ok("set_time:set:tcb", novas_set_split_time(NOVAS_TCB, ijd, fjd, leap, dut1, &tcb))) return 1;
+  if(!is_ok("set_time:set:tcg", novas_set_split_time(NOVAS_TCG, ijd, fjd, leap, dut1, &tcg))) return 1;
+  if(!is_ok("set_time:set:tai", novas_set_split_time(NOVAS_TAI, ijd, fjd, leap, dut1, &tai))) return 1;
+  if(!is_ok("set_time:set:gps", novas_set_split_time(NOVAS_GPS, ijd, fjd, leap, dut1, &gps))) return 1;
+  if(!is_ok("set_time:set:utc", novas_set_split_time(NOVAS_UTC, ijd, fjd, leap, dut1, &utc))) return 1;
+  if(!is_ok("set_time:set:ut1", novas_set_split_time(NOVAS_UT1, ijd, fjd, leap, dut1, &ut1))) return 1;
+
+  dt = remainder(novas_get_split_time(&TDB, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL), 1.0);
+  if(!is_ok("set_time:check:tdb-tt", fabs(dt * DAY + tt2tdb(novas_get_time(&tt, NOVAS_TT))) > 1e-9)) {
+    printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, -tt2tdb(ijd + fjd));
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tcb, NOVAS_TT, NULL) - novas_get_split_time(&TDB, NOVAS_TT, NULL);
+  dt += LB * (novas_get_time(&TDB, NOVAS_TDB) - CT0) - TDB0 / DAY;
+  if(!is_ok("set_time:check:tcb-tdb", fabs(dt * DAY) > 1e-9)) {
+    printf("!!! Delta TCB-TDB: %.9f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tcg, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
+  dt += LB * (novas_get_time(&tt, NOVAS_TT) - CT0);
+  if(!is_ok("set_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
+    printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tt, NOVAS_TT, NULL) - novas_get_split_time(&tai, NOVAS_TT, NULL);
+  if(!is_ok("set_time:check:tt-tai", fabs(dt * DAY + 32.184) > 1e-9)) {
+    printf("!!! TT-TAI: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&gps, NOVAS_TT, NULL);
+  if(!is_ok("set_time:check:gps-tai", fabs(dt * DAY + 19.0) > 1e-9)) {
+    printf("!!! TAI-GPS: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
+  if(!is_ok("set_time:check:tai-utc", fabs(dt * DAY + leap) > 1e-9)) {
+    printf("!!! TAI-UTC: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&ut1, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
+  if(!is_ok("set_time:check:ut1-utc", fabs(dt * DAY + dut1) > 1e-9)) {
+    printf("!!! UT1-UTC: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  return 0;
+}
+
+static int test_get_time() {
+  novas_timespec tt;
+  int leap = 32;
+  double dut1 = 0.1;
+  double dt;
+
+  const double CT0 = 2443144.5003725;
+  const double LB = 1.550519768e-8;
+  const double TDB0 = 6.55e-5;
+
+  if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, tdb + 0.25, leap, dut1, &tt))) return 1;
+
+  dt = novas_get_time(&tt, NOVAS_TT) - (tt.ijd_tt + tt.fjd_tt);
+  if(!is_ok("get_time:check:nosplit", fabs(dt * DAY) > 1e-5)) {
+    printf("!!! Delta split: %.9f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = remainder(novas_get_split_time(&tt, NOVAS_TDB, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL), 1.0);
+  if(!is_ok("get_time:check:tdb-tt", fabs(dt * DAY - tt2tdb(novas_get_time(&tt, NOVAS_TT))) > 1e-9)) {
+    printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, tt2tdb(tdb));
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tt, NOVAS_TCB, NULL) - novas_get_split_time(&tt, NOVAS_TDB, NULL);
+  dt -= LB * (novas_get_time(&tt, NOVAS_TDB) - CT0) - TDB0 / DAY;
+  if(!is_ok("get_time:check:tcb-tdb", fabs(dt * DAY) > 1e-9)) {
+    printf("!!! Delta TCB-TDB: %.9f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tt, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TAI, NULL);
+  if(!is_ok("get_time:check:tt-tai", fabs(dt * DAY - 32.184) > 1e-9)) {
+    printf("!!! TT-TAI: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tt, NOVAS_TCG, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
+  dt -= LB * (novas_get_time(&tt, NOVAS_TT) - CT0);
+  if(!is_ok("get_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
+    printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - novas_get_split_time(&tt, NOVAS_GPS, NULL);
+  if(!is_ok("get_time:check:gps-tai", fabs(dt * DAY - 19.0) > 1e-9)) {
+    printf("!!! TAI-GPS: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
+  if(!is_ok("get_time:check:tai-utc", fabs(dt * DAY - leap) > 1e-9)) {
+    printf("!!! TAI-UTC: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  dt = novas_get_split_time(&tt, NOVAS_UT1, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
+  if(!is_ok("get_time:check:ut1-utc", fabs(dt * DAY - dut1) > 1e-9)) {
+    printf("!!! UT1-UTC: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  return 0;
+}
+
+
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
   int i, n = 0;
@@ -642,6 +789,8 @@ static int test_dates() {
   if(test_nutation_lp_provider()) n++;
   if(test_cal_date()) n++;
   if(test_cirs_app_ra()) n++;
+  if(test_set_time()) n++;
+  if(test_get_time()) n++;
 
   for(i = 0; i < 5; i++) {
     tdb = J2000 + offsets[i];
@@ -863,6 +1012,14 @@ static int test_tdb2tt() {
 
   if(!is_ok("tdb2tt:tt:null", tdb2tt(tdb, NULL, &d))) return 1;
   if(!is_ok("tdb2tt:dt:null", tdb2tt(tdb, &tt, NULL))) return 1;
+  return 0;
+}
+
+static int test_tt2tdb() {
+  double d;
+
+  if(!is_ok("tdb2tt:tt:null", tdb2tt(tdb, NULL, &d))) return 1;
+  if(!is_ok("tt2tdb:check", fabs(tt2tdb(tdb) - d) >= 1e-9)) return 1;
 
   return 0;
 }
@@ -1091,32 +1248,44 @@ static int test_unix_time() {
   novas_timespec t;
   long nsec = -1;
 
-  if(!is_ok("set_unix_time", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
-  if(!is_ok("set_unix_time:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
+  if(!is_ok("unix_time:set", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
+  if(!is_ok("unix_time:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
     printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), sec);
     return 1;
   }
-  if(!is_ok("set_unix_time:check:nsec", abs(nsec - nanos) > 0)) {
+  if(!is_ok("sunix_time:check:nsec", abs(nsec - nanos) > 0)) {
     printf("!!! nsec %ld  %ld\n", nsec, nanos);
     return 1;
   }
 
-  if(!is_ok("set_unix_time:check2:sec", novas_get_unix_time(&t, NULL) != sec)) {
+  if(!is_ok("unix_time:check2:sec", novas_get_unix_time(&t, NULL) != sec)) {
     printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, NULL), (long) sec);
     return 1;
   }
 
   // Offset by half a second (to test rounding other way)
   nanos += 500000000;
-  if(!is_ok("set_unix_time", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
-  if(!is_ok("set_unix_time:offset:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
+  if(!is_ok("unix_time:incr", novas_set_unix_time(sec, nanos, 37, 0.11, &t))) return 1;
+  if(!is_ok("unix_time:offset:check:incr:sec", novas_get_unix_time(&t, &nsec) != sec)) {
     printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), (long) sec);
     return 1;
   }
-  if(!is_ok("set_unix_time:offset:check:nsec", abs(nsec - nanos) > 0)) {
+  if(!is_ok("unix_time:offset:check:incr:nsec", abs(nsec - nanos) > 0)) {
     printf("!!! nsec %ld  %ld\n", nsec, nanos);
     return 1;
   }
+
+  sec = -86400;
+  if(!is_ok("unix_time:neg", novas_set_unix_time(sec, nanos, 0, 0.11, &t))) return 1;
+  if(!is_ok("unix_time:neg:check:sec", novas_get_unix_time(&t, &nsec) != sec)) {
+    printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), (long) sec);
+    return 1;
+  }
+  if(!is_ok("unix_time:neg:check:nsec", abs(nsec - nanos) > 0)) {
+    printf("!!! nsec %ld  %ld\n", nsec, nanos);
+    return 1;
+  }
+
 
   return 0;
 }
@@ -1125,9 +1294,12 @@ static int test_diff_time() {
   novas_timespec t, t1;
   time_t sec = time(NULL);
   long nsec = -1;
+  double dt;
+
+  const double LB = 1.550519768e-8;
 
   if(!is_ok("diff_time:set", novas_set_unix_time(sec, 1, 37, 0.11, &t))) return 1;
-  if(!is_ok("diff_time:inc", novas_increment_time(&t, 0.5, &t1))) return 1;
+  if(!is_ok("diff_time:incr", novas_offset_time(&t, 0.5, &t1))) return 1;
 
   if(!is_ok("diff_time:check", fabs(novas_diff_time(&t1, &t) - 0.5) >= 1e-9)) {
     printf("!!! diff %.9f (expected 0.5)\n", novas_diff_time(&t1, &t));
@@ -1139,148 +1311,33 @@ static int test_diff_time() {
     return 1;
   }
 
-  if(!is_ok("diff_time:dec", novas_increment_time(&t, -0.5, &t1))) return 1;
-  if(!is_ok("diff_time:check:dec", fabs(novas_diff_time(&t1, &t) + 0.5) >= 1e-9)) {
+  dt = novas_diff_coordinate_time(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
+  if(!is_ok("diff_time:check:dec", fabs(dt) >= 1e-9)) {
+    printf("!!! missed coords by %.9f\n", dt);
+    return 1;
+  }
+
+  if(!is_ok("diff_time:decr", novas_offset_time(&t, -0.5, &t1))) return 1;
+  if(!is_ok("diff_time:check:decr", fabs(novas_diff_time(&t1, &t) + 0.5) >= 1e-9)) {
     printf("!!! diff %.9f (expected -0.5)\n", novas_diff_time(&t1, &t));
     return 1;
   }
 
-  return 0;
-}
-
-static int test_set_time() {
-  novas_timespec tt, tai, gps, TDB, tcb, tcg, utc, ut1;
-  int leap = 32;
-  double dut1 = 0.1;
-  double ut1_to_tt = get_ut1_to_tt(leap, dut1);
-  int ijd = (int) NOVAS_JD_J2000;
-  double fjd = 0.1;
-  double dt;
-
-  const double CT0 = 2443144.5003725;
-  const double LB = 1.550519768e-8;
-  const double TDB0 = 6.55e-5;
-
-  tdb2tt(ijd, NULL, &dt);
-
-  if(!is_ok("set_time:set:tt", novas_set_split_time(NOVAS_TT, ijd, fjd, leap, dut1, &tt))) return 1;
-  if(!is_ok("set_time:check:tt:int", tt.ijd_tt != ijd)) return 1;
-  if(!is_ok("set_time:check:tt:frac", fabs(tt.fjd_tt - fjd) > 1e-9)) return 1;
-
-  if(!is_ok("set_time:set:tdb", novas_set_split_time(NOVAS_TDB, ijd, fjd, leap, dut1, &TDB))) return 1;
-  if(!is_ok("set_time:set:tcb", novas_set_split_time(NOVAS_TCB, ijd, fjd, leap, dut1, &tcb))) return 1;
-  if(!is_ok("set_time:set:tcg", novas_set_split_time(NOVAS_TCG, ijd, fjd, leap, dut1, &tcg))) return 1;
-  if(!is_ok("set_time:set:tai", novas_set_split_time(NOVAS_TAI, ijd, fjd, leap, dut1, &tai))) return 1;
-  if(!is_ok("set_time:set:gps", novas_set_split_time(NOVAS_GPS, ijd, fjd, leap, dut1, &gps))) return 1;
-  if(!is_ok("set_time:set:utc", novas_set_split_time(NOVAS_UTC, ijd, fjd, leap, dut1, &utc))) return 1;
-  if(!is_ok("set_time:set:ut1", novas_set_split_time(NOVAS_UT1, ijd, fjd, leap, dut1, &ut1))) return 1;
-
-  dt = novas_get_split_time(&TDB, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:tdb-tt", fabs(dt * DAY + tt2tdb(novas_get_time(&tt, NOVAS_TT))) > 1e-9)) {
-    printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, -tt2tdb(ijd + fjd));
+  if(!is_ok("diff_time:incr:same", novas_offset_time(&t, -0.5, &t))) return 1;
+  if(!is_ok("diff_time:incr:check:same", fabs(novas_diff_time(&t1, &t)) >= 1e-9)) {
+    printf("!!! diff %.9f\n", novas_diff_time(&t1, &t));
     return 1;
   }
 
-  dt = novas_get_split_time(&tcb, NOVAS_TT, NULL) - novas_get_split_time(&TDB, NOVAS_TT, NULL);
-  dt += LB * (novas_get_time(&TDB, NOVAS_TDB) - CT0) - TDB0 / DAY;
-  if(!is_ok("set_time:check:tcb-tdb", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCB-TDB: %.9f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tcg, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
-  dt += LB * (novas_get_time(&tt, NOVAS_TT) - CT0);
-  if(!is_ok("set_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tt, NOVAS_TT, NULL) - novas_get_split_time(&tai, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:tt-tai", fabs(dt * DAY + 32.184) > 1e-9)) {
-    printf("!!! TT-TAI: %.6f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&gps, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:gps-tai", fabs(dt * DAY + 19.0) > 1e-9)) {
-    printf("!!! TAI-GPS: %.6f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:tai-utc", fabs(dt * DAY + leap) > 1e-9)) {
-    printf("!!! TAI-UTC: %.6f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&ut1, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:ut1-utc", fabs(dt * DAY + dut1) > 1e-9)) {
-    printf("!!! UT1-UTC: %.6f\n", dt * DAY);
-    return 1;
-  }
-
-
-  return 0;
-}
-
-static int test_get_time() {
-  novas_timespec tt;
-  int leap = 32;
-  double dut1 = 0.1;
-  double dt;
-
-  const double CT0 = 2443144.5003725;
-  const double LB = 1.550519768e-8;
-  const double TDB0 = 6.55e-5;
-
-  if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, NOVAS_JD_J2000 + 0.10, leap, dut1, &tt))) return 1;
-
-  dt = novas_get_split_time(&tt, NOVAS_TDB, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
-  if(!is_ok("get_time:check:tdb-tt", fabs(dt * DAY - tt2tdb(novas_get_time(&tt, NOVAS_TT))) > 1e-9)) {
-    printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, tt2tdb(NOVAS_JD_J2000));
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tt, NOVAS_TCB, NULL) - novas_get_split_time(&tt, NOVAS_TDB, NULL);
-  dt -= LB * (novas_get_time(&tt, NOVAS_TDB) - CT0) - TDB0 / DAY;
-  if(!is_ok("get_time:check:tcb-tdb", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCB-TDB: %.9f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tt, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TAI, NULL);
-  if(!is_ok("get_time:check:tt-tai", fabs(dt * DAY - 32.184) > 1e-9)) {
-    printf("!!! TT-TAI: %.6f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tt, NOVAS_TCG, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
-  dt -= LB * (novas_get_time(&tt, NOVAS_TT) - CT0);
-  if(!is_ok("get_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - novas_get_split_time(&tt, NOVAS_GPS, NULL);
-  if(!is_ok("get_time:check:gps-tai", fabs(dt * DAY - 19.0) > 1e-9)) {
-    printf("!!! TAI-GPS: %.6f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
-  if(!is_ok("get_time:check:tai-utc", fabs(dt * DAY - leap) > 1e-9)) {
-    printf("!!! TAI-UTC: %.6f\n", dt * DAY);
-    return 1;
-  }
-
-  dt = novas_get_split_time(&tt, NOVAS_UT1, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
-  if(!is_ok("get_time:check:ut1-utc", fabs(dt * DAY - dut1) > 1e-9)) {
-    printf("!!! UT1-UTC: %.6f\n", dt * DAY);
+  if(!is_ok("diff_time:incr:overflow", novas_offset_time(&t, 86400.0, &t))) return 1;
+  if(!is_ok("diff_time:incr:check:overflow", fabs(novas_diff_time(&t, &t1) - 86400.0) >= 1e-9)) {
+    printf("!!! diff %.9f\n", novas_diff_time(&t, &t1));
     return 1;
   }
 
   return 0;
 }
+
 
 int main() {
   int n = 0;
@@ -1303,6 +1360,7 @@ int main() {
   if(test_iau2000b()) n++;
   if(test_nu2000k()) n++;
   if(test_tdb2tt()) n++;
+  if(test_tt2tdb()) n++;
   if(test_grav_vec()) n++;
   if(test_grav_undef()) n++;
   if(test_vector2radec()) n++;
@@ -1315,8 +1373,6 @@ int main() {
 
   if(test_unix_time()) n++;
   if(test_diff_time()) n++;
-  if(test_set_time()) n++;
-  if(test_get_time()) n++;
 
   n += test_dates();
 
