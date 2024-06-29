@@ -5178,9 +5178,14 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
  * Returns the TDB - TT time difference in seconds for a given TT date.
  *
  *
+ * Note, as of version 1.1, it uses the same calculation as the more precise original tdb2tt().
+ *
+ *
  * REFERENCES
  * <ol>
- * <li><a><href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
+ * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a>
+ * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
  * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a>
  * </li>
  * </ol>
@@ -5194,9 +5199,16 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
  * @author Attila Kovacs
  */
 double tt2tdb(double jd_tt) {
+  double dt;
+
+  tdb2tt(jd_tt, NULL, &dt);
+  return dt;
+
+  /*
   const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-  const double g = TWOPI * (357.528 + 35999.050 * t) * DEGREE;
-  return 0.001658 * sin(g + 0.0167 * sin(g));
+  const double g = 6.239996 + 630.0221385924 * t;
+  return 0.001657 * sin(g + 0.01671 * sin(g));
+  */
 }
 
 /**
