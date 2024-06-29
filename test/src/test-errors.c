@@ -874,6 +874,28 @@ static int test_obs_posvel() {
   return n;
 }
 
+static int test_time() {
+  novas_timespec time = {};
+  int n = 0;
+
+  if(check("time:set:time", -1, novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 37, 0.11, NULL))) n++;
+  if(check("time:set:scale:-1", -1, novas_set_time(-1, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
+  if(check("time:set:scale:hi", -1, novas_set_time(NOVAS_TIMESCALES, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
+
+  if(check("time:get:time", -1, novas_get_time(NULL, NOVAS_TT))) n++;
+  if(check("time:get:scale:-1", -1, novas_get_time(&time, -1))) n++;
+  if(check("time:get:scale:hi", -1, novas_get_time(&time, NOVAS_TIMESCALES))) n++;
+
+  if(check("time:offset:time", -1, novas_offset_time(NULL, 0.1, &time))) n++;
+  if(check("time:offset:out", -1, novas_offset_time(&time, 0.1, NULL))) n++;
+  if(check("time:offset:both", -1, novas_offset_time(NULL, 0.1, NULL))) n++;
+
+  if(check("time:diff:t1", -1, novas_diff_time(NULL, &time))) n++;
+  if(check("time:diff:t2", -1, novas_diff_time(&time, NULL))) n++;
+  if(check("time:diff:both", -1, novas_diff_time(NULL, NULL))) n++;
+
+  return n;
+}
 
 int main() {
   int n = 0;

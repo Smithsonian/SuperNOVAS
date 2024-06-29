@@ -5351,6 +5351,10 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * <ol>
  * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
+ * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
+ * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
  * </ol>
  *
  * @param jd_tdb         [day] Barycentric Dynamic Time (TDB) based Julian date
@@ -5370,6 +5374,11 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
           + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
           + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
+  // The simpler formula with a precision of ~30 us.
+//  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
+//  const double g = 6.239996 + 630.0221385924 * t;
+//  const double d = 0.001657 * sin(g + 0.01671 * sin(g));
+
   if(jd_tt)
     *jd_tt = jd_tdb - d / DAY;
   if(secdiff)
@@ -5381,17 +5390,18 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
 /**
  * Returns the TDB - TT time difference in seconds for a given TT date.
  *
- *
- * Note, as of version 1.1, it uses the same calculation as the more precise original tdb2tt().
+ * Note, as of version 1.1, it uses the same calculation as the more precise original tdb2tt(). It thus has an acuracy of
+ * about 10 &mu;s vs around 30 &mu;s with the simpler formula from the references below.
  *
  *
  * REFERENCES
  * <ol>
+ * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
- * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a>
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
  * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
- * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a>
- * </li>
+ * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
  * </ol>
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date
@@ -5407,12 +5417,6 @@ double tt2tdb(double jd_tt) {
 
   tdb2tt(jd_tt, NULL, &dt);
   return dt;
-
-  /*
-  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-  const double g = 6.239996 + 630.0221385924 * t;
-  return 0.001657 * sin(g + 0.01671 * sin(g));
-  */
 }
 
 /**
