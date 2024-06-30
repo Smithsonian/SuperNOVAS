@@ -418,6 +418,9 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * to a dfferent coordinate system of choice afterwards if you want the results expressed in
  * more than one coordinate system.
  *
+ * It implements the same geometric transformations as `place()` but at a reduced computational
+ * cost. See `place()` for references.
+ *
  * @param source          Pointer to a celestial source data structure that is observed
  * @param frame           Observer frame, defining the location and time of observation
  * @param sys             The coordinate system in which to return positions and velocities.
@@ -433,6 +436,7 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * @sa novas_make_frame()
  * @sa novas_sky_pos()
  * @sa novas_transform_vector()
+ * @sa place()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -516,6 +520,9 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  *
  * The approximate 'inverse' of this function is novas_app_to_geom().
  *
+ * This function implements the same aberration and gravitational deflection corrections as
+ * `place()`, but at reduced computational cost. See `place()` for references.
+ *
  * @param object        Pointer to a celestial object data structure that is observed
  * @param frame         The observer frame, defining the location and time of observation
  * @param sys           The coordinate system in which to return the apparent sky location
@@ -527,6 +534,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * @sa novas_geom_posvel()
  * @sa novas_app_to_hor()
  * @sa novas_app_to_geom()
+ * @sa place()
  *
  * @since 1.1
  * @author Attila Kovacs
