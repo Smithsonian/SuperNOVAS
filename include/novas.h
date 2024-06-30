@@ -1120,12 +1120,12 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
 
 int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *output);
 
-int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
+int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model,
         double *az, double *el);
 
 int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs);
 
-int novas_hor_to_app(double az, double el, const novas_frame *frame, RefractionModel ref_model, enum novas_reference_system sys,
+int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys,
         double *ra, double *dec);
 
 int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system,

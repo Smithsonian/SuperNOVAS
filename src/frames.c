@@ -624,10 +624,10 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
  * refraction correction for Earth's atmosphere. If no such model is provided the calculated
  * elevation will be the astrometric elevation without a refraction correction.
  *
+ * @param frame       Observer frame, defining the time and place of observation (on Earth).
  * @param sys         Astronomical coordinate system in which the observed position is given.
  * @param ra          [h] Observed apparent right ascension (R.A.) coordinate
  * @param dec         [deg] Observed apparent declination coordinate
- * @param frame       Observer frame, defining the time and place of observation (on Earth).
  * @param ref_model   An appropriate refraction model, or NULL to calculate unrefracted elevation.
  *                    Depending on the refraction model, you might want to make sure that the
  *                    weather parameters were set when the observing frame was defined.
@@ -642,7 +642,7 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
  * @sa novas_optical_refraction()
  * @sa novas_hor_to_app();
  */
-int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, const novas_frame *frame, RefractionModel ref_model,
+int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model,
         double *az, double *el) {
   static const char *fn = "novas_app_to_hor";
   const novas_timespec *time;
@@ -715,9 +715,9 @@ int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, con
  * refraction correction for Earth's atmosphere. If no such model is provided, the provided
  * elevation value will be assumed to be an astrometric elevation without a refraction correction.
  *
+ * @param frame       Observer frame, defining the time and place of observation (on Earth).
  * @param az          [deg] Observed azimuth angle. It may be NULL if not required.
  * @param el          [deg] Observed elevation angle. It may be NULL if not required.
- * @param frame       Observer frame, defining the time and place of observation (on Earth).
  * @param ref_model   An appropriate refraction model, or NULL to assume unrefracted elevation.
  *                    Depending on the refraction model, you might want to make sure that the
  *                    weather parameters were set when the observing frame was defined.
@@ -731,7 +731,7 @@ int novas_app_to_hor(enum novas_reference_system sys, double ra, double dec, con
  * @sa novas_app_to_hor()
  * @sa novas_make_frame()
  */
-int novas_hor_to_app(double az, double el, const novas_frame *frame, RefractionModel ref_model, enum novas_reference_system sys,
+int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys,
         double *ra, double *dec) {
   static const char *fn = "novas_hor_to_app";
   const novas_timespec *time;
