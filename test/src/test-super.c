@@ -645,6 +645,7 @@ static int test_set_time() {
   const double CT0 = 2443144.5003725;
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
+  const double LG = 6.969291e-10;
 
   tdb2tt(ijd, NULL, &dt);
 
@@ -681,7 +682,7 @@ static int test_set_time() {
   }
 
   dt = novas_get_split_time(&tcg, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
-  dt += LB * (novas_get_time(&tt, NOVAS_TT) - CT0);
+  dt += LG * (novas_get_time(&tt, NOVAS_TT) - CT0);
   if(!is_ok("set_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
     printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
     return 1;
@@ -724,7 +725,7 @@ static int test_get_time() {
   const double CT0 = 2443144.5003725;
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
-
+  const double LG = 6.969291e-10;
 
   if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, tdb + 0.25, leap, dut1, &tt))) return 1;
 
@@ -754,7 +755,7 @@ static int test_get_time() {
   }
 
   dt = novas_get_split_time(&tt, NOVAS_TCG, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
-  dt -= LB * (novas_get_time(&tt, NOVAS_TT) - CT0);
+  dt -= LG * (novas_get_time(&tt, NOVAS_TT) - CT0);
   if(!is_ok("get_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
     printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
     return 1;
@@ -1347,6 +1348,7 @@ static int test_diff_time() {
   double dt;
 
   const double LB = 1.550519768e-8;
+  const double LG = 6.969291e-10;
 
   if(!is_ok("diff_time:set", novas_set_unix_time(sec, 1, 37, 0.11, &t))) return 1;
   if(!is_ok("diff_time:incr", novas_offset_time(&t, 0.5, &t1))) return 1;
@@ -1361,9 +1363,15 @@ static int test_diff_time() {
     return 1;
   }
 
-  dt = novas_diff_coordinate_time(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
-  if(!is_ok("diff_time:check:dec", fabs(dt) >= 1e-9)) {
-    printf("!!! missed coords by %.9f\n", dt);
+  dt = novas_tcb_diff(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
+  if(!is_ok("diff_time:check:tcb", fabs(dt) >= 1e-9)) {
+    printf("!!! missed TCB by %.9f\n", dt);
+    return 1;
+  }
+
+  dt = novas_tcg_diff(&t, &t1) - (1.0 + LG) * novas_diff_time(&t, &t1);
+  if(!is_ok("diff_time:check:tcg", fabs(dt) >= 1e-9)) {
+    printf("!!! missed TCG by %.9f\n", dt);
     return 1;
   }
 
