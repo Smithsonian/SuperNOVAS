@@ -718,11 +718,13 @@ static int test_get_time() {
   novas_timespec tt;
   int leap = 32;
   double dut1 = 0.1;
-  double dt;
+  double dt, fjd;
+  long ijd;
 
   const double CT0 = 2443144.5003725;
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
+
 
   if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, tdb + 0.25, leap, dut1, &tt))) return 1;
 
@@ -773,6 +775,45 @@ static int test_get_time() {
   dt = novas_get_split_time(&tt, NOVAS_UT1, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
   if(!is_ok("get_time:check:ut1-utc", fabs(dt * DAY - dut1) > 1e-9)) {
     printf("!!! UT1-UTC: %.6f\n", dt * DAY);
+    return 1;
+  }
+
+  tt.fjd_tt = 0.0;
+  dt = novas_get_split_time(&tt, NOVAS_TAI, &ijd) - (1.0 - 32.184 / DAY);
+  if(!is_ok("get_time:wrap:lo:check:fjd", fabs(dt * DAY) > 1e-9)) {
+    printf("!!! delta: %.9f\n", dt * DAY);
+    return 1;
+  }
+  if(!is_ok("get_time:wrap:lo:check:ijd", (ijd + 1) != tt.ijd_tt)) {
+    printf("!!! ijd: &ld (expected %ld)\n", ijd, tt.ijd_tt - 1);
+    return 1;
+  }
+
+  // Same with NULL ijd...
+  dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - (1.0 - 32.184 / DAY);
+  if(!is_ok("get_time:wrap:lo:check:fjd", fabs(dt * DAY) > 1e-9)) {
+    printf("!!! delta: %.9f\n", dt * DAY);
+    return 1;
+  }
+
+
+  tt.fjd_tt = 1.0 - 1e-9 / DAY;
+  tt.tt2tdb = 1e-3;
+
+  dt = novas_get_split_time(&tt, NOVAS_TDB, &ijd);
+  if(!is_ok("get_time:wrap:hi:check:fjd", dt * DAY >= 1e-3)) {
+    printf("!!! delta: %.9f\n", dt * DAY);
+    return 1;
+  }
+  if(!is_ok("get_time:wrap:hi:check:ijd", (ijd - 1) != tt.ijd_tt)) {
+    printf("!!! ijd: &ld (expected %ld)\n", ijd, tt.ijd_tt + 1);
+    return 1;
+  }
+
+  // Same with NULL ijd
+  dt = novas_get_split_time(&tt, NOVAS_TDB, NULL);
+  if(!is_ok("get_time:wrap:hi:check:fjd", dt * DAY >= 1e-3)) {
+    printf("!!! delta: %.9f\n", dt * DAY);
     return 1;
   }
 
@@ -1283,6 +1324,15 @@ static int test_unix_time() {
   }
   if(!is_ok("unix_time:neg:check:nsec", abs(nsec - nanos) > 0)) {
     printf("!!! nsec %ld  %ld\n", nsec, nanos);
+    return 1;
+  }
+
+  // Check rounding up to next second.
+  if(!is_ok("unix_time:wrap", novas_set_unix_time(sec, 999999999L, 0, 0.11, &t))) return 1;
+  t.fjd_tt += 6e-10 / DAY;
+  novas_get_unix_time(&t, &nsec);
+  if(!is_ok("unix_time:wrap:check:nsec", nsec > 0)) {
+    printf("!!! nsec %ld\n", nsec);
     return 1;
   }
 
