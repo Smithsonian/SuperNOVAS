@@ -15,9 +15,6 @@ available on the `main` branch.
 ### Fixed
 
  - `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
- 
- - `tdb2tt()` had the wrong time offset in NOVAS C 3.1. Its zero was defined at J2000, whereas it should have been
-   1977 January 1, 0h 0m 0s TAI, corrssponding to JD<sub>TT</sub> = 2443144.5003725.
    
  - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
    coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
@@ -70,7 +67,8 @@ available on the `main` branch.
  
  - Added new observer locations `NOVAS_AIRBORNE_OBSERVER` for an observer moving relative to the surface of Earth e.g.
    in an aircraft or balloon based telescope platform, and `NOVAS_SOLAR_SYSTEM_OBSERVER` for spacecraft orbiting the 
-   Sun.
+   Sun. Both of these use the `observer.near_earth` strcture to define (positions and) velocities as apropriate. Hence
+   the `'near_earth` name is a bit misleading, but sticks for back compatibility.
    
  - Added coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
    `NOVAS_J2000` for the J2000 dynamical reference system.

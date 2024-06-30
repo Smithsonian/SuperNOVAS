@@ -456,7 +456,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
+    return novas_error(-1, EINVAL, fn, "invalid reference system", sys);
 
   // ---------------------------------------------------------------------
   // Earth can only be an observed object when 'location' is not on Earth.
