@@ -33,17 +33,18 @@
 #define UNIX_J2000                  (UNIX_SECONDS_0UTC_1JAN2000 + (IDAY / 2))
 
 // IAU 2006 Resolution B3
-#define TCB_T0      2443144.5003725       ///< 1977 January 1, 0h 0m 0s TAI
-#define TCB_LB      1.550519768e-8
-#define TCB_TDB0    (6.55e-5 / DAY)
+#define TC_T0      2443144.5003725       ///< 1977 January 1, 0h 0m 0s TAI
+#define TC_LB      1.550519768e-8        ///< Relative rate at which Barycentric coordinate time progresses fastern than time on Earth.
+#define TC_LG      6.969291e-10          ///< Relative rate at which Geocentric coordinate time progresses fastern than time on Earth.
+#define TC_TDB0    (6.55e-5 / DAY)       ///< TDB time offset at TC_T0
 
-#define E9          1000000000
+#define E9          1000000000           ///< 10<sup>9</sup> as integer
 /// \endcond
 
 
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
- * timescale
+ * timescale.
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
@@ -69,6 +70,19 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
  * The split into the integer and fractional parts can be done in any convenient way. The highest
  * precision is reached if the fractional part is on the order of &le;= 1 day.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IAU 1991, RECOMMENDATION III. XXIst General Assembly of the
+ * International Astronomical Union. Retrieved 6 June 2019.</li>
+ * <li>IAU 2006 resolution 3, see Recommendation and footnotes, note 3.</li>
+ * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
+ * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
+ * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
+ * </ol>
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param ijd           [day] integer part of the Julian day in the specified timescale
@@ -102,13 +116,13 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
     case NOVAS_TT:
       break;
     case NOVAS_TCB:
-      fjd -= time->tt2tdb / DAY - TCB_TDB0;
-      fjd -= TCB_LB * ((ijd - TCB_T0) + fjd); // -> TDB
+      fjd -= time->tt2tdb / DAY - TC_TDB0;
+      fjd -= TC_LB * ((ijd - TC_T0) + fjd); // -> TDB
       time->tt2tdb = tt2tdb(ijd + fjd);
       fjd -= time->tt2tdb / DAY;                // -> TT
       break;
     case NOVAS_TCG:
-      fjd -= TCB_LB * ((ijd - TCB_T0) + fjd);
+      fjd -= TC_LG * ((ijd - TC_T0) + fjd);
       break;
     case NOVAS_TDB: {
       time->tt2tdb = tt2tdb(ijd + fjd);
@@ -201,6 +215,19 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * Returns the fractional Julian date of an astronomical time in the specified timescale, as an
  * integer and fractional part.
  *
+ * REFERENCES:
+ * <ol>
+ * <li>IAU 1991, RECOMMENDATION III. XXIst General Assembly of the
+ * International Astronomical Union. Retrieved 6 June 2019.</li>
+ * <li>IAU 2006 resolution 3, see Recommendation and footnotes, note 3.</li>
+ * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
+ * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
+ * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
+ * </ol>
+ *
  * @param time        Pointer to the astronimical time specification data structure.
  * @param timescale   The astronomical time scale in which the returned Julian Date is to be
  *                    provided
@@ -235,10 +262,11 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
       f += time->tt2tdb / DAY;
       break;
     case NOVAS_TCB:
-      f += time->tt2tdb / DAY - TCB_TDB0;
-      /* no break */
+      f += time->tt2tdb / DAY - TC_TDB0;
+      f += TC_LB * ((time->ijd_tt - TC_T0) + f);
+      break;
     case NOVAS_TCG:
-      f += TCB_LB * ((time->ijd_tt - TCB_T0) + f);
+      f += TC_LG * ((time->ijd_tt - TC_T0) + f);
       break;
     case NOVAS_TAI:
       f -= DTA;
@@ -282,7 +310,8 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  *
  * @sa novas_set_time()
  * @sa novas_offset_time()
- * @sa novas_diff_coordinate_time()
+ * @sa novas_tcb_diff()
+ * @sa novas_tcg_diff()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -297,24 +326,47 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
 }
 
 /**
- * Returns the Coordinate Time based time difference (t1 - t2) in days between two
- * astronomical time specifications. Coordinate time such as TCG or TCB progress slightly faster
- * than time on Earth due to the lack og gravitational time dilation.
+ * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between
+ * two astronomical time specifications. TCG progresses slightly faster, by a relative rate about
+ * 1.6&times10<sup>-8</sup> higher, than time on Earth due to the lack of gravitational time
+ * dilation by the Earth or Sun.
  *
  * @param t1    First time
  * @param t2    Second time
  * @return      [day] Precise coordinate time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
+ * @sa novas_tgc_diff()
  * @sa novas_diff_time()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_diff_coordinate_time(const novas_timespec *t1, const novas_timespec *t2) {
-  return novas_diff_time(t1, t2) * (1.0 + TCB_LB);
+double novas_tcb_diff(const novas_timespec *t1, const novas_timespec *t2) {
+  return novas_diff_time(t1, t2) * (1.0 + TC_LB);
 }
 
+
+/**
+ * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between two
+ * astronomical time specifications. TCG progresses slightly faster, by a relative rate about
+ * 7&times10<sup>-10</sup> higher, than time on Earth due to the lack of gravitational time
+ * dilation by Earth.
+ *
+ * @param t1    First time
+ * @param t2    Second time
+ * @return      [day] Precise coordinate time difference (t1-t2), or NAN if one of the inputs was
+ *              NULL (errno will be set to EINVAL)
+ *
+ * @sa novas_tcb_diff()
+ * @sa novas_diff_time()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+double novas_tcg_diff(const novas_timespec *t1, const novas_timespec *t2) {
+  return novas_diff_time(t1, t2) * (1.0 + TC_LG);
+}
 
 /**
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
