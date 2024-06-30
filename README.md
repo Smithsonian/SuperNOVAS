@@ -468,7 +468,7 @@ location, you can proceed from the `sky_pos` data you obtained above (in whichev
  double az, el;   // [deg] local azimuth and elevation angles to populate
   
  // Convert the apparent position in CIRS on sky to horizontal coordinates
- novas_app_to_hor(NOVAS_CIRS, apparent.ra, apparent.dec, &obs_frame, novas_standard_refraction, &az, &el);
+ novas_app_to_hor(&obs_frame, NOVAS_CIRS, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el);
 ``` 
 
 Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and 
