@@ -44,11 +44,13 @@
 
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
- * timescale.
+ * timescale. The time set this way is accurate to a few &mu;s (microsecond) due to the inherent
+ * precision of the double-precision argument. For higher precision applications you may use
+ * `novas_set_split_time()` instead, which has an inherent accuracy at the picoseconds level.
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
- * @param leap          [s] Leap seconds
+ * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
  * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
@@ -69,7 +71,8 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
 /**
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
  * The split into the integer and fractional parts can be done in any convenient way. The highest
- * precision is reached if the fractional part is on the order of &le;= 1 day.
+ * precision is reached if the fractional part is on the order of &le;= 1 day. In that case, the
+ * time may be specified to picosecond accuracy, if needed.
  *
  * REFERENCES:
  * <ol>
@@ -87,7 +90,7 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param ijd           [day] integer part of the Julian day in the specified timescale
  * @param fjd           [day] fractional part Julian day value in the specified timescale
- * @param leap          [s] Leap seconds
+ * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
  * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
@@ -192,7 +195,10 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
 }
 
 /**
- * Returns the fractional Julian date of an astronomical time in the specified timescale.
+ * Returns the fractional Julian date of an astronomical time in the specified timescale. The
+ * returned time is accurate to a few &mu;s (microsecond) due to the inherent precision of the
+ * double-precision result. For higher precision applications you may use `novas_get_split_time()`
+ * instead, which has an inherent accuracy at the picosecond level.
  *
  * @param time        Pointer to the astronimical time specification data structure.
  * @param timescale   The astronomical time scale in which the returned Julian Date is to be
@@ -213,7 +219,9 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
 
 /**
  * Returns the fractional Julian date of an astronomical time in the specified timescale, as an
- * integer and fractional part.
+ * integer and fractional part. The two-component split of the time allows for abolute precisions
+ * at the picosecond level, as opposed to `novas_set_time()`, whose precision is limited to a
+ * ew microseconds. Ultimately, the accutacy of the time will depend on how it was set.
  *
  * REFERENCES:
  * <ol>
@@ -333,7 +341,7 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
  *
  * @param t1    First time
  * @param t2    Second time
- * @return      [day] Precise coordinate time difference (t1-t2), or NAN if one of the inputs was
+ * @return      [day] Precise TCB time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
  * @sa novas_tgc_diff()
@@ -355,7 +363,7 @@ double novas_tcb_diff(const novas_timespec *t1, const novas_timespec *t2) {
  *
  * @param t1    First time
  * @param t2    Second time
- * @return      [day] Precise coordinate time difference (t1-t2), or NAN if one of the inputs was
+ * @return      [day] Precise TCG time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
  * @sa novas_tcb_diff()
@@ -369,13 +377,15 @@ double novas_tcg_diff(const novas_timespec *t1, const novas_timespec *t2) {
 }
 
 /**
- * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
- * The split into the integer and fractional parts can be done in any convenient way. The highest
- * precision is reached if the fractional part is on the order of &le;= 1 day.
+ * Sets an astronomical time to a UNIX time value. UNIX time is defined as UTC seconds measured
+ * since 0 UTC, 1 Jan 1970 (the start of the UNIX era). Specifying time this way supports
+ * precisions to the nanoseconds level by construct. Specifying UNIX time in split seconds and
+ * nanoseconds is a common way CLIB handles precision time, e.g. with `struct timespec` and
+ * functions like `clock_gettime()` (see `time.h`).
  *
  * @param unix_time   [s] UNIX time (UTC) seconds
  * @param nanos       [ns] UTC sub-second component
- * @param leap        [s] Leap seconds
+ * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C.
  * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
  * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
  *                    for all applications.
@@ -384,6 +394,8 @@ double novas_tcg_diff(const novas_timespec *t1, const novas_timespec *t2) {
  *
  * @sa novas_set_time()
  * @sa novas_get_unix_time()
+ * @sa clock_gettime()
+ * @sa struct timespec
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -409,7 +421,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  * Returns the UNIX time for an astronomical time instant.
  *
  * @param time      The astronomical time scale in which the returned Julian Date is to be provided
- * @param nanos     [ns] UTC sub-second component.
+ * @param nanos     [ns] UTC sub-second component. It may be NULL if not required.
  * @return          [s] The integer UNIX time
  *
  * @sa novas_set_unix_time()
