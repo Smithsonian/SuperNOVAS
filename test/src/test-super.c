@@ -74,11 +74,10 @@ static int is_ok(const char *func, int error) {
 }
 
 static int is_equal(const char *func, double v1, double v2, double prec) {
-  if(fabs(v1 - v2) > prec) {
-    fprintf(stderr, "ERROR! %s (%g != %g)\n", func, v1, v2);
-    return 0;
-  }
-  return 1;
+  if(fabs(v1 - v2) < prec) return 1;
+
+  fprintf(stderr, "ERROR! %s (%g != %g)\n", func, v1, v2);
+  return 0;
 }
 
 static double vlen(double *pos) {
@@ -1379,6 +1378,36 @@ static int test_optical_refraction() {
   return 0;
 }
 
+static int test_radio_refraction() {
+  const double exp[] = { 1365.48, 512.67, 294.20, 206.08, 156.43, 122.56, 98.08, 80.39, 67.44,
+                         57.34, 48.54, 40.21, 32.32, 25.33, 19.50, 14.42, 9.01, 3.11};
+  on_surface obs = {};
+  int i, el;
+
+  obs.temperature = 10.0;
+  obs.pressure = 1000.0;
+  obs.humidity = 40.0;
+
+  for(i = 0, el = 1; el < 90.0; i++, el += 5) {
+    char label[50];
+    double del, del1;
+
+    sprintf(label, "radio_refraction:%d:astro", el);
+    del = novas_radio_refraction(NOVAS_J2000, &obs, NOVAS_REFRACT_ASTROMETRIC, el);
+
+    if(!is_equal(label, del, exp[i] / 3600.0, 1e-3)) return -1;
+    del1 = novas_radio_refraction(NOVAS_J2000, &obs, NOVAS_REFRACT_OBSERVED, el + del);
+
+    sprintf(label, "radio_refraction:%d:trip", el);
+    if(!is_equal(label, del, del1, 1e-4)) return 1;
+  }
+
+  printf("\n");
+
+  return 0;
+}
+
+
 static int test_inv_refract() {
   on_surface obs = {};
   int el;
@@ -1391,7 +1420,11 @@ static int test_inv_refract() {
     char label[50];
 
     sprintf(label, "inv_refract:observed:%d", el);
-    if(!is_equal(label, novas_inv_refract(novas_optical_refraction, NOVAS_J2000, &obs, NOVAS_REFRACT_OBSERVED, el), refract_astro(&obs, NOVAS_WEATHER_AT_LOCATION, 90 - el), 1e-3)) return 1;
+    if(!is_equal(label,
+            novas_inv_refract(novas_optical_refraction, NOVAS_J2000, &obs, NOVAS_REFRACT_OBSERVED, el),
+            refract_astro(&obs, NOVAS_WEATHER_AT_LOCATION, 90 - el),
+            1e-4))
+      return 1;
   }
 
   return 0;
@@ -1435,7 +1468,7 @@ int main() {
   if(test_standard_refraction()) n++;
   if(test_optical_refraction()) n++;
   if(test_inv_refract()) n++;
-
+  if(test_radio_refraction()) n++;
 
   n += test_dates();
 

@@ -123,10 +123,9 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
     case NOVAS_TT:
       break;
     case NOVAS_TCB:
-      fjd -= time->tt2tdb / DAY - TC_TDB0;
-      fjd -= TC_LB * ((ijd - TC_T0) + fjd); // -> TDB
       time->tt2tdb = tt2tdb(ijd + fjd);
-      fjd -= time->tt2tdb / DAY;                // -> TT
+      fjd -= time->tt2tdb / DAY - TC_TDB0;
+      fjd -= TC_LB * ((ijd - TC_T0) + fjd);
       break;
     case NOVAS_TCG:
       fjd -= TC_LG * ((ijd - TC_T0) + fjd);
