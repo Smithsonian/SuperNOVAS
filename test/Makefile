@@ -32,7 +32,7 @@ cov.info:
 	geninfo . -b . -o $@
 
 .PHONY: coverage
-coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov timescale.c.gcov
+coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov timescale.c.gcov refract.c.gcov
 	make clean-test
 	make cov
 
