@@ -1430,6 +1430,45 @@ static int test_inv_refract() {
   return 0;
 }
 
+static int test_make_frame() {
+  novas_timespec ts = {};
+  novas_frame frame = {};
+  observer obs = {};
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+  make_observer_at_geocenter(&obs);
+
+  if(!is_ok("make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 1.0, 2.0, &frame))) return 1;
+
+  if(!is_ok("make_frame:time", memcmp(&frame.time, &ts, sizeof(ts)))) return 1;
+  if(!is_ok("make_frame:obs", memcmp(&frame.observer, &obs, sizeof(obs)))) return 1;
+  if(!is_ok("make_frame:dx", frame.dx != 1.0)) return 1;
+  if(!is_ok("make_frame:dy", frame.dy != 2.0)) return 1;
+
+  return 0;
+}
+
+static int test_change_observer() {
+  novas_timespec ts = {};
+  novas_frame frame = {}, out = {};
+  observer obs = {};
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+  make_observer_at_geocenter(&obs);
+
+  if(!is_ok("change_observer:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 1.0, 2.0, &frame))) return 1;
+
+  make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs);
+  if(!is_ok("change_observer", novas_change_observer(&frame, &obs, &out))) return 1;
+  if(!is_ok("change_observer:check", memcmp(&out.observer, &obs, sizeof(obs)))) return 1;
+
+  if(!is_ok("change_observer:same", novas_change_observer(&frame, &obs, &frame))) return 1;
+  if(!is_ok("change_observer:same:check", memcmp(&frame.observer, &obs, sizeof(obs)))) return 1;
+
+  return 0;
+}
+
+
 int main() {
   int n = 0;
 
@@ -1469,6 +1508,8 @@ int main() {
   if(test_optical_refraction()) n++;
   if(test_inv_refract()) n++;
   if(test_radio_refraction()) n++;
+  if(test_make_frame()) n++;
+  if(test_change_observer()) n++;
 
   n += test_dates();
 
