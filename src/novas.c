@@ -6523,8 +6523,8 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
 
   zd_obs = fabs(zd_obs);
 
-  // Compute refraction up to zenith distance 90.1 degrees.
-  if(zd_obs > 90.1)
+  // Compute refraction up to zenith distance 91 degrees.
+  if(zd_obs > 91.0)
     return 0.0;
 
   // If observed weather data are available, use them.  Otherwise, use
