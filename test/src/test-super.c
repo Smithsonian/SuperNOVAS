@@ -73,6 +73,14 @@ static int is_ok(const char *func, int error) {
   return !error;
 }
 
+static int is_equal(const char *func, double v1, double v2, double prec) {
+  if(fabs(v1 - v2) > prec) {
+    fprintf(stderr, "ERROR! %s (%g != %g)\n", func, v1, v2);
+    return 0;
+  }
+  return 1;
+}
+
 static double vlen(double *pos) {
   return sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]);
 }
@@ -669,48 +677,30 @@ static int test_set_time() {
   if(!is_ok("set_time:set:ut1", novas_set_split_time(NOVAS_UT1, ijd, fjd, leap, dut1, &ut1))) return 1;
 
   dt = remainder(novas_get_split_time(&TDB, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL), 1.0);
-  if(!is_ok("set_time:check:tdb-tt", fabs(dt * DAY + tt2tdb(novas_get_time(&tt, NOVAS_TT))) > 1e-9)) {
+  if(!is_equal("set_time:check:tdb-tt", dt * DAY, -tt2tdb(novas_get_time(&tt, NOVAS_TT)), 1e-9)) {
     printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, -tt2tdb(ijd + fjd));
     return 1;
   }
 
   dt = novas_get_split_time(&tcb, NOVAS_TT, NULL) - novas_get_split_time(&TDB, NOVAS_TT, NULL);
   dt += LB * (novas_get_time(&TDB, NOVAS_TDB) - CT0) - TDB0 / DAY;
-  if(!is_ok("set_time:check:tcb-tdb", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCB-TDB: %.9f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("set_time:check:tcb-tdb", dt * DAY, 0.0, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tcg, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
   dt += LG * (novas_get_time(&tt, NOVAS_TT) - CT0);
-  if(!is_ok("set_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("set_time:check:tcg-tt", dt * DAY, 0.0, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_TT, NULL) - novas_get_split_time(&tai, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:tt-tai", fabs(dt * DAY + 32.184) > 1e-9)) {
-    printf("!!! TT-TAI: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("set_time:check:tt-tai", dt * DAY, -32.184, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&gps, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:gps-tai", fabs(dt * DAY + 19.0) > 1e-9)) {
-    printf("!!! TAI-GPS: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("set_time:check:gps-tai", dt * DAY, -19.0, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tai, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:tai-utc", fabs(dt * DAY + leap) > 1e-9)) {
-    printf("!!! TAI-UTC: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("set_time:check:tai-utc", dt * DAY, -leap, 1e-9)) return 1;
 
   dt = novas_get_split_time(&ut1, NOVAS_TT, NULL) - novas_get_split_time(&utc, NOVAS_TT, NULL);
-  if(!is_ok("set_time:check:ut1-utc", fabs(dt * DAY + dut1) > 1e-9)) {
-    printf("!!! UT1-UTC: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("set_time:check:ut1-utc", dt * DAY, -dut1, 1e-9)) return 1;
 
   return 0;
 }
@@ -730,61 +720,35 @@ static int test_get_time() {
   if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, tdb + 0.25, leap, dut1, &tt))) return 1;
 
   dt = novas_get_time(&tt, NOVAS_TT) - (tt.ijd_tt + tt.fjd_tt);
-  if(!is_ok("get_time:check:nosplit", fabs(dt * DAY) > 1e-5)) {
-    printf("!!! Delta split: %.9f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:check:nosplit", dt * DAY, 0.0, 1e-5)) return 1;
 
   dt = remainder(novas_get_split_time(&tt, NOVAS_TDB, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL), 1.0);
-  if(!is_ok("get_time:check:tdb-tt", fabs(dt * DAY - tt2tdb(novas_get_time(&tt, NOVAS_TT))) > 1e-9)) {
-    printf("!!! TT-TDB: %.9f (expected %.9f)\n", dt * DAY, tt2tdb(tdb));
-    return 1;
-  }
+  if(!is_equal("get_time:check:tdb-tt", dt * DAY, tt2tdb(novas_get_time(&tt, NOVAS_TT)), 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_TCB, NULL) - novas_get_split_time(&tt, NOVAS_TDB, NULL);
   dt -= LB * (novas_get_time(&tt, NOVAS_TDB) - CT0) - TDB0 / DAY;
-  if(!is_ok("get_time:check:tcb-tdb", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCB-TDB: %.9f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:check:tcb-tdb", dt * DAY, 0.0, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_TT, NULL) - novas_get_split_time(&tt, NOVAS_TAI, NULL);
-  if(!is_ok("get_time:check:tt-tai", fabs(dt * DAY - 32.184) > 1e-9)) {
-    printf("!!! TT-TAI: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:check:tt-tai", dt * DAY, 32.184, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_TCG, NULL) - novas_get_split_time(&tt, NOVAS_TT, NULL);
   dt -= LG * (novas_get_time(&tt, NOVAS_TT) - CT0);
-  if(!is_ok("get_time:check:tcg-tt", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! Delta TCG-TT: %.9f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:check:tcg-tt", dt * DAY, 0.0, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - novas_get_split_time(&tt, NOVAS_GPS, NULL);
-  if(!is_ok("get_time:check:gps-tai", fabs(dt * DAY - 19.0) > 1e-9)) {
-    printf("!!! TAI-GPS: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:check:gps-tai", dt * DAY, 19.0, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
-  if(!is_ok("get_time:check:tai-utc", fabs(dt * DAY - leap) > 1e-9)) {
-    printf("!!! TAI-UTC: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:check:tai-utc", dt * DAY, leap, 1e-9)) return 1;
 
   dt = novas_get_split_time(&tt, NOVAS_UT1, NULL) - novas_get_split_time(&tt, NOVAS_UTC, NULL);
-  if(!is_ok("get_time:check:ut1-utc", fabs(dt * DAY - dut1) > 1e-9)) {
-    printf("!!! UT1-UTC: %.6f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:check:ut1-utc", dt * DAY, dut1, 1e-9)) return 1;
 
   tt.fjd_tt = 0.0;
   dt = novas_get_split_time(&tt, NOVAS_TAI, &ijd) - (1.0 - 32.184 / DAY);
-  if(!is_ok("get_time:wrap:lo:check:fjd", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! delta: %.9f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:wrap:lo:check:fjd", dt * DAY, 0.0, 1e-9)) return 1;
+
   if(!is_ok("get_time:wrap:lo:check:ijd", (ijd + 1) != tt.ijd_tt)) {
     printf("!!! ijd: &ld (expected %ld)\n", ijd, tt.ijd_tt - 1);
     return 1;
@@ -792,10 +756,7 @@ static int test_get_time() {
 
   // Same with NULL ijd...
   dt = novas_get_split_time(&tt, NOVAS_TAI, NULL) - (1.0 - 32.184 / DAY);
-  if(!is_ok("get_time:wrap:lo:check:fjd", fabs(dt * DAY) > 1e-9)) {
-    printf("!!! delta: %.9f\n", dt * DAY);
-    return 1;
-  }
+  if(!is_equal("get_time:wrap:lo:check:fjd", dt * DAY, 0.0, 1e-9)) return 1;
 
 
   tt.fjd_tt = 1.0 - 1e-9 / DAY;
@@ -1353,15 +1314,8 @@ static int test_diff_time() {
   if(!is_ok("diff_time:set", novas_set_unix_time(sec, 1, 37, 0.11, &t))) return 1;
   if(!is_ok("diff_time:incr", novas_offset_time(&t, 0.5, &t1))) return 1;
 
-  if(!is_ok("diff_time:check", fabs(novas_diff_time(&t1, &t) - 0.5) >= 1e-9)) {
-    printf("!!! diff %.9f (expected 0.5)\n", novas_diff_time(&t1, &t));
-    return 1;
-  }
-
-  if(!is_ok("diff_time:check:rev", fabs(novas_diff_time(&t, &t1) + 0.5) >= 1e-9)) {
-    printf("!!! diff %.9f (expected- 0.5)\n", novas_diff_time(&t, &t1));
-    return 1;
-  }
+  if(!is_equal("diff_time:check", novas_diff_time(&t1, &t), 0.5, 1e-9)) return 1;
+  if(!is_equal("diff_time:check:rev", novas_diff_time(&t, &t1), -0.5, 1e-9)) return 1;
 
   dt = novas_tcb_diff(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
   if(!is_ok("diff_time:check:tcb", fabs(dt) >= 1e-9)) {
@@ -1376,26 +1330,72 @@ static int test_diff_time() {
   }
 
   if(!is_ok("diff_time:decr", novas_offset_time(&t, -0.5, &t1))) return 1;
-  if(!is_ok("diff_time:check:decr", fabs(novas_diff_time(&t1, &t) + 0.5) >= 1e-9)) {
-    printf("!!! diff %.9f (expected -0.5)\n", novas_diff_time(&t1, &t));
-    return 1;
-  }
+  if(!is_equal("diff_time:check:decr", novas_diff_time(&t1, &t), -0.5, 1e-9)) return 1;
 
   if(!is_ok("diff_time:incr:same", novas_offset_time(&t, -0.5, &t))) return 1;
-  if(!is_ok("diff_time:incr:check:same", fabs(novas_diff_time(&t1, &t)) >= 1e-9)) {
-    printf("!!! diff %.9f\n", novas_diff_time(&t1, &t));
-    return 1;
-  }
+  if(!is_equal("diff_time:incr:check:same", novas_diff_time(&t1, &t), 0.0, 1e-9)) return 1;
 
   if(!is_ok("diff_time:incr:overflow", novas_offset_time(&t, 86400.0, &t))) return 1;
-  if(!is_ok("diff_time:incr:check:overflow", fabs(novas_diff_time(&t, &t1) - 86400.0) >= 1e-9)) {
-    printf("!!! diff %.9f\n", novas_diff_time(&t, &t1));
-    return 1;
+  if(!is_equal("diff_time:incr:check:overflow", novas_diff_time(&t, &t1), 86400.0, 1e-9)) return 1;
+
+  return 0;
+}
+
+static int test_standard_refraction() {
+  on_surface obs = {};
+  int el;
+
+  for(el = 1; el < 90.0; el += 5) {
+    char label[50];
+
+    sprintf(label, "standard_refraction:observed:%d", el);
+    if(!is_equal(label, novas_standard_refraction(NOVAS_J2000, &obs, NOVAS_REFRACT_OBSERVED, el), refract(&obs, NOVAS_STANDARD_ATMOSPHERE, 90 - el), 1e-3)) return 1;
+
+    sprintf(label, "standard_refraction:astro:%d", el);
+    if(!is_equal(label, novas_standard_refraction(NOVAS_J2000, &obs, NOVAS_REFRACT_ASTROMETRIC, el), refract_astro(&obs, NOVAS_STANDARD_ATMOSPHERE, 90 - el), 1e-3)) return 1;
   }
 
   return 0;
 }
 
+static int test_optical_refraction() {
+  on_surface obs = {};
+  int el;
+
+  obs.temperature = 10.0;
+  obs.pressure = 1000.0;
+  obs.humidity = 40.0;
+
+  for(el = 1; el < 90.0; el += 5) {
+    char label[50];
+
+    sprintf(label, "optical_refraction:observed:%d", el);
+    if(!is_equal(label, novas_optical_refraction(NOVAS_J2000, &obs, NOVAS_REFRACT_OBSERVED, el), refract(&obs, NOVAS_WEATHER_AT_LOCATION, 90 - el), 1e-3)) return 1;
+
+    sprintf(label, "optical_refraction:observed:%d", el);
+    if(!is_equal(label, novas_optical_refraction(NOVAS_J2000, &obs, NOVAS_REFRACT_ASTROMETRIC, el), refract_astro(&obs, NOVAS_WEATHER_AT_LOCATION, 90 - el), 1e-3)) return 1;
+  }
+
+  return 0;
+}
+
+static int test_inv_refract() {
+  on_surface obs = {};
+  int el;
+
+  obs.temperature = 10.0;
+  obs.pressure = 1000.0;
+  obs.humidity = 40.0;
+
+  for(el = 1; el < 90.0; el += 5) {
+    char label[50];
+
+    sprintf(label, "inv_refract:observed:%d", el);
+    if(!is_equal(label, novas_inv_refract(novas_optical_refraction, NOVAS_J2000, &obs, NOVAS_REFRACT_OBSERVED, el), refract_astro(&obs, NOVAS_WEATHER_AT_LOCATION, 90 - el), 1e-3)) return 1;
+  }
+
+  return 0;
+}
 
 int main() {
   int n = 0;
@@ -1429,8 +1429,13 @@ int main() {
   if(test_dxdy_to_dpsideps()) n++;
   if(test_cio_location()) n++;
 
+  // v1.1
   if(test_unix_time()) n++;
   if(test_diff_time()) n++;
+  if(test_standard_refraction()) n++;
+  if(test_optical_refraction()) n++;
+  if(test_inv_refract()) n++;
+
 
   n += test_dates();
 

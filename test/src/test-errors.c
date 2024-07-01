@@ -162,7 +162,7 @@ static int test_refract() {
   if(check("refract:model", 1, r == 0.0 && errno == EINVAL)) n++;
 
   errno = 0;
-  r = refract(&o, NOVAS_STANDARD_ATMOSPHERE, 91.0);
+  r = refract(&o, NOVAS_STANDARD_ATMOSPHERE, 91.01);
   if(check("refract:zd", 1, r == 0.0)) n++;
 
   return n;
@@ -905,6 +905,28 @@ static int test_time() {
   return n;
 }
 
+static int test_refraction() {
+  int n = 0;
+  on_surface obs = {};
+
+  if(check_nan("stardard_refraction:loc", novas_standard_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
+  if(check_nan("stardard_refraction:type:-2", novas_standard_refraction(NOVAS_JD_J2000, &obs, -2, 10.0))) n++;
+  if(check_nan("stardard_refraction:type:1", novas_standard_refraction(NOVAS_JD_J2000, &obs, 1, 10.0))) n++;
+  if(check_nan("stardard_refraction:el:neg", novas_standard_refraction(NOVAS_JD_J2000, &obs, 1, -10.0))) n++;
+
+  if(check_nan("optical_refraction:loc", novas_optical_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
+  if(check_nan("optical_refraction:type:-2", novas_optical_refraction(NOVAS_JD_J2000, &obs, -2, 10.0))) n++;
+  if(check_nan("optical_refraction:type:1", novas_optical_refraction(NOVAS_JD_J2000, &obs, 1, 10.0))) n++;
+  if(check_nan("optical_refraction:el:neg", novas_optical_refraction(NOVAS_JD_J2000, &obs, 1, -10.0))) n++;
+
+  if(check_nan("radio_refraction:loc", novas_radio_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
+  if(check_nan("radio_refraction:type:-2", novas_radio_refraction(NOVAS_JD_J2000, &obs, -2, 10.0))) n++;
+  if(check_nan("radio_refraction:type:1", novas_radio_refraction(NOVAS_JD_J2000, &obs, 1, 10.0))) n++;
+  if(check_nan("radio_refraction:el:neg", novas_radio_refraction(NOVAS_JD_J2000, &obs, 1, -10.0))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -998,6 +1020,7 @@ int main() {
 
   if(test_obs_posvel()) n++;
   if(test_time()) n++;
+  if(test_refraction()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

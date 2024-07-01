@@ -21,13 +21,18 @@
 
 
 static double novas_refraction(enum novas_refraction_model model, const on_surface *loc, enum novas_refraction_type type, double el) {
-  if(!loc)
-    return novas_error(-1, EINVAL, "novas_refraction", "NULL on surface observer location");
+  if(!loc) {
+    novas_error(-1, EINVAL, "novas_refraction", "NULL on surface observer location");
+    return NAN;
+  }
 
   if(type == NOVAS_REFRACT_OBSERVED)
-    return refract(loc, NOVAS_WEATHER_AT_LOCATION, 90.0 - el);
+    return refract(loc, model, 90.0 - el);
 
-  return refract_astro(loc, NOVAS_WEATHER_AT_LOCATION, 90.0 - el);
+  if(type == NOVAS_REFRACT_ASTROMETRIC)
+    return refract_astro(loc, model, 90.0 - el);
+
+  return NAN;
 }
 
 /**
@@ -120,6 +125,8 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * data is fully defined, and that the humidity was explicitly set after calling
  * `make_on_surface()`.
  *
+ * Adapted from FORTAN code provided by Berman &amp; Rockwell 1976.
+ *
  * REFERENCES:
  * <ol>
  * <li>Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-1601</li>
@@ -140,7 +147,6 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   // Various coefficients...
   static const double E[] = { 0.0, 46.625, 45.375, 4.1572, 1.4468, 0.25391, 2.2716, -1.3465, -4.3877, 3.1484, 4.520, -1.8982, 0.8900 };
-  //static const double EULER = 2.71828182845905; // Euler's number
 
   double E0, TK;
   double y = 1.0, z;
@@ -149,23 +155,27 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   double refraction;
   int j;
 
-  // The Bermann
-  if(type == NOVAS_REFRACT_OBSERVED) {
-    return novas_inv_refract(novas_radio_refraction, jd_tt, loc, NOVAS_REFRACT_ASTROMETRIC, el);
+  if(!loc) {
+    novas_error(-1, EINVAL, "novas_radio_refraction", "NULL on surface observer location");
+    return NAN;
   }
 
-  // TODO check which type of argument it takes.
+  if(type != NOVAS_REFRACT_OBSERVED && type != NOVAS_REFRACT_ASTROMETRIC) {
+    novas_error(-1, EINVAL, "novas_radio_refraction", "invalid refraction type: %d", type);
+    return NAN;
+  }
+
+  // The Bermann
+  if(type == NOVAS_REFRACT_OBSERVED)
+    return novas_inv_refract(novas_radio_refraction, jd_tt, loc, NOVAS_REFRACT_ASTROMETRIC, el);
 
   // Zenith angle in degrees
   z = (90.0 - el) / DEGREE;
 
   // Temperature in Kelvin
   TK = loc->temperature + 273.16;
-
   fptem = (loc->pressure / 1000.) * (273.16 / TK);
-
   E0 = (z - E[1]) / E[2];
-
   poly = E[11];
 
   for(j = 1; j <= 8; j++)
@@ -174,9 +184,7 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   if(poly <= -80.) poly = 0.;
 
   poly = exp(poly) - E[12];
-
   refraction = poly * fptem;
-
   y = exp(((TK * 17.149) - 4684.1) / (TK - 38.45));
 
   return refraction * 1.0 + (y * loc->humidity * 71.) / (TK * loc->pressure * 0.760);

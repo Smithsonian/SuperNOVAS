@@ -1144,6 +1144,8 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
 
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
+double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el0);
+
 // <================= END of SuperNOVAS API =====================>
 
 #include "solarsystem.h"

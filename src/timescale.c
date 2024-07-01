@@ -74,6 +74,10 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * precision is reached if the fractional part is on the order of &le;= 1 day. In that case, the
  * time may be specified to picosecond accuracy, if needed.
  *
+ * The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is
+ * limited by the precision of `tbd2tt()` implementation, to around 10 &mu;s.
+ *
+ *
  * REFERENCES:
  * <ol>
  * <li>IAU 1991, RECOMMENDATION III. XXIst General Assembly of the
@@ -222,6 +226,9 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * integer and fractional part. The two-component split of the time allows for abolute precisions
  * at the picosecond level, as opposed to `novas_set_time()`, whose precision is limited to a
  * ew microseconds. Ultimately, the accutacy of the time will depend on how it was set.
+ *
+ * The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is
+ * limited by the precision of the `tbd2tt()` implemenation, to around 10 &mu;s.
  *
  * REFERENCES:
  * <ol>
