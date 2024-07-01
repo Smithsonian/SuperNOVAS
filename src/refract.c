@@ -46,7 +46,7 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
  * @param type      Refraction type to use for the original model: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
  * @param el0       [deg] input elevation for the inverse refraction model.
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
+ * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
  * @sa refract_astro()
@@ -63,12 +63,13 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
   for(i = 0; i < INV_MAX_ITER; i++) {
     double el1 = el0 + dir * refr;
     refr = model(jd_tt, loc, type, el1);
-    if(fabs(refr - dir * (el1 - el0)) < 3.0e-5)
+
+    if(fabs(refr - dir * (el1 - el0)) < 1e-7)
       return refr;
   }
 
   novas_set_errno(ECANCELED, "refract_astro", "failed to converge");
-  return refr;
+  return NAN;
 }
 
 /**
@@ -79,7 +80,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
+ * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
  * @sa novas_app_to_hor()
@@ -136,8 +137,8 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
- * @param el        [deg] Astrometric (unrefracted) source elevation
- * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
+ * @param el        [deg] source elevation of the specified type.
+ * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
  * @sa novas_optical_refraction()
@@ -145,6 +146,7 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * @sa on_surface
  */
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
+  static const char *fn = "novas_radio_refraction";
   // Various coefficients...
   static const double E[] = { 0.0, 46.625, 45.375, 4.1572, 1.4468, 0.25391, 2.2716, -1.3465, -4.3877, 3.1484, 4.520, -1.8982, 0.8900 };
 
@@ -156,21 +158,20 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   int j;
 
   if(!loc) {
-    novas_error(-1, EINVAL, "novas_radio_refraction", "NULL on surface observer location");
+    novas_error(-1, EINVAL, fn, "NULL on surface observer location");
     return NAN;
   }
 
-  if(type != NOVAS_REFRACT_OBSERVED && type != NOVAS_REFRACT_ASTROMETRIC) {
-    novas_error(-1, EINVAL, "novas_radio_refraction", "invalid refraction type: %d", type);
-    return NAN;
-  }
-
-  // The Bermann
   if(type == NOVAS_REFRACT_OBSERVED)
     return novas_inv_refract(novas_radio_refraction, jd_tt, loc, NOVAS_REFRACT_ASTROMETRIC, el);
 
+  if(type != NOVAS_REFRACT_ASTROMETRIC) {
+    novas_error(-1, EINVAL, fn, "invalid refraction type: %d", type);
+    return NAN;
+  }
+
   // Zenith angle in degrees
-  z = (90.0 - el) / DEGREE;
+  z = 90.0 - el;
 
   // Temperature in Kelvin
   TK = loc->temperature + 273.16;
@@ -184,8 +185,8 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   if(poly <= -80.) poly = 0.;
 
   poly = exp(poly) - E[12];
-  refraction = poly * fptem;
+  refraction = poly * fptem / 3600.0;
   y = exp(((TK * 17.149) - 4684.1) / (TK - 38.45));
 
-  return refraction * 1.0 + (y * loc->humidity * 71.) / (TK * loc->pressure * 0.760);
+  return refraction * (1.0 + (y * loc->humidity * 71.) / (TK * loc->pressure * 0.760));
 }
