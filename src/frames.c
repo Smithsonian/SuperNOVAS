@@ -448,8 +448,11 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
   const observer *obs;
   double pos1[3], vel1[3];
 
-  if(!source || !frame || !pos || !vel)
-    return novas_error(-1, EINVAL, fn, "NULL argument: source=%p, frame=%p, pos=%p, vel=%p", source, frame, pos, vel);
+  if(!source || !frame)
+    return novas_error(-1, EINVAL, fn, "NULL argument: source=%p, frame=%p", source, frame);
+
+  if(!pos && !vel)
+      return novas_error(-1, EINVAL, fn, "Both output vectors (pos, vel) are NULL");
 
   obs = (observer*) &frame->observer;
 
@@ -551,6 +554,9 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
 
   if(!is_frame_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+
+  if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
     return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);

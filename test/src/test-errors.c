@@ -927,6 +927,267 @@ static int test_refraction() {
   return n;
 }
 
+static int test_make_frame() {
+  int n = 0;
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+
+  if(check("make_frame:obs", -1, novas_make_frame(NOVAS_REDUCED_ACCURACY, NULL, &ts, 0.0, 0.0, &frame))) n++;
+  if(check("make_frame:time", -1, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, NULL, 0.0, 0.0, &frame))) n++;
+  if(check("make_frame:frame", -1, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, NULL))) n++;
+  if(check("make_frame:accuracy:-1", -1, novas_make_frame(-1, &obs, &ts, 0.0, 0.0, &frame))) n++;
+  if(check("make_frame:accuracy:2", -1, novas_make_frame(2, &obs, &ts, 0.0, 0.0, &frame))) n++;
+
+  obs.where = -1;
+  if(check("make_frame:obs:where:-1", -1, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) n++;
+
+  obs.where = NOVAS_OBSERVER_PLACES;
+  if(check("make_frame:obs:where:hi", -1, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) n++;
+
+  return n;
+}
+
+static int test_change_observer() {
+  int n = 0;
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {}, out = {};
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("change_observer:orig", -1, novas_change_observer(NULL, &obs, &out))) n++;
+  if(check("change_observer:orig:init", -1, novas_change_observer(&frame, &obs, &out))) n++;
+
+  if(check("change_observer:make_frame", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+  if(check("change_observer:orig:ok", 0, novas_change_observer(&frame, &obs, &out))) n++;
+
+  if(check("change_observer:obs", -1, novas_change_observer(&frame, NULL, &out))) n++;
+  if(check("change_observer:out", -1, novas_change_observer(&frame, &obs, NULL))) n++;
+
+  return 0;
+}
+
+static int test_make_transform() {
+  int n = 0;
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  novas_transform T = {};
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("make_transform:frame", -1, novas_make_transform(NULL, NOVAS_ICRS, NOVAS_J2000, &T))) n++;
+  if(check("make_transform:frame:init", -1, novas_make_transform(&frame, NOVAS_ICRS, NOVAS_J2000, &T))) n++;
+
+  if(check("make_transform:frame", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) n++;
+  if(check("make_transform:out", -1, novas_make_transform(&frame, NOVAS_ICRS, NOVAS_J2000, NULL))) n++;
+
+  if(check("make_transform:from:-1", -1, novas_make_transform(&frame, -1, NOVAS_J2000, &T))) n++;
+  if(check("make_transform:from:hi", -1, novas_make_transform(&frame, NOVAS_REFERENCE_SYSTEMS, NOVAS_J2000, &T))) n++;
+
+  if(check("make_transform:to:-1", -1, novas_make_transform(&frame, NOVAS_ICRS, -1, &T))) n++;
+  if(check("make_transform:to:hi", -1, novas_make_transform(&frame, NOVAS_ICRS, NOVAS_REFERENCE_SYSTEMS, &T))) n++;
+
+  return n;
+}
+
+static int test_geom_posvel() {
+  int n = 0;
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  object o = {};
+  double pos[3] = {}, vel[3] = {};
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("geom_posvel:frame", -1, novas_geom_posvel(&o, NULL, NOVAS_ICRS, pos, vel))) n++;
+  if(check("geom_posvel:frame:init", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+  if(check("geom_posvel:frame:ok", 0, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
+  if(check("geom_posvel:object", -1, novas_geom_posvel(NULL, &frame, NOVAS_ICRS, pos, vel))) n++;
+  if(check("geom_posvel:pos+vel", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, NULL, NULL))) n++;
+  if(check("geom_posvel:sys:-1", -1, novas_geom_posvel(&o, &frame, -1, pos, vel))) n++;
+  if(check("geom_posvel:sys:hi", -1, novas_geom_posvel(&o, &frame, NOVAS_REFERENCE_SYSTEMS, pos, vel))) n++;
+
+  frame.accuracy = -1;
+  if(check("geom_posvel:frame:accuracy:-1", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
+  frame.accuracy = 2;
+  if(check("geom_posvel:frame:accuracy:2", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
+  return n;
+}
+
+static int test_sky_pos() {
+  int n = 0;
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  object o = {};
+  sky_pos out = {};
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("sky_pos:frame", -1, novas_sky_pos(&o, NULL, NOVAS_ICRS, &out))) n++;
+  if(check("sky_pos:frame:init", -1, novas_sky_pos(&o, &frame, NOVAS_ICRS, &out))) n++;
+
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+  if(check("sky_pos:frame:ok", 0, novas_sky_pos(&o, &frame, NOVAS_ICRS, &out))) n++;
+
+  if(check("sky_pos:object", -1, novas_sky_pos(NULL, &frame, NOVAS_ICRS, &out))) n++;
+  if(check("sky_pos:out", -1, novas_sky_pos(&o, &frame, NOVAS_ICRS, NULL))) n++;
+  if(check("sky_pos:sys:-1", -1, novas_sky_pos(&o, &frame, -1, &out))) n++;
+  if(check("sky_pos:sys:hi", -1, novas_sky_pos(&o, &frame, NOVAS_REFERENCE_SYSTEMS, &out))) n++;
+
+  frame.accuracy = -1;
+  if(check("sky_pos:frame:accuracy:-1", -1, novas_sky_pos(&o, &frame, NOVAS_ICRS, &out))) n++;
+
+  frame.accuracy = 2;
+  if(check("sky_pos:frame:accuracy:2", -1, novas_sky_pos(&o, &frame, NOVAS_ICRS, &out))) n++;
+
+  return n;
+}
+
+static int test_app_to_geom() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double pos[3] = {};
+  int n = 0;
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("app_to_geom:frame", -1, novas_app_to_geom(NULL, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
+  if(check("app_to_geom:frame:init", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
+
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+  if(check("app_to_geom:frame:ok", 0, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
+
+  if(check("app_to_geom:pos", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, NULL))) n++;
+  if(check("app_to_geom:sys:-1", -1, novas_app_to_geom(&frame, -1, 1.0, 2.0, 10.0, pos))) n++;
+  if(check("app_to_geom:sys:hi", -1, novas_app_to_geom(&frame, NOVAS_REFERENCE_SYSTEMS, 1.0, 2.0, 10.0, pos))) n++;
+
+  return n;
+}
+
+static int test_app_to_hor() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double az, el;
+  int n = 0;
+
+  make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("app_to_hor:frame", -1, novas_app_to_hor(NULL, NOVAS_ICRS, 1.0, 2.0, NULL, &az, &el))) n++;
+  if(check("app_to_hor:frame:init", -1, novas_app_to_hor(&frame, NOVAS_ICRS, 1.0, 2.0, NULL, &az, &el))) n++;
+
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+  if(check("app_to_hor:frame:ok", 0, novas_app_to_hor(&frame, NOVAS_ICRS, 1.0, 2.0, NULL, &az, &el))) n++;
+
+  if(check("app_to_hor:az+el", -1, novas_app_to_hor(&frame, NOVAS_ICRS, 1.0, 2.0, NULL, NULL, NULL))) n++;
+  if(check("app_to_hor:sys:-1", -1, novas_app_to_hor(&frame, -1, 1.0, 2.0, NULL, &az, &el))) n++;
+  if(check("app_to_hor:sys:hi", -1, novas_app_to_hor(&frame, NOVAS_REFERENCE_SYSTEMS, 1.0, 2.0, NULL, &az, &el))) n++;
+
+  frame.observer.where = NOVAS_OBSERVER_AT_GEOCENTER;
+  if(check("app_to_hor:frame:obs:where", -1, novas_app_to_hor(&frame, NOVAS_ICRS, 1.0, 2.0, NULL, &az, &el))) n++;
+
+  return n;
+}
+
+static int test_hor_to_app() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double ra, dec;
+  int n = 0;
+
+  make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("hor_to_app:frame", -1, novas_hor_to_app(NULL, 1.0, 2.0, NULL, NOVAS_ICRS, &ra, &dec))) n++;
+  if(check("hor_to_app:frame:init", -1, novas_hor_to_app(&frame, 1.0, 2.0, NULL, NOVAS_ICRS, &ra, &dec))) n++;
+
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+  if(check("hor_to_app:frame:ok", 0, novas_hor_to_app(&frame, 1.0, 2.0, NULL, NOVAS_ICRS, &ra, &dec))) n++;
+
+  if(check("hor_to_app:ra+dec", -1, novas_hor_to_app(&frame, 1.0, 2.0, NULL, NOVAS_ICRS, NULL, NULL))) n++;
+  if(check("hor_to_app:sys:-1", -1, novas_hor_to_app(&frame, 1.0, 2.0, NULL, -1, &ra, &dec))) n++;
+  if(check("hor_to_app:sys:hi", -1, novas_hor_to_app(&frame, 1.0, 2.0, NULL, NOVAS_REFERENCE_SYSTEMS, &ra, &dec))) n++;
+
+  frame.observer.where = NOVAS_OBSERVER_AT_GEOCENTER;
+  if(check("hor_to_app:frame:obs:where", -1, novas_hor_to_app(&frame, 1.0, 2.0, NULL, NOVAS_ICRS, &ra, &dec))) n++;
+
+  return n;
+}
+
+
+static int test_transform_vector() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  novas_transform T = {};
+  double pos[3] = {};
+  int n = 0;
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+
+  novas_make_transform(&frame, NOVAS_ICRS, NOVAS_J2000, &T);
+
+  if(check("transform_vector:in", -1, novas_transform_vector(NULL, &T, pos))) n++;
+  if(check("transform_vector:out", -1, novas_transform_vector(pos, &T, NULL))) n++;
+  if(check("transform_vector:in+out", -1, novas_transform_vector(NULL, &T, NULL))) n++;
+  if(check("transform_vector:in", -1, novas_transform_vector(pos, NULL, pos))) n++;
+
+  return n;
+}
+
+static int test_transform_sky_pos() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  novas_transform T = {};
+  sky_pos pos = {};
+  int n = 0;
+
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+
+  novas_make_transform(&frame, NOVAS_ICRS, NOVAS_J2000, &T);
+
+  if(check("transform_sky_pos:in", -1, novas_transform_sky_pos(NULL, &T, &pos))) n++;
+  if(check("transform_sky_pos:out", -1, novas_transform_sky_pos(&pos, &T, NULL))) n++;
+  if(check("transform_sky_pos:in+out", -1, novas_transform_sky_pos(NULL, &T, NULL))) n++;
+  if(check("transform_sky_pos:in", -1, novas_transform_sky_pos(&pos, NULL, &pos))) n++;
+
+  return n;
+}
+
+static int test_inv_transform() {
+  novas_transform T = {};
+  int n = 0;
+
+  if(check("invert_transform:in", -1, novas_invert_transform(NULL, &T))) n++;
+  if(check("invert_transform:out", -1, novas_invert_transform(&T, NULL))) n++;
+  if(check("invert_transform:in+out", -1, novas_invert_transform(NULL, NULL))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1021,6 +1282,19 @@ int main() {
   if(test_obs_posvel()) n++;
   if(test_time()) n++;
   if(test_refraction()) n++;
+
+  if(test_make_frame()) n++;
+  if(test_change_observer()) n++;
+  if(test_make_transform()) n++;
+  if(test_geom_posvel()) n++;
+  if(test_sky_pos()) n++;
+  if(test_app_to_geom()) n++;
+  if(test_app_to_hor()) n++;
+  if(test_hor_to_app()) n++;
+  if(test_transform_vector()) n++;
+  if(test_transform_sky_pos()) n++;
+  if(test_inv_transform()) n++;
+
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
