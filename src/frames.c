@@ -79,7 +79,7 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   I->M[1][2] = A->M[1][0] * A->M[0][2] - A->M[0][0] * A->M[1][2];
   I->M[2][2] = A->M[0][0] * A->M[1][1] - A->M[1][0] * A->M[0][1];
 
-  idet = 1.0 / (A->M[0][0] * I->M[0][0] + A->M[1][1] * I->M[1][1] + A->M[2][2] * I->M[2][2]);
+  idet = 1.0 / (A->M[0][0] * I->M[0][0] + A->M[0][1] * I->M[1][0] + A->M[0][2] * I->M[2][0]);
 
   for(i = 3; --i >= 0;) {
     I->M[i][0] *= idet;
@@ -869,13 +869,14 @@ static int cat_transform(novas_transform *transform, const novas_matrix *compone
   double T[3][3];
 
   memcpy(T, transform->matrix.M, sizeof(T));
+  memset(transform->matrix.M, 0, sizeof(transform->matrix.M));
 
   for(i = 3; --i >= 0;) {
     int j;
     for(j = 3; --j >= 0;) {
       int k;
       for(k = 3; --k >= 0;)
-        transform->matrix.M[i][j] = T[i][k] * (dir < 0 ? component->M[j][k] : component->M[k][j]);
+        transform->matrix.M[i][j] += T[i][k] * (dir < 0 ? component->M[j][k] : component->M[k][j]);
     }
   }
 
@@ -1002,7 +1003,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
  *
  * @param transform     Pointer to a coordinate transformation matrix.
  * @param[out] inverse  Pointer to a coordinate transformation matrix to populate with the inverse
- *                      transform.
+ *                      transform. It may be the same as the input.
  * @return              0 if successful, or else -1 if the was an error (errno will indicate the
  *                      type of error).
  *
