@@ -40,14 +40,8 @@ static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b)
 }
 
 static int matrix_transform(const double *in, const novas_matrix *matrix, double *out) {
-  static const char *fn = "novas_matrix_transform";
   double orig[3];
   int i;
-
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL coordinate: in=%p, out=%p", in, out);
-  if(!matrix)
-    return novas_error(-1, EINVAL, fn, "NULL matrix pointer");
 
   memcpy(orig, in, sizeof(orig));
 
@@ -60,14 +54,8 @@ static int matrix_transform(const double *in, const novas_matrix *matrix, double
 
 static int matrix_inv_rotate(const double *in, const novas_matrix *matrix, double *out) {
   // IMPORTANT! use only with unitary matrices.
-  static const char *fn = "novas_matrix_transform";
   double orig[3];
   int i;
-
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL coordinate: in=%p, out=%p", in, out);
-  if(!matrix)
-    return novas_error(-1, EINVAL, fn, "NULL matrix pointer");
 
   memcpy(orig, in, sizeof(orig));
 
@@ -286,7 +274,6 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   double mobl, tobl, ee, dpsi, deps;
   long ijd_ut1;
   double fjd_ut1;
-  int err;
 
   if(accuracy < 0 || accuracy > NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);

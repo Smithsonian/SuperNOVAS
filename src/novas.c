@@ -3435,7 +3435,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  * @param dx          [mas] Earth orientation: GCRS pole offset dx, e.g. as published by IERS Bulletin A.
  * @param dy          [mas] Earth orientation: GCRS pole offset dy, e.g. as published by IERS Bulletin A.
  * @param[out] dpsi   [arcsec] Calculated TOD orientation d&psi;.
- * @param[out] deps   [arcsec] Calculated TOD orientation d&eps;.
+ * @param[out] deps   [arcsec] Calculated TOD orientation d&epsilon;.
  * @return            0
  *
  * @sa cel_pole()
