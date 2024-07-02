@@ -61,10 +61,14 @@ static int check_equal_pos(const double *posa, const double *posb, double tol) {
   tol = fabs(tol);
   if(tol < 1e-30) tol = 1e-30;
 
-  for(i = 0; i < 3; i++) if(fabs(posa[i] - posb[i]) > tol) {
+  for(i = 0; i < 3; i++) {
+    if(fabs(posa[i] - posb[i]) <= tol) continue;
+    if(isnan(posa[i]) && isnan(posb[i])) continue;
+
     fprintf(stderr, "  A[%d] = %.9g vs B[%d] = %.9g\n", i, posa[i], i, posb[i]);
     return i + 1;
   }
+
   return 0;
 }
 
@@ -841,16 +845,10 @@ static int test_geom_posvel() {
   if(!is_ok("geom_posvel", novas_geom_posvel(&source, &frame, NOVAS_ICRS, pos0, vel0))) return 1;
 
   if(!is_ok("geom_posvel:pos:null", novas_geom_posvel(&source, &frame, NOVAS_ICRS, NULL, vel))) return 1;
-  if(check_equal_pos(vel, vel0, 1e-5)) {
-    printf("geom_posvel:pos:null\n");
-    return 1;
-  }
+  if(!is_ok("geom_posvel:pos:null:check", check_equal_pos(vel, vel0, 1e-5))) return 1;
 
   if(!is_ok("geom_posvel:vel:null", novas_geom_posvel(&source, &frame, NOVAS_ICRS, pos, NULL))) return 1;
-  if(check_equal_pos(pos, pos0, 1e-7)) {
-    printf("geom_posvel:vel:null\n");
-    return 1;
-  }
+  if(!is_ok("geom_posvel:vel:null:check", check_equal_pos(pos, pos0, 1e-7))) return 1;
 
   return 0;
 }
@@ -1546,7 +1544,43 @@ static int test_change_observer() {
   return 0;
 }
 
+static int test_transform() {
+  novas_timespec ts = {};
+  novas_frame frame = {};
+  observer obs = {};
+  novas_transform T = {}, I = {};
 
+  double pos0[3] = {1.0, 2.0, 3.0}, pos1[3] = {1.0, 2.0, 3.0};
+  sky_pos p0 = {}, p1 = {};
+
+  p0.r_hat[1] = 1.0;
+  p1.r_hat[1] = 1.0;
+  vector2radec(p0.r_hat, &p0.ra, &p0.dec);
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000 + 10000.0, 32, 0.0, &ts);
+  make_observer_at_geocenter(&obs);
+
+  if(!is_ok("transform:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 1.0, 2.0, &frame))) return 1;
+  if(!is_ok("transform:make", novas_make_transform(&frame, NOVAS_ICRS, NOVAS_TOD, &T))) return 1;
+  if(!is_ok("transform:invert", novas_invert_transform(&T, &I))) return 1;
+
+  novas_transform_vector(pos0, &T, pos1);
+  if(!is_ok("transform:vec", !check_equal_pos(pos0, pos1, 1e-9))) return 1;
+
+  novas_transform_vector(pos1, &I, pos1);
+  if(!is_ok("transform:inv:vec", check_equal_pos(pos0, pos1, 1e-9))) return 1;
+
+  novas_transform_sky_pos(&p0, &T, &p1);
+  if(!is_ok("transform:sky", !check_equal_pos(p0.r_hat, p1.r_hat, 1e-9))) return 1;
+
+  novas_transform_sky_pos(&p1, &I, &p1);
+  if(!is_ok("transform:inv:sky", check_equal_pos(p0.r_hat, p1.r_hat, 1e-9))) return 1;
+
+  if(!is_equal("transform:inv:sky:ra", p0.ra, p1.ra, 1e-9)) return 1;
+  if(!is_equal("transform:inv:sky:dec", p0.dec, p1.dec, 1e-9)) return 1;
+
+  return 0;
+}
 
 
 int main() {
@@ -1590,6 +1624,7 @@ int main() {
   if(test_radio_refraction()) n++;
   if(test_make_frame()) n++;
   if(test_change_observer()) n++;
+  if(test_transform()) n++;
 
   n += test_dates();
 
