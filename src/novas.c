@@ -314,7 +314,6 @@ static int time_equals(double jd1, double jd2) {
  */
 int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "j2000_to_tod";
-  double v[3];
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
@@ -322,8 +321,8 @@ int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  precession(JD_J2000, in, jd_tdb, v);
-  nutation(jd_tdb, NUTATE_MEAN_TO_TRUE, accuracy, v, out);
+  precession(JD_J2000, in, jd_tdb, out);
+  nutation(jd_tdb, NUTATE_MEAN_TO_TRUE, accuracy, out, out);
 
   return 0;
 }
@@ -3415,8 +3414,8 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
 }
 
 /**
- * Converts <i>dx,dy</i> pole offsets to d&psi; d&epsilon;. The latter set includes seasonal tidal variations,
- * while the former are residuals on top of the modeled tidal terms.
+ * Converts <i>dx,dy</i> pole offsets to d&psi; d&epsilon;. The former is in GCRS, vs the latter in
+ * True of Date (TOD) -- and note the different units!
  *
  * NOTES:
  * <ol>
@@ -3432,11 +3431,11 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  *  <li>Kaplan, G. (2003), USNO/AA Technical Note 2003-03.</li>
  * </ol>
  *
- * @param jd_tt
- * @param dx          [mas]
- * @param dy          [mas]
- * @param[out] dpsi   [arcsec]
- * @param[out] deps   [arcsec]
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian Date.
+ * @param dx          [mas] Earth orientation: GCRS pole offset dx, e.g. as published by IERS Bulletin A.
+ * @param dy          [mas] Earth orientation: GCRS pole offset dy, e.g. as published by IERS Bulletin A.
+ * @param[out] dpsi   [arcsec] Calculated TOD orientation d&psi;.
+ * @param[out] deps   [arcsec] Calculated TOD orientation d&eps;.
  * @return            0
  *
  * @sa cel_pole()
@@ -3447,9 +3446,6 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
 int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps) {
   // Components of modeled pole unit vector referred to GCRS axes, that is, dx and dy.
   const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-
-  // Compute sin_e of mean obliquity of date.
-  const double sin_e = sin(mean_obliq(jd_tt) * ARCSEC);
 
   // The following algorithm, to transform dx and dy to
   // delta-delta-psi and delta-delta-epsilon, is from eqs. (7)-(9) of the
@@ -3467,8 +3463,11 @@ int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, dou
   precession(JD_J2000, dp, jd_tt, dp);
 
   // Compute delta-delta-psi and delta-delta-epsilon in arcseconds.
-  if(dpsi)
+  if(dpsi) {
+    // Compute sin_e of mean obliquity of date.
+    const double sin_e = sin(mean_obliq(jd_tt) * ARCSEC);
     *dpsi = (dp[0] / sin_e) / ARCSEC;
+  }
   if(deps)
     *deps = dp[1] / ARCSEC;
 
@@ -3750,7 +3749,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
  * @param in          Position vector, equatorial rectangular coordinates.
  * @param direction   <0 for for dynamical to ICRS transformation, or else &gt;=0 for ICRS to
  *                    dynamical transformation. Alternatively you may use the constants
- *                    J2000_TO_ICRS (0; or positive) or ICRS_TO_J2000 (-1; or negative).
+ *                    J2000_TO_ICRS (-1; or negative) or ICRS_TO_J2000 (0; or positive).
  * @param[out] out    Position vector, equatorial rectangular coordinates. It can be the same
  *                    vector as the input.
  * @return            0 if successfor or -1 if either of the vector arguments is NULL.

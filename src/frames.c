@@ -210,20 +210,15 @@ static int set_nutation(novas_frame *frame) {
 }
 
 static int set_obs_posvel(novas_frame *frame) {
-  return obs_posvel(novas_get_time(&frame->time, NOVAS_TDB), frame->time.ut1_to_tt, frame->accuracy, &frame->observer,
+  int res = obs_posvel(novas_get_time(&frame->time, NOVAS_TDB), frame->time.ut1_to_tt, frame->accuracy, &frame->observer,
           &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0], frame->obs_pos, frame->obs_vel);
-}
-
-static int set_aberration(novas_frame *frame) {
-  if(!frame)
-    return novas_error(-1, EINVAL, "set_aberration", "NULL frame argument");
 
   frame->v_obs = novas_vlen(frame->obs_vel);
   frame->beta = frame->v_obs / C_AUDAY;
   frame->gamma = sqrt(1.0 - frame->beta * frame->beta);
-
-  return 0;
+  return res;
 }
+
 
 static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
   double d, p, q, r;
@@ -312,31 +307,27 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   tdb2[1] = time->fjd_tt + tt2tdb(time->ijd_tt + time->fjd_tt) / DAY;
 
   // Various calculated quantities for frame transformations
-  e_tilt(tdb2[0] + tdb2[1], frame->accuracy, &mobl, &tobl, &ee, &dpsi, &deps);
+  e_tilt(tdb2[0] + tdb2[1], frame->accuracy, &mobl, &tobl, &ee, NULL, NULL);
 
   frame->mobl = mobl * DEGREE;
   frame->tobl = tobl * DEGREE;
   frame->ee = ee * DEGREE;
 
-  // Do not include polar wobble here.
-  novas_dxdy_to_dpsideps(time->ijd_tt + time->fjd_tt, 0.0, 0.0, &frame->dpsi0, &frame->deps0);
+  nutation_angles((tdb2[0] + tdb2[1] - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, accuracy, &dpsi, &deps);
 
+  frame->dpsi0 = dpsi * ARCSEC;
+  frame->deps0 = deps * ARCSEC;
   frame->dx = dx;
   frame->dy = dy;
 
   fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
   frame->era = era(ijd_ut1, fjd_ut1);
 
-  err = sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, frame->accuracy, &frame->gst);
-  if(err != 0) {
-    novas_trace(fn, err, 0);
-    return -1;
-  }
+  prop_error(fn, sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, frame->accuracy, &frame->gst), 0);
 
   set_frame_tie(frame);
   set_precession(frame);
   set_nutation(frame);
-  set_aberration(frame);
 
   prop_error(fn, set_gcrs_to_cirs(frame), 0);
 
@@ -386,18 +377,14 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
 
   if(sys == NOVAS_CIRS) {
     matrix_transform(pos, &frame->gcrs_to_cirs, pos);
-    matrix_transform(pos, &frame->gcrs_to_cirs, pos);
   }
   else if(cmp_sys(sys, NOVAS_ICRS) != 0) {
-    matrix_transform(pos, &frame->icrs_to_j2000, pos);
     matrix_transform(pos, &frame->icrs_to_j2000, pos);
     if(sys == NOVAS_J2000) return 0;
 
     matrix_transform(pos, &frame->precession, pos);
-    matrix_transform(pos, &frame->precession, pos);
     if(sys == NOVAS_MOD) return 0;
 
-    matrix_transform(pos, &frame->nutation, pos);
     matrix_transform(pos, &frame->nutation, pos);
   }
 
