@@ -905,6 +905,13 @@ static int test_time() {
   return n;
 }
 
+
+static double switching_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
+  static int count;
+  return (count++) % 2 ? -0.1 : 0.1;
+}
+
+
 static int test_refraction() {
   int n = 0;
   on_surface obs = {};
@@ -924,6 +931,8 @@ static int test_refraction() {
   if(check_nan("radio_refraction:type:1", novas_radio_refraction(NOVAS_JD_J2000, &obs, 1, 10.0))) n++;
   if(check_nan("radio_refraction:el:neg", novas_radio_refraction(NOVAS_JD_J2000, &obs, 1, -10.0))) n++;
 
+  if(check_nan("inv_refract:conv", novas_inv_refract(switching_refraction, NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
+  if(check("inv_refract:conv:errno", ECANCELED, errno)) n++;
   return n;
 }
 

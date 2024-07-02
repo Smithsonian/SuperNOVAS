@@ -781,6 +781,80 @@ static int test_get_time() {
   return 0;
 }
 
+static int test_sky_pos() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  cat_entry c = {};
+  object source[2] = {{}};
+  int i, k;
+
+  if(!is_ok("sky_pos:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("sky_pos:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("sky_pos:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  make_cat_entry("test", "TST", 1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, &c);
+
+  make_cat_object(&c, &source[0]);
+  make_planet(NOVAS_SUN, &source[1]);
+
+  cel_pole(tdb, POLE_OFFSETS_X_Y, 0.0, 0.0);
+
+  for(k = NOVAS_TOD; k <= NOVAS_TOD; k++) {
+    for(i = 0; i < 2; i++) {
+      char label[50];
+      double pos[3] = {}, vel[3] = {};
+      sky_pos p = {}, pc = {};
+
+      place(ts.ijd_tt + ts.fjd_tt, &source[i], &obs, ts.ut1_to_tt, k, NOVAS_REDUCED_ACCURACY, &pc);
+
+      sprintf(label, "sky_pos:sys=%d:source=%d", k, i);
+      if(!is_ok(label, novas_sky_pos(&source[i], &frame, k, &p))) return 1;
+
+      sprintf(label, "sky_pos:sys=%d:source=%d:check:ra", k, i);
+      if(!is_equal(label, p.ra, pc.ra, 1e-6)) return 1;
+
+      sprintf(label, "sky_pos:sys=%d:source=%d:check:dec", k, i);
+      if(!is_equal(label, p.dec, pc.dec, 1e-5)) return 1;
+
+      sprintf(label, "sky_pos:sys=%d:source=%d:check:rv", k, i);
+      if(!is_equal(label, p.rv, pc.rv, 1e-5)) return 1;
+    }
+  }
+
+  return 0;
+}
+
+static int test_geom_posvel() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  object source = {};
+  double pos0[3] = {}, vel0[3] = {}, pos[3] = {1.0}, vel[3] = {1.0};
+
+  if(!is_ok("sky_pos:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("sky_pos:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("sky_pos:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  make_planet(NOVAS_SUN, &source);
+
+  if(!is_ok("geom_posvel", novas_geom_posvel(&source, &frame, NOVAS_ICRS, pos0, vel0))) return 1;
+
+  if(!is_ok("geom_posvel:pos:null", novas_geom_posvel(&source, &frame, NOVAS_ICRS, NULL, vel))) return 1;
+  if(check_equal_pos(vel, vel0, 1e-5)) {
+    printf("geom_posvel:pos:null\n");
+    return 1;
+  }
+
+  if(!is_ok("geom_posvel:vel:null", novas_geom_posvel(&source, &frame, NOVAS_ICRS, pos, NULL))) return 1;
+  if(check_equal_pos(pos, pos0, 1e-7)) {
+    printf("geom_posvel:vel:null\n");
+    return 1;
+  }
+
+  return 0;
+}
+
 
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
@@ -791,11 +865,15 @@ static int test_dates() {
   if(test_nutation_lp_provider()) n++;
   if(test_cal_date()) n++;
   if(test_cirs_app_ra()) n++;
-  if(test_set_time()) n++;
-  if(test_get_time()) n++;
 
   for(i = 0; i < 5; i++) {
     tdb = J2000 + offsets[i];
+
+    if(test_set_time()) n++;
+    if(test_get_time()) n++;
+    if(test_sky_pos()) n++;
+    if(test_geom_posvel()) n++;
+
     n += test_sources();
   }
 
@@ -1380,7 +1458,7 @@ static int test_optical_refraction() {
 
 static int test_radio_refraction() {
   const double exp[] = { 1365.48, 512.67, 294.20, 206.08, 156.43, 122.56, 98.08, 80.39, 67.44,
-                         57.34, 48.54, 40.21, 32.32, 25.33, 19.50, 14.42, 9.01, 3.11};
+          57.34, 48.54, 40.21, 32.32, 25.33, 19.50, 14.42, 9.01, 3.11};
   on_surface obs = {};
   int i, el;
 
@@ -1467,6 +1545,8 @@ static int test_change_observer() {
 
   return 0;
 }
+
+
 
 
 int main() {
