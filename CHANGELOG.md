@@ -49,22 +49,22 @@ available on the `main` branch.
 
 ### Added
    
- - New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). You 
-   can set the time via `novas_set_time()` or `novas_set_split_time()` to a JD date in the timescale of choice (UTC, 
-   UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an 
-   expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
-   `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
-   `novas_increment_time()`, or measure time differences via `novas_diff_time()`. 
-   
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
    place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
    defined it can be used very efficiently to calculate positions for multiple celestial objects with minimal 
    additional computational cost. The frames API is also more elegant and simpler than the low-level NOVAS C approach 
    for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their 
    internal state is never modified during the calculations. The following new functions were added: 
-   `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_sky_pos()`, `novas_app_to_hor()`, 
-   `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, `novas_invert_transform()`, 
-   `novas_transform_vector()`, and `novas_transform_sky_pos()`.
+   `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_geom_to_app()`, `novas_sky_pos()`, 
+   `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, 
+   `novas_invert_transform()`, `novas_transform_vector()`, and `novas_transform_sky_pos()`.
+   
+ - New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). You 
+   can set the time via `novas_set_time()` or `novas_set_split_time()` to a JD date in the timescale of choice (UTC, 
+   UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an 
+   expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
+   `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
+   `novas_increment_time()`, or measure time differences via `novas_diff_time()`. 
    
  - Added `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
    
@@ -73,8 +73,8 @@ available on the `main` branch.
  
  - Added new observer locations `NOVAS_AIRBORNE_OBSERVER` for an observer moving relative to the surface of Earth e.g.
    in an aircraft or balloon based telescope platform, and `NOVAS_SOLAR_SYSTEM_OBSERVER` for spacecraft orbiting the 
-   Sun. Both of these use the `observer.near_earth` strcture to define (positions and) velocities as apropriate. Hence
-   the `'near_earth` name is a bit misleading, but sticks for back compatibility.
+   Sun. Both of these use the `observer.near_earth` strcture to define (positions and) velocities as appropriate. 
+   Hence the `'near_earth` name is a bit misleading, but sticks for back compatibility.
    
  - Added coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
    `NOVAS_J2000` for the J2000 dynamical reference system.

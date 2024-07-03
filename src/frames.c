@@ -625,7 +625,7 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
   // ---------------------------------------------------------------------
   // Variable 'loc' determines whether Earth deflection is included.
   loc = frame->observer.where;
-  if(loc == NOVAS_OBSERVER_ON_EARTH) {
+  if(loc == NOVAS_OBSERVER_ON_EARTH || loc == NOVAS_AIRBORNE_OBSERVER) {
     double frlimb;
     limb_angle(pos, &frame->pos[NOVAS_EARTH][0], NULL, &frlimb);
     if(frlimb < 0.8)
@@ -893,7 +893,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   // ---------------------------------------------------------------------
   // Variable 'loc' determines whether Earth deflection is included.
   loc = frame->observer.where;
-  if(loc == NOVAS_OBSERVER_ON_EARTH) {
+  if(loc == NOVAS_OBSERVER_ON_EARTH || loc == NOVAS_AIRBORNE_OBSERVER) {
     double frlimb;
     limb_angle(app_pos, &frame->pos[NOVAS_EARTH][0], NULL, &frlimb);
     if(frlimb < 0.8)
