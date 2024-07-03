@@ -548,7 +548,7 @@ static int test_transform_icrs_cirs() {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  double pos1[3] = {}, pos2[3] = {};
+  double pos1[3] = {1}, pos2[3] = {2};
 
 
   if(!is_ok("transform:icrs_cirs:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
@@ -573,7 +573,7 @@ static int test_transform_icrs_j2000() {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  double pos1[3] = {}, pos2[3] = {};
+  double pos1[3] = {1}, pos2[3] = {2};
 
 
   if(!is_ok("transform:icrs_j2000:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
@@ -598,7 +598,7 @@ static int test_transform_j2000_mod() {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  double pos1[3] = {}, pos2[3] = {};
+  double pos1[3] = {1}, pos2[3] = {2};
 
   if(!is_ok("transform:j2000_mod:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
   if(!is_ok("transform:j2000_mod:make_observer", make_observer_at_geocenter(&obs))) return 1;
@@ -618,7 +618,7 @@ static int test_transform_mod_tod() {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  double pos1[3] = {}, pos2[3] = {};
+  double pos1[3] = {1}, pos2[3] = {2};
 
   if(!is_ok("transform:mod_tod:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
   if(!is_ok("transform:mod_tod:make_observer", make_observer_at_geocenter(&obs))) return 1;
@@ -649,16 +649,16 @@ static int test_transform_inv() {
     char label[50];
     novas_transform T = {}, I = {};
     enum novas_reference_system to;
-    double pos1[3] = {}, pos2[3] = {};
+    double pos1[3] = {1}, pos2[3] = {2};
 
     novas_make_transform(&frame, from, to, &T);
-    novas_make_transform(&frame, from, to, &I);
+    novas_make_transform(&frame, to, from, &I);
 
     novas_transform_vector(pos0, &T, pos1);
     novas_transform_vector(pos1, &I, pos2);
 
     sprintf(label, "transform_rev:from=%d:to=%d", from, to);
-    if(!is_ok(label, check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+    if(!is_ok(label, check_equal_pos(pos0, pos2, 1e-12 * vlen(pos0)))) return 1;
   }
 
   return 0;
