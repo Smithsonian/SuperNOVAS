@@ -274,6 +274,7 @@ static int is_frame_initialized(const novas_frame *frame) {
  *                    type of error).
  *
  * @sa novas_change_observer()
+ * @sa novas_sky_pos()
  * @sa novas_geom_posvel()
  * @sa novas_make_transform()
  *
@@ -356,6 +357,9 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
  *                    (errno will also indicate the type of error).
  *
  * @sa novas_make_frame()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out) {
   static const char *fn = "novas_change_observer";
@@ -433,7 +437,6 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  *                      3 if the observer is at the observed location,
  *                      50--70 error is 50 + error from light_time2().
  *
- * @sa novas_make_frame()
  * @sa novas_geom_to_app()
  * @sa novas_sky_pos()
  * @sa novas_transform_vector()
@@ -532,9 +535,8 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  *                      70--80 error is 70 + error from grav_def(),
  *                      or else -1 (errno will indicate the type of error).
  *
- * @sa novas_geom_posvel()
+ * @sa novas_geom_to_app()
  * @sa novas_app_to_hor()
- * @sa novas_app_to_geom()
  * @sa place()
  *
  * @since 1.1
@@ -598,9 +600,13 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
  * @return          0 if successful, or an error from grav_def(),
  *                  or else -1 (errno will indicate the type of error).
  *
- * @sa novas_app_to_geom()
- * @sa novas_geom_posvel()
  * @sa novas_sky_pos()
+ * @sa novas_app_to_geom()
+ * @sa novas_app_to_hor()
+ * @sa novas_geom_posvel()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_reference_system sys, sky_pos *out) {
   static const char *fn = "novas_geom_to_app";
@@ -674,11 +680,14 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
  * @return            0 if successful, or else an error from tod_to_itrs() or cirs_to_itrs(), or
  *                    -1 (errno will indicate the type of error).
  *
- * @sa novas_geom_posvel()
- * @sa novas_sky_pos()
+ * @sa novas_hor_to_app()
+ * @sa novas_app_to_geom()
  * @sa novas_standard_refraction()
  * @sa novas_optical_refraction()
- * @sa novas_hor_to_app();
+ * @sa novas_radio_refraction()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model,
         double *az, double *el) {
@@ -763,7 +772,13 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
  *                    -1 (errno will indicate the type of error).
  *
  * @sa novas_app_to_hor()
- * @sa novas_make_frame()
+ * @sa novas_app_to_geom()
+ * @sa novas_standard_refraction()
+ * @sa novas_optical_refraction()
+ * @sa novas_radio_refraction()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
  */
 int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys,
         double *ra, double *dec) {
@@ -845,6 +860,9 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
  *                      indicate the type of error).
  *
  * @sa novas_geom_to_app()
+ * @sa novas_hor_to_app()
+ * @sa novas_geom_to_hor()
+ * @sa novas_transform_vector()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -947,8 +965,10 @@ static int cat_transform(novas_transform *transform, const novas_matrix *compone
  *                        the type of error).
  *
  * @sa novas_transform_vector()
- * @sa novas_geom_posvel()
+ * @sa novas_transform_sky_pos()
  * @sa novas_invert_transform()
+ * @sa novas_geom_posvel()
+ * @sa novas_app_to_geom()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -1060,7 +1080,6 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
  *                      type of error).
  *
  * @sa novas_make_transform()
- * @sa novas_geom_posvel()
  *
  * @since 1.1
  * @author Attila Kovacs
