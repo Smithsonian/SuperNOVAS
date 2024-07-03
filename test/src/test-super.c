@@ -438,6 +438,7 @@ static int test_radec_star() {
 
 
 static int test_app_hor(enum novas_reference_system sys) {
+  char label[50];
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
@@ -445,24 +446,75 @@ static int test_app_hor(enum novas_reference_system sys) {
 
   double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1;
 
-  if(!is_ok("app_hor:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
-  if(!is_ok("app_hor:make_observer", make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
-  if(!is_ok("app_hop:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+  sprintf(label, "app_hor:sys=%d:set_time", sys);
+  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
 
-  if(!is_ok("app_hor:app_to_hor", novas_app_to_hor(&frame, sys, ra, dec, NULL, &az, &el))) return 1;
-  if(!is_ok("app_hor:hor_to_app", novas_hor_to_app(&frame, az, el, NULL, sys, &ra1, &dec1))) return 1;
+  sprintf(label, "app_hor:sys=%d:make_observer", sys);
+  if(!is_ok(label, make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
 
-  if(!is_equal("app_hor:trip:ra", ra1, ra, 1e-7)) return 1;
-  if(!is_equal("app_hor:trip:dec", dec1, dec, 1e-6)) return 1;
+  sprintf(label, "app_hor:sys=%d:make_frame", sys);
+  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
 
-  if(!is_ok("app_hor:app_to_hor:refract", novas_app_to_hor(&frame, sys, ra, dec, novas_standard_refraction, &az, &el))) return 1;
-  if(!is_ok("app_hor:hor_to_app:refract", novas_hor_to_app(&frame, az, el, novas_standard_refraction, sys, &ra1, &dec1))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:app_to_hor", sys);
+  if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, NULL, &az, &el))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:hor_to_app", sys);
+  if(!is_ok(label, novas_hor_to_app(&frame, az, el, NULL, sys, &ra1, &dec1))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:trip:ra", sys);
+  if(!is_equal(label, ra1, ra, 1e-7)) return 1;
+
+  sprintf(label, "app_hor:sys=%d:trip:dec", sys);
+  if(!is_equal(label, dec1, dec, 1e-6)) return 1;
+
+  sprintf(label, "app_hor:sys=%d:app_to_hor:refract", sys);
+  if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, novas_standard_refraction, &az, &el))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:hor_to_app:refract", sys);
+  if(!is_ok(label, novas_hor_to_app(&frame, az, el, novas_standard_refraction, sys, &ra1, &dec1))) return 1;
 
   // TODO check against cel2ter...
 
-  if(!is_equal("app_hor:refract:trip:ra", ra1, ra, 1e-7)) return 1;
-  if(!is_equal("app_hor:refract:trip:dec", dec1, dec, 1e-6)) return 1;
+  sprintf(label, "app_hor:sys=%d:refract:ra", sys);
+  if(!is_equal(label, ra1, ra, 1e-7)) return 1;
 
+  sprintf(label, "app_hor:sys=%d:refract:dec", sys);
+  if(!is_equal(label, dec1, dec, 1e-6)) return 1;
+
+
+  return 0;
+}
+
+static int test_app_geom(enum novas_reference_system sys) {
+  char label[50];
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  cat_entry c = {};
+  double pos0[3] = {}, pos1[3] = {};
+  sky_pos app = {};
+
+  sprintf(label, "app_hor:sys=%d:set_time", sys);
+  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:make_observer", sys);
+  if(!is_ok(label, make_observer_at_geocenter(&obs))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:make_frame", sys);
+  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  starvectors(&source.star, pos0, NULL);
+
+  sprintf(label, "app_hor:sys=%d:geom_to_app", sys);
+  if(!is_ok(label, novas_geom_to_app(&frame, pos0, sys, &app))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:app_to_geom", sys);
+
+  if(!is_ok(label, novas_app_to_geom(&frame, sys, app.ra, app.dec, vlen(pos0), pos1))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:check", sys);
+  if(!is_ok(label, check_equal_pos(pos1, pos0, 1e-8 * vlen(pos0)))) return 1;
 
   return 0;
 }
@@ -496,9 +548,11 @@ static int test_source() {
 
   if(test_geo_posvel()) n++;
 
-  if(test_app_hor(1)) n++;
+  for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_hor(k)) n++;
 
-  for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++) if(test_app_hor(k)) n++;
+  novas_debug(NOVAS_DEBUG_ON);
+  for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_geom(k)) n++;
+  novas_debug(NOVAS_DEBUG_OFF);
 
   return n;
 }

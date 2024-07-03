@@ -1118,6 +1118,8 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
 int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel);
 
+int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_reference_system sys, sky_pos *out);
+
 int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *output);
 
 int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model,

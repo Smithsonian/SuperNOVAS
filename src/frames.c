@@ -435,6 +435,7 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  *                      50--70 error is 50 + error from light_time2().
  *
  * @sa novas_make_frame()
+ * @sa novas_geom_to_app()
  * @sa novas_sky_pos()
  * @sa novas_transform_vector()
  * @sa place()
@@ -453,7 +454,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
     return novas_error(-1, EINVAL, fn, "NULL argument: source=%p, frame=%p", source, frame);
 
   if(!pos && !vel)
-      return novas_error(-1, EINVAL, fn, "Both output vectors (pos, vel) are NULL");
+    return novas_error(-1, EINVAL, fn, "Both output vectors (pos, vel) are NULL");
 
   obs = (observer*) &frame->observer;
 
@@ -533,7 +534,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * @param sys           The coordinate system in which to return the apparent sky location
  * @param[out] out      Pointer to the data structure which is populated with the calculated
  *                      apparent location in the designated coordinate system.
- * @return              0 if successful, or an error from grav_def(),
+ * @return              0 if successful,
  *                      3 if Earth is the observed object, and the observer is either at the
  *                      geocenter or on the Earth's surface,
  *                      50--70 error is 50 + error from light_time2(),
@@ -549,11 +550,10 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * @author Attila Kovacs
  */
 int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *out) {
-  static const char *fn = "novas_calc_apparent";
-  enum novas_observer_place loc;
-  double jd_tdb, id, d_sb;
+  static const char *fn = "novas_sky_pos";
+
   double pos[3], vel[3];
-  int i;
+  double d_sb;
 
   if(!object || !frame || !out)
     return novas_error(-1, EINVAL, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
@@ -565,8 +565,6 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
   prop_error(fn, novas_geom_posvel(object, frame, NOVAS_ICRS, pos, vel), 0);
-
-  jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
   if(object->type == NOVAS_CATALOG_OBJECT) {
     out->dis = 0.0;
@@ -592,6 +590,45 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   rad_vel(object, pos, vel, frame->obs_vel, novas_vdist(frame->obs_pos, &frame->pos[NOVAS_EARTH][0]),
           novas_vdist(frame->obs_pos, &frame->pos[NOVAS_SUN][0]), d_sb, &out->rv);
 
+  prop_error(fn, novas_geom_to_app(frame, pos, sys, out), 70);
+
+  return 0;
+}
+
+/**
+ * Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate
+ * corrections for aberration and gravitational deflection for the observer's frame.
+ *
+ * @param frame     The observer frame, defining the location and time of observation
+ * @param pos       [AU] Geometric position of source in ICRS coordinates
+ * @param sys       The coordinate system in which to return the apparent sky location
+ * @param[out] out  Pointer to the data structure which is populated with the calculated
+ *                  apparent location in the designated coordinate system.
+ * @return          0 if successful, or an error from grav_def(),
+ *                  or else -1 (errno will indicate the type of error).
+ *
+ * @sa novas_app_to_geom()
+ * @sa novas_geom_posvel()
+ * @sa novas_sky_pos()
+ */
+int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_reference_system sys, sky_pos *out) {
+  static const char *fn = "novas_geom_to_app";
+
+  double jd_tdb, id, pos1[3];
+  enum novas_observer_place loc;
+  int i;
+
+  if(!pos || !frame || !out)
+    return novas_error(-1, EINVAL, "NULL argument: pos=%p, frame=%p, out=%p", (void *) pos, frame, out);
+
+  if(!is_frame_initialized(frame))
+    return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
+
+  if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
+
+  jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
+
   // ---------------------------------------------------------------------
   // Apply gravitational deflection of light and aberration.
   // ---------------------------------------------------------------------
@@ -605,22 +642,19 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   }
 
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos), 70);
+  prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos1), 0);
 
   // Aberration correction
-  frame_aberration(frame, GEOM_TO_APP, pos);
+  frame_aberration(frame, GEOM_TO_APP, pos1);
 
   // Transform position to output system
-  prop_error(fn, icrs_to_sys(frame, pos, sys), 0);
+  prop_error(fn, icrs_to_sys(frame, pos1, sys), 0);
 
-  // ---------------------------------------------------------------------
-  // Finish up.
-  // ---------------------------------------------------------------------
-  vector2radec(pos, &out->ra, &out->dec);
+  vector2radec(pos1, &out->ra, &out->dec);
 
-  id = 1.0 / novas_vlen(pos);
+  id = 1.0 / novas_vlen(pos1);
   for(i = 3; --i >= 0;)
-    out->r_hat[i] = pos[i] * id;
+    out->r_hat[i] = pos1[i] * id;
 
   return 0;
 }
@@ -761,7 +795,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
   }
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-1, EINVAL, fn, "invalid reference system", sys);
+    return novas_error(-1, EINVAL, fn, "invalid reference system: %d", sys);
 
   time = (novas_timespec *) &frame->time;
 
@@ -826,7 +860,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
  * @return              0 if successful, or else an error from grav_undef(), or -1 (errno will
  *                      indicate the type of error).
  *
- * @sa novas_transform_skypos()
+ * @sa novas_geom_to_app()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -837,13 +871,13 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   double jd_tdb, app_pos[3];
 
   if(!frame || !geom_icrs)
-    return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, nom_pos=%p", frame, geom_icrs);
+    return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, geom_icrs=%p", frame, geom_icrs);
 
   if(!is_frame_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
+    return novas_error(-1, EINVAL, fn, "invalid reference system: %d", sys);
 
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 

@@ -1088,6 +1088,30 @@ static int test_app_to_geom() {
   return n;
 }
 
+static int test_geom_to_app() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  sky_pos out = {};
+  double pos[3] = {};
+  int n = 0;
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+
+  if(check("geom_to_app:frame", -1, novas_geom_to_app(NULL, pos, NOVAS_ICRS, &out))) n++;
+  if(check("geom_to_app:frame:init", -1, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
+
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+  if(check("geom_to_app:frame:ok", 0, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
+
+  if(check("geom_to_app:pos", -1, novas_geom_to_app(&frame, NULL, NOVAS_ICRS, &out))) n++;
+  if(check("geom_to_app:sys:-1", -1, novas_geom_to_app(&frame, pos, -1, &out))) n++;
+  if(check("geom_to_app:sys:hi", -1, novas_geom_to_app(&frame, pos, NOVAS_REFERENCE_SYSTEMS, &out))) n++;
+
+  return n;
+}
+
 static int test_app_to_hor() {
   novas_timespec ts = {};
   observer obs = {};
@@ -1296,10 +1320,11 @@ int main() {
   if(test_change_observer()) n++;
   if(test_make_transform()) n++;
   if(test_geom_posvel()) n++;
-  if(test_sky_pos()) n++;
+  if(test_geom_to_app()) n++;
   if(test_app_to_geom()) n++;
   if(test_app_to_hor()) n++;
   if(test_hor_to_app()) n++;
+  if(test_sky_pos()) n++;
   if(test_transform_vector()) n++;
   if(test_transform_sky_pos()) n++;
   if(test_inv_transform()) n++;
