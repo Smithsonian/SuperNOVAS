@@ -419,7 +419,7 @@ int j2000_to_gcrs(const double *in, double *out) {
  * @author Attila Kovacs
  */
 int gcrs_to_j2000(const double *in, double *out) {
-  prop_error("gcrs_to_j2000", frame_tie(in, J2000_TO_ICRS, out), 0);
+  prop_error("gcrs_to_j2000", frame_tie(in, ICRS_TO_J2000, out), 0);
   return 0;
 }
 
