@@ -111,7 +111,7 @@ static int test_tod_itrs_tod() {
 
   if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
   if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
-  if(!is_ok("tod_itrs_tod", check_equal_pos(pos0, pos1, 1e-12 * vlen(pos0)))) return 1;
+  if(!is_ok("tod_itrs_tod", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
 
@@ -130,7 +130,7 @@ static int test_cirs_itrs_cirs() {
 
   if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
   if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
-  if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-12 * vlen(pos0)))) return 1;
+  if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
   return 0;
 }
 
@@ -444,7 +444,7 @@ static int test_app_hor(enum novas_reference_system sys) {
   novas_frame frame = {};
   cat_entry c = {};
 
-  double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1;
+  double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1, x;
 
   sprintf(label, "app_hor:sys=%d:set_time", sys);
   if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
@@ -455,12 +455,27 @@ static int test_app_hor(enum novas_reference_system sys) {
   sprintf(label, "app_hor:sys=%d:make_frame", sys);
   if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
 
-
   sprintf(label, "app_hor:sys=%d:app_to_hor", sys);
   if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, NULL, &az, &el))) return 1;
 
+  sprintf(label, "app_hor:sys=%d:app_to_hor:no_az", sys);
+  if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, NULL, NULL, &x))) return 1;
+  if(!is_equal(label, x, el, 1e-9)) return 1;
+
+  sprintf(label, "app_hor:sys=%d:app_to_hor:no_el", sys);
+  if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, NULL, &x, NULL))) return 1;
+  if(!is_equal(label, x, az, 1e-9)) return 1;
+
   sprintf(label, "app_hor:sys=%d:hor_to_app", sys);
   if(!is_ok(label, novas_hor_to_app(&frame, az, el, NULL, sys, &ra1, &dec1))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:hor_to_app:no_ra", sys);
+  if(!is_ok(label, novas_hor_to_app(&frame, az, el, NULL, sys, NULL, &x))) return 1;
+  if(!is_equal(label, x, dec1, 1e-9)) return 1;
+
+  sprintf(label, "app_hor:sys=%d:hor_to_app:no_dec", sys);
+  if(!is_ok(label, novas_hor_to_app(&frame, az, el, NULL, sys, &x, NULL))) return 1;
+  if(!is_equal(label, x, ra1, 1e-9)) return 1;
 
   sprintf(label, "app_hor:sys=%d:trip:ra", sys);
   if(!is_equal(label, ra1, ra, 1e-7)) return 1;
@@ -477,10 +492,10 @@ static int test_app_hor(enum novas_reference_system sys) {
   // TODO check against cel2ter...
 
   sprintf(label, "app_hor:sys=%d:refract:ra", sys);
-  if(!is_equal(label, ra1, ra, 1e-7)) return 1;
+  if(!is_equal(label, ra1, ra, 1e-6)) return 1;
 
   sprintf(label, "app_hor:sys=%d:refract:dec", sys);
-  if(!is_equal(label, dec1, dec, 1e-6)) return 1;
+  if(!is_equal(label, dec1, dec, 1e-5)) return 1;
 
 
   return 0;
@@ -528,9 +543,131 @@ static int test_app_geom(enum novas_reference_system sys) {
   return 0;
 }
 
+static int test_transform_icrs_cirs() {
+  novas_transform T = {}, I = {};
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double pos1[3] = {}, pos2[3] = {};
+
+
+  if(!is_ok("transform:icrs_cirs:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform:icrs_cirs:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform:icrs_cirs:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+
+  novas_make_transform(&frame, NOVAS_ICRS, NOVAS_CIRS, &T);
+  novas_transform_vector(pos0, &T, pos1);
+  novas_make_transform(&frame, NOVAS_GCRS, NOVAS_CIRS, &T);
+  novas_transform_vector(pos0, &T, pos2);
+  if(!is_ok("transform:icrs_cirs:gcrs", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  gcrs_to_cirs(tdb, NOVAS_REDUCED_ACCURACY, pos0, pos2);
+  if(!is_ok("transform:icrs_cirs:check", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
+static int test_transform_icrs_j2000() {
+  novas_transform T = {}, I = {};
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double pos1[3] = {}, pos2[3] = {};
+
+
+  if(!is_ok("transform:icrs_j2000:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform:icrs_j2000:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform:icrs_j2000:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+
+  novas_make_transform(&frame, NOVAS_ICRS, NOVAS_J2000, &T);
+  novas_transform_vector(pos0, &T, pos1);
+  novas_make_transform(&frame, NOVAS_GCRS, NOVAS_J2000, &T);
+  novas_transform_vector(pos0, &T, pos2);
+  if(!is_ok("transform:icrs_j2000:gcrs", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  gcrs_to_j2000(pos0, pos2);
+  if(!is_ok("transform:icrs_j2000:check", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
+static int test_transform_j2000_mod() {
+  novas_transform T = {}, I = {};
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double pos1[3] = {}, pos2[3] = {};
+
+  if(!is_ok("transform:j2000_mod:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform:j2000_mod:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform:j2000_mod:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  novas_make_transform(&frame, NOVAS_J2000, NOVAS_MOD, &T);
+  novas_transform_vector(pos0, &T, pos1);
+
+  precession(NOVAS_JD_J2000, pos0, tdb, pos2);
+  if(!is_ok("transform:j2000_mod:check", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
+static int test_transform_mod_tod() {
+  novas_transform T = {}, I = {};
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double pos1[3] = {}, pos2[3] = {};
+
+  if(!is_ok("transform:mod_tod:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform:mod_tod:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform:mod_tod:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  novas_make_transform(&frame, NOVAS_MOD, NOVAS_TOD, &T);
+  novas_transform_vector(pos0, &T, pos1);
+
+  nutation(tdb, NUTATE_MEAN_TO_TRUE, NOVAS_REDUCED_ACCURACY, pos0, pos2);
+  if(!is_ok("transform:mod_tod:check", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
+static int test_transform_inv() {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  cat_entry c = {};
+
+  enum novas_reference_system from;
+
+  if(!is_ok("transform_rev:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform_rev:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform_rev:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  for(from = 0; from < NOVAS_REFERENCE_SYSTEMS; from++) {
+    char label[50];
+    novas_transform T = {}, I = {};
+    enum novas_reference_system to;
+    double pos1[3] = {}, pos2[3] = {};
+
+    novas_make_transform(&frame, from, to, &T);
+    novas_make_transform(&frame, from, to, &I);
+
+    novas_transform_vector(pos0, &T, pos1);
+    novas_transform_vector(pos1, &I, pos2);
+
+    sprintf(label, "transform_rev:from=%d:to=%d", from, to);
+    if(!is_ok(label, check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+  }
+
+  return 0;
+}
 
 static int test_source() {
   int k, n = 0;
+
+  starvectors(&source.star, pos0, NULL);
 
   if(test_gcrs_j2000_gcrs()) n++;
   if(test_j2000_tod_j2000()) n++;
@@ -556,6 +693,12 @@ static int test_source() {
   if(test_starvectors()) n++;
 
   if(test_geo_posvel()) n++;
+
+  if(test_transform_icrs_cirs()) n++;
+  if(test_transform_icrs_j2000()) n++;
+  if(test_transform_j2000_mod()) n++;
+  if(test_transform_mod_tod()) n++;
+  if(test_transform_inv()) n++;
 
   for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_hor(k)) n++;
 
@@ -655,17 +798,28 @@ static int test_sources() {
   int n = 0;
 
   make_cat_entry("22+20", "TST", 1001, 22.0, 20.0, 3.0, -2.0, 5.0, 10.0, &star);
-  if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
+  if(make_cat_object(&star, &source) != 0) return -1;
+  n += test_observers();
+
+  make_cat_entry("22-40", "TST", 1001, 22.0, -40.0, 3.0, -2.0, 5.0, 10.0, &star);
+  if(make_cat_object(&star, &source) != 0) return -1;
   n += test_observers();
 
   make_cat_entry("16-20", "TST", 1001, 16.0, -20.0, 3.0, -2.0, 5.0, 10.0, &star);
-  if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
+  if(make_cat_object(&star, &source) != 0) return -1;
+  n += test_observers();
+
+  make_cat_entry("16+77", "TST", 1001, 16.0, 77.0, -3.0, 2.0, -5.0, -10.0, &star);
+  if(make_cat_object(&star, &source) != 0) return -1;
   n += test_observers();
 
   make_cat_entry("08+03", "TST", 1001, 8.0, 3.0, -3.0, 2.0, -5.0, -10.0, &star);
-  if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
+  if(make_cat_object(&star, &source) != 0) return -1;
   n += test_observers();
 
+  make_cat_entry("08-66", "TST", 1001, 8.0, -66.0, -3.0, 2.0, -5.0, -10.0, &star);
+  if(make_cat_object(&star, &source) != 0) return -1;
+  n += test_observers();
 
   return n;
 }

@@ -1013,7 +1013,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
       case NOVAS_J2000:
         cat_transform(transform, &frame->precession, 1);
-        if(from_system == NOVAS_MOD)
+        if(to_system == NOVAS_MOD)
           return 0;
         /* no break */
 
@@ -1036,7 +1036,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
       case NOVAS_MOD:
         cat_transform(transform, &frame->precession, -1);
-        if(to_system == NOVAS_MOD)
+        if(to_system == NOVAS_J2000)
           return 0;
         /* no break */
 
