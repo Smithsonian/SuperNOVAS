@@ -13,6 +13,12 @@ Changes coming to the next quarterly release, expected around 1 September 2024. 
 available on the `main` branch.
 
 ### Fixed
+
+ - `gcrs_to_j2000` transformed in the wrong direction.
+
+ - `gcrs_to_cirs()` did not handle well if input and output vectors were the same.
+
+ - `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
    
  - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
    that is observed is in the geometric direction towards the source (unaffected by aberration). A proper accounting 
