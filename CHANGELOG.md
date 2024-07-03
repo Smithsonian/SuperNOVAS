@@ -14,11 +14,22 @@ available on the `main` branch.
 
 ### Fixed
 
+ - `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
+
  - `gcrs_to_j2000` transformed in the wrong direction.
 
  - `gcrs_to_cirs()` did not handle well if input and output vectors were the same.
 
  - `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
+   
+ - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
+   coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
+   which broke many calculations badly for such platforms. As of now, we use the explicit platform-independent 
+   `int8_t` storage type for these coefficients.
+
+ - Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris reference
+   position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
+   the gravitational deflection due to the Sun being skipped. See Issue #28.
    
  - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
    that is observed is in the geometric direction towards the source (unaffected by aberration). A proper accounting 
