@@ -445,7 +445,7 @@ static int test_app_hor(enum novas_reference_system sys) {
   cat_entry c = {};
   int i;
 
-  double ra = source.star.ra, dec = source.star.dec, az, el, az1, el1, ra1, dec1, x;
+  double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1, x, y;
 
   sprintf(label, "app_hor:sys=%d:set_time", sys);
   if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
@@ -459,6 +459,13 @@ static int test_app_hor(enum novas_reference_system sys) {
   sprintf(label, "app_hor:sys=%d:app_to_hor", sys);
   if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, NULL, &az, &el))) return 1;
 
+  sprintf(label, "app_hor:sys=%d:app_to_hor:air", sys);
+  frame.observer.where = NOVAS_AIRBORNE_OBSERVER;
+  if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, NULL, &x, &y))) return 1;
+  if(!is_equal(label, az, x, 1e-6)) return 1;
+  if(!is_equal(label, el, y, 1e-6)) return 1;
+  frame.observer.where = NOVAS_OBSERVER_ON_EARTH;
+
   sprintf(label, "app_hor:sys=%d:app_to_hor:no_az", sys);
   if(!is_ok(label, novas_app_to_hor(&frame, sys, ra, dec, NULL, NULL, &x))) return 1;
   if(!is_equal(label, x, el, 1e-9)) return 1;
@@ -469,6 +476,13 @@ static int test_app_hor(enum novas_reference_system sys) {
 
   sprintf(label, "app_hor:sys=%d:hor_to_app", sys);
   if(!is_ok(label, novas_hor_to_app(&frame, az, el, NULL, sys, &ra1, &dec1))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:hor_to_app:air", sys);
+  frame.observer.where = NOVAS_AIRBORNE_OBSERVER;
+  if(!is_ok(label, novas_hor_to_app(&frame, az, el, NULL, sys, &x, &y))) return 1;
+  if(!is_equal(label, ra1, x, 1e-6)) return 1;
+  if(!is_equal(label, dec1, y, 1e-6)) return 1;
+  frame.observer.where = NOVAS_OBSERVER_ON_EARTH;
 
   sprintf(label, "app_hor:sys=%d:hor_to_app:no_ra", sys);
   if(!is_ok(label, novas_hor_to_app(&frame, az, el, NULL, sys, NULL, &x))) return 1;
@@ -1090,23 +1104,29 @@ static int test_sky_pos(enum novas_reference_system sys) {
 static int test_geom_posvel() {
   novas_timespec ts = {};
   observer obs = {};
-  novas_frame frame = {};
+  novas_frame frame = {}, acc = {};
   object source = {};
   double pos0[3] = {}, vel0[3] = {}, pos[3] = {1.0}, vel[3] = {1.0};
+
+  enable_earth_sun_hp(1);
 
   if(!is_ok("sky_pos:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
   if(!is_ok("sky_pos:make_observer", make_observer_at_geocenter(&obs))) return 1;
   if(!is_ok("sky_pos:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+  if(!is_ok("sky_pos:make_frame:acc", novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &ts, 0.0, 0.0, &acc))) return 1;
 
   make_planet(NOVAS_SUN, &source);
 
   if(!is_ok("geom_posvel", novas_geom_posvel(&source, &frame, NOVAS_ICRS, pos0, vel0))) return 1;
+  if(!is_ok("geom_posvel", novas_geom_posvel(&source, &acc, NOVAS_ICRS, pos, vel))) return 1;
+  if(!is_ok("geom_posvel:pos:acc", check_equal_pos(pos, pos0, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("geom_posvel:vel:acc", check_equal_pos(vel, vel0, 1e-8))) return 1;
 
   if(!is_ok("geom_posvel:pos:null", novas_geom_posvel(&source, &frame, NOVAS_ICRS, NULL, vel))) return 1;
-  if(!is_ok("geom_posvel:pos:null:check", check_equal_pos(vel, vel0, 1e-5))) return 1;
+  if(!is_ok("geom_posvel:pos:null:check", check_equal_pos(vel, vel0, 1e-8))) return 1;
 
   if(!is_ok("geom_posvel:vel:null", novas_geom_posvel(&source, &frame, NOVAS_ICRS, pos, NULL))) return 1;
-  if(!is_ok("geom_posvel:vel:null:check", check_equal_pos(pos, pos0, 1e-7))) return 1;
+  if(!is_ok("geom_posvel:vel:null:check", check_equal_pos(pos, pos0, 1e-9 * vlen(pos0)))) return 1;
 
   return 0;
 }
@@ -1848,6 +1868,7 @@ int main() {
   int n = 0;
 
   novas_debug(NOVAS_DEBUG_ON);
+  enable_earth_sun_hp(1);
 
   make_object(NOVAS_CATALOG_OBJECT, 0, "None", NULL, &source);
 

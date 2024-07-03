@@ -1069,6 +1069,9 @@ static int test_sky_pos() {
   frame.accuracy = 2;
   if(check("sky_pos:frame:accuracy:2", -1, novas_sky_pos(&o, &frame, NOVAS_ICRS, &out))) n++;
 
+  frame.accuracy = NOVAS_FULL_ACCURACY;
+  if(check("sky_pos:frame:accuracy:full", 73, novas_sky_pos(&o, &frame, NOVAS_ICRS, &out))) n++;
+
   return n;
 }
 
@@ -1115,6 +1118,15 @@ static int test_geom_to_app() {
   if(check("geom_to_app:pos", -1, novas_geom_to_app(&frame, NULL, NOVAS_ICRS, &out))) n++;
   if(check("geom_to_app:sys:-1", -1, novas_geom_to_app(&frame, pos, -1, &out))) n++;
   if(check("geom_to_app:sys:hi", -1, novas_geom_to_app(&frame, pos, NOVAS_REFERENCE_SYSTEMS, &out))) n++;
+
+  frame.accuracy = -1;
+  if(check("geom_to_app:frame:accuracy:-1", -1, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
+
+  frame.accuracy = 2;
+  if(check("geom_to_app:frame:accuracy:2", -1, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
+
+  frame.accuracy = NOVAS_FULL_ACCURACY;
+  if(check("geom_to_app:frame:accuracy:2", 13, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
 
   return n;
 }

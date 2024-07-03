@@ -1006,10 +1006,9 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
         return 0;
 
       default:
-        return novas_error(-1, EINVAL, fn, "invalid reference system (from): %d\n", from_system);
+        // nothing to do...
     }
   }
-
   else {
     switch(from_system) {
       case NOVAS_TOD:
@@ -1035,10 +1034,11 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
         return 0;
 
       default:
-        return novas_error(-1, EINVAL, fn, "invalid reference system (from): %d\n", from_system);
+        // nothing to do...
     }
   }
 
+  return novas_error(-1, EINVAL, fn, "invalid reference system (from): %d\n", from_system);
 }
 
 /**
