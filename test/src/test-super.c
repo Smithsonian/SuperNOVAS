@@ -443,8 +443,9 @@ static int test_app_hor(enum novas_reference_system sys) {
   observer obs = {};
   novas_frame frame = {};
   cat_entry c = {};
+  int i;
 
-  double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1, x;
+  double ra = source.star.ra, dec = source.star.dec, az, el, az1, el1, ra1, dec1, x;
 
   sprintf(label, "app_hor:sys=%d:set_time", sys);
   if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
@@ -490,7 +491,6 @@ static int test_app_hor(enum novas_reference_system sys) {
   if(!is_ok(label, novas_hor_to_app(&frame, az, el, novas_standard_refraction, sys, &ra1, &dec1))) return 1;
 
   // TODO check against cel2ter...
-
   sprintf(label, "app_hor:sys=%d:refract:ra", sys);
   if(!is_equal(label, ra1, ra, 1e-6)) return 1;
 
@@ -504,42 +504,47 @@ static int test_app_hor(enum novas_reference_system sys) {
 static int test_app_geom(enum novas_reference_system sys) {
   char label[50];
   novas_timespec ts = {};
-  observer obs[2] = {{}};
-  novas_frame frame[2] = {};
-  cat_entry c = {};
-  double pos0[3] = {}, pos1[3] = {};
-  sky_pos app = {};
+  on_surface loc;
   int i;
 
-  sprintf(label, "app_hor:sys=%d:set_time", sys);
-  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
+  for(i = 0; i < NOVAS_OBSERVER_PLACES; i++) {
+    observer obs = {};
+    novas_frame frame = {};
+    double sc_pos[3] = {};
+    double sc_vel[3] = {};
+    double pos1[3] = {};
+    sky_pos app = {};
 
-  sprintf(label, "app_hor:sys=%d:make_observer:gc", sys);
-  if(!is_ok(label, make_observer_at_geocenter(&obs[0]))) return 1;
+    switch(i) {
+      case NOVAS_OBSERVER_AT_GEOCENTER: make_observer_at_geocenter(&obs); break;
+      case NOVAS_OBSERVER_ON_EARTH: make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs); break;
+      case NOVAS_OBSERVER_IN_EARTH_ORBIT: make_observer_in_space(sc_pos, sc_vel, &obs); break;
+      case NOVAS_AIRBORNE_OBSERVER: {
+        on_surface loc;
+        make_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &loc);
+        make_airborne_observer(&loc, sc_vel, &obs);
+        break;
+      }
+      case NOVAS_SOLAR_SYSTEM_OBSERVER: make_solar_system_observer(sc_pos, sc_vel, &obs); break;
+      default: return -1;
+    }
 
-  sprintf(label, "app_hor:sys=%d:make_observer:gc", sys);
-  if(!is_ok(label, make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs[1]))) return 1;
+    sprintf(label, "app_hor:sys=%d:obs=%d:set_time", sys, i);
+    if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
 
-  sprintf(label, "app_hor:sys=%d:make_frame", sys);
-  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs[0], &ts, 0.0, 0.0, &frame[0]))) return 1;
+    sprintf(label, "app_hor:sys=%d:obs=%d:make_frame", sys, i);
+    if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
 
-  sprintf(label, "app_hor:sys=%d:make_frame", sys);
-  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs[1], &ts, 0.0, 0.0, &frame[1]))) return 1;
-
-  starvectors(&source.star, pos0, NULL);
-
-  for(i = 0; i < 2; i++) {
     sprintf(label, "app_hor:sys=%d:obs=%d:geom_to_app", sys, i);
-    if(!is_ok(label, novas_geom_to_app(&frame[i], pos0, sys, &app))) return 1;
+    if(!is_ok(label, novas_geom_to_app(&frame, pos0, sys, &app))) return 1;
 
     sprintf(label, "app_hor:sys=%d:obs=%d:app_to_geom", sys, i);
-
-    if(!is_ok(label, novas_app_to_geom(&frame[i], sys, app.ra, app.dec, vlen(pos0), pos1))) return 1;
+    if(!is_ok(label, novas_app_to_geom(&frame, sys, app.ra, app.dec, vlen(pos0), pos1))) return 1;
 
     sprintf(label, "app_hor:sys=%d:obs=%d:check", sys, i);
     if(!is_ok(label, check_equal_pos(pos1, pos0, 1e-8 * vlen(pos0)))) return 1;
-  }
 
+  }
   return 0;
 }
 
@@ -703,10 +708,7 @@ static int test_source() {
   if(test_transform_inv()) n++;
 
   for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_hor(k)) n++;
-
-  novas_debug(NOVAS_DEBUG_ON);
   for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_geom(k)) n++;
-  novas_debug(NOVAS_DEBUG_OFF);
 
   return n;
 }
@@ -1554,9 +1556,7 @@ static int test_cio_location() {
   double loc;
   short type;
 
-  novas_debug(NOVAS_DEBUG_ON);
   cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc, &type);
-  novas_debug(NOVAS_DEBUG_OFF);
 
   return 0;
 }
@@ -1576,7 +1576,7 @@ static int test_novas_debug() {
   novas_debug(3);
   if(!is_ok("novas_debug:3", novas_get_debug_mode() != NOVAS_DEBUG_EXTRA)) n++;
 
-  novas_debug(NOVAS_DEBUG_OFF);
+  novas_debug(NOVAS_DEBUG_ON);
 
   return n;
 }
@@ -1846,6 +1846,8 @@ static int test_transform() {
 
 int main() {
   int n = 0;
+
+  novas_debug(NOVAS_DEBUG_ON);
 
   make_object(NOVAS_CATALOG_OBJECT, 0, "None", NULL, &source);
 

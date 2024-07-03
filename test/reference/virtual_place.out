@@ -5,7 +5,7 @@
 
 -10000.0 SUN        S0 O0 A0: ERROR 33 
 
--10000.0 EARTH      S0 O0 A0: ERROR 13 
+-10000.0 EARTH      S0 O0 A0: ERROR 33 
 
      0.0 22+20      S2 O0 A0: ERROR 43 
 
@@ -13,7 +13,7 @@
 
      0.0 SUN        S0 O0 A0: ERROR 33 
 
-     0.0 EARTH      S0 O0 A0: ERROR 13 
+     0.0 EARTH      S0 O0 A0: ERROR 33 
 
  10000.0 22+20      S2 O0 A0: ERROR 43 
 
@@ -21,7 +21,7 @@
 
  10000.0 SUN        S0 O0 A0: ERROR 33 
 
- 10000.0 EARTH      S0 O0 A0: ERROR 13 
+ 10000.0 EARTH      S0 O0 A0: ERROR 33 
 
  10000.0 22+20      S2 O0 A0: ERROR 43 
 
@@ -29,7 +29,7 @@
 
  10000.0 SUN        S0 O0 A0: ERROR 33 
 
- 10000.0 EARTH      S0 O0 A0: ERROR 13 
+ 10000.0 EARTH      S0 O0 A0: ERROR 33 
 
  10000.0 22+20      S2 O0 A0: ERROR 43 
 
@@ -37,7 +37,7 @@
 
  10000.0 SUN        S0 O0 A0: ERROR 33 
 
- 10000.0 EARTH      S0 O0 A0: ERROR 13 
+ 10000.0 EARTH      S0 O0 A0: ERROR 33 
 
 -10000.0 22+20      S2 O0 A1:      22.0004      20.0014
 

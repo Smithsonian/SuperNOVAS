@@ -1597,13 +1597,6 @@ short place(double jd_tt, const object *source, const observer *location, double
     first_time = 0;
   }
 
-  // ---------------------------------------------------------------------
-  // Check on Earth as an observed object.  Earth can only be an observed
-  // object when 'location' is a near-Earth satellite.
-  // ---------------------------------------------------------------------
-  if((source->type == NOVAS_PLANET) && (source->number == NOVAS_EARTH) && (obs.where != NOVAS_OBSERVER_IN_EARTH_ORBIT))
-    return novas_error(3, EINVAL, fn, "invalid source type: %d", source->type);
-
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
@@ -1653,6 +1646,9 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     // Get position of body wrt observer, antedated for light-time.
     prop_error(fn, light_time2(jd_tdb, source, pob, 0.0, accuracy, pos, vel, &t_light), 50);
+
+    if(t_light < 3e-8)
+          return novas_error(3, EINVAL, fn, "observer is at or very near the observed location");
 
     // Calculate distance to Sun.
     d_sb = 0.0;

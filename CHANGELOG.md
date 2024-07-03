@@ -107,6 +107,9 @@ available on the `main` branch.
 
 ### Changed
 
+ - `place()` now returns an error 3 if and only if the observer is at (or very close, within ~10m) of the observed
+   Solar-system object.
+
  - Improved precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being more careful
    about the order in which terms are accumulated and combined, resulting in a small improvement on the few uas 
    (micro-arcsecond) level.

@@ -1031,6 +1031,13 @@ static int test_geom_posvel() {
   frame.accuracy = 2;
   if(check("geom_posvel:frame:accuracy:2", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
 
+  frame.accuracy = NOVAS_REDUCED_ACCURACY;
+  make_planet(NOVAS_EARTH, &o);
+  if(check("geom_posvel:earth:gc", 3, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
+  make_planet(NOVAS_SUN, &o);
+  if(check("geom_posvel:sun:gc", 0, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
   return n;
 }
 
@@ -1116,7 +1123,7 @@ static int test_app_to_hor() {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  double az, el;
+  double az, el, sc_vel = {};
   int n = 0;
 
   make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs);

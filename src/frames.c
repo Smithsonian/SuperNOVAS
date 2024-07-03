@@ -430,8 +430,7 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  *                      the observer in the designated coordinate system. It may be NULL if not
  *                      required.
  * @return              0 if successful, or else -1 if any of the arguments is invalid,
- *                      3 if Earth is the observed object, and the observer is either at the
- *                      geocenter or on the Earth's surface,
+ *                      3 if the observer is at the observed location,
  *                      50--70 error is 50 + error from light_time2().
  *
  * @sa novas_make_frame()
@@ -463,14 +462,6 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
-
-  // ---------------------------------------------------------------------
-  // Earth can only be an observed object when 'location' is not on Earth.
-  // ---------------------------------------------------------------------
-  if((source->type == NOVAS_PLANET) && (source->number == NOVAS_EARTH) && (obs->where != NOVAS_OBSERVER_AT_GEOCENTER)
-          && (obs->where != NOVAS_OBSERVER_ON_EARTH))
-    return novas_error(3, EINVAL, fn, "invalid source type: %d", source->type);
-
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
@@ -493,6 +484,9 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
   else {
     // Get position of body wrt observer, antedated for light-time.
     prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 50);
+
+    if(t_light < 3e-8)
+      return novas_error(3, EINVAL, fn, "observer is at or very near the observed location");
   }
 
   if(pos) {
@@ -735,12 +729,8 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
 
   itrs_to_hor(&frame->observer.on_surf, pos, &az0, &za0);
 
-  if(ref_model) {
-    double del = ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_ASTROMETRIC, 90.0 - za0);
-    if(isnan(del))
-      return novas_trace(fn, -1, 0);
-    za0 -= del;
-  }
+  if(ref_model)
+    za0 -= ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_ASTROMETRIC, 90.0 - za0);
 
   if(az)
     *az = az0;
@@ -796,12 +786,8 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
 
   time = (novas_timespec *) &frame->time;
 
-  if(ref_model) {
-    double del = ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
-    if(isnan(del))
-      return novas_trace(fn, -1, 0);
-    el -= del;
-  }
+  if(ref_model)
+    el -= ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
 
   hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
 
@@ -972,6 +958,9 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
   if(!is_frame_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
+  if(to_system < 0 || to_system >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-1, EINVAL, fn, "invalid reference system (to): %d\n", to_system);
+
   transform->frame = *frame;
   transform->from_system = from_system;
   transform->to_system = to_system;
@@ -991,8 +980,6 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
     to_system = NOVAS_GCRS;
 
   dir = cmp_sys(to_system, from_system);
-  if(dir < -1)
-    return -1;
 
   if(dir == 0)
     return 0;
@@ -1022,7 +1009,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
         return 0;
 
       default:
-        /* NOT REACHED */
+        return novas_error(-1, EINVAL, fn, "invalid reference system (from): %d\n", from_system);
     }
   }
 
@@ -1051,11 +1038,10 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
         return 0;
 
       default:
-        /* NOT REACHED */
+        return novas_error(-1, EINVAL, fn, "invalid reference system (from): %d\n", from_system);
     }
   }
 
-  return 0; /* NOT REACHED */
 }
 
 /**
