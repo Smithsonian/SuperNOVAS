@@ -446,7 +446,6 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
   static const char *fn = "novas_geom_posvel";
 
   double jd_tdb, t_light;
-  const observer *obs;
   double pos1[3], vel1[3];
 
   if(!source || !frame)
@@ -454,8 +453,6 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
 
   if(!pos && !vel)
     return novas_error(-1, EINVAL, fn, "Both output vectors (pos, vel) are NULL");
-
-  obs = (observer*) &frame->observer;
 
   if(!is_frame_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
