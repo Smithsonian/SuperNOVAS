@@ -794,9 +794,6 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
     return novas_error(-1, EINVAL, fn, "observer not on Earth: where=%d", frame->observer.where);
   }
 
-  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-1, EINVAL, fn, "invalid reference system: %d", sys);
-
   time = (novas_timespec *) &frame->time;
 
   if(ref_model) {

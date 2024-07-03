@@ -489,32 +489,41 @@ static int test_app_hor(enum novas_reference_system sys) {
 static int test_app_geom(enum novas_reference_system sys) {
   char label[50];
   novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
+  observer obs[2] = {{}};
+  novas_frame frame[2] = {};
   cat_entry c = {};
   double pos0[3] = {}, pos1[3] = {};
   sky_pos app = {};
+  int i;
 
   sprintf(label, "app_hor:sys=%d:set_time", sys);
   if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
 
-  sprintf(label, "app_hor:sys=%d:make_observer", sys);
-  if(!is_ok(label, make_observer_at_geocenter(&obs))) return 1;
+  sprintf(label, "app_hor:sys=%d:make_observer:gc", sys);
+  if(!is_ok(label, make_observer_at_geocenter(&obs[0]))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:make_observer:gc", sys);
+  if(!is_ok(label, make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs[1]))) return 1;
 
   sprintf(label, "app_hor:sys=%d:make_frame", sys);
-  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs[0], &ts, 0.0, 0.0, &frame[0]))) return 1;
+
+  sprintf(label, "app_hor:sys=%d:make_frame", sys);
+  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs[1], &ts, 0.0, 0.0, &frame[1]))) return 1;
 
   starvectors(&source.star, pos0, NULL);
 
-  sprintf(label, "app_hor:sys=%d:geom_to_app", sys);
-  if(!is_ok(label, novas_geom_to_app(&frame, pos0, sys, &app))) return 1;
+  for(i = 0; i < 2; i++) {
+    sprintf(label, "app_hor:sys=%d:obs=%d:geom_to_app", sys, i);
+    if(!is_ok(label, novas_geom_to_app(&frame[i], pos0, sys, &app))) return 1;
 
-  sprintf(label, "app_hor:sys=%d:app_to_geom", sys);
+    sprintf(label, "app_hor:sys=%d:obs=%d:app_to_geom", sys, i);
 
-  if(!is_ok(label, novas_app_to_geom(&frame, sys, app.ra, app.dec, vlen(pos0), pos1))) return 1;
+    if(!is_ok(label, novas_app_to_geom(&frame[i], sys, app.ra, app.dec, vlen(pos0), pos1))) return 1;
 
-  sprintf(label, "app_hor:sys=%d:check", sys);
-  if(!is_ok(label, check_equal_pos(pos1, pos0, 1e-8 * vlen(pos0)))) return 1;
+    sprintf(label, "app_hor:sys=%d:obs=%d:check", sys, i);
+    if(!is_ok(label, check_equal_pos(pos1, pos0, 1e-8 * vlen(pos0)))) return 1;
+  }
 
   return 0;
 }
