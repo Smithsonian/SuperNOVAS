@@ -638,7 +638,6 @@ static int test_transform_inv() {
   observer obs = {};
   novas_frame frame = {};
   cat_entry c = {};
-
   enum novas_reference_system from;
 
   if(!is_ok("transform_rev:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
@@ -647,18 +646,21 @@ static int test_transform_inv() {
 
   for(from = 0; from < NOVAS_REFERENCE_SYSTEMS; from++) {
     char label[50];
-    novas_transform T = {}, I = {};
     enum novas_reference_system to;
-    double pos1[3] = {1}, pos2[3] = {2};
 
-    novas_make_transform(&frame, from, to, &T);
-    novas_make_transform(&frame, to, from, &I);
+    for(to = from; to < NOVAS_REFERENCE_SYSTEMS; to++) {
+      novas_transform T = {}, I = {};
+      double pos1[3] = {1}, pos2[3] = {2};
 
-    novas_transform_vector(pos0, &T, pos1);
-    novas_transform_vector(pos1, &I, pos2);
+      novas_make_transform(&frame, from, to, &T);
+      novas_make_transform(&frame, to, from, &I);
 
-    sprintf(label, "transform_rev:from=%d:to=%d", from, to);
-    if(!is_ok(label, check_equal_pos(pos0, pos2, 1e-12 * vlen(pos0)))) return 1;
+      novas_transform_vector(pos0, &T, pos1);
+      novas_transform_vector(pos1, &I, pos2);
+
+      sprintf(label, "transform_rev:from=%d:to=%d", from, to);
+      if(!is_ok(label, check_equal_pos(pos0, pos2, 1e-12 * vlen(pos0)))) return 1;
+    }
   }
 
   return 0;
