@@ -1864,6 +1864,40 @@ static int test_transform() {
 }
 
 
+static int test_app_hor2() {
+  char label[50];
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  cat_entry c = {};
+  int i;
+
+  double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1, x, y;
+
+  if(!is_ok("app_hor2:sys=%d:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("app_hor2:sys=%d:make_observer", make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
+  if(!is_ok("app_hor2:sys=%d:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  for(i = -85; i <= 85; i += 10) {
+    int j;
+
+    for(j = 0; j <= 24.0; j++) {
+      char label[50];
+      double x, y;
+
+      sprintf(label, "app_hor2:ra=%d:dec=%d", j, i);
+
+      if(!is_ok(label, novas_app_to_hor(&frame, NOVAS_ICRS, j, i, NULL, &x, &y))) return 1;
+      if(!is_ok(label, novas_hor_to_app(&frame, x, y, NULL, NOVAS_ICRS, &x, &y))) return 1;
+
+      if(!is_equal(label, remainder(x - j, 24.0), 0.0, 1e-8)) return 1;
+      if(!is_equal(label, y, i, 1e-9)) return 1;
+    }
+  }
+
+  return 0;
+}
+
 int main() {
   int n = 0;
 
@@ -1909,6 +1943,7 @@ int main() {
   if(test_make_frame()) n++;
   if(test_change_observer()) n++;
   if(test_transform()) n++;
+  if(test_app_hor2()) n++;
 
   n += test_dates();
 
