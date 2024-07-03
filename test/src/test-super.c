@@ -80,7 +80,7 @@ static int is_ok(const char *func, int error) {
 static int is_equal(const char *func, double v1, double v2, double prec) {
   if(fabs(v1 - v2) < prec) return 1;
 
-  fprintf(stderr, "ERROR! %s (%g != %g)\n", func, v1, v2);
+  fprintf(stderr, "ERROR! %s (%.9g != %.9g)\n", func, v1, v2);
   return 0;
 }
 
@@ -436,8 +436,40 @@ static int test_radec_star() {
   return 0;
 }
 
+
+static int test_app_hor(enum novas_reference_system sys) {
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  cat_entry c = {};
+
+  double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1;
+
+  if(!is_ok("app_hor:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("app_hor:make_observer", make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
+  if(!is_ok("app_hop:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  if(!is_ok("app_hor:app_to_hor", novas_app_to_hor(&frame, sys, ra, dec, NULL, &az, &el))) return 1;
+  if(!is_ok("app_hor:hor_to_app", novas_hor_to_app(&frame, az, el, NULL, sys, &ra1, &dec1))) return 1;
+
+  if(!is_equal("app_hor:hor_to_app:ra", ra1, ra, 1e-8)) return 1;
+  if(!is_equal("app_hor:hor_to_app:dec", dec1, dec, 1e-9)) return 1;
+
+  if(!is_ok("app_hor:app_to_hor:refract", novas_app_to_hor(&frame, sys, ra, dec, novas_standard_refraction, &az, &el))) return 1;
+  if(!is_ok("app_hor:hor_to_app:refract", novas_hor_to_app(&frame, az, el, novas_standard_refraction, sys, &ra1, &dec1))) return 1;
+
+  // TODO check against cel2ter...
+
+  if(!is_equal("app_hor:hor_to_app:refract:ra", ra1, ra, 1e-8)) return 1;
+  if(!is_equal("app_hor:hor_to_app:refract:dec", dec1, dec, 1e-9)) return 1;
+
+
+  return 0;
+}
+
+
 static int test_source() {
-  int n = 0;
+  int k, n = 0;
 
   if(test_gcrs_j2000_gcrs()) n++;
   if(test_j2000_tod_j2000()) n++;
@@ -463,6 +495,8 @@ static int test_source() {
   if(test_starvectors()) n++;
 
   if(test_geo_posvel()) n++;
+
+  //for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++) if(test_app_hor(k)) n++;
 
   return n;
 }
@@ -554,8 +588,6 @@ static int test_observers() {
 static int test_sources() {
   cat_entry star;
   int n = 0;
-
-  printf(" Testing date %.3f\n", (tdb - J2000));
 
   make_cat_entry("22+20", "TST", 1001, 22.0, 20.0, 3.0, -2.0, 5.0, 10.0, &star);
   if(make_object(2, star.starnumber, star.starname, &star, &source) != 0) return -1;
@@ -785,13 +817,13 @@ static int test_get_time() {
   return 0;
 }
 
-static int test_sky_pos() {
+static int test_sky_pos(enum novas_reference_system sys) {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
   cat_entry c = {};
   object source[2] = {{}};
-  int i, k;
+  int i;
 
   if(!is_ok("sky_pos:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
   if(!is_ok("sky_pos:make_observer", make_observer_at_geocenter(&obs))) return 1;
@@ -804,26 +836,29 @@ static int test_sky_pos() {
 
   cel_pole(tdb, POLE_OFFSETS_X_Y, 0.0, 0.0);
 
-  for(k = NOVAS_TOD; k <= NOVAS_TOD; k++) {
-    for(i = 0; i < 2; i++) {
-      char label[50];
-      double pos[3] = {}, vel[3] = {};
-      sky_pos p = {}, pc = {};
 
-      place(ts.ijd_tt + ts.fjd_tt, &source[i], &obs, ts.ut1_to_tt, k, NOVAS_REDUCED_ACCURACY, &pc);
+  for(i = 0; i < 2; i++) {
+    char label[50];
+    double pos[3] = {}, vel[3] = {};
+    sky_pos p = {}, pc = {};
 
-      sprintf(label, "sky_pos:sys=%d:source=%d", k, i);
-      if(!is_ok(label, novas_sky_pos(&source[i], &frame, k, &p))) return 1;
+    // place does not apply deflection / aberration for ICRS
+    place(tdb, &source[i], &obs, ts.ut1_to_tt, (sys == NOVAS_ICRS ? NOVAS_GCRS : sys), NOVAS_REDUCED_ACCURACY, &pc);
 
-      sprintf(label, "sky_pos:sys=%d:source=%d:check:ra", k, i);
-      if(!is_equal(label, p.ra, pc.ra, 1e-6)) return 1;
+    sprintf(label, "sky_pos:sys=%d:source=%d", sys, i);
+    if(!is_ok(label, novas_sky_pos(&source[i], &frame, sys, &p))) return 1;
 
-      sprintf(label, "sky_pos:sys=%d:source=%d:check:dec", k, i);
-      if(!is_equal(label, p.dec, pc.dec, 1e-5)) return 1;
+    sprintf(label, "sky_pos:sys=%d:source=%d:check:ra", sys, i);
+    if(!is_equal(label, p.ra, pc.ra, 1e-9)) return 1;
 
-      sprintf(label, "sky_pos:sys=%d:source=%d:check:rv", k, i);
-      if(!is_equal(label, p.rv, pc.rv, 1e-5)) return 1;
-    }
+    sprintf(label, "sky_pos:sys=%d:source=%d:check:dec", sys, i);
+    if(!is_equal(label, p.dec, pc.dec, 1e-10)) return 1;
+
+    sprintf(label, "sky_pos:sys=%d:source=%d:check:rv", sys, i);
+    if(!is_equal(label, p.rv, pc.rv, 1e-12)) return 1;
+
+    sprintf(label, "sky_pos:sys=%d:source=%d:check:r_hat", sys, i);
+    if(!is_ok(label, check_equal_pos(p.r_hat, pc.r_hat, 1e-9))) return 1;
   }
 
   return 0;
@@ -836,7 +871,7 @@ static int test_geom_posvel() {
   object source = {};
   double pos0[3] = {}, vel0[3] = {}, pos[3] = {1.0}, vel[3] = {1.0};
 
-  if(!is_ok("sky_pos:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("sky_pos:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
   if(!is_ok("sky_pos:make_observer", make_observer_at_geocenter(&obs))) return 1;
   if(!is_ok("sky_pos:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
 
@@ -865,12 +900,17 @@ static int test_dates() {
   if(test_cirs_app_ra()) n++;
 
   for(i = 0; i < 5; i++) {
+    int k;
+
+    printf(" Testing date %.3f\n", offsets[i]);
+
     tdb = J2000 + offsets[i];
 
     if(test_set_time()) n++;
     if(test_get_time()) n++;
-    if(test_sky_pos()) n++;
     if(test_geom_posvel()) n++;
+
+    for(k =0; k < NOVAS_REFERENCE_SYSTEMS; k++) if(test_sky_pos(k)) n++;
 
     n += test_sources();
   }

@@ -268,6 +268,7 @@ double novas_vdot(const double *v1, const double *v2) {
 static void tiny_rotate(const double *in, double ax, double ay, double az, double *out) {
   const double x = in[0], y = in[1], z = in[2];
   const double A[3] = { ax * ax, ay * ay, az * az };
+
   out[0] = x - 0.5 * (A[1] + A[2]) * x - az * y + ay * z;
   out[1] = y - 0.5 * (A[0] + A[2]) * y + az * x - ax * z;
   out[2] = z - 0.5 * (A[0] + A[1]) * z - ay * x + ax * y;
@@ -1506,10 +1507,10 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * coordinate system, <code>location->where</code> sets the origin of the reference place relative
  * to which positions and velocities are reported.
  *
- * The calculated positions and velocities include aberration corrections for the moving frame of
- * the observer as well as gravitational deflection due to the Sun and Earth and other major
- * gravitating bodies in the Solar system, provided planet positions are available via a
- * novas_planet_provider function.
+ * For all but ICRS coordinate outputs, the calculated positions and velocities include aberration
+ * corrections for the moving frame of the observer as well as gravitational deflection due to the
+ * Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions
+ * are available via a novas_planet_provider function.
  *
  * In case of a dynamical equatorial system (such as CIRS or TOD) and an Earth-based observer, the
  * polar wobble parameters set via a prior call to cel_pole() together with he ut1_to_tt argument
@@ -1536,16 +1537,21 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
  *                      NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2).
  * @param coord_sys     The coordinate system that defines the orientation of the celestial pole.
+ *                      If it is NOVAS_ICRS (3), a geometric position is returned. For all other
+ *                      systems, the returned position is the apparent position including aberration
+ *                      ang gravitational deflection corrections.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] output   Data structure to populate with the result.
  * @return              0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid,
  *                      3 if Earth is the observed object, and the observer is either at the
  *                      geocenter or on the Earth's surface, 10--40: error is 10 + the error ephemeris(),
  *                      40--50: error is 40 + the error from geo_posvel(), 50--70 error is
- *                      50 + error from light_time(), 70--80 error is 70 + error from grav_def(),
- *                      80--90 errro is 80 + error from cio_location(), 90--100 error is 90 + error
+ *                      50 + error from light_time2(), 70--80 error is 70 + error from grav_def(),
+ *                      80--90 error is 80 + error from cio_location(), 90--100 error is 90 + error
  *                      from cio_basis().
  *
+ * @sa novas_geom_posvel()
+ * @sa novas_sky_pos()
  * @sa place_star()
  * @sa place_icrs()
  * @sa place_gcrs()
@@ -1638,6 +1644,7 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     // Get position of star wrt observer (corrected for parallax).
     bary2obs(pos, pob, pos, &t_light);
+
     output->dis = 0.0;
     d_sb = novas_vlen(pos);
   }
@@ -1658,6 +1665,8 @@ short place(double jd_tt, const object *source, const observer *location, double
     // AK: Fix for antedating distance and velocities...
     output->dis = t_light * C_AUDAY;
   }
+
+
 
   // ---------------------------------------------------------------------
   // Compute radial velocity (all vectors in ICRS).
@@ -1692,26 +1701,26 @@ short place(double jd_tt, const object *source, const observer *location, double
   // Transform, if necessary, to output coordinate system.
   // ---------------------------------------------------------------------
   switch(coord_sys) {
-    case (NOVAS_J2000): {
+    case NOVAS_J2000: {
       // Transform to equator and equinox of date.
       gcrs_to_j2000(pos, pos);
       break;
     }
 
-    case (NOVAS_MOD): {
+    case NOVAS_MOD: {
       // Transform to equator and equinox of date.
       gcrs_to_j2000(pos, pos);
       precession(NOVAS_JD_J2000, pos, jd_tdb, pos);
       break;
     }
 
-    case (NOVAS_TOD): {
+    case NOVAS_TOD: {
       // Transform to equator and equinox of date.
       gcrs_to_tod(jd_tdb, accuracy, pos, pos);
       break;
     }
 
-    case (NOVAS_CIRS): {
+    case NOVAS_CIRS: {
       // Transform to equator and CIO of date.
       prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos, pos), 80);
       break;
@@ -3771,10 +3780,10 @@ int frame_tie(const double *in, enum novas_frametie_direction direction, double 
   if(!in || !out)
     return novas_error(-1, EINVAL, "frame_tie", "NULL input or output 3-vector: in=%p, out=%p", in, out);
 
-  if(direction >= 0)
-    tiny_rotate(in, eta0, -xi0, -da0, out);
-  else
+  if(direction < 0)
     tiny_rotate(in, -eta0, xi0, da0, out);
+  else
+    tiny_rotate(in, eta0, -xi0, -da0, out);
 
   return 0;
 }

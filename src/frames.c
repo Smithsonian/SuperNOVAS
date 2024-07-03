@@ -23,15 +23,20 @@
 /// \cond PRIVATE
 #define FRAME_DEFAULT       0                   ///< frame.state value we set to indicate the frame is not configured
 #define FRAME_INITIALIZED   0xdeadbeadcafeba5e  ///< frame.state for a properly initialized frame.
+#define GEOM_TO_APP         1                   ///< Geometric to apparent conversion
+#define APP_TO_GEOM         (-1)                ///< Apparent to geometric conversion
 /// \endcond
 
 static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b) {
   // GCRS=0, TOD=1, CIRS=2, ICRS=3, J2000=4, MOD=5
-  // TOD->-3, MOD->-2, J2000->-1, GCRS->0, CIRS->1
+  // TOD->-3, MOD->-2, J2000->-1, GCRS/ICRS->0, CIRS->1
   static const int index[] = { 0, -3, 1, 0, -1, -2 };
 
-  if(a < 0 || a >= NOVAS_REFERENCE_SYSTEMS || b < 0 || b >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-2, EINVAL, "cmp_sys", "Invalid reference system: a=%d, b=%d", a, b);
+  if(a < 0 || a >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-2, EINVAL, "cmp_sys", "Invalid reference system (#1): %d", a);
+
+  if(b < 0 || b >= NOVAS_REFERENCE_SYSTEMS)
+    return novas_error(-2, EINVAL, "cmp_sys", "Invalid reference system (#2): %d", b);
 
   if(index[a] == index[b])
     return 0;
@@ -39,14 +44,29 @@ static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b)
   return index[a] < index[b] ? -1 : 1;
 }
 
+int print_matrix(const char *prefix, const novas_matrix *matrix) {
+  int i;
+  for(i = 0; i < 3; i++) {
+    int j;
+
+    printf(prefix);
+    for(j = 0; j < 3; j++)
+      printf("  %.12f", matrix->M[i][j]);
+    printf("\n");
+  }
+  printf("\n");
+
+  return 0;
+}
+
 static int matrix_transform(const double *in, const novas_matrix *matrix, double *out) {
-  double orig[3];
+  double v[3];
   int i;
 
-  memcpy(orig, in, sizeof(orig));
+  memcpy(v, in, sizeof(v));
 
   for(i = 3; --i >= 0;)
-    out[i] = matrix->M[i][0] * orig[0] + matrix->M[i][1] * orig[1] + matrix->M[i][2] * orig[2];
+    out[i] = (matrix->M[i][0] * v[0]) + (matrix->M[i][1] * v[1]) + (matrix->M[i][2] * v[2]);
 
   return 0;
 }
@@ -54,13 +74,13 @@ static int matrix_transform(const double *in, const novas_matrix *matrix, double
 
 static int matrix_inv_rotate(const double *in, const novas_matrix *matrix, double *out) {
   // IMPORTANT! use only with unitary matrices.
-  double orig[3];
+  double v[3];
   int i;
 
-  memcpy(orig, in, sizeof(orig));
+  memcpy(v, in, sizeof(v));
 
   for(i = 3; --i >= 0;)
-    out[i] = matrix->M[0][i] * orig[0] + matrix->M[1][i] * orig[1] + matrix->M[2][i] * orig[2];
+    out[i] = (matrix->M[0][i] * v[0]) + (matrix->M[1][i] * v[1]) + (matrix->M[2][i] * v[2]);
 
   return 0;
 }
@@ -72,9 +92,11 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   I->M[0][0] = A->M[1][1] * A->M[2][2] - A->M[2][1] * A->M[1][2];
   I->M[1][0] = A->M[2][0] * A->M[1][2] - A->M[1][0] * A->M[2][2];
   I->M[2][0] = A->M[1][0] * A->M[2][1] - A->M[2][0] * A->M[1][1];
+
   I->M[0][1] = A->M[2][1] * A->M[0][2] - A->M[0][1] * A->M[2][2];
   I->M[1][1] = A->M[0][0] * A->M[2][2] - A->M[2][0] * A->M[0][2];
   I->M[2][1] = A->M[2][0] * A->M[0][1] - A->M[0][0] * A->M[2][1];
+
   I->M[0][2] = A->M[0][1] * A->M[1][2] - A->M[1][1] * A->M[0][2];
   I->M[1][2] = A->M[1][0] * A->M[0][2] - A->M[0][0] * A->M[1][2];
   I->M[2][2] = A->M[0][0] * A->M[1][1] - A->M[1][0] * A->M[0][1];
@@ -90,27 +112,32 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   return 0;
 }
 
+#define XI0       (-0.0166170 * ARCSEC)
+#define ETA0      (-0.0068192 * ARCSEC)
+#define DA0       (-0.01460 * ARCSEC)
+
+
 static int set_frame_tie(novas_frame *frame) {
   // 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
   // from IERS (2003) Conventions, Chapter 5.
-  static const double ax = -0.0166170 * ARCSEC; // eta0
-  static const double ay = 0.0068192 * ARCSEC;  // -xi0
-  static const double az = 0.01460 * ARCSEC;    // -da0
-  static const double A[3] = { ax * ax, ay * ay, az * az };
+  static const double ax = ETA0;
+  static const double ay = -XI0;
+  static const double az = -DA0;
+  static const double X = ax * ax, Y = ay * ay, Z = az * az;
 
   novas_matrix *T = &frame->icrs_to_j2000;
 
-  memset(&frame->icrs_to_j2000, 0, sizeof(frame->icrs_to_j2000));
-
-  T->M[0][0] = (1.0 - 0.5 * (A[1] + A[2]));
+  T->M[0][0] = (1.0 - 0.5 * (Y + Z));
   T->M[0][1] = -az;
   T->M[0][2] = ay;
+
   T->M[1][0] = az;
-  T->M[1][1] = (1.0 - 0.5 * (A[0] + A[2]));
+  T->M[1][1] = (1.0 - 0.5 * (X + Z));
   T->M[1][2] = -ax;
+
   T->M[2][0] = -ay;
   T->M[2][1] = ax;
-  T->M[2][2] = (1.0 - 0.5 * (A[0] + A[1]));
+  T->M[2][2] = (1.0 - 0.5 * (X + Y));
 
   return 0;
 }
@@ -120,17 +147,11 @@ static int set_gcrs_to_cirs(novas_frame *frame) {
   const double jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
   double r_cio;
   short sys;
-  double T[3][3];
-  int i;
+
+  novas_matrix *T = &frame->gcrs_to_cirs;
 
   prop_error(fn, cio_location(jd_tdb, frame->accuracy, &r_cio, &sys), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, frame->accuracy, &T[0][0], &T[1][0], &T[2][0]), 10);
-
-  for(i = 3; --i >= 0;) {
-    frame->gcrs_to_cirs.M[i][0] = T[0][i];
-    frame->gcrs_to_cirs.M[i][1] = T[1][i];
-    frame->gcrs_to_cirs.M[i][2] = T[2][i];
-  }
+  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]), 10);
 
   return 0;
 }
@@ -163,9 +184,11 @@ static int set_precession(novas_frame *frame) {
   T->M[0][0] = cd * cb - sb * sd * cc;
   T->M[0][1] = cd * sb * ca + sd * cc * cb * ca - sa * sd * sc;
   T->M[0][2] = cd * sb * sa + sd * cc * cb * sa + ca * sd * sc;
+
   T->M[1][0] = -sd * cb - sb * cd * cc;
   T->M[1][1] = -sd * sb * ca + cd * cc * cb * ca - sa * cd * sc;
   T->M[1][2] = -sd * sb * sa + cd * cc * cb * sa + ca * cd * sc;
+
   T->M[2][0] = sb * sc;
   T->M[2][1] = -sc * cb * ca - sa * cc;
   T->M[2][2] = -sc * cb * sa + cc * ca;
@@ -187,9 +210,11 @@ static int set_nutation(novas_frame *frame) {
   T->M[0][0] = cp;
   T->M[0][1] = -sp * cm;
   T->M[0][2] = -sp * sm;
+
   T->M[1][0] = sp * ct;
   T->M[1][1] = cp * cm * ct + sm * st;
   T->M[1][2] = cp * sm * ct - cm * st;
+
   T->M[2][0] = sp * st;
   T->M[2][1] = cp * cm * st - sm * ct;
   T->M[2][2] = cp * sm * st + cm * ct;
@@ -223,11 +248,13 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
   r = 1.0 + p;
 
   if(dir < 0) {
+    // Apparent to geometric
     pos[0] = (r * pos[0] - q * frame->obs_vel[0]) / frame->gamma;
     pos[1] = (r * pos[1] - q * frame->obs_vel[1]) / frame->gamma;
     pos[2] = (r * pos[2] - q * frame->obs_vel[2]) / frame->gamma;
   }
   else {
+    // Geometric to apparent
     pos[0] = (frame->gamma * pos[0] + q * frame->obs_vel[0]) / r;
     pos[1] = (frame->gamma * pos[1] + q * frame->obs_vel[1]) / r;
     pos[2] = (frame->gamma * pos[2] + q * frame->obs_vel[2]) / r;
@@ -254,7 +281,12 @@ static int is_frame_initialized(const novas_frame *frame) {
  * @param dx          [mas] Earth orientation parameter, polar offset in x.
  * @param dy          [mas] Earth orientation parameter, polar offset in y.
  * @param[out] frame  Pointer to the observing frame to set up.
- * @return            0 if successful, or else -1 if there was an error (errno will indicate the
+ * @return            0 if successful, 10--40: error is 10 + the error ephemeris(),
+ *                    40--50: error is 40 + the error from geo_posvel(),
+ *                    50--80: error is 30 + the error from sidereal_time(),
+ *                    80--90 error is 80 + error from cio_location(),
+ *                    90--100 error is 90 + error from cio_basis().
+ *                    or else -1 if there was an error (errno will indicate the
  *                    type of error).
  *
  * @sa novas_change_observer()
@@ -310,21 +342,21 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
   frame->era = era(ijd_ut1, fjd_ut1);
 
-  prop_error(fn, sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, frame->accuracy, &frame->gst), 0);
+  prop_error(fn, sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, frame->accuracy, &frame->gst), 50);
 
   set_frame_tie(frame);
   set_precession(frame);
   set_nutation(frame);
 
-  prop_error(fn, set_gcrs_to_cirs(frame), 0);
+  prop_error(fn, set_gcrs_to_cirs(frame), 80);
 
   // Barycentric Earth and Sun positions and velocities
-  prop_error(fn, ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_SUN][0], &frame->vel[NOVAS_SUN][0]), 0);
-  prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0]), 0);
+  prop_error(fn, ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_SUN][0], &frame->vel[NOVAS_SUN][0]), 10);
+  prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0]), 10);
 
   frame->state = FRAME_INITIALIZED;
 
-  novas_change_observer(frame, obs, frame);
+  prop_error(fn, novas_change_observer(frame, obs, frame), 40);
 
   return 0;
 }
@@ -336,8 +368,8 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
  * @param obs         New observer location
  * @param[out] out    Observing frame to populate with a original frame data and new observer
  *                    location. It can be the same as the input.
- * @return            0 if successfule or else an an error code (errno will indicate the type of
- *                    error).
+ * @return            0 if successfule or else an an error code from geo_posvel()
+ *                    (errno will also indicate the type of error).
  *
  * @sa novas_make_frame()
  */
@@ -361,29 +393,38 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 }
 
 static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_reference_system sys) {
+  switch(sys) {
+    case NOVAS_ICRS:
+    case NOVAS_GCRS:
+      return 0;
 
-  if(sys == NOVAS_CIRS) {
-    matrix_transform(pos, &frame->gcrs_to_cirs, pos);
+    case NOVAS_CIRS:
+      matrix_transform(pos, &frame->gcrs_to_cirs, pos);
+      return 0;
+
+    case NOVAS_J2000:
+    case NOVAS_MOD:
+    case NOVAS_TOD:
+      //gcrs_to_j2000(pos, pos);
+      matrix_transform(pos, &frame->icrs_to_j2000, pos);
+      if(sys == NOVAS_J2000) return 0;
+
+      matrix_transform(pos, &frame->precession, pos);
+      if(sys == NOVAS_MOD) return 0;
+
+      matrix_transform(pos, &frame->nutation, pos);
+      return 0;
   }
-  else if(cmp_sys(sys, NOVAS_ICRS) != 0) {
-    matrix_transform(pos, &frame->icrs_to_j2000, pos);
-    if(sys == NOVAS_J2000) return 0;
 
-    matrix_transform(pos, &frame->precession, pos);
-    if(sys == NOVAS_MOD) return 0;
-
-    matrix_transform(pos, &frame->nutation, pos);
-  }
-
-  return 0;
+  return novas_error(-1, EINVAL, "icrs_to_sys", "invalid reference system: %d", sys);
 }
 
 /**
- * Calculates the geometric position and velocity vectors for a source in the given observing
- * frame, in the specified coordinate system of choice. The geometric position includes proper
- * motion, and for solar-system bodies it is antedated for light travel time, so it effectively
- * represents the geometric position as seen by the observer. However, the geometric does not
- * include aberration correction, nor gravitational deflection.
+ * Calculates the geometric position and velocity vectors, relative to the observer, for a source
+ * in the given observing frame, in the specified coordinate system of choice. The geometric
+ * position includes proper motion, and for solar-system bodies it is antedated for light travel
+ * time, so it effectively represents the geometric position as seen by the observer. However, the
+ * geometric does not include aberration correction, nor gravitational deflection.
  *
  * If you want apparent positions, which account for aberration and gravitational deflection,
  * use novas_skypos() instead.
@@ -395,17 +436,19 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * It implements the same geometric transformations as `place()` but at a reduced computational
  * cost. See `place()` for references.
  *
- * @param source          Pointer to a celestial source data structure that is observed
- * @param frame           Observer frame, defining the location and time of observation
- * @param sys             The coordinate system in which to return positions and velocities.
- * @param[out] pos        [AU] Calculated geometric position vector of the source relative
- *                        to the observer location, in the designated coordinate system. It may be
- *                        NULL if not required.
- * @param[out] vel        [AU/day] The calculated velocity vector of the source relative to
- *                        the observer in the designated coordinate system. It may be NULL if not
- *                        required.
- * @return          0 if successful, or an error from light_time2(), or else -1 (errno will
- *                  indicate the type of error).
+ * @param source        Pointer to a celestial source data structure that is observed
+ * @param frame         Observer frame, defining the location and time of observation
+ * @param sys           The coordinate system in which to return positions and velocities.
+ * @param[out] pos      [AU] Calculated geometric position vector of the source relative
+ *                      to the observer location, in the designated coordinate system. It may be
+ *                      NULL if not required.
+ * @param[out] vel      [AU/day] The calculated velocity vector of the source relative to
+ *                      the observer in the designated coordinate system. It may be NULL if not
+ *                      required.
+ * @return              0 if successful, or else -1 if any of the arguments is invalid,
+ *                      3 if Earth is the observed object, and the observer is either at the
+ *                      geocenter or on the Earth's surface,
+ *                      50--70 error is 50 + error from light_time2().
  *
  * @sa novas_make_frame()
  * @sa novas_sky_pos()
@@ -436,15 +479,12 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
-  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-1, EINVAL, fn, "invalid reference system", sys);
-
   // ---------------------------------------------------------------------
   // Earth can only be an observed object when 'location' is not on Earth.
   // ---------------------------------------------------------------------
   if((source->type == NOVAS_PLANET) && (source->number == NOVAS_EARTH) && (obs->where != NOVAS_OBSERVER_AT_GEOCENTER)
           && (obs->where != NOVAS_OBSERVER_ON_EARTH))
-    return novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
+    return novas_error(3, EINVAL, fn, "invalid source type: %d", source->type);
 
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
@@ -463,19 +503,19 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
     proper_motion(NOVAS_JD_J2000, pos1, vel1, (jd_tdb + dt), pos1);
 
     // Get position of star wrt observer (corrected for parallax).
-    bary2obs(pos1, frame->obs_vel, pos1, &t_light);
+    bary2obs(pos1, frame->obs_pos, pos1, &t_light);
   }
   else {
     // Get position of body wrt observer, antedated for light-time.
-    prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 0);
+    prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 50);
   }
 
   if(pos) {
-    icrs_to_sys(frame, pos1, sys);
+    prop_error(fn, icrs_to_sys(frame, pos1, sys), 0);
     memcpy(pos, pos1, sizeof(pos1));
   }
   if(vel) {
-    icrs_to_sys(frame, vel1, sys);
+    prop_error(fn, icrs_to_sys(frame, vel1, sys), 0);
     memcpy(vel, vel1, sizeof(vel1));
   }
 
@@ -498,15 +538,23 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * The approximate 'inverse' of this function is novas_app_to_geom().
  *
  * This function implements the same aberration and gravitational deflection corrections as
- * `place()`, but at reduced computational cost. See `place()` for references.
+ * `place()`, but at reduced computational cost. See `place()` for references. Note, however
+ * that while `place()` does not apply aberration and gravitational reflection corrections
+ * when `sys` is NOVAS_ICRS (3), this routine will apply those corrections consistently for
+ * all coordinate systems (or you can use novas_geom_posvel() to get positions without
+ * aberration /deflection in any system).
  *
  * @param object        Pointer to a celestial object data structure that is observed
  * @param frame         The observer frame, defining the location and time of observation
  * @param sys           The coordinate system in which to return the apparent sky location
  * @param[out] out      Pointer to the data structure which is populated with the calculated
  *                      apparent location in the designated coordinate system.
- * @return              0 if successful, or an error from grav_def(), or else -1 (errno will
- *                      indicate the type of error).
+ * @return              0 if successful, or an error from grav_def(),
+ *                      3 if Earth is the observed object, and the observer is either at the
+ *                      geocenter or on the Earth's surface,
+ *                      50--70 error is 50 + error from light_time2(),
+ *                      70--80 error is 70 + error from grav_def(),
+ *                      or else -1 (errno will indicate the type of error).
  *
  * @sa novas_geom_posvel()
  * @sa novas_app_to_hor()
@@ -532,9 +580,6 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
-  if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
-    return novas_error(-1, EINVAL, fn, "invaliud reference system", sys);
-
   prop_error(fn, novas_geom_posvel(object, frame, NOVAS_ICRS, pos, vel), 0);
 
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
@@ -546,7 +591,7 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   else {
     int k;
 
-    out->dis = novas_vlen(pos) * C_AUDAY;
+    out->dis = novas_vlen(pos);
 
     // Calculate distance to Sun.
     d_sb = 0.0;
@@ -576,13 +621,13 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   }
 
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos), 0);
+  prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos), 70);
 
   // Aberration correction
-  frame_aberration(frame, 1, pos);
+  frame_aberration(frame, GEOM_TO_APP, pos);
 
   // Transform position to output system
-  icrs_to_sys(frame, pos, sys);
+  prop_error(fn, icrs_to_sys(frame, pos, sys), 0);
 
   // ---------------------------------------------------------------------
   // Finish up.
@@ -843,7 +888,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   }
 
   // Undo aberration correction
-  frame_aberration(frame, -1, app_pos);
+  frame_aberration(frame, APP_TO_GEOM, app_pos);
 
   // ---------------------------------------------------------------------
   // Undo gravitational deflection of light.
