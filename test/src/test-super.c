@@ -1008,7 +1008,7 @@ static int test_get_time() {
   if(!is_equal("get_time:wrap:lo:check:fjd", dt * DAY, 0.0, 1e-9)) return 1;
 
   if(!is_ok("get_time:wrap:lo:check:ijd", (ijd + 1) != tt.ijd_tt)) {
-    printf("!!! ijd: &ld (expected %ld)\n", ijd, tt.ijd_tt - 1);
+    printf("!!! ijd: %ld (expected %ld)\n", ijd, tt.ijd_tt - 1);
     return 1;
   }
 
@@ -1026,7 +1026,7 @@ static int test_get_time() {
     return 1;
   }
   if(!is_ok("get_time:wrap:hi:check:ijd", (ijd - 1) != tt.ijd_tt)) {
-    printf("!!! ijd: &ld (expected %ld)\n", ijd, tt.ijd_tt + 1);
+    printf("!!! ijd: %ld (expected %ld)\n", ijd, tt.ijd_tt + 1);
     return 1;
   }
 

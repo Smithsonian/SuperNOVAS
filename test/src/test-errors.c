@@ -1123,7 +1123,7 @@ static int test_app_to_hor() {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  double az, el, sc_vel = {};
+  double az, el;
   int n = 0;
 
   make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs);
