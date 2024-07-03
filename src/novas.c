@@ -501,11 +501,13 @@ static int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double
  */
 int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "gcrs_to_cirs";
-  double r_cio, x[3], y[3], z[4];
+  double r_cio, v[3], x[3], y[3], z[3];
   short sys;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
+
+  memcpy(v, in, sizeof(v));
 
   // Obtain the basis vectors, in the GCRS, of the celestial intermediate
   // system.
@@ -513,9 +515,9 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
   prop_error(fn, cio_basis(jd_tdb, r_cio, sys, accuracy, x, y, z), 10);
 
   // Transform position vector to celestial intermediate system.
-  out[0] = vdot(x, in);
-  out[1] = vdot(y, in);
-  out[2] = vdot(z, in);
+  out[0] = vdot(x, v);
+  out[1] = vdot(y, v);
+  out[2] = vdot(z, v);
 
   return 0;
 }
