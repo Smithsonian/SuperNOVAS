@@ -20,6 +20,10 @@
 #include <math.h>
 #include "novas.h"
 
+#define XI0       (-0.0166170 * ARCSEC)         ///< Frame bias term &xi;<sub>0</sub>
+#define ETA0      (-0.0068192 * ARCSEC)         ///< Frame bias term &eta;<sub>0</sub>
+#define DA0       (-0.01460 * ARCSEC)           ///< Frame bias term da<sub>0</sub>
+
 /// \cond PRIVATE
 #define FRAME_DEFAULT       0                   ///< frame.state value we set to indicate the frame is not configured
 #define FRAME_INITIALIZED   0xdeadbeadcafeba5e  ///< frame.state for a properly initialized frame.
@@ -42,21 +46,6 @@ static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b)
     return 0;
 
   return index[a] < index[b] ? -1 : 1;
-}
-
-int print_matrix(const char *prefix, const novas_matrix *matrix) {
-  int i;
-  for(i = 0; i < 3; i++) {
-    int j;
-
-    printf(prefix);
-    for(j = 0; j < 3; j++)
-      printf("  %.12f", matrix->M[i][j]);
-    printf("\n");
-  }
-  printf("\n");
-
-  return 0;
 }
 
 static int matrix_transform(const double *in, const novas_matrix *matrix, double *out) {
@@ -111,11 +100,6 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
 
   return 0;
 }
-
-#define XI0       (-0.0166170 * ARCSEC)
-#define ETA0      (-0.0068192 * ARCSEC)
-#define DA0       (-0.01460 * ARCSEC)
-
 
 static int set_frame_tie(novas_frame *frame) {
   // 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
@@ -684,7 +668,7 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
   if(!is_frame_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
-  if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH) {
+  if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER) {
     return novas_error(-1, EINVAL, fn, "observer not on Earth: where=%d", frame->observer.where);
   }
 
@@ -772,7 +756,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
   if(!is_frame_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
-  if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH) {
+  if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER) {
     return novas_error(-1, EINVAL, fn, "observer not on Earth: where=%d", frame->observer.where);
   }
 
@@ -798,7 +782,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
     prop_error(fn, itrs_to_cirs(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
   }
 
-  // Continue to convert to output system....
+  // Continue to convert TOD / CIRS to output system....
   switch(sys) {
     case NOVAS_TOD:
       break;

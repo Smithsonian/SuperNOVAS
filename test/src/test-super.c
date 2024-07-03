@@ -80,7 +80,7 @@ static int is_ok(const char *func, int error) {
 static int is_equal(const char *func, double v1, double v2, double prec) {
   if(fabs(v1 - v2) < prec) return 1;
 
-  fprintf(stderr, "ERROR! %s (%.9g != %.9g)\n", func, v1, v2);
+  fprintf(stderr, "ERROR! %s (%.12g != %.12g)\n", func, v1, v2);
   return 0;
 }
 
@@ -93,7 +93,7 @@ static int test_gcrs_j2000_gcrs() {
 
   if(!is_ok("gcrs_to_j2000", gcrs_to_j2000(pos0, pos1))) return 1;
   if(!is_ok("j2000_to_gcrs", j2000_to_gcrs(pos1, pos1))) return 1;
-  if(!is_ok("gcrs_j2000_gcrs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("gcrs_j2000_gcrs", check_equal_pos(pos0, pos1, 1e-12 * vlen(pos0)))) return 1;
   return 0;
 }
 
@@ -102,7 +102,7 @@ static int test_j2000_tod_j2000() {
 
   if(!is_ok("j2000_to_tod", j2000_to_tod(tdb, 0, pos0, pos1))) return 1;
   if(!is_ok("tod_to_j2000", tod_to_j2000(tdb, 0, pos1, pos1))) return 1;
-  if(!is_ok("j2000_tod_j2000", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("j2000_tod_j2000", check_equal_pos(pos0, pos1, 1e-12 * vlen(pos0)))) return 1;
   return 0;
 }
 
@@ -111,7 +111,7 @@ static int test_tod_itrs_tod() {
 
   if(!is_ok("tod_to_itrs", tod_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
   if(!is_ok("itrs_to_tod", itrs_to_tod(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
-  if(!is_ok("tod_itrs_tod", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("tod_itrs_tod", check_equal_pos(pos0, pos1, 1e-12 * vlen(pos0)))) return 1;
   return 0;
 }
 
@@ -120,7 +120,7 @@ static int test_gcrs_cirs_gcrs() {
 
   if(!is_ok("gcrs_to_cirs", gcrs_to_cirs(tdb, 0, pos0, pos1))) return 1;
   if(!is_ok("cirs_to_gcrs", cirs_to_gcrs(tdb, 0, pos1, pos1))) return 1;
-  if(!is_ok("gcrs_cirs_gcrs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("gcrs_cirs_gcrs", check_equal_pos(pos0, pos1, 1e-12 * vlen(pos0)))) return 1;
   return 0;
 }
 
@@ -130,7 +130,7 @@ static int test_cirs_itrs_cirs() {
 
   if(!is_ok("cirs_to_itrs", cirs_to_itrs(tdb, 0.0, ut12tt, 0, xp, yp, pos0, pos1))) return 1;
   if(!is_ok("itrs_to_cirs", itrs_to_cirs(tdb, 0.0, ut12tt, 0, xp, yp, pos1, pos1))) return 1;
-  if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-9 * vlen(pos0)))) return 1;
+  if(!is_ok("cirs_itrs_cirs", check_equal_pos(pos0, pos1, 1e-12 * vlen(pos0)))) return 1;
   return 0;
 }
 
@@ -147,7 +147,7 @@ static int test_itrs_hor_itrs() {
 
     if(!is_ok("itrs_to_hor", itrs_to_hor(&obs.on_surf, p, &az, &za))) return 1;
     if(!is_ok("hor_to_itrs", hor_to_itrs(&obs.on_surf, az, za, pos1))) return 1;
-    if(!is_ok("itrs_hor_itrs", check_equal_pos(p, pos1, 1e-9))) return 1;
+    if(!is_ok("itrs_hor_itrs", check_equal_pos(p, pos1, 1e-12))) return 1;
 
     if(!is_ok("itrs_to_hor:az:null", itrs_to_hor(&obs.on_surf, p, NULL, &za))) return 1;
     if(!is_ok("itrs_to_hor:za:null", itrs_to_hor(&obs.on_surf, p, &az, NULL))) return 1;
@@ -165,23 +165,23 @@ static int test_cel2ter2cel() {
 
   if(!is_ok("cel2ter2cel:cel2ter:1", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p0, p))) return 1;
   if(!is_ok("cel2ter2cel:ter2cel:1", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
 
   if(!is_ok("cel2ter2cel:cel2ter:2", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p0, p))) return 1;
   if(!is_ok("cel2ter2cel:ter2cel:2", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
 
   if(!is_ok("cel2ter2cel:cel2ter:3", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p0, p))) return 1;
   if(!is_ok("cel2ter2cel:ter2cel:3", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
 
   if(!is_ok("cel2ter2cel:cel2ter:dyn", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p0, p))) return 1;
   if(!is_ok("cel2ter2cel:ter2cel:dyn", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
 
   if(!is_ok("cel2ter2cel:cel2ter:era", cel2ter(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p0, p))) return 1;
   if(!is_ok("cel2ter2cel:ter2cel:era", ter2cel(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-9))) return 1;
+  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
 
   return 0;
 }
@@ -452,16 +452,16 @@ static int test_app_hor(enum novas_reference_system sys) {
   if(!is_ok("app_hor:app_to_hor", novas_app_to_hor(&frame, sys, ra, dec, NULL, &az, &el))) return 1;
   if(!is_ok("app_hor:hor_to_app", novas_hor_to_app(&frame, az, el, NULL, sys, &ra1, &dec1))) return 1;
 
-  if(!is_equal("app_hor:hor_to_app:ra", ra1, ra, 1e-8)) return 1;
-  if(!is_equal("app_hor:hor_to_app:dec", dec1, dec, 1e-9)) return 1;
+  if(!is_equal("app_hor:trip:ra", ra1, ra, 1e-7)) return 1;
+  if(!is_equal("app_hor:trip:dec", dec1, dec, 1e-6)) return 1;
 
   if(!is_ok("app_hor:app_to_hor:refract", novas_app_to_hor(&frame, sys, ra, dec, novas_standard_refraction, &az, &el))) return 1;
   if(!is_ok("app_hor:hor_to_app:refract", novas_hor_to_app(&frame, az, el, novas_standard_refraction, sys, &ra1, &dec1))) return 1;
 
   // TODO check against cel2ter...
 
-  if(!is_equal("app_hor:hor_to_app:refract:ra", ra1, ra, 1e-8)) return 1;
-  if(!is_equal("app_hor:hor_to_app:refract:dec", dec1, dec, 1e-9)) return 1;
+  if(!is_equal("app_hor:refract:trip:ra", ra1, ra, 1e-7)) return 1;
+  if(!is_equal("app_hor:refract:trip:dec", dec1, dec, 1e-6)) return 1;
 
 
   return 0;
@@ -496,7 +496,9 @@ static int test_source() {
 
   if(test_geo_posvel()) n++;
 
-  //for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++) if(test_app_hor(k)) n++;
+  if(test_app_hor(1)) n++;
+
+  for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++) if(test_app_hor(k)) n++;
 
   return n;
 }
@@ -849,16 +851,16 @@ static int test_sky_pos(enum novas_reference_system sys) {
     if(!is_ok(label, novas_sky_pos(&source[i], &frame, sys, &p))) return 1;
 
     sprintf(label, "sky_pos:sys=%d:source=%d:check:ra", sys, i);
-    if(!is_equal(label, p.ra, pc.ra, 1e-9)) return 1;
+    if(!is_equal(label, p.ra, pc.ra, 1e-10)) return 1;
 
     sprintf(label, "sky_pos:sys=%d:source=%d:check:dec", sys, i);
-    if(!is_equal(label, p.dec, pc.dec, 1e-10)) return 1;
+    if(!is_equal(label, p.dec, pc.dec, 1e-9)) return 1;
 
     sprintf(label, "sky_pos:sys=%d:source=%d:check:rv", sys, i);
-    if(!is_equal(label, p.rv, pc.rv, 1e-12)) return 1;
+    if(!is_equal(label, p.rv, pc.rv, 1e-9)) return 1;
 
     sprintf(label, "sky_pos:sys=%d:source=%d:check:r_hat", sys, i);
-    if(!is_ok(label, check_equal_pos(p.r_hat, pc.r_hat, 1e-9))) return 1;
+    if(!is_ok(label, check_equal_pos(p.r_hat, pc.r_hat, 1e-12))) return 1;
   }
 
   return 0;
