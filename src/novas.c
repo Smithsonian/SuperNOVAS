@@ -4167,13 +4167,10 @@ double d_light(const double *pos_src, const double *pos_body) {
  * major gravitating bodies in the solar system.  This function valid for an observed body
  * within the solar system as well as for a star.
  *
- * If 'accuracy' is set to zero (full accuracy), three bodies (Sun, Jupiter, and Saturn) are
- * used in the calculation.  If the reduced-accuracy option is set, only the Sun is used in
- * the calculation.  In both cases, if the observer is not at the geocenter, the deflection
- * due to the Earth is included.
- *
- * The number of bodies used at full and reduced accuracy can be set by making a change to
- * the code in this function as indicated in the comments.
+ * If 'accuracy' is NOVAS_FULL_ACCURACY (0), the deflections due to the Sun, Jupiter, Saturn,
+ * and Earth are calculated.  Otherwise, only the deflection due to the Sun is calculated.
+ * In either case, deflection is ignored if the observer is within ~1500 km of the center
+ * of the gravitating body.
  *
  * NOTES:
  * <ol>
@@ -4190,7 +4187,10 @@ double d_light(const double *pos_src, const double *pos_body) {
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param unused      The type of observer frame (no longer used)
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1). In full accuracy
+ *                    mode, it will calculate the deflection due to the Sun, Jupiter, Saturn
+ *                    and Earth. In reduced accuracy mode, only the deflection due to the
+ *                    Sun is calculated.
  * @param pos_src     [AU] Position 3-vector of observed object, with respect to origin at
  *                    observer (or the geocenter), referred to ICRS axes, components
  *                    in AU.
@@ -4205,8 +4205,9 @@ double d_light(const double *pos_src, const double *pos_body) {
  *                    or if the output vector is the same as pos_obs, or the error from
  *                    ephemeris(), or else 30 + the error from make_object().
  *
- * @sa grav_invdef()
+ * @sa grav_undef()
  * @sa place()
+ * @sa novas_geom_to_app()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  */
@@ -4272,6 +4273,7 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
     if(tlt < dlt)
       jd[1] -= tlt;
 
+    // Get position of gravitating body wrt ss barycenter at the time light passed it.
     error = ephemeris(jd, &body[i], NOVAS_BARYCENTER, accuracy, pbody, vbody);
     if(error) break;
 
@@ -4330,10 +4332,12 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
  *                    ephemeris(), or else 30 + the error from make_object().
  *
  * @sa grav_def()
+ * @sa novas_app_to_geom()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  *
  * @since 1.1
+ * @author Attila Kovacs
  */
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app,
         const double *pos_obs, double *out) {

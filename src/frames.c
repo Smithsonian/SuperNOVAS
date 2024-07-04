@@ -783,6 +783,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
   if(ref_model)
     el -= ref_model(time->ijd_tt + time->fjd_tt, &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
 
+  // az, el to ITRS pos
   hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
 
   // ITRS to TOD or CIRS...

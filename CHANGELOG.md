@@ -108,6 +108,9 @@ available on the `main` branch.
 
 ### Changed
 
+ - `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip deflections
+   due to a body, if the observer is within ~1500 km of its center.
+
  - `place()` now returns an error 3 if and only if the observer is at (or very close, to within ~1.5m) of the 
    observed Solar-system object.
 
