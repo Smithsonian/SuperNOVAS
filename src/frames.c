@@ -842,7 +842,6 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
  */
 int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs) {
   static const char *fn = "novas_apparent_to_nominal";
-  enum novas_observer_place loc;
   double jd_tdb, app_pos[3];
 
   if(!frame || !geom_icrs)
