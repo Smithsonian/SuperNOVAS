@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['solarsystem_2eh_0',['solarsystem.h',['../solarsystem_8h.html',1,'']]],
-  ['solsys_2dephem_2ec_1',['solsys-ephem.c',['../solsys-ephem_8c.html',1,'']]],
-  ['solsys1_2ec_2',['solsys1.c',['../solsys1_8c.html',1,'']]],
-  ['solsys2_2ec_3',['solsys2.c',['../solsys2_8c.html',1,'']]],
-  ['solsys3_2ec_4',['solsys3.c',['../solsys3_8c.html',1,'']]]
+  ['novas_2ec_0',['novas.c',['../novas_8c.html',1,'']]],
+  ['novas_2eh_1',['novas.h',['../novas_8h.html',1,'']]],
+  ['novascon_2ec_2',['novascon.c',['../novascon_8c.html',1,'']]],
+  ['novascon_2eh_3',['novascon.h',['../novascon_8h.html',1,'']]],
+  ['nutation_2ec_4',['nutation.c',['../nutation_8c.html',1,'']]],
+  ['nutation_2eh_5',['nutation.h',['../nutation_8h.html',1,'']]]
 ];

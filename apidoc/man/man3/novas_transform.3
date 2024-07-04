@@ -1,0 +1,53 @@
+.TH "novas_transform" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+novas_transform
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <novas\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBnovas_frame\fP \fBframe\fP"
+.br
+.RI "The observer place and time for which the transform is valid\&. "
+.ti -1c
+.RI "enum \fBnovas_reference_system\fP \fBfrom_system\fP"
+.br
+.RI "The original coordinate system\&. "
+.ti -1c
+.RI "\fBnovas_matrix\fP \fBmatrix\fP"
+.br
+.RI "Transformation matrix elements\&. "
+.ti -1c
+.RI "enum \fBnovas_reference_system\fP \fBto_system\fP"
+.br
+.RI "The final coordinate system\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A transformation between two astronomical coordinate systems for the same observer location and time\&. This allows for more elegant, generic, and efficient coordinate transformations than using the low-level NOVAS functions\&.
+.PP
+The transformation can be (should be) initialized via novas_make_trasform(), or else modified via \fBnovas_invert_transform()\fP or \fBnovas_change_observer()\fP\&.
+.PP
+\fBSince\fP
+.RS 4
+1\&.1
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_make_transform()\fP 
+.PP
+\fBnovas_invert_transform()\fP 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

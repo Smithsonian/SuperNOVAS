@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['to_20supernovas_0',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]]
+  ['list_0',['Deprecated List',['../deprecated.html',1,'']]]
 ];

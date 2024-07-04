@@ -1,0 +1,53 @@
+.TH "novas_timespec" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+novas_timespec
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <novas\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "double \fBdut1\fP"
+.br
+.RI "[s] UT1 - UTC time difference "
+.ti -1c
+.RI "double \fBfjd_tt\fP"
+.br
+.RI "[day] Terrestrial time (TT) based fractional Julian day\&. "
+.ti -1c
+.RI "long \fBijd_tt\fP"
+.br
+.RI "[day] Integer part of the Terrestrial Time (TT) based Julian Date "
+.ti -1c
+.RI "double \fBtt2tdb\fP"
+.br
+.RI "[s] TDB - TT time difference "
+.ti -1c
+.RI "double \fBut1_to_tt\fP"
+.br
+.RI "[s] UT1 - TT time difference "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A structure, which defines a precise instant of time that can be extpressed in any of the astronomical timescales\&. Precisions to picosecond accuracy are supported, which ought to be plenty accurate for any real astronomical application\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_timescale\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

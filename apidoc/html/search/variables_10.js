@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['sc_5fpos_0',['sc_pos',['../structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8',1,'in_space']]],
-  ['sc_5fvel_1',['sc_vel',['../structin__space.html#a9615dabeef0c31f47546c8083b768257',1,'in_space']]],
-  ['ss_2',['SS',['../eph__manager_8c.html#a20c09a36fbddf8e712b5f937f06b1b66',1,'eph_manager.c']]],
-  ['star_3',['star',['../structobject.html#a0ead8b30742e9c76887f5ff76cabae7c',1,'object']]],
-  ['starname_4',['starname',['../structcat__entry.html#ad26c9b08b1028d2a7f35c447841022b1',1,'cat_entry']]],
-  ['starnumber_5',['starnumber',['../structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8',1,'cat_entry']]]
+  ['r_5fhat_0',['r_hat',['../structsky__pos.html#a5fd669be4d5224aa192afa368a6e3173',1,'sky_pos']]],
+  ['ra_1',['ra',['../structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'cat_entry::ra'],['../structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'sky_pos::ra']]],
+  ['ra_5fcio_2',['ra_cio',['../structra__of__cio.html#aba4253d16ca8c644b29da1e727d787aa',1,'ra_of_cio']]],
+  ['radialvelocity_3',['radialvelocity',['../structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a',1,'cat_entry']]],
+  ['record_5flength_4',['RECORD_LENGTH',['../eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300',1,'eph_manager.c']]],
+  ['rmass_5',['rmass',['../novascon_8c.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c'],['../novascon_8h.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c']]],
+  ['rv_6',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
 ];

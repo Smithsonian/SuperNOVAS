@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['changelog_0',['Changelog',['../md_CHANGELOG.html',1,'']]],
-  ['contributing_20to_20supernovas_1',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]]
+  ['a_20sidereal_20source_0',['Calculating positions for a sidereal source',['../md_LEGACY.html',1,'']]]
 ];

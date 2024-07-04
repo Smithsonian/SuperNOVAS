@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['r_5fhat_0',['r_hat',['../structsky__pos.html#a5fd669be4d5224aa192afa368a6e3173',1,'sky_pos']]],
-  ['ra_1',['ra',['../structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'cat_entry::ra'],['../structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'sky_pos::ra']]],
-  ['ra_5fcio_2',['ra_cio',['../structra__of__cio.html#aba4253d16ca8c644b29da1e727d787aa',1,'ra_of_cio']]],
-  ['radialvelocity_3',['radialvelocity',['../structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a',1,'cat_entry']]],
-  ['record_5flength_4',['RECORD_LENGTH',['../eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300',1,'eph_manager.c']]],
-  ['rmass_5',['rmass',['../novascon_8c.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c'],['../novascon_8h.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c']]],
-  ['rv_6',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
+  ['parallax_0',['parallax',['../structcat__entry.html#a18f7f3626661dbf57ce9eaec51840eb8',1,'cat_entry']]],
+  ['pc_1',['PC',['../eph__manager_8c.html#a0fcf3bf4c37f78e5ef7557cb03029eff',1,'eph_manager.c']]],
+  ['precession_2',['precession',['../structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c',1,'novas_frame']]],
+  ['pressure_3',['pressure',['../structon__surface.html#aee1c5d07ac79c5c036195858afe33405',1,'on_surface']]],
+  ['promodec_4',['promodec',['../structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c',1,'cat_entry']]],
+  ['promora_5',['promora',['../structcat__entry.html#ab9301cf1c67c13114b22950650b17789',1,'cat_entry']]],
+  ['psi_5fcor_6',['PSI_COR',['../novas_8c.html#a103c28cd84e81dde365238ee3599f5b0',1,'novas.c']]]
 ];

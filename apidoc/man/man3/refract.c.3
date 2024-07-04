@@ -1,0 +1,194 @@
+.TH "src/refract.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/refract.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBnovas_inv_refract\fP (\fBRefractionModel\fP model, double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el0)"
+.br
+.ti -1c
+.RI "double \fBnovas_optical_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
+.br
+.ti -1c
+.RI "double \fBnovas_radio_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
+.br
+.ti -1c
+.RI "double \fBnovas_standard_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Jun 27, 2024 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+A collection of refraction models to used with \fBnovas_app_to_hor()\fP 
+.SH "Function Documentation"
+.PP 
+.SS "double novas_inv_refract (\fBRefractionModel\fP model, double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el0)"
+Computes the reverse atmospheric refraction for a given refraction model\&. Thus if a refraction model takes observed elevation as an input, the reverse refraction takes astrometric elevation as its input, and vice versa\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImodel\fP The original refraction model 
+.br
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
+.br
+\fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
+.br
+\fItype\fP Refraction type to use for the original model: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+.br
+\fIel0\fP [deg] input elevation for the inverse refraction model\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] Estimated refraction, or NAN if there was an error (it should also set errno to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBrefract_astro()\fP 
+.PP
+\fBitrs_to_hor()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_REFRACT_OBSERVED\fP\&.
+.SS "double novas_optical_refraction (double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el)"
+Returns an optical refraction correction using the weather parameters defined for the observer location\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
+.br
+\fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
+.br
+\fItype\fP Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+.br
+\fIel\fP [deg] Astrometric (unrefracted) source elevation 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[arcsec] Estimated refraction, or NAN if there was an error (it should also set errno to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_app_to_hor()\fP 
+.PP
+\fBnovas_optical_refraction()\fP 
+.PP
+\fBNOVAS_STANDARD_ATMOSPHERE()\fP 
+.PP
+\fBrefract()\fP 
+.PP
+\fBrefract_astro()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_WEATHER_AT_LOCATION\fP\&.
+.SS "double novas_radio_refraction (double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el)"
+Atmospheric refraction model for radio wavelengths (Berman & Rockwell 1976)\&. It uses the weather parameters defined for the location, including humidity\&. As such make sure the weather data is fully defined, and that the humidity was explicitly set after calling \fC\fBmake_on_surface()\fP\fP\&.
+.PP
+Adapted from FORTAN code provided by Berman & Rockwell 1976\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Berman, Allan L\&., and Rockwell, Stephen T\&. (1976), NASA JPL Technical Report 32-1601 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
+.br
+\fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
+.br
+\fItype\fP Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+.br
+\fIel\fP [deg] source elevation of the specified type\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] Estimated refraction, or NAN if there was an error (it should also set errno to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_optical_refraction()\fP 
+.PP
+\fBmake_on_surface()\fP 
+.PP
+\fBon_surface\fP 
+.RE
+.PP
+
+.PP
+References \fBon_surface::humidity\fP, \fBnovas_inv_refract()\fP, \fBnovas_radio_refraction()\fP, \fBNOVAS_REFRACT_ASTROMETRIC\fP, \fBNOVAS_REFRACT_OBSERVED\fP, \fBon_surface::pressure\fP, and \fBon_surface::temperature\fP\&.
+.SS "double novas_standard_refraction (double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el)"
+Returns an optical refraction correction for a standard atmosphere\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
+.br
+\fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
+.br
+\fItype\fP Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+.br
+\fIel\fP [deg] Astrometric (unrefracted) source elevation 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] Estimated refraction, or NAN if there was an error (it should also set errno to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_app_to_hor()\fP 
+.PP
+\fBnovas_optical_refraction()\fP 
+.PP
+\fBNOVAS_STANDARD_ATMOSPHERE()\fP 
+.PP
+\fBrefract()\fP 
+.PP
+\fBrefract_astro()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_STANDARD_ATMOSPHERE\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

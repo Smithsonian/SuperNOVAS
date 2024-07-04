@@ -16,6 +16,10 @@ on_surface
 .br
 .RI "[m] altitude above sea level "
 .ti -1c
+.RI "double \fBhumidity\fP"
+.br
+.RI "[%] Relative humidity\&. "
+.ti -1c
 .RI "double \fBlatitude\fP"
 .br
 .RI "[deg] geodetic (ITRS) latitude; north positive "
@@ -35,6 +39,19 @@ on_surface
 .SH "Detailed Description"
 .PP 
 data for an observer's location on the surface of the Earth\&. The atmospheric parameters are used only by the refraction function called from function 'equ2hor'\&. Additional parameters can be added to this structure if a more sophisticated refraction model is employed\&. 
+.SH "Field Documentation"
+.PP 
+.SS "double humidity"
+
+.PP
+[%] Relative humidity\&. 
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+
 
 .SH "Author"
 .PP 

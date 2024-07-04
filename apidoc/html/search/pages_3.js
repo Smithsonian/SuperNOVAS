@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['supernovas_0',['supernovas',['../md_CONTRIBUTING.html',1,'Contributing to SuperNOVAS'],['../index.html',1,'SuperNOVAS']]]
+  ['for_20a_20sidereal_20source_0',['Calculating positions for a sidereal source',['../md_LEGACY.html',1,'']]]
 ];

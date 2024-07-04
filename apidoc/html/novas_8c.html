@@ -120,7 +120,8 @@ $(document).ready(function(){initNavTree('novas_8c.html',''); initResizable(); }
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">novas.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -163,8 +164,8 @@ Functions</h2></td></tr>
 <tr class="separator:ac0ba048cd1732d0d0398397396d158bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2768d89d499a7155f90a6fd8c176d8d" id="r_aa2768d89d499a7155f90a6fd8c176d8d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs</a> (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="separator:aa2768d89d499a7155f90a6fd8c176d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25e1ba14b69ef837cc7a5da21b27e5c6" id="r_a25e1ba14b69ef837cc7a5da21b27e5c6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a25e1ba14b69ef837cc7a5da21b27e5c6">d_light</a> (const double *pos, const double *pos_obs)</td></tr>
-<tr class="separator:a25e1ba14b69ef837cc7a5da21b27e5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad799864f637c483fb49491bde5a93e25" id="r_ad799864f637c483fb49491bde5a93e25"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#ad799864f637c483fb49491bde5a93e25">d_light</a> (const double *pos_src, const double *pos_body)</td></tr>
+<tr class="separator:ad799864f637c483fb49491bde5a93e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6408979487e7fdf65fe7902b0400ce87" id="r_a6408979487e7fdf65fe7902b0400ce87"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a6408979487e7fdf65fe7902b0400ce87">e_tilt</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *mobl, double *tobl, double *ee, double *dpsi, double *deps)</td></tr>
 <tr class="separator:a6408979487e7fdf65fe7902b0400ce87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb3abc403e84a4821c3d00dc9186eed5" id="r_afb3abc403e84a4821c3d00dc9186eed5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#afb3abc403e84a4821c3d00dc9186eed5">ecl2equ</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014">novas_equator_type</a> coord_sys, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double elon, double elat, double *ra, double *dec)</td></tr>
@@ -205,8 +206,10 @@ Functions</h2></td></tr>
 <tr class="separator:a4d7470ca705efa1953e8b4beab77c6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7611704bab9ce717744a8b5575c5378" id="r_ab7611704bab9ce717744a8b5575c5378"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt</a> (int leap_seconds)</td></tr>
 <tr class="separator:ab7611704bab9ce717744a8b5575c5378"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a525de0742ee25bd3fbe9ee0ea5494ac4" id="r_a525de0742ee25bd3fbe9ee0ea5494ac4"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a525de0742ee25bd3fbe9ee0ea5494ac4">grav_def</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3">novas_observer_place</a> loc_type, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *pos_src, const double *pos_obs, double *out)</td></tr>
-<tr class="separator:a525de0742ee25bd3fbe9ee0ea5494ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48f90ac20950507fad9b880a7f7f2383" id="r_a48f90ac20950507fad9b880a7f7f2383"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3">novas_observer_place</a> unused, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *pos_src, const double *pos_obs, double *out)</td></tr>
+<tr class="separator:a48f90ac20950507fad9b880a7f7f2383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaae33249717912663bbb00be4fa4e6c3" id="r_aaae33249717912663bbb00be4fa4e6c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aaae33249717912663bbb00be4fa4e6c3">grav_undef</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *pos_app, const double *pos_obs, double *out)</td></tr>
+<tr class="separator:aaae33249717912663bbb00be4fa4e6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08a008572e2746a70bec19739b5fb7e6" id="r_a08a008572e2746a70bec19739b5fb7e6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a08a008572e2746a70bec19739b5fb7e6">grav_vec</a> (const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out)</td></tr>
 <tr class="separator:a08a008572e2746a70bec19739b5fb7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad290005b13558de3927e455775b32e0f" id="r_ad290005b13558de3927e455775b32e0f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#ad290005b13558de3927e455775b32e0f">hor_to_itrs</a> (const <a class="el" href="structon__surface.html">on_surface</a> *location, double az, double za, double *itrs)</td></tr>
@@ -235,8 +238,12 @@ Functions</h2></td></tr>
 <tr class="separator:ac036606c424c30a5600049b0cd38d868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f24eef523d0a8e3252002654389bd5c" id="r_a0f24eef523d0a8e3252002654389bd5c"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a0f24eef523d0a8e3252002654389bd5c">local_star</a> (double jd_tt, double ut1_to_tt, const <a class="el" href="structcat__entry.html">cat_entry</a> *star, const <a class="el" href="structon__surface.html">on_surface</a> *position, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *ra, double *dec)</td></tr>
 <tr class="separator:a0f24eef523d0a8e3252002654389bd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa423a88cd3f434642fc89d47390184f4" id="r_aa423a88cd3f434642fc89d47390184f4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer</a> (const <a class="el" href="structon__surface.html">on_surface</a> *location, const double *vel, <a class="el" href="structobserver.html">observer</a> *obs)</td></tr>
+<tr class="separator:aa423a88cd3f434642fc89d47390184f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9950f7973fc3b5d40b0d0a9f4eceddac" id="r_a9950f7973fc3b5d40b0d0a9f4eceddac"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry</a> (const char *star_name, const char *catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double <a class="el" href="novas_8c.html#a304b2220e084b4b12e674aad897972bc">rad_vel</a>, <a class="el" href="structcat__entry.html">cat_entry</a> *star)</td></tr>
 <tr class="separator:a9950f7973fc3b5d40b0d0a9f4eceddac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9b7a622486f2904615ceed1ba94cd8f" id="r_ab9b7a622486f2904615ceed1ba94cd8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object</a> (const <a class="el" href="structcat__entry.html">cat_entry</a> *star, <a class="el" href="structobject.html">object</a> *source)</td></tr>
+<tr class="separator:ab9b7a622486f2904615ceed1ba94cd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22303f98df2d63edf6d8452ff3a43b2" id="r_aa22303f98df2d63edf6d8452ff3a43b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a> (const char *name, long num, <a class="el" href="structobject.html">object</a> *body)</td></tr>
 <tr class="separator:aa22303f98df2d63edf6d8452ff3a43b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0ca6f330e1795ce811df95986400632" id="r_ac0ca6f330e1795ce811df95986400632"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#ac0ca6f330e1795ce811df95986400632">make_in_space</a> (const double *sc_pos, const double *sc_vel, <a class="el" href="structin__space.html">in_space</a> *loc)</td></tr>
@@ -255,6 +262,8 @@ Functions</h2></td></tr>
 <tr class="separator:a9174488cd701172531174d85ed26819b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a618bbba887b9bc9e7df878234c66c215" id="r_a618bbba887b9bc9e7df878234c66c215"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> num, <a class="el" href="structobject.html">object</a> *planet)</td></tr>
 <tr class="separator:a618bbba887b9bc9e7df878234c66c215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c3f1a1bc3fd9ac6d211806913d2d529" id="r_a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer</a> (const double *sc_pos, const double *sc_vel, <a class="el" href="structobserver.html">observer</a> *obs)</td></tr>
+<tr class="separator:a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af182ee8cc4239f581f746aa974827d61" id="r_af182ee8cc4239f581f746aa974827d61"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq</a> (double jd_tdb)</td></tr>
 <tr class="separator:af182ee8cc4239f581f746aa974827d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd9c6d2127483551c98300e264977f5" id="r_a8bd9c6d2127483551c98300e264977f5"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a8bd9c6d2127483551c98300e264977f5">mean_star</a> (double jd_tt, double tra, double tdec, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *ira, double *idec)</td></tr>
@@ -271,6 +280,8 @@ Functions</h2></td></tr>
 <tr class="separator:a69df5671751c09a7575963b94ad1151e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dc364ae1963da0b916ed5a9d0862d3e" id="r_a0dc364ae1963da0b916ed5a9d0862d3e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e">nutation_angles</a> (double t, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *dpsi, double *deps)</td></tr>
 <tr class="separator:a0dc364ae1963da0b916ed5a9d0862d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a62b6e1ef8840a1203c6d2a75d17152" id="r_a5a62b6e1ef8840a1203c6d2a75d17152"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a5a62b6e1ef8840a1203c6d2a75d17152">obs_posvel</a> (double jd_tdb, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const <a class="el" href="structobserver.html">observer</a> *obs, const double *geo_pos, const double *geo_vel, double *pos, double *vel)</td></tr>
+<tr class="separator:a5a62b6e1ef8840a1203c6d2a75d17152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a263de1618d80fcc737984951fa97c5a3" id="r_a263de1618d80fcc737984951fa97c5a3"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, const <a class="el" href="structobserver.html">observer</a> *location, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> coord_sys, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *output)</td></tr>
 <tr class="separator:a263de1618d80fcc737984951fa97c5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebad3c9b51f62cb7b31a686b5ec890a9" id="r_aebad3c9b51f62cb7b31a686b5ec890a9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
@@ -279,6 +290,10 @@ Functions</h2></td></tr>
 <tr class="separator:acbcd90c9111cc5580a5c2bac404f7f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ef1b6d204e22608e964e60cf34a15ad" id="r_a4ef1b6d204e22608e964e60cf34a15ad"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a4ef1b6d204e22608e964e60cf34a15ad">place_icrs</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
 <tr class="separator:a4ef1b6d204e22608e964e60cf34a15ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3da1221ec52e427f9571d12f6f914ae" id="r_aa3da1221ec52e427f9571d12f6f914ae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aa3da1221ec52e427f9571d12f6f914ae">place_j2000</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
+<tr class="separator:aa3da1221ec52e427f9571d12f6f914ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f055f3994889e3345d5267dac671a60" id="r_a3f055f3994889e3345d5267dac671a60"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a3f055f3994889e3345d5267dac671a60">place_mod</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
+<tr class="separator:a3f055f3994889e3345d5267dac671a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a078b5e764d5cf3fdca600fada992b409" id="r_a078b5e764d5cf3fdca600fada992b409"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a078b5e764d5cf3fdca600fada992b409">place_star</a> (double jd_tt, const <a class="el" href="structcat__entry.html">cat_entry</a> *star, const <a class="el" href="structobserver.html">observer</a> *obs, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> system, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
 <tr class="separator:a078b5e764d5cf3fdca600fada992b409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c8817db8a00764da4c285b32590ccfb" id="r_a2c8817db8a00764da4c285b32590ccfb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a2c8817db8a00764da4c285b32590ccfb">place_tod</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
@@ -345,6 +360,13 @@ Functions</h2></td></tr>
 <tr class="separator:acd47f30801a6676afb5e0614eaefa569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aead87744eeb3029ce7d5ffb1801ee652" id="r_aead87744eeb3029ce7d5ffb1801ee652"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble</a> (double jd_tt, enum <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5">novas_wobble_direction</a> direction, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="separator:aead87744eeb3029ce7d5ffb1801ee652"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ac063b61c63e78a4864f2baa4606bab36" id="r_ac063b61c63e78a4864f2baa4606bab36"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#ac063b61c63e78a4864f2baa4606bab36">EPS_COR</a> = 0.0</td></tr>
+<tr class="separator:ac063b61c63e78a4864f2baa4606bab36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103c28cd84e81dde365238ee3599f5b0" id="r_a103c28cd84e81dde365238ee3599f5b0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a103c28cd84e81dde365238ee3599f5b0">PSI_COR</a> = 0.0</td></tr>
+<tr class="separator:a103c28cd84e81dde365238ee3599f5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs </dd></dl>
@@ -445,7 +467,9 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <dd>
 <a class="el" href="novas_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a> </dd></dl>
+<a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
@@ -1150,7 +1174,7 @@ Kaplan, G. (2003), USNO/AA Technical Note 2003-03. </li>
 <dd>
 <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>, <a class="el" href="novas_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47">POLE_OFFSETS_DPSI_DEPS</a>, <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77">POLE_OFFSETS_X_Y</a>, and <a class="el" href="novas_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#ac063b61c63e78a4864f2baa4606bab36">EPS_COR</a>, <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47">POLE_OFFSETS_DPSI_DEPS</a>, <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77">POLE_OFFSETS_X_Y</a>, and <a class="el" href="novas_8c.html#a103c28cd84e81dde365238ee3599f5b0">PSI_COR</a>.</p>
 
 </div>
 </div>
@@ -1606,8 +1630,8 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 
 </div>
 </div>
-<a id="a25e1ba14b69ef837cc7a5da21b27e5c6" name="a25e1ba14b69ef837cc7a5da21b27e5c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25e1ba14b69ef837cc7a5da21b27e5c6">&#9670;&#160;</a></span>d_light()</h2>
+<a id="ad799864f637c483fb49491bde5a93e25" name="ad799864f637c483fb49491bde5a93e25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad799864f637c483fb49491bde5a93e25">&#9670;&#160;</a></span>d_light()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1616,13 +1640,13 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
           <td class="memname">double d_light </td>
           <td>(</td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>pos</em>, </td>
+          <td class="paramname"><em>pos_src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>pos_obs</em>&#160;</td>
+          <td class="paramname"><em>pos_body</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1631,20 +1655,20 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the difference in light-time, for a star, between the barycenter of the solar system and the observer (or the geocenter).</p>
-<p>Alternatively, this function returns the light-time from the observer (or the geocenter) to a point on a light ray that is closest to a specific solar system body. For this purpose, 'pos1' is the position vector toward observed object, with respect to origin at observer (or the geocenter); 'pos_obs' is the position vector of solar system body, with respect to origin at observer (or the geocenter), components in AU; and the returned value is the light time to point on line defined by 'pos1' that is closest to solar system body (positive if light passes body before hitting observer, i.e., if 'pos1' is within 90 degrees of 'pos_obs').</p>
+<p>Returns the difference in light-time, for a star, between the barycenter of the solar system and the observer (or the geocenter) (<em>Usage A</em>).</p>
+<p>Alternatively (<em>Usage B</em>), this function returns the light-time from the observer (or the geocenter) to a point on a light ray that is closest to a specific solar system body. For this purpose, 'pos_src' is the position vector toward observed object, with respect to origin at observer (or the geocenter); 'pos_body' is the position vector of solar system body, with respect to origin at observer (or the geocenter), components in AU; and the returned value is the light time to point on line defined by 'pos' that is closest to solar system body (positive if light passes body before hitting observer, i.e., if 'pos1' is within 90 degrees of 'pos_obs').</p>
 <p>NOTES: </p><ol>
 <li>
 This function is called by <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pos</td><td>Position vector of star, with respect to origin at solar system barycenter. </td></tr>
-    <tr><td class="paramname">pos_obs</td><td>[AU] Position vector of observer (or the geocenter), with respect to origin at solar system barycenter, components in AU. </td></tr>
+    <tr><td class="paramname">pos_src</td><td>Position vector towards observed object, with respect to the SSB (<em>Usage A</em>), or relative to the observer / geocenter (<em>Usage B</em>). </td></tr>
+    <tr><td class="paramname">pos_body</td><td>[AU] Position of observer relative to SSB (<em>Usage A</em>), or position of intermediate solar-system body with respect to the observer / geocenter (<em>Usage B</em>). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] Difference in light time, in the sense star to barycenter minus star to earth, in days, or NAN if either of the input arguments is NULL.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] Difference in light time to observer, either relative to SSB (<em>Usage A</em>) or relative intermediate solar-system body (<em>Usage B</em>); or else NAN if either of the input arguments is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novascon_8c.html#a55379c7fece80070614c09bb218275b6">C_AUDAY</a>.</p>
@@ -1729,7 +1753,7 @@ This function is called by <a class="el" href="novas_8c.html#a263de1618d80fcc737
 <dd>
 <a class="el" href="novas_8c.html#afb3abc403e84a4821c3d00dc9186eed5">ecl2equ()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a>, <a class="el" href="novas_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e">nutation_angles()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a>, <a class="el" href="novas_8c.html#ac063b61c63e78a4864f2baa4606bab36">EPS_COR</a>, <a class="el" href="novas_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e">nutation_angles()</a>, and <a class="el" href="novas_8c.html#a103c28cd84e81dde365238ee3599f5b0">PSI_COR</a>.</p>
 
 </div>
 </div>
@@ -2442,7 +2466,7 @@ IERS (2003) Conventions, Chapter 5. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Position vector, equatorial rectangular coordinates. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">direction</td><td>&lt;0 for for dynamical to ICRS transformation, or else &gt;=0 for ICRS to dynamical transformation. Alternatively you may use the constants J2000_TO_ICRS (0; or positive) or ICRS_TO_J2000 (-1; or negative). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">direction</td><td>&lt;0 for for dynamical to ICRS transformation, or else &gt;=0 for ICRS to dynamical transformation. Alternatively you may use the constants J2000_TO_ICRS (-1; or negative) or ICRS_TO_J2000 (0; or positive). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Position vector, equatorial rectangular coordinates. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
@@ -2736,7 +2760,7 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, and <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, and <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>.</p>
 
 </div>
 </div>
@@ -2789,7 +2813,7 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the geocentric position and velocity of an observer on the surface of the earth or on a near-earth spacecraft. The final vectors are expressed in the GCRS.</p>
+<p>Computes the geocentric position and velocity of an observer. The final vectors are expressed in the GCRS.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. </td></tr>
@@ -2810,7 +2834,7 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 <dd>
 <a class="el" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novascon_8c.html#a95419ca41731064148e6fcfb0e919171">AU_KM</a>, <a class="el" href="novas_8c.html#a6408979487e7fdf65fe7902b0400ce87">e_tilt()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="structobserver.html#a447c33455c0da962abf8621638c994b5">observer::near_earth</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2">NOVAS_OBSERVER_AT_GEOCENTER</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="structobserver.html#a0ed422bd2a08c6b3870b545e16484501">observer::on_surf</a>, <a class="el" href="structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8">in_space::sc_pos</a>, <a class="el" href="structin__space.html#a9615dabeef0c31f47546c8083b768257">in_space::sc_vel</a>, <a class="el" href="novas_8c.html#a3236e72771f2c363f342547d80f5d50f">sidereal_time()</a>, <a class="el" href="novas_8c.html#aa111f8d21d960677fb91139adc96ff17">terra()</a>, <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, and <a class="el" href="structobserver.html#a11f2eb69df64b674d938b34bbb842ab1">observer::where</a>.</p>
+<p class="reference">References <a class="el" href="novascon_8c.html#a95419ca41731064148e6fcfb0e919171">AU_KM</a>, <a class="el" href="novas_8c.html#a6408979487e7fdf65fe7902b0400ce87">e_tilt()</a>, <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97">geo_posvel()</a>, <a class="el" href="structobserver.html#a447c33455c0da962abf8621638c994b5">observer::near_earth</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2">NOVAS_OBSERVER_AT_GEOCENTER</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>, <a class="el" href="structobserver.html#a0ed422bd2a08c6b3870b545e16484501">observer::on_surf</a>, <a class="el" href="structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8">in_space::sc_pos</a>, <a class="el" href="structin__space.html#a9615dabeef0c31f47546c8083b768257">in_space::sc_vel</a>, <a class="el" href="novas_8c.html#a3236e72771f2c363f342547d80f5d50f">sidereal_time()</a>, <a class="el" href="novas_8c.html#aa111f8d21d960677fb91139adc96ff17">terra()</a>, <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, and <a class="el" href="structobserver.html#a11f2eb69df64b674d938b34bbb842ab1">observer::where</a>.</p>
 
 </div>
 </div>
@@ -2870,7 +2894,7 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds at gthe time of observations </td></tr>
+    <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds at the time of observations </td></tr>
     <tr><td class="paramname">dut1</td><td>[s] UT1 - UTC time difference [-0.5:0.5] </td></tr>
   </table>
   </dd>
@@ -2913,14 +2937,16 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
 <dl class="section return"><dt>Returns</dt><dd>[s] The TT - UTC time difference</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd></dl>
+<a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda">NOVAS_TAI_TO_TT</a>.</p>
 
 </div>
 </div>
-<a id="a525de0742ee25bd3fbe9ee0ea5494ac4" name="a525de0742ee25bd3fbe9ee0ea5494ac4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a525de0742ee25bd3fbe9ee0ea5494ac4">&#9670;&#160;</a></span>grav_def()</h2>
+<a id="a48f90ac20950507fad9b880a7f7f2383" name="a48f90ac20950507fad9b880a7f7f2383"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48f90ac20950507fad9b880a7f7f2383">&#9670;&#160;</a></span>grav_def()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2935,7 +2961,7 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">enum <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3">novas_observer_place</a>&#160;</td>
-          <td class="paramname"><em>loc_type</em>, </td>
+          <td class="paramname"><em>unused</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2969,8 +2995,7 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
       </table>
 </div><div class="memdoc">
 <p>Computes the total gravitational deflection of light for the observed object due to the major gravitating bodies in the solar system. This function valid for an observed body within the solar system as well as for a star.</p>
-<p>If 'accuracy' is set to zero (full accuracy), three bodies (Sun, Jupiter, and Saturn) are used in the calculation. If the reduced-accuracy option is set, only the Sun is used in the calculation. In both cases, if the observer is not at the geocenter, the deflection due to the Earth is included.</p>
-<p>The number of bodies used at full and reduced accuracy can be set by making a change to the code in this function as indicated in the comments.</p>
+<p>If 'accuracy' is NOVAS_FULL_ACCURACY (0), the deflections due to the Sun, Jupiter, Saturn, and Earth are calculated. Otherwise, only the deflection due to the Sun is calculated. In either case, deflection is ignored if the observer is within ~1500 km of the center of the gravitating body.</p>
 <p>NOTES: </p><ol>
 <li>
 This function is called by <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> to calculate gravitational deflections as appropriate for positioning sources precisely. The gravitational deflection due to planets requires a planet calculator function to be configured, e.g. via <a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>.  </li>
@@ -2982,8 +3007,8 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">loc_type</td><td>The type of observer frame </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">unused</td><td>The type of observer frame (no longer used) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1). In full accuracy mode, it will calculate the deflection due to the Sun, Jupiter, Saturn and Earth. In reduced accuracy mode, only the deflection due to the Sun is calculated. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pos_src</td><td>[AU] Position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>[AU] Position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, corrected for gravitational deflection, components in AU. It can be the same vector as the input, but not the same as pos_obs. </td></tr>
@@ -2991,13 +3016,92 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, or else 30 + the error from <a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#aaae33249717912663bbb00be4fa4e6c3">grav_undef()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ad412ac774327a4120237dc3b3110f9a0">novas_geom_to_app()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#aada778ddcc75a355b6753f5372775094">bary2obs()</a>, <a class="el" href="novascon_8c.html#a55379c7fece80070614c09bb218275b6">C_AUDAY</a>, <a class="el" href="novas_8c.html#a25e1ba14b69ef837cc7a5da21b27e5c6">d_light()</a>, <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, <a class="el" href="novas_8c.html#a08a008572e2746a70bec19739b5fb7e6">grav_vec()</a>, <a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baaa03b175422e9603e87ab87f93a45c07c">NOVAS_DEBUG_EXTRA</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045af12d26e56aa375fd2aa0c0edfd1c9ae3">NOVAS_NEPTUNE</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2">NOVAS_OBSERVER_AT_GEOCENTER</a>, <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a5ddc7a011476a8cffaec1866beaa0095">NOVAS_RMASS_INIT</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a71d987d5d11d3a162807cdf0c994ad28">NOVAS_URANUS</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a7c452cc654265f03e78801f9aead83de">NOVAS_VENUS</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#aada778ddcc75a355b6753f5372775094">bary2obs()</a>, <a class="el" href="novascon_8c.html#a55379c7fece80070614c09bb218275b6">C_AUDAY</a>, <a class="el" href="novas_8c.html#ad799864f637c483fb49491bde5a93e25">d_light()</a>, <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, <a class="el" href="novas_8c.html#a08a008572e2746a70bec19739b5fb7e6">grav_vec()</a>, <a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baaa03b175422e9603e87ab87f93a45c07c">NOVAS_DEBUG_EXTRA</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045af12d26e56aa375fd2aa0c0edfd1c9ae3">NOVAS_NEPTUNE</a>, <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a5ddc7a011476a8cffaec1866beaa0095">NOVAS_RMASS_INIT</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a71d987d5d11d3a162807cdf0c994ad28">NOVAS_URANUS</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a7c452cc654265f03e78801f9aead83de">NOVAS_VENUS</a>.</p>
+
+</div>
+</div>
+<a id="aaae33249717912663bbb00be4fa4e6c3" name="aaae33249717912663bbb00be4fa4e6c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaae33249717912663bbb00be4fa4e6c3">&#9670;&#160;</a></span>grav_undef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int grav_undef </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>pos_app</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>pos_obs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computes the gravitationally undeflected position of an observed source position due to the major gravitating bodies in the solar system. This function valid for an observed body within the solar system as well as for a star.</p>
+<p>If 'accuracy' is set to zero (full accuracy), three bodies (Sun, Jupiter, and Saturn) are used in the calculation. If the reduced-accuracy option is set, only the Sun is used in the calculation. In both cases, if the observer is not at the geocenter, the deflection due to the Earth is included.</p>
+<p>The number of bodies used at full and reduced accuracy can be set by making a change to the code in this function as indicated in the comments.</p>
+<p>REFERENCES: </p><ol>
+<li>
+Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pos_app</td><td>[AU] Apparent position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>[AU] Nominal position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, without gravitational deflection, components in AU. It can be the same vector as the input, but not the same as pos_obs. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, or else 30 + the error from <a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#a83db7db5a0ed0311610391f199b9f66c">novas_app_to_geom()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a>, and <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>.</p>
 
 </div>
 </div>
@@ -3047,7 +3151,7 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6. </li>
 <p>Corrects position vector for the deflection of light in the gravitational field of an arbitrary body. This function valid for an observed body within the solar system as well as for a star.</p>
 <p>NOTES: </p><ol>
 <li>
-This function is called by <a class="el" href="novas_8c.html#a525de0742ee25bd3fbe9ee0ea5494ac4">grav_def()</a> to calculate appropriate gravitational deflections for sources.  </li>
+This function is called by <a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a> to calculate appropriate gravitational deflections for sources.  </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
@@ -3070,7 +3174,7 @@ Kaplan, G. et al. (1989) Astronomical Journal 97, 1197-1210, section iii f. </li
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input vectors is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a525de0742ee25bd3fbe9ee0ea5494ac4">grav_def()</a> </dd></dl>
+<a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novascon_8c.html#a2b9e1ccc1a034cb26b9c794767315346">AU</a>, <a class="el" href="novascon_8c.html#a9e8a46a0e00368ad98642587ca4ebdbe">C</a>, and <a class="el" href="novascon_8c.html#a5060445c439eb63c5fb506fa625ca343">GS</a>.</p>
 
@@ -4022,6 +4126,65 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 
 </div>
 </div>
+<a id="aa423a88cd3f434642fc89d47390184f4" name="aa423a88cd3f434642fc89d47390184f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa423a88cd3f434642fc89d47390184f4">&#9670;&#160;</a></span>make_airborne_observer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_airborne_observer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structon__surface.html">on_surface</a> *&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>vel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobserver.html">observer</a> *&#160;</td>
+          <td class="paramname"><em>obs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Populates an 'observer' data structure for an observer moving relative to the surface of Earth, such as an airborne observer. Airborne observers have an earth fixed momentary location, defined by longitude, latitude, and altitude, the same was as for a stationary observer on Earth, but are moving relative to the surface, such as in an aircraft or balloon observatory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">location</td><td>Current longitude, latitude and altitude, and local weather (temperature and pressure) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">vel</td><td>[km/s] Surface velocity. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">obs</td><td>Pointer to data structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>make_observer_at geocenter() </dd>
+<dd>
+<a class="el" href="novas_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a00d9f6909923cd3e559c8f011ff9b794">make_observer_on_surface()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a> </dd>
+<dd>
+novas_calc_geometric_position() </dd>
+<dd>
+<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, and <a class="el" href="structin__space.html#a9615dabeef0c31f47546c8083b768257">in_space::sc_vel</a>.</p>
+
+</div>
+</div>
 <a id="a9950f7973fc3b5d40b0d0a9f4eceddac" name="a9950f7973fc3b5d40b0d0a9f4eceddac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9950f7973fc3b5d40b0d0a9f4eceddac">&#9670;&#160;</a></span>make_cat_entry()</h2>
 
@@ -4117,6 +4280,54 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 <a class="el" href="novas_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="structcat__entry.html#a128c876f7e50045e1c469dbabb400c58">cat_entry::catalog</a>, <a class="el" href="structcat__entry.html#ac4ae7989694321b540abb75c30eec690">cat_entry::dec</a>, <a class="el" href="structcat__entry.html#a18f7f3626661dbf57ce9eaec51840eb8">cat_entry::parallax</a>, <a class="el" href="structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c">cat_entry::promodec</a>, <a class="el" href="structcat__entry.html#ab9301cf1c67c13114b22950650b17789">cat_entry::promora</a>, <a class="el" href="structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422">cat_entry::ra</a>, <a class="el" href="novas_8c.html#a304b2220e084b4b12e674aad897972bc">rad_vel()</a>, <a class="el" href="structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a">cat_entry::radialvelocity</a>, <a class="el" href="structcat__entry.html#ad26c9b08b1028d2a7f35c447841022b1">cat_entry::starname</a>, and <a class="el" href="structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8">cat_entry::starnumber</a>.</p>
+
+</div>
+</div>
+<a id="ab9b7a622486f2904615ceed1ba94cd8f" name="ab9b7a622486f2904615ceed1ba94cd8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9b7a622486f2904615ceed1ba94cd8f">&#9670;&#160;</a></span>make_cat_object()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_cat_object </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structcat__entry.html">cat_entry</a> *&#160;</td>
+          <td class="paramname"><em>star</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Populates and object data structure with the data for a catalog source.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to structure to populate with the catalog data for a celestial object located outside the solar system. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to the celestial object data structure to be populated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if 'cel_obj' is NULL or when type is NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="structcat__entry.html#ad26c9b08b1028d2a7f35c447841022b1">cat_entry::starname</a>, and <a class="el" href="structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8">cat_entry::starnumber</a>.</p>
 
 </div>
 </div>
@@ -4272,14 +4483,14 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">number</td><td>The novas ID number (for solar-system bodies only, otherwise ignored) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">name</td><td>The name of the object (case insensitive). It should be shorter than SIZE_OF_OBJ_NAME or else an error will be returned. The name is converted to upper internally unless <a class="el" href="novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive()</a> was called before to change that. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to structure to populate with the catalog data for a celestial object located outside the solar system. Used only if type is NOVAS_CATALOG_OBJECT, otherwise ignored and can be NULL. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to the celestial object data structure to be populated. Used only if 'type' is NOVAS_PLANET or NOVAS_EPHEM_OBJECT, otherwise ignored and may be NULL. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to the celestial object data structure to be populated. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if 'cel_obj' is NULL or when type is NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry()</a> </dd>
+<a class="el" href="novas_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd>
 <dd>
@@ -4345,7 +4556,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 <dd>
 <a class="el" href="novas_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="structobserver.html#a447c33455c0da962abf8621638c994b5">observer::near_earth</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2">NOVAS_OBSERVER_AT_GEOCENTER</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="structobserver.html#a0ed422bd2a08c6b3870b545e16484501">observer::on_surf</a>, and <a class="el" href="structobserver.html#a11f2eb69df64b674d938b34bbb842ab1">observer::where</a>.</p>
+<p class="reference">References <a class="el" href="structobserver.html#a447c33455c0da962abf8621638c994b5">observer::near_earth</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2">NOVAS_OBSERVER_AT_GEOCENTER</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>, <a class="el" href="structobserver.html#a0ed422bd2a08c6b3870b545e16484501">observer::on_surf</a>, <a class="el" href="structin__space.html#a9615dabeef0c31f47546c8083b768257">in_space::sc_vel</a>, and <a class="el" href="structobserver.html#a11f2eb69df64b674d938b34bbb842ab1">observer::where</a>.</p>
 
 </div>
 </div>
@@ -4555,6 +4766,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
       </table>
 </div><div class="memdoc">
 <p>Populates an '<a class="el" href="structon__surface.html">on_surface</a>' data structure, for an observer on the surface of the Earth, with the given parameters.</p>
+<p>Note, that because this is an original NOVAS C routine, it does not have an argument to set a humidity value (e.g. for radio refraction). As such the call will set humidity to 0.0. To set the humidity, set the output structure's field after calling this funcion. Its unit is [%], and so the range is 0.0&ndash;100.0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">latitude</td><td>[deg] Geodetic (ITRS) latitude in degrees; north positive. </td></tr>
@@ -4571,7 +4783,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 <dd>
 <a class="el" href="novas_8c.html#ac0ca6f330e1795ce811df95986400632">make_in_space()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="structon__surface.html#a89f6abd564014faeff7cd20c340a9c7d">on_surface::height</a>, <a class="el" href="structon__surface.html#a76714bdbc5c536fa77dfb14533ff82a9">on_surface::latitude</a>, <a class="el" href="structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6">on_surface::longitude</a>, <a class="el" href="structon__surface.html#aee1c5d07ac79c5c036195858afe33405">on_surface::pressure</a>, and <a class="el" href="structon__surface.html#ab4b11c8d9c758430960896bc3fe82ead">on_surface::temperature</a>.</p>
+<p class="reference">References <a class="el" href="structon__surface.html#a89f6abd564014faeff7cd20c340a9c7d">on_surface::height</a>, <a class="el" href="structon__surface.html#a987616dbcfdfc936af3e5874ef5a41e7">on_surface::humidity</a>, <a class="el" href="structon__surface.html#a76714bdbc5c536fa77dfb14533ff82a9">on_surface::latitude</a>, <a class="el" href="structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6">on_surface::longitude</a>, <a class="el" href="structon__surface.html#aee1c5d07ac79c5c036195858afe33405">on_surface::pressure</a>, and <a class="el" href="structon__surface.html#ab4b11c8d9c758430960896bc3fe82ead">on_surface::temperature</a>.</p>
 
 </div>
 </div>
@@ -4618,6 +4830,65 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, and <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>.</p>
+
+</div>
+</div>
+<a id="a9c3f1a1bc3fd9ac6d211806913d2d529" name="a9c3f1a1bc3fd9ac6d211806913d2d529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c3f1a1bc3fd9ac6d211806913d2d529">&#9670;&#160;</a></span>make_solar_system_observer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_solar_system_observer </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>sc_pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>sc_vel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobserver.html">observer</a> *&#160;</td>
+          <td class="paramname"><em>obs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft, with the specified geocentric position and velocity vectors. Solar-system observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative to the Solar System Barycenter, instead of the geocenter.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">sc_pos</td><td>[AU] Solar-system barycentric (x, y, z) position vector in ICRS. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">sc_vel</td><td>[AU/day] Solar-system barycentric (x, y, z) velocity vector in ICRS. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">obs</td><td>Pointer to the data structure to populate </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a00d9f6909923cd3e559c8f011ff9b794">make_observer_on_surface()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a6802265b4ac76628f22260ba23ac2352">make_observer_at_geocenter()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a> </dd>
+<dd>
+novas_calc_geometric_position() </dd>
+<dd>
+<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#ac0ca6f330e1795ce811df95986400632">make_in_space()</a>, <a class="el" href="novas_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a>, and <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>.</p>
 
 </div>
 </div>
@@ -4758,7 +5029,9 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[rad] the normalized angle in the [0:2&pi;) range. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[rad] the normalized angle in the [0:2&pi;) range.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
@@ -4986,6 +5259,90 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 
 </div>
 </div>
+<a id="a5a62b6e1ef8840a1203c6d2a75d17152" name="a5a62b6e1ef8840a1203c6d2a75d17152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a62b6e1ef8840a1203c6d2a75d17152">&#9670;&#160;</a></span>obs_posvel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int obs_posvel </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ut1_to_tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structobserver.html">observer</a> *&#160;</td>
+          <td class="paramname"><em>obs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>geo_pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>geo_vel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>vel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculates the ICRS position and velocity of the observer relative to the Solar System Barycenter (SSB).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] TT - UT1 time difference. Used only when 'location-&gt;where' is NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">obs</td><td>The observer location, relative to which the output positions and velocities are to be calculated </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">geo_pos</td><td>[AU] ICRS position vector of the geocenter w.r.t. the Solar System Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be calculated when needed. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">geo_vel</td><td>[AU/day] ICRS velocity vector of the geocenter w.r.t. the Solar System Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be calculated when needed. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter (SSB) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">vel</td><td>[AU/day] Velocity 3-vector of the observer w.r.t. the Solar System Barycenter (SSB) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or the error from <a class="el" href="novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97">geo_posvel()</a>, or else -1 (with errno indicating the type of error).</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, <a class="el" href="novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97">geo_posvel()</a>, <a class="el" href="structobserver.html#a447c33455c0da962abf8621638c994b5">observer::near_earth</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a7af86c48f77394688f4ad43eb20760f4">NOVAS_OBSERVER_PLACES</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>, <a class="el" href="structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8">in_space::sc_pos</a>, <a class="el" href="structin__space.html#a9615dabeef0c31f47546c8083b768257">in_space::sc_vel</a>, and <a class="el" href="structobserver.html#a11f2eb69df64b674d938b34bbb842ab1">observer::where</a>.</p>
+
+</div>
+</div>
 <a id="a263de1618d80fcc737984951fa97c5a3" name="a263de1618d80fcc737984951fa97c5a3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a263de1618d80fcc737984951fa97c5a3">&#9670;&#160;</a></span>place()</h2>
 
@@ -5043,7 +5400,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 </div><div class="memdoc">
 <p>Computes the apparent direction of a celestial object at a specified time and in a specified coordinate system and a specific near-Earth origin.</p>
 <p>While <code>coord_sys</code> defines the celestial pole (i.e. equator) orientation of the coordinate system, <code>location-&gt;where</code> sets the origin of the reference place relative to which positions and velocities are reported.</p>
-<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a novas_planet_provider function.</p>
+<p>For all but ICRS coordinate outputs, the calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a novas_planet_provider function.</p>
 <p>In case of a dynamical equatorial system (such as CIRS or TOD) and an Earth-based observer, the polar wobble parameters set via a prior call to <a class="el" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> together with he ut1_to_tt argument decide whether the resulting 'topocentric' output frame is Pseudo Earth Fixed (PEF; if <a class="el" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> was not set and DUT1 is 0) or ITRS (actual rotating Earth; if <a class="el" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> was set and ut1_to_tt includes the DUT1 component).</p>
 <p>NOTES: </p><ol>
 <li>
@@ -5061,14 +5418,18 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Pointer to a celestrial object data structure </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">location</td><td>The observer location, relative to which the output positions and velocities are to be calculated </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] TT - UT1 time difference. Used only when 'location-&gt;where' is NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2). </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The coordinate system that defines the orientation of the celestial pole. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The coordinate system that defines the orientation of the celestial pole. If it is NOVAS_ICRS (3), a geometric position is returned. For all other systems, the returned position is the apparent position including aberration ang gravitational deflection corrections. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">output</td><td>Data structure to populate with the result. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid, 3 if Earth is the observed object, and the observer is either at the geocenter or on the Earth's surface, 10&ndash;40: error is 10 + the error <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, 40&ndash;50: error is 40 + the error from <a class="el" href="novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97">geo_posvel()</a>, 50&ndash;70 error is 50 + error from <a class="el" href="novas_8c.html#ac37988ea091479b766590e472293439b">light_time()</a>, 70&ndash;80 error is 70 + error from <a class="el" href="novas_8c.html#a525de0742ee25bd3fbe9ee0ea5494ac4">grav_def()</a>, 80&ndash;90 errro is 80 + error from <a class="el" href="novas_8c.html#a43141f0ea4598d6c87193c3ea594dd6c">cio_location()</a>, 90&ndash;100 error is 90 + error from <a class="el" href="novas_8c.html#a07f83fbb8a57cf442c264ecdc979475e">cio_basis()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a078b5e764d5cf3fdca600fada992b409">place_star()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid, 3 if Earth is the observed object, and the observer is either at the geocenter or on the Earth's surface, 10&ndash;40: error is 10 + the error <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, 40&ndash;50: error is 40 + the error from <a class="el" href="novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97">geo_posvel()</a>, 50&ndash;70 error is 50 + error from <a class="el" href="novas_8c.html#a8a93137b6201bedd8d47cc954684ebe3">light_time2()</a>, 70&ndash;80 error is 70 + error from <a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a>, 80&ndash;90 error is 80 + error from <a class="el" href="novas_8c.html#a43141f0ea4598d6c87193c3ea594dd6c">cio_location()</a>, 90&ndash;100 error is 90 + error from <a class="el" href="novas_8c.html#a07f83fbb8a57cf442c264ecdc979475e">cio_basis()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a078b5e764d5cf3fdca600fada992b409">place_star()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a4ef1b6d204e22608e964e60cf34a15ad">place_icrs()</a> </dd>
 <dd>
@@ -5084,7 +5445,7 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
 <dd>
 <a class="el" href="novas_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a033f1bf4b01e0e21a0e05e13c19c02f6">aberration()</a>, <a class="el" href="novas_8c.html#aada778ddcc75a355b6753f5372775094">bary2obs()</a>, <a class="el" href="novascon_8c.html#a55379c7fece80070614c09bb218275b6">C_AUDAY</a>, <a class="el" href="novas_8c.html#a25e1ba14b69ef837cc7a5da21b27e5c6">d_light()</a>, <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0">sky_pos::dis</a>, <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, <a class="el" href="novas_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97">geo_posvel()</a>, <a class="el" href="novas_8c.html#a525de0742ee25bd3fbe9ee0ea5494ac4">grav_def()</a>, <a class="el" href="novas_8c.html#a8a93137b6201bedd8d47cc954684ebe3">light_time2()</a>, <a class="el" href="novas_8c.html#a0e4364546c40854eb63211bd6cd0e70b">limb_angle()</a>, <a class="el" href="novas_8c.html#a6802265b4ac76628f22260ba23ac2352">make_observer_at_geocenter()</a>, <a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2">NOVAS_OBSERVER_AT_GEOCENTER</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca418efc57ac159cf541c324c008eb27">NOVAS_OBSERVER_IN_EARTH_ORBIT</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ae55994629ca97e634b1bb97aafb3f49b">NOVAS_REFERENCE_SYSTEMS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74">object::number</a>, <a class="el" href="novas_8c.html#ade8207981b6f840d1f0a79dd0c72beb2">proper_motion()</a>, <a class="el" href="structsky__pos.html#a5fd669be4d5224aa192afa368a6e3173">sky_pos::r_hat</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="novas_8c.html#a304b2220e084b4b12e674aad897972bc">rad_vel()</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, <a class="el" href="structobject.html#a0ead8b30742e9c76887f5ff76cabae7c">object::star</a>, <a class="el" href="novas_8c.html#a2b801c7f5f2ba483776ab60ef2a0f06d">starvectors()</a>, <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, <a class="el" href="structobject.html#a2cc80aad5c0303449e2412b122504a10">object::type</a>, <a class="el" href="novas_8c.html#a882279981a7d5a67ed596fa0937a12c1">vector2radec()</a>, and <a class="el" href="structobserver.html#a11f2eb69df64b674d938b34bbb842ab1">observer::where</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#a033f1bf4b01e0e21a0e05e13c19c02f6">aberration()</a>, <a class="el" href="novas_8c.html#aada778ddcc75a355b6753f5372775094">bary2obs()</a>, <a class="el" href="novascon_8c.html#a55379c7fece80070614c09bb218275b6">C_AUDAY</a>, <a class="el" href="novas_8c.html#ad799864f637c483fb49491bde5a93e25">d_light()</a>, <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0">sky_pos::dis</a>, <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, <a class="el" href="novas_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="novas_8c.html#aeea4b5085c7267714492fae6108fb975">gcrs_to_j2000()</a>, <a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a>, <a class="el" href="novas_8c.html#a8a93137b6201bedd8d47cc954684ebe3">light_time2()</a>, <a class="el" href="novas_8c.html#a0e4364546c40854eb63211bd6cd0e70b">limb_angle()</a>, <a class="el" href="novas_8c.html#a6802265b4ac76628f22260ba23ac2352">make_observer_at_geocenter()</a>, <a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9">NOVAS_J2000</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5a2a55ff66f97310a9641d7ffa60b8dd">NOVAS_MOD</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2">NOVAS_OBSERVER_AT_GEOCENTER</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ae55994629ca97e634b1bb97aafb3f49b">NOVAS_REFERENCE_SYSTEMS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="novas_8c.html#a5a62b6e1ef8840a1203c6d2a75d17152">obs_posvel()</a>, <a class="el" href="novas_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, <a class="el" href="novas_8c.html#ade8207981b6f840d1f0a79dd0c72beb2">proper_motion()</a>, <a class="el" href="structsky__pos.html#a5fd669be4d5224aa192afa368a6e3173">sky_pos::r_hat</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="novas_8c.html#a304b2220e084b4b12e674aad897972bc">rad_vel()</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, <a class="el" href="structobject.html#a0ead8b30742e9c76887f5ff76cabae7c">object::star</a>, <a class="el" href="novas_8c.html#a2b801c7f5f2ba483776ab60ef2a0f06d">starvectors()</a>, <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, <a class="el" href="structobject.html#a2cc80aad5c0303449e2412b122504a10">object::type</a>, <a class="el" href="novas_8c.html#a882279981a7d5a67ed596fa0937a12c1">vector2radec()</a>, and <a class="el" href="structobserver.html#a11f2eb69df64b674d938b34bbb842ab1">observer::where</a>.</p>
 
 </div>
 </div>
@@ -5269,6 +5630,130 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, and <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a>.</p>
+
+</div>
+</div>
+<a id="aa3da1221ec52e427f9571d12f6f914ae" name="aa3da1221ec52e427f9571d12f6f914ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3da1221ec52e427f9571d12f6f914ae">&#9670;&#160;</a></span>place_j2000()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int place_j2000 </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structsky__pos.html">sky_pos</a> *&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computes the J2000 dynamical position position of a source as 'seen' from the geocenter at the given time of observation. See <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> for more information.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated CIRS position data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#acbcd90c9111cc5580a5c2bac404f7f00">place_gcrs()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#abceec12c6cac2693b45b7778374455f4">app_star()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a84516e14b76ec0b8ad5b9a9049a2db81">app_planet()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9">NOVAS_J2000</a>, and <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a>.</p>
+
+</div>
+</div>
+<a id="a3f055f3994889e3345d5267dac671a60" name="a3f055f3994889e3345d5267dac671a60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f055f3994889e3345d5267dac671a60">&#9670;&#160;</a></span>place_mod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int place_mod </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structsky__pos.html">sky_pos</a> *&#160;</td>
+          <td class="paramname"><em>pos</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computes the Mean of Date (MOD) dynamical position position of a source as 'seen' from the geocenter at the given time of observation. See <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> for more information.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated CIRS position data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#acbcd90c9111cc5580a5c2bac404f7f00">place_gcrs()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#abceec12c6cac2693b45b7778374455f4">app_star()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a84516e14b76ec0b8ad5b9a9049a2db81">app_planet()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5a2a55ff66f97310a9641d7ffa60b8dd">NOVAS_MOD</a>, and <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a>.</p>
 
 </div>
 </div>
@@ -5457,7 +5942,9 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 <dd>
 <a class="el" href="novas_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a> </dd></dl>
+<a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a479f3eb097c0aeb4ac7dc3ae2e6c376e">NOVAS_MARS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045af12d26e56aa375fd2aa0c0edfd1c9ae3">NOVAS_NEPTUNE</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a71d987d5d11d3a162807cdf0c994ad28">NOVAS_URANUS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a7c452cc654265f03e78801f9aead83de">NOVAS_VENUS</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
@@ -6153,7 +6640,9 @@ Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259. </l
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the input argument is NULL</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e">nutation_angles()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e">nutation_angles()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 </div>
 </div>
@@ -6452,6 +6941,10 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240. </li>
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
+<li>
+<a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a> </li>
+<li>
+<a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -6737,7 +7230,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
 
 </div>
 </div>
@@ -7130,9 +7623,16 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
       </table>
 </div><div class="memdoc">
 <p>Returns the TDB - TT time difference in seconds for a given TT date.</p>
+<p>Note, as of version 1.1, it uses the same calculation as the more precise original <a class="el" href="novas_8c.html#a45b1a5d3cf875521f3176bc301633d79">tdb2tt()</a>. It thus has an acuracy of about 10 &mu;s vs around 30 &mu;s with the simpler formula from the references below.</p>
 <p>REFERENCES </p><ol>
 <li>
-&lt;href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems"&gt; <a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a>  </li>
+Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240. </li>
+<li>
+Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
+<li>
+<a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a> </li>
+<li>
+<a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -7145,7 +7645,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#a45b1a5d3cf875521f3176bc301633d79">tdb2tt()</a>.</p>
 
 </div>
 </div>
@@ -7188,8 +7688,8 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">pos</td><td>Position 3-vector, equatorial rectangular coordinates. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Right ascension in hours [0:24] or NAN if the position vector is NULL or a null-vector. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Declination in degrees [-90:90] or NAN if the position vector is NULL or a null-vector. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Right ascension in hours [0:24] or NAN if the position vector is NULL or a null-vector. It may be NULL if notrequired. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Declination in degrees [-90:90] or NAN if the position vector is NULL or a null-vector. It may be NULL if not required. </td></tr>
   </table>
   </dd>
 </dl>
@@ -7445,6 +7945,43 @@ Lambert &amp; Bizouard (2002), Astronomy and Astrophysics 394, 317-321. </li>
 <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9">WOBBLE_ITRS_TO_PEF</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ac063b61c63e78a4864f2baa4606bab36" name="ac063b61c63e78a4864f2baa4606bab36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac063b61c63e78a4864f2baa4606bab36">&#9670;&#160;</a></span>EPS_COR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double EPS_COR = 0.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Celestial pole offset &epsilon; for high-precision applications.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a103c28cd84e81dde365238ee3599f5b0">PSI_COR</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a103c28cd84e81dde365238ee3599f5b0" name="a103c28cd84e81dde365238ee3599f5b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a103c28cd84e81dde365238ee3599f5b0">&#9670;&#160;</a></span>PSI_COR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double PSI_COR = 0.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Celestial pole offset &psi; for high-precision applications.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#ac063b61c63e78a4864f2baa4606bab36">EPS_COR</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> </dd></dl>
 
 </div>
 </div>

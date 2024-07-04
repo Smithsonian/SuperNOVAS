@@ -1,0 +1,615 @@
+.TH "src/frames.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/frames.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBDA0\fP   (\-0\&.01460 * ARCSEC)"
+.br
+.RI "Frame bias term da\*<0\*>  "
+.ti -1c
+.RI "#define \fBETA0\fP   (\-0\&.0068192 * ARCSEC)"
+.br
+.RI "Frame bias term \*<0\*>  "
+.ti -1c
+.RI "#define \fBXI0\fP   (\-0\&.0166170 * ARCSEC)"
+.br
+.RI "Frame bias term \*<0\*>  "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBnovas_app_to_geom\fP (const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double *geom_icrs)"
+.br
+.ti -1c
+.RI "int \fBnovas_app_to_hor\fP (const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double *az, double *el)"
+.br
+.ti -1c
+.RI "int \fBnovas_change_observer\fP (const \fBnovas_frame\fP *orig, const \fBobserver\fP *obs, \fBnovas_frame\fP *out)"
+.br
+.ti -1c
+.RI "int \fBnovas_geom_posvel\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, double *pos, double *vel)"
+.br
+.ti -1c
+.RI "int \fBnovas_geom_to_app\fP (const \fBnovas_frame\fP *frame, const double *pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *out)"
+.br
+.ti -1c
+.RI "int \fBnovas_hor_to_app\fP (const \fBnovas_frame\fP *frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "int \fBnovas_invert_transform\fP (const \fBnovas_transform\fP *transform, \fBnovas_transform\fP *inverse)"
+.br
+.ti -1c
+.RI "int \fBnovas_make_frame\fP (enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP *obs, const \fBnovas_timespec\fP *time, double dx, double dy, \fBnovas_frame\fP *frame)"
+.br
+.ti -1c
+.RI "int \fBnovas_make_transform\fP (const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP from_system, enum \fBnovas_reference_system\fP to_system, \fBnovas_transform\fP *transform)"
+.br
+.ti -1c
+.RI "int \fBnovas_sky_pos\fP (const \fBobject\fP *\fBobject\fP, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *out)"
+.br
+.ti -1c
+.RI "int \fBnovas_transform_sky_pos\fP (const \fBsky_pos\fP *in, const \fBnovas_transform\fP *transform, \fBsky_pos\fP *out)"
+.br
+.ti -1c
+.RI "int \fBnovas_transform_vector\fP (const double *in, const \fBnovas_transform\fP *transform, double *out)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Jun 23, 2024 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1
+.RE
+.PP
+Routines for higher-level and efficient repeat coordinate transformations\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int novas_app_to_geom (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double * geom_icrs)"
+Converts an observed apparent sky position of a source to an ICRS geometric position, by undoing the gravitational deflection and aberration corrections\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIframe\fP The observer frame, defining the location and time of observation 
+.br
+\fIsys\fP The reference system in which the observed position is specified\&. 
+.br
+\fIra\fP [h] Observed ICRS right-ascension of the source 
+.br
+\fIdec\fP [deg] Observed ICRS declination of the source 
+.br
+\fIdist\fP [AU] Observed distance from observer\&. A value of <=0 will translate to 10\*{15\*}  AU (around 5 Gpc)\&. 
+.br
+\fIgeom_icrs\fP [AU] The corresponding geometric position for the source, in ICRS\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error from grav_undef2(), or -1 (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_geom_to_app()\fP 
+.PP
+\fBnovas_hor_to_app()\fP 
+.PP
+novas_geom_to_hor() 
+.PP
+\fBnovas_transform_vector()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::accuracy\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBgrav_undef()\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBNOVAS_CIRS\fP, \fBnovas_get_time()\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::precession\fP, \fBradec2vector()\fP, and \fBnovas_frame::time\fP\&.
+.SS "int novas_app_to_hor (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double * az, double * el)"
+Converts an observed apparent position vector in the specified coordinate system to local horizontal coordinates in the specified observer frame\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided the calculated elevation will be the astrometric elevation without a refraction correction\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIframe\fP Observer frame, defining the time and place of observation (on Earth)\&. 
+.br
+\fIsys\fP Astronomical coordinate system in which the observed position is given\&. 
+.br
+\fIra\fP [h] Observed apparent right ascension (R\&.A\&.) coordinate 
+.br
+\fIdec\fP [deg] Observed apparent declination coordinate 
+.br
+\fIref_model\fP An appropriate refraction model, or NULL to calculate unrefracted elevation\&. Depending on the refraction model, you might want to make sure that the weather parameters were set when the observing frame was defined\&. 
+.br
+\fIaz\fP [deg] Calculated azimuth angle\&. It may be NULL if not required\&. 
+.br
+\fIel\fP [deg] Calculated elevation angle\&. It may be NULL if not required\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error from \fBtod_to_itrs()\fP or \fBcirs_to_itrs()\fP, or -1 (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_hor_to_app()\fP 
+.PP
+\fBnovas_app_to_geom()\fP 
+.PP
+\fBnovas_standard_refraction()\fP 
+.PP
+\fBnovas_optical_refraction()\fP 
+.PP
+\fBnovas_radio_refraction()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::era\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::gst\fP, \fBnovas_timespec::ijd_tt\fP, \fBitrs_to_hor()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REFRACT_ASTROMETRIC\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::observer\fP, \fBobserver::on_surf\fP, \fBnovas_frame::precession\fP, \fBradec2vector()\fP, \fBspin()\fP, \fBnovas_frame::time\fP, and \fBobserver::where\fP\&.
+.SS "int novas_change_observer (const \fBnovas_frame\fP * orig, const \fBobserver\fP * obs, \fBnovas_frame\fP * out)"
+Change the observer location for an observing frame\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIorig\fP Pointer to original observing frame 
+.br
+\fIobs\fP New observer location 
+.br
+\fIout\fP Observing frame to populate with a original frame data and new observer location\&. It can be the same as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successfule or else an an error code from \fBgeo_posvel()\fP (errno will also indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_make_frame()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::observer\fP, and \fBnovas_frame::state\fP\&.
+.SS "int novas_geom_posvel (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double * pos, double * vel)"
+Calculates the geometric position and velocity vectors, relative to the observer, for a source in the given observing frame, in the specified coordinate system of choice\&. The geometric position includes proper motion, and for solar-system bodies it is antedated for light travel time, so it effectively represents the geometric position as seen by the observer\&. However, the geometric does not include aberration correction, nor gravitational deflection\&.
+.PP
+If you want apparent positions, which account for aberration and gravitational deflection, use novas_skypos() instead\&.
+.PP
+You can also use \fBnovas_transform_vector()\fP to convert the output position and velocity vectors to a dfferent coordinate system of choice afterwards if you want the results expressed in more than one coordinate system\&.
+.PP
+It implements the same geometric transformations as \fC\fBplace()\fP\fP but at a reduced computational cost\&. See \fC\fBplace()\fP\fP for references\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP Pointer to a celestial source data structure that is observed 
+.br
+\fIframe\fP Observer frame, defining the location and time of observation 
+.br
+\fIsys\fP The coordinate system in which to return positions and velocities\&. 
+.br
+\fIpos\fP [AU] Calculated geometric position vector of the source relative to the observer location, in the designated coordinate system\&. It may be NULL if not required\&. 
+.br
+\fIvel\fP [AU/day] The calculated velocity vector of the source relative to the observer in the designated coordinate system\&. It may be NULL if not required\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if any of the arguments is invalid, 50--70 error is 50 + error from \fBlight_time2()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_geom_to_app()\fP 
+.PP
+\fBnovas_sky_pos()\fP 
+.PP
+\fBnovas_transform_vector()\fP 
+.PP
+\fBplace()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::accuracy\fP, \fBbary2obs()\fP, \fBd_light()\fP, \fBlight_time2()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBnovas_frame::obs_pos\fP, \fBproper_motion()\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBnovas_frame::time\fP, and \fBobject::type\fP\&.
+.SS "int novas_geom_to_app (const \fBnovas_frame\fP * frame, const double * pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP * out)"
+Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate corrections for aberration and gravitational deflection for the observer's frame\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIframe\fP The observer frame, defining the location and time of observation 
+.br
+\fIpos\fP [AU] Geometric position of source in ICRS coordinates 
+.br
+\fIsys\fP The coordinate system in which to return the apparent sky location 
+.br
+\fIout\fP Pointer to the data structure which is populated with the calculated apparent location in the designated coordinate system\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or an error from grav_def2(), or else -1 (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_sky_pos()\fP 
+.PP
+\fBnovas_app_to_geom()\fP 
+.PP
+\fBnovas_app_to_hor()\fP 
+.PP
+\fBnovas_geom_posvel()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBgrav_def()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBnovas_frame::time\fP, \fBvector2radec()\fP, and \fBobserver::where\fP\&.
+.SS "int novas_hor_to_app (const \fBnovas_frame\fP * frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double * ra, double * dec)"
+Converts an observed azimuth and elevation coordinate to right ascension (R\&.A\&.) and declination coordinates expressed in the coordinate system of choice\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided, the provided elevation value will be assumed to be an astrometric elevation without a refraction correction\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIframe\fP Observer frame, defining the time and place of observation (on Earth)\&. 
+.br
+\fIaz\fP [deg] Observed azimuth angle\&. It may be NULL if not required\&. 
+.br
+\fIel\fP [deg] Observed elevation angle\&. It may be NULL if not required\&. 
+.br
+\fIref_model\fP An appropriate refraction model, or NULL to assume unrefracted elevation\&. Depending on the refraction model, you might want to make sure that the weather parameters were set when the observing frame was defined\&. 
+.br
+\fIsys\fP Astronomical coordinate system in which the output is R\&.A\&. and declination values are to be calculated\&. 
+.br
+\fIra\fP [h] Calculated apparent right ascension (R\&.A\&.) coordinate 
+.br
+\fIdec\fP [deg] Calculated apparent declination coordinate 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error from \fBitrs_to_tod()\fP or \fBitrs_to_cirs()\fP, or -1 (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_app_to_hor()\fP 
+.PP
+\fBnovas_app_to_geom()\fP 
+.PP
+\fBnovas_standard_refraction()\fP 
+.PP
+\fBnovas_optical_refraction()\fP 
+.PP
+\fBnovas_radio_refraction()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::era\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::gst\fP, \fBhor_to_itrs()\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REFRACT_OBSERVED\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::observer\fP, \fBobserver::on_surf\fP, \fBnovas_frame::precession\fP, \fBspin()\fP, \fBnovas_frame::time\fP, \fBvector2radec()\fP, and \fBobserver::where\fP\&.
+.SS "int novas_invert_transform (const \fBnovas_transform\fP * transform, \fBnovas_transform\fP * inverse)"
+Inverts a novas coordinate transformation matrix\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItransform\fP Pointer to a coordinate transformation matrix\&. 
+.br
+\fIinverse\fP Pointer to a coordinate transformation matrix to populate with the inverse transform\&. It may be the same as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the was an error (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_make_transform()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_transform::matrix\fP\&.
+.SS "int novas_make_frame (enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP * obs, const \fBnovas_timespec\fP * time, double dx, double dy, \fBnovas_frame\fP * frame)"
+Sets up a observing frame for a specific observer location, time of observation, and accuracy requirement\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIaccuracy\fP Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient\&. 
+.br
+\fIobs\fP Observer location 
+.br
+\fItime\fP Time of observation 
+.br
+\fIdx\fP [mas] Earth orientation parameter, polar offset in x\&. 
+.br
+\fIdy\fP [mas] Earth orientation parameter, polar offset in y\&. 
+.br
+\fIframe\fP Pointer to the observing frame to set up\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, 10--40: error is 10 + the error \fBephemeris()\fP, 40--50: error is 40 + the error from \fBgeo_posvel()\fP, 50--80: error is 30 + the error from \fBsidereal_time()\fP, 80--90 error is 80 + error from \fBcio_location()\fP, 90--100 error is 90 + error from \fBcio_basis()\fP\&. or else -1 if there was an error (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_change_observer()\fP 
+.PP
+\fBnovas_sky_pos()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
+.PP
+\fBnovas_make_transform()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::accuracy\fP, \fBnovas_frame::deps0\fP, \fBnovas_frame::dpsi0\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBe_tilt()\fP, \fBnovas_frame::earth_pos\fP, \fBnovas_frame::earth_vel\fP, \fBnovas_frame::ee\fP, \fBephemeris()\fP, \fBnovas_frame::era\fP, \fBera()\fP, \fBEROT_GST\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gst\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_frame::mobl\fP, \fBNOVAS_BARYCENTER\fP, \fBnovas_change_observer()\fP, \fBNOVAS_EARTH\fP, \fBnovas_get_split_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBNOVAS_UT1\fP, \fBnutation_angles()\fP, \fBsidereal_time()\fP, \fBnovas_frame::state\fP, \fBnovas_frame::sun_pos\fP, \fBnovas_frame::sun_vel\fP, \fBnovas_frame::time\fP, \fBnovas_frame::tobl\fP, \fBtt2tdb()\fP, \fBnovas_timespec::ut1_to_tt\fP, and \fBobserver::where\fP\&.
+.SS "int novas_make_transform (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP from_system, enum \fBnovas_reference_system\fP to_system, \fBnovas_transform\fP * transform)"
+Calculates a transformation matrix that can be used to convert positions and velocities from one coordinate reference system to another\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIframe\fP Observer frame, defining the location and time of observation 
+.br
+\fIfrom_system\fP Original coordinate reference system 
+.br
+\fIto_system\fP New coordinate reference system 
+.br
+\fItransform\fP Pointer to the transform data structure to populate\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_transform_vector()\fP 
+.PP
+\fBnovas_transform_sky_pos()\fP 
+.PP
+\fBnovas_invert_transform()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
+.PP
+\fBnovas_app_to_geom()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_transform::frame\fP, \fBnovas_transform::from_system\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBnovas_matrix::M\fP, \fBnovas_transform::matrix\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::precession\fP, and \fBnovas_transform::to_system\fP\&.
+.SS "int novas_sky_pos (const \fBobject\fP * object, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP * out)"
+Calculates an apparent location on sky for the source\&. The position takes into account the proper motion (for sidereal soure), or is antedated for light-travel time (for Solar-System bodies)\&. It also applies an appropriate aberration correction and gravitational deflection of the light\&.
+.PP
+To calculate corresponding local horizontal coordinates, you can pass the output RA/Dec coordinates to \fBnovas_app_to_hor()\fP\&. Or to calculate apparent coordinates in other systems, you may pass the result to novas_transform_sy_pos() after\&.
+.PP
+And if you want geometric positions instead (not corrected for aberration or gravitational deflection), you may want to use \fBnovas_geom_posvel()\fP instead\&.
+.PP
+The approximate 'inverse' of this function is \fBnovas_app_to_geom()\fP\&.
+.PP
+This function implements the same aberration and gravitational deflection corrections as \fC\fBplace()\fP\fP, but at reduced computational cost\&. See \fC\fBplace()\fP\fP for references\&. Note, however that while \fC\fBplace()\fP\fP does not apply aberration and gravitational reflection corrections when \fCsys\fP is NOVAS_ICRS (3), this routine will apply those corrections consistently for all coordinate systems (or you can use \fBnovas_geom_posvel()\fP to get positions without aberration /deflection in any system)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIobject\fP Pointer to a celestial object data structure that is observed 
+.br
+\fIframe\fP The observer frame, defining the location and time of observation 
+.br
+\fIsys\fP The coordinate system in which to return the apparent sky location 
+.br
+\fIout\fP Pointer to the data structure which is populated with the calculated apparent location in the designated coordinate system\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, 50--70 error is 50 + error from \fBlight_time2()\fP, 70--80 error is 70 + error from \fBgrav_def()\fP, or else -1 (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_geom_to_app()\fP 
+.PP
+\fBnovas_app_to_hor()\fP 
+.PP
+\fBplace()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::accuracy\fP, \fBsky_pos::dis\fP, \fBnovas_frame::earth_pos\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::obs_vel\fP, \fBrad_vel()\fP, \fBsky_pos::rv\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
+.SS "int novas_transform_sky_pos (const \fBsky_pos\fP * in, const \fBnovas_transform\fP * transform, \fBsky_pos\fP * out)"
+Transforms a position or velocity 3-vector from one coordinate reference system to another\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIin\fP Input apparent position on sky in the original coordinate reference system 
+.br
+\fItransform\fP Pointer to a coordinate transformation matrix 
+.br
+\fIout\fP Output apparent position on sky in the new coordinate reference system\&. It may be the same as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_make_transform()\fP 
+.PP
+\fBnovas_transform_vector()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBsky_pos::dec\fP, \fBnovas_transform::matrix\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, and \fBvector2radec()\fP\&.
+.SS "int novas_transform_vector (const double * in, const \fBnovas_transform\fP * transform, double * out)"
+Transforms a position or velocity 3-vector from one coordinate reference system to another\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIin\fP Input 3-vector in the original coordinate reference system 
+.br
+\fItransform\fP Pointer to a coordinate transformation matrix 
+.br
+\fIout\fP Output 3-vector in the new coordinate reference system\&. It may be the same as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_make_transform()\fP 
+.PP
+novas_transform_skypos()
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_transform::matrix\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

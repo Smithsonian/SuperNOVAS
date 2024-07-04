@@ -1,0 +1,489 @@
+.TH "src/timescale.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/timescale.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBnovas_diff_time\fP (const \fBnovas_timespec\fP *t1, const \fBnovas_timespec\fP *t2)"
+.br
+.ti -1c
+.RI "double \fBnovas_get_split_time\fP (const \fBnovas_timespec\fP *time, enum \fBnovas_timescale\fP timescale, long *ijd)"
+.br
+.ti -1c
+.RI "double \fBnovas_get_time\fP (const \fBnovas_timespec\fP *time, enum \fBnovas_timescale\fP timescale)"
+.br
+.ti -1c
+.RI "time_t \fBnovas_get_unix_time\fP (const \fBnovas_timespec\fP *time, long *nanos)"
+.br
+.ti -1c
+.RI "int \fBnovas_offset_time\fP (const \fBnovas_timespec\fP *time, double seconds, \fBnovas_timespec\fP *out)"
+.br
+.ti -1c
+.RI "int \fBnovas_set_split_time\fP (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP *time)"
+.br
+.ti -1c
+.RI "int \fBnovas_set_time\fP (enum \fBnovas_timescale\fP timescale, double jd, int leap, double dut1, \fBnovas_timespec\fP *time)"
+.br
+.ti -1c
+.RI "int \fBnovas_set_unix_time\fP (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP *time)"
+.br
+.ti -1c
+.RI "double \fBnovas_tcb_diff\fP (const \fBnovas_timespec\fP *t1, const \fBnovas_timespec\fP *t2)"
+.br
+.ti -1c
+.RI "double \fBnovas_tcg_diff\fP (const \fBnovas_timespec\fP *t1, const \fBnovas_timespec\fP *t2)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Jun 24, 2024 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1
+.RE
+.PP
+A set of routines to make handling of astronomical timescale and conversions between them easier\&. 
+.SH "Function Documentation"
+.PP 
+.SS "double novas_diff_time (const \fBnovas_timespec\fP * t1, const \fBnovas_timespec\fP * t2)"
+Returns the Terrestrial Time (TT) based time difference (t1 - t2) in days between two astronomical time specifications\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIt1\fP First time 
+.br
+\fIt2\fP Second time 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_time()\fP 
+.PP
+\fBnovas_offset_time()\fP 
+.PP
+\fBnovas_tcb_diff()\fP 
+.PP
+\fBnovas_tcg_diff()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_timespec::fjd_tt\fP, and \fBnovas_timespec::ijd_tt\fP\&.
+.SS "double novas_get_split_time (const \fBnovas_timespec\fP * time, enum \fBnovas_timescale\fP timescale, long * ijd)"
+Returns the fractional Julian date of an astronomical time in the specified timescale, as an integer and fractional part\&. The two-component split of the time allows for abolute precisions at the picosecond level, as opposed to \fC\fBnovas_set_time()\fP\fP, whose precision is limited to a ew microseconds\&. Ultimately, the accutacy of the time will depend on how it was set\&.
+.PP
+The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is limited by the precision of the \fCtbd2tt()\fP implemenation, to around 10 s\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+IAU 1991, RECOMMENDATION III\&. XXIst General Assembly of the International Astronomical Union\&. Retrieved 6 June 2019\&. 
+.IP "2." 4
+IAU 2006 resolution 3, see Recommendation and footnotes, note 3\&. 
+.IP "3." 4
+Fairhead, L\&. & Bretagnon, P\&. (1990) Astron\&. & Astrophys\&. 229, 240\&. 
+.IP "4." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.IP "5." 4
+\fChttps://naif\&.jpl\&.nasa\&.gov/pub/naif/toolkit_docs/FORTRAN/req/time\&.html\fP 
+.IP "6." 4
+\fChttps://gssc\&.esa\&.int/navipedia/index\&.php/Transformations_between_Time_Systems\fP 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP Pointer to the astronimical time specification data structure\&. 
+.br
+\fItimescale\fP The astronomical time scale in which the returned Julian Date is to be provided 
+.br
+\fIijd\fP [day] The integer part of the Julian date in the requested timescale\&. It may be NULL if not required\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] The fractional part of the Julian date in the requested timescale\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_split_time()\fP 
+.PP
+\fBnovas_get_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_timespec::dut1\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, \fBNOVAS_UTC\fP, \fBnovas_timespec::tt2tdb\fP, and \fBnovas_timespec::ut1_to_tt\fP\&.
+.SS "double novas_get_time (const \fBnovas_timespec\fP * time, enum \fBnovas_timescale\fP timescale)"
+Returns the fractional Julian date of an astronomical time in the specified timescale\&. The returned time is accurate to a few s (microsecond) due to the inherent precision of the double-precision result\&. For higher precision applications you may use \fC\fBnovas_get_split_time()\fP\fP instead, which has an inherent accuracy at the picosecond level\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP Pointer to the astronimical time specification data structure\&. 
+.br
+\fItimescale\fP The astronomical time scale in which the returned Julian Date is to be provided 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] The Julian date in the requested timescale\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_time()\fP 
+.PP
+\fBnovas_get_split_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_get_split_time()\fP\&.
+.SS "time_t novas_get_unix_time (const \fBnovas_timespec\fP * time, long * nanos)"
+Returns the UNIX time for an astronomical time instant\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP The astronomical time scale in which the returned Julian Date is to be provided 
+.br
+\fInanos\fP [ns] UTC sub-second component\&. It may be NULL if not required\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[s] The integer UNIX time
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_unix_time()\fP 
+.PP
+\fBnovas_get_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_get_split_time()\fP, and \fBNOVAS_UTC\fP\&.
+.SS "int novas_offset_time (const \fBnovas_timespec\fP * time, double seconds, \fBnovas_timespec\fP * out)"
+Increments the astrometric time by a given amount\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP Original time specification 
+.br
+\fIseconds\fP [s] Seconds to add to the original 
+.br
+\fIout\fP New incremented time specification\&. It may be the same as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if either the input or the output is NULL (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_time()\fP 
+.PP
+\fBnovas_diff_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_timespec::fjd_tt\fP, and \fBnovas_timespec::ijd_tt\fP\&.
+.SS "int novas_set_split_time (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP * time)"
+Sets an astronomical time to the split Julian Date value, defined in the specified timescale\&. The split into the integer and fractional parts can be done in any convenient way\&. The highest precision is reached if the fractional part is on the order of = 1 day\&. In that case, the time may be specified to picosecond accuracy, if needed\&.
+.PP
+The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is limited by the precision of \fCtbd2tt()\fP implementation, to around 10 s\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+IAU 1991, RECOMMENDATION III\&. XXIst General Assembly of the International Astronomical Union\&. Retrieved 6 June 2019\&. 
+.IP "2." 4
+IAU 2006 resolution 3, see Recommendation and footnotes, note 3\&. 
+.IP "3." 4
+Fairhead, L\&. & Bretagnon, P\&. (1990) Astron\&. & Astrophys\&. 229, 240\&. 
+.IP "4." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.IP "5." 4
+\fChttps://naif\&.jpl\&.nasa\&.gov/pub/naif/toolkit_docs/FORTRAN/req/time\&.html\fP 
+.IP "6." 4
+\fChttps://gssc\&.esa\&.int/navipedia/index\&.php/Transformations_between_Time_Systems\fP 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fItimescale\fP The astronomical time scale in which the Julian Date is given 
+.br
+\fIijd\fP [day] integer part of the Julian day in the specified timescale 
+.br
+\fIfjd\fP [day] fractional part Julian day value in the specified timescale 
+.br
+\fIleap\fP [s] Leap seconds, e\&.g\&. as published by IERS Bulletin C\&. 
+.br
+\fIdut1\fP [s] UT1-UTC time difference, e\&.g\&. as published in IERS Bulletin A\&. 
+.br
+\fItime\fP Pointer to the data structure that uniquely defines the astronomical time for all applications\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will be set to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_time()\fP 
+.PP
+\fBnovas_set_unix_time()\fP 
+.PP
+\fBnovas_get_split_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_timespec::dut1\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, \fBNOVAS_UTC\fP, \fBnovas_timespec::tt2tdb\fP, \fBtt2tdb()\fP, and \fBnovas_timespec::ut1_to_tt\fP\&.
+.SS "int novas_set_time (enum \fBnovas_timescale\fP timescale, double jd, int leap, double dut1, \fBnovas_timespec\fP * time)"
+Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale\&. The time set this way is accurate to a few s (microsecond) due to the inherent precision of the double-precision argument\&. For higher precision applications you may use \fC\fBnovas_set_split_time()\fP\fP instead, which has an inherent accuracy at the picoseconds level\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItimescale\fP The astronomical time scale in which the Julian Date is given 
+.br
+\fIjd\fP [day] Julian day value in the specified timescale 
+.br
+\fIleap\fP [s] Leap seconds, e\&.g\&. as published by IERS Bulletin C\&. 
+.br
+\fIdut1\fP [s] UT1-UTC time difference, e\&.g\&. as published in IERS Bulletin A\&. 
+.br
+\fItime\fP Pointer to the data structure that uniquely defines the astronomical time for all applications\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will be set to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_split_time()\fP 
+.PP
+\fBnovas_set_unix_time()\fP 
+.PP
+\fBnovas_get_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_set_split_time()\fP\&.
+.SS "int novas_set_unix_time (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP * time)"
+Sets an astronomical time to a UNIX time value\&. UNIX time is defined as UTC seconds measured since 0 UTC, 1 Jan 1970 (the start of the UNIX era)\&. Specifying time this way supports precisions to the nanoseconds level by construct\&. Specifying UNIX time in split seconds and nanoseconds is a common way CLIB handles precision time, e\&.g\&. with \fCstruct timespec\fP and functions like \fCclock_gettime()\fP (see \fCtime\&.h\fP)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIunix_time\fP [s] UNIX time (UTC) seconds 
+.br
+\fInanos\fP [ns] UTC sub-second component 
+.br
+\fIleap\fP [s] Leap seconds, e\&.g\&. as published by IERS Bulletin C\&. 
+.br
+\fIdut1\fP [s] UT1-UTC time difference, e\&.g\&. as published in IERS Bulletin A\&. 
+.br
+\fItime\fP Pointer to the data structure that uniquely defines the astronomical time for all applications\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will be set to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_time()\fP 
+.PP
+\fBnovas_get_unix_time()\fP 
+.PP
+clock_gettime() 
+.PP
+struct timespec
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_set_split_time()\fP, and \fBNOVAS_UTC\fP\&.
+.SS "double novas_tcb_diff (const \fBnovas_timespec\fP * t1, const \fBnovas_timespec\fP * t2)"
+Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between two astronomical time specifications\&. TCG progresses slightly faster, by a relative rate about 1\&.6&times10\*{-8\*}  higher, than time on Earth due to the lack of gravitational time dilation by the Earth or Sun\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIt1\fP First time 
+.br
+\fIt2\fP Second time 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] Precise TCB time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+novas_tgc_diff() 
+.PP
+\fBnovas_diff_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_diff_time()\fP\&.
+.SS "double novas_tcg_diff (const \fBnovas_timespec\fP * t1, const \fBnovas_timespec\fP * t2)"
+Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between two astronomical time specifications\&. TCG progresses slightly faster, by a relative rate about 7&times10\*{-10\*}  higher, than time on Earth due to the lack of gravitational time dilation by Earth\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIt1\fP First time 
+.br
+\fIt2\fP Second time 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] Precise TCG time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_tcb_diff()\fP 
+.PP
+\fBnovas_diff_time()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_diff_time()\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

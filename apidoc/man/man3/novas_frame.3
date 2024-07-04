@@ -1,0 +1,141 @@
+.TH "novas_frame" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+novas_frame
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <novas\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "enum \fBnovas_accuracy\fP \fBaccuracy\fP"
+.br
+.RI "NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBbeta\fP"
+.br
+.RI "Observer relativistic  rel SSB\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBdeps0\fP"
+.br
+.RI "[rad] Modeled Earth orientation  (not including polar wobble) "
+.ti -1c
+.RI "\fBdouble\fP \fBdpsi0\fP"
+.br
+.RI "[rad] Modeled Earth orientation  (not including polar wobble) "
+.ti -1c
+.RI "\fBdouble\fP \fBdx\fP"
+.br
+.RI "[mas] Polar wobble parameter dx\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBdy\fP"
+.br
+.RI "[mas] Polar wobble parameter dy\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBearth_pos\fP [3]"
+.br
+.RI "[AU] Earth's geometric position, rel SSB\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBearth_vel\fP [3]"
+.br
+.RI "[AU/day] Earth's velocity, rel SSB\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBee\fP"
+.br
+.RI "[rad] Equation of the equinoxes "
+.ti -1c
+.RI "\fBdouble\fP \fBera\fP"
+.br
+.RI "[deg] Earth Rotation Angle (ERA); "
+.ti -1c
+.RI "\fBdouble\fP \fBgamma\fP"
+.br
+.RI "Observer Lorentz factor  rel SSB\&. "
+.ti -1c
+.RI "\fBnovas_matrix\fP \fBgcrs_to_cirs\fP"
+.br
+.RI "GCRS to CIRS conversion matrix\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBgst\fP"
+.br
+.RI "[h] Greenwich (Apparent) Sidereal Time (GST / GAST) "
+.ti -1c
+.RI "\fBnovas_matrix\fP \fBicrs_to_j2000\fP"
+.br
+.RI "ICRS to J2000 matrix\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBmobl\fP"
+.br
+.RI "[rad] Mean obliquity "
+.ti -1c
+.RI "\fBnovas_matrix\fP \fBnutation\fP"
+.br
+.RI "nutation matrix (Lieske 1977 method) "
+.ti -1c
+.RI "\fBdouble\fP \fBobs_pos\fP [3]"
+.br
+.RI "[AU] Observer position rel\&. to barycenter "
+.ti -1c
+.RI "\fBdouble\fP \fBobs_vel\fP [3]"
+.br
+.RI "[AU/day] Observer movement rel\&. to barycenter "
+.ti -1c
+.RI "\fBobserver\fP \fBobserver\fP"
+.br
+.RI "The observer location, or NULL for barycentric\&. "
+.ti -1c
+.RI "\fBnovas_matrix\fP \fBprecession\fP"
+.br
+.RI "precession matrix "
+.ti -1c
+.RI "\fBint64_t\fP \fBstate\fP"
+.br
+.RI "An internal state for checking validity\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBsun_pos\fP [3]"
+.br
+.RI "[AU] Sun's geometric position, rel SSB\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBsun_vel\fP [3]"
+.br
+.RI "[AU/day] Sun's velocity, rel SSB\&. "
+.ti -1c
+.RI "\fBnovas_timespec\fP \fBtime\fP"
+.br
+.RI "The instant of time for which this observing frame is valid\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBtobl\fP"
+.br
+.RI "[rad] True obliquity "
+.ti -1c
+.RI "\fBdouble\fP \fBv_obs\fP"
+.br
+.RI "[AU/day] Magnitude of observer motion rel\&. to barycenter "
+.in -1c
+.SH "Detailed Description"
+.PP 
+A set of parameters that uniquely define the place and time of observation\&. The user may initialize the frame with \fBnovas_make_frame()\fP\&. Once the observer frame is set up, it can be used repeatedly to perform efficient calculations of multiple objects in the coordinate system of choice, much faster than what \fBplace()\fP can do\&. Frames also allow for transforming coordinates calculated for one coordinate syste, into another coordinate system with little effort\&.
+.PP
+You should never set or change fields in this structure manually\&. Instead the structure should always be initialized by an appropriate call to \fBnovas_make_frame()\fP\&. After that you may change the observer location, if need be, with \fBnovas_change_observer()\fP\&.
+.PP
+\fBSince\fP
+.RS 4
+1\&.1
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_make_frame()\fP 
+.PP
+\fBnovas_change_observer()\fP 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

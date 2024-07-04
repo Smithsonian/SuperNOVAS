@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['parallax_0',['parallax',['../structcat__entry.html#a18f7f3626661dbf57ce9eaec51840eb8',1,'cat_entry']]],
-  ['pc_1',['PC',['../eph__manager_8c.html#a0fcf3bf4c37f78e5ef7557cb03029eff',1,'eph_manager.c']]],
-  ['pressure_2',['pressure',['../structon__surface.html#aee1c5d07ac79c5c036195858afe33405',1,'on_surface']]],
-  ['promodec_3',['promodec',['../structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c',1,'cat_entry']]],
-  ['promora_4',['promora',['../structcat__entry.html#ab9301cf1c67c13114b22950650b17789',1,'cat_entry']]]
+  ['obs_5fpos_0',['obs_pos',['../structnovas__frame.html#ac2558d2b29171b29bad2599c75d3cc6c',1,'novas_frame']]],
+  ['obs_5fvel_1',['obs_vel',['../structnovas__frame.html#a66f1e86da27c96c1c920dce442ce78c8',1,'novas_frame']]],
+  ['observer_2',['observer',['../structnovas__frame.html#aa792216b0b2601bb9af3b882c87274f8',1,'novas_frame']]],
+  ['omega_3',['Omega',['../structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737',1,'novas_delaunay_args']]],
+  ['on_5fsurf_4',['on_surf',['../structobserver.html#a0ed422bd2a08c6b3870b545e16484501',1,'observer']]]
 ];
