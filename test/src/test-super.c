@@ -1567,8 +1567,8 @@ static int test_obs_posvel() {
 static int test_dxdy_to_dpsideps() {
   double x;
 
-  if(!is_ok("dxdy_to_dpsideps:dpsi:null", novas_dxdy_to_dpsideps(NOVAS_JD_J2000, 1.0, 2.0, NULL, &x))) return 1;
-  if(!is_ok("dxdy_to_dpsideps:deps:null", novas_dxdy_to_dpsideps(NOVAS_JD_J2000, 1.0, 2.0, &x, NULL))) return 1;
+  if(!is_ok("dxdy_to_dpsideps:dpsi:null", polar_dxdy_to_dpsideps(NOVAS_JD_J2000, 1.0, 2.0, NULL, &x))) return 1;
+  if(!is_ok("dxdy_to_dpsideps:deps:null", polar_dxdy_to_dpsideps(NOVAS_JD_J2000, 1.0, 2.0, &x, NULL))) return 1;
 
   return 0;
 }

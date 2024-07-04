@@ -983,6 +983,8 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
+
+
 // -------------------------------------------------------------------------------------------------------------------
 // SuperNOVAS API:
 
@@ -1064,10 +1066,14 @@ int itrs_to_hor(const on_surface *location, const double *itrs, double *az, doub
 
 int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
 
+
+
 // ---------------------- Added in 1.0.1 -------------------------
 double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
+
+
 
 // ---------------------- Added in 1.1.0 -------------------------
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
@@ -1145,6 +1151,8 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el0);
+
+
 
 // <================= END of SuperNOVAS API =====================>
 
@@ -1224,7 +1232,7 @@ double novas_vlen(const double *v);
 double novas_vdist(const double *v1, const double *v2);
 double novas_vdot(const double *v1, const double *v2);
 
-int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
+int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
 
 
 #endif /* __NOVAS_INTERNAL_API__ */

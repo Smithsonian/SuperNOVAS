@@ -3449,7 +3449,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *to
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps) {
+int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps) {
   // Components of modeled pole unit vector referred to GCRS axes, that is, dx and dy.
   const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
 
@@ -3541,7 +3541,7 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
       break;
 
     case POLE_OFFSETS_X_Y: {
-      novas_dxdy_to_dpsideps(jd_tt, dpole1, dpole2, &PSI_COR, &EPS_COR);
+      polar_dxdy_to_dpsideps(jd_tt, dpole1, dpole2, &PSI_COR, &EPS_COR);
       break;
     }
 
