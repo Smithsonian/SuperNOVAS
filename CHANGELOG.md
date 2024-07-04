@@ -12,24 +12,25 @@ Changes coming to the next quarterly release, expected around 1 September 2024. 
 available on the `main` branch.
 
 
+
 ### Fixed
 
- - `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
+ - #39: `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
 
- - `gcrs_to_j2000` transformed in the wrong direction.
+ - #38: `gcrs_to_j2000` transformed in the wrong direction.
 
- - `gcrs_to_cirs()` did not handle well if input and output vectors were the same.
+ - #37: `gcrs_to_cirs()` did not handle well if input and output vectors were the same.
 
- - `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
+ - #36: `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
    
- - Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing integer 
-   coefficients, assuming `char` was a signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
-   which broke many calculations badly for such platforms. As of now, we use the explicit platform-independent 
-   `int8_t` storage type for these coefficients.
+ - #29: Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing 
+   integer coefficients, assuming `char` was signed. However, on some platforms like ARM and PowerPC `char` is 
+   unsigned, which broke many calculations badly for such platforms. As of now, we use the explicit platform
+   independent `int8_t` storage type for these coefficients.
 
- - Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris reference
-   position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
-   the gravitational deflection due to the Sun being skipped. See Issue #28.
+ - #28: Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris 
+   reference position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively 
+   results in the gravitational deflection due to the Sun being skipped. See Issue #28.
 
  - Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial velocity 
    that is observed is in the geometric direction towards the source (unaffected by aberration). A precise accounting 
@@ -42,7 +43,7 @@ available on the `main` branch.
  - Adjusted regression testing to treat `nan` and `-nan` effectively the same. They both represent an equally invalid 
    result regardless of the sign.
 
- - Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
+ - #24: Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
  
  - Bungled definition of `NOVAS_OBSERVER_PLACES` in `novas.h`. 
 
@@ -107,8 +108,8 @@ available on the `main` branch.
 
 ### Changed
 
- - `place()` now returns an error 3 if and only if the observer is at (or very close, within ~10m) of the observed
-   Solar-system object.
+ - `place()` now returns an error 3 if and only if the observer is at (or very close, to within ~1.5m) of the 
+   observed Solar-system object.
 
  - Improved precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being more careful
    about the order in which terms are accumulated and combined, resulting in a small improvement on the few uas 

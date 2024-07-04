@@ -814,9 +814,9 @@ static int test_grav_undef() {
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {};
   int n = 0;
 
-  if(check("grav_def:pos", -1, grav_undef(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
-  if(check("grav_def:po", -1, grav_undef(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
-  if(check("grav_def:out", -1, grav_undef(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
+  if(check("grav_def:pos", -1, grav_undef(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
+  if(check("grav_def:po", -1, grav_undef(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, p))) n++;
+  if(check("grav_def:out", -1, grav_undef(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, po, NULL))) n++;
 
   return n;
 }
@@ -1031,13 +1031,6 @@ static int test_geom_posvel() {
   frame.accuracy = 2;
   if(check("geom_posvel:frame:accuracy:2", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
 
-  frame.accuracy = NOVAS_REDUCED_ACCURACY;
-  make_planet(NOVAS_EARTH, &o);
-  if(check("geom_posvel:earth:gc", 3, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
-
-  make_planet(NOVAS_SUN, &o);
-  if(check("geom_posvel:sun:gc", 0, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
-
   return n;
 }
 
@@ -1106,7 +1099,7 @@ static int test_geom_to_app() {
   double pos[3] = {};
   int n = 0;
 
-  make_observer_at_geocenter(&obs);
+  make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs);
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
 
   if(check("geom_to_app:frame", -1, novas_geom_to_app(NULL, pos, NOVAS_ICRS, &out))) n++;

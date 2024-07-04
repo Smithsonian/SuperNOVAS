@@ -208,7 +208,7 @@ static int set_nutation(novas_frame *frame) {
 
 static int set_obs_posvel(novas_frame *frame) {
   int res = obs_posvel(novas_get_time(&frame->time, NOVAS_TDB), frame->time.ut1_to_tt, frame->accuracy, &frame->observer,
-          &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0], frame->obs_pos, frame->obs_vel);
+          frame->earth_pos, frame->earth_vel, frame->obs_pos, frame->obs_vel);
 
   frame->v_obs = novas_vlen(frame->obs_vel);
   frame->beta = frame->v_obs / C_AUDAY;
@@ -336,8 +336,8 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   prop_error(fn, set_gcrs_to_cirs(frame), 80);
 
   // Barycentric Earth and Sun positions and velocities
-  prop_error(fn, ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_SUN][0], &frame->vel[NOVAS_SUN][0]), 10);
-  prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, &frame->pos[NOVAS_EARTH][0], &frame->vel[NOVAS_EARTH][0]), 10);
+  prop_error(fn, ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, frame->sun_pos, frame->sun_vel), 10);
+  prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, frame->earth_pos, frame->earth_vel), 10);
 
   frame->state = FRAME_INITIALIZED;
 
@@ -374,6 +374,7 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
   out->state = FRAME_DEFAULT;
   out->observer = *obs;
+
   prop_error(fn, set_obs_posvel(out), 0);
 
   out->state = FRAME_INITIALIZED;
@@ -434,7 +435,6 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  *                      the observer in the designated coordinate system. It may be NULL if not
  *                      required.
  * @return              0 if successful, or else -1 if any of the arguments is invalid,
- *                      3 if the observer is at the observed location,
  *                      50--70 error is 50 + error from light_time2().
  *
  * @sa novas_geom_to_app()
@@ -484,9 +484,6 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
   else {
     // Get position of body wrt observer, antedated for light-time.
     prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 50);
-
-    if(t_light < 3e-8)
-      return novas_error(3, EINVAL, fn, "observer is at or very near the observed location");
   }
 
   if(pos) {
@@ -529,8 +526,6 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * @param[out] out      Pointer to the data structure which is populated with the calculated
  *                      apparent location in the designated coordinate system.
  * @return              0 if successful,
- *                      3 if Earth is the observed object, and the observer is either at the
- *                      geocenter or on the Earth's surface,
  *                      50--70 error is 50 + error from light_time2(),
  *                      70--80 error is 70 + error from grav_def(),
  *                      or else -1 (errno will indicate the type of error).
@@ -571,7 +566,7 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
     // Calculate distance to Sun.
     d_sb = 0.0;
     for(k = 3; --k >= 0;) {
-      double d = frame->pos[NOVAS_SUN][k] - (frame->obs_pos[k] + pos[k]);
+      double d = frame->sun_pos[k] - (frame->obs_pos[k] + pos[k]);
       d_sb += d * d;
     }
     d_sb = sqrt(d_sb);
@@ -580,8 +575,8 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   // ---------------------------------------------------------------------
   // Compute radial velocity (all vectors in ICRS).
   // ---------------------------------------------------------------------
-  rad_vel(object, pos, vel, frame->obs_vel, novas_vdist(frame->obs_pos, &frame->pos[NOVAS_EARTH][0]),
-          novas_vdist(frame->obs_pos, &frame->pos[NOVAS_SUN][0]), d_sb, &out->rv);
+  rad_vel(object, pos, vel, frame->obs_vel, novas_vdist(frame->obs_pos, frame->earth_pos),
+          novas_vdist(frame->obs_pos, frame->sun_pos), d_sb, &out->rv);
 
   prop_error(fn, novas_geom_to_app(frame, pos, sys, out), 70);
 
@@ -597,7 +592,7 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
  * @param sys       The coordinate system in which to return the apparent sky location
  * @param[out] out  Pointer to the data structure which is populated with the calculated
  *                  apparent location in the designated coordinate system.
- * @return          0 if successful, or an error from grav_def(),
+ * @return          0 if successful, or an error from grav_def2(),
  *                  or else -1 (errno will indicate the type of error).
  *
  * @sa novas_sky_pos()
@@ -612,7 +607,6 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
   static const char *fn = "novas_geom_to_app";
 
   double jd_tdb, id, pos1[3];
-  enum novas_observer_place loc;
   int i;
 
   if(!pos || !frame || !out)
@@ -626,24 +620,8 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
 
   jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
-  // ---------------------------------------------------------------------
-  // Apply gravitational deflection of light and aberration.
-  // ---------------------------------------------------------------------
-  // Variable 'loc' determines whether Earth deflection is included.
-  loc = frame->observer.where;
-  if(loc == NOVAS_OBSERVER_ON_EARTH || loc == NOVAS_AIRBORNE_OBSERVER) {
-    double pog[3], frlimb;
-
-    for(i = 3; --i >= 0;)
-      pog[i] = frame->obs_pos[i] - frame->pos[NOVAS_EARTH][i];
-
-    limb_angle(pos, pog, NULL, &frlimb);
-    if(frlimb < 0.8)
-      loc = NOVAS_OBSERVER_AT_GEOCENTER;
-  }
-
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_def(jd_tdb, loc, frame->accuracy, pos, frame->obs_pos, pos1), 0);
+  prop_error(fn, grav_def(jd_tdb, frame->observer.where, frame->accuracy, pos, frame->obs_pos, pos1), 0);
 
   // Aberration correction
   frame_aberration(frame, GEOM_TO_APP, pos1);
@@ -722,7 +700,7 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
       matrix_transform(pos, &frame->nutation, pos);
       /* no break */
     case NOVAS_TOD:
-      prop_error(fn, tod_to_itrs(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
+      spin(24.0 * frame->gst, pos, pos);
       break;
 
     case NOVAS_ICRS:
@@ -730,7 +708,7 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
       matrix_transform(pos, &frame->gcrs_to_cirs, pos);
       /* no break */
     case NOVAS_CIRS:
-      prop_error(fn, cirs_to_itrs(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
+      spin(frame->era, pos, pos);
       break;
 
     default:
@@ -808,12 +786,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
   hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
 
   // ITRS to TOD or CIRS...
-  if(cmp_sys(sys, NOVAS_GCRS) < 0) {
-    prop_error(fn, itrs_to_tod(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
-  }
-  else {
-    prop_error(fn, itrs_to_cirs(time->ijd_tt, time->fjd_tt, time->ut1_to_tt, frame->accuracy, frame->dx, frame->dy, pos, pos), 0);
-  }
+  spin(cmp_sys(sys, NOVAS_GCRS) < 0 ? -24.0 * frame->gst : -frame->era, pos, pos);
 
   // Continue to convert TOD / CIRS to output system....
   switch(sys) {
@@ -856,7 +829,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
  * @param dist            [AU] Observed distance from observer. A value of &lt;=0 will translate
  *                        to 10<sup>15</sup> AU (around 5 Gpc).
  * @param[out] geom_icrs  [AU] The corresponding geometric position for the source, in ICRS.
- * @return              0 if successful, or else an error from grav_undef(), or -1 (errno will
+ * @return              0 if successful, or else an error from grav_undef2(), or -1 (errno will
  *                      indicate the type of error).
  *
  * @sa novas_geom_to_app()
@@ -910,25 +883,8 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   // Undo aberration correction
   frame_aberration(frame, APP_TO_GEOM, app_pos);
 
-  // ---------------------------------------------------------------------
-  // Undo gravitational deflection of light.
-  // ---------------------------------------------------------------------
-  // Variable 'loc' determines whether Earth deflection is included.
-  loc = frame->observer.where;
-  if(loc == NOVAS_OBSERVER_ON_EARTH || loc == NOVAS_AIRBORNE_OBSERVER) {
-    double pog[3], frlimb;
-    int i;
-
-    for(i = 3; --i >= 0;)
-      pog[i] = frame->obs_pos[i] - frame->pos[NOVAS_EARTH][i];
-
-    limb_angle(app_pos, pog, NULL, &frlimb);
-    if(frlimb < 0.8)
-      loc = NOVAS_OBSERVER_AT_GEOCENTER;
-  }
-
-  // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_undef(jd_tdb, loc, frame->accuracy, app_pos, frame->obs_pos, geom_icrs), 0);
+  // Undo gravitational deflection and aberration.
+  prop_error(fn, grav_undef(jd_tdb, frame->accuracy, app_pos, frame->obs_pos, geom_icrs), 0);
 
   return 0;
 }

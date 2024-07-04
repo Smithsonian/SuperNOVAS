@@ -748,16 +748,17 @@ typedef struct {
   double deps0;                   ///< [rad] Modeled Earth orientation &epsilon; (not including polar wobble)
   double dx;                      ///< [mas] Polar wobble parameter dx.
   double dy;                      ///< [mas] Polar wobble parameter dy.
-  double era;                     ///< [rad] Earth Rotation Angle (ERA);
-  double gst;                     ///< [rad] Greenwich (Apparent) Sidereal Time (GST / GAST)
+  double era;                     ///< [deg] Earth Rotation Angle (ERA);
+  double gst;                     ///< [h] Greenwich (Apparent) Sidereal Time (GST / GAST)
   double obs_pos[3];              ///< [AU] Observer position rel. to barycenter
   double obs_vel[3];              ///< [AU/day] Observer movement rel. to barycenter
   double v_obs;                   ///< [AU/day] Magnitude of observer motion rel. to barycenter
   double beta;                    ///< Observer relativistic &beta; rel SSB
   double gamma;                   ///< Observer Lorentz factor &Gamma; rel SSB
-  double contains_planet[NOVAS_PLANETS];  ///< (boolean) whether contrains planet coordinates
-  double pos[NOVAS_PLANETS][3];   ///< [AU] (optional) planet positions w.r.t. solar system reference, or NULL if not available
-  double vel[NOVAS_PLANETS][3];   ///< [AU/day] (optional) planet velocities w.r.t. solar system reference, or NULL if not available
+  double sun_pos[3];              ///< [AU] Sun's geometric position, rel SSB.
+  double sun_vel[3];              ///< [AU/day] Sun's velocity, rel SSB.
+  double earth_pos[3];            ///< [AU] Earth's geometric position, rel SSB.
+  double earth_vel[3];            ///< [AU/day] Earth's velocity, rel SSB.
   novas_matrix icrs_to_j2000;     ///< ICRS to J2000 matrix
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
@@ -899,7 +900,7 @@ short light_time(double jd_tdb, const object *body, const double *pos_obs, doubl
 
 double d_light(const double *pos_src, const double *pos_body);
 
-short grav_def(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_src,
+short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src,
         const double *pos_obs, double *out);
 
 int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out);
@@ -1069,13 +1070,10 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 // ---------------------- Added in 1.1.0 -------------------------
-int grav_undef(double jd_tdb, enum novas_observer_place loc_type, enum novas_accuracy accuracy, const double *pos_app,
-        const double *pos_obs, double *out);
+int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
-
-int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 
@@ -1226,6 +1224,7 @@ double novas_vlen(const double *v);
 double novas_vdist(const double *v1, const double *v2);
 double novas_vdot(const double *v1, const double *v2);
 
+int novas_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
 
 
 #endif /* __NOVAS_INTERNAL_API__ */

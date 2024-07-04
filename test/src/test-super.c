@@ -14,6 +14,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
 #define J2000   2451545.0
@@ -1417,16 +1418,16 @@ static int test_grav_undef() {
   for(i = 0; i < 3; i++) pos_src[i] = -(2.001 * pos_obs[i]);
 
   if(!is_ok("grav_invdef:def", grav_def(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_src, pos_obs, pos_app))) return 1;
-  if(!is_ok("grav_invdef:undef", grav_undef(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
+  if(!is_ok("grav_invdef:undef", grav_undef(tdb, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
 
   if(!is_ok("grav_invdef:check", check_equal_pos(pos_src, pos0, 1e-9))) return 1;
 
   memset(pos_app, 0, sizeof(pos_app));
-  if(!is_ok("grav_invdef:undef:zero", grav_undef(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
+  if(!is_ok("grav_invdef:undef:zero", grav_undef(tdb, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
   if(!is_ok("grav_invdef:check:zero", check_equal_pos(pos0, pos_app, 1e-9))) return 1;
 
   memset(pos_app, 0, sizeof(pos_app));
-  if(!is_ok("grav_invdef:undef:zero", grav_undef(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos_app))) return 1;
+  if(!is_ok("grav_invdef:undef:zero", grav_undef(tdb, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos_app))) return 1;
   if(!is_ok("grav_invdef:check:zero", check_equal_pos(pos0, pos_app, 1e-9))) return 1;
 
   return 0;
