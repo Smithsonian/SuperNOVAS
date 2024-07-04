@@ -6,11 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.1.0-rc1]
 
 Changes coming to the next quarterly release, expected around 1 September 2024. Some or all of these may be readily 
 available on the `main` branch.
-
 
 
 ### Fixed
