@@ -55,7 +55,7 @@ novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem
  * @sa EPS_COR
  * @sa cel_pole()
  */
-static double PSI_COR = 0.0;
+double PSI_COR = 0.0;
 
 /**
  * Celestial pole offset &epsilon; for high-precision applications.
@@ -63,7 +63,7 @@ static double PSI_COR = 0.0;
  * @sa PSI_COR
  * @sa cel_pole()
  */
-static double EPS_COR = 0.0;
+double EPS_COR = 0.0;
 
 /// Current debugging state for reporting errors and traces to stderr.
 static enum novas_debug_mode novas_debug_state = 0;
