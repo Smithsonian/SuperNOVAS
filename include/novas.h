@@ -739,7 +739,7 @@ typedef struct {
 typedef struct {
   int64_t state;                  ///< An internal state for checking validity.
   enum novas_accuracy accuracy;   ///< NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
-  novas_timespec time;            ///< The instant of time for the positions of major Solar-system bodies
+  novas_timespec time;            ///< The instant of time for which this observing frame is valid
   observer observer;              ///< The observer location, or NULL for barycentric
   double mobl;                    ///< [rad] Mean obliquity
   double tobl;                    ///< [rad] True obliquity
@@ -771,7 +771,7 @@ typedef struct {
  * transformations than using the low-level NOVAS functions.
  *
  * The transformation can be (should be) initialized via novas_make_trasform(), or else
- * via novas_invert_transform().
+ * modified via novas_invert_transform() or novas_change_observer().
  *
  * @since 1.1
  *
@@ -781,13 +781,14 @@ typedef struct {
 typedef struct {
   enum novas_reference_system from_system;  ///< The original coordinate system
   enum novas_reference_system to_system;    ///< The final coordinate system
-  novas_frame frame;            ///< The observer place and time for which the transform is valid
-  novas_matrix matrix;          ///< Transformation matrix elements
+  novas_frame frame;                        ///< The observer place and time for which the transform is valid
+  novas_matrix matrix;                      ///< Transformation matrix elements
 } novas_transform;
 
 /**
  * The type of elevation value for which to calculate a refraction.
  *
+ * @sa RefractionModel
  */
 enum novas_refraction_type {
   NOVAS_REFRACT_OBSERVED = -1,  ///< Refract observed elevation value
