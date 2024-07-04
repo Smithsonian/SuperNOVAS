@@ -454,9 +454,9 @@ get radial velocity (for spectroscopy), and apparent distance for Solar-system b
 size conversion).
 
 Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational 
-deflection, you might use `novas_posvel()` instead. And regardless, which function you use you can always easily and 
-efficienty change the coordinate system in which your results are expressed by creating an appropriate transform via
-`novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
+deflection, you might use `novas_geom_posvel()` instead. And regardless, which function you use you can always easily 
+and efficienty change the coordinate system in which your results are expressed by creating an appropriate transform 
+via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
 
 
 #### Calculate azimuth and elevation angles at the observing location
@@ -498,7 +498,7 @@ will handle the respective ephemeris data at runtime before making the NOVAS cal
  set_ephem_provider(my_ephemeris_provider_function);
 ```
 
-Instead of `make_cat_entry()` you define your source as an `object` with an name or ID number that is used by the 
+Instead of `make_cat_object()` you define your source as an `object` with an name or ID number that is used by the 
 ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
