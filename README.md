@@ -137,11 +137,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
     the gravitational deflection due to the Sun being skipped.
    
- - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial 
-   velocity that is observed is in the geometric direction towards the source (unaffected by aberration). A proper 
-   accounting for the gravitational bending around some intermediate mass would require calculating the direction of 
-   light that left the source. However, short of doing that the geometric direction is at least closer to it than the 
-   direction in which the bent light is observed (and we should do this more properly in the future).
+ - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the 
+   radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration), and 
+   `rad_vel()` requires geometric directions also to account for the gravitational effects of the Sun and Earth.
 
 -----------------------------------------------------------------------------
 
@@ -303,21 +301,30 @@ In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively s
 positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
 Earth (at the geocenter, on the surface, or in Earth orbit).
 
+SuperNOVAS __v1.1__ has instroduced a new, more intuitive, more elegant, and more efficient approach for calculating
+astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
+NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
+showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
 
 A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
-galactic molecular cloud, or a distant quasar. First, you must provide the coordinates (which may include proper 
-motion and parallax). Let's assume we pick a star for which we have B1950 (i.e. FK4) coordinates:
+galactic molecular cloud, or a distant quasar. 
+
+#### Specify the object of interest
+
+First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star 
+for which we have B1950 (i.e. FK4) coordinates:
 
 ```c
- cat_entry source; // Structure to contain information on sidereal source 
+ cat_entry star; // Structure to contain information on sidereal source 
+
 
  // Let's assume we have B1950 (FK4) coordinates...
  // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year, 
  // parallax 5.89 mas, radial velocity -3.4 km/s.
- make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &source);
+ make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
 We must convert these coordinates to the now standard ICRS system for calculations in SuperNOVAS, first by calculating 
@@ -333,23 +340,36 @@ adjustment to convert from J2000 to ICRS coordinates.
 ```
 
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
-start.)
+start.) Once the catalog entry is defined in ICRS, you can proceed qrapping it in a generic source structure (which
+handles both catalog and ephemeris sources).
+
+```c
+ object source;   // Common structure for a sidereal or an ephemeris source
+  
+ // Wrap it in a generic source data structure
+ make_cat_object(&star, &source);
+```
+
+#### Spefify the observer location
 
 Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
 (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):
 
 ```c
- observer obs;	 // Structure to contain observer location 
+ observer obs;    // Structure to contain observer location 
 
  // Specify the location we are observing from
  // 50.7374 deg N, 7.0982 deg E, 60m elevation
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-We also need to set the time of observation. Our clocks usually measure UTC, but for astrometry we usually need time 
-measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. For a ground-based observer, you will often
-have to provide NOVAS with the TT - UT1 time difference, which can be calculated from the current leap seconds and the 
-UT1 - UTC time difference (a.k.a. DUT1): 
+Similarly, you can also specify observers in Earth orbit, in Sun orbit, at the geocenter, or at the Solar-system 
+barycenter.
+
+#### Specify the time of observation
+
+Next we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the
+UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds.
 
 ```c
  // The current value for the leap seconds (UTC - TAI)
@@ -357,115 +377,105 @@ UT1 - UTC time difference (a.k.a. DUT1):
 
  // Set the DUT1 = UT1 - UTC time difference in seconds (e.g. from IERS Bulletins)
  int dut1 = ...;
+``` 
+ 
+Now we can set a standard UNIX time, for example, using the current time:
 
- // Calculate the Terrestrial Time (TT) based Julian date of observation (in days)
- // Let's say on 2024-02-06 at 14:53:06 UTC.
- double jd_tt = julian_date(2024, 2, 6, 14.885) + get_utc_to_tt(leap_seconds) / 86400.0; 
-  
- // We'll also need the TT - UT1 difference, which we can obtain from what we already
- // defined above
- double ut1_to_tt = get_ut1_to_tt(leap_seconds, dut1);
+```c
+ novas_timescale t_obs;	        // Structure that will define astrometric time
+ struct timespec unix_time;     // Standard precision UNIX time structure
+
+ // Get the current system time, with up to nanosecond resolution...
+ clock_gettime(CLOCK_REALTIME, &unix_time);
+ 
+ // Set the time of observation to the precise UTC-based UNIX time
+ novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, leap_seconds, dut1, &t_obs);
 ```
 
-Next, you may want to set the small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
+Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
+or TCB):
+
+```c
+ double jd_tai = ...     // TAI-based Julian Date 
+
+ novas_set_time(NOVAS_TAI, jd_tai, leap_seconds, dut1, &t_obs);
+```
+
+or, for the best precision we may do the same with an integer / fractional split:
+
+```c
+ long ijd_tai = ...     // Integer part of the TAI-based Julian Date
+ double fjd_tai = ...   // Fractional part of the TAI-based Julian Date 
+  
+ novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, leap_seconds, dut1, &t_obs);
+```
+
+#### Set up the observing frame
+
+Next, we set up an observing frame, which is defined for a unique combination of the observer location and the time of
+observation:
+
+```c
+ novas_frame obs_frame;  // Structure that will define the observing frame
+ double dx = ...         // [mas] Earth polar offset x, e.g. from IERS Bulletin A.
+ double dy = ...         // [mas] Earth polar offset y, from same source as above.
+  
+ // Initialize the observing frame with the given observing parameters
+ novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &obs_time, dx, dy, &obs_frame);
+```
+
+Here `dx` and `dy` are small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
 in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). The obvious utility of 
-these values comes later, when converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. Less 
-obviously, however, it is also needed for calculating the CIO location for CIRS coordinates when a CIO locator file 
-is not available, or for calculations sidereal time measures etc. Therefore, it's best to set the pole offsets 
-early on:
+these values comes later, when converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. 
+You may ignore these and set zeroes if sub-arcsecond precision is not required.
+
+The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
+in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it 
+will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames
+for different observer locations, if need be, via `novas_change_observer()`.
+
+
+#### Calculate an apparent place on sky
+
+Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal
+sources) or light-time correction (for Solar-system bodies), and also aberration corrections for the moving observer 
+and gravitational deflection around the major Solar System bodies. You can calculate an apparent location in the 
+coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, or TOD):
 
 ```c
- // Current polar offsets provided by the IERS Bulletins (in arcsec)
- double dx = ...;
- double dy = ...;
+  sky_pos apparent;    // Structure containing the precise observed position
   
- cel_pole(jd_tt, POLE_OFFSETS_X_Y, dx, dy);
+  novas_sky_pos(&source, &obs_frame, NOVAS_CIRS, &apparent);
 ```
 
-Now we can calculate the precise apparent position (CIRS or TOD) of the source, such as it's right ascension (R.A.) 
-and declination, and the equatorial _x,y,z_ unit vector pointing in the direction of the source (in the requested 
-coordinate system and for the specified observing location). We also get radial velocity (for spectroscopy), and 
-distance (e.g. for apparent-to-physical size conversion):
+Apart from providing precise apparent R.A. and declination coordinates, the `sky_pos` structure also provides the 
+_x,y,z_ unit vector pointing in the observed direction of the source (in the designated coordinate system). We also 
+get radial velocity (for spectroscopy), and apparent distance for Solar-system bodies (e.g. for apparent-to-physical 
+size conversion).
+
+Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational 
+deflection, you might use `novas_posvel()` instead. And regardless, which function you use you can always easily and 
+efficienty change the coordinate system in which your results are expressed by creating an appropriate transform via
+`novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
+
+
+#### Calculate azimuth and elevation angles at the observing location
+
+If your ultimate goal is to calculate the azimuth and elevation angles of the source at the specified observing 
+location, you can proceed from the `sky_pos` data you obtained above (in whichever coordinate system!) as:
 
 ```c
- sky_pos pos;	// We'll return the observable positions (in CIRS) in this structure
+ double az, el;   // [deg] local azimuth and elevation angles to populate
   
- // Calculate the apparent (CIRS) topocentric positions for the above configuration
- int status = place_star(jd_tt, &source, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
-  
- // You should always check that the calculation was successful...
- if(status) {
-   // Oops, something went wrong...
-   return -1;
- }
-```
-
-The _placement_ of the celestial target in the observer's frame includes appropriate aberration corrections for the
-observer's motion, as well as appropriate gravitational deflection corrections due to the Sun and Earth, and for other 
-major gravitating solar system bodies (in full precision mode and if a suitable planet provider function is available).
-
-The calculated `sky_pos` structure contains all the information needed about the apparent position of the source at 
-the given date/time of observation. We may use it to get true apparent R.A. and declination from it, or to calculate 
-azimuth and elevation at the observing location. We'll consider these two cases separately below.
-
-
-#### A. True apparent R.A. and declination
-
-If you want to know the apparent R.A. and declination coordinates from the `sky_pos` structure you obtained, then you 
-can follow with:
-
-```c
-  double ra, dec; // [h, deg] We'll return the apparent R.A. [h] and declination [deg] in these
- 
-  // Convert the rectangular equatorial unit vector to R.A. [h] and declination [deg]
-  vector2radec(pos.r_hat, &ra, &dec);
-```
-
-Alternatively, you can simply call `radec_star()` instead of `place_star()` to get apparent R.A. and declination in a 
-single step if you do not need the `sky_pos` data otherwise. If you followed the less-precise old methodology (Lieske 
-et. al. 1977) thus far, calculating TOD coordinates, you are done here. 
-
-If, however, you calculated the position in CIRS with the more precise IAU 2006 methodology (as we did in the example 
-above), you have one more step to go still. The CIRS equator is the true equator of date, however its origin (CIO) is 
-not the true equinox of date. Thus, we must correct for the difference of the origins to get the true apparent R.A.:
-
-```c
-  ra = cirs_to_app_ra(jd_tt, NOVAS_FULL_ACCURACY, ra);
-```
-
-#### B. Azimuth and elevation angles at the observing location
-
-If your goal is to calculate the astrometric azimuth and zenith distance (= 90&deg; - elevation) angles of the source 
-at the specified observing location (without refraction correction), you can proceed from the `sky_pos` data you 
-obtained from `place_star()` as:
-
-```c
- double itrs[3];  // ITRS position vector of source to populate
- double az, zd;   // [deg] local azimuth and zenith distance angles to populate
-  
- // Convert CIRS to Earth-fixed ITRS using the pole offsets.
- cirs_to_itrs(jd_tt, 0.0, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, pos.r_hat, itrs);
- 
- // Finally convert ITRS to local horizontal coordinates at the observing site
- itrs_to_hor(itrs, &obs.on_surface, &az, &zd);
+ // Convert the apparent position in CIRS on sky to horizontal coordinates
+ novas_app_to_hor(&obs_frame, NOVAS_CIRS, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el);
 ``` 
 
-Above we used `cirs_to_itrs()` function, and then converted the `sky_pos` rectangular equatorial unit vector 
-calculated in CIRS to the Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) 
-measured variation of the pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously 
-set via `cel_pole()`. Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer 
-location.
-
-If you followed the old (Lieske et al. 1977) method instead to calculate `sky_pos` in the less precise TOD coordinate
-system, then you'd  simply replace the `cirs_to_itrs()` call above with `tod_to_itrs()` accordingly. 
-
-You can additionally apply an approximate optical refraction correction for the astrometric (unrefracted) zenith angle, 
-if you want, e.g.:
-
-```c
-   zd -= refract_astro(&obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, zd);
-```
-
+Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and 
+elevation coordinates at the observing location, using the `novas_standard_refraction()` function to provide a 
+suitable refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data 
+embedded in the frame's `observer` stucture, or some user-defined refraction model, or else `NULL` to calculate 
+unrefracted elevation angles.
 
 <a name="solsys-example"></a>
 ### Calculating positions for a Solar-system source
@@ -488,14 +498,6 @@ will handle the respective ephemeris data at runtime before making the NOVAS cal
  set_ephem_provider(my_ephemeris_provider_function);
 ```
 
-You can use `tt2tdb()` to convert Terrestrial Time (TT) to Barycentric Dynamic Time (TDB) for your ephemeris provider 
-functions (they only differ when you really need extreme precision -- for most applications you can used TT and TDB 
-interchangeably in the present era):
-
-```c
- double jd_tdb = jd_tt + tt2tdb(jd_tt) / 86400.0;
-```
-
 Instead of `make_cat_entry()` you define your source as an `object` with an name or ID number that is used by the 
 ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
@@ -512,12 +514,10 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
-Other than that, it's the same spiel as before, except using the appropriate `place()` for generic celestial
-targets instead of `place_star()` for the sidereal sources (or else `radec_planet()` instead of `radec_star()`). 
-E.g.:
+Other than that, it's the same spiel as before, e.g.:
 
 ```c
- int status = place(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
+ int status = novas_sky_pos(&mars, &obs_frame, NOVAS_TOD, &apparent);
  if(status) {
    // Oops, something went wrong...
    ...
@@ -530,28 +530,24 @@ E.g.:
 
 When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
 
- - You can use TT and TDB timescales interchangeably in the present era unless you require the utmost precision.
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at the milliarcsecond level only, but may be much faster to calculate.
- - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
-   &lt;= 22 mas level).
  - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
  
+
 <a name="performance-note"></a>
 ### Performance considerations
 
-Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
-however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they 
-may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy). 
-Therefore, when calculating positions for a large number of sources at different times:
+If accuracy below the milliarcsecond level is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster 
+calculations, in general.
 
- - It is best to iterate over the sources in the inner loop while keeping the time fixed. 
- - You probably want to stick to one accuracy mode (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
-   re-calculating the same quantities repeatedly to alternating precision.
- - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
  
 <a name="multi-threading"></a>
 ### Multi-threaded calculations
+
+Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
+however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they 
+may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).
  
 A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as 
 implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one 
@@ -706,6 +702,58 @@ before that level of accuracy is reached.
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
+#### Added in v1.1
+
+ - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
+   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is defined 
+   it can be used very efficiently to calculate positions for multiple celestial objects with minimal 
+   additional computational cost. The frames API is also more elegant and simpler than the low-level NOVAS C approach 
+   for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their 
+   internal state is never modified during the calculations. The following new functions were added: 
+   `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_geom_to_app()`, `novas_sky_pos()`, 
+   `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, 
+   `novas_invert_transform()`, `novas_transform_vector()`, and `novas_transform_sky_pos()`.
+   
+ - New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). You 
+   can set the time via `novas_set_time()` or `novas_set_split_time()` to a JD date in the timescale of choice (UTC, 
+   UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an 
+   expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
+   `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
+   `novas_increment_time()`, or measure time differences via `novas_diff_time()`.
+   
+ - `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
+   
+ - `grav_undef()` to undo gravitational bending of the observed light to obtain geometric positions from
+   observed ones.
+ 
+ - New observer locations `NOVAS_AIRBORNE_OBSERVER` for an observer moving relative to the surface of Earth e.g.
+   in an aircraft or balloon based telescope platform, and `NOVAS_SOLAR_SYSTEM_OBSERVER` for spacecraft orbiting the 
+   Sun. Both of these use the `observer.near_earth` strcture to define (positions and) velocities as appropriate. 
+   Hence the `'near_earth` name is a bit misleading, but sticks for back compatibility.
+   
+ - New coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
+   `NOVAS_J2000` for the J2000 dynamical reference system.
+
+ - New observer locations `NOVAS_AIRBORNE_OBSERVER` and `NOVAS_SOLAR_SYSTEM_OBSERVER`, and corresponding
+   `make_airborne_observer()` and `make_solar_system_observer()` functions. Airborne observers have an Earth-fixed
+   momentary location, defined by longitude, latitude, and altitude, the same way as for a stationary observer on
+   Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system
+   observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative
+   to the Solar System Barycenter (SSB), instead of the geocenter.
+
+ - Added humidity field to `on_surface` structure, e.g. for refraction calculations at radio wavelengths. The
+   `make_on_surface()` function will set humidity to 0.0, but the user can set the field appropriately afterwards.
+
+ - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` function. The models
+   `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction model as `refract()` 
+   in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` respectively, including the 
+   reversed direction provided by `refract_astro()`. The user may supply their own refraction models to
+   `novas_app_to_hor()` also, and may make used of the generic reversal function `novas_inv_refract` to calculate
+   refraction in the reverse direction (observer vs astrometric elevations) as needed.
+
+ - Added radio refraction model `novas_radio_refraction()` based on the formulae by Berman &amp; Rockwell 1976.
+
+
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
@@ -767,7 +815,16 @@ before that level of accuracy is reached.
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
    guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
    observing location.
+   
+ - [__v1.1__] Improved precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being more 
+   careful about the order in which terms are accumulated and combined, resulting in a small improvement on the few 
+   uas (micro-arcsecond) level.
+   
+ - [__v1.1__] `place()` now returns an error 3 if and only if the observer is at (or very close, within ~10m) of the 
+   observed Solar-system object.
 
+ - [__v1.1__] `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip 
+   deflections due to a body, if the observer is within ~1500 km of its center.
 
 
 -----------------------------------------------------------------------------
