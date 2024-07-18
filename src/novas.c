@@ -4539,7 +4539,6 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
  * @return            0 if successful, -1 if any of the pointer arguments is NULL (errno = EINVAL)
  *                    or if the result did not converge (errno = ECANCELED), or else an error from
  *                    grav_init_planets().
- *                    .
  *
  * @sa grav_def()
  * @sa novas_app_to_geom()

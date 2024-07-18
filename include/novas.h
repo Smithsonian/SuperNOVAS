@@ -763,9 +763,9 @@ typedef struct {
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
-  int pl_mask;
-  double pl_pos[NOVAS_PLANETS][3];
-  double pl_vel[NOVAS_PLANETS][3];
+  int pl_mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
+  double pl_pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
+  double pl_vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
 } novas_frame;
 
 /**
