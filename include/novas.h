@@ -763,6 +763,9 @@ typedef struct {
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
+  int pl_mask;
+  double pl_pos[NOVAS_PLANETS][3];
+  double pl_vel[NOVAS_PLANETS][3];
 } novas_frame;
 
 /**

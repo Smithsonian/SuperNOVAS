@@ -4128,7 +4128,8 @@ short light_time(double jd_tdb, const object *body, const double *pos_obs, doubl
  * observer (or the geocenter); 'pos_body' is the position vector of solar system body, with
  * respect to origin at observer (or the geocenter), components in AU; and the returned value is
  * the light time to point on line defined by 'pos' that is closest to solar system body (positive
- * if light passes body before hitting observer, i.e., if 'pos1' is within 90 degrees of 'pos_obs').
+ * if light passes body before hitting observer, i.e., if 'pos_body' is within 90 degrees of
+ * 'pos_src').
  *
  * NOTES:
  * <ol>
@@ -4164,13 +4165,293 @@ double d_light(const double *pos_src, const double *pos_body) {
 
 /**
  * Computes the total gravitational deflection of light for the observed object due to the
+ * specified gravitating bodies in the solar system.  This function is valid for an observed body
+ * within the solar system as well as for a star.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The gravitational deflection due to planets requires a planet calculator function to be
+ * configured, e.g. via set_planet_provider().</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6.</li>
+ * </ol>
+ *
+ * @param pos_src     [AU] Position 3-vector of observed object, with respect to origin at
+ *                    observer (or the geocenter), referred to ICRS axes, components
+ *                    in AU.
+ * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
+ *                    origin at solar system barycenter, referred to ICRS axes,
+ *                    components in AU.
+ * @param pl_mask     Bitwise (1 << planet-number) mask indicating which planets to use,
+ *                    and have apparent positions and velocities defined.
+ * @param pl_pos      [AU] Apparent geometric position of planets rel. to observer, antedated
+ *                    for light travel time to observer.
+ * @param pl_vel      [AU/day] Apparent velocities of planets rel. to observer, antedated
+ *                    for light travel time to observer.
+ * @param[out] out    [AU] Position vector of observed object, with respect to origin at
+ *                    observer (or the geocenter), referred to ICRS axes, corrected
+ *                    for gravitational deflection, components in AU. It can be the same
+ *                    vector as the input, but not the same as pos_obs.
+ * @return            0 if successful, -1 if any of the pointer arguments is NULL
+ *                    or if the output vector is the same as pos_obs.
+ *
+ * @sa grav_def()
+ * @sa grav_undo_planets()
+ * @sa place()
+ * @sa novas_geom_to_app()
+ * @sa set_planet_provider()
+ * @sa set_planet_provider_hp()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, double pl_pos[][3], double pl_vel[][3], double *out) {
+  static const char *fn = "grav_planets";
+  static const double rmass[] = NOVAS_RMASS_INIT;
+
+  double tsrc;
+  int i;
+
+  if(!pos_src || !pos_obs)
+    return novas_error(-1, EINVAL, fn, "NULL input 3-vector: pos_src=%p, pos_obs=%p", pos_src, pos_obs);
+
+  if(!out)
+    return novas_error(-1, EINVAL, fn, "NULL output 3-vector");
+
+  if(!pl_pos || !pl_vel)
+    return novas_error(-1, EINVAL, fn, "NULL input planet posvel: pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
+
+  // Initialize output vector of observed object to equal input vector.
+  if(out != pos_src)
+    memcpy(out, pos_src, XYZ_VECTOR_SIZE);
+
+  tsrc = novas_vlen(pos_src) / C_AUDAY;
+
+  for(i = 0; i < NOVAS_PLANETS; i++) {
+    double lt, dlt, dpl, p1[3];
+    int k;
+
+    if((pl_mask & (1 << i)) == 0)
+      continue;
+
+    // Distance from observer to gravitating body
+    dpl = novas_vlen(&pl_pos[i][0]);
+
+    // If observing from within ~1500 km of the graviating body, then skip it
+    if(dpl < 1e-5) continue;
+
+    // Calculate light time to the point where incoming light ray is closest to gravitating body.
+    lt = d_light(out, &pl_pos[i][0]);
+
+    // If gravitating body is in opposite direction from the source then use the gravitating
+    // body position at the time the light is observed.
+    if(lt < 0.0)
+      lt = 0.0;
+
+    // If source is between gravitating body and observer, then use gravitating body position
+    // at the time light originated from source.
+    else if(tsrc < lt)
+      lt = tsrc;
+
+    // Differential light time w.r.t. planet center
+    dlt = (lt - dpl / C_AUDAY);
+
+    // Calculate planet position at the time it is gravitationally acting on light.
+    for(k = 3; --k >= 0;)
+      p1[k] = pl_pos[i][k] - dlt * pl_vel[i][k];
+
+    // Compute deflection due to gravitating body.
+    grav_vec(out, pos_obs, p1, rmass[i], out);
+  }
+
+  return 0;
+}
+
+/**
+ * Computes the gravitationally undeflected position of an observed source position due to the
+ * specified Solar-system bodies.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Klioner, S. (2003), Astronomical Journal 125, 1580-1597, Section 6.</li>
+ * </ol>
+ *
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) for sub-&mu;as accuracy or NOVAS_REDUCED_ACCURACY (1)
+ *                    for sub-mas accuracy.
+ * @param pos_app     [AU] Apparent position 3-vector of observed object, with respect to origin at
+ *                    observer (or the geocenter), referred to ICRS axes, components
+ *                    in AU.
+ * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
+ *                    origin at solar system barycenter, referred to ICRS axes,
+ *                    components in AU.
+ * @param pl_mask     Bitwise (1 << planet-number) mask indicating which planets to use,
+ *                    and have apparent positions and velocities defined.
+ * @param pl_pos      [AU] Apparent geometric position of planets rel. to observer, antedated
+ *                    for light travel time to observer.
+ * @param pl_vel      [AU/day] Apparent velocities of planets rel. to observer, antedated
+ *                    for light travel time to observer.
+ * @param[out] out    [AU] Nominal position vector of observed object, with respect to origin at
+ *                    observer (or the geocenter), referred to ICRS axes, without gravitational
+ *                    deflection, components in AU. It can be the same vector as the input, but not
+ *                    the same as pos_obs.
+ * @return            0 if successful, -1 if any of the pointer arguments is NULL.
+ *
+ * @sa grav_undef()
+ * @sa grav_planets()
+ * @sa novas_app_to_geom()
+ * @sa set_planet_provider()
+ * @sa set_planet_provider_hp()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int grav_undo_planets(enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, int pl_mask, double pl_pos[][3],
+        double pl_vel[][3], double *out) {
+  static const char *fn = "grav_undo_planets";
+
+  double pos_def[3] = { }, pos0[3] = { };
+  double l;
+  double tol = accuracy == NOVAS_REDUCED_ACCURACY ? 1e-10 : 1e-13;
+  int i;
+
+  if(!pos_app || !pos_obs || !out)
+    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: pos_app=%p, pos_obs=%p, out=%p", pos_app, pos_obs, out);
+
+  l = novas_vlen(pos_app);
+  if(l == 0.0) {
+    if(out != pos_app)
+      memcpy(out, pos_app, XYZ_VECTOR_SIZE);
+    return 0;        // Source is same as observer. No deflection.
+  }
+
+  memcpy(pos0, pos_app, sizeof(pos0));
+
+  for(i = 0; i < INV_MAX_ITER; i++) {
+    int j;
+
+    prop_error(fn, grav_planets(pos0, pos_obs, pl_mask, pl_pos, pl_vel, pos_def), 0);
+
+    if(novas_vdist(pos_def, pos_app) / l < tol) {
+      memcpy(out, pos0, sizeof(pos0));
+      return 0;
+    }
+
+    for(j = 3; --j >= 0;)
+      pos0[j] -= pos_def[j] - pos_app[j];
+  }
+
+  novas_set_errno(ECANCELED, fn, "failed to converge");
+  return -1;
+}
+
+/**
+ * Initializes the positions and velocities for the Solar-system bodies to use for graviational deflection
+ * calculations.
+ *
+ *
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1). In full accuracy
+ *                      mode, it will calculate the deflection due to the Sun, Jupiter, Saturn
+ *                      and Earth. In reduced accuracy mode, only the deflection due to the
+ *                      Sun is calculated.
+ * @param pos_obs       [AU] Position 3-vector of observer (or the geocenter), with respect to
+ *                      origin at solar system barycenter, referred to ICRS axes,
+ *                      components in AU.
+ * @param pl_mask       Bitwise (1 << planet-number) mask indicating which planets to use,
+ *                      and have apparent positions and velocities defined.
+ * @param pl_pos        [AU] Apparent geometric position of planets rel. to observer, antedated
+ *                      for light travel time to observer.
+ * @param pl_vel        [AU/day] Apparent velocities of planets rel. to observer, antedated
+ *                      for light travel time to observer.
+ * @return              0 if successful, -1 if any of the pointer arguments is NULL
+ *                      or if the output vector is the same as pos_obs, or the error from
+ *                      ephemeris().
+ *
+ * @sa grav_def()
+ * @sa grav_undef()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, double pl_pos[][3], double pl_vel[][3], int *pl_mask) {
+  static const char *fn = "grav_init_planets";
+
+  // The following list of body numbers identifies which gravitating bodies (aside from the Earth)
+  // are potentially used -- list is taken from Klioner's table 1, the order based on area of sky
+  // affected (col 2).  Order is Sun, Jupiter, Saturn, Moon, Venus, Uranus, Neptune.
+  // v1.1: Earth is inserted after Saturn, for use in high accuracy calculations only.
+  static const enum novas_planet body_num[] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_EARTH, NOVAS_MOON, NOVAS_VENUS,
+          NOVAS_URANUS, NOVAS_NEPTUNE };
+  static object body[8];
+  static int initialized;
+
+  int error = 0;
+
+  // Set the number of bodies -- and hence the bodies used -- based on the value of the 'accuracy' flag.
+  const int nbodies = (accuracy == NOVAS_FULL_ACCURACY) ? 4 : 1;
+
+  int i;
+
+  if(!pl_mask)
+    return novas_error(-1, EINVAL, fn, "NULL planet parameter pl_mask");
+
+  *pl_mask = 0;
+
+  if(!pos_obs)
+    return novas_error(-1, EINVAL, fn, "NULL parameter: pos_obs");
+
+  if(!pl_pos || !pl_vel)
+      return novas_error(-1, EINVAL, fn, "NULL planet pos/vel: pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
+
+  // Set up the structures of type 'object' containing the body information.
+  if(!initialized) {
+    for(i = 0; i < 8; i++)
+      make_planet(body_num[i], &body[i]);
+    initialized = 1;
+  }
+
+  // Cycle through gravitating bodies.
+  for(i = 0; i < nbodies; i++) {
+    const int n = body_num[i];
+    double tl;
+
+    error = light_time2(jd_tdb, &body[i], pos_obs, 0.0, accuracy, &pl_pos[n][0], &pl_vel[n][0], &tl);
+    if(error) {
+      error = error > 10 ? error - 10 : -1;
+      break;
+    }
+
+    *pl_mask |= (1 << n);
+  }
+
+  // If could not calculate deflection due to Sun, return with error
+  if(i == 0)
+    prop_error("grav_init_planet:sun", error, 0);
+
+  // If could not calculate deflection to another solar system body then
+  // return error only if in extra debug mode...
+  if(i < nbodies && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA) {
+    const char *names[] = NOVAS_PLANET_NAMES_INIT;
+    char from[40];
+    sprintf(from, "%s:%s", fn, names[body_num[i]]);
+    prop_error(from, error, 0);
+  }
+
+  return 0;
+}
+
+/**
+ * Computes the total gravitational deflection of light for the observed object due to the
  * major gravitating bodies in the solar system.  This function valid for an observed body
  * within the solar system as well as for a star.
  *
  * If 'accuracy' is NOVAS_FULL_ACCURACY (0), the deflections due to the Sun, Jupiter, Saturn,
  * and Earth are calculated.  Otherwise, only the deflection due to the Sun is calculated.
- * In either case, deflection is ignored if the observer is within ~1500 km of the center
- * of the gravitating body.
+ * In either case, deflection for a given body is ignored if the observer is within ~1500 km
+ * of the center of the gravitating body.
  *
  * NOTES:
  * <ol>
@@ -4203,7 +4484,7 @@ double d_light(const double *pos_src, const double *pos_body) {
  *                    vector as the input, but not the same as pos_obs.
  * @return            0 if successful, -1 if any of the pointer arguments is NULL
  *                    or if the output vector is the same as pos_obs, or the error from
- *                    ephemeris(), or else 30 + the error from make_object().
+ *                    grav_init_planets().
  *
  * @sa grav_undef()
  * @sa place()
@@ -4215,87 +4496,15 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
         const double *pos_obs, double *out) {
   static const char *fn = "grav_def";
 
-  // The following list of body numbers identifies which gravitating bodies (aside from the Earth)
-  // are potentially used -- list is taken from Klioner's table 1, the order based on area of sky
-  // affected (col 2).  Order is Sun, Jupiter, Saturn, Moon, Venus, Uranus, Neptune.
-  static const enum novas_planet body_num[] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_EARTH, NOVAS_MOON, NOVAS_VENUS,
-          NOVAS_URANUS, NOVAS_NEPTUNE };
-  static const double rmass[] = NOVAS_RMASS_INIT;
-  static object body[8];
-  static int first_time = 1;
+  double pl_pos[NOVAS_PLANETS][3]= {{}}, pl_vel[NOVAS_PLANETS][3] = {{}};
+  int pl_mask = 0;
 
-  // Set the number of bodies -- and hence the bodies used -- based on the value of the 'accuracy' flag.
-  const int nbodies = (accuracy == NOVAS_FULL_ACCURACY) ? 4 : 1;
-
-  double tlt;
-  int i, error = 0;
-
-  if(!pos_src || !pos_obs || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: pos_src=%p, pos_obs=%p, out=%p", pos_src, pos_obs, out);
-
-  // Initialize output vector of observed object to equal input vector.
-  if(out != pos_src)
-    memcpy(out, pos_src, XYZ_VECTOR_SIZE);
-
-  // Set up the structures of type 'object' containing the body information.
-  if(first_time) {
-    for(i = 0; i < 8; i++)
-      prop_error(fn, make_planet(body_num[i], &body[i]), 30);
-    first_time = 0;
-  }
-
-  // Compute light-time to observed object.
-  tlt = novas_vlen(pos_src) / C_AUDAY;
-
-  // Cycle through gravitating bodies.
-  for(i = 0; i < nbodies; i++) {
-    double dlt, pbody[3], vbody[3], pbodyo[3];
-    double jd[2] = { jd_tdb };
-
-    // Get position of gravitating body wrt ss barycenter at time 'jd_tdb'.
-    error = ephemeris(jd, &body[i], NOVAS_BARYCENTER, accuracy, pbody, vbody);
-    if(error)
-      break;
-
-    // Get position of gravitating body wrt observer at time 'jd_tdb'.
-    bary2obs(pbody, pos_obs, pbodyo, NULL);
-
-    // If observing from within ~1500 km of the graviating body, then ignore it
-    if(novas_vlen(pbodyo) < 1e-5) continue;
-
-    // Compute light-time from point on incoming light ray that is closest to gravitating body.
-    dlt = d_light(pos_src, pbodyo);
-
-    // Get position of gravitating body wrt ss barycenter at time when
-    // incoming photons were closest to it.
-    jd[1] = -dlt;
-
-    if(tlt < dlt)
-      jd[1] -= tlt;
-
-    // Get position of gravitating body wrt ss barycenter at the time light passed it.
-    error = ephemeris(jd, &body[i], NOVAS_BARYCENTER, accuracy, pbody, vbody);
-    if(error) break;
-
-    // Compute deflection due to gravitating body.
-    grav_vec(out, pos_obs, pbody, rmass[body_num[i]], out);
-  }
-
-  // If could not calculate deflection due to Sun, return with error
-  if(i == 0)
-    prop_error("grav_def:sun", error, 0);
-
-  // If could not calculate deflection to another solar system body then
-  // return error only if in extra debug mode...
-  if(i < nbodies && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA) {
-    const char *names[] = NOVAS_PLANET_NAMES_INIT;
-    char from[40];
-    sprintf(from, "%s:%s", fn, names[body_num[i]]);
-    prop_error(from, error, 0);
-  }
-
+  int error = grav_init_planets(jd_tdb, accuracy, pos_obs, pl_pos, pl_vel, &pl_mask);
+  grav_planets(pos_src, pos_obs, pl_mask, pl_pos, pl_vel, out);
+  prop_error(fn, error, 0);
   return 0;
 }
+
 
 /**
  * Computes the gravitationally undeflected position of an observed source position due to the
@@ -4327,9 +4536,10 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
  *                    observer (or the geocenter), referred to ICRS axes, without gravitational
  *                    deflection, components in AU. It can be the same vector as the input, but not
  *                    the same as pos_obs.
- * @return            0 if successful, -1 if any of the pointer arguments is NULL
- *                    or if the output vector is the same as pos_obs, or the error from
- *                    ephemeris(), or else 30 + the error from make_object().
+ * @return            0 if successful, -1 if any of the pointer arguments is NULL (errno = EINVAL)
+ *                    or if the result did not converge (errno = ECANCELED), or else an error from
+ *                    grav_init_planets().
+ *                    .
  *
  * @sa grav_def()
  * @sa novas_app_to_geom()
@@ -4339,43 +4549,16 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app,
-        const double *pos_obs, double *out) {
-  static const char *fn = "grav_invdef";
+int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out) {
+  static const char *fn = "grav_undef";
 
-  double pos_def[3] = { }, pos0[3] = { };
-  double l;
-  double tol = accuracy == NOVAS_REDUCED_ACCURACY ? 1e-10 : 1e-13;
-  int i;
+  double pl_pos[NOVAS_PLANETS][3], pl_vel[NOVAS_PLANETS][3];
+  int pl_mask = 0;
 
-  if(!pos_app || !pos_obs || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: pos_app=%p, pos_obs=%p, out=%p", pos_app, pos_obs, out);
-
-  l = novas_vlen(pos_app);
-  if(l == 0.0) {
-    if(out != pos_app)
-      memcpy(out, pos_app, XYZ_VECTOR_SIZE);
-    return 0;        // Source is same as observer. No deflection.
-  }
-
-  memcpy(pos0, pos_app, sizeof(pos0));
-
-  for(i = 0; i < INV_MAX_ITER; i++) {
-    int j;
-
-    prop_error(fn, grav_def(jd_tdb, -1, accuracy, pos0, pos_obs, pos_def), 0);
-
-    if(novas_vdist(pos_def, pos_app) / l < tol) {
-      memcpy(out, pos0, sizeof(pos0));
-      return 0;
-    }
-
-    for(j = 3; --j >= 0;)
-      pos0[j] -= pos_def[j] - pos_app[j];
-  }
-
-  novas_set_errno(ECANCELED, fn, "failed to converge");
-  return -1;
+  int error = grav_init_planets(jd_tdb, accuracy, pos_obs, pl_pos, pl_vel, &pl_mask);
+  prop_error(fn, grav_undo_planets(jd_tdb, pos_app, pos_obs, pl_mask, pl_pos, pl_vel, out), 0);
+  prop_error(fn, error, 0);
+  return 0;
 }
 
 /**

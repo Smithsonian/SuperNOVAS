@@ -637,13 +637,26 @@ static void test_light_time() {
 }
 
 static void test_grav_def() {
-  double pos1[3];
+  double pos1[3], pos2[3], ps[3], vs[3];
+  double d, jd2[2] = { tdb };
+  object sun = { 0, 10, "Sun" };
+  int k;
 
   if(source.type != 2) return;
 
   openfile("grav_def");
   if(is_ok(grav_def(tdb, obs.where, accuracy, pos0, pobs, pos1))) {
     printunitvector(pos1);
+  }
+
+  ephemeris(jd2, &sun, 0, accuracy, ps, vs);
+  d = vlen(pos0);
+
+  // Now test a position near the Sun in the direction of the source
+  for(k = 3; --k >= 0;) pos1[k] = ps[k] + 0.01 * pos0[k] / d;
+
+  if(is_ok(grav_def(tdb, obs.where, accuracy, pos1, pobs, pos2))) {
+    printunitvector(pos2);
   }
 }
 
