@@ -179,7 +179,7 @@ int main(int argc, const char *argv[]) {
   if(fread(&ra_n, double_size, (size_t) 1, out_file) != 1) goto read_error; // @suppress("Goto statement used")
 
   printf("Results from program cio_file:\n\n");
-  printf("Input file identifier: %s\n",);
+  printf("Input file identifier: %s\n", identifier);
   printf("%ld records read from the input file:\n", n_recs);
   printf("   First Julian date: %f\n", jd_beg);
   printf("   Last Julian date:  %f\n", jd_end);
