@@ -1380,6 +1380,7 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
   // Get initial approximation by precessing star position at 'jd_tt'
   // to its position at J2000.0.
   precession(jd_tt, pos, JD_J2000, pos);
+
   prop_error(fn, vector2radec(pos, &star.ra, &star.dec), 10);
 
   // Iteratively find ICRS coordinates that produce input apparent place
@@ -4240,7 +4241,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, doub
     // Distance from observer to gravitating body
     dpl = novas_vlen(&pl_pos[i][0]);
 
-    // If observing from within ~1500 km of the graviating body, then skip it
+    // If observing from within ~1500 km of the gravitating body, then skip deflections by it...
     if(dpl < 1e-5) continue;
 
     // Calculate light time to the point where incoming light ray is closest to gravitating body.
@@ -4256,7 +4257,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, doub
     else if(tsrc < lt)
       lt = tsrc;
 
-    // Differential light time w.r.t. planet center
+    // Differential light time w.r.t. the apparent planet center
     dlt = (lt - dpl / C_AUDAY);
 
     // Calculate planet position at the time it is gravitationally acting on light.
@@ -4376,14 +4377,14 @@ int grav_undo_planets(enum novas_accuracy accuracy, const double *pos_app, const
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, double pl_pos[][3], double pl_vel[][3], int *pl_mask) {
+static int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, double pl_pos[][3], double pl_vel[][3], int *pl_mask) {
   static const char *fn = "grav_init_planets";
 
   // The following list of body numbers identifies which gravitating bodies (aside from the Earth)
   // are potentially used -- list is taken from Klioner's table 1, the order based on area of sky
   // affected (col 2).  Order is Sun, Jupiter, Saturn, Moon, Venus, Uranus, Neptune.
-  // v1.1: Earth is inserted after Saturn, for use in high accuracy calculations only.
-  static const enum novas_planet body_num[] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_EARTH, NOVAS_MOON, NOVAS_VENUS,
+  // v1.1: Earth is inserted after Sun, but used in high accuracy calculations only.
+  static const enum novas_planet body_num[] = { NOVAS_SUN, NOVAS_EARTH, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_MOON, NOVAS_VENUS,
           NOVAS_URANUS, NOVAS_NEPTUNE };
   static object body[8];
   static int initialized;
@@ -4392,19 +4393,21 @@ int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double 
 
   // Set the number of bodies -- and hence the bodies used -- based on the value of the 'accuracy' flag.
   const int nbodies = (accuracy == NOVAS_FULL_ACCURACY) ? 4 : 1;
+  enum novas_debug_mode dbmode = novas_get_debug_mode();
 
   int i;
 
   if(!pl_mask)
-    return novas_error(-1, EINVAL, fn, "NULL planet parameter pl_mask");
+    return novas_error(-1, EINVAL, fn, "NULL parameter: pl_mask");
 
+  // Initialize pl_mask
   *pl_mask = 0;
 
   if(!pos_obs)
-    return novas_error(-1, EINVAL, fn, "NULL parameter: pos_obs");
+    return novas_error(-1, EINVAL, fn, "NULL observer position parameter: pos_obs");
 
   if(!pl_pos || !pl_vel)
-      return novas_error(-1, EINVAL, fn, "NULL planet pos/vel: pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
+      return novas_error(-1, EINVAL, fn, "NULL planet pos/vel array(s): pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
 
   // Set up the structures of type 'object' containing the body information.
   if(!initialized) {
@@ -4413,11 +4416,15 @@ int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double 
     initialized = 1;
   }
 
+  // Temporarily disable debug traces, unless in extra debug mode
+  if(dbmode != NOVAS_DEBUG_EXTRA) novas_debug(NOVAS_DEBUG_OFF);
+
   // Cycle through gravitating bodies.
   for(i = 0; i < nbodies; i++) {
     const int n = body_num[i];
     double tl;
 
+    // Calculate positions and velocities antedated for light time.
     error = light_time2(jd_tdb, &body[i], pos_obs, 0.0, accuracy, &pl_pos[n][0], &pl_vel[n][0], &tl);
     if(error) {
       error = error > 10 ? error - 10 : -1;
@@ -4427,11 +4434,14 @@ int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double 
     *pl_mask |= (1 << n);
   }
 
+  // Re-enable debug traces
+  novas_debug(dbmode);
+
   // If could not calculate deflection due to Sun, return with error
   if(i == 0)
     prop_error("grav_init_planet:sun", error, 0);
 
-  // If could not calculate deflection to another solar system body then
+  // If could not get positions for another gravitating body then
   // return error only if in extra debug mode...
   if(i < nbodies && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA) {
     const char *names[] = NOVAS_PLANET_NAMES_INIT;
@@ -4499,9 +4509,11 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
   double pl_pos[NOVAS_PLANETS][3]= {{}}, pl_vel[NOVAS_PLANETS][3] = {{}};
   int pl_mask = 0;
 
-  int error = grav_init_planets(jd_tdb, accuracy, pos_obs, pl_pos, pl_vel, &pl_mask);
-  grav_planets(pos_src, pos_obs, pl_mask, pl_pos, pl_vel, out);
-  prop_error(fn, error, 0);
+  if(!pos_src || !out)
+     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_src=%p, out=%p", pos_src, out);
+
+  prop_error(fn, grav_init_planets(jd_tdb, accuracy, pos_obs, pl_pos, pl_vel, &pl_mask), 0);
+  prop_error(fn, grav_planets(pos_src, pos_obs, pl_mask, pl_pos, pl_vel, out), 0);
   return 0;
 }
 
@@ -4554,9 +4566,11 @@ int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_ap
   double pl_pos[NOVAS_PLANETS][3], pl_vel[NOVAS_PLANETS][3];
   int pl_mask = 0;
 
-  int error = grav_init_planets(jd_tdb, accuracy, pos_obs, pl_pos, pl_vel, &pl_mask);
+  if(!pos_app || !out)
+     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_app=%p, out=%p", pos_app, out);
+
+  prop_error(fn, grav_init_planets(jd_tdb, accuracy, pos_obs, pl_pos, pl_vel, &pl_mask), 0);
   prop_error(fn, grav_undo_planets(jd_tdb, pos_app, pos_obs, pl_mask, pl_pos, pl_vel, out), 0);
-  prop_error(fn, error, 0);
   return 0;
 }
 
@@ -4678,6 +4692,7 @@ int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_bod
  *
  * @return            0 if successful, or -1 if any of the vector arguments are NULL.
  *
+ * @sa inv_aberration()
  * @sa place()
  */
 int aberration(const double *pos, const double *vobs, double lighttime, double *out) {
@@ -4711,6 +4726,72 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
   out[0] = (gammai * pos[0] + q * vobs[0]) / r;
   out[1] = (gammai * pos[1] + q * vobs[1]) / r;
   out[2] = (gammai * pos[2] + q * vobs[2]) / r;
+
+  return 0;
+}
+
+/**
+ * Calculates an unaberrated position vector from an observed apparent position vector for a moving observer.
+ * Algorithm includes relativistic terms.
+ *
+ * NOTES:
+ * <ol>
+ * <li>This function is called by place() to account for aberration when calculating the position
+ * of the source.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Murray, C. A. (1981) Mon. Notices Royal Ast. Society 195, 639-648.</li>
+ * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
+ * </ol>
+ *
+ * @param pos         [AU] Observed position vector of source relative to observer
+ * @param vobs        [AU/day]  Velocity vector of observer, relative to the solar system barycenter,
+ *                    components in AU/day.
+ * @param lighttime   [day] Light time from object to Earth in days (if known). Or set to 0, and this
+ *                    function will compute it.
+ * @param[out] out    [AU] Unaberrated position vector for a non-moving observer (rel. SSB) at the
+ *                    observer position.
+ *
+ * @return            0 if successful, or -1 if any of the vector arguments are NULL.
+ *
+ * @sa aberration()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int inv_aberration(const double *pos, const double *vobs, double lighttime, double *out) {
+  double p1mag, vemag, beta, cosd, gammai, p, q, r;
+
+  if(!pos || !vobs || !out)
+    return novas_error(-1, EINVAL, "aberration", "NULL input or output 3-vector: pos=%p, vobs=%p, out=%p", pos, vobs, out);
+
+  vemag = novas_vlen(vobs);
+  if(!vemag) {
+    if(out != pos)
+      memcpy(out, pos, XYZ_VECTOR_SIZE);
+    return 0;
+  }
+
+  beta = vemag / C_AUDAY;
+
+  if(lighttime <= 0.0) {
+    p1mag = novas_vlen(pos);
+    lighttime = p1mag / C_AUDAY;
+  }
+  else
+    p1mag = lighttime * C_AUDAY;
+
+  cosd = novas_vdot(pos, vobs) / (p1mag * vemag);
+  gammai = sqrt(1.0 - beta * beta);
+  p = beta * cosd;
+  q = (1.0 + p / (1.0 + gammai)) * lighttime;
+  r = 1.0 + p;
+
+  out[0] = (r * pos[0] - q * vobs[0]) / gammai;
+  out[1] = (r * pos[1] - q * vobs[1]) / gammai;
+  out[2] = (r * pos[2] - q * vobs[2]) / gammai;
 
   return 0;
 }

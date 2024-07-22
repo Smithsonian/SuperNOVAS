@@ -581,6 +581,8 @@ static int test_light_time2() {
   double pos[3] = {1.0}, p[3], v[3], t;
   int n = 0;
 
+  make_planet(NOVAS_SUN, &o);
+
   if(check("light_time2:tout", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, NULL))) n++;
   if(check("light_time2:object", -1, light_time2(0.0, NULL, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
   if(check("light_time2:pos", -1, light_time2(0.0, &o, NULL, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;

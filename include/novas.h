@@ -1095,6 +1095,7 @@ int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
 
 int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
+int inv_aberration(const double *pos, const double *vobs, double lighttime, double *out);
 
 // in timescale.c
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time);

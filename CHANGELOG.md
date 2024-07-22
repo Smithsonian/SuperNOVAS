@@ -14,6 +14,10 @@ available on the `main` branch.
 
 ### Fixed
 
+ - `grav_def()` gravitating body position antedated somewhat incorrectly (in v1.0) when observed source is a 
+   Solar-system object between the observer and the gravitating body. The resulting error is typically small at below 
+   10 uas.
+
  - #39: `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
 
  - #38: `gcrs_to_j2000` transformed in the wrong direction.
@@ -113,8 +117,12 @@ available on the `main` branch.
  - `cio_file` tool parses interval from header rather than the less precise differencing of the first two record
    timestamps. This leads to `cio_array()` being more accurately centered on matching date entries, e.g. J2000.
 
+ - `grav_def()` estimation of light time to where light passes nearest to gravitating body is improved by starting 
+   with the body position already antedated for light-time for the gravitating mass. The change typically improves
+   the grativational deflection calculations at the few uas level.
+
  - `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip deflections
-   due to a body, if the observer is within ~1500 km of its center.
+   due to any body, if the observer is within ~1500 km of its center.
 
  - `place()` now returns an error 3 if and only if the observer is at (or very close, to within ~1.5m) of the 
    observed Solar-system object.
