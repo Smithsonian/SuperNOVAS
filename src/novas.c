@@ -65,6 +65,10 @@ double PSI_COR = 0.0;
  */
 double EPS_COR = 0.0;
 
+int grav_bodies_reduced_accuracy = DEFAULT_GRAV_BODIES_REDUCED_ACCURACY;
+
+int grav_bodies_full_accuracy = DEFAULT_GRAV_BODIES_FULL_ACCURACY;
+
 /// Current debugging state for reporting errors and traces to stderr.
 static enum novas_debug_mode novas_debug_state = 0;
 
@@ -4203,6 +4207,8 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @sa grav_undo_planets()
  * @sa grav_def()
  * @sa novas_geom_to_app()
+ * @sa grav_bodies_full_accuracy
+ * @sa grav_bodies_reduced_accuracy
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -4510,13 +4516,15 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
  * @sa novas_geom_to_app()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
+ * @sa grav_bodies_full_accuracy
+ * @sa grav_bodies_reduced_accuracy
  */
 short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs,
         double *out) {
   static const char *fn = "grav_def";
 
   double pl_pos[NOVAS_PLANETS][3] = { { } }, pl_vel[NOVAS_PLANETS][3] = { { } };
-  int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? GRAV_BODIES_FULL_ACCURACY : GRAV_BODIES_REDUCED_ACCURACY;
+  int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_src || !out)
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_src=%p, out=%p", pos_src, out);
@@ -4564,6 +4572,8 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
  * @sa novas_app_to_geom()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
+ * @sa grav_bodies_full_accuracy
+ * @sa grav_bodies_reduced_accuracy
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -4572,7 +4582,7 @@ int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_ap
   static const char *fn = "grav_undef";
 
   double pl_pos[NOVAS_PLANETS][3], pl_vel[NOVAS_PLANETS][3];
-  int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? GRAV_BODIES_FULL_ACCURACY : GRAV_BODIES_REDUCED_ACCURACY;
+  int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_app || !out)
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_app=%p, out=%p", pos_app, out);
@@ -6131,7 +6141,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     else {
       if(fread(cache, sizeof(ra_of_cio), N, cio_file) != (size_t) N)
         return novas_error(-1, errno, fn, "corrupted binary CIO locator data: %s", strerror(errno));
-        cache_count = N;
+      cache_count = N;
     }
   }
 

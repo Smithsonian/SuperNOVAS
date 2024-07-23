@@ -376,7 +376,7 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
   out->state = FRAME_DEFAULT;
   out->observer = *obs;
-  out->pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? GRAV_BODIES_FULL_ACCURACY : GRAV_BODIES_REDUCED_ACCURACY;
+  out->pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   prop_error(fn, set_obs_posvel(out), 0);
 
