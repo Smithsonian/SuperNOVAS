@@ -5851,7 +5851,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
   // Check if it's a new file
   if(last_file != cio_file) {
     char line[80] = {};
-    int version;
+    int version, tokens;
 
     last_file = NULL;
     cache_count = 0;
@@ -5859,7 +5859,9 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     if(fgets(line, sizeof(line) - 1, cio_file) == NULL)
       return novas_error(1, errno, fn, "empty CIO locator data: %s", strerror(errno));
 
-    if(sscanf(line, "CIO RA P%d @ %lfd", &version, &lookup.jd_interval) == 2) {
+    tokens = sscanf(line, "CIO RA P%d @ %lfd", &version, &lookup.jd_interval);
+
+    if(tokens == 2) {
       int nrec;
 
       is_ascii = 1;
@@ -5876,6 +5878,9 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
       fseek(cio_file, 0, SEEK_END);
       nrec = (ftell(cio_file) - header_size) / lrec;
       lookup.jd_end = lookup.jd_start + nrec * lookup.jd_interval;
+    }
+    else if(tokens) {
+      return novas_error(1, errno, fn, "incomplete or corrupted ASCII CIO locator data header: %s", strerror(errno));
     }
     else {
       is_ascii = 0;

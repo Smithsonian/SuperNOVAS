@@ -622,6 +622,27 @@ static int test_cio_array() {
 
   if(check("cio_array:corner:near", 0, cio_array(2341962.6, 5, x))) n++;
 
+  set_cio_locator_file("bad-cio-data/empty");
+  if(check("cio_array:bin:empty", 1, cio_array(2341951.4, 5, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-1.bin");
+  if(check("cio_array:bin:header", 1, cio_array(2341952.0, 2, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-2.bin");
+  if(check("cio_array:bin:incomplete", 6, cio_array(2341952.0, 2, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-2.bin");
+  if(check("cio_array:bin:seek", -1, cio_array(2341955.4, 2, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-1.txt");
+  if(check("cio_array:ascii:header", 1, cio_array(2341952.0, 2, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-2.txt");
+  if(check("cio_array:ascii:incomplete", 6, cio_array(2341952.0, 2, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-2.txt");
+  if(check("cio_array:ascii:seek", 2, cio_array(2341955.4, 2, x))) n++;
+
   return n;
 }
 
