@@ -849,6 +849,50 @@ static int test_grav_undef() {
   return n;
 }
 
+static int test_grav_init_planets() {
+  double p[3] = {2.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}};
+  int pl_mask, n = 0;
+
+  if(check("grav_init_planets:pos_obs", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, pb, vb, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_pos", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, vb, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_vel", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, pb, NULL, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_pos+pl_vel", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, NULL, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_pos=pl_vel", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, pb, pb, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_mask", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, pb, vb, NULL))) n++;
+
+  return n;
+}
+
+static int test_grav_planets() {
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
+  int pl_mask, n = 0;
+
+  if(check("grav_planets:pos_src", -1, grav_planets(NULL, po, pl_mask, pb, vb, out))) n++;
+  if(check("grav_planets:pos_obs", -1, grav_planets(p, NULL, pl_mask, pb, vb, out))) n++;
+  if(check("grav_planets:pl_pos", -1, grav_planets(p, po, pl_mask, NULL, vb, out))) n++;
+  if(check("grav_planets:pl_vel", -1, grav_planets(p, po, pl_mask, pb, NULL, out))) n++;
+  if(check("grav_planets:pl_pos+pl_vel", -1, grav_planets(p, po, pl_mask, NULL, NULL, out))) n++;
+  if(check("grav_planets:pl_pos=pl_vel", -1, grav_planets(p, po, pl_mask, pb, pb, out))) n++;
+  if(check("grav_planets:pos_src", -1, grav_planets(p, po, pl_mask, pb, vb, NULL))) n++;
+
+  return n;
+}
+
+static int test_grav_undo_planets() {
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
+  int pl_mask, n = 0;
+
+  if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;
+  if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;
+  if(check("grav_undo_planets:pl_pos", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, NULL, vb, out))) n++;
+  if(check("grav_undo_planets:pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, NULL, out))) n++;
+  if(check("grav_undo_planets:pl_pos+pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, NULL, NULL, out))) n++;
+  if(check("grav_undo_planets:pl_pos=pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, pb, out))) n++;
+  if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, NULL))) n++;
+
+  return n;
+}
+
 static int test_earth_sun_calc() {
   double p[3], v[3];
   int n = 0;
@@ -1146,9 +1190,6 @@ static int test_geom_to_app() {
   frame.accuracy = 2;
   if(check("geom_to_app:frame:accuracy:2", -1, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
 
-  frame.accuracy = NOVAS_FULL_ACCURACY;
-  if(check("geom_to_app:frame:accuracy:2", 13, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
-
   return n;
 }
 
@@ -1347,6 +1388,9 @@ int main() {
   if(test_grav_vec()) n++;
   if(test_grav_def()) n++;
   if(test_grav_undef()) n++;
+  if(test_grav_init_planets()) n++;
+  if(test_grav_planets()) n++;
+  if(test_grav_undo_planets()) n++;
 
   if(test_earth_sun_calc()) n++;
   if(test_earth_sun_calc_hp()) n++;

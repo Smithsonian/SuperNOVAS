@@ -1082,6 +1082,13 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 // ---------------------- Added in 1.1.0 -------------------------
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
+int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, double pl_pos[][3], double pl_vel[][3], int *pl_mask);
+
+int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out);
+
+int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, int pl_mask, const double pl_pos[][3],
+        const double pl_vel[][3], double *out);
+
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
 
@@ -1095,7 +1102,6 @@ int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
 
 int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
-int inv_aberration(const double *pos, const double *vobs, double lighttime, double *out);
 
 // in timescale.c
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time);
