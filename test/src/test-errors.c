@@ -31,7 +31,6 @@ static int check_nan(const char *func, double value) {
 }
 
 static int test_make_on_surface() {
-  on_surface loc;
   if(check("make_on_surface", -1, make_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, NULL))) return 1;
   return 0;
 }
@@ -115,8 +114,8 @@ static int test_make_cat_entry() {
 }
 
 static int test_make_object() {
-  cat_entry s;
-  object o;
+  cat_entry s = {};
+  object o = {};
   int n = 0;
 
   char longname[SIZE_OF_OBJ_NAME + 1];
@@ -399,7 +398,7 @@ static int test_ecl2equ_vec() {
 
 static int test_itrs_to_hor() {
   on_surface loc = {};
-  double p[3], az, za;
+  double p[3] = {}, az, za;
   int n = 0;
 
   if(check("itrs_to_hor:loc", -1, itrs_to_hor(NULL, p, &az, &za))) n++;
@@ -819,7 +818,7 @@ static int test_grav_vec() {
 }
 
 static int test_grav_def() {
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {};
+  double p[3] = {2.0}, po[3] = {0.0, 1.0};
   int n = 0;
 
   if(check("grav_def:pos", -1, grav_def(NOVAS_JD_J2000, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
@@ -839,7 +838,7 @@ static int test_grav_def() {
 }
 
 static int test_grav_undef() {
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {};
+  double p[3] = {2.0}, po[3] = {0.0, 1.0};
   int n = 0;
 
   if(check("grav_def:pos", -1, grav_undef(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, po, p))) n++;
@@ -865,7 +864,7 @@ static int test_grav_init_planets() {
 
 static int test_grav_planets() {
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
-  int pl_mask, n = 0;
+  int pl_mask = 0, n = 0;
 
   if(check("grav_planets:pos_src", -1, grav_planets(NULL, po, pl_mask, pb, vb, out))) n++;
   if(check("grav_planets:pos_obs", -1, grav_planets(p, NULL, pl_mask, pb, vb, out))) n++;
@@ -880,7 +879,7 @@ static int test_grav_planets() {
 
 static int test_grav_undo_planets() {
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
-  int pl_mask, n = 0;
+  int pl_mask = 0, n = 0;
 
   if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;
   if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;

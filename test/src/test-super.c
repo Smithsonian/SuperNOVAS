@@ -445,8 +445,6 @@ static int test_app_hor(enum novas_reference_system sys) {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  cat_entry c = {};
-  int i;
 
   double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1, x, y;
 
@@ -521,7 +519,6 @@ static int test_app_hor(enum novas_reference_system sys) {
 static int test_app_geom(enum novas_reference_system sys) {
   char label[50];
   novas_timespec ts = {};
-  on_surface loc;
   int i;
 
   for(i = 0; i < NOVAS_OBSERVER_PLACES; i++) {
@@ -566,7 +563,7 @@ static int test_app_geom(enum novas_reference_system sys) {
 }
 
 static int test_transform_icrs_cirs() {
-  novas_transform T = {}, I = {};
+  novas_transform T = {};
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
@@ -591,7 +588,7 @@ static int test_transform_icrs_cirs() {
 }
 
 static int test_transform_icrs_j2000() {
-  novas_transform T = {}, I = {};
+  novas_transform T = {};
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
@@ -616,7 +613,7 @@ static int test_transform_icrs_j2000() {
 }
 
 static int test_transform_j2000_mod() {
-  novas_transform T = {}, I = {};
+  novas_transform T = {};
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
@@ -636,7 +633,7 @@ static int test_transform_j2000_mod() {
 }
 
 static int test_transform_mod_tod() {
-  novas_transform T = {}, I = {};
+  novas_transform T = {};
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
@@ -659,7 +656,6 @@ static int test_transform_inv() {
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  cat_entry c = {};
   enum novas_reference_system from;
 
   if(!is_ok("transform_rev:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
@@ -920,7 +916,6 @@ static int test_set_time() {
   novas_timespec tt, tt1, tai, gps, TDB, tcb, tcg, utc, ut1;
   int leap = 32;
   double dut1 = 0.1;
-  double ut1_to_tt = get_ut1_to_tt(leap, dut1);
   long ijd = (long) tdb;
   double fjd = 0.25;
   double dt;
@@ -984,7 +979,7 @@ static int test_get_time() {
   novas_timespec tt;
   int leap = 32;
   double dut1 = 0.1;
-  double dt, fjd;
+  double dt;
   long ijd;
 
   const double CT0 = 2443144.5003725;
@@ -1079,7 +1074,6 @@ static int test_sky_pos(enum novas_reference_system sys) {
 
   for(i = 0; i < 2; i++) {
     char label[50];
-    double pos[3] = {}, vel[3] = {};
     sky_pos p = {}, pc = {};
 
     // place does not apply deflection / aberration for ICRS
@@ -1238,7 +1232,7 @@ static int test_make_object() {
 }
 
 static int test_transform_cat() {
-  cat_entry in, out;
+  cat_entry in = {}, out;
 
   if(!is_ok("transform_cat:noid", transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &in, 0.0, NULL, &out))) return 1;
   if(!is_ok("transform_cat:same", transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &in, 0.0, "TR", &in))) return 1;
@@ -1436,7 +1430,7 @@ static int test_grav_undef() {
 }
 
 static int test_vector2radec() {
-  double pos[3] = {1.0}, z[3] = {0.0, 0.0, 1.0};
+  double pos[3] = {1.0};
   double x;
 
   if(!is_ok("vector2radec:ra:null", vector2radec(pos, NULL, &x))) return 1;
@@ -1486,7 +1480,6 @@ static int test_airborne_observer() {
 }
 
 static int test_solar_system_observer() {
-  on_surface loc = {};
   observer obs = {}, gc = {};
   object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth"};
   double pos[3] = {1.0, 2.0, 3.0}, vel[3] = { 10.0, 11.0, 12.0 };
@@ -1530,7 +1523,6 @@ static int test_obs_posvel() {
   double tdb2[2] = { tdb, 0.0 };
   double sc_pos[3] = {1.0, 2.0, 3.0}, sc_vel[3] = {4.0, 5.0, 6.0};
   double gpos[3], gvel[3];
-  int i;
 
   if(!is_ok("obs_posvel:ephemeris:earth", ephemeris(tdb2, &earth, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, epos, evel))) return 1;
 
@@ -1687,7 +1679,6 @@ static int test_unix_time() {
 static int test_diff_time() {
   novas_timespec t, t1;
   time_t sec = time(NULL);
-  long nsec = -1;
   double dt;
 
   const double LB = 1.550519768e-8;
@@ -1891,14 +1882,10 @@ static int test_transform() {
 
 
 static int test_app_hor2() {
-  char label[50];
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
-  cat_entry c = {};
   int i;
-
-  double ra = source.star.ra, dec = source.star.dec, az, el, ra1, dec1, x, y;
 
   if(!is_ok("app_hor2:sys=%d:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
   if(!is_ok("app_hor2:sys=%d:make_observer", make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
