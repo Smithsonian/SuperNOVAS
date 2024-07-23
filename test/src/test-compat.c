@@ -62,7 +62,6 @@ static void openfile(const char *name) {
   else if(header) fprintf(fp, "%s", header);
 }
 
-
 static void printvector(double *v) {
   if(!v) fprintf(fp, "null ");
   fprintf(fp, "%12.6f %12.6f %12.6f ", v[0], v[1], v[2]);
@@ -72,8 +71,8 @@ static void printunitvector(double *v) {
   if(!v) fprintf(fp, "null ");
   else {
     double l = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-    if(accuracy == 0) fprintf(fp, "%12.9f %12.9f %12.9f ", v[0] / l, v[1] / l, v[2] / l);
-    else fprintf(fp, "%9.6f %9.6f %9.6f ", v[0] / l, v[1] / l, v[2] / l);
+    if(accuracy == 0) fprintf(fp, "%14.11f %14.11f %14.11f ", v[0] / l, v[1] / l, v[2] / l);
+    else fprintf(fp, "%11.8f %11.8f %11.8f ", v[0] / l, v[1] / l, v[2] / l);
   }
 }
 
@@ -202,15 +201,15 @@ static void test_mean_star() {
 
   openfile("mean_star");
   if(is_ok(mean_star(2433282.42345905, 10.0, -40.0, 1, &ra, &dec)))
-    fprintf(fp, "1 %12.6f %12.6f ", ra, dec);
+    fprintf(fp, "1 %12.9f %12.8f ", ra, dec);
 
   openfile("mean_star");
   if(is_ok(mean_star(2433282.42345905, 19.0, 30.0, 1, &ra, &dec)))
-    fprintf(fp, "2 %12.6f %12.6f ", ra, dec);
+    fprintf(fp, "2 %12.9f %12.8f ", ra, dec);
 
   openfile("mean_star");
   if(is_ok(mean_star(2433282.42345905, 2.7, 68.3, 1, &ra, &dec)))
-    fprintf(fp, "3 %12.6f %12.6f ", ra, dec);
+    fprintf(fp, "3 %12.9f %12.8f ", ra, dec);
 }
 
 
@@ -637,13 +636,26 @@ static void test_light_time() {
 }
 
 static void test_grav_def() {
-  double pos1[3];
+  double pos1[3], pos2[3], ps[3], vs[3];
+  double d, jd2[2] = { tdb };
+  object sun = { 0, 10, "Sun" };
+  int k;
 
   if(source.type != 2) return;
 
   openfile("grav_def");
   if(is_ok(grav_def(tdb, obs.where, accuracy, pos0, pobs, pos1))) {
     printunitvector(pos1);
+  }
+
+  ephemeris(jd2, &sun, 0, accuracy, ps, vs);
+  d = vlen(pos0);
+
+  // Now test a position near the Sun in the direction of the source
+  for(k = 3; --k >= 0;) pos1[k] = ps[k] + 0.01 * pos0[k] / d;
+
+  if(is_ok(grav_def(tdb, obs.where, accuracy, pos1, pobs, pos2))) {
+    printunitvector(pos2);
   }
 }
 

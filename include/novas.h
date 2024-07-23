@@ -763,6 +763,9 @@ typedef struct {
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
+  int pl_mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
+  double pl_pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
+  double pl_vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
 } novas_frame;
 
 /**
@@ -794,6 +797,48 @@ enum novas_refraction_type {
   NOVAS_REFRACT_OBSERVED = -1,  ///< Refract observed elevation value
   NOVAS_REFRACT_ASTROMETRIC     ///< Refract astrometric elevation value
 };
+
+/**
+ * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode
+ *
+ * @sa grav_bodies_reduced_accuracy
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) | (1 << NOVAS_EARTH) )
+
+/**
+ * Default set of gravitating bodies to use for deflection calculations in full accuracy mode
+ *
+ * @sa grav_bodies_full_accuracy
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+#define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
+
+/**
+ * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode
+ *
+ * @sa grav_def()
+ * @sa grav_planets()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+extern int grav_bodies_reduced_accuracy;
+
+/**
+ * Current set of gravitating bodies to use for deflection calculations in full accuracy mode
+ *
+ * @sa grav_def()
+ * @sa grav_planets()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+extern int grav_bodies_full_accuracy;
 
 
 /**
@@ -1077,10 +1122,17 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 
 // ---------------------- Added in 1.1.0 -------------------------
-int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
-
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
+
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3]);
+
+int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
+
+int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out);
+
+int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, int pl_mask, const double pl_pos[][3],
+        const double pl_vel[][3], double *out);
 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 

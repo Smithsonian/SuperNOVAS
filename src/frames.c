@@ -363,6 +363,8 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
  */
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out) {
   static const char *fn = "novas_change_observer";
+  double jd_tdb;
+
   if(!orig || !obs || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: orig=%p, obs=%p, out=%p", orig, obs, out);
 
@@ -374,8 +376,12 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
   out->state = FRAME_DEFAULT;
   out->observer = *obs;
+  out->pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   prop_error(fn, set_obs_posvel(out), 0);
+
+  jd_tdb = novas_get_time(&out->time, NOVAS_TDB);
+  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, &out->pl_mask, out->pl_pos, out->pl_vel), 0);
 
   out->state = FRAME_INITIALIZED;
   return 0;
@@ -606,7 +612,7 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
 int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_reference_system sys, sky_pos *out) {
   static const char *fn = "novas_geom_to_app";
 
-  double jd_tdb, id, pos1[3];
+  double id, pos1[3];
   int i;
 
   if(!pos || !frame || !out)
@@ -618,10 +624,8 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
-  jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
-
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_def(jd_tdb, frame->observer.where, frame->accuracy, pos, frame->obs_pos, pos1), 0);
+  prop_error(fn, grav_planets(pos, frame->obs_pos, frame->pl_mask, frame->pl_pos, frame->pl_vel, pos1), 0);
 
   // Aberration correction
   frame_aberration(frame, GEOM_TO_APP, pos1);
@@ -843,7 +847,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
  */
 int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs) {
   static const char *fn = "novas_apparent_to_nominal";
-  double jd_tdb, app_pos[3];
+  double app_pos[3];
 
   if(!frame || !geom_icrs)
     return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, geom_icrs=%p", frame, geom_icrs);
@@ -853,8 +857,6 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
     return novas_error(-1, EINVAL, fn, "invalid reference system: %d", sys);
-
-  jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
 
   if(dist <= 0.0) dist = 1e15;
 
@@ -884,7 +886,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   frame_aberration(frame, APP_TO_GEOM, app_pos);
 
   // Undo gravitational deflection and aberration.
-  prop_error(fn, grav_undef(jd_tdb, frame->accuracy, app_pos, frame->obs_pos, geom_icrs), 0);
+  prop_error(fn, grav_undo_planets(app_pos, frame->obs_pos, frame->accuracy, frame->pl_mask, frame->pl_pos, frame->pl_vel, geom_icrs), 0);
 
   return 0;
 }
