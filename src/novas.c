@@ -4315,7 +4315,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
 
   double pos_def[3] = { }, pos0[3] = { };
   double l;
-  double tol = accuracy == NOVAS_FULL_ACCURACY ? 1e-13 : 1e-1;
+  double tol = accuracy == NOVAS_FULL_ACCURACY ? 1e-13 : 1e-10;
   int i;
 
   if(!pos_app || !pos_obs)
