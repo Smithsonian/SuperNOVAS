@@ -5921,7 +5921,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     if(is_ascii) {
       for(cache_count = 0; cache_count < N; cache_count++)
         if(fscanf(cio_file, "%lf %lf\n", &cache[cache_count].jd_tdb, &cache[cache_count].ra_cio) != 2)
-          break;
+          return novas_error(-1, errno, fn, "corrupted ASCII CIO locator data: %s", strerror(errno));
     }
     else {
       if(fread(cache, sizeof(ra_of_cio), N, cio_file) != (size_t) N)
