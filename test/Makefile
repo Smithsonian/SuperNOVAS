@@ -15,7 +15,7 @@ include ../config.mk
 OBJECTS := novas.o nutation.o solsys3.o frames.o timescale.o refract.o
 
 .PHONY: run
-run: clean-cov clean-data test-compat test-cio_file test-super test-errors data ../cio_ra.bin
+run: clean-cov clean-data test-compat test-cio_file test-super test-errors data ../cio_ra.bin bad-data
 	./test-compat
 	ln -s ../cio_ra.bin
 	./test-cio_file
@@ -38,6 +38,19 @@ coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov timescale.c.gcov refract.c
 
 data:
 	mkdir data
+
+bad-data: ../cio_ra.bin bad-cio-data
+	touch bad-cio-data/empty
+	dd if=../cio_ra.bin of=bad-cio-data/bad-1.bin bs=27 count=1
+	dd if=../cio_ra.bin of=bad-cio-data/bad-2.bin bs=63 count=1
+	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-1.txt bs=14 count=1
+	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-2.txt bs=79 count=1
+	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-3.txt bs=21 count=1
+	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-4.txt bs=21 count=1 && echo "blah" >> bad-cio-data/bad-4.txt
+	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-5.txt bs=79 count=1 && echo "blah blah blah blah blah blah" >> bad-cio-data/bad-5.txt
+
+bad-cio-data:
+	mkdir $@
 
 .PRECIOUS: %.c.gcov
 %.c.gcov: %.gcno %.gcda
@@ -70,7 +83,7 @@ clean-cov:
 
 .PHONY: clean-data
 clean-data:
-	rm -rf data cio_ra.bin
+	rm -rf data cio_ra.bin bad-cio-data
 
 .PHONY: clean
 clean: clean-test clean-cov clean-data

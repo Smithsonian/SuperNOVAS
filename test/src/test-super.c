@@ -13,6 +13,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <libgen.h>
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
@@ -20,6 +21,7 @@
 #define J2000   2451545.0
 #define DAY     86400.0
 
+static char *workPath;
 
 static observer obs;
 static object source;
@@ -1582,6 +1584,29 @@ static int test_cio_location() {
   return 0;
 }
 
+static int test_cio_array() {
+  char path[256];
+  ra_of_cio data[10] = {};
+
+  sprintf(path, "%s/../data/CIO_RA.TXT", workPath);
+
+  if(!is_ok("cio_array:ascii:set_cio_locator_file", set_cio_locator_file(path))) return 1;
+  if(!is_ok("cio_array:ascii", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
+  if(!is_ok("cio_array:ascii:check:date", fabs(data[0].jd_tdb - NOVAS_JD_J2000) > 6.01)) return 1;
+  if(!is_ok("cio_array:ascii:check:first", data[0].ra_cio == 0.0)) return 1;
+  if(!is_ok("cio_array:ascii:check:last", data[9].ra_cio == 0.0)) return 1;
+
+  sprintf(path, "%s/../cio_ra.bin", workPath);
+
+  if(!is_ok("cio_array:bin:set_cio_locator_file", set_cio_locator_file(path))) return 1;
+  if(!is_ok("cio_array:bin", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
+  if(!is_ok("cio_array:bin:check:date", fabs(data[0].jd_tdb - NOVAS_JD_J2000) > 6.01)) return 1;
+  if(!is_ok("cio_array:bin:check:first", data[0].ra_cio == 0.0)) return 1;
+  if(!is_ok("cio_array:bin:check:last", data[9].ra_cio == 0.0)) return 1;
+
+  return 0;
+}
+
 static int test_novas_debug() {
   int n = 0;
 
@@ -1899,8 +1924,10 @@ static int test_app_hor2() {
   return 0;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   int n = 0;
+
+  workPath = dirname(argv[0]);
 
   novas_debug(NOVAS_DEBUG_ON);
   enable_earth_sun_hp(1);
@@ -1933,6 +1960,7 @@ int main() {
   if(test_obs_posvel()) n++;
   if(test_dxdy_to_dpsideps()) n++;
   if(test_cio_location()) n++;
+  if(test_cio_array()) n++;
 
   // v1.1
   if(test_unix_time()) n++;

@@ -49,6 +49,9 @@ available on the `main` branch.
 
 ### Added
    
+ - `cio_array()` can now parse the original ASCII CIO locator data file (`data/CIO_RA.TXT`) efficiently also, thus no 
+   longer requiring a platform-specific binary translation via the `cio_file` tool.
+  
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
    place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
    defined it can be used very efficiently to calculate positions for multiple celestial objects with minimal 
@@ -106,6 +109,9 @@ available on the `main` branch.
    
 
 ### Changed
+
+ - `cio_file` tool parses interval from header rather than the less precise differencing of the first two record
+   timestamps. This leads to `cio_array()` being more accurately centered on matching date entries, e.g. J2000.
 
  - `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip deflections
    due to a body, if the observer is within ~1500 km of its center.
