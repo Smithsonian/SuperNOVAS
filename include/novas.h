@@ -265,6 +265,16 @@ enum novas_planet {
 #define NOVAS_PLANET_NAMES_INIT { "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Sun", "Moon" }
 
 /**
+ * Gravitating bodies to account for in reduced accuracy mode
+ */
+#define GRAV_BODIES_REDUCED_ACCURACY   ((1 << NOVAS_SUN) | (1 << NOVAS_EARTH))
+
+/**
+ * Gravitating bodies to account for in full accuracy mode
+ */
+#define GRAV_BODIES_FULL_ACCURACY     (GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN))
+
+/**
  * Types of places on and around Earth that may serve a a reference position for the observation.
  *
  */
@@ -1082,7 +1092,7 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 // ---------------------- Added in 1.1.0 -------------------------
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
-int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, double pl_pos[][3], double pl_vel[][3], int *pl_mask);
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3]);
 
 int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out);
 

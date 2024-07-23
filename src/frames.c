@@ -376,11 +376,12 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
   out->state = FRAME_DEFAULT;
   out->observer = *obs;
+  out->pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? GRAV_BODIES_FULL_ACCURACY : GRAV_BODIES_REDUCED_ACCURACY;
 
   prop_error(fn, set_obs_posvel(out), 0);
 
   jd_tdb = novas_get_time(&out->time, NOVAS_TDB);
-  prop_error(fn, grav_init_planets(jd_tdb, out->accuracy, out->obs_pos, out->pl_pos, out->pl_vel, &out->pl_mask), 0);
+  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, &out->pl_mask, out->pl_pos, out->pl_vel), 0);
 
   out->state = FRAME_INITIALIZED;
   return 0;

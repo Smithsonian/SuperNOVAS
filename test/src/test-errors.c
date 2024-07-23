@@ -853,12 +853,12 @@ static int test_grav_init_planets() {
   double p[3] = {2.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}};
   int pl_mask, n = 0;
 
-  if(check("grav_init_planets:pos_obs", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, pb, vb, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_pos", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, vb, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_vel", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, pb, NULL, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_pos+pl_vel", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, NULL, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_pos=pl_vel", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, pb, pb, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_mask", -1, grav_init_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, pb, vb, NULL))) n++;
+  if(check("grav_init_planets:pos_obs", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, &pl_mask, pb, vb))) n++;
+  if(check("grav_init_planets:pl_pos", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, NULL, vb))) n++;
+  if(check("grav_init_planets:pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, pb, NULL))) n++;
+  if(check("grav_init_planets:pl_pos+pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, NULL, NULL))) n++;
+  if(check("grav_init_planets:pl_pos=pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, pb, pb))) n++;
+  if(check("grav_init_planets:pl_mask", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, pb, vb))) n++;
 
   return n;
 }

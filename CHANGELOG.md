@@ -77,6 +77,8 @@ available on the `main` branch.
    
  - Added `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
  
+ - Added `obs_planets()` to calculate planet positions (relative to observer) and velocities (w.r.t. SSB).
+ 
  - Added new observer locations `NOVAS_AIRBORNE_OBSERVER` for an observer moving relative to the surface of Earth e.g.
    in an aircraft or balloon based telescope platform, and `NOVAS_SOLAR_SYSTEM_OBSERVER` for spacecraft orbiting the 
    Sun. Both of these use the `observer.near_earth` strcture to define (positions and) velocities as appropriate. 
