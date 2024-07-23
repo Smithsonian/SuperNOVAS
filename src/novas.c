@@ -4264,7 +4264,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
 
     // Calculate planet position at the time it is gravitationally acting on light.
     for(k = 3; --k >= 0;)
-      p1[k] = pl_pos[i][k] - dlt * pl_vel[i][k];
+      p1[k] = pos_obs[k] + pl_pos[i][k] - dlt * pl_vel[i][k];
 
     // Compute deflection due to gravitating body.
     grav_vec(out, pos_obs, p1, rmass[i], out);
