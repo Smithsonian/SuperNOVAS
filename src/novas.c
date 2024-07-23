@@ -4246,8 +4246,8 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
     if(dpl < 1e-5)
       continue;
 
-    // Calculate light time to the point where incoming light ray is closest to gravitating body.
-    lt = d_light(out, &pl_pos[i][0]);
+    // Calculate light time to the point where incoming geometric light ray is closest to gravitating body.
+    lt = d_light(pos_src, &pl_pos[i][0]);
 
     // If gravitating body is in opposite direction from the source then use the gravitating
     // body position at the time the light is observed.
