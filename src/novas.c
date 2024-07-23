@@ -5833,7 +5833,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
   static long index_cache, cache_count;
   static int is_ascii;
   static int header_size, lrec;
-  static char line[80] = {};
 
   long index_rec;
 
@@ -5851,6 +5850,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
 
   // Check if it's a new file
   if(last_file != cio_file) {
+    char line[80] = {};
     int version;
 
     last_file = NULL;
