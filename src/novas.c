@@ -5873,14 +5873,14 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
       lrec = strlen(line);
 
       if(sscanf(line, "%lf", &lookup.jd_start) < 1)
-        return novas_error(1, errno, fn, "incomplete or corrupted ASCII CIO locator record: %s", strerror(errno));
+        return novas_error(-1, errno, fn, "incomplete or corrupted ASCII CIO locator record: %s", strerror(errno));
 
       fseek(cio_file, 0, SEEK_END);
       nrec = (ftell(cio_file) - header_size) / lrec;
       lookup.jd_end = lookup.jd_start + nrec * lookup.jd_interval;
     }
     else if(tokens) {
-      return novas_error(1, errno, fn, "incomplete or corrupted ASCII CIO locator data header: %s", strerror(errno));
+      return novas_error(-1, errno, fn, "incomplete or corrupted ASCII CIO locator data header: %s", strerror(errno));
     }
     else {
       is_ascii = 0;
@@ -5891,7 +5891,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
 
       // Read the file header
       if(fread(&lookup, sizeof(struct cio_file_header), 1, cio_file) != 1)
-        return novas_error(1, errno, fn, "incomplete or corrupted binary CIO locator data header: %s", strerror(errno));
+        return novas_error(-1, errno, fn, "incomplete or corrupted binary CIO locator data header: %s", strerror(errno));
     }
 
     last_file = cio_file;
