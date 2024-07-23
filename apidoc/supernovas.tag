@@ -55,6 +55,20 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>DEFAULT_GRAV_BODIES_FULL_ACCURACY</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a4cb74da554b236c835302480688cfaac</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aec64bf67d5a03b2b4fb2583e5918f1de</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>DEG2RAD</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>af7e8592d0a634bd3642e9fd508ea8022</anchor>
@@ -1215,10 +1229,24 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>grav_planets</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>afdf087c9ed66c708a3ea6c86ed0e15ed</anchor>
+      <arglist>(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>grav_undef</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aaae33249717912663bbb00be4fa4e6c3</anchor>
       <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>grav_undo_planets</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aaa9a1797639f30c3efa4f1849dd7e411</anchor>
+      <arglist>(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1649,6 +1677,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>obs_planets</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aaa85b5a4a1185241bef2d7eaaf41e6bf</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3])</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>obs_posvel</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a5a62b6e1ef8840a1203c6d2a75d17152</anchor>
@@ -1905,6 +1940,20 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aead87744eeb3029ce7d5ffb1801ee652</anchor>
       <arglist>(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>grav_bodies_full_accuracy</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a18647d39520d1a15a137661f698cb12a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>grav_bodies_reduced_accuracy</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a03a4df8961a0cd05f89aca478d2dcd24</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -2732,10 +2781,24 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>grav_planets</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>afdf087c9ed66c708a3ea6c86ed0e15ed</anchor>
+      <arglist>(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>grav_undef</name>
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>aaae33249717912663bbb00be4fa4e6c3</anchor>
       <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>grav_undo_planets</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>aaa9a1797639f30c3efa4f1849dd7e411</anchor>
+      <arglist>(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2981,6 +3044,13 @@
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>a0dc364ae1963da0b916ed5a9d0862d3e</anchor>
       <arglist>(double t, enum novas_accuracy accuracy, double *dpsi, double *deps)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>obs_planets</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>aaa85b5a4a1185241bef2d7eaaf41e6bf</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3])</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -3267,6 +3337,20 @@
       <name>EPS_COR</name>
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>ac063b61c63e78a4864f2baa4606bab36</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>grav_bodies_full_accuracy</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a18647d39520d1a15a137661f698cb12a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>grav_bodies_reduced_accuracy</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a03a4df8961a0cd05f89aca478d2dcd24</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -3925,6 +4009,27 @@
       <anchorfile>structnovas__frame.html</anchorfile>
       <anchor>aa792216b0b2601bb9af3b882c87274f8</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>pl_mask</name>
+      <anchorfile>structnovas__frame.html</anchorfile>
+      <anchor>a11c277b59ff54981d5d06f592ec7f3f3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>double</type>
+      <name>pl_pos</name>
+      <anchorfile>structnovas__frame.html</anchorfile>
+      <anchor>a6f5b67b882e34ccb91a7ba495dee6735</anchor>
+      <arglist>[NOVAS_PLANETS][3]</arglist>
+    </member>
+    <member kind="variable">
+      <type>double</type>
+      <name>pl_vel</name>
+      <anchorfile>structnovas__frame.html</anchorfile>
+      <anchor>aa267b4bd2ba4580fdb6c25900e04238a</anchor>
+      <arglist>[NOVAS_PLANETS][3]</arglist>
     </member>
     <member kind="variable">
       <type>novas_matrix</type>

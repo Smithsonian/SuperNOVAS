@@ -65,7 +65,7 @@ var NAVTREE =
         [ "3. Explicit linking of custom ephemeris functions", "index.html#autotoc_md65", null ]
       ] ],
       [ "Release schedule", "index.html#autotoc_md67", null ],
-      [ "[1.1.0-rc1]", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ]
@@ -111,8 +111,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#aea0e1028baf14d16d9de800e36a17086",
-"novas_8h.html#acf86ce700b3d3509ebba13e5f16a4327"
+"novas_8c.html#ad290005b13558de3927e455775b32e0f",
+"novas_8h.html#ac800815a32e81e7befdb828c29d1efcc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

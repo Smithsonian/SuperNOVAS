@@ -39,7 +39,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md67"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.1.0-rc1]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -116,6 +116,9 @@
         <topic label="obs_pos" href="structnovas__frame.html#ac2558d2b29171b29bad2599c75d3cc6c"/>
         <topic label="obs_vel" href="structnovas__frame.html#a66f1e86da27c96c1c920dce442ce78c8"/>
         <topic label="observer" href="structnovas__frame.html#aa792216b0b2601bb9af3b882c87274f8"/>
+        <topic label="pl_mask" href="structnovas__frame.html#a11c277b59ff54981d5d06f592ec7f3f3"/>
+        <topic label="pl_pos" href="structnovas__frame.html#a6f5b67b882e34ccb91a7ba495dee6735"/>
+        <topic label="pl_vel" href="structnovas__frame.html#aa267b4bd2ba4580fdb6c25900e04238a"/>
         <topic label="precession" href="structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c"/>
         <topic label="state" href="structnovas__frame.html#a14c8ca4d0bdc764dec0d95d5ba6a0bd6"/>
         <topic label="sun_pos" href="structnovas__frame.html#a3d3fc00c5477b8f7a9b6593a748949d0"/>
@@ -223,6 +226,9 @@
             <topic label="obs_pos" href="structnovas__frame.html#ac2558d2b29171b29bad2599c75d3cc6c"/>
             <topic label="obs_vel" href="structnovas__frame.html#a66f1e86da27c96c1c920dce442ce78c8"/>
             <topic label="observer" href="structnovas__frame.html#aa792216b0b2601bb9af3b882c87274f8"/>
+            <topic label="pl_mask" href="structnovas__frame.html#a11c277b59ff54981d5d06f592ec7f3f3"/>
+            <topic label="pl_pos" href="structnovas__frame.html#a6f5b67b882e34ccb91a7ba495dee6735"/>
+            <topic label="pl_vel" href="structnovas__frame.html#aa267b4bd2ba4580fdb6c25900e04238a"/>
             <topic label="precession" href="structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c"/>
             <topic label="state" href="structnovas__frame.html#a14c8ca4d0bdc764dec0d95d5ba6a0bd6"/>
             <topic label="sun_pos" href="structnovas__frame.html#a3d3fc00c5477b8f7a9b6593a748949d0"/>
@@ -282,6 +288,8 @@
           <topic label="BARYC" href="novas_8h.html#a0c92a54a656043a455ea8ae0ace6c57e"/>
           <topic label="DE405_AU" href="novas_8h.html#af303bf91582509624aa40c6a87eb95ac"/>
           <topic label="DEFAULT_CIO_LOCATOR_FILE" href="novas_8h.html#a4caf1f6e33a208827eb99df7e387d6d1"/>
+          <topic label="DEFAULT_GRAV_BODIES_FULL_ACCURACY" href="novas_8h.html#a4cb74da554b236c835302480688cfaac"/>
+          <topic label="DEFAULT_GRAV_BODIES_REDUCED_ACCURACY" href="novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de"/>
           <topic label="DEG2RAD" href="novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022"/>
           <topic label="HELIOC" href="novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2"/>
           <topic label="NOVAS_AU" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a"/>
@@ -480,7 +488,9 @@
           <topic label="get_ut1_to_tt" href="novas_8h.html#a4d7470ca705efa1953e8b4beab77c6b6"/>
           <topic label="get_utc_to_tt" href="novas_8h.html#ab7611704bab9ce717744a8b5575c5378"/>
           <topic label="grav_def" href="novas_8h.html#a48f90ac20950507fad9b880a7f7f2383"/>
+          <topic label="grav_planets" href="novas_8h.html#afdf087c9ed66c708a3ea6c86ed0e15ed"/>
           <topic label="grav_undef" href="novas_8h.html#aaae33249717912663bbb00be4fa4e6c3"/>
+          <topic label="grav_undo_planets" href="novas_8h.html#aaa9a1797639f30c3efa4f1849dd7e411"/>
           <topic label="grav_vec" href="novas_8h.html#a08a008572e2746a70bec19739b5fb7e6"/>
           <topic label="hor_to_itrs" href="novas_8h.html#ad290005b13558de3927e455775b32e0f"/>
           <topic label="ira_equinox" href="novas_8h.html#aea0e1028baf14d16d9de800e36a17086"/>
@@ -542,6 +552,7 @@
           <topic label="novas_transform_vector" href="novas_8h.html#aadb7bc88119eed4ea54373a42e22a0d4"/>
           <topic label="nutation" href="novas_8h.html#a69df5671751c09a7575963b94ad1151e"/>
           <topic label="nutation_angles" href="novas_8h.html#a0dc364ae1963da0b916ed5a9d0862d3e"/>
+          <topic label="obs_planets" href="novas_8h.html#aaa85b5a4a1185241bef2d7eaaf41e6bf"/>
           <topic label="obs_posvel" href="novas_8h.html#a5a62b6e1ef8840a1203c6d2a75d17152"/>
           <topic label="place" href="novas_8h.html#a263de1618d80fcc737984951fa97c5a3"/>
           <topic label="place_cirs" href="novas_8h.html#aebad3c9b51f62cb7b31a686b5ec890a9"/>
@@ -579,6 +590,8 @@
           <topic label="virtual_planet" href="novas_8h.html#af47d81c6aaa03c8af78eb251c8894bde"/>
           <topic label="virtual_star" href="novas_8h.html#acd47f30801a6676afb5e0614eaefa569"/>
           <topic label="wobble" href="novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652"/>
+          <topic label="grav_bodies_full_accuracy" href="novas_8h.html#a18647d39520d1a15a137661f698cb12a"/>
+          <topic label="grav_bodies_reduced_accuracy" href="novas_8h.html#a03a4df8961a0cd05f89aca478d2dcd24"/>
         </topic>
         <topic label="novascon.h" href="novascon_8h.html">
           <topic label="ANGVEL" href="novascon_8h.html#a088f463ef64dea2727d8ade9b1cd7192"/>
@@ -706,7 +719,9 @@
           <topic label="get_ut1_to_tt" href="novas_8c.html#a4d7470ca705efa1953e8b4beab77c6b6"/>
           <topic label="get_utc_to_tt" href="novas_8c.html#ab7611704bab9ce717744a8b5575c5378"/>
           <topic label="grav_def" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383"/>
+          <topic label="grav_planets" href="novas_8c.html#afdf087c9ed66c708a3ea6c86ed0e15ed"/>
           <topic label="grav_undef" href="novas_8c.html#aaae33249717912663bbb00be4fa4e6c3"/>
+          <topic label="grav_undo_planets" href="novas_8c.html#aaa9a1797639f30c3efa4f1849dd7e411"/>
           <topic label="grav_vec" href="novas_8c.html#a08a008572e2746a70bec19739b5fb7e6"/>
           <topic label="hor_to_itrs" href="novas_8c.html#ad290005b13558de3927e455775b32e0f"/>
           <topic label="ira_equinox" href="novas_8c.html#aea0e1028baf14d16d9de800e36a17086"/>
@@ -742,6 +757,7 @@
           <topic label="novas_get_debug_mode" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79"/>
           <topic label="nutation" href="novas_8c.html#a69df5671751c09a7575963b94ad1151e"/>
           <topic label="nutation_angles" href="novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e"/>
+          <topic label="obs_planets" href="novas_8c.html#aaa85b5a4a1185241bef2d7eaaf41e6bf"/>
           <topic label="obs_posvel" href="novas_8c.html#a5a62b6e1ef8840a1203c6d2a75d17152"/>
           <topic label="place" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3"/>
           <topic label="place_cirs" href="novas_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9"/>
@@ -783,6 +799,8 @@
           <topic label="virtual_star" href="novas_8c.html#acd47f30801a6676afb5e0614eaefa569"/>
           <topic label="wobble" href="novas_8c.html#aead87744eeb3029ce7d5ffb1801ee652"/>
           <topic label="EPS_COR" href="novas_8c.html#ac063b61c63e78a4864f2baa4606bab36"/>
+          <topic label="grav_bodies_full_accuracy" href="novas_8c.html#a18647d39520d1a15a137661f698cb12a"/>
+          <topic label="grav_bodies_reduced_accuracy" href="novas_8c.html#a03a4df8961a0cd05f89aca478d2dcd24"/>
           <topic label="PSI_COR" href="novas_8c.html#a103c28cd84e81dde365238ee3599f5b0"/>
         </topic>
         <topic label="novascon.c" href="novascon_8c.html">

@@ -130,7 +130,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBgrav_undef()\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBNOVAS_CIRS\fP, \fBnovas_get_time()\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::precession\fP, \fBradec2vector()\fP, and \fBnovas_frame::time\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBgrav_undo_planets()\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::pl_mask\fP, \fBnovas_frame::pl_pos\fP, \fBnovas_frame::pl_vel\fP, \fBnovas_frame::precession\fP, and \fBradec2vector()\fP\&.
 .SS "int novas_app_to_hor (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double * az, double * el)"
 Converts an observed apparent position vector in the specified coordinate system to local horizontal coordinates in the specified observer frame\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided the calculated elevation will be the astrometric elevation without a refraction correction\&.
 .PP
@@ -216,7 +216,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::observer\fP, and \fBnovas_frame::state\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_TDB\fP, \fBobs_planets()\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBnovas_frame::pl_mask\fP, \fBnovas_frame::pl_pos\fP, \fBnovas_frame::pl_vel\fP, \fBnovas_frame::state\fP, and \fBnovas_frame::time\fP\&.
 .SS "int novas_geom_posvel (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double * pos, double * vel)"
 Calculates the geometric position and velocity vectors, relative to the observer, for a source in the given observing frame, in the specified coordinate system of choice\&. The geometric position includes proper motion, and for solar-system bodies it is antedated for light travel time, so it effectively represents the geometric position as seen by the observer\&. However, the geometric does not include aberration correction, nor gravitational deflection\&.
 .PP
@@ -310,7 +310,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBgrav_def()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBnovas_frame::time\fP, \fBvector2radec()\fP, and \fBobserver::where\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::pl_mask\fP, \fBnovas_frame::pl_pos\fP, \fBnovas_frame::pl_vel\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, and \fBvector2radec()\fP\&.
 .SS "int novas_hor_to_app (const \fBnovas_frame\fP * frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double * ra, double * dec)"
 Converts an observed azimuth and elevation coordinate to right ascension (R\&.A\&.) and declination coordinates expressed in the coordinate system of choice\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided, the provided elevation value will be assumed to be an astrometric elevation without a refraction correction\&.
 .PP

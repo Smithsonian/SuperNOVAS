@@ -78,11 +78,6 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
    
- - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which led to the wrong results 
-   when the numerator was negative. This affected the calculation of the mean anomaly in `solsys3.c` (line 261) and 
-   the fundamental arguments calculated in `fund_args()` and `ee_ct()` for dates prior to J2000. Less critically, it 
-   also was the reason `cal_date()` did not work for negative JD values.
-   
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
    observed body rather than at the time that light arrives to the observer. This correction was done properly for 
@@ -104,6 +99,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
    `coord_sys = 0` and the same date as before would return the results in GCRS coordinates instead of the requested 
    mean equinox of date coordinates.
+ 
+ - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
+   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
@@ -437,9 +435,9 @@ get radial velocity (for spectroscopy), and apparent distance for Solar-system b
 size conversion).
 
 Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational 
-deflection, you might use `novas_posvel()` instead. And regardless, which function you use you can always easily and 
-efficienty change the coordinate system in which your results are expressed by creating an appropriate transform via
-`novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
+deflection, you might use `novas_geom_posvel()` instead. And regardless, which function you use you can always easily 
+and efficienty change the coordinate system in which your results are expressed by creating an appropriate transform 
+via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
 
 
 #### Calculate azimuth and elevation angles at the observing location
@@ -481,7 +479,7 @@ will handle the respective ephemeris data at runtime before making the NOVAS cal
  set_ephem_provider(my_ephemeris_provider_function);
 ```
 
-Instead of `make_cat_entry()` you define your source as an `object` with an name or ID number that is used by the 
+Instead of `make_cat_object()` you define your source as an `object` with an name or ID number that is used by the 
 ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:

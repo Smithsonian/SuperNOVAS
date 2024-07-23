@@ -88,6 +88,18 @@ novas_frame
 .br
 .RI "The observer location, or NULL for barycentric\&. "
 .ti -1c
+.RI "\fBint\fP \fBpl_mask\fP"
+.br
+.RI "Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBpl_pos\fP [\fBNOVAS_PLANETS\fP][3]"
+.br
+.RI "[AU] Apparent positions of planets w\&.r\&.t\&. observer antedated for light-time "
+.ti -1c
+.RI "\fBdouble\fP \fBpl_vel\fP [\fBNOVAS_PLANETS\fP][3]"
+.br
+.RI "[AU/day] Apparent velocity of planets w\&.r\&.t\&. barycenter antedated for light-time "
+.ti -1c
 .RI "\fBnovas_matrix\fP \fBprecession\fP"
 .br
 .RI "precession matrix "

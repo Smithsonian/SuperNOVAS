@@ -7,10 +7,12 @@ md_CHANGELOG \- Changelog
  All notable changes to the SuperNOVAS library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.1\&.0-rc1]"
+.SH "[Unreleased]"
 .PP
 Changes coming to the next quarterly release, expected around 1 September 2024\&. Some or all of these may be readily available on the \fCmain\fP branch\&.
 .SS "Fixed"
+.IP "\(bu" 2
+#41: \fC\fBgrav_def()\fP\fP gravitating body position antedated somewhat incorrectly (in v1\&.0) when observed source is a Solar-system object between the observer and the gravitating body\&. The resulting positional error is typically small at below 10 uas\&.
 .IP "\(bu" 2
 #39: \fC\fBtod_to_itrs()\fP\fP used wrong Earth rotation measure (\fCNOVAS_ERA\fP instead of \fCNOVAS_GST\fP)\&.
 .IP "\(bu" 2
@@ -20,11 +22,13 @@ Changes coming to the next quarterly release, expected around 1 September 2024\&
 .IP "\(bu" 2
 #36: \fC\fBtt2tdb()\fP\fP Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1\&.7 ms\&.
 .IP "\(bu" 2
+#34: Radial velocity calculation to precede aberration and gravitational bending in \fC\fBplace()\fP\fP, since the radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration)\&. A precise accounting of the gravitational effects would require figuring out the direction in which the observed light was emitted from the source before it was bent by gravitating bodies along the way\&. In practice, this may be difficult to generalize\&. For a single gravitationg body the geometric direction of the source is between the direction in which the light is emitted, and the observed deflected direction\&. Therefore, for the time being, the radial velocity calculated via the geometric direction is closer to the actual value\&.
+.IP "\(bu" 2
 #29: Fix portability to non-Intel x86 platforms (see Issue #29)\&. Previously, SuperNOVAS used \fCchar\fP for storing integer coefficients, assuming \fCchar\fP was signed\&. However, on some platforms like ARM and PowerPC \fCchar\fP is unsigned, which broke many calculations badly for such platforms\&. As of now, we use the explicit platform independent \fCint8_t\fP storage type for these coefficients\&.
 .IP "\(bu" 2
 #28: Division by zero bug in \fC\fBd_light()\fP\fP (since NOVAS C 3\&.1) if the first position argument is the ephemeris reference position (e\&.g\&. the Sun for \fC\fBsolsys3\&.c\fP\fP)\&. The bug affects for example \fC\fBgrav_def()\fP\fP, where it effectively results in the gravitational deflection due to the Sun being skipped\&. See Issue #28\&.
 .IP "\(bu" 2
-Radial velocity calculation to precede aberration and gravitational bending in \fC\fBplace()\fP\fP, since the radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration)\&. A precise accounting of the gravitational effects would require figuring out the direction in which the observed light was emitted from the source before it was bent by gravitating bodies along the way\&. In practice, this may be difficult to generalize, but it may be feasible for a single dominant gravitating body\&.\&.\&. The geometric direction of the source is between the direction in which the light is emitted, and the observed deflected direction\&. Therefore, for the time being, the radial velocity calculated via the geometric direction is closer to the actual value\&.
+\fCPSI_COR\fP and \fCEPS_COR\fP made globally visible again, thus improving NOVAS C 3\&.1 compatibility\&.
 .IP "\(bu" 2
 Adjusted regression testing to treat \fCnan\fP and \fC-nan\fP effectively the same\&. They both represent an equally invalid result regardless of the sign\&.
 .IP "\(bu" 2
@@ -34,13 +38,15 @@ Bungled definition of \fCNOVAS_OBSERVER_PLACES\fP in \fC\fBnovas\&.h\fP\fP\&.
 .PP
 .SS "Added"
 .IP "\(bu" 2
-New observing-frame based approach for calculations (\fC\fBframes\&.c\fP\fP)\&. A \fC\fBnovas_frame\fP\fP object uniquely defines both the place and time of observation, with a set of pre-calculated transformations and constants\&. Once the frame is defined it can be used very efficiently to calculate positions for multiple celestial objects with minimal additional computational cost\&. The frames API is also more elegant and simpler than the low-level NOVAS C approach for performing the same kind of calculations\&. And, frames are inherently thread-safe since post-creation their internal state is never modified during the calculations\&. The following new functions were added: \fC\fBnovas_make_frame()\fP\fP, \fC\fBnovas_change_observer()\fP\fP, \fC\fBnovas_geom_posvel()\fP\fP, \fC\fBnovas_geom_to_app()\fP\fP, \fC\fBnovas_sky_pos()\fP\fP, \fC\fBnovas_app_to_hor()\fP\fP, \fC\fBnovas_app_to_geom()\fP\fP, \fC\fBnovas_hor_to_app()\fP\fP, \fC\fBnovas_make_transform()\fP\fP, \fC\fBnovas_invert_transform()\fP\fP, \fC\fBnovas_transform_vector()\fP\fP, and \fC\fBnovas_transform_sky_pos()\fP\fP\&.
+#33: New observing-frame based approach for calculations (\fC\fBframes\&.c\fP\fP)\&. A \fC\fBnovas_frame\fP\fP object uniquely defines both the place and time of observation, with a set of pre-calculated transformations and constants\&. Once the frame is defined it can be used very efficiently to calculate positions for multiple celestial objects with minimal additional computational cost\&. The frames API is also more elegant and simpler than the low-level NOVAS C approach for performing the same kind of calculations\&. And, frames are inherently thread-safe since post-creation their internal state is never modified during the calculations\&. The following new functions were added: \fC\fBnovas_make_frame()\fP\fP, \fC\fBnovas_change_observer()\fP\fP, \fC\fBnovas_geom_posvel()\fP\fP, \fC\fBnovas_geom_to_app()\fP\fP, \fC\fBnovas_sky_pos()\fP\fP, \fC\fBnovas_app_to_hor()\fP\fP, \fC\fBnovas_app_to_geom()\fP\fP, \fC\fBnovas_hor_to_app()\fP\fP, \fC\fBnovas_make_transform()\fP\fP, \fC\fBnovas_invert_transform()\fP\fP, \fC\fBnovas_transform_vector()\fP\fP, and \fC\fBnovas_transform_sky_pos()\fP\fP\&.
 .IP "\(bu" 2
-New \fC\fBnovas_timespec\fP\fP structure for the self-contained definition of precise astronomical time (\fC\fBtimescale\&.c\fP\fP)\&. You can set the time via \fC\fBnovas_set_time()\fP\fP or \fC\fBnovas_set_split_time()\fP\fP to a JD date in the timescale of choice (UTC, UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with \fC\fBnovas_set_unix_time()\fP\fP\&. Once set, you can obtain an expression of that time in any timescale of choice via \fC\fBnovas_get_time()\fP\fP, \fC\fBnovas_get_split_time()\fP\fP or \fC\fBnovas_get_unix_time()\fP\fP\&. And, you can create a new time specification by incrementing an existing one, using \fCnovas_increment_time()\fP, or measure time differences via \fC\fBnovas_diff_time()\fP\fP\&.
+#33: New \fC\fBnovas_timespec\fP\fP structure for the self-contained definition of precise astronomical time (\fC\fBtimescale\&.c\fP\fP)\&. You can set the time via \fC\fBnovas_set_time()\fP\fP or \fC\fBnovas_set_split_time()\fP\fP to a JD date in the timescale of choice (UTC, UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with \fC\fBnovas_set_unix_time()\fP\fP\&. Once set, you can obtain an expression of that time in any timescale of choice via \fC\fBnovas_get_time()\fP\fP, \fC\fBnovas_get_split_time()\fP\fP or \fC\fBnovas_get_unix_time()\fP\fP\&. And, you can create a new time specification by incrementing an existing one, using \fCnovas_increment_time()\fP, or measure time differences via \fC\fBnovas_diff_time()\fP\fP\&.
+.IP "\(bu" 2
+#32: Added \fC\fBgrav_undef()\fP\fP to undo gravitational bending of the observed light to obtain geometric positions from observed ones\&.
 .IP "\(bu" 2
 Added \fC\fBobs_posvel()\fP\fP to calculate the observer position and velocity relative to the Solar System Barycenter (SSB)\&.
 .IP "\(bu" 2
-Added \fC\fBgrav_undef()\fP\fP to undo gravitational bending of the observed light to obtain geometric positions from observed ones\&.
+Added \fC\fBobs_planets()\fP\fP to calculate planet positions (relative to observer) and velocities (w\&.r\&.t\&. SSB)\&.
 .IP "\(bu" 2
 Added new observer locations \fCNOVAS_AIRBORNE_OBSERVER\fP for an observer moving relative to the surface of Earth e\&.g\&. in an aircraft or balloon based telescope platform, and \fCNOVAS_SOLAR_SYSTEM_OBSERVER\fP for spacecraft orbiting the Sun\&. Both of these use the \fC\fBobserver\&.near_earth\fP\fP strcture to define (positions and) velocities as appropriate\&. Hence the \fC'near_earth\fP name is a bit misleading, but sticks for back compatibility\&.
 .IP "\(bu" 2
@@ -54,13 +60,19 @@ New set of built-in refraction models to use with the frame-based \fC\fBnovas_ap
 .IP "\(bu" 2
 Added radio refraction model \fC\fBnovas_radio_refraction()\fP\fP based on the formulae by Berman & Rockwell 1976\&.
 .IP "\(bu" 2
+#42: \fC\fBcio_array()\fP\fP can now parse the original ASCII CIO locator data file (\fCdata/CIO_RA\&.TXT\fP) efficiently also, thus no longer requiring a platform-specific binary translation via the \fCcio_file\fP tool\&.
+.IP "\(bu" 2
 \fCmake help\fP to provide a brief list and explanation of the available build targets\&. (Thanks to \fC@teuben\fP for suggesting this\&.)
 .IP "\(bu" 2
 Added GitHub CI regression testing for non-x86 platforms: \fCarmv7\fP, \fCaarch64\fP, \fCriscv64\fP, \fCppc64le\fP\&. Thus, we should avoid misphaps, like the platform specific bug Issue #29, in the future\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-\fC\fBgrav_def()\fP\fP is simplified\&. It no longer uses the location type argument\&. Instead it will skip deflections due to a body, if the observer is within ~1500 km of its center\&.
+\fCcio_file\fP tool parses interval from header rather than the less precise differencing of the first two record timestamps\&. This leads to \fC\fBcio_array()\fP\fP being more accurately centered on matching date entries, e\&.g\&. J2000\&.
+.IP "\(bu" 2
+\fC\fBgrav_def()\fP\fP estimation of light time to where light passes nearest to gravitating body is improved by starting with the body position already antedated for light-time for the gravitating mass\&. The change typically improves the grativational deflection calculations at the few uas level\&.
+.IP "\(bu" 2
+\fC\fBgrav_def()\fP\fP is simplified\&. It no longer uses the location type argument\&. Instead it will skip deflections due to any body, if the observer is within ~1500 km of its center\&.
 .IP "\(bu" 2
 \fC\fBplace()\fP\fP now returns an error 3 if and only if the observer is at (or very close, to within ~1\&.5m) of the observed Solar-system object\&.
 .IP "\(bu" 2
@@ -118,7 +130,7 @@ This is the initial release of the SuperNOVAS library\&. Changes are indicated w
 .IP "\(bu" 2
 Fixes the NOVAS C 3\&.1 \fCsidereal_time bug\fP, whereby the \fC\fBsidereal_time()\fP\fP function had an incorrect unit cast\&.
 .IP "\(bu" 2
-Some remainder calculations in NOVAS C 3\&.1 used the result from \fCfmod()\fP unchecked, which led to the wrong results when the numerator was negative\&. This affected the calculation of the mean anomaly in \fC\fBsolsys3\&.c\fP\fP (line 261) and the fundamental arguments calculated in \fC\fBfund_args()\fP\fP and \fC\fBee_ct()\fP\fP for dates prior to J2000\&. Less critically, it also was the reason \fC\fBcal_date()\fP\fP did not work for negative JD values\&.
+Some remainder calculations in NOVAS C 3\&.1 used the result from \fCfmod()\fP unchecked, which resulted in angles outside of the expected [0:] range and was also the reason why \fC\fBcal_date()\fP\fP did not work for negative JD values\&.
 .IP "\(bu" 2
 Fixes antedating velocities and distances for light travel time in NOVAS C 3\&.1 \fC\fBephemeris()\fP\fP\&. When getting positions and velocities for Solar-system sources, it is important to use the values from the time light originated from the observed body rather than at the time that light arrives to the observer\&. This correction was done properly for positions, but not for velocities or distances, resulting in incorrect observed radial velocities or apparent distances being reported for spectroscopic observations or for angular-physical size conversions\&.
 .IP "\(bu" 2

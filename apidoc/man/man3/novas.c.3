@@ -130,7 +130,13 @@ src/novas.c
 .RI "short \fBgrav_def\fP (double jd_tdb, enum \fBnovas_observer_place\fP unused, enum \fBnovas_accuracy\fP accuracy, const double *pos_src, const double *pos_obs, double *out)"
 .br
 .ti -1c
+.RI "int \fBgrav_planets\fP (const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out)"
+.br
+.ti -1c
 .RI "int \fBgrav_undef\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *pos_app, const double *pos_obs, double *out)"
+.br
+.ti -1c
+.RI "int \fBgrav_undo_planets\fP (const double *pos_app, const double *pos_obs, enum \fBnovas_accuracy\fP accuracy, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out)"
 .br
 .ti -1c
 .RI "int \fBgrav_vec\fP (const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out)"
@@ -236,6 +242,9 @@ src/novas.c
 .br
 .ti -1c
 .RI "int \fBnutation_angles\fP (double t, enum \fBnovas_accuracy\fP accuracy, double *dpsi, double *deps)"
+.br
+.ti -1c
+.RI "int \fBobs_planets\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3])"
 .br
 .ti -1c
 .RI "int \fBobs_posvel\fP (double jd_tdb, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP *obs, const double *geo_pos, const double *geo_vel, double *pos, double *vel)"
@@ -365,6 +374,12 @@ src/novas.c
 .RI "double \fBEPS_COR\fP = 0\&.0"
 .br
 .ti -1c
+.RI "int \fBgrav_bodies_full_accuracy\fP = \fBDEFAULT_GRAV_BODIES_FULL_ACCURACY\fP"
+.br
+.ti -1c
+.RI "int \fBgrav_bodies_reduced_accuracy\fP = \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP"
+.br
+.ti -1c
 .RI "double \fBPSI_COR\fP = 0\&.0"
 .br
 .in -1c
@@ -422,6 +437,8 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 \fBSee also\fP
 .RS 4
+inv_aberration() 
+.PP
 \fBplace()\fP 
 .RE
 .PP
@@ -936,7 +953,7 @@ This function has been completely re-written by A\&. Kovacs to provide much more
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, -1 if the output array is NULL or there was an I/O error accessing the CIO location data file\&. Or else 1 if no locator data file is available, 2 if 'jd_tdb' not in the range of the CIO file, 3 if 'n_pts' out of range, 4 if unable to allocate memory for the internal 't' array, or 6 if 'jd_tdb' is too close to either end of the CIO file do we are unable to put 'n_pts' data points into the output
+0 if successful, -1 if the output array is NULL or there was an I/O error accessing the CIO location data file\&. Or else 1 if no locator data file is available, 2 if 'jd_tdb' not in the range of the CIO file, 3 if 'n_pts' out of range, or 6 if 'jd_tdb' is too close to either end of the CIO file do we are unable to put 'n_pts' data points into the output
 .RE
 .PP
 \fBSee also\fP
@@ -1195,7 +1212,7 @@ References \fBcel2ter()\fP, \fBEROT_ERA\fP, and \fBNOVAS_DYNAMICAL_CLASS\fP\&.
 .SS "double d_light (const double * pos_src, const double * pos_body)"
 Returns the difference in light-time, for a star, between the barycenter of the solar system and the observer (or the geocenter) (\fIUsage A\fP)\&.
 .PP
-Alternatively (\fIUsage B\fP), this function returns the light-time from the observer (or the geocenter) to a point on a light ray that is closest to a specific solar system body\&. For this purpose, 'pos_src' is the position vector toward observed object, with respect to origin at observer (or the geocenter); 'pos_body' is the position vector of solar system body, with respect to origin at observer (or the geocenter), components in AU; and the returned value is the light time to point on line defined by 'pos' that is closest to solar system body (positive if light passes body before hitting observer, i\&.e\&., if 'pos1' is within 90 degrees of 'pos_obs')\&.
+Alternatively (\fIUsage B\fP), this function returns the light-time from the observer (or the geocenter) to a point on a light ray that is closest to a specific solar system body\&. For this purpose, 'pos_src' is the position vector toward observed object, with respect to origin at observer (or the geocenter); 'pos_body' is the position vector of solar system body, with respect to origin at observer (or the geocenter), components in AU; and the returned value is the light time to point on line defined by 'pos' that is closest to solar system body (positive if light passes body before hitting observer, i\&.e\&., if 'pos_body' is within 90 degrees of 'pos_src')\&.
 .PP
 NOTES: 
 .PD 0
@@ -1996,7 +2013,7 @@ References \fBNOVAS_TAI_TO_TT\fP\&.
 .SS "short grav_def (double jd_tdb, enum \fBnovas_observer_place\fP unused, enum \fBnovas_accuracy\fP accuracy, const double * pos_src, const double * pos_obs, double * out)"
 Computes the total gravitational deflection of light for the observed object due to the major gravitating bodies in the solar system\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
-If 'accuracy' is NOVAS_FULL_ACCURACY (0), the deflections due to the Sun, Jupiter, Saturn, and Earth are calculated\&. Otherwise, only the deflection due to the Sun is calculated\&. In either case, deflection is ignored if the observer is within ~1500 km of the center of the gravitating body\&.
+If 'accuracy' is NOVAS_FULL_ACCURACY (0), the deflections due to the Sun, Jupiter, Saturn, and Earth are calculated\&. Otherwise, only the deflection due to the Sun is calculated\&. In either case, deflection for a given body is ignored if the observer is within ~1500 km of the center of the gravitating body\&.
 .PP
 NOTES: 
 .PD 0
@@ -2027,7 +2044,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&.
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from \fBephemeris()\fP, or else 30 + the error from \fBmake_object()\fP\&.
+0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from \fBobs_planets()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -2041,11 +2058,78 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&.
 \fBset_planet_provider()\fP 
 .PP
 \fBset_planet_provider_hp()\fP 
+.PP
+\fBgrav_bodies_full_accuracy\fP 
+.PP
+\fBgrav_bodies_reduced_accuracy\fP 
 .RE
 .PP
 
 .PP
-References \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBephemeris()\fP, \fBgrav_vec()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_DEBUG_EXTRA\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_MOON\fP, \fBNOVAS_NEPTUNE\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_RMASS_INIT\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_SUN\fP, \fBNOVAS_URANUS\fP, and \fBNOVAS_VENUS\fP\&.
+References \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_PLANETS\fP, and \fBobs_planets()\fP\&.
+.SS "int grav_planets (const double * pos_src, const double * pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double * out)"
+Computes the total gravitational deflection of light for the observed object due to the specified gravitating bodies in the solar system\&. This function is valid for an observed body within the solar system as well as for a star\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The gravitational deflection due to planets requires a planet calculator function to be configured, e\&.g\&. via \fBset_planet_provider()\fP\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos_src\fP [AU] Position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU\&. 
+.br
+\fIpl_mask\fP Bitwise (1 << planet-number) mask indicating which planets to use, and have apparent positions and velocities defined\&. 
+.br
+\fIpl_pos\fP [AU] Apparent geometric position of planets rel\&. to observer, antedated for light travel time to observer\&. 
+.br
+\fIpl_vel\fP [AU/day] Apparent velocities of planets rel\&. to observer, antedated for light travel time to observer\&. 
+.br
+\fIout\fP [AU] Position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, corrected for gravitational deflection, components in AU\&. It can be the same vector as the input, but not the same as pos_obs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobs_planets()\fP 
+.PP
+\fBgrav_undo_planets()\fP 
+.PP
+\fBgrav_def()\fP 
+.PP
+\fBnovas_geom_to_app()\fP 
+.PP
+\fBgrav_bodies_full_accuracy\fP 
+.PP
+\fBgrav_bodies_reduced_accuracy\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBC_AUDAY\fP, \fBd_light()\fP, \fBgrav_vec()\fP, \fBNOVAS_PLANETS\fP, and \fBNOVAS_RMASS_INIT\fP\&.
 .SS "int grav_undef (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * pos_app, const double * pos_obs, double * out)"
 Computes the gravitationally undeflected position of an observed source position due to the major gravitating bodies in the solar system\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
@@ -2074,7 +2158,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&.
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from \fBephemeris()\fP, or else 30 + the error from \fBmake_object()\fP\&.
+0 if successful, -1 if any of the pointer arguments is NULL (errno = EINVAL) or if the result did not converge (errno = ECANCELED), or else an error from \fBobs_planets()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -2085,7 +2169,11 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&.
 .PP
 \fBset_planet_provider()\fP 
 .PP
-\fBset_planet_provider_hp()\fP
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBgrav_bodies_full_accuracy\fP 
+.PP
+\fBgrav_bodies_reduced_accuracy\fP
 .RE
 .PP
 \fBSince\fP
@@ -2100,7 +2188,60 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBgrav_def()\fP, and \fBNOVAS_REDUCED_ACCURACY\fP\&.
+References \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_undo_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_PLANETS\fP, and \fBobs_planets()\fP\&.
+.SS "int grav_undo_planets (const double * pos_app, const double * pos_obs, enum \fBnovas_accuracy\fP accuracy, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double * out)"
+Computes the gravitationally undeflected position of an observed source position due to the specified Solar-system bodies\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos_app\fP [AU] Apparent position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) for sub-as accuracy or NOVAS_REDUCED_ACCURACY (1) for sub-mas accuracy\&. 
+.br
+\fIpl_mask\fP Bitwise (1 << planet-number) mask indicating which planets to use, and have apparent positions and velocities defined\&. 
+.br
+\fIpl_pos\fP [AU] Apparent geometric position of planets rel\&. to observer, antedated for light travel time to observer\&. 
+.br
+\fIpl_vel\fP [AU/day] Apparent velocities of planets rel\&. to observer, antedated for light travel time to observer\&. 
+.br
+\fIout\fP [AU] Nominal position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, without gravitational deflection, components in AU\&. It can be the same vector as the input, but not the same as pos_obs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobs_planets()\fP 
+.PP
+\fBgrav_planets()\fP 
+.PP
+\fBnovas_app_to_geom()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBgrav_planets()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
 .SS "int grav_vec (const double * pos_src, const double * pos_obs, const double * pos_body, double rmass, double * out)"
 Corrects position vector for the deflection of light in the gravitational field of an arbitrary body\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
@@ -3454,6 +3595,53 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 
 .PP
 References \fBiau2000a()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
+.SS "int obs_planets (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * pos_obs, int * pl_mask, double pl_pos[][3], double pl_vel[][3])"
+Calculates the positions and velocities for the Solar-system bodies, e\&.g\&. for use for graviational deflection calculations\&. The planet positions are calculated relative to the observer location, while velocities are w\&.r\&.t\&. the SSB\&. Both positions and velocities are antedated for light travel time, so they accurately reflect the apparent position (and barycentric motion) of the bodies from the observer's perspective\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)\&. In full accuracy mode, it will calculate the deflection due to the Sun, Jupiter, Saturn and Earth\&. In reduced accuracy mode, only the deflection due to the Sun is calculated\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU\&. 
+.br
+\fIpl_mask\fP Bitwise (1 << planet-number) mask indicating which planets to use (input), and which of these have apparent positions and velocities returned (output)\&. 
+.br
+\fIpl_pos\fP [AU] Apparent geometric position of planets rel\&. to observer, antedated for light travel time to observer\&. 
+.br
+\fIpl_vel\fP [AU/day] Apparent velocities of planets rel\&. to observer, antedated for light travel time to observer\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from \fBephemeris()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_planets()\fP 
+.PP
+\fBgrav_undo_planets()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBlight_time2()\fP, \fBmake_planet()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_EXTRA\fP, \fBNOVAS_DEBUG_OFF\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_PLANETS\fP, and \fBNOVAS_SUN\fP\&.
 .SS "int obs_posvel (double jd_tdb, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP * obs, const double * geo_pos, const double * geo_vel, double * pos, double * vel)"
 Calculates the ICRS position and velocity of the observer relative to the Solar System Barycenter (SSB)\&.
 .PP
@@ -5219,6 +5407,48 @@ Celestial pole offset  for high-precision applications\&.
 \fBPSI_COR\fP 
 .PP
 \fBcel_pole()\fP 
+.RE
+.PP
+
+.SS "int grav_bodies_full_accuracy = \fBDEFAULT_GRAV_BODIES_FULL_ACCURACY\fP"
+Current set of gravitating bodies to use for deflection calculations in full accuracy mode
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_def()\fP 
+.PP
+\fBgrav_planets()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "int grav_bodies_reduced_accuracy = \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP"
+Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_def()\fP 
+.PP
+\fBgrav_planets()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 

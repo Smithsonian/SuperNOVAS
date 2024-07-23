@@ -17,6 +17,8 @@ var novas_8h =
     [ "BARYC", "novas_8h.html#a0c92a54a656043a455ea8ae0ace6c57e", null ],
     [ "DE405_AU", "novas_8h.html#af303bf91582509624aa40c6a87eb95ac", null ],
     [ "DEFAULT_CIO_LOCATOR_FILE", "novas_8h.html#a4caf1f6e33a208827eb99df7e387d6d1", null ],
+    [ "DEFAULT_GRAV_BODIES_FULL_ACCURACY", "novas_8h.html#a4cb74da554b236c835302480688cfaac", null ],
+    [ "DEFAULT_GRAV_BODIES_REDUCED_ACCURACY", "novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de", null ],
     [ "DEG2RAD", "novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022", null ],
     [ "HELIOC", "novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2", null ],
     [ "NOVAS_AU", "novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a", null ],
@@ -215,7 +217,9 @@ var novas_8h =
     [ "get_ut1_to_tt", "novas_8h.html#a4d7470ca705efa1953e8b4beab77c6b6", null ],
     [ "get_utc_to_tt", "novas_8h.html#ab7611704bab9ce717744a8b5575c5378", null ],
     [ "grav_def", "novas_8h.html#a48f90ac20950507fad9b880a7f7f2383", null ],
+    [ "grav_planets", "novas_8h.html#afdf087c9ed66c708a3ea6c86ed0e15ed", null ],
     [ "grav_undef", "novas_8h.html#aaae33249717912663bbb00be4fa4e6c3", null ],
+    [ "grav_undo_planets", "novas_8h.html#aaa9a1797639f30c3efa4f1849dd7e411", null ],
     [ "grav_vec", "novas_8h.html#a08a008572e2746a70bec19739b5fb7e6", null ],
     [ "hor_to_itrs", "novas_8h.html#ad290005b13558de3927e455775b32e0f", null ],
     [ "ira_equinox", "novas_8h.html#aea0e1028baf14d16d9de800e36a17086", null ],
@@ -277,6 +281,7 @@ var novas_8h =
     [ "novas_transform_vector", "novas_8h.html#aadb7bc88119eed4ea54373a42e22a0d4", null ],
     [ "nutation", "novas_8h.html#a69df5671751c09a7575963b94ad1151e", null ],
     [ "nutation_angles", "novas_8h.html#a0dc364ae1963da0b916ed5a9d0862d3e", null ],
+    [ "obs_planets", "novas_8h.html#aaa85b5a4a1185241bef2d7eaaf41e6bf", null ],
     [ "obs_posvel", "novas_8h.html#a5a62b6e1ef8840a1203c6d2a75d17152", null ],
     [ "place", "novas_8h.html#a263de1618d80fcc737984951fa97c5a3", null ],
     [ "place_cirs", "novas_8h.html#aebad3c9b51f62cb7b31a686b5ec890a9", null ],
@@ -313,5 +318,7 @@ var novas_8h =
     [ "vector2radec", "novas_8h.html#a882279981a7d5a67ed596fa0937a12c1", null ],
     [ "virtual_planet", "novas_8h.html#af47d81c6aaa03c8af78eb251c8894bde", null ],
     [ "virtual_star", "novas_8h.html#acd47f30801a6676afb5e0614eaefa569", null ],
-    [ "wobble", "novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652", null ]
+    [ "wobble", "novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652", null ],
+    [ "grav_bodies_full_accuracy", "novas_8h.html#a18647d39520d1a15a137661f698cb12a", null ],
+    [ "grav_bodies_reduced_accuracy", "novas_8h.html#a03a4df8961a0cd05f89aca478d2dcd24", null ]
 ];
