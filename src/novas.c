@@ -4456,11 +4456,8 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
 
   // If could not get positions for another gravitating body then
   // return error only if in extra debug mode...
-  if(*pl_mask != mask && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA) {
-    const char *names[] = NOVAS_PLANET_NAMES_INIT;
-    char from[40];
+  if(*pl_mask != mask && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA)
     prop_error(fn, error, 0);
-  }
 
   return 0;
 }
