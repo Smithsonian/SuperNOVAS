@@ -30,7 +30,8 @@ int main(int argc, const char *argv[]) {
   const char *outname = "cio_ra.bin";
   char identifier[25];
 
-  long int header_size, record_size, i, n_recs;
+  long header_size, record_size, i, n_recs;
+  int version;
 
   double jd_tdb, ra_cio, jd_first = 0.0, jd_last = 0.0, interval = 0.0, jd_beg, jd_end, t_int, jd_1, ra_1, jd_n, ra_n;
 
@@ -78,6 +79,8 @@ int main(int argc, const char *argv[]) {
     return (1);
   }
 
+  sscanf(identifier, "CIO RA P%d @ %lfd", &version, &interval);
+
   /*
    Read the input file and write the output file.
    */
@@ -107,14 +110,6 @@ int main(int argc, const char *argv[]) {
       jd_first = jd_tdb;
       fseek(out_file, header_size, SEEK_SET);
     }
-
-    /*
-     If this is the second record, compute the time interval between
-     input data points, assuming a constant interval.
-     */
-
-    if(i == 2L)
-      interval = jd_tdb - jd_first;
 
     /*
      Capture the value of the Julian date of the last data point.
