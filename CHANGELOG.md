@@ -207,9 +207,6 @@ from which SuperNOVAS is forked from.
 
  - Fixes the NOVAS C 3.1 [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the 
    `sidereal_time()` function had an incorrect unit cast.
- 
- - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
-   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
    
  - Fixes antedating velocities and distances for light travel time in NOVAS C 3.1 `ephemeris()`. When getting 
    positions and velocities for Solar-system sources, it is important to use the values from the time light originated 
@@ -232,6 +229,9 @@ from which SuperNOVAS is forked from.
    overwritten the cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent 
    call with `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the 
    requested mean equinox of date coordinates.
+ 
+ - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
+   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
  
  - Fixes NOVAS C 3.1 `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified 
    input vector appropriately instead.

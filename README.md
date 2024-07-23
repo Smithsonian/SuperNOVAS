@@ -720,6 +720,8 @@ before that level of accuracy is reached.
    `novas_increment_time()`, or measure time differences via `novas_diff_time()`.
    
  - `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
+ 
+ - `obs_planets()` to calculate planet positions (relative to observer) and velocities (w.r.t. SSB).
    
  - `grav_undef()` to undo gravitational bending of the observed light to obtain geometric positions from
    observed ones.
