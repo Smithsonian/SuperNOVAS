@@ -5861,7 +5861,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     tokens = sscanf(line, "CIO RA P%d @ %lfd", &version, &lookup.jd_interval);
 
     if(tokens < 0) {
-      return novas_error(-1, errno, fn, "Incopmlete ASCII CIO locator data: %s", strerror(errno));
+      return novas_error(-1, errno, fn, "CIO locator data input error: %s", strerror(errno));
     }
     if(tokens == 2) {
       int nrec;

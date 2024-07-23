@@ -630,8 +630,6 @@ static int test_cio_array() {
 
   set_cio_locator_file("bad-cio-data/bad-2.bin");
   if(check("cio_array:bin:incomplete", 6, cio_array(2341952.0, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-2.bin");
   if(check("cio_array:bin:seek", -1, cio_array(2341955.4, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-1.txt");
@@ -639,9 +637,13 @@ static int test_cio_array() {
 
   set_cio_locator_file("bad-cio-data/bad-2.txt");
   if(check("cio_array:ascii:incomplete", 6, cio_array(2341952.0, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-2.txt");
   if(check("cio_array:ascii:seek", 2, cio_array(2341955.4, 2, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-3.txt");
+  if(check("cio_array:ascii:no-data", 1, cio_array(2341952.0, 2, x))) n++;
+
+  set_cio_locator_file("bad-cio-data/bad-4.txt");
+  if(check("cio_array:ascii:no-data", -1, cio_array(2341952.0, 2, x))) n++;
 
   return n;
 }

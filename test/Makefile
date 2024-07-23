@@ -45,6 +45,8 @@ bad-data: ../cio_ra.bin bad-cio-data
 	dd if=../cio_ra.bin of=bad-cio-data/bad-2.bin bs=63 count=1
 	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-1.txt bs=14 count=1
 	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-2.txt bs=79 count=1
+	dd if=../data/CIO_RA.TXT of=bad-cio-data/bad-3.txt bs=21 count=1
+	cp bad-cio-data/bad-3.txt bad-cio-data/bad-4.txt && echo "blah" >> bad-cio-data/bad-4.txt
 
 bad-cio-data:
 	mkdir $@
