@@ -1651,7 +1651,6 @@ short place(double jd_tt, const object *source, const observer *location, double
     if(novas_vlen(pos) < 1e-11)
       return novas_error(3, EINVAL, fn, "observer is at or very near the observed location");
 
-
     // Calculate distance to Sun.
     d_sb = 0.0;
     for(k = 3; --k >= 0;) {
@@ -2816,13 +2815,13 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
     }
     case (EROT_GST):
-                      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-    spin(-15.0 * gast, out, out);
+      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
+      spin(-15.0 * gast, out, out);
 
-    if(class != NOVAS_DYNAMICAL_CLASS) {
-      tod_to_gcrs(jd_tdb, accuracy, out, out);
-    }
-    break;
+      if(class != NOVAS_DYNAMICAL_CLASS) {
+        tod_to_gcrs(jd_tdb, accuracy, out, out);
+      }
+      break;
 
     default:
       return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
@@ -3134,10 +3133,10 @@ int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  * @since 1.0
  * @author Attila Kovacs
  */
-int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
-        double yp, const double *in, double *out) {
-  prop_error("tod_to_itrs", cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt / DAY, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, in,
-          out), 0);
+int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
+        double *out) {
+  prop_error("tod_to_itrs",
+          cel2ter(jd_tt_high, jd_tt_low - ut1_to_tt / DAY, ut1_to_tt, EROT_GST, accuracy, NOVAS_DYNAMICAL_CLASS, xp, yp, in, out), 0);
   return 0;
 }
 
@@ -3668,7 +3667,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
 
   // Sine and cosine coefficients for t^1.
   const double se1[2] = //
-  { -0.87e-6, +0.00e-6 };
+          { -0.87e-6, +0.00e-6 };
 
   novas_delaunay_args fa2;
   double fa[14];
@@ -3973,8 +3972,10 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
 
       // Return velocities w.r.t. the geocenter.
       for(i = 3; --i >= 0;) {
-        if(pos) pos[i] = obs->near_earth.sc_pos[i] - pos1[i];
-        if(vel) vel[i] = obs->near_earth.sc_vel[i] - vel1[i];
+        if(pos)
+          pos[i] = obs->near_earth.sc_pos[i] - pos1[i];
+        if(vel)
+          vel[i] = obs->near_earth.sc_vel[i] - vel1[i];
       }
 
       // Already in GCRS...
@@ -4163,7 +4164,6 @@ double d_light(const double *pos_src, const double *pos_body) {
   return d_src > 1e-30 ? novas_vdot(pos_body, pos_src) / d_src / C_AUDAY : 0.0;
 }
 
-
 /**
  * Computes the total gravitational deflection of light for the observed object due to the
  * specified gravitating bodies in the solar system.  This function is valid for an observed body
@@ -4243,7 +4243,8 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
     dpl = novas_vlen(&pl_pos[i][0]);
 
     // If observing from within ~1500 km of the gravitating body, then skip deflections by it...
-    if(dpl < 1e-5) continue;
+    if(dpl < 1e-5)
+      continue;
 
     // Calculate light time to the point where incoming light ray is closest to gravitating body.
     lt = d_light(out, &pl_pos[i][0]);
@@ -4314,7 +4315,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
 
   double pos_def[3] = { }, pos0[3] = { };
   double l;
-  double tol = accuracy == NOVAS_REDUCED_ACCURACY ? 1e-10 : 1e-13;
+  double tol = accuracy == NOVAS_FULL_ACCURACY ? 1e-13 : 1e-1;
   int i;
 
   if(!pos_app || !pos_obs)
@@ -4387,22 +4388,23 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, double pl_pos[][3], double pl_vel[][3], int *pl_mask) {
+int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, double pl_pos[][3], double pl_vel[][3],
+        int *pl_mask) {
   static const char *fn = "grav_init_planets";
 
   // The following list of body numbers identifies which gravitating bodies (aside from the Earth)
   // are potentially used -- list is taken from Klioner's table 1, the order based on area of sky
   // affected (col 2).  Order is Sun, Jupiter, Saturn, Moon, Venus, Uranus, Neptune.
-  // v1.1: Earth is inserted after Sun, but used in high accuracy calculations only.
-  static const enum novas_planet body_num[] = { NOVAS_SUN, NOVAS_EARTH, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_MOON, NOVAS_VENUS,
-          NOVAS_URANUS, NOVAS_NEPTUNE };
+  // v1.1: Earth is inserted after Saturn, but used in high accuracy calculations only.
+  static const enum novas_planet body_num[] = { NOVAS_SUN, NOVAS_JUPITER, NOVAS_SATURN, NOVAS_EARTH, NOVAS_MOON, NOVAS_VENUS, NOVAS_URANUS,
+          NOVAS_NEPTUNE };
   static object body[8];
   static int initialized;
 
   int error = 0;
 
   // Set the number of bodies -- and hence the bodies used -- based on the value of the 'accuracy' flag.
-  const int nbodies = (accuracy == NOVAS_FULL_ACCURACY) ? 4 : 1;
+  const int mask = (accuracy == NOVAS_FULL_ACCURACY) ? 15 : 9;
   enum novas_debug_mode dbmode = novas_get_debug_mode();
 
   int i;
@@ -4422,7 +4424,6 @@ int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double 
   if(pl_pos == pl_vel)
     return novas_error(-1, EINVAL, fn, "Indinstinct arrays: planet pos = vel");
 
-
   // Set up the structures of type 'object' containing the body information.
   if(!initialized) {
     for(i = 0; i < 8; i++)
@@ -4431,22 +4432,24 @@ int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double 
   }
 
   // Temporarily disable debug traces, unless in extra debug mode
-  if(dbmode != NOVAS_DEBUG_EXTRA) novas_debug(NOVAS_DEBUG_OFF);
+  if(dbmode != NOVAS_DEBUG_EXTRA)
+    novas_debug(NOVAS_DEBUG_OFF);
 
   // Cycle through gravitating bodies.
-  for(i = 0; i < nbodies; i++) {
-    const int n = body_num[i];
-    double tl;
+  for(i = 0; i < 8; i++)
+    if(mask & (1 << i)) {
+      const int n = body_num[i];
+      double tl;
 
-    // Calculate positions and velocities antedated for light time.
-    error = light_time2(jd_tdb, &body[i], pos_obs, 0.0, accuracy, &pl_pos[n][0], &pl_vel[n][0], &tl);
-    if(error) {
-      error = error > 10 ? error - 10 : -1;
-      break;
+      // Calculate positions and velocities antedated for light time.
+      error = light_time2(jd_tdb, &body[i], pos_obs, 0.0, accuracy, &pl_pos[n][0], &pl_vel[n][0], &tl);
+      if(error) {
+        error = error > 10 ? error - 10 : -1;
+        break;
+      }
+
+      *pl_mask |= (1 << n);
     }
-
-    *pl_mask |= (1 << n);
-  }
 
   // Re-enable debug traces
   novas_debug(dbmode);
@@ -4457,7 +4460,7 @@ int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double 
 
   // If could not get positions for another gravitating body then
   // return error only if in extra debug mode...
-  if(i < nbodies && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA) {
+  if(i < 8 && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA) {
     const char *names[] = NOVAS_PLANET_NAMES_INIT;
     char from[40];
     sprintf(from, "%s:%s", fn, names[body_num[i]]);
@@ -4516,11 +4519,11 @@ int grav_init_planets(double jd_tdb, enum novas_accuracy accuracy, const double 
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  */
-short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src,
-        const double *pos_obs, double *out) {
+short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs,
+        double *out) {
   static const char *fn = "grav_def";
 
-  double pl_pos[NOVAS_PLANETS][3]= {{}}, pl_vel[NOVAS_PLANETS][3] = {{}};
+  double pl_pos[NOVAS_PLANETS][3] = { { } }, pl_vel[NOVAS_PLANETS][3] = { { } };
   int pl_mask = 0;
 
   if(!pos_src || !out)
@@ -4530,7 +4533,6 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
   prop_error(fn, grav_planets(pos_src, pos_obs, pl_mask, pl_pos, pl_vel, out), 0);
   return 0;
 }
-
 
 /**
  * Computes the gravitationally undeflected position of an observed source position due to the
@@ -4744,7 +4746,6 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
   return 0;
 }
 
-
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed
@@ -4878,7 +4879,7 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
       break;
     }
 
-    /* Objects in the solar system */
+      /* Objects in the solar system */
     case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
       // Compute solar potential at object, if within solar system.
@@ -5575,8 +5576,8 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
 
   // Expression given in USNO Circular 179, eq. 2.6.
   const double d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
-  + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-  + 0.000010 * t * sin(628.3076 * t + 4.2490);
+          + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+          + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
   // The simpler formula with a precision of ~30 us.
   //  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
