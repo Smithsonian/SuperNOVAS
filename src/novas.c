@@ -5809,9 +5809,8 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  * @return          0 if successful, -1 if the output array is NULL or there
  *                  was an I/O error accessing the CIO location data file. Or else 1 if no
  *                  locator data file is available, 2 if 'jd_tdb' not in the range of the CIO
- *                  file, 3 if 'n_pts' out of range, 4 if  unable to allocate memory for the
- *                  internal 't' array, or 6 if 'jd_tdb' is too close to either end of the CIO
- *                  file do we are unable to put 'n_pts' data points into the output
+ *                  file, 3 if 'n_pts' out of range, or 6 if 'jd_tdb' is too close to either end
+ *                  of the CIO file do we are unable to put 'n_pts' data points into the output
  *
  * @sa set_cio_locator_file()
  * @sa cio_location()
