@@ -5852,7 +5852,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
   // Check if it's a new file
   if(last_file != cio_file) {
     int version;
-    int nrec;
 
     last_file = NULL;
     cache_count = 0;
@@ -5861,6 +5860,8 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
       return novas_error(1, errno, fn, "empty CIO locator data: %s", strerror(errno));
 
     if(sscanf(line, "CIO RA P%d @ %lfd", &version, &lookup.jd_interval) == 2) {
+      int nrec;
+
       is_ascii = 1;
       header_size = strlen(line);
 
