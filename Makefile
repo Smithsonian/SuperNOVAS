@@ -57,7 +57,7 @@ endif
 
 # Default target for packaging with Linux distributions
 .PHONY: distro
-distro: $(SHARED_TARGETS) cio_ra.bin $(DOC_TARGETS)
+distro: $(SHARED_TARGETS) $(DOC_TARGETS)
 
 # Shared libraries (versioned and unversioned)
 .PHONY: shared
@@ -147,9 +147,8 @@ lib/libnovas.a: $(OBJECTS) | lib
 	ranlib $@
 
 # CIO locator data
-.PHONY: cio_ra.bin
-cio_ra.bin: bin/cio_file lib/libnovas.a data/CIO_RA.TXT
-	bin/cio_file data/CIO_RA.TXT $@
+cio_ra.bin: data/CIO_RA.TXT bin/cio_file lib/libnovas.a
+	bin/cio_file $< $@
 
 .INTERMEDIATE: bin/cio_file
 bin/cio_file: obj/cio_file.o | bin
@@ -177,17 +176,17 @@ help:
 	@echo
 	@echo "The following targets are available:"
 	@echo
-	@echo "  distro        (default) 'shared', 'cio_ra.bin' targets, and also 'dox'" 
-	@echo "                if 'doxygen' is available, or was specified via the DOXYGEN"
-	@echo "                variable (e.g. in 'config.mk')."
+	@echo "  distro        (default) 'shared' targets and also 'local-dox' provided 'doxygen'" 
+	@echo "                is available, or was specified via the DOXYGEN variable (e.g. in"
+	@echo "                'config.mk')."
 	@echo "  static        Builds the static 'lib/libsupernovas.a' library."
 	@echo "  shared        Builds the shared 'libsupernovas.so', 'libsolsys1.so', and" 
 	@echo "                'libsolsys2.so' libraries (linked to versioned ones)."
-	@echo "  cio_ra.bin    Generates the CIO locator lookup data file 'cio_ra.bin', in the"
-	@echo "                destination specified in 'config.mk'."
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  solsys        Builds only the objects that may provide external 'solarsystem()'"
 	@echo "                call implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
+	@echo "  cio_ra.bin    Generates a platform-specific binary CIO locator lookup data file"
+	@echo "                'cio_ra.bin' from the ASCII 'data/CIO_RA.TXT'."
 	@echo "  check         Performs static analysis with 'cppcheck'."
 	@echo "  test          Runs regression tests."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
