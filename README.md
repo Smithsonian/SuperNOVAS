@@ -95,9 +95,6 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
    
- - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
-   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
-   
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
    observed body rather than at the time that light arrives to the observer. This correction was done properly for 
@@ -119,6 +116,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent call with
    `coord_sys = 0` and the same date as before would return the results in GCRS coordinates instead of the requested 
    mean equinox of date coordinates.
+ 
+ - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
+   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
