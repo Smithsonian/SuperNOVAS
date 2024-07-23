@@ -629,14 +629,14 @@ static int test_cio_array() {
   if(check("cio_array:bin:header", -1, cio_array(2341952.0, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-2.bin");
-  if(check("cio_array:bin:incomplete", 6, cio_array(2341952.0, 2, x))) n++;
+  if(check("cio_array:bin:incomplete", 6, cio_array(2341951.4, 2, x))) n++;
   if(check("cio_array:bin:seek", -1, cio_array(2341965.4, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-1.txt");
   if(check("cio_array:ascii:header", -1, cio_array(2341952.0, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-2.txt");
-  if(check("cio_array:ascii:incomplete", 6, cio_array(2341952.0, 2, x))) n++;
+  if(check("cio_array:ascii:incomplete", 6, cio_array(2341951.4, 2, x))) n++;
   if(check("cio_array:ascii:seek", 2, cio_array(2341965.4, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-3.txt");

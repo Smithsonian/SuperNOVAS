@@ -5860,9 +5860,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
 
     tokens = sscanf(line, "CIO RA P%d @ %lfd", &version, &lookup.jd_interval);
 
-    if(tokens < 0) {
-      return novas_error(-1, errno, fn, "CIO locator data input error: %s", strerror(errno));
-    }
     if(tokens == 2) {
       is_ascii = 1;
       header_size = strlen(line);
@@ -5919,17 +5916,17 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
       index_cache = 0;
 
     // Read in cache from the requested position
-    if(fseek(cio_file, header_size + index_cache * lrec, SEEK_SET) < 0)
-          return novas_error(-1, errno, fn, "truncated or corrupted CIO locator data file: %s", strerror(errno));
+    if(fseek(cio_file, header_size + index_cache * lrec, SEEK_SET) != 0)
+          return novas_error(-1, errno, fn, "truncated CIO locator data file: %s", strerror(errno));
 
     if(is_ascii) {
       int k;
       for(k = 0; k < N; k++)
         if(fscanf(cio_file, "%lf %lf\n", &cache[k].jd_tdb, &cache[k].ra_cio) != 2)
-          return novas_error(-1, errno, fn, "CIO locator data file read error: %s", strerror(errno));
+          return novas_error(-1, errno, fn, "corrupted ASCII CIO locator data: %s", strerror(errno));
     }
     else if(fread(cache, sizeof(ra_of_cio), N, cio_file) != (size_t) N)
-      return novas_error(-1, errno, fn, "CIO locator data file read error: %s", strerror(errno));
+      return novas_error(-1, errno, fn, "corrupted binaty CIO locator data: %s", strerror(errno));
 
     cache_count = N;
   }

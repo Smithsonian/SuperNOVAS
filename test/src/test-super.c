@@ -1590,22 +1590,19 @@ static int test_cio_array() {
 
   sprintf(path, "%s/../data/CIO_RA.TXT", workPath);
 
-  if(!is_ok("cio_array:set_cio_locator_file", set_cio_locator_file(path))) return 1;
-  if(!is_ok("cio_array", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
-  if(!is_ok("cio_array:check:date", fabs(data[0].jd_tdb - NOVAS_JD_J2000) > 6.01)) return 1;
-  if(!is_ok("cio_array:check:first", data[0].ra_cio == 0.0)) return 1;
-  if(!is_ok("cio_array:check:first", data[9].ra_cio == 0.0)) return 1;
+  if(!is_ok("cio_array:ascii:set_cio_locator_file", set_cio_locator_file(path))) return 1;
+  if(!is_ok("cio_array:ascii", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
+  if(!is_ok("cio_array:ascii:check:date", fabs(data[0].jd_tdb - NOVAS_JD_J2000) > 6.01)) return 1;
+  if(!is_ok("cio_array:ascii:check:first", data[0].ra_cio == 0.0)) return 1;
+  if(!is_ok("cio_array:ascii:check:last", data[9].ra_cio == 0.0)) return 1;
 
   sprintf(path, "%s/../cio_ra.bin", workPath);
 
-  if(!is_ok("cio_array:set_cio_locator_file", set_cio_locator_file(path))) return 1;
-  if(!is_ok("cio_array", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
-
-  printf("### %f\n", fabs(data[0].jd_tdb - NOVAS_JD_J2000));
-
-  if(!is_ok("cio_array:check:date", fabs(data[0].jd_tdb - NOVAS_JD_J2000) > 6.01)) return 1;
-  if(!is_ok("cio_array:check:first", data[0].ra_cio == 0.0)) return 1;
-  if(!is_ok("cio_array:check:first", data[9].ra_cio == 0.0)) return 1;
+  if(!is_ok("cio_array:bin:set_cio_locator_file", set_cio_locator_file(path))) return 1;
+  if(!is_ok("cio_array:bin", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
+  if(!is_ok("cio_array:bin:check:date", fabs(data[0].jd_tdb - NOVAS_JD_J2000) > 6.01)) return 1;
+  if(!is_ok("cio_array:bin:check:first", data[0].ra_cio == 0.0)) return 1;
+  if(!is_ok("cio_array:bin:check:last", data[9].ra_cio == 0.0)) return 1;
 
   return 0;
 }
