@@ -5864,8 +5864,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
       return novas_error(-1, errno, fn, "CIO locator data input error: %s", strerror(errno));
     }
     if(tokens == 2) {
-      int nrec;
-
       is_ascii = 1;
       header_size = strlen(line);
 
@@ -5878,8 +5876,9 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
         return novas_error(-1, errno, fn, "incomplete or corrupted ASCII CIO locator record: %s", strerror(errno));
 
       fseek(cio_file, 0, SEEK_END);
-      nrec = (ftell(cio_file) - header_size) / lrec;
-      lookup.jd_end = lookup.jd_start + nrec * lookup.jd_interval;
+
+      lookup.n_recs = (ftell(cio_file) - header_size) / lrec;
+      lookup.jd_end = lookup.jd_start + lookup.n_recs * lookup.jd_interval;
     }
     else if(tokens) {
       return novas_error(-1, errno, fn, "incomplete or corrupted ASCII CIO locator data header: %s", strerror(errno));
