@@ -72,14 +72,19 @@ int main(int argc, const char *argv[]) {
    Read input file identifier.
    */
 
-  if(fgets(identifier, sizeof(identifier), in_file) == NULL) {
+  if(fgets(identifier, sizeof(identifier) - 1, in_file) == NULL) {
     printf("Empty input file.\n");
     fclose(in_file);
     fclose(out_file);
     return (1);
   }
 
-  sscanf(identifier, "CIO RA P%d @ %lfd", &version, &interval);
+  if(sscanf(identifier, "CIO RA P%d @ %lfd", &version, &interval) != 2) {
+    printf("Invalid header: %s.\n", identifier);
+    fclose(in_file);
+    fclose(out_file);
+    return (1);
+  }
 
   /*
    Read the input file and write the output file.
