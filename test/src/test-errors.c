@@ -1116,6 +1116,10 @@ static int test_geom_posvel() {
   frame.accuracy = 2;
   if(check("geom_posvel:frame:accuracy:2", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
 
+  frame.accuracy = NOVAS_REDUCED_ACCURACY;
+  make_ephem_object("blah", 111111, &o);
+  if(check("geom_posvel:ephem_object", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
   return n;
 }
 

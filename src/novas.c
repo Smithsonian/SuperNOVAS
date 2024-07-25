@@ -6425,6 +6425,8 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
       enum novas_origin eph_origin = NOVAS_HELIOCENTER;
 
       error = -1;
+      errno = ENOSYS;
+
       if(readeph2_call) {
         // If there is a newstyle epehemeris access routine set, we will prefer it.
         error = readeph2_call(body->name, body->number, jd_tdb[0], jd_tdb[1], &eph_origin, posvel, &posvel[3]);
