@@ -41,7 +41,7 @@ check:
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
-dox: README.md | apidoc
+dox: README.md Doxyfile | apidoc
 	@echo "   [doxygen]"
 	@$(DOXYGEN)
 
