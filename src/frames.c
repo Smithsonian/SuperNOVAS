@@ -6,8 +6,8 @@
  * @since 1.1
  *
  *  Routines for higher-level and efficient repeat coordinate transformations using observer frames.
- *  Observer frames represent an observer location at a specific stronomical time (instant), which
- *  can be re-used again and again to calculate or transform positions of celestial sources in
+ *  Observer frames represent an observer location at a specific astronomical time (instant), which
+ *  can be re-used again and again to calculate or transform positions of celestial sources in a
  *  a range of astronomical coordinate systems.
  */
 
@@ -497,8 +497,20 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
     bary2obs(pos1, frame->obs_pos, pos1, &t_light);
   }
   else {
-    // Get position of body wrt observer, antedated for light-time.
-    prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 50);
+    int got = 0;
+
+    // If we readily have the requested planet data in the frame, use it.
+    if(source->type == NOVAS_PLANET)
+      if(frame->pl_mask & (1 << source->number)) {
+        memcpy(pos1, &frame->pl_pos[source->number][0], sizeof(pos1));
+        memcpy(vel1, &frame->pl_vel[source->number][0], sizeof(vel1));
+        got = 1;
+      }
+
+    // Otherwise, get the position of body wrt observer, antedated for light-time.
+    if(!got) {
+      prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 50);
+    }
   }
 
   if(pos) {

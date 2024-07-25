@@ -358,6 +358,9 @@ int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  *
  * @sa j2000_to_tod()
  * @sa j2000_to_gcrs()
+ * @sa tod_to_gcrs()
+ * @sa tod_to_cirs()
+ * @sa tod_to_itrs()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -384,6 +387,7 @@ int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @param[out] out  GCRS output 3-vector
  * @return          0 if successful, or else an error from frame_tie()
  *
+ * @sa j2000_to_tod()
  * @sa gcrs_to_j2000()
  *
  * @since 1.0
@@ -402,6 +406,7 @@ int j2000_to_gcrs(const double *in, double *out) {
  * @return          0 if successful, or else an error from frame_tie()
  *
  * @sa j2000_to_gcrs()
+ * @sa tod_to_j2000()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -453,7 +458,9 @@ static int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double
  * @return          0 if successful, or -1 if either of the vector arguments is NULL.
  *
  * @sa j2000_to_tod()
- * @sa tod_to_gcrs()
+ * @sa tod_to_cirs()
+ * @sa tod_to_j2000()
+ * @sa tod_to_itrs()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -529,6 +536,8 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  *
  * @sa tod_to_gcrs()
  * @sa gcrs_to_cirs()
+ * @sa cirs_to_itrs()
+ * @sa cirs_to_tod()
  *
  *
  * @since 1.0
@@ -579,6 +588,8 @@ int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  *
  * @sa tod_to_cirs()
  * @sa cirs_to_app_ra()
+ * @sa cirs_to_gcrs()
+ * @sa cirs_to_itrs()
  *
  *
  * @since 1.1
@@ -612,6 +623,9 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  *
  * @sa cirs_to_tod()
  * @sa app_to_cirs_ra()
+ * @sa tod_to_gcrs()
+ * @sa tod_to_j2000()
+ * @sa tod_to_itrs()
  *
  *
  * @since 1.1
@@ -3161,6 +3175,8 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @sa tod_to_itrs()
  * @sa itrs_to_cirs()
  * @sa gcrs_to_cirs()
+ * @sa cirs_to_gcrs()
+ * @sa cirs_to_tod()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -3209,6 +3225,9 @@ int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  * @sa cirs_to_itrs()
  * @sa itrs_to_tod()
  * @sa j2000_to_tod()
+ * @sa tod_to_gcrs()
+ * @sa tod_to_j2000()
+ * @sa tod_to_cirs()
  *
  * @since 1.0
  * @author Attila Kovacs
