@@ -118,7 +118,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    mean equinox of date coordinates.
  
  - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
-   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
+   of the expected [0:2&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
@@ -135,9 +135,6 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
     the gravitational deflection due to the Sun being skipped.
    
- - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the 
-   radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration), and 
-   `rad_vel()` requires geometric directions also to account for the gravitational effects of the Sun and Earth.
 
 -----------------------------------------------------------------------------
 
@@ -188,10 +185,10 @@ the necessary variables in the shell prior to invoking `make`. For example:
    one tries to use the functions from `solsys1.c`). Note, that a `readeph()` implementation is not always necessary 
    and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
 
- - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the binary file 
-   (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable
-   prior to calling `make`. (The CIO locator file is not at all necessary for the functioning of the library, unless 
-   you specifically require CIO positions relative to GCRS.)
+ - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
+   file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
+   variable prior to calling `make`. (The CIO locator file is not at all necessary for the functioning of the library, 
+   unless  you specifically require CIO positions relative to GCRS.)
    
  - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
@@ -206,8 +203,8 @@ Now you are ready to build the library:
 
 will compile the shared (e.g. `lib/libsupernovas.so`) libraries, produce a CIO locator data file (e.g. 
 `tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
-Alternatively, you can build select components of the above with the `make` targets `shared`, `cio_file`, and 
-`local-dox` respectively. And, if unsure, you can always call `make help` to see what build targets are available.
+Alternatively, you can build select components of the above with the `make` targets `shared`, and `local-dox` 
+respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
 system-wide install you may place the static or shared library into `/usr/local/lib/`, copy the CIO locator file to 
@@ -600,10 +597,10 @@ before that level of accuracy is reached.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
-    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations. 
-    Note, that refraction at radio wavelengths is notably different from the included optical model. In any case you 
-    may want to skip the refraction corrections offered in this library, and instead implement your own as appropriate 
-    (or not at all).
+    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
+    Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
+    radio refraction model is included as of version 1.1. In any case you may want to skip the refraction corrections 
+    offered in this library, and instead implement your own as appropriate (or not at all).
   
 
 
@@ -826,6 +823,9 @@ before that level of accuracy is reached.
  - [__v1.1__] `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip 
    deflections due to a body, if the observer is within ~1500 km of its center.
 
+ - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the 
+   radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration), and 
+   `rad_vel()` requires geometric directions also to account for the gravitational effects of the Sun and Earth.
 
 -----------------------------------------------------------------------------
 

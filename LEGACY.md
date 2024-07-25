@@ -1,11 +1,22 @@
+# SuperNOVAS: Astrometric Positions the Old Way
 
-### Calculating positions for a sidereal source
+As of version 1.1, the SuperNOVAS library offers a new, more versatile, more intuitive, and more efficient way to 
+calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see `README.md`). 
+However the old approach of the NOVAS C library remain viable also. This document demonstrates calculating the 
+astrometric places of sources the old way, without using the observing frames approach that is now preferred in 
+SuperNOVAS.
 
+ - [Calculating positions for a sidereal source](#old-sidereal-example)
+ - [Calculating positions for a Solar-system source](#old-solsys-example)
+
+
+<a name="old-sidereal-example"></a>
+## Calculating positions for a sidereal source
 
 A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
 galactic molecular cloud, or a distant quasar. 
 
-#### Specify the object of interest
+### Specify the object of interest
 
 First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star 
 for which we have B1950 (i.e. FK4) coordinates:
@@ -34,7 +45,7 @@ adjustment to convert from J2000 to ICRS coordinates.
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
 start.)
 
-#### Spefify the observer location
+### Spefify the observer location
 
 Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
 (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):
@@ -47,7 +58,7 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-#### Specify the time of observation
+### Specify the time of observation
 
 We also need to set the time of observation. Our clocks usually measure UTC, but for astrometry we usually need time 
 measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. For a ground-based observer, you will often
@@ -70,7 +81,7 @@ UT1 - UTC time difference (a.k.a. DUT1):
  double ut1_to_tt = get_ut1_to_tt(leap_seconds, dut1);
 ```
 
-#### Specify Earth orientation parameters
+### Specify Earth orientation parameters
 
 Next, you may want to set the small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
 in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). The obvious utility of 
@@ -87,7 +98,7 @@ early on:
  cel_pole(jd_tt, POLE_OFFSETS_X_Y, dx, dy);
 ```
 
-#### Calculate apparent positions on sky
+### Calculate apparent positions on sky
 
 Now we can calculate the precise apparent position (CIRS or TOD) of the source, such as it's right ascension (R.A.) 
 and declination, and the equatorial _x,y,z_ unit vector pointing in the direction of the source (in the requested 
@@ -116,7 +127,7 @@ the given date/time of observation. We may use it to get true apparent R.A. and 
 azimuth and elevation at the observing location. We'll consider these two cases separately below.
 
 
-##### A. True apparent R.A. and declination
+#### A. True apparent R.A. and declination
 
 If you want to know the apparent R.A. and declination coordinates from the `sky_pos` structure you obtained, then you 
 can follow with:
@@ -140,7 +151,8 @@ not the true equinox of date. Thus, we must correct for the difference of the or
   ra = cirs_to_app_ra(jd_tt, NOVAS_FULL_ACCURACY, ra);
 ```
 
-##### B. Azimuth and elevation angles at the observing location
+
+#### B. Azimuth and elevation angles at the observing location
 
 If your goal is to calculate the astrometric azimuth and zenith distance (= 90&deg; - elevation) angles of the source 
 at the specified observing location (without refraction correction), you can proceed from the `sky_pos` data you 
@@ -173,8 +185,8 @@ if you want, e.g.:
    zd -= refract_astro(&obs.on_surf, NOVAS_STANDARD_ATMOSPHERE, zd);
 ```
 
-
-### Calculating positions for a Solar-system source
+<a name="old-solsys-example"></a>
+## Calculating positions for a Solar-system source
 
 Solar-system sources work similarly to the above with a few important differences.
 
@@ -229,46 +241,4 @@ E.g.:
    ...
  }
 ```
-
-### Reduced accuracy shortcuts
-
-When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
-
- - You can use TT and TDB timescales interchangeably in the present era unless you require the utmost precision.
- - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
-   effect at the milliarcsecond level only, but may be much faster to calculate.
- - You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the 
-   &lt;= 22 mas level).
- - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
- 
-
-### Performance considerations
-
-Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
-however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they 
-may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy). 
-Therefore, when calculating positions for a large number of sources at different times:
-
- - It is best to iterate over the sources in the inner loop while keeping the time fixed. 
- - You probably want to stick to one accuracy mode (`NOVAS_FULL_ACCURACY` or `NOVAS_REDUCED_ACCURACY`) to prevent
-   re-calculating the same quantities repeatedly to alternating precision.
- - If super-high accuracy is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster calculations, in general.
- 
-
-### Multi-threaded calculations
- 
-A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as 
-implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one 
-set of input parameters while, at the same time, another thread is saving cached values for a different set of 
-parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, 
-or more precisely they may not correspond to the requested input parameters.
- 
-While you should never call NOVAS C from  multiple threads simultaneously, SuperNOVAS caches the results in thread
-local variables (provided your compiler supports it), and is therefore safe to use in multi-threaded applications.
-Just make sure that you:
-
- - use a compiler which supports the C11 language standard;
- - or, compile with GCC &gt;= 3.3;
- - or else, set the appropriate non-standard keyword to use for declaring thread-local variables for your compiler in 
-   `config.mk` or in your equivalent build setup.
 
