@@ -5,7 +5,10 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *  Routines for higher-level and efficient repeat coordinate transformations.
+ *  Routines for higher-level and efficient repeat coordinate transformations using observer frames.
+ *  Observer frames represent an observer location at a specific stronomical time (instant), which
+ *  can be re-used again and again to calculate or transform positions of celestial sources in
+ *  a range of astronomical coordinate systems.
  */
 
 /// \cond PRIVATE
@@ -255,7 +258,10 @@ static int is_frame_initialized(const novas_frame *frame) {
 
 /**
  * Sets up a observing frame for a specific observer location, time of observation, and accuracy
- * requirement.
+ * requirement. The frame is initialized using the currently configured planet ephemeris provider
+ * function (see set_planet_provider() and set_planet_provider_hp()), and in case of reduced
+ * accuracy mode, the currently configured IAU nutation model provider (see
+ * set_nutation_lp_provider()).
  *
  *
  * @param accuracy    Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or
@@ -264,10 +270,11 @@ static int is_frame_initialized(const novas_frame *frame) {
  * @param time        Time of observation
  * @param dx          [mas] Earth orientation parameter, polar offset in x.
  * @param dy          [mas] Earth orientation parameter, polar offset in y.
- * @param[out] frame  Pointer to the observing frame to set up.
- * @return            0 if successful, 10--40: error is 10 + the error ephemeris(),
+ * @param[out] frame  Pointer to the observing frame to configure.
+ * @return            0 if successful,
+ *                    10--40: error is 10 + the error from ephemeris(),
  *                    40--50: error is 40 + the error from geo_posvel(),
- *                    50--80: error is 30 + the error from sidereal_time(),
+ *                    50--80: error is 50 + the error from sidereal_time(),
  *                    80--90 error is 80 + error from cio_location(),
  *                    90--100 error is 90 + error from cio_basis().
  *                    or else -1 if there was an error (errno will indicate the
@@ -277,6 +284,8 @@ static int is_frame_initialized(const novas_frame *frame) {
  * @sa novas_sky_pos()
  * @sa novas_geom_posvel()
  * @sa novas_make_transform()
+ * @sa set_planet_provider()
+ * @sa set_nutation_lp_provider()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -381,7 +390,7 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
   prop_error(fn, set_obs_posvel(out), 0);
 
   jd_tdb = novas_get_time(&out->time, NOVAS_TDB);
-  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, &out->pl_mask, out->pl_pos, out->pl_vel), 0);
+  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, out->pl_mask, out->pl_pos, out->pl_vel, &out->pl_mask), 0);
 
   out->state = FRAME_INITIALIZED;
   return 0;

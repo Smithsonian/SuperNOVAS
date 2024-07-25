@@ -42,6 +42,8 @@
 #  define DEFAULT_SOLSYS 0
 #endif
 
+// <---------- GLOBAL VARIABLES -------------->
+
 #if !DEFAULT_SOLSYS
 novas_planet_provider planet_call = (novas_planet_provider) solarsystem;
 novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem_hp;
@@ -50,7 +52,8 @@ novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem
 /// \endcond
 
 /**
- * Celestial pole offset &psi; for high-precision applications.
+ * Celestial pole offset &psi; for high-precision applications. It was visible to users in NOVAS C 3.1,
+ * hence we continue to expose it also for back compatibility.
  *
  * @sa EPS_COR
  * @sa cel_pole()
@@ -58,16 +61,22 @@ novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem
 double PSI_COR = 0.0;
 
 /**
- * Celestial pole offset &epsilon; for high-precision applications.
+ * Celestial pole offset &epsilon; for high-precision applications. It was visible to users in NOVAS C 3.1,
+ * hence we continue to expose it also for back compatibility.
  *
  * @sa PSI_COR
  * @sa cel_pole()
  */
 double EPS_COR = 0.0;
 
+// Defined in novas.h
 int grav_bodies_reduced_accuracy = DEFAULT_GRAV_BODIES_REDUCED_ACCURACY;
 
+// Defined in novas.h
 int grav_bodies_full_accuracy = DEFAULT_GRAV_BODIES_FULL_ACCURACY;
+
+
+// <---------- LOCAL VARIABLES -------------->
 
 /// Current debugging state for reporting errors and traces to stderr.
 static enum novas_debug_mode novas_debug_state = 0;
@@ -550,6 +559,73 @@ int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
 
   return 0;
 }
+
+/**
+ * Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate
+ * Reference System (CIRS) at the given epoch to the True of Date (TOD) reference
+ * system.
+ *
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date that defines
+ *                  the output epoch. Typically it does not require much precision, and
+ *                  Julian dates in other time measures will be unlikely to affect the
+ *                  result
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param in        CIRS Input (x, y, z) position or velocity vector
+ * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
+ *                  It can be the same vector as the input.
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL
+ *                  or the accuracy is invalid, or 10 + the error from cio_location(), or
+ *                  else 20 + the error from cio_basis().
+ *
+ * @sa tod_to_cirs()
+ * @sa cirs_to_app_ra()
+ *
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
+  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
+
+  // Obtain the R.A. [h] of the CIO at the given date
+  prop_error("cirs_to_tod", cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio), 0);
+
+  return spin(-15.0 * ra_cio, in, out);
+}
+
+
+/**
+ * Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference
+ * system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the .
+ *
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date that defines
+ *                  the output epoch. Typically it does not require much precision, and
+ *                  Julian dates in other time measures will be unlikely to affect the
+ *                  result
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param in        CIRS Input (x, y, z) position or velocity vector
+ * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
+ *                  It can be the same vector as the input.
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL
+ *                  or the accuracy is invalid, or 10 + the error from cio_location(), or
+ *                  else 20 + the error from cio_basis().
+ *
+ * @sa cirs_to_tod()
+ * @sa app_to_cirs_ra()
+ *
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
+  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
+
+  // Obtain the R.A. [h] of the CIO at the given date
+  prop_error("tod_to_cirs", cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio), 0);
+
+  return spin(15.0 * ra_cio, in, out);
+}
+
 
 /**
  * Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY)
@@ -3949,7 +4025,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       break;
     }
 
-    case NOVAS_AIRBORNE_OBSERVER: {
+    case NOVAS_AIRBORNE_OBSERVER: {                     // Airborne observer
       const double ivu = DAY / AU_KM;
       observer surf = *obs;
       int i;
@@ -3966,7 +4042,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       break;
     }
 
-    case NOVAS_SOLAR_SYSTEM_OBSERVER: {
+    case NOVAS_SOLAR_SYSTEM_OBSERVER: {               // Observer in Solar orbit
       const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
       const double tdb[2] = { jd_tdb, 0.0 };
       int i;
@@ -4190,8 +4266,9 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
  *                    origin at solar system barycenter, referred to ICRS axes,
  *                    components in AU.
- * @param pl_mask     Bitwise (1 << planet-number) mask indicating which planets to use,
- *                    and have apparent positions and velocities defined.
+ * @param pl_mask     Bitwise `(1 << planet-number)` mask indicating which planets to use,
+ *                    and have apparent positions and velocities defined. See enum novas_planet
+ *                    for the planet numbers.
  * @param pl_pos      [AU] Apparent geometric position of planets rel. to observer, antedated
  *                    for light travel time to observer.
  * @param pl_vel      [AU/day] Apparent velocities of planets rel. to observer, antedated
@@ -4209,6 +4286,7 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @sa novas_geom_to_app()
  * @sa grav_bodies_full_accuracy
  * @sa grav_bodies_reduced_accuracy
+ * @sa enum novas_planet
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -4296,8 +4374,9 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
  *                    components in AU.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) for sub-&mu;as accuracy or NOVAS_REDUCED_ACCURACY (1)
  *                    for sub-mas accuracy.
- * @param pl_mask     Bitwise (1 << planet-number) mask indicating which planets to use,
- *                    and have apparent positions and velocities defined.
+ * @param pl_mask     Bitwise `(1 << planet-number)` mask indicating which planets to use,
+ *                    and have apparent positions and velocities defined. See enum novas_planet for
+ *                    the planet numbers.
  * @param pl_pos      [AU] Apparent geometric position of planets rel. to observer, antedated
  *                    for light travel time to observer.
  * @param pl_vel      [AU/day] Apparent velocities of planets rel. to observer, antedated
@@ -4311,6 +4390,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
  * @sa obs_planets()
  * @sa grav_planets()
  * @sa novas_app_to_geom()
+ * @sa enum novas_planet
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -4331,7 +4411,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
     return novas_error(-1, EINVAL, fn, "NULL input planet posvel: pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
 
   if(pl_pos == pl_vel)
-    return novas_error(-1, EINVAL, fn, "Indinstinct arrays: planet pos = vel");
+    return novas_error(-1, EINVAL, fn, "Indistinct output arrays: planet pos = vel");
 
   if(!out)
     return novas_error(-1, EINVAL, fn, "NULL output 3-vector: out=%p", out);
@@ -4379,17 +4459,20 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
  * @param pos_obs       [AU] Position 3-vector of observer (or the geocenter), with respect to
  *                      origin at solar system barycenter, referred to ICRS axes,
  *                      components in AU.
- * @param[in,out] pl_mask   Bitwise (1 << planet-number) mask indicating which planets to use
- *                          (input), and which of these have apparent positions and velocities
- *                          returned (output).
+ * @param pl_mask       Bitwise `(1 << planet-number)` mask indicating which planets to use.
+ *                      See enum novas_planet for the enumeration of planet numbers.
  * @param[out] pl_pos   [AU] Apparent geometric position of planets rel. to observer, antedated
  *                      for light travel time to observer.
  * @param[out] pl_vel   [AU/day] Apparent velocities of planets rel. to observer, antedated
  *                      for light travel time to observer.
+ * @param[out] out_mask Pointer to bitwise `(1 << planet-number)` mask indicating which planets
+ *                      have positions and velocities calculated successfully. See enum
+ *                      novas_planet for the enumeration of planet numbers.
  * @return              0 if successful, -1 if any of the pointer arguments is NULL
  *                      or if the output vector is the same as pos_obs, or the error from
  *                      ephemeris().
  *
+ * @sa enum novas_planet
  * @sa grav_planets()
  * @sa grav_undo_planets()
  * @sa set_planet_provider()
@@ -4398,20 +4481,19 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
  * @since 1.1
  * @author Attila Kovacs
  */
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3]) {
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, double pl_pos[][3], double pl_vel[][3], int *out_mask) {
   static const char *fn = "obs_planets";
 
   static object body[NOVAS_PLANETS];
   static int initialized;
 
   enum novas_debug_mode dbmode = novas_get_debug_mode();
-  int i, mask, error = 0;
+  int i, error = 0;
 
-  if(!pl_mask)
-    return novas_error(-1, EINVAL, fn, "NULL planet mask parameter");
+  if(!out_mask)
+    return novas_error(-1, EINVAL, fn, "NULL output mask pointer");
 
-  mask = *pl_mask;
-  *pl_mask = 0;
+  *out_mask = 0;
 
   if(!pos_obs)
     return novas_error(-1, EINVAL, fn, "NULL observer position parameter");
@@ -4439,7 +4521,7 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
     double tl;
     int stat;
 
-    if((mask & bit) == 0)
+    if((pl_mask & bit) == 0)
       continue;
 
     // Calculate positions and velocities antedated for light time.
@@ -4450,19 +4532,19 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
       continue;
     }
 
-    *pl_mask |= bit;
+    *out_mask |= bit;
   }
 
   // Re-enable debug traces
   novas_debug(dbmode);
 
   // If could not calculate deflection due to Sun, return with error
-  if((*pl_mask & (1 << NOVAS_SUN)) == 0)
+  if((*out_mask & (1 << NOVAS_SUN)) == 0)
     prop_error("grav_init_planet:sun", error, 0);
 
   // If could not get positions for another gravitating body then
   // return error only if in extra debug mode...
-  if(*pl_mask != mask && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA)
+  if(*out_mask != pl_mask && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA)
     prop_error(fn, error, 0);
 
   return 0;
@@ -4529,7 +4611,7 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
   if(!pos_src || !out)
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_src=%p, out=%p", pos_src, out);
 
-  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, &pl_mask, pl_pos, pl_vel), 0);
+  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, pl_mask, pl_pos, pl_vel, &pl_mask), 0);
   prop_error(fn, grav_planets(pos_src, pos_obs, pl_mask, pl_pos, pl_vel, out), 0);
   return 0;
 }
@@ -4587,7 +4669,7 @@ int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_ap
   if(!pos_app || !out)
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_app=%p, out=%p", pos_app, out);
 
-  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, &pl_mask, pl_pos, pl_vel), 0);
+  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, pl_mask, pl_pos, pl_vel, &pl_mask), 0);
   prop_error(fn, grav_undo_planets(pos_app, pos_obs, accuracy, pl_mask, pl_pos, pl_vel, out), 0);
   return 0;
 }
@@ -5688,9 +5770,11 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio) {
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param ra          [h] The CIRS right ascension coordinate, measured from the CIO.
- * @return            [h] the apparent R.A. coordinate measured from the true equinox of date [0:24].
+ * @return            [h] the apparent R.A. coordinate measured from the true equinox of date [0:24],
+ *                    or NAN if the accuracy is invalid, or if there wan an error from cio_ra().
  *
- * @see app_to_cirs_ra()
+ * @sa app_to_cirs_ra()
+ * @sa cirs_to_tod()
  *
  * @since 1.0.1
  * @author Attila Kovacs
@@ -5699,7 +5783,11 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
   // Obtain the R.A. [h] of the CIO at the given date
-  cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio);
+  int stat = cio_ra(jd_tt, accuracy, &ra_cio);
+  if(stat) {
+    novas_trace("cirs_to_app_ra", stat, 0);
+    return NAN;
+  }
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
   ra = remainder(ra + ra_cio, 24.0);
@@ -5716,9 +5804,11 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param ra          [h] the apparent R.A. coordinate measured from the true equinox of date.
- * @return            [h] The CIRS right ascension coordinate, measured from the CIO [0:24].
+ * @return            [h] The CIRS right ascension coordinate, measured from the CIO [0:24],
+ *                    or NAN if the accuracy is invalid, or if there wan an error from cio_ra().
  *
- * @see cirs_to_app_ra()
+ * @sa cirs_to_app_ra()
+ * @sa tod_to_cirs()
  *
  * @since 1.0.1
  * @author Attila Kovacs
@@ -5727,7 +5817,11 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
   // Obtain the R.A. [h] of the CIO at the given date
-  cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio);
+  int stat = cio_ra(jd_tt, accuracy, &ra_cio);
+  if(stat) {
+    novas_trace("app_to_cirs_ra", stat, 0);
+    return NAN;
+  }
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
   ra = remainder(ra - ra_cio, 24.0);
@@ -5739,8 +5833,10 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
 
 /**
  * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS.
- * The necessary binary data file may be obtained via the <code>cio_file.c</code> utility
- * provided in this distribution under <code>tools/</code>.
+ * You can specify either the original `CIO_RA.TXT` file included in the distribution
+ * (preferred since v1.1), or else a platform-specific binary data file compiled from it
+ * (the old way), which may be obtained via the <code>cio_file.c</code> utility provided
+ * in this distribution under <code>tools/</code>.
  *
  * @param filename    Path (preferably absolute path) to binary data file generated
  *                    by the <code>cio_file.c</code> utility from the <code>CIO_RA.TXT</code>

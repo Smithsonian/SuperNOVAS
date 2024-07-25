@@ -273,6 +273,20 @@ static int test_cirs_to_gcrs() {
   return n;
 }
 
+static int test_cirs_to_app_ra() {
+  int n = 0;
+  if(check_nan("cirs_to_app_ra:accuracy:-1", cirs_to_app_ra(NOVAS_JD_J2000, -1, 0.0))) n++;
+  if(check_nan("cirs_to_app_ra:accuracy:2", cirs_to_app_ra(NOVAS_JD_J2000, 2, 0.0))) n++;
+  return n;
+}
+
+static int test_app_to_cirs_ra() {
+  int n = 0;
+  if(check_nan("app_to_cirs_ra:accuracy:-1", app_to_cirs_ra(NOVAS_JD_J2000, -1, 0.0))) n++;
+  if(check_nan("app_to_cirs_ra:accuracy:2", app_to_cirs_ra(NOVAS_JD_J2000, 2, 0.0))) n++;
+  return n;
+}
+
 static int test_set_planet_provider() {
   if(check("set_planet_provider", -1, set_planet_provider(NULL))) return 1;
   return 0;
@@ -852,12 +866,12 @@ static int test_grav_init_planets() {
   double p[3] = {2.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}};
   int pl_mask, n = 0;
 
-  if(check("grav_init_planets:pos_obs", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, &pl_mask, pb, vb))) n++;
-  if(check("grav_init_planets:pl_pos", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, NULL, vb))) n++;
-  if(check("grav_init_planets:pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, pb, NULL))) n++;
-  if(check("grav_init_planets:pl_pos+pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, NULL, NULL))) n++;
-  if(check("grav_init_planets:pl_pos=pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, pb, pb))) n++;
-  if(check("grav_init_planets:pl_mask", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, pb, vb))) n++;
+  if(check("grav_init_planets:pos_obs", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, 0, pb, vb, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_pos", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, NULL, vb, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, pb, NULL, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_pos+pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, NULL, NULL, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_pos=pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, pb, pb, &pl_mask))) n++;
+  if(check("grav_init_planets:pl_mask", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, pb, vb, NULL))) n++;
 
   return n;
 }
@@ -1326,6 +1340,8 @@ int main() {
   if(test_tod_to_j2000()) n++;
   if(test_gcrs_to_cirs()) n++;
   if(test_cirs_to_gcrs()) n++;
+  if(test_cirs_to_app_ra()) n++;
+  if(test_app_to_cirs_ra()) n++;
 
   if(test_set_planet_provider()) n++;
   if(test_set_planet_provider_hp()) n++;

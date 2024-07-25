@@ -4,7 +4,7 @@
  * @date Created  on Jun 27, 2024
  * @author Attila Kovacs
  *
- *  A collection of refraction models to used with novas_app_to_hor()
+ *  A collection of refraction models and utilities to use with novas_app_to_hor() or novas_hor_to_app().
  */
 
 /// \cond PRIVATE

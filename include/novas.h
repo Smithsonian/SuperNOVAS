@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 1.0.1
+ * @version 1.1.0
  *
  *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -61,7 +61,7 @@
 #define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1".
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING ""
 
 
 
@@ -201,7 +201,7 @@
 enum novas_debug_mode {
  NOVAS_DEBUG_OFF = 0,     ///< Do not print errors and traces to the standard error (default).
  NOVAS_DEBUG_ON,          ///< Print errors and traces to the standard error.
- NOVAS_DEBUG_EXTRA         ///< Print all errors and traces, even if they may be 'normal' behavior, to the standard error.
+ NOVAS_DEBUG_EXTRA        ///< Print all errors and traces to the standard error, even if they may be acceptable behavior.
 };
 
 /**
@@ -792,6 +792,8 @@ typedef struct {
  * The type of elevation value for which to calculate a refraction.
  *
  * @sa RefractionModel
+ *
+ * @since 1.1
  */
 enum novas_refraction_type {
   NOVAS_REFRACT_OBSERVED = -1,  ///< Refract observed elevation value
@@ -799,7 +801,7 @@ enum novas_refraction_type {
 };
 
 /**
- * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode
+ * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
  *
  * @sa grav_bodies_reduced_accuracy
  *
@@ -809,7 +811,7 @@ enum novas_refraction_type {
 #define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) | (1 << NOVAS_EARTH) )
 
 /**
- * Default set of gravitating bodies to use for deflection calculations in full accuracy mode
+ * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.
  *
  * @sa grav_bodies_full_accuracy
  *
@@ -819,24 +821,32 @@ enum novas_refraction_type {
 #define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
 
 /**
- * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode
+ * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
  *
  * @sa grav_def()
  * @sa grav_planets()
+ * @sa DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
  *
  * @since 1.1
- * @author Attila Kovacs
  */
 extern int grav_bodies_reduced_accuracy;
 
 /**
- * Current set of gravitating bodies to use for deflection calculations in full accuracy mode
+ * Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
  *
  * @sa grav_def()
  * @sa grav_planets()
+ * @sa DEFAULT_GRAV_BODIES_FULL_ACCURACY
  *
  * @since 1.1
- * @author Attila Kovacs
  */
 extern int grav_bodies_full_accuracy;
 
@@ -852,6 +862,8 @@ extern int grav_bodies_full_accuracy;
  * @param el        [deg] Astrometric (unrefracted) source elevation
  * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should
  *                  also set errno to indicate the type of error).
+ *
+ * @since 1.1
  */
 typedef double (*RefractionModel)(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
@@ -1125,7 +1137,7 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
 
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3]);
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, double pl_pos[][3], double pl_vel[][3], int *out_mask);
 
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
@@ -1143,6 +1155,10 @@ int make_cat_object(const cat_entry *star, object *source);
 int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
 int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+
+int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+
+int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
 
 // in timescale.c
@@ -1196,6 +1212,7 @@ int novas_transform_vector(const double *in, const novas_transform *transform, d
 
 int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform, sky_pos *out);
 
+
 // in refract.c
 double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
@@ -1240,7 +1257,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #define ANGVEL              NOVAS_EARTH_ANGVEL
 
 // Various locally used physical units
-#define DAY                 86400.0         ///< [s] seconds in a day
+#define DAY                 86400.0               ///< [s] seconds in a day
 #define DAY_HOURS           24.0
 #define DEG360              360.0
 #define JULIAN_YEAR_DAYS    365.25

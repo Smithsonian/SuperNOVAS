@@ -5,7 +5,7 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *   A set of routines to make handling of astronomical timescale and conversions between them
+ *   A set of routines to make handling of astronomical timescales and conversions between them
  *   easier.
  */
 
