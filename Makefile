@@ -116,7 +116,7 @@ lib/libnovas.so: lib/libsupernovas.so
 SO_LINK := $(LDFLAGS) -lm
 
 # Share librarry recipe
-lib/%.so.$(SO_VERSION) : | lib
+lib/%.so.$(SO_VERSION) : | lib Makefile
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst lib/,,$@) $(SO_LINK)
 
 lib/libsolsys%.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
@@ -142,7 +142,7 @@ lib/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c | lib/libsupernovas.
 
 
 # Static library: novas.a
-lib/libnovas.a: $(OBJECTS) | lib
+lib/libnovas.a: $(OBJECTS) | lib Makefile
 	ar -rc $@ $^
 	ranlib $@
 
@@ -165,9 +165,9 @@ Doxyfile.local:
 
 # Local documentation without specialized headers. The resulting HTML documents do not have
 # Google Search or Analytics tracking info.
+.PHONY: local-dox
 local-dox: README-orig.md Doxyfile.local
 	doxygen Doxyfile.local
-
 
 .PHONY: help
 help:
