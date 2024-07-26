@@ -69,6 +69,15 @@ double PSI_COR = 0.0;
  */
 double EPS_COR = 0.0;
 
+/**
+ * Maximum number of iterations for convergent inverse calculations. Most iterative inverse functions should
+ * normally converge in a handful of iterations. In some pathological cases more iterations may be required.
+ * This variable sets an absolute maximum for the number of iterations in order to avoid runaway (zombie)
+ * behaviour. If inverse functions faile to converge, they will return a value indicating an error, and
+ * errno should be set to ECANCELED.
+ *
+ * @since 1.1
+ */
 int novas_inv_max_iter = 100;
 
 // Defined in novas.h

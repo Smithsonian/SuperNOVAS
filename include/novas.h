@@ -1304,15 +1304,6 @@ double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
 
-/**
- * Maximum number of iterations for convergent inverse calculations. Most iterative inverse functions should
- * normally converge in a handful of iterations. In some pathological cases more iterations may be required.
- * This variable sets an absolute maximum for the number of iterations in order to avoid runaway (zombie)
- * behaviour. If inverse functions faile to converge, they will return a value indicating an error, and
- * errno should be set to ECANCELED.
- *
- * @since 1.1
- */
 extern int novas_inv_max_iter;
 
 #endif /* __NOVAS_INTERNAL_API__ */
