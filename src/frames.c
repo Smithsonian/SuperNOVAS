@@ -261,8 +261,7 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
     }
   }
 
-  novas_set_errno(ECANCELED, "frame_aberration", "failed to converge");
-  return -1;
+  return novas_error(-1, ECANCELED, "frame_aberration", "failed to converge");
 }
 
 

@@ -142,6 +142,10 @@ severity, which affected prior SuperNOVAS releases.
  - `tt2tdb()` Now uses the same, slightly more precise series as the original NOVAS C `tdb2tt()`.
 
  - `PSI_COR` and `EPS_COR` made globally visible again, thus improving NOVAS C 3.1 compatibility.
+ 
+ - Convergent inverse calculations now use the `novas_inv_max_iter` variable declared in `novas.c` to specify the
+   maximum number of iterations before inverse functions return with an error (with errno set to `ECANCELED`). Users
+   may adjust this limit, if they prefer some other maximum value.
 
  - Adjusted regression testing to treat `nan` and `-nan` effectively the same. They both represent an equally invalid 
    result regardless of the sign.

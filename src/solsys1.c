@@ -180,10 +180,9 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
 }
 
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
-  if(!jd_tdb) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!jd_tdb)
+    return novas_error(-1, EINVAL, "solarsystem_hp", "NULL jd_tdb 2-component input array");
+
   prop_error("solarsystem_hp", planet_eph_manager_hp(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }

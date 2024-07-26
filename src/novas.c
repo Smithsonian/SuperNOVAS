@@ -90,7 +90,7 @@ int grav_bodies_full_accuracy = DEFAULT_GRAV_BODIES_FULL_ACCURACY;
 // <---------- LOCAL VARIABLES -------------->
 
 /// Current debugging state for reporting errors and traces to stderr.
-static enum novas_debug_mode novas_debug_state = 0;
+static enum novas_debug_mode novas_debug_state = NOVAS_DEBUG_OFF;
 
 ///< Opened CIO locator data file, or NULL.
 static FILE *cio_file;
@@ -5399,7 +5399,7 @@ double planet_lon(double t, enum novas_planet planet) {
       lon = 5.311886286677 + 3.813303563778 * t;
       break;
     default:
-      errno = EINVAL;
+      novas_set_errno(EINVAL, "planet_lon", "invalid planet number: %d", planet);
       return NAN;
   }
 
@@ -6434,22 +6434,26 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
     case NOVAS_EPHEM_OBJECT: {
       enum novas_origin eph_origin = NOVAS_HELIOCENTER;
 
-      error = -1;
-      errno = ENOSYS;
-
       if(readeph2_call) {
         // If there is a newstyle epehemeris access routine set, we will prefer it.
         error = readeph2_call(body->name, body->number, jd_tdb[0], jd_tdb[1], &eph_origin, posvel, &posvel[3]);
       }
-#     ifdef DEFAULT_READEPH
       else {
+#  ifdef DEFAULT_READEPH
         // Use whatever readeph() was compiled or the equivalent user-defined call
         double *res = readeph(body->number, body->name, jd_tdb[0] + jd_tdb[1], &error);
-        if(res == NULL) return 3;
-        memcpy(posvel, res, sizeof(posvel));
-        free(res);
+        if(res == NULL) {
+          error = 3;
+          errno = ENOSYS;
+        }
+        else
+          memcpy(posvel, res, sizeof(posvel));
+          free(res);
+        }
+#  else
+        return novas_error(-1, errno, "ephemeris:ephem_object", "No ephemeris provider was defined. Call set_ephem_provider() prior.");
+#  endif
       }
-#     endif
 
       prop_error("ephemeris:ephem_object", error, 20);
 

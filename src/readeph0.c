@@ -30,6 +30,7 @@ double * readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
 
   if(isnanf(jd_tdb)) {
     set_error(-1, EINVAL, fn, "NaN jd_tdb");
+    *error = -1;
     return NULL;
   }
 
