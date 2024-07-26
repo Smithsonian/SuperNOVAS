@@ -167,6 +167,28 @@ static int test_refract() {
   return n;
 }
 
+static int test_refract_astro() {
+  on_surface surf = {};
+  int n = 0;
+
+  if(check_nan("refract_astro:converge", refract_astro(&surf, NOVAS_STANDARD_ATMOSPHERE, 85.0))) {
+    if(check("refract_astro:converge:errno", ECANCELED, errno)) n++;
+  }
+
+  return n;
+}
+
+static int test_inv_refract() {
+  on_surface surf = {};
+  int n = 0;
+
+  if(check_nan("inv_refract:converge", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, &surf, NOVAS_REFRACT_OBSERVED, 5.0))) {
+    if(check("inv_refract:converge:errno", ECANCELED, errno)) n++;
+  }
+
+  return n;
+}
+
 static int test_limb_angle() {
   double pos[3] = { 0.01 }, pn[3] = { -0.01 }, pz[3] = {}, a, b;
   int n = 0;
@@ -335,11 +357,15 @@ static int test_radec_planet() {
 }
 
 static int test_mean_star() {
-  double x;
+  double x, y;
   int n = 0;
 
-  if(check("mean_star:ira", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, &x))) n++;
+  if(check("mean_star:ira", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, &y))) n++;
   if(check("mean_star:idec", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, &x, NULL))) n++;
+
+  if(check("mean_star:converge", 1, mean_star(NOVAS_JD_J2000, 0.0, 0.0, NOVAS_REDUCED_ACCURACY, &x, &y))) {
+    if(check("mean_star:converge:errno", ECANCELED, errno)) n++;
+  }
 
   return n;
 }
@@ -903,6 +929,11 @@ static int test_grav_undo_planets() {
   if(check("grav_undo_planets:pl_pos=pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, pb, out))) n++;
   if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, NULL))) n++;
 
+  pl_mask = 1 << NOVAS_SUN;
+  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) {
+    if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
+  }
+
   return n;
 }
 
@@ -1171,7 +1202,9 @@ static int test_app_to_geom() {
   if(check("app_to_geom:frame:init", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
 
   novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
-  if(check("app_to_geom:frame:ok", 0, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
+  if(check("app_to_geom:frame:converge", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) {
+    if(check("app_to_geom:frame:converge:errno", ECANCELED, errno)) n++;
+  }
 
   if(check("app_to_geom:pos", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, NULL))) n++;
   if(check("app_to_geom:sys:-1", -1, novas_app_to_geom(&frame, -1, 1.0, 2.0, 10.0, pos))) n++;
@@ -1336,6 +1369,8 @@ int main() {
   if(test_transform_hip()) n++;
 
   if(test_refract()) n++;
+  if(test_refract_astro()) n++;
+  if(test_inv_refract()) n++;
   if(test_limb_angle()) n++;
 
   if(test_ephemeris()) n++;

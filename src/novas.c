@@ -4458,8 +4458,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
       pos0[j] -= pos_def[j] - pos_app[j];
   }
 
-  novas_set_errno(ECANCELED, fn, "failed to converge");
-  return -1;
+  return novas_error(-1, ECANCELED, fn, "failed to converge");
 }
 
 /**

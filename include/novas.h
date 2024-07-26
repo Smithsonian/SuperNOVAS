@@ -1267,7 +1267,9 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #define HOURANGLE           (M_PI / 12.0)
 #define MAS                 (1e-3 * ASEC2RAD)
 
-#define INV_MAX_ITER        100
+#ifndef INV_MAX_ITER
+#  define INV_MAX_ITER      100                   ///< Maximum number of iterations for convergent inverse calculations
+#endif
 
 #  ifndef THREAD_LOCAL
 #    if __STDC_VERSION__ >= 201112L

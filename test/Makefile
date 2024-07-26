@@ -13,6 +13,7 @@ include ../config.mk
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
 OBJECTS := novas.o nutation.o solsys3.o frames.o timescale.o refract.o
+SOURCES := $(subst .o,.c,$(OBJECTS))
 
 .PHONY: run
 run: clean-cov clean-data test-compat test-cio_file test-super test-errors data ../cio_ra.bin bad-data
@@ -65,6 +66,10 @@ bad-cio-data:
 ../cio_ra.bin:
 	make -C .. cio_ra.bin
 
+test-errors: CPPFLAGS += -DINV_MAX_ITER=0
+test-errors: test-errors.o $(SOURCES) | Makefile data
+	$(CC) -o $@ $^ $(CPPFLAGS) $(CFLAGS) $(LDFLAGS)
+
 test-%: test-%.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
 
@@ -86,9 +91,12 @@ clean-cov:
 clean-data:
 	rm -rf data cio_ra.bin bad-cio-data
 
-.PHONY: clean
-clean: clean-test clean-cov clean-data
+.PHONY: clean-obj
+clean-obj:
 	rm -f *.o
+
+.PHONY: clean
+clean: clean-obj clean-test clean-cov clean-data
 
 
 .PHONY: help
