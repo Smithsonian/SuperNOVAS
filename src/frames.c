@@ -223,7 +223,9 @@ static int set_obs_posvel(novas_frame *frame) {
 
 
 static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
-  double d, p, q, r;
+  const double pos0[3] = { pos[0], pos[1], pos[2] };
+  double d;
+  int i;
 
   if(frame->v_obs == 0.0)
     return 0;
@@ -232,24 +234,35 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
   if(d == 0.0)
     return 0;
 
-  p = frame->beta * novas_vdot(pos, frame->obs_vel) / (d * frame->v_obs);
-  q = (1.0 + p / (1.0 + frame->gamma)) * d / C_AUDAY;
-  r = 1.0 + p;
+  // Iterate as necessary (for inverse only)
+  for(i = 0; i < INV_MAX_ITER; i++) {
+    const double p = frame->beta * novas_vdot(pos, frame->obs_vel) / (d * frame->v_obs);
+    const double q = (1.0 + p / (1.0 + frame->gamma)) * d / C_AUDAY;
+    const double r = 1.0 + p;
 
-  if(dir < 0) {
-    // Apparent to geometric
-    pos[0] = (r * pos[0] - q * frame->obs_vel[0]) / frame->gamma;
-    pos[1] = (r * pos[1] - q * frame->obs_vel[1]) / frame->gamma;
-    pos[2] = (r * pos[2] - q * frame->obs_vel[2]) / frame->gamma;
-  }
-  else {
-    // Geometric to apparent
-    pos[0] = (frame->gamma * pos[0] + q * frame->obs_vel[0]) / r;
-    pos[1] = (frame->gamma * pos[1] + q * frame->obs_vel[1]) / r;
-    pos[2] = (frame->gamma * pos[2] + q * frame->obs_vel[2]) / r;
+    if(dir < 0) {
+      const double pos1[3] = { pos[0], pos[1], pos[2] };
+
+      // Apparent to geometric
+      pos[0] = (r * pos0[0] - q * frame->obs_vel[0]) / frame->gamma;
+      pos[1] = (r * pos0[1] - q * frame->obs_vel[1]) / frame->gamma;
+      pos[2] = (r * pos0[2] - q * frame->obs_vel[2]) / frame->gamma;
+
+      // Iterate, since p, q, r are defined by unaberrated position.
+      if(novas_vdist(pos, pos1) < 1e-13 * d)
+        return 0;
+    }
+    else {
+      // Geometric to apparent
+      pos[0] = (frame->gamma * pos0[0] + q * frame->obs_vel[0]) / r;
+      pos[1] = (frame->gamma * pos0[1] + q * frame->obs_vel[1]) / r;
+      pos[2] = (frame->gamma * pos0[2] + q * frame->obs_vel[2]) / r;
+      return 0; // No need to iterate...
+    }
   }
 
-  return 0;
+  errno = ECANCELED;
+  return -1;
 }
 
 
