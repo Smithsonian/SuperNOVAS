@@ -721,15 +721,17 @@ typedef struct {
 
 
 /**
- * Position and velocity data for a set of major planets (including Sun and Moon).
+ * Position and velocity data for a set of major planets (which may include the Sun and the Moon also).
  *
  * @since 1.1
+ *
+ * @sa enum novas_planet
  */
 typedef struct {
   int mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
   double pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
   double vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
-} novas_planet_set;
+} novas_planet_bundle;
 
 /**
  * A set of parameters that uniquely define the place and time of observation. The user may
@@ -775,7 +777,7 @@ typedef struct {
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
-  novas_planet_set planets;   ///< Planet positions and velocities
+  novas_planet_bundle planets;   ///< Planet positions and velocities
 } novas_frame;
 
 /**
@@ -1147,13 +1149,13 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
 
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_set *planets);
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_bundle *planets);
 
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
-int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_set *planets, double *out);
+int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_bundle *planets, double *out);
 
-int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_set *planets, double *out);
+int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_bundle *planets, double *out);
 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 

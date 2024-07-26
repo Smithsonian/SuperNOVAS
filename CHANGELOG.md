@@ -61,7 +61,10 @@ severity, which affected prior SuperNOVAS releases.
    an expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
    `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
    `novas_increment_time()`, or measure time differences via `novas_diff_time()`. 
-   
+ 
+ - Added `novas_planet_bundle` structure to handle planet positions and velocities more elegantly (for gravitational
+   deflection calculations).
+ 
  - #32: Added `grav_undef()` to undo gravitational bending of the observed light to obtain geometric positions from
    observed ones.
    

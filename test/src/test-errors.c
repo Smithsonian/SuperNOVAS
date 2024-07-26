@@ -889,7 +889,7 @@ static int test_grav_undef() {
 }
 
 static int test_grav_init_planets() {
-  novas_planet_set planets = {};
+  novas_planet_bundle planets = {};
   double p[3] = {2.0};
   int n = 0;
 
@@ -900,7 +900,7 @@ static int test_grav_init_planets() {
 }
 
 static int test_grav_planets() {
-  novas_planet_set planets = {};
+  novas_planet_bundle planets = {};
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
   int n = 0;
 
@@ -913,7 +913,7 @@ static int test_grav_planets() {
 }
 
 static int test_grav_undo_planets() {
-  novas_planet_set planets = {};
+  novas_planet_bundle planets = {};
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
   int n = 0;
 

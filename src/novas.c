@@ -4306,12 +4306,11 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @sa novas_geom_to_app()
  * @sa grav_bodies_full_accuracy
  * @sa grav_bodies_reduced_accuracy
- * @sa enum novas_planet
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_set *planets, double *out) {
+int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_bundle *planets, double *out) {
   static const char *fn = "grav_planets";
   static const double rmass[] = NOVAS_RMASS_INIT;
 
@@ -4402,12 +4401,11 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
  * @sa obs_planets()
  * @sa grav_planets()
  * @sa novas_app_to_geom()
- * @sa enum novas_planet
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_set *planets, double *out) {
+int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_bundle *planets, double *out) {
   static const char *fn = "grav_undo_planets";
 
   double pos_def[3] = { }, pos0[3] = { };
@@ -4484,7 +4482,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
  * @since 1.1
  * @author Attila Kovacs
  */
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_set *planets) {
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_bundle *planets) {
   static const char *fn = "obs_planets";
 
   static object body[NOVAS_PLANETS];
@@ -4603,7 +4601,7 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
         double *out) {
   static const char *fn = "grav_def";
 
-  novas_planet_set planets = {};
+  novas_planet_bundle planets = {};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_src || !out)
@@ -4661,7 +4659,7 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out) {
   static const char *fn = "grav_undef";
 
-  novas_planet_set planets = {};
+  novas_planet_bundle planets = {};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_app || !out)
