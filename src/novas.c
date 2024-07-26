@@ -4291,13 +4291,8 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
  *                    origin at solar system barycenter, referred to ICRS axes,
  *                    components in AU.
- * @param pl_mask     Bitwise `(1 << planet-number)` mask indicating which planets to use,
- *                    and have apparent positions and velocities defined. See enum novas_planet
- *                    for the planet numbers.
- * @param pl_pos      [AU] Apparent geometric position of planets rel. to observer, antedated
- *                    for light travel time to observer.
- * @param pl_vel      [AU/day] Apparent velocities of planets rel. to observer, antedated
- *                    for light travel time to observer.
+ * @param planets     Apparent planet data containing positions and velocities for the major
+ *                    gravitating bodies in the solar-system.
  * @param[out] out    [AU] Position vector of observed object, with respect to origin at
  *                    observer (or the geocenter), referred to ICRS axes, corrected
  *                    for gravitational deflection, components in AU. It can be the same
@@ -4396,13 +4391,8 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
  *                    components in AU.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) for sub-&mu;as accuracy or NOVAS_REDUCED_ACCURACY (1)
  *                    for sub-mas accuracy.
- * @param pl_mask     Bitwise `(1 << planet-number)` mask indicating which planets to use,
- *                    and have apparent positions and velocities defined. See enum novas_planet for
- *                    the planet numbers.
- * @param pl_pos      [AU] Apparent geometric position of planets rel. to observer, antedated
- *                    for light travel time to observer.
- * @param pl_vel      [AU/day] Apparent velocities of planets rel. to observer, antedated
- *                    for light travel time to observer.
+ * @param planets     Apparent planet data containing positions and velocities for the major
+ *                    gravitating bodies in the solar-system.
  * @param[out] out    [AU] Nominal position vector of observed object, with respect to origin at
  *                    observer (or the geocenter), referred to ICRS axes, without gravitational
  *                    deflection, components in AU. It can be the same vector as the input, but not
