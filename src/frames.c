@@ -5,10 +5,12 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *  Routines for higher-level and efficient repeat coordinate transformations using observer frames.
- *  Observer frames represent an observer location at a specific astronomical time (instant), which
- *  can be re-used again and again to calculate or transform positions of celestial sources in a
- *  a range of astronomical coordinate systems.
+ *  SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using
+ *  observer frames. Observer frames represent an observer location at a specific astronomical
+ *  time (instant), which can be re-used again and again to calculate or transform positions of
+ *  celestial sources in a a range of astronomical coordinate systems.
+ *
+ *  @sa timescale.c
  */
 
 /// \cond PRIVATE

@@ -3,12 +3,15 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS implementation for numerical constants that were used internally in novas.c. In SuperNOVAS it is no longer needed
- *  by novas.c, and you probably don't want to use it either with your application code.
+ *  SuperNOVAS implementation for numerical constants that were used internally in novas.c. In
+ *  SuperNOVAS it is no longer needed by novas.c, and you probably don't want to use it either
+ *  with your application code.
  *
- *  @deprecated Use your own version for the selection of the constant you need, expressed in whatever units your application
- *              desires. We should not force you to adopt the internally used convention of NOVAS, not to mention the high
- *              chance of namespace conflicts with the super-simplistic naming scheme here. You are better off without this.
+ *  @deprecated Use your own version for the selection of the constant you need, expressed in
+ *              whatever units your application desires. We should not force you to adopt the
+ *              internally used convention of NOVAS, not to mention the high chance of namespace
+ *              conflicts with the super-simplistic naming scheme here. You are better off
+ *              without this.
  *
  *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
  *  Astronomical Applications Dept.

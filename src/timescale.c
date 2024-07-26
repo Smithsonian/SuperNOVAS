@@ -5,8 +5,10 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *   A set of routines to make handling of astronomical timescales and conversions between them
- *   easier.
+ *   A set of SuperNOVAS routines to make handling of astronomical timescales and conversions
+ *   among them easier.
+ *
+ * @sa frames.c
  */
 
 /// \cond PRIVATE

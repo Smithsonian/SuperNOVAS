@@ -8,6 +8,8 @@
  *  Astronomical Applications Dept.
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ * @sa solsys1.c
  */
 
 #ifndef _EPHMAN_

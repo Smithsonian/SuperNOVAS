@@ -4,7 +4,7 @@
  * @author G. Kaplan and A. Kovacs
  * @version 1.1.0
  *
- *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
+ *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
  *
  *

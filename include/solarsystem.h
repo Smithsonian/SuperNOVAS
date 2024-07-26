@@ -21,6 +21,11 @@
  *  Astronomical Applications Dept.
  *  Washington, DC
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ *  @sa solsys1.c
+ *  @sa solsys2.c
+ *  @sa solsys3.c
+ *  @sa solsys-ephem.c
  */
 
 #ifndef _SOLSYS_
