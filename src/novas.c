@@ -14,28 +14,23 @@
  *
  */
 
+#include <string.h>
+#include <math.h>
+#include <errno.h>
+#include <unistd.h>
+#include <stdarg.h>   // stdarg.h before stdio.h (for older gcc...)
+
 #if !COMPAT
 #  include <stdio.h>
 #  include <stdlib.h>
 #  include <ctype.h>
 #endif
 
-#include <string.h>
-#include <math.h>
-#include <errno.h>
-#include <unistd.h>
-#include <stdarg.h>
-
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
 #define CIO_INTERP_POINTS   6     ///< Number of points to load from CIO interpolation table at once.
-
-// On some older platform NAN may not be defined, so define it here if need be
-#ifndef NAN
-#  define NAN               (0.0/0.0)
-#endif
 
 #ifndef DEFAULT_SOLSYS
 /// Will use solarsystem() and solarsystem_hp() that is linked with application
@@ -4321,7 +4316,7 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out) {
+int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_set *planets, double *out) {
   static const char *fn = "grav_planets";
   static const double rmass[] = NOVAS_RMASS_INIT;
 
@@ -4334,11 +4329,8 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
   if(!out)
     return novas_error(-1, EINVAL, fn, "NULL output 3-vector");
 
-  if(!pl_pos || !pl_vel)
-    return novas_error(-1, EINVAL, fn, "NULL input planet posvel: pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
-
-  if(pl_pos == pl_vel)
-    return novas_error(-1, EINVAL, fn, "Indinstinct arrays: planet pos = vel");
+  if(!planets)
+    return novas_error(-1, EINVAL, fn, "NULL input planet data");
 
   // Initialize output vector of observed object to equal input vector.
   if(out != pos_src)
@@ -4350,18 +4342,18 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
     double lt, dlt, dpl, p1[3];
     int k;
 
-    if((pl_mask & (1 << i)) == 0)
+    if((planets->mask & (1 << i)) == 0)
       continue;
 
     // Distance from observer to gravitating body
-    dpl = novas_vlen(&pl_pos[i][0]);
+    dpl = novas_vlen(&planets->pos[i][0]);
 
     // If observing from within ~1500 km of the gravitating body, then skip deflections by it...
     if(dpl < 1e-5)
       continue;
 
     // Calculate light time to the point where incoming geometric light ray is closest to gravitating body.
-    lt = d_light(pos_src, &pl_pos[i][0]);
+    lt = d_light(pos_src, &planets->pos[i][0]);
 
     // If gravitating body is in opposite direction from the source then use the gravitating
     // body position at the time the light is observed.
@@ -4378,7 +4370,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
 
     // Calculate planet position at the time it is gravitationally acting on light.
     for(k = 3; --k >= 0;)
-      p1[k] = pos_obs[k] + pl_pos[i][k] - dlt * pl_vel[i][k];
+      p1[k] = pos_obs[k] + planets->pos[i][k] - dlt * planets->vel[i][k];
 
     // Compute deflection due to gravitating body.
     grav_vec(out, pos_obs, p1, rmass[i], out);
@@ -4425,8 +4417,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, cons
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, int pl_mask, const double pl_pos[][3],
-        const double pl_vel[][3], double *out) {
+int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_set *planets, double *out) {
   static const char *fn = "grav_undo_planets";
 
   double pos_def[3] = { }, pos0[3] = { };
@@ -4437,11 +4428,8 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
   if(!pos_app || !pos_obs)
     return novas_error(-1, EINVAL, fn, "NULL input 3-vector: pos_app=%p, pos_obs=%p", pos_app, pos_obs);
 
-  if(!pl_pos || !pl_vel)
-    return novas_error(-1, EINVAL, fn, "NULL input planet posvel: pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
-
-  if(pl_pos == pl_vel)
-    return novas_error(-1, EINVAL, fn, "Indistinct output arrays: planet pos = vel");
+  if(!planets)
+    return novas_error(-1, EINVAL, fn, "NULL input planet data");
 
   if(!out)
     return novas_error(-1, EINVAL, fn, "NULL output 3-vector: out=%p", out);
@@ -4458,7 +4446,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
   for(i = 0; i < novas_inv_max_iter; i++) {
     int j;
 
-    prop_error(fn, grav_planets(pos0, pos_obs, pl_mask, pl_pos, pl_vel, pos_def), 0);
+    prop_error(fn, grav_planets(pos0, pos_obs, planets, pos_def), 0);
 
     if(novas_vdist(pos_def, pos_app) / l < tol) {
       memcpy(out, pos0, sizeof(pos0));
@@ -4488,13 +4476,9 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
  * @param pos_obs       [AU] Position 3-vector of observer (or the geocenter), with respect to
  *                      origin at solar system barycenter, referred to ICRS axes,
  *                      components in AU.
- * @param pl_mask       Bitwise `(1 << planet-number)` mask indicating which planets to use.
- *                      See enum novas_planet for the enumeration of planet numbers.
- * @param[out] pl_pos   [AU] Apparent geometric position of planets rel. to observer, antedated
- *                      for light travel time to observer.
- * @param[out] pl_vel   [AU/day] Apparent velocities of planets rel. to observer, antedated
- *                      for light travel time to observer.
- * @param[out] out_mask Pointer to bitwise `(1 << planet-number)` mask indicating which planets
+ * @param pl_mask       Bitwise `(1 << planet-number)` mask indicating which planets to request
+ *                      data for. See enum novas_planet for the enumeration of planet numbers.
+ * @param[out] planets  Pointer to apparent planet data to populate.
  *                      have positions and velocities calculated successfully. See enum
  *                      novas_planet for the enumeration of planet numbers.
  * @return              0 if successful, -1 if any of the pointer arguments is NULL
@@ -4510,7 +4494,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
  * @since 1.1
  * @author Attila Kovacs
  */
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, double pl_pos[][3], double pl_vel[][3], int *out_mask) {
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_set *planets) {
   static const char *fn = "obs_planets";
 
   static object body[NOVAS_PLANETS];
@@ -4519,19 +4503,14 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
   enum novas_debug_mode dbmode = novas_get_debug_mode();
   int i, error = 0;
 
-  if(!out_mask)
-    return novas_error(-1, EINVAL, fn, "NULL output mask pointer");
+  if(!planets)
+    return novas_error(-1, EINVAL, fn, "NULL planet data");
 
-  *out_mask = 0;
+  planets->mask = 0;
 
   if(!pos_obs)
     return novas_error(-1, EINVAL, fn, "NULL observer position parameter");
 
-  if(!pl_pos || !pl_vel)
-    return novas_error(-1, EINVAL, fn, "NULL planet pos/vel array parameter(s): pl_pos=%p, pl_vel=%p", pl_pos, pl_vel);
-
-  if(pl_pos == pl_vel)
-    return novas_error(-1, EINVAL, fn, "Indinstinct arrays: planet pos = vel");
 
   // Set up the structures of type 'object' containing the body information.
   if(!initialized) {
@@ -4554,26 +4533,26 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
       continue;
 
     // Calculate positions and velocities antedated for light time.
-    stat = light_time2(jd_tdb, &body[i], pos_obs, 0.0, accuracy, &pl_pos[i][0], &pl_vel[i][0], &tl);
+    stat = light_time2(jd_tdb, &body[i], pos_obs, 0.0, accuracy, &planets->pos[i][0], &planets->vel[i][0], &tl);
     if(stat) {
       if(!error)
         error = stat > 10 ? stat - 10 : -1;
       continue;
     }
 
-    *out_mask |= bit;
+    planets->mask |= bit;
   }
 
   // Re-enable debug traces
   novas_debug(dbmode);
 
   // If could not calculate deflection due to Sun, return with error
-  if((*out_mask & (1 << NOVAS_SUN)) == 0)
+  if((planets->mask & (1 << NOVAS_SUN)) == 0)
     prop_error("grav_init_planet:sun", error, 0);
 
   // If could not get positions for another gravitating body then
   // return error only if in extra debug mode...
-  if(*out_mask != pl_mask && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA)
+  if(planets->mask != pl_mask && novas_get_debug_mode() == NOVAS_DEBUG_EXTRA)
     prop_error(fn, error, 0);
 
   return 0;
@@ -4634,14 +4613,14 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
         double *out) {
   static const char *fn = "grav_def";
 
-  double pl_pos[NOVAS_PLANETS][3] = { { } }, pl_vel[NOVAS_PLANETS][3] = { { } };
+  novas_planet_set planets = {};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_src || !out)
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_src=%p, out=%p", pos_src, out);
 
-  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, pl_mask, pl_pos, pl_vel, &pl_mask), 0);
-  prop_error(fn, grav_planets(pos_src, pos_obs, pl_mask, pl_pos, pl_vel, out), 0);
+  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, pl_mask, &planets), 0);
+  prop_error(fn, grav_planets(pos_src, pos_obs, &planets, out), 0);
   return 0;
 }
 
@@ -4692,14 +4671,14 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out) {
   static const char *fn = "grav_undef";
 
-  double pl_pos[NOVAS_PLANETS][3], pl_vel[NOVAS_PLANETS][3];
+  novas_planet_set planets = {};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_app || !out)
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_app=%p, out=%p", pos_app, out);
 
-  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, pl_mask, pl_pos, pl_vel, &pl_mask), 0);
-  prop_error(fn, grav_undo_planets(pos_app, pos_obs, accuracy, pl_mask, pl_pos, pl_vel, out), 0);
+  prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, pl_mask, &planets), 0);
+  prop_error(fn, grav_undo_planets(pos_app, pos_obs, accuracy, &planets, out), 0);
   return 0;
 }
 
@@ -6446,7 +6425,7 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
           error = 3;
           errno = ENOSYS;
         }
-        else
+        else {
           memcpy(posvel, res, sizeof(posvel));
           free(res);
         }

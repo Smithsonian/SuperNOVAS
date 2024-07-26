@@ -448,7 +448,7 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
   seconds = UNIX_J2000 + (ijd - IJD_J2000) * IDAY + isod;
 
   if(nanos) {
-    *nanos = round(1e9 * (sod - isod));
+    *nanos = floor(1e9 * (sod - isod) + 0.5);
     if(*nanos == E9) {
       seconds++;
       *nanos = 0;

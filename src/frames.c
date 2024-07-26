@@ -387,6 +387,7 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out) {
   static const char *fn = "novas_change_observer";
   double jd_tdb;
+  int pl_mask;
 
   if(!orig || !obs || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: orig=%p, obs=%p, out=%p", orig, obs, out);
@@ -399,12 +400,13 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
   out->state = FRAME_DEFAULT;
   out->observer = *obs;
-  out->pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
+
+  pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   prop_error(fn, set_obs_posvel(out), 0);
 
   jd_tdb = novas_get_time(&out->time, NOVAS_TDB);
-  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, out->pl_mask, out->pl_pos, out->pl_vel, &out->pl_mask), 0);
+  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, pl_mask, &out->planets), 0);
 
   out->state = FRAME_INITIALIZED;
   return 0;
@@ -515,9 +517,9 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
 
     // If we readily have the requested planet data in the frame, use it.
     if(source->type == NOVAS_PLANET)
-      if(frame->pl_mask & (1 << source->number)) {
-        memcpy(pos1, &frame->pl_pos[source->number][0], sizeof(pos1));
-        memcpy(vel1, &frame->pl_vel[source->number][0], sizeof(vel1));
+      if(frame->planets.mask & (1 << source->number)) {
+        memcpy(pos1, &frame->planets.pos[source->number][0], sizeof(pos1));
+        memcpy(vel1, &frame->planets.vel[source->number][0], sizeof(vel1));
         got = 1;
       }
 
@@ -660,7 +662,7 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_planets(pos, frame->obs_pos, frame->pl_mask, frame->pl_pos, frame->pl_vel, pos1), 0);
+  prop_error(fn, grav_planets(pos, frame->obs_pos, &frame->planets, pos1), 0);
 
   // Aberration correction
   frame_aberration(frame, GEOM_TO_APP, pos1);
@@ -921,7 +923,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   frame_aberration(frame, APP_TO_GEOM, app_pos);
 
   // Undo gravitational deflection and aberration.
-  prop_error(fn, grav_undo_planets(app_pos, frame->obs_pos, frame->accuracy, frame->pl_mask, frame->pl_pos, frame->pl_vel, geom_icrs), 0);
+  prop_error(fn, grav_undo_planets(app_pos, frame->obs_pos, frame->accuracy, &frame->planets, geom_icrs), 0);
 
   return 0;
 }

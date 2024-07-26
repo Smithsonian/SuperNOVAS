@@ -889,48 +889,41 @@ static int test_grav_undef() {
 }
 
 static int test_grav_init_planets() {
-  double p[3] = {2.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}};
-  int pl_mask, n = 0;
+  novas_planet_set planets = {};
+  double p[3] = {2.0};
+  int n = 0;
 
-  if(check("grav_init_planets:pos_obs", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, 0, pb, vb, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_pos", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, NULL, vb, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, pb, NULL, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_pos+pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, NULL, NULL, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_pos=pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, pb, pb, &pl_mask))) n++;
-  if(check("grav_init_planets:pl_mask", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, pb, vb, NULL))) n++;
+  if(check("grav_init_planets:pos_obs", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, 0, &planets))) n++;
+  if(check("grav_init_planets:planets", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, NULL))) n++;
 
   return n;
 }
 
 static int test_grav_planets() {
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
-  int pl_mask = 0, n = 0;
+  novas_planet_set planets = {};
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
+  int n = 0;
 
-  if(check("grav_planets:pos_src", -1, grav_planets(NULL, po, pl_mask, pb, vb, out))) n++;
-  if(check("grav_planets:pos_obs", -1, grav_planets(p, NULL, pl_mask, pb, vb, out))) n++;
-  if(check("grav_planets:pl_pos", -1, grav_planets(p, po, pl_mask, NULL, vb, out))) n++;
-  if(check("grav_planets:pl_vel", -1, grav_planets(p, po, pl_mask, pb, NULL, out))) n++;
-  if(check("grav_planets:pl_pos+pl_vel", -1, grav_planets(p, po, pl_mask, NULL, NULL, out))) n++;
-  if(check("grav_planets:pl_pos=pl_vel", -1, grav_planets(p, po, pl_mask, pb, pb, out))) n++;
-  if(check("grav_planets:pos_src", -1, grav_planets(p, po, pl_mask, pb, vb, NULL))) n++;
+  if(check("grav_planets:pos_src", -1, grav_planets(NULL, po, &planets, out))) n++;
+  if(check("grav_planets:pos_obs", -1, grav_planets(p, NULL, &planets, out))) n++;
+  if(check("grav_planets:planets", -1, grav_planets(p, po, NULL, out))) n++;
+  if(check("grav_planets:pos_src", -1, grav_planets(p, po, &planets, NULL))) n++;
 
   return n;
 }
 
 static int test_grav_undo_planets() {
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
-  int pl_mask = 0, n = 0;
+  novas_planet_set planets = {};
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
+  int n = 0;
 
-  if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;
-  if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;
-  if(check("grav_undo_planets:pl_pos", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, NULL, vb, out))) n++;
-  if(check("grav_undo_planets:pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, NULL, out))) n++;
-  if(check("grav_undo_planets:pl_pos+pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, NULL, NULL, out))) n++;
-  if(check("grav_undo_planets:pl_pos=pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, pb, out))) n++;
-  if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, NULL))) n++;
+  if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, NOVAS_REDUCED_ACCURACY, &planets, out))) n++;
+  if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, NOVAS_REDUCED_ACCURACY, &planets, out))) n++;
+  if(check("grav_undo_planets:planets", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, NULL, out))) n++;
+    if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, &planets, NULL))) n++;
 
-  pl_mask = 1 << NOVAS_SUN;
-  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) {
+  planets.mask = 1 << NOVAS_SUN;
+  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, &planets, out))) {
     if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
   }
 

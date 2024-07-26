@@ -20,6 +20,7 @@
 #include <math.h>   // for M_PI
 #include <stdlib.h> // NULL
 #include <stdint.h>
+#include <time.h>
 
 // The upstream NOVAS library had a set of include statements that really were not necessary
 // First, including standard libraries here meant that those libraries were included in the
@@ -720,6 +721,17 @@ typedef struct {
 
 
 /**
+ * Position and velocity data for a set of major planets (including Sun and Moon).
+ *
+ * @since 1.1
+ */
+typedef struct {
+  int mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
+  double pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
+  double vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
+} novas_planet_set;
+
+/**
  * A set of parameters that uniquely define the place and time of observation. The user may
  * initialize the frame with novas_make_frame(). Once the observer frame is set up, it can be
  * used repeatedly to perform efficient calculations of multiple objects in the coordinate
@@ -763,9 +775,7 @@ typedef struct {
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
-  int pl_mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
-  double pl_pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
-  double pl_vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
+  novas_planet_set planets;   ///< Planet positions and velocities
 } novas_frame;
 
 /**
@@ -1137,14 +1147,13 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
 
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, double pl_pos[][3], double pl_vel[][3], int *out_mask);
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_set *planets);
 
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
-int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out);
+int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_set *planets, double *out);
 
-int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, int pl_mask, const double pl_pos[][3],
-        const double pl_vel[][3], double *out);
+int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_set *planets, double *out);
 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 
@@ -1267,6 +1276,10 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #define HOURANGLE           (M_PI / 12.0)
 #define MAS                 (1e-3 * ASEC2RAD)
 
+// On some older platform NAN may not be defined, so define it here if need be
+#ifndef NAN
+#  define NAN               (0.0/0.0)
+#endif
 
 #  ifndef THREAD_LOCAL
 #    if __STDC_VERSION__ >= 201112L
