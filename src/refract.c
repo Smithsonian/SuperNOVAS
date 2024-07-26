@@ -64,7 +64,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
   const int dir = (type == NOVAS_REFRACT_OBSERVED ? 1 : -1);
   int i;
 
-  for(i = 0; i < INV_MAX_ITER; i++) {
+  for(i = 0; i < novas_inv_max_iter; i++) {
     double el1 = el0 + dir * refr;
     refr = model(jd_tt, loc, type, el1);
 

@@ -69,6 +69,8 @@ double PSI_COR = 0.0;
  */
 double EPS_COR = 0.0;
 
+int novas_inv_max_iter = 100;
+
 // Defined in novas.h
 int grav_bodies_reduced_accuracy = DEFAULT_GRAV_BODIES_REDUCED_ACCURACY;
 
@@ -1479,7 +1481,7 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 
   // Iteratively find ICRS coordinates that produce input apparent place
   // of star at date 'jd_tt'.
-  for(iter = INV_MAX_ITER; --iter >= 0;) {
+  for(iter = novas_inv_max_iter; --iter >= 0;) {
     double ra1, dec1;
 
     prop_error(fn, app_star(jd_tt, &star, accuracy, &ra1, &dec1), 20);
@@ -4444,7 +4446,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_a
 
   memcpy(pos0, pos_app, sizeof(pos0));
 
-  for(i = 0; i < INV_MAX_ITER; i++) {
+  for(i = 0; i < novas_inv_max_iter; i++) {
     int j;
 
     prop_error(fn, grav_planets(pos0, pos_obs, pl_mask, pl_pos, pl_vel, pos_def), 0);
@@ -6820,7 +6822,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
   double refr = 0.0;
   int i;
 
-  for(i = 0; i < INV_MAX_ITER; i++) {
+  for(i = 0; i < novas_inv_max_iter; i++) {
     double zd_obs = zd_astro - refr;
     refr = refract(location, option, zd_obs);
     if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5)

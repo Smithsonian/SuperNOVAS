@@ -1353,7 +1353,11 @@ static int test_inv_transform() {
 }
 
 int main() {
+  extern int novas_inv_max_iter;
   int n = 0;
+
+  // For testing convergence errors.
+  novas_inv_max_iter = 0;
 
   if(test_make_on_surface()) n++;
   if(test_make_in_space()) n++;

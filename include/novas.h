@@ -1267,9 +1267,6 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #define HOURANGLE           (M_PI / 12.0)
 #define MAS                 (1e-3 * ASEC2RAD)
 
-#ifndef INV_MAX_ITER
-#  define INV_MAX_ITER      100                   ///< Maximum number of iterations for convergent inverse calculations
-#endif
 
 #  ifndef THREAD_LOCAL
 #    if __STDC_VERSION__ >= 201112L
@@ -1280,6 +1277,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #      define THREAD_LOCAL                        ///< no thread-local variables
 #    endif
 #  endif
+
 
 int novas_trace(const char *loc, int n, int offset);
 void novas_set_errno(int en, const char *from, const char *desc, ...);
@@ -1306,6 +1304,16 @@ double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
 
+/**
+ * Maximum number of iterations for convergent inverse calculations. Most iterative inverse functions should
+ * normally converge in a handful of iterations. In some pathological cases more iterations may be required.
+ * This variable sets an absolute maximum for the number of iterations in order to avoid runaway (zombie)
+ * behaviour. If inverse functions faile to converge, they will return a value indicating an error, and
+ * errno should be set to ECANCELED.
+ *
+ * @since 1.1
+ */
+extern int novas_inv_max_iter;
 
 #endif /* __NOVAS_INTERNAL_API__ */
 /// \endcond

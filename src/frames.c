@@ -235,7 +235,7 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
     return 0;
 
   // Iterate as necessary (for inverse only)
-  for(i = 0; i < INV_MAX_ITER; i++) {
+  for(i = 0; i < novas_inv_max_iter; i++) {
     const double p = frame->beta * novas_vdot(pos, frame->obs_vel) / (d * frame->v_obs);
     const double q = (1.0 + p / (1.0 + frame->gamma)) * d / C_AUDAY;
     const double r = 1.0 + p;
