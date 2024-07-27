@@ -326,8 +326,8 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  *
  * @sa novas_set_time()
  * @sa novas_offset_time()
- * @sa novas_tcb_diff()
- * @sa novas_tcg_diff()
+ * @sa novas_diff_tcb()
+ * @sa novas_diff_tcg()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -352,13 +352,13 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
  * @return      [day] Precise TCB time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
- * @sa novas_tgc_diff()
+ * @sa novas_diff_tcg()
  * @sa novas_diff_time()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_tcb_diff(const novas_timespec *t1, const novas_timespec *t2) {
+double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
   return novas_diff_time(t1, t2) * (1.0 + TC_LB);
 }
 
@@ -374,13 +374,13 @@ double novas_tcb_diff(const novas_timespec *t1, const novas_timespec *t2) {
  * @return      [day] Precise TCG time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
- * @sa novas_tcb_diff()
+ * @sa novas_diff_tcb()
  * @sa novas_diff_time()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_tcg_diff(const novas_timespec *t1, const novas_timespec *t2) {
+double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
   return novas_diff_time(t1, t2) * (1.0 + TC_LG);
 }
 

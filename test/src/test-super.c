@@ -1711,13 +1711,13 @@ static int test_diff_time() {
   if(!is_equal("diff_time:check", novas_diff_time(&t1, &t), 0.5, 1e-9)) return 1;
   if(!is_equal("diff_time:check:rev", novas_diff_time(&t, &t1), -0.5, 1e-9)) return 1;
 
-  dt = novas_tcb_diff(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
+  dt = novas_diff_tcb(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
   if(!is_ok("diff_time:check:tcb", fabs(dt) >= 1e-9)) {
     printf("!!! missed TCB by %.9f\n", dt);
     return 1;
   }
 
-  dt = novas_tcg_diff(&t, &t1) - (1.0 + LG) * novas_diff_time(&t, &t1);
+  dt = novas_diff_tcg(&t, &t1) - (1.0 + LG) * novas_diff_time(&t, &t1);
   if(!is_ok("diff_time:check:tcg", fabs(dt) >= 1e-9)) {
     printf("!!! missed TCG by %.9f\n", dt);
     return 1;

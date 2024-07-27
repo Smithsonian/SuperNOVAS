@@ -1187,9 +1187,9 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos);
 
 double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2);
 
-double novas_tcb_diff(const novas_timespec *t1, const novas_timespec *t2);
+double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2);
 
-double novas_tcg_diff(const novas_timespec *t1, const novas_timespec *t2);
+double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2);
 
 int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec *out);
 
