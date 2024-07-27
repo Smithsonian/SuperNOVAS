@@ -3,15 +3,19 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be used together
- *  with eph_manager.c. A more generic solution is to implement a novas_ephem_provider (e.g. relying on the current
- *  version of the CSPICE library) and set it as the default ephemeris handler via set_ephem_provider(), and then
- *  use solsys-ephem.c instead to use the same implementation for major planets.
+ *  SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be
+ *  used together with eph_manager.c. A more generic solution is to implement a
+ *  novas_ephem_provider (e.g. relying on the current version of the CSPICE library) and set it as
+ *  the default ephemeris handler via set_ephem_provider(), and then use solsys-ephem.c instead to
+ *  use the same implementation for major planets.
  *
- *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
- *  Astronomical Applications Dept.
- *  Washington, DC
- *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *  Based on the NOVAS C Edition, Version 3.1:
+ *
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
  * @sa solsys-ephem.c
  * @sa solsys1.c
@@ -179,10 +183,9 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
 }
 
 short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
-  if(!jd_tdb) {
-    errno = EINVAL;
-    return -1;
-  }
+  if(!jd_tdb)
+    return novas_error(-1, EINVAL, "solarsystem_hp", "NULL jd_tdb 2-component input array");
+
   prop_error("solarsystem_hp", planet_eph_manager_hp(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }

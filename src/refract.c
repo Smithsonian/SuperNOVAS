@@ -4,7 +4,11 @@
  * @date Created  on Jun 27, 2024
  * @author Attila Kovacs
  *
- *  A collection of refraction models to used with novas_app_to_hor()
+ *  A collection of refraction models and utilities to use with novas_app_to_hor() or
+ *  novas_hor_to_app().
+ *
+ * @sa novas_app_to_hor()
+ * @sa novas_hor_to_app().
  */
 
 /// \cond PRIVATE
@@ -18,7 +22,6 @@
 #include <errno.h>
 #include <math.h>
 #include "novas.h"
-
 
 static double novas_refraction(enum novas_refraction_model model, const on_surface *loc, enum novas_refraction_type type, double el) {
   if(!loc) {
@@ -60,7 +63,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
   const int dir = (type == NOVAS_REFRACT_OBSERVED ? 1 : -1);
   int i;
 
-  for(i = 0; i < INV_MAX_ITER; i++) {
+  for(i = 0; i < novas_inv_max_iter; i++) {
     double el1 = el0 + dir * refr;
     refr = model(jd_tt, loc, type, el1);
 
@@ -134,7 +137,9 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * </ol>
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
+ * @param loc       Pointer to structure defining the observer's location on earth, and local weather.
+ *                  Make sure all weather values, including humidity (added in v1.1), are fully
+ *                  populated.
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
  * @param el        [deg] source elevation of the specified type.

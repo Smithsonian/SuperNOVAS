@@ -167,6 +167,28 @@ static int test_refract() {
   return n;
 }
 
+static int test_refract_astro() {
+  on_surface surf = {};
+  int n = 0;
+
+  if(check_nan("refract_astro:converge", refract_astro(&surf, NOVAS_STANDARD_ATMOSPHERE, 85.0))) {
+    if(check("refract_astro:converge:errno", ECANCELED, errno)) n++;
+  }
+
+  return n;
+}
+
+static int test_inv_refract() {
+  on_surface surf = {};
+  int n = 0;
+
+  if(check_nan("inv_refract:converge", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, &surf, NOVAS_REFRACT_OBSERVED, 5.0))) {
+    if(check("inv_refract:converge:errno", ECANCELED, errno)) n++;
+  }
+
+  return n;
+}
+
 static int test_limb_angle() {
   double pos[3] = { 0.01 }, pn[3] = { -0.01 }, pz[3] = {}, a, b;
   int n = 0;
@@ -273,6 +295,20 @@ static int test_cirs_to_gcrs() {
   return n;
 }
 
+static int test_cirs_to_app_ra() {
+  int n = 0;
+  if(check_nan("cirs_to_app_ra:accuracy:-1", cirs_to_app_ra(NOVAS_JD_J2000, -1, 0.0))) n++;
+  if(check_nan("cirs_to_app_ra:accuracy:2", cirs_to_app_ra(NOVAS_JD_J2000, 2, 0.0))) n++;
+  return n;
+}
+
+static int test_app_to_cirs_ra() {
+  int n = 0;
+  if(check_nan("app_to_cirs_ra:accuracy:-1", app_to_cirs_ra(NOVAS_JD_J2000, -1, 0.0))) n++;
+  if(check_nan("app_to_cirs_ra:accuracy:2", app_to_cirs_ra(NOVAS_JD_J2000, 2, 0.0))) n++;
+  return n;
+}
+
 static int test_set_planet_provider() {
   if(check("set_planet_provider", -1, set_planet_provider(NULL))) return 1;
   return 0;
@@ -321,11 +357,15 @@ static int test_radec_planet() {
 }
 
 static int test_mean_star() {
-  double x;
+  double x, y;
   int n = 0;
 
-  if(check("mean_star:ira", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, &x))) n++;
+  if(check("mean_star:ira", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, &y))) n++;
   if(check("mean_star:idec", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, &x, NULL))) n++;
+
+  if(check("mean_star:converge", 1, mean_star(NOVAS_JD_J2000, 0.0, 0.0, NOVAS_REDUCED_ACCURACY, &x, &y))) {
+    if(check("mean_star:converge:errno", ECANCELED, errno)) n++;
+  }
 
   return n;
 }
@@ -849,45 +889,43 @@ static int test_grav_undef() {
 }
 
 static int test_grav_init_planets() {
-  double p[3] = {2.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}};
-  int pl_mask, n = 0;
+  novas_planet_bundle planets = {};
+  double p[3] = {2.0};
+  int n = 0;
 
-  if(check("grav_init_planets:pos_obs", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, &pl_mask, pb, vb))) n++;
-  if(check("grav_init_planets:pl_pos", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, NULL, vb))) n++;
-  if(check("grav_init_planets:pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, pb, NULL))) n++;
-  if(check("grav_init_planets:pl_pos+pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, NULL, NULL))) n++;
-  if(check("grav_init_planets:pl_pos=pl_vel", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, &pl_mask, pb, pb))) n++;
-  if(check("grav_init_planets:pl_mask", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, NULL, pb, vb))) n++;
+  if(check("grav_init_planets:pos_obs", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, NULL, 0, &planets))) n++;
+  if(check("grav_init_planets:planets", -1, obs_planets(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, p, 0, NULL))) n++;
 
   return n;
 }
 
 static int test_grav_planets() {
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
-  int pl_mask = 0, n = 0;
+  novas_planet_bundle planets = {};
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
+  int n = 0;
 
-  if(check("grav_planets:pos_src", -1, grav_planets(NULL, po, pl_mask, pb, vb, out))) n++;
-  if(check("grav_planets:pos_obs", -1, grav_planets(p, NULL, pl_mask, pb, vb, out))) n++;
-  if(check("grav_planets:pl_pos", -1, grav_planets(p, po, pl_mask, NULL, vb, out))) n++;
-  if(check("grav_planets:pl_vel", -1, grav_planets(p, po, pl_mask, pb, NULL, out))) n++;
-  if(check("grav_planets:pl_pos+pl_vel", -1, grav_planets(p, po, pl_mask, NULL, NULL, out))) n++;
-  if(check("grav_planets:pl_pos=pl_vel", -1, grav_planets(p, po, pl_mask, pb, pb, out))) n++;
-  if(check("grav_planets:pos_src", -1, grav_planets(p, po, pl_mask, pb, vb, NULL))) n++;
+  if(check("grav_planets:pos_src", -1, grav_planets(NULL, po, &planets, out))) n++;
+  if(check("grav_planets:pos_obs", -1, grav_planets(p, NULL, &planets, out))) n++;
+  if(check("grav_planets:planets", -1, grav_planets(p, po, NULL, out))) n++;
+  if(check("grav_planets:pos_src", -1, grav_planets(p, po, &planets, NULL))) n++;
 
   return n;
 }
 
 static int test_grav_undo_planets() {
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[NOVAS_PLANETS][3] = {{}}, vb[NOVAS_PLANETS][3] = {{}}, out[3] = {};
-  int pl_mask = 0, n = 0;
+  novas_planet_bundle planets = {};
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
+  int n = 0;
 
-  if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;
-  if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, out))) n++;
-  if(check("grav_undo_planets:pl_pos", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, NULL, vb, out))) n++;
-  if(check("grav_undo_planets:pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, NULL, out))) n++;
-  if(check("grav_undo_planets:pl_pos+pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, NULL, NULL, out))) n++;
-  if(check("grav_undo_planets:pl_pos=pl_vel", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, pb, out))) n++;
-  if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, pl_mask, pb, vb, NULL))) n++;
+  if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, &planets, out))) n++;
+  if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, &planets, out))) n++;
+  if(check("grav_undo_planets:planets", -1, grav_undo_planets(p, po, NULL, out))) n++;
+    if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, &planets, NULL))) n++;
+
+  planets.mask = 1 << NOVAS_SUN;
+  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, &planets, out))) {
+    if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
+  }
 
   return n;
 }
@@ -1102,6 +1140,10 @@ static int test_geom_posvel() {
   frame.accuracy = 2;
   if(check("geom_posvel:frame:accuracy:2", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
 
+  frame.accuracy = NOVAS_REDUCED_ACCURACY;
+  make_ephem_object("blah", 111111, &o);
+  if(check("geom_posvel:ephem_object", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+
   return n;
 }
 
@@ -1153,7 +1195,9 @@ static int test_app_to_geom() {
   if(check("app_to_geom:frame:init", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
 
   novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
-  if(check("app_to_geom:frame:ok", 0, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
+  if(check("app_to_geom:frame:converge", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) {
+    if(check("app_to_geom:frame:converge:errno", ECANCELED, errno)) n++;
+  }
 
   if(check("app_to_geom:pos", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, NULL))) n++;
   if(check("app_to_geom:sys:-1", -1, novas_app_to_geom(&frame, -1, 1.0, 2.0, 10.0, pos))) n++;
@@ -1302,7 +1346,11 @@ static int test_inv_transform() {
 }
 
 int main() {
+  extern int novas_inv_max_iter;
   int n = 0;
+
+  // For testing convergence errors.
+  novas_inv_max_iter = 0;
 
   if(test_make_on_surface()) n++;
   if(test_make_in_space()) n++;
@@ -1318,6 +1366,8 @@ int main() {
   if(test_transform_hip()) n++;
 
   if(test_refract()) n++;
+  if(test_refract_astro()) n++;
+  if(test_inv_refract()) n++;
   if(test_limb_angle()) n++;
 
   if(test_ephemeris()) n++;
@@ -1326,6 +1376,8 @@ int main() {
   if(test_tod_to_j2000()) n++;
   if(test_gcrs_to_cirs()) n++;
   if(test_cirs_to_gcrs()) n++;
+  if(test_cirs_to_app_ra()) n++;
+  if(test_app_to_cirs_ra()) n++;
 
   if(test_set_planet_provider()) n++;
   if(test_set_planet_provider_hp()) n++;

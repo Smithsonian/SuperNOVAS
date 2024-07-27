@@ -1,15 +1,18 @@
-/*
- Naval Observatory Vector Astrometry Software (NOVAS)
- C Edition, Version 3.1
-
- readeph0.c: Dummy readeph for use when minor planet ephermeris is unavailable
-
- U. S. Naval Observatory
- Astronomical Applications Dept.
- Washington, DC
- http://www.usno.navy.mil/USNO/astronomical-applications
+/**
+ * @author G. Kaplan and A. Kovacs
+ *
+ *  Dummy readeph() implementation for SuperNOVAS for use when minor planet ephermeris is
+ *  unavailable.
+ *
+ *  Based on the NOVAS C Edition, Version 3.1:
+ *
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
  */
-
 #include <stdlib.h>
 #include <errno.h>
 
@@ -30,6 +33,7 @@ double * readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
 
   if(isnanf(jd_tdb)) {
     set_error(-1, EINVAL, fn, "NaN jd_tdb");
+    *error = -1;
     return NULL;
   }
 

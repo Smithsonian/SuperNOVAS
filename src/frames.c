@@ -5,7 +5,12 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *  Routines for higher-level and efficient repeat coordinate transformations.
+ *  SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using
+ *  observer frames. Observer frames represent an observer location at a specific astronomical
+ *  time (instant), which can be re-used again and again to calculate or transform positions of
+ *  celestial sources in a a range of astronomical coordinate systems.
+ *
+ *  @sa timescale.c
  */
 
 /// \cond PRIVATE
@@ -218,7 +223,9 @@ static int set_obs_posvel(novas_frame *frame) {
 
 
 static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
-  double d, p, q, r;
+  const double pos0[3] = { pos[0], pos[1], pos[2] };
+  double d;
+  int i;
 
   if(frame->v_obs == 0.0)
     return 0;
@@ -227,24 +234,34 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
   if(d == 0.0)
     return 0;
 
-  p = frame->beta * novas_vdot(pos, frame->obs_vel) / (d * frame->v_obs);
-  q = (1.0 + p / (1.0 + frame->gamma)) * d / C_AUDAY;
-  r = 1.0 + p;
+  // Iterate as necessary (for inverse only)
+  for(i = 0; i < novas_inv_max_iter; i++) {
+    const double p = frame->beta * novas_vdot(pos, frame->obs_vel) / (d * frame->v_obs);
+    const double q = (1.0 + p / (1.0 + frame->gamma)) * d / C_AUDAY;
+    const double r = 1.0 + p;
 
-  if(dir < 0) {
-    // Apparent to geometric
-    pos[0] = (r * pos[0] - q * frame->obs_vel[0]) / frame->gamma;
-    pos[1] = (r * pos[1] - q * frame->obs_vel[1]) / frame->gamma;
-    pos[2] = (r * pos[2] - q * frame->obs_vel[2]) / frame->gamma;
-  }
-  else {
-    // Geometric to apparent
-    pos[0] = (frame->gamma * pos[0] + q * frame->obs_vel[0]) / r;
-    pos[1] = (frame->gamma * pos[1] + q * frame->obs_vel[1]) / r;
-    pos[2] = (frame->gamma * pos[2] + q * frame->obs_vel[2]) / r;
+    if(dir < 0) {
+      const double pos1[3] = { pos[0], pos[1], pos[2] };
+
+      // Apparent to geometric
+      pos[0] = (r * pos0[0] - q * frame->obs_vel[0]) / frame->gamma;
+      pos[1] = (r * pos0[1] - q * frame->obs_vel[1]) / frame->gamma;
+      pos[2] = (r * pos0[2] - q * frame->obs_vel[2]) / frame->gamma;
+
+      // Iterate, since p, q, r are defined by unaberrated position.
+      if(novas_vdist(pos, pos1) < 1e-13 * d)
+        return 0;
+    }
+    else {
+      // Geometric to apparent
+      pos[0] = (frame->gamma * pos0[0] + q * frame->obs_vel[0]) / r;
+      pos[1] = (frame->gamma * pos0[1] + q * frame->obs_vel[1]) / r;
+      pos[2] = (frame->gamma * pos0[2] + q * frame->obs_vel[2]) / r;
+      return 0; // No need to iterate...
+    }
   }
 
-  return 0;
+  return novas_error(-1, ECANCELED, "frame_aberration", "failed to converge");
 }
 
 
@@ -255,7 +272,10 @@ static int is_frame_initialized(const novas_frame *frame) {
 
 /**
  * Sets up a observing frame for a specific observer location, time of observation, and accuracy
- * requirement.
+ * requirement. The frame is initialized using the currently configured planet ephemeris provider
+ * function (see set_planet_provider() and set_planet_provider_hp()), and in case of reduced
+ * accuracy mode, the currently configured IAU nutation model provider (see
+ * set_nutation_lp_provider()).
  *
  *
  * @param accuracy    Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or
@@ -264,10 +284,11 @@ static int is_frame_initialized(const novas_frame *frame) {
  * @param time        Time of observation
  * @param dx          [mas] Earth orientation parameter, polar offset in x.
  * @param dy          [mas] Earth orientation parameter, polar offset in y.
- * @param[out] frame  Pointer to the observing frame to set up.
- * @return            0 if successful, 10--40: error is 10 + the error ephemeris(),
+ * @param[out] frame  Pointer to the observing frame to configure.
+ * @return            0 if successful,
+ *                    10--40: error is 10 + the error from ephemeris(),
  *                    40--50: error is 40 + the error from geo_posvel(),
- *                    50--80: error is 30 + the error from sidereal_time(),
+ *                    50--80: error is 50 + the error from sidereal_time(),
  *                    80--90 error is 80 + error from cio_location(),
  *                    90--100 error is 90 + error from cio_basis().
  *                    or else -1 if there was an error (errno will indicate the
@@ -277,6 +298,8 @@ static int is_frame_initialized(const novas_frame *frame) {
  * @sa novas_sky_pos()
  * @sa novas_geom_posvel()
  * @sa novas_make_transform()
+ * @sa set_planet_provider()
+ * @sa set_nutation_lp_provider()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -364,6 +387,7 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out) {
   static const char *fn = "novas_change_observer";
   double jd_tdb;
+  int pl_mask;
 
   if(!orig || !obs || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: orig=%p, obs=%p, out=%p", orig, obs, out);
@@ -376,12 +400,13 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
 
   out->state = FRAME_DEFAULT;
   out->observer = *obs;
-  out->pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
+
+  pl_mask = (out->accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   prop_error(fn, set_obs_posvel(out), 0);
 
   jd_tdb = novas_get_time(&out->time, NOVAS_TDB);
-  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, &out->pl_mask, out->pl_pos, out->pl_vel), 0);
+  prop_error(fn, obs_planets(jd_tdb, out->accuracy, out->obs_pos, pl_mask, &out->planets), 0);
 
   out->state = FRAME_INITIALIZED;
   return 0;
@@ -488,8 +513,20 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
     bary2obs(pos1, frame->obs_pos, pos1, &t_light);
   }
   else {
-    // Get position of body wrt observer, antedated for light-time.
-    prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 50);
+    int got = 0;
+
+    // If we readily have the requested planet data in the frame, use it.
+    if(source->type == NOVAS_PLANET)
+      if(frame->planets.mask & (1 << source->number)) {
+        memcpy(pos1, &frame->planets.pos[source->number][0], sizeof(pos1));
+        memcpy(vel1, &frame->planets.vel[source->number][0], sizeof(vel1));
+        got = 1;
+      }
+
+    // Otherwise, get the position of body wrt observer, antedated for light-time.
+    if(!got) {
+      prop_error(fn, light_time2(jd_tdb, source, frame->obs_pos, 0.0, frame->accuracy, pos1, vel1, &t_light), 50);
+    }
   }
 
   if(pos) {
@@ -625,7 +662,7 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
   // Compute gravitational deflection and aberration.
-  prop_error(fn, grav_planets(pos, frame->obs_pos, frame->pl_mask, frame->pl_pos, frame->pl_vel, pos1), 0);
+  prop_error(fn, grav_planets(pos, frame->obs_pos, &frame->planets, pos1), 0);
 
   // Aberration correction
   frame_aberration(frame, GEOM_TO_APP, pos1);
@@ -886,7 +923,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   frame_aberration(frame, APP_TO_GEOM, app_pos);
 
   // Undo gravitational deflection and aberration.
-  prop_error(fn, grav_undo_planets(app_pos, frame->obs_pos, frame->accuracy, frame->pl_mask, frame->pl_pos, frame->pl_vel, geom_icrs), 0);
+  prop_error(fn, grav_undo_planets(app_pos, frame->obs_pos, &frame->planets, geom_icrs), 0);
 
   return 0;
 }

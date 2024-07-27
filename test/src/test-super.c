@@ -782,6 +782,23 @@ static int test_radec_planet() {
 }
 
 
+static int test_cirs_tod() {
+  double pos1[3] = {}, pos2[3] = {};
+  double ra0, dec0, ra1, dec1;
+
+  if(vector2radec(pos0, &ra0, &dec0) != 0) return 0;
+
+  if(!is_ok("cirs_tod:cirs_to_tod", cirs_to_tod(tdb, NOVAS_FULL_ACCURACY, pos0, pos1))) return 1;
+
+  vector2radec(pos1, &ra1, &dec1);
+  if(!is_equal("cirs_tod:cirs_to_tod:check", cirs_to_app_ra(tdb, NOVAS_FULL_ACCURACY, ra0), ra1, 1e-10)) return 1;
+
+  if(!is_ok("cirs_tod:tod_to_cirs", tod_to_cirs(tdb, NOVAS_FULL_ACCURACY, pos1, pos2))) return 1;
+  if(!is_ok("cirs_tod:tod_to_cirs:check", check_equal_pos(pos2, pos0, 1e-13 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
 static int test_observers() {
   double ps[3] = { 100.0, 30.0, 10.0 }, vs[3] = { 10.0 };
   int n = 0;
@@ -791,6 +808,8 @@ static int test_observers() {
 
   if(test_equ_ecl()) n++;
   if(test_equ_gal()) n++;
+
+  if(test_cirs_tod()) n++;
 
   make_observer_at_geocenter(&obs);
   n += test_source();
@@ -911,6 +930,8 @@ static int test_cirs_app_ra() {
   }
   return 0;
 }
+
+
 
 static int test_set_time() {
   novas_timespec tt, tt1, tai, gps, TDB, tcb, tcg, utc, ut1;
@@ -1690,13 +1711,13 @@ static int test_diff_time() {
   if(!is_equal("diff_time:check", novas_diff_time(&t1, &t), 0.5, 1e-9)) return 1;
   if(!is_equal("diff_time:check:rev", novas_diff_time(&t, &t1), -0.5, 1e-9)) return 1;
 
-  dt = novas_tcb_diff(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
+  dt = novas_diff_tcb(&t, &t1) - (1.0 + LB) * novas_diff_time(&t, &t1);
   if(!is_ok("diff_time:check:tcb", fabs(dt) >= 1e-9)) {
     printf("!!! missed TCB by %.9f\n", dt);
     return 1;
   }
 
-  dt = novas_tcg_diff(&t, &t1) - (1.0 + LG) * novas_diff_time(&t, &t1);
+  dt = novas_diff_tcg(&t, &t1) - (1.0 + LG) * novas_diff_time(&t, &t1);
   if(!is_ok("diff_time:check:tcg", fabs(dt) >= 1e-9)) {
     printf("!!! missed TCG by %.9f\n", dt);
     return 1;

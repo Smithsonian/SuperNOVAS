@@ -5,8 +5,10 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *   A set of routines to make handling of astronomical timescale and conversions between them
- *   easier.
+ *   A set of SuperNOVAS routines to make handling of astronomical timescales and conversions
+ *   among them easier.
+ *
+ * @sa frames.c
  */
 
 /// \cond PRIVATE
@@ -44,9 +46,9 @@
 
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
- * timescale. The time set this way is accurate to a few &mu;s (microsecond) due to the inherent
+ * timescale. The time set this way is accurate to a few &mu;s (microseconds) due to the inherent
  * precision of the double-precision argument. For higher precision applications you may use
- * `novas_set_split_time()` instead, which has an inherent accuracy at the picoseconds level.
+ * `novas_set_split_time()` instead, which has an inherent accuracy at the picosecond level.
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
@@ -71,8 +73,8 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
 /**
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
  * The split into the integer and fractional parts can be done in any convenient way. The highest
- * precision is reached if the fractional part is on the order of &le;= 1 day. In that case, the
- * time may be specified to picosecond accuracy, if needed.
+ * precision is reached if the fractional part is &le; 1 day. In that case, the time may be
+ * specified to picosecond accuracy, if needed.
  *
  * The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is
  * limited by the precision of `tbd2tt()` implementation, to around 10 &mu;s.
@@ -203,7 +205,7 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
  * double-precision result. For higher precision applications you may use `novas_get_split_time()`
  * instead, which has an inherent accuracy at the picosecond level.
  *
- * @param time        Pointer to the astronimical time specification data structure.
+ * @param time        Pointer to the astronomical time specification data structure.
  * @param timescale   The astronomical time scale in which the returned Julian Date is to be
  *                    provided
  * @return            [day] The Julian date in the requested timescale.
@@ -222,9 +224,9 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
 
 /**
  * Returns the fractional Julian date of an astronomical time in the specified timescale, as an
- * integer and fractional part. The two-component split of the time allows for abolute precisions
+ * integer and fractional part. The two-component split of the time allows for absolute precisions
  * at the picosecond level, as opposed to `novas_set_time()`, whose precision is limited to a
- * ew microseconds. Ultimately, the accutacy of the time will depend on how it was set.
+ * few microseconds typically.
  *
  * The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is
  * limited by the precision of the `tbd2tt()` implemenation, to around 10 &mu;s.
@@ -242,7 +244,7 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
  * </ol>
  *
- * @param time        Pointer to the astronimical time specification data structure.
+ * @param time        Pointer to the astronomical time specification data structure.
  * @param timescale   The astronomical time scale in which the returned Julian Date is to be
  *                    provided
  * @param[out] ijd    [day] The integer part of the Julian date in the requested timescale. It may
@@ -324,8 +326,8 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  *
  * @sa novas_set_time()
  * @sa novas_offset_time()
- * @sa novas_tcb_diff()
- * @sa novas_tcg_diff()
+ * @sa novas_diff_tcb()
+ * @sa novas_diff_tcg()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -340,45 +342,47 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
 }
 
 /**
- * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between
- * two astronomical time specifications. TCG progresses slightly faster, by a relative rate about
- * 1.6&times10<sup>-8</sup> higher, than time on Earth due to the lack of gravitational time
- * dilation by the Earth or Sun.
+ * Returns the Barycentric Coordinate Time (TCB) based time difference (t1 - t2) in days between
+ * two astronomical time specifications. TCB progresses slightly faster than time on Earth, at a
+ * rate about 1.6&times10<sup>-8</sup> higher, due to the lack of gravitational time dilation by
+ * the Earth or Sun.
  *
  * @param t1    First time
  * @param t2    Second time
  * @return      [day] Precise TCB time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
- * @sa novas_tgc_diff()
+ * @sa novas_diff_tcg()
  * @sa novas_diff_time()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_tcb_diff(const novas_timespec *t1, const novas_timespec *t2) {
+double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
   return novas_diff_time(t1, t2) * (1.0 + TC_LB);
 }
 
 
 /**
- * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between two
- * astronomical time specifications. TCG progresses slightly faster, by a relative rate about
- * 7&times10<sup>-10</sup> higher, than time on Earth due to the lack of gravitational time
- * dilation by Earth.
+ * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between
+ * two astronomical time specifications. TCG progresses slightly faster than time on Earth, at a
+ * rate about 7&times10<sup>-10</sup> higher, due to the lack of gravitational time dilation by
+ * Earth. TCG is an appropriate time measure for a spacecraft that is in the proximity of the
+ * orbit of Earth, but far enough from Earth such that the relativistic effects of Earth's gravity
+ * can be ignored.
  *
  * @param t1    First time
  * @param t2    Second time
  * @return      [day] Precise TCG time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
- * @sa novas_tcb_diff()
+ * @sa novas_diff_tcb()
  * @sa novas_diff_time()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_tcg_diff(const novas_timespec *t1, const novas_timespec *t2) {
+double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
   return novas_diff_time(t1, t2) * (1.0 + TC_LG);
 }
 
@@ -426,9 +430,9 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
 /**
  * Returns the UNIX time for an astronomical time instant.
  *
- * @param time      The astronomical time scale in which the returned Julian Date is to be provided
- * @param nanos     [ns] UTC sub-second component. It may be NULL if not required.
- * @return          [s] The integer UNIX time
+ * @param time        Pointer to the astronomical time specification data structure.
+ * @param[out] nanos  [ns] UTC sub-second component. It may be NULL if not required.
+ * @return            [s] The integer UNIX time
  *
  * @sa novas_set_unix_time()
  * @sa novas_get_time()
@@ -446,7 +450,7 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
   seconds = UNIX_J2000 + (ijd - IJD_J2000) * IDAY + isod;
 
   if(nanos) {
-    *nanos = round(1e9 * (sod - isod));
+    *nanos = floor(1e9 * (sod - isod) + 0.5);
     if(*nanos == E9) {
       seconds++;
       *nanos = 0;

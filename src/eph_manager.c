@@ -8,12 +8,15 @@
  *
  *  This module exposes a lot of its own internal state variables globally. You probably should
  *  not access them from outside this module, but they are kept ad globals to ensure compatibility
- *  with existing NOVAS C applications that do tinker with those values.
+ *  with existing NOVAS C applications that might access those values.
  *
- *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
- *  Astronomical Applications Dept.
- *  Washington, DC
- *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *  Based on the NOVAS C Edition, Version 3.1:
+ *
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
  *  @sa solsys2.c
  */

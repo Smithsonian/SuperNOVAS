@@ -17,10 +17,18 @@
  *  Additionally, users may set their custom choice of major planet ephemeris handler at
  *  runtime via the set_ephem_size().
  *
- *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
- *  Astronomical Applications Dept.
- *  Washington, DC
- *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *  Based on the NOVAS C Edition, Version 3.1:
+ *
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ *  @sa solsys1.c
+ *  @sa solsys2.c
+ *  @sa solsys3.c
+ *  @sa solsys-ephem.c
  */
 
 #ifndef _SOLSYS_

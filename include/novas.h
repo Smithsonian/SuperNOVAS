@@ -2,16 +2,18 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 1.0.1
+ * @version 1.1.0
  *
- *  SuperNOVAS astrometry softwate based on the Naval Observatory Vector Astrometry Software (NOVAS).
+ *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
  *
+ *  Based on the NOVAS C Edition, Version 3.1:
  *
- *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
- *  Astronomical Applications Dept.
- *  Washington, DC
- *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  */
 
 #ifndef _NOVAS_
@@ -20,6 +22,7 @@
 #include <math.h>   // for M_PI
 #include <stdlib.h> // NULL
 #include <stdint.h>
+#include <time.h>
 
 // The upstream NOVAS library had a set of include statements that really were not necessary
 // First, including standard libraries here meant that those libraries were included in the
@@ -61,7 +64,7 @@
 #define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1".
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING ""
 
 
 
@@ -201,7 +204,7 @@
 enum novas_debug_mode {
  NOVAS_DEBUG_OFF = 0,     ///< Do not print errors and traces to the standard error (default).
  NOVAS_DEBUG_ON,          ///< Print errors and traces to the standard error.
- NOVAS_DEBUG_EXTRA         ///< Print all errors and traces, even if they may be 'normal' behavior, to the standard error.
+ NOVAS_DEBUG_EXTRA        ///< Print all errors and traces to the standard error, even if they may be acceptable behavior.
 };
 
 /**
@@ -720,6 +723,19 @@ typedef struct {
 
 
 /**
+ * Position and velocity data for a set of major planets (which may include the Sun and the Moon also).
+ *
+ * @since 1.1
+ *
+ * @sa enum novas_planet
+ */
+typedef struct {
+  int mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
+  double pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
+  double vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
+} novas_planet_bundle;
+
+/**
  * A set of parameters that uniquely define the place and time of observation. The user may
  * initialize the frame with novas_make_frame(). Once the observer frame is set up, it can be
  * used repeatedly to perform efficient calculations of multiple objects in the coordinate
@@ -763,18 +779,16 @@ typedef struct {
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
-  int pl_mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
-  double pl_pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
-  double pl_vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
+  novas_planet_bundle planets;    ///< Planet positions and velocities
 } novas_frame;
 
 /**
  * A transformation between two astronomical coordinate systems for the same observer
  * location and time. This allows for more elegant, generic, and efficient coordinate
- * transformations than using the low-level NOVAS functions.
+ * transformations than the low-level NOVAS functions.
  *
- * The transformation can be (should be) initialized via novas_make_trasform(), or else
- * modified via novas_invert_transform() or novas_change_observer().
+ * The transformation can be (should be) initialized via novas_make_trasform(), or via
+ * novas_invert_transform().
  *
  * @since 1.1
  *
@@ -792,6 +806,8 @@ typedef struct {
  * The type of elevation value for which to calculate a refraction.
  *
  * @sa RefractionModel
+ *
+ * @since 1.1
  */
 enum novas_refraction_type {
   NOVAS_REFRACT_OBSERVED = -1,  ///< Refract observed elevation value
@@ -799,7 +815,7 @@ enum novas_refraction_type {
 };
 
 /**
- * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode
+ * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
  *
  * @sa grav_bodies_reduced_accuracy
  *
@@ -809,7 +825,7 @@ enum novas_refraction_type {
 #define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) | (1 << NOVAS_EARTH) )
 
 /**
- * Default set of gravitating bodies to use for deflection calculations in full accuracy mode
+ * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.
  *
  * @sa grav_bodies_full_accuracy
  *
@@ -819,24 +835,34 @@ enum novas_refraction_type {
 #define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
 
 /**
- * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode
+ * Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
  *
  * @sa grav_def()
  * @sa grav_planets()
+ * @sa DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
+ * @sa set_ephem_provider()
  *
  * @since 1.1
- * @author Attila Kovacs
  */
 extern int grav_bodies_reduced_accuracy;
 
 /**
- * Current set of gravitating bodies to use for deflection calculations in full accuracy mode
+ * Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each
+ * bit signifies whether a given body is to be accounted for as a gravitating body that bends light,
+ * such as the bit `(1 << NOVAS_JUPITER)` indicates whether or not Jupiter is considered as a deflecting
+ * body. You should also be sure that you provide ephemeris data for bodies that are designated for the
+ * deflection calculation.
  *
  * @sa grav_def()
  * @sa grav_planets()
+ * @sa DEFAULT_GRAV_BODIES_FULL_ACCURACY
+ * @sa set_ephem_provider_hp()
  *
  * @since 1.1
- * @author Attila Kovacs
  */
 extern int grav_bodies_full_accuracy;
 
@@ -845,15 +871,17 @@ extern int grav_bodies_full_accuracy;
  * A function that returns a refraction correction for a given date/time of observation at the
  * given site on earth, and for a given astrometric source elevation
  *
- * @param j_tt      [day] Terrestrial Time (TT) based Julian data of observation
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
  * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should
  *                  also set errno to indicate the type of error).
+ *
+ * @since 1.1
  */
-typedef double (*RefractionModel)(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
+typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 
 short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
@@ -1125,14 +1153,13 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
         const double *geo_pos, const double *geo_vel, double *pos, double *vel);
 
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int *pl_mask, double pl_pos[][3], double pl_vel[][3]);
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_bundle *planets);
 
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
-int grav_planets(const double *pos_src, const double *pos_obs, int pl_mask, const double pl_pos[][3], const double pl_vel[][3], double *out);
+int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_bundle *planets, double *out);
 
-int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, int pl_mask, const double pl_pos[][3],
-        const double pl_vel[][3], double *out);
+int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *planets, double *out);
 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 
@@ -1143,6 +1170,10 @@ int make_cat_object(const cat_entry *star, object *source);
 int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
 
 int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+
+int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+
+int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
 
 // in timescale.c
@@ -1160,9 +1191,9 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos);
 
 double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2);
 
-double novas_tcb_diff(const novas_timespec *t1, const novas_timespec *t2);
+double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2);
 
-double novas_tcg_diff(const novas_timespec *t1, const novas_timespec *t2);
+double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2);
 
 int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec *out);
 
@@ -1195,6 +1226,7 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
 int novas_transform_vector(const double *in, const novas_transform *transform, double *out);
 
 int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform, sky_pos *out);
+
 
 // in refract.c
 double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
@@ -1240,7 +1272,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #define ANGVEL              NOVAS_EARTH_ANGVEL
 
 // Various locally used physical units
-#define DAY                 86400.0         ///< [s] seconds in a day
+#define DAY                 86400.0               ///< [s] seconds in a day
 #define DAY_HOURS           24.0
 #define DEG360              360.0
 #define JULIAN_YEAR_DAYS    365.25
@@ -1250,7 +1282,10 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #define HOURANGLE           (M_PI / 12.0)
 #define MAS                 (1e-3 * ASEC2RAD)
 
-#define INV_MAX_ITER        100
+// On some older platform NAN may not be defined, so define it here if need be
+#ifndef NAN
+#  define NAN               (0.0/0.0)
+#endif
 
 #  ifndef THREAD_LOCAL
 #    if __STDC_VERSION__ >= 201112L
@@ -1262,12 +1297,13 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #    endif
 #  endif
 
+
 int novas_trace(const char *loc, int n, int offset);
 void novas_set_errno(int en, const char *from, const char *desc, ...);
 int novas_error(int ret, int en, const char *from, const char *desc, ...);
 
 /**
- * Propagate an error (if any) with an offset. If the error is non-zero, it returns with the offset
+ * Propagates an error (if any) with an offset. If the error is non-zero, it returns with the offset
  * error value. Otherwise it keeps going as if it weren't even there...
  *
  * @param n     {int} error code or the call that produces the error code
@@ -1287,6 +1323,7 @@ double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
 
+extern int novas_inv_max_iter;
 
 #endif /* __NOVAS_INTERNAL_API__ */
 /// \endcond

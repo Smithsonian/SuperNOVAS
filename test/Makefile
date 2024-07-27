@@ -39,6 +39,7 @@ coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov timescale.c.gcov refract.c
 data:
 	mkdir data
 
+.PHONY: bad-data
 bad-data: ../cio_ra.bin bad-cio-data
 	touch bad-cio-data/empty
 	dd if=../cio_ra.bin of=bad-cio-data/bad-1.bin bs=27 count=1
@@ -88,6 +89,21 @@ clean-data:
 .PHONY: clean
 clean: clean-test clean-cov clean-data
 	rm -f *.o
+
+
+.PHONY: help
+help:
+	@echo
+	@echo "Syntax: make [target]"
+	@echo
+	@echo "The following targets are available:"
+	@echo
+	@echo "  run           (default) Compiles and runs regression tests."
+	@echo "  coverage      Extracts test coverage data."
+	@echo "  clean         Removes intermediate products."
+	@echo "  distclean     Deletes all generated files."
+	@echo
+
 
 vpath %.c ../src
 vpath %.c src

@@ -1,13 +1,20 @@
-/*
- Naval Observatory Vector Astrometry Software (NOVAS)
- C Edition, Version 3.1
-
- cio_file.c: Produces binary file of RA values for CIO
-
- U. S. Naval Observatory
- Astronomical Applications Dept.
- Washington, DC
- http://www.usno.navy.mil/USNO/astronomical-applications
+/**
+ * @author G. Kaplan and A. Kovacs
+ *
+ *  SuperNOVAS tool to Produces binary data file of RA values for CIO. The resulting binary file
+ *  is platform-dependent. As of SuperNOVAS version 1.1, one may use the ASCII file directly with
+ *  SuperNOVAS. As such, there is no longer the need to produce the platform-dependent binary, and
+ *  the use of the ASCII CIO locator file is now preferred for reasons of portability.
+ *
+ *  Based on the NOVAS C Edition, Version 3.1:
+ *
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *   <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *   http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *
+ *  @sa set_cio_locator_file()
  */
 
 #include <stdio.h>

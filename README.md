@@ -27,6 +27,7 @@ SuperNOVAS is entirely free to use without licensing restrictions.  Its source c
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
+This document has been updated for the `v1.1` release.
 
 
 ## Table of Contents
@@ -118,7 +119,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    mean equinox of date coordinates.
  
  - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
-   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
+   of the expected [0:2&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
  
  - Fixes `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified input vector 
    appropriately instead.
@@ -135,9 +136,6 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
     the gravitational deflection due to the Sun being skipped.
    
- - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the 
-   radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration), and 
-   `rad_vel()` requires geometric directions also to account for the gravitational effects of the Sun and Earth.
 
 -----------------------------------------------------------------------------
 
@@ -188,10 +186,10 @@ the necessary variables in the shell prior to invoking `make`. For example:
    one tries to use the functions from `solsys1.c`). Note, that a `readeph()` implementation is not always necessary 
    and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
 
- - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the binary file 
-   (e.g. `/usr/local/share/novas/cio_ra.bin`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable
-   prior to calling `make`. (The CIO locator file is not at all necessary for the functioning of the library, unless 
-   you specifically require CIO positions relative to GCRS.)
+ - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
+   file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
+   variable prior to calling `make`. (The CIO locator file is not at all necessary for the functioning of the library, 
+   unless  you specifically require CIO positions relative to GCRS.)
    
  - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
@@ -206,8 +204,8 @@ Now you are ready to build the library:
 
 will compile the shared (e.g. `lib/libsupernovas.so`) libraries, produce a CIO locator data file (e.g. 
 `tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
-Alternatively, you can build select components of the above with the `make` targets `shared`, `cio_file`, and 
-`local-dox` respectively. And, if unsure, you can always call `make help` to see what build targets are available.
+Alternatively, you can build select components of the above with the `make` targets `shared`, and `local-dox` 
+respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
 system-wide install you may place the static or shared library into `/usr/local/lib/`, copy the CIO locator file to 
@@ -377,7 +375,7 @@ UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds.
  int dut1 = ...;
 ``` 
  
-Now we can set a standard UNIX time, for example, using the current time:
+Now we can set the time of observation, for example, using the current UNIX time:
 
 ```c
  novas_timescale t_obs;	        // Structure that will define astrometric time
@@ -600,10 +598,10 @@ before that level of accuracy is reached.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
-    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations. 
-    Note, that refraction at radio wavelengths is notably different from the included optical model. In any case you 
-    may want to skip the refraction corrections offered in this library, and instead implement your own as appropriate 
-    (or not at all).
+    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
+    Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
+    radio refraction model is included as of version 1.1. In any case you may want to skip the refraction corrections 
+    offered in this library, and instead implement your own as appropriate (or not at all).
   
 
 
@@ -700,14 +698,15 @@ before that level of accuracy is reached.
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
+
 #### Added in v1.1
 
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
-   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is defined 
-   it can be used very efficiently to calculate positions for multiple celestial objects with minimal 
-   additional computational cost. The frames API is also more elegant and simpler than the low-level NOVAS C approach 
-   for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their 
-   internal state is never modified during the calculations. The following new functions were added: 
+   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
+   defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum 
+   additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C 
+   approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
+   their internal state is never modified during the calculations. The following new functions were added: 
    `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_geom_to_app()`, `novas_sky_pos()`, 
    `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, 
    `novas_invert_transform()`, `novas_transform_vector()`, and `novas_transform_sky_pos()`.
@@ -717,7 +716,11 @@ before that level of accuracy is reached.
    UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an 
    expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
    `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
-   `novas_increment_time()`, or measure time differences via `novas_diff_time()`.
+   `novas_increment_time()`, or measure time differences via `novas_diff_time()`, `novas_diff_tcg()`, or 
+   `novas_diff_tcb()`.
+ 
+ - Added `novas_planet_bundle` structure to handle planet positions and velocities more elegantly (e.g. for 
+   gravitational deflection calculations).
    
  - `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
  
@@ -744,15 +747,19 @@ before that level of accuracy is reached.
  - Added humidity field to `on_surface` structure, e.g. for refraction calculations at radio wavelengths. The
    `make_on_surface()` function will set humidity to 0.0, but the user can set the field appropriately afterwards.
 
- - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` function. The models
-   `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction model as `refract()` 
-   in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` respectively, including the 
-   reversed direction provided by `refract_astro()`. The user may supply their own refraction models to
-   `novas_app_to_hor()` also, and may make used of the generic reversal function `novas_inv_refract` to calculate
-   refraction in the reverse direction (observer vs astrometric elevations) as needed.
+ - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` / `novas_hor_to_app()` 
+   functions. The models `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction 
+   model as `refract()`  in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` 
+   respectively, including the reversed direction provided by `refract_astro()`. The user may supply their own custom 
+   refraction also, and may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in 
+   the reverse direction (observer vs astrometric elevations) as needed.
 
  - Added radio refraction model `novas_radio_refraction()` based on the formulae by Berman &amp; Rockwell 1976.
+ 
+ - Added `cirs_to_tod()` and `tod_to_cirs()` functions for efficient tranformation between True of Date (TOD) and
+   Celestial Intermediate Reference System (CIRS), and vice versa.
 
+ - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
 
 
 <a name="api-changes"></a>
@@ -826,6 +833,9 @@ before that level of accuracy is reached.
  - [__v1.1__] `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip 
    deflections due to a body, if the observer is within ~1500 km of its center.
 
+ - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the 
+   radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration), and 
+   `rad_vel()` requires geometric directions also to account for the gravitational effects of the Sun and Earth.
 
 -----------------------------------------------------------------------------
 
