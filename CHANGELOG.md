@@ -9,18 +9,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [1.1.0] -- 2024-08-11
 
-Feature release, introducing a more efficient and elegant approach to position and velocity calculations using 
-observer frames, versatile handling of astronomical timescales, as well as support for further observer locations, 
-coordinate reference systems and atmospheric refraction models. The release also fixes a number of bugs, of varying
-severity, which affected prior SuperNOVAS releases.
+Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using 
+observer frames, versatile handling of astronomical timescales, support for further observer locations, coordinate 
+reference systems and atmospheric refraction models. The release also fixes a number of bugs, of varying severity, 
+which affected prior SuperNOVAS releases.
 
 
 ### Fixed
 
- - #29: Fix portability to non-Intel x86 platforms. Previously, SuperNOVAS used `char` for storing integer 
-   coefficients, assuming `char` was signed. However, on some platforms like ARM and PowerPC `char` is unsigned, 
-   which broke many calculations badly for such platforms. As of now, we use the explicit platform independent 
-   signed `int8_t` storage type for these coefficients.
+ - #29: Fix portability to non-Intel platforms. Previously, SuperNOVAS used `char` for storing integer coefficients, 
+   assuming `char` was signed. However, on some platforms like ARM and PowerPC `char` is unsigned, which broke 
+   calculations badly on such platforms. As of now, we use the explicit platform independent signed `int8_t` storage 
+   type for these coefficients.
 
  - #38: `gcrs_to_j2000` transformed in the wrong direction.
 

@@ -7,11 +7,13 @@
  *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
  *
- *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
- *  Astronomical Applications Dept.
- *  Washington, DC
- *   <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *  Based on the NOVAS C Edition, Version 3.1:
  *
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *   <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *   http://www.usno.navy.mil/USNO/astronomical-applications</a>
  */
 
 #include <string.h>
@@ -27,7 +29,7 @@
 #endif
 
 /// \cond PRIVATE
-#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+#define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
 #define CIO_INTERP_POINTS   6     ///< Number of points to load from CIO interpolation table at once.

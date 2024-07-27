@@ -23,7 +23,6 @@
 #include <math.h>
 #include "novas.h"
 
-
 static double novas_refraction(enum novas_refraction_model model, const on_surface *loc, enum novas_refraction_type type, double el) {
   if(!loc) {
     novas_error(-1, EINVAL, "novas_refraction", "NULL on surface observer location");

@@ -718,6 +718,9 @@ before that level of accuracy is reached.
    `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
    `novas_increment_time()`, or measure time differences via `novas_diff_time()`, `novas_diff_tcg()`, or 
    `novas_diff_tcb()`.
+ 
+ - Added `novas_planet_bundle` structure to handle planet positions and velocities more elegantly (e.g. for 
+   gravitational deflection calculations).
    
  - `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
  

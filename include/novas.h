@@ -7,11 +7,13 @@
  *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
  *
+ *  Based on the NOVAS C Edition, Version 3.1:
  *
- *  Based on the NOVAS C Edition, Version 3.1,  U. S. Naval Observatory
- *  Astronomical Applications Dept.
- *  Washington, DC
- *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a>
+ *  U. S. Naval Observatory<br>
+ *  Astronomical Applications Dept.<br>
+ *  Washington, DC<br>
+ *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
+ *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  */
 
 #ifndef _NOVAS_
@@ -1299,7 +1301,7 @@ void novas_set_errno(int en, const char *from, const char *desc, ...);
 int novas_error(int ret, int en, const char *from, const char *desc, ...);
 
 /**
- * Propagate an error (if any) with an offset. If the error is non-zero, it returns with the offset
+ * Propagates an error (if any) with an offset. If the error is non-zero, it returns with the offset
  * error value. Otherwise it keeps going as if it weren't even there...
  *
  * @param n     {int} error code or the call that produces the error code
