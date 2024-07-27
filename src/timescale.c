@@ -342,10 +342,10 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
 }
 
 /**
- * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between
- * two astronomical time specifications. TCG progresses slightly faster, by a relative rate about
- * 1.6&times10<sup>-8</sup> higher, than time on Earth due to the lack of gravitational time
- * dilation by the Earth or Sun.
+ * Returns the Barycentric Coordinate Time (TCB) based time difference (t1 - t2) in days between
+ * two astronomical time specifications. TCB progresses slightly faster than time on Earth, at a
+ * rate about 1.6&times10<sup>-8</sup> higher, due to the lack of gravitational time dilation by
+ * the Earth or Sun.
  *
  * @param t1    First time
  * @param t2    Second time
@@ -364,10 +364,12 @@ double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
 
 
 /**
- * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between two
- * astronomical time specifications. TCG progresses slightly faster, by a relative rate about
- * 7&times10<sup>-10</sup> higher, than time on Earth due to the lack of gravitational time
- * dilation by Earth.
+ * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between
+ * two astronomical time specifications. TCG progresses slightly faster than time on Earth, at a
+ * rate about 7&times10<sup>-10</sup> higher, due to the lack of gravitational time dilation by
+ * Earth. TCG is an appropriate time measure for a spacecraft that is in the proximity of the
+ * orbit of Earth, but far enough from Earth such that the relativistic effects of Earth's gravity
+ * can be ignored.
  *
  * @param t1    First time
  * @param t2    Second time
