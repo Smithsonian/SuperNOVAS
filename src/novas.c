@@ -4332,7 +4332,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
 
   tsrc = novas_vlen(pos_src) / C_AUDAY;
 
-  for(i = 0; i < NOVAS_PLANETS; i++) {
+  for(i = 1; i < NOVAS_PLANETS; i++) {
     double lt, dlt, dpl, p1[3];
     int k;
 
