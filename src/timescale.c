@@ -46,9 +46,9 @@
 
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
- * timescale. The time set this way is accurate to a few &mu;s (microsecond) due to the inherent
+ * timescale. The time set this way is accurate to a few &mu;s (microseconds) due to the inherent
  * precision of the double-precision argument. For higher precision applications you may use
- * `novas_set_split_time()` instead, which has an inherent accuracy at the picoseconds level.
+ * `novas_set_split_time()` instead, which has an inherent accuracy at the picosecond level.
  *
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
@@ -73,8 +73,8 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
 /**
  * Sets an astronomical time to the split Julian Date value, defined in the specified timescale.
  * The split into the integer and fractional parts can be done in any convenient way. The highest
- * precision is reached if the fractional part is on the order of &le;= 1 day. In that case, the
- * time may be specified to picosecond accuracy, if needed.
+ * precision is reached if the fractional part is &le; 1 day. In that case, the time may be
+ * specified to picosecond accuracy, if needed.
  *
  * The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is
  * limited by the precision of `tbd2tt()` implementation, to around 10 &mu;s.
@@ -205,7 +205,7 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
  * double-precision result. For higher precision applications you may use `novas_get_split_time()`
  * instead, which has an inherent accuracy at the picosecond level.
  *
- * @param time        Pointer to the astronimical time specification data structure.
+ * @param time        Pointer to the astronomical time specification data structure.
  * @param timescale   The astronomical time scale in which the returned Julian Date is to be
  *                    provided
  * @return            [day] The Julian date in the requested timescale.
@@ -224,9 +224,9 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
 
 /**
  * Returns the fractional Julian date of an astronomical time in the specified timescale, as an
- * integer and fractional part. The two-component split of the time allows for abolute precisions
+ * integer and fractional part. The two-component split of the time allows for absolute precisions
  * at the picosecond level, as opposed to `novas_set_time()`, whose precision is limited to a
- * ew microseconds. Ultimately, the accutacy of the time will depend on how it was set.
+ * few microseconds typically.
  *
  * The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is
  * limited by the precision of the `tbd2tt()` implemenation, to around 10 &mu;s.
@@ -244,7 +244,7 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
  * </ol>
  *
- * @param time        Pointer to the astronimical time specification data structure.
+ * @param time        Pointer to the astronomical time specification data structure.
  * @param timescale   The astronomical time scale in which the returned Julian Date is to be
  *                    provided
  * @param[out] ijd    [day] The integer part of the Julian date in the requested timescale. It may
@@ -430,9 +430,9 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
 /**
  * Returns the UNIX time for an astronomical time instant.
  *
- * @param time      The astronomical time scale in which the returned Julian Date is to be provided
- * @param nanos     [ns] UTC sub-second component. It may be NULL if not required.
- * @return          [s] The integer UNIX time
+ * @param time        Pointer to the astronomical time specification data structure.
+ * @param[out] nanos  [ns] UTC sub-second component. It may be NULL if not required.
+ * @return            [s] The integer UNIX time
  *
  * @sa novas_set_unix_time()
  * @sa novas_get_time()
