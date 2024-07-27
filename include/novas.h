@@ -779,16 +779,16 @@ typedef struct {
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
-  novas_planet_bundle planets;   ///< Planet positions and velocities
+  novas_planet_bundle planets;    ///< Planet positions and velocities
 } novas_frame;
 
 /**
  * A transformation between two astronomical coordinate systems for the same observer
  * location and time. This allows for more elegant, generic, and efficient coordinate
- * transformations than using the low-level NOVAS functions.
+ * transformations than the low-level NOVAS functions.
  *
- * The transformation can be (should be) initialized via novas_make_trasform(), or else
- * modified via novas_invert_transform() or novas_change_observer().
+ * The transformation can be (should be) initialized via novas_make_trasform(), or via
+ * novas_invert_transform().
  *
  * @since 1.1
  *
@@ -844,6 +844,7 @@ enum novas_refraction_type {
  * @sa grav_def()
  * @sa grav_planets()
  * @sa DEFAULT_GRAV_BODIES_REDUCED_ACCURACY
+ * @sa set_ephem_provider()
  *
  * @since 1.1
  */
@@ -859,6 +860,7 @@ extern int grav_bodies_reduced_accuracy;
  * @sa grav_def()
  * @sa grav_planets()
  * @sa DEFAULT_GRAV_BODIES_FULL_ACCURACY
+ * @sa set_ephem_provider_hp()
  *
  * @since 1.1
  */
@@ -869,7 +871,7 @@ extern int grav_bodies_full_accuracy;
  * A function that returns a refraction correction for a given date/time of observation at the
  * given site on earth, and for a given astrometric source elevation
  *
- * @param j_tt      [day] Terrestrial Time (TT) based Julian data of observation
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
@@ -879,7 +881,7 @@ extern int grav_bodies_full_accuracy;
  *
  * @since 1.1
  */
-typedef double (*RefractionModel)(double j_tt, const on_surface *loc, enum novas_refraction_type type, double el);
+typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 
 short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
