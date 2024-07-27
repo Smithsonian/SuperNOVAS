@@ -698,14 +698,15 @@ before that level of accuracy is reached.
 
  - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
 
+
 #### Added in v1.1
 
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
-   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is defined 
-   it can be used very efficiently to calculate positions for multiple celestial objects with minimal 
-   additional computational cost. The frames API is also more elegant and simpler than the low-level NOVAS C approach 
-   for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their 
-   internal state is never modified during the calculations. The following new functions were added: 
+   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
+   defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum 
+   additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C 
+   approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
+   their internal state is never modified during the calculations. The following new functions were added: 
    `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_geom_to_app()`, `novas_sky_pos()`, 
    `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, 
    `novas_invert_transform()`, `novas_transform_vector()`, and `novas_transform_sky_pos()`.
@@ -715,7 +716,8 @@ before that level of accuracy is reached.
    UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an 
    expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
    `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
-   `novas_increment_time()`, or measure time differences via `novas_diff_time()`.
+   `novas_increment_time()`, or measure time differences via `novas_diff_time()`, `novas_diff_tcg()`, or 
+   `novas_diff_tcb()`.
    
  - `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
  
@@ -742,15 +744,19 @@ before that level of accuracy is reached.
  - Added humidity field to `on_surface` structure, e.g. for refraction calculations at radio wavelengths. The
    `make_on_surface()` function will set humidity to 0.0, but the user can set the field appropriately afterwards.
 
- - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` function. The models
-   `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction model as `refract()` 
-   in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` respectively, including the 
-   reversed direction provided by `refract_astro()`. The user may supply their own refraction models to
-   `novas_app_to_hor()` also, and may make used of the generic reversal function `novas_inv_refract` to calculate
-   refraction in the reverse direction (observer vs astrometric elevations) as needed.
+ - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` / `novas_hor_to_app()` 
+   functions. The models `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction 
+   model as `refract()`  in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` 
+   respectively, including the reversed direction provided by `refract_astro()`. The user may supply their own custom 
+   refraction also, and may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in 
+   the reverse direction (observer vs astrometric elevations) as needed.
 
  - Added radio refraction model `novas_radio_refraction()` based on the formulae by Berman &amp; Rockwell 1976.
+ 
+ - Added `cirs_to_tod()` and `tod_to_cirs()` functions for efficient tranformation between True of Date (TOD) and
+   Celestial Intermediate Reference System (CIRS), and vice versa.
 
+ - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
 
 
 <a name="api-changes"></a>

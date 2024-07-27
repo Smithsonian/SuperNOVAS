@@ -138,7 +138,9 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * </ol>
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
+ * @param loc       Pointer to structure defining the observer's location on earth, and local weather.
+ *                  Make sure all weather values, including humidity (added in v1.1), are fully
+ *                  populated.
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
  * @param el        [deg] source elevation of the specified type.
