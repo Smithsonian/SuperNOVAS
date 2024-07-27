@@ -1155,7 +1155,7 @@ int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_ap
 
 int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_bundle *planets, double *out);
 
-int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_bundle *planets, double *out);
+int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *planets, double *out);
 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 

@@ -923,7 +923,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
   frame_aberration(frame, APP_TO_GEOM, app_pos);
 
   // Undo gravitational deflection and aberration.
-  prop_error(fn, grav_undo_planets(app_pos, frame->obs_pos, frame->accuracy, &frame->planets, geom_icrs), 0);
+  prop_error(fn, grav_undo_planets(app_pos, frame->obs_pos, &frame->planets, geom_icrs), 0);
 
   return 0;
 }

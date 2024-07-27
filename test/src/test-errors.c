@@ -917,13 +917,13 @@ static int test_grav_undo_planets() {
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
   int n = 0;
 
-  if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, NOVAS_REDUCED_ACCURACY, &planets, out))) n++;
-  if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, NOVAS_REDUCED_ACCURACY, &planets, out))) n++;
-  if(check("grav_undo_planets:planets", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, NULL, out))) n++;
-    if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, &planets, NULL))) n++;
+  if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, &planets, out))) n++;
+  if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, &planets, out))) n++;
+  if(check("grav_undo_planets:planets", -1, grav_undo_planets(p, po, NULL, out))) n++;
+    if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, &planets, NULL))) n++;
 
   planets.mask = 1 << NOVAS_SUN;
-  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, NOVAS_REDUCED_ACCURACY, &planets, out))) {
+  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, &planets, out))) {
     if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
   }
 

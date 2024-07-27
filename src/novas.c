@@ -4388,8 +4388,6 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
  * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
  *                    origin at solar system barycenter, referred to ICRS axes,
  *                    components in AU.
- * @param accuracy    NOVAS_FULL_ACCURACY (0) for sub-&mu;as accuracy or NOVAS_REDUCED_ACCURACY (1)
- *                    for sub-mas accuracy.
  * @param planets     Apparent planet data containing positions and velocities for the major
  *                    gravitating bodies in the solar-system.
  * @param[out] out    [AU] Nominal position vector of observed object, with respect to origin at
@@ -4405,12 +4403,12 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_undo_planets(const double *pos_app, const double *pos_obs, enum novas_accuracy accuracy, const novas_planet_bundle *planets, double *out) {
+int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *planets, double *out) {
   static const char *fn = "grav_undo_planets";
 
+  const double tol = 1e-13;
   double pos_def[3] = { }, pos0[3] = { };
   double l;
-  double tol = accuracy == NOVAS_FULL_ACCURACY ? 1e-13 : 1e-10;
   int i;
 
   if(!pos_app || !pos_obs)
@@ -4498,7 +4496,6 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
 
   if(!pos_obs)
     return novas_error(-1, EINVAL, fn, "NULL observer position parameter");
-
 
   // Set up the structures of type 'object' containing the body information.
   if(!initialized) {
@@ -4666,7 +4663,7 @@ int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_ap
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_app=%p, out=%p", pos_app, out);
 
   prop_error(fn, obs_planets(jd_tdb, accuracy, pos_obs, pl_mask, &planets), 0);
-  prop_error(fn, grav_undo_planets(pos_app, pos_obs, accuracy, &planets, out), 0);
+  prop_error(fn, grav_undo_planets(pos_app, pos_obs, &planets, out), 0);
   return 0;
 }
 
