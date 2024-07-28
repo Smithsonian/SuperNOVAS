@@ -3137,7 +3137,6 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
     }
 
     default:
-      out[0] = out[1] = out[2] = NAN;
       return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
   }
 
