@@ -516,6 +516,46 @@ static int test_app_hor(enum novas_reference_system sys) {
   return 0;
 }
 
+
+static int test_app_to_hor_compat() {
+  char label[50];
+  novas_timespec ts = {};
+  observer obs = {};
+  novas_frame frame = {};
+  double pos1[3] = {};
+
+  double ra, dec, az, el, az1, za1;
+
+  sprintf(label, "app_to_hor_compat:set_time");
+  if(!is_ok(label, novas_set_time(NOVAS_TT, tdb, 37, 0.0, &ts))) return 1;
+
+  sprintf(label, "app_to_hor_compat:make_observer");
+  if(!is_ok(label, make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
+
+  sprintf(label, "app_to_hor_compat:make_frame");
+  if(!is_ok(label, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+
+  vector2radec(pos0, &ra, &dec);
+
+  if(!is_ok("app_to_hor_comat:app_to_hor:cirs",
+          novas_app_to_hor(&frame, NOVAS_CIRS, ra, dec, NULL, &az, &el))) return 1;
+  if(!is_ok("app_to_hor_compat:cirs_to_itrs",
+          cirs_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, pos0, pos1))) return 1;
+  if(!is_ok("app_to_hor_compat:itrs_to_hor:cirs", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
+  if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
+  if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
+
+  if(!is_ok("app_to_hor_comat:app_to_hor:tod",
+          novas_app_to_hor(&frame, NOVAS_TOD, ra, dec, NULL, &az, &el))) return 1;
+  if(!is_ok("app_to_hor_compat:tod_to_itrs",
+          tod_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, pos0, pos1))) return 1;
+  if(!is_ok("app_to_hor_compat:itrs_to_hor:tod", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
+  if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
+  if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
+
+  return 0;
+}
+
 static int test_app_geom(enum novas_reference_system sys) {
   char label[50];
   novas_timespec ts = {};
@@ -820,6 +860,7 @@ static int test_observers() {
   if(test_terra()) n++;
   if(test_bary2obs()) n++;
   if(test_cel2ter2cel()) n++;
+  if(test_app_to_hor_compat()) n++;
 
   make_observer_in_space(ps, vs, &obs);
   n += test_source();
@@ -1931,6 +1972,7 @@ static int test_app_hor2() {
 
   return 0;
 }
+
 
 int main(int argc, char *argv[]) {
   int n = 0;

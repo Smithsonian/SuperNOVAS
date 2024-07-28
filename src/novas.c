@@ -3088,7 +3088,7 @@ int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy,
         enum novas_equatorial_class class, double xp, double yp, const double *in, double *out) {
   static const char *fn = "cel2ter";
-  double jd_ut1, jd_tt, jd_tdb, gast, theta;
+  double jd_ut1, jd_tt, jd_tdb;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
@@ -3103,6 +3103,10 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   // Compute the TDB Julian date corresponding to the input UT1 Julian date
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
+  // Initialize output to input coords if distinct...
+  if(out != in)
+    memcpy(out, in, XYZ_VECTOR_SIZE);
+
   switch(erot) {
     case EROT_ERA:
       // IAU 2006 standard method
@@ -3113,28 +3117,25 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the terrestrial intermediate system.
-      theta = era(jd_ut1_high, jd_ut1_low);
-      spin(theta, out, out);
-
+      spin(era(jd_ut1_high, jd_ut1_low), out, out);
       break;
 
-    case EROT_GST:
+    case EROT_GST: {
+      double gast;
+
       // Pre IAU 2006 method
-      if(class == NOVAS_DYNAMICAL_CLASS) {
-        if(out != in)
-          memcpy(out, in, XYZ_VECTOR_SIZE);
-      }
-      else {
+      if(class != NOVAS_DYNAMICAL_CLASS) {
         gcrs_to_tod(jd_tdb, accuracy, in, out);
       }
 
       // Apply Earth rotation.
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(gast * 15.0, out, out);
-
       break;
+    }
 
     default:
+      out[0] = out[1] = out[2] = NAN;
       return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
   }
 
