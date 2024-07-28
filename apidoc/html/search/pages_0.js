@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['a_20sidereal_20source_0',['Calculating positions for a sidereal source',['../md_LEGACY.html',1,'']]]
+  ['astrometric_20positions_20the_20old_20way_0',['SuperNOVAS: Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]]
 ];

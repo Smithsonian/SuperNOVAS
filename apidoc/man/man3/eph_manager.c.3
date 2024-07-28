@@ -1,4 +1,4 @@
-.TH "src/eph_manager.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/eph_manager.c" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -103,9 +103,17 @@ G\&. Kaplan and A\&. Kovacs
 .PP
 SuperNOVAS planetary ephemeris manager for the planet_eph_manager and \fBplanet_eph_manager_hp()\fP functions\&.
 .PP
-This module exposes a lot of its own internal state variables globally\&. You probably should not access them from outside this module, but they are kept ad globals to ensure compatibility with existing NOVAS C applications that do tinker with those values\&.
+This module exposes a lot of its own internal state variables globally\&. You probably should not access them from outside this module, but they are kept ad globals to ensure compatibility with existing NOVAS C applications that might access those values\&.
 .PP
-Based on the NOVAS C Edition, Version 3\&.1, U\&. S\&. Naval Observatory Astronomical Applications Dept\&. Washington, DC \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP
+Based on the NOVAS C Edition, Version 3\&.1:
+.PP
+U\&. S\&. Naval Observatory
+.br
+ Astronomical Applications Dept\&.
+.br
+ Washington, DC
+.br
+ \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP
 .PP
 \fBSee also\fP
 .RS 4

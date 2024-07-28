@@ -1,10 +1,19 @@
-.TH "md_LEGACY" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "md_LEGACY" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-md_LEGACY \- Calculating positions for a sidereal source 
+md_LEGACY \- SuperNOVAS: Astrometric Positions the Old Way 
 .PP
-
+ As of version 1\&.1, the SuperNOVAS library offers a new, more versatile, more intuitive, and more efficient way to calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see \fCREADME\&.md\fP)\&. However the old approach of the NOVAS C library remain viable also\&. This document demonstrates calculating the astrometric places of sources the old way, without using the observing frames approach that is now preferred in SuperNOVAS\&.
+.PP
+.IP "\(bu" 2
+\fBCalculating positions for a sidereal source\fP
+.IP "\(bu" 2
+\fBCalculating positions for a Solar-system source\fP
+.PP
+.PP
+ 
+.SH "Calculating positions for a sidereal source"
 .PP
 A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates\&. It may be a star, or a galactic molecular cloud, or a distant quasar\&.
 .SS "Specify the object of interest"
@@ -147,7 +156,10 @@ You can additionally apply an approximate optical refraction correction for the 
 zd \-= refract_astro(&obs\&.on_surf, NOVAS_STANDARD_ATMOSPHERE, zd);
 .fi
 .PP
-.SS "Calculating positions for a Solar-system source"
+.PP
+ 
+.SH "Calculating positions for a Solar-system source"
+.PP
 Solar-system sources work similarly to the above with a few important differences\&.
 .PP
 First, You will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation\&. See section on integrating \fBExternal Solar-system ephemeris data or services\fP with SuperNOVAS\&. You can specify the functions that will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e\&.g\&.:
@@ -199,38 +211,4 @@ if(status) {
 }
 .fi
 .PP
-.SS "Reduced accuracy shortcuts"
-When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
-.PP
-.IP "\(bu" 2
-You can use TT and TDB timescales interchangeably in the present era unless you require the utmost precision\&.
-.IP "\(bu" 2
-You can use \fCNOVAS_REDUCED_ACCURACY\fP instead of \fCNOVAS_FULL_ACCURACY\fP for the calculations\&. This typically has an effect at the milliarcsecond level only, but may be much faster to calculate\&.
-.IP "\(bu" 2
-You can skip the J2000 to ICRS conversion and use J2000 coordinates directly as a fair approximation (at the <= 22 mas level)\&.
-.IP "\(bu" 2
-You might skip the pole offsets dx, dy\&. These are tenths of arcsec, typically\&.
-.PP
-.SS "Performance considerations"
-Some of the calculations involved can be expensive from a computational perspective\&. For the most typical use case however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy)\&. Therefore, when calculating positions for a large number of sources at different times:
-.PP
-.IP "\(bu" 2
-It is best to iterate over the sources in the inner loop while keeping the time fixed\&.
-.IP "\(bu" 2
-You probably want to stick to one accuracy mode (\fCNOVAS_FULL_ACCURACY\fP or \fCNOVAS_REDUCED_ACCURACY\fP) to prevent re-calculating the same quantities repeatedly to alternating precision\&.
-.IP "\(bu" 2
-If super-high accuracy is not required \fCNOVAS_REDUCED_ACCURACY\fP mode offers much faster calculations, in general\&.
-.PP
-.SS "Multi-threaded calculations"
-A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as implemented by the original NOVAS C 3\&.1 library\&. One thread may be in the process of returning cached values for one set of input parameters while, at the same time, another thread is saving cached values for a different set of parameters\&. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely they may not correspond to the requested input parameters\&.
-.PP
-While you should never call NOVAS C from multiple threads simultaneously, SuperNOVAS caches the results in thread local variables (provided your compiler supports it), and is therefore safe to use in multi-threaded applications\&. Just make sure that you:
-.PP
-.IP "\(bu" 2
-use a compiler which supports the C11 language standard;
-.IP "\(bu" 2
-or, compile with GCC >= 3\&.3;
-.IP "\(bu" 2
-or else, set the appropriate non-standard keyword to use for declaring thread-local variables for your compiler in \fCconfig\&.mk\fP or in your equivalent build setup\&. 
-.PP
-
+ 

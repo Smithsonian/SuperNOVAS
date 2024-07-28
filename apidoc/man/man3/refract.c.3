@@ -1,4 +1,4 @@
-.TH "src/refract.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/refract.c" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -36,7 +36,16 @@ Created on Jun 27, 2024
 Attila Kovacs
 .RE
 .PP
-A collection of refraction models to used with \fBnovas_app_to_hor()\fP 
+A collection of refraction models and utilities to use with \fBnovas_app_to_hor()\fP or \fBnovas_hor_to_app()\fP\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_app_to_hor()\fP 
+.PP
+\fBnovas_hor_to_app()\fP\&. 
+.RE
+.PP
+
 .SH "Function Documentation"
 .PP 
 .SS "double novas_inv_refract (\fBRefractionModel\fP model, double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el0)"
@@ -79,7 +88,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_REFRACT_OBSERVED\fP\&.
+References \fBnovas_inv_max_iter\fP, and \fBNOVAS_REFRACT_OBSERVED\fP\&.
 .SS "double novas_optical_refraction (double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el)"
 Returns an optical refraction correction using the weather parameters defined for the observer location\&.
 .PP
@@ -130,7 +139,7 @@ Berman, Allan L\&., and Rockwell, Stephen T\&. (1976), NASA JPL Technical Report
 .RS 4
 \fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
 .br
-\fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
+\fIloc\fP Pointer to structure defining the observer's location on earth, and local weather\&. Make sure all weather values, including humidity (added in v1\&.1), are fully populated\&. 
 .br
 \fItype\fP Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
 .br

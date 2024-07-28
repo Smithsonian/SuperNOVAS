@@ -31,7 +31,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/SuperNOVAS/resources/android-chrome-192x192.png" />
 <link rel="icon" type="image/png" sizes="512x512" href="/SuperNOVAS/resources/android-chrome-512x512.png" />
 <link rel="apple-touch-icon" type="image/png" href="/SuperNOVAS/resources/apple-touch-icon.png" />
-<title>SuperNOVAS: Globals</title>
+<title>SuperNOVAS: novas_planet_bundle Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,7 +93,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('globals_func_o.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structnovas__planet__bundle.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -118,18 +118,43 @@ $(document).ready(function(){initNavTree('globals_func_o.html',''); initResizabl
 </div>
 </div>
 
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
+  <div class="headertitle"><div class="title">novas_planet_bundle Struct Reference</div></div>
+</div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all documented functions with links to the documentation:</div>
 
-<h3><a id="index_o" name="index_o"></a>- o -</h3><ul>
-<li>obs_planets()&#160;:&#160;<a class="el" href="novas_8c.html#acbc29fe86915ef8a3701795dc9fd9b34">novas.c</a>, <a class="el" href="novas_8h.html#acbc29fe86915ef8a3701795dc9fd9b34">novas.h</a></li>
-<li>obs_posvel()&#160;:&#160;<a class="el" href="novas_8c.html#a5a62b6e1ef8840a1203c6d2a75d17152">novas.c</a>, <a class="el" href="novas_8h.html#a5a62b6e1ef8840a1203c6d2a75d17152">novas.h</a></li>
+<p><code>#include &lt;novas.h&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:ab77cc972f3ee899689ba053015472ccd" id="r_ab77cc972f3ee899689ba053015472ccd"><td class="memItemLeft" align="right" valign="top"><a id="ab77cc972f3ee899689ba053015472ccd" name="ab77cc972f3ee899689ba053015472ccd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>mask</b></td></tr>
+<tr class="memdesc:ab77cc972f3ee899689ba053015472ccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitwise mask (1 &lt;&lt; planet-number) specifying wich planets have pos/vel data. <br /></td></tr>
+<tr class="separator:ab77cc972f3ee899689ba053015472ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa2104ef635031a82766fd018c9ee9dd" id="r_afa2104ef635031a82766fd018c9ee9dd"><td class="memItemLeft" align="right" valign="top"><a id="afa2104ef635031a82766fd018c9ee9dd" name="afa2104ef635031a82766fd018c9ee9dd"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>pos</b> [<a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>][3]</td></tr>
+<tr class="memdesc:afa2104ef635031a82766fd018c9ee9dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">[AU] Apparent positions of planets w.r.t. observer antedated for light-time <br /></td></tr>
+<tr class="separator:afa2104ef635031a82766fd018c9ee9dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2bad6c1e0659e0e508492669eb67035" id="r_af2bad6c1e0659e0e508492669eb67035"><td class="memItemLeft" align="right" valign="top"><a id="af2bad6c1e0659e0e508492669eb67035" name="af2bad6c1e0659e0e508492669eb67035"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>vel</b> [<a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>][3]</td></tr>
+<tr class="memdesc:af2bad6c1e0659e0e508492669eb67035"><td class="mdescLeft">&#160;</td><td class="mdescRight">[AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time <br /></td></tr>
+<tr class="separator:af2bad6c1e0659e0e508492669eb67035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Position and velocity data for a set of major planets (which may include the Sun and the Moon also).</p>
+<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> </dd></dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/<a class="el" href="novas_8h.html">novas.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="structnovas__planet__bundle.html">novas_planet_bundle</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

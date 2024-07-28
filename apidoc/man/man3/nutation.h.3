@@ -1,4 +1,4 @@
-.TH "include/nutation.h" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "include/nutation.h" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -37,7 +37,15 @@ G\&. Kaplan and A\&. Kovacs
 .PP
 SuperNOVAS prototypes for the IAU2000 nutation series calculations, with varying trade-offs between computational cost and precision\&. It provides support for both the IAU 2000A and IAU 2000B series as well as a NOVAS-specific truncated low-precision version we call NU2000K\&.
 .PP
-Based on the NOVAS C Edition, Version 3\&.1, U\&. S\&. Naval Observatory Astronomical Applications Dept\&. Washington, DC \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP 
+Based on the NOVAS C Edition, Version 3\&.1:
+.PP
+U\&. S\&. Naval Observatory
+.br
+ Astronomical Applications Dept\&.
+.br
+ Washington, DC
+.br
+ \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP 
 .SH "Typedef Documentation"
 .PP 
 .SS "typedef int(* novas_nutation_provider) (double jd_tt_high, double jd_tt_low, double *dpsi, double *deps)"

@@ -54,7 +54,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.0</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.1</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -175,7 +175,18 @@ Functions</h2></td></tr>
 <p>SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter. The source files <a class="el" href="solsys1_8c.html">solsys1.c</a>, <a class="el" href="solsys2_8c.html">solsys2.c</a>, <a class="el" href="solsys3_8c.html">solsys3.c</a> and <a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> provide various standard implementations that users may use (some require additional sources, or user-specific implementations), or you can write your own version if that seems more appropriate.</p>
 <p>If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see Makefile), then the library is compiled with that version providing a built-in default implementation (the default is to use solsys3, which is a self-contained orbital calculation).</p>
 <p>Additionally, users may set their custom choice of major planet ephemeris handler at runtime via the set_ephem_size().</p>
-<p>Based on the NOVAS C Edition, Version 3.1, U. S. Naval Observatory Astronomical Applications Dept. Washington, DC <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a> </p>
+<p>Based on the NOVAS C Edition, Version 3.1:</p>
+<p>U. S. Naval Observatory<br  />
+ Astronomical Applications Dept.<br  />
+ Washington, DC<br  />
+ <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a></p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys1_8c.html">solsys1.c</a> </dd>
+<dd>
+<a class="el" href="solsys2_8c.html">solsys2.c</a> </dd>
+<dd>
+<a class="el" href="solsys3_8c.html">solsys3.c</a> </dd>
+<dd>
+<a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> </dd></dl>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="ac2ae695519a5b600a105243f4e30c3ab" name="ac2ae695519a5b600a105243f4e30c3ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac2ae695519a5b600a105243f4e30c3ab">&#9670;&#160;</a></span>novas_ephem_provider</h2>

@@ -54,7 +54,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.0</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.1</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -148,7 +148,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>jplint_</b> (const do
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs</dd></dl>
 <p>SuperNOVAS major planet ephemeris lookup wrapper for JPL ephemerides accessed over <code>pleph()</code>. It is a top-level wrapper, with an intermediate Fortran routine, <a class="el" href="solsys2_8c.html#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a> providing the interface between the NOVAS planet calculator functions here and the pleph() call of the JPL library. (The sample source code of jplint.f is included in the distribution).</p>
 <p>For supporting JPL ephemerides more generally, including for satellites, asteroids, and comets, you are probably better off using <a class="el" href="solsys-ephem_8c.html#a61c60adf57c00d797fac94bb5841c271">planet_ephem_provider()</a>, and provide an interface, e.g. to the SPICE library, via novas_ephem_provider instead, which you can then activate at runtime with <a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>.</p>
-<p>Based on the NOVAS C Edition, Version 3.1, U. S. Naval Observatory Astronomical Applications Dept. Washington, DC <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a></p>
+<p>Based on the NOVAS C Edition, Version 3.1:</p>
+<p>U. S. Naval Observatory<br  />
+ Astronomical Applications Dept.<br  />
+ Washington, DC<br  />
+ <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> </dd>
 <dd>
 <a class="el" href="solsys1_8c.html">solsys1.c</a> </dd></dl>

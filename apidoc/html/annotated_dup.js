@@ -5,6 +5,7 @@ var annotated_dup =
     [ "novas_delaunay_args", "structnovas__delaunay__args.html", "structnovas__delaunay__args" ],
     [ "novas_frame", "structnovas__frame.html", "structnovas__frame" ],
     [ "novas_matrix", "structnovas__matrix.html", "structnovas__matrix" ],
+    [ "novas_planet_bundle", "structnovas__planet__bundle.html", "structnovas__planet__bundle" ],
     [ "novas_timespec", "structnovas__timespec.html", "structnovas__timespec" ],
     [ "novas_transform", "structnovas__transform.html", "structnovas__transform" ],
     [ "object", "structobject.html", "structobject" ],

@@ -7,47 +7,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
-## [Unreleased]
+## [1.1.0-rc3] -- 2024-07-28
 
-Changes coming to the next quarterly release, expected around 1 September 2024. Some or all of these may be readily 
-available on the `main` branch.
+Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using 
+observer frames; versatile handling of astronomical timescales; and support for further observer locations, coordinate 
+reference systems, and atmospheric refraction models. The release also fixes a number of bugs, of varying severity, 
+which affected prior SuperNOVAS releases.
 
 
 ### Fixed
 
- - #41: `grav_def()` gravitating body position antedated somewhat incorrectly (in v1.0) when observed source is a 
-   Solar-system object between the observer and the gravitating body. The resulting positional error is typically 
-   small at below 10 uas.
-
- - #39: `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
+ - #29: Fix portability to non-Intel platforms. Previously, SuperNOVAS used `char` for storing integer coefficients, 
+   assuming `char` was signed. However, on some platforms like ARM and PowerPC `char` is unsigned, which broke 
+   calculations badly on such platforms. As of now, we use the explicit platform independent signed `int8_t` storage 
+   type for these coefficients.
 
  - #38: `gcrs_to_j2000` transformed in the wrong direction.
 
- - #37: `gcrs_to_cirs()` did not handle well if input and output vectors were the same.
+ - #39: `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
+
+ - #45: `cel2ter()` invalid output with CIRS input coordinates (`erot` = `EROT_ERA` and 
+   `class` = `NOVAS_DYNAMICAL_CLASS`) if output vector was distinct from input vector. Affects prior SuperNOVAS
+   releases.
 
  - #36: `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
-   
- - #34: Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial 
-   velocity that is observed is in the geometric direction towards the source (unaffected by aberration). A precise 
-   accounting of the gravitational effects would require figuring out the direction in which the observed light was 
-   emitted from the source before it was bent by gravitating bodies along the way. In practice, this may be difficult 
-   to generalize. For a single gravitationg body the geometric direction of the source is between the direction in 
-   which the light is emitted, and the observed deflected direction. Therefore, for the time being, the radial 
-   velocity calculated via the geometric direction is closer to the actual value.
-   
- - #29: Fix portability to non-Intel x86 platforms (see Issue #29). Previously, SuperNOVAS used `char` for storing 
-   integer coefficients, assuming `char` was signed. However, on some platforms like ARM and PowerPC `char` is 
-   unsigned, which broke many calculations badly for such platforms. As of now, we use the explicit platform
-   independent `int8_t` storage type for these coefficients.
+ 
+ - #37: `gcrs_to_cirs()` did not handle well if input and output vectors were the same.
 
  - #28: Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris 
    reference position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively 
    results in the gravitational deflection due to the Sun being skipped. See Issue #28.
-
- - `PSI_COR` and `EPS_COR` made globally visible again, thus improving NOVAS C 3.1 compatibility.
-
- - Adjusted regression testing to treat `nan` and `-nan` effectively the same. They both represent an equally invalid 
-   result regardless of the sign.
+ 
+ - #41: `grav_def()` gravitating body position antedated somewhat incorrectly (in v1.0) when observed source is a 
+   Solar-system object between the observer and the gravitating body. The resulting positional error is typically 
+   small at below 10 uas.
 
  - #24: Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
  
@@ -58,10 +51,10 @@ available on the `main` branch.
      
  - #33: New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both 
    the place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
-   defined it can be used very efficiently to calculate positions for multiple celestial objects with minimal 
-   additional computational cost. The frames API is also more elegant and simpler than the low-level NOVAS C approach 
-   for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their 
-   internal state is never modified during the calculations. The following new functions were added: 
+   defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum 
+   additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C 
+   approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
+   their internal state is never modified during the calculations. The following new functions were added: 
    `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_geom_to_app()`, `novas_sky_pos()`, 
    `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, 
    `novas_invert_transform()`, `novas_transform_vector()`, and `novas_transform_sky_pos()`.
@@ -71,14 +64,18 @@ available on the `main` branch.
    (UTC, UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain 
    an expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
    `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
-   `novas_increment_time()`, or measure time differences via `novas_diff_time()`. 
-   
+   `novas_increment_time()`, or measure time differences via `novas_diff_time()`, `novas_diff_tcg()`, or 
+   `novas_diff_tcb()`. 
+ 
+ - Added `novas_planet_bundle` structure to handle planet positions and velocities more elegantly (e.g. for 
+   gravitational deflection calculations).
+ 
  - #32: Added `grav_undef()` to undo gravitational bending of the observed light to obtain geometric positions from
    observed ones.
    
  - Added `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
  
- - Added `obs_planets()` to calculate planet positions (relative to observer) and velocities (w.r.t. SSB).
+ - Added `obs_planets()` to calculate apparent planet positions (relative to observer) and velocities (w.r.t. SSB).
  
  - Added new observer locations `NOVAS_AIRBORNE_OBSERVER` for an observer moving relative to the surface of Earth e.g.
    in an aircraft or balloon based telescope platform, and `NOVAS_SOLAR_SYSTEM_OBSERVER` for spacecraft orbiting the 
@@ -98,17 +95,19 @@ available on the `main` branch.
  - Added humidity field to `on_surface` structure, e.g. for refraction calculations at radio wavelengths. The
    `make_on_surface()` function will set humidity to 0.0, but the user can set the field appropriately afterwards.
 
- - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` function. The models
-   `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction model as `refract()` 
-   in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` respectively, including the 
-   reversed direction provided by `refract_astro()`. The user may supply their own refraction models to
-   `novas_app_to_hor()` also, and may make used of the generic reversal function `novas_inv_refract` to calculate
-   refraction in the reverse direction (observer vs astrometric elevations) as needed.
+ - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` / `novas_hor_to_app()` 
+   functions. The models `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction 
+   model as `refract()`  in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` 
+   respectively, including the reversed direction provided by `refract_astro()`. The user may supply their own custom 
+   refraction also, and may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in 
+   the reverse direction (observer vs astrometric elevations) as needed.
 
  - Added radio refraction model `novas_radio_refraction()` based on the formulae by Berman &amp; Rockwell 1976.
  
- - #42: `cio_array()` can now parse the original ASCII CIO locator data file (`data/CIO_RA.TXT`) efficiently also, 
-   thus no longer requiring a platform-specific binary translation via the `cio_file` tool.
+ - Added `cirs_to_tod()` and `tod_to_cirs()` functions for efficient tranformation between True of Date (TOD) and
+   Celestial Intermediate Reference System (CIRS), and vice versa.
+   
+ - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
  
  - `make help` to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` for 
    suggesting this.)
@@ -118,6 +117,17 @@ available on the `main` branch.
    
 
 ### Changed
+
+ - #34: Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial 
+   velocity that is observed is in the geometric direction towards the source (unaffected by aberration). A precise 
+   accounting of the gravitational effects would require figuring out the direction in which the observed light was 
+   emitted from the source before it was bent by gravitating bodies along the way. In practice, this may be difficult 
+   to generalize. For a single gravitationg body the geometric direction of the source is between the direction in 
+   which the light is emitted, and the observed deflected direction. Therefore, for the time being, the radial 
+   velocity calculated via the geometric direction is closer to the actual value.
+
+ - #42: `cio_array()` can now parse the original ASCII CIO locator data file (`data/CIO_RA.TXT`) efficiently also, 
+   thus no longer requiring a platform-specific binary translation via the `cio_file` tool.
 
  - `cio_file` tool parses interval from header rather than the less precise differencing of the first two record
    timestamps. This leads to `cio_array()` being more accurately centered on matching date entries, e.g. J2000.
@@ -136,12 +146,21 @@ available on the `main` branch.
    about the order in which terms are accumulated and combined, resulting in a small improvement on the few uas 
    (micro-arcsecond) level.
    
- - The `ra` or `dec` arguments passed to `vector2radec()` may now be NULL if not required.
+ - `vector2radec()`: `ra` or `dec` arguments may now be NULL if not required.
 
- - `tt2tdb()` Now uses the same more precise series as the original NOVAS C `tdb2tt()`.
+ - `tt2tdb()` Now uses the same, slightly more precise series as the original NOVAS C `tdb2tt()`.
+
+ - `PSI_COR` and `EPS_COR` made globally visible again, thus improving NOVAS C 3.1 compatibility.
+ 
+ - Convergent inverse calculations now use the `novas_inv_max_iter` variable declared in `novas.c` to specify the
+   maximum number of iterations before inverse functions return with an error (with errno set to `ECANCELED`). Users
+   may adjust this limit, if they prefer some other maximum value.
+
+ - Adjusted regression testing to treat `nan` and `-nan` effectively the same. They both represent an equally invalid 
+   result regardless of the sign.
 
  - The default make target is now `distro`. It's similar to the deprecated `api` target from before except that it 
-   skips building `static` libraries.
+   skips building `static` libraries and `cio_ra.bin`.
    
  - `make` now generates `.so` shared libraries with `SONAME` set to `lib<name>.so.1` where the `.1` indicates that it
    is major version 1 of the `ABI`. All 1.x.x releases are expected to be ABI compatible with earlier releases.
@@ -170,7 +189,7 @@ available on the `main` branch.
 
  - Doxygen tag file renamed to `supernovas.tag` for consistency.
    
- - Initialize test variable for reproducibility
+ - Initialize test variables for reproducibility
    
 
 
@@ -207,9 +226,6 @@ from which SuperNOVAS is forked from.
 
  - Fixes the NOVAS C 3.1 [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the 
    `sidereal_time()` function had an incorrect unit cast.
- 
- - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
-   of the expected [0:&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
    
  - Fixes antedating velocities and distances for light travel time in NOVAS C 3.1 `ephemeris()`. When getting 
    positions and velocities for Solar-system sources, it is important to use the values from the time light originated 
@@ -232,6 +248,9 @@ from which SuperNOVAS is forked from.
    overwritten the cached mean obliquity value for `coord_sys = 0` (mean equinox of date). As a result, a subsequent 
    call with `coord_sys = 0` and the same date as before would return the results GCRS coordinates instead of the 
    requested mean equinox of date coordinates.
+ 
+ - Some remainder calculations in NOVAS C 3.1 used the result from `fmod()` unchecked, which resulted in angles outside
+   of the expected [0:2&pi;] range and was also the reason why `cal_date()` did not work for negative JD values.
  
  - Fixes NOVAS C 3.1 `aberration()` returning NaN vectors if the `ve` argument is 0. It now returns the unmodified 
    input vector appropriately instead.

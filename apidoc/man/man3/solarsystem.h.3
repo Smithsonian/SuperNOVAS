@@ -1,4 +1,4 @@
-.TH "include/solarsystem.h" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "include/solarsystem.h" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -86,7 +86,28 @@ If the standard implementations are compiled with the DEFAULT_SOLSYS option set 
 .PP
 Additionally, users may set their custom choice of major planet ephemeris handler at runtime via the set_ephem_size()\&.
 .PP
-Based on the NOVAS C Edition, Version 3\&.1, U\&. S\&. Naval Observatory Astronomical Applications Dept\&. Washington, DC \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP 
+Based on the NOVAS C Edition, Version 3\&.1:
+.PP
+U\&. S\&. Naval Observatory
+.br
+ Astronomical Applications Dept\&.
+.br
+ Washington, DC
+.br
+ \fChttp://www\&.usno\&.navy\&.mil/USNO/astronomical-applications\fP
+.PP
+\fBSee also\fP
+.RS 4
+\fBsolsys1\&.c\fP 
+.PP
+\fBsolsys2\&.c\fP 
+.PP
+\fBsolsys3\&.c\fP 
+.PP
+\fBsolsys-ephem\&.c\fP 
+.RE
+.PP
+
 .SH "Typedef Documentation"
 .PP 
 .SS "typedef int(* novas_ephem_provider) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *origin, double *pos, double *vel)"

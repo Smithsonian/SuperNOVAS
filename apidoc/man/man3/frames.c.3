@@ -1,4 +1,4 @@
-.TH "src/frames.c" 3 "Version v1.0" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/frames.c" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -81,7 +81,14 @@ Attila Kovacs
 1\&.1
 .RE
 .PP
-Routines for higher-level and efficient repeat coordinate transformations\&. 
+SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using observer frames\&. Observer frames represent an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBtimescale\&.c\fP 
+.RE
+.PP
+
 .SH "Function Documentation"
 .PP 
 .SS "int novas_app_to_geom (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double * geom_icrs)"
@@ -130,7 +137,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBgrav_undo_planets()\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::pl_mask\fP, \fBnovas_frame::pl_pos\fP, \fBnovas_frame::pl_vel\fP, \fBnovas_frame::precession\fP, and \fBradec2vector()\fP\&.
+References \fBnovas_frame::gcrs_to_cirs\fP, \fBgrav_undo_planets()\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBnovas_frame::precession\fP, and \fBradec2vector()\fP\&.
 .SS "int novas_app_to_hor (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double * az, double * el)"
 Converts an observed apparent position vector in the specified coordinate system to local horizontal coordinates in the specified observer frame\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided the calculated elevation will be the astrometric elevation without a refraction correction\&.
 .PP
@@ -216,7 +223,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_TDB\fP, \fBobs_planets()\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBnovas_frame::pl_mask\fP, \fBnovas_frame::pl_pos\fP, \fBnovas_frame::pl_vel\fP, \fBnovas_frame::state\fP, and \fBnovas_frame::time\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_TDB\fP, \fBobs_planets()\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBnovas_frame::planets\fP, \fBnovas_frame::state\fP, and \fBnovas_frame::time\fP\&.
 .SS "int novas_geom_posvel (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double * pos, double * vel)"
 Calculates the geometric position and velocity vectors, relative to the observer, for a source in the given observing frame, in the specified coordinate system of choice\&. The geometric position includes proper motion, and for solar-system bodies it is antedated for light travel time, so it effectively represents the geometric position as seen by the observer\&. However, the geometric does not include aberration correction, nor gravitational deflection\&.
 .PP
@@ -267,7 +274,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBbary2obs()\fP, \fBd_light()\fP, \fBlight_time2()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBnovas_frame::obs_pos\fP, \fBproper_motion()\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBnovas_frame::time\fP, and \fBobject::type\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBbary2obs()\fP, \fBd_light()\fP, \fBlight_time2()\fP, \fBnovas_planet_bundle::mask\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBobject::number\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBnovas_planet_bundle::pos\fP, \fBproper_motion()\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBnovas_frame::time\fP, \fBobject::type\fP, and \fBnovas_planet_bundle::vel\fP\&.
 .SS "int novas_geom_to_app (const \fBnovas_frame\fP * frame, const double * pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP * out)"
 Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate corrections for aberration and gravitational deflection for the observer's frame\&.
 .PP
@@ -310,7 +317,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::pl_mask\fP, \fBnovas_frame::pl_pos\fP, \fBnovas_frame::pl_vel\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, and \fBvector2radec()\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, and \fBvector2radec()\fP\&.
 .SS "int novas_hor_to_app (const \fBnovas_frame\fP * frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double * ra, double * dec)"
 Converts an observed azimuth and elevation coordinate to right ascension (R\&.A\&.) and declination coordinates expressed in the coordinate system of choice\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided, the provided elevation value will be assumed to be an astrometric elevation without a refraction correction\&.
 .PP
@@ -396,7 +403,7 @@ Attila Kovacs
 .PP
 References \fBnovas_transform::matrix\fP\&.
 .SS "int novas_make_frame (enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP * obs, const \fBnovas_timespec\fP * time, double dx, double dy, \fBnovas_frame\fP * frame)"
-Sets up a observing frame for a specific observer location, time of observation, and accuracy requirement\&.
+Sets up a observing frame for a specific observer location, time of observation, and accuracy requirement\&. The frame is initialized using the currently configured planet ephemeris provider function (see \fBset_planet_provider()\fP and \fBset_planet_provider_hp()\fP), and in case of reduced accuracy mode, the currently configured IAU nutation model provider (see \fBset_nutation_lp_provider()\fP)\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -410,12 +417,12 @@ Sets up a observing frame for a specific observer location, time of observation,
 .br
 \fIdy\fP [mas] Earth orientation parameter, polar offset in y\&. 
 .br
-\fIframe\fP Pointer to the observing frame to set up\&. 
+\fIframe\fP Pointer to the observing frame to configure\&. 
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, 10--40: error is 10 + the error \fBephemeris()\fP, 40--50: error is 40 + the error from \fBgeo_posvel()\fP, 50--80: error is 30 + the error from \fBsidereal_time()\fP, 80--90 error is 80 + error from \fBcio_location()\fP, 90--100 error is 90 + error from \fBcio_basis()\fP\&. or else -1 if there was an error (errno will indicate the type of error)\&.
+0 if successful, 10--40: error is 10 + the error from \fBephemeris()\fP, 40--50: error is 40 + the error from \fBgeo_posvel()\fP, 50--80: error is 50 + the error from \fBsidereal_time()\fP, 80--90 error is 80 + error from \fBcio_location()\fP, 90--100 error is 90 + error from \fBcio_basis()\fP\&. or else -1 if there was an error (errno will indicate the type of error)\&.
 .RE
 .PP
 \fBSee also\fP
@@ -426,7 +433,11 @@ Sets up a observing frame for a specific observer location, time of observation,
 .PP
 \fBnovas_geom_posvel()\fP 
 .PP
-\fBnovas_make_transform()\fP
+\fBnovas_make_transform()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_nutation_lp_provider()\fP
 .RE
 .PP
 \fBSince\fP
