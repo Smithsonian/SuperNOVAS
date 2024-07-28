@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
-## [1.1.0] -- 2024-08-11
+## [1.1.0-rc3] -- 2024-07-28
 
 Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using 
 observer frames; versatile handling of astronomical timescales; and support for further observer locations, coordinate 
