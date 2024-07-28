@@ -27,8 +27,7 @@ which affected prior SuperNOVAS releases.
  - #39: `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
 
  - #45: `cel2ter()` invalid output with CIRS input coordinates (`erot` = `EROT_ERA` and 
-   `class` = `NOVAS_DYNAMICAL_CLASS`) if output vector was distinct from input vector. Affects prior SuperNOVAS
-   releases.
+   `class` = `NOVAS_DYNAMICAL_CLASS`) if output vector was distinct from input vector.
 
  - #36: `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
  
