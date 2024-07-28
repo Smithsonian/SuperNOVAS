@@ -741,7 +741,7 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
       matrix_transform(pos, &frame->nutation, pos);
       /* no break */
     case NOVAS_TOD:
-      spin(24.0 * frame->gst, pos, pos);
+      spin(15.0 * frame->gst, pos, pos);
       break;
 
     case NOVAS_ICRS:
@@ -828,7 +828,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
   hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
 
   // ITRS to TOD or CIRS...
-  spin(cmp_sys(sys, NOVAS_GCRS) < 0 ? -24.0 * frame->gst : -frame->era, pos, pos);
+  spin(cmp_sys(sys, NOVAS_GCRS) < 0 ? -15.0 * frame->gst : -frame->era, pos, pos);
 
   // Continue to convert TOD / CIRS to output system....
   switch(sys) {
