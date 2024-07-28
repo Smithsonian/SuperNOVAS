@@ -587,7 +587,7 @@ int split(double tt, double *fr) {
     return novas_error(-1, EINVAL, "split", "NULL output pointer");
 
   // Get integer and fractional parts.
-  fr[0] = (int) floor(tt);
+  fr[0] = floor(tt);
   fr[1] = tt - fr[0];
   return 0;
 }

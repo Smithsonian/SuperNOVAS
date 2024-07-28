@@ -153,7 +153,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
       return novas_error(-1, EINVAL, fn, "Invalid timescale: %d", timescale);
   }
 
-  time->ijd_tt = ijd + (int) floor(fjd);
+  time->ijd_tt = ijd + (long) floor(fjd);
   time->fjd_tt = remainder(fjd, 1.0);
 
   if(time->fjd_tt < 0.0)
@@ -181,7 +181,7 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
  * @author Attila Kovacs
  */
 int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec *out) {
-  int dd;
+  long dd;
 
   if(!time || !out)
     return novas_error(-1, EINVAL, "novas_offset_time", "NULL parameter: time=%p, out=%p", time, out);
@@ -190,7 +190,7 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
     *out = *time;
 
   out->fjd_tt += seconds / DAY;
-  dd = (int) floor(out->fjd_tt);
+  dd = (long) floor(out->fjd_tt);
   if(dd) {
     out->fjd_tt -= dd;
     out->ijd_tt += dd;
@@ -446,11 +446,11 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
   time_t seconds;
 
   sod = novas_get_split_time(time, NOVAS_UTC, &ijd) * DAY;
-  isod = floor(sod);
+  isod = (long) floor(sod);
   seconds = UNIX_J2000 + (ijd - IJD_J2000) * IDAY + isod;
 
   if(nanos) {
-    *nanos = floor(1e9 * (sod - isod) + 0.5);
+    *nanos = (long) floor(1e9 * (sod - isod) + 0.5);
     if(*nanos == E9) {
       seconds++;
       *nanos = 0;

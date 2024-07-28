@@ -10,8 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [1.1.0] -- 2024-08-11
 
 Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using 
-observer frames, versatile handling of astronomical timescales, support for further observer locations, coordinate 
-reference systems and atmospheric refraction models. The release also fixes a number of bugs, of varying severity, 
+observer frames; versatile handling of astronomical timescales; and support for further observer locations, coordinate 
+reference systems, and atmospheric refraction models. The release also fixes a number of bugs, of varying severity, 
 which affected prior SuperNOVAS releases.
 
 
