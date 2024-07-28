@@ -2879,7 +2879,7 @@ double era(double jd_ut1_high, double jd_ut1_low) {
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy,
         enum novas_equatorial_class class, double xp, double yp, const double *in, double *out) {
   static const char *fn = "ter2cel";
-  double jd_ut1, jd_tt, jd_tdb, gast;
+  double jd_ut1, jd_tt, jd_tdb;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
@@ -2908,15 +2908,16 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the celestial intermediate system.
-      const double theta = era(jd_ut1_high, jd_ut1_low);
-      spin(-theta, out, out);
+      spin(-era(jd_ut1_high, jd_ut1_low), out, out);
 
       if(class != NOVAS_DYNAMICAL_CLASS)
         prop_error(fn, cirs_to_gcrs(jd_tdb, accuracy, out, out), 10);
 
       break;
     }
-    case (EROT_GST):
+    case (EROT_GST): {
+      double gast;
+
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(-15.0 * gast, out, out);
 
@@ -2924,6 +2925,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
         tod_to_gcrs(jd_tdb, accuracy, out, out);
       }
       break;
+    }
 
     default:
       return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
