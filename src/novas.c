@@ -1523,9 +1523,10 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
  *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be
  *                      calculated when needed.
  * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter
- *                      (SSB)
+ *                      (SSB). It may be NULL if not required.
  * @param[out] vel      [AU/day] Velocity 3-vector of the observer w.r.t. the Solar System
- *                      Barycenter (SSB)
+ *                      Barycenter (SSB). It must be distinct from the pos output vector, and may be
+ *                      NULL if not required.
  * @return              0 if successful, or the error from geo_posvel(), or else -1 (with errno
  *                      indicating the type of error).
  *
@@ -1544,8 +1545,8 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
   if(obs->where < 0 || obs->where >= NOVAS_OBSERVER_PLACES)
     return novas_error(-1, EINVAL, fn, "Invalid observer location: %d", obs->where);
 
-  if(!pos && !vel)
-    return novas_error(-1, EINVAL, fn, "NULL output pointers (both)");
+  if(pos == vel)
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel pointers @ %p.", pos);
 
   if(obs->where == NOVAS_SOLAR_SYSTEM_OBSERVER) {
     if(pos)
@@ -1646,8 +1647,8 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] output   Data structure to populate with the result.
  * @return              0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid,
- *                      3 if Earth is the observed object, and the observer is either at the
- *                      geocenter or on the Earth's surface, 10--40: error is 10 + the error ephemeris(),
+ *                      3 if Earth is the observed object, and the observer is at or very near (within
+ *                      ~1.5m of) the observed location, 10--40: error is 10 + the error ephemeris(),
  *                      40--50: error is 40 + the error from geo_posvel(), 50--70 error is
  *                      50 + error from light_time2(), 70--80 error is 70 + error from grav_def(),
  *                      80--90 error is 80 + error from cio_location(), 90--100 error is 90 + error
@@ -2992,6 +2993,7 @@ int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
  * use UTC-based Julian date the same way.for arcsec-level precision also.
  *
+ *
  * REFERENCES:
  *  <ol>
  *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -3052,8 +3054,6 @@ int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  *   oint Discussion 16.</li>
  *  </ol>
  *
- *
- *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
@@ -3105,16 +3105,15 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   // Compute the TDB Julian date corresponding to the input UT1 Julian date
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
-  // Initialize output to input coords if distinct...
-  if(out != in)
-    memcpy(out, in, XYZ_VECTOR_SIZE);
-
   switch(erot) {
     case EROT_ERA:
       // IAU 2006 standard method
       if(class != NOVAS_DYNAMICAL_CLASS) {
         // See second reference, eq. (3) and (4).
         prop_error(fn, gcrs_to_cirs(jd_tt, accuracy, in, out), 10);
+      }
+      else if (out != in) {
+        memcpy(out, in, XYZ_VECTOR_SIZE);
       }
 
       // Compute and apply the Earth rotation angle, 'theta', transforming the
@@ -3129,10 +3128,13 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       if(class != NOVAS_DYNAMICAL_CLASS) {
         gcrs_to_tod(jd_tdb, accuracy, in, out);
       }
+      else if (out != in) {
+        memcpy(out, in, XYZ_VECTOR_SIZE);
+      }
 
       // Apply Earth rotation.
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-      spin(gast * 15.0, out, out);
+      spin(15.0 * gast, out, out);
       break;
     }
 
@@ -3393,8 +3395,8 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
  *                    position data is required).
  * @param[out] vel    [AU/day] Velocity vector of observer with respect to center of Earth,
  *                    equatorial rectangular coordinates, referred to true equator
- *                    and equinox of date, components in AU/day. (It may be NULL if
- *                    no velocity data is required).
+ *                    and equinox of date, components in AU/day. (It must be distinct from
+ *                    the pos output vector, and may be NULL if no velocity data is required).
  *
  * @return            0 if successful, or -1 if location is NULL or if the pos and vel output
  *                    arguments are identical pointers.
@@ -3413,7 +3415,7 @@ int terra(const on_surface *location, double lst, double *pos, double *vel) {
     return novas_error(-1, EINVAL, fn, "NULL observer location pointer");
 
   if(pos == vel)
-    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors.");
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p", pos);
 
   // Compute parameters relating to geodetic to geocentric conversion.
   df = 1.0 - EF;
@@ -3982,8 +3984,8 @@ int bary2obs(const double *pos, const double *pos_obs, double *out, double *ligh
  * @param[out] pos    [AU] Position 3-vector of observer, with respect to origin at geocenter,
  *                    referred to GCRS axes, components in AU. (It may be NULL if not required.)
  * @param[out] vel    [AU/day] Velocity 3-vector of observer, with respect to origin at geocenter,
- *                    referred to GCRS axes, components in AU/day. (It may be NULL if not
- *                    required.)
+ *                    referred to GCRS axes, components in AU/day. (It must be distinct from the
+ *                    pos output vector, and may be NULL if not required)
  * @return            0 if successful, -1 if the 'obs' is NULL or the two output vectors are
  *                    the same, or else 1 if 'accuracy' is invalid, or 2 if 'obserrver->where' is
  *                    invalid.
@@ -4005,7 +4007,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
     return novas_error(-1, EINVAL, fn, "NULL observer location pointer");
 
   if(pos == vel)
-    return novas_error(-1, EINVAL, fn, "identical output pos and vel pointers");
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p", pos);
 
   // Invalid value of 'accuracy'.
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
@@ -5523,7 +5525,8 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
  * @param[out] pos     [AU] Position vector, equatorial rectangular coordinates,
  *                     components in AU. It may be NULL if not required.
  * @param[out] vel     [AU/day] Velocity vector, equatorial rectangular coordinates,
- *                     components in AU/Day. It may be NULL if not required.
+ *                     components in AU/Day. It must be distinct from the pos output
+ *                     vector, and may be NULL if not required.
  *
  * @return             0 if successful, or -1 if the star argument is NULL or the
  *                     output vectors are the same pointer.
@@ -5533,8 +5536,11 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
 int starvectors(const cat_entry *star, double *pos, double *vel) {
   double paralx, r, d, cra, sra, cdc, sdc;
 
-  if(!star || pos == vel)
-    return novas_error(-1, EINVAL, "starvectors", "NULL input or output: star=%p, pos=%p, vel=%p", star, pos, vel);
+  if(!star)
+    return novas_error(-1, EINVAL, "starvectors", "NULL input cat_entry");
+
+  if(pos == vel)
+    return novas_error(-1, EINVAL, "starvectors", "identical output pos and vel 3-vectors @ %p", pos, vel);
 
   // If parallax is unknown, undetermined, or zero, set it to 1e-6
   // milliarcsecond, corresponding to a distance of 1 gigaparsec.
@@ -5832,12 +5838,10 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
  * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS.
  * You can specify either the original `CIO_RA.TXT` file included in the distribution
  * (preferred since v1.1), or else a platform-specific binary data file compiled from it
- * (the old way), which may be obtained via the <code>cio_file.c</code> utility provided
- * in this distribution under <code>tools/</code>.
+ * via the <code>cio_file</code> utility (the old way).
  *
- * @param filename    Path (preferably absolute path) to binary data file generated
- *                    by the <code>cio_file.c</code> utility from the <code>CIO_RA.TXT</code>
- *                    data file.
+ * @param filename    Path (preferably absolute path) `CIO_RA.TXT` or else to the binary
+ *                    `cio_ra.bin` data.
  * @return            0 if successful, or else -1 if the specified file does not exists or
  *                    we have no permission to read it.
  *
@@ -5870,8 +5874,8 @@ int set_cio_locator_file(const char *filename) {
  * The user may specify an interpolation file to use via set_cio_locator_file() prior to
  * calling this function. In that case the call will return CIO location relative to GCRS.
  * In the absence of the table, it will calculate the CIO location relative to the true
- * equinox. In either case the type of the location is returnedalogside the CIO location
- * value.
+ * equinox. In either case the type of the location is returned alongside the corresponding
+ * CIO location value.
  *
  * NOTES:
  * <ol>
@@ -6099,9 +6103,9 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  * intermediate origin (CIO).  The range of dates is centered (at least approximately) on the
  * requested date.  The function obtains the data from an external data file.
  *
- * This function assumes that binary, random-access file has been created and is either in the
- * location specified at compilation; or set at runtime via set_cio_locator_file().
- * This file is created by program 'cio_file.c'.
+ * This function assumes that a CIO locator file (`CIO_RA.TXT` or `cio_ra.bin`) exists in the
+ * default location (configured at build time), or else was specified via `set_cio_locator_file()`
+ * prior to calling this function.
  *
  * NOTES:
  * <ol>
@@ -6377,6 +6381,12 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
 
   if(!jd_tdb || !body)
     return novas_error(-1, EINVAL, fn, "NULL input pointer: jd_tdb=%p, body=%p", jd_tdb, body);
+
+  if(!pos || !vel)
+    return novas_error(-1, EINVAL, fn, "NULL output pointer: pos=%p, vel=%p", pos, vel);
+
+  if(pos == vel)
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p.", pos);
 
   // Check the value of 'origin'.
   if(origin < 0 || origin >= NOVAS_ORIGIN_TYPES)

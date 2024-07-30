@@ -463,8 +463,8 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  *                      to the observer location, in the designated coordinate system. It may be
  *                      NULL if not required.
  * @param[out] vel      [AU/day] The calculated velocity vector of the source relative to
- *                      the observer in the designated coordinate system. It may be NULL if not
- *                      required.
+ *                      the observer in the designated coordinate system. It must be distinct from
+ *                      the pos output vector, and may be NULL if not required.
  * @return              0 if successful, or else -1 if any of the arguments is invalid,
  *                      50--70 error is 50 + error from light_time2().
  *
@@ -485,8 +485,8 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
   if(!source || !frame)
     return novas_error(-1, EINVAL, fn, "NULL argument: source=%p, frame=%p", source, frame);
 
-  if(!pos && !vel)
-    return novas_error(-1, EINVAL, fn, "Both output vectors (pos, vel) are NULL");
+  if(pos == vel)
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p.", pos);
 
   if(!is_frame_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
@@ -634,7 +634,8 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
  * @param pos       [AU] Geometric position of source in ICRS coordinates
  * @param sys       The coordinate system in which to return the apparent sky location
  * @param[out] out  Pointer to the data structure which is populated with the calculated
- *                  apparent location in the designated coordinate system.
+ *                  apparent location in the designated coordinate system. It may be the
+ *                  same pounter as the input position.
  * @return          0 if successful, or an error from grav_def2(),
  *                  or else -1 (errno will indicate the type of error).
  *

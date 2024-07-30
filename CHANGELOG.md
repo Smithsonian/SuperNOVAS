@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
-## [1.1.0-rc3] -- 2024-07-28
+## [1.1.0] -- 2024-08-04
 
 Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using 
 observer frames; versatile handling of astronomical timescales; and support for further observer locations, coordinate 
@@ -17,21 +17,21 @@ which affected prior SuperNOVAS releases.
 
 ### Fixed
 
- - #29: Fix portability to non-Intel platforms. Previously, SuperNOVAS used `char` for storing integer coefficients, 
-   assuming `char` was signed. However, on some platforms like ARM and PowerPC `char` is unsigned, which broke 
-   calculations badly on such platforms. As of now, we use the explicit platform independent signed `int8_t` storage 
-   type for these coefficients.
+ - #29: Fix portability to non-Intel platforms. Previously, SuperNOVAS used `char` for storing small integer 
+   coefficients, assuming `char` was signed. However, on some platforms like ARM and PowerPC `char` is unsigned, which 
+   broke calculations badly. As of now, we use the explicit platform independent signed `int8_t` storage type for 
+   these coefficients.
 
- - #38: `gcrs_to_j2000` transformed in the wrong direction.
+ - #38: `gcrs_to_j2000()` transformed in the wrong direction in v1.0.
 
- - #39: `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`).
+ - #39: `tod_to_itrs()` used wrong Earth rotation measure (`NOVAS_ERA` instead of `NOVAS_GST`) in v1.0.
 
- - #45: `cel2ter()` invalid output with CIRS input coordinates (`erot` = `EROT_ERA` and 
-   `class` = `NOVAS_DYNAMICAL_CLASS`) if output vector was distinct from input vector.
+ - #45: `cel2ter()` invalid output in v1.0 with CIRS input coordinates (`erot` = `EROT_ERA` and 
+   `class` = `NOVAS_DYNAMICAL_CLASS`) if output vector was distinct from input vector. Affects `cirs_to_itrs()` also.
 
- - #36: `tt2tdb()` Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1.7 ms.
+ - #36: `tt2tdb()` Had a wrong scaling in sinusoidal period in v1.0, resulting in an error of up to +/- 1.7 ms.
  
- - #37: `gcrs_to_cirs()` did not handle well if input and output vectors were the same.
+ - #37: `gcrs_to_cirs()` did not handle well if input and output vectors were the same in v1.0.
 
  - #28: Division by zero bug in `d_light()` (since NOVAS C 3.1) if the first position argument is the ephemeris 
    reference position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively 
@@ -41,9 +41,9 @@ which affected prior SuperNOVAS releases.
    Solar-system object between the observer and the gravitating body. The resulting positional error is typically 
    small at below 10 uas.
 
- - #24: Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h`. 
+ - #24: Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h` in v1.0. 
  
- - Bungled definition of `NOVAS_OBSERVER_PLACES` in `novas.h`. 
+ - Bungled definition of `NOVAS_OBSERVER_PLACES` in `novas.h` in v1.0. 
 
 
 ### Added

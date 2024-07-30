@@ -245,8 +245,13 @@ static int test_ephemeris() {
 
   if(check("ephemeris:body", -1, ephemeris(tdb, NULL, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
   if(check("ephemeris:jd", -1, ephemeris(NULL, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
+  if(check("ephemeris:pos", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, NULL, v))) n++;
+  if(check("ephemeris:vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, NULL))) n++;
+  if(check("ephemeris:pos+vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, NULL, NULL))) n++;
+  if(check("ephemeris:pos=vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, p))) n++;
   if(check("ephemeris:origin", 1, ephemeris(tdb, &ceres, -1, NOVAS_FULL_ACCURACY, p, v))) n++;
   if(check("ephemeris:noephem", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
+
 
   return n;
 }
@@ -732,7 +737,8 @@ static int test_starvectors() {
   int n = 0;
 
   if(check("starvectors:star", -1, starvectors(NULL, p, v))) n++;
-  if(check("starvectors:same", -1, starvectors(&star, p, p))) n++;
+  if(check("starvectors:pos+vel", -1, starvectors(NULL, NULL, NULL))) n++;
+  if(check("starvectors:pos=vel", -1, starvectors(&star, p, p))) n++;
 
   return n;
 }
@@ -965,9 +971,9 @@ static int test_sun_eph() {
   double ra, dec, dis;
   int n = 0;
 
-  if(check("sun_eph:ra:null", -1, sun_eph(NOVAS_JD_J2000, NULL, &dec, &dis))) n++;
-  if(check("sun_eph:dec:null", -1, sun_eph(NOVAS_JD_J2000, &ra, NULL, &dis))) n++;
-  if(check("sun_eph:dis:null", -1, sun_eph(NOVAS_JD_J2000, &ra, &dec, NULL))) n++;
+  if(check("sun_eph:ra", -1, sun_eph(NOVAS_JD_J2000, NULL, &dec, &dis))) n++;
+  if(check("sun_eph:dec", -1, sun_eph(NOVAS_JD_J2000, &ra, NULL, &dis))) n++;
+  if(check("sun_eph:dis", -1, sun_eph(NOVAS_JD_J2000, &ra, &dec, NULL))) n++;
 
   return n;
 }
@@ -979,8 +985,9 @@ static int test_obs_posvel() {
 
   make_observer_at_geocenter(&obs);
 
-  if(check("obs_posvel:obs:null", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, NULL, NULL, NULL, &x, NULL))) n++;
-  if(check("obs_posvel:obs:pos+vel:null", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, NULL))) n++;
+  if(check("obs_posvel:obs", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, NULL, NULL, NULL, &x, NULL))) n++;
+  if(check("obs_posvel:obs:pos+vel", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, NULL))) n++;
+  if(check("obs_posvel:obs:pos=vel", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, &x, &x))) n++;
 
   obs.where = -1;
   if(check("obs_posvel:obs:where:-1", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, &x, NULL))) n++;
@@ -1131,6 +1138,7 @@ static int test_geom_posvel() {
 
   if(check("geom_posvel:object", -1, novas_geom_posvel(NULL, &frame, NOVAS_ICRS, pos, vel))) n++;
   if(check("geom_posvel:pos+vel", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, NULL, NULL))) n++;
+  if(check("geom_posvel:pos=vel", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, pos))) n++;
   if(check("geom_posvel:sys:-1", -1, novas_geom_posvel(&o, &frame, -1, pos, vel))) n++;
   if(check("geom_posvel:sys:hi", -1, novas_geom_posvel(&o, &frame, NOVAS_REFERENCE_SYSTEMS, pos, vel))) n++;
 

@@ -64,7 +64,7 @@
 #define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1".
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING ""
 
 
 
@@ -746,6 +746,9 @@ typedef struct {
  * You should never set or change fields in this structure manually. Instead the structure
  * should always be initialized by an appropriate call to novas_make_frame(). After that you
  * may change the observer location, if need be, with novas_change_observer().
+ *
+ * The structure may expand with additional field in the future. Thus neither its size nor its
+ * particular layout should be assumed fixed over SuperNOVAS releases.
  *
  * @since 1.1
  *
