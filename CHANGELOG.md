@@ -41,6 +41,10 @@ which affected prior SuperNOVAS releases.
    Solar-system object between the observer and the gravitating body. The resulting positional error is typically 
    small at below 10 uas.
 
+ - #34: `place()` radial velocities were not quite correct in NOVAS C 3.1, or in prior releases. The radial velocity 
+   calculation now precedes aberration, since the radial velocity that is observed is in the geometric direction 
+   towards the source (unaffected by aberration), and it properly accounts for gravitational bending also.
+
  - #24: Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h` in v1.0. 
  
  - Bungled definition of `NOVAS_OBSERVER_PLACES` in `novas.h` in v1.0. 
@@ -116,14 +120,6 @@ which affected prior SuperNOVAS releases.
    
 
 ### Changed
-
- - #34: Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the radial 
-   velocity that is observed is in the geometric direction towards the source (unaffected by aberration). A precise 
-   accounting of the gravitational effects would require figuring out the direction in which the observed light was 
-   emitted from the source before it was bent by gravitating bodies along the way. In practice, this may be difficult 
-   to generalize. For a single gravitationg body the geometric direction of the source is between the direction in 
-   which the light is emitted, and the observed deflected direction. Therefore, for the time being, the radial 
-   velocity calculated via the geometric direction is closer to the actual value.
 
  - #42: `cio_array()` can now parse the original ASCII CIO locator data file (`data/CIO_RA.TXT`) efficiently also, 
    thus no longer requiring a platform-specific binary translation via the `cio_file` tool.

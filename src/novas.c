@@ -295,6 +295,7 @@ static void tiny_rotate(const double *in, double ax, double ay, double az, doubl
   out[2] = z - 0.5 * (A[0] + A[1]) * z - ay * x + ax * y;
 }
 
+
 /**
  * Checks if two Julian dates are equals under the precision that can be handled by this
  * library. In practive two dates are considered equal if they agree within 10<sup>-8</sup>
@@ -1626,6 +1627,9 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <ol>
  * <li>This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not
  * antedated for light-travel time.</li>
+ * <li>As of v1.1, this method calculates radial velocities more precisely, by (a) ignoring
+ * aberration (unlike before), and (b) properly accounting for the gravitational deflection for
+ * the apparent velocities.</li>
  * </ol>
  *
  * REFERENCES:
@@ -1646,13 +1650,16 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  *                      ang gravitational deflection corrections.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] output   Data structure to populate with the result.
- * @return              0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid,
- *                      3 if Earth is the observed object, and the observer is at or very near (within
- *                      ~1.5m of) the observed location, 10--40: error is 10 + the error ephemeris(),
- *                      40--50: error is 40 + the error from geo_posvel(), 50--70 error is
- *                      50 + error from light_time2(), 70--80 error is 70 + error from grav_def(),
- *                      80--90 error is 80 + error from cio_location(), 90--100 error is 90 + error
- *                      from cio_basis().
+ * @return              0 if successful,<br>
+ *                      1 if 'coord_sys' is invalid,<br>
+ *                      2 if 'accuracy' is invalid,<br>
+ *                      3 if the observer is at or very near (within ~1.5m of) the observed location,<br>
+ *                      10--40: error is 10 + the error ephemeris(),<br>
+ *                      40--50: error is 40 + the error from geo_posvel(),<br>
+ *                      50--70: error is 50 + error from light_time2(),<br>
+ *                      70--80: error is 70 + error from grav_def(),<br>
+ *                      80--90: error is 80 + error from cio_location(),<br>
+ *                      90--100: error is 90 + error from cio_basis().
  *
  * @sa novas_geom_posvel()
  * @sa novas_sky_pos()
@@ -1676,6 +1683,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
   double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], t_light, d_sb, frlimb;
+  double vpos[3];
   observer obs;
   int i;
 
@@ -1766,13 +1774,11 @@ short place(double jd_tt, const object *source, const observer *location, double
     output->dis = t_light * C_AUDAY;
   }
 
-  // ---------------------------------------------------------------------
-  // Compute radial velocity (all vectors in ICRS).
-  // ---------------------------------------------------------------------
-  rad_vel(source, pos, vel, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb, &output->rv);
+  // Initialize the 'velocity' position to geometric position...
+  memcpy(vpos, pos, sizeof(pos));
 
   // ---------------------------------------------------------------------
-  // Apply gravitational deflection of light and aberration.
+  // Apply gravitational deflection
   // ---------------------------------------------------------------------
   if(coord_sys != NOVAS_ICRS) {
     enum novas_observer_place loc = obs.where;
@@ -1789,9 +1795,23 @@ short place(double jd_tt, const object *source, const observer *location, double
         loc = NOVAS_OBSERVER_AT_GEOCENTER;
     }
 
-    // Compute gravitational deflection and aberration.
-    prop_error(fn, grav_def(jd_tdb, loc, accuracy, pos, pob, pos), 70);
+    // Compute gravitational deflection.
+    prop_error(fn, grav_def(jd_tdb, loc, accuracy, vpos, pob, pos), 70);
 
+    // Calculate the deflected 'velocity' position...
+    for(i = 3; --i >= 0;)
+      vpos[i] = 2.0 * vpos[i] - pos[i];
+  }
+
+  // ---------------------------------------------------------------------
+  // Compute radial velocity (all vectors in ICRS).
+  // ---------------------------------------------------------------------
+  rad_vel(source, vpos, vel, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb, &output->rv);
+
+  // ---------------------------------------------------------------------
+  // Apply light and aberration.
+  // ---------------------------------------------------------------------
+  if(coord_sys != NOVAS_ICRS) {
     aberration(pos, vob, t_light, pos);
   }
 
@@ -1833,9 +1853,9 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   vector2radec(pos, &output->ra, &output->dec);
 
-  x = novas_vlen(pos);
+  x = 1.0 / novas_vlen(pos);
   for(i = 3; --i >= 0;)
-    output->r_hat[i] = pos[i] / x;
+    output->r_hat[i] = pos[i] * x;
 
   return 0;
 }
