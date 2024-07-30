@@ -565,6 +565,9 @@ static int geom_to_app(const object *object, const novas_frame *frame, const dou
   if(vel) {
     double d_sb, vpos[3];
 
+    if(!object)
+      return novas_error(-1, EINVAL, fn, "NULL celestial object with non-NULL velocity vector", frame);
+
     // Calculate the deflected 'velocity' position...
     for(i = 3; --i >= 0;)
       vpos[i] = 2.0 * pos[i] - pos1[i];
@@ -575,9 +578,6 @@ static int geom_to_app(const object *object, const novas_frame *frame, const dou
     }
     else {
       int k;
-
-      if(!object)
-        return novas_error(-1, EINVAL, fn, "NULL celestial object with non-NULL velocity vector", frame);
 
       out->dis = novas_vlen(pos);
 
