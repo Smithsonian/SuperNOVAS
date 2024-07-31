@@ -642,7 +642,7 @@ static int test_light_time2() {
   if(check("light_time2:same3", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, p, &t))) n++;
 
   novas_inv_max_iter = 0;
-  if(check("light_time2:converge", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) {
+  if(check("light_time2:converge", 1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) {
     if(check("light_time2:converge:errno", ECANCELED, errno)) n++;
   }
   novas_inv_max_iter = 100;

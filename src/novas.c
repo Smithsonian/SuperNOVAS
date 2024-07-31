@@ -4914,7 +4914,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *                      to EINVAL if any of the arguments are NULL, or to some other value to
  *                      indicate the type of error).
  *
- * @sa prad_vel()
+ * @sa rad_vel2()
  *
  */
 int rad_vel(const object *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun,
@@ -4935,7 +4935,8 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means. This is a modified version of the original NOVAS C 3.1 rad_vel(), to account for
- * the different directions light is emitted vs detected due to gravitational deflection.
+ * the different directions in which light is emitted vs in which it detected, e.g. when it is
+ * gravitationally deflected.
  *
  * Radial velocity is here defined as the radial velocity measure (z) times the speed
  * of light.  For a solar system body, it applies to a fictitious emitter at the center of the
@@ -4996,7 +4997,9 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *                      to EINVAL if any of the arguments are NULL, or to some other value to
  *                      indicate the type of error).
  *
- * @sa prad_vel()
+ * @sa rad_vel()
+ * @sa place()
+ * @sa novas_sky_pos()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -5081,10 +5084,11 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       break;
     }
 
-      /* Objects in the solar system */
     case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
-      // Compute solar potential at object, if within solar system.
+      // Objects in the solar system
+
+      // Compute solar potential at object
       r = d_src_sun * AU;
       phisun = (r > 1e8 && r < 1e16) ? GS / r : 0.0;
 
