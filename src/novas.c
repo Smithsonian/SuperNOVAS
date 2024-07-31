@@ -2651,8 +2651,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
     }
 
     case NOVAS_DYNAMICAL_CIRS:
-      prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos1, pos2), 10)
-      ;
+      prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos1, pos2), 10);
       break;
 
     default:
@@ -4206,7 +4205,7 @@ int light_time2(double jd_tdb, const object *body, const double *pos_obs, double
   }
 
   // Iterate to obtain correct light-time (usually converges rapidly).
-  for(iter = 0; iter < 10; iter++) {
+  for(iter = 0; iter < novas_inv_max_iter; iter++) {
     int error;
     double dt = 0.0;
 

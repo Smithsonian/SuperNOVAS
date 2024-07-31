@@ -925,6 +925,13 @@ static void test_rad_vel() {
   fprintf(fp, "%12.6f ", rv);
 }
 
+static void test_limb_angle() {
+  double limb = 0.0, nadir = 0.0;
+  openfile("limb_angle");
+  limb_angle(pos0, pobs, &limb, &nadir);
+  fprintf(fp, "%12.6f %12.6f ", limb, nadir);
+}
+
 static int test_source() {
   openfile("init");
 
@@ -940,6 +947,7 @@ static int test_source() {
   test_place();
   test_aberration();
   test_rad_vel();
+  test_limb_angle();
 
   if(obs.where == 0) {
     test_astro_place();

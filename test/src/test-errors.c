@@ -168,23 +168,29 @@ static int test_refract() {
 }
 
 static int test_refract_astro() {
+  extern int novas_inv_max_iter;
   on_surface surf = {};
   int n = 0;
 
+  novas_inv_max_iter = 0;
   if(check_nan("refract_astro:converge", refract_astro(&surf, NOVAS_STANDARD_ATMOSPHERE, 85.0))) {
     if(check("refract_astro:converge:errno", ECANCELED, errno)) n++;
   }
+  novas_inv_max_iter = 100;
 
   return n;
 }
 
 static int test_inv_refract() {
+  extern int novas_inv_max_iter;
   on_surface surf = {};
   int n = 0;
 
+  novas_inv_max_iter = 0;
   if(check_nan("inv_refract:converge", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, &surf, NOVAS_REFRACT_OBSERVED, 5.0))) {
     if(check("inv_refract:converge:errno", ECANCELED, errno)) n++;
   }
+  novas_inv_max_iter = 100;
 
   return n;
 }
@@ -621,6 +627,7 @@ static int test_geo_posvel() {
 }
 
 static int test_light_time2() {
+  extern int novas_inv_max_iter;
   object o;
   double pos[3] = {1.0}, p[3], v[3], t;
   int n = 0;
@@ -633,6 +640,12 @@ static int test_light_time2() {
   if(check("light_time2:same1", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, pos, v, &t))) n++;
   if(check("light_time2:same2", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, pos, &t))) n++;
   if(check("light_time2:same3", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, p, &t))) n++;
+
+  novas_inv_max_iter = 0;
+  if(check("light_time2:converge", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) {
+    if(check("light_time2:converge:errno", ECANCELED, errno)) n++;
+  }
+  novas_inv_max_iter = 100;
 
   return n;
 }
@@ -919,6 +932,7 @@ static int test_grav_planets() {
 }
 
 static int test_grav_undo_planets() {
+  extern int novas_inv_max_iter;
   novas_planet_bundle planets = {};
   double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
   int n = 0;
@@ -929,9 +943,11 @@ static int test_grav_undo_planets() {
     if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, &planets, NULL))) n++;
 
   planets.mask = 1 << NOVAS_SUN;
+  novas_inv_max_iter = 0;
   if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, &planets, out))) {
     if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
   }
+  novas_inv_max_iter = 100;
 
   return n;
 }
@@ -1190,6 +1206,7 @@ static int test_sky_pos() {
 }
 
 static int test_app_to_geom() {
+  extern int novas_inv_max_iter;
   novas_timespec ts = {};
   observer obs = {};
   novas_frame frame = {};
@@ -1203,9 +1220,11 @@ static int test_app_to_geom() {
   if(check("app_to_geom:frame:init", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
 
   novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+  novas_inv_max_iter = 0;
   if(check("app_to_geom:frame:converge", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) {
     if(check("app_to_geom:frame:converge:errno", ECANCELED, errno)) n++;
   }
+  novas_inv_max_iter = 100;
 
   if(check("app_to_geom:pos", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, NULL))) n++;
   if(check("app_to_geom:sys:-1", -1, novas_app_to_geom(&frame, -1, 1.0, 2.0, 10.0, pos))) n++;
@@ -1354,11 +1373,7 @@ static int test_inv_transform() {
 }
 
 int main() {
-  extern int novas_inv_max_iter;
   int n = 0;
-
-  // For testing convergence errors.
-  novas_inv_max_iter = 0;
 
   if(test_make_on_surface()) n++;
   if(test_make_in_space()) n++;
