@@ -134,7 +134,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - [__v1.0.2__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
-    the gravitational deflection due to the Sun being skipped.
+   the gravitational deflection due to the Sun being skipped.
     
  - [__v1.1__] `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
    radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 

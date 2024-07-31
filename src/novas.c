@@ -4864,12 +4864,12 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
  * independently of spectroscopy) can be treated like solar system objects.
  *
- * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel'
+ * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
  *
  * If the object is outside the solar system, the algorithm used will be consistent with the
  * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
- * measure, which is derived from spectroscopy.  In that case, the vector 'vel' can be very
+ * measure, which is derived from spectroscopy.  In that case, the vector 'vel_src' can be very
  * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
  * geometric correction that is proportional to proper motion.
  *
@@ -4901,11 +4901,11 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
  *                      barycenter, in AU/day.
  * @param d_obs_geo     [AU] Distance from observer to geocenter, in AU, or 0.0 if
- *                      gravitational deflection can be ignored.
+ *                      gravitational redshifting due to Earth potential can be ignored.
  * @param d_obs_sun     [AU] Distance from observer to Sun, in AU, or 0.0 if gravitational
- *                      deflection can be ignored.
+ *                      redshifting due to Solar potential around observer can be ignored.
  * @param d_src_sun     [AU] Distance from object to Sun, in AU, or 0.0 if gravitational
- *                      deflection can be ignored.
+ *                      redshifting due to Solar potential around source can be ignored.
  * @param[out] rv       [km/s] The observed radial velocity measure times the speed of light,
  *                      in kilometers/second, or NAN if there was an error (errno will be set
  *                      to EINVAL if any of the arguments are NULL, or to some other value to
@@ -4946,12 +4946,12 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
  * independently of spectroscopy) can be treated like solar system objects.
  *
- * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel'
+ * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
  *
  * If the object is outside the solar system, the algorithm used will be consistent with the
  * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
- * measure, which is derived from spectroscopy.  In that case, the vector 'vel' can be very
+ * measure, which is derived from spectroscopy.  In that case, the vector 'vel_src' can be very
  * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
  * geometric correction that is proportional to proper motion.
  *
@@ -4987,11 +4987,11 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
  *                      barycenter, in AU/day.
  * @param d_obs_geo     [AU] Distance from observer to geocenter, in AU, or 0.0 if
- *                      gravitational deflection can be ignored.
+ *                      gravitational redshifting due to Earth potential can be ignored.
  * @param d_obs_sun     [AU] Distance from observer to Sun, in AU, or 0.0 if gravitational
- *                      deflection can be ignored.
+ *                      redshifting due to Solar potential around observer can be ignored.
  * @param d_src_sun     [AU] Distance from object to Sun, in AU, or 0.0 if gravitational
- *                      deflection can be ignored.
+ *                      redshifting due to Solar potential around source can be ignored.
  * @return              [km/s] The observed radial velocity measure times the speed of light,
  *                      in kilometers/second, or NAN if there was an error (errno will be set
  *                      to EINVAL if any of the arguments are NULL, or to some other value to
