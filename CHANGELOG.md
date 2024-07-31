@@ -41,9 +41,12 @@ which affected prior SuperNOVAS releases.
    Solar-system object between the observer and the gravitating body. The resulting positional error is typically 
    small at below 10 uas.
 
- - #34: `place()` radial velocities were not quite correct in NOVAS C 3.1, or in prior releases. The radial velocity 
-   calculation now precedes aberration, since the radial velocity that is observed is in the geometric direction 
-   towards the source (unaffected by aberration), and it properly accounts for gravitational bending also.
+ - #34: `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
+   radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 
+   direction towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction 
+   is the correct direction in which light was emitted from the source for sidereal objects. For Solar system sources 
+   we now reverse trace the deflected light to calculate the direction in which it was emitted from the source. As 
+   such, the radial velocities calculated should now be precise under all conditions.
 
  - #24: Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h` in v1.0. 
  

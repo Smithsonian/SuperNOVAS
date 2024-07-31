@@ -1627,9 +1627,11 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <ol>
  * <li>This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not
  * antedated for light-travel time.</li>
- * <li>As of v1.1, this method calculates radial velocities more precisely, by (a) ignoring
- * aberration (unlike before), and (b) properly accounting for the gravitational deflection for
- * the apparent velocities.</li>
+ * <li>As of v1.1, this method calculates radial velocities using the geometric position of the
+ * source instead of the aberrated and deflected apparent position of NOVAS C 3.1. It also
+ * calculates the actual direction light was emitted by reverse tracing the deflected light. The
+ * new method yields the correct (precise) radial velocity for both sidereal and Solar-system
+ * sources.</li>
  * </ol>
  *
  * REFERENCES:
@@ -1645,9 +1647,10 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
  *                      NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2).
  * @param coord_sys     The coordinate system that defines the orientation of the celestial pole.
- *                      If it is NOVAS_ICRS (3), a geometric position is returned. For all other
- *                      systems, the returned position is the apparent position including aberration
- *                      ang gravitational deflection corrections.
+ *                      If it is NOVAS_ICRS (3), a geometric position and radial velocity is returned. For
+ *                      all other systems, the returned position is the apparent position including
+ *                      aberration and gravitational deflection corrections, and the radial velocity
+ *                      is in the direction the eflected light was emitted from the source.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] output   Data structure to populate with the result.
  * @return              0 if successful,<br>
@@ -1682,9 +1685,10 @@ short place(double jd_tt, const object *source, const observer *location, double
   static THREAD_LOCAL double tlast1 = 0.0;
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
-  double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], t_light, d_sb, frlimb;
-  double vpos[3];
   observer obs;
+  novas_planet_bundle planets = {};
+  int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
+  double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], vpos[3], t_light, d_sb;
   int i;
 
   if(!source)
@@ -1754,8 +1758,6 @@ short place(double jd_tt, const object *source, const observer *location, double
     d_sb = novas_vlen(pos);
   }
   else {
-    int k;
-
     // Get position of body wrt observer, antedated for light-time.
     prop_error(fn, light_time2(jd_tdb, source, pob, 0.0, accuracy, pos, vel, &t_light), 50);
 
@@ -1764,8 +1766,8 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     // Calculate distance to Sun.
     d_sb = 0.0;
-    for(k = 3; --k >= 0;) {
-      double d = psb[k] - (pob[k] + pos[k]);
+    for(i = 3; --i >= 0;) {
+      double d = psb[i] - (pob[i] + pos[i]);
       d_sb += d * d;
     }
     d_sb = sqrt(d_sb);
@@ -1774,33 +1776,32 @@ short place(double jd_tt, const object *source, const observer *location, double
     output->dis = t_light * C_AUDAY;
   }
 
-  // Initialize the 'velocity' position to geometric position...
-  memcpy(vpos, pos, sizeof(pos));
+  if(coord_sys != NOVAS_ICRS)
+    prop_error(fn, obs_planets(jd_tdb, accuracy, pob, pl_mask, &planets), 70);
 
   // ---------------------------------------------------------------------
-  // Apply gravitational deflection
+  // Compute direction in which light was emitted from the source
   // ---------------------------------------------------------------------
-  if(coord_sys != NOVAS_ICRS) {
-    enum novas_observer_place loc = obs.where;
+  if(coord_sys != NOVAS_ICRS && source->type != NOVAS_CATALOG_OBJECT) {
+    double psrc[3];  // Barycentric position of Solar-systemn source (antedated)
 
-    // Variable 'loc' determines whether Earth deflection is included.
-    if(obs.where == NOVAS_OBSERVER_ON_EARTH) {
-      double pog[3];
-
-      for(i = 3; --i >= 0;)
-        pog[i] = pob[i] - peb[i];
-
-      limb_angle(pos, pog, NULL, &frlimb);
-      if(frlimb < 0.8)
-        loc = NOVAS_OBSERVER_AT_GEOCENTER;
+    // A.K.: For this we calculate gravitational deflection of the observer seen from the source
+    // i.e., reverse tracing the light to find the direction in which it was emitted.
+    for(i = 3; --i >= 0;) {
+      vpos[i] = -pos[i];
+      psrc[i] = pos[i] + pob[i];
     }
 
-    // Compute gravitational deflection.
-    prop_error(fn, grav_def(jd_tdb, loc, accuracy, vpos, pob, pos), 70);
+    // vpos -> deflected direction in which observer is seen from source.
+    prop_error(fn, grav_planets(vpos, psrc, &planets, vpos), 70);
 
-    // Calculate the deflected 'velocity' position...
+    // vpos -> direction in which light was emitted from observer's perspective...
     for(i = 3; --i >= 0;)
-      vpos[i] = 2.0 * vpos[i] - pos[i];
+      vpos[i] = -vpos[i];
+  }
+  else {
+    // For sidereal sources the 'velocity' position is the same as the geometric position.
+    memcpy(vpos, pos, sizeof(pos));
   }
 
   // ---------------------------------------------------------------------
@@ -1808,10 +1809,15 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   rad_vel(source, vpos, vel, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb, &output->rv);
 
-  // ---------------------------------------------------------------------
-  // Apply light and aberration.
-  // ---------------------------------------------------------------------
   if(coord_sys != NOVAS_ICRS) {
+    // ---------------------------------------------------------------------
+    // Apply gravitational deflection
+    // ---------------------------------------------------------------------
+    prop_error(fn, grav_planets(pos, pob, &planets, pos), 70);
+
+    // ---------------------------------------------------------------------
+    // Apply light and aberration.
+    // ---------------------------------------------------------------------
     aberration(pos, vob, t_light, pos);
   }
 
@@ -6841,7 +6847,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
   }
 
   novas_set_errno(ECANCELED, "refract_astro", "failed to converge");
-  return refr;
+  return NAN;
 }
 
 /**
