@@ -141,7 +141,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    direction towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction 
    is the correct direction in which light was emitted from the source for sidereal objects. For Solar system sources 
    we now reverse trace the deflected light to calculate the direction in which it was emitted from the source. As 
-   such, the radial velocities calculated should now be precise under all conditions.
+   such, the radial velocities calculated should now be precise under all conditions. The typical errors of the old 
+   calculations were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection 
+   calculation.
 
    
 
