@@ -621,7 +621,11 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
   // ---------------------------------------------------------------------
   // Compute direction in which light is emitted from the source
   // ---------------------------------------------------------------------
-  if(object->type != NOVAS_CATALOG_OBJECT) {
+  if(object->type == NOVAS_CATALOG_OBJECT) {
+    // For sidereal sources the 'velocity' position is the same as the geometric position.
+    memcpy(vpos, pos, sizeof(pos));
+  }
+  else {
     double psrc[3]; // Barycentric position of Solar-system source (antedated)
     int i;
 
@@ -638,10 +642,6 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
     // vpos -> direction in which light was emitted from observer's perspective...
     for(i = 3; --i >= 0;)
       vpos[i] = -vpos[i];
-  }
-  else {
-    // For sidereal sources the 'velocity' position is the same as the geometric position.
-    memcpy(vpos, pos, sizeof(pos));
   }
 
   rad_vel(object, vpos, vel, frame->obs_vel, novas_vdist(frame->obs_pos, frame->earth_pos),

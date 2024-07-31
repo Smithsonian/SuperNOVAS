@@ -1782,7 +1782,11 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   // Compute direction in which light was emitted from the source
   // ---------------------------------------------------------------------
-  if(coord_sys != NOVAS_ICRS && source->type != NOVAS_CATALOG_OBJECT) {
+  if(coord_sys == NOVAS_ICRS || source->type == NOVAS_CATALOG_OBJECT) {
+    // For sidereal sources and ICRS the 'velocity' position is the same as the geometric position.
+    memcpy(vpos, pos, sizeof(pos));
+  }
+  else {
     double psrc[3];  // Barycentric position of Solar-systemn source (antedated)
 
     // A.K.: For this we calculate gravitational deflection of the observer seen from the source
@@ -1798,10 +1802,6 @@ short place(double jd_tt, const object *source, const observer *location, double
     // vpos -> direction in which light was emitted from observer's perspective...
     for(i = 3; --i >= 0;)
       vpos[i] = -vpos[i];
-  }
-  else {
-    // For sidereal sources the 'velocity' position is the same as the geometric position.
-    memcpy(vpos, pos, sizeof(pos));
   }
 
   // ---------------------------------------------------------------------
