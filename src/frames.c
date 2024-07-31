@@ -562,7 +562,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * however, the output always reports the distance calculated from the parallax for sidereal
  * sources. Note also, that while `place()` does not apply aberration and gravitational deflection
  * corrections when `sys` is NOVAS_ICRS (3), this routine will apply those corrections consistently
- * for all coordinate systems (and you can use novas_geom_posvel() to get positions without
+ * for all coordinate systems (and you can use novas_geom_posvel() instead to get positions without
  * aberration or deflection in any system).
  *
  * @param object        Pointer to a celestial object data structure that is observed
@@ -657,7 +657,9 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
 
 /**
  * Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate
- * corrections for aberration and gravitational deflection for the observer's frame.
+ * corrections for aberration and gravitational deflection for the observer's frame. Unlike
+ * `place()` the output reports the distance calculated from the parallax for sidereal sources.
+ * The radial velocity of the output is set to NAN (if needed use novas_sky_pos() instead).
  *
  * @param frame     The observer frame, defining the location and time of observation
  * @param pos       [AU] Geometric position of source in ICRS coordinates
@@ -894,9 +896,7 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
 
 /**
  * Converts an observed apparent sky position of a source to an ICRS geometric position, by
- * undoing the gravitational deflection and aberration corrections. Unlike `place()` the output
- * reports the distance calculated from the parallax for sidereal sources. The radial velocity
- * of the output is set to NAN (if needed use novas_sky_pos() instead).
+ * undoing the gravitational deflection and aberration corrections.
  *
  * @param frame           The observer frame, defining the location and time of observation
  * @param sys             The reference system in which the observed position is specified.
