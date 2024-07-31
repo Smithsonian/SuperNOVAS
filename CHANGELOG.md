@@ -115,6 +115,10 @@ which affected prior SuperNOVAS releases.
    
  - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
  
+ - Added `rad_vel2()` to calculate radial velocities precisely in the presense of gravitational deflection i.e., 
+   when the direction in which light was emitted is different from the direction it is detected by the observer.
+   This new function is now used by both `place()` and `novas_sky_pos()`.
+ 
  - `make help` to provide a brief list and explanation of the available build targets. (Thanks to `@teuben` for 
    suggesting this.)
 

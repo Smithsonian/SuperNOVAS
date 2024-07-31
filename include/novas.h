@@ -1178,6 +1178,8 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
 
 int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
+double rad_vel2(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
+        double d_obs_geo, double d_obs_sun, double d_src_sun);
 
 // in timescale.c
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time);

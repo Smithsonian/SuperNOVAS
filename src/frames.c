@@ -585,7 +585,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
 int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *out) {
   static const char *fn = "novas_sky_pos";
 
-  double d_sb, rv, pos[3], vel[3], vpos[3];
+  double d_sb, pos[3], vel[3], vpos[3];
 
   if(!object || !frame || !out)
     return novas_error(-1, EINVAL, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
@@ -644,11 +644,10 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
       vpos[i] = -vpos[i];
   }
 
-  rad_vel(object, vpos, vel, frame->obs_vel, novas_vdist(frame->obs_pos, frame->earth_pos),
-          novas_vdist(frame->obs_pos, frame->sun_pos), d_sb, &rv);
-
   prop_error(fn, novas_geom_to_app(frame, pos, sys, out), 70);
-  out->rv = rv;
+
+  out->rv = rad_vel2(object, vpos, vel, pos, frame->obs_vel, novas_vdist(frame->obs_pos, frame->earth_pos),
+          novas_vdist(frame->obs_pos, frame->sun_pos), d_sb);
 
   return 0;
 }

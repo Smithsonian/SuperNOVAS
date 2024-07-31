@@ -1807,7 +1807,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   // Compute radial velocity (all vectors in ICRS).
   // ---------------------------------------------------------------------
-  rad_vel(source, vpos, vel, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb, &output->rv);
+  output->rv = rad_vel2(source, vpos, vel, pos, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb);
 
   if(coord_sys != NOVAS_ICRS) {
     // ---------------------------------------------------------------------
@@ -4882,8 +4882,8 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place() to calculate radial velocities long with the position
- * of the source.</li>
+ * <li>This function does not accont for gravitational deflection of Solar-system sources.
+ * For that, the rad_vel2() function, introduced in v1.1, is more appropriate.</li>
  * </ol>
  *
  * REFERENCES:
@@ -4892,11 +4892,11 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * </ol>
  *
  * @param source        Celestial object observed
- * @param pos           [AU|*] Geometric position vector of object with respect to observer.
+ * @param pos_src       [AU|*] Geometric position vector of object with respect to observer.
  *                      For solar system sources it should be corrected for light-time, and
  *                      expressed in AU. For non-solar-system objects, the position vector
  *                      defines a direction only, with arbitrary magnitude.
- * @param vel           [AU/day] Velocity vector of object with respect to solar system
+ * @param vel_src       [AU/day] Velocity vector of object with respect to solar system
  *                      barycenter, in AU/day.
  * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
  *                      barycenter, in AU/day.
@@ -4907,36 +4907,125 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * @param d_src_sun     [AU] Distance from object to Sun, in AU, or 0.0 if gravitational
  *                      deflection can be ignored.
  * @param[out] rv       [km/s] The observed radial velocity measure times the speed of light,
- *                      in kilometers/second.
- * @return              0 if successful, or -1 if any of the pointer arguments is NULL.
+ *                      in kilometers/second, or NAN if there was an error (errno will be set
+ *                      to EINVAL if any of the arguments are NULL, or to some other value to
+ *                      indicate the type of error).
+ * @return              0 if successfule, or else -1 if there was an error (errno will be set
+ *                      to EINVAL if any of the arguments are NULL, or to some other value to
+ *                      indicate the type of error).
  *
- * @sa place()
+ * @sa prad_vel()
+ *
  */
-int rad_vel(const object *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun,
+int rad_vel(const object *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun,
         double d_src_sun, double *rv) {
   static const char *fn = "rad_vel";
+  int stat;
+
+  if(!rv)
+    return novas_error(-1, EINVAL, fn, "NULL input source");
+
+  *rv = rad_vel2(source, pos_src, vel_src, pos_src, vel_obs, d_obs_geo, d_obs_sun, d_src_sun);
+  stat = isnan(*rv) ? -1 : 0;
+  prop_error(fn, stat, 0);
+
+  return 0;
+}
+
+/**
+ * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
+ * means. This is a modified version of the original NOVAS C 3.1 rad_vel(), to account for
+ * the different directions light is emitted vs detected due to gravitational deflection.
+ *
+ * Radial velocity is here defined as the radial velocity measure (z) times the speed
+ * of light.  For a solar system body, it applies to a fictitious emitter at the center of the
+ * observed object, assumed massless (no gravitational red shift), and does not in general
+ * apply to reflected light.  For stars, it includes all effects, such as gravitational
+ * redshift, contained in the catalog barycentric radial velocity measure, a scalar derived
+ * from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
+ * independently of spectroscopy) can be treated like solar system objects.
+ *
+ * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel'
+ * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
+ *
+ * If the object is outside the solar system, the algorithm used will be consistent with the
+ * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
+ * measure, which is derived from spectroscopy.  In that case, the vector 'vel' can be very
+ * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
+ * geometric correction that is proportional to proper motion.
+ *
+ * Any of the distances (last three input arguments) can be set to zero (0.0) if the
+ * corresponding general relativistic gravitational potential term is not to be evaluated.
+ * These terms generally are important only at the meter/second level. If 'd_obs_geo' and
+ * 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the
+ * observer, appropriate for an observer on the surface of the Earth. 'd_obj_sun', if given, is
+ * used only for solar system objects.
+ *
+ * NOTES:
+ * <ol>
+ * <li>This function is called by place() to calculate radial velocities long with the position
+ * of the source.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201.</li>
+ * </ol>
+ *
+ * @param source        Celestial object observed
+ * @param pos_emit      [AU|*] position vector of object with respect to observer in the
+ *                      direction that light was emitted from the source.
+ *                      For solar system sources it should be corrected for light-time, and
+ *                      expressed in AU. For non-solar-system objects, the position vector
+ *                      defines a direction only, with arbitrary magnitude.
+ * @param vel_src       [AU/day] Velocity vector of object with respect to solar system
+ *                      barycenter, in AU/day.
+ * @param pos_det       [AU|*] apparent position vector of source, as seen by the observer.
+ *                      It may be the same vector as `pos_emit`, in which case the routine
+ *                      behaves like the original NOVAS_C rad_vel().
+ * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
+ *                      barycenter, in AU/day.
+ * @param d_obs_geo     [AU] Distance from observer to geocenter, in AU, or 0.0 if
+ *                      gravitational deflection can be ignored.
+ * @param d_obs_sun     [AU] Distance from observer to Sun, in AU, or 0.0 if gravitational
+ *                      deflection can be ignored.
+ * @param d_src_sun     [AU] Distance from object to Sun, in AU, or 0.0 if gravitational
+ *                      deflection can be ignored.
+ * @return              [km/s] The observed radial velocity measure times the speed of light,
+ *                      in kilometers/second, or NAN if there was an error (errno will be set
+ *                      to EINVAL if any of the arguments are NULL, or to some other value to
+ *                      indicate the type of error).
+ *
+ * @sa prad_vel()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+double rad_vel2(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
+        double d_obs_geo, double d_obs_sun, double d_src_sun) {
+  static const char *fn = "rad_vel2";
   static const double c2 = C * C, toms = AU / DAY, toms2 = (AU / DAY) * (AU / DAY);
 
-  double v[3], posmag, uk[3], v2, vo2, r, phigeo, phisun, rel, kv, zb1, kvobs, zobs1;
+  double v[3], d, uk[3], v2, vo2, r, phigeo, phisun, rel, kv, zb1, kvobs, zobs1;
   int i;
 
-  if(!source || !pos || !vel || !vel_obs || !rv) {
-    if(rv)
-      *rv = NAN;
-    return novas_error(-1, EINVAL, fn, "NULL input or output pointer: source=%p, pos=%p, vel=%p, vel_obs=%p, rv=%p", source, pos, vel,
-            vel_obs, rv);
+  if(!source) {
+    novas_error(-1, EINVAL, fn, "NULL input source");
+    return NAN;
+  }
+
+  if(!pos_emit || !vel_src || !pos_det) {
+    novas_error(-1, EINVAL, fn, "NULL input source pos/vel: pos_emit=%p, vel_src=%p, pos_det=%p", pos_emit, vel_src, pos_det);
+    return NAN;
+  }
+
+  if(!vel_obs) {
+    novas_error(-1, EINVAL, fn, "NULL input observer velocity");
+    return NAN;
   }
 
   // Initialize variables needed for radial velocity calculation.
-  memcpy(v, vel, sizeof(v));
-
-  // Compute length of position vector = distance to object in AU.
-  posmag = novas_vlen(pos);
-
-  // Compute unit vector toward object.
-  for(i = 0; i < 3; i++) {
-    uk[i] = pos[i] / posmag;
-  }
+  memcpy(v, vel_src, sizeof(v));
 
   // Compute velocity-squared factors.
   v2 = novas_vdot(v, v) * toms2;
@@ -4959,6 +5048,11 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
     // Lindegren & Dravins eq. (42), inverse.
     rel = 1.0 - 1.550e-8;
   }
+
+  // Compute unit vector toward object (direction of emission).
+  d = novas_vlen(pos_emit);
+  for(i = 0; i < 3; i++)
+    uk[i] = pos_emit[i] / d;
 
   // Complete radial velocity calculation.
   switch(source->type) {
@@ -4999,21 +5093,25 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
       // velocity vector is known and gravitational red shift is negligible
       // (Lindegren & Dravins eq. (40), applied as per S. Klioner private
       // communication (2006)).
-      kv = novas_vdot(uk, vel) * toms;
+      kv = novas_vdot(uk, vel_src) * toms;
       zb1 = (1.0 + kv / C) / (1.0 - phisun / c2 - 0.5 * v2 / c2);
       break;
 
     default:
-      return novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
+      novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
+      return NAN;
   }
+
+  // Compute unit vector toward object (direction of detection).
+  d = novas_vlen(pos_det);
+  for(i = 0; i < 3; i++)
+    uk[i] = pos_det[i] / d;
 
   kvobs = novas_vdot(uk, vel_obs) * toms;
   zobs1 = zb1 * rel / (1.0 + kvobs / C);
 
   // Convert observed radial velocity measure to kilometers/second.
-  *rv = (zobs1 - 1.0) * C / 1000.0;
-
-  return 0;
+  return (zobs1 - 1.0) * C / 1000.0;
 }
 
 /**
