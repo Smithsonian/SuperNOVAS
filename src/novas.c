@@ -1776,8 +1776,9 @@ short place(double jd_tt, const object *source, const observer *location, double
     output->dis = t_light * C_AUDAY;
   }
 
-  if(coord_sys != NOVAS_ICRS)
+  if(coord_sys != NOVAS_ICRS) {
     prop_error(fn, obs_planets(jd_tdb, accuracy, pob, pl_mask, &planets), 70);
+  }
 
   // ---------------------------------------------------------------------
   // Compute direction in which light was emitted from the source
@@ -4882,8 +4883,18 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *
  * NOTES:
  * <ol>
- * <li>This function does not accont for gravitational deflection of Solar-system sources.
- * For that, the rad_vel2() function, introduced in v1.1, is more appropriate.</li>
+ * <li>This function does not accont for the gravitational deflection of Solar-system sources.
+ * For that purpose, the rad_vel2() function, introduced in v1.1, is more appropriate.</li>
+ * <li>The NOVAS C implementation did not include relatistic corrections for a travelling observer
+ * if both `d_obs_geo` and `d_obs_sun` were zero. As of SuperNOVAS v1.1, the relatistic corrections
+ * for a (fast) moving observer will be included in the radial velocity measure always.</li>
+ * <li>The NOVAS C implementation did not include gravitational redshift corrections for light
+ * originating at the Solar photosphere when observing the Sun. As of SuperNOVAS v1.1, we will assume
+ * that observing the Sun means looking at light originating at its photosphere, and will apply the
+ * appropriate gravitational redshift corrections accordingly, unless `d_src_sun` is negative.
+ * As a result, `d_src_sun` being zero has a changed meaning. In NOVAS C 3.1 it indicated that the
+ * Solar potential at the source should be ignored, but now it simply indicates that the Sun is
+ * being observed, with light originating at its photosphere</li>
  * </ol>
  *
  * REFERENCES:
@@ -4893,23 +4904,22 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *
  * @param source        Celestial object observed
  * @param pos_src       [AU|*] Geometric position vector of object with respect to observer.
- *                      For solar system sources it should be corrected for light-time, and
- *                      expressed in AU. For non-solar-system objects, the position vector
- *                      defines a direction only, with arbitrary magnitude.
+ *                      For solar system sources it should be corrected for light-time. For
+ *                      non-solar-system objects, the position vector defines a direction only,
+ *                      with arbitrary magnitude.
  * @param vel_src       [AU/day] Velocity vector of object with respect to solar system
- *                      barycenter, in AU/day.
+ *                      barycenter.
  * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
- *                      barycenter, in AU/day.
- * @param d_obs_geo     [AU] Distance from observer to geocenter, in AU, or 0.0 if
- *                      gravitational redshifting due to Earth potential can be ignored.
- * @param d_obs_sun     [AU] Distance from observer to Sun, in AU, or 0.0 if gravitational
- *                      redshifting due to Solar potential around observer can be ignored.
- * @param d_src_sun     [AU] Distance from object to Sun, in AU, or 0.0 if gravitational
+ *                      barycenter.
+ * @param d_obs_geo     [AU] Distance from observer to geocenter, or &lt;=0.0 if
+ *                      gravitational blueshifting due to Earth potential around observer can be
+ *                      ignored.
+ * @param d_obs_sun     [AU] Distance from observer to Sun, or &lt;=0.0 if gravitational
+ *                      bluehifting due to Solar potential around observer can be ignored.
+ * @param d_src_sun     [AU] Distance from object to Sun, or a negative value if gravitational
  *                      redshifting due to Solar potential around source can be ignored.
  * @param[out] rv       [km/s] The observed radial velocity measure times the speed of light,
- *                      in kilometers/second, or NAN if there was an error (errno will be set
- *                      to EINVAL if any of the arguments are NULL, or to some other value to
- *                      indicate the type of error).
+ *                      or NAN if there was an error.
  * @return              0 if successfule, or else -1 if there was an error (errno will be set
  *                      to EINVAL if any of the arguments are NULL, or to some other value to
  *                      indicate the type of error).
@@ -4955,7 +4965,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
  * geometric correction that is proportional to proper motion.
  *
- * Any of the distances (last three input arguments) can be set to zero (0.0) if the
+ * Any of the distances (last three input arguments) can be set to a negative value if the
  * corresponding general relativistic gravitational potential term is not to be evaluated.
  * These terms generally are important only at the meter/second level. If 'd_obs_geo' and
  * 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the
@@ -4964,8 +4974,8 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place() to calculate radial velocities long with the position
- * of the source.</li>
+ * <li>This function is called by place() and novas_sky_pos() to calculate radial velocities along
+ * with the apparent position of the source.</li>
  * </ol>
  *
  * REFERENCES:
@@ -4976,26 +4986,26 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * @param source        Celestial object observed
  * @param pos_emit      [AU|*] position vector of object with respect to observer in the
  *                      direction that light was emitted from the source.
- *                      For solar system sources it should be corrected for light-time, and
- *                      expressed in AU. For non-solar-system objects, the position vector
- *                      defines a direction only, with arbitrary magnitude.
+ *                      For solar system sources it should be corrected for light-time. For
+ *                      non-solar-system objects, the position vector defines a direction only,
+ *                      with arbitrary magnitude.
  * @param vel_src       [AU/day] Velocity vector of object with respect to solar system
- *                      barycenter, in AU/day.
+ *                      barycenter.
  * @param pos_det       [AU|*] apparent position vector of source, as seen by the observer.
  *                      It may be the same vector as `pos_emit`, in which case the routine
  *                      behaves like the original NOVAS_C rad_vel().
  * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
- *                      barycenter, in AU/day.
- * @param d_obs_geo     [AU] Distance from observer to geocenter, in AU, or 0.0 if
- *                      gravitational redshifting due to Earth potential can be ignored.
- * @param d_obs_sun     [AU] Distance from observer to Sun, in AU, or 0.0 if gravitational
- *                      redshifting due to Solar potential around observer can be ignored.
- * @param d_src_sun     [AU] Distance from object to Sun, in AU, or 0.0 if gravitational
+ *                      barycenter.
+ * @param d_obs_geo     [AU] Distance from observer to geocenter, or &lt;=0.0 if
+ *                      gravitational blueshifting due to Earth potential around observer can be
+ *                      ignored.
+ * @param d_obs_sun     [AU] Distance from observer to Sun, or &lt;=0.0 if gravitational
+ *                      bluehifting due to Solar potential around observer can be ignored.
+ * @param d_src_sun     [AU] Distance from object to Sun, or a negative value if gravitational
  *                      redshifting due to Solar potential around source can be ignored.
  * @return              [km/s] The observed radial velocity measure times the speed of light,
- *                      in kilometers/second, or NAN if there was an error (errno will be set
- *                      to EINVAL if any of the arguments are NULL, or to some other value to
- *                      indicate the type of error).
+ *                      or NAN if there was an error (errno will be set to EINVAL if any of the
+ *                      arguments are NULL, or to some other value to indicate the type of error).
  *
  * @sa rad_vel()
  * @sa place()
@@ -5034,23 +5044,27 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   v2 = novas_vdot(v, v) * toms2;
   vo2 = novas_vdot(vel_obs, vel_obs) * toms2;
 
-  // Compute geopotential at observer, unless observer is geocentric.
+  // Compute geopotential at observer, unless observer is within Earth.
   r = d_obs_geo * AU;
-  phigeo = (r > 1.0e6) ? GE / r : 0.0;
+  phigeo = (r > 0.95 * NOVAS_EARTH_RADIUS) ? GE / r : 0.0;
 
-  // Compute solar potential at observer.
+  // Compute solar potential at observer unless well the Sun
   r = d_obs_sun * AU;
-  phisun = (r > 1.0e8) ? GS / r : 0.0;
+  phisun = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
-  // Compute relativistic potential and velocity factor for observer.
+  // Compute relativistic potential.
   if((d_obs_geo != 0.0) || (d_obs_sun != 0.0)) {
     // Lindegren & Dravins eq. (41), second factor in parentheses.
-    rel = 1.0 - (phigeo + phisun) / c2 - 0.5 * vo2 / c2;
+    rel = 1.0 - (phigeo + phisun) / c2;
   }
   else {
+    // Use average value for an observer on the surface of Earth
     // Lindegren & Dravins eq. (42), inverse.
     rel = 1.0 - 1.550e-8;
   }
+
+  // Include relativistic velocity factor for observer
+  rel -= 0.5 * vo2 / c2;
 
   // Compute unit vector toward object (direction of emission).
   d = novas_vlen(pos_emit);
@@ -5088,9 +5102,15 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     case NOVAS_EPHEM_OBJECT:
       // Objects in the solar system
 
-      // Compute solar potential at object
+      // Nominal distance of object from Sun
       r = d_src_sun * AU;
-      phisun = (r > 1e8 && r < 1e16) ? GS / r : 0.0;
+
+      // If observing the Sun, assume light originating from the surface
+      if(r >= 0.0 && r < 0.95 * NOVAS_SOLAR_RADIUS)
+        r = NOVAS_SOLAR_RADIUS;
+
+      // Compute solar potential at object
+      phisun = (r > 0.95 * NOVAS_SOLAR_RADIUS && r < 1e16) ? GS / r : 0.0;
 
       // Compute observed radial velocity measure of a planet or other
       // object -- including a nearby star -- where kinematic barycentric

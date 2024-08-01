@@ -158,6 +158,9 @@
 /// [s] TT - TAI time offset
 #define NOVAS_TAI_TO_TT           32.187
 
+/// [m] Solar radius
+#define NOVAS_SOLAR_RADIUS        696340000.0
+
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
 /// [0]: Earth/Moon barycenter, MASS[1] = Mercury, ...,
 /// [9]: Pluto, [10]: Sun, [11]: Moon.

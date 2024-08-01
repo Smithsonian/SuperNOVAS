@@ -41,6 +41,17 @@ which affected prior SuperNOVAS releases.
    Solar-system object between the observer and the gravitating body. The resulting positional error is typically 
    small at below 10 uas.
 
+ - #50: The NOVAS C 3.1 implementation of `rad_vel()` applied relativistic corrections for a moving observer 
+   conditional on applying relativistic gravitational corrections (for Sun and/or Earth potential) for the observer. 
+   However, it seems more reasonable that the corrections for a (fast) moving observer should be applied always and 
+   independently of the (optional) gravitational corrections.
+
+ - #51: In the NOVAS C 3.1 implementation of `rad_vel()`, the Solar gravitational potential was ignored when 
+   calculating radial velocities. Typically 'observing the Sun' means looking at its photosphere. As the light travels 
+   away from the Sun's photosphere towards the observer, it is redshifted. The NOVAS C implementation of `rad_vel()` 
+   has ignored this redshifting when the Sun was being observed. From bow on, we shall reference radial velocities of 
+   the Sun to its photosphere.
+
  - #34: `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
    radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 
    direction towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction 
@@ -153,6 +164,12 @@ which affected prior SuperNOVAS releases.
  - `vector2radec()`: `ra` or `dec` arguments may now be NULL if not required.
 
  - `tt2tdb()` Now uses the same, slightly more precise series as the original NOVAS C `tdb2tt()`.
+
+ - `rad_vel()` You can use negative values for the distances to skip particular gravitational corrections to the
+   radial velocity measure. For `d_obs_geo` and `d_obs_sun` 0.0 also continues to have the same effect. However
+   `d_src_sun` being 0.0 takes on a different meaning than before: rather than skipping gravitational redshift
+   corrections for the Solar potential, we will now assume that 0.0 means observing the Sun, and will apply
+   gravitational corrections for light originating at its photosphere.
 
  - `PSI_COR` and `EPS_COR` made globally visible again, thus improving NOVAS C 3.1 compatibility.
  
