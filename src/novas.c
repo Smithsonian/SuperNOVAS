@@ -4916,7 +4916,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *                      ignored.
  * @param d_obs_sun     [AU] Distance from observer to Sun, or &lt;=0.0 if gravitational
  *                      bluehifting due to Solar potential around observer can be ignored.
- * @param d_src_sun     [AU] Distance from object to Sun, or a negative value if gravitational
+ * @param d_src_sun     [AU] Distance from object to Sun, or &lt;=0.0 if gravitational
  *                      redshifting due to Solar potential around source can be ignored.
  * @param[out] rv       [km/s] The observed radial velocity measure times the speed of light,
  *                      or NAN if there was an error.
@@ -5001,7 +5001,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *                      ignored.
  * @param d_obs_sun     [AU] Distance from observer to Sun, or &lt;=0.0 if gravitational
  *                      bluehifting due to Solar potential around observer can be ignored.
- * @param d_src_sun     [AU] Distance from object to Sun, or a negative value if gravitational
+ * @param d_src_sun     [AU] Distance from object to Sun, or &lt;=0.0 if gravitational
  *                      redshifting due to Solar potential around source can be ignored.
  * @return              [km/s] The observed radial velocity measure times the speed of light,
  *                      or NAN if there was an error (errno will be set to EINVAL if any of the
@@ -5101,13 +5101,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
       // Objects in the solar system
-
-      // Nominal distance of object from Sun
-      r = d_src_sun * AU;
-
-      // If observing the Sun, assume light originating from the surface
-      if(r >= 0.0 && r < 0.95 * NOVAS_SOLAR_RADIUS)
-        r = NOVAS_SOLAR_RADIUS;
+      r = (source->number == NOVAS_SUN) ? NOVAS_SOLAR_RADIUS : d_src_sun * AU;
 
       // Compute solar potential at object
       phisun = (r > 0.95 * NOVAS_SOLAR_RADIUS && r < 1e16) ? GS / r : 0.0;
