@@ -295,7 +295,6 @@ static void tiny_rotate(const double *in, double ax, double ay, double az, doubl
   out[2] = z - 0.5 * (A[0] + A[1]) * z - ay * x + ax * y;
 }
 
-
 /**
  * Checks if two Julian dates are equals under the precision that can be handled by this
  * library. In practive two dates are considered equal if they agree within 10<sup>-8</sup>
@@ -2971,7 +2970,6 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
  * use UTC-based Julian date the same way.for arcsec-level precision also.
  *
- *
  * REFERENCES:
  *  <ol>
  *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -3018,7 +3016,6 @@ int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
  * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
  * use UTC-based Julian date the same way.for arcsec-level precision also.
- *
  *
  * REFERENCES:
  *  <ol>
