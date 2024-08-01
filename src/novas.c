@@ -4887,14 +4887,14 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * For that purpose, the rad_vel2() function, introduced in v1.1, is more appropriate.</li>
  * <li>The NOVAS C implementation did not include relatistic corrections for a travelling observer
  * if both `d_obs_geo` and `d_obs_sun` were zero. As of SuperNOVAS v1.1, the relatistic corrections
- * for a (fast) moving observer will be included in the radial velocity measure always.</li>
+ * for a moving observer will be included in the radial velocity measure always.</li>
  * <li>The NOVAS C implementation did not include gravitational redshift corrections for light
  * originating at the Solar photosphere when observing the Sun. As of SuperNOVAS v1.1, we will assume
  * that observing the Sun means looking at light originating at its photosphere, and will apply the
  * appropriate gravitational redshift corrections accordingly, unless `d_src_sun` is negative.
- * As a result, `d_src_sun` being zero has a changed meaning. In NOVAS C 3.1 it indicated that the
- * Solar potential at the source should be ignored, but now it simply indicates that the Sun is
- * being observed, with light originating at its photosphere</li>
+ * As a result, `d_src_sun` being zero has a changed meaning: In NOVAS C 3.1 it indicated that the
+ * Solar potential at the source should be ignored, but now if the observed object is the Sun it
+ * will include gravitational corrections for light originating at the Sun's photosphere.</li>
  * </ol>
  *
  * REFERENCES:
