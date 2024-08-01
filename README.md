@@ -134,7 +134,27 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - [__v1.0.2__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
-    the gravitational deflection due to the Sun being skipped.
+   the gravitational deflection due to the Sun being skipped.
+    
+ - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` applied relativistic corrections for a moving observer 
+   conditional on applying relativistic gravitational corrections (for Sun and/or Earth potential) for the observer. 
+   However, it seems more reasonable that the corrections for a moving observer should be applied always and
+   independently of the (optional) gravitational corrections.
+   
+ - [__v1.1__] In the NOVAS C 3.1 implementation of `rad_vel()`, the Solar gravitational potential was ignored when 
+   calculating radial velocities. Typically 'observing the Sun' means looking at its photosphere, As the light travels 
+   away from the Sun's photosphere towards the observer, it is redshifted. The NOVAS C implementation of `rad_vel()` 
+   has ignored this redshifting when the Sun was being observed.
+   
+ - [__v1.1__] `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
+   radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 
+   direction towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction 
+   is the correct direction in which light was emitted from the source for sidereal objects. For Solar system sources 
+   we now reverse trace the deflected light to calculate the direction in which it was emitted from the source. As 
+   such, the radial velocities calculated should now be precise under all conditions. The typical errors of the old 
+   calculations were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection 
+   calculation.
+
    
 
 -----------------------------------------------------------------------------
@@ -336,7 +356,7 @@ adjustment to convert from J2000 to ICRS coordinates.
 ```
 
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
-start.) Once the catalog entry is defined in ICRS, you can proceed qrapping it in a generic source structure (which
+start.) Once the catalog entry is defined in ICRS, you can proceed wrapping it in a generic source structure (which
 handles both catalog and ephemeris sources).
 
 ```c
@@ -364,18 +384,9 @@ barycenter.
 
 #### Specify the time of observation
 
-Next we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the
-UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds.
-
-```c
- // The current value for the leap seconds (UTC - TAI)
- int leap_seconds = 37;
-
- // Set the DUT1 = UT1 - UTC time difference in seconds (e.g. from IERS Bulletins)
- int dut1 = ...;
-``` 
- 
-Now we can set the time of observation, for example, using the current UNIX time:
+Next, we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the
+UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.114,
+then we can set the time of observation, for example, using the current UNIX time:
 
 ```c
  novas_timescale t_obs;	        // Structure that will define astrometric time
@@ -385,7 +396,7 @@ Now we can set the time of observation, for example, using the current UNIX time
  clock_gettime(CLOCK_REALTIME, &unix_time);
  
  // Set the time of observation to the precise UTC-based UNIX time
- novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, leap_seconds, dut1, &t_obs);
+ novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.114, &t_obs);
 ```
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
@@ -403,7 +414,7 @@ or, for the best precision we may do the same with an integer / fractional split
  long ijd_tai = ...     // Integer part of the TAI-based Julian Date
  double fjd_tai = ...   // Fractional part of the TAI-based Julian Date 
   
- novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, leap_seconds, dut1, &t_obs);
+ novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &t_obs);
 ```
 
 #### Set up the observing frame
@@ -490,7 +501,7 @@ will handle the respective ephemeris data at runtime before making the NOVAS cal
  // Set the function for high-precision planet position calculations
  set_planet_provider_hp(my_very_precise_planet_function);
   
- // Set the function to use for calculating all sorts of solar-system bodies
+ // Set the function to use for calculating all other solar-system bodies
  set_ephem_provider(my_ephemeris_provider_function);
 ```
 
@@ -534,8 +545,8 @@ When one does not need positions at the microarcsecond level, some shortcuts can
 <a name="performance-note"></a>
 ### Performance considerations
 
-If accuracy below the milliarcsecond level is not required `NOVAS_REDUCED_ACCURACY` mode offers much faster 
-calculations, in general.
+If accuracy below the milliarcsecond level is not required `NOVAS_REDUCED_ACCURACY` mode offers faster calculations, 
+in general.
 
  
 <a name="multi-threading"></a>
@@ -728,11 +739,9 @@ before that level of accuracy is reached.
    
  - `grav_undef()` to undo gravitational bending of the observed light to obtain geometric positions from
    observed ones.
- 
- - New observer locations `NOVAS_AIRBORNE_OBSERVER` for an observer moving relative to the surface of Earth e.g.
-   in an aircraft or balloon based telescope platform, and `NOVAS_SOLAR_SYSTEM_OBSERVER` for spacecraft orbiting the 
-   Sun. Both of these use the `observer.near_earth` strcture to define (positions and) velocities as appropriate. 
-   Hence the `'near_earth` name is a bit misleading, but sticks for back compatibility.
+   
+ - `grav_planets()` and `grav_undo_planets()` functions to apply/ or undo gravitational deflection using a specific
+   set of gravitating bodies.
    
  - New coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
    `NOVAS_J2000` for the J2000 dynamical reference system.
@@ -749,10 +758,10 @@ before that level of accuracy is reached.
 
  - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` / `novas_hor_to_app()` 
    functions. The models `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction 
-   model as `refract()`  in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` 
+   model as `refract()` in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` 
    respectively, including the reversed direction provided by `refract_astro()`. The user may supply their own custom 
-   refraction also, and may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in 
-   the reverse direction (observer vs astrometric elevations) as needed.
+   refraction model also, and may make use of the generic reversal function `novas_inv_refract()` to calculate 
+   refraction in the reverse direction (observer vs astrometric elevations) as needed.
 
  - Added radio refraction model `novas_radio_refraction()` based on the formulae by Berman &amp; Rockwell 1976.
  
@@ -827,15 +836,12 @@ before that level of accuracy is reached.
    careful about the order in which terms are accumulated and combined, resulting in a small improvement on the few 
    uas (micro-arcsecond) level.
    
- - [__v1.1__] `place()` now returns an error 3 if and only if the observer is at (or very close, within ~10m) of the 
+ - [__v1.1__] `place()` now returns an error 3 if and only if the observer is at (or very close, within ~1.5m) of the 
    observed Solar-system object.
 
  - [__v1.1__] `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip 
-   deflections due to a body, if the observer is within ~1500 km of its center.
-
- - [__v1.1__] Radial velocity calculation to precede aberration and gravitational bending in `place()`, since the 
-   radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration), and 
-   `rad_vel()` requires geometric directions also to account for the gravitational effects of the Sun and Earth.
+   deflections due to a body if the observer is within ~1500 km of its center (which is below the surface for all
+   major Solar system bodies).
 
 -----------------------------------------------------------------------------
 

@@ -158,6 +158,9 @@
 /// [s] TT - TAI time offset
 #define NOVAS_TAI_TO_TT           32.187
 
+/// [m] Solar radius
+#define NOVAS_SOLAR_RADIUS        696340000.0
+
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
 /// [0]: Earth/Moon barycenter, MASS[1] = Mercury, ...,
 /// [9]: Pluto, [10]: Sun, [11]: Moon.
@@ -747,6 +750,9 @@ typedef struct {
  * should always be initialized by an appropriate call to novas_make_frame(). After that you
  * may change the observer location, if need be, with novas_change_observer().
  *
+ * The structure may expand with additional field in the future. Thus neither its size nor its
+ * particular layout should be assumed fixed over SuperNOVAS releases.
+ *
  * @since 1.1
  *
  * @see novas_make_frame()
@@ -1175,6 +1181,8 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
 
 int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
+double rad_vel2(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
+        double d_obs_geo, double d_obs_sun, double d_src_sun);
 
 // in timescale.c
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time);

@@ -1523,9 +1523,10 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
  *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be
  *                      calculated when needed.
  * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter
- *                      (SSB)
+ *                      (SSB). It may be NULL if not required.
  * @param[out] vel      [AU/day] Velocity 3-vector of the observer w.r.t. the Solar System
- *                      Barycenter (SSB)
+ *                      Barycenter (SSB). It must be distinct from the pos output vector, and may be
+ *                      NULL if not required.
  * @return              0 if successful, or the error from geo_posvel(), or else -1 (with errno
  *                      indicating the type of error).
  *
@@ -1544,8 +1545,8 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
   if(obs->where < 0 || obs->where >= NOVAS_OBSERVER_PLACES)
     return novas_error(-1, EINVAL, fn, "Invalid observer location: %d", obs->where);
 
-  if(!pos && !vel)
-    return novas_error(-1, EINVAL, fn, "NULL output pointers (both)");
+  if(pos == vel)
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel pointers @ %p.", pos);
 
   if(obs->where == NOVAS_SOLAR_SYSTEM_OBSERVER) {
     if(pos)
@@ -1625,6 +1626,11 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <ol>
  * <li>This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not
  * antedated for light-travel time.</li>
+ * <li>As of v1.1, this method calculates radial velocities using the geometric position of the
+ * source instead of the aberrated and deflected apparent position of NOVAS C 3.1. It also
+ * calculates the actual direction light was emitted by reverse tracing the deflected light. The
+ * new method yields the correct (precise) radial velocity for both sidereal and Solar-system
+ * sources.</li>
  * </ol>
  *
  * REFERENCES:
@@ -1640,18 +1646,22 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
  *                      NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2).
  * @param coord_sys     The coordinate system that defines the orientation of the celestial pole.
- *                      If it is NOVAS_ICRS (3), a geometric position is returned. For all other
- *                      systems, the returned position is the apparent position including aberration
- *                      ang gravitational deflection corrections.
+ *                      If it is NOVAS_ICRS (3), a geometric position and radial velocity is returned. For
+ *                      all other systems, the returned position is the apparent position including
+ *                      aberration and gravitational deflection corrections, and the radial velocity
+ *                      is in the direction the eflected light was emitted from the source.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] output   Data structure to populate with the result.
- * @return              0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid,
- *                      3 if Earth is the observed object, and the observer is either at the
- *                      geocenter or on the Earth's surface, 10--40: error is 10 + the error ephemeris(),
- *                      40--50: error is 40 + the error from geo_posvel(), 50--70 error is
- *                      50 + error from light_time2(), 70--80 error is 70 + error from grav_def(),
- *                      80--90 error is 80 + error from cio_location(), 90--100 error is 90 + error
- *                      from cio_basis().
+ * @return              0 if successful,<br>
+ *                      1 if 'coord_sys' is invalid,<br>
+ *                      2 if 'accuracy' is invalid,<br>
+ *                      3 if the observer is at or very near (within ~1.5m of) the observed location,<br>
+ *                      10--40: error is 10 + the error ephemeris(),<br>
+ *                      40--50: error is 40 + the error from geo_posvel(),<br>
+ *                      50--70: error is 50 + error from light_time2(),<br>
+ *                      70--80: error is 70 + error from grav_def(),<br>
+ *                      80--90: error is 80 + error from cio_location(),<br>
+ *                      90--100: error is 90 + error from cio_basis().
  *
  * @sa novas_geom_posvel()
  * @sa novas_sky_pos()
@@ -1674,8 +1684,10 @@ short place(double jd_tt, const object *source, const observer *location, double
   static THREAD_LOCAL double tlast1 = 0.0;
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
-  double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], t_light, d_sb, frlimb;
   observer obs;
+  novas_planet_bundle planets = {};
+  int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
+  double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], vpos[3], t_light, d_sb;
   int i;
 
   if(!source)
@@ -1745,8 +1757,6 @@ short place(double jd_tt, const object *source, const observer *location, double
     d_sb = novas_vlen(pos);
   }
   else {
-    int k;
-
     // Get position of body wrt observer, antedated for light-time.
     prop_error(fn, light_time2(jd_tdb, source, pob, 0.0, accuracy, pos, vel, &t_light), 50);
 
@@ -1755,8 +1765,8 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     // Calculate distance to Sun.
     d_sb = 0.0;
-    for(k = 3; --k >= 0;) {
-      double d = psb[k] - (pob[k] + pos[k]);
+    for(i = 3; --i >= 0;) {
+      double d = psb[i] - (pob[i] + pos[i]);
       d_sb += d * d;
     }
     d_sb = sqrt(d_sb);
@@ -1765,32 +1775,49 @@ short place(double jd_tt, const object *source, const observer *location, double
     output->dis = t_light * C_AUDAY;
   }
 
+  if(coord_sys != NOVAS_ICRS) {
+    prop_error(fn, obs_planets(jd_tdb, accuracy, pob, pl_mask, &planets), 70);
+  }
+
+  // ---------------------------------------------------------------------
+  // Compute direction in which light was emitted from the source
+  // ---------------------------------------------------------------------
+  if(coord_sys == NOVAS_ICRS || source->type == NOVAS_CATALOG_OBJECT) {
+    // For sidereal sources and ICRS the 'velocity' position is the same as the geometric position.
+    memcpy(vpos, pos, sizeof(pos));
+  }
+  else {
+    double psrc[3];  // Barycentric position of Solar-systemn source (antedated)
+
+    // A.K.: For this we calculate gravitational deflection of the observer seen from the source
+    // i.e., reverse tracing the light to find the direction in which it was emitted.
+    for(i = 3; --i >= 0;) {
+      vpos[i] = -pos[i];
+      psrc[i] = pos[i] + pob[i];
+    }
+
+    // vpos -> deflected direction in which observer is seen from source.
+    prop_error(fn, grav_planets(vpos, psrc, &planets, vpos), 70);
+
+    // vpos -> direction in which light was emitted from observer's perspective...
+    for(i = 3; --i >= 0;)
+      vpos[i] = -vpos[i];
+  }
+
   // ---------------------------------------------------------------------
   // Compute radial velocity (all vectors in ICRS).
   // ---------------------------------------------------------------------
-  rad_vel(source, pos, vel, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb, &output->rv);
+  output->rv = rad_vel2(source, vpos, vel, pos, vob, novas_vdist(pob, peb), novas_vdist(pob, psb), d_sb);
 
-  // ---------------------------------------------------------------------
-  // Apply gravitational deflection of light and aberration.
-  // ---------------------------------------------------------------------
   if(coord_sys != NOVAS_ICRS) {
-    enum novas_observer_place loc = obs.where;
+    // ---------------------------------------------------------------------
+    // Apply gravitational deflection
+    // ---------------------------------------------------------------------
+    prop_error(fn, grav_planets(pos, pob, &planets, pos), 70);
 
-    // Variable 'loc' determines whether Earth deflection is included.
-    if(obs.where == NOVAS_OBSERVER_ON_EARTH) {
-      double pog[3];
-
-      for(i = 3; --i >= 0;)
-        pog[i] = pob[i] - peb[i];
-
-      limb_angle(pos, pog, NULL, &frlimb);
-      if(frlimb < 0.8)
-        loc = NOVAS_OBSERVER_AT_GEOCENTER;
-    }
-
-    // Compute gravitational deflection and aberration.
-    prop_error(fn, grav_def(jd_tdb, loc, accuracy, pos, pob, pos), 70);
-
+    // ---------------------------------------------------------------------
+    // Apply light and aberration.
+    // ---------------------------------------------------------------------
     aberration(pos, vob, t_light, pos);
   }
 
@@ -1832,9 +1859,9 @@ short place(double jd_tt, const object *source, const observer *location, double
   // ---------------------------------------------------------------------
   vector2radec(pos, &output->ra, &output->dec);
 
-  x = novas_vlen(pos);
+  x = 1.0 / novas_vlen(pos);
   for(i = 3; --i >= 0;)
-    output->r_hat[i] = pos[i] / x;
+    output->r_hat[i] = pos[i] * x;
 
   return 0;
 }
@@ -2624,8 +2651,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
     }
 
     case NOVAS_DYNAMICAL_CIRS:
-      prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos1, pos2), 10)
-      ;
+      prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos1, pos2), 10);
       break;
 
     default:
@@ -2944,7 +2970,6 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
  * use UTC-based Julian date the same way.for arcsec-level precision also.
  *
- *
  * REFERENCES:
  *  <ol>
  *   <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -3052,8 +3077,6 @@ int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  *   oint Discussion 16.</li>
  *  </ol>
  *
- *
- *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
@@ -3105,16 +3128,15 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   // Compute the TDB Julian date corresponding to the input UT1 Julian date
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
-  // Initialize output to input coords if distinct...
-  if(out != in)
-    memcpy(out, in, XYZ_VECTOR_SIZE);
-
   switch(erot) {
     case EROT_ERA:
       // IAU 2006 standard method
       if(class != NOVAS_DYNAMICAL_CLASS) {
         // See second reference, eq. (3) and (4).
         prop_error(fn, gcrs_to_cirs(jd_tt, accuracy, in, out), 10);
+      }
+      else if (out != in) {
+        memcpy(out, in, XYZ_VECTOR_SIZE);
       }
 
       // Compute and apply the Earth rotation angle, 'theta', transforming the
@@ -3129,10 +3151,13 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       if(class != NOVAS_DYNAMICAL_CLASS) {
         gcrs_to_tod(jd_tdb, accuracy, in, out);
       }
+      else if (out != in) {
+        memcpy(out, in, XYZ_VECTOR_SIZE);
+      }
 
       // Apply Earth rotation.
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-      spin(gast * 15.0, out, out);
+      spin(15.0 * gast, out, out);
       break;
     }
 
@@ -3393,8 +3418,8 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
  *                    position data is required).
  * @param[out] vel    [AU/day] Velocity vector of observer with respect to center of Earth,
  *                    equatorial rectangular coordinates, referred to true equator
- *                    and equinox of date, components in AU/day. (It may be NULL if
- *                    no velocity data is required).
+ *                    and equinox of date, components in AU/day. (It must be distinct from
+ *                    the pos output vector, and may be NULL if no velocity data is required).
  *
  * @return            0 if successful, or -1 if location is NULL or if the pos and vel output
  *                    arguments are identical pointers.
@@ -3413,7 +3438,7 @@ int terra(const on_surface *location, double lst, double *pos, double *vel) {
     return novas_error(-1, EINVAL, fn, "NULL observer location pointer");
 
   if(pos == vel)
-    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors.");
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p", pos);
 
   // Compute parameters relating to geodetic to geocentric conversion.
   df = 1.0 - EF;
@@ -3982,8 +4007,8 @@ int bary2obs(const double *pos, const double *pos_obs, double *out, double *ligh
  * @param[out] pos    [AU] Position 3-vector of observer, with respect to origin at geocenter,
  *                    referred to GCRS axes, components in AU. (It may be NULL if not required.)
  * @param[out] vel    [AU/day] Velocity 3-vector of observer, with respect to origin at geocenter,
- *                    referred to GCRS axes, components in AU/day. (It may be NULL if not
- *                    required.)
+ *                    referred to GCRS axes, components in AU/day. (It must be distinct from the
+ *                    pos output vector, and may be NULL if not required)
  * @return            0 if successful, -1 if the 'obs' is NULL or the two output vectors are
  *                    the same, or else 1 if 'accuracy' is invalid, or 2 if 'obserrver->where' is
  *                    invalid.
@@ -4005,7 +4030,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
     return novas_error(-1, EINVAL, fn, "NULL observer location pointer");
 
   if(pos == vel)
-    return novas_error(-1, EINVAL, fn, "identical output pos and vel pointers");
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p", pos);
 
   // Invalid value of 'accuracy'.
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
@@ -4178,7 +4203,7 @@ int light_time2(double jd_tdb, const object *body, const double *pos_obs, double
   }
 
   // Iterate to obtain correct light-time (usually converges rapidly).
-  for(iter = 0; iter < 10; iter++) {
+  for(iter = 0; iter < novas_inv_max_iter; iter++) {
     int error;
     double dt = 0.0;
 
@@ -4837,12 +4862,12 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
  * independently of spectroscopy) can be treated like solar system objects.
  *
- * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel'
+ * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
  *
  * If the object is outside the solar system, the algorithm used will be consistent with the
  * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
- * measure, which is derived from spectroscopy.  In that case, the vector 'vel' can be very
+ * measure, which is derived from spectroscopy.  In that case, the vector 'vel_src' can be very
  * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
  * geometric correction that is proportional to proper motion.
  *
@@ -4855,8 +4880,18 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place() to calculate radial velocities long with the position
- * of the source.</li>
+ * <li>This function does not accont for the gravitational deflection of Solar-system sources.
+ * For that purpose, the rad_vel2() function, introduced in v1.1, is more appropriate.</li>
+ * <li>The NOVAS C implementation did not include relatistic corrections for a travelling observer
+ * if both `d_obs_geo` and `d_obs_sun` were zero. As of SuperNOVAS v1.1, the relatistic corrections
+ * for a moving observer will be included in the radial velocity measure always.</li>
+ * <li>The NOVAS C implementation did not include gravitational redshift corrections for light
+ * originating at the Solar photosphere when observing the Sun. As of SuperNOVAS v1.1, we will assume
+ * that observing the Sun means looking at light originating at its photosphere, and will apply the
+ * appropriate gravitational redshift corrections accordingly, unless `d_src_sun` is negative.
+ * As a result, `d_src_sun` being zero has a changed meaning: In NOVAS C 3.1 it indicated that the
+ * Solar potential at the source should be ignored, but now if the observed object is the Sun it
+ * will include gravitational corrections for light originating at the Sun's photosphere.</li>
  * </ol>
  *
  * REFERENCES:
@@ -4865,73 +4900,173 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * </ol>
  *
  * @param source        Celestial object observed
- * @param pos           [AU|*] Geometric position vector of object with respect to observer.
- *                      For solar system sources it should be corrected for light-time, and
- *                      expressed in AU. For non-solar-system objects, the position vector
- *                      defines a direction only, with arbitrary magnitude.
- * @param vel           [AU/day] Velocity vector of object with respect to solar system
- *                      barycenter, in AU/day.
+ * @param pos_src       [AU|*] Geometric position vector of object with respect to observer.
+ *                      For solar system sources it should be corrected for light-time. For
+ *                      non-solar-system objects, the position vector defines a direction only,
+ *                      with arbitrary magnitude.
+ * @param vel_src       [AU/day] Velocity vector of object with respect to solar system
+ *                      barycenter.
  * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
- *                      barycenter, in AU/day.
- * @param d_obs_geo     [AU] Distance from observer to geocenter, in AU, or 0.0 if
- *                      gravitational deflection can be ignored.
- * @param d_obs_sun     [AU] Distance from observer to Sun, in AU, or 0.0 if gravitational
- *                      deflection can be ignored.
- * @param d_src_sun     [AU] Distance from object to Sun, in AU, or 0.0 if gravitational
- *                      deflection can be ignored.
+ *                      barycenter.
+ * @param d_obs_geo     [AU] Distance from observer to geocenter, or &lt;=0.0 if
+ *                      gravitational blueshifting due to Earth potential around observer can be
+ *                      ignored.
+ * @param d_obs_sun     [AU] Distance from observer to Sun, or &lt;=0.0 if gravitational
+ *                      bluehifting due to Solar potential around observer can be ignored.
+ * @param d_src_sun     [AU] Distance from object to Sun, or &lt;=0.0 if gravitational
+ *                      redshifting due to Solar potential around source can be ignored.
  * @param[out] rv       [km/s] The observed radial velocity measure times the speed of light,
- *                      in kilometers/second.
- * @return              0 if successful, or -1 if any of the pointer arguments is NULL.
+ *                      or NAN if there was an error.
+ * @return              0 if successfule, or else -1 if there was an error (errno will be set
+ *                      to EINVAL if any of the arguments are NULL, or to some other value to
+ *                      indicate the type of error).
  *
- * @sa place()
+ * @sa rad_vel2()
+ *
  */
-int rad_vel(const object *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun,
+int rad_vel(const object *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun,
         double d_src_sun, double *rv) {
   static const char *fn = "rad_vel";
+  int stat;
+
+  if(!rv)
+    return novas_error(-1, EINVAL, fn, "NULL input source");
+
+  *rv = rad_vel2(source, pos_src, vel_src, pos_src, vel_obs, d_obs_geo, d_obs_sun, d_src_sun);
+  stat = isnan(*rv) ? -1 : 0;
+  prop_error(fn, stat, 0);
+
+  return 0;
+}
+
+/**
+ * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
+ * means. This is a modified version of the original NOVAS C 3.1 rad_vel(), to account for
+ * the different directions in which light is emitted vs in which it detected, e.g. when it is
+ * gravitationally deflected.
+ *
+ * Radial velocity is here defined as the radial velocity measure (z) times the speed
+ * of light.  For a solar system body, it applies to a fictitious emitter at the center of the
+ * observed object, assumed massless (no gravitational red shift), and does not in general
+ * apply to reflected light.  For stars, it includes all effects, such as gravitational
+ * redshift, contained in the catalog barycentric radial velocity measure, a scalar derived
+ * from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
+ * independently of spectroscopy) can be treated like solar system objects.
+ *
+ * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
+ * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
+ *
+ * If the object is outside the solar system, the algorithm used will be consistent with the
+ * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
+ * measure, which is derived from spectroscopy.  In that case, the vector 'vel_src' can be very
+ * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
+ * geometric correction that is proportional to proper motion.
+ *
+ * Any of the distances (last three input arguments) can be set to a negative value if the
+ * corresponding general relativistic gravitational potential term is not to be evaluated.
+ * These terms generally are important only at the meter/second level. If 'd_obs_geo' and
+ * 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the
+ * observer, appropriate for an observer on the surface of the Earth. 'd_obj_sun', if given, is
+ * used only for solar system objects.
+ *
+ * NOTES:
+ * <ol>
+ * <li>This function is called by place() and novas_sky_pos() to calculate radial velocities along
+ * with the apparent position of the source.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201.</li>
+ * </ol>
+ *
+ * @param source        Celestial object observed
+ * @param pos_emit      [AU|*] position vector of object with respect to observer in the
+ *                      direction that light was emitted from the source.
+ *                      For solar system sources it should be corrected for light-time. For
+ *                      non-solar-system objects, the position vector defines a direction only,
+ *                      with arbitrary magnitude.
+ * @param vel_src       [AU/day] Velocity vector of object with respect to solar system
+ *                      barycenter.
+ * @param pos_det       [AU|*] apparent position vector of source, as seen by the observer.
+ *                      It may be the same vector as `pos_emit`, in which case the routine
+ *                      behaves like the original NOVAS_C rad_vel().
+ * @param vel_obs       [AU/day] Velocity vector of observer with respect to solar system
+ *                      barycenter.
+ * @param d_obs_geo     [AU] Distance from observer to geocenter, or &lt;=0.0 if
+ *                      gravitational blueshifting due to Earth potential around observer can be
+ *                      ignored.
+ * @param d_obs_sun     [AU] Distance from observer to Sun, or &lt;=0.0 if gravitational
+ *                      bluehifting due to Solar potential around observer can be ignored.
+ * @param d_src_sun     [AU] Distance from object to Sun, or &lt;=0.0 if gravitational
+ *                      redshifting due to Solar potential around source can be ignored.
+ * @return              [km/s] The observed radial velocity measure times the speed of light,
+ *                      or NAN if there was an error (errno will be set to EINVAL if any of the
+ *                      arguments are NULL, or to some other value to indicate the type of error).
+ *
+ * @sa rad_vel()
+ * @sa place()
+ * @sa novas_sky_pos()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+double rad_vel2(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
+        double d_obs_geo, double d_obs_sun, double d_src_sun) {
+  static const char *fn = "rad_vel2";
   static const double c2 = C * C, toms = AU / DAY, toms2 = (AU / DAY) * (AU / DAY);
 
-  double v[3], posmag, uk[3], v2, vo2, r, phigeo, phisun, rel, kv, zb1, kvobs, zobs1;
+  double v[3], d, uk[3], v2, vo2, r, phigeo, phisun, rel, kv, zb1, kvobs, zobs1;
   int i;
 
-  if(!source || !pos || !vel || !vel_obs || !rv) {
-    if(rv)
-      *rv = NAN;
-    return novas_error(-1, EINVAL, fn, "NULL input or output pointer: source=%p, pos=%p, vel=%p, vel_obs=%p, rv=%p", source, pos, vel,
-            vel_obs, rv);
+  if(!source) {
+    novas_error(-1, EINVAL, fn, "NULL input source");
+    return NAN;
+  }
+
+  if(!pos_emit || !vel_src || !pos_det) {
+    novas_error(-1, EINVAL, fn, "NULL input source pos/vel: pos_emit=%p, vel_src=%p, pos_det=%p", pos_emit, vel_src, pos_det);
+    return NAN;
+  }
+
+  if(!vel_obs) {
+    novas_error(-1, EINVAL, fn, "NULL input observer velocity");
+    return NAN;
   }
 
   // Initialize variables needed for radial velocity calculation.
-  memcpy(v, vel, sizeof(v));
-
-  // Compute length of position vector = distance to object in AU.
-  posmag = novas_vlen(pos);
-
-  // Compute unit vector toward object.
-  for(i = 0; i < 3; i++) {
-    uk[i] = pos[i] / posmag;
-  }
+  memcpy(v, vel_src, sizeof(v));
 
   // Compute velocity-squared factors.
   v2 = novas_vdot(v, v) * toms2;
   vo2 = novas_vdot(vel_obs, vel_obs) * toms2;
 
-  // Compute geopotential at observer, unless observer is geocentric.
+  // Compute geopotential at observer, unless observer is within Earth.
   r = d_obs_geo * AU;
-  phigeo = (r > 1.0e6) ? GE / r : 0.0;
+  phigeo = (r > 0.95 * NOVAS_EARTH_RADIUS) ? GE / r : 0.0;
 
-  // Compute solar potential at observer.
+  // Compute solar potential at observer unless well the Sun
   r = d_obs_sun * AU;
-  phisun = (r > 1.0e8) ? GS / r : 0.0;
+  phisun = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
-  // Compute relativistic potential and velocity factor for observer.
+  // Compute relativistic potential.
   if((d_obs_geo != 0.0) || (d_obs_sun != 0.0)) {
     // Lindegren & Dravins eq. (41), second factor in parentheses.
-    rel = 1.0 - (phigeo + phisun) / c2 - 0.5 * vo2 / c2;
+    rel = 1.0 - (phigeo + phisun) / c2;
   }
   else {
+    // Use average value for an observer on the surface of Earth
     // Lindegren & Dravins eq. (42), inverse.
     rel = 1.0 - 1.550e-8;
   }
+
+  // Include relativistic velocity factor for observer
+  rel -= 0.5 * vo2 / c2;
+
+  // Compute unit vector toward object (direction of emission).
+  d = novas_vlen(pos_emit);
+  for(i = 0; i < 3; i++)
+    uk[i] = pos_emit[i] / d;
 
   // Complete radial velocity calculation.
   switch(source->type) {
@@ -4960,33 +5095,38 @@ int rad_vel(const object *source, const double *pos, const double *vel, const do
       break;
     }
 
-      /* Objects in the solar system */
     case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
-      // Compute solar potential at object, if within solar system.
-      r = d_src_sun * AU;
-      phisun = (r > 1e8 && r < 1e16) ? GS / r : 0.0;
+      // Objects in the solar system
+      r = (source->number == NOVAS_SUN) ? NOVAS_SOLAR_RADIUS : d_src_sun * AU;
+
+      // Compute solar potential at object
+      phisun = (r > 0.95 * NOVAS_SOLAR_RADIUS && r < 1e16) ? GS / r : 0.0;
 
       // Compute observed radial velocity measure of a planet or other
       // object -- including a nearby star -- where kinematic barycentric
       // velocity vector is known and gravitational red shift is negligible
       // (Lindegren & Dravins eq. (40), applied as per S. Klioner private
       // communication (2006)).
-      kv = novas_vdot(uk, vel) * toms;
+      kv = novas_vdot(uk, vel_src) * toms;
       zb1 = (1.0 + kv / C) / (1.0 - phisun / c2 - 0.5 * v2 / c2);
       break;
 
     default:
-      return novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
+      novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
+      return NAN;
   }
+
+  // Compute unit vector toward object (direction of detection).
+  d = novas_vlen(pos_det);
+  for(i = 0; i < 3; i++)
+    uk[i] = pos_det[i] / d;
 
   kvobs = novas_vdot(uk, vel_obs) * toms;
   zobs1 = zb1 * rel / (1.0 + kvobs / C);
 
   // Convert observed radial velocity measure to kilometers/second.
-  *rv = (zobs1 - 1.0) * C / 1000.0;
-
-  return 0;
+  return (zobs1 - 1.0) * C / 1000.0;
 }
 
 /**
@@ -5523,7 +5663,8 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
  * @param[out] pos     [AU] Position vector, equatorial rectangular coordinates,
  *                     components in AU. It may be NULL if not required.
  * @param[out] vel     [AU/day] Velocity vector, equatorial rectangular coordinates,
- *                     components in AU/Day. It may be NULL if not required.
+ *                     components in AU/Day. It must be distinct from the pos output
+ *                     vector, and may be NULL if not required.
  *
  * @return             0 if successful, or -1 if the star argument is NULL or the
  *                     output vectors are the same pointer.
@@ -5533,8 +5674,11 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
 int starvectors(const cat_entry *star, double *pos, double *vel) {
   double paralx, r, d, cra, sra, cdc, sdc;
 
-  if(!star || pos == vel)
-    return novas_error(-1, EINVAL, "starvectors", "NULL input or output: star=%p, pos=%p, vel=%p", star, pos, vel);
+  if(!star)
+    return novas_error(-1, EINVAL, "starvectors", "NULL input cat_entry");
+
+  if(pos == vel)
+    return novas_error(-1, EINVAL, "starvectors", "identical output pos and vel 3-vectors @ %p", pos, vel);
 
   // If parallax is unknown, undetermined, or zero, set it to 1e-6
   // milliarcsecond, corresponding to a distance of 1 gigaparsec.
@@ -5832,12 +5976,10 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
  * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS.
  * You can specify either the original `CIO_RA.TXT` file included in the distribution
  * (preferred since v1.1), or else a platform-specific binary data file compiled from it
- * (the old way), which may be obtained via the <code>cio_file.c</code> utility provided
- * in this distribution under <code>tools/</code>.
+ * via the <code>cio_file</code> utility (the old way).
  *
- * @param filename    Path (preferably absolute path) to binary data file generated
- *                    by the <code>cio_file.c</code> utility from the <code>CIO_RA.TXT</code>
- *                    data file.
+ * @param filename    Path (preferably absolute path) `CIO_RA.TXT` or else to the binary
+ *                    `cio_ra.bin` data.
  * @return            0 if successful, or else -1 if the specified file does not exists or
  *                    we have no permission to read it.
  *
@@ -5870,8 +6012,8 @@ int set_cio_locator_file(const char *filename) {
  * The user may specify an interpolation file to use via set_cio_locator_file() prior to
  * calling this function. In that case the call will return CIO location relative to GCRS.
  * In the absence of the table, it will calculate the CIO location relative to the true
- * equinox. In either case the type of the location is returnedalogside the CIO location
- * value.
+ * equinox. In either case the type of the location is returned alongside the corresponding
+ * CIO location value.
  *
  * NOTES:
  * <ol>
@@ -6099,9 +6241,9 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  * intermediate origin (CIO).  The range of dates is centered (at least approximately) on the
  * requested date.  The function obtains the data from an external data file.
  *
- * This function assumes that binary, random-access file has been created and is either in the
- * location specified at compilation; or set at runtime via set_cio_locator_file().
- * This file is created by program 'cio_file.c'.
+ * This function assumes that a CIO locator file (`CIO_RA.TXT` or `cio_ra.bin`) exists in the
+ * default location (configured at build time), or else was specified via `set_cio_locator_file()`
+ * prior to calling this function.
  *
  * NOTES:
  * <ol>
@@ -6377,6 +6519,12 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
 
   if(!jd_tdb || !body)
     return novas_error(-1, EINVAL, fn, "NULL input pointer: jd_tdb=%p, body=%p", jd_tdb, body);
+
+  if(!pos || !vel)
+    return novas_error(-1, EINVAL, fn, "NULL output pointer: pos=%p, vel=%p", pos, vel);
+
+  if(pos == vel)
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p.", pos);
 
   // Check the value of 'origin'.
   if(origin < 0 || origin >= NOVAS_ORIGIN_TYPES)
@@ -6811,7 +6959,7 @@ double refract_astro(const on_surface *location, enum novas_refraction_model opt
   }
 
   novas_set_errno(ECANCELED, "refract_astro", "failed to converge");
-  return refr;
+  return NAN;
 }
 
 /**

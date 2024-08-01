@@ -26,7 +26,7 @@ static short accuracy;
 static double ut12tt = 69.0;
 
 // Initialized quantities.
-static double lst, pos0[3], vel0[3], epos[3], evel[3], pobs[3], vobs[3];
+static double lst, pos0[3], vel0[3], epos[3], evel[3], pobs[3], vobs[3], spos[3], svel[3];
 
 static FILE *fp;
 static int idx = -1;
@@ -36,6 +36,16 @@ static char *header;
 
 static double vlen(double *pos) {
   return sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]);
+}
+
+static double vdist(const double *v1, const double *v2) {
+  double d2 = 0.0;
+  int i;
+  for(i = 3; --i >= 0;) {
+    const double d = v1[i] - v2[i];
+    d2 += d * d;
+  }
+  return sqrt(d2);
 }
 
 static void newline() {
@@ -499,7 +509,7 @@ static void test_time_specific() {
 
 
 static int init() {
-  object earth;
+  object earth, sun;
   double tdb2[2] = { tdb };
 
   memset(pos0, 0, sizeof(pos0));
@@ -544,6 +554,20 @@ static int init() {
   fprintf(fp, "EAR ");
   printvector(epos);
   printvector(evel);
+  newline();
+
+  if(make_object(0, 10, "Sun", NULL, &sun) != 0) {
+    fprintf(stderr, "init: Failed make_object(Sun)\n");
+    return -1;
+  }
+  if(ephemeris(tdb2, &sun, 0, 1, spos, svel) != 0) {
+    fprintf(stderr, "init: Failed Earth ephemeris\n");
+    return -1;
+  }
+
+  fprintf(fp, "SUN ");
+  printvector(spos);
+  printvector(svel);
   newline();
 
   if(sidereal_time(tdb, 0.0, ut12tt, 0, 1, accuracy, &lst) != 0) {
@@ -921,8 +945,19 @@ static void test_rad_vel() {
   double rv = 0.0;
 
   openfile("rad_vel");
+
   rad_vel(&source, pos0, vel0, vobs, 0.0, 0.0, 0.0, &rv);
   fprintf(fp, "%12.6f ", rv);
+
+  rad_vel(&source, pos0, vel0, vobs, vdist(pobs, epos), vdist(pobs, spos), vdist(pos0, spos), &rv);
+  fprintf(fp, "%12.6f ", rv);
+}
+
+static void test_limb_angle() {
+  double limb = 0.0, nadir = 0.0;
+  openfile("limb_angle");
+  limb_angle(pos0, pobs, &limb, &nadir);
+  fprintf(fp, "%12.6f %12.6f ", limb, nadir);
 }
 
 static int test_source() {
@@ -940,6 +975,7 @@ static int test_source() {
   test_place();
   test_aberration();
   test_rad_vel();
+  test_limb_angle();
 
   if(obs.where == 0) {
     test_astro_place();

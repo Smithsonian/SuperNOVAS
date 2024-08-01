@@ -166,25 +166,37 @@ static int test_cel2ter2cel() {
 
   if(obs.where != NOVAS_OBSERVER_ON_EARTH) return 0;
 
-  if(!is_ok("cel2ter2cel:cel2ter:1", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p0, p))) return 1;
-  if(!is_ok("cel2ter2cel:ter2cel:1", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
+  if(!is_ok("cel2ter2cel:cel2ter:gst", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:gst", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p, p))) return 1;
+  if(!is_ok("cel2ter2cel:gst:check", check_equal_pos(p, p0, 1e-12))) return 1;
 
-  if(!is_ok("cel2ter2cel:cel2ter:2", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p0, p))) return 1;
-  if(!is_ok("cel2ter2cel:ter2cel:2", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
-
-  if(!is_ok("cel2ter2cel:cel2ter:3", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p0, p))) return 1;
-  if(!is_ok("cel2ter2cel:ter2cel:3", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
-
-  if(!is_ok("cel2ter2cel:cel2ter:dyn", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p0, p))) return 1;
-  if(!is_ok("cel2ter2cel:ter2cel:dyn", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
+  if(!is_ok("cel2ter2cel:cel2ter:gst:dyn", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:gst:dyn", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) return 1;
+  if(!is_ok("cel2ter2cel:gst:dyn:check", check_equal_pos(p, p0, 1e-12))) return 1;
 
   if(!is_ok("cel2ter2cel:cel2ter:era", cel2ter(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p0, p))) return 1;
   if(!is_ok("cel2ter2cel:ter2cel:era", ter2cel(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 0.0, p, p))) return 1;
-  if(!is_ok("itrs_hor_itrs", check_equal_pos(p, p0, 1e-12))) return 1;
+  if(!is_ok("cel2ter2cel:era:check", check_equal_pos(p, p0, 1e-12))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:era:dyn", cel2ter(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:era:dyn", ter2cel(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_DYNAMICAL_CLASS, 0.0, 0.0, p, p))) return 1;
+  if(!is_ok("cel2ter2cel:era:dyn:check", check_equal_pos(p, p0, 1e-12))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:gst:dx", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:gst:dx", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p, p))) return 1;
+  if(!is_ok("cel2ter2cel:gst:dx:check", check_equal_pos(p, p0, 1e-12))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:gst:dy", cel2ter(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:gst:dy", ter2cel(tdb, 0.0, 0.0, EROT_GST, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p, p))) return 1;
+  if(!is_ok("cel2ter2cel:gst:dy:check", check_equal_pos(p, p0, 1e-12))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:era:dx", cel2ter(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:era:dx", ter2cel(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 1.0, 0.0, p, p))) return 1;
+  if(!is_ok("cel2ter2cel:era:dx:check", check_equal_pos(p, p0, 1e-12))) return 1;
+
+  if(!is_ok("cel2ter2cel:cel2ter:era:dy", cel2ter(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p0, p))) return 1;
+  if(!is_ok("cel2ter2cel:ter2cel:era:dy", ter2cel(tdb, 0.0, 0.0, EROT_ERA, NOVAS_FULL_ACCURACY, NOVAS_REFERENCE_CLASS, 0.0, 1.0, p, p))) return 1;
+  if(!is_ok("cel2ter2cel:era:dy:check", check_equal_pos(p, p0, 1e-12))) return 1;
 
   return 0;
 }
