@@ -43,7 +43,7 @@ which affected prior SuperNOVAS releases.
 
  - #50: The NOVAS C 3.1 implementation of `rad_vel()` applied relativistic corrections for a moving observer 
    conditional on applying relativistic gravitational corrections (for Sun and/or Earth potential) for the observer. 
-   However, it seems more reasonable that the corrections for a (fast) moving observer should be applied always and 
+   However, it seems more reasonable that the corrections for a moving observer should be applied always and 
    independently of the (optional) gravitational corrections.
 
  - #51: In the NOVAS C 3.1 implementation of `rad_vel()`, the Solar gravitational potential was ignored when 
