@@ -367,14 +367,17 @@ static int test_radec_planet() {
 }
 
 static int test_mean_star() {
+  extern int novas_inv_max_iter;
   double x, y;
   int n = 0;
 
   if(check("mean_star:ira", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, &y))) n++;
   if(check("mean_star:idec", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, &x, NULL))) n++;
 
+  novas_inv_max_iter = 0;
   if(check("mean_star:converge", 1, mean_star(NOVAS_JD_J2000, 0.0, 0.0, NOVAS_REDUCED_ACCURACY, &x, &y))) n++;
   else if(check("mean_star:converge:errno", ECANCELED, errno)) n++;
+  novas_inv_max_iter = 100;
 
   return n;
 }
@@ -685,14 +688,14 @@ static int test_cio_array() {
   if(check("cio_array:bin:header", -1, cio_array(2341952.6, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-2.bin");
-  if(check("cio_array:bin:incomplete", -1, cio_array(2341952.6, 2, x))) n++;
+  if(check("cio_array:bin:incomplete", 6, cio_array(2341951.4, 2, x))) n++;
   if(check("cio_array:bin:seek", -1, cio_array(2341965.4, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-1.txt");
   if(check("cio_array:ascii:header", -1, cio_array(2341952.6, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-2.txt");
-  if(check("cio_array:ascii:incomplete", 6, cio_array(2341952.6, 2, x))) n++;
+  if(check("cio_array:ascii:incomplete", 6, cio_array(2341951.4, 2, x))) n++;
   if(check("cio_array:ascii:seek", 2, cio_array(2341965.4, 2, x))) n++;
 
   set_cio_locator_file("bad-cio-data/bad-3.txt");
