@@ -64,7 +64,7 @@
 #define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1".
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING ""
 
 
 
@@ -141,6 +141,10 @@
 /// meters^3 / second^2, from DE-405.
 #define NOVAS_G_EARTH             3.98600433e+14
 
+/// [m] Solar radius (photosphere)
+/// @since 1.1
+#define NOVAS_SOLAR_RADIUS        696340000.0
+
 /// [m] Radius of Earth in meters from IERS Conventions (2003).
 #define NOVAS_EARTH_RADIUS        6378136.6
 
@@ -158,8 +162,6 @@
 /// [s] TT - TAI time offset
 #define NOVAS_TAI_TO_TT           32.187
 
-/// [m] Solar radius
-#define NOVAS_SOLAR_RADIUS        696340000.0
 
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
 /// [0]: Earth/Moon barycenter, MASS[1] = Mercury, ...,

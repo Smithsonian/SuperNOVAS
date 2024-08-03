@@ -142,9 +142,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    independently of the (optional) gravitational corrections.
    
  - [__v1.1__] In the NOVAS C 3.1 implementation of `rad_vel()`, the Solar gravitational potential was ignored when 
-   calculating radial velocities. Typically 'observing the Sun' means looking at its photosphere, As the light travels 
-   away from the Sun's photosphere towards the observer, it is redshifted. The NOVAS C implementation of `rad_vel()` 
-   has ignored this redshifting when the Sun was being observed.
+   calculating radial velocities for the Sun. Typically 'observing the Sun' means looking at its photosphere, As the 
+   light travels away from the Sun's photosphere towards the observer, it is redshifted. The NOVAS C implementation of 
+   `rad_vel()` has ignored this redshifting when the Sun was being observed.
    
  - [__v1.1__] `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
    radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 

@@ -4362,7 +4362,7 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
   tsrc = novas_vlen(pos_src) / C_AUDAY;
 
   for(i = 1; i < NOVAS_PLANETS; i++) {
-    double lt, dlt, dpl, p1[3];
+    double lt, dpl, p1[3];
     int k;
 
     if((planets->mask & (1 << i)) == 0)
@@ -4389,11 +4389,11 @@ int grav_planets(const double *pos_src, const double *pos_obs, const novas_plane
       lt = tsrc;
 
     // Differential light time w.r.t. the apparent planet center
-    dlt = (lt - dpl / C_AUDAY);
+    lt -= dpl / C_AUDAY;
 
     // Calculate planet position at the time it is gravitationally acting on light.
     for(k = 3; --k >= 0;)
-      p1[k] = pos_obs[k] + planets->pos[i][k] - dlt * planets->vel[i][k];
+      p1[k] = pos_obs[k] + planets->pos[i][k] - lt * planets->vel[i][k];
 
     // Compute deflection due to gravitating body.
     grav_vec(out, pos_obs, p1, rmass[i], out);
