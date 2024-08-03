@@ -173,9 +173,9 @@ static int test_refract_astro() {
   int n = 0;
 
   novas_inv_max_iter = 0;
-  if(check_nan("refract_astro:converge", refract_astro(&surf, NOVAS_STANDARD_ATMOSPHERE, 85.0))) {
-    if(check("refract_astro:converge:errno", ECANCELED, errno)) n++;
-  }
+  if(check_nan("refract_astro:converge", refract_astro(&surf, NOVAS_STANDARD_ATMOSPHERE, 85.0))) n++;
+  else if(check("refract_astro:converge:errno", ECANCELED, errno)) n++;
+
   novas_inv_max_iter = 100;
 
   return n;
@@ -187,9 +187,8 @@ static int test_inv_refract() {
   int n = 0;
 
   novas_inv_max_iter = 0;
-  if(check_nan("inv_refract:converge", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, &surf, NOVAS_REFRACT_OBSERVED, 5.0))) {
-    if(check("inv_refract:converge:errno", ECANCELED, errno)) n++;
-  }
+  if(check_nan("inv_refract:converge", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, &surf, NOVAS_REFRACT_OBSERVED, 5.0))) n++;
+  else if(check("inv_refract:converge:errno", ECANCELED, errno)) n++;
   novas_inv_max_iter = 100;
 
   return n;
@@ -374,9 +373,8 @@ static int test_mean_star() {
   if(check("mean_star:ira", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, &y))) n++;
   if(check("mean_star:idec", -1, mean_star(0.0, 0.0, 0.0, NOVAS_FULL_ACCURACY, &x, NULL))) n++;
 
-  if(check("mean_star:converge", 1, mean_star(NOVAS_JD_J2000, 0.0, 0.0, NOVAS_REDUCED_ACCURACY, &x, &y))) {
-    if(check("mean_star:converge:errno", ECANCELED, errno)) n++;
-  }
+  if(check("mean_star:converge", 1, mean_star(NOVAS_JD_J2000, 0.0, 0.0, NOVAS_REDUCED_ACCURACY, &x, &y))) n++;
+  else if(check("mean_star:converge:errno", ECANCELED, errno)) n++;
 
   return n;
 }
@@ -642,9 +640,8 @@ static int test_light_time2() {
   if(check("light_time2:same3", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, p, &t))) n++;
 
   novas_inv_max_iter = 0;
-  if(check("light_time2:converge", 1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) {
-    if(check("light_time2:converge:errno", ECANCELED, errno)) n++;
-  }
+  if(check("light_time2:converge", 1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
+  else if(check("light_time2:converge:errno", ECANCELED, errno)) n++;
   novas_inv_max_iter = 100;
 
   return n;
@@ -944,9 +941,8 @@ static int test_grav_undo_planets() {
 
   planets.mask = 1 << NOVAS_SUN;
   novas_inv_max_iter = 0;
-  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, &planets, out))) {
-    if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
-  }
+  if(check("grav_undo_planets:converge", -1, grav_undo_planets(p, po, &planets, out))) n++;
+  else if(check("grav_undo_planets:converge:errno", ECANCELED, errno)) n++;
   novas_inv_max_iter = 100;
 
   return n;
@@ -1064,7 +1060,8 @@ static int test_refraction() {
   if(check_nan("radio_refraction:el:neg", novas_radio_refraction(NOVAS_JD_J2000, &obs, 1, -10.0))) n++;
 
   if(check_nan("inv_refract:conv", novas_inv_refract(switching_refraction, NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
-  if(check("inv_refract:conv:errno", ECANCELED, errno)) n++;
+  else if(check("inv_refract:conv:errno", ECANCELED, errno)) n++;
+
   return n;
 }
 
@@ -1221,9 +1218,8 @@ static int test_app_to_geom() {
 
   novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
   novas_inv_max_iter = 0;
-  if(check("app_to_geom:frame:converge", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) {
-    if(check("app_to_geom:frame:converge:errno", ECANCELED, errno)) n++;
-  }
+  if(check("app_to_geom:frame:converge", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, pos))) n++;
+  else if(check("app_to_geom:frame:converge:errno", ECANCELED, errno)) n++;
   novas_inv_max_iter = 100;
 
   if(check("app_to_geom:pos", -1, novas_app_to_geom(&frame, NOVAS_ICRS, 1.0, 2.0, 10.0, NULL))) n++;
