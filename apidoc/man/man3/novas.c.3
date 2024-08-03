@@ -286,7 +286,10 @@ src/novas.c
 .RI "int \fBproper_motion\fP (double jd_tdb_in, const double *pos, const double *vel, double jd_tdb_out, double *out)"
 .br
 .ti -1c
-.RI "int \fBrad_vel\fP (const \fBobject\fP *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)"
+.RI "int \fBrad_vel\fP (const \fBobject\fP *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)"
+.br
+.ti -1c
+.RI "double \fBrad_vel2\fP (const \fBobject\fP *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun)"
 .br
 .ti -1c
 .RI "int \fBradec2vector\fP (double ra, double dec, double dist, double *pos)"
@@ -953,7 +956,7 @@ References \fBEPS_COR\fP, \fBPOLE_OFFSETS_DPSI_DEPS\fP, \fBPOLE_OFFSETS_X_Y\fP, 
 .SS "short cio_array (double jd_tdb, long n_pts, \fBra_of_cio\fP * cio)"
 Given an input TDB Julian date and the number of data points desired, this function returns a set of Julian dates and corresponding values of the GCRS right ascension of the celestial intermediate origin (CIO)\&. The range of dates is centered (at least approximately) on the requested date\&. The function obtains the data from an external data file\&.
 .PP
-This function assumes that binary, random-access file has been created and is either in the location specified at compilation; or set at runtime via \fBset_cio_locator_file()\fP\&. This file is created by program 'cio_file\&.c'\&.
+This function assumes that a CIO locator file (\fCCIO_RA\&.TXT\fP or \fCcio_ra\&.bin\fP) exists in the default location (configured at build time), or else was specified via \fC\fBset_cio_locator_file()\fP\fP prior to calling this function\&.
 .PP
 NOTES: 
 .PD 0
@@ -1031,7 +1034,7 @@ References \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBNOVAS_FULL_ACCURACY\fP, a
 .SS "short cio_location (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double * ra_cio, short * loc_type)"
 Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of date\&. The CIO is always located on the true equator (= intermediate equator) of date\&.
 .PP
-The user may specify an interpolation file to use via \fBset_cio_locator_file()\fP prior to calling this function\&. In that case the call will return CIO location relative to GCRS\&. In the absence of the table, it will calculate the CIO location relative to the true equinox\&. In either case the type of the location is returnedalogside the CIO location value\&.
+The user may specify an interpolation file to use via \fBset_cio_locator_file()\fP prior to calling this function\&. In that case the call will return CIO location relative to GCRS\&. In the absence of the table, it will calculate the CIO location relative to the true equinox\&. In either case the type of the location is returned alongside the corresponding CIO location value\&.
 .PP
 NOTES: 
 .PD 0
@@ -1960,7 +1963,7 @@ Computes the geocentric position and velocity of an observer\&. The final vector
 .br
 \fIpos\fP [AU] Position 3-vector of observer, with respect to origin at geocenter, referred to GCRS axes, components in AU\&. (It may be NULL if not required\&.) 
 .br
-\fIvel\fP [AU/day] Velocity 3-vector of observer, with respect to origin at geocenter, referred to GCRS axes, components in AU/day\&. (It may be NULL if not required\&.) 
+\fIvel\fP [AU/day] Velocity 3-vector of observer, with respect to origin at geocenter, referred to GCRS axes, components in AU/day\&. (It must be distinct from the pos output vector, and may be NULL if not required) 
 .RE
 .PP
 \fBReturns\fP
@@ -2800,7 +2803,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBbary2obs()\fP, \fBephemeris()\fP, \fBNOVAS_BARYCENTER\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
+References \fBbary2obs()\fP, \fBephemeris()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBnovas_inv_max_iter\fP\&.
 .SS "int limb_angle (const double * pos_src, const double * pos_obs, double * limb_ang, double * nadir_ang)"
 Determines the angle of an object above or below the Earth's limb (horizon)\&. The geometric limb is computed, assuming the Earth to be an airless sphere (no refraction or oblateness is included)\&. The observer can be on or above the Earth\&. For an observer on the surface of the Earth, this function returns the approximate unrefracted elevation\&.
 .PP
@@ -3725,9 +3728,9 @@ Calculates the ICRS position and velocity of the observer relative to the Solar 
 .br
 \fIgeo_vel\fP [AU/day] ICRS velocity vector of the geocenter w\&.r\&.t\&. the Solar System Barycenter (SSB)\&. If either geo_pos or geo_vel is NULL, it will be calculated when needed\&. 
 .br
-\fIpos\fP [AU] Position 3-vector of the observer w\&.r\&.t\&. the Solar System Barycenter (SSB) 
+\fIpos\fP [AU] Position 3-vector of the observer w\&.r\&.t\&. the Solar System Barycenter (SSB)\&. It may be NULL if not required\&. 
 .br
-\fIvel\fP [AU/day] Velocity 3-vector of the observer w\&.r\&.t\&. the Solar System Barycenter (SSB) 
+\fIvel\fP [AU/day] Velocity 3-vector of the observer w\&.r\&.t\&. the Solar System Barycenter (SSB)\&. It must be distinct from the pos output vector, and may be NULL if not required\&. 
 .RE
 .PP
 \fBReturns\fP
@@ -3766,6 +3769,8 @@ NOTES:
 .PD 0
 .IP "1." 4
 This version fixes a NOVAS C 3\&.1 issue that velocities and solar-system distances were not antedated for light-travel time\&. 
+.IP "2." 4
+As of v1\&.1, this method calculates radial velocities using the geometric position of the source instead of the aberrated and deflected apparent position of NOVAS C 3\&.1\&. It also calculates the actual direction light was emitted by reverse tracing the deflected light\&. The new method yields the correct (precise) radial velocity for both sidereal and Solar-system sources\&. 
 .PP
 .PP
 REFERENCES: 
@@ -3786,7 +3791,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597\&.
 .br
 \fIut1_to_tt\fP [s] TT - UT1 time difference\&. Used only when 'location->where' is NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2)\&. 
 .br
-\fIcoord_sys\fP The coordinate system that defines the orientation of the celestial pole\&. If it is NOVAS_ICRS (3), a geometric position is returned\&. For all other systems, the returned position is the apparent position including aberration ang gravitational deflection corrections\&. 
+\fIcoord_sys\fP The coordinate system that defines the orientation of the celestial pole\&. If it is NOVAS_ICRS (3), a geometric position and radial velocity is returned\&. For all other systems, the returned position is the apparent position including aberration and gravitational deflection corrections, and the radial velocity is in the direction the eflected light was emitted from the source\&. 
 .br
 \fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
 .br
@@ -3795,7 +3800,25 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597\&.
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, 1 if 'coord_sys' is invalid, 2 if 'accuracy' is invalid, 3 if Earth is the observed object, and the observer is either at the geocenter or on the Earth's surface, 10--40: error is 10 + the error \fBephemeris()\fP, 40--50: error is 40 + the error from \fBgeo_posvel()\fP, 50--70 error is 50 + error from \fBlight_time2()\fP, 70--80 error is 70 + error from \fBgrav_def()\fP, 80--90 error is 80 + error from \fBcio_location()\fP, 90--100 error is 90 + error from \fBcio_basis()\fP\&.
+0 if successful,
+.br
+ 1 if 'coord_sys' is invalid,
+.br
+ 2 if 'accuracy' is invalid,
+.br
+ 3 if the observer is at or very near (within ~1\&.5m of) the observed location,
+.br
+ 10--40: error is 10 + the error \fBephemeris()\fP,
+.br
+ 40--50: error is 40 + the error from \fBgeo_posvel()\fP,
+.br
+ 50--70: error is 50 + error from \fBlight_time2()\fP,
+.br
+ 70--80: error is 70 + error from \fBgrav_def()\fP,
+.br
+ 80--90: error is 80 + error from \fBcio_location()\fP,
+.br
+ 90--100: error is 90 + error from \fBcio_basis()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -3823,7 +3846,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597\&.
 .PP
 
 .PP
-References \fBaberration()\fP, \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_j2000()\fP, \fBgrav_def()\fP, \fBlight_time2()\fP, \fBlimb_angle()\fP, \fBmake_observer_at_geocenter()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TOD\fP, \fBobs_posvel()\fP, \fBprecession()\fP, \fBproper_motion()\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBrad_vel()\fP, \fBsky_pos::rv\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, \fBobject::type\fP, \fBvector2radec()\fP, and \fBobserver::where\fP\&.
+References \fBaberration()\fP, \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_j2000()\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBlight_time2()\fP, \fBmake_observer_at_geocenter()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TOD\fP, \fBobs_planets()\fP, \fBobs_posvel()\fP, \fBprecession()\fP, \fBproper_motion()\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBrad_vel2()\fP, \fBsky_pos::rv\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, \fBobject::type\fP, and \fBvector2radec()\fP\&.
 .SS "int place_cirs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the Celestial Intermediate Reference System (CIRS) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
@@ -4256,19 +4279,23 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .RE
 .PP
 
-.SS "int rad_vel (const \fBobject\fP * source, const double * pos, const double * vel, const double * vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double * rv)"
+.SS "int rad_vel (const \fBobject\fP * source, const double * pos_src, const double * vel_src, const double * vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double * rv)"
 Predicts the radial velocity of the observed object as it would be measured by spectroscopic means\&. Radial velocity is here defined as the radial velocity measure (z) times the speed of light\&. For a solar system body, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift), and does not in general apply to reflected light\&. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy\&. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects\&.
 .PP
-All the input arguments are BCRS quantities, expressed with respect to the ICRS axes\&. 'vel' and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy\&.
+All the input arguments are BCRS quantities, expressed with respect to the ICRS axes\&. 'vel_src' and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy\&.
 .PP
-If the object is outside the solar system, the algorithm used will be consistent with the IAU definition of stellar radial velocity, specifically, the barycentric radial velocity measure, which is derived from spectroscopy\&. In that case, the vector 'vel' can be very approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small geometric correction that is proportional to proper motion\&.
+If the object is outside the solar system, the algorithm used will be consistent with the IAU definition of stellar radial velocity, specifically, the barycentric radial velocity measure, which is derived from spectroscopy\&. In that case, the vector 'vel_src' can be very approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small geometric correction that is proportional to proper motion\&.
 .PP
 Any of the distances (last three input arguments) can be set to zero (0\&.0) if the corresponding general relativistic gravitational potential term is not to be evaluated\&. These terms generally are important only at the meter/second level\&. If 'd_obs_geo' and 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the observer, appropriate for an observer on the surface of the Earth\&. 'd_obj_sun', if given, is used only for solar system objects\&.
 .PP
 NOTES: 
 .PD 0
 .IP "1." 4
-This function is called by \fBplace()\fP to calculate radial velocities long with the position of the source\&. 
+This function does not accont for the gravitational deflection of Solar-system sources\&. For that purpose, the \fBrad_vel2()\fP function, introduced in v1\&.1, is more appropriate\&. 
+.IP "2." 4
+The NOVAS C implementation did not include relatistic corrections for a travelling observer if both \fCd_obs_geo\fP and \fCd_obs_sun\fP were zero\&. As of SuperNOVAS v1\&.1, the relatistic corrections for a moving observer will be included in the radial velocity measure always\&. 
+.IP "3." 4
+The NOVAS C implementation did not include gravitational redshift corrections for light originating at the Solar photosphere when observing the Sun\&. As of SuperNOVAS v1\&.1, we will assume that observing the Sun means looking at light originating at its photosphere, and will apply the appropriate gravitational redshift corrections accordingly, unless \fCd_src_sun\fP is negative\&. As a result, \fCd_src_sun\fP being zero has a changed meaning: In NOVAS C 3\&.1 it indicated that the Solar potential at the source should be ignored, but now if the observed object is the Sun it will include gravitational corrections for light originating at the Sun's photosphere\&. 
 .PP
 .PP
 REFERENCES: 
@@ -4281,34 +4308,103 @@ Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201\&.
 .RS 4
 \fIsource\fP Celestial object observed 
 .br
-\fIpos\fP [AU|*] Geometric position vector of object with respect to observer\&. For solar system sources it should be corrected for light-time, and expressed in AU\&. For non-solar-system objects, the position vector defines a direction only, with arbitrary magnitude\&. 
+\fIpos_src\fP [AU|*] Geometric position vector of object with respect to observer\&. For solar system sources it should be corrected for light-time\&. For non-solar-system objects, the position vector defines a direction only, with arbitrary magnitude\&. 
 .br
-\fIvel\fP [AU/day] Velocity vector of object with respect to solar system barycenter, in AU/day\&. 
+\fIvel_src\fP [AU/day] Velocity vector of object with respect to solar system barycenter\&. 
 .br
-\fIvel_obs\fP [AU/day] Velocity vector of observer with respect to solar system barycenter, in AU/day\&. 
+\fIvel_obs\fP [AU/day] Velocity vector of observer with respect to solar system barycenter\&. 
 .br
-\fId_obs_geo\fP [AU] Distance from observer to geocenter, in AU, or 0\&.0 if gravitational deflection can be ignored\&. 
+\fId_obs_geo\fP [AU] Distance from observer to geocenter, or <=0\&.0 if gravitational blueshifting due to Earth potential around observer can be ignored\&. 
 .br
-\fId_obs_sun\fP [AU] Distance from observer to Sun, in AU, or 0\&.0 if gravitational deflection can be ignored\&. 
+\fId_obs_sun\fP [AU] Distance from observer to Sun, or <=0\&.0 if gravitational bluehifting due to Solar potential around observer can be ignored\&. 
 .br
-\fId_src_sun\fP [AU] Distance from object to Sun, in AU, or 0\&.0 if gravitational deflection can be ignored\&. 
+\fId_src_sun\fP [AU] Distance from object to Sun, or <=0\&.0 if gravitational redshifting due to Solar potential around source can be ignored\&. 
 .br
-\fIrv\fP [km/s] The observed radial velocity measure times the speed of light, in kilometers/second\&. 
+\fIrv\fP [km/s] The observed radial velocity measure times the speed of light, or NAN if there was an error\&. 
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, or -1 if any of the pointer arguments is NULL\&.
+0 if successfule, or else -1 if there was an error (errno will be set to EINVAL if any of the arguments are NULL, or to some other value to indicate the type of error)\&.
 .RE
 .PP
 \fBSee also\fP
 .RS 4
-\fBplace()\fP 
+\fBrad_vel2()\fP 
 .RE
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References \fBrad_vel2()\fP\&.
+.SS "double rad_vel2 (const \fBobject\fP * source, const double * pos_emit, const double * vel_src, const double * pos_det, const double * vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun)"
+Predicts the radial velocity of the observed object as it would be measured by spectroscopic means\&. This is a modified version of the original NOVAS C 3\&.1 \fBrad_vel()\fP, to account for the different directions in which light is emitted vs in which it detected, e\&.g\&. when it is gravitationally deflected\&.
+.PP
+Radial velocity is here defined as the radial velocity measure (z) times the speed of light\&. For a solar system body, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift), and does not in general apply to reflected light\&. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy\&. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects\&.
+.PP
+All the input arguments are BCRS quantities, expressed with respect to the ICRS axes\&. 'vel_src' and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy\&.
+.PP
+If the object is outside the solar system, the algorithm used will be consistent with the IAU definition of stellar radial velocity, specifically, the barycentric radial velocity measure, which is derived from spectroscopy\&. In that case, the vector 'vel_src' can be very approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small geometric correction that is proportional to proper motion\&.
+.PP
+Any of the distances (last three input arguments) can be set to a negative value if the corresponding general relativistic gravitational potential term is not to be evaluated\&. These terms generally are important only at the meter/second level\&. If 'd_obs_geo' and 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the observer, appropriate for an observer on the surface of the Earth\&. 'd_obj_sun', if given, is used only for solar system objects\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+This function is called by \fBplace()\fP and \fBnovas_sky_pos()\fP to calculate radial velocities along with the apparent position of the source\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP Celestial object observed 
+.br
+\fIpos_emit\fP [AU|*] position vector of object with respect to observer in the direction that light was emitted from the source\&. For solar system sources it should be corrected for light-time\&. For non-solar-system objects, the position vector defines a direction only, with arbitrary magnitude\&. 
+.br
+\fIvel_src\fP [AU/day] Velocity vector of object with respect to solar system barycenter\&. 
+.br
+\fIpos_det\fP [AU|*] apparent position vector of source, as seen by the observer\&. It may be the same vector as \fCpos_emit\fP, in which case the routine behaves like the original NOVAS_C \fBrad_vel()\fP\&. 
+.br
+\fIvel_obs\fP [AU/day] Velocity vector of observer with respect to solar system barycenter\&. 
+.br
+\fId_obs_geo\fP [AU] Distance from observer to geocenter, or <=0\&.0 if gravitational blueshifting due to Earth potential around observer can be ignored\&. 
+.br
+\fId_obs_sun\fP [AU] Distance from observer to Sun, or <=0\&.0 if gravitational bluehifting due to Solar potential around observer can be ignored\&. 
+.br
+\fId_src_sun\fP [AU] Distance from object to Sun, or <=0\&.0 if gravitational redshifting due to Solar potential around source can be ignored\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[km/s] The observed radial velocity measure times the speed of light, or NAN if there was an error (errno will be set to EINVAL if any of the arguments are NULL, or to some other value to indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBrad_vel()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBnovas_sky_pos()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBAU\fP, \fBC\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBNOVAS_SUN\fP, \fBobject::number\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
 .SS "int radec2vector (double ra, double dec, double dist, double * pos)"
 Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates)\&.
 .PP
@@ -4541,11 +4637,11 @@ Attila Kovacs
 .PP
 References \fBnovas_inv_max_iter\fP, and \fBrefract()\fP\&.
 .SS "int set_cio_locator_file (const char * filename)"
-Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS\&. You can specify either the original \fCCIO_RA\&.TXT\fP file included in the distribution (preferred since v1\&.1), or else a platform-specific binary data file compiled from it (the old way), which may be obtained via the \fCcio_file\&.c\fP utility provided in this distribution under \fCtools/\fP\&.
+Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS\&. You can specify either the original \fCCIO_RA\&.TXT\fP file included in the distribution (preferred since v1\&.1), or else a platform-specific binary data file compiled from it via the \fCcio_file\fP utility (the old way)\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIfilename\fP Path (preferably absolute path) to binary data file generated by the \fCcio_file\&.c\fP utility from the \fCCIO_RA\&.TXT\fP data file\&. 
+\fIfilename\fP Path (preferably absolute path) \fCCIO_RA\&.TXT\fP or else to the binary \fCcio_ra\&.bin\fP data\&. 
 .RE
 .PP
 \fBReturns\fP
@@ -4781,7 +4877,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .br
 \fIpos\fP [AU] Position vector, equatorial rectangular coordinates, components in AU\&. It may be NULL if not required\&. 
 .br
-\fIvel\fP [AU/day] Velocity vector, equatorial rectangular coordinates, components in AU/Day\&. It may be NULL if not required\&.
+\fIvel\fP [AU/day] Velocity vector, equatorial rectangular coordinates, components in AU/Day\&. It must be distinct from the pos output vector, and may be NULL if not required\&.
 .RE
 .PP
 \fBReturns\fP
@@ -4928,7 +5024,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .br
 \fIpos\fP [AU] Position vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU\&. If reference meridian is Greenwich and 'lst' = 0, 'pos' is effectively referred to equator and Greenwich\&. (It may be NULL if no position data is required)\&. 
 .br
-\fIvel\fP [AU/day] Velocity vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/day\&. (It may be NULL if no velocity data is required)\&.
+\fIvel\fP [AU/day] Velocity vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/day\&. (It must be distinct from the pos output vector, and may be NULL if no velocity data is required)\&.
 .RE
 .PP
 \fBReturns\fP

@@ -26,8 +26,9 @@ var searchData=
   ['novas_5fplanets_23',['NOVAS_PLANETS',['../novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08',1,'novas.h']]],
   ['novas_5freference_5fsystems_24',['NOVAS_REFERENCE_SYSTEMS',['../novas_8h.html#ae55994629ca97e634b1bb97aafb3f49b',1,'novas.h']]],
   ['novas_5frmass_5finit_25',['NOVAS_RMASS_INIT',['../novas_8h.html#a5ddc7a011476a8cffaec1866beaa0095',1,'novas.h']]],
-  ['novas_5ftai_5fto_5ftt_26',['NOVAS_TAI_TO_TT',['../novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda',1,'novas.h']]],
-  ['novas_5ftimescales_27',['NOVAS_TIMESCALES',['../novas_8h.html#a7505fe27b163e97b60bcf4406eadffa7',1,'novas.h']]],
-  ['novas_5ftransform_5ftypes_28',['NOVAS_TRANSFORM_TYPES',['../novas_8h.html#ab5988d52596448e8248d94a4f59d69a1',1,'novas.h']]],
-  ['novas_5fversion_5fstring_29',['NOVAS_VERSION_STRING',['../novas_8h.html#afc8e7b02d26a13c380dcff4ec2d6530e',1,'novas.h']]]
+  ['novas_5fsolar_5fradius_26',['NOVAS_SOLAR_RADIUS',['../novas_8h.html#ae548ecdfc646914084936acb32e9c993',1,'novas.h']]],
+  ['novas_5ftai_5fto_5ftt_27',['NOVAS_TAI_TO_TT',['../novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda',1,'novas.h']]],
+  ['novas_5ftimescales_28',['NOVAS_TIMESCALES',['../novas_8h.html#a7505fe27b163e97b60bcf4406eadffa7',1,'novas.h']]],
+  ['novas_5ftransform_5ftypes_29',['NOVAS_TRANSFORM_TYPES',['../novas_8h.html#ab5988d52596448e8248d94a4f59d69a1',1,'novas.h']]],
+  ['novas_5fversion_5fstring_30',['NOVAS_VERSION_STRING',['../novas_8h.html#afc8e7b02d26a13c380dcff4ec2d6530e',1,'novas.h']]]
 ];

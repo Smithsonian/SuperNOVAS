@@ -243,7 +243,7 @@ It implements the same geometric transformations as \fC\fBplace()\fP\fP but at a
 .br
 \fIpos\fP [AU] Calculated geometric position vector of the source relative to the observer location, in the designated coordinate system\&. It may be NULL if not required\&. 
 .br
-\fIvel\fP [AU/day] The calculated velocity vector of the source relative to the observer in the designated coordinate system\&. It may be NULL if not required\&. 
+\fIvel\fP [AU/day] The calculated velocity vector of the source relative to the observer in the designated coordinate system\&. It must be distinct from the pos output vector, and may be NULL if not required\&. 
 .RE
 .PP
 \fBReturns\fP
@@ -276,7 +276,7 @@ Attila Kovacs
 .PP
 References \fBnovas_frame::accuracy\fP, \fBbary2obs()\fP, \fBd_light()\fP, \fBlight_time2()\fP, \fBnovas_planet_bundle::mask\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBobject::number\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBnovas_planet_bundle::pos\fP, \fBproper_motion()\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBnovas_frame::time\fP, \fBobject::type\fP, and \fBnovas_planet_bundle::vel\fP\&.
 .SS "int novas_geom_to_app (const \fBnovas_frame\fP * frame, const double * pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP * out)"
-Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate corrections for aberration and gravitational deflection for the observer's frame\&.
+Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate corrections for aberration and gravitational deflection for the observer's frame\&. Unlike \fC\fBplace()\fP\fP the output reports the distance calculated from the parallax for sidereal sources\&. The radial velocity of the output is set to NAN (if needed use \fBnovas_sky_pos()\fP instead)\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -286,7 +286,7 @@ Converts an geometric position in ICRS to an apparent position on sky, by applyi
 .br
 \fIsys\fP The coordinate system in which to return the apparent sky location 
 .br
-\fIout\fP Pointer to the data structure which is populated with the calculated apparent location in the designated coordinate system\&. 
+\fIout\fP Pointer to the data structure which is populated with the calculated apparent location in the designated coordinate system\&. It may be the same pounter as the input position\&. 
 .RE
 .PP
 \fBReturns\fP
@@ -317,7 +317,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, and \fBvector2radec()\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBvector2radec()\fP\&.
 .SS "int novas_hor_to_app (const \fBnovas_frame\fP * frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double * ra, double * dec)"
 Converts an observed azimuth and elevation coordinate to right ascension (R\&.A\&.) and declination coordinates expressed in the coordinate system of choice\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided, the provided elevation value will be assumed to be an astrometric elevation without a refraction correction\&.
 .PP
@@ -507,7 +507,7 @@ And if you want geometric positions instead (not corrected for aberration or gra
 .PP
 The approximate 'inverse' of this function is \fBnovas_app_to_geom()\fP\&.
 .PP
-This function implements the same aberration and gravitational deflection corrections as \fC\fBplace()\fP\fP, but at reduced computational cost\&. See \fC\fBplace()\fP\fP for references\&. Note, however that while \fC\fBplace()\fP\fP does not apply aberration and gravitational reflection corrections when \fCsys\fP is NOVAS_ICRS (3), this routine will apply those corrections consistently for all coordinate systems (or you can use \fBnovas_geom_posvel()\fP to get positions without aberration /deflection in any system)\&.
+This function implements the same aberration and gravitational deflection corrections as \fC\fBplace()\fP\fP, but at reduced computational cost\&. See \fC\fBplace()\fP\fP for references\&. Unlike \fC\fBplace()\fP\fP, however, the output always reports the distance calculated from the parallax for sidereal sources\&. Note also, that while \fC\fBplace()\fP\fP does not apply aberration and gravitational deflection corrections when \fCsys\fP is NOVAS_ICRS (3), this routine will apply those corrections consistently for all coordinate systems (and you can use \fBnovas_geom_posvel()\fP instead to get positions without aberration or deflection in any system)\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -546,7 +546,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBsky_pos::dis\fP, \fBnovas_frame::earth_pos\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::obs_vel\fP, \fBrad_vel()\fP, \fBsky_pos::rv\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBsky_pos::dis\fP, \fBnovas_frame::earth_pos\fP, \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::obs_vel\fP, \fBnovas_frame::planets\fP, \fBrad_vel2()\fP, \fBsky_pos::rv\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
 .SS "int novas_transform_sky_pos (const \fBsky_pos\fP * in, const \fBnovas_transform\fP * transform, \fBsky_pos\fP * out)"
 Transforms a position or velocity 3-vector from one coordinate reference system to another\&.
 .PP

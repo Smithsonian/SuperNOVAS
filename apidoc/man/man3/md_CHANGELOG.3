@@ -7,30 +7,36 @@ md_CHANGELOG \- Changelog
  All notable changes to the SuperNOVAS library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.1\&.0-rc3] &ndash; 2024-07-28"
+.SH "[1\&.1\&.0] &ndash; 2024-08-04"
 .PP
 Feature release\&. Introducing a more efficient and elegant approach to position and velocity calculations using observer frames; versatile handling of astronomical timescales; and support for further observer locations, coordinate reference systems, and atmospheric refraction models\&. The release also fixes a number of bugs, of varying severity, which affected prior SuperNOVAS releases\&.
 .SS "Fixed"
 .IP "\(bu" 2
-#29: Fix portability to non-Intel platforms\&. Previously, SuperNOVAS used \fCchar\fP for storing integer coefficients, assuming \fCchar\fP was signed\&. However, on some platforms like ARM and PowerPC \fCchar\fP is unsigned, which broke calculations badly on such platforms\&. As of now, we use the explicit platform independent signed \fCint8_t\fP storage type for these coefficients\&.
+#29: Fix portability to non-Intel platforms\&. Previously, SuperNOVAS used \fCchar\fP for storing small integer coefficients, assuming \fCchar\fP was signed\&. However, on some platforms like ARM and PowerPC \fCchar\fP is unsigned, which broke calculations badly\&. As of now, we use the explicit platform independent signed \fCint8_t\fP storage type for these coefficients\&.
 .IP "\(bu" 2
-#38: \fCgcrs_to_j2000\fP transformed in the wrong direction\&.
+#38: \fC\fBgcrs_to_j2000()\fP\fP transformed in the wrong direction in v1\&.0\&.
 .IP "\(bu" 2
-#39: \fC\fBtod_to_itrs()\fP\fP used wrong Earth rotation measure (\fCNOVAS_ERA\fP instead of \fCNOVAS_GST\fP)\&.
+#39: \fC\fBtod_to_itrs()\fP\fP used wrong Earth rotation measure (\fCNOVAS_ERA\fP instead of \fCNOVAS_GST\fP) in v1\&.0\&.
 .IP "\(bu" 2
-#45: \fC\fBcel2ter()\fP\fP invalid output with CIRS input coordinates (\fCerot\fP = \fCEROT_ERA\fP and \fCclass\fP = \fCNOVAS_DYNAMICAL_CLASS\fP) if output vector was distinct from input vector\&. Affects prior SuperNOVAS releases\&.
+#45: \fC\fBcel2ter()\fP\fP invalid output in v1\&.0 with CIRS input coordinates (\fCerot\fP = \fCEROT_ERA\fP and \fCclass\fP = \fCNOVAS_DYNAMICAL_CLASS\fP) if output vector was distinct from input vector\&. Affects \fC\fBcirs_to_itrs()\fP\fP also\&.
 .IP "\(bu" 2
-#36: \fC\fBtt2tdb()\fP\fP Had a wrong scaling in sinusoidal period, resulting in an error of up to +/- 1\&.7 ms\&.
+#36: \fC\fBtt2tdb()\fP\fP Had a wrong scaling in sinusoidal period in v1\&.0, resulting in an error of up to +/- 1\&.7 ms\&.
 .IP "\(bu" 2
-#37: \fC\fBgcrs_to_cirs()\fP\fP did not handle well if input and output vectors were the same\&.
+#37: \fC\fBgcrs_to_cirs()\fP\fP did not handle well if input and output vectors were the same in v1\&.0\&.
 .IP "\(bu" 2
 #28: Division by zero bug in \fC\fBd_light()\fP\fP (since NOVAS C 3\&.1) if the first position argument is the ephemeris reference position (e\&.g\&. the Sun for \fC\fBsolsys3\&.c\fP\fP)\&. The bug affects for example \fC\fBgrav_def()\fP\fP, where it effectively results in the gravitational deflection due to the Sun being skipped\&. See Issue #28\&.
 .IP "\(bu" 2
 #41: \fC\fBgrav_def()\fP\fP gravitating body position antedated somewhat incorrectly (in v1\&.0) when observed source is a Solar-system object between the observer and the gravitating body\&. The resulting positional error is typically small at below 10 uas\&.
 .IP "\(bu" 2
-#24: Bungled definition of \fCSUPERNOVAS_VERSION_STRING\fP in \fC\fBnovas\&.h\fP\fP\&.
+#50: The NOVAS C 3\&.1 implementation of \fC\fBrad_vel()\fP\fP applied relativistic corrections for a moving observer conditional on applying relativistic gravitational corrections (for Sun and/or Earth potential) for the observer\&. However, it seems more reasonable that the corrections for a moving observer should be applied always and independently of the (optional) gravitational corrections\&.
 .IP "\(bu" 2
-Bungled definition of \fCNOVAS_OBSERVER_PLACES\fP in \fC\fBnovas\&.h\fP\fP\&.
+#51: In the NOVAS C 3\&.1 implementation of \fC\fBrad_vel()\fP\fP, the Solar gravitational potential was ignored when calculating radial velocities for the Sun\&. Typically 'observing the Sun' means looking at its photosphere\&. As the light travels away from the Sun's photosphere towards the observer, it is redshifted\&. The NOVAS C implementation of \fC\fBrad_vel()\fP\fP has ignored this redshifting when the Sun was being observed\&. From now on, we shall gravitationally reference radial velocities when observing the Sun to its photosphere\&.
+.IP "\(bu" 2
+#34: \fC\fBplace()\fP\fP radial velocities were not quite correct in NOVAS C 3\&.1, and in prior SuperNOVAS releases\&. The radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration)\&. As for gravitational deflection, the geometric direction is the correct direction in which light was emitted from the source for sidereal objects\&. For Solar system sources we now reverse trace the deflected light to calculate the direction in which it was emitted from the source\&. As such, the radial velocities calculated should now be precise under all conditions\&. The typical errors of the old calculations were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection calculation\&.
+.IP "\(bu" 2
+#24: Bungled definition of \fCSUPERNOVAS_VERSION_STRING\fP in \fC\fBnovas\&.h\fP\fP in v1\&.0\&.
+.IP "\(bu" 2
+Bungled definition of \fCNOVAS_OBSERVER_PLACES\fP in \fC\fBnovas\&.h\fP\fP in v1\&.0\&.
 .PP
 .SS "Added"
 .IP "\(bu" 2
@@ -62,13 +68,13 @@ Added \fC\fBcirs_to_tod()\fP\fP and \fC\fBtod_to_cirs()\fP\fP functions for effi
 .IP "\(bu" 2
 Added \fC\fBmake_cat_object()\fP\fP function to create a NOVAS celestial \fCobject\fP structure from existing \fC\fBcat_entry\fP\fP data\&.
 .IP "\(bu" 2
+Added \fC\fBrad_vel2()\fP\fP to calculate radial velocities precisely in the presense of gravitational deflection i\&.e\&., when the direction in which light was emitted is different from the direction it is detected by the observer\&. This new function is now used by both \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP\&.
+.IP "\(bu" 2
 \fCmake help\fP to provide a brief list and explanation of the available build targets\&. (Thanks to \fC@teuben\fP for suggesting this\&.)
 .IP "\(bu" 2
 Added GitHub CI regression testing for non-x86 platforms: \fCarmv7\fP, \fCaarch64\fP, \fCriscv64\fP, \fCppc64le\fP\&. Thus, we should avoid misphaps, like the platform specific bug Issue #29, in the future\&.
 .PP
 .SS "Changed"
-.IP "\(bu" 2
-#34: Radial velocity calculation to precede aberration and gravitational bending in \fC\fBplace()\fP\fP, since the radial velocity that is observed is in the geometric direction towards the source (unaffected by aberration)\&. A precise accounting of the gravitational effects would require figuring out the direction in which the observed light was emitted from the source before it was bent by gravitating bodies along the way\&. In practice, this may be difficult to generalize\&. For a single gravitationg body the geometric direction of the source is between the direction in which the light is emitted, and the observed deflected direction\&. Therefore, for the time being, the radial velocity calculated via the geometric direction is closer to the actual value\&.
 .IP "\(bu" 2
 #42: \fC\fBcio_array()\fP\fP can now parse the original ASCII CIO locator data file (\fCdata/CIO_RA\&.TXT\fP) efficiently also, thus no longer requiring a platform-specific binary translation via the \fCcio_file\fP tool\&.
 .IP "\(bu" 2
@@ -85,6 +91,8 @@ Improved precision of some calculations, like \fC\fBera()\fP\fP, \fC\fBfund_args
 \fC\fBvector2radec()\fP\fP: \fCra\fP or \fCdec\fP arguments may now be NULL if not required\&.
 .IP "\(bu" 2
 \fC\fBtt2tdb()\fP\fP Now uses the same, slightly more precise series as the original NOVAS C \fC\fBtdb2tt()\fP\fP\&.
+.IP "\(bu" 2
+\fC\fBrad_vel()\fP\fP You can use negative values for the distances to skip particular gravitational corrections to the radial velocity measure\&. The value 0\&.0 also continues to have the same effect as before, except if the observed source is the Sun\&. Then \fCd_src_sun\fP being 0\&.0 takes on a different meaning than before: rather than skipping gravitational redshift corrections for the Solar potential, we will now assume that 0\&.0 means observing the Sun, and will apply gravitational corrections for light originating at its photosphere\&.
 .IP "\(bu" 2
 \fCPSI_COR\fP and \fCEPS_COR\fP made globally visible again, thus improving NOVAS C 3\&.1 compatibility\&.
 .IP "\(bu" 2

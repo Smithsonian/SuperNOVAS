@@ -266,6 +266,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_SOLAR_RADIUS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae548ecdfc646914084936acb32e9c993</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_TAI_TO_TT</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a68aa01f6e3e0f40bbe1b5ccab3144fda</anchor>
@@ -1782,6 +1789,13 @@
       <arglist>(const object *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>rad_vel2</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a191dcbb360afb9b6bf123d46858156d0</anchor>
+      <arglist>(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>radec2vector</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -3162,8 +3176,15 @@
       <type>int</type>
       <name>rad_vel</name>
       <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a304b2220e084b4b12e674aad897972bc</anchor>
-      <arglist>(const object *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)</arglist>
+      <anchor>a9f76e2386515e2023172e05891c3fa28</anchor>
+      <arglist>(const object *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>rad_vel2</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a191dcbb360afb9b6bf123d46858156d0</anchor>
+      <arglist>(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

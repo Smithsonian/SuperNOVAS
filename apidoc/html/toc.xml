@@ -39,7 +39,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md65"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.1.0-rc3] &amp;ndash; 2024-07-28" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.1.0] &amp;ndash; 2024-08-04" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -323,6 +323,7 @@
           <topic label="NOVAS_PLANETS" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08"/>
           <topic label="NOVAS_REFERENCE_SYSTEMS" href="novas_8h.html#ae55994629ca97e634b1bb97aafb3f49b"/>
           <topic label="NOVAS_RMASS_INIT" href="novas_8h.html#a5ddc7a011476a8cffaec1866beaa0095"/>
+          <topic label="NOVAS_SOLAR_RADIUS" href="novas_8h.html#ae548ecdfc646914084936acb32e9c993"/>
           <topic label="NOVAS_TAI_TO_TT" href="novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda"/>
           <topic label="NOVAS_TIMESCALES" href="novas_8h.html#a7505fe27b163e97b60bcf4406eadffa7"/>
           <topic label="NOVAS_TRANSFORM_TYPES" href="novas_8h.html#ab5988d52596448e8248d94a4f59d69a1"/>
@@ -572,6 +573,7 @@
           <topic label="precession" href="novas_8h.html#a9178358732325399f3a5e3582080ced3"/>
           <topic label="proper_motion" href="novas_8h.html#ade8207981b6f840d1f0a79dd0c72beb2"/>
           <topic label="rad_vel" href="novas_8h.html#a304b2220e084b4b12e674aad897972bc"/>
+          <topic label="rad_vel2" href="novas_8h.html#a191dcbb360afb9b6bf123d46858156d0"/>
           <topic label="radec2vector" href="novas_8h.html#acf86ce700b3d3509ebba13e5f16a4327"/>
           <topic label="radec_planet" href="novas_8h.html#a11d3da697a640c39d87cf201ac54ca7c"/>
           <topic label="radec_star" href="novas_8h.html#aed179ad664f4ff023deb540140f3c2ef"/>
@@ -778,7 +780,8 @@
           <topic label="planet_lon" href="novas_8c.html#aacc6a0daf29b8bdc18f46647a94694d3"/>
           <topic label="precession" href="novas_8c.html#a9178358732325399f3a5e3582080ced3"/>
           <topic label="proper_motion" href="novas_8c.html#ade8207981b6f840d1f0a79dd0c72beb2"/>
-          <topic label="rad_vel" href="novas_8c.html#a304b2220e084b4b12e674aad897972bc"/>
+          <topic label="rad_vel" href="novas_8c.html#a9f76e2386515e2023172e05891c3fa28"/>
+          <topic label="rad_vel2" href="novas_8c.html#a191dcbb360afb9b6bf123d46858156d0"/>
           <topic label="radec2vector" href="novas_8c.html#acf86ce700b3d3509ebba13e5f16a4327"/>
           <topic label="radec_planet" href="novas_8c.html#a11d3da697a640c39d87cf201ac54ca7c"/>
           <topic label="radec_star" href="novas_8c.html#aed179ad664f4ff023deb540140f3c2ef"/>

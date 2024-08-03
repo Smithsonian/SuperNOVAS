@@ -126,6 +126,8 @@ A set of parameters that uniquely define the place and time of observation\&. Th
 .PP
 You should never set or change fields in this structure manually\&. Instead the structure should always be initialized by an appropriate call to \fBnovas_make_frame()\fP\&. After that you may change the observer location, if need be, with \fBnovas_change_observer()\fP\&.
 .PP
+The structure may expand with additional field in the future\&. Thus neither its size nor its particular layout should be assumed fixed over SuperNOVAS releases\&.
+.PP
 \fBSince\fP
 .RS 4
 1\&.1
