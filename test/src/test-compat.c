@@ -957,7 +957,7 @@ static void test_limb_angle() {
   double limb = 0.0, nadir = 0.0;
   openfile("limb_angle");
   limb_angle(pos0, pobs, &limb, &nadir);
-  fprintf(fp, "%12.6f %12.6f ", limb, nadir);
+  fprintf(fp, "%12.6f %12.6e ", limb, nadir);
 }
 
 static int test_source() {

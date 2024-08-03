@@ -6857,7 +6857,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
  *                        geocenter, components in AU.
  * @param[out] limb_ang   [deg] Angle of observed object above (+) or below (-) limb in degrees,
  *                        or NAN if reurning with an error. It may be NULL if not required.
- * @param[out] nadir_ang  [deg] Nadir angle of observed object as a fraction of apparent radius
+ * @param[out] nadir_ang  Nadir angle of observed object as a fraction of apparent radius
  *                        of limb: %lt;1.0 if below the limb; 1.0 on the limb; or &gt;1.0 if
  *                        above the limb. Returns NAN in case of an error return. It may be NULL
  *                        if not required.
