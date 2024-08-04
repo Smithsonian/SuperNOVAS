@@ -5094,20 +5094,18 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
       // Objects in the solar system
-      r = (source->number == NOVAS_SUN) ? NOVAS_SOLAR_RADIUS : d_src_sun * AU;
+      if(source->number != NOVAS_BARYCENTER) {
+        r = (source->number == NOVAS_SUN) ? NOVAS_SOLAR_RADIUS : d_src_sun * AU;
+        // Compute solar potential at object
+        phi = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
-      // Compute solar potential at object
-      phi = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
-
-      // Earth potential at object
-      r = d_obs_geo * AU;
-      phi += (r > 0.95 * NOVAS_EARTH_RADIUS) ? GE / r : 0.0;
+        // Gravitational redshift at source
+        rel /= 1.0 - phi / c2;
+      }
 
       // Compute observed radial velocity measure of a planet rel. barycenter
       kvs = novas_vdot(uk, vel_src) * toms;
 
-      // Gravitational redshift at source
-      rel /= 1.0 - phi / c2;
       break;
 
     default:
