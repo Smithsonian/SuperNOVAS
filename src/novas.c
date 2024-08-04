@@ -5127,7 +5127,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   // Differential barycentric radial velocity (relativistic formula)
   kv = (kvs - kvobs) / (1.0 + kvs * kvobs / c2);
 
-  // Relativistic redhsift factor due to relative motion
+  // Include relativistic redhsift factor due to relative motion
   rel *= (1.0 + kv / C) / sqrt(1.0 - vdist2(vel_obs, vel_src) / c2);
 
   // Convert observed radial velocity measure to kilometers/second.
