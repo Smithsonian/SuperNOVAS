@@ -4132,6 +4132,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   if(vel)
     tod_to_gcrs(jd_tdb, accuracy, vel1, vel);
 
+
   return 0;
 }
 
@@ -4964,7 +4965,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
  * measure, which is derived from spectroscopy.  In that case, the vector 'vel_src' can be very
  * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
- * geometric correction that is proportional to proper motion.
+ * geometric and relativistic (time dilation) correction, including the proper motion.
  *
  * Any of the distances (last three input arguments) can be set to a negative value if the
  * corresponding general relativistic gravitational potential term is not to be evaluated.
@@ -5094,14 +5095,13 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     case NOVAS_PLANET:
     case NOVAS_EPHEM_OBJECT:
       // Objects in the solar system
-      if(source->number != NOVAS_BARYCENTER) {
-        r = (source->number == NOVAS_SUN) ? NOVAS_SOLAR_RADIUS : d_src_sun * AU;
-        // Compute solar potential at object
-        phi = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
+      r = (source->number == NOVAS_SUN) ? NOVAS_SOLAR_RADIUS : d_src_sun * AU;
 
-        // Gravitational redshift at source
-        rel /= 1.0 - phi / c2;
-      }
+      // Compute solar potential at object
+      phi = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
+
+      // Gravitational redshift at source
+      rel /= 1.0 - phi / c2;
 
       // Compute observed radial velocity measure of a planet rel. barycenter
       kvs = novas_vdot(uk, vel_src) * toms;
