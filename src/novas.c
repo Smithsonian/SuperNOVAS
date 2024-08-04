@@ -5020,7 +5020,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   static const char *fn = "rad_vel2";
   static const double c2 = C * C, toms = AU / DAY;
 
-  double rel; // i.e. f_src / fobs = (1 + z)
+  double rel; // redshift factor i.e., f_src / fobs = (1 + z)
   double v[3], d, uk[3], r, phigeo, phisun, kvs, kvobs, kv;
   int i;
 
