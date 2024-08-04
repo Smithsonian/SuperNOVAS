@@ -5124,8 +5124,8 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   // Radial velocity measure of observer rel. barycenter
   kvobs = novas_vdot(uk, vel_obs) * toms;
 
-  // Differential barycentric radial velocity (relativistic formula)
-  kv = (kvs - kvobs) / (1.0 + kvs * kvobs / c2);
+  // Differential barycentric radial velocity measure (relativistic formula)
+  kv = (kvs - kvobs) / (1.0 - kvs * kvobs / c2);
 
   // Include relativistic redhsift factor due to relative motion
   rel *= (1.0 + kv / C) / sqrt(1.0 - vdist2(vel_obs, vel_src) / c2);
