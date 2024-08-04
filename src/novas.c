@@ -5020,7 +5020,8 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   static const char *fn = "rad_vel2";
   static const double c2 = C * C, toms = AU / DAY;
 
-  double v[3], d, uk[3], r, phigeo, phisun, rel, kvs, kvobs, dv2;
+  double rel; // i.e. f_src / fobs = (1 + z)
+  double v[3], d, uk[3], r, phigeo, phisun, kvs, kvobs, kv;
   int i;
 
   if(!source) {
@@ -5123,14 +5124,14 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   // Radial velocity measure of observer rel. barycenter
   kvobs = novas_vdot(uk, vel_obs) * toms;
 
-  // Relative motion of source vs observer.
-  dv2 = novas_vdist(vel_obs, vel_src);
+  // Differential barycentric radial velocity (relativistic formula)
+  kv = (kvs - kvobs) / (1.0 + kvs * kvobs / c2);
 
-  // Include relativistic time dilation due to motion of source rel. observer
-  rel *= sqrt(1.0 - dv2 / c2);
+  // Relativistic redhsift factor due to relative motion
+  rel *= (1.0 + kv / C) / sqrt(1.0 - vdist2(vel_obs, vel_src) / c2);
 
   // Convert observed radial velocity measure to kilometers/second.
-  return (kvs - kvobs) * rel / 1000.0;
+  return (rel - 1.0) * C / 1000.0;
 }
 
 
