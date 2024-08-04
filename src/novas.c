@@ -5069,16 +5069,16 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       // Objects outside the solar system.
       // For stars, update barycentric radial velocity measure for change
       // in view angle.
-      const double ra = source->star.ra * HOURANGLE;
-      const double dec = source->star.dec * DEGREE;
+      const cat_entry *star= &source->star;
+      const double ra = star->ra * HOURANGLE;
+      const double dec = star->dec * DEGREE;
       const double cosdec = cos(dec);
-      const double radvel = source->star.radialvelocity;
 
       // Compute radial velocity measure of sidereal source rel. barycenter
       // Including proper motion
-      kvs = 1e3 * radvel;
+      kvs = 1e3 * star->radialvelocity;
 
-      if(source->star.parallax > 0.0) {
+      if(star->parallax > 0.0) {
         double du[3];
 
         du[0] = uk[0] - (cosdec * cos(ra));
