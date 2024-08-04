@@ -7,6 +7,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
+## [Unreleased]
+
+Changes expected for the next bug-fix release, possibly around 1 December 2024.
+
+### Fixed
+
+### Changed
+
+
+
 ## [1.1.0] -- 2024-08-04
 
 Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using 
@@ -75,9 +85,13 @@ which affected prior SuperNOVAS releases.
    approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
    their internal state is never modified during the calculations. The following new functions were added: 
    `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_geom_to_app()`, `novas_sky_pos()`, 
-   `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, 
-   `novas_invert_transform()`, `novas_transform_vector()`, and `novas_transform_sky_pos()`.
+   `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`.
    
+ - #33: New coordinate system transformations via the `novas_transform` structure. You may use these transforms to 
+   express position / velocity vectors, calculated for a given observer and time, in the coordinate reference system of 
+   choice.The following new functions were added: `novas_make_transform()`, `novas_invert_transform()`, 
+   `novas_transform_vector()`, and `novas_transform_sky_pos()`.
+ 
  - #33: New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). 
    You can set the time via `novas_set_time()` or `novas_set_split_time()` to a JD date in the timescale of choice 
    (UTC, UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain 
@@ -99,7 +113,7 @@ which affected prior SuperNOVAS releases.
  - Added new observer locations `NOVAS_AIRBORNE_OBSERVER` for an observer moving relative to the surface of Earth e.g.
    in an aircraft or balloon based telescope platform, and `NOVAS_SOLAR_SYSTEM_OBSERVER` for spacecraft orbiting the 
    Sun. Both of these use the `observer.near_earth` strcture to define (positions and) velocities as appropriate. 
-   Hence the `'near_earth` name is a bit misleading, but sticks for back compatibility.
+   Hence the `'near_earth` name is a bit misleading, but remains for back compatibility.
    
  - Added coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
    `NOVAS_J2000` for the J2000 dynamical reference system.
@@ -165,11 +179,11 @@ which affected prior SuperNOVAS releases.
 
  - `tt2tdb()` Now uses the same, slightly more precise series as the original NOVAS C `tdb2tt()`.
 
- - `rad_vel()` You can use negative values for the distances to skip particular gravitational corrections to the
+ - `rad_vel()` You can use negative values for the distances to skip particular gravitational corrections to the 
    radial velocity measure. The value 0.0 also continues to have the same effect as before, except if the observed
    source is the Sun. Then `d_src_sun` being 0.0 takes on a different meaning than before: rather than skipping 
-   gravitational redshift corrections for the Solar potential, we will now assume that 0.0 means observing the Sun, 
-   and will apply gravitational corrections for light originating at its photosphere.
+   gravitational redshift corrections for the Solar potential (as before) we will apply gravitational corrections for 
+   light originating at the Sun's photosphere.
 
  - `PSI_COR` and `EPS_COR` made globally visible again, thus improving NOVAS C 3.1 compatibility.
  
