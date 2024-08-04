@@ -13,6 +13,10 @@ Changes expected for the next bug-fix release, possibly around 1 December 2024.
 
 ### Fixed
 
+ - #55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses
+   the actual velocity differential between the source and observer to apply the appropriate time dilation factor, and
+   applies graviational corrections for Sun and Earth consistently at source and observer alike.
+
 ### Changed
 
 

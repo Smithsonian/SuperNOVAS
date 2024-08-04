@@ -155,6 +155,10 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    calculations were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection 
    calculation.
 
+ - [v1.1.1] The NOVAS C 3.1 implementation of `rad_vel()` applied relativistic corrections for moving source and 
+   observer both incorrectly and approximately. It applied separate time dilation factors for the motions of the 
+   source vs barycenter and the observer vs barycenter, rather than applying the factor for source vs observer. And,
+   it used an approximation for &gamma; that is appropriate only for v/c much less than 1.
    
 
 -----------------------------------------------------------------------------
