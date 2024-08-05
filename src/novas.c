@@ -5127,8 +5127,11 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   // Include relativistic redhsift factor due to relative motion
   rel *= (1.0 + kv / C) / sqrt(1.0 - vdist2(vel_obs, vel_src) / c2);
 
+  // rel: (1+z) -> (1+z)^2
+  rel *= rel;
+
   // Convert observed radial velocity measure to kilometers/second.
-  return (rel - 1.0) * C / 1000.0;
+  return (rel - 1.0) / (rel + 1.0) * C / 1000.0;
 }
 
 
