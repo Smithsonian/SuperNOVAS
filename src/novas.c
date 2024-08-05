@@ -232,6 +232,16 @@ double novas_vlen(const double *v) {
   return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
 
+static double vdist2(const double *v1, const double *v2) {
+  double d2 = 0.0;
+  int i;
+  for(i = 3; --i >= 0;) {
+    const double d = v1[i] - v2[i];
+    d2 += d * d;
+  }
+  return d2;
+}
+
 /**
  * Calculates the distance between two 3-vectors.
  *
@@ -247,13 +257,7 @@ double novas_vlen(const double *v) {
  * @author Attila Kovacs
  */
 double novas_vdist(const double *v1, const double *v2) {
-  double d2 = 0.0;
-  int i;
-  for(i = 3; --i >= 0;) {
-    const double d = v1[i] - v2[i];
-    d2 += d * d;
-  }
-  return sqrt(d2);
+  return sqrt(vdist2(v1, v2));
 }
 
 /**
@@ -4128,6 +4132,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   if(vel)
     tod_to_gcrs(jd_tdb, accuracy, vel1, vel);
 
+
   return 0;
 }
 
@@ -4960,7 +4965,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
  * measure, which is derived from spectroscopy.  In that case, the vector 'vel_src' can be very
  * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
- * geometric correction that is proportional to proper motion.
+ * geometric and relativistic (time dilation) correction, including the proper motion.
  *
  * Any of the distances (last three input arguments) can be set to a negative value if the
  * corresponding general relativistic gravitational potential term is not to be evaluated.
@@ -5014,9 +5019,10 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
 double rad_vel2(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
         double d_obs_geo, double d_obs_sun, double d_src_sun) {
   static const char *fn = "rad_vel2";
-  static const double c2 = C * C, toms = AU / DAY, toms2 = (AU / DAY) * (AU / DAY);
+  static const double c2 = C * C, toms = AU / DAY;
 
-  double v[3], d, uk[3], v2, vo2, r, phigeo, phisun, rel, kv, zb1, kvobs, zobs1;
+  double rel; // redshift factor i.e., f_src / fobs = (1 + z)
+  double uk[3], r, phi, kvs, kvobs, kv;
   int i;
 
   if(!source) {
@@ -5034,25 +5040,18 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     return NAN;
   }
 
-  // Initialize variables needed for radial velocity calculation.
-  memcpy(v, vel_src, sizeof(v));
-
-  // Compute velocity-squared factors.
-  v2 = novas_vdot(v, v) * toms2;
-  vo2 = novas_vdot(vel_obs, vel_obs) * toms2;
-
   // Compute geopotential at observer, unless observer is within Earth.
   r = d_obs_geo * AU;
-  phigeo = (r > 0.95 * NOVAS_EARTH_RADIUS) ? GE / r : 0.0;
+  phi = (r > 0.95 * NOVAS_EARTH_RADIUS) ? GE / r : 0.0;
 
   // Compute solar potential at observer unless well the Sun
   r = d_obs_sun * AU;
-  phisun = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
+  phi += (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
-  // Compute relativistic potential.
+  // Compute relativistic potential at observer.
   if((d_obs_geo != 0.0) || (d_obs_sun != 0.0)) {
     // Lindegren & Dravins eq. (41), second factor in parentheses.
-    rel = 1.0 - (phigeo + phisun) / c2;
+    rel = 1.0 - phi / c2;
   }
   else {
     // Use average value for an observer on the surface of Earth
@@ -5060,13 +5059,10 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     rel = 1.0 - 1.550e-8;
   }
 
-  // Include relativistic velocity factor for observer
-  rel -= 0.5 * vo2 / c2;
-
   // Compute unit vector toward object (direction of emission).
-  d = novas_vlen(pos_emit);
+  r = novas_vlen(pos_emit);
   for(i = 0; i < 3; i++)
-    uk[i] = pos_emit[i] / d;
+    uk[i] = pos_emit[i] / r;
 
   // Complete radial velocity calculation.
   switch(source->type) {
@@ -5074,24 +5070,25 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       // Objects outside the solar system.
       // For stars, update barycentric radial velocity measure for change
       // in view angle.
-      const double ra = source->star.ra * HOURANGLE;
-      const double dec = source->star.dec * DEGREE;
+      const cat_entry *star= &source->star;
+      const double ra = star->ra * HOURANGLE;
+      const double dec = star->dec * DEGREE;
       const double cosdec = cos(dec);
-      const double radvel = source->star.radialvelocity;
 
-      double du[3], zc;
+      // Compute radial velocity measure of sidereal source rel. barycenter
+      // Including proper motion
+      kvs = 1e3 * star->radialvelocity;
 
-      if(source->star.parallax <= 0.0)
-        memset(v, 0, sizeof(v));
+      if(star->parallax > 0.0) {
+        double du[3];
 
-      du[0] = uk[0] - (cosdec * cos(ra));
-      du[1] = uk[1] - (cosdec * sin(ra));
-      du[2] = uk[2] - sin(dec);
-      zc = radvel * 1.0e3 + novas_vdot(v, du) * toms;
+        du[0] = uk[0] - (cosdec * cos(ra));
+        du[1] = uk[1] - (cosdec * sin(ra));
+        du[2] = uk[2] - sin(dec);
 
-      // Compute observed radial velocity measure of a star (inverse of
-      // Lindegren & Dravins eq. (41)).
-      zb1 = 1.0 + zc / C;
+        kvs += novas_vdot(vel_src, du) * toms;
+      }
+
       break;
     }
 
@@ -5101,15 +5098,14 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       r = (source->number == NOVAS_SUN) ? NOVAS_SOLAR_RADIUS : d_src_sun * AU;
 
       // Compute solar potential at object
-      phisun = (r > 0.95 * NOVAS_SOLAR_RADIUS && r < 1e16) ? GS / r : 0.0;
+      phi = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
-      // Compute observed radial velocity measure of a planet or other
-      // object -- including a nearby star -- where kinematic barycentric
-      // velocity vector is known and gravitational red shift is negligible
-      // (Lindegren & Dravins eq. (40), applied as per S. Klioner private
-      // communication (2006)).
-      kv = novas_vdot(uk, vel_src) * toms;
-      zb1 = (1.0 + kv / C) / (1.0 - phisun / c2 - 0.5 * v2 / c2);
+      // Gravitational redshift at source
+      rel /= 1.0 - phi / c2;
+
+      // Compute observed radial velocity measure of a planet rel. barycenter
+      kvs = novas_vdot(uk, vel_src) * toms;
+
       break;
 
     default:
@@ -5118,16 +5114,26 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   }
 
   // Compute unit vector toward object (direction of detection).
-  d = novas_vlen(pos_det);
+  r = novas_vlen(pos_det);
   for(i = 0; i < 3; i++)
-    uk[i] = pos_det[i] / d;
+    uk[i] = pos_det[i] / r;
 
+  // Radial velocity measure of observer rel. barycenter
   kvobs = novas_vdot(uk, vel_obs) * toms;
-  zobs1 = zb1 * rel / (1.0 + kvobs / C);
+
+  // Differential barycentric radial velocity measure (relativistic formula)
+  kv = (kvs - kvobs) / (1.0 - kvs * kvobs / c2);
+
+  // Include relativistic redhsift factor due to relative motion
+  rel *= (1.0 + kv / C) / sqrt(1.0 - vdist2(vel_obs, vel_src) / c2);
+
+  // rel: (1+z) -> (1+z)^2
+  rel *= rel;
 
   // Convert observed radial velocity measure to kilometers/second.
-  return (zobs1 - 1.0) * C / 1000.0;
+  return (rel - 1.0) / (rel + 1.0) * C / 1000.0;
 }
+
 
 /**
  * Precesses equatorial rectangular coordinates from one epoch to another. Unlike the original

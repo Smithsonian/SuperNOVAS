@@ -135,13 +135,13 @@
 
 -10000.0 SUN        S0 O1 A1:     0.005848
 
--10000.0 SUN        S0 O2 A1:     0.609167
+-10000.0 SUN        S0 O2 A1: ERROR 21 
 
 -10000.0 EARTH      S0 O0 A1:     0.005834
 
 -10000.0 EARTH      S0 O1 A1:     0.000000
 
--10000.0 EARTH      S0 O2 A1:     0.605790
+-10000.0 EARTH      S0 O2 A1: ERROR 21 
 
      0.0 22+20      S2 O0 A1: ERROR 12 
 
@@ -159,13 +159,13 @@
 
      0.0 SUN        S0 O1 A1:     0.005679
 
-     0.0 SUN        S0 O2 A1:     0.606470
+     0.0 SUN        S0 O2 A1: ERROR 21 
 
      0.0 EARTH      S0 O0 A1:     0.005671
 
      0.0 EARTH      S0 O1 A1:     0.000000
 
-     0.0 EARTH      S0 O2 A1:     0.605681
+     0.0 EARTH      S0 O2 A1: ERROR 21 
 
  10000.0 22+20      S2 O0 A1: ERROR 12 
 
@@ -183,13 +183,13 @@
 
  10000.0 SUN        S0 O1 A1:     0.005842
 
- 10000.0 SUN        S0 O2 A1:     0.601308
+ 10000.0 SUN        S0 O2 A1: ERROR 21 
 
  10000.0 EARTH      S0 O0 A1:     0.005864
 
  10000.0 EARTH      S0 O1 A1:     0.000000
 
- 10000.0 EARTH      S0 O2 A1:     0.605779
+ 10000.0 EARTH      S0 O2 A1: ERROR 21 
 
  10000.0 22+20      S2 O0 A1: ERROR 12 
 
@@ -207,13 +207,13 @@
 
  10000.0 SUN        S0 O1 A1:     0.005842
 
- 10000.0 SUN        S0 O2 A1:     0.601308
+ 10000.0 SUN        S0 O2 A1: ERROR 21 
 
  10000.0 EARTH      S0 O0 A1:     0.005864
 
  10000.0 EARTH      S0 O1 A1:     0.000000
 
- 10000.0 EARTH      S0 O2 A1:     0.605779
+ 10000.0 EARTH      S0 O2 A1: ERROR 21 
 
  10000.0 22+20      S2 O0 A1: ERROR 12 
 
@@ -231,10 +231,10 @@
 
  10000.0 SUN        S0 O1 A1:     0.005842
 
- 10000.0 SUN        S0 O2 A1:     0.601309
+ 10000.0 SUN        S0 O2 A1: ERROR 21 
 
  10000.0 EARTH      S0 O0 A1:     0.005864
 
  10000.0 EARTH      S0 O1 A1:     0.000000
 
- 10000.0 EARTH      S0 O2 A1:     0.605779
+ 10000.0 EARTH      S0 O2 A1: ERROR 21 

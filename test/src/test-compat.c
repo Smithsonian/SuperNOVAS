@@ -16,7 +16,7 @@
 #define DEGREE  (M_PI / 180.0)
 #define ARCSEC  (DEGREE / 3600.0)
 #define HOURANGLE (M_PI / 12.0)
-#define AU      NOVAS_AU
+#define AU      1.495978707e+11
 #define J2000   2451545.0
 
 static observer obs;
@@ -592,8 +592,8 @@ static int init() {
   else if (obs.where == 2) {
     int i;
     for(i = 0; i < 3; i++) {
-      pobs[i] = epos[i] + obs.near_earth.sc_pos[i];
-      vobs[i] = evel[i] + obs.near_earth.sc_vel[i];
+      pobs[i] = epos[i] + obs.near_earth.sc_pos[i] * 1e-3 * AU;
+      vobs[i] = evel[i] + obs.near_earth.sc_vel[i] / (1e-3 * AU / 86400.0);
     }
   }
 
