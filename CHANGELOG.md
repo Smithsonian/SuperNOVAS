@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Changes expected for the next bug-fix release, expected around 1 December 2024.
 
+
 ### Fixed
 
  - #55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses
