@@ -295,6 +295,48 @@ static double novas_add_vel(double v1, double v2) {
   return novas_add_beta(v1 / C_AUDAY, v2 / C_AUDAY) * C_AUDAY;
 }
 
+/**
+ * Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>).
+ * It is based on the relativistic formula:
+ * <pre>
+ *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+ * </pre>
+ * where &beta; = v / c.
+ *
+ * @param vel   [km/s] velocity (i.e. rate) of recession.
+ * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if
+ *              the input velocity is invalid (i.e., it exceeds the speed of light).
+ *
+ * @sa novas_z2v()
+ */
+//double novas_v2z(double vel) {
+//  vel *= 1e3 / C;   // v -> beta
+//  if(fabs(vel) > 1.0))
+//    return NAN;
+//  return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
+//}
+
+/**
+ * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of recession.
+ * It is based on the relativistic formula:
+ * <pre>
+ *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+ * </pre>
+ * where &beta; = v / c.
+ *
+ * @param z   the redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>).
+ * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).
+ *
+ * @sa novas_v2z()
+ */
+static double novas_z2v(double z) {
+//  if(z <= -1.0)
+//    return NAN;
+  z += 1.0;
+  z *= z;
+  return 1e-3 * (z - 1.0) / (z + 1.0) * C;
+}
+
 /// \endcond
 
 /**
@@ -5143,11 +5185,8 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   // Include relativistic redhsift factor due to relative motion
   rel *= (1.0 + beta) / sqrt(1.0 - vdist2(vel_obs, vel_src) / C2);
 
-  // rel: (1+z) -> (1+z)^2
-  rel *= rel;
-
   // Convert observed radial velocity measure to kilometers/second.
-  return (rel - 1.0) / (rel + 1.0) * C / 1000.0;
+  return novas_z2v(rel - 1.0);
 }
 
 

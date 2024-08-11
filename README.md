@@ -136,29 +136,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
    the gravitational deflection due to the Sun being skipped.
     
- - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` applied relativistic corrections for a moving observer 
-   conditional on applying relativistic gravitational corrections (for Sun and/or Earth potential) for the observer. 
-   However, it seems more reasonable that the corrections for a moving observer should be applied always and
-   independently of the (optional) gravitational corrections.
-   
- - [__v1.1__] In the NOVAS C 3.1 implementation of `rad_vel()`, the Solar gravitational potential was ignored when 
-   calculating radial velocities for the Sun. Typically 'observing the Sun' means looking at its photosphere, As the 
-   light travels away from the Sun's photosphere towards the observer, it is redshifted. The NOVAS C implementation of 
-   `rad_vel()` has ignored this redshifting when the Sun was being observed.
-   
- - [__v1.1__] `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
-   radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 
-   direction towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction 
-   is the correct direction in which light was emitted from the source for sidereal objects. For Solar system sources 
-   we now reverse trace the deflected light to calculate the direction in which it was emitted from the source. As 
-   such, the radial velocities calculated should now be precise under all conditions. The typical errors of the old 
-   calculations were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection 
-   calculation.
-
- - [v1.1.1] The NOVAS C 3.1 implementation of `rad_vel()` applied relativistic corrections for moving source and 
-   observer both incorrectly and approximately. It applied separate time dilation factors for the motions of the 
-   source vs barycenter and the observer vs barycenter, rather than applying the factor for source vs observer. And,
-   it used an approximation for &gamma; that is appropriate only for v/c much less than 1.
+ - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` has a number of issues that produce inaccurate results. 
+   The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.
    
 
 -----------------------------------------------------------------------------
