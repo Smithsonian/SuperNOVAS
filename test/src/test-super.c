@@ -1572,13 +1572,14 @@ static int test_solar_system_observer() {
 
   for(i = 0; i < 3; i++) {
     gpos[i] += epos[i];
-    gvel[i] += evel[i];
+    // Relativistic addition of velocities.
+    gvel[i] = (gvel[i] + evel[i]) / (1.0 + gvel[i] * evel[i] / (NOVAS_C_AU_PER_DAY * NOVAS_C_AU_PER_DAY));
   }
 
   if(!is_ok("solar_system_observer:check:result:pos:1", check_equal_pos(opos, pos, 1e-9))) return 1;
   if(!is_ok("solar_system_observer:check:result:vel:1", check_equal_pos(ovel, vel, 1e-9))) return 1;
   if(!is_ok("solar_system_observer:check:result:pos:2", check_equal_pos(gpos, pos, 1e-9))) return 1;
-  if(!is_ok("solar_system_observer:check:result:vel:2", check_equal_pos(gvel, vel, 1e-9))) return 1;
+  if(!is_ok("solar_system_observer:check:result:vel:2", check_equal_pos(gvel, vel, 1e-9))) return 1; // TODO check rel.
 
   if(!is_ok("solar_system_observer:obs_posvel:pos:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, ovel))) return 1;
   if(!is_ok("solar_system_observer:obs_posvel:vel:null", obs_posvel(tdb, ut12tt, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, opos, NULL))) return 1;

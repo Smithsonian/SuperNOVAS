@@ -9,9 +9,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Changes expected for the next bug-fix release, possibly around 1 December 2024.
+Changes expected for the next bug-fix release, expected around 1 December 2024.
 
 ### Fixed
+
+ - #55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses
+   the actual relativistic velocity differential between the source and observer to apply the appropriate time 
+   dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike.
+   
+ - #55: Use relativistic formulae to add velocities (i.e. change velocity reference frame).
+
+
+### Added
 
 ### Changed
 
