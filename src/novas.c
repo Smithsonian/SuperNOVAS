@@ -6605,7 +6605,7 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
 
         for(i = 3; --i >= 0;) {
           posvel[i] -= pos[i];
-          posvel[i + 3] -= vel[i];
+          posvel[i + 3] = novas_add_vel(posvel[i + 3], vel[i]);
         }
       }
 
