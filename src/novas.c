@@ -36,8 +36,10 @@
 
 #ifndef DEFAULT_SOLSYS
 /// Will use solarsystem() and solarsystem_hp() that is linked with application
-#  define DEFAULT_SOLSYS 0
+#  define DEFAULT_SOLSYS    0
 #endif
+
+#define C2                  (C * C)   ///< [m^2/s^2] Speed of light squared
 
 // <---------- GLOBAL VARIABLES -------------->
 
@@ -276,6 +278,21 @@ double novas_vdist(const double *v1, const double *v2) {
  */
 double novas_vdot(const double *v1, const double *v2) {
   return (v1[0] * v2[0]) + (v1[1] * v2[1]) + (v1[2] * v2[2]);
+}
+
+static double novas_add_beta(double beta1, double beta2) {
+  return (beta1 + beta2) / (1 + beta1 * beta2);
+}
+
+/**
+ * Adds velocities define in AU/day, using the relativistic formula.
+ *
+ * @param v1  [AU/day] First component
+ * @param v2  [AU/day] Second component
+ * @return    [AU/day] The relativistically coadded sum of the input velocities.
+ */
+static double novas_add_vel(double v1, double v2) {
+  return novas_add_beta(v1 / C_AUDAY, v2 / C_AUDAY) * C_AUDAY;
 }
 
 /// \endcond
@@ -1594,7 +1611,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
         if(pos)
           pos[i] += pog[i];
         if(vel)
-          vel[i] += vog[i];
+          vel[i] = novas_add_vel(vel[i], vog[i]);
       }
 
       break;
@@ -4071,20 +4088,20 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       break;
 
     case NOVAS_OBSERVER_IN_EARTH_ORBIT: {               // Observer on near-earth spacecraft.
-      const double ivu = DAY / AU_KM;
+      const double kms = DAY / AU_KM;
       int i;
 
       // Convert units to AU and AU/day.
       for(i = 3; --i >= 0;) {
         pos1[i] = obs->near_earth.sc_pos[i] / AU_KM;
-        vel1[i] = obs->near_earth.sc_vel[i] * ivu;
+        vel1[i] = obs->near_earth.sc_vel[i] * kms;
       }
 
       break;
     }
 
     case NOVAS_AIRBORNE_OBSERVER: {                     // Airborne observer
-      const double ivu = DAY / AU_KM;
+      const double kms = DAY / AU_KM;
       observer surf = *obs;
       int i;
 
@@ -4095,7 +4112,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
 
       // Add in the aircraft motion
       for(i = 3; --i >= 0;)
-        vel1[i] += obs->near_earth.sc_vel[i] * ivu;
+        vel1[i] = novas_add_vel(vel1[i], obs->near_earth.sc_vel[i] * kms);
 
       break;
     }
@@ -4113,7 +4130,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
         if(pos)
           pos[i] = obs->near_earth.sc_pos[i] - pos1[i];
         if(vel)
-          vel[i] = obs->near_earth.sc_vel[i] - vel1[i];
+          vel[i] = novas_add_vel(obs->near_earth.sc_vel[i], -vel1[i]);
       }
 
       // Already in GCRS...
@@ -5019,10 +5036,9 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
 double rad_vel2(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
         double d_obs_geo, double d_obs_sun, double d_src_sun) {
   static const char *fn = "rad_vel2";
-  static const double c2 = C * C, toms = AU / DAY;
 
   double rel; // redshift factor i.e., f_src / fobs = (1 + z)
-  double uk[3], r, phi, kvs, kvobs, kv;
+  double uk[3], r, phi, beta_src, beta_obs, beta;
   int i;
 
   if(!source) {
@@ -5051,7 +5067,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   // Compute relativistic potential at observer.
   if((d_obs_geo != 0.0) || (d_obs_sun != 0.0)) {
     // Lindegren & Dravins eq. (41), second factor in parentheses.
-    rel = 1.0 - phi / c2;
+    rel = 1.0 - phi / C2;
   }
   else {
     // Use average value for an observer on the surface of Earth
@@ -5077,7 +5093,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
 
       // Compute radial velocity measure of sidereal source rel. barycenter
       // Including proper motion
-      kvs = 1e3 * star->radialvelocity;
+      beta_src = 1e3 * star->radialvelocity / C;
 
       if(star->parallax > 0.0) {
         double du[3];
@@ -5086,7 +5102,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
         du[1] = uk[1] - (cosdec * sin(ra));
         du[2] = uk[2] - sin(dec);
 
-        kvs += novas_vdot(vel_src, du) * toms;
+        beta_src += novas_vdot(vel_src, du) / C_AUDAY;
       }
 
       break;
@@ -5101,10 +5117,10 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       phi = (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
       // Gravitational redshift at source
-      rel /= 1.0 - phi / c2;
+      rel /= 1.0 - phi / C2;
 
       // Compute observed radial velocity measure of a planet rel. barycenter
-      kvs = novas_vdot(uk, vel_src) * toms;
+      beta_src = novas_vdot(uk, vel_src) / C_AUDAY;
 
       break;
 
@@ -5119,13 +5135,13 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     uk[i] = pos_det[i] / r;
 
   // Radial velocity measure of observer rel. barycenter
-  kvobs = novas_vdot(uk, vel_obs) * toms;
+  beta_obs = novas_vdot(uk, vel_obs) / C_AUDAY;
 
   // Differential barycentric radial velocity measure (relativistic formula)
-  kv = (kvs - kvobs) / (1.0 - kvs * kvobs / c2);
+  beta = novas_add_beta(beta_src, -beta_obs);
 
   // Include relativistic redhsift factor due to relative motion
-  rel *= (1.0 + kv / C) / sqrt(1.0 - vdist2(vel_obs, vel_src) / c2);
+  rel *= (1.0 + beta) / sqrt(1.0 - vdist2(vel_obs, vel_src) / C2);
 
   // rel: (1+z) -> (1+z)^2
   rel *= rel;
