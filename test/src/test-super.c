@@ -782,7 +782,7 @@ static int test_source() {
 static int test_make_planet() {
   object mars;
 
-  make_planet(NOVAS_MARS, &mars);
+  if(!is_ok("make_panet", make_planet(NOVAS_MARS, &mars))) return 1;
 
   if(!is_ok("make_planet:type", mars.type != NOVAS_PLANET)) return 1;
   if(!is_ok("make_planet:number", mars.number != NOVAS_MARS)) return 1;
@@ -1258,6 +1258,23 @@ static int test_refract_astro() {
   return 0;
 }
 
+static int test_v2z() {
+  int v;
+
+  for(v = 0.0; v < NOVAS_C; v += 10000000) {
+    char label[40];
+    double zexp = sqrt((1.0 + v / NOVAS_C) / (1.0 - v / NOVAS_C)) - 1.0;
+
+    sprintf(label, "v2z:v:%d", v);
+    if(!is_equal(label, novas_v2z(v / 1000.0), zexp, 1e-6)) return 1;
+
+    sprintf(label, "v2z:z2v:v:%d", v);
+    if(!is_equal(label, novas_z2v(zexp), v / 1000.0, 1e-6)) return 1;
+  }
+
+  return 0;
+}
+
 static int test_case() {
   object o;
 
@@ -1301,6 +1318,22 @@ static int test_make_object() {
   cat_entry c = {};
 
   if(!is_ok("make_object:name:null", make_object(NOVAS_CATALOG_OBJECT, 1, NULL, &c, &o))) return 1;
+
+  return 0;
+}
+
+static int test_make_redshifted_object() {
+  object gal;
+
+  if(!is_ok("make_redshifted_object", make_redshifted_object("test", 1.0, 2.0, 3.0, &gal))) return 1;
+
+  if(!is_ok("make_redshifted_object:type", gal.type != NOVAS_CATALOG_OBJECT)) return 1;
+  if(!is_equal("make_redshifted_object:ra", gal.star.ra, 1.0, 1e-12)) return 1;
+  if(!is_equal("make_redshifted_object:dec", gal.star.dec, 2.0, 1e-12)) return 1;
+  if(!is_equal("make_redshifted_object:rv", novas_v2z(gal.star.radialvelocity), 3.0, 1e-12)) return 1;
+  if(!is_ok("make_redshifted_object:ra", gal.star.promora != 0.0)) return 1;
+  if(!is_ok("make_redshifted_object:ra", gal.star.promodec != 0.0)) return 1;
+  if(!is_ok("make_redshifted_object:ra", gal.star.parallax != 0.0)) return 1;
 
   return 0;
 }
@@ -2036,6 +2069,10 @@ int main(int argc, char *argv[]) {
   if(test_change_observer()) n++;
   if(test_transform()) n++;
   if(test_app_hor2()) n++;
+
+  // v1.2
+  if(test_v2z()) n++;
+  if(test_make_redshifted_object()) n++;
 
   n += test_dates();
 

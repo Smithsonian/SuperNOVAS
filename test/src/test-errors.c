@@ -144,6 +144,29 @@ static int test_make_cat_object() {
   return n;
 }
 
+static int test_make_redshifted_object() {
+  object source;
+  int n = 0;
+
+  if(check("make_redshifted_object", -1, make_redshifted_object("TEST", 0.0, 0.0, 0.0, NULL))) n++;
+  if(check("make_redshifted_object:z:lo", -1, make_redshifted_object("TEST", 0.0, 0.0, -1.0, &source))) n++;
+
+  return n;
+}
+
+static int test_v2z() {
+  int n = 0;
+
+  if(check_nan("v2z:hi", novas_v2z(NOVAS_C / 1000.0 + 0.01))) n++;
+  return n;
+}
+
+static int test_z2v() {
+  int n = 0;
+
+  if(check_nan("z2v:-1", novas_z2v(-1.0))) n++;
+  return n;
+}
 
 static int test_refract() {
   on_surface o = {};
@@ -1374,6 +1397,9 @@ static int test_inv_transform() {
 int main() {
   int n = 0;
 
+  if(test_v2z()) n++;
+  if(test_z2v()) n++;
+
   if(test_make_on_surface()) n++;
   if(test_make_in_space()) n++;
   if(test_make_observer()) n++;
@@ -1381,6 +1407,7 @@ int main() {
 
   if(test_make_object()) n++;
   if(test_make_cat_object()) n++;
+  if(test_make_redshifted_object()) n++;
   if(test_make_ephem_object()) n++;
   if(test_make_planet()) n++;
   if(test_make_cat_entry()) n++;
@@ -1485,7 +1512,6 @@ int main() {
   if(test_transform_vector()) n++;
   if(test_transform_sky_pos()) n++;
   if(test_inv_transform()) n++;
-
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

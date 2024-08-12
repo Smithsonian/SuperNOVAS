@@ -294,6 +294,8 @@ static double novas_add_beta(double beta1, double beta2) {
 static double novas_add_vel(double v1, double v2) {
   return novas_add_beta(v1 / C_AUDAY, v2 / C_AUDAY) * C_AUDAY;
 }
+/// \endcond
+
 
 /**
  * Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>).
@@ -308,13 +310,16 @@ static double novas_add_vel(double v1, double v2) {
  *              the input velocity is invalid (i.e., it exceeds the speed of light).
  *
  * @sa novas_z2v()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  */
-//double novas_v2z(double vel) {
-//  vel *= 1e3 / C;   // v -> beta
-//  if(fabs(vel) > 1.0))
-//    return NAN;
-//  return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
-//}
+double novas_v2z(double vel) {
+  vel *= 1e3 / C;   // [km/s] -> beta
+  if(fabs(vel) > 1.0)
+    return NAN;
+  return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
+}
 
 /**
  * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of recession.
@@ -328,16 +333,17 @@ static double novas_add_vel(double v1, double v2) {
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).
  *
  * @sa novas_v2z()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  */
-static double novas_z2v(double z) {
-//  if(z <= -1.0)
-//    return NAN;
+double novas_z2v(double z) {
+  if(z <= -1.0)
+    return NAN;
   z += 1.0;
   z *= z;
   return 1e-3 * (z - 1.0) / (z + 1.0) * C;
 }
-
-/// \endcond
 
 /**
  * Computationally efficient implementation of 3D rotation with small angles.
@@ -5071,6 +5077,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * @sa rad_vel()
  * @sa place()
  * @sa novas_sky_pos()
+ * @sa novas_v2z()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -7290,7 +7297,7 @@ void novas_case_sensitive(int value) {
 }
 
 /**
- * Populates and object data structure using the parameters provided. By default (for
+ * Populates an object data structure using the parameters provided. By default (for
  * compatibility with NOVAS C) source names are converted to upper-case internally. You can
  * however enable case-sensitive processing by calling novas_case_sensitive() before.
  *
@@ -7311,6 +7318,7 @@ void novas_case_sensitive(int value) {
  *
  * @sa novas_case_sensitive()
  * @sa make_cat_object()
+ * @sa make_redshifted_object()
  * @sa make_planet()
  * @sa make_ephem_object()
  * @sa place()
@@ -7361,16 +7369,16 @@ short make_object(enum novas_object_type type, long number, const char *name, co
 }
 
 /**
- * Populates and object data structure with the data for a catalog source.
+ * Populates an object data structure with the data for a catalog source.
  *
  * @param star          Pointer to structure to populate with the catalog data for a celestial
  *                      object located outside the solar system.
  * @param[out] source   Pointer to the celestial object data structure to be populated.
- * @return              0 if successful, or -1 if 'cel_obj' is NULL or when type is
- *                      NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is
- *                      invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.
+ * @return              0 if successful, or -1 if either argument is NULL or
+ *                      5 if 'name' is too long.
  *
  * @sa make_cat_entry()
+ * @sa make_redshifted_object()
  * @sa make_planet()
  * @sa make_ephem_object()
  * @sa place()
@@ -7384,6 +7392,42 @@ int make_cat_object(const cat_entry *star, object *source) {
     return novas_error(-1, EINVAL, "make_cat_object", "NULL parameter: star=%p, source=%p", star, source);
   make_object(NOVAS_CATALOG_OBJECT, star->starnumber, star->starname, star, source);
   return 0;
+}
+
+/**
+ * Populates a celestial object data structure with the parameters for a redhifted catalog
+ * source, such as a distant quasar or galaxy. It is similar to `make_cat_object()` except
+ * that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax
+ * and no proper motion (appropriately for a distant redshifted source). The catalog name
+ * is set to `EXT` to indicate an extragalactic source, and the catalog number defaults to 0.
+ * The user may change these default field values as appropriate afterwards, if necessary.
+ *
+ * @param name        Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL.
+ * @param ra          [h] Right ascension of the object (hours).
+ * @param dec         [deg] Declination of the object (degrees).
+ * @param z           Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 =
+ *                    f<sub>rest</sub> / f<sub>obs</sub> - 1).
+ * @param[out] source Pointer to structure to populate.
+ * @return            0 if successful, or 5 if 'name' is too long, else -1 if the 'source'
+ *                    pointer is NULL.
+ *
+ * @sa make_cat_object()
+ * @sa novas_v2z()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
+ */
+int make_redshifted_object(const char *name, double ra, double dec, double z, object *source) {
+  static const char *fn = "make_redshifted_source";
+
+  cat_entry c;
+  double v = novas_z2v(z);
+
+  if(isnan(v))
+    return novas_error(-1, EINVAL, fn, "invalid redshift value: %f\n", z);
+
+  prop_error(fn, make_cat_entry(name, "EXT", 0, ra, dec, 0.0, 0.0, 0.0, v, &c), 0);
+  return make_cat_object(&c, source);
 }
 
 /**
