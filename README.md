@@ -97,6 +97,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
    
+ - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This was a documented issue of NOVAS C 3.1.
+     
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
    observed body rather than at the time that light arrives to the observer. This correction was done properly for 
@@ -130,9 +133,6 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
  
- - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This was a documented issue of NOVAS C 3.1.
-   
  - [__v1.1__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
    the gravitational deflection due to the Sun being skipped.
@@ -146,7 +146,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 <a name="compatibility"></a>
 ## Compatibility with NOVAS C 3.1
 
-SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. 
+SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary (ABI) 
+compatibility. 
 
 If you have code that was written for NOVAS C 3.1, it should work with SuperNOVAS as is, without modifications. Simply 
 (re)build your application against SuperNOVAS, and you are good to go. 
