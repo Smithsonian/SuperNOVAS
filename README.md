@@ -77,7 +77,8 @@ Outside contributions are very welcome. See
 
 Here are some links to other SuperNOVAS related content online:
 
- - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io.
+ - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io, including 
+   [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via JPL HORIZONS.
