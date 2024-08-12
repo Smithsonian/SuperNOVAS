@@ -983,7 +983,7 @@ A predictable release schedule and process can help manage expectations and redu
 alike.
 
 Releases of the library shall follow a quarterly release schedule. You may expect upcoming releases 
-to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as-needed
+to be published around __February 1__, __May 1__, __August 1__, and/or __November 1__ each year, on an as-needed
 basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that 
 addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a new release will 
 actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 
