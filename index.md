@@ -44,7 +44,7 @@ structure, which allows non-bloated installations of just the parts that are nee
  | `supernovas-doc`         | `libsupernovas-doc`       |
  
 
-The differences in package naming are due to the different naming policies for RefdHat/Fedora vs Debian. Some files
+The differences in package naming are due to the different naming policies for RedHat/Fedora vs Debian. Some files
 are installed at different locations and/or with different names for RMS vs Debian, also owing to the differences in
 packaging policies between the distibutions. Otherwise the RPM and Debian packages provide identical contents and 
 features.
