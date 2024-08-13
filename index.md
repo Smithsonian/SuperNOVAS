@@ -28,6 +28,26 @@ __Downloads__
    your [Doxygen](https://www.doxygen.nl/) documentation to that of SuperNOVAS
 
 
+__Linux Packages__
+
+SuperNOVAS is also available in packaged for for both RPM and Debian-based Linux distros. It has the following package
+structure, which allows non-bloated installations of just the parts that are needed for the particular use case(s):
+
+ | __Fedora RPM__           |  __Debian package__       | __Description__               |
+ |--------------------------|---------------------------|-------------------------------|
+ | `supernovas`             | `libsupernovas1`          | Runtime shared library        |
+ | `supernovas-cio-data`    | `libsupernovas-cio-data`  | Optional CIO locator data     |
+ | `supernovas-solsys1`     | `libsolsys1_1`            | Plugin for JPL PLEPH routines |
+ | `supernovas-solsys2`     | `libsolsys2_1`            | Plugin for JPL DE200--DE421   |
+ | `supernovas-devel`       | `libsupernovas-dev`       | C headers and examples        |
+ | `supernovas-doc`         | `libsupernovas-doc`       | API documentation etc.        |
+ 
+The differences in package naming are due to the different naming policies for RefdHat/Fedora vs Debian. Some files
+are installed at different locations and/or with different names for RMS vs Debian, also owing to the differences in
+packaging policies between the distibutions. Otherwise the RPM and Debian packages provide identical contents and 
+features.
+ 
+
 __Documentation__
 
  - [User's guide](doc/README.md) (`README.md`)
