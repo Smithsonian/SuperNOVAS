@@ -28,6 +28,16 @@ __Downloads__
    your [Doxygen](https://www.doxygen.nl/) documentation to that of SuperNOVAS
 
 
+__Documentation__
+
+ - [User's guide](doc/README.md) (`README.md`)
+ - [API Documentation](apidoc/html/files.html)
+ - [History of changes](doc/CHANGELOG.md) (`CHANGELOG.md`)
+ - [Issues](https://github.com/Smithsonian/SuperNOVAS/issues) affecting SuperNOVAS releases (past and/or present)
+ - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/issues) &ndash; ask a question, provide feedback, or 
+   check announcements.
+
+
 __Linux Packages__
 
 SuperNOVAS is also available in packaged for for both RPM and Debian-based Linux distros. It has the following package
@@ -49,14 +59,5 @@ are installed at different locations and/or with different names for RMS vs Debi
 packaging policies between the distibutions. Otherwise the RPM and Debian packages provide identical contents and 
 features.
  
-
-__Documentation__
-
- - [User's guide](doc/README.md) (`README.md`)
- - [API Documentation](apidoc/html/files.html)
- - [History of changes](doc/CHANGELOG.md) (`CHANGELOG.md`)
- - [Issues](https://github.com/Smithsonian/SuperNOVAS/issues) affecting SuperNOVAS releases (past and/or present)
- - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/issues) &ndash; ask a question, provide feedback, or 
-   check announcements.
 
  
