@@ -600,7 +600,7 @@ typedef struct {
   double promora;                   ///< [mas/yr] ICRS proper motion in right ascension
   double promodec;                  ///< [mas/yr] ICRS proper motion in declination
   double parallax;                  ///< [mas] parallax
-  double radialvelocity;            ///< [km/s] radial velocity
+  double radialvelocity;            ///< [km/s] catalog radial velocity
 } cat_entry;
 
 /**
@@ -1255,10 +1255,21 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
 double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el0);
 
 
+// ---------------------- Added in 1.2.0 -------------------------
+int make_redshifted_object(const char *name, double ra, double dec, double z, object *source);
+
+double novas_v2z(double vel);
+
+double novas_z2v(double z);
+
+
 
 // <================= END of SuperNOVAS API =====================>
 
 #include "solarsystem.h"
+
+
+
 
 
 // <================= SuperNOVAS internals ======================>

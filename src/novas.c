@@ -294,6 +294,32 @@ static double novas_add_beta(double beta1, double beta2) {
 static double novas_add_vel(double v1, double v2) {
   return novas_add_beta(v1 / C_AUDAY, v2 / C_AUDAY) * C_AUDAY;
 }
+/// \endcond
+
+
+/**
+ * Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>).
+ * It is based on the relativistic formula:
+ * <pre>
+ *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+ * </pre>
+ * where &beta; = v / c.
+ *
+ * @param vel   [km/s] velocity (i.e. rate) of recession.
+ * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if
+ *              the input velocity is invalid (i.e., it exceeds the speed of light).
+ *
+ * @sa novas_z2v()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+double novas_v2z(double vel) {
+  vel *= 1e3 / C;   // [km/s] -> beta
+  if(fabs(vel) > 1.0)
+    return NAN;
+  return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
+}
 
 /**
  * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of recession.
@@ -307,16 +333,17 @@ static double novas_add_vel(double v1, double v2) {
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).
  *
  * @sa novas_v2z()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  */
-static double novas_z2v(double z) {
-//  if(z <= -1.0)
-//    return NAN;
+double novas_z2v(double z) {
+  if(z <= -1.0)
+    return NAN;
   z += 1.0;
   z *= z;
   return 1e-3 * (z - 1.0) / (z + 1.0) * C;
 }
-
-/// \endcond
 
 /**
  * Computationally efficient implementation of 3D rotation with small angles.
@@ -4223,6 +4250,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * @sa rad_vel()
  * @sa place()
  * @sa novas_sky_pos()
+ * @sa novas_v2z()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -6333,7 +6361,7 @@ void novas_case_sensitive(int value) {
 }
 
 /**
- * Populates and object data structure using the parameters provided. By default (for
+ * Populates an object data structure using the parameters provided. By default (for
  * compatibility with NOVAS C) source names are converted to upper-case internally. You can
  * however enable case-sensitive processing by calling novas_case_sensitive() before.
  *
@@ -6354,6 +6382,7 @@ void novas_case_sensitive(int value) {
  *
  * @sa novas_case_sensitive()
  * @sa make_cat_object()
+ * @sa make_redshifted_object()
  * @sa make_planet()
  * @sa make_ephem_object()
  * @sa place()
