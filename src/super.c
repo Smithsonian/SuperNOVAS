@@ -1021,6 +1021,42 @@ int make_ephem_object(const char *name, long num, object *body) {
 }
 
 /**
+ * Populates a celestial object data structure with the parameters for a redhifted catalog
+ * source, such as a distant quasar or galaxy. It is similar to `make_cat_object()` except
+ * that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax
+ * and no proper motion (appropriately for a distant redshifted source). The catalog name
+ * is set to `EXT` to indicate an extragalactic source, and the catalog number defaults to 0.
+ * The user may change these default field values as appropriate afterwards, if necessary.
+ *
+ * @param name        Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL.
+ * @param ra          [h] Right ascension of the object (hours).
+ * @param dec         [deg] Declination of the object (degrees).
+ * @param z           Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 =
+ *                    f<sub>rest</sub> / f<sub>obs</sub> - 1).
+ * @param[out] source Pointer to structure to populate.
+ * @return            0 if successful, or 5 if 'name' is too long, else -1 if the 'source'
+ *                    pointer is NULL.
+ *
+ * @sa make_cat_object()
+ * @sa novas_v2z()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
+ */
+int make_redshifted_object(const char *name, double ra, double dec, double z, object *source) {
+  static const char *fn = "make_redshifted_source";
+
+  cat_entry c;
+  double v = novas_z2v(z);
+
+  if(isnan(v))
+    return novas_error(-1, EINVAL, fn, "invalid redshift value: %f\n", z);
+
+  prop_error(fn, make_cat_entry(name, "EXT", 0, ra, dec, 0.0, 0.0, 0.0, v, &c), 0);
+  return make_cat_object(&c, source);
+}
+
+/**
  * Populates an 'observer' data structure for an observer moving relative to the surface of Earth,
  * such as an airborne observer. Airborne observers have an earth fixed momentary location,
  * defined by longitude, latitude, and altitude, the same was as for a stationary observer on
