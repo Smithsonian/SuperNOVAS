@@ -2103,6 +2103,10 @@ int main(int argc, char *argv[]) {
   if(test_v2z()) n++;
   if(test_make_redshifted_object()) n++;
 
+  // v1.2
+  if(test_v2z()) n++;
+  if(test_make_redshifted_object()) n++;
+
   n += test_dates();
 
   return n;
