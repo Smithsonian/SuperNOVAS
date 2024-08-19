@@ -4919,11 +4919,12 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed
- * of light.  For a solar system body, it applies to a fictitious emitter at the center of the
- * observed object, assumed massless (no gravitational red shift), and does not in general
- * apply to reflected light.  For stars, it includes all effects, such as gravitational
- * redshift, contained in the catalog barycentric radial velocity measure, a scalar derived
- * from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
+ * of light. For the Sun, it includes gravitational corrections for light originating at the Sun's
+ * photosphere. For a solar system body, other than the Sun itself, it applies to a fictitious
+ * emitter at the center of the observed object, assumed massless (no gravitational red shift),
+ * and does not in general apply to reflected light. For stars, it includes all effects, such as
+ * gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar
+ * derived from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
  * independently of spectroscopy) can be treated like solar system objects.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
@@ -5009,12 +5010,13 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * the different directions in which light is emitted vs in which it detected, e.g. when it is
  * gravitationally deflected.
  *
- * Radial velocity is here defined as the radial velocity measure (z) times the speed
- * of light.  For a solar system body, it applies to a fictitious emitter at the center of the
- * observed object, assumed massless (no gravitational red shift), and does not in general
- * apply to reflected light.  For stars, it includes all effects, such as gravitational
- * redshift, contained in the catalog barycentric radial velocity measure, a scalar derived
- * from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
+ * Radial velocity is here defined as the radial velocity measure (z) times the speed of light.
+ * For the Sun, it includes gravitational corrections for light originating at the Sun's
+ * photosphere. For a solar system body, other than the Sun itself, it applies to a fictitious
+ * emitter at the center of the observed object, assumed massless (no gravitational red shift),
+ * and does not in general apply to reflected light. For stars, it includes all effects, such as
+ * gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar
+ * derived from spectroscopy.  Nearby stars with a known kinematic velocity vector (obtained
  * independently of spectroscopy) can be treated like solar system objects.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
