@@ -4108,6 +4108,7 @@ double grav_redshift(double M_kg, double r_m) {
  * @param vrad    [km/s] Radial velocity
  * @param z       Redshift correction to apply
  * @return        [km/s] The redshift corrected radial velocity or NAN if the redshift value is invalid.
+ *                (errno will be set to EINVAL)
  *
  * @sa unredshift_vrad()
  * @sa grav_redshift()
@@ -4116,6 +4117,10 @@ double grav_redshift(double M_kg, double r_m) {
  * @author Attila Kovacs
  */
 double redshift_vrad(double vrad, double z) {
+  if(z <= -1.0) {
+    novas_error(-1, EINVAL, "redshift_vrad", "invalid redshift value: z=%g\n", z);
+    return NAN;
+  }
   return novas_z2v((1.0 + novas_v2z(vrad)) * (1.0 + z) - 1.0);
 }
 
@@ -4124,7 +4129,8 @@ double redshift_vrad(double vrad, double z) {
  *
  * @param vrad    [km/s] Radial velocity
  * @param z       Redshift correction to apply
- * @return        [km/s] The radial velocity without the redshift correction or NAN if the redshift value is invalid.
+ * @return        [km/s] The radial velocity without the redshift correction or NAN if the redshift value is
+ *                invalid. (errno will be set to EINVAL)
  *
  * @sa redshift_vrad()
  * @sa grav_redshift()
@@ -4133,9 +4139,29 @@ double redshift_vrad(double vrad, double z) {
  * @author Attila Kovacs
  */
 double unredshift_vrad(double vrad, double z) {
+  if(z <= -1.0) {
+    novas_error(-1, EINVAL, "unredshift_vrad", "invalid redshift value: z=%g\n", z);
+    return NAN;
+  }
   return novas_z2v((1.0 + novas_v2z(vrad)) / (1.0 + z) - 1.0);
 }
 
+
+/**
+ * Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or
+ * corrections for a moving observer.
+ *
+ * @param z1    One of the redshift values
+ * @param z2    The other redshift value
+ * @return      The compound redshift value, ot NAN if either input redshift is invalid (errno will be set to EINVAL).
+ */
+double redhift_add(double z1, double z2) {
+  if(z1 <= -1.0 || z2 <= -1.0) {
+    novas_error(-1, EINVAL, "redshift_add", "invalid redshift value: z1=%g, z2=%g\n", z1, z2);
+    return NAN;
+  }
+  return (1.0 + z1) * (1.0 + z2) - 1.0;
+}
 
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
