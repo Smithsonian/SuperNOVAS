@@ -161,11 +161,8 @@ which affected prior SuperNOVAS releases.
  - #42: `cio_array()` can now parse the original ASCII CIO locator data file (`data/CIO_RA.TXT`) efficiently also, 
    thus no longer requiring a platform-specific binary translation via the `cio_file` tool.
 
- - #51: In the NOVAS C 3.1 implementation of `rad_vel()`, the Solar gravitational potential was ignored when 
-   calculating radial velocities for the Sun. Typically 'observing the Sun' means looking at its photosphere. As the 
-   light travels away from the Sun's photosphere towards the observer, it is redshifted. The NOVAS C implementation of 
-   `rad_vel()` has ignored this redshifting when the Sun was being observed. From now on, we shall gravitationally 
-   reference radial velocities when observing the Sun to its photosphere.
+ - #51: The NOVAS C implementation of `rad_vel()` has ignored this redshifting when the Sun was being observed. From 
+   now on, we shall gravitationally reference radial velocities when observing the Sun to its photosphere.
 
  - `cio_file` tool parses interval from header rather than the less precise differencing of the first two record
    timestamps. This leads to `cio_array()` being more accurately centered on matching date entries, e.g. J2000.
