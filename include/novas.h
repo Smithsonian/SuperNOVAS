@@ -1268,13 +1268,16 @@ double redshift_vrad(double vrad, double z);
 
 double unredshift_vrad(double vrad, double z);
 
+double novas_z_add(double z1, double z2);
+
+double novas_z_inv(double z);
+
 
 // <================= END of SuperNOVAS API =====================>
 
+
+
 #include "solarsystem.h"
-
-
-
 
 
 // <================= SuperNOVAS internals ======================>

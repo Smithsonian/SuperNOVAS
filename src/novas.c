@@ -4160,6 +4160,7 @@ double unredshift_vrad(double vrad, double z) {
     novas_error(-1, EINVAL, fn, "invalid redshift value: z=%g", z);
     return NAN;
   }
+  z0 = novas_v2z(vrad);
   if(isnan(z0)) novas_trace(fn, -1, 0);
   return novas_z2v((1.0 + z0) / (1.0 + z) - 1.0);
 }
@@ -4196,7 +4197,7 @@ double novas_z_add(double z1, double z2) {
  */
 double novas_z_inv(double z) {
   if(z <= -1.0) {
-    novas_error(-1, EINVAL, novas_z_inv(), "invalid redshift value: z=%g", z);
+    novas_error(-1, EINVAL, "novas_z_inv", "invalid redshift value: z=%g", z);
     return NAN;
   }
   return 1.0 / (1.0 + z) - 1.0;
