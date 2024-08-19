@@ -72,14 +72,13 @@ which affected prior SuperNOVAS releases.
    `rad_vel()` has ignored this redshifting when the Sun was being observed. From now on, we shall gravitationally 
    reference radial velocities when observing the Sun to its photosphere.
 
- - #34: `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
-   radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 
-   direction towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction 
-   is the correct direction in which light was emitted from the source for sidereal objects. For Solar system sources 
-   we now reverse trace the deflected light to calculate the direction in which it was emitted from the source. As 
-   such, the radial velocities calculated should now be precise under all conditions. The typical errors of the old 
-   calculations were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection 
-   calculation.
+ - #34: `place()` radial velocities were not quite correct in prior SuperNOVAS releases. The radial velocity 
+   calculation now precedes aberration, since the radial velocity that is observed is in the geometric direction 
+   towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction is the 
+   correct direction in which light was emitted from the source for sidereal objects. For Solar system sources we now 
+   reverse trace the deflected light to calculate the direction in which it was emitted from the source. As such, the 
+   radial velocities calculated should now be precise under all conditions. The typical errors of the old calculations 
+   were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection calculation.
 
  - #24: Bungled definition of `SUPERNOVAS_VERSION_STRING` in `novas.h` in v1.0. 
  
