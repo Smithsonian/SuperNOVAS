@@ -310,6 +310,7 @@ static double novas_add_vel(double v1, double v2) {
  *              the input velocity is invalid (i.e., it exceeds the speed of light).
  *
  * @sa novas_z2v()
+ * @sa novas_z_add()
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -333,6 +334,7 @@ double novas_v2z(double vel) {
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).
  *
  * @sa novas_v2z()
+ * @sa novas_redshift_vrad()
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -3159,7 +3161,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
 
   // Sine and cosine coefficients for t^1.
   const double se1[2] = //
-          { -0.87e-6, +0.00e-6 };
+  { -0.87e-6, +0.00e-6 };
 
   novas_delaunay_args fa2;
   double fa[14];
@@ -4087,6 +4089,10 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * @param r_m     [m] Radius at which light is emitted.
  * @return        The gravitational redshift (_z_) for an observer at very large  (infinite) distance from the gravitating body.
  *
+ * @sa redshift_vrad()
+ * @sa unredshift_vrad()
+ * @sa novas_z_add()
+ *
  * @since 1.2
  * @author Attila Kovacs
  */
@@ -4103,7 +4109,7 @@ double grav_redshift(double M_kg, double r_m) {
  * Applies an incremental redshift correction to a radial velocity. For example, you may use this function to
  * correct a radial velocity calculated by `rad_vel()` or `rad_vel2()` for a Solar-system body to account for
  * the gravitational redshift for light originating at a specific distance away from the body. For the Sun, you
- * may want to undo the redhift correction applied for the photosphere using `unredshift_vrad()` first.
+ * may want to undo the redshift correction applied for the photosphere using `unredshift_vrad()` first.
  *
  * @param vrad    [km/s] Radial velocity
  * @param z       Redshift correction to apply
@@ -4112,20 +4118,25 @@ double grav_redshift(double M_kg, double r_m) {
  *
  * @sa unredshift_vrad()
  * @sa grav_redshift()
+ * @sa novas_z_add()
  *
  * @since 1.2
  * @author Attila Kovacs
  */
 double redshift_vrad(double vrad, double z) {
+  static const char *fn = "redshift_vrad";
+  double z0;
   if(z <= -1.0) {
-    novas_error(-1, EINVAL, "redshift_vrad", "invalid redshift value: z=%g\n", z);
+    novas_error(-1, EINVAL, fn, "invalid redshift value: z=%g\n", z);
     return NAN;
   }
-  return novas_z2v((1.0 + novas_v2z(vrad)) * (1.0 + z) - 1.0);
+  z0 = novas_v2z(vrad);
+  if(isnan(z0)) novas_trace(fn, -1, 0);
+  return novas_z2v((1.0 + z0) * (1.0 + z) - 1.0);
 }
 
 /**
- * Undoes an incremental redshift correction to a radial velocity.
+ * Undoes an incremental redshift correction that was applied to radial velocity.
  *
  * @param vrad    [km/s] Radial velocity
  * @param z       Redshift correction to apply
@@ -4139,25 +4150,31 @@ double redshift_vrad(double vrad, double z) {
  * @author Attila Kovacs
  */
 double unredshift_vrad(double vrad, double z) {
+  static const char *fn = "unredshift_vrad";
+  double z0;
   if(z <= -1.0) {
-    novas_error(-1, EINVAL, "unredshift_vrad", "invalid redshift value: z=%g\n", z);
+    novas_error(-1, EINVAL, fn, "invalid redshift value: z=%g\n", z);
     return NAN;
   }
-  return novas_z2v((1.0 + novas_v2z(vrad)) / (1.0 + z) - 1.0);
+  if(isnan(z0)) novas_trace(fn, -1, 0);
+  return novas_z2v((1.0 + z0) / (1.0 + z) - 1.0);
 }
-
 
 /**
  * Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or
- * corrections for a moving observer.
+ * corrections for a moving observer. It's effectively using (1 + z) = (1 + z1) * (1 + z2).
  *
  * @param z1    One of the redshift values
  * @param z2    The other redshift value
  * @return      The compound redshift value, ot NAN if either input redshift is invalid (errno will be set to EINVAL).
+ *
+ * @sa grav_redshift()
+ * @sa redshift_vrad()
+ * @sa unredshift_vrad()
  */
-double redhift_add(double z1, double z2) {
+double novas_z_add(double z1, double z2) {
   if(z1 <= -1.0 || z2 <= -1.0) {
-    novas_error(-1, EINVAL, "redshift_add", "invalid redshift value: z1=%g, z2=%g\n", z1, z2);
+    novas_error(-1, EINVAL, "novas_z_add", "invalid redshift value: z1=%g, z2=%g\n", z1, z2);
     return NAN;
   }
   return (1.0 + z1) * (1.0 + z2) - 1.0;
@@ -5091,8 +5108,8 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
 
   // Expression given in USNO Circular 179, eq. 2.6.
   const double d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
-          + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-          + 0.000010 * t * sin(628.3076 * t + 4.2490);
+  + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+  + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
   // The simpler formula with a precision of ~30 us.
   //  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
