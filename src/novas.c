@@ -4181,6 +4181,23 @@ double novas_z_add(double z1, double z2) {
 }
 
 /**
+ * Returns the inverse of a redshift value, that is the redshift that when compounded with the original,
+ * e.g. via `novas_z_add()` will result in zero redshift overall.
+ *
+ * @param z     A redhift value
+ * @return      The redshift value that cancels out the input redshift.
+ *
+ * @sa novas_z_add()
+ */
+double novas_z_inv(double z) {
+  if(z <= -1.0) {
+    novas_error(-1, EINVAL, novas_z_inv(), "invalid redshift value: z=%g\n", z);
+    return NAN;
+  }
+  return 1.0 / (1.0 + z) - 1.0;
+}
+
+/**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed of
  * light. For major planets (and Sun and Moon), it includes gravitational corrections for light
