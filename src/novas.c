@@ -1700,6 +1700,9 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  *     <li>Klioner, S. (2003), Astronomical Journal 125, 1580-1597.</li>
+ *     <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is
+ * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
+ * calculated for a massless Sun).</li>
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
@@ -4962,6 +4965,9 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * REFERENCES:
  * <ol>
  * <li>Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201.</li>
+ * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is
+ * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
+ * calculated for a massless Sun).</li>
  * </ol>
  *
  * @param source        Celestial object observed
