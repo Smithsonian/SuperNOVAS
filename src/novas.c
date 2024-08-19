@@ -4080,6 +4080,64 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
 }
 
 /**
+ * Returns the gravitational redshift (_z_) for light emitted near a massive spherical body at some distance from its center,
+ * and observed at some very large (infinite) distance away.
+ *
+ * @param M_kg    [kg] Mass of gravitating body that is contained inside the emitting radius.
+ * @param r_m     [m] Radius at which light is emitted.
+ * @return        The gravitational redshift (_z_) for an observer at very large  (infinite) distance from the gravitating body.
+ *
+ * @since 1.2
+ * @author Attila Kovacs
+ */
+double grav_redshift(double M_kg, double r_m) {
+  static const double G = 6.6743e-11; // G in SI units.
+  static const double c2 = C * C;
+
+  const double rs = 2 * G * M_kg / c2;
+
+  return 1.0 / sqrt(1.0 - rs / r_m) - 1.0;
+}
+
+/**
+ * Applies an incremental redshift correction to a radial velocity. For example, you may use this function to
+ * correct a radial velocity calculated by `rad_vel()` or `rad_vel2()` for a Solar-system body to account for
+ * the gravitational redshift for light originating at a specific distance away from the body. For the Sun, you
+ * may want to undo the redhift correction applied for the photosphere using `unredshift_vrad()` first.
+ *
+ * @param vrad    [km/s] Radial velocity
+ * @param z       Redshift correction to apply
+ * @return        [km/s] The redshift corrected radial velocity or NAN if the redshift value is invalid.
+ *
+ * @sa unredshift_vrad()
+ * @sa grav_redshift()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
+ */
+double redshift_vrad(double vrad, double z) {
+  return novas_z2v((1.0 + novas_v2z(vrad)) * (1.0 + z) - 1.0);
+}
+
+/**
+ * Undoes an incremental redshift correction to a radial velocity.
+ *
+ * @param vrad    [km/s] Radial velocity
+ * @param z       Redshift correction to apply
+ * @return        [km/s] The radial velocity without the redshift correction or NAN if the redshift value is invalid.
+ *
+ * @sa redshift_vrad()
+ * @sa grav_redshift()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
+ */
+double unredshift_vrad(double vrad, double z) {
+  return novas_z2v((1.0 + novas_v2z(vrad)) / (1.0 + z) - 1.0);
+}
+
+
+/**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed of
  * light. For major planets (and Sun and Moon), it includes gravitational corrections for light
@@ -4094,6 +4152,9 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
  * orbiting other major Solar-system bodies.
+ *
+ * You may apply (or adjust) the amount of gravitational redshift correction applied to the
+ * radial velocity via `redshift_vrad()`, `unredshift_vrad()` and `gav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
@@ -4190,6 +4251,9 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
  * orbiting other major Solar-system bodies.
+ *
+ * You may apply (or adjust) the amount of gravitational redshift correction applied to the
+ * radial velocity via `redshift_vrad()`, `unredshift_vrad()` and `gav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.

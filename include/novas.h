@@ -1262,6 +1262,11 @@ double novas_v2z(double vel);
 
 double novas_z2v(double z);
 
+double grav_redshift(double M_kg, double r_m);
+
+double redshift_vrad(double vrad, double z);
+
+double unredshift_vrad(double vrad, double z);
 
 
 // <================= END of SuperNOVAS API =====================>
