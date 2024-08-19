@@ -4185,7 +4185,8 @@ double novas_z_add(double z1, double z2) {
  * e.g. via `novas_z_add()` will result in zero redshift overall.
  *
  * @param z     A redhift value
- * @return      The redshift value that cancels out the input redshift.
+ * @return      The redshift value that cancels out the input redshift, or NAN if the input redshift
+ *              is invalid.
  *
  * @sa novas_z_add()
  */
@@ -4247,9 +4248,8 @@ double novas_z_inv(double z) {
  * REFERENCES:
  * <ol>
  * <li>Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201.</li>
- * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is
- * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
- * calculated for a massless Sun).</li>
+ * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is gravitationally
+ * referenced to the Sun's photosphere. (NOVAS C returns the radial velocity for a massless Sun)</li>
  * </ol>
  *
  * @param source        Celestial object observed
