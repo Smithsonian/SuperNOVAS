@@ -317,8 +317,10 @@ static double novas_add_vel(double v1, double v2) {
  */
 double novas_v2z(double vel) {
   vel *= 1e3 / C;   // [km/s] -> beta
-  if(fabs(vel) > 1.0)
+  if(fabs(vel) > 1.0) {
+    novas_error(-1, EINVAL, "novas_v2z", "velocity exceeds speed of light v=%g km/s", 1e-3 * vel * C);
     return NAN;
+  }
   return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
 }
 
@@ -340,8 +342,10 @@ double novas_v2z(double vel) {
  * @since 1.2
  */
 double novas_z2v(double z) {
-  if(z <= -1.0)
+  if(z <= -1.0) {
+    novas_error(-1, EINVAL, "novas_z2v", "invalid redshift value z=%g", z);
     return NAN;
+  }
   z += 1.0;
   z *= z;
   return 1e-3 * (z - 1.0) / (z + 1.0) * C;
@@ -4127,7 +4131,7 @@ double redshift_vrad(double vrad, double z) {
   static const char *fn = "redshift_vrad";
   double z0;
   if(z <= -1.0) {
-    novas_error(-1, EINVAL, fn, "invalid redshift value: z=%g\n", z);
+    novas_error(-1, EINVAL, fn, "invalid redshift value: z=%g", z);
     return NAN;
   }
   z0 = novas_v2z(vrad);
@@ -4153,7 +4157,7 @@ double unredshift_vrad(double vrad, double z) {
   static const char *fn = "unredshift_vrad";
   double z0;
   if(z <= -1.0) {
-    novas_error(-1, EINVAL, fn, "invalid redshift value: z=%g\n", z);
+    novas_error(-1, EINVAL, fn, "invalid redshift value: z=%g", z);
     return NAN;
   }
   if(isnan(z0)) novas_trace(fn, -1, 0);
@@ -4174,7 +4178,7 @@ double unredshift_vrad(double vrad, double z) {
  */
 double novas_z_add(double z1, double z2) {
   if(z1 <= -1.0 || z2 <= -1.0) {
-    novas_error(-1, EINVAL, "novas_z_add", "invalid redshift value: z1=%g, z2=%g\n", z1, z2);
+    novas_error(-1, EINVAL, "novas_z_add", "invalid redshift value: z1=%g, z2=%g", z1, z2);
     return NAN;
   }
   return (1.0 + z1) * (1.0 + z2) - 1.0;
@@ -4192,7 +4196,7 @@ double novas_z_add(double z1, double z2) {
  */
 double novas_z_inv(double z) {
   if(z <= -1.0) {
-    novas_error(-1, EINVAL, novas_z_inv(), "invalid redshift value: z=%g\n", z);
+    novas_error(-1, EINVAL, novas_z_inv(), "invalid redshift value: z=%g", z);
     return NAN;
   }
   return 1.0 / (1.0 + z) - 1.0;
