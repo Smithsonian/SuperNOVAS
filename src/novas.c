@@ -290,6 +290,11 @@ static double novas_add_beta(double beta1, double beta2) {
  * @param v1  [AU/day] First component
  * @param v2  [AU/day] Second component
  * @return    [AU/day] The relativistically coadded sum of the input velocities.
+ *
+ * @sa novas_z_add()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
  */
 static double novas_add_vel(double v1, double v2) {
   return novas_add_beta(v1 / C_AUDAY, v2 / C_AUDAY) * C_AUDAY;
@@ -4085,12 +4090,13 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
 }
 
 /**
- * Returns the gravitational redshift (_z_) for light emitted near a massive spherical body at some distance from its center,
- * and observed at some very large (infinite) distance away.
+ * Returns the gravitational redshift (_z_) for light emitted near a massive spherical body
+ * at some distance from its center, and observed at some very large (infinite) distance away.
  *
  * @param M_kg    [kg] Mass of gravitating body that is contained inside the emitting radius.
  * @param r_m     [m] Radius at which light is emitted.
- * @return        The gravitational redshift (_z_) for an observer at very large  (infinite) distance from the gravitating body.
+ * @return        The gravitational redshift (_z_) for an observer at very large  (infinite)
+ *                distance from the gravitating body.
  *
  * @sa redshift_vrad()
  * @sa unredshift_vrad()
@@ -4109,15 +4115,16 @@ double grav_redshift(double M_kg, double r_m) {
 }
 
 /**
- * Applies an incremental redshift correction to a radial velocity. For example, you may use this function to
- * correct a radial velocity calculated by `rad_vel()` or `rad_vel2()` for a Solar-system body to account for
- * the gravitational redshift for light originating at a specific distance away from the body. For the Sun, you
- * may want to undo the redshift correction applied for the photosphere using `unredshift_vrad()` first.
+ * Applies an incremental redshift correction to a radial velocity. For example, you may
+ * use this function to correct a radial velocity calculated by `rad_vel()` or `rad_vel2()`
+ * for a Solar-system body to account for the gravitational redshift for light originating
+ * at a specific distance away from the body. For the Sun, you may want to undo the redshift
+ * correction applied for the photosphere using `unredshift_vrad()` first.
  *
  * @param vrad    [km/s] Radial velocity
  * @param z       Redshift correction to apply
- * @return        [km/s] The redshift corrected radial velocity or NAN if the redshift value is invalid.
- *                (errno will be set to EINVAL)
+ * @return        [km/s] The redshift corrected radial velocity or NAN if the redshift value
+ *                is invalid (errno will be set to EINVAL).
  *
  * @sa unredshift_vrad()
  * @sa grav_redshift()
@@ -4143,8 +4150,8 @@ double redshift_vrad(double vrad, double z) {
  *
  * @param vrad    [km/s] Radial velocity
  * @param z       Redshift correction to apply
- * @return        [km/s] The radial velocity without the redshift correction or NAN if the redshift value is
- *                invalid. (errno will be set to EINVAL)
+ * @return        [km/s] The radial velocity without the redshift correction or NAN if the
+ *                redshift value is invalid. (errno will be set to EINVAL)
  *
  * @sa redshift_vrad()
  * @sa grav_redshift()
@@ -4165,16 +4172,21 @@ double unredshift_vrad(double vrad, double z) {
 }
 
 /**
- * Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or
- * corrections for a moving observer. It's effectively using (1 + z) = (1 + z1) * (1 + z2).
+ * Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift
+ * corrections and/or corrections for a moving observer. It's effectively using
+ * (1 + z) = (1 + z1) * (1 + z2).
  *
  * @param z1    One of the redshift values
  * @param z2    The other redshift value
- * @return      The compound redshift value, ot NAN if either input redshift is invalid (errno will be set to EINVAL).
+ * @return      The compound redshift value, ot NAN if either input redshift is invalid (errno
+ *              will be set to EINVAL).
  *
  * @sa grav_redshift()
  * @sa redshift_vrad()
  * @sa unredshift_vrad()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
  */
 double novas_z_add(double z1, double z2) {
   if(z1 <= -1.0 || z2 <= -1.0) {
@@ -4185,14 +4197,17 @@ double novas_z_add(double z1, double z2) {
 }
 
 /**
- * Returns the inverse of a redshift value, that is the redshift that when compounded with the original,
- * e.g. via `novas_z_add()` will result in zero redshift overall.
+ * Returns the inverse of a redshift value, that is the redshift for a body moving with the same
+ * velocity as the original but in the opposite direction.
  *
  * @param z     A redhift value
- * @return      The redshift value that cancels out the input redshift, or NAN if the input redshift
- *              is invalid.
+ * @return      The redshift value for a body moving in the opposite direction with the
+ *              same speed, or NAN if the input redshift is invalid.
  *
  * @sa novas_z_add()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
  */
 double novas_z_inv(double z) {
   if(z <= -1.0) {
@@ -4216,7 +4231,9 @@ double novas_z_inv(double z) {
  *
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies.
+ * orbiting other major Solar-system bodies. If necessary you can correct for the gravitational
+ * potential for an observer near a major body using `unredshift_vrad()` in conjunction with
+ * `grav_redshift()`.
  *
  * You may apply (or adjust) the amount of gravitational redshift correction applied to the
  * radial velocity via `redshift_vrad()`, `unredshift_vrad()` and `gav_redshift()` if necessary.
@@ -4314,7 +4331,9 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies.
+ * orbiting other major Solar-system bodies. If necessary you can correct for the gravitational
+ * potential for an observer near a major body using `unredshift_vrad()` in conjunction with
+ * `grav_redshift()`.
  *
  * You may apply (or adjust) the amount of gravitational redshift correction applied to the
  * radial velocity via `redshift_vrad()`, `unredshift_vrad()` and `gav_redshift()` if necessary.
