@@ -1689,23 +1689,18 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <ol>
  * <li>This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not
  * antedated for light-travel time.</li>
- * <li>As of v1.1, this method calculates radial velocities using the geometric position of the
- * source instead of the aberrated and deflected apparent position of NOVAS C 3.1. It also
- * calculates the actual direction light was emitted by reverse tracing the deflected light. The
- * new method yields the correct (precise) radial velocity for both sidereal and Solar-system
- * sources.</li>
+ * <li>As of version 1.1, this function will return a radial velocity for the Sun that is
+ * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
+ * calculated for a massless Sun).</li>
+ * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
+ * corrections for light originating at the surface, assuming it's observed at some large distance
+ * away.</li>
  * </ol>
  *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  *     <li>Klioner, S. (2003), Astronomical Journal 125, 1580-1597.</li>
- *     <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is
- * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
- * calculated for a massless Sun).</li>
- *     <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
- * corrections for light originating at the surface, assuming it's observed at some large distance
- * away.</li>
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
@@ -4924,15 +4919,15 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
 
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
- * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed
- * of light. For major planets (and Sun and Moon) it includes gravitational corrections for light
- * originating at the surface, and observed from a large distance away. For other solar system
- * bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless
- * (no gravitational red shift). The corrections does not in general apply to reflected light. For
- * stars, it includes all effects, such as gravitational redshift, contained in the catalog
- * barycentric radial velocity measure, a scalar derived from spectroscopy.  Nearby stars with a
- * known kinematic velocity vector (obtained independently of spectroscopy) can be treated like
- * solar system objects.
+ * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed of
+ * light. For major planets (and Sun and Moon), it includes gravitational corrections for light
+ * originating at the surface and observed from near Earth or else from a large distance away. For
+ * other solar system bodies, it applies to a fictitious emitter at the center of the observed
+ * object, assumed massless (no gravitational red shift). The corrections do not in general apply
+ * to reflected light. For stars, it includes all effects, such as gravitational redshift,
+ * contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy.
+ * Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can
+ * be treated like solar system objects.
  *
  * Gravitational blueshift corrections for the Solar potential around observers are included.
  * Blueshift corrections for observers near Earth are also included, but not for observers
@@ -4958,7 +4953,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * <ol>
  * <li>This function does not accont for the gravitational deflection of Solar-system sources.
  * For that purpose, the rad_vel2() function, introduced in v1.1, is more appropriate.</li>
- * <li>The NOVAS C implementation did not include relatistic corrections for a travelling observer
+ * <li>The NOVAS C implementation did not include relatistic corrections for a moving observer
  * if both `d_obs_geo` and `d_obs_sun` were zero. As of SuperNOVAS v1.1, the relatistic corrections
  * for a moving observer will be included in the radial velocity measure always.</li>
  * <li>The NOVAS C implementation did not include gravitational redshift corrections for light
@@ -4968,6 +4963,9 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * As a result, `d_src_sun` being zero has a changed meaning: In NOVAS C 3.1 it indicated that the
  * Solar potential at the source should be ignored, but now if the observed object is the Sun it
  * will include gravitational corrections for light originating at the Sun's photosphere.</li>
+ * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
+ * corrections for light originating at the surface, assuming it's observed at some large distance
+ * away.</li>
  * </ol>
  *
  * REFERENCES:
@@ -4976,9 +4974,6 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is
  * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
  * calculated for a massless Sun).</li>
- * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
- * corrections for light originating at the surface, assuming it's observed at some large distance
- * away.</li>
  * </ol>
  *
  * @param source        Celestial object observed
@@ -5029,13 +5024,13 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *
  * Radial velocity is here defined as the radial velocity measure (z) times the speed of light.
  * For major planets (and Sun and Moon), it includes gravitational corrections for light
- * originating at the surface and observed from a large distance away. For other solar system
- * bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless
- * (no gravitational red shift). The corrections does not in general apply to reflected light. For
- * stars, it includes all effects, such as gravitational redshift, contained in the catalog
- * barycentric radial velocity measure, a scalar derived from spectroscopy.  Nearby stars with a
- * known kinematic velocity vector (obtained independently of spectroscopy) can be treated like
- * solar system objects.
+ * originating at the surface and observed from near Earth or else from a large distance away. For
+ * other solar system bodies, it applies to a fictitious emitter at the center of the observed
+ * object, assumed massless (no gravitational red shift). The corrections do not in general apply
+ * to reflected light. For stars, it includes all effects, such as gravitational redshift,
+ * contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy.
+ * Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can
+ * be treated like solar system objects.
  *
  * Gravitational blueshift corrections for the Solar potential around observers are included.
  * Blueshift corrections for observers near Earth are also included, but not for observers
