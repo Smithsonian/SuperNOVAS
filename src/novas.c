@@ -5172,7 +5172,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     case NOVAS_PLANET: {
       // Gravitational potential for light originating at surface of major solar system body.
       const double zpl[NOVAS_PLANETS] = NOVAS_PLANET_GRAV_Z_INIT;
-      if(source->number > 0 && source->number < NOVAS_PLANETS)
+      if(source->number > 0 && source->number < NOVAS_PLANETS) if(d_src_sun > 0.0)
         rel *= (1.0 + zpl[source->number]);
     }
     /* no break */
