@@ -1689,12 +1689,9 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <ol>
  * <li>This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not
  * antedated for light-travel time.</li>
- * <li>As of version 1.1, this function will return a radial velocity for the Sun that is
- * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
- * calculated for a massless Sun).</li>
- * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
- * corrections for light originating at the surface, assuming it's observed at some large distance
- * away.</li>
+ * <li>In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and
+ * Moon) includes gravitational redshift corrections for light originating at the surface, assuming
+ * it's observed from near Earth or else from a large distance away.</li>
  * </ol>
  *
  * REFERENCES:
@@ -4956,16 +4953,9 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * <li>The NOVAS C implementation did not include relatistic corrections for a moving observer
  * if both `d_obs_geo` and `d_obs_sun` were zero. As of SuperNOVAS v1.1, the relatistic corrections
  * for a moving observer will be included in the radial velocity measure always.</li>
- * <li>The NOVAS C implementation did not include gravitational redshift corrections for light
- * originating at the Solar photosphere when observing the Sun. As of SuperNOVAS v1.1, we will assume
- * that observing the Sun means looking at light originating at its photosphere, and will apply the
- * appropriate gravitational redshift corrections accordingly, unless `d_src_sun` is negative.
- * As a result, `d_src_sun` being zero has a changed meaning: In NOVAS C 3.1 it indicated that the
- * Solar potential at the source should be ignored, but now if the observed object is the Sun it
- * will include gravitational corrections for light originating at the Sun's photosphere.</li>
- * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
- * corrections for light originating at the surface, assuming it's observed from near Earth or
- * else from a large distance away.</li>
+ * <li>In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and
+ * Moon) includes gravitational redshift corrections for light originating at the surface, assuming
+ * it's observed from near Earth or else from a large distance away.</li>
  * </ol>
  *
  * REFERENCES:
@@ -5056,7 +5046,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * <ol>
  * <li>This function is called by place() and novas_sky_pos() to calculate radial velocities along
  * with the apparent position of the source.</li>
- * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
+ * <li>For major planets (and Sun and Moon), the radial velocity includes gravitational redshift
  * corrections for light originating at the surface, assuming it's observed from near Earth or
  * else from a large distance away.</li>
  * </ol>
