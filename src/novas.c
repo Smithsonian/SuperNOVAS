@@ -3164,8 +3164,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
           { +0.11e-6, +0.00e-6 } };
 
   // Sine and cosine coefficients for t^1.
-  const double se1[2] = //
-  { -0.87e-6, +0.00e-6 };
+  const double se1[2] = { -0.87e-6, +0.00e-6 };
 
   novas_delaunay_args fa2;
   double fa[14];
@@ -4182,7 +4181,7 @@ double novas_z_add(double z1, double z2) {
     novas_error(-1, EINVAL, "novas_z_add", "invalid redshift value: z1=%g, z2=%g", z1, z2);
     return NAN;
   }
-  return (1.0 + z1) * (1.0 + z2) - 1.0;
+  return z1 + z2 + z1 * z2;
 }
 
 /**
