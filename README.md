@@ -828,6 +828,9 @@ before that level of accuracy is reached.
    deflections due to a body if the observer is within ~1500 km of its center (which is below the surface for all
    major Solar system bodies).
 
+ - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
+   to radial velocity for light originating at the surface, and observed near Earth or at a large distance away.
+
 -----------------------------------------------------------------------------
 
 <a name="solarsystem"></a>

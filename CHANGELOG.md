@@ -25,6 +25,11 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
 
 ### Changed
 
+ - #59: For major planets (and Sun and Moon) `rad_vel()`, `rad_vel2()`, `place()`, and `novas_sky_pos()` will include 
+   gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or at a 
+   large distance away, unless `d_src_sun` is negative. (No such gravitational corrections are applied for the fictive 
+   Solar-system barycenter.)
+
 
 
 ## [1.1.0] -- 2024-08-04
