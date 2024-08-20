@@ -4934,6 +4934,10 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * known kinematic velocity vector (obtained independently of spectroscopy) can be treated like
  * solar system objects.
  *
+ * Gravitational blueshift corrections for the Solar potential around observers are included.
+ * Blueshift corrections for observers near Earth are also included, but not for observers
+ * (e.g. spacecraft) orbiting other major Solar-system bodies.
+ *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
  *
@@ -5033,6 +5037,10 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * known kinematic velocity vector (obtained independently of spectroscopy) can be treated like
  * solar system objects.
  *
+ * Gravitational blueshift corrections for the Solar potential around observers are included.
+ * Blueshift corrections for observers near Earth are also included, but not for observers
+ * (e.g. spacecraft) orbiting other major Solar-system bodies.
+ *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
  *
@@ -5128,14 +5136,14 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   phi += (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 
   // Compute relativistic potential at observer.
-  if((d_obs_geo != 0.0) || (d_obs_sun != 0.0)) {
-    // Lindegren & Dravins eq. (41), second factor in parentheses.
-    rel = 1.0 - phi / C2;
-  }
-  else {
+  if(d_obs_geo == 0.0 && d_obs_sun == 0.0) {
     // Use average value for an observer on the surface of Earth
     // Lindegren & Dravins eq. (42), inverse.
     rel = 1.0 - 1.550e-8;
+  }
+  else {
+    // Lindegren & Dravins eq. (41), second factor in parentheses.
+    rel = 1.0 - phi / C2;
   }
 
   // Compute unit vector toward object (direction of emission).
