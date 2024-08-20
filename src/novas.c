@@ -4929,9 +4929,9 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can
  * be treated like solar system objects.
  *
- * Gravitational blueshift corrections for the Solar potential around observers are included.
- * Blueshift corrections for observers near Earth are also included, but not for observers
- * (e.g. spacecraft) orbiting other major Solar-system bodies.
+ * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
+ * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
+ * orbiting other major Solar-system bodies.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
@@ -4942,11 +4942,11 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * approximate -- or, for distant stars or galaxies, zero -- as it will be used only for a small
  * geometric correction that is proportional to proper motion.
  *
- * Any of the distances (last three input arguments) can be set to zero (0.0) if the
+ * Any of the distances (last three input arguments) can be set to zero (0.0) or negative if the
  * corresponding general relativistic gravitational potential term is not to be evaluated.
- * These terms generally are important only at the meter/second level. If 'd_obs_geo' and
+ * These terms generally are important at the meter/second level only. If 'd_obs_geo' and
  * 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the
- * observer, appropriate for an observer on the surface of the Earth. 'd_obj_sun', if given, is
+ * observer, appropriate for an observer on the surface of the Earth. 'd_src_sun', if given, is
  * used only for solar system objects.
  *
  * NOTES:
@@ -4964,8 +4964,8 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * Solar potential at the source should be ignored, but now if the observed object is the Sun it
  * will include gravitational corrections for light originating at the Sun's photosphere.</li>
  * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
- * corrections for light originating at the surface, assuming it's observed at some large distance
- * away.</li>
+ * corrections for light originating at the surface, assuming it's observed from near Earth or
+ * else from a large distance away.</li>
  * </ol>
  *
  * REFERENCES:
@@ -5032,9 +5032,9 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can
  * be treated like solar system objects.
  *
- * Gravitational blueshift corrections for the Solar potential around observers are included.
- * Blueshift corrections for observers near Earth are also included, but not for observers
- * (e.g. spacecraft) orbiting other major Solar-system bodies.
+ * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
+ * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
+ * orbiting other major Solar-system bodies.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
@@ -5049,7 +5049,7 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * corresponding general relativistic gravitational potential term is not to be evaluated.
  * These terms generally are important only at the meter/second level. If 'd_obs_geo' and
  * 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the
- * observer, appropriate for an observer on the surface of the Earth. 'd_obj_sun', if given, is
+ * observer, appropriate for an observer on the surface of the Earth. 'd_src_sun', if given, is
  * used only for solar system objects.
  *
  * NOTES:
@@ -5057,8 +5057,8 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  * <li>This function is called by place() and novas_sky_pos() to calculate radial velocities along
  * with the apparent position of the source.</li>
  * <li>As of version 1.1.1, major planets (and Sun and Moon) include gravitational redshift
- * corrections for light originating at the surface, assuming it's observed at some large distance
- * away.</li>
+ * corrections for light originating at the surface, assuming it's observed from near Earth or
+ * else from a large distance away.</li>
  * </ol>
  *
  * REFERENCES:
@@ -5126,7 +5126,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   r = d_obs_geo * AU;
   phi = (r > 0.95 * NOVAS_EARTH_RADIUS) ? GE / r : 0.0;
 
-  // Compute solar potential at observer unless well the Sun
+  // Compute solar potential at observer unless well within the Sun
   r = d_obs_sun * AU;
   phi += (r > 0.95 * NOVAS_SOLAR_RADIUS) ? GS / r : 0.0;
 

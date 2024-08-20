@@ -171,11 +171,11 @@
       22902.98, 19412.24, 135200000.0, 1.0, 27068700.387534 }
 
 /// Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
-/// and detected at infinite distance.
+/// and detected at a large distance away.
 /// @since 1.1.1
 #define NOVAS_PLANET_GRAV_Z_INIT { \
-  0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, 3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11 \
-}
+  0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
+  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11 }
 
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
