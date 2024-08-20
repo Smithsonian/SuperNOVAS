@@ -5083,6 +5083,8 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *                      bluehifting due to Solar potential around observer can be ignored.
  * @param d_src_sun     [AU] Distance from object to Sun, or &lt;=0.0 if gravitational
  *                      redshifting due to Solar potential around source can be ignored.
+ *                      Additionally, a value &lt;0 will also skip corrections for light
+ *                      originating at the surface of the observed major solar-system body.
  * @return              [km/s] The observed radial velocity measure times the speed of light,
  *                      or NAN if there was an error (errno will be set to EINVAL if any of the
  *                      arguments are NULL, or to some other value to indicate the type of error).
@@ -5170,7 +5172,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
     }
 
     case NOVAS_PLANET:
-      if(d_src_sun > 0.0) {
+      if(d_src_sun >= 0.0) {
         // Gravitational potential for light originating at surface of major solar system body.
         const double zpl[NOVAS_PLANETS] = NOVAS_PLANET_GRAV_Z_INIT;
         if(source->number > 0 && source->number < NOVAS_PLANETS)
