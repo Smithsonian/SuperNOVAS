@@ -736,6 +736,8 @@ static int test_transform_inv() {
   return 0;
 }
 
+
+
 static int test_source() {
   int k, n = 0;
 
@@ -1986,6 +1988,32 @@ static int test_app_hor2() {
   return 0;
 }
 
+static int test_rad_vel2() {
+  object planet = {};
+  double pos[3] = {1.0}, pos_obs[3] = {1.0}, v[3] = {};
+  double rv0, rv1, rv2;
+  int n = 0;
+
+  make_planet(NOVAS_SUN, &planet);
+
+  // d_src_sun 0 vs -1 -- different for surface gravity
+  rv0 = rad_vel2(&planet, pos, v, pos_obs, v, 0.0, 0.0, 0.0);
+
+  rv1 = rad_vel2(&planet, pos, v, pos_obs, v, 0.0, 0.0, -1.0);
+  if(!is_ok("rad_vel:src_sun:-1", rv0 == rv1)) n++;
+
+  // no surface gravity for SSB
+  planet.number = 0;
+  rv2 = rad_vel2(&planet, pos, v, pos_obs, v, 0.0, 0.0, 0.0);
+  if(!is_equal("rad_vel:ssb", rv2, rv1, 1e-9)) n++;
+
+  // no surface gravity for illegal planet number
+  planet.number = NOVAS_PLANETS;
+  rv2 = rad_vel2(&planet, pos, v, pos_obs, v, 0.0, 0.0, 0.0);
+  if(!is_equal("rad_vel:hi", rv2, rv1, 1e-9)) n++;
+
+  return n;
+}
 
 int main(int argc, char *argv[]) {
   int n = 0;
@@ -2036,6 +2064,7 @@ int main(int argc, char *argv[]) {
   if(test_change_observer()) n++;
   if(test_transform()) n++;
   if(test_app_hor2()) n++;
+  if(test_rad_vel2()) n++;
 
   n += test_dates();
 
