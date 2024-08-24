@@ -32,11 +32,8 @@ cov.info:
 	geninfo . -b . -o $@
 
 .PHONY: coverage
-<<<<<<< HEAD
-coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov
-=======
-coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov util.c.gcov
->>>>>>> aa179c7 (Split out util.c)
+
+coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov util.c.gcov
 	make clean-test
 	make cov
 
