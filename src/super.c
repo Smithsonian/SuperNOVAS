@@ -4,7 +4,8 @@
  * @date Created  on Aug 24, 2024
  * @author Attila Kovacs
  *
- *  SuperNOVAS only functions, which are not integral to the functionality of novas.c
+ *  SuperNOVAS only functions, which are not integral to the functionality of novas.c, and thus
+ *  can live in a separate, more manageably sized, module.
  */
 
 #include <math.h>
