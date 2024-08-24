@@ -1116,8 +1116,6 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
   return 0;
 }
 
-
-
 /**
  * Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>).
  * It is based on the relativistic formula:
@@ -1144,7 +1142,6 @@ double novas_v2z(double vel) {
   }
   return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
 }
-
 
 /**
  * Returns the gravitational redshift (_z_) for light emitted near a massive spherical body
