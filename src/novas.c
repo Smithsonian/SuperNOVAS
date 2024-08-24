@@ -306,36 +306,17 @@ static double novas_add_beta(double beta1, double beta2) {
  * @param v1  [AU/day] First component
  * @param v2  [AU/day] Second component
  * @return    [AU/day] The relativistically coadded sum of the input velocities.
+ *
+ * @sa novas_z_add()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
  */
 static double novas_add_vel(double v1, double v2) {
   return novas_add_beta(v1 / C_AUDAY, v2 / C_AUDAY) * C_AUDAY;
 }
 /// \endcond
 
-
-/**
- * Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>).
- * It is based on the relativistic formula:
- * <pre>
- *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
- * </pre>
- * where &beta; = v / c.
- *
- * @param vel   [km/s] velocity (i.e. rate) of recession.
- * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if
- *              the input velocity is invalid (i.e., it exceeds the speed of light).
- *
- * @sa novas_z2v()
- *
- * @author Attila Kovacs
- * @since 1.2
- */
-double novas_v2z(double vel) {
-  vel *= 1e3 / C;   // [km/s] -> beta
-  if(fabs(vel) > 1.0)
-    return NAN;
-  return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
-}
 
 /**
  * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of recession.
@@ -349,13 +330,16 @@ double novas_v2z(double vel) {
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).
  *
  * @sa novas_v2z()
+ * @sa redshift_vrad()
  *
  * @author Attila Kovacs
  * @since 1.2
  */
 double novas_z2v(double z) {
-  if(z <= -1.0)
+  if(z <= -1.0) {
+    novas_error(-1, EINVAL, "novas_z2v", "invalid redshift value z=%g", z);
     return NAN;
+  }
   z += 1.0;
   z *= z;
   return 1e-3 * (z - 1.0) / (z + 1.0) * C;
@@ -3171,8 +3155,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
           { +0.11e-6, +0.00e-6 } };
 
   // Sine and cosine coefficients for t^1.
-  const double se1[2] = //
-          { -0.87e-6, +0.00e-6 };
+  const double se1[2] = { -0.87e-6, +0.00e-6 };
 
   novas_delaunay_args fa2;
   double fa[14];
@@ -4094,6 +4077,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
   return 0;
 }
 
+
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed of
@@ -4108,7 +4092,9 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies.
+ * orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift
+ * correction applied to the radial velocity via `redshift_vrad()`, `unredshift_vrad()` and
+ * `grav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
@@ -4141,9 +4127,8 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * REFERENCES:
  * <ol>
  * <li>Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201.</li>
- * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is
- * gravitationally referenced for the Sun's photosphere. (NOVAS C returns the radial velocity
- * calculated for a massless Sun).</li>
+ * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is gravitationally
+ * referenced to the Sun's photosphere. (NOVAS C returns the radial velocity for a massless Sun)</li>
  * </ol>
  *
  * @param source        Celestial object observed
@@ -4204,7 +4189,9 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies.
+ * orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift
+ * correction applied to the radial velocity via `redshift_vrad()`, `unredshift_vrad()` and
+ * `grav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
@@ -5016,8 +5003,8 @@ int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff) {
 
   // Expression given in USNO Circular 179, eq. 2.6.
   const double d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
-          + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-          + 0.000010 * t * sin(628.3076 * t + 4.2490);
+  + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+  + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
   // The simpler formula with a precision of ~30 us.
   //  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
