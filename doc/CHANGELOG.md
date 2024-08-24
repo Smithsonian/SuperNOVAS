@@ -30,6 +30,9 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
    large distance away, unless `d_src_sun` is negative. (No such gravitational corrections are applied for the fictive 
    Solar-system barycenter.)
 
+ - #60: Split out SuperNOVAS-only functions to a separate `super.c` module to alleviate bloating of `novas.c`, which
+   continues to function as a self-contained, single source/object, NOVAS C replacement for legacy applications if need
+   be.
 
 
 ## [1.1.0] -- 2024-08-04
