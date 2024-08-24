@@ -341,7 +341,7 @@ double novas_v2z(double vel) {
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).
  *
  * @sa novas_v2z()
- * @sa novas_redshift_vrad()
+ * @sa redshift_vrad()
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -4231,12 +4231,9 @@ double novas_z_inv(double z) {
  *
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies. If necessary you can correct for the gravitational
- * potential for an observer near a major body using `unredshift_vrad()` in conjunction with
- * `grav_redshift()`.
- *
- * You may apply (or adjust) the amount of gravitational redshift correction applied to the
- * radial velocity via `redshift_vrad()`, `unredshift_vrad()` and `gav_redshift()` if necessary.
+ * orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift
+ * correction applied to the radial velocity via `redshift_vrad()`, `unredshift_vrad()` and
+ * `grav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
@@ -4331,12 +4328,9 @@ int rad_vel(const object *source, const double *pos_src, const double *vel_src, 
  *
  * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
  * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies. If necessary you can correct for the gravitational
- * potential for an observer near a major body using `unredshift_vrad()` in conjunction with
- * `grav_redshift()`.
- *
- * You may apply (or adjust) the amount of gravitational redshift correction applied to the
- * radial velocity via `redshift_vrad()`, `unredshift_vrad()` and `gav_redshift()` if necessary.
+ * orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift
+ * correction applied to the radial velocity via `redshift_vrad()`, `unredshift_vrad()` and
+ * `grav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.

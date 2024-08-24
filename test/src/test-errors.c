@@ -1394,6 +1394,36 @@ static int test_inv_transform() {
   return n;
 }
 
+static int test_redshift_vrad() {
+  int n = 0;
+
+  if(check_nan("redshift_vrad", redshift_vrad(0.0, -1.0))) n++;
+  return n;
+}
+
+static int test_unredshift_vrad() {
+  int n = 0;
+
+  if(check_nan("unredshift_vrad", unredshift_vrad(0.0, -1.0))) n++;
+  return n;
+}
+
+static int test_z_add() {
+  int n = 0;
+
+  if(check_nan("z_add:z1", novas_z_add(-1.0, 0.0))) n++;
+  if(check_nan("z_add:z2", novas_z_add(0.0, -1.0))) n++;
+  if(check_nan("z_add:z1+z2", novas_z_add(-1.0, -1.0))) n++;
+  return n;
+}
+
+static int test_z_inv() {
+  int n = 0;
+
+  if(check_nan("z_inv", novas_z_inv(-1.0))) n++;
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1512,6 +1542,11 @@ int main() {
   if(test_transform_vector()) n++;
   if(test_transform_sky_pos()) n++;
   if(test_inv_transform()) n++;
+
+  if(test_redshift_vrad()) n++;
+  if(test_unredshift_vrad()) n++;
+  if(test_z_add()) n++;
+  if(test_z_inv()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
