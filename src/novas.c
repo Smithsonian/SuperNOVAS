@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 1.1.0
+ * @version 1.1.1
  *
  *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -430,7 +430,6 @@ int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
   return 0;
 }
 
-
 /**
  * Change GCRS coordinates to J2000 coordinates. Same as frame_tie() called with ICRS_TO_J2000
  *
@@ -448,7 +447,6 @@ int gcrs_to_j2000(const double *in, double *out) {
   prop_error("gcrs_to_j2000", frame_tie(in, ICRS_TO_J2000, out), 0);
   return 0;
 }
-
 
 /**
  * Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial
