@@ -18,7 +18,7 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
    the actual relativistic velocity differential between the source and observer to apply the appropriate time 
    dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike.
    
- - #55: Use relativistic formulae to add velocities (i.e. change velocity reference frame).
+ - #55: Use relativistic formulae to add/difference velocities (i.e. change velocity reference frame).
 
 
 ### Added
@@ -26,16 +26,15 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
 ### Changed
 
  - #59: For major planets (and Sun and Moon) `rad_vel()`, `rad_vel2()`, `place()`, and `novas_sky_pos()` will include 
-   gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or at a 
-   large distance away, unless `d_src_sun` is negative. (No such gravitational corrections are applied for the fictive 
-   Solar-system barycenter.)
+   gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or else 
+   at a large distance away. The corrections can be skipped for `rad_vel()` / `rad_vel2()` by setting `d_src_sun` 
+   negative.
 
- - #60: Split out SuperNOVAS-only functions to a separate `super.c` module to alleviate bloating of `novas.c`, which
-   continues to function as a self-contained, single source/object, NOVAS C replacement for legacy applications if need
-   be.
+ - #60: Moved SuperNOVAS-only functions to a separate `super.c` module to alleviate the bloating of `novas.c`, which
+   can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be.
 
 
-## [1.1.0] -- 2024-08-04
+## [1.1.0] - 2024-08-04
 
 Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using 
 observer frames; versatile handling of astronomical timescales; and support for further observer locations, coordinate 
@@ -242,7 +241,7 @@ which affected prior SuperNOVAS releases.
    
 
 
-## [1.0.1] -- 2024-05-13
+## [1.0.1] - 2024-05-13
 
 Bug fix release with minor changes.
 
