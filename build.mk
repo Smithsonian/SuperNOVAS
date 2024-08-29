@@ -7,11 +7,24 @@
 
 
 # Regular object files
-obj/%.o: %.c dep/%.d obj Makefile
+$(OBJ)/%.o: %.c dep/%.d $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
+# Share library recipe
+$(LIB)/%.so.$(SO_VERSION) : | $(LIB) Makefile
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LD_FLAGS)
+
+# Unversioned shared libs (for linking against)
+$(LIB)/lib%.so:
+	ln -sr $< $@
+
+# Static library recipe
+$(LIB)/%.a:
+	ar -rc $@ $^
+	ranlib $@
+
 # Create sub-directories for build targets
-dep obj lib bin apidoc:
+dep $(OBJ) $(LIB) $(BIN) apidoc:
 	mkdir $@
 
 # Remove intermediate files locally
@@ -50,6 +63,6 @@ dox: README.md Doxyfile | apidoc
 dep/%.d: %.c dep
 	@echo " > $@" \
 	&& $(CC) $(CPPFLAGS) -I$(INC) -MM -MG $< > $@.$$$$ \
-	&& sed 's|\w*\.o[ :]*| obj/&|g' < $@.$$$$ > $@; \
+	&& sed 's|\w*\.o[ :]*| $(OBJ)/&|g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
