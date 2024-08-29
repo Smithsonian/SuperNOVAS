@@ -34,7 +34,7 @@ __Documentation__
  - [API Documentation](apidoc/html/files.html)
  - [History of changes](doc/CHANGELOG.md) (`CHANGELOG.md`)
  - [Issues](https://github.com/Smithsonian/SuperNOVAS/issues) affecting SuperNOVAS releases (past and/or present)
- - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/issues) &ndash; ask a question, provide feedback, or 
+ - [Community Forum](https://github.com/Smithsonian/SuperNOVAS/discussions) &ndash; ask a question, provide feedback, or 
    check announcements.
 
 
