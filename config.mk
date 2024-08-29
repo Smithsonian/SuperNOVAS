@@ -5,11 +5,17 @@
 # You can include this snipplet in your Makefile also.
 # ============================================================================
 
+# Folders in which sources and headers are located, respectively
+SRC ?= src
+INC ?= include
+
+# Folders for compiled objects, libraries, and binaries, respectively 
+OBJ ?= obj
+LIB ?= lib
+BIN ?= bin
+
 # Compiler: use gcc by default
 CC ?= gcc
-
-# Root directory in which files are to be installed
-DESTDIR ?= /usr
 
 # Base compiler options (if not defined externally...)
 CFLAGS ?= -Os -Wall 
@@ -17,18 +23,11 @@ CFLAGS ?= -Os -Wall
 # Add include/ directory
 CFLAGS += -I$(INC)
 
-
-# Folders in which sources and headers are located, respectively
-SRC ?= src
-INC ?= include
-
-# Specific Doxygen to use if not the default one
-#DOXYGEN ?= /opt/bin/doxygen
-
-
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra
 
+# Specific Doxygen to use if not the default one
+#DOXYGEN ?= /opt/bin/doxygen
 
 # For maximum compatibility with NOVAS C 3.1, uncomment the line below
 #COMPAT ?= 1
@@ -95,11 +94,12 @@ BUILTIN_SOLSYS_EPHEM ?= 1
 DEFAULT_SOLSYS ?= 3
 
 
-# cppcheck options for 'check' target
+# cppcheck options for 'check' target. You can add additional options by
+# setting the CHECKEXTRA variable (e.g. in shell) prior to invoking 'make'.
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
-            --error-exitcode=1
+            --error-exitcode=1 $(CHECKEXTRA)
 
-# Exhaustive checking for newer cppcheck
+# Exhaustive checking for newer cppcheck...
 #CHECKOPTS += --check-level=exhaustive
 
 # ============================================================================
@@ -175,6 +175,11 @@ ifeq ($(BUILD_MODE),debug)
 endif
 
 # Generate a list of object (obj/*.o) files from the input sources
-OBJECTS := $(subst $(SRC),obj,$(SOURCES))
+OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
 
+# Search for files in the designated locations
+vpath %.h $(INCLUDE)
+vpath %.c $(SRC)
+vpath %.o $(OBJ)
+vpath %.d dep 

@@ -92,7 +92,6 @@ clean-data:
 clean: clean-test clean-cov clean-data
 	rm -f *.o
 
-
 .PHONY: help
 help:
 	@echo

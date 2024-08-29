@@ -15,8 +15,8 @@ include config.mk
 # The version of the shared .so libraries
 SO_VERSION := 1
 
-# The documentation components to build
-DOC_TARGETS := README-orig.md
+# We'll need math functions to link
+LDFLAGS += -lm
 
 # Check if there is a doxygen we can run
 ifndef DOXYGEN
@@ -33,26 +33,26 @@ else
 endif
 
 SOLSYS_TARGETS :=
-SHARED_TARGETS := lib/libsupernovas.so lib/libnovas.so
+SHARED_TARGETS := $(LIB)/libsupernovas.so $(LIB)/libnovas.so
 
 ifneq ($(BUILTIN_SOLSYS1),1)
-  SOLSYS_TARGETS += obj/solsys1.o obj/eph_manager.o
-  SHARED_TARGETS += lib/libsolsys1.so
+  SOLSYS_TARGETS += $(OBJ)/solsys1.o $(OBJ)/eph_manager.o
+  SHARED_TARGETS += $(LIB)/libsolsys1.so
 endif
 
 ifneq ($(BUILTIN_SOLSYS2),1)
-  SOLSYS_TARGETS += obj/solsys2.o
-  SHARED_TARGETS += lib/libsolsys2.so
+  SOLSYS_TARGETS += $(OBJ)/solsys2.o
+  SHARED_TARGETS += $(LIB)/libsolsys2.so
 endif
 
 ifneq ($(BUILTIN_SOLSYS3),1)
-  SOLSYS_TARGETS += obj/solsys3.o
-  SHARED_TARGETS += lib/libsolsys3.so
+  SOLSYS_TARGETS += $(OBJ)/solsys3.o
+  SHARED_TARGETS += $(LIB)/libsolsys3.so
 endif
 
 ifneq ($(BUILTIN_SOLSYS_EPHEM),1)
-  SOLSYS_TARGETS += obj/solsys-ephem.o
-  SHARED_TARGETS += lib/libsolsys-ephem.so
+  SOLSYS_TARGETS += $(OBJ)/solsys-ephem.o
+  SHARED_TARGETS += $(LIB)/libsolsys-ephem.so
 endif
 
 # Default target for packaging with Linux distributions
@@ -65,7 +65,7 @@ shared: $(SHARED_TARGETS)
 
 # Legacy static libraries (locally built)
 .PHONY: static
-static: lib/libnovas.a solsys
+static: $(LIB)/libnovas.a solsys
 
 # solarsystem() call handler objects
 .PHONY: solsys
@@ -88,70 +88,56 @@ coverage:
 # Remove intermediates
 .PHONY: clean
 clean:
-	rm -f obj README-orig.md bin/cio_file gmon.out
+	rm -f $(OBJECTS) README-orig.md $(BIN)/cio_file gmon.out
 	make -C test clean
 
 # Remove all generated files
 .PHONY: distclean
 distclean: clean
-	rm -f lib cio_ra.bin
-
+	rm -f $(LIB)/libsupernovas.so* $(LIB)/libnovas.so* $(LIB)/libnovas.a $(LIB)/libsolsys*.so* cio_ra.bin
 
 # ----------------------------------------------------------------------------
 # The nitty-gritty stuff below
 # ----------------------------------------------------------------------------
 
-# Unversioned shared libs (for linking against)
-lib/lib%.so:
-	ln -sr $< $@
+$(LIB)/libsupernovas.so: $(LIB)/libsupernovas.so.$(SO_VERSION)
 
-lib/libsupernovas.so: lib/libsupernovas.so.$(SO_VERSION)
+$(LIB)/libsolsys1.so: $(LIB)/libsolsys1.so.$(SO_VERSION)
 
-lib/libsolsys1.so: lib/libsolsys1.so.$(SO_VERSION)
+$(LIB)/libsolsys2.so: $(LIB)/libsolsys2.so.$(SO_VERSION)
 
-lib/libsolsys2.so: lib/libsolsys2.so.$(SO_VERSION)
+$(LIB)/libnovas.so: $(LIB)/libsupernovas.so
 
-lib/libnovas.so: lib/libsupernovas.so
+$(LIB)/libsolsys%.so.$(SO_VERSION): LD_FLAGS += -L$(LIB) -lsupernovas
 
-SO_LINK := $(LDFLAGS) -lm
+# Shared library: libsupernovas.so.1 -- same as novas.so except the builtin SONAME
+$(LIB)/libsupernovas.so.$(SO_VERSION): $(SOURCES)
 
-# Share librarry recipe
-lib/%.so.$(SO_VERSION) : | lib Makefile
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst lib/,,$@) $(SO_LINK)
+# Shared library: libsolsys1.so.1 (standalone solsys1.c functionality)
+$(LIB)/libsolsys1.so.$(SO_VERSION): BUILTIN_SOLSYS1 := 0
+$(LIB)/libsolsys1.so.$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c | $(LIB)/libsupernovas.so
 
-lib/libsolsys%.so.$(SO_VERSION): SO_LINK += -Llib -lsupernovas
+# Shared library: libsolsys2.so.1 (standalone solsys2.c functionality)
+$(LIB)/libsolsys2.so.$(SO_VERSION): BUILTIN_SOLSYS2 := 0
+$(LIB)/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c | $(LIB)/libsupernovas.so
 
-# Shared library: supernovas.so -- same as novas.so except the builtin SONAME
-lib/libsupernovas.so.$(SO_VERSION): $(SOURCES)
+# Shared library: libsolsys3.so.1 (standalone solsys1.c functionality)
+$(LIB)/libsolsys3.so.$(SO_VERSION): BUILTIN_SOLSYS3 := 0
+$(LIB)/libsolsys3.so.$(SO_VERSION): $(SRC)/solsys3.c | $(LIB)/libsupernovas.so
 
-# Shared library: solsys1.so (standalone solsys1.c functionality)
-lib/libsolsys1.so.$(SO_VERSION): BUILTIN_SOLSYS1 := 0
-lib/libsolsys1.so.$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c | lib/libsupernovas.so
+# Shared library: libsolsys-ephem.so.1 (standalone solsys2.c functionality)
+$(LIB)/libsolsys-ephem.so.$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
+$(LIB)/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c | $(LIB)/libsupernovas.so
 
-# Shared library: solsys2.so (standalone solsys2.c functionality)
-lib/libsolsys2.so.$(SO_VERSION): BUILTIN_SOLSYS2 := 0
-lib/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c | lib/libsupernovas.so
-
-# Shared library: solsys1.so (standalone solsys1.c functionality)
-lib/libsolsys3.so.$(SO_VERSION): BUILTIN_SOLSYS3 := 0
-lib/libsolsys3.so.$(SO_VERSION): $(SRC)/solsys3.c | lib/libsupernovas.so
-
-# Shared library: solsys2.so (standalone solsys2.c functionality)
-lib/libsolsys-ephem.so.$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
-lib/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c | lib/libsupernovas.so
-
-
-# Static library: novas.a
-lib/libnovas.a: $(OBJECTS) | lib Makefile
-	ar -rc $@ $^
-	ranlib $@
+# Static library: libnovas.a
+$(LIB)/libnovas.a: $(OBJECTS) | $(LIB) Makefile
 
 # CIO locator data
-cio_ra.bin: data/CIO_RA.TXT bin/cio_file lib/libnovas.a
-	bin/cio_file $< $@
+cio_ra.bin: data/CIO_RA.TXT $(BIN)/cio_file
+	$(BIN)/cio_file $< $@
 
-.INTERMEDIATE: bin/cio_file
-bin/cio_file: obj/cio_file.o | bin
+.INTERMEDIATE: $(BIN)/cio_file
+bin/cio_file: $(OBJ)/cio_file.o | $(BIN)
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
 
 README-orig.md: README.md
@@ -169,6 +155,7 @@ Doxyfile.local:
 local-dox: README-orig.md Doxyfile.local
 	doxygen Doxyfile.local
 
+# Built-in help screen for `make help`
 .PHONY: help
 help:
 	@echo
@@ -195,9 +182,8 @@ help:
 	@echo "  distclean     Deletes all generated files."
 	@echo
 
+# This Makefile depends on the config and build snipplets.
 Makefile: config.mk build.mk
-
-vpath %.c $(SRC)
 
 # ===============================================================================
 # Generic targets and recipes below...
