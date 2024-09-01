@@ -66,6 +66,7 @@
 /// Additional release information in version, e.g. "-1", or "-rc1".
 #define SUPERNOVAS_RELEASE_STRING "-devel"
 
+/// \cond PRIVATE
 
 #ifdef str_2
 #  undef str_2
@@ -81,8 +82,10 @@
 /// Stringify level 1 macro
 #define str_1(s) #s
 
+/// \endcond
 
 /// The version string for this library
+/// \hideinitializer
 #define SUPERNOVAS_VERSION_STRING str_2(SUPERNOVAS_MAJOR_VERSION) "." str_2(SUPERNOVAS_MINOR_VERSION) \
                                   "." str_2(SUPERNOVAS_PATCHLEVEL) SUPERNOVAS_RELEASE_STRING
 
