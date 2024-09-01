@@ -146,7 +146,7 @@ README-orig.md: README.md
 dox: README-orig.md
 
 .INTERMEDIATE: Doxyfile.local
-Doxyfile.local:
+Doxyfile.local: Doxyfile
 	sed "s:resources/header.html::g" Doxyfile > $@
 
 # Local documentation without specialized headers. The resulting HTML documents do not have
