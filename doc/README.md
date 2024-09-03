@@ -60,7 +60,8 @@ Outside contributions are very welcome. See
 
 Here are some links to other SuperNOVAS related content online:
 
- - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io.
+ - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io, including 
+   [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via JPL HORIZONS.
@@ -79,6 +80,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
    
+ - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
+   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This was a documented issue of NOVAS C 3.1.
+     
  - Fixes antedating velocities and distances for light travel time in `ephemeris()`. When getting positions and 
    velocities for Solar-system sources, it is important to use the values from the time light originated from the 
    observed body rather than at the time that light arrives to the observer. This correction was done properly for 
@@ -112,32 +116,12 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
  
- - Fixes the [ephem_close bug](https://aa.usno.navy.mil/software/novas_faq), whereby `ephem_close()` in 
-   `eph_manager.c` did not reset the `EPHFILE` pointer to NULL. This was a documented issue of NOVAS C 3.1.
-   
- - [__v1.0.2__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
+ - [__v1.1__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
    the gravitational deflection due to the Sun being skipped.
     
- - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` applied relativistic corrections for a moving observer 
-   conditional on applying relativistic gravitational corrections (for Sun and/or Earth potential) for the observer. 
-   However, it seems more reasonable that the corrections for a moving observer should be applied always and
-   independently of the (optional) gravitational corrections.
-   
- - [__v1.1__] In the NOVAS C 3.1 implementation of `rad_vel()`, the Solar gravitational potential was ignored when 
-   calculating radial velocities for the Sun. Typically 'observing the Sun' means looking at its photosphere, As the 
-   light travels away from the Sun's photosphere towards the observer, it is redshifted. The NOVAS C implementation of 
-   `rad_vel()` has ignored this redshifting when the Sun was being observed.
-   
- - [__v1.1__] `place()` radial velocities were not quite correct in NOVAS C 3.1, and in prior SuperNOVAS releases. The 
-   radial velocity calculation now precedes aberration, since the radial velocity that is observed is in the geometric 
-   direction towards the source (unaffected by aberration). As for gravitational deflection, the geometric direction 
-   is the correct direction in which light was emitted from the source for sidereal objects. For Solar system sources 
-   we now reverse trace the deflected light to calculate the direction in which it was emitted from the source. As 
-   such, the radial velocities calculated should now be precise under all conditions. The typical errors of the old 
-   calculations were up to tens of m/s because of aberration, and a few m/s due to the wrong gravitational deflection 
-   calculation.
-
+ - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` has a number of issues that produce inaccurate results. 
+   The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.
    
 
 -----------------------------------------------------------------------------
@@ -145,7 +129,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
 <a name="compatibility"></a>
 ## Compatibility with NOVAS C 3.1
 
-SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary compatibility. 
+SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary (ABI) 
+compatibility. 
 
 If you have code that was written for NOVAS C 3.1, it should work with SuperNOVAS as is, without modifications. Simply 
 (re)build your application against SuperNOVAS, and you are good to go. 
@@ -826,6 +811,9 @@ before that level of accuracy is reached.
    deflections due to a body if the observer is within ~1500 km of its center (which is below the surface for all
    major Solar system bodies).
 
+ - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
+   to radial velocity for light originating at the surface, and observed near Earth or at a large distance away.
+
 -----------------------------------------------------------------------------
 
 <a name="solarsystem"></a>
@@ -981,7 +969,7 @@ A predictable release schedule and process can help manage expectations and redu
 alike.
 
 Releases of the library shall follow a quarterly release schedule. You may expect upcoming releases 
-to be published around __March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as-needed
+to be published around __February 1__, __May 1__, __August 1__, and/or __November 1__ each year, on an as-needed
 basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that 
 addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a new release will 
 actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 

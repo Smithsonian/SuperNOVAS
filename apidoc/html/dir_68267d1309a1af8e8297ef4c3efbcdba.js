@@ -10,5 +10,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "solsys1.c", "solsys1_8c.html", "solsys1_8c" ],
     [ "solsys2.c", "solsys2_8c.html", "solsys2_8c" ],
     [ "solsys3.c", "solsys3_8c.html", "solsys3_8c" ],
+    [ "super.c", "super_8c.html", "super_8c" ],
     [ "timescale.c", "timescale_8c.html", "timescale_8c" ]
 ];

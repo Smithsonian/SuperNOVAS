@@ -2,14 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KLH8B274YR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-KLH8B274YR');
-</script>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta charset="utf-8"/>
@@ -126,9 +118,9 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt>Global <a class="el" href="novascon_8c.html#a088f463ef64dea2727d8ade9b1cd7192">ANGVEL</a>  </dt>
 <dd><a class="anchor" id="_deprecated000025"></a>Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003). Use NOVAS_EARTH_ANGVEL instead  </dd>
 <dt>Global <a class="el" href="novas_8c.html#a84516e14b76ec0b8ad5b9a9049a2db81">app_planet</a>  (double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis)</dt>
-<dd><a class="anchor" id="_deprecated000002"></a>Use <a class="el" href="novas_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs()</a> is now preferred, especially for high accuracy calculations. </dd>
+<dd><a class="anchor" id="_deprecated000002"></a>Use <a class="el" href="super_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs()</a> is now preferred, especially for high accuracy calculations. </dd>
 <dt>Global <a class="el" href="novas_8c.html#abceec12c6cac2693b45b7778374455f4">app_star</a>  (double jd_tt, const <a class="el" href="structcat__entry.html">cat_entry</a> *star, enum novas_accuracy accuracy, double *ra, double *dec)</dt>
-<dd><a class="anchor" id="_deprecated000001"></a>Use <a class="el" href="novas_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs()</a> is now preferred, especially for high accuracy calculations. </dd>
+<dd><a class="anchor" id="_deprecated000001"></a>Use <a class="el" href="super_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs()</a> is now preferred, especially for high accuracy calculations. </dd>
 <dt>Global <a class="el" href="novascon_8c.html#a2b9e1ccc1a034cb26b9c794767315346">AU</a>  </dt>
 <dd><a class="anchor" id="_deprecated000019"></a>Astronomical unit in meters. Use NOVAS_AU instead.  </dd>
 <dt>Global <a class="el" href="novascon_8c.html#a95419ca41731064148e6fcfb0e919171">AU_KM</a>  </dt>
@@ -142,9 +134,9 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt>Global <a class="el" href="novascon_8c.html#a55379c7fece80070614c09bb218275b6">C_AUDAY</a>  </dt>
 <dd><a class="anchor" id="_deprecated000018"></a>Speed of light in AU/day. Use NOVAS_AUDAY instead.  </dd>
 <dt>Global <a class="el" href="novas_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter</a>  (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</dt>
-<dd><a class="anchor" id="_deprecated000007"></a>This function can be confusing to use due to the input coordinate system being specified by a combination of two options. Use <a class="el" href="novas_8c.html#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a> or <a class="el" href="novas_8c.html#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate. </dd>
+<dd><a class="anchor" id="_deprecated000007"></a>This function can be confusing to use due to the input coordinate system being specified by a combination of two options. Use <a class="el" href="super_8c.html#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a> or <a class="el" href="super_8c.html#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate. </dd>
 <dt>Global <a class="el" href="novas_8c.html#a5f229207d8a775119565a52f7e586cf8">equ2hor</a>  (double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const <a class="el" href="structon__surface.html">on_surface</a> *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr)</dt>
-<dd><a class="anchor" id="_deprecated000005"></a>The name of this function does not reveal what type of equatorial coordinates it requires. To make it less ambiguous, you should use <a class="el" href="novas_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> followed by <a class="el" href="novas_8c.html#a296fcf0239f66eb19732f5072fed6d6e">itrs_to_hor()</a> instead, possibly following it with <a class="el" href="novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7">refract_astro()</a> if you also want to apply optical refraction. </dd>
+<dd><a class="anchor" id="_deprecated000005"></a>The name of this function does not reveal what type of equatorial coordinates it requires. To make it less ambiguous, you should use <a class="el" href="super_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> followed by <a class="el" href="super_8c.html#a296fcf0239f66eb19732f5072fed6d6e">itrs_to_hor()</a> instead, possibly following it with <a class="el" href="novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7">refract_astro()</a> if you also want to apply optical refraction. </dd>
 <dt>Global <a class="el" href="novascon_8c.html#aa7bbeb0cb618d36be058e8fd92133b4d">ERAD</a>  </dt>
 <dd><a class="anchor" id="_deprecated000023"></a>Radius of Earth in kilometers from IERS Conventions (2003). Use NOVAS_EARTH_RADIUS instead  </dd>
 <dt>Global <a class="el" href="novascon_8c.html#a480d6423b1e9ca40c69c5a83458b49b0">F</a>  </dt>
@@ -172,7 +164,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt>Global <a class="el" href="novas_8c.html#a45b1a5d3cf875521f3176bc301633d79">tdb2tt</a>  (double jd_tdb, double *jd_tt, double *secdiff)</dt>
 <dd><a class="anchor" id="_deprecated000008"></a>Use the less computationally intensive an more accurate <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> routine instead. </dd>
 <dt>Global <a class="el" href="novas_8c.html#a6b662ff99b35db19c9b6b24a1ae9264f">ter2cel</a>  (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</dt>
-<dd><a class="anchor" id="_deprecated000006"></a>This function can be confusing to use due to the output coordinate system being specified by a combination of two options. Use <a class="el" href="novas_8c.html#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a> or <a class="el" href="novas_8c.html#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate. </dd>
+<dd><a class="anchor" id="_deprecated000006"></a>This function can be confusing to use due to the output coordinate system being specified by a combination of two options. Use <a class="el" href="super_8c.html#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a> or <a class="el" href="super_8c.html#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a> instead. You can then follow these with other conversions to GCRS (or whatever else) as appropriate. </dd>
 <dt>Global <a class="el" href="novas_8c.html#a48cf19bbddaeeb698bb921575b15e23e">topo_planet</a>  (double jd_tt, const object *ss_body, double ut1_to_tt, const <a class="el" href="structon__surface.html">on_surface</a> *position, enum novas_accuracy accuracy, double *ra, double *dec, double *dis)</dt>
 <dd><a class="anchor" id="_deprecated000004"></a>Using <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> with system NOVAS_CIRS is now preferred for topocentric calculations, especially when high precision is required. However, you will have to follow the IAU 2000 method consistently to produce equivalent calculations throughout. </dd>
 <dt>Global <a class="el" href="novas_8c.html#a221884a610d2866c7e7303cd7b94182c">topo_star</a>  (double jd_tt, double ut1_to_tt, const <a class="el" href="structcat__entry.html">cat_entry</a> *star, const <a class="el" href="structon__surface.html">on_surface</a> *position, enum novas_accuracy accuracy, double *ra, double *dec)</dt>
