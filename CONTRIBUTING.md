@@ -19,7 +19,7 @@ which is named either after the issue number, e.g. `issue-192`, or some other de
 3. __Develop__. Experiment on your fork/branch freely. If you run into a dead-end, you can always abandon it (which is 
 why branches are great) and start anew. You can run your own tests locally using `make test` before committing your 
 changes. If the tests pass, you should also try running `make all` and to ensure that all components of the package 
-and its API documentation are also in order. Remember to synchronize your `master` branch by fetching changes from 
+and its API documentation are also in order. Remember to synchronize your `main` branch by fetching changes from 
 upstream every once in a while, and merging them into your development branch. Don't forget to:
 
    - Add __doxygen__ markup your new code. You can keep it sweet and simple, but make sure it properly explains your 
