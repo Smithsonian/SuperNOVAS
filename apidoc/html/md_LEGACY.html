@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta charset="utf-8"/>
 <meta name="description" content="SuperNOVAS C/C++ astrometry library"/>
-<meta name="keywords" content="astronomy, astrometry, C, C++, library, NOVAS"/>
+<meta name="keywords" content="astronomy, astrometry, C, C++, C90, software library, open source, NOVAS"/>
 <meta name="author" content="Attila Kovacs"/>
 <meta name="copyright" content="(C)2024 Attila Kovacs" />
 <meta name="robots" content="index,follow"/>
@@ -114,16 +114,16 @@ $(document).ready(function(){initNavTree('md_LEGACY.html',''); initResizable(); 
   <div class="headertitle"><div class="title">SuperNOVAS: Astrometric Positions the Old Way</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md19"></a> As of version 1.1, the SuperNOVAS library offers a new, more versatile, more intuitive, and more efficient way to calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see <code>README.md</code>). However the old approach of the NOVAS C library remain viable also. This document demonstrates calculating the astrometric places of sources the old way, without using the observing frames approach that is now preferred in SuperNOVAS.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md18"></a> As of version 1.1, the SuperNOVAS library offers a new, more versatile, more intuitive, and more efficient way to calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see <code>README.md</code>). However the old approach of the NOVAS C library remain viable also. This document demonstrates calculating the astrometric places of sources the old way, without using the observing frames approach that is now preferred in SuperNOVAS.</p>
 <ul>
 <li><a class="el" href="md_LEGACY.html#old-sidereal-example">Calculating positions for a sidereal source</a></li>
 <li><a class="el" href="md_LEGACY.html#old-solsys-example">Calculating positions for a Solar-system source</a></li>
 </ul>
 <p><a class="anchor" id="old-sidereal-example"></a> </p>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Calculating positions for a sidereal source</h1>
 <p>A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a galactic molecular cloud, or a distant quasar.</p>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Specify the object of interest</h2>
 <p>First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star for which we have B1950 (i.e. FK4) coordinates:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structcat__entry.html">cat_entry</a> source; <span class="comment">// Structure to contain information on sidereal source </span></div>
@@ -145,7 +145,7 @@ Specify the object of interest</h2>
 <div class="ttc" id="anovas_8h_html_ace5e59ce1564bf6c61946c290bb05367a84da44f7510d8c99353b1b1c6bb4faf8"><div class="ttname"><a href="novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a84da44f7510d8c99353b1b1c6bb4faf8">CHANGE_J2000_TO_ICRS</a></div><div class="ttdeci">@ CHANGE_J2000_TO_ICRS</div><div class="ttdef"><b>Definition</b> novas.h:490</div></div>
 <div class="ttc" id="anovas_8h_html_ace5e59ce1564bf6c61946c290bb05367a882f5d97444df44485d360ce298843b1"><div class="ttname"><a href="novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a882f5d97444df44485d360ce298843b1">CHANGE_EPOCH</a></div><div class="ttdeci">@ CHANGE_EPOCH</div><div class="ttdoc">The combined equivalent of PROPER_MOTION and PRECESSION together.</div><div class="ttdef"><b>Definition</b> novas.h:486</div></div>
 </div><!-- fragment --><p>(Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the start.)</p>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Spefify the observer location</h2>
 <p>Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;   <span class="comment">// Structure to contain observer location </span></div>
@@ -155,7 +155,7 @@ Spefify the observer location</h2>
 <div class="line"><a class="code hl_function" href="novas_8c.html#a00d9f6909923cd3e559c8f011ff9b794">make_observer_on_surface</a>(50.7374, 7.0982, 60.0, 0.0, 0.0, &amp;obs);</div>
 <div class="ttc" id="anovas_8c_html_a00d9f6909923cd3e559c8f011ff9b794"><div class="ttname"><a href="novas_8c.html#a00d9f6909923cd3e559c8f011ff9b794">make_observer_on_surface</a></div><div class="ttdeci">int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure, observer *obs)</div><div class="ttdef"><b>Definition</b> novas.c:6529</div></div>
 <div class="ttc" id="astructobserver_html"><div class="ttname"><a href="structobserver.html">observer</a></div><div class="ttdef"><b>Definition</b> novas.h:653</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md23"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md22"></a>
 Specify the time of observation</h2>
 <p>We also need to set the time of observation. Our clocks usually measure UTC, but for astrometry we usually need time measured based on Terrestrial Time (TT) or Barycentric Time (TDB) or UT1. For a ground-based observer, you will often have to provide NOVAS with the TT - UT1 time difference, which can be calculated from the current leap seconds and the UT1 - UTC time difference (a.k.a. DUT1):</p>
 <div class="fragment"><div class="line"><span class="comment">// The current value for the leap seconds (UTC - TAI)</span></div>
@@ -174,7 +174,7 @@ Specify the time of observation</h2>
 <div class="ttc" id="anovas_8c_html_a7cd85bc0a0248f84d399cbbce9fe9546"><div class="ttname"><a href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date</a></div><div class="ttdeci">double julian_date(short year, short month, short day, double hour)</div><div class="ttdef"><b>Definition</b> novas.c:6174</div></div>
 <div class="ttc" id="asuper_8c_html_a4d7470ca705efa1953e8b4beab77c6b6"><div class="ttname"><a href="super_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt</a></div><div class="ttdeci">double get_ut1_to_tt(int leap_seconds, double dut1)</div><div class="ttdef"><b>Definition</b> super.c:60</div></div>
 <div class="ttc" id="asuper_8c_html_ab7611704bab9ce717744a8b5575c5378"><div class="ttname"><a href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt</a></div><div class="ttdeci">double get_utc_to_tt(int leap_seconds)</div><div class="ttdef"><b>Definition</b> super.c:32</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md24"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md23"></a>
 Specify Earth orientation parameters</h2>
 <p>Next, you may want to set the small diurnal (sub-arcsec level) corrections to Earth orientation, which are published in the <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html">IERS Bulletins</a>. The obvious utility of these values comes later, when converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. Less obviously, however, it is also needed for calculating the CIO location for CIRS coordinates when a CIO locator file is not available, or for calculations sidereal time measures etc. Therefore, it's best to set the pole offsets early on:</p>
 <div class="fragment"><div class="line"><span class="comment">// Current polar offsets provided by the IERS Bulletins (in arcsec)</span></div>
@@ -184,7 +184,7 @@ Specify Earth orientation parameters</h2>
 <div class="line"><a class="code hl_function" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole</a>(jd_tt, <a class="code hl_enumvalue" href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77">POLE_OFFSETS_X_Y</a>, dx, dy);</div>
 <div class="ttc" id="anovas_8c_html_a8937180de2ee1545d19b8fc840f35fe2"><div class="ttname"><a href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole</a></div><div class="ttdeci">short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2)</div><div class="ttdef"><b>Definition</b> novas.c:2998</div></div>
 <div class="ttc" id="anovas_8h_html_a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77"><div class="ttname"><a href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77">POLE_OFFSETS_X_Y</a></div><div class="ttdeci">@ POLE_OFFSETS_X_Y</div><div class="ttdoc">Offsets are dx, dy pairs (IAU 2006 precession-nutation model)</div><div class="ttdef"><b>Definition</b> novas.h:441</div></div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md24"></a>
 Calculate apparent positions on sky</h2>
 <p>Now we can calculate the precise apparent position (CIRS or TOD) of the source, such as it's right ascension (R.A.) and declination, and the equatorial <em>x,y,z</em> unit vector pointing in the direction of the source (in the requested coordinate system and for the specified observing location). We also get radial velocity (for spectroscopy), and distance (e.g. for apparent-to-physical size conversion):</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structsky__pos.html">sky_pos</a> pos;   <span class="comment">// We&#39;ll return the observable positions (in CIRS) in this structure</span></div>
@@ -203,7 +203,7 @@ Calculate apparent positions on sky</h2>
 <div class="ttc" id="astructsky__pos_html"><div class="ttname"><a href="structsky__pos.html">sky_pos</a></div><div class="ttdef"><b>Definition</b> novas.h:671</div></div>
 </div><!-- fragment --><p>The <em>placement</em> of the celestial target in the observer's frame includes appropriate aberration corrections for the observer's motion, as well as appropriate gravitational deflection corrections due to the Sun and Earth, and for other major gravitating solar system bodies (in full precision mode and if a suitable planet provider function is available).</p>
 <p>The calculated <code><a class="el" href="structsky__pos.html">sky_pos</a></code> structure contains all the information needed about the apparent position of the source at the given date/time of observation. We may use it to get true apparent R.A. and declination from it, or to calculate azimuth and elevation at the observing location. We'll consider these two cases separately below.</p>
-<h3><a class="anchor" id="autotoc_md26"></a>
+<h3><a class="anchor" id="autotoc_md25"></a>
 A. True apparent R.A. and declination</h3>
 <p>If you want to know the apparent R.A. and declination coordinates from the <code><a class="el" href="structsky__pos.html">sky_pos</a></code> structure you obtained, then you can follow with:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> ra, dec; <span class="comment">// [h, deg] We&#39;ll return the apparent R.A. [h] and declination [deg] in these</span></div>
@@ -216,7 +216,7 @@ A. True apparent R.A. and declination</h3>
 <p>If, however, you calculated the position in CIRS with the more precise IAU 2006 methodology (as we did in the example above), you have one more step to go still. The CIRS equator is the true equator of date, however its origin (CIO) is not the true equinox of date. Thus, we must correct for the difference of the origins to get the true apparent R.A.:</p>
 <div class="fragment"><div class="line">ra = <a class="code hl_function" href="super_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra</a>(jd_tt, <a class="code hl_enumvalue" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, ra);</div>
 <div class="ttc" id="asuper_8c_html_af90d52a6527d9b62b8ac35d8c1ac7c6b"><div class="ttname"><a href="super_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra</a></div><div class="ttdeci">double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra)</div><div class="ttdef"><b>Definition</b> super.c:591</div></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md27"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md26"></a>
 B. Azimuth and elevation angles at the observing location</h3>
 <p>If your goal is to calculate the astrometric azimuth and zenith distance (= 90&deg; - elevation) angles of the source at the specified observing location (without refraction correction), you can proceed from the <code><a class="el" href="structsky__pos.html">sky_pos</a></code> data you obtained from <code><a class="el" href="novas_8c.html#a078b5e764d5cf3fdca600fada992b409">place_star()</a></code> as:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> itrs[3];  <span class="comment">// ITRS position vector of source to populate</span></div>
@@ -237,7 +237,7 @@ B. Azimuth and elevation angles at the observing location</h3>
 <div class="ttc" id="anovas_8h_html_abe97e2d459a30db9d0f67d8c60af3b81a7ed64c314f06fdf9acfa72beb531e73d"><div class="ttname"><a href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81a7ed64c314f06fdf9acfa72beb531e73d">NOVAS_STANDARD_ATMOSPHERE</a></div><div class="ttdeci">@ NOVAS_STANDARD_ATMOSPHERE</div><div class="ttdef"><b>Definition</b> novas.h:405</div></div>
 <div class="ttc" id="astructobserver_html_a0ed422bd2a08c6b3870b545e16484501"><div class="ttname"><a href="structobserver.html#a0ed422bd2a08c6b3870b545e16484501">observer::on_surf</a></div><div class="ttdeci">on_surface on_surf</div><div class="ttdef"><b>Definition</b> novas.h:658</div></div>
 </div><!-- fragment --><p><a class="anchor" id="old-solsys-example"></a> </p>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
 Calculating positions for a Solar-system source</h1>
 <p>Solar-system sources work similarly to the above with a few important differences.</p>
 <p>First, You will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on integrating <a class="el" href="index.html#solarsystem">External Solar-system ephemeris data or services</a> with SuperNOVAS. You can specify the functions that will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:</p>

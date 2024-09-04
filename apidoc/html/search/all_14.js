@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['r_20a_20and_20declination_0',['A. True apparent R.A. and declination',['../md_LEGACY.html#autotoc_md26',1,'']]],
+  ['r_20a_20and_20declination_0',['A. True apparent R.A. and declination',['../md_LEGACY.html#autotoc_md25',1,'']]],
   ['r_5fhat_1',['r_hat',['../structsky__pos.html#a5fd669be4d5224aa192afa368a6e3173',1,'sky_pos']]],
   ['ra_2',['ra',['../structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'cat_entry::ra'],['../structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'sky_pos::ra']]],
   ['ra_5fcio_3',['ra_cio',['../structra__of__cio.html#aba4253d16ca8c644b29da1e727d787aa',1,'ra_of_cio']]],
@@ -14,13 +14,13 @@ var searchData=
   ['radialvelocity_11',['radialvelocity',['../structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a',1,'cat_entry']]],
   ['readeph_12',['readeph',['../solarsystem_8h.html#abb70fdad016c3a2ea45990eaa16b9245',1,'solarsystem.h']]],
   ['record_5flength_13',['RECORD_LENGTH',['../eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300',1,'eph_manager.c']]],
-  ['reduced_20accuracy_20shortcuts_14',['Reduced accuracy shortcuts',['../index.html#autotoc_md50',1,'']]],
-  ['refinements_20to_20the_20novas_20c_20api_15',['Refinements to the NOVAS C API',['../index.html#autotoc_md60',1,'']]],
+  ['reduced_20accuracy_20shortcuts_14',['Reduced accuracy shortcuts',['../index.html#autotoc_md49',1,'']]],
+  ['refinements_20to_20the_20novas_20c_20api_15',['Refinements to the NOVAS C API',['../index.html#autotoc_md59',1,'']]],
   ['refract_16',['refract',['../novas_8h.html#a151b74255ea04462abc5503c6afddcae',1,'refract(const on_surface *location, enum novas_refraction_model option, double zd_obs):&#160;novas.c'],['../novas_8c.html#a151b74255ea04462abc5503c6afddcae',1,'refract(const on_surface *location, enum novas_refraction_model option, double zd_obs):&#160;novas.c']]],
   ['refract_2ec_17',['refract.c',['../refract_8c.html',1,'']]],
   ['refract_5fastro_18',['refract_astro',['../novas_8h.html#a46d245f56c6eea9b1a7dc32d3feeaeb8',1,'refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_calc):&#160;novas.c'],['../novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7',1,'refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_astro):&#160;novas.c']]],
   ['refractionmodel_19',['RefractionModel',['../novas_8h.html#ad4899a6116cfbbe17400e7ef0c8426a9',1,'novas.h']]],
-  ['release_20schedule_20',['Release schedule',['../index.html#autotoc_md69',1,'']]],
+  ['release_20schedule_20',['Release schedule',['../index.html#autotoc_md68',1,'']]],
   ['rmass_21',['rmass',['../novascon_8c.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c'],['../novascon_8h.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c']]],
   ['rv_22',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
 ];

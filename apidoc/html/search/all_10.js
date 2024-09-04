@@ -1,7 +1,7 @@
 var searchData=
 [
   ['m_0',['M',['../structnovas__matrix.html#ac842f2eec8c8b880e2aca8792d63359b',1,'novas_matrix']]],
-  ['major_20planet_20ephemerides_1',['2. Built-in support for (old) JPL major planet ephemerides',['../index.html#autotoc_md64',1,'']]],
+  ['major_20planet_20ephemerides_1',['2. Built-in support for (old) JPL major planet ephemerides',['../index.html#autotoc_md63',1,'']]],
   ['make_5fairborne_5fobserver_2',['make_airborne_observer',['../super_8c.html#aa423a88cd3f434642fc89d47390184f4',1,'make_airborne_observer(const on_surface *location, const double *vel, observer *obs):&#160;super.c'],['../novas_8h.html#aa423a88cd3f434642fc89d47390184f4',1,'make_airborne_observer(const on_surface *location, const double *vel, observer *obs):&#160;super.c']]],
   ['make_5fcat_5fentry_3',['make_cat_entry',['../novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac',1,'make_cat_entry(const char *star_name, const char *catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star):&#160;novas.c'],['../novas_8h.html#a9950f7973fc3b5d40b0d0a9f4eceddac',1,'make_cat_entry(const char *star_name, const char *catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star):&#160;novas.c']]],
   ['make_5fcat_5fobject_4',['make_cat_object',['../novas_8h.html#ab9b7a622486f2904615ceed1ba94cd8f',1,'make_cat_object(const cat_entry *star, object *source):&#160;super.c'],['../super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f',1,'make_cat_object(const cat_entry *star, object *source):&#160;super.c']]],
@@ -19,7 +19,7 @@ var searchData=
   ['matrix_16',['matrix',['../structnovas__transform.html#a7a4a2e27593c1af2ae14cfb323ba4aba',1,'novas_transform']]],
   ['mean_5fobliq_17',['mean_obliq',['../novas_8c.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;novas.c'],['../novas_8h.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;novas.c']]],
   ['mean_5fstar_18',['mean_star',['../novas_8c.html#a8bd9c6d2127483551c98300e264977f5',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *ira, double *idec):&#160;novas.c'],['../novas_8h.html#a8bd9c6d2127483551c98300e264977f5',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *ira, double *idec):&#160;novas.c']]],
-  ['methodologies_19',['Note on alternative methodologies',['../index.html#autotoc_md41',1,'']]],
+  ['methodologies_19',['Note on alternative methodologies',['../index.html#autotoc_md40',1,'']]],
   ['mobl_20',['mobl',['../structnovas__frame.html#adcbb032bae5aa01bff2501f40527943e',1,'novas_frame']]],
-  ['multi_20threaded_20calculations_21',['Multi-threaded calculations',['../index.html#autotoc_md52',1,'']]]
+  ['multi_20threaded_20calculations_21',['Multi-threaded calculations',['../index.html#autotoc_md51',1,'']]]
 ];

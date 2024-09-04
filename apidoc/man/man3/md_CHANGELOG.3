@@ -4,7 +4,7 @@
 .SH NAME
 md_CHANGELOG \- Changelog 
 .PP
- All notable changes to the SuperNOVAS library will be documented in this file\&.
+ All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
 .SH "[Unreleased]"
@@ -13,13 +13,12 @@ Changes expected for the next bug-fix release, expected around 1 December 2024\&
 .SS "Fixed"
 .IP "\(bu" 2
 #55: Relativistic corrections to radial velocity were still not applied correctly\&. The revised calculation now uses the actual relativistic velocity differential between the source and observer to apply the appropriate time dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike\&.
-.IP "\(bu" 2
-#55: Use relativistic formulae to add/difference velocities (i\&.e\&. change velocity reference frame)\&.
 .PP
-.SS "Added"
 .SS "Changed"
 .IP "\(bu" 2
 #59: For major planets (and Sun and Moon) \fC\fBrad_vel()\fP\fP, \fC\fBrad_vel2()\fP\fP, \fC\fBplace()\fP\fP, and \fC\fBnovas_sky_pos()\fP\fP will include gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or else at a large distance away\&. The corrections can be skipped for \fC\fBrad_vel()\fP\fP / \fC\fBrad_vel2()\fP\fP by setting \fCd_src_sun\fP negative\&.
+.IP "\(bu" 2
+#55: Use relativistic formulae to add/difference velocities (i\&.e\&. change velocity reference frame)\&.
 .IP "\(bu" 2
 #60: Moved SuperNOVAS-only functions to a separate \fC\fBsuper\&.c\fP\fP module to alleviate the bloating of \fC\fBnovas\&.c\fP\fP, which can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be\&.
 .PP
@@ -282,7 +281,7 @@ Changed the standard atmospheric model for (optical) refraction calculation to i
 .PP
 .SS "Deprecated"
 .IP "\(bu" 2
-\fC\fBnovascon\&.h\fP\fP / \fC\fBnovascon\&.c\fP\fP: These definitions of constants in NOVAS C 3\&.1 was troublesome for two reasons: (1) They were primarily meant for use internally within the library itself\&. As the library clearly defines in what units input and output quantities are expressed, the user code can apply its own appropriate conversions that need not match the internal system used by the library\&. Hence exposing these constants to users was half baked\&. (2) The naming of constants was too simplistic (with names such as \fCC\fP or \fCF\fP) that it was rather prone to naming conflicts in user code\&. As a result, the constants have been moved to \fBnovas\&.h\fP with more unique names (such as \fCNOVAS_C\fP and \fCNOVAS_EARTH_FLATTENING\fP\&. New code should rely on these definitions instead of the troubled constants of \fC\fBnovascon\&.c\fP\fP / \fC\&.h\fP if at all necessary\&.
+\fC\fBnovascon\&.h\fP\fP / \fC\fBnovascon\&.c\fP\fP: These definitions of constants in NOVAS C 3\&.1 was troublesome for two reasons: (1) They were primarily meant for use internally within the library itself\&. As the library clearly defines in what units input and output quantities are expressed, the user code can apply its own appropriate conversions that need not match the internal system used by the library\&. Hence exposing these constants to users was half baked\&. (2) The naming of constants was too simplistic (with names such as \fCC\fP or \fCF\fP) that it was rather prone to naming conflicts in user code\&. As a result, the constants have been moved to \fC\fBnovas\&.h\fP\fP with more unique names (such as \fCNOVAS_C\fP and \fCNOVAS_EARTH_FLATTENING\fP\&. New code should rely on these definitions instead of the troubled constants of \fC\fBnovascon\&.c\fP\fP / \fC\&.h\fP if at all necessary\&.
 .IP "\(bu" 2
 \fC\fBequ2hor()\fP\fP: It's name does not make it clear that this function is suitable only for converting TOD (old methodology) to horizontal but not CIRS to horizontal (IAU 2000 standard)\&. You should use the equivalent but more specific \fC\fBtod_to_itrs()\fP\fP or the newly added \fC\fBcirs_to_itrs()\fP\fP, followed by \fC\fBitrs_to_hor()\fP\fP instead\&.
 .IP "\(bu" 2
