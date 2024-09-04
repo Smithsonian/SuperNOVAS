@@ -1,6 +1,7 @@
 # Changelog
 
-All notable changes to the SuperNOVAS library will be documented in this file.
+All notable changes to the [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) library will be documented in this 
+file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -11,17 +12,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Changes expected for the next bug-fix release, expected around 1 December 2024.
 
-
 ### Fixed
 
  - #55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses
    the actual relativistic velocity differential between the source and observer to apply the appropriate time 
    dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike.
-   
- - #55: Use relativistic formulae to add/difference velocities (i.e. change velocity reference frame).
-
-
-### Added
 
 ### Changed
 
@@ -30,9 +25,12 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
    at a large distance away. The corrections can be skipped for `rad_vel()` / `rad_vel2()` by setting `d_src_sun` 
    negative.
 
+ - #55: Use relativistic formulae to add/difference velocities (i.e. change velocity reference frame).
+
  - #60: Moved SuperNOVAS-only functions to a separate `super.c` module to alleviate the bloating of `novas.c`, which
    can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be.
 
+ 
 
 ## [1.1.0] - 2024-08-04
 
@@ -478,7 +476,7 @@ from which SuperNOVAS is forked from.
    units input and output quantities are expressed, the user code can apply its own appropriate conversions that need 
    not match the internal system used by the library. Hence exposing these constants to users was half baked. (2) The 
    naming of constants was too simplistic (with names such as `C` or `F`) that it was rather prone to naming conflicts 
-   in user code. As a result, the constants have been moved to novas.h with more unique names (such as `NOVAS_C` and 
+   in user code. As a result, the constants have been moved to `novas.h` with more unique names (such as `NOVAS_C` and 
    `NOVAS_EARTH_FLATTENING`. New code should rely on these definitions instead of the troubled constants of 
    `novascon.c` / `.h` if at all necessary.
 
