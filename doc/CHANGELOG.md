@@ -6,22 +6,7 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased - 1.2.0]
 
-Changes expected for the next bug-fix release, expected around 1 December 2024.
-
-## Added
-
- - #57: New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are characterized
-   with a redshift measure rather than a radial velocity value.
-
- - #57: New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
- 
- - #58: New functions to calculate and apply additional gravitational redshift corrections for light that originates
-   near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive
-   gravitating bodies (other than the Sun and Earth). The added functions are `grav_redshift()`, `redhift_vrad()`,
-   `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
-   
 
 ## [Unreleased]
 

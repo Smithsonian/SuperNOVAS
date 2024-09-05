@@ -58,7 +58,6 @@ var novas_8c =
     [ "novas_case_sensitive", "novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2", null ],
     [ "novas_debug", "novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3", null ],
     [ "novas_get_debug_mode", "novas_8c.html#a29cad12337acfce5f1e370320dcefb79", null ],
-    [ "novas_z2v", "novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1", null ],
     [ "nutation", "novas_8c.html#a69df5671751c09a7575963b94ad1151e", null ],
     [ "nutation_angles", "novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e", null ],
     [ "obs_planets", "novas_8c.html#acbc29fe86915ef8a3701795dc9fd9b34", null ],
