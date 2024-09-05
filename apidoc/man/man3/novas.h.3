@@ -1,4 +1,4 @@
-.TH "include/novas.h" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
+.TH "include/novas.h" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -216,11 +216,11 @@ include/novas.h
 .br
 .RI "API major version\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_MINOR_VERSION\fP   1"
+.RI "#define \fBSUPERNOVAS_MINOR_VERSION\fP   2"
 .br
 .RI "API minor version\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_PATCHLEVEL\fP   1"
+.RI "#define \fBSUPERNOVAS_PATCHLEVEL\fP   0"
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
@@ -436,6 +436,9 @@ include/novas.h
 .RI "int \fBgrav_planets\fP (const double *pos_src, const double *pos_obs, const \fBnovas_planet_bundle\fP *planets, double *out)"
 .br
 .ti -1c
+.RI "double \fBgrav_redshift\fP (double M_kg, double r_m)"
+.br
+.ti -1c
 .RI "int \fBgrav_undef\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *pos_app, const double *pos_obs, double *out)"
 .br
 .ti -1c
@@ -518,6 +521,9 @@ include/novas.h
 .br
 .ti -1c
 .RI "int \fBmake_planet\fP (enum \fBnovas_planet\fP num, \fBobject\fP *planet)"
+.br
+.ti -1c
+.RI "int \fBmake_redshifted_object\fP (const char *name, double ra, double dec, double z, \fBobject\fP *source)"
 .br
 .ti -1c
 .RI "int \fBmake_solar_system_observer\fP (const double *sc_pos, const double *sc_vel, \fBobserver\fP *obs)"
@@ -619,6 +625,18 @@ include/novas.h
 .RI "int \fBnovas_transform_vector\fP (const double *in, const \fBnovas_transform\fP *transform, double *out)"
 .br
 .ti -1c
+.RI "double \fBnovas_v2z\fP (double vel)"
+.br
+.ti -1c
+.RI "double \fBnovas_z2v\fP (double z)"
+.br
+.ti -1c
+.RI "double \fBnovas_z_add\fP (double z1, double z2)"
+.br
+.ti -1c
+.RI "double \fBnovas_z_inv\fP (double z)"
+.br
+.ti -1c
 .RI "int \fBnutation\fP (double jd_tdb, enum \fBnovas_nutation_direction\fP direction, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
 .br
 .ti -1c
@@ -679,6 +697,9 @@ include/novas.h
 .RI "int \fBradec_star\fP (double jd_tt, const \fBcat_entry\fP *star, const \fBobserver\fP *obs, double ut1_to_tt, enum \fBnovas_reference_system\fP sys, enum \fBnovas_accuracy\fP accuracy, double *ra, double *dec, double *rv)"
 .br
 .ti -1c
+.RI "double \fBredshift_vrad\fP (double vrad, double z)"
+.br
+.ti -1c
 .RI "double \fBrefract\fP (const \fBon_surface\fP *location, enum \fBnovas_refraction_model\fP option, double zd_obs)"
 .br
 .ti -1c
@@ -733,6 +754,9 @@ include/novas.h
 .RI "double \fBtt2tdb\fP (double jd_tt)"
 .br
 .ti -1c
+.RI "double \fBunredshift_vrad\fP (double vrad, double z)"
+.br
+.ti -1c
 .RI "short \fBvector2radec\fP (const double *pos, double *ra, double *dec)"
 .br
 .ti -1c
@@ -766,7 +790,7 @@ G\&. Kaplan and A\&. Kovacs
 .PP
 \fBVersion\fP
 .RS 4
-1\&.1\&.0
+1\&.2\&.0
 .RE
 .PP
 SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS)\&. It has been modified to fix outstanding issues and to make it easier to use\&.
@@ -3151,6 +3175,43 @@ Attila Kovacs
 
 .PP
 References \fBC_AUDAY\fP, \fBd_light()\fP, \fBgrav_vec()\fP, \fBnovas_planet_bundle::mask\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_RMASS_INIT\fP, \fBnovas_planet_bundle::pos\fP, and \fBnovas_planet_bundle::vel\fP\&.
+.SS "double grav_redshift (double M_kg, double r_m)"
+Returns the gravitational redshift (\fIz\fP) for light emitted near a massive spherical body at some distance from its center, and observed at some very large (infinite) distance away\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIM_kg\fP [kg] Mass of gravitating body that is contained inside the emitting radius\&. 
+.br
+\fIr_m\fP [m] Radius at which light is emitted\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The gravitational redshift (\fIz\fP) for an observer at very large (infinite) distance from the gravitating body\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBredshift_vrad()\fP 
+.PP
+\fBunredshift_vrad()\fP 
+.PP
+\fBnovas_z_add()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBC\fP\&.
 .SS "int grav_undef (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * pos_app, const double * pos_obs, double * out)"
 Computes the gravitationally undeflected position of an observed source position due to the major gravitating bodies in the solar system\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
@@ -4075,7 +4136,7 @@ Populates an '\fBin_space\fP' data structure, for an observer situated on a near
 .PP
 References \fBin_space::sc_pos\fP, and \fBin_space::sc_vel\fP\&.
 .SS "short make_object (enum \fBnovas_object_type\fP type, long number, const char * name, const \fBcat_entry\fP * star, \fBobject\fP * source)"
-Populates and object data structure using the parameters provided\&. By default (for compatibility with NOVAS C) source names are converted to upper-case internally\&. You can however enable case-sensitive processing by calling \fBnovas_case_sensitive()\fP before\&.
+Populates an object data structure using the parameters provided\&. By default (for compatibility with NOVAS C) source names are converted to upper-case internally\&. You can however enable case-sensitive processing by calling \fBnovas_case_sensitive()\fP before\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -4100,6 +4161,8 @@ Populates and object data structure using the parameters provided\&. By default 
 \fBnovas_case_sensitive()\fP 
 .PP
 \fBmake_cat_object()\fP 
+.PP
+\fBmake_redshifted_object()\fP 
 .PP
 \fBmake_planet()\fP 
 .PP
@@ -4303,6 +4366,47 @@ Attila Kovacs
 
 .PP
 References \fBmake_object()\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, and \fBNOVAS_PLANETS\fP\&.
+.SS "int make_redshifted_object (const char * name, double ra, double dec, double z, \fBobject\fP * source)"
+Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy\&. It is similar to \fC\fBmake_cat_object()\fP\fP except that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax and no proper motion (appropriately for a distant redshifted source)\&. The catalog name is set to \fCEXT\fP to indicate an extragalactic source, and the catalog number defaults to 0\&. The user may change these default field values as appropriate afterwards, if necessary\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Object name (less than SIZE_OF_OBJ_NAME in length)\&. It may be NULL\&. 
+.br
+\fIra\fP [h] Right ascension of the object (hours)\&. 
+.br
+\fIdec\fP [deg] Declination of the object (degrees)\&. 
+.br
+\fIz\fP Redhift value (\*<obs\*>  / \*<rest\*>  - 1 = f\*<rest\*>  / f\*<obs\*>  - 1)\&. 
+.br
+\fIsource\fP Pointer to structure to populate\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or 5 if 'name' is too long, else -1 if the 'source' pointer is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_cat_object()\fP 
+.PP
+\fBnovas_v2z()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBmake_cat_entry()\fP, \fBmake_cat_object()\fP, and \fBnovas_z2v()\fP\&.
 .SS "int make_solar_system_observer (const double * sc_pos, const double * sc_vel, \fBobserver\fP * obs)"
 Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft, with the specified geocentric position and velocity vectors\&. Solar-system observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative to the Solar System Barycenter, instead of the geocenter\&.
 .PP
@@ -5624,6 +5728,150 @@ Attila Kovacs
 
 .PP
 References \fBnovas_transform::matrix\fP\&.
+.SS "double novas_v2z (double vel)"
+Converts a radial recession velocity to a redshift value (z = f / f\*<rest\*> )\&. It is based on the relativistic formula: 
+.PP
+.nf
+
+ 1 + z = sqrt((1 + ) / (1 - ))
+.fi
+.PP
+ where  = v / c\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvel\fP [km/s] velocity (i\&.e\&. rate) of recession\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the corresponding redshift value ( / \*<rest\*> ), or NAN if the input velocity is invalid (i\&.e\&., it exceeds the speed of light)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_z2v()\fP 
+.PP
+\fBnovas_z_add()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBC\fP\&.
+.SS "double novas_z2v (double z)"
+Converts a redshift value (z = f / f\*<rest\*> ) to a radial velocity (i\&.e\&. rate) of recession\&. It is based on the relativistic formula: 
+.PP
+.nf
+
+ 1 + z = sqrt((1 + ) / (1 - ))
+.fi
+.PP
+ where  = v / c\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIz\fP the redshift value ( / \*<rest\*> )\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i\&.e\&. z <= -1)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_v2z()\fP 
+.PP
+\fBredshift_vrad()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBC\fP\&.
+.SS "double novas_z_add (double z1, double z2)"
+Compounds two redshift corrections, e\&.g\&. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer\&. It's effectively using (1 + z) = (1 + z1) * (1 + z2)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIz1\fP One of the redshift values 
+.br
+\fIz2\fP The other redshift value 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The compound redshift value, ot NAN if either input redshift is invalid (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_redshift()\fP 
+.PP
+\fBredshift_vrad()\fP 
+.PP
+\fBunredshift_vrad()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "double novas_z_inv (double z)"
+Returns the inverse of a redshift value, that is the redshift for a body moving with the same velocity as the original but in the opposite direction\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIz\fP A redhift value 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The redshift value for a body moving in the opposite direction with the same speed, or NAN if the input redshift is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_z_add()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
 .SS "int nutation (double jd_tdb, enum \fBnovas_nutation_direction\fP direction, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and equinox of epoch\&. Inverse transformation may be applied by setting flag 'direction'\&.
 .PP
@@ -6332,7 +6580,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .SS "int rad_vel (const \fBobject\fP * source, const double * pos_src, const double * vel_src, const double * vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double * rv)"
 Predicts the radial velocity of the observed object as it would be measured by spectroscopic means\&. Radial velocity is here defined as the radial velocity measure (z) times the speed of light\&. For major planets (and Sun and Moon), it includes gravitational corrections for light originating at the surface and observed from near Earth or else from a large distance away\&. For other solar system bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift)\&. The corrections do not in general apply to reflected light\&. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy\&. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects\&.
 .PP
-Gravitational blueshift corrections for the Solar and Earth potential for observers are included\&. However, the result does not include a blueshift correction for observers (e\&.g\&. spacecraft) orbiting other major Solar-system bodies\&.
+Gravitational blueshift corrections for the Solar and Earth potential for observers are included\&. However, the result does not include a blueshift correction for observers (e\&.g\&. spacecraft) orbiting other major Solar-system bodies\&. You may adjust the amount of gravitational redshift correction applied to the radial velocity via \fC\fBredshift_vrad()\fP\fP, \fC\fBunredshift_vrad()\fP\fP and \fC\fBgrav_redshift()\fP\fP if necessary\&.
 .PP
 All the input arguments are BCRS quantities, expressed with respect to the ICRS axes\&. 'vel_src' and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy\&.
 .PP
@@ -6355,7 +6603,7 @@ REFERENCES:
 .IP "1." 4
 Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201\&. 
 .IP "2." 4
-Unlike NOVAS C, this function will return a radial velocity for the Sun that is gravitationally referenced for the Sun's photosphere\&. (NOVAS C returns the radial velocity calculated for a massless Sun)\&. 
+Unlike NOVAS C, this function will return a radial velocity for the Sun that is gravitationally referenced to the Sun's photosphere\&. (NOVAS C returns the radial velocity for a massless Sun) 
 .PP
 .PP
 \fBParameters\fP
@@ -6395,7 +6643,7 @@ Predicts the radial velocity of the observed object as it would be measured by s
 .PP
 Radial velocity is here defined as the radial velocity measure (z) times the speed of light\&. For major planets (and Sun and Moon), it includes gravitational corrections for light originating at the surface and observed from near Earth or else from a large distance away\&. For other solar system bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift)\&. The corrections do not in general apply to reflected light\&. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy\&. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects\&.
 .PP
-Gravitational blueshift corrections for the Solar and Earth potential for observers are included\&. However, the result does not include a blueshift correction for observers (e\&.g\&. spacecraft) orbiting other major Solar-system bodies\&.
+Gravitational blueshift corrections for the Solar and Earth potential for observers are included\&. However, the result does not include a blueshift correction for observers (e\&.g\&. spacecraft) orbiting other major Solar-system bodies\&. You may adjust the amount of gravitational redshift correction applied to the radial velocity via \fC\fBredshift_vrad()\fP\fP, \fC\fBunredshift_vrad()\fP\fP and \fC\fBgrav_redshift()\fP\fP if necessary\&.
 .PP
 All the input arguments are BCRS quantities, expressed with respect to the ICRS axes\&. 'vel_src' and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy\&.
 .PP
@@ -6447,7 +6695,9 @@ Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201\&.
 .PP
 \fBplace()\fP 
 .PP
-\fBnovas_sky_pos()\fP
+\fBnovas_sky_pos()\fP 
+.PP
+\fBnovas_v2z()\fP
 .RE
 .PP
 \fBSince\fP
@@ -6462,7 +6712,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBC_AUDAY\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBobject::number\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References \fBAU\fP, \fBC\fP, \fBC_AUDAY\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBnovas_z2v()\fP, \fBobject::number\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
 .SS "int radec2vector (double ra, double dec, double dist, double * pos)"
 Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates)\&.
 .PP
@@ -6604,6 +6854,43 @@ Attila Kovacs
 
 .PP
 References \fBsky_pos::dec\fP, \fBplace_star()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+.SS "double redshift_vrad (double vrad, double z)"
+Applies an incremental redshift correction to a radial velocity\&. For example, you may use this function to correct a radial velocity calculated by \fC\fBrad_vel()\fP\fP or \fC\fBrad_vel2()\fP\fP for a Solar-system body to account for the gravitational redshift for light originating at a specific distance away from the body\&. For the Sun, you may want to undo the redshift correction applied for the photosphere using \fC\fBunredshift_vrad()\fP\fP first\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvrad\fP [km/s] Radial velocity 
+.br
+\fIz\fP Redshift correction to apply 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[km/s] The redshift corrected radial velocity or NAN if the redshift value is invalid (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBunredshift_vrad()\fP 
+.PP
+\fBgrav_redshift()\fP 
+.PP
+\fBnovas_z_add()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_v2z()\fP, and \fBnovas_z2v()\fP\&.
 .SS "double refract (const \fBon_surface\fP * location, enum \fBnovas_refraction_model\fP option, double zd_obs)"
 Computes atmospheric optical refraction for an observed (already refracted!) zenith distance through the atmosphere\&. In other words this is suitable to convert refracted zenith angles to astrometric (unrefracted) zenith angles\&. For the reverse, see \fBrefract_astro()\fP\&.
 .PP
@@ -7407,6 +7694,41 @@ Attila Kovacs
 
 .PP
 References \fBtdb2tt()\fP\&.
+.SS "double unredshift_vrad (double vrad, double z)"
+Undoes an incremental redshift correction that was applied to radial velocity\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvrad\fP [km/s] Radial velocity 
+.br
+\fIz\fP Redshift correction to apply 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[km/s] The radial velocity without the redshift correction or NAN if the redshift value is invalid\&. (errno will be set to EINVAL)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBredshift_vrad()\fP 
+.PP
+\fBgrav_redshift()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_v2z()\fP, and \fBnovas_z2v()\fP\&.
 .SS "short vector2radec (const double * pos, double * ra, double * dec)"
 Converts an vector in equatorial rectangular coordinates to equatorial spherical coordinates\&.
 .PP

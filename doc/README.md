@@ -10,7 +10,7 @@ SuperNOVAS is entirely free to use without licensing restrictions.  Its source c
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
-This document has been updated for the `v1.1` release.
+This document has been updated for the `v1.2` and later releases.
 
 
 ## Table of Contents
@@ -988,4 +988,5 @@ your code when they become available to avoid unexpected surprises when the fina
 candidates are typically available for one week only before they are superseded either by another, or by the finalized 
 release.
 
-
+-----------------------------------------------------------------------------
+Copyright (C) 2024 Attila Kovács

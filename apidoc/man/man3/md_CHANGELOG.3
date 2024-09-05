@@ -1,4 +1,4 @@
-.TH "md_CHANGELOG" 3 "Version v1.1" "SuperNOVAS" \" -*- nroff -*-
+.TH "md_CHANGELOG" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,6 +7,18 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
+.SH "[Unreleased - 1\&.2\&.0]"
+.PP
+Changes expected for the next bug-fix release, expected around 1 December 2024\&.
+.SH "Added"
+.PP
+.IP "\(bu" 2
+#57: New \fCnovas_make_redshifted_object()\fP to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value\&.
+.IP "\(bu" 2
+#57: New generic redshift-handling functions \fC\fBnovas_v2z()\fP\fP, \fC\fBnovas_z2v()\fP\fP,
+.IP "\(bu" 2
+#58: New functions to calculate and apply additional gravitational redshift corrections for light that originates near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive gravitating bodies (other than the Sun and Earth)\&. The added functions are \fC\fBgrav_redshift()\fP\fP, \fCredhift_vrad()\fP, \fC\fBunredshift_vrad()\fP\fP, \fC\fBnovas_z_add()\fP\fP, and \fC\fBnovas_z_inv()\fP\fP\&.
+.PP
 .SH "[Unreleased]"
 .PP
 Changes expected for the next bug-fix release, expected around 1 December 2024\&.
