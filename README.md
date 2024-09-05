@@ -1005,4 +1005,5 @@ your code when they become available to avoid unexpected surprises when the fina
 candidates are typically available for one week only before they are superseded either by another, or by the finalized 
 release.
 
-
+-----------------------------------------------------------------------------
+Copyright (C) 2024 Attila Kovács
