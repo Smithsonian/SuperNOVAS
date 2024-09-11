@@ -130,6 +130,8 @@ int novas_trace(const char *loc, int n, int offset) {
  *
  * @param loc     Function [:location] where error was produced.
  * @return       NAN
+ *
+ * @since 1.1.1
  */
 double novas_trace_nan(const char *loc) {
   if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) {

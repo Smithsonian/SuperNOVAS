@@ -1065,6 +1065,11 @@ static int test_refraction() {
   if(check_nan("inv_refract:conv", novas_inv_refract(switching_refraction, NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
   else if(check("inv_refract:conv:errno", ECANCELED, errno)) n++;
 
+  fprintf(stderr, ">>> Expecting an eror and trace...\n");
+  novas_debug(1);
+  novas_optical_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0);
+  novas_debug(0);
+
   return n;
 }
 
