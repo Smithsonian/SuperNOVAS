@@ -1269,6 +1269,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 #ifdef __NOVAS_INTERNAL_API__
 
 #  include <stdio.h>
+#  include <math.h>
 
 #define _CONSTS_
 

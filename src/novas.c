@@ -114,7 +114,7 @@ static int is_case_sensitive = 0; ///< (boolean) whether object names are case-s
  * @param n       error code that was received.
  * @param offset  Offset to add to error code (if &lt;0) to return.
  *
- * @sa novas_print_error()
+ * @sa novas_error()
  */
 int novas_trace(const char *loc, int n, int offset) {
   if(n != 0) {
@@ -133,7 +133,7 @@ int novas_trace(const char *loc, int n, int offset) {
  * @param from  {string} Function (:location) where error originated
  * @param desc  {string} Description of error, with information to convey to user.
  *
- * @sa novas_print_error()
+ * @sa novas_error()
  * @sa novas_debug()
  *
  * @since 1.0
