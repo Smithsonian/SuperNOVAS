@@ -1319,6 +1319,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 
 
 int novas_trace(const char *loc, int n, int offset);
+double novas_trace_nan(const char *loc);
 void novas_set_errno(int en, const char *from, const char *desc, ...);
 int novas_error(int ret, int en, const char *from, const char *desc, ...);
 

@@ -126,6 +126,22 @@ int novas_trace(const char *loc, int n, int offset) {
 }
 
 /**
+ * (<i>for internal use</i>) Traces an error before returning NAN.
+ *
+ * @param loc     Function [:location] where error was produced.
+ * @return       NAN
+ *
+ * @since 1.1.1
+ */
+double novas_trace_nan(const char *loc) {
+  if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) {
+    fprintf(stderr, "       @ %s [=> NAN]\n", loc);
+  }
+  return NAN;
+}
+
+
+/**
  * (<i>for internal use</i>) Sets an errno and report errors to the standard error, depending
  * on the current debug mode.
  *

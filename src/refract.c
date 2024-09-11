@@ -95,7 +95,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   double dz = novas_refraction(NOVAS_STANDARD_ATMOSPHERE, loc, type, el);
   if(isnan(dz))
-    novas_trace("novas_optical_refraction", -1, 0);
+    return novas_trace_nan("novas_optical_refraction");
   return dz;
 }
 
@@ -119,7 +119,7 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
 double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   double dz = novas_refraction(NOVAS_WEATHER_AT_LOCATION, loc, type, el);
   if(isnan(dz))
-    novas_trace("novas_optical_refraction", -1, 0);
+    return novas_trace_nan("novas_optical_refraction");
   return dz;
 }
 
