@@ -593,10 +593,8 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
 
   // Obtain the R.A. [h] of the CIO at the given date
   int stat = cio_ra(jd_tt, accuracy, &ra_cio);
-  if(stat) {
-    novas_trace("cirs_to_app_ra", stat, 0);
-    return NAN;
-  }
+  if(stat)
+    return novas_trace_nan("cirs_to_app_ra");
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
   ra = remainder(ra + ra_cio, 24.0);
@@ -627,10 +625,8 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
 
   // Obtain the R.A. [h] of the CIO at the given date
   int stat = cio_ra(jd_tt, accuracy, &ra_cio);
-  if(stat) {
-    novas_trace("app_to_cirs_ra", stat, 0);
-    return NAN;
-  }
+  if(stat)
+    return novas_trace_nan("app_to_cirs_ra");
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
   ra = remainder(ra - ra_cio, 24.0);
