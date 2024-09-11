@@ -30,6 +30,8 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
  - #60: Moved SuperNOVAS-only functions to a separate `super.c` module to alleviate the bloating of `novas.c`, which
    can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be.
 
+ - #62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus
+   integer before.
  
 
 ## [1.1.0] - 2024-08-04
