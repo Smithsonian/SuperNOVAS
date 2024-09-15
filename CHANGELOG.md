@@ -8,9 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
-## [Unreleased]
+## [1.1.1-rc1] - 2025-09-16
 
-Changes expected for the next bug-fix release, expected around 1 December 2024.
+Changes expected for the next bug-fix release, expected around 1 November 2024.
 
 ### Fixed
 
@@ -32,6 +32,8 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
 
  - #62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus
    integer before.
+   
+ - Slight tweakes to `Makefile`, and `.mk` snipplets.
  
 
 ## [1.1.0] - 2024-08-04
