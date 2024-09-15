@@ -17,11 +17,11 @@ BIN ?= bin
 # Compiler: use gcc by default
 CC ?= gcc
 
+# Add include directory
+CPPFLAGS += -I$(INC)
+
 # Base compiler options (if not defined externally...)
 CFLAGS ?= -Os -Wall 
-
-# Add include/ directory
-CFLAGS += -I$(INC)
 
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra

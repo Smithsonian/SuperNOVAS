@@ -51,7 +51,7 @@ distclean: distclean-local
 .PHONY: check
 check:
 	@echo "   [check]"
-	@cppcheck -I$(INC) $(CHECKOPTS) src
+	@cppcheck $(CPPFLAGS) $(CHECKOPTS) src
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
@@ -63,7 +63,7 @@ dox: README.md Doxyfile | apidoc $(SRC) $(INC)
 .PRECIOUS: dep/%.d
 dep/%.d: %.c dep
 	@echo " > $@" \
-	&& $(CC) $(CPPFLAGS) -I$(INC) -MM -MG $< > $@.$$$$ \
+	&& $(CC) $(CPPFLAGS) -MM -MG $< > $@.$$$$ \
 	&& sed 's|\w*\.o[ :]*| $(OBJ)/&|g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
