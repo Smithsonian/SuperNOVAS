@@ -5,5 +5,6 @@ var searchData=
   ['2_20built_20in_20support_20for_20old_20jpl_20major_20planet_20ephemerides_2',['2. Built-in support for (old) JPL major planet ephemerides',['../index.html#autotoc_md63',1,'']]],
   ['2024_2003_2001_3',['[1.0.0] - 2024-03-01',['../md_CHANGELOG.html#autotoc_md12',1,'']]],
   ['2024_2005_2013_4',['[1.0.1] - 2024-05-13',['../md_CHANGELOG.html#autotoc_md8',1,'']]],
-  ['2024_2008_2004_5',['[1.1.0] - 2024-08-04',['../md_CHANGELOG.html#autotoc_md4',1,'']]]
+  ['2024_2008_2004_5',['[1.1.0] - 2024-08-04',['../md_CHANGELOG.html#autotoc_md4',1,'']]],
+  ['2025_2009_2016_6',['[1.1.1-rc1] - 2025-09-16',['../md_CHANGELOG.html#autotoc_md1',1,'']]]
 ];

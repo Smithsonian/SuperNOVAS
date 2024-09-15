@@ -7,9 +7,9 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[Unreleased]"
+.SH "[1\&.1\&.1-rc1] - 2025-09-16"
 .PP
-Changes expected for the next bug-fix release, expected around 1 December 2024\&.
+Changes expected for the next bug-fix release, expected around 1 November 2024\&.
 .SS "Fixed"
 .IP "\(bu" 2
 #55: Relativistic corrections to radial velocity were still not applied correctly\&. The revised calculation now uses the actual relativistic velocity differential between the source and observer to apply the appropriate time dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike\&.
@@ -21,6 +21,10 @@ Changes expected for the next bug-fix release, expected around 1 December 2024\&
 #55: Use relativistic formulae to add/difference velocities (i\&.e\&. change velocity reference frame)\&.
 .IP "\(bu" 2
 #60: Moved SuperNOVAS-only functions to a separate \fC\fBsuper\&.c\fP\fP module to alleviate the bloating of \fC\fBnovas\&.c\fP\fP, which can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be\&.
+.IP "\(bu" 2
+#62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus integer before\&.
+.IP "\(bu" 2
+Slight tweakes to \fCMakefile\fP, and \fC\&.mk\fP snipplets\&.
 .PP
 .SH "[1\&.1\&.0] - 2024-08-04"
 .PP

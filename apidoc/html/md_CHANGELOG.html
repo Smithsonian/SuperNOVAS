@@ -117,8 +117,8 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
-<p>Changes expected for the next bug-fix release, expected around 1 December 2024.</p>
+[1.1.1-rc1] - 2025-09-16</h1>
+<p>Changes expected for the next bug-fix release, expected around 1 November 2024.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
@@ -130,6 +130,8 @@ Changed</h2>
 <li>#59: For major planets (and Sun and Moon) <code><a class="el" href="novas_8c.html#a9f76e2386515e2023172e05891c3fa28">rad_vel()</a></code>, <code><a class="el" href="novas_8c.html#a191dcbb360afb9b6bf123d46858156d0">rad_vel2()</a></code>, <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, and <code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code> will include gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or else at a large distance away. The corrections can be skipped for <code><a class="el" href="novas_8c.html#a9f76e2386515e2023172e05891c3fa28">rad_vel()</a></code> / <code><a class="el" href="novas_8c.html#a191dcbb360afb9b6bf123d46858156d0">rad_vel2()</a></code> by setting <code>d_src_sun</code> negative.</li>
 <li>#55: Use relativistic formulae to add/difference velocities (i.e. change velocity reference frame).</li>
 <li>#60: Moved SuperNOVAS-only functions to a separate <code><a class="el" href="super_8c.html">super.c</a></code> module to alleviate the bloating of <code><a class="el" href="novas_8c.html">novas.c</a></code>, which can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be.</li>
+<li>#62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus integer before.</li>
+<li>Slight tweakes to <code>Makefile</code>, and <code>.mk</code> snipplets.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md4"></a>
 [1.1.0] - 2024-08-04</h1>
