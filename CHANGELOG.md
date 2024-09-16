@@ -18,6 +18,9 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
    the actual relativistic velocity differential between the source and observer to apply the appropriate time 
    dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike.
 
+ - #64: `NOVAS_TAI_TO_TT` definition had wrong decimal in last place, thus was 3 ms off from what it should have been.
+   (thanks to @kiranshila)
+
 ### Changed
 
  - #59: For major planets (and Sun and Moon) `rad_vel()`, `rad_vel2()`, `place()`, and `novas_sky_pos()` will include 
@@ -32,9 +35,6 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
 
  - #62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus
    integer before.
- 
- - #64: `NOVAS_TAI_TO_TT` definition had wrong decimal in last place, thus was 3 ms off from what it should have been.
-   (thanks to @kiranshila)
    
  - Slight tweakes to `Makefile`, and `.mk` snipplets, with added `make` configurability.
  
