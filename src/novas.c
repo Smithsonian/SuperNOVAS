@@ -1353,6 +1353,7 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, const double *geo_pos,
         const double *geo_vel, double *pos, double *vel) {
   static const char *fn = "get_obs_posvel";
+  static const cat_entry zero_star = {0};
 
   if(!obs)
     return novas_error(-1, EINVAL, fn, "NULL observer parameter");
@@ -1373,7 +1374,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
 
   if(!geo_pos || !geo_vel) {
     const double tdb2[2] = { jd_tdb };
-    object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
+    object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", zero_star };
     double gpos[3], gvel[3];
     prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, gpos, gvel), 0);
     if(pos)
@@ -3372,6 +3373,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   static THREAD_LOCAL double t_last = 0;
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double gast;
+  static const cat_entry zero_star = {0};
 
   double gmst, eqeq, pos1[3], vel1[3], jd_tdb, jd_ut1;
 
@@ -3446,7 +3448,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
     }
 
     case NOVAS_SOLAR_SYSTEM_OBSERVER: {               // Observer in Solar orbit
-      const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
+      const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", zero_star };
       const double tdb[2] = { jd_tdb, 0.0 };
       int i;
 
