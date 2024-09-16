@@ -24,6 +24,7 @@
 #include <stdint.h>
 #include <time.h>
 
+/// Definition of π in case it's not defined in math.h
 #ifndef M_PI
 #    define M_PI 3.14159265358979323846
 #endif
