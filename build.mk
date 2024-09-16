@@ -51,7 +51,7 @@ distclean: distclean-local
 .PHONY: check
 check:
 	@echo "   [check]"
-	@cppcheck $(CPPFLAGS) $(CHECKOPTS) $(SRC) -I$(INC)
+	@cppcheck $(CPPFLAGS) $(CHECKOPTS) $(SRC)
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
