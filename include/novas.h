@@ -162,7 +162,7 @@
 #define NOVAS_GPS_TO_TAI          19.0
 
 /// [s] TT - TAI time offset
-#define NOVAS_TAI_TO_TT           32.187
+#define NOVAS_TAI_TO_TT           32.184
 
 
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
