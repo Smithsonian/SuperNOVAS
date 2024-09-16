@@ -1413,6 +1413,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
 
     default:
       // Nothing to do
+      ;
   }
 
   return 0;
@@ -1665,6 +1666,7 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     default:
       // Nothing else to do.
+      ;
   }
 
   // ---------------------------------------------------------------------

@@ -950,6 +950,7 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
       break;
     default:
       // nothing to do.
+      ;
   }
 
   // Undo aberration correction
@@ -1064,6 +1065,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
       default:
         // nothing to do...
+        ;
     }
   }
   else {
@@ -1092,6 +1094,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
       default:
         // nothing to do...
+        ;
     }
   }
 
