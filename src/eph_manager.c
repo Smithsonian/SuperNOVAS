@@ -268,8 +268,8 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
   int do_earth = 0, do_moon = 0;
 
   double jed[2];
-  double pos_moon[3] = { }, vel_moon[3] = { }, pos_earth[3] = { }, vel_earth[3] = { };
-  double target_pos[3] = { }, target_vel[3] = { }, center_pos[3] = { }, center_vel[3] = { };
+  double pos_moon[3] = {0}, vel_moon[3] = {0}, pos_earth[3] = {0}, vel_earth[3] = {0};
+  double target_pos[3] = {0}, target_vel[3] = {0}, center_pos[3] = {0}, center_vel[3] = {0};
 
   if(!tjd || !position || !velocity)
     return novas_error(-1, EINVAL, "planet_ephemeris", "NULL parameter: tjd=%p, position=%p, velocity=%p", tjd, position, velocity);
