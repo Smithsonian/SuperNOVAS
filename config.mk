@@ -21,7 +21,7 @@ CC ?= gcc
 CPPFLAGS += -I$(INC)
 
 # Base compiler options (if not defined externally...)
-CFLAGS ?= -Os -Wall 
+CFLAGS ?= -Os -Wall -std=c99
 
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra
