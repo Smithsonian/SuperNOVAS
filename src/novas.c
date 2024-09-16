@@ -4328,7 +4328,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
         if(source->number > 0 && source->number < NOVAS_PLANETS)
           rel *= (1.0 + zpl[source->number]);
       }
-      /* no break */
+      /* fallthrough */
 
     case NOVAS_EPHEM_OBJECT:
       // Solar potential at source (bodies strictly outside the Sun's volume)
@@ -6486,7 +6486,7 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
         return novas_error(-1, EINVAL, fn, "NULL in space location (for velocity)");
 
       memcpy(&obs->near_earth.sc_vel, loc_space->sc_vel, sizeof(loc_space->sc_vel));
-      /* no break */
+      /* fallthrough */
 
     case NOVAS_OBSERVER_ON_EARTH:
       if(!loc_surface)
