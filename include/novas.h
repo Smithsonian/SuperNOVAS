@@ -775,7 +775,7 @@ typedef struct {
  * @see novas_change_observer()
  */
 typedef struct {
-  int64_t state;                  ///< An internal state for checking validity.
+  uint64_t state;                  ///< An internal state for checking validity.
   enum novas_accuracy accuracy;   ///< NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
   novas_timespec time;            ///< The instant of time for which this observing frame is valid
   observer observer;              ///< The observer location, or NULL for barycentric
