@@ -3902,7 +3902,7 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
  */
 short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs,
         double *out) {
-  (void)unused;
+  (void) unused;
   static const char *fn = "grav_def";
 
   novas_planet_bundle planets = {};
