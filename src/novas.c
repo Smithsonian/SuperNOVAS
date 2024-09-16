@@ -6146,7 +6146,7 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
 
   // If observed weather data are available, use them.  Otherwise, use
   // crude estimates of average conditions.
-  if(option == 2) {
+  if(option == NOVAS_WEATHER_AT_LOCATION) {
     p = location->pressure;
     t = location->temperature;
   }
