@@ -19,10 +19,14 @@
 #ifndef _NOVAS_
 #define _NOVAS_
 
-#include <math.h>   // for M_PI
+#include <math.h>   // for sin, cos
 #include <stdlib.h> // NULL
 #include <stdint.h>
 #include <time.h>
+
+#ifndef M_PI
+#    define M_PI 3.14159265358979323846
+#endif
 
 // The upstream NOVAS library had a set of include statements that really were not necessary
 // First, including standard libraries here meant that those libraries were included in the
