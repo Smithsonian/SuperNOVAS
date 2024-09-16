@@ -97,7 +97,7 @@ DEFAULT_SOLSYS ?= 3
 # cppcheck options for 'check' target. You can add additional options by
 # setting the CHECKEXTRA variable (e.g. in shell) prior to invoking 'make'.
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
-            --error-exitcode=1 $(CHECKEXTRA)
+            --error-exitcode=1 --std=c99$(CHECKEXTRA)
 
 # Exhaustive checking for newer cppcheck...
 #CHECKOPTS += --check-level=exhaustive
