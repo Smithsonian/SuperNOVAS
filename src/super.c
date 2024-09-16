@@ -866,7 +866,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_
   static const char *fn = "grav_undo_planets";
 
   const double tol = 1e-13;
-  double pos_def[3] = { }, pos0[3] = { };
+  double pos_def[3] = {0}, pos0[3] = {0};
   double l;
   int i;
 
@@ -952,7 +952,7 @@ int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out) {
   static const char *fn = "grav_undef";
 
-  novas_planet_bundle planets = {};
+  novas_planet_bundle planets = {0};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_app || !out)
@@ -1036,7 +1036,7 @@ int make_ephem_object(const char *name, long num, object *body) {
  * @author Attila Kovacs
  */
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs) {
-  in_space motion = { };
+  in_space motion = {0};
 
   if(!vel)
     return novas_error(-1, EINVAL, "make_airborne_observer", "NULL velocity");

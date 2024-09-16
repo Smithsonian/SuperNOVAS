@@ -697,7 +697,7 @@ int set_planet_provider_hp(novas_planet_provider_hp func) {
 int place_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt, enum novas_reference_system system,
         enum novas_accuracy accuracy, sky_pos *pos) {
   static const char *fn = "place_star";
-  object source = { };
+  object source = {0};
 
   if(!star || !pos)
     return novas_error(-1, EINVAL, fn, "NULL input star=%p or output pos=%p pointer", star, pos);
@@ -747,7 +747,7 @@ int place_star(double jd_tt, const cat_entry *star, const observer *obs, double 
  */
 int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
         enum novas_accuracy accuracy, double *ra, double *dec, double *rv) {
-  sky_pos output = { };
+  sky_pos output = {0};
 
   // Default return values in case of error.
   if(ra)
@@ -810,7 +810,7 @@ int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double 
 int radec_planet(double jd_tt, const object *ss_body, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
         enum novas_accuracy accuracy, double *ra, double *dec, double *dis, double *rv) {
   static const char *fn = "radec_planet";
-  sky_pos output = { };
+  sky_pos output = {0};
 
   // Default return values in case of error.
   if(ra)
@@ -1111,7 +1111,7 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
 short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy, double *ra,
         double *dec) {
   static const char *fn = "topo_star";
-  observer obs = { };
+  observer obs = {0};
   prop_error(fn, make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs), 0);
   prop_error(fn, radec_star(jd_tt, star, &obs, ut1_to_tt, NOVAS_TOD, accuracy, ra, dec, NULL), 0);
   return 0;
@@ -1154,7 +1154,7 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_
 short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec) {
   static const char *fn = "local_star";
-  observer obs = { };
+  observer obs = {0};
   prop_error(fn, make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs), 0);
   prop_error(fn, radec_star(jd_tt, star, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, ra, dec, NULL), 0);
   return 0;
@@ -1202,7 +1202,7 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
 short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec, double *dis) {
   static const char *fn = "topo_planet";
-  observer obs = { };
+  observer obs = {0};
   prop_error(fn, make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs), 0);
   prop_error(fn, radec_planet(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_TOD, accuracy, ra, dec, dis, NULL), 0);
   return 0;
@@ -1244,7 +1244,7 @@ short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const o
 short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position, enum novas_accuracy accuracy,
         double *ra, double *dec, double *dis) {
   static const char *fn = "local_planet";
-  observer obs = { };
+  observer obs = {0};
   prop_error(fn, make_observer(NOVAS_OBSERVER_ON_EARTH, position, NULL, &obs), 0);
   prop_error(fn, radec_planet(jd_tt, ss_body, &obs, ut1_to_tt, NOVAS_GCRS, accuracy, ra, dec, dis, NULL), 0);
   return 0;
@@ -1278,7 +1278,7 @@ short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const 
  */
 short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *ira, double *idec) {
   static const char *fn = "mean_star";
-  cat_entry star = { };
+  cat_entry star = {0};
   double pos[3];
   int iter;
 
@@ -1395,7 +1395,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
     case NOVAS_OBSERVER_ON_EARTH:
     case NOVAS_AIRBORNE_OBSERVER:
     case NOVAS_OBSERVER_IN_EARTH_ORBIT: {
-      double pog[3] = { }, vog[3] = { };
+      double pog[3] = {0}, vog[3] = {0};
       int i;
 
       // For topocentric place, get geocentric position and velocity vectors
@@ -1499,7 +1499,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
   observer obs;
-  novas_planet_bundle planets = {};
+  novas_planet_bundle planets = {0};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
   double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], vpos[3], t_light, d_sb;
   int i;
@@ -3523,7 +3523,7 @@ int light_time2(double jd_tdb, const object *body, const double *pos_obs, double
   static const char *fn = "light_time2";
   int iter = 0;
 
-  double tol, jd[2] = { };
+  double tol, jd[2] = {0};
 
   if(!tlight)
     return novas_error(-1, EINVAL, fn, "NULL 'tlight' output pointer");
@@ -3905,7 +3905,7 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
   (void) unused;
   static const char *fn = "grav_def";
 
-  novas_planet_bundle planets = {};
+  novas_planet_bundle planets = {0};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
 
   if(!pos_src || !out)
@@ -3953,7 +3953,7 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
  */
 int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out) {
   static const char *fn = "grav_vec";
-  double pq[3], pe[3], pmag, emag, qmag, phat[3] = { }, ehat[3], qhat[3];
+  double pq[3], pe[3], pmag, emag, qmag, phat[3] = {0}, ehat[3], qhat[3];
   int i;
 
   if(!pos_src || !out)
@@ -5422,7 +5422,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
 
   // Check if it's a new file
   if(last_file != cio_file) {
-    char line[80] = {};
+    char line[80] = {0};
     int version, tokens;
 
     last_file = NULL;
@@ -5637,7 +5637,7 @@ novas_ephem_provider get_ephem_provider() {
 short ephemeris(const double *jd_tdb, const object *body, enum novas_origin origin, enum novas_accuracy accuracy, double *pos, double *vel) {
   static const char *fn = "ephemeris";
 
-  double posvel[6] = { };
+  double posvel[6] = {0};
   int error = 0;
 
   if(!jd_tdb || !body)
@@ -5698,7 +5698,7 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
 
       // Check and adjust the origins as necessary.
       if(origin != eph_origin) {
-        double pos0[3] = { }, vel0[3] = { };
+        double pos0[3] = {0}, vel0[3] = {0};
         enum novas_planet refnum = (origin == NOVAS_BARYCENTER) ? NOVAS_SSB : NOVAS_SUN;
         int i;
 
