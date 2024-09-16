@@ -78,7 +78,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 /**
  * Returns an optical refraction correction for a standard atmosphere.
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (currently unused)
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
@@ -93,6 +93,7 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
  * @sa refract_astro()
  */
 double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
+  (void)jd_tt;
   double dz = novas_refraction(NOVAS_STANDARD_ATMOSPHERE, loc, type, el);
   if(isnan(dz))
     return novas_trace_nan("novas_optical_refraction");
@@ -102,7 +103,7 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
 /**
  * Returns an optical refraction correction using the weather parameters defined for the observer location.
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (currently unused)
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
  * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
  *                  REFRACT_ASTROMETRIC (0).
@@ -117,6 +118,7 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
  * @sa refract_astro()
  */
 double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
+  (void)jd_tt;
   double dz = novas_refraction(NOVAS_WEATHER_AT_LOCATION, loc, type, el);
   if(isnan(dz))
     return novas_trace_nan("novas_optical_refraction");
@@ -136,7 +138,7 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * <li>Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-1601</li>
  * </ol>
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (currently unused)
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather.
  *                  Make sure all weather values, including humidity (added in v1.1), are fully
  *                  populated.
@@ -151,6 +153,7 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * @sa on_surface
  */
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
+  (void)jd_tt;
   static const char *fn = "novas_radio_refraction";
   // Various coefficients...
   static const double E[] = { 0.0, 46.625, 45.375, 4.1572, 1.4468, 0.25391, 2.2716, -1.3465, -4.3877, 3.1484, 4.520, -1.8982, 0.8900 };
