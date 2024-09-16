@@ -19,7 +19,7 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
    dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike.
 
  - #64: `NOVAS_TAI_TO_TT` definition had wrong decimal in last place, thus was 3 ms off from what it should have been.
-   (thanks to @kiranshila)
+   (thanks to kiranshila)
 
 ### Changed
 
