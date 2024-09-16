@@ -80,8 +80,10 @@ Here are some links to other SuperNOVAS related content online:
  - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io, including 
    [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
+ - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemeris
+   from JPL and/or in INPOP 2.0/3.0 format.
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
-   via JPL HORIZONS.
+   via from JPL.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
    of ephemeris data.
 
@@ -871,8 +873,10 @@ heliocenter, and accordingly, your function should set the value pointed at by o
 `NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
 AU/day respectively. 
 
-This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the CSPICE toolkit, or for the 
-Minor Planet Center (MPC), or whatever other ephemeris service you prefer.
+This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using 
+[CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) or the 
+[CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
+ephemeris service you prefer.
 
 Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
 
