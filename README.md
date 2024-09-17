@@ -428,14 +428,12 @@ in that frame. So, if you need to calculate positions for thousands of sources f
 will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames
 for different observer locations, if need be, via `novas_change_observer()`.
 
-Note, that to create `NOVAS_FULL_ACCURACY` frames, with sub &mu;as precision, you will you will need a high-precision 
-ephemeris provider for the major planets (not just only the Earth and Sun), to account for gravitational bending 
-around massive plannets. Without it, &mu;as accuracy cannot be ensured, in general. Therefore, attempting to construct 
-high-accuracy frames without an appropriate high-precision ephemeris provider will result in an error from the 
-requisite `ephemeris()` call. 
-
-I.e., without a proper ephemeris provider for the major planets, you are invariuable restricted to working with 
-`NOVAS_REDUCED_ACCURACY` frames, providing mas precisions only.
+Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
+`NOVAS_REDUCED_ACCURACY` frames, providing mas precisions only. To create `NOVAS_FULL_ACCURACY` frames, with sub 
+&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (not just only the 
+Earth and Sun included by default), to account for gravitational bending around massive plannets. Without it, &mu;as 
+accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate 
+high-precision ephemeris provider will result in an error from the requisite `ephemeris()` call. 
 
 
 #### Calculate an apparent place on sky
