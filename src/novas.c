@@ -235,7 +235,7 @@ enum novas_debug_mode novas_get_debug_mode() {
 /// \cond PRIVATE
 
 /**
- * Calculates the length of a 3-vector
+ * (<i>for internal use only</i>) Calculates the length of a 3-vector
  *
  * @param v     Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @return      the length of the vector
@@ -261,7 +261,7 @@ static double vdist2(const double *v1, const double *v2) {
 }
 
 /**
- * Calculates the distance between two 3-vectors.
+ * (<i>for internal use only</i>) Calculates the distance between two 3-vectors.
  *
  * @param v1    Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @param v2    Pointer to another 3-component (x, y, z) vector. The argument cannot
@@ -279,7 +279,7 @@ double novas_vdist(const double *v1, const double *v2) {
 }
 
 /**
- * Calculates the dot product between two 3-vectors.
+ * (<i>for internal use only</i>) Calculates the dot product between two 3-vectors.
  *
  * @param v1    Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @param v2    Pointer to another 3-component (x, y, z) vector. The argument cannot
@@ -395,14 +395,11 @@ static int time_equals(double jd1, double jd2) {
 int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "j2000_to_tod";
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
-
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  precession(JD_J2000, in, jd_tdb, out);
-  nutation(jd_tdb, NUTATE_MEAN_TO_TRUE, accuracy, out, out);
+  prop_error(fn, precession(JD_J2000, in, jd_tdb, out), 0);
+  prop_error(fn, nutation(jd_tdb, NUTATE_MEAN_TO_TRUE, accuracy, out, out), 0);
 
   return 0;
 }
@@ -434,14 +431,11 @@ int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
 int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "tod_to_j2000";
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
-
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  nutation(jd_tdb, NUTATE_TRUE_TO_MEAN, accuracy, in, out);
-  precession(jd_tdb, out, JD_J2000, out);
+  prop_error(fn, nutation(jd_tdb, NUTATE_TRUE_TO_MEAN, accuracy, in, out), 0);
+  prop_error(fn, precession(jd_tdb, out, JD_J2000, out), 0);
 
   return 0;
 }
@@ -3292,9 +3286,8 @@ int proper_motion(double jd_tdb_in, const double *pos, const double *vel, double
   if(!pos || !vel || !out)
     return novas_error(-1, EINVAL, "proper_motion", "NULL input or output 3-vector: pos=%p, vel=%p, out=%p", pos, vel, out);
 
-  for(j = 3; --j >= 0;) {
+  for(j = 3; --j >= 0;)
     out[j] = pos[j] + vel[j] * dt;
-  }
 
   return 0;
 }
