@@ -591,7 +591,7 @@ before that level of accuracy is reached.
     default SuperNOVAS can only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in 
     `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
     need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
-    JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
+    JPL or CALCEPH) if you want to use it to obtain precise positions for Solar-system bodies. See the 
     [section further below](#solarsystem) for more information how you can do that.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
