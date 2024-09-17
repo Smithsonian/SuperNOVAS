@@ -277,6 +277,13 @@ static int is_frame_initialized(const novas_frame *frame) {
  * accuracy mode, the currently configured IAU nutation model provider (see
  * set_nutation_lp_provider()).
  *
+ * Note, that to construct full accuracy frames, you will need a high-precision ephemeris provider
+ * for the major planets (not just the default Earth/Sun), as without it, gravitational bending
+ * around massive plannets cannot be accounted for, and therefore &mu;as accuracy cannot be ensured,
+ * in general. Attempting to construct a high-accuracy frame without a high-precision ephemeris
+ * provider for the major planets will result in an error in the 10--40 range from the required
+ * ephemeris() call.
+ *
  *
  * @param accuracy    Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or
  *                    NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient.
