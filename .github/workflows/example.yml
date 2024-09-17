@@ -6,6 +6,11 @@ on:
       - 'examples/**'
       - '.github/workflows/example.yml'
 
+  pull_request:
+    paths:
+      - 'examples/**'
+      - '.github/workflows/example.yml'
+
 jobs:
 
   build:

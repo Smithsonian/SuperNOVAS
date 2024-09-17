@@ -12,6 +12,17 @@ on:
       - 'test/Makefile'
       - '.github/workflows/test.yml'
 
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'test/src/**'
+      - 'test/reference/**'
+      - 'Makefile'
+      - '*.mk'
+      - 'test/Makefile'
+      - '.github/workflows/test.yml'
+
 jobs:
 
   test:

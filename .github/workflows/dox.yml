@@ -13,7 +13,16 @@ on:
       - 'Doxyfile'
       - '*.md'
       - '.github/workflows/dox.yml'
-      
+
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'css/**'
+      - 'resources/**'
+      - 'Doxyfile'
+      - '*.md'
+      - '.github/workflows/dox.yml'
 jobs:   
 
   apidocs:

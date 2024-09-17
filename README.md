@@ -23,7 +23,7 @@ high-precision astrometry such as one might need for running an observatory or a
 fork of the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) 
 C version 3.1, providing bug fixes and making it easier to use overall.
 
-SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C90 
+SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 

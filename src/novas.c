@@ -39,7 +39,7 @@
 #  define DEFAULT_SOLSYS    0
 #endif
 
-#define C2                  (C * C)   ///< [m^2/s^2] Speed of light squared
+#define C2                  (C * C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light squared
 
 // <---------- GLOBAL VARIABLES -------------->
 
@@ -6151,7 +6151,7 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
 
   // If observed weather data are available, use them.  Otherwise, use
   // crude estimates of average conditions.
-  if(option == 2) {
+  if(option == NOVAS_WEATHER_AT_LOCATION) {
     p = location->pressure;
     t = location->temperature;
   }
