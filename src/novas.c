@@ -39,7 +39,7 @@
 #  define DEFAULT_SOLSYS    0
 #endif
 
-#define C2                  (C * C)   ///< [m<sup>2/s<sup>2] Speed of light squared
+#define C2                  (C * C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light squared
 
 // <---------- GLOBAL VARIABLES -------------->
 
