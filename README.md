@@ -336,10 +336,10 @@ adjustment to convert from J2000 to ICRS coordinates.
 
 ```c
  // First change the catalog coordinates (in place) to the J2000 (FK5) system... 
- transform_cat(CHANGE_EPOCH, NOVAS_B1950, &source, NOVAS_J2000, "FK5", &source);
+ transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star);
   
  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
- transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source, 0.0, "ICRS", &source);
+ transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &star, 0.0, "ICRS", &star);
 ```
 
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
@@ -376,14 +376,14 @@ UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's ass
 then we can set the time of observation, for example, using the current UNIX time:
 
 ```c
- novas_timescale t_obs;	        // Structure that will define astrometric time
+ novas_timespec obs_time;	        // Structure that will define astrometric time
  struct timespec unix_time;     // Standard precision UNIX time structure
 
  // Get the current system time, with up to nanosecond resolution...
  clock_gettime(CLOCK_REALTIME, &unix_time);
  
  // Set the time of observation to the precise UTC-based UNIX time
- novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.114, &t_obs);
+ novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.114, &obs_time);
 ```
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
@@ -392,7 +392,7 @@ or TCB):
 ```c
  double jd_tai = ...     // TAI-based Julian Date 
 
- novas_set_time(NOVAS_TAI, jd_tai, leap_seconds, dut1, &t_obs);
+ novas_set_time(NOVAS_TAI, jd_tai, leap_seconds, dut1, &obs_time);
 ```
 
 or, for the best precision we may do the same with an integer / fractional split:
@@ -401,7 +401,7 @@ or, for the best precision we may do the same with an integer / fractional split
  long ijd_tai = ...     // Integer part of the TAI-based Julian Date
  double fjd_tai = ...   // Fractional part of the TAI-based Julian Date 
   
- novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &t_obs);
+ novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &obs_time);
 ```
 
 #### Set up the observing frame
