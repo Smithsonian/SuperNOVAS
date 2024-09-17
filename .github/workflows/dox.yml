@@ -5,6 +5,8 @@ on:
     types: [published]
 
   push:
+    branches:
+      - main
     paths:
       - 'src/**'
       - 'include/**'
