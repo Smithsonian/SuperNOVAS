@@ -36,6 +36,8 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
  - #62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus
    integer before.
    
+ - #67: Use accuracy argument in `tod_to_cirs()`. (thanks to kiranshila)
+ 
  - Slight tweakes to `Makefile`, and `.mk` snipplets, with added `make` configurability.
  
  
