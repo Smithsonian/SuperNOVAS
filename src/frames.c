@@ -306,6 +306,7 @@ static int is_frame_initialized(const novas_frame *frame) {
  * @sa novas_geom_posvel()
  * @sa novas_make_transform()
  * @sa set_planet_provider()
+ * @sa set_planet_provider_hp()
  * @sa set_nutation_lp_provider()
  *
  * @since 1.1
