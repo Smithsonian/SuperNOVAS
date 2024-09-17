@@ -21,6 +21,8 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
  - #64: `NOVAS_TAI_TO_TT` definition had wrong decimal in last place, thus was 3 ms off from what it should have been.
    (thanks to kiranshila)
 
+ - #68: `readeph_dummy()` dummy implenetation in `readeph0.c` called non existing error handler function.
+
 ### Changed
 
  - #59: For major planets (and Sun and Moon) `rad_vel()`, `rad_vel2()`, `place()`, and `novas_sky_pos()` will include 
@@ -37,6 +39,8 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
    integer before.
    
  - #67: Use accuracy argument in `tod_to_cirs()`. (thanks to kiranshila)
+ 
+ - #68: Various improvements to debug error tracing.
  
  - Slight tweakes to `Makefile`, and `.mk` snipplets, with added `make` configurability.
  
