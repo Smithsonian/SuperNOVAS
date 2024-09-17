@@ -24,8 +24,10 @@
 #include "novas.h"
 
 static double novas_refraction(enum novas_refraction_model model, const on_surface *loc, enum novas_refraction_type type, double el) {
+  static const char *fn = "novas_refraction";
+
   if(!loc) {
-    novas_error(-1, EINVAL, "novas_refraction", "NULL on surface observer location");
+    novas_set_errno(EINVAL, fn, "NULL on surface observer location");
     return NAN;
   }
 
@@ -35,6 +37,7 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
   if(type == NOVAS_REFRACT_ASTROMETRIC)
     return refract_astro(loc, model, 90.0 - el);
 
+  novas_set_errno(EINVAL, fn, "NULL on surface observer location");
   return NAN;
 }
 
@@ -163,7 +166,7 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   int j;
 
   if(!loc) {
-    novas_error(-1, EINVAL, fn, "NULL on surface observer location");
+    novas_set_errno(EINVAL, fn, "NULL on surface observer location");
     return NAN;
   }
 
@@ -171,7 +174,7 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
     return novas_inv_refract(novas_radio_refraction, jd_tt, loc, NOVAS_REFRACT_ASTROMETRIC, el);
 
   if(type != NOVAS_REFRACT_ASTROMETRIC) {
-    novas_error(-1, EINVAL, fn, "invalid refraction type: %d", type);
+    novas_set_errno(EINVAL, fn, "invalid refraction type: %d", type);
     return NAN;
   }
 

@@ -4245,17 +4245,17 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   int i;
 
   if(!source) {
-    novas_error(-1, EINVAL, fn, "NULL input source");
+    novas_set_errno(EINVAL, fn, "NULL input source");
     return NAN;
   }
 
   if(!pos_emit || !vel_src || !pos_det) {
-    novas_error(-1, EINVAL, fn, "NULL input source pos/vel: pos_emit=%p, vel_src=%p, pos_det=%p", pos_emit, vel_src, pos_det);
+    novas_set_errno(EINVAL, fn, "NULL input source pos/vel: pos_emit=%p, vel_src=%p, pos_det=%p", pos_emit, vel_src, pos_det);
     return NAN;
   }
 
   if(!vel_obs) {
-    novas_error(-1, EINVAL, fn, "NULL input observer velocity");
+    novas_set_errno(EINVAL, fn, "NULL input observer velocity");
     return NAN;
   }
 
@@ -4331,7 +4331,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       break;
 
     default:
-      novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
+      novas_set_errno(EINVAL, fn, "invalid source type: %d", source->type);
       return NAN;
   }
 
@@ -5113,7 +5113,7 @@ int set_cio_locator_file(const char *filename) {
   if(old)
     fclose(old);
 
-  return cio_file ? 0 : -1;
+  return cio_file ? 0 : novas_error(-1, errno, "set_cio_locator_file", "File could not be opened");
 }
 
 /**

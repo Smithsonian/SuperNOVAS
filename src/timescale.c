@@ -268,7 +268,7 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
   if(ijd) *ijd = -1;
 
   if(!time) {
-    novas_error(-1, EINVAL, fn, "NULL input time specification");
+    novas_set_errno(EINVAL, fn, "NULL input time specification");
     return NAN;
   }
 
@@ -303,7 +303,7 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
       f -= time->ut1_to_tt / DAY;
       break;
     default:
-      novas_error(-1, EINVAL, fn, "Invalid timescale: %d", timescale);
+      novas_set_errno(EINVAL, fn, "Invalid timescale: %d", timescale);
       return NAN;
   }
 
@@ -340,7 +340,7 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  */
 double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
   if(!t1 || !t2) {
-    novas_error(-1, EINVAL, "novas_diff_time", "NULL parameter: t1=%p, t2=%p", t1, t2);
+    novas_set_errno(EINVAL, "novas_diff_time", "NULL parameter: t1=%p, t2=%p", t1, t2);
     return NAN;
   }
 
