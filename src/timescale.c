@@ -253,7 +253,7 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * @param[out] ijd    [day] The integer part of the Julian date in the requested timescale. It may
  *                    be NULL if not required.
  * @return            [day] The fractional part of the Julian date in the requested timescale or
- *                    NAN is the time argument is NULL.
+ *                    NAN is the time argument is NULL (ijd will be set to -1 also).
  *
  * @sa novas_set_split_time()
  * @sa novas_get_time()
@@ -264,6 +264,8 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
 double novas_get_split_time(const novas_timespec *time, enum novas_timescale timescale, long *ijd) {
   static const char *fn = "novas_get_split_time";
   double f;
+
+  if(ijd) *ijd = -1;
 
   if(!time) {
     novas_error(-1, EINVAL, fn, "NULL input time specification");
@@ -443,7 +445,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  *
  * @param time        Pointer to the astronomical time specification data structure.
  * @param[out] nanos  [ns] UTC sub-second component. It may be NULL if not required.
- * @return            [s] The integer UNIX time
+ * @return            [s] The integer UNIX time, or -1 if the input time is NULL.
  *
  * @sa novas_set_unix_time()
  * @sa novas_get_time()
@@ -457,8 +459,11 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
   time_t seconds;
 
   sod = novas_get_split_time(time, NOVAS_UTC, &ijd) * DAY;
-  if(isnan(sod))
-    return novas_trace_nan("novas_get_unix_time");
+  if(isnan(sod)) {
+    static const char *fn = "novas_get_unix_time";
+    if(nanos) *nanos = novas_trace_nan(fn);
+    return novas_trace(fn, -1, 0);
+  }
 
   isod = (long) floor(sod);
   seconds = UNIX_J2000 + (ijd - IJD_J2000) * IDAY + isod;

@@ -1016,6 +1016,7 @@ static int test_obs_posvel() {
 static int test_time() {
   novas_timespec time = {};
   int n = 0;
+  long ijd = 0;
 
   if(check("time:set:time", -1, novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 37, 0.11, NULL))) n++;
   if(check("time:set:scale:-1", -1, novas_set_time(-1, NOVAS_JD_J2000, 37, 0.11, &time))) n++;
@@ -1025,6 +1026,9 @@ static int test_time() {
   if(check_nan("time:get:scale:-1", novas_get_time(&time, -1))) n++;
   if(check_nan("time:get:scale:hi", novas_get_time(&time, NOVAS_TIMESCALES))) n++;
 
+  if(check("time:get_unix_time:time", -1, novas_get_unix_time(NULL, &ijd))) n++;
+  if(check("time:get_unix_time:time+ijd", -1, novas_get_unix_time(NULL, NULL))) n++;
+
   if(check("time:offset:time", -1, novas_offset_time(NULL, 0.1, &time))) n++;
   if(check("time:offset:out", -1, novas_offset_time(&time, 0.1, NULL))) n++;
   if(check("time:offset:both", -1, novas_offset_time(NULL, 0.1, NULL))) n++;
@@ -1032,6 +1036,15 @@ static int test_time() {
   if(check_nan("time:diff:t1", novas_diff_time(NULL, &time))) n++;
   if(check_nan("time:diff:t2", novas_diff_time(&time, NULL))) n++;
   if(check_nan("time:diff:both", novas_diff_time(NULL, NULL))) n++;
+
+  if(check_nan("time:diff_tcg:t1", novas_diff_tcg(NULL, &time))) n++;
+  if(check_nan("time:diff_tcg:t2", novas_diff_tcg(&time, NULL))) n++;
+  if(check_nan("time:diff_tcg:both", novas_diff_tcg(NULL, NULL))) n++;
+
+  if(check_nan("time:diff_tcb:t1", novas_diff_tcb(NULL, &time))) n++;
+  if(check_nan("time:diff_tcb:t2", novas_diff_tcb(&time, NULL))) n++;
+  if(check_nan("time:diff_tcb:both", novas_diff_tcb(NULL, NULL))) n++;
+
 
   return n;
 }
@@ -1065,7 +1078,7 @@ static int test_refraction() {
   if(check_nan("inv_refract:conv", novas_inv_refract(switching_refraction, NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
   else if(check("inv_refract:conv:errno", ECANCELED, errno)) n++;
 
-  fprintf(stderr, ">>> Expecting an eror and trace...\n");
+  fprintf(stderr, ">>> Expecting an error and trace...\n");
   novas_debug(1);
   novas_optical_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0);
   novas_debug(0);
