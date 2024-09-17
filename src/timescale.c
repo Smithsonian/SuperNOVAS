@@ -67,7 +67,8 @@
  * @author Attila Kovacs
  */
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time) {
-  return novas_set_split_time(timescale, 0, jd, leap, dut1, time);
+  prop_error("novas_set_time", novas_set_split_time(timescale, 0, jd, leap, dut1, time), 0);
+  return 0;
 }
 
 /**
@@ -219,6 +220,8 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
 double novas_get_time(const novas_timespec *time, enum novas_timescale timescale) {
   long ijd;
   double fjd = novas_get_split_time(time, timescale, &ijd);
+  if(isnan(fjd))
+    return novas_trace_nan("novas_get_time");
   return ijd + fjd;
 }
 
@@ -249,7 +252,8 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  *                    provided
  * @param[out] ijd    [day] The integer part of the Julian date in the requested timescale. It may
  *                    be NULL if not required.
- * @return            [day] The fractional part of the Julian date in the requested timescale.
+ * @return            [day] The fractional part of the Julian date in the requested timescale or
+ *                    NAN is the time argument is NULL.
  *
  * @sa novas_set_split_time()
  * @sa novas_get_time()
@@ -258,7 +262,7 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * @author Attila Kovacs
  */
 double novas_get_split_time(const novas_timespec *time, enum novas_timescale timescale, long *ijd) {
-  static const char *fn = "novas_get_time";
+  static const char *fn = "novas_get_split_time";
   double f;
 
   if(!time) {
@@ -359,7 +363,10 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
  * @author Attila Kovacs
  */
 double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
-  return novas_diff_time(t1, t2) * (1.0 + TC_LB);
+  double dt = novas_diff_time(t1, t2) * (1.0 + TC_LB);
+  if(isnan(dt))
+    return novas_trace_nan("novas_diff_tcb");
+  return dt;
 }
 
 
@@ -383,7 +390,10 @@ double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
  * @author Attila Kovacs
  */
 double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
-  return novas_diff_time(t1, t2) * (1.0 + TC_LG);
+  double dt = novas_diff_time(t1, t2) * (1.0 + TC_LG);
+  if(isnan(dt))
+    return novas_trace_nan("novas_diff_tcg");
+  return dt;
 }
 
 /**
@@ -424,7 +434,8 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
     jd--;
   }
 
-  return novas_set_split_time(NOVAS_UTC, jd, (sojd + 1e-9 * nanos) / DAY, leap, dut1, time);
+  prop_error("novas_set_unix_time", novas_set_split_time(NOVAS_UTC, jd, (sojd + 1e-9 * nanos) / DAY, leap, dut1, time), 0);
+  return 0;
 }
 
 /**
@@ -446,6 +457,9 @@ time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
   time_t seconds;
 
   sod = novas_get_split_time(time, NOVAS_UTC, &ijd) * DAY;
+  if(isnan(sod))
+    return novas_trace_nan("novas_get_unix_time");
+
   isod = (long) floor(sod);
   seconds = UNIX_J2000 + (ijd - IJD_J2000) * IDAY + isod;
 

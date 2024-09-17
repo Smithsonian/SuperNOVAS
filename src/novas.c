@@ -5806,7 +5806,6 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   double paralx, dist, r, d, cra, sra, cdc, sdc, k;
   double pos[3], vel[3], term1, pmr, pmd, rvl, xyproj;
-  int error = 0;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: in=%p, out=%p", in, out);
@@ -5955,7 +5954,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
     out->starnumber = in->starnumber;
   }
 
-  return error;
+  return 0;
 }
 
 /**
