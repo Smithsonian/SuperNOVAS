@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CC: gcc
+      CFLAGS: -Os -Wall -Wextra -std=c99
     steps:
     - uses: actions/checkout@v4
     
