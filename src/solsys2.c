@@ -87,7 +87,7 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
   static const char *fn = "planet_jplint";
 
   long targ, cent, err_flg = 0;
-  double posvel[6] = { };
+  double posvel[6] = {0};
   const double jd2[2] = { jd_tdb };
   int i;
 
@@ -179,7 +179,7 @@ short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum nova
   static const char *fn = "planet_jplint_hp";
 
   long targ, cent, err_flg = 0;
-  double posvel[6] = { };
+  double posvel[6] = {0};
   int i;
 
   if(!jd_tdb)

@@ -306,9 +306,10 @@ static int is_frame_initialized(const novas_frame *frame) {
  */
 int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double dx, double dy,
         novas_frame *frame) {
-  static const char *fn = "novas_create_frame";
-  static const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth" };
-  static const object sun = { NOVAS_PLANET, NOVAS_SUN, "Sun" };
+  static const char *fn = "novas_make_frame";
+  static const cat_entry zero_star = {0};
+  static const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", zero_star };
+  static const object sun = { NOVAS_PLANET, NOVAS_SUN, "Sun", zero_star };
 
   double tdb2[2];
   double mobl, tobl, ee, dpsi, deps;
@@ -769,10 +770,10 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
   switch(sys) {
     case NOVAS_J2000:
       matrix_transform(pos, &frame->precession, pos);
-      /* no break */
+      /* fallthrough */
     case NOVAS_MOD:
       matrix_transform(pos, &frame->nutation, pos);
-      /* no break */
+      /* fallthrough */
     case NOVAS_TOD:
       spin(15.0 * frame->gst, pos, pos);
       break;
@@ -780,7 +781,7 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
     case NOVAS_ICRS:
     case NOVAS_GCRS:
       matrix_transform(pos, &frame->gcrs_to_cirs, pos);
-      /* no break */
+      /* fallthrough */
     case NOVAS_CIRS:
       spin(frame->era, pos, pos);
       break;
@@ -941,15 +942,16 @@ int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys,
 
     case NOVAS_TOD:
       matrix_inv_rotate(app_pos, &frame->nutation, app_pos);
-      /* no break */
+      /* fallthrough */
     case NOVAS_MOD:
       matrix_inv_rotate(app_pos, &frame->precession, app_pos);
-      /* no break */
+      /* fallthrough */
     case NOVAS_J2000:
       matrix_inv_rotate(app_pos, &frame->icrs_to_j2000, app_pos);
       break;
     default:
       // nothing to do.
+      ;
   }
 
   // Undo aberration correction
@@ -1044,19 +1046,19 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
         cat_transform(transform, &frame->gcrs_to_cirs, -1);
         if(to_system == NOVAS_GCRS)
           return 0;
-        /* no break */
+        /* fallthrough */
 
       case NOVAS_GCRS:
         cat_transform(transform, &frame->icrs_to_j2000, 1);
         if(to_system == NOVAS_J2000)
           return 0;
-        /* no break */
+        /* fallthrough */
 
       case NOVAS_J2000:
         cat_transform(transform, &frame->precession, 1);
         if(to_system == NOVAS_MOD)
           return 0;
-        /* no break */
+        /* fallthrough */
 
       case NOVAS_MOD:
         cat_transform(transform, &frame->nutation, 1);
@@ -1064,6 +1066,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
       default:
         // nothing to do...
+        ;
     }
   }
   else {
@@ -1072,19 +1075,19 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
         cat_transform(transform, &frame->nutation, -1);
         if(to_system == NOVAS_MOD)
           return 0;
-        /* no break */
+        /* fallthrough */
 
       case NOVAS_MOD:
         cat_transform(transform, &frame->precession, -1);
         if(to_system == NOVAS_J2000)
           return 0;
-        /* no break */
+        /* fallthrough */
 
       case NOVAS_J2000:
         cat_transform(transform, &frame->icrs_to_j2000, -1);
         if(to_system == NOVAS_GCRS)
           return 0;
-        /* no break */
+        /* fallthrough */
 
       case NOVAS_GCRS:
         cat_transform(transform, &frame->gcrs_to_cirs, 1);
@@ -1092,6 +1095,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
       default:
         // nothing to do...
+        ;
     }
   }
 
