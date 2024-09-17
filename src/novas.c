@@ -235,7 +235,7 @@ enum novas_debug_mode novas_get_debug_mode() {
 /// \cond PRIVATE
 
 /**
- * Calculates the length of a 3-vector
+ * (<i>for internal use only</i>) Calculates the length of a 3-vector
  *
  * @param v     Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @return      the length of the vector
@@ -261,7 +261,7 @@ static double vdist2(const double *v1, const double *v2) {
 }
 
 /**
- * Calculates the distance between two 3-vectors.
+ * (<i>for internal use only</i>) Calculates the distance between two 3-vectors.
  *
  * @param v1    Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @param v2    Pointer to another 3-component (x, y, z) vector. The argument cannot
@@ -279,7 +279,7 @@ double novas_vdist(const double *v1, const double *v2) {
 }
 
 /**
- * Calculates the dot product between two 3-vectors.
+ * (<i>for internal use only</i>) Calculates the dot product between two 3-vectors.
  *
  * @param v1    Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @param v2    Pointer to another 3-component (x, y, z) vector. The argument cannot
@@ -395,14 +395,11 @@ static int time_equals(double jd1, double jd2) {
 int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "j2000_to_tod";
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
-
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  precession(JD_J2000, in, jd_tdb, out);
-  nutation(jd_tdb, NUTATE_MEAN_TO_TRUE, accuracy, out, out);
+  prop_error(fn, precession(JD_J2000, in, jd_tdb, out), 0);
+  prop_error(fn, nutation(jd_tdb, NUTATE_MEAN_TO_TRUE, accuracy, out, out), 0);
 
   return 0;
 }
@@ -434,14 +431,11 @@ int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
 int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "tod_to_j2000";
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
-
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  nutation(jd_tdb, NUTATE_TRUE_TO_MEAN, accuracy, in, out);
-  precession(jd_tdb, out, JD_J2000, out);
+  prop_error(fn, nutation(jd_tdb, NUTATE_TRUE_TO_MEAN, accuracy, in, out), 0);
+  prop_error(fn, precession(jd_tdb, out, JD_J2000, out), 0);
 
   return 0;
 }
@@ -3292,9 +3286,8 @@ int proper_motion(double jd_tdb_in, const double *pos, const double *vel, double
   if(!pos || !vel || !out)
     return novas_error(-1, EINVAL, "proper_motion", "NULL input or output 3-vector: pos=%p, vel=%p, out=%p", pos, vel, out);
 
-  for(j = 3; --j >= 0;) {
+  for(j = 3; --j >= 0;)
     out[j] = pos[j] + vel[j] * dt;
-  }
 
   return 0;
 }
@@ -4252,17 +4245,17 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
   int i;
 
   if(!source) {
-    novas_error(-1, EINVAL, fn, "NULL input source");
+    novas_set_errno(EINVAL, fn, "NULL input source");
     return NAN;
   }
 
   if(!pos_emit || !vel_src || !pos_det) {
-    novas_error(-1, EINVAL, fn, "NULL input source pos/vel: pos_emit=%p, vel_src=%p, pos_det=%p", pos_emit, vel_src, pos_det);
+    novas_set_errno(EINVAL, fn, "NULL input source pos/vel: pos_emit=%p, vel_src=%p, pos_det=%p", pos_emit, vel_src, pos_det);
     return NAN;
   }
 
   if(!vel_obs) {
-    novas_error(-1, EINVAL, fn, "NULL input observer velocity");
+    novas_set_errno(EINVAL, fn, "NULL input observer velocity");
     return NAN;
   }
 
@@ -4338,7 +4331,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       break;
 
     default:
-      novas_error(-1, EINVAL, fn, "invalid source type: %d", source->type);
+      novas_set_errno(EINVAL, fn, "invalid source type: %d", source->type);
       return NAN;
   }
 
@@ -5120,7 +5113,7 @@ int set_cio_locator_file(const char *filename) {
   if(old)
     fclose(old);
 
-  return cio_file ? 0 : -1;
+  return cio_file ? 0 : novas_error(-1, errno, "set_cio_locator_file", "File could not be opened");
 }
 
 /**
@@ -5813,7 +5806,6 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   double paralx, dist, r, d, cra, sra, cdc, sdc, k;
   double pos[3], vel[3], term1, pmr, pmd, rvl, xyproj;
-  int error = 0;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: in=%p, out=%p", in, out);
@@ -5962,7 +5954,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
     out->starnumber = in->starnumber;
   }
 
-  return error;
+  return 0;
 }
 
 /**

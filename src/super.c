@@ -379,12 +379,15 @@ int j2000_to_gcrs(const double *in, double *out) {
  * @author Attila Kovacs
  */
 int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
+  static const char *fn = "cirs_to_tod";
+
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
   // Obtain the R.A. [h] of the CIO at the given date
-  prop_error("cirs_to_tod", cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio), 0);
+  prop_error(fn, cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio), 0);
+  prop_error(fn, spin(-15.0 * ra_cio, in, out), 0);
 
-  return spin(-15.0 * ra_cio, in, out);
+  return 0;
 }
 
 /**
@@ -414,12 +417,15 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @author Attila Kovacs
  */
 int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
+  static const char *fn = "tod_to_cirs";
+
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
   // Obtain the R.A. [h] of the CIO at the given date
-  prop_error("tod_to_cirs", cio_ra(jd_tt, accuracy, &ra_cio), 0);
+  prop_error(fn, cio_ra(jd_tt, accuracy, &ra_cio), 0);
+  prop_error(fn, spin(15.0 * ra_cio, in, out), 0);
 
-  return spin(15.0 * ra_cio, in, out);
+  return 0;
 }
 
 
