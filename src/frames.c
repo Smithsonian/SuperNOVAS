@@ -306,7 +306,7 @@ static int is_frame_initialized(const novas_frame *frame) {
  */
 int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double dx, double dy,
         novas_frame *frame) {
-  static const char *fn = "novas_create_frame";
+  static const char *fn = "novas_make_frame";
   static const cat_entry zero_star = {0};
   static const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", zero_star };
   static const object sun = { NOVAS_PLANET, NOVAS_SUN, "Sun", zero_star };
