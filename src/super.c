@@ -384,7 +384,7 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
   // Obtain the R.A. [h] of the CIO at the given date
-  prop_error(fn, cio_ra(jd_tt, NOVAS_FULL_ACCURACY, &ra_cio), 0);
+  prop_error(fn, cio_ra(jd_tt, accuracy, &ra_cio), 0);
   prop_error(fn, spin(-15.0 * ra_cio, in, out), 0);
 
   return 0;
