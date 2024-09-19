@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta charset="utf-8"/>
 <meta name="description" content="SuperNOVAS C/C++ astrometry library"/>
-<meta name="keywords" content="astronomy, astrometry, C, C++, C90, software library, open source, NOVAS"/>
+<meta name="keywords" content="astronomy, astrometry, C, C++, C99, software library, open source, NOVAS"/>
 <meta name="author" content="Attila Kovacs"/>
 <meta name="copyright" content="(C)2024 Attila Kovacs" />
 <meta name="robots" content="index,follow"/>
@@ -338,7 +338,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] The fractional part of the Julian date in the requested timescale.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The fractional part of the Julian date in the requested timescale or NAN is the time argument is NULL (ijd will be set to -1 also).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a37c8f2d5e1ad2daed78d1bd7991fdba4">novas_set_split_time()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#aa65f86f70b2ea6e77bf0799d6859ca05">novas_get_time()</a></dd></dl>
@@ -426,7 +426,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[s] The integer UNIX time</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] The integer UNIX time, or -1 if the input time is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#abacd89aa380c85da2d3c19a7e2187df3">novas_set_unix_time()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#aa65f86f70b2ea6e77bf0799d6859ca05">novas_get_time()</a></dd></dl>

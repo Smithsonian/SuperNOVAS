@@ -1,17 +1,17 @@
 var searchData=
 [
   ['c_0',['c',['../novascon_8c.html#a9e8a46a0e00368ad98642587ca4ebdbe',1,'C:&#160;novascon.c'],['../novascon_8h.html#a9e8a46a0e00368ad98642587ca4ebdbe',1,'C:&#160;novascon.c']]],
-  ['c_203_201_1',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md34',1,'']]],
-  ['c_203_201_20issues_2',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md32',1,'']]],
-  ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md59',1,'']]],
+  ['c_203_201_1',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md35',1,'']]],
+  ['c_203_201_20issues_2',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md33',1,'']]],
+  ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md60',1,'']]],
   ['c_5fauday_4',['c_auday',['../novascon_8c.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c'],['../novascon_8h.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c']]],
   ['cal_5fdate_5',['cal_date',['../novas_8c.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c'],['../novas_8h.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c']]],
-  ['calculate_20an_20apparent_20place_20on_20sky_6',['Calculate an apparent place on sky',['../index.html#autotoc_md46',1,'']]],
+  ['calculate_20an_20apparent_20place_20on_20sky_6',['Calculate an apparent place on sky',['../index.html#autotoc_md47',1,'']]],
   ['calculate_20apparent_20positions_20on_20sky_7',['Calculate apparent positions on sky',['../md_LEGACY.html#autotoc_md24',1,'']]],
-  ['calculate_20azimuth_20and_20elevation_20angles_20at_20the_20observing_20location_8',['Calculate azimuth and elevation angles at the observing location',['../index.html#autotoc_md47',1,'']]],
-  ['calculating_20positions_20for_20a_20sidereal_20source_9',['calculating positions for a sidereal source',['../md_LEGACY.html#autotoc_md19',1,'Calculating positions for a sidereal source'],['../index.html#autotoc_md41',1,'Calculating positions for a sidereal source']]],
-  ['calculating_20positions_20for_20a_20solar_20system_20source_10',['calculating positions for a solar system source',['../md_LEGACY.html#autotoc_md27',1,'Calculating positions for a Solar-system source'],['../index.html#autotoc_md48',1,'Calculating positions for a Solar-system source']]],
-  ['calculations_11',['Multi-threaded calculations',['../index.html#autotoc_md51',1,'']]],
+  ['calculate_20azimuth_20and_20elevation_20angles_20at_20the_20observing_20location_8',['Calculate azimuth and elevation angles at the observing location',['../index.html#autotoc_md48',1,'']]],
+  ['calculating_20positions_20for_20a_20sidereal_20source_9',['calculating positions for a sidereal source',['../md_LEGACY.html#autotoc_md19',1,'Calculating positions for a sidereal source'],['../index.html#autotoc_md42',1,'Calculating positions for a sidereal source']]],
+  ['calculating_20positions_20for_20a_20solar_20system_20source_10',['calculating positions for a solar system source',['../md_LEGACY.html#autotoc_md27',1,'Calculating positions for a Solar-system source'],['../index.html#autotoc_md49',1,'Calculating positions for a Solar-system source']]],
+  ['calculations_11',['Multi-threaded calculations',['../index.html#autotoc_md52',1,'']]],
   ['cat_5fentry_12',['cat_entry',['../structcat__entry.html',1,'']]],
   ['catalog_13',['catalog',['../structcat__entry.html#a128c876f7e50045e1c469dbabb400c58',1,'cat_entry']]],
   ['cel2ter_14',['cel2ter',['../novas_8c.html#a95f02377ce41d4e251654449dda82986',1,'cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out):&#160;novas.c'],['../novas_8h.html#a95f02377ce41d4e251654449dda82986',1,'cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out):&#160;novas.c']]],
@@ -31,9 +31,9 @@ var searchData=
   ['cirs_5fto_5fgcrs_28',['cirs_to_gcrs',['../novas_8c.html#ac0ba048cd1732d0d0398397396d158bc',1,'cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out):&#160;novas.c'],['../novas_8h.html#ad0db0cf9077844f6f1df94a46972c8f2',1,'cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out):&#160;novas.c']]],
   ['cirs_5fto_5fitrs_29',['cirs_to_itrs',['../novas_8h.html#aa2768d89d499a7155f90a6fd8c176d8d',1,'cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;super.c'],['../super_8c.html#aa2768d89d499a7155f90a6fd8c176d8d',1,'cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;super.c']]],
   ['cirs_5fto_5ftod_30',['cirs_to_tod',['../novas_8h.html#a9cac4f3a18d4c14939519e7123b4d504',1,'cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out):&#160;super.c'],['../super_8c.html#a9cac4f3a18d4c14939519e7123b4d504',1,'cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out):&#160;super.c']]],
-  ['compatibility_20with_20novas_20c_203_201_31',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md34',1,'']]],
-  ['considerations_32',['Performance considerations',['../index.html#autotoc_md50',1,'']]],
+  ['compatibility_20with_20novas_20c_203_201_31',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md35',1,'']]],
+  ['considerations_32',['Performance considerations',['../index.html#autotoc_md51',1,'']]],
   ['contents_33',['Table of Contents',['../index.html#autotoc_md28',1,'']]],
   ['contributing_20to_20supernovas_34',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]],
-  ['custom_20ephemeris_20functions_35',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md66',1,'']]]
+  ['custom_20ephemeris_20functions_35',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md67',1,'']]]
 ];

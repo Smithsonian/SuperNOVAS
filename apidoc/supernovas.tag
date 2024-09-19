@@ -84,6 +84,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>M_PI</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae71449b1cc6e6250b91f539153a7a0d3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_AU</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>abc8f275a2d431e59a1ec9e276abaca1a</anchor>
@@ -4080,10 +4087,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>int64_t</type>
+      <type>uint64_t</type>
       <name>state</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>a14c8ca4d0bdc764dec0d95d5ba6a0bd6</anchor>
+      <anchor>ac8ddcc571efb6061ddf9dfbcfffb4cd1</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">

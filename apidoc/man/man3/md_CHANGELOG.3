@@ -7,12 +7,16 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.1\&.1-rc1] - 2025-09-16"
+.SH "[Unreleased]"
 .PP
 Changes expected for the next bug-fix release, expected around 1 November 2024\&.
 .SS "Fixed"
 .IP "\(bu" 2
 #55: Relativistic corrections to radial velocity were still not applied correctly\&. The revised calculation now uses the actual relativistic velocity differential between the source and observer to apply the appropriate time dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike\&.
+.IP "\(bu" 2
+#64: \fCNOVAS_TAI_TO_TT\fP definition had wrong decimal in last place, thus was 3 ms off from what it should have been\&. (thanks to kiranshila)
+.IP "\(bu" 2
+#68: \fCreadeph_dummy()\fP dummy implenetation in \fCreadeph0\&.c\fP called non existing error handler function\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
@@ -24,7 +28,13 @@ Changes expected for the next bug-fix release, expected around 1 November 2024\&
 .IP "\(bu" 2
 #62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus integer before\&.
 .IP "\(bu" 2
-Slight tweakes to \fCMakefile\fP, and \fC\&.mk\fP snipplets\&.
+#66: Various tweaks for C/C++ best practices (by kiranshila)
+.IP "\(bu" 2
+#67: Use accuracy argument in \fC\fBtod_to_cirs()\fP\fP\&. (thanks to kiranshila)
+.IP "\(bu" 2
+#68: Various improvements to debug error tracing\&.
+.IP "\(bu" 2
+Slight tweakes to \fCMakefile\fP, and \fC\&.mk\fP snipplets, with added \fCmake\fP configurability\&.
 .PP
 .SH "[1\&.1\&.0] - 2024-08-04"
 .PP

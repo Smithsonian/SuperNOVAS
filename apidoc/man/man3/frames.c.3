@@ -405,6 +405,8 @@ References \fBnovas_transform::matrix\fP\&.
 .SS "int novas_make_frame (enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP * obs, const \fBnovas_timespec\fP * time, double dx, double dy, \fBnovas_frame\fP * frame)"
 Sets up a observing frame for a specific observer location, time of observation, and accuracy requirement\&. The frame is initialized using the currently configured planet ephemeris provider function (see \fBset_planet_provider()\fP and \fBset_planet_provider_hp()\fP), and in case of reduced accuracy mode, the currently configured IAU nutation model provider (see \fBset_nutation_lp_provider()\fP)\&.
 .PP
+Note, that to construct full accuracy frames, you will need a high-precision ephemeris provider for the major planets (not just the default Earth/Sun), as without it, gravitational bending around massive plannets cannot be accounted for, and therefore as accuracy cannot be ensured, in general\&. Attempting to construct a high-accuracy frame without a high-precision ephemeris provider for the major planets will result in an error in the 10--40 range from the required \fBephemeris()\fP call\&.
+.PP
 \fBParameters\fP
 .RS 4
 \fIaccuracy\fP Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient\&. 
@@ -436,6 +438,8 @@ Sets up a observing frame for a specific observer location, time of observation,
 \fBnovas_make_transform()\fP 
 .PP
 \fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
 .PP
 \fBset_nutation_lp_provider()\fP
 .RE

@@ -27,45 +27,47 @@ var NAVTREE =
   [ "SuperNOVAS", "index.html", [
     [ "Changelog", "md_CHANGELOG.html", [
       [ "Table of Contents", "index.html#autotoc_md28", null ],
-      [ "Introduction", "index.html#autotoc_md30", null ],
-      [ "Fixed NOVAS C 3.1 issues", "index.html#autotoc_md32", null ],
-      [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md34", null ],
-      [ "Building and installation", "index.html#autotoc_md36", [
-        [ "Building your application with SuperNOVAS", "index.html#autotoc_md37", null ]
+      [ "Introduction", "index.html#autotoc_md30", [
+        [ "Related links", "index.html#autotoc_md31", null ]
       ] ],
-      [ "Example usage", "index.html#autotoc_md39", [
-        [ "Note on alternative methodologies", "index.html#autotoc_md40", null ],
-        [ "Calculating positions for a sidereal source", "index.html#autotoc_md41", [
-          [ "Specify the object of interest", "index.html#autotoc_md42", null ],
-          [ "Spefify the observer location", "index.html#autotoc_md43", null ],
-          [ "Specify the time of observation", "index.html#autotoc_md44", null ],
-          [ "Set up the observing frame", "index.html#autotoc_md45", null ],
-          [ "Calculate an apparent place on sky", "index.html#autotoc_md46", null ],
-          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md47", null ]
+      [ "Fixed NOVAS C 3.1 issues", "index.html#autotoc_md33", null ],
+      [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md35", null ],
+      [ "Building and installation", "index.html#autotoc_md37", [
+        [ "Building your application with SuperNOVAS", "index.html#autotoc_md38", null ]
+      ] ],
+      [ "Example usage", "index.html#autotoc_md40", [
+        [ "Note on alternative methodologies", "index.html#autotoc_md41", null ],
+        [ "Calculating positions for a sidereal source", "index.html#autotoc_md42", [
+          [ "Specify the object of interest", "index.html#autotoc_md43", null ],
+          [ "Spefify the observer location", "index.html#autotoc_md44", null ],
+          [ "Specify the time of observation", "index.html#autotoc_md45", null ],
+          [ "Set up the observing frame", "index.html#autotoc_md46", null ],
+          [ "Calculate an apparent place on sky", "index.html#autotoc_md47", null ],
+          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md48", null ]
         ] ],
-        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md48", null ],
-        [ "Reduced accuracy shortcuts", "index.html#autotoc_md49", null ],
-        [ "Performance considerations", "index.html#autotoc_md50", null ],
-        [ "Multi-threaded calculations", "index.html#autotoc_md51", null ]
+        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md49", null ],
+        [ "Reduced accuracy shortcuts", "index.html#autotoc_md50", null ],
+        [ "Performance considerations", "index.html#autotoc_md51", null ],
+        [ "Multi-threaded calculations", "index.html#autotoc_md52", null ]
       ] ],
-      [ "Usage", "index.html#autotoc_md53", null ],
-      [ "Notes on precision", "index.html#autotoc_md54", null ],
-      [ "SuperNOVAS specific features", "index.html#autotoc_md56", [
-        [ "Newly added functionality", "index.html#autotoc_md57", [
-          [ "Added in v1.1", "index.html#autotoc_md58", null ]
+      [ "Usage", "index.html#autotoc_md54", null ],
+      [ "Notes on precision", "index.html#autotoc_md55", null ],
+      [ "SuperNOVAS specific features", "index.html#autotoc_md57", [
+        [ "Newly added functionality", "index.html#autotoc_md58", [
+          [ "Added in v1.1", "index.html#autotoc_md59", null ]
         ] ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md59", null ]
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md60", null ]
       ] ],
-      [ "External Solar-system ephemeris data or services", "index.html#autotoc_md61", [
-        [ "1. Universal ephemeris data / service integration", "index.html#autotoc_md62", null ],
-        [ "2. Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md63", [
-          [ "2.1. Planets via <tt>eph_manager</tt>", "index.html#autotoc_md64", null ],
-          [ "2.b. Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md65", null ]
+      [ "External Solar-system ephemeris data or services", "index.html#autotoc_md62", [
+        [ "1. Universal ephemeris data / service integration", "index.html#autotoc_md63", null ],
+        [ "2. Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md64", [
+          [ "2.1. Planets via <tt>eph_manager</tt>", "index.html#autotoc_md65", null ],
+          [ "2.b. Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md66", null ]
         ] ],
-        [ "3. Explicit linking of custom ephemeris functions", "index.html#autotoc_md66", null ]
+        [ "3. Explicit linking of custom ephemeris functions", "index.html#autotoc_md67", null ]
       ] ],
-      [ "Release schedule", "index.html#autotoc_md68", null ],
-      [ "[1.1.1-rc1] - 2025-09-16", "md_CHANGELOG.html#autotoc_md1", [
+      [ "Release schedule", "index.html#autotoc_md69", null ],
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md3", null ]
       ] ],
@@ -127,9 +129,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#aed179ad664f4ff023deb540140f3c2ef",
-"novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a882f5d97444df44485d360ce298843b1",
-"super_8c.html#af4cce5aa6c74794a0b89176037305181"
+"novas_8c.html#aead87744eeb3029ce7d5ffb1801ee652",
+"novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a84da44f7510d8c99353b1b1c6bb4faf8",
+"super_8c.html#ae68d01655c4b37b5a3e1422f0062f94c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

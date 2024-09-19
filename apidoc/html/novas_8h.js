@@ -22,6 +22,7 @@ var novas_8h =
     [ "DEFAULT_GRAV_BODIES_REDUCED_ACCURACY", "novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de", null ],
     [ "DEG2RAD", "novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022", null ],
     [ "HELIOC", "novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2", null ],
+    [ "M_PI", "novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3", null ],
     [ "NOVAS_AU", "novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a", null ],
     [ "NOVAS_AU_KM", "novas_8h.html#ab94b49a9d44c6078c5ea12171029eb96", null ],
     [ "NOVAS_AU_SEC", "novas_8h.html#a610c7260c1879f89913bf7a5549b4649", null ],

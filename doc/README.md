@@ -1,12 +1,16 @@
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
+The NOVAS C astrometry library, made better.
+
+ - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
+ - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io, including 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
 fork of the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) 
 C version 3.1, providing bug fixes and making it easier to use overall.
 
-SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C90 
+SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
@@ -58,13 +62,13 @@ repository on GitHub.
 Outside contributions are very welcome. See
 [how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
 
-Here are some links to other SuperNOVAS related content online:
+### Related links
 
- - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io, including 
-   [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
+ - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemeris
+   from JPL and/or in INPOP 2.0/3.0 format.
  - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
-   via JPL HORIZONS.
+   via from JPL.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
    of ephemeris data.
 
@@ -317,10 +321,10 @@ adjustment to convert from J2000 to ICRS coordinates.
 
 ```c
  // First change the catalog coordinates (in place) to the J2000 (FK5) system... 
- transform_cat(CHANGE_EPOCH, NOVAS_B1950, &source, NOVAS_J2000, "FK5", &source);
+ transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star);
   
  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
- transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source, 0.0, "ICRS", &source);
+ transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &star, 0.0, "ICRS", &star);
 ```
 
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
@@ -357,14 +361,14 @@ UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's ass
 then we can set the time of observation, for example, using the current UNIX time:
 
 ```c
- novas_timescale t_obs;	        // Structure that will define astrometric time
+ novas_timespec obs_time;	        // Structure that will define astrometric time
  struct timespec unix_time;     // Standard precision UNIX time structure
 
  // Get the current system time, with up to nanosecond resolution...
  clock_gettime(CLOCK_REALTIME, &unix_time);
  
  // Set the time of observation to the precise UTC-based UNIX time
- novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.114, &t_obs);
+ novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.114, &obs_time);
 ```
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
@@ -373,7 +377,7 @@ or TCB):
 ```c
  double jd_tai = ...     // TAI-based Julian Date 
 
- novas_set_time(NOVAS_TAI, jd_tai, leap_seconds, dut1, &t_obs);
+ novas_set_time(NOVAS_TAI, jd_tai, leap_seconds, dut1, &obs_time);
 ```
 
 or, for the best precision we may do the same with an integer / fractional split:
@@ -382,7 +386,7 @@ or, for the best precision we may do the same with an integer / fractional split
  long ijd_tai = ...     // Integer part of the TAI-based Julian Date
  double fjd_tai = ...   // Fractional part of the TAI-based Julian Date 
   
- novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &t_obs);
+ novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &obs_time);
 ```
 
 #### Set up the observing frame
@@ -396,7 +400,7 @@ observation:
  double dy = ...         // [mas] Earth polar offset y, from same source as above.
   
  // Initialize the observing frame with the given observing parameters
- novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &obs_time, dx, dy, &obs_frame);
+ novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &obs_time, dx, dy, &obs_frame);
 ```
 
 Here `dx` and `dy` are small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
@@ -408,6 +412,13 @@ The advantage of using the observing frame, is that it enables very fast positio
 in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it 
 will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames
 for different observer locations, if need be, via `novas_change_observer()`.
+
+Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
+`NOVAS_REDUCED_ACCURACY` frames, providing mas precisions only. To create `NOVAS_FULL_ACCURACY` frames, with sub 
+&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (not just only the 
+Earth and Sun included by default), to account for gravitational bending around massive plannets. Without it, &mu;as 
+accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate 
+high-precision ephemeris provider will result in an error from the requisite `ephemeris()` call. 
 
 
 #### Calculate an apparent place on sky
@@ -572,7 +583,7 @@ before that level of accuracy is reached.
     default SuperNOVAS can only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in 
     `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
     need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
-    JPL) if you want to use it to obtain precise positions for Solar-system bodies. See the 
+    JPL or CALCEPH) if you want to use it to obtain precise positions for Solar-system bodies. See the 
     [section further below](#solarsystem) for more information how you can do that.
     
   4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
@@ -854,8 +865,10 @@ heliocenter, and accordingly, your function should set the value pointed at by o
 `NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
 AU/day respectively. 
 
-This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the CSPICE toolkit, or for the 
-Minor Planet Center (MPC), or whatever other ephemeris service you prefer.
+This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using 
+[CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) or the 
+[CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
+ephemeris service you prefer.
 
 Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
 

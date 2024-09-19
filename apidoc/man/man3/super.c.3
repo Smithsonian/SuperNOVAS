@@ -289,7 +289,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBspin()\fP\&.
+References \fBcio_ra()\fP, and \fBspin()\fP\&.
 .SS "int ecl2equ (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double elon, double elat, double * ra, double * dec)"
 Convert ecliptic longitude and latitude to right ascension and declination\&. To convert GCRS ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at'jd_tt'\&.
 .PP
@@ -1269,7 +1269,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBspin()\fP\&.
+References \fBcio_ra()\fP, and \fBspin()\fP\&.
 .SS "int tod_to_itrs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method)\&.
 .PP

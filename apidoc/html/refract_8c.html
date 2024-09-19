@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta charset="utf-8"/>
 <meta name="description" content="SuperNOVAS C/C++ astrometry library"/>
-<meta name="keywords" content="astronomy, astrometry, C, C++, C90, software library, open source, NOVAS"/>
+<meta name="keywords" content="astronomy, astrometry, C, C++, C99, software library, open source, NOVAS"/>
 <meta name="author" content="Attila Kovacs"/>
 <meta name="copyright" content="(C)2024 Attila Kovacs" />
 <meta name="robots" content="index,follow"/>
@@ -241,7 +241,7 @@ Functions</h2></td></tr>
 <p>Returns an optical refraction correction using the weather parameters defined for the observer location.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian data of observation </td></tr>
+    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel) </td></tr>
     <tr><td class="paramname">loc</td><td>Pointer to structure defining the observer's location on earth, and local weather </td></tr>
     <tr><td class="paramname">type</td><td>Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0). </td></tr>
     <tr><td class="paramname">el</td><td>[deg] Astrometric (unrefracted) source elevation </td></tr>
@@ -308,7 +308,7 @@ Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian data of observation </td></tr>
+    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel) </td></tr>
     <tr><td class="paramname">loc</td><td>Pointer to structure defining the observer's location on earth, and local weather. Make sure all weather values, including humidity (added in v1.1), are fully populated. </td></tr>
     <tr><td class="paramname">type</td><td>Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0). </td></tr>
     <tr><td class="paramname">el</td><td>[deg] source elevation of the specified type. </td></tr>
@@ -366,7 +366,7 @@ Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-
 <p>Returns an optical refraction correction for a standard atmosphere.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian data of observation </td></tr>
+    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel) </td></tr>
     <tr><td class="paramname">loc</td><td>Pointer to structure defining the observer's location on earth, and local weather </td></tr>
     <tr><td class="paramname">type</td><td>Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0). </td></tr>
     <tr><td class="paramname">el</td><td>[deg] Astrometric (unrefracted) source elevation </td></tr>

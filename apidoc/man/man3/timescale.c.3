@@ -210,7 +210,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 \fBReturns\fP
 .RS 4
-[day] The fractional part of the Julian date in the requested timescale\&.
+[day] The fractional part of the Julian date in the requested timescale or NAN is the time argument is NULL (ijd will be set to -1 also)\&.
 .RE
 .PP
 \fBSee also\fP
@@ -280,7 +280,7 @@ Returns the UNIX time for an astronomical time instant\&.
 .PP
 \fBReturns\fP
 .RS 4
-[s] The integer UNIX time
+[s] The integer UNIX time, or -1 if the input time is NULL\&.
 .RE
 .PP
 \fBSee also\fP

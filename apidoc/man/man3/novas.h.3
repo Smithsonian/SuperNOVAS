@@ -76,12 +76,16 @@ include/novas.h
 .RI "#define \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP   ( (1 << \fBNOVAS_SUN\fP) | (1 << \fBNOVAS_EARTH\fP) )"
 .br
 .ti -1c
-.RI "#define \fBDEG2RAD\fP   (M_PI / 180\&.0)"
+.RI "#define \fBDEG2RAD\fP   (\fBM_PI\fP / 180\&.0)"
 .br
 .RI "[rad/deg] 1 degree in radians "
 .ti -1c
 .RI "#define \fBHELIOC\fP   \fBNOVAS_HELIOCENTER\fP"
 .br
+.ti -1c
+.RI "#define \fBM_PI\fP   3\&.14159265358979323846"
+.br
+.RI "Definition of  in case it's not defined in math\&.h\&. "
 .ti -1c
 .RI "#define \fBNOVAS_AU\fP   1\&.495978707e+11"
 .br
@@ -185,7 +189,7 @@ include/novas.h
 .RI "#define \fBNOVAS_SOLAR_RADIUS\fP   696340000\&.0"
 .br
 .ti -1c
-.RI "#define \fBNOVAS_TAI_TO_TT\fP   32\&.187"
+.RI "#define \fBNOVAS_TAI_TO_TT\fP   32\&.184"
 .br
 .RI "[s] TT - TAI time offset "
 .ti -1c
@@ -224,14 +228,14 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc1'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1'\&. "
 .ti -1c
 .RI "#define \fBSUPERNOVAS_VERSION_STRING\fP"
 .br
 .ti -1c
-.RI "#define \fBTWOPI\fP   (2\&.0 * M_PI)"
+.RI "#define \fBTWOPI\fP   (2\&.0 * \fBM_PI\fP)"
 .br
 .RI "2 "
 .in -1c
@@ -2257,7 +2261,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBspin()\fP\&.
+References \fBcio_ra()\fP, and \fBspin()\fP\&.
 .SS "double d_light (const double * pos_src, const double * pos_body)"
 Returns the difference in light-time, for a star, between the barycenter of the solar system and the observer (or the geocenter) (\fIUsage A\fP)\&.
 .PP
@@ -3777,6 +3781,8 @@ Determines the angle of an object above or below the Earth's limb (horizon)\&. T
 .RE
 .PP
 
+.PP
+References \fBM_PI\fP\&.
 .SS "short local_planet (double jd_tt, const \fBobject\fP * ss_body, double ut1_to_tt, const \fBon_surface\fP * position, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * dis)"
 Computes the local apparent place of a solar system body, in the GCRS\&. This is the same as calling \fBplace()\fP for the body for the same observer location and NOVAS_GCRS as the reference system, except the different set of return values used\&.
 .PP
@@ -4890,7 +4896,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 \fBReturns\fP
 .RS 4
-[day] The fractional part of the Julian date in the requested timescale\&.
+[day] The fractional part of the Julian date in the requested timescale or NAN is the time argument is NULL (ijd will be set to -1 also)\&.
 .RE
 .PP
 \fBSee also\fP
@@ -4960,7 +4966,7 @@ Returns the UNIX time for an astronomical time instant\&.
 .PP
 \fBReturns\fP
 .RS 4
-[s] The integer UNIX time
+[s] The integer UNIX time, or -1 if the input time is NULL\&.
 .RE
 .PP
 \fBSee also\fP
@@ -5111,6 +5117,8 @@ References \fBnovas_transform::matrix\fP\&.
 .SS "int novas_make_frame (enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP * obs, const \fBnovas_timespec\fP * time, double dx, double dy, \fBnovas_frame\fP * frame)"
 Sets up a observing frame for a specific observer location, time of observation, and accuracy requirement\&. The frame is initialized using the currently configured planet ephemeris provider function (see \fBset_planet_provider()\fP and \fBset_planet_provider_hp()\fP), and in case of reduced accuracy mode, the currently configured IAU nutation model provider (see \fBset_nutation_lp_provider()\fP)\&.
 .PP
+Note, that to construct full accuracy frames, you will need a high-precision ephemeris provider for the major planets (not just the default Earth/Sun), as without it, gravitational bending around massive plannets cannot be accounted for, and therefore as accuracy cannot be ensured, in general\&. Attempting to construct a high-accuracy frame without a high-precision ephemeris provider for the major planets will result in an error in the 10--40 range from the required \fBephemeris()\fP call\&.
+.PP
 \fBParameters\fP
 .RS 4
 \fIaccuracy\fP Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient\&. 
@@ -5142,6 +5150,8 @@ Sets up a observing frame for a specific observer location, time of observation,
 \fBnovas_make_transform()\fP 
 .PP
 \fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
 .PP
 \fBset_nutation_lp_provider()\fP
 .RE
@@ -5246,7 +5256,7 @@ Returns an optical refraction correction using the weather parameters defined fo
 .PP
 \fBParameters\fP
 .RS 4
-\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel) 
 .br
 \fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
 .br
@@ -5289,7 +5299,7 @@ Berman, Allan L\&., and Rockwell, Stephen T\&. (1976), NASA JPL Technical Report
 .PP
 \fBParameters\fP
 .RS 4
-\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel) 
 .br
 \fIloc\fP Pointer to structure defining the observer's location on earth, and local weather\&. Make sure all weather values, including humidity (added in v1\&.1), are fully populated\&. 
 .br
@@ -5520,7 +5530,7 @@ Returns an optical refraction correction for a standard atmosphere\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation 
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel) 
 .br
 \fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
 .br
@@ -7059,7 +7069,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBspin()\fP\&.
+References \fBcio_ra()\fP, and \fBspin()\fP\&.
 .SS "int tod_to_itrs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method)\&.
 .PP

@@ -21,7 +21,7 @@ var structnovas__frame =
     [ "observer", "structnovas__frame.html#aa792216b0b2601bb9af3b882c87274f8", null ],
     [ "planets", "structnovas__frame.html#a78ace4b8a99aace5313f4011a842d199", null ],
     [ "precession", "structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c", null ],
-    [ "state", "structnovas__frame.html#a14c8ca4d0bdc764dec0d95d5ba6a0bd6", null ],
+    [ "state", "structnovas__frame.html#ac8ddcc571efb6061ddf9dfbcfffb4cd1", null ],
     [ "sun_pos", "structnovas__frame.html#a3d3fc00c5477b8f7a9b6593a748949d0", null ],
     [ "sun_vel", "structnovas__frame.html#ae949db92ce7c56e4b5ada1b8f80002d3", null ],
     [ "time", "structnovas__frame.html#a430880330b471a12c587f77d1c73b49a", null ],
