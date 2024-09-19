@@ -16,7 +16,11 @@
 <br clear="all">
 
 # SuperNOVAS 
+
 The NOVAS C astrometry library, made better.
+
+ - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
+ - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io, including 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
@@ -75,10 +79,8 @@ repository on GitHub.
 Outside contributions are very welcome. See
 [how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
 
-Here are some links to other SuperNOVAS related content online:
+### Related links
 
- - [SuperNOVAS](https://smithsonian.github.io/SuperNOVAS) page on github.io, including 
-   [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemeris
    from JPL and/or in INPOP 2.0/3.0 format.
