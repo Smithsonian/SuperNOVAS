@@ -3,7 +3,7 @@
 The NOVAS C astrometry library, made better.
 
  - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
- - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io, including 
+ - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
