@@ -20,7 +20,7 @@
 The NOVAS C astrometry library, made better.
 
  - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
- - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io, including 
+ - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
@@ -431,11 +431,12 @@ will be significantly faster than using the low-level NOVAS C routines instead. 
 for different observer locations, if need be, via `novas_change_observer()`.
 
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
-`NOVAS_REDUCED_ACCURACY` frames, providing mas precisions only. To create `NOVAS_FULL_ACCURACY` frames, with sub 
-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (not just only the 
-Earth and Sun included by default), to account for gravitational bending around massive plannets. Without it, &mu;as 
-accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate 
-high-precision ephemeris provider will result in an error from the requisite `ephemeris()` call. 
+`NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
+sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
+low-precison Earth and Sun calculator included by default), to account for gravitational bending around massive 
+planets. Without it, &mu;as accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy 
+frames without an appropriate high-precision ephemeris provider will result in an error from the requisite 
+`ephemeris()` call. 
 
 
 #### Calculate an apparent place on sky
