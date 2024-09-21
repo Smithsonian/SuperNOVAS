@@ -12,10 +12,10 @@ var searchData=
   ['observing_20frame_9',['Set up the observing frame',['../index.html#autotoc_md46',1,'']]],
   ['observing_20location_10',['observing location',['../md_LEGACY.html#autotoc_md26',1,'B. Azimuth and elevation angles at the observing location'],['../index.html#autotoc_md48',1,'Calculate azimuth and elevation angles at the observing location']]],
   ['of_20contents_11',['Table of Contents',['../index.html#autotoc_md28',1,'']]],
-  ['of_20custom_20ephemeris_20functions_12',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md66',1,'']]],
+  ['of_20custom_20ephemeris_20functions_12',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md67',1,'']]],
   ['of_20interest_13',['of interest',['../index.html#autotoc_md43',1,'Specify the object of interest'],['../md_LEGACY.html#autotoc_md20',1,'Specify the object of interest']]],
   ['of_20observation_14',['of observation',['../md_LEGACY.html#autotoc_md22',1,'Specify the time of observation'],['../index.html#autotoc_md45',1,'Specify the time of observation']]],
-  ['old_20jpl_20major_20planet_20ephemerides_15',['2. Built-in support for (old) JPL major planet ephemerides',['../index.html#autotoc_md63',1,'']]],
+  ['old_20jpl_20major_20planet_20ephemerides_15',['2. Built-in support for (old) JPL major planet ephemerides',['../index.html#autotoc_md64',1,'']]],
   ['old_20way_16',['SuperNOVAS: Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
   ['omega_17',['Omega',['../structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737',1,'novas_delaunay_args']]],
   ['on_20alternative_20methodologies_18',['Note on alternative methodologies',['../index.html#autotoc_md41',1,'']]],
@@ -23,6 +23,6 @@ var searchData=
   ['on_20sky_20',['on sky',['../index.html#autotoc_md47',1,'Calculate an apparent place on sky'],['../md_LEGACY.html#autotoc_md24',1,'Calculate apparent positions on sky']]],
   ['on_5fsurf_21',['on_surf',['../structobserver.html#a0ed422bd2a08c6b3870b545e16484501',1,'observer']]],
   ['on_5fsurface_22',['on_surface',['../structon__surface.html',1,'']]],
-  ['or_20services_23',['External Solar-system ephemeris data or services',['../index.html#autotoc_md61',1,'']]],
+  ['or_20services_23',['External Solar-system ephemeris data or services',['../index.html#autotoc_md62',1,'']]],
   ['orientation_20parameters_24',['Specify Earth orientation parameters',['../md_LEGACY.html#autotoc_md23',1,'']]]
 ];

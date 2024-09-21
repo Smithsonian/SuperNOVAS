@@ -570,6 +570,8 @@ ephemeris provider for the major planets (and any Solar-system bodies of interes
 SuperNOVAS out of the box. In the absense of a suitable high-precision ephemeris provider, some functions might return 
 an error if called with `NOVAS_FULL_ACCURACY`.
 
+### Prerequisites to precise results
+
 The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s, 
 precision for all types of celestial sources. However, there are certain prerequisites and practical considerations 
 before that level of accuracy is reached.

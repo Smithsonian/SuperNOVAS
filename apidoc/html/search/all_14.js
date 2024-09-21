@@ -15,13 +15,14 @@ var searchData=
   ['readeph_12',['readeph',['../solarsystem_8h.html#abb70fdad016c3a2ea45990eaa16b9245',1,'solarsystem.h']]],
   ['record_5flength_13',['RECORD_LENGTH',['../eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300',1,'eph_manager.c']]],
   ['reduced_20accuracy_20shortcuts_14',['Reduced accuracy shortcuts',['../index.html#autotoc_md50',1,'']]],
-  ['refinements_20to_20the_20novas_20c_20api_15',['Refinements to the NOVAS C API',['../index.html#autotoc_md59',1,'']]],
+  ['refinements_20to_20the_20novas_20c_20api_15',['Refinements to the NOVAS C API',['../index.html#autotoc_md60',1,'']]],
   ['refract_16',['refract',['../novas_8h.html#a151b74255ea04462abc5503c6afddcae',1,'refract(const on_surface *location, enum novas_refraction_model option, double zd_obs):&#160;novas.c'],['../novas_8c.html#a151b74255ea04462abc5503c6afddcae',1,'refract(const on_surface *location, enum novas_refraction_model option, double zd_obs):&#160;novas.c']]],
   ['refract_2ec_17',['refract.c',['../refract_8c.html',1,'']]],
   ['refract_5fastro_18',['refract_astro',['../novas_8h.html#a46d245f56c6eea9b1a7dc32d3feeaeb8',1,'refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_calc):&#160;novas.c'],['../novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7',1,'refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_astro):&#160;novas.c']]],
   ['refractionmodel_19',['RefractionModel',['../novas_8h.html#ad4899a6116cfbbe17400e7ef0c8426a9',1,'novas.h']]],
   ['related_20links_20',['Related links',['../index.html#autotoc_md31',1,'']]],
-  ['release_20schedule_21',['Release schedule',['../index.html#autotoc_md68',1,'']]],
-  ['rmass_22',['rmass',['../novascon_8c.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c'],['../novascon_8h.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c']]],
-  ['rv_23',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
+  ['release_20schedule_21',['Release schedule',['../index.html#autotoc_md69',1,'']]],
+  ['results_22',['Prerequisites to precise results',['../index.html#autotoc_md55',1,'']]],
+  ['rmass_23',['rmass',['../novascon_8c.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c'],['../novascon_8h.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c']]],
+  ['rv_24',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
 ];
