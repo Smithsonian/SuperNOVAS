@@ -378,7 +378,7 @@ UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's ass
 then we can set the time of observation, for example, using the current UNIX time:
 
 ```c
- novas_timespec obs_time;	        // Structure that will define astrometric time
+ novas_timespec obs_time;       // Structure that will define astrometric time
  struct timespec unix_time;     // Standard precision UNIX time structure
 
  // Get the current system time, with up to nanosecond resolution...
@@ -421,9 +421,9 @@ observation:
 ```
 
 Here `dx` and `dy` are small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
-in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). The obvious utility of 
-these values comes later, when converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. 
-You may ignore these and set zeroes if sub-arcsecond precision is not required.
+in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). They are needed when 
+converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. You may ignore these and set zeroes 
+if sub-arcsecond precision is not required.
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
 in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it 
