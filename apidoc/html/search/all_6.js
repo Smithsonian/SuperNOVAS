@@ -3,7 +3,7 @@ var searchData=
   ['c_0',['c',['../novascon_8c.html#a9e8a46a0e00368ad98642587ca4ebdbe',1,'C:&#160;novascon.c'],['../novascon_8h.html#a9e8a46a0e00368ad98642587ca4ebdbe',1,'C:&#160;novascon.c']]],
   ['c_203_201_1',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md35',1,'']]],
   ['c_203_201_20issues_2',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md33',1,'']]],
-  ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md60',1,'']]],
+  ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md59',1,'']]],
   ['c_5fauday_4',['c_auday',['../novascon_8c.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c'],['../novascon_8h.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c']]],
   ['cal_5fdate_5',['cal_date',['../novas_8c.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c'],['../novas_8h.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c']]],
   ['calculate_20an_20apparent_20place_20on_20sky_6',['Calculate an apparent place on sky',['../index.html#autotoc_md47',1,'']]],
@@ -35,5 +35,5 @@ var searchData=
   ['considerations_32',['Performance considerations',['../index.html#autotoc_md51',1,'']]],
   ['contents_33',['Table of Contents',['../index.html#autotoc_md28',1,'']]],
   ['contributing_20to_20supernovas_34',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]],
-  ['custom_20ephemeris_20functions_35',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md67',1,'']]]
+  ['custom_20ephemeris_20functions_35',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md66',1,'']]]
 ];

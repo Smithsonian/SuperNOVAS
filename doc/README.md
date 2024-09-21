@@ -554,8 +554,6 @@ Just make sure that you:
  
 -----------------------------------------------------------------------------
 
-## Usage 
-
 <a name="precision"></a>
 ## Notes on precision
 
