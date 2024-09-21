@@ -559,16 +559,45 @@ Just make sure that you:
 <a name="precision"></a>
 ## Notes on precision
 
-The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s 
+Many of the (Super)NOVAS functions take an accuracy argument, which determines to what precision quantities are 
+calculated. The argument can have one of two values, which correspond to typical precisions around:
+
+ | `enum novas_accuracy` value  | Typical precision                |
+ | ---------------------------- | -------------------------------- |
+ | `NOVAS_REDUCED_ACCURTACY`    | ~ 1 milli-arcsecond (mas)        |
+ | `NOVAS_FULL_ACCURACY`        | below 1 micro-arcsecond (&mu;as) |
+
+Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision
+ephemeris provider for the major planets (and any Solar-system bodies of interest), which does not come with 
+SuperNOVAS out of the box. In the absense of a suitable high-precision ephemeris provider, some functions might return 
+an error if called with `NOVAS_FULL_ACCURACY`.
+
+The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s, 
 precision for all types of celestial sources. However, there are certain prerequisites and practical considerations 
 before that level of accuracy is reached.
 
-
+    
  1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use SuperNOVAS with the
     new IAU standard quantities and methods. The old ways were simply not suited for precision much below the 
     milliarcsecond level.
+    
+ 2. __Gravitational bending__: Calculations much below the milliarcsecond level will require to account for 
+    gravitational bending around massive Solar-system bodies, and hence will require you to provide a high-precision 
+    ephemeris provider for the major planets. Without it, there is no guarantee of achieving the desired &mu;as-level 
+    precision in general, especially when observing near massive planets (e.g. observing Jupiter's or Saturn's moons, 
+    near transit). Therefore some functions will return with an error, if used with `NOVAS_FULL_ACCURACY` in the 
+    absense of a suitable high-precision planetary ephemeris provider.
 
- 2. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
+ 3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
+    the target object as well as for Earth, and the Sun. For the highest precision calculations you also need 
+    positions for all major planets to calculate gravitational deflection precisely. By default SuperNOVAS can only 
+    provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly not at 
+    the sub-microarcsecond level, and not for other solar-system sources. You will need to provide a way to interface 
+    SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from JPL or CALCEPH) if you want to use it 
+    to obtain precise positions for Solar-system bodies. See the [section further below](#solarsystem) for more 
+    information how you can do that.
+
+ 4. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
     knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
     nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
@@ -577,17 +606,8 @@ before that level of accuracy is reached.
     functions to apply / use the published values from these to improve the astrometric precision of Earth-orientation
     based coordinate calculations. Without setting and using the actual polar offset values for the time of 
     observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
- 
- 3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
-    the target object as well as for Earth, and the Sun vs the Solar-system barycenter. For the highest precision 
-    calculations you also need positions for all major planets to calculate gravitational deflection precisely. By 
-    default SuperNOVAS can only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in 
-    `solsys3.c`), but certainly not at the sub-microarcsecond level, and not for other solar-system sources. You will 
-    need to provide a way to interface SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from 
-    JPL or CALCEPH) if you want to use it to obtain precise positions for Solar-system bodies. See the 
-    [section further below](#solarsystem) for more information how you can do that.
-    
-  4. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
+   
+  5. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
     using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
     Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
