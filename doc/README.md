@@ -563,7 +563,7 @@ calculated. The argument can have one of two values, which correspond to typical
 
  | `enum novas_accuracy` value  | Typical precision                |
  | ---------------------------- | -------------------------------- |
- | `NOVAS_REDUCED_ACCURTACY`    | ~ 1 milli-arcsecond (mas)        |
+ | `NOVAS_REDUCED_ACCURACY`     | ~ 1 milli-arcsecond (mas)        |
  | `NOVAS_FULL_ACCURACY`        | below 1 micro-arcsecond (&mu;as) |
 
 Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision
