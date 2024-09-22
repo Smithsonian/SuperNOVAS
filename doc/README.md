@@ -27,7 +27,7 @@ This document has been updated for the `v1.1` release.
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
  - [External Solar-system ephemeris data or services](#solarsystem)
- - [Runtime Debug support](#debug-support)
+ - [Runtime debug support](#debug-support)
  - [Release schedule](#release-schedule)
 
 
