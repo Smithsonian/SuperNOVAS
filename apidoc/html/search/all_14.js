@@ -21,8 +21,9 @@ var searchData=
   ['refract_5fastro_18',['refract_astro',['../novas_8h.html#a46d245f56c6eea9b1a7dc32d3feeaeb8',1,'refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_calc):&#160;novas.c'],['../novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7',1,'refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_astro):&#160;novas.c']]],
   ['refractionmodel_19',['RefractionModel',['../novas_8h.html#ad4899a6116cfbbe17400e7ef0c8426a9',1,'novas.h']]],
   ['related_20links_20',['Related links',['../index.html#autotoc_md31',1,'']]],
-  ['release_20schedule_21',['Release schedule',['../index.html#autotoc_md69',1,'']]],
+  ['release_20schedule_21',['Release schedule',['../index.html#autotoc_md71',1,'']]],
   ['results_22',['Prerequisites to precise results',['../index.html#autotoc_md55',1,'']]],
   ['rmass_23',['rmass',['../novascon_8c.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c'],['../novascon_8h.html#a19a7c107c3918c90c90cdad5ab310b1a',1,'RMASS:&#160;novascon.c']]],
-  ['rv_24',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
+  ['runtime_20debug_20support_24',['Runtime debug support',['../index.html#autotoc_md69',1,'']]],
+  ['rv_25',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
 ];

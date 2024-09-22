@@ -27,6 +27,7 @@ This document has been updated for the `v1.1` release.
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
  - [External Solar-system ephemeris data or services](#solarsystem)
+ - [Runtime Debug support](#debug-support)
  - [Release schedule](#release-schedule)
 
 
@@ -991,6 +992,27 @@ most generic way to add your preferred implementations while also providing some
 _other users_ of the library, who may not need _your_ ephemeris service, or have no need for planet data beyond the 
 approximate positions for the Earth and Sun.
 
+-----------------------------------------------------------------------------
+
+<a name="debug-support"></a>
+## Runtime debug support
+
+You can enable or disable debugging output to `stderr` with `novas_debug(enum novas_debug_mode)`, where the argument 
+is one of the defined constants from `novas.h`:
+
+ | `novas_debug_mode` value   | Description                                        |
+ | -------------------------- | -------------------------------------------------- |
+ | `NOVAS_DEBUG_OFF`          | No debugging output (_default_)                    |
+ | `NOVAS_DEBUG_ON`           | Prints error messages and traces to `stderr`       |
+ | `NOVAS_DEBUG_EXTRA`        | Same as above but with stricter error checking     |
+ 
+The main difference between `NOVAS_DEBUG_ON` and `NOVAS_DEBUG_EXTRA` is that the latter will treat minor issues as 
+errors also, while the former may ignore them. For example, `place()` will return normally by default if it cannot 
+calculate gravitational bending around massive planets in full accuracy mode. It is unlikely that this omission would 
+significantly alter the result in most cases, except for some very specific ones when observing in a direction close 
+to a major planet. Thus, with `NOVAS_DEBUG_ON`, `place()` go about as usual even if the Jupiter's position is not 
+known. However, `NOVAS_DEBUG_EXTRA` will not give it a free pass, and will make `place()` return an error (and print 
+the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.
 
 
 -----------------------------------------------------------------------------

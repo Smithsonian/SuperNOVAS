@@ -39,7 +39,8 @@
       </topic>
       <topic label="3. Explicit linking of custom ephemeris functions" href="index.html#autotoc_md67"/>
     </topic>
-    <topic label="Release schedule" href="index.html#autotoc_md69"/>
+    <topic label="Runtime debug support" href="index.html#autotoc_md69"/>
+    <topic label="Release schedule" href="index.html#autotoc_md71"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">

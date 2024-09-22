@@ -4438,6 +4438,7 @@
     <docanchor file="index.html">universal-ephemerides</docanchor>
     <docanchor file="index.html">builtin-ephem-readers</docanchor>
     <docanchor file="index.html">explicit-ephem-linking</docanchor>
+    <docanchor file="index.html">debug-support</docanchor>
     <docanchor file="index.html">release-schedule</docanchor>
   </compound>
 </tagfile>
