@@ -16,17 +16,17 @@ Changes expected for the next bug-fix release, expected around 1 November 2024\&
 .IP "\(bu" 2
 #64: \fCNOVAS_TAI_TO_TT\fP definition had wrong decimal in last place, thus was 3 ms off from what it should have been\&. (thanks to kiranshila)
 .IP "\(bu" 2
-#68: \fCreadeph_dummy()\fP dummy implenetation in \fCreadeph0\&.c\fP called non existing error handler function\&.
+#68: \fCreadeph_dummy()\fP dummy implementation in \fCreadeph0\&.c\fP called non existing error handler function\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-#59: For major planets (and Sun and Moon) \fC\fBrad_vel()\fP\fP, \fC\fBrad_vel2()\fP\fP, \fC\fBplace()\fP\fP, and \fC\fBnovas_sky_pos()\fP\fP will include gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or else at a large distance away\&. The corrections can be skipped for \fC\fBrad_vel()\fP\fP / \fC\fBrad_vel2()\fP\fP by setting \fCd_src_sun\fP negative\&.
+#59: For observing major planets (and Sun and Moon) \fC\fBrad_vel()\fP\fP, \fC\fBrad_vel2()\fP\fP, \fC\fBplace()\fP\fP, and \fC\fBnovas_sky_pos()\fP\fP will include gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or else at a large distance away\&. These corrections, along with those for the Solar potential at the source, may be skipped for \fC\fBrad_vel()\fP\fP / \fC\fBrad_vel2()\fP\fP by setting \fCd_src_sun\fP negative\&.
 .IP "\(bu" 2
 #55: Use relativistic formulae to add/difference velocities (i\&.e\&. change velocity reference frame)\&.
 .IP "\(bu" 2
 #60: Moved SuperNOVAS-only functions to a separate \fC\fBsuper\&.c\fP\fP module to alleviate the bloating of \fC\fBnovas\&.c\fP\fP, which can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be\&.
 .IP "\(bu" 2
-#62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus integer before\&.
+#62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus integer return value before\&.
 .IP "\(bu" 2
 #66: Various tweaks for C/C++ best practices (by kiranshila)
 .IP "\(bu" 2
@@ -158,7 +158,7 @@ Initialize test variables for reproducibility
 Bug fix release with minor changes\&.
 .SS "Fixed"
 .IP "\(bu" 2
-\fC\fBcirs_to_itrs()\fP\fP, \fC\fBitrs_to_cirs()\fP\fP, \fC\fBtod_to_itrs()\fP\fP, and \fC\fBitrs_to_tod()\fP\fP all had a unit conversion bug in using the \fCut1_to_tt\fP argument [s] when converting TT-based Julian date to UT1-based JD [day] internally\&.
+\fC\fBcirs_to_itrs()\fP\fP, \fC\fBitrs_to_cirs()\fP\fP, \fC\fBtod_to_itrs()\fP\fP, and \fC\fBitrs_to_tod()\fP\fP all had a unit conversion bug in using the \fCut1_to_tt\fP argument [s] when converting TT-based Julian date to UT1-based JD [day] internally\&. (thanks to hannorein)
 .IP "\(bu" 2
 Fixed errors in \fCexample\&.c\fP [by hannorein]\&.
 .PP
@@ -168,7 +168,7 @@ Added \fC\fBcirs_to_app_ra()\fP\fP and \fC\fBapp_to_cirs_ra()\fP\fP for convenie
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-Changed definition of \fCNOVAS_AU\fP to the IAU definition of exactly 1\&.495978707e+11 m\&. The old definition is also available as \fCDE405_AU\fP\&.
+Changed definition of \fCNOVAS_AU\fP to the IAU definition of exactly 1\&.495978707e+11 m\&. The old definition is also available as \fCDE405_AU\fP\&. (thanks to hannorein)
 .IP "\(bu" 2
 Various corrections and changes to documentation\&.
 .PP

@@ -21,14 +21,14 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
  - #64: `NOVAS_TAI_TO_TT` definition had wrong decimal in last place, thus was 3 ms off from what it should have been.
    (thanks to kiranshila)
 
- - #68: `readeph_dummy()` dummy implenetation in `readeph0.c` called non existing error handler function.
+ - #68: `readeph_dummy()` dummy implementation in `readeph0.c` called non existing error handler function.
 
 ### Changed
 
- - #59: For major planets (and Sun and Moon) `rad_vel()`, `rad_vel2()`, `place()`, and `novas_sky_pos()` will include 
-   gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or else 
-   at a large distance away. The corrections can be skipped for `rad_vel()` / `rad_vel2()` by setting `d_src_sun` 
-   negative.
+ - #59: For observing major planets (and Sun and Moon) `rad_vel()`, `rad_vel2()`, `place()`, and `novas_sky_pos()` 
+   will include gravitational corrections to radial velocity for light originating at the surface, and observed near 
+   Earth or else at a large distance away. These corrections, along with those for the Solar potential at the source, 
+   may be skipped for `rad_vel()` / `rad_vel2()` by setting `d_src_sun` negative.
 
  - #55: Use relativistic formulae to add/difference velocities (i.e. change velocity reference frame).
 
@@ -36,7 +36,7 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
    can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be.
 
  - #62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus
-   integer before.
+   integer return value before.
    
  - #66: Various tweaks for C/C++ best practices (by kiranshila) 
    
@@ -262,7 +262,8 @@ Bug fix release with minor changes.
 ### Fixed
 
  - `cirs_to_itrs()`, `itrs_to_cirs()`, `tod_to_itrs()`, and `itrs_to_tod()` all had a unit conversion bug in using the 
-  `ut1_to_tt` argument [s] when converting TT-based Julian date to UT1-based JD [day] internally.
+  `ut1_to_tt` argument [s] when converting TT-based Julian date to UT1-based JD [day] internally. 
+  (thanks to hannorein)
 
  - Fixed errors in `example.c` [by hannorein].
 
@@ -274,7 +275,7 @@ Bug fix release with minor changes.
 ### Changed
 
  - Changed definition of `NOVAS_AU` to the IAU definition of exactly 1.495978707e+11 m. The old definition is also
-   available as `DE405_AU`.
+   available as `DE405_AU`. (thanks to hannorein)
  - Various corrections and changes to documentation.
 
 
