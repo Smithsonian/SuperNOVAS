@@ -7,7 +7,7 @@
 
 
 # Regular object files
-$(OBJ)/%.o: %.c dep/%.d $(OBJ) Makefile
+$(OBJ)/%.o: $(SRC)/%.c dep/%.d $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
 # Share library recipe
@@ -15,12 +15,12 @@ $(LIB)/%.so.$(SO_VERSION) : | $(LIB) Makefile
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
 
 # Unversioned shared libs (for linking against)
-$(LIB)/lib%.so:
+$(LIB)/lib%.so:  | $(LIB)
 	@rm -f $@
 	ln -sr $< $@
 
 # Static library recipe
-$(LIB)/%.a:
+$(LIB)/%.a: | $(LIB) Makefile
 	ar -rc $@ $^
 	ranlib $@
 
@@ -61,7 +61,7 @@ dox: README.md Doxyfile | apidoc $(SRC) $(INC)
 
 # Automatic dependence on included header files.
 .PRECIOUS: dep/%.d
-dep/%.d: %.c dep
+dep/%.d: $(SRC)/%.c dep
 	@echo " > $@" \
 	&& $(CC) $(CPPFLAGS) -MM -MG $< > $@.$$$$ \
 	&& sed 's|\w*\.o[ :]*| $(OBJ)/&|g' < $@.$$$$ > $@; \
