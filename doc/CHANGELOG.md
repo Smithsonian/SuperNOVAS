@@ -44,6 +44,9 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
  
  - #68: Various improvements to debug error tracing.
  
+ - #73: Initializer macros (primarily for internal use), forced 'use' of unused variables after declarations, and no
+   order-only-dependencies in Makefiles -- in order to cure warnings and to conform with older compilers and make:.
+ 
  - Slight tweakes to `Makefile`, and `.mk` snipplets, with added `make` configurability.
  
  
