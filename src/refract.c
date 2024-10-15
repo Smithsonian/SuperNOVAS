@@ -96,8 +96,9 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
  * @sa refract_astro()
  */
 double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
-  (void) jd_tt;
   double dz = novas_refraction(NOVAS_STANDARD_ATMOSPHERE, loc, type, el);
+  (void) jd_tt;
+
   if(isnan(dz))
     return novas_trace_nan("novas_optical_refraction");
   return dz;
@@ -121,8 +122,9 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
  * @sa refract_astro()
  */
 double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
-  (void) jd_tt;
   double dz = novas_refraction(NOVAS_WEATHER_AT_LOCATION, loc, type, el);
+  (void) jd_tt;
+
   if(isnan(dz))
     return novas_trace_nan("novas_optical_refraction");
   return dz;
@@ -156,7 +158,6 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * @sa on_surface
  */
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
-  (void) jd_tt;
   static const char *fn = "novas_radio_refraction";
   // Various coefficients...
   static const double E[] = { 0.0, 46.625, 45.375, 4.1572, 1.4468, 0.25391, 2.2716, -1.3465, -4.3877, 3.1484, 4.520, -1.8982, 0.8900 };
@@ -167,6 +168,8 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   double fptem;
   double refraction;
   int j;
+
+  (void) jd_tt;
 
   if(!loc) {
     novas_set_errno(EINVAL, fn, "NULL on surface observer location");

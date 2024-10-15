@@ -1042,7 +1042,7 @@ int make_ephem_object(const char *name, long num, object *body) {
  * @author Attila Kovacs
  */
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs) {
-  in_space motion = {0};
+  in_space motion = IN_SPACE_INIT;
 
   if(!vel)
     return novas_error(-1, EINVAL, "make_airborne_observer", "NULL velocity");

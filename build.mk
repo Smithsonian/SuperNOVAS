@@ -15,12 +15,14 @@ $(LIB)/%.so.$(SO_VERSION) : | $(LIB) Makefile
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
 
 # Unversioned shared libs (for linking against)
-$(LIB)/lib%.so:  | $(LIB)
+$(LIB)/lib%.so:
+	@if [ ! -e $(LIB) ] ; then mkdir $(LIB); fi
 	@rm -f $@
 	ln -sr $< $@
 
 # Static library recipe
-$(LIB)/%.a: | $(LIB) Makefile
+$(LIB)/%.a:
+	@if [ ! -e $(LIB) ] ; then mkdir $(LIB); fi
 	ar -rc $@ $^
 	ranlib $@
 
