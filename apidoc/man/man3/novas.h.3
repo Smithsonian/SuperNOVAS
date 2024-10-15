@@ -64,6 +64,9 @@ include/novas.h
 .RI "#define \fBBARYC\fP   \fBNOVAS_BARYCENTER\fP"
 .br
 .ti -1c
+.RI "#define \fBCAT_ENTRY_INIT\fP   { {'\\0'}, {'\\0'}, 0L, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+.br
+.ti -1c
 .RI "#define \fBDE405_AU\fP   1\&.4959787069098932e+11"
 .br
 .ti -1c
@@ -81,6 +84,9 @@ include/novas.h
 .RI "[rad/deg] 1 degree in radians "
 .ti -1c
 .RI "#define \fBHELIOC\fP   \fBNOVAS_HELIOCENTER\fP"
+.br
+.ti -1c
+.RI "#define \fBIN_SPACE_INIT\fP   {{0\&.0}, {0\&.0}}"
 .br
 .ti -1c
 .RI "#define \fBM_PI\fP   3\&.14159265358979323846"
@@ -216,6 +222,9 @@ include/novas.h
 .br
 .RI "Maximum bytes in object names including string termination\&. "
 .ti -1c
+.RI "#define \fBSKY_POS_INIT\fP   { {0\&.0}, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+.br
+.ti -1c
 .RI "#define \fBSUPERNOVAS_MAJOR_VERSION\fP   1"
 .br
 .RI "API major version\&. "
@@ -228,7 +237,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc3'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1'\&. "
 .ti -1c
@@ -795,6 +804,15 @@ Old definition of the Barycenter origin\&. NOVAS_BARYCENTER is preferred\&.
 .RE
 .PP
 
+.SS "#define CAT_ENTRY_INIT   { {'\\0'}, {'\\0'}, 0L, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+Initializer for a NOVAS \fBcat_entry\fP structure\&. 
+.PP
+\fBSince\fP
+.RS 4
+1\&.1\&.1 
+.RE
+.PP
+
 .SS "#define DE405_AU   1\&.4959787069098932e+11"
 [m] Astronomical unit (AU)\&. based on DE-405\&. (old definition) 
 .PP
@@ -850,6 +868,15 @@ Attila Kovacs
 \fBDeprecated\fP
 .RS 4
 Old definition of the Center of Sun as the origin\&. NOVAS_HELIOCENTER is preferred\&. 
+.RE
+.PP
+
+.SS "#define IN_SPACE_INIT   {{0\&.0}, {0\&.0}}"
+Initializer for a NOVAS \fBin_space\fP structure\&. 
+.PP
+\fBSince\fP
+.RS 4
+1\&.1\&.1 
 .RE
 .PP
 
@@ -925,6 +952,15 @@ The number of asronomical time scales supported\&.
 \fBSince\fP
 .RS 4
 1\&.1 
+.RE
+.PP
+
+.SS "#define SKY_POS_INIT   { {0\&.0}, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+Initializer for a NOVAS \fBsky_pos\fP structure\&. 
+.PP
+\fBSince\fP
+.RS 4
+1\&.1\&.1 
 .RE
 .PP
 
@@ -2962,7 +2998,7 @@ Computes the geocentric position and velocity of an observer\&. The final vector
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBe_tilt()\fP, \fBephemeris()\fP, \fBEROT_ERA\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBobserver::on_surf\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
+References \fBAU_KM\fP, \fBCAT_ENTRY_INIT\fP, \fBe_tilt()\fP, \fBephemeris()\fP, \fBEROT_ERA\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBobserver::on_surf\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
 .SS "double get_ut1_to_tt (int leap_seconds, double dut1)"
 Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time difference as measured and published by IERS\&.
 .PP
@@ -3933,7 +3969,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBmake_observer()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, and \fBin_space::sc_vel\fP\&.
+References \fBIN_SPACE_INIT\fP, \fBmake_observer()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, and \fBin_space::sc_vel\fP\&.
 .SS "short make_cat_entry (const char * star_name, const char * catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, \fBcat_entry\fP * star)"
 Populates the data structure for a 'catalog' source, such as a star\&.
 .PP
@@ -4427,7 +4463,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&.
 .PP
 
 .PP
-References \fBapp_star()\fP, \fBcat_entry::dec\fP, \fBnovas_inv_max_iter\fP, \fBprecession()\fP, \fBcat_entry::ra\fP, \fBstarvectors()\fP, and \fBvector2radec()\fP\&.
+References \fBapp_star()\fP, \fBCAT_ENTRY_INIT\fP, \fBcat_entry::dec\fP, \fBnovas_inv_max_iter\fP, \fBprecession()\fP, \fBcat_entry::ra\fP, \fBstarvectors()\fP, and \fBvector2radec()\fP\&.
 .SS "double norm_ang (double angle)"
 Returns the normalized angle in the [0:2) range\&.
 .PP
@@ -5168,7 +5204,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBnovas_frame::deps0\fP, \fBnovas_frame::dpsi0\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBe_tilt()\fP, \fBnovas_frame::earth_pos\fP, \fBnovas_frame::earth_vel\fP, \fBnovas_frame::ee\fP, \fBephemeris()\fP, \fBnovas_frame::era\fP, \fBera()\fP, \fBEROT_GST\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gst\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_frame::mobl\fP, \fBNOVAS_BARYCENTER\fP, \fBnovas_change_observer()\fP, \fBNOVAS_EARTH\fP, \fBnovas_get_split_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBNOVAS_UT1\fP, \fBnutation_angles()\fP, \fBsidereal_time()\fP, \fBnovas_frame::state\fP, \fBnovas_frame::sun_pos\fP, \fBnovas_frame::sun_vel\fP, \fBnovas_frame::time\fP, \fBnovas_frame::tobl\fP, \fBtt2tdb()\fP, \fBnovas_timespec::ut1_to_tt\fP, and \fBobserver::where\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBCAT_ENTRY_INIT\fP, \fBnovas_frame::deps0\fP, \fBnovas_frame::dpsi0\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBe_tilt()\fP, \fBnovas_frame::earth_pos\fP, \fBnovas_frame::earth_vel\fP, \fBnovas_frame::ee\fP, \fBephemeris()\fP, \fBnovas_frame::era\fP, \fBera()\fP, \fBEROT_GST\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gst\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_frame::mobl\fP, \fBNOVAS_BARYCENTER\fP, \fBnovas_change_observer()\fP, \fBNOVAS_EARTH\fP, \fBnovas_get_split_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBNOVAS_UT1\fP, \fBnutation_angles()\fP, \fBsidereal_time()\fP, \fBnovas_frame::state\fP, \fBnovas_frame::sun_pos\fP, \fBnovas_frame::sun_vel\fP, \fBnovas_frame::time\fP, \fBnovas_frame::tobl\fP, \fBtt2tdb()\fP, \fBnovas_timespec::ut1_to_tt\fP, and \fBobserver::where\fP\&.
 .SS "int novas_make_transform (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP from_system, enum \fBnovas_reference_system\fP to_system, \fBnovas_transform\fP * transform)"
 Calculates a transformation matrix that can be used to convert positions and velocities from one coordinate reference system to another\&.
 .PP
@@ -5815,7 +5851,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBephemeris()\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, and \fBobserver::where\fP\&.
+References \fBCAT_ENTRY_INIT\fP, \fBephemeris()\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, and \fBobserver::where\fP\&.
 .SS "short place (double jd_tt, const \fBobject\fP * source, const \fBobserver\fP * location, double ut1_to_tt, enum \fBnovas_reference_system\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * output)"
 Computes the apparent direction of a celestial object at a specified time and in a specified coordinate system and a specific near-Earth origin\&.
 .PP
@@ -6556,7 +6592,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBplace()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBobject::type\fP\&.
+References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBplace()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, \fBSKY_POS_INIT\fP, and \fBobject::type\fP\&.
 .SS "int radec_star (double jd_tt, const \fBcat_entry\fP * star, const \fBobserver\fP * obs, double ut1_to_tt, enum \fBnovas_reference_system\fP sys, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * rv)"
 Computes the place of a star at date 'jd_tt', for an observer in the specified coordinate system, given the star's ICRS catalog place, proper motion, parallax, and radial velocity\&.
 .PP
@@ -6613,7 +6649,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBplace_star()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+References \fBsky_pos::dec\fP, \fBplace_star()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBSKY_POS_INIT\fP\&.
 .SS "double refract (const \fBon_surface\fP * location, enum \fBnovas_refraction_model\fP option, double zd_obs)"
 Computes atmospheric optical refraction for an observed (already refracted!) zenith distance through the atmosphere\&. In other words this is suitable to convert refracted zenith angles to astrometric (unrefracted) zenith angles\&. For the reverse, see \fBrefract_astro()\fP\&.
 .PP

@@ -42,6 +42,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>CAT_ENTRY_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a0a185da3a347343e5dd21d41a598d0fa</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>DE405_AU</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>af303bf91582509624aa40c6a87eb95ac</anchor>
@@ -80,6 +87,13 @@
       <name>HELIOC</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a5414c24d23ad004a73ec69b1aad9f3e2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>IN_SPACE_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a406038a5cbe32b7e0e7233f6145e4cf5</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -332,6 +346,13 @@
       <name>SIZE_OF_OBJ_NAME</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a977a43db51d544f728ea8a22b4a53783</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SKY_POS_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a462bdac0f370f0c5b421ae5b3f3e35f2</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
