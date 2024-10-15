@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
-## [Unreleased]
+## [1.1.1-rc3] - 2024-10-15
 
 Changes expected for the next bug-fix release, expected around 1 November 2024.
 
