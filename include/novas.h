@@ -611,6 +611,12 @@ typedef struct {
 } cat_entry;
 
 /**
+ * Initializer for a NOVAS cat_entry structure.
+ * @since 1.1.1
+ */
+#define CAT_ENTRY_INIT { {'\0'}, {'\0'}, 0L, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+
+/**
  * Celestial object of interest.
  *
  * Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type'
@@ -652,6 +658,12 @@ typedef struct {
 } in_space;
 
 /**
+ * Initializer for a NOVAS in_space structure.
+ * @since 1.1.1
+ */
+#define IN_SPACE_INIT   {{0.0}, {0.0}}
+
+/**
  * Observer location (somewhere around Earth).
  *
  */
@@ -680,6 +692,12 @@ typedef struct {
   double dis;       ///< [AU] true (geometric, Euclidian) distance to solar system body or 0.0 for star (AU)
   double rv;        ///< [km/s] radial velocity (km/s)
 } sky_pos;
+
+/**
+ * Initializer for a NOVAS sky_pos structure.
+ * @since 1.1.1
+ */
+#define SKY_POS_INIT { {0.0}, 0.0, 0.0, 0.0, 0.0 }
 
 /**
  * Right ascension of the Celestial Intermediate Origin (CIO) with respect to the GCRS

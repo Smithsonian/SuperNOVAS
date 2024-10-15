@@ -741,7 +741,7 @@ int place_star(double jd_tt, const cat_entry *star, const observer *obs, double 
  */
 int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
         enum novas_accuracy accuracy, double *ra, double *dec, double *rv) {
-  sky_pos output = {0};
+  sky_pos output = SKY_POS_INIT;
 
   // Default return values in case of error.
   if(ra)
@@ -804,7 +804,7 @@ int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double 
 int radec_planet(double jd_tt, const object *ss_body, const observer *obs, double ut1_to_tt, enum novas_reference_system sys,
         enum novas_accuracy accuracy, double *ra, double *dec, double *dis, double *rv) {
   static const char *fn = "radec_planet";
-  sky_pos output = {0};
+  sky_pos output = SKY_POS_INIT;
 
   // Default return values in case of error.
   if(ra)
@@ -1272,7 +1272,7 @@ short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const 
  */
 short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *ira, double *idec) {
   static const char *fn = "mean_star";
-  cat_entry star = {0};
+  cat_entry star = CAT_ENTRY_INIT;
   double pos[3];
   int iter;
 
@@ -1347,7 +1347,7 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, const double *geo_pos,
         const double *geo_vel, double *pos, double *vel) {
   static const char *fn = "get_obs_posvel";
-  static const cat_entry zero_star = {0};
+  static const cat_entry zero_star = CAT_ENTRY_INIT;
 
   if(!obs)
     return novas_error(-1, EINVAL, fn, "NULL observer parameter");
@@ -3366,7 +3366,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   static THREAD_LOCAL double t_last = 0;
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double gast;
-  static const cat_entry zero_star = {0};
+  static const cat_entry zero_star = CAT_ENTRY_INIT;
 
   double gmst, eqeq, pos1[3], vel1[3], jd_tdb, jd_ut1;
 
@@ -3897,11 +3897,12 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_o
  */
 short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs,
         double *out) {
-  (void) unused;
   static const char *fn = "grav_def";
 
   novas_planet_bundle planets = {0};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
+
+  (void) unused;
 
   if(!pos_src || !out)
     return novas_error(-1, EINVAL, fn, "NULL source position 3-vector: pos_src=%p, out=%p", pos_src, out);
