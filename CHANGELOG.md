@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
-## [1.1.1-rc3] - 2024-10-15
+## [Unreleased]
 
 Changes expected for the next bug-fix release, expected around 1 November 2024.
 
@@ -45,9 +45,9 @@ Changes expected for the next bug-fix release, expected around 1 November 2024.
  - #68: Various improvements to debug error tracing.
  
  - #73: Initializer macros (primarily for internal use), forced 'use' of unused variables after declarations, and no
-   order-only-dependencies in Makefiles -- in order to cure warnings and to conform with older compilers and make:.
+   order-only-dependencies in Makefiles -- in order to cure warnings and to conform with older compilers and make.
  
- - Slight tweakes to `Makefile`, and `.mk` snipplets, with added `make` configurability.
+ - Slight tweaks to `Makefile`, and `.mk` snippets, with added `make` configurability.
  
  
 
