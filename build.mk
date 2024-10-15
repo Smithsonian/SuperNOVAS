@@ -11,18 +11,18 @@ $(OBJ)/%.o: $(SRC)/%.c dep/%.d $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
 # Share library recipe
-$(LIB)/%.so.$(SO_VERSION) : | $(LIB) Makefile
+$(LIB)/%.so.$(SO_VERSION):
+	@make $(LIB)
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
 
 # Unversioned shared libs (for linking against)
 $(LIB)/lib%.so:
-	@if [ ! -e $(LIB) ] ; then mkdir $(LIB); fi
 	@rm -f $@
 	ln -sr $< $@
 
 # Static library recipe
 $(LIB)/%.a:
-	@if [ ! -e $(LIB) ] ; then mkdir $(LIB); fi
+	@make $(LIB)
 	ar -rc $@ $^
 	ranlib $@
 
@@ -57,7 +57,7 @@ check:
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
-dox: README.md Doxyfile | apidoc $(SRC) $(INC)
+dox: README.md Doxyfile apidoc $(SRC) $(INC)
 	@echo "   [doxygen]"
 	@$(DOXYGEN)
 
