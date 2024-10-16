@@ -39,7 +39,7 @@ var NAVTREE =
         [ "Note on alternative methodologies", "index.html#autotoc_md41", null ],
         [ "Calculating positions for a sidereal source", "index.html#autotoc_md42", [
           [ "Specify the object of interest", "index.html#autotoc_md43", null ],
-          [ "Spefify the observer location", "index.html#autotoc_md44", null ],
+          [ "Specify the observer location", "index.html#autotoc_md44", null ],
           [ "Specify the time of observation", "index.html#autotoc_md45", null ],
           [ "Set up the observing frame", "index.html#autotoc_md46", null ],
           [ "Calculate an apparent place on sky", "index.html#autotoc_md47", null ],
@@ -69,7 +69,7 @@ var NAVTREE =
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md69", null ],
       [ "Release schedule", "index.html#autotoc_md71", null ],
-      [ "[1.1.1-rc3] - 2024-10-15", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md3", null ]
       ] ],

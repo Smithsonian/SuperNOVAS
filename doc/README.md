@@ -44,7 +44,7 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
  - Fixing [outstanding issues](#fixed-issues).
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
  - [New features](#added-functionality).
- - [Refining the API](#api-changes) to promote best programing practices.
+ - [Refining the API](#api-changes) to promote best programming practices.
  - [Thread-safe calculations](#multi-threading).
  - [Debug mode](#debug-mode) with informative error tracing.
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
@@ -238,7 +238,7 @@ you may additionally specify the appropriate optional shared library also:
   	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys1
 ```
 
-To use your own `solarsystem()` implemetation for `ephemeris()`, you will want to build the library with
+To use your own `solarsystem()` implementation for `ephemeris()`, you will want to build the library with
 `DEFAULT_SOLSYS` not set (or else set to 0) in `config.mk` (see section above), and your applications 
 `Makefile` may contain something like:
 
@@ -290,7 +290,7 @@ In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively s
 positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
 Earth (at the geocenter, on the surface, or in Earth orbit).
 
-SuperNOVAS __v1.1__ has instroduced a new, more intuitive, more elegant, and more efficient approach for calculating
+SuperNOVAS __v1.1__ has instoduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
@@ -339,7 +339,7 @@ handles both catalog and ephemeris sources).
  make_cat_object(&star, &source);
 ```
 
-#### Spefify the observer location
+#### Specify the observer location
 
 Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
 (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):
@@ -417,7 +417,7 @@ for different observer locations, if need be, via `novas_change_observer()`.
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
 sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
-low-precison Earth and Sun calculator included by default), to account for gravitational bending around massive 
+low-precision Earth and Sun calculator included by default), to account for gravitational bending around massive 
 planets. Without it, &mu;as accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy 
 frames without an appropriate high-precision ephemeris provider will result in an error from the requisite 
 `ephemeris()` call. 
@@ -443,7 +443,7 @@ size conversion).
 
 Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational 
 deflection, you might use `novas_geom_posvel()` instead. And regardless, which function you use you can always easily 
-and efficienty change the coordinate system in which your results are expressed by creating an appropriate transform 
+and efficiently change the coordinate system in which your results are expressed by creating an appropriate transform 
 via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
 
 
@@ -457,12 +457,12 @@ location, you can proceed from the `sky_pos` data you obtained above (in whichev
   
  // Convert the apparent position in CIRS on sky to horizontal coordinates
  novas_app_to_hor(&obs_frame, NOVAS_CIRS, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el);
-``` 
+```
 
 Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and 
 elevation coordinates at the observing location, using the `novas_standard_refraction()` function to provide a 
 suitable refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data 
-embedded in the frame's `observer` stucture, or some user-defined refraction model, or else `NULL` to calculate 
+embedded in the frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate 
 unrefracted elevation angles.
 
 <a name="solsys-example"></a>
@@ -766,7 +766,7 @@ before that level of accuracy is reached.
 
  - Added radio refraction model `novas_radio_refraction()` based on the formulae by Berman &amp; Rockwell 1976.
  
- - Added `cirs_to_tod()` and `tod_to_cirs()` functions for efficient tranformation between True of Date (TOD) and
+ - Added `cirs_to_tod()` and `tod_to_cirs()` functions for efficient transformation between True of Date (TOD) and
    Celestial Intermediate Reference System (CIRS), and vice versa.
 
  - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
@@ -921,7 +921,7 @@ either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph`
 #### 2.1. Planets via `eph_manager`
 
 To use the `eph_manager` interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
-superNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
+SuperNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
 `eph_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
 way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
 `eph_manager` as your planetary ephemeris provider at runtime via:
@@ -1038,7 +1038,7 @@ feature releases, although they may also be rolled out in bug-fix releases as lo
 API -- in line with the desire to keep bug-fix releases fully backwards compatible with their parent versions.
 
 In the weeks and month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be published 
-temporarily on github, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be 
+temporarily on GitHub, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be 
 tested by adopters before the releases are finalized. Please use due diligence to test such release candidates with 
 your code when they become available to avoid unexpected surprises when the finalized release is published. Release 
 candidates are typically available for one week only before they are superseded either by another, or by the finalized 

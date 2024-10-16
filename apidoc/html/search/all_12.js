@@ -8,7 +8,7 @@ var searchData=
   ['obs_5fvel_5',['obs_vel',['../structnovas__frame.html#a66f1e86da27c96c1c920dce442ce78c8',1,'novas_frame']]],
   ['observation_6',['observation',['../index.html#autotoc_md45',1,'Specify the time of observation'],['../md_LEGACY.html#autotoc_md22',1,'Specify the time of observation']]],
   ['observer_7',['observer',['../structobserver.html',1,'observer'],['../structnovas__frame.html#aa792216b0b2601bb9af3b882c87274f8',1,'novas_frame::observer']]],
-  ['observer_20location_8',['observer location',['../md_LEGACY.html#autotoc_md21',1,'Spefify the observer location'],['../index.html#autotoc_md44',1,'Spefify the observer location']]],
+  ['observer_20location_8',['observer location',['../index.html#autotoc_md44',1,'Specify the observer location'],['../md_LEGACY.html#autotoc_md21',1,'Spefify the observer location']]],
   ['observing_20frame_9',['Set up the observing frame',['../index.html#autotoc_md46',1,'']]],
   ['observing_20location_10',['observing location',['../md_LEGACY.html#autotoc_md26',1,'B. Azimuth and elevation angles at the observing location'],['../index.html#autotoc_md48',1,'Calculate azimuth and elevation angles at the observing location']]],
   ['of_20contents_11',['Table of Contents',['../index.html#autotoc_md28',1,'']]],
