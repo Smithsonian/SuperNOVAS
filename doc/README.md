@@ -290,7 +290,7 @@ In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively s
 positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
 Earth (at the geocenter, on the surface, or in Earth orbit).
 
-SuperNOVAS __v1.1__ has instoduced a new, more intuitive, more elegant, and more efficient approach for calculating
+SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
