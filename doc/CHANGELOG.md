@@ -8,15 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 
-## [Unreleased]
+## [1.1.1] - 2024-10-28
 
-Changes expected for the next bug-fix release, expected around 1 November 2024.
+Bug fix release. Nothing too scary, mainly just a collection of smaller fixes and improvements.
 
 ### Fixed
 
  - #55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses
    the actual relativistic velocity differential between the source and observer to apply the appropriate time 
-   dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike.
+   dilation factor, and applies gravitational corrections for Sun and Earth consistently at source and observer alike.
 
  - #64: `NOVAS_TAI_TO_TT` definition had wrong decimal in last place, thus was 3 ms off from what it should have been.
    (thanks to kiranshila)

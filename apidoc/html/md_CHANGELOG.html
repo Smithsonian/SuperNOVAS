@@ -117,12 +117,12 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
-<p>Changes expected for the next bug-fix release, expected around 1 November 2024.</p>
+[1.1.1] - 2024-10-28</h1>
+<p>Bug fix release. Nothing too scary, mainly just a collection of smaller fixes and improvements.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
-<li>#55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses the actual relativistic velocity differential between the source and observer to apply the appropriate time dilation factor, and applies graviational corrections for Sun and Earth consistently at source and observer alike.</li>
+<li>#55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses the actual relativistic velocity differential between the source and observer to apply the appropriate time dilation factor, and applies gravitational corrections for Sun and Earth consistently at source and observer alike.</li>
 <li>#64: <code>NOVAS_TAI_TO_TT</code> definition had wrong decimal in last place, thus was 3 ms off from what it should have been. (thanks to kiranshila)</li>
 <li>#68: <code>readeph_dummy()</code> dummy implementation in <code>readeph0.c</code> called non existing error handler function.</li>
 </ul>
