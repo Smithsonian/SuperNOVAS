@@ -5942,9 +5942,11 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   // Set the catalog identification code for the transformed catalog entry.
   if(out_id)
-    strncpy(out->catalog, out_id, sizeof(out->catalog) - 1);
+    strncpy(out->catalog, out_id, sizeof(out->catalog));
   else if(out != in)
-    strncpy(out->catalog, in->catalog, sizeof(out->catalog) - 1);
+    strncpy(out->catalog, in->catalog, sizeof(out->catalog));
+
+  out->catalog[sizeof(out->catalog) - 1] = '\0';
 
   if(out != in) {
     // Take care of zero-parallax case.
@@ -5956,7 +5958,8 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
       out->parallax = in->parallax;
 
     // Copy unchanged quantities from the input catalog entry to the transformed catalog entry.
-    strncpy(out->starname, in->starname, sizeof(out->starname) - 1);
+    strncpy(out->starname, in->starname, sizeof(out->starname));
+    out->starname[sizeof(out->starname) - 1] = '\0';
     out->starnumber = in->starnumber;
   }
 

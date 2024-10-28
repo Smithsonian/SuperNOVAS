@@ -108,7 +108,7 @@ $(LIB)/libsolsys2.so: $(LIB)/libsolsys2.so.$(SO_VERSION)
 
 $(LIB)/libnovas.so: $(LIB)/libsupernovas.so
 
-$(LIB)/libsolsys%.so.$(SO_VERSION): LD_FLAGS += -L$(LIB) -lsupernovas
+$(LIB)/libsolsys%.so.$(SO_VERSION): LDFLAGS += -L$(LIB) -lsupernovas
 
 # Shared library: libsupernovas.so.1 -- same as novas.so except the builtin SONAME
 $(LIB)/libsupernovas.so.$(SO_VERSION): $(SOURCES)
