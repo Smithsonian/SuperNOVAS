@@ -74,7 +74,16 @@ static void openfile(const char *name) {
 
 static void printvector(double *v) {
   if(!v) fprintf(fp, "null ");
-  fprintf(fp, "%12.6f %12.6f %12.6f ", v[0], v[1], v[2]);
+  if(accuracy == 0) fprintf(fp, "%17.11g %17.11g %17.11g ", v[0], v[1], v[2]);
+  else fprintf(fp, "%14.8g %14.8g %14.8g ", v[0], v[1], v[2]);
+}
+
+static void printvel(double *v) {
+  double norm = (AU / 86400.0) / 1000.0;
+
+  // rto mm/s or m/s accuracy...
+  if(accuracy == 0) fprintf(fp, "%12.6f %12.6f %12.6f ", v[0] * norm, v[1] * norm, v[2] * norm);
+  else fprintf(fp, "%9.3f %9.3f %9.3f ", v[0] * norm, v[1] * norm, v[2] * norm);
 }
 
 static void printunitvector(double *v) {
@@ -296,7 +305,7 @@ static void test_ephemeris() {
 
       fprintf(fp, "%-10s %d ", body[i].name, j);
       printvector(pos1);
-      printvector(vel1);
+      printvel(vel1);
       fprintf(fp, "\n");
     }
   }
@@ -465,7 +474,7 @@ static void test_geo_posvel() {
   openfile("geo_posvel");
   if(is_ok(geo_posvel(tdb, ut12tt, accuracy, &obs, pos1, vel1))) {
     printvector(pos1);
-    printvector(vel1);
+    printvel(vel1);
   }
 }
 
@@ -539,7 +548,7 @@ static int init() {
   newline();
   fprintf(fp, "SOU ");
   printvector(pos0);
-  printvector(vel0);
+  printvel(vel0);
   newline();
 
   if(make_object(0, 3, "Earth", NULL, &earth) != 0) {
@@ -553,7 +562,7 @@ static int init() {
 
   fprintf(fp, "EAR ");
   printvector(epos);
-  printvector(evel);
+  printvel(evel);
   newline();
 
   if(make_object(0, 10, "Sun", NULL, &sun) != 0) {
@@ -567,7 +576,7 @@ static int init() {
 
   fprintf(fp, "SUN ");
   printvector(spos);
-  printvector(svel);
+  printvel(svel);
   newline();
 
   if(sidereal_time(tdb, 0.0, ut12tt, 0, 1, accuracy, &lst) != 0) {
@@ -599,7 +608,7 @@ static int init() {
 
   fprintf(fp, "OBS ");
   printvector(pobs);
-  printvector(vobs);
+  printvel(vobs);
 
   return 0;
 }
