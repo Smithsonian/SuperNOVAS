@@ -860,13 +860,13 @@ sufficient precision, you will have to integrate it with a suitable provider of 
 SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most flexible 
 (and preferred) to the least flexible (old ways).
 
- 1. [Universal ephemeris data / service integration](#universal-ephemerides)
- 2. [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
- 3. [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
+ - [Universal ephemeris data / service integration](#universal-ephemerides)
+ - [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
+ - [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
 
 
 <a name="universal-ephemerides"></a>
-### 1. Universal ephemeris data / service integration 
+### Universal ephemeris data / service integration 
 
 Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
 `novas_ephem_provider`, e.g.:
@@ -912,13 +912,13 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 
 
 <a name="builtin-ephem-readers"></a>
-### 2. Built-in support for (old) JPL major planet ephemerides
+### Built-in support for (old) JPL major planet ephemerides
 
 If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
 distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
 either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph` interface with `solsys2.c`.
 
-#### 2.1. Planets via `eph_manager`
+#### Planets via `eph_manager`
 
 To use the `eph_manager` interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
 SuperNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
@@ -953,7 +953,7 @@ can integrate as discussed further above!)
 That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
 
 
-#### 2.b. Planets via JPL's `pleph` FORTRAN interface
+#### Planets via JPL's `pleph` FORTRAN interface
 
 To interface eith the JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS with 
 `BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your appropriately modified 
@@ -974,7 +974,7 @@ planetary ephemeris data with SuperNOVAS.
 
 
 <a name="explicit-ephem-linking"></a>
-### 3. Explicit linking of custom ephemeris functions
+### Explicit linking of custom ephemeris functions
 
 Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the 
 `DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own implementation of

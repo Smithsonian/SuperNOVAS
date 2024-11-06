@@ -60,12 +60,12 @@ var NAVTREE =
         [ "Refinements to the NOVAS C API", "index.html#autotoc_md60", null ]
       ] ],
       [ "External Solar-system ephemeris data or services", "index.html#autotoc_md62", [
-        [ "1. Universal ephemeris data / service integration", "index.html#autotoc_md63", null ],
-        [ "2. Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md64", [
-          [ "2.1. Planets via <tt>eph_manager</tt>", "index.html#autotoc_md65", null ],
-          [ "2.b. Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md66", null ]
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md63", null ],
+        [ "Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md64", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md65", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md66", null ]
         ] ],
-        [ "3. Explicit linking of custom ephemeris functions", "index.html#autotoc_md67", null ]
+        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md67", null ]
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md69", null ],
       [ "Release schedule", "index.html#autotoc_md71", null ],

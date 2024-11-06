@@ -32,12 +32,12 @@
       <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md60"/>
     </topic>
     <topic label="External Solar-system ephemeris data or services" href="index.html#autotoc_md62">
-      <topic label="1. Universal ephemeris data / service integration" href="index.html#autotoc_md63"/>
-      <topic label="2. Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md64">
-        <topic label="2.1. Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md65"/>
-        <topic label="2.b. Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md66"/>
+      <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md63"/>
+      <topic label="Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md64">
+        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md65"/>
+        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md66"/>
       </topic>
-      <topic label="3. Explicit linking of custom ephemeris functions" href="index.html#autotoc_md67"/>
+      <topic label="Explicit linking of custom ephemeris functions" href="index.html#autotoc_md67"/>
     </topic>
     <topic label="Runtime debug support" href="index.html#autotoc_md69"/>
     <topic label="Release schedule" href="index.html#autotoc_md71"/>

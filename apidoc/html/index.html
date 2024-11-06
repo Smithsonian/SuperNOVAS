@@ -538,14 +538,14 @@ Refinements to the NOVAS C API</h3>
 <h2><a class="anchor" id="autotoc_md62"></a>
 External Solar-system ephemeris data or services</h2>
 <p>If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as <a href="https://ssd.jpl.nasa.gov/horizons/app.html#/">JPL Horizons</a> or the <a href="https://www.minorplanetcenter.net/iau/mpc.html">Minor Planet Center</a>. Given the NOVAS C heritage, and some added SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most flexible (and preferred) to the least flexible (old ways).</p>
-<ol type="1">
+<ul>
 <li><a class="el" href="index.html#universal-ephemerides">Universal ephemeris data / service integration</a></li>
 <li><a class="el" href="index.html#builtin-ephem-readers">Built-in support for (old) JPL major planet ephemerides</a></li>
 <li><a class="el" href="index.html#explicit-ephem-linking">Explicit linking of custom ephemeris functions</a></li>
-</ol>
+</ul>
 <p><a class="anchor" id="universal-ephemerides"></a> </p>
 <h3><a class="anchor" id="autotoc_md63"></a>
-1. Universal ephemeris data / service integration</h3>
+Universal ephemeris data / service integration</h3>
 <p>Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own <code>novas_ephem_provider</code>, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> my_ephem_reader(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keywordtype">double</span> jd_tdb_high, <span class="keywordtype">double</span> jd_tdb_low, </div>
 <div class="line">                    <span class="keyword">enum</span> <a class="code hl_enumeration" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> *origin, <span class="keywordtype">double</span> *pos, <span class="keywordtype">double</span> *vel) {</div>
@@ -565,10 +565,10 @@ External Solar-system ephemeris data or services</h2>
 </div><!-- fragment --><p>provided you compiled SuperNOVAS with <code>BUILTIN_SOLSYS_EPHEM = 1</code> (in <code>config.mk</code>), or else you link your code against <code><a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a></code> explicitly. Easy-peasy.</p>
 <p><a class="anchor" id="builtin-ephem-readers"></a> </p>
 <h3><a class="anchor" id="autotoc_md64"></a>
-2. Built-in support for (old) JPL major planet ephemerides</h3>
+Built-in support for (old) JPL major planet ephemerides</h3>
 <p>If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS distribution. The modules <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> provide built-in support to older JPL ephemerides (DE200 to DE421), either via the <code>eph_manager</code> interface of <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> or via the FORTRAN <code>pleph</code> interface with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code>.</p>
 <h4><a class="anchor" id="autotoc_md65"></a>
-2.1. Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
+Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
 <p>To use the <code>eph_manager</code> interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build SuperNOVAS with <code>BUILTIN_SOLSYS1 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="eph__manager_8c.html">eph_manager.c</a></code> from SuperNOVAS explicitly. If you want <code>eph_manager</code> to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 1</code> in <code>config.mk</code>. Otherwise, your application should set <code>eph_manager</code> as your planetary ephemeris provider at runtime via:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys1_8c.html#a71d2bfef45818d56e359205c57db0694">planet_eph_manager</a>);</div>
 <div class="line"><a class="code hl_function" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys1_8c.html#acacfbde919107d0514da5c7d8508917b">planet_eph_manager_hp</a>);</div>
@@ -586,7 +586,7 @@ External Solar-system ephemeris data or services</h2>
 </div><!-- fragment --><p>Note, that at any given time <code>eph_manager</code> can have only one ephemeris data file opened. You cannot use it to retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you can integrate as discussed further above!)</p>
 <p>That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.</p>
 <h4><a class="anchor" id="autotoc_md66"></a>
-2.b. Planets via JPL's &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface</h4>
+Planets via JPL's &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface</h4>
 <p>To interface eith the JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS with <code>BUILTIN_SOLSYS2 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> and your appropriately modified <code>jplint.f</code> (from the <code>examples</code> sub-directory) explicitly, together with the JPL PLEPH library. If you want this to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 2</code> in <code>config.mk</code>. Otherwise, your application should set your planetary ephemeris provider at runtime via:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys2_8c.html#aceb7bc6823b1823d8a8360517ff58f29">planet_jplint</a>);</div>
 <div class="line"><a class="code hl_function" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys2_8c.html#a399a5363ddf93d662886e6e4692d03ad">planet_jplint_hp</a>);</div>
@@ -595,7 +595,7 @@ External Solar-system ephemeris data or services</h2>
 </div><!-- fragment --><p>Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end of the world), but you may also have to modify <code>jplint.f</code> (providing the intermediate FORTRAN <code><a class="el" href="solsys2_8c.html#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a></code> / <code><a class="el" href="solsys2_8c.html#a14752a69e14c399d5ee82e83f22acf68" title="Function prototype for the FORTRAN subroutine jplihp in jplint.f.">jplihp_()</a></code> interfaces to <code>pleph_()</code>) to work with the version of <code>pleph.f</code> that you will be using. Unless you already have code that relies on this method, you are probably better off choosing one of the other ways for integrating planetary ephemeris data with SuperNOVAS.</p>
 <p><a class="anchor" id="explicit-ephem-linking"></a> </p>
 <h3><a class="anchor" id="autotoc_md67"></a>
-3. Explicit linking of custom ephemeris functions</h3>
+Explicit linking of custom ephemeris functions</h3>
 <p>Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the <code>DEFAULT_SOLSYS</code> option disabled (commented, removed, or else set to 0), and then link your own implementation of <code><a class="el" href="solsys-ephem_8c.html#a5e2d599b1dc7a0e87bfd29dbd6413398">solarsystem()</a></code> and <code><a class="el" href="solsys-ephem_8c.html#a0243c2489c22860de898115aed8ffc87">solarsystem_hp()</a></code> calls with your application.</p>
 <p>For Solar-system objects other than the major planets, you may also provide your own <code><a class="el" href="solarsystem_8h.html#abb70fdad016c3a2ea45990eaa16b9245">readeph()</a></code> implementation. (In this case you will want to set <code>DEFAULT_READEPH</code> in <code>config.mk</code> to specify your source code for that function before building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link your application explicitly with your <code><a class="el" href="solarsystem_8h.html#abb70fdad016c3a2ea45990eaa16b9245">readeph()</a></code> implementation.</p>
 <p>The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing a <code><a class="el" href="solsys-ephem_8c.html#a5e2d599b1dc7a0e87bfd29dbd6413398">solarsystem()</a></code> / <code><a class="el" href="solsys-ephem_8c.html#a0243c2489c22860de898115aed8ffc87">solarsystem_hp()</a></code> and/or <code><a class="el" href="solarsystem_8h.html#abb70fdad016c3a2ea45990eaa16b9245">readeph()</a></code> implementations for <em>every</em> application that you will want to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and most generic way to add your preferred implementations while also providing some minimum default implementations for <em>other users</em> of the library, who may not need <em>your</em> ephemeris service, or have no need for planet data beyond the approximate positions for the Earth and Sun.</p>

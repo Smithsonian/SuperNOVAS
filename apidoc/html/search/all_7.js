@@ -4,7 +4,7 @@ var searchData=
   ['d_5flight_1',['d_light',['../novas_8h.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;novas.c'],['../novas_8c.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;novas.c']]],
   ['da0_2',['DA0',['../frames_8c.html#a850d4988b6e1ee4e16274b2c723f93c4',1,'frames.c']]],
   ['data_20or_20services_3',['External Solar-system ephemeris data or services',['../index.html#autotoc_md62',1,'']]],
-  ['data_20service_20integration_4',['1. Universal ephemeris data / service integration',['../index.html#autotoc_md63',1,'']]],
+  ['data_20service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md63',1,'']]],
   ['de405_5fau_5',['DE405_AU',['../novas_8h.html#af303bf91582509624aa40c6a87eb95ac',1,'novas.h']]],
   ['debug_20support_6',['Runtime debug support',['../index.html#autotoc_md69',1,'']]],
   ['dec_7',['dec',['../structsky__pos.html#ac4ae7989694321b540abb75c30eec690',1,'sky_pos::dec'],['../structcat__entry.html#ac4ae7989694321b540abb75c30eec690',1,'cat_entry::dec']]],

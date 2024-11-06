@@ -36,5 +36,5 @@ var searchData=
   ['considerations_33',['Performance considerations',['../index.html#autotoc_md51',1,'']]],
   ['contents_34',['Table of Contents',['../index.html#autotoc_md28',1,'']]],
   ['contributing_20to_20supernovas_35',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]],
-  ['custom_20ephemeris_20functions_36',['3. Explicit linking of custom ephemeris functions',['../index.html#autotoc_md67',1,'']]]
+  ['custom_20ephemeris_20functions_36',['Explicit linking of custom ephemeris functions',['../index.html#autotoc_md67',1,'']]]
 ];
