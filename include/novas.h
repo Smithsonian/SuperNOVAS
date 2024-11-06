@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 1.1.0
+ * @version 1.2.0
  *
  *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -63,10 +63,10 @@
 #define SUPERNOVAS_MAJOR_VERSION  1
 
 /// API minor version
-#define SUPERNOVAS_MINOR_VERSION  1
+#define SUPERNOVAS_MINOR_VERSION  2
 
 /// Integer sub version of the release
-#define SUPERNOVAS_PATCHLEVEL     2
+#define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1".
 #define SUPERNOVAS_RELEASE_STRING "-devel"
@@ -607,7 +607,7 @@ typedef struct {
   double promora;                   ///< [mas/yr] ICRS proper motion in right ascension
   double promodec;                  ///< [mas/yr] ICRS proper motion in declination
   double parallax;                  ///< [mas] parallax
-  double radialvelocity;            ///< [km/s] radial velocity
+  double radialvelocity;            ///< [km/s] catalog radial velocity
 } cat_entry;
 
 /**
@@ -1280,8 +1280,29 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
 double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el0);
 
 
+// ---------------------- Added in 1.2.0 -------------------------
+int make_redshifted_object(const char *name, double ra, double dec, double z, object *source);
+
+double novas_z2v(double z);
+
+
+// in util.c
+double novas_v2z(double vel);
+
+double grav_redshift(double M_kg, double r_m);
+
+double redshift_vrad(double vrad, double z);
+
+double unredshift_vrad(double vrad, double z);
+
+double novas_z_add(double z1, double z2);
+
+double novas_z_inv(double z);
+
 
 // <================= END of SuperNOVAS API =====================>
+
+
 
 #include "solarsystem.h"
 

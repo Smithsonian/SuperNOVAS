@@ -784,7 +784,7 @@ static int test_source() {
 static int test_make_planet() {
   object mars;
 
-  make_planet(NOVAS_MARS, &mars);
+  if(!is_ok("make_panet", make_planet(NOVAS_MARS, &mars))) return 1;
 
   if(!is_ok("make_planet:type", mars.type != NOVAS_PLANET)) return 1;
   if(!is_ok("make_planet:number", mars.number != NOVAS_MARS)) return 1;
@@ -1260,6 +1260,23 @@ static int test_refract_astro() {
   return 0;
 }
 
+static int test_v2z() {
+  int v;
+
+  for(v = 0.0; v < NOVAS_C; v += 10000000) {
+    char label[40];
+    double zexp = sqrt((1.0 + v / NOVAS_C) / (1.0 - v / NOVAS_C)) - 1.0;
+
+    sprintf(label, "v2z:v:%d", v);
+    if(!is_equal(label, novas_v2z(v / 1000.0), zexp, 1e-6)) return 1;
+
+    sprintf(label, "v2z:z2v:v:%d", v);
+    if(!is_equal(label, novas_z2v(zexp), v / 1000.0, 1e-6)) return 1;
+  }
+
+  return 0;
+}
+
 static int test_case() {
   object o;
 
@@ -1303,6 +1320,22 @@ static int test_make_object() {
   cat_entry c = {};
 
   if(!is_ok("make_object:name:null", make_object(NOVAS_CATALOG_OBJECT, 1, NULL, &c, &o))) return 1;
+
+  return 0;
+}
+
+static int test_make_redshifted_object() {
+  object gal;
+
+  if(!is_ok("make_redshifted_object", make_redshifted_object("test", 1.0, 2.0, 3.0, &gal))) return 1;
+
+  if(!is_ok("make_redshifted_object:type", gal.type != NOVAS_CATALOG_OBJECT)) return 1;
+  if(!is_equal("make_redshifted_object:ra", gal.star.ra, 1.0, 1e-12)) return 1;
+  if(!is_equal("make_redshifted_object:dec", gal.star.dec, 2.0, 1e-12)) return 1;
+  if(!is_equal("make_redshifted_object:rv", novas_v2z(gal.star.radialvelocity), 3.0, 1e-12)) return 1;
+  if(!is_ok("make_redshifted_object:ra", gal.star.promora != 0.0)) return 1;
+  if(!is_ok("make_redshifted_object:ra", gal.star.promodec != 0.0)) return 1;
+  if(!is_ok("make_redshifted_object:ra", gal.star.parallax != 0.0)) return 1;
 
   return 0;
 }
@@ -2015,6 +2048,77 @@ static int test_rad_vel2() {
   return n;
 }
 
+
+static int test_grav_redshift() {
+  static const double G = 6.6743e-11; // G in SI units.
+  static const double c2 = C * C;
+
+  double M = 2e30;  // [kg]
+  double r = NOVAS_SOLAR_RADIUS;
+
+  double rs = 2 * G * M / c2;
+  double zp1 = 1.0 / sqrt(1.0 - rs / r);
+
+  int n = 0;
+
+  if(!is_equal("grav_redshift", 1.0 + grav_redshift(M, r), zp1, 1e-12)) n++;
+
+  return n;
+}
+
+static int test_redshift_vrad() {
+  double v0 = 100.0;
+  double z;
+
+  int n = 0;
+
+  for(z = -0.5; z < 3.0; z += 0.1) {
+    char label[80];
+    double v = redshift_vrad(v0, z);
+
+    sprintf(label, "redshift_vrad:z=%.1f:inv", z);
+    if(!is_equal(label, unredshift_vrad(v, z), v0, 1e-6)) n++;
+
+    sprintf(label, "redshift_vrad:z=%.1f:check", z);
+    if(!is_equal(label, 1.0 + novas_v2z(v), (1.0 + novas_v2z(v0)) * (1.0 + z), 1e-6)) n++;
+  }
+
+  return n;
+}
+
+static int test_z_add() {
+  int n = 0;
+  double z1;
+
+  for(z1 = -0.5; z1 < 5.0; z1 += 0.5) {
+    double z2;
+    for(z2 = -0.1; z2 < 1.0; z2 += 0.1) {
+      double zexp;
+
+      zexp = (1.0 + z1) * (1.0 + z2) - 1.0;
+      if(!is_equal("z_add", novas_z_add(z1, z2), zexp, 1e-12)) n++;
+    }
+  }
+  return n;
+}
+
+static int test_z_inv() {
+  int n = 0;
+  double z;
+
+  for(z = -0.5; z < 5.0; z += 0.5) {
+    char label[80];
+    double zi = novas_z_inv(z);
+
+    sprintf(label, "z_inv:z=%.1f", z);
+    if(!is_equal(label, 1.0, (1.0 + z) * (1.0 + zi), 1e-6)) n++;
+  }
+
+  return n;
+}
+
+
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -2065,6 +2169,15 @@ int main(int argc, char *argv[]) {
   if(test_transform()) n++;
   if(test_app_hor2()) n++;
   if(test_rad_vel2()) n++;
+
+  // v1.2
+  if(test_v2z()) n++;
+  if(test_make_redshifted_object()) n++;
+  if(test_z_add()) n++;
+  if(test_z_inv()) n++;
+  if(test_redshift_vrad()) n++;
+  if(test_grav_redshift()) n++;
+
 
   n += test_dates();
 
