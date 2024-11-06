@@ -112,9 +112,18 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  * can provide their own, either as a default statically compiled readeph() implementation,
  * or else a dynamically defined one via ephemeris_set_reader().
  *
+ * Note, that implementations would typically use either the name or the ID argument
+ * to identify the object for which ephemeris data is requested. As such you only need
+ * to specify the one that is going to be used.
+ *
  * @param id            The ID number of the solar-system body for which the position in
- *                      desired.
- * @param name          The name of the solar-system body
+ *                      desired. (Typically a NAIF ID, or else an appropriate ID for the
+ *                      implementation -- corresponding minor planet objects should be created
+ *                      with the same type of ID.). If the ephemeris provider is name based
+ *                      the ID is not used an can be set to anything (-1 might be a good
+ *                      default).
+ * @param name          The name of the solar-system body (in case the ephemeris provider is
+ *                      name based, otherwiase it may be NULL).
  * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
  *                      Julian date for which to find the position and velocity. Typically
  *                      this may be the integer part of the Julian date for high-precision
@@ -288,6 +297,15 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
 short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
 short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+
+#if USE_CALCEPH
+#  include "calceph.h"
+
+int novas_use_calceph(t_calcephbin *eph);
+
+int novas_use_calceph_planets(t_calcephbin *eph);
+
+#endif /* USE_CALCEPH */
 
 /// \cond PRIVATE
 

@@ -87,6 +87,10 @@ BUILTIN_SOLSYS3 ?= 1
 BUILTIN_SOLSYS_EPHEM ?= 1
 
 
+# Whether or not to build solsys-calceph libraries
+CALCEPH_INTEGRATION ?= 0
+
+
 # Compile library with a default solarsystem() implementation. If you want to
 # use your library with your own solarsystem() implementation, you should
 # not set this option. In that case you must always provide a solarsystem()
@@ -142,7 +146,7 @@ ifeq ($(DEFAULT_SOLSYS), 3)
   CPPFLAGS += -DDEFAULT_SOLSYS=3
 endif
 
-SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/super.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/refract.c
+SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/super.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/refract.c $(SRC)/naif.c
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
   SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 

@@ -1,0 +1,278 @@
+/**
+ * @file
+ *
+ * @author A. Kovacs
+ *
+ *  SuperNOVAS major planet ephemeris lookup implementation via the CALCEPH C library
+ *  See https://calceph.imcce.fr/docs/4.0.0/html/c/
+ *
+ */
+
+#include <string.h>
+#include <errno.h>
+
+/// \cond PRIVATE
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+#include "novas.h"
+#define USE_CALCEPH 1               ///< NOVAS CALCEPH integration prototypes
+#include "calceph.h"
+#include "naif.h"
+/// \endcond
+
+
+/// CALCEPH ephemeris specifically for planets (and Sun and Moon) only
+static t_calcephbin *planets;
+
+/// Generic CALCEPH ephemeris files for all types of Solar-system sources
+static t_calcephbin *bodies;
+
+
+
+/**
+ * Provides an interface between the CALCEPG C library and NOVAS-C for regular (reduced) precision
+ * applications. The user must set the CALCEPH ephemeris binary data to use using the
+ * novas_set_calceph() or novas_set_calceph_planet() to activate the desired CALCEPH ephemeris
+ * data prior to use.
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>The CALCEPH C library; https://calceph.imcce.fr/docs/4.0.0/html/c/index.html</li>
+ *  <li>Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
+ *  Subroutines"; USNO internal document dated 20 Oct 1988;
+ *  revised 15 Mar 1990.</li>
+ * </ol>
+ *
+ * @param jd_tdb         [day] Two-element array containing the Julian date, which may be
+ *                       split any way (although the first element is usually the
+ *                       "integer" part, and the second element is the "fractional"
+ *                       part).  Julian date is on the TDB or "T_eph" time scale.
+ * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1)
+ *                       -- relative to which to report positions and velocities.
+ * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
+ *                       coordinates in AU referred to the ICRS.
+ * @param[out] velocity  [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
+ *                       system referred to the ICRS, in AU/day.
+ * @return               0 if successful, or else 1 if the 'body' is invalid, or 2 if the
+ *                       'origin' is invalid, or 3 if there was an error providing ephemeris
+ *                       data.
+ *
+ * @sa planet_calceph
+ * @sa novas_set_calceph()
+ * @sa novas_set_calceph_planet()
+ *
+ * @since 1.2
+ */
+static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
+  static const char *fn = "planet_eph_manager_hp";
+
+  t_calcephbin *eph = planets ? planets : bodies;
+  double pv[6] = {};
+  int center = 0, success;
+
+  if(!jd_tdb)
+    return novas_error(-1, EINVAL, fn, "jd_tdb input time array is NULL.");
+
+  if(body < 1 || body >= NOVAS_PLANETS)
+    return novas_error(1, EINVAL, fn, "input body number %d is out of range [0:%d]", body, NOVAS_PLANETS-1);
+
+  if(!eph)
+    return novas_error(3, EINVAL, fn, "No CALCEPH ephemeris has been configured.");
+
+
+  switch (origin) {
+     case NOVAS_BARYCENTER:
+       center = NAIF_SSB;
+       break;
+     case NOVAS_HELIOCENTER:
+       center = NAIF_SUN;
+       break;
+     default:
+       return novas_error(2, EINVAL, fn, "Invalid origin type: %d", origin);
+   }
+
+  success = calceph_compute_unit(
+            eph, jd_tdb[0], jd_tdb[1], novas_to_naif_id(body), center,
+            CALCEPH_USE_NAIFID | CALCEPH_UNIT_AU | CALCEPH_UNIT_DAY, pv);
+
+  if(!success)
+    return novas_error(3, EAGAIN, fn, "calceph_compute() failure");
+
+  if(position)
+    memcpy(position, pv, XYZ_VECTOR_SIZE);
+  if(velocity)
+    memcpy(&velocity, &pv[3], XYZ_VECTOR_SIZE);
+
+  return 0;
+}
+
+/**
+ * Provides an interface between the CALCEPG C library and NOVAS-C for regular (reduced) precision
+ * applications. The user must set the CALCEPH ephemeris binary data to use using the
+ * novas_set_calceph() or novas_set_calceph_planet() to activate the desired CALCEPH ephemeris
+ * data prior to use.
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>The CALCEPH C library; https://calceph.imcce.fr/docs/4.0.0/html/c/index.html</li>
+ *  <li>Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
+ *  Subroutines"; USNO internal document dated 20 Oct 1988;
+ *  revised 15 Mar 1990.</li>
+ * </ol>
+ *
+ * @param jd_tdb         [day] Two-element array containing the Julian date, which may be
+ *                       split any way (although the first element is usually the
+ *                       "integer" part, and the second element is the "fractional"
+ *                       part).  Julian date is on the TDB or "T_eph" time scale.
+ * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
+ *                       -- relative to which to report positions and velocities.
+ * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
+ *                       coordinates in AU referred to the ICRS.
+ * @param[out] velocity  [AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular
+ *                       system referred to the ICRS, in AU/day.
+ * @return               0 if successful, or else an error code of solarsystem().
+ *
+ * @sa planet_eph_manager_hp()
+ * @sa planet_ephem_provider()
+ * @sa ephem_open()
+ * @sa set_planet_provider()
+ * @sa solarsystem()
+ *
+ * @since 1.0
+ */
+static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
+        double *velocity) {
+  const double tjd[2] = { jd_tdb, 0.0 };
+  prop_error("planet_calceph", planet_calceph_hp(tjd, body, origin, position, velocity), 0);
+  return 0;
+}
+
+/**
+ * Generic ephemeris handling via the CALCEPH C library.
+ *
+ * @param id            The ID number of the solar-system body for which the position in
+ *                      desired.
+ * @param name          The name of the solar-system body
+ * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
+ *                      Julian date for which to find the position and velocity. Typically
+ *                      this may be the integer part of the Julian date for high-precision
+ *                      calculations, or else the entire Julian date for reduced precision.
+ * @param jd_tdb_low    [day] The low-order part of Barycentric Dynamical Time (TDB) based
+ *                      Julian date for which to find the position and velocity. Typically
+ *                      this may be the fractional part of the Julian date for high-precision
+ *                      calculations, or else 0.0 if the date is defined entirely by the
+ *                      high-order component for reduced precision.
+ * @param[out] origin   Set to NOVAS_BARYCENTER or NOVAS_HELIOCENTER to indicate relative to
+ *                      which the ephemeris positions/velocities are reported.
+ * @param[out] pos      [AU] position 3-vector to populate with rectangular equatorial
+ *                      coordinates in AU. It may be NULL if position is not required.
+ * @param[out] vel      [AU/day] velocity 3-vector to populate in rectangular equatorial
+ *                      coordinates in AU/day. It may be NULL if velocities are not required.
+ * @return              0 if successful, -1 if any of the pointer arguments are NULL, or some
+ *                      non-zero value if the was an error s.t. the position and velocity
+ *                      vector should not be used.
+ *
+ * @sa set_ephem_provider()
+ * @sa ephemeris()
+ * @sa NOVAS_EPHEM_OBJECT
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+static int novas_calceph(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
+  static const char *fn = "novas_calceph";
+
+  double pv[6] = {};
+  int success;
+
+  if(!bodies)
+    return novas_error(3, EINVAL, fn, "No CALCEPH ephemeris has been configured.");
+
+  if(origin)
+    *origin = NOVAS_SSB;
+
+  success = calceph_compute_unit(
+          bodies, jd_tdb_high, jd_tdb_low, novas_to_naif_id(id), NOVAS_SSB,
+          CALCEPH_USE_NAIFID | CALCEPH_UNIT_AU | CALCEPH_UNIT_DAY, pv);
+
+  if(!success)
+      return novas_error(3, EAGAIN, fn, "calceph_compute() failure");
+
+  if(pos)
+    memcpy(pos, pv, XYZ_VECTOR_SIZE);
+  if(vel)
+    memcpy(&vel, &pv[3], XYZ_VECTOR_SIZE);
+
+  return 0;
+}
+
+
+/**
+ * Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set of
+ * ephemeris files. If the supplied ephemeris files contain data for major planets also, they can be used
+ * by planet_calceph() / planet_calceph_hp() also, unless a separate CALCEPH ephemeris data is set via
+ * novas_set_calceph_planets().
+ *
+ * The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects. If you
+ * want to use another provider for major planets, you need to call set_planet_provider() /
+ * set_planet_provider_hp() afterwards to specify a different provider for major planets (and Sun, Moon, SSB).
+ *
+ * @param eph   Pointer to the CALCEPH ephemeris data that have been opened.
+ * @return  0 if successful, or else -1 (errno will indicate the type of error).
+ *
+ * @sa novas_use_calceph_planets()
+ * @sa set_ephem_provider()
+ *
+ * @since 1.2
+ */
+int novas_use_calceph(t_calcephbin *eph) {
+  static const char *fn = "novas_set_calceph";
+
+  if(!eph) return novas_error(-1, EINVAL, fn, "input ephemerid data is NULL");
+
+  if(!calceph_prefetch(eph))
+    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed.");
+
+  bodies = eph;
+
+  set_ephem_provider(novas_calceph);
+
+  if (!planets) novas_use_calceph_planets(eph);
+
+  return 0;
+}
+
+/**
+ * Sets a ephemeris provider for the major planets (and Sun, Moon, and SSB) using the CALCEPH C library and
+ * the specified ephemeris data.
+ *
+ * The call also make CALCEPH the default ephemeris providers for major planets.
+ *
+ * @param eph   Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, and SSB) that
+ *              have been opened.
+ * @return  0 if successful, or else -1 (errno will indicate the type of error).
+ *
+ * @sa novas_use_calceph()
+ * @sa set_planet_provider()
+ * @sa set_planet_provider_hp()
+ *
+ * @since 1.2
+ */
+int novas_use_calceph_planets(t_calcephbin *eph) {
+  static const char *fn = "novas_set_calceph_planets";
+
+  if(!eph) return novas_error(-1, EINVAL, fn, "input ephemerid data is NULL");
+
+  if(!calceph_prefetch(eph))
+    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed.");
+
+  planets = eph;
+
+  set_planet_provider_hp(planet_calceph_hp);
+  set_planet_provider(planet_calceph);
+
+  return 0;
+}
+

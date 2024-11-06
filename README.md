@@ -182,9 +182,10 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
 the necessary variables in the shell prior to invoking `make`. For example:
 
  - Choose which planet calculator function routines are built into the library (for example to provide 
-   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
-   You can then specify these functions as the default planet calculator for `ephemeris()` in your application 
-   dynamically via `set_planet_provider()`.
+   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`,
+   and or for `planet_calceph()` / `novas_calceph()` set `BUILTIN_SOLSYS_CALCEPH = 1`. You can then specify these 
+   functions as the default planet calculator for `ephemeris()` in your application dynamically via 
+   `set_planet_provider()`.
    
  - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
    `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
