@@ -14,7 +14,7 @@ SuperNOVAS is entirely free to use without licensing restrictions.  Its source c
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
-This document has been updated for the `v1.1` release.
+This document has been updated for the `v1.2` and later releases.
 
 
 ## Table of Contents
@@ -770,6 +770,21 @@ before that level of accuracy is reached.
    Celestial Intermediate Reference System (CIRS), and vice versa.
 
  - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
+
+
+#### Added in v1.2
+
+ - New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are characterized
+   with a redshift measure rather than a radial velocity value.
+
+ - New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
+ 
+ - New functions to calculate and apply additional gravitational redshift corrections for light that originates
+   near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive
+   gravitating bodies (other than the Sun and Earth). The added functions are `grav_redshift()`, `redhift_vrad()`,
+   `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
+
+
 
 
 <a name="api-changes"></a>

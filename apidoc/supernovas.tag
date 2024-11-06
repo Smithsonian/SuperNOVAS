@@ -1271,6 +1271,13 @@
       <arglist>(const double *pos_src, const double *pos_obs, const novas_planet_bundle *planets, double *out)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>grav_redshift</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a3ce6b306bc183387d0aaac97abbd82e8</anchor>
+      <arglist>(double M_kg, double r_m)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>grav_undef</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -1465,6 +1472,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a618bbba887b9bc9e7df878234c66c215</anchor>
       <arglist>(enum novas_planet num, object *planet)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_redshifted_object</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae579a49d84696a913fd0d9f348bb5b11</anchor>
+      <arglist>(const char *name, double ra, double dec, double z, object *source)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1698,6 +1712,34 @@
       <arglist>(const double *in, const novas_transform *transform, double *out)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_v2z</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aa54cd00024b294d38fa29433c017c65f</anchor>
+      <arglist>(double vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_z2v</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a63621cea3b4985c1bfcc4514a7aa3fb1</anchor>
+      <arglist>(double z)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_z_add</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a493ab751eee5804db77157c37e94e5c3</anchor>
+      <arglist>(double z1, double z2)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_z_inv</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a1130ad2ce520e948c71f03a25a713075</anchor>
+      <arglist>(double z)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>nutation</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -1839,6 +1881,13 @@
     </member>
     <member kind="function">
       <type>double</type>
+      <name>redshift_vrad</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>af56088995d42a0673e03bca1f3891544</anchor>
+      <arglist>(double vrad, double z)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
       <name>refract</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a151b74255ea04462abc5503c6afddcae</anchor>
@@ -1962,6 +2011,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a129acca41760da486e1179c93cb9e86d</anchor>
       <arglist>(double jd_tt)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>unredshift_vrad</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aea89203030ca831260dec18f83081d23</anchor>
+      <arglist>(double vrad, double z)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -2956,6 +3012,13 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_z2v</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a63621cea3b4985c1bfcc4514a7aa3fb1</anchor>
+      <arglist>(double z)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>nutation</name>
       <anchorfile>novas_8c.html</anchorfile>
@@ -3624,6 +3687,13 @@
       <arglist>(int leap_seconds)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>grav_redshift</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>a3ce6b306bc183387d0aaac97abbd82e8</anchor>
+      <arglist>(double M_kg, double r_m)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>grav_undef</name>
       <anchorfile>super_8c.html</anchorfile>
@@ -3695,10 +3765,38 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>make_redshifted_object</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>ae579a49d84696a913fd0d9f348bb5b11</anchor>
+      <arglist>(const char *name, double ra, double dec, double z, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>make_solar_system_observer</name>
       <anchorfile>super_8c.html</anchorfile>
       <anchor>a9c3f1a1bc3fd9ac6d211806913d2d529</anchor>
       <arglist>(const double *sc_pos, const double *sc_vel, observer *obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_v2z</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>aa54cd00024b294d38fa29433c017c65f</anchor>
+      <arglist>(double vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_z_add</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>a493ab751eee5804db77157c37e94e5c3</anchor>
+      <arglist>(double z1, double z2)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_z_inv</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>a1130ad2ce520e948c71f03a25a713075</anchor>
+      <arglist>(double z)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -3743,6 +3841,13 @@
       <arglist>(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>redshift_vrad</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>af56088995d42a0673e03bca1f3891544</anchor>
+      <arglist>(double vrad, double z)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>tod_to_cirs</name>
       <anchorfile>super_8c.html</anchorfile>
@@ -3755,6 +3860,13 @@
       <anchorfile>super_8c.html</anchorfile>
       <anchor>a4551e2ac083e34c1b2b61b3805efb9a3</anchor>
       <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>unredshift_vrad</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>aea89203030ca831260dec18f83081d23</anchor>
+      <arglist>(double vrad, double z)</arglist>
     </member>
   </compound>
   <compound kind="file">

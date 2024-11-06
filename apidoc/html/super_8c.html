@@ -46,7 +46,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.1</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.2</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -135,6 +135,8 @@ Functions</h2></td></tr>
 <tr class="separator:a4d7470ca705efa1953e8b4beab77c6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7611704bab9ce717744a8b5575c5378" id="r_ab7611704bab9ce717744a8b5575c5378"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt</a> (int leap_seconds)</td></tr>
 <tr class="separator:ab7611704bab9ce717744a8b5575c5378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ce6b306bc183387d0aaac97abbd82e8" id="r_a3ce6b306bc183387d0aaac97abbd82e8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift</a> (double M_kg, double r_m)</td></tr>
+<tr class="separator:a3ce6b306bc183387d0aaac97abbd82e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaae33249717912663bbb00be4fa4e6c3" id="r_aaae33249717912663bbb00be4fa4e6c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aaae33249717912663bbb00be4fa4e6c3">grav_undef</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *pos_app, const double *pos_obs, double *out)</td></tr>
 <tr class="separator:aaae33249717912663bbb00be4fa4e6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae68d01655c4b37b5a3e1422f0062f94c" id="r_ae68d01655c4b37b5a3e1422f0062f94c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#ae68d01655c4b37b5a3e1422f0062f94c">grav_undo_planets</a> (const double *pos_app, const double *pos_obs, const <a class="el" href="structnovas__planet__bundle.html">novas_planet_bundle</a> *planets, double *out)</td></tr>
@@ -155,8 +157,16 @@ Functions</h2></td></tr>
 <tr class="separator:ab9b7a622486f2904615ceed1ba94cd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22303f98df2d63edf6d8452ff3a43b2" id="r_aa22303f98df2d63edf6d8452ff3a43b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a> (const char *name, long num, <a class="el" href="structobject.html">object</a> *body)</td></tr>
 <tr class="separator:aa22303f98df2d63edf6d8452ff3a43b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae579a49d84696a913fd0d9f348bb5b11" id="r_ae579a49d84696a913fd0d9f348bb5b11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a> (const char *name, double ra, double dec, double z, <a class="el" href="structobject.html">object</a> *source)</td></tr>
+<tr class="separator:ae579a49d84696a913fd0d9f348bb5b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c3f1a1bc3fd9ac6d211806913d2d529" id="r_a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer</a> (const double *sc_pos, const double *sc_vel, <a class="el" href="structobserver.html">observer</a> *obs)</td></tr>
 <tr class="separator:a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa54cd00024b294d38fa29433c017c65f" id="r_aa54cd00024b294d38fa29433c017c65f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z</a> (double vel)</td></tr>
+<tr class="separator:aa54cd00024b294d38fa29433c017c65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493ab751eee5804db77157c37e94e5c3" id="r_a493ab751eee5804db77157c37e94e5c3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add</a> (double z1, double z2)</td></tr>
+<tr class="separator:a493ab751eee5804db77157c37e94e5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1130ad2ce520e948c71f03a25a713075" id="r_a1130ad2ce520e948c71f03a25a713075"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a1130ad2ce520e948c71f03a25a713075">novas_z_inv</a> (double z)</td></tr>
+<tr class="separator:a1130ad2ce520e948c71f03a25a713075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebad3c9b51f62cb7b31a686b5ec890a9" id="r_aebad3c9b51f62cb7b31a686b5ec890a9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aebad3c9b51f62cb7b31a686b5ec890a9">place_cirs</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
 <tr class="separator:aebad3c9b51f62cb7b31a686b5ec890a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbcd90c9111cc5580a5c2bac404f7f00" id="r_acbcd90c9111cc5580a5c2bac404f7f00"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#acbcd90c9111cc5580a5c2bac404f7f00">place_gcrs</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
@@ -169,10 +179,14 @@ Functions</h2></td></tr>
 <tr class="separator:a3f055f3994889e3345d5267dac671a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c8817db8a00764da4c285b32590ccfb" id="r_a2c8817db8a00764da4c285b32590ccfb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a2c8817db8a00764da4c285b32590ccfb">place_tod</a> (double jd_tt, const <a class="el" href="structobject.html">object</a> *source, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, <a class="el" href="structsky__pos.html">sky_pos</a> *pos)</td></tr>
 <tr class="separator:a2c8817db8a00764da4c285b32590ccfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af56088995d42a0673e03bca1f3891544" id="r_af56088995d42a0673e03bca1f3891544"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#af56088995d42a0673e03bca1f3891544">redshift_vrad</a> (double vrad, double z)</td></tr>
+<tr class="separator:af56088995d42a0673e03bca1f3891544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb48b2acaf76cc3a1e3a1412cc42c232" id="r_adb48b2acaf76cc3a1e3a1412cc42c232"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#adb48b2acaf76cc3a1e3a1412cc42c232">tod_to_cirs</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
 <tr class="separator:adb48b2acaf76cc3a1e3a1412cc42c232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4551e2ac083e34c1b2b61b3805efb9a3" id="r_a4551e2ac083e34c1b2b61b3805efb9a3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs</a> (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="separator:a4551e2ac083e34c1b2b61b3805efb9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea89203030ca831260dec18f83081d23" id="r_aea89203030ca831260dec18f83081d23"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aea89203030ca831260dec18f83081d23">unredshift_vrad</a> (double vrad, double z)</td></tr>
+<tr class="separator:aea89203030ca831260dec18f83081d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Aug 24, 2024 </dd></dl>
@@ -660,6 +674,52 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda">NOVAS_TAI_TO_TT</a>.</p>
+
+</div>
+</div>
+<a id="a3ce6b306bc183387d0aaac97abbd82e8" name="a3ce6b306bc183387d0aaac97abbd82e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ce6b306bc183387d0aaac97abbd82e8">&#9670;&#160;</a></span>grav_redshift()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double grav_redshift </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>M_kg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>r_m</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the gravitational redshift (<em>z</em>) for light emitted near a massive spherical body at some distance from its center, and observed at some very large (infinite) distance away.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">M_kg</td><td>[kg] Mass of gravitating body that is contained inside the emitting radius. </td></tr>
+    <tr><td class="paramname">r_m</td><td>[m] Radius at which light is emitted. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The gravitational redshift (<em>z</em>) for an observer at very large (infinite) distance from the gravitating body.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novascon_8c.html#a9e8a46a0e00368ad98642587ca4ebdbe">C</a>.</p>
 
 </div>
 </div>
@@ -1326,6 +1386,71 @@ novas_calc_geometric_position() </dd>
 
 </div>
 </div>
+<a id="ae579a49d84696a913fd0d9f348bb5b11" name="ae579a49d84696a913fd0d9f348bb5b11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae579a49d84696a913fd0d9f348bb5b11">&#9670;&#160;</a></span>make_redshifted_object()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_redshifted_object </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ra</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy. It is similar to <code><a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a></code> except that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax and no proper motion (appropriately for a distant redshifted source). The catalog name is set to <code>EXT</code> to indicate an extragalactic source, and the catalog number defaults to 0. The user may change these default field values as appropriate afterwards, if necessary.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">name</td><td>Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Right ascension of the object (hours). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Declination of the object (degrees). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">z</td><td>Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 = f<sub>rest</sub> / f<sub>obs</sub> - 1). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or 5 if 'name' is too long, else -1 if the 'source' pointer is NULL.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry()</a>, <a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a>, and <a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>.</p>
+
+</div>
+</div>
 <a id="a9c3f1a1bc3fd9ac6d211806913d2d529" name="a9c3f1a1bc3fd9ac6d211806913d2d529"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c3f1a1bc3fd9ac6d211806913d2d529">&#9670;&#160;</a></span>make_solar_system_observer()</h2>
 
@@ -1382,6 +1507,114 @@ novas_calc_geometric_position() </dd>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8c.html#ac0ca6f330e1795ce811df95986400632">make_in_space()</a>, <a class="el" href="novas_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a>, and <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a82474207bac139bc2a8826b9d317a42c">NOVAS_SOLAR_SYSTEM_OBSERVER</a>.</p>
+
+</div>
+</div>
+<a id="aa54cd00024b294d38fa29433c017c65f" name="aa54cd00024b294d38fa29433c017c65f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa54cd00024b294d38fa29433c017c65f">&#9670;&#160;</a></span>novas_v2z()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_v2z </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>vel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>). It is based on the relativistic formula: </p><pre>
+ 1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+</pre><p> where &beta; = v / c.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vel</td><td>[km/s] velocity (i.e. rate) of recession. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if the input velocity is invalid (i.e., it exceeds the speed of light).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+
+<p class="reference">References <a class="el" href="novascon_8c.html#a9e8a46a0e00368ad98642587ca4ebdbe">C</a>.</p>
+
+</div>
+</div>
+<a id="a493ab751eee5804db77157c37e94e5c3" name="a493ab751eee5804db77157c37e94e5c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a493ab751eee5804db77157c37e94e5c3">&#9670;&#160;</a></span>novas_z_add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_z_add </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer. It's effectively using (1 + z) = (1 + z1) * (1 + z2).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">z1</td><td>One of the redshift values </td></tr>
+    <tr><td class="paramname">z2</td><td>The other redshift value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The compound redshift value, ot NAN if either input redshift is invalid (errno will be set to EINVAL).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+</div>
+</div>
+<a id="a1130ad2ce520e948c71f03a25a713075" name="a1130ad2ce520e948c71f03a25a713075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1130ad2ce520e948c71f03a25a713075">&#9670;&#160;</a></span>novas_z_inv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_z_inv </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the inverse of a redshift value, that is the redshift for a body moving with the same velocity as the original but in the opposite direction.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">z</td><td>A redhift value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The redshift value for a body moving in the opposite direction with the same speed, or NAN if the input redshift is invalid.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 </div>
 </div>
@@ -1755,6 +1988,52 @@ novas_calc_geometric_position() </dd>
 
 </div>
 </div>
+<a id="af56088995d42a0673e03bca1f3891544" name="af56088995d42a0673e03bca1f3891544"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af56088995d42a0673e03bca1f3891544">&#9670;&#160;</a></span>redshift_vrad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double redshift_vrad </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>vrad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Applies an incremental redshift correction to a radial velocity. For example, you may use this function to correct a radial velocity calculated by <code><a class="el" href="novas_8c.html#a9f76e2386515e2023172e05891c3fa28">rad_vel()</a></code> or <code><a class="el" href="novas_8c.html#a191dcbb360afb9b6bf123d46858156d0">rad_vel2()</a></code> for a Solar-system body to account for the gravitational redshift for light originating at a specific distance away from the body. For the Sun, you may want to undo the redshift correction applied for the photosphere using <code><a class="el" href="super_8c.html#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a></code> first.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vrad</td><td>[km/s] Radial velocity </td></tr>
+    <tr><td class="paramname">z</td><td>Redshift correction to apply </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[km/s] The redshift corrected radial velocity or NAN if the redshift value is invalid (errno will be set to EINVAL).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, and <a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>.</p>
+
+</div>
+</div>
 <a id="adb48b2acaf76cc3a1e3a1412cc42c232" name="adb48b2acaf76cc3a1e3a1412cc42c232"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb48b2acaf76cc3a1e3a1412cc42c232">&#9670;&#160;</a></span>tod_to_cirs()</h2>
 
@@ -1918,6 +2197,50 @@ tod_to_gcrs() </dd>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
+
+</div>
+</div>
+<a id="aea89203030ca831260dec18f83081d23" name="aea89203030ca831260dec18f83081d23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea89203030ca831260dec18f83081d23">&#9670;&#160;</a></span>unredshift_vrad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double unredshift_vrad </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>vrad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Undoes an incremental redshift correction that was applied to radial velocity.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vrad</td><td>[km/s] Radial velocity </td></tr>
+    <tr><td class="paramname">z</td><td>Redshift correction to apply </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[km/s] The radial velocity without the redshift correction or NAN if the redshift value is invalid. (errno will be set to EINVAL)</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, and <a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>.</p>
 
 </div>
 </div>

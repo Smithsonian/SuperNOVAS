@@ -26,83 +26,86 @@ var NAVTREE =
 [
   [ "SuperNOVAS", "index.html", [
     [ "Changelog", "md_CHANGELOG.html", [
-      [ "Table of Contents", "index.html#autotoc_md28", null ],
-      [ "Introduction", "index.html#autotoc_md30", [
-        [ "Related links", "index.html#autotoc_md31", null ]
+      [ "Table of Contents", "index.html#autotoc_md30", null ],
+      [ "Introduction", "index.html#autotoc_md32", [
+        [ "Related links", "index.html#autotoc_md33", null ]
       ] ],
-      [ "Fixed NOVAS C 3.1 issues", "index.html#autotoc_md33", null ],
-      [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md35", null ],
-      [ "Building and installation", "index.html#autotoc_md37", [
-        [ "Building your application with SuperNOVAS", "index.html#autotoc_md38", null ]
+      [ "Fixed NOVAS C 3.1 issues", "index.html#autotoc_md35", null ],
+      [ "Compatibility with NOVAS C 3.1", "index.html#autotoc_md37", null ],
+      [ "Building and installation", "index.html#autotoc_md39", [
+        [ "Building your application with SuperNOVAS", "index.html#autotoc_md40", null ]
       ] ],
-      [ "Example usage", "index.html#autotoc_md40", [
-        [ "Note on alternative methodologies", "index.html#autotoc_md41", null ],
-        [ "Calculating positions for a sidereal source", "index.html#autotoc_md42", [
-          [ "Specify the object of interest", "index.html#autotoc_md43", null ],
-          [ "Specify the observer location", "index.html#autotoc_md44", null ],
-          [ "Specify the time of observation", "index.html#autotoc_md45", null ],
-          [ "Set up the observing frame", "index.html#autotoc_md46", null ],
-          [ "Calculate an apparent place on sky", "index.html#autotoc_md47", null ],
-          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md48", null ]
+      [ "Example usage", "index.html#autotoc_md42", [
+        [ "Note on alternative methodologies", "index.html#autotoc_md43", null ],
+        [ "Calculating positions for a sidereal source", "index.html#autotoc_md44", [
+          [ "Specify the object of interest", "index.html#autotoc_md45", null ],
+          [ "Specify the observer location", "index.html#autotoc_md46", null ],
+          [ "Specify the time of observation", "index.html#autotoc_md47", null ],
+          [ "Set up the observing frame", "index.html#autotoc_md48", null ],
+          [ "Calculate an apparent place on sky", "index.html#autotoc_md49", null ],
+          [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md50", null ]
         ] ],
-        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md49", null ],
-        [ "Reduced accuracy shortcuts", "index.html#autotoc_md50", null ],
-        [ "Performance considerations", "index.html#autotoc_md51", null ],
-        [ "Multi-threaded calculations", "index.html#autotoc_md52", null ]
+        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md51", null ],
+        [ "Reduced accuracy shortcuts", "index.html#autotoc_md52", null ],
+        [ "Performance considerations", "index.html#autotoc_md53", null ],
+        [ "Multi-threaded calculations", "index.html#autotoc_md54", null ]
       ] ],
-      [ "Notes on precision", "index.html#autotoc_md54", [
-        [ "Prerequisites to precise results", "index.html#autotoc_md55", null ]
+      [ "Notes on precision", "index.html#autotoc_md56", [
+        [ "Prerequisites to precise results", "index.html#autotoc_md57", null ]
       ] ],
-      [ "SuperNOVAS specific features", "index.html#autotoc_md57", [
-        [ "Newly added functionality", "index.html#autotoc_md58", [
-          [ "Added in v1.1", "index.html#autotoc_md59", null ]
+      [ "SuperNOVAS specific features", "index.html#autotoc_md59", [
+        [ "Newly added functionality", "index.html#autotoc_md60", [
+          [ "Added in v1.1", "index.html#autotoc_md61", null ],
+          [ "Added in v1.2", "index.html#autotoc_md62", null ]
         ] ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md60", null ]
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md63", null ]
       ] ],
-      [ "External Solar-system ephemeris data or services", "index.html#autotoc_md62", [
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md63", null ],
-        [ "Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md64", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md65", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md66", null ]
+      [ "External Solar-system ephemeris data or services", "index.html#autotoc_md65", [
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md66", null ],
+        [ "Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md67", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md68", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md69", null ]
         ] ],
-        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md67", null ]
+        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md70", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md69", null ],
-      [ "Release schedule", "index.html#autotoc_md71", null ],
-      [ "[1.1.1] - 2024-10-28", "md_CHANGELOG.html#autotoc_md1", [
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md3", null ]
+      [ "Runtime debug support", "index.html#autotoc_md72", null ],
+      [ "Release schedule", "index.html#autotoc_md74", null ],
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", null ],
+      [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
+      [ "[1.1.1] - 2024-10-28", "md_CHANGELOG.html#autotoc_md3", [
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md4", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md5", null ]
       ] ],
-      [ "[1.1.0] - 2024-08-04", "md_CHANGELOG.html#autotoc_md4", [
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md5", null ],
-        [ "Added", "md_CHANGELOG.html#autotoc_md6", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md7", null ]
+      [ "[1.1.0] - 2024-08-04", "md_CHANGELOG.html#autotoc_md6", [
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md7", null ],
+        [ "Added", "md_CHANGELOG.html#autotoc_md8", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md9", null ]
       ] ],
-      [ "[1.0.1] - 2024-05-13", "md_CHANGELOG.html#autotoc_md8", [
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md9", null ],
-        [ "Added", "md_CHANGELOG.html#autotoc_md10", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md11", null ]
+      [ "[1.0.1] - 2024-05-13", "md_CHANGELOG.html#autotoc_md10", [
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md11", null ],
+        [ "Added", "md_CHANGELOG.html#autotoc_md12", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md13", null ]
       ] ],
-      [ "[1.0.0] - 2024-03-01", "md_CHANGELOG.html#autotoc_md12", [
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md13", null ],
-        [ "Added", "md_CHANGELOG.html#autotoc_md14", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md15", null ],
-        [ "Deprecated", "md_CHANGELOG.html#autotoc_md16", null ]
+      [ "[1.0.0] - 2024-03-01", "md_CHANGELOG.html#autotoc_md14", [
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md15", null ],
+        [ "Added", "md_CHANGELOG.html#autotoc_md16", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md17", null ],
+        [ "Deprecated", "md_CHANGELOG.html#autotoc_md18", null ]
       ] ]
     ] ],
     [ "Contributing to SuperNOVAS", "md_CONTRIBUTING.html", null ],
     [ "SuperNOVAS: Astrometric Positions the Old Way", "md_LEGACY.html", [
-      [ "Calculating positions for a sidereal source", "md_LEGACY.html#autotoc_md19", [
-        [ "Specify the object of interest", "md_LEGACY.html#autotoc_md20", null ],
-        [ "Spefify the observer location", "md_LEGACY.html#autotoc_md21", null ],
-        [ "Specify the time of observation", "md_LEGACY.html#autotoc_md22", null ],
-        [ "Specify Earth orientation parameters", "md_LEGACY.html#autotoc_md23", null ],
-        [ "Calculate apparent positions on sky", "md_LEGACY.html#autotoc_md24", [
-          [ "A. True apparent R.A. and declination", "md_LEGACY.html#autotoc_md25", null ],
-          [ "B. Azimuth and elevation angles at the observing location", "md_LEGACY.html#autotoc_md26", null ]
+      [ "Calculating positions for a sidereal source", "md_LEGACY.html#autotoc_md21", [
+        [ "Specify the object of interest", "md_LEGACY.html#autotoc_md22", null ],
+        [ "Spefify the observer location", "md_LEGACY.html#autotoc_md23", null ],
+        [ "Specify the time of observation", "md_LEGACY.html#autotoc_md24", null ],
+        [ "Specify Earth orientation parameters", "md_LEGACY.html#autotoc_md25", null ],
+        [ "Calculate apparent positions on sky", "md_LEGACY.html#autotoc_md26", [
+          [ "A. True apparent R.A. and declination", "md_LEGACY.html#autotoc_md27", null ],
+          [ "B. Azimuth and elevation angles at the observing location", "md_LEGACY.html#autotoc_md28", null ]
         ] ]
       ] ],
-      [ "Calculating positions for a Solar-system source", "md_LEGACY.html#autotoc_md27", null ]
+      [ "Calculating positions for a Solar-system source", "md_LEGACY.html#autotoc_md29", null ]
     ] ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Data Structures", "annotated.html", [
@@ -131,9 +134,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#aea0e1028baf14d16d9de800e36a17086",
-"novas_8h.html#ace5e59ce1564bf6c61946c290bb05367",
-"super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f"
+"novas_8c.html#acf86ce700b3d3509ebba13e5f16a4327",
+"novas_8h.html#ac272a018a213965f07b21ac6facb4a62",
+"super_8c.html#a3ce6b306bc183387d0aaac97abbd82e8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
