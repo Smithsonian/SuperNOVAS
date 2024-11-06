@@ -789,6 +789,21 @@ before that level of accuracy is reached.
  - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
 
 
+#### Added in v1.2
+
+ - New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are characterized
+   with a redshift measure rather than a radial velocity value.
+
+ - New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
+ 
+ - New functions to calculate and apply additional gravitational redshift corrections for light that originates
+   near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive
+   gravitating bodies (other than the Sun and Earth). The added functions are `grav_redshift()`, `redhift_vrad()`,
+   `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
+
+
+
+
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
 
