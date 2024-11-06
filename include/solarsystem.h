@@ -337,4 +337,4 @@ extern novas_planet_provider_hp planet_call_hp;
 
 /// \endcond
 
-#endif
+#endif /* _SOLSYS_ */

@@ -6,10 +6,13 @@
  *  SuperNOVAS major planet ephemeris lookup implementation via the CALCEPH C library
  *  See https://calceph.imcce.fr/docs/4.0.0/html/c/
  *
+ *  Source code at https://gitlab.obspm.fr/imcce_calceph/calceph
+ *
  */
 
 #include <string.h>
 #include <errno.h>
+#include <semaphore.h>
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
@@ -23,16 +26,30 @@
 /// CALCEPH ephemeris specifically for planets (and Sun and Moon) only
 static t_calcephbin *planets;
 
+/// (boolean) whether the planets ephemeris data is thread safe to access
+static int is_thread_safe_planets;
+
+/// Semaphore for thread-safe access of planet ephemeris (if needed)
+static sem_t sem_planets;
+
+
 /// Generic CALCEPH ephemeris files for all types of Solar-system sources
 static t_calcephbin *bodies;
 
+/// (boolean) whether the generic solar-system bodies ephemeris data is thread safe to access
+static int is_thread_safe_bodies;
 
+/// Semaphore for thread-safe access of generic solar-system bodies ephemeris (if needed)
+static sem_t sem_bodies;
 
 /**
  * Provides an interface between the CALCEPG C library and NOVAS-C for regular (reduced) precision
  * applications. The user must set the CALCEPH ephemeris binary data to use using the
  * novas_set_calceph() or novas_set_calceph_planet() to activate the desired CALCEPH ephemeris
  * data prior to use.
+ *
+ * This call is always thread safe, even if CALCEPH and the ephemeris data is not. In such cases the
+ * ephemeris access will be mutexed to ensure sequential access under the hood.
  *
  * REFERENCES:
  * <ol>
@@ -67,7 +84,9 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
         double *velocity) {
   static const char *fn = "planet_eph_manager_hp";
 
-  t_calcephbin *eph = planets ? planets : bodies;
+  t_calcephbin *eph;
+  sem_t *sem;
+  const int lock = !is_thread_safe_planets;
   double pv[6] = {};
   int center = 0, success;
 
@@ -76,6 +95,15 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
 
   if(body < 1 || body >= NOVAS_PLANETS)
     return novas_error(1, EINVAL, fn, "input body number %d is out of range [0:%d]", body, NOVAS_PLANETS-1);
+
+  if(planets) {
+    eph = planets;
+    sem = &sem_planets;
+  }
+  else {
+    eph = bodies;
+    sem = &sem_bodies;
+  }
 
   if(!eph)
     return novas_error(3, EINVAL, fn, "No CALCEPH ephemeris has been configured.");
@@ -92,9 +120,16 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
        return novas_error(2, EINVAL, fn, "Invalid origin type: %d", origin);
    }
 
+  if(lock)
+      if(sem_wait(sem) != 0)
+        return novas_error(-1, errno, fn, "sem_wait() failed");
+
   success = calceph_compute_unit(
             eph, jd_tdb[0], jd_tdb[1], novas_to_naif_id(body), center,
             CALCEPH_USE_NAIFID | CALCEPH_UNIT_AU | CALCEPH_UNIT_DAY, pv);
+
+  if(lock)
+    sem_post(sem);
 
   if(!success)
     return novas_error(3, EAGAIN, fn, "calceph_compute() failure");
@@ -112,6 +147,9 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
  * applications. The user must set the CALCEPH ephemeris binary data to use using the
  * novas_set_calceph() or novas_set_calceph_planet() to activate the desired CALCEPH ephemeris
  * data prior to use.
+ *
+ * This call is always thread safe, even if CALCEPH and the ephemeris data is not. In such cases the
+ * ephemeris access will be mutexed to ensure sequential access under the hood.
  *
  * REFERENCES:
  * <ol>
@@ -140,17 +178,20 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
  * @sa set_planet_provider()
  * @sa solarsystem()
  *
- * @since 1.0
+ * @since 1.2
  */
 static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
         double *velocity) {
   const double tjd[2] = { jd_tdb, 0.0 };
+
   prop_error("planet_calceph", planet_calceph_hp(tjd, body, origin, position, velocity), 0);
   return 0;
 }
 
 /**
- * Generic ephemeris handling via the CALCEPH C library.
+ * Generic ephemeris handling via the CALCEPH C library. This call is always thread safe, even if
+ * CALCEPH and the ephemeris data is not. In such cases the ephemeris access will be mutexed to
+ * ensure sequential access under the hood.
  *
  * @param id            The ID number of the solar-system body for which the position in
  *                      desired.
@@ -178,24 +219,33 @@ static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_or
  * @sa ephemeris()
  * @sa NOVAS_EPHEM_OBJECT
  *
- * @since 1.0
+ * @since 1.2
  * @author Attila Kovacs
  */
 static int novas_calceph(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
   static const char *fn = "novas_calceph";
 
   double pv[6] = {};
+  const int lock = !is_thread_safe_bodies;
   int success;
 
   if(!bodies)
     return novas_error(3, EINVAL, fn, "No CALCEPH ephemeris has been configured.");
 
+  // Always return psoitions and velocities w.r.t. the SSB
   if(origin)
     *origin = NOVAS_SSB;
+
+  if(lock)
+    if(sem_wait(&sem_bodies) != 0)
+      return novas_error(-1, errno, fn, "sem_wait() failed");
 
   success = calceph_compute_unit(
           bodies, jd_tdb_high, jd_tdb_low, novas_to_naif_id(id), NOVAS_SSB,
           CALCEPH_USE_NAIFID | CALCEPH_UNIT_AU | CALCEPH_UNIT_DAY, pv);
+
+  if(lock)
+      sem_post(&sem_bodies);
 
   if(!success)
       return novas_error(3, EAGAIN, fn, "calceph_compute() failure");
@@ -233,9 +283,19 @@ int novas_use_calceph(t_calcephbin *eph) {
   if(!eph) return novas_error(-1, EINVAL, fn, "input ephemerid data is NULL");
 
   if(!calceph_prefetch(eph))
-    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed.");
+    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed");
 
+  // If first time, then initialize the bodies semaphore
+  if(!bodies)
+    sem_init(&sem_bodies, 0, 1);
+
+  // Make sure we don't change the ephemeris provider while using it
+  if(sem_wait(&sem_bodies) != 0)
+    return novas_error(-1, errno, fn, "sem_wait() failed");
+
+  is_thread_safe_bodies = calceph_isthreadsafe(eph);
   bodies = eph;
+  sem_post(&sem_bodies);
 
   set_ephem_provider(novas_calceph);
 
@@ -266,9 +326,19 @@ int novas_use_calceph_planets(t_calcephbin *eph) {
   if(!eph) return novas_error(-1, EINVAL, fn, "input ephemerid data is NULL");
 
   if(!calceph_prefetch(eph))
-    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed.");
+    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed");
 
+  // If first time, then initialize the planet semaphore
+  if(!planets)
+    sem_init(&sem_planets, 0, 1);
+
+  // Make sure we don't change the ephemeris provider while using it
+  if(sem_wait(&sem_planets) != 0)
+    return novas_error(-1, errno, fn, "sem_wait() failed");
+
+  is_thread_safe_planets = calceph_isthreadsafe(eph);
   planets = eph;
+  sem_post(&sem_planets);
 
   set_planet_provider_hp(planet_calceph_hp);
   set_planet_provider(planet_calceph);
