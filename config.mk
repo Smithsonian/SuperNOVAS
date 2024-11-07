@@ -87,7 +87,10 @@ BUILTIN_SOLSYS3 ?= 1
 BUILTIN_SOLSYS_EPHEM ?= 1
 
 
-# Whether or not to build solsys-calceph libraries
+# Whether or not to build solsys-calceph libraries. You need the calceph 
+# development libraries (libcalceph.so or libcaclceph.a) installed in
+# LD_LIBRARY_PATH, and calceph.h in /usr/include or some other accessible
+# location.
 CALCEPH_INTEGRATION ?= 0
 
 
