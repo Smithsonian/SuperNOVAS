@@ -6,6 +6,7 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
 
 Changes expected for the next bug-fix release, expected around 1 December 2024.
@@ -22,7 +23,14 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
    gravitating bodies (other than the Sun and Earth). The added functions are `grav_redshift()`, `redhift_vrad()`,
    `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
    
+ - #83: CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris 
+   data via CALCEPH for Solar-system sources in general, and for major planets specifically. These functions are 
+   provided by the `libsolsys-calceph.so[.1]` and/or `.a` plugin libraries, which are built contingent on the
+   `CALCEPH_INTEGRATION` variable being set to 1 prior to the build. The build of the plugin module requires an
+   accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries
+   depending on the needs of the build).
 
+   
 ## [1.1.1] - 2024-10-28
 
 Bug fix release. Nothing too scary, mainly just a collection of smaller fixes and improvements.

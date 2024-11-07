@@ -197,6 +197,12 @@ the necessary variables in the shell prior to invoking `make`. For example:
    one tries to use the functions from `solsys1.c`). Note, that a `readeph()` implementation is not always necessary 
    and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
 
+ - You can enable integration with the [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library, by 
+   setting `CALCEPH_INTEGRATION = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
+   `libsolsys-calceph.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
+   modules requires an accessible installation of the CALCEPH development files (C headers and unversioned static or 
+   shared libraries depending on the needs of the build).
+
  - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
    file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
    variable prior to calling `make`. (The CIO locator file is not at all necessary for the functioning of the library, 
@@ -802,7 +808,8 @@ before that level of accuracy is reached.
    gravitating bodies (other than the Sun and Earth). The added functions are `grav_redshift()`, `redhift_vrad()`,
    `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
 
-
+ - CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris data 
+   via CALCEPH for Solar-system sources in general, and for major planets specifically.
 
 
 <a name="api-changes"></a>
@@ -885,7 +892,6 @@ before that level of accuracy is reached.
 <a name="solarsystem"></a>
 ## External Solar-system ephemeris data or services
 
-
 If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
 sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as 
 [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/app.html#/) or the 
@@ -894,6 +900,7 @@ SuperNOVAS flexibility in this area, you have several options on doing that. The
 (and preferred) to the least flexible (old ways).
 
  - [Universal ephemeris data / service integration](#universal-ephemerides)
+ - [Built-in support for CALCEPH integration](#calceph-integration)
  - [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
  - [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
 
@@ -920,8 +927,7 @@ heliocenter, and accordingly, your function should set the value pointed at by o
 `NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
 AU/day respectively. 
 
-This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using 
-[CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) or the 
+This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the
 [CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
 ephemeris service you prefer.
 
@@ -942,6 +948,47 @@ major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use
 
 provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
 `solsys-ephem.c` explicitly. Easy-peasy.
+
+
+<a name="calceph-integration"></a>
+### Built-in support for CALCEPH integration
+
+The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides an easy-to-use access to JPL and
+INPOP ephemeris files from C/C++. As of version 1.2, we provide built-in support for integrating the CALCEPH C library 
+with SuperNOVAS for handling Solar-system objects.
+
+Prior to building SuperNOVAS simply set `CALCEPH_INTEGRATION` to 1 in `config.mk` or in your shell. Depending on the 
+build target, it will build `libsolsys-calceph.so[.1]` (target `shared`) or `libsolsys-calceph.a` (target `static`) 
+libraries, which provide the `novas_use_calceph()` and `novas_use_calceph_planets()` functions.
+
+Of course, you will need access to the CALCEPH C development files (C headers and unversioned libraries) for the build
+to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application code:
+
+```c
+  #include <calceph.h>
+  
+  // You can open a set of JPL/INPOP ephemeris files with CALCEPH...
+  t_calcephbin *eph = calceph_open_array(...);
+  
+  // Then use them as your generic SuperNOVAS ephemeris provider
+  int status = novas_use_calceph(eph);
+  if(status < 0) {
+    // Ooops something went wrong...
+  }
+  
+  // -----------------------------------------------------------------------
+  // Optionally you may use a separate ephemeris data for major planets
+  // (or if planet ephemeris was included in 'eph' above, you don't have to) 
+  t_calcephbin *pleph = calceph_open(...);
+  int status = novas_use_calceph(pleph);
+  if(status < 0) {
+    // Ooops something went wrong...
+  }
+```
+
+And, when linking your application, don't forget to add `-lsolsys-calceph` to your link flags. That's all there is to
+it.
+
 
 
 <a name="builtin-ephem-readers"></a>
