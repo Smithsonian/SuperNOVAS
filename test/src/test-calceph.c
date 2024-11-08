@@ -18,8 +18,8 @@
 #include "novas.h"
 #include "solarsystem.h"
 
-#define PLANET_EPH                  "de440s.bsp"
-#define MARS_EPH                    "mar097.bsp"
+#define PLANET_EPH                  "de440s-j2000.bsp"
+#define MARS_EPH                    "mar097-j2000.bsp"
 
 static const char *prefix;
 

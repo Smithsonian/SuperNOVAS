@@ -13,9 +13,19 @@ include ../config.mk
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
 OBJECTS := novas.o nutation.o solsys3.o super.o frames.o timescale.o refract.o naif.o
+TESTS := test-compat test-cio_file test-super test-errors
+COVFILES := novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov
+
+ifeq ($(CALCEPH_INTEGRATION), 1)
+  CPPFLAGS += -DUSE_CALCEPH=1
+  LDFLAGS += -lcalceph
+  OBJECTS += solsys-calceph.o
+  TESTS += test-calceph
+  COVFILES += solsys-calceph.c.gcov
+endif
 
 .PHONY: run
-run: clean-cov clean-data test-compat test-cio_file test-super test-errors data ../cio_ra.bin bad-data
+run: clean-cov clean-data $(TESTS) data ../cio_ra.bin bad-data
 	./test-compat
 	ln -s ../cio_ra.bin
 	./test-cio_file
@@ -24,6 +34,9 @@ run: clean-cov clean-data test-compat test-cio_file test-super test-errors data 
 	./test-super
 	rm -f cio_ra.bin
 	./test-errors
+ifeq ($(CALCEPH_INTEGRATION), 1)
+	./test-calceph ephem
+endif
 
 cov: cov.info
 	genhtml $< -o $@
@@ -33,7 +46,7 @@ cov.info:
 
 .PHONY: coverage
 
-coverage: novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov
+coverage: $(COVFILES)
 	make clean-test
 	make cov
 
@@ -79,7 +92,6 @@ test-%.o: src/test-%.c | Makefile
 
 
 test-calceph: LDFLAGS += -lcalceph
-test-calceph: ../obj/solsys-calceph.o
 
 .PHONY: clean-test
 clean-test:
