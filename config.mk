@@ -87,18 +87,19 @@ BUILTIN_SOLSYS3 ?= 1
 BUILTIN_SOLSYS_EPHEM ?= 1
 
 
-# Whether or not to build solsys-calceph libraries. You need the calceph 
-# development libraries (libcalceph.so and/or libcaclceph.a) installed in
-# LD_LIBRARY_PATH, and calceph.h in /usr/include or some other accessible
-# location.
-CALCEPH_SUPPORT ?= 0
-
-
 # Compile library with a default solarsystem() implementation. If you want to
 # use your library with your own solarsystem() implementation, you should
 # not set this option. In that case you must always provide a solarsystem()
 # implementation when linking your application against this library.
 DEFAULT_SOLSYS ?= 3
+
+
+# Whether or not to build solsys-calceph libraries. You need the calceph 
+# development libraries (libcalceph.so and/or libcaclceph.a) installed in
+# LD_LIBRARY_PATH, and calceph.h in /usr/include or some other accessible
+# location (you may also  set an appropriate -I<path> option to CPPFLAGS 
+# prior to calling make).
+CALCEPH_SUPPORT ?= 0
 
 
 # cppcheck options for 'check' target. You can add additional options by

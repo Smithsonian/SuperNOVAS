@@ -201,7 +201,8 @@ the necessary variables in the shell prior to invoking `make`. For example:
    setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
    `libsolsys-calceph.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
    modules requires an accessible installation of the CALCEPH development files (C headers and unversioned static or 
-   shared libraries depending on the needs of the build).
+   shared libraries depending on the needs of the build). You might want to set `LD_LIBRARY_PATH`, and/or `CPPFLAGS` 
+   to include an appropriate `-I<path>` option, to help locate these prior to calling `make`.
 
  - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
    file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
