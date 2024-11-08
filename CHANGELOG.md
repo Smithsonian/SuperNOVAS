@@ -29,7 +29,15 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
    `CALCEPH_INTEGRATION` variable being set to 1 prior to the build. The build of the plugin module requires an
    accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries
    depending on the needs of the build).
+   
+ - NOVAS-NAIF conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()` (planet centers), 
+   `novas_to_dexxx_planet()` (mixed planet center/barycenter for DExxx ephemeris files), and the inverse
+   `naif_to_novas_planet()`.
 
+ - Added `get_planet_provider()` and `get_planet_provider_hp()` functions for convenience to return the `solarsystem()`
+   / `solarsystem_hp()` type custom planet ephemeris provider functions currently configured, so they may be used
+   directly, outside of `ephemeris()` calls.
+   
    
 ## [1.1.1] - 2024-10-28
 

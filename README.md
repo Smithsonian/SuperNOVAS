@@ -85,7 +85,7 @@ Outside contributions are very welcome. See
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemeris
    from JPL and/or in INPOP 2.0/3.0 format.
- - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
+ - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via from JPL.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
    of ephemeris data.
@@ -810,6 +810,11 @@ before that level of accuracy is reached.
 
  - CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris data 
    via CALCEPH for Solar-system sources in general, and for major planets specifically.
+   
+ - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
+   `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
+   
+ - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
 
 
 <a name="api-changes"></a>

@@ -1301,9 +1301,10 @@ double novas_z_inv(double z);
 
 // in naif.c
 
-long naif_to_novas_id(long id);
+enum novas_planet naif_to_novas_planet(long id);
 
-long novas_to_naif_id(long id);
+long novas_to_naif_planet(enum novas_planet id);
+
 
 
 

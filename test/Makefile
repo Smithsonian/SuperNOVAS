@@ -12,7 +12,7 @@ LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 include ../config.mk
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
-OBJECTS := novas.o nutation.o solsys3.o super.o frames.o timescale.o refract.o
+OBJECTS := novas.o nutation.o solsys3.o super.o frames.o timescale.o refract.o naif.o
 
 .PHONY: run
 run: clean-cov clean-data test-compat test-cio_file test-super test-errors data ../cio_ra.bin bad-data
@@ -76,6 +76,10 @@ test-%.o: src/test-%.c | Makefile
 
 %.o: ../src/%.c | Makefile
 	$(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
+
+
+test-calceph: LDFLAGS += -lcalceph
+test-calceph: ../obj/solsys-calceph.o
 
 .PHONY: clean-test
 clean-test:
