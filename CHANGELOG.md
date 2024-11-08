@@ -26,7 +26,7 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
  - #83: CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris 
    data via CALCEPH for Solar-system sources in general, and for major planets specifically. These functions are 
    provided by the `libsolsys-calceph.so[.1]` and/or `.a` plugin libraries, which are built contingent on the
-   `CALCEPH_INTEGRATION` variable being set to 1 prior to the build. The build of the plugin module requires an
+   `CALCEPH_SUPPORT` variable being set to 1 prior to the build. The build of the plugin module requires an
    accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries
    depending on the needs of the build).
    

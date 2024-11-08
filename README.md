@@ -198,7 +198,7 @@ the necessary variables in the shell prior to invoking `make`. For example:
    and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
 
  - You can enable integration with the [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library, by 
-   setting `CALCEPH_INTEGRATION = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
+   setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
    `libsolsys-calceph.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
    modules requires an accessible installation of the CALCEPH development files (C headers and unversioned static or 
    shared libraries depending on the needs of the build).
@@ -962,7 +962,7 @@ The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provi
 INPOP ephemeris files from C/C++. As of version 1.2, we provide built-in support for integrating the CALCEPH C library 
 with SuperNOVAS for handling Solar-system objects.
 
-Prior to building SuperNOVAS simply set `CALCEPH_INTEGRATION` to 1 in `config.mk` or in your shell. Depending on the 
+Prior to building SuperNOVAS simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your shell. Depending on the 
 build target, it will build `libsolsys-calceph.so[.1]` (target `shared`) or `libsolsys-calceph.a` (target `static`) 
 libraries, which provide the `novas_use_calceph()` and `novas_use_calceph_planets()` functions.
 

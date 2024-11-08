@@ -55,7 +55,7 @@ ifneq ($(BUILTIN_SOLSYS_EPHEM),1)
   SHARED_TARGETS += $(LIB)/libsolsys-ephem.so
 endif
 
-ifeq ($(CALCEPH_INTEGRATION),1)
+ifeq ($(CALCEPH_SUPPORT),1)
   CPPFLAGS += -DUSE_CALCEPH=1
   SOLSYS_TARGETS += $(OBJ)/solsys-calceph.o
   SHARED_TARGETS += $(LIB)/libsolsys-calceph.so

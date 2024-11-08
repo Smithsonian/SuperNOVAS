@@ -16,7 +16,7 @@ OBJECTS := novas.o nutation.o solsys3.o super.o frames.o timescale.o refract.o n
 TESTS := test-compat test-cio_file test-super test-errors
 COVFILES := novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov
 
-ifeq ($(CALCEPH_INTEGRATION), 1)
+ifeq ($(CALCEPH_SUPPORT), 1)
   CPPFLAGS += -DUSE_CALCEPH=1
   LDFLAGS += -lcalceph
   OBJECTS += solsys-calceph.o
@@ -34,7 +34,7 @@ run: clean-cov clean-data $(TESTS) data ../cio_ra.bin bad-data
 	./test-super
 	rm -f cio_ra.bin
 	./test-errors
-ifeq ($(CALCEPH_INTEGRATION), 1)
+ifeq ($(CALCEPH_SUPPORT), 1)
 	./test-calceph ephem
 endif
 
