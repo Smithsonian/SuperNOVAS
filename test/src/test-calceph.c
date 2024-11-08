@@ -90,15 +90,18 @@ static int test_calceph() {
 }
 
 static int test_calceph_planet() {
-  double pos[3], vel[3], pos0[3], vel0[3];
+  double pos[3], vel[3], pos0[3] = {}, vel0[3] = {};
   double jd = NOVAS_JD_J2000;
   double jd2[2] = { jd, 0.0 };
 
   char filename[1024];
-  object earth, mars, phobos;
+  object ssb, sun, earth, moon, mars, phobos;
   t_calcephbin *eph;
 
+  make_planet(NOVAS_SSB, &ssb);
+  make_planet(NOVAS_SUN, &sun);
   make_planet(NOVAS_EARTH, &earth);
+  make_planet(NOVAS_MOON, &moon);
   make_planet(NOVAS_MARS, &mars);
   make_ephem_object("Phobos", 401, &phobos);
 
@@ -110,11 +113,29 @@ static int test_calceph_planet() {
   eph = calceph_open(filename);
   if(novas_use_calceph_planets(eph)) return 1;
 
+  if(!is_ok("calceph_planet:ssb", ephemeris(jd2, &ssb, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
+  if(!is_ok("calceph_planet:ssb:pos", check_equal_pos(pos, pos0, 1e-5))) return 1;
+
+  if(!is_ok("calceph_planet:sun_vs_sun", ephemeris(jd2, &sun, NOVAS_HELIOCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
+  if(!is_ok("calceph_planet:sun_vs_sun:pos", check_equal_pos(pos, pos0, 1e-5))) return 1;
+
+  if(!is_ok("calceph_planet:sun", ephemeris(jd2, &sun, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
+  earth_sun_calc(jd, NOVAS_SUN, NOVAS_BARYCENTER, pos0, vel0);
+  if(!is_ok("calceph_planet:sun:pos", check_equal_pos(pos, pos0, 1e-5))) return 1;
+
   if(!is_ok("calceph_planet:earth", ephemeris(jd2, &earth, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
   earth_sun_calc(jd, NOVAS_EARTH, NOVAS_BARYCENTER, pos0, vel0);
 
   if(!is_ok("calceph_planet:earth:pos", check_equal_pos(pos, pos0, 1e-5))) return 1;
   if(!is_ok("calceph_planet:earth:vel", check_equal_pos(vel, vel0, 1e-5))) return 1;
+
+  if(!is_ok("calceph_planet:moon", ephemeris(jd2, &moon, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
+  earth_sun_calc(jd, NOVAS_MOON, NOVAS_BARYCENTER, pos0, vel0);
+
+  if(!is_ok("calceph_planet:moon:pos", check_equal_pos(pos, pos0, 1e-2))) return 1;
+  if(!is_ok("calceph_planet:moon:vel", check_equal_pos(vel, vel0, 1e-3))) return 1;
+
+
 
   if(!is_ok("calceph_planet:mars", ephemeris(jd2, &mars, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos0, vel0))) return 1;
   if(!is_ok("calceph_planet:phobos", ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return -1;
@@ -124,6 +145,7 @@ static int test_calceph_planet() {
   phobos.number = -1;
   if(!is_ok("calceph_planet:phobos:byname", ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos0, vel0))) return -1;
   if(!is_ok("calceph_planet:phobos:match", check_equal_pos(pos, pos0, 1e-6))) return 1;
+
 
   return 0;
 }

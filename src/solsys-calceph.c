@@ -96,8 +96,7 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
         double *velocity) {
   static const char *fn = "planet_calceph_hp";
 
-  t_calcephbin *eph;
-  sem_t *sem;
+  sem_t *sem = (planets == bodies) ? &sem_bodies : &sem_planets;
   const int lock = !is_thread_safe_planets;
   double pv[6] = {};
   int i, target, center, success;
@@ -105,22 +104,6 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
   if(!jd_tdb)
     return novas_error(-1, EINVAL, fn, "jd_tdb input time array is NULL.");
 
-  if(planets) {
-    eph = planets;
-    sem = &sem_planets;
-  }
-  else {
-    eph = bodies;
-    sem = &sem_bodies;
-  }
-
-  if(!eph)
-    return novas_error(3, EINVAL, fn, "No CALCEPH ephemeris has been configured.");
-
-  // The standard DExxx ephemeris files mainly just have barycenter data except for
-  // Mercury, Venus, and Earth -- which have separate barycenter and planet center
-  // data. (For Venus and Mercury the two should be identical as they have no sattelites,
-  // so we'll just use the barycenter positions for these too...)
   switch(body) {
     case NOVAS_SSB:
       target = CALCEPH_SSB;
@@ -152,7 +135,7 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
     if(sem_wait(sem) != 0)
       return novas_error(-1, errno, fn, "sem_wait()");
 
-  success = calceph_compute_unit(eph, jd_tdb[0], jd_tdb[1], target, center, CALCEPH_UNITS, pv);
+  success = calceph_compute_unit(planets, jd_tdb[0], jd_tdb[1], target, center, CALCEPH_UNITS, pv);
 
   if(lock)
     sem_post(sem);
@@ -256,9 +239,6 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
   double pv[6] = {};
   const int lock = !is_thread_safe_bodies;
   int i, success;
-
-  if(!bodies)
-    return novas_error(3, EINVAL, fn, "No CALCEPH ephemeris has been configured.");
 
   if(id == -1) {
     // Use name to get NAIF ID.
