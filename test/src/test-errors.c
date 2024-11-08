@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "novas.h"
+#include "naif.h"
 
 static int check(const char *func, int exp, int error) {
   if(error != exp) {
@@ -1442,6 +1443,41 @@ static int test_z_inv() {
   return n;
 }
 
+static int test_novas_to_naif_planet() {
+  int n = 0;
+
+  if(check("novas_to_naif_planet:-2", -1, novas_to_naif_planet(-2))) n++;
+  if(check("novas_to_naif_planet:-1", -1, novas_to_naif_planet(-1))) n++;
+  if(check("novas_to_naif_planet:hi", -1, novas_to_naif_planet(NOVAS_PLANETS))) n++;
+
+  return n;
+}
+
+static int test_novas_to_dexxx_planet() {
+  int n = 0;
+
+  if(check("novas_to_dexxx_planet:-2", -1, novas_to_dexxx_planet(-2))) n++;
+  if(check("novas_to_dexxx_planet:-1", -1, novas_to_dexxx_planet(-1))) n++;
+  if(check("novas_to_dexxx_planet:hi", -1, novas_to_dexxx_planet(NOVAS_PLANETS))) n++;
+
+  return n;
+}
+
+static int test_naif_to_novas_planet() {
+  int n = 0;
+
+  if(check("naif_to_novas_planet:-2", -1, naif_to_novas_planet(-1))) n++;
+  if(check("naif_to_novas_planet:-1", -1, naif_to_novas_planet(-1))) n++;
+  if(check("naif_to_novas_planet:", -1, naif_to_novas_planet(-1))) n++;
+  if(check("naif_to_novas_planet:emb", -1, naif_to_novas_planet(NAIF_EMB))) n++;
+  if(check("naif_to_novas_planet:500", -1, naif_to_novas_planet(500))) n++;
+  if(check("naif_to_novas_planet:501", -1, naif_to_novas_planet(501))) n++;
+  if(check("naif_to_novas_planet:598", -1, naif_to_novas_planet(598))) n++;
+  if(check("naif_to_novas_planet:1000", -1, naif_to_novas_planet(1000))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1565,6 +1601,10 @@ int main() {
   if(test_unredshift_vrad()) n++;
   if(test_z_add()) n++;
   if(test_z_inv()) n++;
+
+  if(test_novas_to_naif_planet()) n++;
+  if(test_novas_to_dexxx_planet()) n++;
+  if(test_naif_to_novas_planet()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

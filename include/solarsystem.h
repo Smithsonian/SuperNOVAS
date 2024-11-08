@@ -305,6 +305,14 @@ novas_planet_provider get_planet_provider();
 
 novas_planet_provider_hp get_planet_provider_hp();
 
+// in naif.c
+enum novas_planet naif_to_novas_planet(long id);
+
+long novas_to_naif_planet(enum novas_planet id);
+
+long novas_to_dexxx_planet(enum novas_planet id);
+
+// in solsys-calceph.c
 #if USE_CALCEPH
 #  include "calceph.h"
 
@@ -313,6 +321,9 @@ int novas_use_calceph(t_calcephbin *eph);
 int novas_use_calceph_planets(t_calcephbin *eph);
 
 #endif /* USE_CALCEPH */
+
+
+
 
 /// \cond PRIVATE
 

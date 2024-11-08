@@ -1299,14 +1299,6 @@ double novas_z_add(double z1, double z2);
 
 double novas_z_inv(double z);
 
-// in naif.c
-
-enum novas_planet naif_to_novas_planet(long id);
-
-long novas_to_naif_planet(enum novas_planet id);
-
-
-
 
 // <================= END of SuperNOVAS API =====================>
 

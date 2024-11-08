@@ -14,6 +14,7 @@
 
 #include <errno.h>
 
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 #include "naif.h"
 
@@ -36,20 +37,23 @@
  */
 enum novas_planet naif_to_novas_planet(long id) {
   switch (id) {
-    case NAIF_SUN: return NOVAS_SUN;
-    case NAIF_MOON: return NOVAS_MOON;
-    case NAIF_SSB: return NOVAS_SSB;
+    case NAIF_SUN:
+      return NOVAS_SUN;
+    case NAIF_MOON:
+      return NOVAS_MOON;
+    case NAIF_SSB:
+      return NOVAS_SSB;
     case NAIF_EMB:
-      errno = EINVAL;
-      return -1;
+      return novas_error(-1, EINVAL, "naif_to_novas_planet", "No NOVAS ID for EMB (NAIF=%ld)", NAIF_EMB);
   }
 
   // Major planets
-  if(id >= NOVAS_MERCURY && id <= NOVAS_PLUTO) return id;
-  if(id > 100 && id < 1000) if(id % 100 == 99) return (id - 99)/100;
+  if(id >= NOVAS_MERCURY && id <= NOVAS_PLUTO)
+    return id;
+  if(id > 100 && id < 1000) if(id % 100 == 99)
+    return (id - 99)/100;
 
-  errno = ENOENT;
-  return -1;
+  return novas_error(-1, EINVAL, "naif_to_novas_planet", "Invalid NOVAS major planet no: %ld", id);
 }
 
 /**
@@ -69,16 +73,19 @@ enum novas_planet naif_to_novas_planet(long id) {
  * @since 1.2
  */
 long novas_to_naif_planet(enum novas_planet id) {
-  if(id >= NOVAS_MERCURY && id <= NOVAS_PLUTO) return 100 * id + 99;     // 1-9: Major planets
+  if(id >= NOVAS_MERCURY && id <= NOVAS_PLUTO)
+    return 100 * id + 99;     // 1-9: Major planets
 
   switch (id) {
-    case NOVAS_SUN: return NAIF_SUN;
-    case NOVAS_MOON: return NAIF_MOON;
-    case NOVAS_SSB: return NAIF_SSB;
+    case NOVAS_SUN:
+      return NAIF_SUN;
+    case NOVAS_MOON:
+      return NAIF_MOON;
+    case NOVAS_SSB:
+      return NAIF_SSB;
     default:
+      return novas_error(-1, EINVAL, "novas_to_naif_planet", "Invalid NOVAS major planet no: %d", id);
   }
-
-  return id;
 }
 
 /**
@@ -100,13 +107,18 @@ long novas_to_naif_planet(enum novas_planet id) {
 long novas_to_dexxx_planet(enum novas_planet id) {
 
   switch (id) {
-    case NOVAS_SUN: return NAIF_SUN;
-    case NOVAS_EARTH: return NAIF_EARTH;
-    case NOVAS_MOON: return NAIF_MOON;
-    case NOVAS_SSB: return NAIF_SSB;
+    case NOVAS_SUN:
+      return NAIF_SUN;
+    case NOVAS_EARTH:
+      return NAIF_EARTH;
+    case NOVAS_MOON:
+      return NAIF_MOON;
+    case NOVAS_SSB:
+      return NAIF_SSB;
     default:
+      return (id >= NOVAS_MERCURY && id <= NOVAS_PLUTO) ?
+              (long) id :
+              novas_error(-1, EINVAL, "novas_to_dexxx_planet", "Invalid NOVAS major planet no: %d", id);
   }
-
-  return id;
 }
 

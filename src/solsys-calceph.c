@@ -299,7 +299,8 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
 int novas_use_calceph(t_calcephbin *eph) {
   static const char *fn = "novas_use_calceph";
 
-  if(!eph) return novas_error(-1, EINVAL, fn, "input ephemeris data is NULL");
+  if(!eph)
+    return novas_error(-1, EINVAL, fn, "input ephemeris data is NULL");
 
   if(!calceph_prefetch(eph))
     return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed");
@@ -346,7 +347,8 @@ int novas_use_calceph(t_calcephbin *eph) {
 int novas_use_calceph_planets(t_calcephbin *eph) {
   static const char *fn = "novas_use_calceph_planets";
 
-  if(!eph) return novas_error(-1, EINVAL, fn, "input ephemeris data is NULL");
+  if(!eph)
+    return novas_error(-1, EINVAL, fn, "input ephemeris data is NULL");
 
   if(!calceph_prefetch(eph))
     return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed");
