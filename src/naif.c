@@ -31,6 +31,7 @@
  * @sa novas_to_naif_planet()
  * @sa novas_to_dexxx_planet()
  *
+ * @author Attila Kovacs
  * @since 1.2
  */
 enum novas_planet naif_to_novas_planet(long id) {
@@ -39,7 +40,7 @@ enum novas_planet naif_to_novas_planet(long id) {
     case NAIF_MOON: return NOVAS_MOON;
     case NAIF_SSB: return NOVAS_SSB;
     case NAIF_EMB:
-      errno = ENOENT;
+      errno = EINVAL;
       return -1;
   }
 
@@ -64,6 +65,7 @@ enum novas_planet naif_to_novas_planet(long id) {
  *
  * @sa naif_to_novas_planet()
  *
+ * @author Attila Kovacs
  * @since 1.2
  */
 long novas_to_naif_planet(enum novas_planet id) {
@@ -82,7 +84,7 @@ long novas_to_naif_planet(enum novas_planet id) {
 /**
  * Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files. The
  * DExxx (e.g. DE440) ephemeris files use NAIF IDs, but for most planets contain barycentric data only
- * rather than that of the body center. For Earth-based observations, it only really makes a difference
+ * rather than that of the planet center. For Earth-based observations, it only really makes a difference
  * whether the 3 is used for the Earth-Moon Barycenter (EMB) or 399 for the geocenter.
  *
  * @param id      The NOVAS ID of the major planet of interest
@@ -92,6 +94,7 @@ long novas_to_naif_planet(enum novas_planet id) {
  * @sa novas_to_naif_planet()
  * @sa naif_to_novas_planet()
  *
+ * @author Attila Kovacs
  * @since 1.2
  */
 long novas_to_dexxx_planet(enum novas_planet id) {

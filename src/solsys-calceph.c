@@ -93,6 +93,7 @@ static sem_t sem_bodies;
  * @sa novas_use_calceph()
  * @sa novas_use_calceph_planet()
  *
+ * @author Attila Kovacs
  * @since 1.2
  */
 static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
@@ -190,6 +191,7 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
  * @sa set_planet_provider()
  * @sa solarsystem()
  *
+ * @author Attila Kovacs
  * @since 1.2
  */
 static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
@@ -233,8 +235,8 @@ static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_or
  * @sa ephemeris()
  * @sa NOVAS_EPHEM_OBJECT
  *
+ *@author Attila Kovacs
  * @since 1.2
- * @author Attila Kovacs
  */
 static int novas_calceph(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
   static const char *fn = "novas_calceph";
@@ -291,6 +293,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
  * @sa novas_use_calceph_planets()
  * @sa set_ephem_provider()
  *
+ * @author Attila Kovacs
  * @since 1.2
  */
 int novas_use_calceph(t_calcephbin *eph) {
@@ -337,6 +340,7 @@ int novas_use_calceph(t_calcephbin *eph) {
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  *
+ * @author Attila Kovacs
  * @since 1.2
  */
 int novas_use_calceph_planets(t_calcephbin *eph) {
