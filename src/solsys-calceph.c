@@ -33,8 +33,11 @@
 
 /// Multiplicative normalization for the velocities returned by CALCEPH to AU/day
 #define NORM_VEL                    (NORM_POS)
-/// \endcond
 
+/// Whether to force serialized (non-parallel CALCEPH queries)
+int serialized_calceph_queries;
+
+/// \endcond
 
 /// CALCEPH ephemeris specifically for planets (and Sun and Moon) only
 static t_calcephbin *planets;
@@ -97,7 +100,7 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
   static const char *fn = "planet_calceph_hp";
 
   sem_t *sem = (planets == bodies) ? &sem_bodies : &sem_planets;
-  const int lock = !is_thread_safe_planets;
+  const int lock = !is_thread_safe_planets || serialized_calceph_queries;
   double pv[6] = {};
   int i, target, center, success;
 
@@ -237,7 +240,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
   static const char *fn = "novas_calceph";
 
   double pv[6] = {};
-  const int lock = !is_thread_safe_bodies;
+  const int lock = !is_thread_safe_bodies || serialized_calceph_queries;
   int i, success;
 
   if(id == -1) {

@@ -5,6 +5,8 @@
  * @author Attila Kovacs
  */
 
+#define _XOPEN_SOURCE 500           /// strdup()
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -150,6 +152,25 @@ static int test_calceph_planet() {
   return 0;
 }
 
+static int test_calceph_lock() {
+  extern int serialized_calceph_queries;
+
+  object mars, phobos;
+  double jd = NOVAS_JD_J2000;
+  double jd2[2] = { jd, 0.0 };
+  double pos[3], vel[3];
+
+  serialized_calceph_queries = 1;
+
+  make_planet(NOVAS_MARS, &mars);
+  make_ephem_object("Phobos", 401, &phobos);
+
+  if(!is_ok("calceph_planet:mars", ephemeris(jd2, &mars, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
+  if(!is_ok("calceph_planet:phobos", ephemeris(jd2, &phobos, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return -1;
+
+  return 0;
+}
+
 static void dummy_error_handler(const char *msg) {
   // Do nothing...
 }
@@ -211,6 +232,7 @@ int main(int argc, char *argv[]) {
   if(test_calceph_planet()) n++;
   if(test_use_calceph()) n++;
   if(test_use_calceph_planets()) n++;
+  if(test_calceph_lock()) n++;
 
   novas_debug(NOVAS_DEBUG_OFF);
   if(test_errors()) n++;
