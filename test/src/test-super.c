@@ -1358,7 +1358,10 @@ static int test_planet_provider() {
   make_planet(NOVAS_MARS, &mars);
 
   if(!is_ok("planet_provider:set_planet_provider", set_planet_provider(dummy_planet))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:get_planet_provider", get_planet_provider() != dummy_planet)) goto cleanup; // @suppress("Goto statement used")
+
   if(!is_ok("planet_provider:set_planet_provider_hp", set_planet_provider_hp(dummy_planet_hp))) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("planet_provider:get_planet_provider_hp", get_planet_provider_hp() != dummy_planet_hp)) goto cleanup; // @suppress("Goto statement used")
 
   if(!is_ok("planet_provider:ephemeris", ephemeris(tdb2, &mars, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, p, v))) goto cleanup; // @suppress("Goto statement used")
   if(!is_ok("planet_provider:control", dummy_planet(tdb, NOVAS_MARS, NOVAS_BARYCENTER, p0, v0))) goto cleanup; // @suppress("Goto statement used")
