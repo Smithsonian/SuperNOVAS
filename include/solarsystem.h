@@ -36,6 +36,23 @@
 
 #include "novas.h"
 
+/**
+ * Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types. JPL ephemerides
+ * use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a>
+ * to identify objects in the Solar-system, which is thus the most widely adopted convention for
+ * numbering Solar-system bodies. But other numbering systems also exists, for example the
+ * CALCEPH library uses its own convention for the numbering of asteroids.
+ *
+ * @sa object
+ * @sa NOVAS_EPHEM_OBJECT
+ */
+enum novas_id_type {
+  NOVAS_ID_NAIF = 0,  ///< If the ephemeris provider should use NAIF IDs
+  NOVAS_ID_CALCEPH    ///< If the ephemeris provider should use CALCEPH IDs
+};
+
+/// Number of different Solar-system body ID types enumerated
+#define NOVAS_ID_TYPES      (NOVAS_ID_CALCEPH + 1)
 
 /**
  * Provides the position and velocity of major planets (as well as the Sun, Moon, and
@@ -319,6 +336,8 @@ long novas_to_dexxx_planet(enum novas_planet id);
 int novas_use_calceph(t_calcephbin *eph);
 
 int novas_use_calceph_planets(t_calcephbin *eph);
+
+int novas_calceph_use_ids(enum novas_id_type idtype);
 
 #endif /* USE_CALCEPH */
 

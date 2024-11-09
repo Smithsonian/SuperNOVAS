@@ -24,11 +24,13 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
    `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
    
  - #83: CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris 
-   data via CALCEPH for Solar-system sources in general, and for major planets specifically. These functions are 
-   provided by the `libsolsys-calceph.so[.1]` and/or `.a` plugin libraries, which are built contingent on the
-   `CALCEPH_SUPPORT` variable being set to 1 prior to the build. The build of the plugin module requires an
-   accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries
-   depending on the needs of the build).
+   data via CALCEPH for Solar-system sources in general, and for major planets specifically; and 
+   `novas_calceph_use_ids()` to specify whether `object.number` in `NOVAS_EPHEM_OBJECT` type objects is a NAIF ID 
+   (default) or else a CALCEPH ID number of the Solar-system body. These functions are provided by the 
+   `libsolsys-calceph.so[.1]` and/or `.a` plugin libraries, which are built contingent on the `CALCEPH_SUPPORT` 
+   variable being set to 1 prior to the build. The build of the plugin module requires an accessible installation of 
+   the CALCEPH development files (C headers and unversioned static or shared libraries depending on the needs of the 
+   build).
    
  - NOVAS-NAIF conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()` (planet centers), 
    `novas_to_dexxx_planet()` (mixed planet center/barycenter for DExxx ephemeris files), and the inverse

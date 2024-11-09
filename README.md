@@ -810,7 +810,9 @@ before that level of accuracy is reached.
    `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
 
  - CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris data 
-   via CALCEPH for Solar-system sources in general, and for major planets specifically.
+   via CALCEPH for Solar-system sources in general, and for major planets specifically; and `novas_calceph_use_ids()` 
+   to specify whether `object.number` in `NOVAS_EPHEM_OBJECT` type objects is a NAIF ID (default) or else a CALCEPH ID 
+   number of the Solar-system body.
    
  - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
    `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.

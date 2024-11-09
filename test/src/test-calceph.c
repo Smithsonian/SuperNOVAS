@@ -219,6 +219,39 @@ static int test_use_calceph_planets() {
   return 0;
 }
 
+
+
+static int test_calceph_use_ids() {
+  novas_ephem_provider calc = get_ephem_provider();
+  double jd = NOVAS_JD_J2000;
+  double jd2[2] = { jd, 0.0 };
+  double pos[3], vel[3], pos0[3], vel0[3];
+  int n = 0;
+
+  char filename[1024];
+  t_calcephbin *eph;
+
+  sprintf(filename, "%s/" PLANET_EPH, prefix);
+  eph = calceph_open(filename);
+  if(novas_use_calceph(eph)) return 1;
+
+  if(check("calceph_use_ids:-1", -1, novas_calceph_use_ids(-1))) n++;
+  if(check("calceph_use_ids:hi", -1, novas_calceph_use_ids(NOVAS_ID_TYPES))) n++;
+
+  if(!is_ok("calceph_use_ids:naif", novas_calceph_use_ids(NOVAS_ID_NAIF))) n++;
+  if(!is_ok("calceph_use_ids:emb:naif", calc("EMB", 3, jd2[0], jd2[1], NOVAS_BARYCENTER, pos0, vel0))) n++;
+
+  if(!is_ok("calceph_use_ids:calceph", novas_calceph_use_ids(NOVAS_ID_CALCEPH))) n++;
+  if(!is_ok("calceph_use_ids:emb:calceph", calc("EMB", 13, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
+
+  novas_calceph_use_ids(NOVAS_ID_NAIF);
+
+  if(!is_ok("calceph_use_ids:emb:pos", check_equal_pos(pos, pos0, 1e-6))) n++;
+  if(!is_ok("calceph_use_ids:emb:vel", check_equal_pos(vel, vel0, 1e-6))) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -233,6 +266,8 @@ int main(int argc, char *argv[]) {
   if(test_use_calceph()) n++;
   if(test_use_calceph_planets()) n++;
   if(test_calceph_lock()) n++;
+  if(test_calceph_use_ids()) n++;
+
 
   novas_debug(NOVAS_DEBUG_OFF);
   if(test_errors()) n++;

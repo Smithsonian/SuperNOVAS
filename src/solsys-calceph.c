@@ -19,6 +19,7 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 #include "calceph.h"
+#include "naif.h"
 
 #define CALCEPH_MOON                10  ///< Moon in CALCEPH
 #define CALCEPH_SUN                 11  ///< Sun in CALCEPH
@@ -39,6 +40,8 @@ int serialized_calceph_queries;
 
 /// \endcond
 
+static int compute_flags = CALCEPH_USE_NAIFID;
+
 /// CALCEPH ephemeris specifically for planets (and Sun and Moon) only
 static t_calcephbin *planets;
 
@@ -56,6 +59,35 @@ static int is_thread_safe_bodies;
 
 /// Semaphore for thread-safe access of generic solar-system bodies ephemeris (if needed)
 static sem_t sem_bodies;
+
+
+/**
+ * Sets the type of Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types.
+ * CALCEPH supports the use of both NAIF and its own numbering system to identify Solar-system
+ * bodies. So, this function gives you the choice on which numbering system you want to use
+ * in object data structures. The choice does not affect major planets (which always use the
+ * NOVAS numbering scheme), or catalog objects.
+ *
+ * @param idtype    NOVAS_ID_NAIF to use NAIF IDs (default) or else NOVAS_ID_CALCEPH to use
+ *                  the CALCEPH body numbering convention for object.
+ * @return          0 if successful or else -1 (errno set to EINVAL) if the input value is invalid.
+ *
+ * @sa object
+ * @sa NOVAS_EPHEM_OBJECT
+ */
+int novas_calceph_use_ids(enum novas_id_type idtype) {
+  switch(idtype) {
+    case NOVAS_ID_NAIF:
+      compute_flags = CALCEPH_USE_NAIFID;
+      return 0;
+    case NOVAS_ID_CALCEPH:
+      compute_flags = 0;
+      return 0;
+    default:
+      return novas_error(-1, EINVAL, "novas_calceph_use_ids", "Invalid body ID: %d\n", idtype);
+  }
+}
+
 
 /**
  * Provides an interface between the CALCEPG C library and NOVAS-C for regular (reduced) precision
@@ -231,6 +263,7 @@ static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_or
  *                      non-zero value if the was an error s.t. the position and velocity
  *                      vector should not be used.
  *
+ * @sa novas_calceph_use_ids()
  * @sa set_ephem_provider()
  * @sa ephemeris()
  * @sa NOVAS_EPHEM_OBJECT
@@ -243,25 +276,26 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
 
   double pv[6] = {};
   const int lock = !is_thread_safe_bodies || serialized_calceph_queries;
-  int i, success;
+  int i, success, center;
 
   if(id == -1) {
     // Use name to get NAIF ID.
-    int iid;
-    if(!calceph_getidbyname(bodies, name, CALCEPH_USE_NAIFID, &iid))
+    if(!calceph_getidbyname(bodies, name, compute_flags, &i))
       return novas_error(1, EINVAL, fn, "CALCEPH could not find a NAIF ID for '%s'", name);
-    id = iid;
+    id = i;
   }
 
   // Always return psoitions and velocities w.r.t. the SSB
   if(origin)
     *origin = NOVAS_SSB;
 
+  center = (compute_flags & CALCEPH_USE_NAIFID) ? NAIF_SSB : CALCEPH_SSB;
+
   if(lock)
     if(sem_wait(&sem_bodies) != 0)
       return novas_error(-1, errno, fn, "sem_wait()");
 
-  success = calceph_compute_unit(bodies, jd_tdb_high, jd_tdb_low, id, NOVAS_SSB, (CALCEPH_USE_NAIFID | CALCEPH_UNITS), pv);
+  success = calceph_compute_unit(bodies, jd_tdb_high, jd_tdb_low, id, center, (compute_flags | CALCEPH_UNITS), pv);
 
   if(lock)
     sem_post(&sem_bodies);
@@ -290,6 +324,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
  * @param eph   Pointer to the CALCEPH ephemeris data that have been opened.
  * @return  0 if successful, or else -1 (errno will indicate the type of error).
  *
+ * @sa novas_calceph_use_ids()
  * @sa novas_use_calceph_planets()
  * @sa set_ephem_provider()
  *
