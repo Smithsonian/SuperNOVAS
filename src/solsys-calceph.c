@@ -61,6 +61,29 @@ static int is_thread_safe_bodies;
 static sem_t sem_bodies;
 
 
+static int mutex_lock(sem_t *sem) {
+  if(sem_wait(sem) != 0)
+    return novas_error(-1, errno, "mutex_lock()", "sem_wait()");
+  return 0;
+}
+
+static int mutex_unlock(sem_t *sem) {
+  sem_post(sem);
+  return 0;
+}
+
+static int prep_ephem(t_calcephbin *eph) {
+  static const char *fn = "prep_ephem";
+
+  if(!eph)
+    return novas_error(-1, EINVAL, fn, "input ephemeris data is NULL");
+
+  if(!calceph_prefetch(eph))
+    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed");
+
+  return 0;
+}
+
 /**
  * Sets the type of Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types.
  * CALCEPH supports the use of both NAIF and its own numbering system to identify Solar-system
@@ -168,13 +191,12 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
   }
 
   if(lock)
-    if(sem_wait(sem) != 0)
-      return novas_error(-1, errno, fn, "sem_wait()");
+    prop_error(fn, mutex_lock(sem), 0);
 
   success = calceph_compute_unit(planets, jd_tdb[0], jd_tdb[1], target, center, CALCEPH_UNITS, pv);
 
   if(lock)
-    sem_post(sem);
+   mutex_unlock(sem);
 
   if(!success)
     return novas_error(3, EAGAIN, fn, "calceph_compute() failure (NOVAS ID=%d)", body);
@@ -292,13 +314,12 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
   center = (compute_flags & CALCEPH_USE_NAIFID) ? NAIF_SSB : CALCEPH_SSB;
 
   if(lock)
-    if(sem_wait(&sem_bodies) != 0)
-      return novas_error(-1, errno, fn, "sem_wait()");
+    prop_error(fn, mutex_lock(&sem_bodies), 0);
 
   success = calceph_compute_unit(bodies, jd_tdb_high, jd_tdb_low, id, center, (compute_flags | CALCEPH_UNITS), pv);
 
   if(lock)
-    sem_post(&sem_bodies);
+    mutex_unlock(&sem_bodies);
 
   if(!success)
     return novas_error(3, EAGAIN, fn, "calceph_compute() failure");
@@ -334,23 +355,18 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
 int novas_use_calceph(t_calcephbin *eph) {
   static const char *fn = "novas_use_calceph";
 
-  if(!eph)
-    return novas_error(-1, EINVAL, fn, "input ephemeris data is NULL");
-
-  if(!calceph_prefetch(eph))
-    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed");
+  prop_error(fn, prep_ephem(eph), 0);
 
   // If first time, then initialize the bodies semaphore
   if(!bodies)
     sem_init(&sem_bodies, 0, 1);
 
   // Make sure we don't change the ephemeris provider while using it
-  if(sem_wait(&sem_bodies) != 0)
-    return novas_error(-1, errno, fn, "sem_wait()");
+  prop_error(fn, mutex_lock(&sem_bodies), 0);
 
   is_thread_safe_bodies = calceph_isthreadsafe(eph);
   bodies = eph;
-  sem_post(&sem_bodies);
+  mutex_unlock(&sem_bodies);
 
   // Use CALCEPH as the default minor body ephemeris provider
   set_ephem_provider(novas_calceph);
@@ -382,23 +398,18 @@ int novas_use_calceph(t_calcephbin *eph) {
 int novas_use_calceph_planets(t_calcephbin *eph) {
   static const char *fn = "novas_use_calceph_planets";
 
-  if(!eph)
-    return novas_error(-1, EINVAL, fn, "input ephemeris data is NULL");
-
-  if(!calceph_prefetch(eph))
-    return novas_error(-1, EAGAIN, fn, "calceph_prefetch() failed");
+  prop_error(fn, prep_ephem(eph), 0);
 
   // If first time, then initialize the planet semaphore
   if(!planets)
     sem_init(&sem_planets, 0, 1);
 
   // Make sure we don't change the ephemeris provider while using it
-  if(sem_wait(&sem_planets) != 0)
-    return novas_error(-1, errno, fn, "sem_wait()");
+  prop_error(fn, mutex_lock(&sem_planets), 0);
 
   is_thread_safe_planets = calceph_isthreadsafe(eph);
   planets = eph;
-  sem_post(&sem_planets);
+  mutex_unlock(&sem_planets);
 
   // Use calceph as the default NOVAS planet provider
   set_planet_provider_hp(planet_calceph_hp);

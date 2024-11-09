@@ -215,7 +215,7 @@ static int test_use_calceph() {
 }
 
 static int test_use_calceph_planets() {
-  if(check("use_calceph", -1, novas_use_calceph(NULL))) return 1;
+  if(check("use_calceph", -1, novas_use_calceph_planets(NULL))) return 1;
   return 0;
 }
 
