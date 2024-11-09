@@ -5912,14 +5912,16 @@ novas_calc_geometric_position() </dd>
 <p>Sets a celestial object to be a Solar-system ephemeris body. Typically this would be used to define minor planets, asteroids, comets and planetary satellites.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">name</td><td>Name of object. By default converted to upper-case, unless <a class="el" href="novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive()</a> was called with a non-zero argument. Max. SIZE_OF_OBJ_NAME long, including termination. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">num</td><td>Solar-system body ID number (e.g. NAIF) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">name</td><td>Name of object. By default converted to upper-case, unless <a class="el" href="novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive()</a> was called with a non-zero argument. Max. SIZE_OF_OBJ_NAME long, including termination. If the ephemeris provider uses names, then the name should match those of the ephemeris provider &ndash; otherwise it is not important. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">num</td><td>Solar-system body ID number (e.g. NAIF). The number should match the needs of the ephemeris provider used with NOVAS. (If the ephemeris provider is by name and not ID number, then the number here is not important). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">body</td><td>Pointer to structure to populate. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the 'planet' pointer is NULL or the name is too long.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry()</a> </dd>
 <dd>

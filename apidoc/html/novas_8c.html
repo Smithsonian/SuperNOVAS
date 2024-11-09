@@ -184,6 +184,10 @@ Functions</h2></td></tr>
 <tr class="separator:a581ef7bb3d2261a105d7086fc1768c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6fad38297a49ba78a6bd49cedf889b1" id="r_aa6fad38297a49ba78a6bd49cedf889b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="solarsystem_8h.html#ac2ae695519a5b600a105243f4e30c3ab">novas_ephem_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider</a> ()</td></tr>
 <tr class="separator:aa6fad38297a49ba78a6bd49cedf889b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f0a786b5614a788c02b37a462eae2d2" id="r_a0f0a786b5614a788c02b37a462eae2d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="solarsystem_8h.html#ae7eb9e64aa00ee757946488fa99351ec">novas_planet_provider</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider</a> ()</td></tr>
+<tr class="separator:a0f0a786b5614a788c02b37a462eae2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae45badb450c1ca73920d982e12346c5b" id="r_ae45badb450c1ca73920d982e12346c5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="solarsystem_8h.html#a85ed597fa94ecf72653e64f4afa7f833">novas_planet_provider_hp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp</a> ()</td></tr>
+<tr class="separator:ae45badb450c1ca73920d982e12346c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48f90ac20950507fad9b880a7f7f2383" id="r_a48f90ac20950507fad9b880a7f7f2383"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3">novas_observer_place</a> unused, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *pos_src, const double *pos_obs, double *out)</td></tr>
 <tr class="separator:a48f90ac20950507fad9b880a7f7f2383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa798460894aa44f8564569d9ea4bf1ef" id="r_aa798460894aa44f8564569d9ea4bf1ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#aa798460894aa44f8564569d9ea4bf1ef">grav_planets</a> (const double *pos_src, const double *pos_obs, const <a class="el" href="structnovas__planet__bundle.html">novas_planet_bundle</a> *planets, double *out)</td></tr>
@@ -2493,9 +2497,65 @@ Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3
 <dl class="section return"><dt>Returns</dt><dd>the currently defined function for accessing ephemeris data for minor planets or satellites, ot NULL if no function was set via <a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> previously.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
 <dd>
+<a class="el" href="novas_8c.html#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp()</a> </dd>
+<dd>
 <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+</div>
+</div>
+<a id="a0f0a786b5614a788c02b37a462eae2d2" name="a0f0a786b5614a788c02b37a462eae2d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f0a786b5614a788c02b37a462eae2d2">&#9670;&#160;</a></span>get_planet_provider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="solarsystem_8h.html#ae7eb9e64aa00ee757946488fa99351ec">novas_planet_provider</a> get_planet_provider </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB), if any.</p>
+<dl class="section return"><dt>Returns</dt><dd>the custom (low-precision) planet ephemeris provider function.</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae45badb450c1ca73920d982e12346c5b" name="ae45badb450c1ca73920d982e12346c5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae45badb450c1ca73920d982e12346c5b">&#9670;&#160;</a></span>get_planet_provider_hp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="solarsystem_8h.html#a85ed597fa94ecf72653e64f4afa7f833">novas_planet_provider_hp</a> get_planet_provider_hp </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB), if any.</p>
+<dl class="section return"><dt>Returns</dt><dd>the custom high-precision planet ephemeris provider function.</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider()</a> </dd></dl>
 
 </div>
 </div>
@@ -5456,6 +5516,10 @@ Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259. </l
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider()</a> </dd>
 <dd>
+<a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
+<dd>
 <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a> </dd></dl>
 
 </div>
@@ -5513,7 +5577,9 @@ Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259. </l
 </dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a0f0a786b5614a788c02b37a462eae2d2">get_planet_provider()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
 <dd>
 <a class="el" href="solsys-ephem_8c.html#a5e2d599b1dc7a0e87bfd29dbd6413398">solarsystem()</a> </dd>
 <dd>
@@ -5545,7 +5611,9 @@ Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259. </l
 </dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>
 <a class="el" href="solsys-ephem_8c.html#a0243c2489c22860de898115aed8ffc87">solarsystem_hp()</a> </dd>
 <dd>

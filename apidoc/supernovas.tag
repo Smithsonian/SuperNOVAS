@@ -1,6 +1,46 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile doxygen_version="1.9.8">
   <compound kind="file">
+    <name>naif.h</name>
+    <path>include/</path>
+    <filename>naif_8h.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>NAIF_EARTH</name>
+      <anchorfile>naif_8h.html</anchorfile>
+      <anchor>a58a3ee779a2235702283b32a762df2f6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NAIF_EMB</name>
+      <anchorfile>naif_8h.html</anchorfile>
+      <anchor>a71a4a929a85a2b77c2adb2284894ca9d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NAIF_MOON</name>
+      <anchorfile>naif_8h.html</anchorfile>
+      <anchor>a172c6c114d2f18ae91003a1f293682bc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NAIF_SSB</name>
+      <anchorfile>naif_8h.html</anchorfile>
+      <anchor>a4a8e127d97f48f2ef918b61182436490</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NAIF_SUN</name>
+      <anchorfile>naif_8h.html</anchorfile>
+      <anchor>a4a4d693821f595d86497eb2befc746c1</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>novas.h</name>
     <path>include/</path>
     <filename>novas_8h.html</filename>
@@ -2203,6 +2243,13 @@
     <path>include/</path>
     <filename>solarsystem_8h.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_ID_TYPES</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a9a736e59fc9bfdc92b7245aa37d529ee</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="typedef">
       <type>int(*</type>
       <name>novas_ephem_provider</name>
@@ -2223,6 +2270,25 @@
       <anchorfile>solarsystem_8h.html</anchorfile>
       <anchor>a85ed597fa94ecf72653e64f4afa7f833</anchor>
       <arglist>)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity)</arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
+      <name>novas_id_type</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ac42df1db80fbcb6f7a72de80d9f9c531</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_ID_NAIF</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_ID_CALCEPH</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719</anchor>
+      <arglist></arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -2251,6 +2317,41 @@
       <anchorfile>solarsystem_8h.html</anchorfile>
       <anchor>aa6fad38297a49ba78a6bd49cedf889b1</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>novas_planet_provider</type>
+      <name>get_planet_provider</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a0f0a786b5614a788c02b37a462eae2d2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>novas_planet_provider_hp</type>
+      <name>get_planet_provider_hp</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ae45badb450c1ca73920d982e12346c5b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_planet</type>
+      <name>naif_to_novas_planet</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a1c4b3f67a3b82808dd16ae43dfaf0f86</anchor>
+      <arglist>(long id)</arglist>
+    </member>
+    <member kind="function">
+      <type>long</type>
+      <name>novas_to_dexxx_planet</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ac3eb54acf22dc155879163de89c6865e</anchor>
+      <arglist>(enum novas_planet id)</arglist>
+    </member>
+    <member kind="function">
+      <type>long</type>
+      <name>novas_to_naif_planet</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ab51ac9bdf7736e1c1582e0981046daf3</anchor>
+      <arglist>(enum novas_planet id)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -2602,6 +2703,41 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>naif.c</name>
+    <path>src/</path>
+    <filename>naif_8c.html</filename>
+    <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
+    <includes id="naif_8h" name="naif.h" local="yes" import="no" module="no" objc="no">naif.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>__NOVAS_INTERNAL_API__</name>
+      <anchorfile>naif_8c.html</anchorfile>
+      <anchor>af46d8e51fc53d94b0d48c8201c3c84a6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_planet</type>
+      <name>naif_to_novas_planet</name>
+      <anchorfile>naif_8c.html</anchorfile>
+      <anchor>a1c4b3f67a3b82808dd16ae43dfaf0f86</anchor>
+      <arglist>(long id)</arglist>
+    </member>
+    <member kind="function">
+      <type>long</type>
+      <name>novas_to_dexxx_planet</name>
+      <anchorfile>naif_8c.html</anchorfile>
+      <anchor>ac3eb54acf22dc155879163de89c6865e</anchor>
+      <arglist>(enum novas_planet id)</arglist>
+    </member>
+    <member kind="function">
+      <type>long</type>
+      <name>novas_to_naif_planet</name>
+      <anchorfile>naif_8c.html</anchorfile>
+      <anchor>ab51ac9bdf7736e1c1582e0981046daf3</anchor>
+      <arglist>(enum novas_planet id)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>novas.c</name>
     <path>src/</path>
     <filename>novas_8c.html</filename>
@@ -2827,6 +2963,20 @@
       <name>get_ephem_provider</name>
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>aa6fad38297a49ba78a6bd49cedf889b1</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>novas_planet_provider</type>
+      <name>get_planet_provider</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a0f0a786b5614a788c02b37a462eae2d2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>novas_planet_provider_hp</type>
+      <name>get_planet_provider_hp</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>ae45badb450c1ca73920d982e12346c5b</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -3463,6 +3613,32 @@
       <anchorfile>refract_8c.html</anchorfile>
       <anchor>ab04bff3b97c132e358e11c3a5b7a3081</anchor>
       <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>solsys-calceph.c</name>
+    <path>src/</path>
+    <filename>solsys-calceph_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_calceph_use_ids</name>
+      <anchorfile>solsys-calceph_8c.html</anchorfile>
+      <anchor>a5531b937a5bb5491cb475d2536346ad8</anchor>
+      <arglist>(enum novas_id_type idtype)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_calceph</name>
+      <anchorfile>solsys-calceph_8c.html</anchorfile>
+      <anchor>a35fc86a939602ec910dbdfde180d7f31</anchor>
+      <arglist>(t_calcephbin *eph)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_calceph_planets</name>
+      <anchorfile>solsys-calceph_8c.html</anchorfile>
+      <anchor>ab86ec03898e658c86c671a8b6399e331</anchor>
+      <arglist>(t_calcephbin *eph)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -4569,6 +4745,7 @@
     <docanchor file="index.html">api-changes</docanchor>
     <docanchor file="index.html">solarsystem</docanchor>
     <docanchor file="index.html">universal-ephemerides</docanchor>
+    <docanchor file="index.html">calceph-integration</docanchor>
     <docanchor file="index.html">builtin-ephem-readers</docanchor>
     <docanchor file="index.html">explicit-ephem-linking</docanchor>
     <docanchor file="index.html">debug-support</docanchor>

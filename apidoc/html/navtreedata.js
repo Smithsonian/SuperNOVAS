@@ -62,14 +62,15 @@ var NAVTREE =
       ] ],
       [ "External Solar-system ephemeris data or services", "index.html#autotoc_md65", [
         [ "Universal ephemeris data / service integration", "index.html#autotoc_md66", null ],
-        [ "Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md67", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md68", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md69", null ]
+        [ "Built-in support for CALCEPH integration", "index.html#autotoc_md67", null ],
+        [ "Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md68", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md69", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md70", null ]
         ] ],
-        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md70", null ]
+        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md71", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md72", null ],
-      [ "Release schedule", "index.html#autotoc_md74", null ],
+      [ "Runtime debug support", "index.html#autotoc_md73", null ],
+      [ "Release schedule", "index.html#autotoc_md75", null ],
       [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", null ],
       [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
       [ "[1.1.1] - 2024-10-28", "md_CHANGELOG.html#autotoc_md3", [
@@ -134,9 +135,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#acf86ce700b3d3509ebba13e5f16a4327",
-"novas_8h.html#ac272a018a213965f07b21ac6facb4a62",
-"super_8c.html#a3ce6b306bc183387d0aaac97abbd82e8"
+"novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1",
+"novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa4649e3c4b655ead9fa3e53a75186ab30",
+"structobject.html#a2cc80aad5c0303449e2412b122504a10"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -4116,9 +4116,9 @@ Sets a celestial object to be a Solar-system ephemeris body\&. Typically this wo
 .PP
 \fBParameters\fP
 .RS 4
-\fIname\fP Name of object\&. By default converted to upper-case, unless \fBnovas_case_sensitive()\fP was called with a non-zero argument\&. Max\&. SIZE_OF_OBJ_NAME long, including termination\&. 
+\fIname\fP Name of object\&. By default converted to upper-case, unless \fBnovas_case_sensitive()\fP was called with a non-zero argument\&. Max\&. SIZE_OF_OBJ_NAME long, including termination\&. If the ephemeris provider uses names, then the name should match those of the ephemeris provider -- otherwise it is not important\&. 
 .br
-\fInum\fP Solar-system body ID number (e\&.g\&. NAIF) 
+\fInum\fP Solar-system body ID number (e\&.g\&. NAIF)\&. The number should match the needs of the ephemeris provider used with NOVAS\&. (If the ephemeris provider is by name and not ID number, then the number here is not important)\&. 
 .br
 \fIbody\fP Pointer to structure to populate\&. 
 .RE
@@ -4130,6 +4130,8 @@ Sets a celestial object to be a Solar-system ephemeris body\&. Typically this wo
 .PP
 \fBSee also\fP
 .RS 4
+\fBset_ephem_provider()\fP 
+.PP
 \fBmake_planet()\fP 
 .PP
 \fBmake_cat_entry()\fP 

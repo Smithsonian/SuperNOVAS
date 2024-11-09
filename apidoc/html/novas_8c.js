@@ -32,6 +32,8 @@ var novas_8c =
     [ "gcrs_to_j2000", "novas_8c.html#aeea4b5085c7267714492fae6108fb975", null ],
     [ "geo_posvel", "novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97", null ],
     [ "get_ephem_provider", "novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1", null ],
+    [ "get_planet_provider", "novas_8c.html#a0f0a786b5614a788c02b37a462eae2d2", null ],
+    [ "get_planet_provider_hp", "novas_8c.html#ae45badb450c1ca73920d982e12346c5b", null ],
     [ "grav_def", "novas_8c.html#a48f90ac20950507fad9b880a7f7f2383", null ],
     [ "grav_planets", "novas_8c.html#aa798460894aa44f8564569d9ea4bf1ef", null ],
     [ "grav_vec", "novas_8c.html#a08a008572e2746a70bec19739b5fb7e6", null ],

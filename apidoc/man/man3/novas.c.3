@@ -106,6 +106,12 @@ src/novas.c
 .RI "\fBnovas_ephem_provider\fP \fBget_ephem_provider\fP ()"
 .br
 .ti -1c
+.RI "\fBnovas_planet_provider\fP \fBget_planet_provider\fP ()"
+.br
+.ti -1c
+.RI "\fBnovas_planet_provider_hp\fP \fBget_planet_provider_hp\fP ()"
+.br
+.ti -1c
 .RI "short \fBgrav_def\fP (double jd_tdb, enum \fBnovas_observer_place\fP unused, enum \fBnovas_accuracy\fP accuracy, const double *pos_src, const double *pos_obs, double *out)"
 .br
 .ti -1c
@@ -1649,6 +1655,10 @@ the currently defined function for accessing ephemeris data for minor planets or
 .RS 4
 \fBset_ephem_provider()\fP 
 .PP
+\fBget_planet_provider()\fP 
+.PP
+\fBget_planet_provider_hp()\fP 
+.PP
 \fBephemeris()\fP
 .RE
 .PP
@@ -1660,6 +1670,62 @@ the currently defined function for accessing ephemeris data for minor planets or
 \fBAuthor\fP
 .RS 4
 Attila Kovacs 
+.RE
+.PP
+
+.SS "\fBnovas_planet_provider\fP get_planet_provider ()"
+Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB), if any\&.
+.PP
+\fBReturns\fP
+.RS 4
+the custom (low-precision) planet ephemeris provider function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider()\fP 
+.PP
+\fBget_planet_provider_hp()\fP 
+.PP
+\fBget_ephem_provider()\fP 
+.RE
+.PP
+
+.SS "\fBnovas_planet_provider_hp\fP get_planet_provider_hp ()"
+Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB), if any\&.
+.PP
+\fBReturns\fP
+.RS 4
+the custom high-precision planet ephemeris provider function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBget_planet_provider()\fP 
+.PP
+\fBget_ephem_provider()\fP 
 .RE
 .PP
 
@@ -3551,6 +3617,10 @@ Attila Kovacs
 .RS 4
 \fBget_ephem_provider()\fP 
 .PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
 \fBephemeris()\fP 
 .RE
 .PP
@@ -3604,6 +3674,8 @@ Attila Kovacs
 .PP
 \fBSee also\fP
 .RS 4
+\fBget_planet_provider()\fP 
+.PP
 \fBset_planet_provider_hp()\fP 
 .PP
 \fBsolarsystem()\fP 
@@ -3632,6 +3704,8 @@ Attila Kovacs
 .PP
 \fBSee also\fP
 .RS 4
+\fBget_planet_provider_hp()\fP 
+.PP
 \fBset_planet_provider()\fP 
 .PP
 \fBsolarsystem_hp()\fP 

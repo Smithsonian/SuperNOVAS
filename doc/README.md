@@ -68,7 +68,7 @@ Outside contributions are very welcome. See
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
  - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemeris
    from JPL and/or in INPOP 2.0/3.0 format.
- - [SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
+ - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via from JPL.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
    of ephemeris data.
@@ -165,9 +165,10 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
 the necessary variables in the shell prior to invoking `make`. For example:
 
  - Choose which planet calculator function routines are built into the library (for example to provide 
-   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
-   You can then specify these functions as the default planet calculator for `ephemeris()` in your application 
-   dynamically via `set_planet_provider()`.
+   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`,
+   and or for `planet_calceph()` / `novas_calceph()` set `BUILTIN_SOLSYS_CALCEPH = 1`. You can then specify these 
+   functions as the default planet calculator for `ephemeris()` in your application dynamically via 
+   `set_planet_provider()`.
    
  - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
    `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
@@ -178,6 +179,13 @@ the necessary variables in the shell prior to invoking `make`. For example:
    `DEFAULT_READEPH` appropriately. (The default setting uses the dummy `readeph0.c` which simply returns an error if 
    one tries to use the functions from `solsys1.c`). Note, that a `readeph()` implementation is not always necessary 
    and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
+
+ - You can enable integration with the [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library, by 
+   setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
+   `libsolsys-calceph.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
+   modules requires an accessible installation of the CALCEPH development files (C headers and unversioned static or 
+   shared libraries depending on the needs of the build). You might want to set `LD_LIBRARY_PATH`, and/or `CPPFLAGS` 
+   to include an appropriate `-I<path>` option, to help locate these prior to calling `make`.
 
  - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
    file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
@@ -784,7 +792,15 @@ before that level of accuracy is reached.
    gravitating bodies (other than the Sun and Earth). The added functions are `grav_redshift()`, `redhift_vrad()`,
    `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
 
-
+ - CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris data 
+   via CALCEPH for Solar-system sources in general, and for major planets specifically; and `novas_calceph_use_ids()` 
+   to specify whether `object.number` in `NOVAS_EPHEM_OBJECT` type objects is a NAIF ID (default) or else a CALCEPH ID 
+   number of the Solar-system body.
+   
+ - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
+   `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
+   
+ - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
 
 
 <a name="api-changes"></a>
@@ -867,15 +883,18 @@ before that level of accuracy is reached.
 <a name="solarsystem"></a>
 ## External Solar-system ephemeris data or services
 
-
 If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
 sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as 
 [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/app.html#/) or the 
 [Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html). Given the NOVAS C heritage, and some added 
 SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most flexible 
-(and preferred) to the least flexible (old ways).
+(and preferred) to the least flexible (old ways). 
+
+NASA/JPL also provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
+planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations.
 
  - [Universal ephemeris data / service integration](#universal-ephemerides)
+ - [Built-in support for CALCEPH integration](#calceph-integration)
  - [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
  - [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
 
@@ -902,8 +921,7 @@ heliocenter, and accordingly, your function should set the value pointed at by o
 `NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
 AU/day respectively. 
 
-This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using 
-[CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) or the 
+This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the
 [CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
 ephemeris service you prefer.
 
@@ -924,6 +942,54 @@ major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use
 
 provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
 `solsys-ephem.c` explicitly. Easy-peasy.
+
+
+<a name="calceph-integration"></a>
+### Built-in support for CALCEPH integration
+
+The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides an easy-to-use access to JPL and
+INPOP ephemeris files from C/C++. As of version 1.2, we provide built-in support for integrating the CALCEPH C library 
+with SuperNOVAS for handling Solar-system objects.
+
+Prior to building SuperNOVAS simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your shell. Depending on the 
+build target, it will build `libsolsys-calceph.so[.1]` (target `shared`) or `libsolsys-calceph.a` (target `static`) 
+libraries, which provide the `novas_use_calceph()` and `novas_use_calceph_planets()` functions.
+
+Of course, you will need access to the CALCEPH C development files (C headers and unversioned libraries) for the build
+to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application code:
+
+```c
+  #include <calceph.h>
+  
+  // You can open a set of JPL/INPOP ephemeris files with CALCEPH...
+  t_calcephbin *eph = calceph_open_array(...);
+  
+  // Then use them as your generic SuperNOVAS ephemeris provider
+  int status = novas_use_calceph(eph);
+  if(status < 0) {
+    // Ooops something went wrong...
+  }
+  
+  // -----------------------------------------------------------------------
+  // Optionally you may use a separate ephemeris data for major planets
+  // (or if planet ephemeris was included in 'eph' above, you don't have to) 
+  t_calcephbin *pleph = calceph_open(...);
+  int status = novas_use_calceph(pleph);
+  if(status < 0) {
+    // Ooops something went wrong...
+  }
+```
+
+You can obtain readily available standard ephemeris files from 
+[NASA/JPL](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/), such as 
+[DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp), which covers the major planets, plus
+Sun, Moon, and Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate cutom ephemeris data for pretty much
+all known solar systems bodies, down to the tiniest rocks. All of these should work with the `solsys-calceph` plugin.
+
+And, when linking your application, don't forget to add `-lsolsys-calceph` to your link flags. That's all there is to
+it.
+
 
 
 <a name="builtin-ephem-readers"></a>

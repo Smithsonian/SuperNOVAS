@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['asec2rad_0',['ASEC2RAD',['../novas_8h.html#a8a0ef80e44076b86bc707e9414d85d76',1,'novas.h']]],
-  ['asec360_1',['ASEC360',['../novas_8h.html#a320b4181c798436981b4520175baad89',1,'novas.h']]]
+  ['_5f_5fnovas_5finternal_5fapi_5f_5f_0',['__NOVAS_INTERNAL_API__',['../naif_8c.html#af46d8e51fc53d94b0d48c8201c3c84a6',1,'naif.c']]]
 ];

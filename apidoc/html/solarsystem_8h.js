@@ -1,12 +1,22 @@
 var solarsystem_8h =
 [
+    [ "NOVAS_ID_TYPES", "solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee", null ],
     [ "novas_ephem_provider", "solarsystem_8h.html#ac2ae695519a5b600a105243f4e30c3ab", null ],
     [ "novas_planet_provider", "solarsystem_8h.html#ae7eb9e64aa00ee757946488fa99351ec", null ],
     [ "novas_planet_provider_hp", "solarsystem_8h.html#a85ed597fa94ecf72653e64f4afa7f833", null ],
+    [ "novas_id_type", "solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531", [
+      [ "NOVAS_ID_NAIF", "solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db", null ],
+      [ "NOVAS_ID_CALCEPH", "solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719", null ]
+    ] ],
     [ "earth_sun_calc", "solarsystem_8h.html#ab5d74f84f8e75e90dfc30ebde562d076", null ],
     [ "earth_sun_calc_hp", "solarsystem_8h.html#a3e6398e29968a48f9de090e82423750f", null ],
     [ "enable_earth_sun_hp", "solarsystem_8h.html#a279bca0519117cee9a3bd4382f38e7ad", null ],
     [ "get_ephem_provider", "solarsystem_8h.html#aa6fad38297a49ba78a6bd49cedf889b1", null ],
+    [ "get_planet_provider", "solarsystem_8h.html#a0f0a786b5614a788c02b37a462eae2d2", null ],
+    [ "get_planet_provider_hp", "solarsystem_8h.html#ae45badb450c1ca73920d982e12346c5b", null ],
+    [ "naif_to_novas_planet", "solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86", null ],
+    [ "novas_to_dexxx_planet", "solarsystem_8h.html#ac3eb54acf22dc155879163de89c6865e", null ],
+    [ "novas_to_naif_planet", "solarsystem_8h.html#ab51ac9bdf7736e1c1582e0981046daf3", null ],
     [ "planet_eph_manager", "solarsystem_8h.html#a71d2bfef45818d56e359205c57db0694", null ],
     [ "planet_eph_manager_hp", "solarsystem_8h.html#acacfbde919107d0514da5c7d8508917b", null ],
     [ "planet_ephem_provider", "solarsystem_8h.html#a61c60adf57c00d797fac94bb5841c271", null ],

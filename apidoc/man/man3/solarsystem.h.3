@@ -6,6 +6,14 @@ include/solarsystem.h
 .SH SYNOPSIS
 .br
 .PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNOVAS_ID_TYPES\fP   (\fBNOVAS_ID_CALCEPH\fP + 1)"
+.br
+.RI "Number of different Solar-system body ID types enumerated\&. "
+.in -1c
 .SS "Typedefs"
 
 .in +1c
@@ -17,6 +25,13 @@ include/solarsystem.h
 .br
 .ti -1c
 .RI "typedef short(* \fBnovas_planet_provider_hp\fP) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBnovas_id_type\fP { \fBNOVAS_ID_NAIF\fP = 0, \fBNOVAS_ID_CALCEPH\fP }"
 .br
 .in -1c
 .SS "Functions"
@@ -33,6 +48,21 @@ include/solarsystem.h
 .br
 .ti -1c
 .RI "\fBnovas_ephem_provider\fP \fBget_ephem_provider\fP ()"
+.br
+.ti -1c
+.RI "\fBnovas_planet_provider\fP \fBget_planet_provider\fP ()"
+.br
+.ti -1c
+.RI "\fBnovas_planet_provider_hp\fP \fBget_planet_provider_hp\fP ()"
+.br
+.ti -1c
+.RI "enum \fBnovas_planet\fP \fBnaif_to_novas_planet\fP (long id)"
+.br
+.ti -1c
+.RI "long \fBnovas_to_dexxx_planet\fP (enum \fBnovas_planet\fP id)"
+.br
+.ti -1c
+.RI "long \fBnovas_to_naif_planet\fP (enum \fBnovas_planet\fP id)"
 .br
 .ti -1c
 .RI "short \fBplanet_eph_manager\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
@@ -113,11 +143,13 @@ U\&. S\&. Naval Observatory
 .SS "typedef int(* novas_ephem_provider) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *origin, double *pos, double *vel)"
 Function to obtain ephemeris data for minor planets, which are not handled by the \fBsolarsystem()\fP type calls\&. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled \fBreadeph()\fP implementation, or else a dynamically defined one via ephemeris_set_reader()\&.
 .PP
+Note, that implementations would typically use either the name or the ID argument to identify the object for which ephemeris data is requested\&. As such you only need to specify the one that is going to be used\&.
+.PP
 \fBParameters\fP
 .RS 4
-\fIid\fP The ID number of the solar-system body for which the position in desired\&. 
+\fIname\fP The name of the solar-system body (in case the ephemeris provider is name based, otherwiase it may be NULL)\&. 
 .br
-\fIname\fP The name of the solar-system body 
+\fIid\fP The ID number of the solar-system body for which the position in desired\&. (Typically a NAIF ID, or else an appropriate ID for the implementation -- corresponding minor planet objects should be created with the same type of ID\&.)\&. If the ephemeris provider is name based the ID is not used an can be set to anything (-1 might be a good default)\&. 
 .br
 \fIjd_tdb_high\fP [day] The high-order part of Barycentric Dynamical Time (TDB) based Julian date for which to find the position and velocity\&. Typically this may be the integer part of the Julian date for high-precision calculations, or else the entire Julian date for reduced precision\&. 
 .br
@@ -221,6 +253,28 @@ novas_solarsystem_func
 .RE
 .PP
 
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBnovas_id_type\fP"
+Solar-system body IDs to use as \fBobject\&.number\fP with NOVAS_EPHEM_OBJECT types\&. JPL ephemerides use \fCNAIF IDs\fP to identify objects in the Solar-system, which is thus the most widely adopted convention for numbering Solar-system bodies\&. But other numbering systems also exists, for example the CALCEPH library uses its own convention for the numbering of asteroids\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBobject\fP 
+.PP
+\fBNOVAS_EPHEM_OBJECT\fP 
+.RE
+.PP
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fINOVAS_ID_NAIF \fP\fP
+If the ephemeris provider should use NAIF IDs\&. 
+.TP
+\fB\fINOVAS_ID_CALCEPH \fP\fP
+If the ephemeris provider should use CALCEPH IDs\&. 
 .SH "Function Documentation"
 .PP 
 .SS "short earth_sun_calc (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
@@ -336,6 +390,10 @@ the currently defined function for accessing ephemeris data for minor planets or
 .RS 4
 \fBset_ephem_provider()\fP 
 .PP
+\fBget_planet_provider()\fP 
+.PP
+\fBget_planet_provider_hp()\fP 
+.PP
 \fBephemeris()\fP
 .RE
 .PP
@@ -350,10 +408,163 @@ Attila Kovacs
 .RE
 .PP
 
+.SS "\fBnovas_planet_provider\fP get_planet_provider ()"
+Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB), if any\&.
+.PP
+\fBReturns\fP
+.RS 4
+the custom (low-precision) planet ephemeris provider function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider()\fP 
+.PP
+\fBget_planet_provider_hp()\fP 
+.PP
+\fBget_ephem_provider()\fP 
+.RE
+.PP
+
+.SS "\fBnovas_planet_provider_hp\fP get_planet_provider_hp ()"
+Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB), if any\&.
+.PP
+\fBReturns\fP
+.RS 4
+the custom high-precision planet ephemeris provider function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBget_planet_provider()\fP 
+.PP
+\fBget_ephem_provider()\fP 
+.RE
+.PP
+
+.SS "enum \fBnovas_planet\fP naif_to_novas_planet (long id)"
+Converts a NAIF ID to a NOVAS major planet ID\&. It account for the different IDs used for Sun, Moon and SSB\&. Otherwise NAIF planet barycenters are mapped to the corresponding bodies, except EMB (3), which will return -1\&. NAIF body centers \fIn\fP99 (e\&.g\&. 399 for Earth), are mapped to the corresponding NOVAS planet number \fIn\fP\&. All other NAIF IDs will return -1, indicating no match to a NOVAS planet ID\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The NAIF ID of the major planet of interest 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the NOVAS ID for the same object (which may or may not be different from the input), or -1 if the NAIF ID cannot be matched to a NOVAS major planet\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_to_naif_planet()\fP 
+.PP
+\fBnovas_to_dexxx_planet()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBNAIF_EMB\fP, \fBNAIF_MOON\fP, \fBNAIF_SSB\fP, \fBNAIF_SUN\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+.SS "long novas_to_dexxx_planet (enum \fBnovas_planet\fP id)"
+Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files\&. The DExxx (e\&.g\&. DE440) ephemeris files use NAIF IDs, but for most planets contain barycentric data only rather than that of the planet center\&. For Earth-based observations, it only really makes a difference whether the 3 is used for the Earth-Moon Barycenter (EMB) or 399 for the geocenter\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The NOVAS ID of the major planet of interest 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the NAIF ID for the same object (which may or may not be different from the input), as appropriate for use in the DExxx ephemeris files\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_to_naif_planet()\fP 
+.PP
+\fBnaif_to_novas_planet()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBNAIF_EARTH\fP, \fBNAIF_MOON\fP, \fBNAIF_SSB\fP, \fBNAIF_SUN\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+.SS "long novas_to_naif_planet (enum \fBnovas_planet\fP id)"
+Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID\&. NOVAS and NAIF use slightly different IDs for major planets, the Moon, and the Solar-system Barycenter (SSB)\&. In NOVAS, major planets are have IDs ranging from 1 through 9, but for NAIF 1--9 are the planetary barycenters and the planet centers have numbers in the hundreds ending with 99 (e\&.g\&. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon Barycenter [EMB])\&. The Sun and Moon also have distinct IDs in NAIF vs NOVAS\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The NOVAS ID of the major planet of interest 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the NAIF ID for the same object or planet center (which may or may not be different from the input)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnaif_to_novas_planet()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBNAIF_MOON\fP, \fBNAIF_SSB\fP, \fBNAIF_SUN\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SS "short planet_eph_manager (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for regular (reduced) precision applications\&.
 .PP
-This function and \fBplanet_ephemeris()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
+This function and \fBplanet_eph_manager_hp()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
 .PP
 The user must create the binary ephemeris files using software from JPL, and open the file using function \fBephem_open()\fP, prior to calling this function\&.
 .PP
@@ -408,7 +619,7 @@ References \fBplanet_eph_manager_hp()\fP\&.
 .SS "short planet_eph_manager_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for highest precision applications\&.
 .PP
-This function and \fBplanet_ephemeris()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
+This function and \fBplanet_eph_manager()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
 .PP
 The user must create the binary ephemeris files using software from JPL, and open the file using function \fBephem_open()\fP, prior to calling this function\&.
 .PP
@@ -724,6 +935,10 @@ Attila Kovacs
 .RS 4
 \fBget_ephem_provider()\fP 
 .PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
 \fBephemeris()\fP 
 .RE
 .PP
@@ -748,6 +963,8 @@ Attila Kovacs
 .PP
 \fBSee also\fP
 .RS 4
+\fBget_planet_provider()\fP 
+.PP
 \fBset_planet_provider_hp()\fP 
 .PP
 \fBsolarsystem()\fP 
@@ -776,6 +993,8 @@ Attila Kovacs
 .PP
 \fBSee also\fP
 .RS 4
+\fBget_planet_provider_hp()\fP 
+.PP
 \fBset_planet_provider()\fP 
 .PP
 \fBsolarsystem_hp()\fP 

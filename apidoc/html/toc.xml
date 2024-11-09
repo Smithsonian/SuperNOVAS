@@ -34,14 +34,15 @@
     </topic>
     <topic label="External Solar-system ephemeris data or services" href="index.html#autotoc_md65">
       <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md66"/>
-      <topic label="Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md67">
-        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md68"/>
-        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md69"/>
+      <topic label="Built-in support for CALCEPH integration" href="index.html#autotoc_md67"/>
+      <topic label="Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md68">
+        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md69"/>
+        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md70"/>
       </topic>
-      <topic label="Explicit linking of custom ephemeris functions" href="index.html#autotoc_md70"/>
+      <topic label="Explicit linking of custom ephemeris functions" href="index.html#autotoc_md71"/>
     </topic>
-    <topic label="Runtime debug support" href="index.html#autotoc_md72"/>
-    <topic label="Release schedule" href="index.html#autotoc_md74"/>
+    <topic label="Runtime debug support" href="index.html#autotoc_md73"/>
+    <topic label="Release schedule" href="index.html#autotoc_md75"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>
@@ -196,6 +197,13 @@
   <topic label="Files" href="files.html">
     <topic label="File List" href="files.html">
       <topic label="include" href="dir_d44c64559bbebec7f509842c48db8b23.html">
+        <topic label="naif.h" href="naif_8h.html">
+          <topic label="NAIF_EARTH" href="naif_8h.html#a58a3ee779a2235702283b32a762df2f6"/>
+          <topic label="NAIF_EMB" href="naif_8h.html#a71a4a929a85a2b77c2adb2284894ca9d"/>
+          <topic label="NAIF_MOON" href="naif_8h.html#a172c6c114d2f18ae91003a1f293682bc"/>
+          <topic label="NAIF_SSB" href="naif_8h.html#a4a8e127d97f48f2ef918b61182436490"/>
+          <topic label="NAIF_SUN" href="naif_8h.html#a4a4d693821f595d86497eb2befc746c1"/>
+        </topic>
         <topic label="novas.h" href="novas_8h.html">
           <topic label="cat_entry" href="structcat__entry.html">
             <topic label="catalog" href="structcat__entry.html#a128c876f7e50045e1c469dbabb400c58"/>
@@ -647,13 +655,23 @@
           <topic label="nu2000k" href="nutation_8h.html#ab17083c5bc84987d4dda1172a4dab843"/>
         </topic>
         <topic label="solarsystem.h" href="solarsystem_8h.html">
+          <topic label="NOVAS_ID_TYPES" href="solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee"/>
           <topic label="novas_ephem_provider" href="solarsystem_8h.html#ac2ae695519a5b600a105243f4e30c3ab"/>
           <topic label="novas_planet_provider" href="solarsystem_8h.html#ae7eb9e64aa00ee757946488fa99351ec"/>
           <topic label="novas_planet_provider_hp" href="solarsystem_8h.html#a85ed597fa94ecf72653e64f4afa7f833"/>
+          <topic label="novas_id_type" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531">
+            <topic label="NOVAS_ID_NAIF" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db"/>
+            <topic label="NOVAS_ID_CALCEPH" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719"/>
+          </topic>
           <topic label="earth_sun_calc" href="solarsystem_8h.html#ab5d74f84f8e75e90dfc30ebde562d076"/>
           <topic label="earth_sun_calc_hp" href="solarsystem_8h.html#a3e6398e29968a48f9de090e82423750f"/>
           <topic label="enable_earth_sun_hp" href="solarsystem_8h.html#a279bca0519117cee9a3bd4382f38e7ad"/>
           <topic label="get_ephem_provider" href="solarsystem_8h.html#aa6fad38297a49ba78a6bd49cedf889b1"/>
+          <topic label="get_planet_provider" href="solarsystem_8h.html#a0f0a786b5614a788c02b37a462eae2d2"/>
+          <topic label="get_planet_provider_hp" href="solarsystem_8h.html#ae45badb450c1ca73920d982e12346c5b"/>
+          <topic label="naif_to_novas_planet" href="solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86"/>
+          <topic label="novas_to_dexxx_planet" href="solarsystem_8h.html#ac3eb54acf22dc155879163de89c6865e"/>
+          <topic label="novas_to_naif_planet" href="solarsystem_8h.html#ab51ac9bdf7736e1c1582e0981046daf3"/>
           <topic label="planet_eph_manager" href="solarsystem_8h.html#a71d2bfef45818d56e359205c57db0694"/>
           <topic label="planet_eph_manager_hp" href="solarsystem_8h.html#acacfbde919107d0514da5c7d8508917b"/>
           <topic label="planet_ephem_provider" href="solarsystem_8h.html#a61c60adf57c00d797fac94bb5841c271"/>
@@ -709,6 +727,12 @@
           <topic label="novas_transform_sky_pos" href="frames_8c.html#a88972e93665bb1903795bfff264c14f6"/>
           <topic label="novas_transform_vector" href="frames_8c.html#aadb7bc88119eed4ea54373a42e22a0d4"/>
         </topic>
+        <topic label="naif.c" href="naif_8c.html">
+          <topic label="__NOVAS_INTERNAL_API__" href="naif_8c.html#af46d8e51fc53d94b0d48c8201c3c84a6"/>
+          <topic label="naif_to_novas_planet" href="naif_8c.html#a1c4b3f67a3b82808dd16ae43dfaf0f86"/>
+          <topic label="novas_to_dexxx_planet" href="naif_8c.html#ac3eb54acf22dc155879163de89c6865e"/>
+          <topic label="novas_to_naif_planet" href="naif_8c.html#ab51ac9bdf7736e1c1582e0981046daf3"/>
+        </topic>
         <topic label="novas.c" href="novas_8c.html">
           <topic label="aberration" href="novas_8c.html#a033f1bf4b01e0e21a0e05e13c19c02f6"/>
           <topic label="accum_prec" href="novas_8c.html#ad1de5b481e41cf193c199bd0dc5084bd"/>
@@ -742,6 +766,8 @@
           <topic label="gcrs_to_j2000" href="novas_8c.html#aeea4b5085c7267714492fae6108fb975"/>
           <topic label="geo_posvel" href="novas_8c.html#a581ef7bb3d2261a105d7086fc1768c97"/>
           <topic label="get_ephem_provider" href="novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1"/>
+          <topic label="get_planet_provider" href="novas_8c.html#a0f0a786b5614a788c02b37a462eae2d2"/>
+          <topic label="get_planet_provider_hp" href="novas_8c.html#ae45badb450c1ca73920d982e12346c5b"/>
           <topic label="grav_def" href="novas_8c.html#a48f90ac20950507fad9b880a7f7f2383"/>
           <topic label="grav_planets" href="novas_8c.html#aa798460894aa44f8564569d9ea4bf1ef"/>
           <topic label="grav_vec" href="novas_8c.html#a08a008572e2746a70bec19739b5fb7e6"/>
@@ -837,6 +863,11 @@
           <topic label="novas_radio_refraction" href="refract_8c.html#a6b49f92f8f818f2272613e3432185a39"/>
           <topic label="novas_standard_refraction" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081"/>
         </topic>
+        <topic label="solsys-calceph.c" href="solsys-calceph_8c.html">
+          <topic label="novas_calceph_use_ids" href="solsys-calceph_8c.html#a5531b937a5bb5491cb475d2536346ad8"/>
+          <topic label="novas_use_calceph" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31"/>
+          <topic label="novas_use_calceph_planets" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331"/>
+        </topic>
         <topic label="solsys-ephem.c" href="solsys-ephem_8c.html">
           <topic label="planet_ephem_provider" href="solsys-ephem_8c.html#a61c60adf57c00d797fac94bb5841c271"/>
           <topic label="planet_ephem_provider_hp" href="solsys-ephem_8c.html#ae19eb2bcaaa2deb9fe27fba8090724e1"/>
@@ -917,7 +948,8 @@
     </topic>
     <topic label="Globals" href="globals.html">
       <topic label="All" href="globals.html">
-        <topic label="a" href="globals.html"/>
+        <topic label="_" href="globals.html"/>
+        <topic label="a" href="globals_a.html"/>
         <topic label="b" href="globals_b.html"/>
         <topic label="c" href="globals_c.html"/>
         <topic label="d" href="globals_d.html"/>

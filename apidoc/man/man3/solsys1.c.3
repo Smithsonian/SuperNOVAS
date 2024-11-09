@@ -56,7 +56,7 @@ U\&. S\&. Naval Observatory
 .SS "short planet_eph_manager (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for regular (reduced) precision applications\&.
 .PP
-This function and \fBplanet_ephemeris()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
+This function and \fBplanet_eph_manager_hp()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
 .PP
 The user must create the binary ephemeris files using software from JPL, and open the file using function \fBephem_open()\fP, prior to calling this function\&.
 .PP
@@ -111,7 +111,7 @@ References \fBplanet_eph_manager_hp()\fP\&.
 .SS "short planet_eph_manager_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for highest precision applications\&.
 .PP
-This function and \fBplanet_ephemeris()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
+This function and \fBplanet_eph_manager()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
 .PP
 The user must create the binary ephemeris files using software from JPL, and open the file using function \fBephem_open()\fP, prior to calling this function\&.
 .PP
