@@ -905,7 +905,10 @@ sufficient precision, you will have to integrate it with a suitable provider of 
 [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/app.html#/) or the 
 [Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html). Given the NOVAS C heritage, and some added 
 SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most flexible 
-(and preferred) to the least flexible (old ways).
+(and preferred) to the least flexible (old ways). 
+
+NASA/JPL also provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
+planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations.
 
  - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Built-in support for CALCEPH integration](#calceph-integration)
@@ -993,6 +996,13 @@ to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your 
     // Ooops something went wrong...
   }
 ```
+
+You can obtain readily available standard ephemeris files from 
+[NASA/JPL](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/), such as 
+[DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp), which covers the major planets, plus
+Sun, Moon, and Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate cutom ephemeris data for pretty much
+all known solar systems bodies, down to the tiniest rocks. All of these should work with the `solsys-calceph` plugin.
 
 And, when linking your application, don't forget to add `-lsolsys-calceph` to your link flags. That's all there is to
 it.
