@@ -1001,13 +1001,17 @@ int make_cat_object(const cat_entry *star, object *source) {
  *
  * @param name          Name of object. By default converted to upper-case, unless novas_case_sensitive()
  *                      was called with a non-zero argument. Max. SIZE_OF_OBJ_NAME long, including
- *                      termination.
- * @param num           Solar-system body ID number (e.g. NAIF)
+ *                      termination. If the ephemeris provider uses names, then the name should match
+ *                      those of the ephemeris provider -- otherwise it is not important.
+ * @param num           Solar-system body ID number (e.g. NAIF). The number should match the needs of the
+ *                      ephemeris provider used with NOVAS. (If the ephemeris provider is by name and not
+ *                      ID number, then the number here is not important).
  * @param[out] body     Pointer to structure to populate.
  * @return              0 if successful, or else -1 if the 'planet' pointer is NULL or the name
  *                      is too long.
  *
  *
+ * @sa set_ephem_provider()
  * @sa make_planet()
  * @sa make_cat_entry()
  * @sa place()

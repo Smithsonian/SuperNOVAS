@@ -36,7 +36,7 @@
  * Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C
  * for highest precision applications.
  *
- * This function and planet_ephemeris() were designed to work with the 1997 version of the
+ * This function and planet_eph_manager() were designed to work with the 1997 version of the
  * JPL ephemerides, as noted in the references.
  *
  * The user must create the binary ephemeris files using software from JPL, and open the file
@@ -128,7 +128,7 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
  * Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C
  * for regular (reduced) precision applications.
  *
- * This function and planet_ephemeris() were designed to work with the 1997 version of the JPL
+ * This function and planet_eph_manager_hp() were designed to work with the 1997 version of the JPL
  * ephemerides, as noted in the references.
  *
  * The user must create the binary ephemeris files using software from JPL, and open the file

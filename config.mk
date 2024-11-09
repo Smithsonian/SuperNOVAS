@@ -94,6 +94,14 @@ BUILTIN_SOLSYS_EPHEM ?= 1
 DEFAULT_SOLSYS ?= 3
 
 
+# Whether or not to build solsys-calceph libraries. You need the calceph 
+# development libraries (libcalceph.so and/or libcaclceph.a) installed in
+# LD_LIBRARY_PATH, and calceph.h in /usr/include or some other accessible
+# location (you may also  set an appropriate -I<path> option to CPPFLAGS 
+# prior to calling make).
+CALCEPH_SUPPORT ?= 0
+
+
 # cppcheck options for 'check' target. You can add additional options by
 # setting the CHECKEXTRA variable (e.g. in shell) prior to invoking 'make'.
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
@@ -142,7 +150,7 @@ ifeq ($(DEFAULT_SOLSYS), 3)
   CPPFLAGS += -DDEFAULT_SOLSYS=3
 endif
 
-SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/super.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/refract.c
+SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/super.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/refract.c $(SRC)/naif.c
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
   SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 

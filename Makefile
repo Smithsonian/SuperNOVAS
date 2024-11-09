@@ -55,6 +55,12 @@ ifneq ($(BUILTIN_SOLSYS_EPHEM),1)
   SHARED_TARGETS += $(LIB)/libsolsys-ephem.so
 endif
 
+ifeq ($(CALCEPH_SUPPORT),1)
+  CPPFLAGS += -DUSE_CALCEPH=1
+  SOLSYS_TARGETS += $(OBJ)/solsys-calceph.o
+  SHARED_TARGETS += $(LIB)/libsolsys-calceph.so
+endif
+
 # Default target for packaging with Linux distributions
 .PHONY: distro
 distro: $(SHARED_TARGETS) $(DOC_TARGETS)
@@ -106,6 +112,12 @@ $(LIB)/libsolsys1.so: $(LIB)/libsolsys1.so.$(SO_VERSION)
 
 $(LIB)/libsolsys2.so: $(LIB)/libsolsys2.so.$(SO_VERSION)
 
+$(LIB)/libsolsys3.so: $(LIB)/libsolsys2.so.$(SO_VERSION)
+
+$(LIB)/libsolsys-ephem.so: $(LIB)/libsolsys-ephem.so.$(SO_VERSION)
+
+$(LIB)/libsolsys-calceph.so: $(LIB)/libsolsys-calceph.so.$(SO_VERSION)
+
 $(LIB)/libnovas.so: $(LIB)/libsupernovas.so
 
 $(LIB)/libsolsys%.so.$(SO_VERSION): LDFLAGS += -L$(LIB) -lsupernovas
@@ -128,6 +140,11 @@ $(LIB)/libsolsys3.so.$(SO_VERSION): $(SRC)/solsys3.c | $(LIB)/libsupernovas.so
 # Shared library: libsolsys-ephem.so.1 (standalone solsys2.c functionality)
 $(LIB)/libsolsys-ephem.so.$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
 $(LIB)/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c | $(LIB)/libsupernovas.so
+
+# Shared library: libsolsys-calceph.so.1 (standalone solsys2.c functionality)
+$(LIB)/libsolsys-calceph.so.$(SO_VERSION): LDFLAGS += -lcalceph
+$(LIB)/libsolsys-calceph.so.$(SO_VERSION): $(SRC)/solsys-calceph.c | $(LIB)/libsupernovas.so
+
 
 # Static library: libnovas.a
 $(LIB)/libnovas.a: $(OBJECTS) | $(LIB) Makefile

@@ -633,6 +633,7 @@ int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @author Attila Kovacs
  * @since 1.0
  *
+ * @sa get_planet_provider()
  * @sa set_planet_provider_hp()
  * @sa solarsystem()
  * @sa NOVAS_REDUCED_ACCURACY
@@ -646,6 +647,23 @@ int set_planet_provider(novas_planet_provider func) {
 }
 
 /**
+ * Returns the custom (low-precision) ephemeris provider function for major planets
+ * (and Sun, Moon, SSB), if any.
+ *
+ * @return    the custom (low-precision) planet ephemeris provider function.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ *
+ * @sa set_planet_provider()
+ * @sa get_planet_provider_hp()
+ * @sa get_ephem_provider()
+ */
+novas_planet_provider get_planet_provider() {
+  return planet_call;
+}
+
+/**
  * Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris
  * calculations instead of the default solarsystem_hp() routine.
  *
@@ -656,6 +674,7 @@ int set_planet_provider(novas_planet_provider func) {
  * @author Attila Kovacs
  * @since 1.0
  *
+ * @sa get_planet_provider_hp()
  * @sa set_planet_provider()
  * @sa solarsystem_hp()
  * @sa NOVAS_FULL_ACCURACY
@@ -666,6 +685,23 @@ int set_planet_provider_hp(novas_planet_provider_hp func) {
 
   planet_call_hp = func;
   return 0;
+}
+
+/**
+ * Returns the custom high-precision ephemeris provider function for major planets
+ * (and Sun, Moon, SSB), if any.
+ *
+ * @return    the custom high-precision planet ephemeris provider function.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ *
+ * @sa set_planet_provider_hp()
+ * @sa get_planet_provider()
+ * @sa get_ephem_provider()
+ */
+novas_planet_provider_hp get_planet_provider_hp() {
+  return planet_call_hp;
 }
 
 /**
@@ -5597,6 +5633,8 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @author Attila Kovacs
  *
  * @sa get_ephem_provider()
+ * @sa set_planet_provider()
+ * @sa set_planet_provider_hp()
  * @sa ephemeris()
  *
  */
@@ -5612,6 +5650,8 @@ int set_ephem_provider(novas_ephem_provider func) {
  *            or satellites, ot NULL if no function was set via set_ephem_provider() previously.
  *
  * @sa set_ephem_provider()
+ * @sa get_planet_provider()
+ * @sa get_planet_provider_hp()
  * @sa ephemeris()
  *
  * @since 1.0

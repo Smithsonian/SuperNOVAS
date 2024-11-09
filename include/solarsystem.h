@@ -36,6 +36,23 @@
 
 #include "novas.h"
 
+/**
+ * Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types. JPL ephemerides
+ * use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a>
+ * to identify objects in the Solar-system, which is thus the most widely adopted convention for
+ * numbering Solar-system bodies. But other numbering systems also exists, for example the
+ * CALCEPH library uses its own convention for the numbering of asteroids.
+ *
+ * @sa object
+ * @sa NOVAS_EPHEM_OBJECT
+ */
+enum novas_id_type {
+  NOVAS_ID_NAIF = 0,  ///< If the ephemeris provider should use NAIF IDs
+  NOVAS_ID_CALCEPH    ///< If the ephemeris provider should use CALCEPH IDs
+};
+
+/// Number of different Solar-system body ID types enumerated
+#define NOVAS_ID_TYPES      (NOVAS_ID_CALCEPH + 1)
 
 /**
  * Provides the position and velocity of major planets (as well as the Sun, Moon, and
@@ -112,9 +129,18 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  * can provide their own, either as a default statically compiled readeph() implementation,
  * or else a dynamically defined one via ephemeris_set_reader().
  *
+ * Note, that implementations would typically use either the name or the ID argument
+ * to identify the object for which ephemeris data is requested. As such you only need
+ * to specify the one that is going to be used.
+ *
+ * @param name          The name of the solar-system body (in case the ephemeris provider is
+ *                      name based, otherwiase it may be NULL).
  * @param id            The ID number of the solar-system body for which the position in
- *                      desired.
- * @param name          The name of the solar-system body
+ *                      desired. (Typically a NAIF ID, or else an appropriate ID for the
+ *                      implementation -- corresponding minor planet objects should be created
+ *                      with the same type of ID.). If the ephemeris provider is name based
+ *                      the ID is not used an can be set to anything (-1 might be a good
+ *                      default).
  * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
  *                      Julian date for which to find the position and velocity. Typically
  *                      this may be the integer part of the Julian date for high-precision
@@ -289,7 +315,39 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
 
 short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
+
+// Added in v1.2 --------------------------------->
+
+novas_planet_provider get_planet_provider();
+
+novas_planet_provider_hp get_planet_provider_hp();
+
+// in naif.c
+enum novas_planet naif_to_novas_planet(long id);
+
+long novas_to_naif_planet(enum novas_planet id);
+
+long novas_to_dexxx_planet(enum novas_planet id);
+
+// in solsys-calceph.c
+#if USE_CALCEPH
+#  include "calceph.h"
+
+int novas_use_calceph(t_calcephbin *eph);
+
+int novas_use_calceph_planets(t_calcephbin *eph);
+
+int novas_calceph_use_ids(enum novas_id_type idtype);
+
+#endif /* USE_CALCEPH */
+
+
+
+
 /// \cond PRIVATE
+
+
+// <================= SuperNOVAS internals ======================>
 
 #  ifdef __NOVAS_INTERNAL_API__
 
@@ -319,4 +377,4 @@ extern novas_planet_provider_hp planet_call_hp;
 
 /// \endcond
 
-#endif
+#endif /* _SOLSYS_ */
