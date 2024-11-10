@@ -103,6 +103,14 @@ DEFAULT_SOLSYS ?= 3
 CALCEPH_SUPPORT ?= 0
 
 
+# Whether or not to build solsys-cspice libraries. You need the CSPICE 
+# development libraries (libcspice.so and/or libcspice.a) installed in
+# LD_LIBRARY_PATH, and CSPICE header files in /usr/include/cspice or some 
+# other accessible location (you may also  set an appropriate -I<path> 
+# option to CPPFLAGS prior to calling make).
+CSPICE_SUPPORT ?= 0
+
+
 # cppcheck options for 'check' target. You can add additional options by
 # setting the CHECKEXTRA variable (e.g. in shell) prior to invoking 'make'.
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
