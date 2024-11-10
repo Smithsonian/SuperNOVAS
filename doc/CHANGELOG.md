@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Changes expected for the next bug-fix release, expected around 1 December 2024.
+Changes expected for the next feature release, expected around 1 December 2024.
 
 ## Added
 
