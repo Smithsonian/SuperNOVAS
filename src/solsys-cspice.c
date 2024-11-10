@@ -290,7 +290,7 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
 
   target = id;
 
-  // Always return psoitions and velocities w.r.t. the SSB
+  // Always return positions and velocities w.r.t. the SSB
   if(origin)
     *origin = NOVAS_SSB;
 

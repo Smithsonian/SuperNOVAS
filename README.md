@@ -87,6 +87,8 @@ Outside contributions are very welcome. See
    from JPL and/or in INPOP 2.0/3.0 format.
  - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
    via from JPL.
+ - [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) for building CSPICE as a shared
+   library for dynamic linking.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
    of ephemeris data.
 
@@ -201,8 +203,15 @@ the necessary variables in the shell prior to invoking `make`. For example:
    setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
    `libsolsys-calceph.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
    modules requires an accessible installation of the CALCEPH development files (C headers and unversioned static or 
-   shared libraries depending on the needs of the build). You might want to set `LD_LIBRARY_PATH`, and/or `CPPFLAGS` 
-   to include an appropriate `-I<path>` option, to help locate these prior to calling `make`.
+   shared libraries depending on the needs of the build).
+   
+ - You can enable integration with the [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), by setting 
+   `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
+   `libsolsys-cspice.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
+   modules requires an accessible installation of the CSPICE development files (C headers, under a `cspice/` 
+   sub-folder in the header search path, and unversioned static or shared libraries depending on the needs of the 
+   build). You might want to check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) 
+   repository for building CSPICE as a shared library.
 
  - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
    file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
@@ -814,12 +823,18 @@ before that level of accuracy is reached.
    to specify whether `object.number` in `NOVAS_EPHEM_OBJECT` type objects is a NAIF ID (default) or else a CALCEPH ID 
    number of the Solar-system body.
    
+ - NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()` to use the 
+   NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
+   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup).
+   
  - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
    `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
    
  - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
 
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
+
+ 
 
 
 <a name="api-changes"></a>
@@ -913,8 +928,9 @@ NASA/JPL also provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations.
 
  - [Universal ephemeris data / service integration](#universal-ephemerides)
- - [Built-in support for CALCEPH integration](#calceph-integration)
- - [Built-in support for (old) JPL major planet ephemerides](#builtin-ephem-readers)
+ - [Optional support for CALCEPH integration](#calceph-integration)
+ - [Optional support for NAIF CSPICE toolkit integration](#cspice-integration)
+ - [Alternative support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
  - [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
 
 
@@ -964,18 +980,19 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 
 
 <a name="calceph-integration"></a>
-### Built-in support for CALCEPH integration
+### Optional support for CALCEPH integration
 
 The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides an easy-to-use access to JPL and
-INPOP ephemeris files from C/C++. As of version 1.2, we provide built-in support for integrating the CALCEPH C library 
+INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing the CALCEPH C library 
 with SuperNOVAS for handling Solar-system objects.
 
-Prior to building SuperNOVAS simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your shell. Depending on the 
+Prior to building SuperNOVAS simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your environment. Depending on the 
 build target, it will build `libsolsys-calceph.so[.1]` (target `shared`) or `libsolsys-calceph.a` (target `static`) 
 libraries, which provide the `novas_use_calceph()` and `novas_use_calceph_planets()` functions.
 
-Of course, you will need access to the CALCEPH C development files (C headers and unversioned libraries) for the build
-to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application code:
+Of course, you will need access to the CALCEPH C development files (C headers and unversioned `libcalceph.so` or `.a` 
+library) for the build to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application 
+code:
 
 ```c
   #include <calceph.h>
@@ -1003,16 +1020,63 @@ You can obtain readily available standard ephemeris files from
 [NASA/JPL](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/), such as 
 [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp), which covers the major planets, plus
 Sun, Moon, and Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
-[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate cutom ephemeris data for pretty much
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
 all known solar systems bodies, down to the tiniest rocks. All of these should work with the `solsys-calceph` plugin.
 
 And, when linking your application, don't forget to add `-lsolsys-calceph` to your link flags. That's all there is to
 it.
 
 
+<a name="cspice-integration"></a>
+### Optional support for NAIF CSPICE toolkit integration
+
+The [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) is the canonical standard library for JPL 
+ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing CSPICE with SuperNOVAS for 
+handling Solar-system objects.
+
+Prior to building SuperNOVAS simply set `CSPICE_SUPPORT` to 1 in `config.mk` or in your environment. Depending on the 
+build target, it will build `libsolsys-cspice.so[.1]` (target `shared`) or `libsolsys-cspice.a` (target `static`) 
+libraries, which provide the `novas_use_cspice()`, `novas_use_cspice_planets()`, and `novas_use_cspice_ephem()` 
+functions to enable CSPICE for providing data for all Solar-system sources, or for major planets only, or for other
+bodies only, respectively.
+
+Of course, you will need access to the CSPICE development files (C headers, installed under a `cspice/` directory 
+of an header search location, and the unversioned `libcspice.so` or `.a` library) for the build to succeed. You may 
+want to check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) GitHub 
+repository to help you build CSPICE with shared libraries and dynamically linked tools.
+
+Here is an example on how you might use CSPICE with SuperNOVAS in your application code:
+
+```c
+  // You can load the desired kernels for CSPICE, using the CSPICE API.
+  // E.g. load DE440s and the Mars satellites from /data/ephem:
+  furnsh_c("/data/ephem/de440s.bsp");
+  furnsh_c("/data/ephem/mar097.bsp");
+  ...
+  
+  // check for CSPICE errors
+  if(return_c()) {
+    // oops, one of the kernels must not have loaded...
+    ...
+  }
+  
+  // Then use CSPICE as your SuperNOVAS ephemeris provider
+  novas_use_cspice();
+```
+
+You can obtain readily available standard ephemeris files from 
+[NASA/JPL](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/), such as 
+[DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp), which covers the major planets, plus
+Sun, Moon, and Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
+all known solar systems bodies, down to the tiniest rocks. All of these will work with the `solsys-cspice` plugin.
+
+And, when linking your application, don't forget to add `-lsolsys-cspice` to your link flags. That's all there is to
+it.
+
 
 <a name="builtin-ephem-readers"></a>
-### Built-in support for (old) JPL major planet ephemerides
+### Alternative support for (older) JPL major planet ephemerides
 
 If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
 distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
