@@ -32,6 +32,8 @@ Changes expected for the next bug-fix release, expected around 1 December 2024.
    the CALCEPH development files (C headers and unversioned static or shared libraries depending on the needs of the 
    build).
    
+ - #87: Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
+   
  - NOVAS-NAIF conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()` (planet centers), 
    `novas_to_dexxx_planet()` (mixed planet center/barycenter for DExxx ephemeris files), and the inverse
    `naif_to_novas_planet()`.
