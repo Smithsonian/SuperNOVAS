@@ -907,7 +907,7 @@ sufficient precision, you will have to interface it to a suitable provider of ep
 SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most practical
 (and preferred) to the least so (the old ways). 
 
-NASA/JPL also provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
+NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
 example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
 and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
