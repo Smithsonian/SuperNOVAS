@@ -661,6 +661,8 @@ Functions</h2></td></tr>
 <tr class="separator:a01f98b2b8033c8dbacaeab37e9198e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4511a80a1defbb1e1fdc29c289e7de4" id="r_ae4511a80a1defbb1e1fdc29c289e7de4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#ae4511a80a1defbb1e1fdc29c289e7de4">novas_optical_refraction</a> (double jd_tt, const <a class="el" href="structon__surface.html">on_surface</a> *loc, enum <a class="el" href="novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468">novas_refraction_type</a> type, double el)</td></tr>
 <tr class="separator:ae4511a80a1defbb1e1fdc29c289e7de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92e869b101bd41e31ac6d3a2419bb0a3" id="r_a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a92e869b101bd41e31ac6d3a2419bb0a3">novas_planet_for_name</a> (const char *name)</td></tr>
+<tr class="separator:a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b49f92f8f818f2272613e3432185a39" id="r_a6b49f92f8f818f2272613e3432185a39"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a6b49f92f8f818f2272613e3432185a39">novas_radio_refraction</a> (double jd_tt, const <a class="el" href="structon__surface.html">on_surface</a> *loc, enum <a class="el" href="novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468">novas_refraction_type</a> type, double el)</td></tr>
 <tr class="separator:a6b49f92f8f818f2272613e3432185a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c8f2d5e1ad2daed78d1bd7991fdba4" id="r_a37c8f2d5e1ad2daed78d1bd7991fdba4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a37c8f2d5e1ad2daed78d1bd7991fdba4">novas_set_split_time</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale, long ijd, double fjd, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time)</td></tr>
@@ -7816,6 +7818,37 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <a class="el" href="novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7">refract_astro()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81aaf3bef1a45c5d59df8e779da09cecb68">NOVAS_WEATHER_AT_LOCATION</a>.</p>
+
+</div>
+</div>
+<a id="a92e869b101bd41e31ac6d3a2419bb0a3" name="a92e869b101bd41e31ac6d3a2419bb0a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92e869b101bd41e31ac6d3a2419bb0a3">&#9670;&#160;</a></span>novas_planet_for_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> novas_planet_for_name </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The planet name, or that for the "Sun", "Moon" or "SSB" (case insensitive). The spelled out "Solar System Barycenter" is also recognized with either spaces, hyphens ('-') or underscores ('_') separating the case insensitive words. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The NOVAS major planet ID, or -1 (errno set to EINVAL) if the input name is NULL or if there is no match for the name provided.</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>.</p>
 
 </div>
 </div>

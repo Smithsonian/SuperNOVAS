@@ -614,6 +614,9 @@ include/novas.h
 .RI "double \fBnovas_optical_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
 .br
 .ti -1c
+.RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
+.br
+.ti -1c
 .RI "double \fBnovas_radio_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
 .br
 .ti -1c
@@ -5428,6 +5431,37 @@ Returns an optical refraction correction using the weather parameters defined fo
 
 .PP
 References \fBNOVAS_WEATHER_AT_LOCATION\fP\&.
+.SS "enum \fBnovas_planet\fP novas_planet_for_name (const char * name)"
+Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The planet name, or that for the 'Sun', 'Moon' or 'SSB' (case insensitive)\&. The spelled out 'Solar System Barycenter' is also recognized with either spaces, hyphens ('-') or underscores ('_') separating the case insensitive words\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The NOVAS major planet ID, or -1 (errno set to EINVAL) if the input name is NULL or if there is no match for the name provided\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_planet()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, and \fBNOVAS_SSB\fP\&.
 .SS "double novas_radio_refraction (double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el)"
 Atmospheric refraction model for radio wavelengths (Berman & Rockwell 1976)\&. It uses the weather parameters defined for the location, including humidity\&. As such make sure the weather data is fully defined, and that the humidity was explicitly set after calling \fC\fBmake_on_surface()\fP\fP\&.
 .PP

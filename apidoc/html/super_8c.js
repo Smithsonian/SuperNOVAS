@@ -1,5 +1,6 @@
 var super_8c =
 [
+    [ "_BSD_SOURCE", "super_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73", null ],
     [ "app_to_cirs_ra", "super_8c.html#a3fa57a154f2f423612736e5e3a5addbf", null ],
     [ "cirs_to_app_ra", "super_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b", null ],
     [ "cirs_to_itrs", "super_8c.html#aa2768d89d499a7155f90a6fd8c176d8d", null ],
@@ -21,6 +22,7 @@ var super_8c =
     [ "make_ephem_object", "super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2", null ],
     [ "make_redshifted_object", "super_8c.html#ae579a49d84696a913fd0d9f348bb5b11", null ],
     [ "make_solar_system_observer", "super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529", null ],
+    [ "novas_planet_for_name", "super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3", null ],
     [ "novas_v2z", "super_8c.html#aa54cd00024b294d38fa29433c017c65f", null ],
     [ "novas_z_add", "super_8c.html#a493ab751eee5804db77157c37e94e5c3", null ],
     [ "novas_z_inv", "super_8c.html#a1130ad2ce520e948c71f03a25a713075", null ],

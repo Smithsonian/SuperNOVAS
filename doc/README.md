@@ -802,6 +802,8 @@ before that level of accuracy is reached.
    
  - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
 
+ - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
+
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API

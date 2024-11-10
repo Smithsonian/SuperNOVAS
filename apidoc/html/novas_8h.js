@@ -279,6 +279,7 @@ var novas_8h =
     [ "novas_make_transform", "novas_8h.html#a4d179c8573319fc25c775ce56ba055dc", null ],
     [ "novas_offset_time", "novas_8h.html#a01f98b2b8033c8dbacaeab37e9198e91", null ],
     [ "novas_optical_refraction", "novas_8h.html#ae4511a80a1defbb1e1fdc29c289e7de4", null ],
+    [ "novas_planet_for_name", "novas_8h.html#a92e869b101bd41e31ac6d3a2419bb0a3", null ],
     [ "novas_radio_refraction", "novas_8h.html#a6b49f92f8f818f2272613e3432185a39", null ],
     [ "novas_set_split_time", "novas_8h.html#a37c8f2d5e1ad2daed78d1bd7991fdba4", null ],
     [ "novas_set_time", "novas_8h.html#ac272a018a213965f07b21ac6facb4a62", null ],

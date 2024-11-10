@@ -21,6 +21,8 @@ Changes expected for the next bug-fix release, expected around 1 December 2024\&
 .IP "\(bu" 2
 #83: CALCEPH integration: \fC\fBnovas_use_calceph()\fP\fP and/or \fC\fBnovas_use_calceph_planets()\fP\fP to specify and use ephemeris data via CALCEPH for Solar-system sources in general, and for major planets specifically; and \fC\fBnovas_calceph_use_ids()\fP\fP to specify whether \fC\fBobject\&.number\fP\fP in \fCNOVAS_EPHEM_OBJECT\fP type objects is a NAIF ID (default) or else a CALCEPH ID number of the Solar-system body\&. These functions are provided by the \fClibsolsys-calceph\&.so[\&.1]\fP and/or \fC\&.a\fP plugin libraries, which are built contingent on the \fCCALCEPH_SUPPORT\fP variable being set to 1 prior to the build\&. The build of the plugin module requires an accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries depending on the needs of the build)\&.
 .IP "\(bu" 2
+#87: Added \fC\fBnovas_planet_for_name()\fP\fP function to return the NOVAS planet ID for a given (case insensitive) name\&.
+.IP "\(bu" 2
 NOVAS-NAIF conversions for major planets (and Sun, Moon, SSB): \fC\fBnovas_to_naif_planet()\fP\fP (planet centers), \fC\fBnovas_to_dexxx_planet()\fP\fP (mixed planet center/barycenter for DExxx ephemeris files), and the inverse \fC\fBnaif_to_novas_planet()\fP\fP\&.
 .IP "\(bu" 2
 Added \fC\fBget_planet_provider()\fP\fP and \fC\fBget_planet_provider_hp()\fP\fP functions for convenience to return the \fC\fBsolarsystem()\fP\fP / \fC\fBsolarsystem_hp()\fP\fP type custom planet ephemeris provider functions currently configured, so they may be used directly, outside of \fC\fBephemeris()\fP\fP calls\&.

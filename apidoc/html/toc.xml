@@ -573,6 +573,7 @@
           <topic label="novas_make_transform" href="novas_8h.html#a4d179c8573319fc25c775ce56ba055dc"/>
           <topic label="novas_offset_time" href="novas_8h.html#a01f98b2b8033c8dbacaeab37e9198e91"/>
           <topic label="novas_optical_refraction" href="novas_8h.html#ae4511a80a1defbb1e1fdc29c289e7de4"/>
+          <topic label="novas_planet_for_name" href="novas_8h.html#a92e869b101bd41e31ac6d3a2419bb0a3"/>
           <topic label="novas_radio_refraction" href="novas_8h.html#a6b49f92f8f818f2272613e3432185a39"/>
           <topic label="novas_set_split_time" href="novas_8h.html#a37c8f2d5e1ad2daed78d1bd7991fdba4"/>
           <topic label="novas_set_time" href="novas_8h.html#ac272a018a213965f07b21ac6facb4a62"/>
@@ -897,6 +898,7 @@
           <topic label="sun_eph" href="solsys3_8c.html#adc71aa5ed911942370abde4cf9b7c2dc"/>
         </topic>
         <topic label="super.c" href="super_8c.html">
+          <topic label="_BSD_SOURCE" href="super_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73"/>
           <topic label="app_to_cirs_ra" href="super_8c.html#a3fa57a154f2f423612736e5e3a5addbf"/>
           <topic label="cirs_to_app_ra" href="super_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b"/>
           <topic label="cirs_to_itrs" href="super_8c.html#aa2768d89d499a7155f90a6fd8c176d8d"/>
@@ -918,6 +920,7 @@
           <topic label="make_ephem_object" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2"/>
           <topic label="make_redshifted_object" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11"/>
           <topic label="make_solar_system_observer" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
+          <topic label="novas_planet_for_name" href="super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3"/>
           <topic label="novas_v2z" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f"/>
           <topic label="novas_z_add" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3"/>
           <topic label="novas_z_inv" href="super_8c.html#a1130ad2ce520e948c71f03a25a713075"/>

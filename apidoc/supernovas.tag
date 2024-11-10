@@ -1696,6 +1696,13 @@
       <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
     </member>
     <member kind="function">
+      <type>enum novas_planet</type>
+      <name>novas_planet_for_name</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a92e869b101bd41e31ac6d3a2419bb0a3</anchor>
+      <arglist>(const char *name)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>novas_radio_refraction</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -3806,6 +3813,13 @@
     <name>super.c</name>
     <path>src/</path>
     <filename>super_8c.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>_BSD_SOURCE</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>ad3d8a3bd0c0b677acef144f2c2ef6d73</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>double</type>
       <name>app_to_cirs_ra</name>
@@ -3952,6 +3966,13 @@
       <anchorfile>super_8c.html</anchorfile>
       <anchor>a9c3f1a1bc3fd9ac6d211806913d2d529</anchor>
       <arglist>(const double *sc_pos, const double *sc_vel, observer *obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_planet</type>
+      <name>novas_planet_for_name</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>a92e869b101bd41e31ac6d3a2419bb0a3</anchor>
+      <arglist>(const char *name)</arglist>
     </member>
     <member kind="function">
       <type>double</type>

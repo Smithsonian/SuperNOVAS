@@ -6,6 +6,14 @@ src/super.c
 .SH SYNOPSIS
 .br
 .PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_BSD_SOURCE\fP"
+.br
+.RI "strcasecmp() feature macro for glibc <= 2\&.19 "
+.in -1c
 .SS "Functions"
 
 .in +1c
@@ -71,6 +79,9 @@ src/super.c
 .br
 .ti -1c
 .RI "int \fBmake_solar_system_observer\fP (const double *sc_pos, const double *sc_vel, \fBobserver\fP *obs)"
+.br
+.ti -1c
+.RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
 .br
 .ti -1c
 .RI "double \fBnovas_v2z\fP (double vel)"
@@ -1070,6 +1081,37 @@ Attila Kovacs
 
 .PP
 References \fBmake_in_space()\fP, \fBmake_observer()\fP, and \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP\&.
+.SS "enum \fBnovas_planet\fP novas_planet_for_name (const char * name)"
+Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP The planet name, or that for the 'Sun', 'Moon' or 'SSB' (case insensitive)\&. The spelled out 'Solar System Barycenter' is also recognized with either spaces, hyphens ('-') or underscores ('_') separating the case insensitive words\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The NOVAS major planet ID, or -1 (errno set to EINVAL) if the input name is NULL or if there is no match for the name provided\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_planet()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, and \fBNOVAS_SSB\fP\&.
 .SS "double novas_v2z (double vel)"
 Converts a radial recession velocity to a redshift value (z = f / f\*<rest\*> )\&. It is based on the relativistic formula: 
 .PP
