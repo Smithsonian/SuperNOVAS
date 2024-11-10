@@ -1035,15 +1035,14 @@ Possibly the most universal way to integrate ephemeris data with SuperNOVAS is t
 ```
 
 which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, 
-and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer locations. 
-The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate 
-for the implementation). The positions and velocities may be returned either relative to the SSB or relative to the 
-heliocenter, and accordingly, your function should set the value pointed at by origin to `NOVAS_BARYCENTER` or 
-`NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
-AU/day respectively. 
+and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer 
+locations. The function can use either the ID number or the name to identify the object or file (whatever is the most 
+appropriate for the implementation and for the supplied parameters). The positions and velocities may be returned 
+either relative to the SSB or relative to the  heliocenter, and accordingly, your function should set the value 
+pointed at by origin to `NOVAS_BARYCENTER` or `NOVAS_HELIOCENTER` accordingly. Positions and velocities are 
+rectangular ICRS _x,y,z_ vectors in units of AU and AU/day respectively. 
 
-This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the
-[CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
+This way you can easily integrate current ephemeris data, e.g. for the Minor Planet Center (MPC), or whatever other 
 ephemeris service you prefer.
 
 Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
@@ -1053,7 +1052,7 @@ Once you have your adapter function, you can set it as your ephemeris service vi
 ```
 
 By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
-major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use the same function for the mentioned 
+major planets, the Sun, Moon, and the Solar System Barycenter). But, you can use the same function for the mentioned 
 'major planets' also via:
 
 ```c

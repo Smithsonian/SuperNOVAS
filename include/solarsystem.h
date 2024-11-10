@@ -133,14 +133,13 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  * to identify the object for which ephemeris data is requested. As such you only need
  * to specify the one that is going to be used.
  *
- * @param name          The name of the solar-system body (in case the ephemeris provider is
- *                      name based, otherwiase it may be NULL).
+ * @param name          The name of the solar-system body (in case the ephemeris provider
+ *                      supports lookup by name), or NULL to force ID based lookup.
  * @param id            The ID number of the solar-system body for which the position in
  *                      desired. (Typically a NAIF ID, or else an appropriate ID for the
  *                      implementation -- corresponding minor planet objects should be created
- *                      with the same type of ID.). If the ephemeris provider is name based
- *                      the ID is not used an can be set to anything (-1 might be a good
- *                      default).
+ *                      with the same type of ID.). A value of -1 can be used to force name
+ *                      based lookups (provided the implementation supports it).
  * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
  *                      Julian date for which to find the position and velocity. Typically
  *                      this may be the integer part of the Julian date for high-precision
