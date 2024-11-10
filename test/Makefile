@@ -24,6 +24,14 @@ ifeq ($(CALCEPH_SUPPORT), 1)
   COVFILES += solsys-calceph.c.gcov
 endif
 
+ifeq ($(CSPICE_SUPPORT), 1)
+  CPPFLAGS += -DUSE_CSPICE=1
+  LDFLAGS += -lcspice
+  OBJECTS += solsys-cspice.o
+  TESTS += test-cspice
+  COVFILES += solsys-cspice.c.gcov
+endif
+
 .PHONY: run
 run: clean-cov clean-data $(TESTS) data ../cio_ra.bin bad-data
 	./test-compat
@@ -36,6 +44,9 @@ run: clean-cov clean-data $(TESTS) data ../cio_ra.bin bad-data
 	./test-errors
 ifeq ($(CALCEPH_SUPPORT), 1)
 	./test-calceph ephem
+endif
+ifeq ($(CSPICE_SUPPORT), 1)
+	./test-cspice ephem
 endif
 
 cov: cov.info
@@ -92,6 +103,8 @@ test-%.o: src/test-%.c | Makefile
 
 
 test-calceph: LDFLAGS += -lcalceph
+
+test-cspice: LDFLAGS += -lcspice
 
 .PHONY: clean-test
 clean-test:

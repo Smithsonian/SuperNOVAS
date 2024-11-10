@@ -28,7 +28,7 @@
 #define NORM_POS                    (1e3 / NOVAS_AU)
 
 /// Multiplicative normalization for the velocities returned by km/s to AU/day
-#define NORM_VEL                    (NORM_POS / 86400.0)
+#define NORM_VEL                    (NORM_POS * 86400.0)
 /// \endcond
 
 /// Semaphore for thread-safe access of ephemerides
@@ -323,6 +323,10 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
 /**
  * Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library.
  *
+ * CSPICE is configured to suppress error messages and to not exit on errors, since we will check
+ * errors and handle them ourselves. You can adjust the behavior after this call with the
+ * CSPICE errprt_c() and erract_c() functions, respectively.
+ *
  * @return  0
  *
  * @sa novas_use_cspice_planets()
@@ -333,6 +337,8 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
  * @since 1.2
  */
 int novas_use_cspice_ephem() {
+  errprt_c("SET", 100, "NONE");       // Suppress CSPICE error messages
+  erract_c("SET", 0, "RETURN");       // Do not exit in case of CSPICE errors.
   set_ephem_provider(novas_cspice);
   return 0;
 }
@@ -340,6 +346,10 @@ int novas_use_cspice_ephem() {
 /**
  * Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, and SSB) using the
  * NAIF CSPICE library.
+ *
+ * CSPICE is configured to suppress error messages and to not exit on errors, since we will check
+ * errors and handle them ourselves. You can adjust the behavior after this call with the
+ * CSPICE errprt_c() and erract_c() functions, respectively.
  *
  * @return  0
  *
@@ -352,6 +362,8 @@ int novas_use_cspice_ephem() {
  * @since 1.2
  */
 int novas_use_cspice_planets() {
+  errprt_c("SET", 100, "NONE");       // Suppress CSPICE error messages
+  erract_c("SET", 0, "RETURN");       // Do not exit in case of CSPICE errors.
   set_planet_provider_hp(planet_cspice_hp);
   set_planet_provider(planet_cspice);
   return 0;
@@ -360,6 +372,10 @@ int novas_use_cspice_planets() {
 /**
  * Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and
  * NOVAS_EPHEM_OBJECT types).
+ *
+ * CSPICE is configured to suppress error messages and to not exit on errors, since we will check
+ * errors and handle them ourselves. You can adjust the behavior after this call with the
+ * CSPICE errprt_c() and erract_c() functions, respectively.
  *
  * @return  0
  *
