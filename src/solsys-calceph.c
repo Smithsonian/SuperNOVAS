@@ -113,7 +113,7 @@ int novas_calceph_use_ids(enum novas_id_type idtype) {
 
 
 /**
- * Provides an interface between the CALCEPG C library and NOVAS-C for regular (reduced) precision
+ * Provides an interface between the CALCEPH C library and NOVAS-C for regular (reduced) precision
  * applications. The user must set the CALCEPH ephemeris binary data to use using the
  * novas_use_calceph() or novas_use_calceph_planet() to activate the desired CALCEPH ephemeris
  * data prior to use.
@@ -210,7 +210,7 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
 }
 
 /**
- * Provides an interface between the CALCEPG C library and NOVAS-C for regular (reduced) precision
+ * Provides an interface between the CALCEPH C library and NOVAS-C for regular (reduced) precision
  * applications. The user must set the CALCEPH ephemeris binary data to use using the
  * novas_use_calceph() or novas_use_calceph_planet() to activate the desired CALCEPH ephemeris
  * data prior to use.
@@ -331,7 +331,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
     mutex_unlock(&sem_bodies);
 
   if(!success)
-    return novas_error(3, EAGAIN, fn, "calceph_compute() failure");
+    return novas_error(3, EAGAIN, fn, "calceph_compute() failure (name='%s', NAIF=%ld)", name ? name : "<null>", id);
 
   for(i = 3; --i >= 0;) {
     if(pos) pos[i] = pv[i] * NORM_POS;
@@ -388,10 +388,8 @@ int novas_use_calceph(t_calcephbin *eph) {
 }
 
 /**
- * Sets a ephemeris provider for the major planets (and Sun, Moon, and SSB) using the CALCEPH C library and
- * the specified ephemeris data.
- *
- * The call also make CALCEPH the default ephemeris providers for major planets.
+ * Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major planets
+ * (and Sun, Moon, and SSB).
  *
  * @param eph   Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, and SSB) that
  *              have been opened.
