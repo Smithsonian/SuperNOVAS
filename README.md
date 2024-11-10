@@ -43,7 +43,7 @@ This document has been updated for the `v1.2` and later releases.
  - [Example usage](#examples)
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
- - [External Solar-system ephemeris data or services](#solarsystem)
+ - [Incorporating Solar-system ephemeris data or services](#solarsystem)
  - [Runtime debug support](#debug-support)
  - [Release schedule](#release-schedule)
 
@@ -915,17 +915,21 @@ before that level of accuracy is reached.
 -----------------------------------------------------------------------------
 
 <a name="solarsystem"></a>
-## External Solar-system ephemeris data or services
+## Incorporating Solar-system ephemeris data or services
 
 If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
-sufficient precision, you will have to integrate it with a suitable provider of ephemeris data, such as 
+sufficient precision, you will have to interface it to a suitable provider of ephemeris data, such as 
 [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/app.html#/) or the 
 [Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html). Given the NOVAS C heritage, and some added 
-SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most flexible 
-(and preferred) to the least flexible (old ways). 
+SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most practical
+(and preferred) to the least so (the old ways). 
 
 NASA/JPL also provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
-planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations.
+planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
+example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
+and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
+all known solar systems bodies, down to the tiniest rocks. 
 
  - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Optional support for CALCEPH integration](#calceph-integration)
@@ -1016,15 +1020,8 @@ code:
   }
 ```
 
-You can obtain readily available standard ephemeris files from 
-[NASA/JPL](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/), such as 
-[DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp), which covers the major planets, plus
-Sun, Moon, and Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
-[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
-all known solar systems bodies, down to the tiniest rocks. All of these should work with the `solsys-calceph` plugin.
-
-And, when linking your application, don't forget to add `-lsolsys-calceph` to your link flags. That's all there is to
-it.
+All modern JPL (SPK) ephemeris files should work with the `solsys-calceph` plugin. When linking your application, 
+don't forget to add `-lsolsys-calceph` to your link flags. That's all there is to it.
 
 
 <a name="cspice-integration"></a>
@@ -1064,15 +1061,8 @@ Here is an example on how you might use CSPICE with SuperNOVAS in your applicati
   novas_use_cspice();
 ```
 
-You can obtain readily available standard ephemeris files from 
-[NASA/JPL](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/), such as 
-[DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp), which covers the major planets, plus
-Sun, Moon, and Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
-[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
-all known solar systems bodies, down to the tiniest rocks. All of these will work with the `solsys-cspice` plugin.
-
-And, when linking your application, don't forget to add `-lsolsys-cspice` to your link flags. That's all there is to
-it.
+All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking your application, don't forget to add 
+`-lsolsys-cspice` to your link flags. That's all there is to it.
 
 
 <a name="builtin-ephem-readers"></a>
