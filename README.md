@@ -924,63 +924,18 @@ sufficient precision, you will have to interface it to a suitable provider of ep
 SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most practical
 (and preferred) to the least so (the old ways). 
 
-NASA/JPL also provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
+NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
 example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
 and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
 [JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
 all known solar systems bodies, down to the tiniest rocks. 
 
- - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Optional support for CALCEPH integration](#calceph-integration)
  - [Optional support for NAIF CSPICE toolkit integration](#cspice-integration)
- - [Alternative support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
- - [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
-
-
-<a name="universal-ephemerides"></a>
-### Universal ephemeris data / service integration 
-
-Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
-`novas_ephem_provider`, e.g.:
-
-```c
- int my_ephem_reader(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
-                     enum novas_origin *origin, double *pos, double *vel) {
-   // Your custom ephemeris reader implementation here
-   ...
- }
-```
-
-which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, 
-and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer locations. 
-The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate 
-for the implementation). The positions and velocities may be returned either relative to the SSB or relative to the 
-heliocenter, and accordingly, your function should set the value pointed at by origin to `NOVAS_BARYCENTER` or 
-`NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
-AU/day respectively. 
-
-This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the
-[CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
-ephemeris service you prefer.
-
-Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
-
-```c
- set_ephem_provider(my_ephem_reader);
-```
-
-By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
-major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use the same function for the mentioned 
-'major planets' also via:
-
-```c
- set_planet_provider(planet_ephem_provider);
- set_planet_provider_hp(planet_ephem_provider_hp);
-```
-
-provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
-`solsys-ephem.c` explicitly. Easy-peasy.
+ - [Universal ephemeris data / service integration](#universal-ephemerides)
+ - [Legacy support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
+ - [Legacy linking of custom ephemeris functions](#explicit-ephem-linking)
 
 
 <a name="calceph-integration"></a>
@@ -1065,8 +1020,54 @@ All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking y
 `-lsolsys-cspice` to your link flags. That's all there is to it.
 
 
+<a name="universal-ephemerides"></a>
+### Universal ephemeris data / service integration 
+
+Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
+`novas_ephem_provider`, e.g.:
+
+```c
+ int my_ephem_reader(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
+                     enum novas_origin *origin, double *pos, double *vel) {
+   // Your custom ephemeris reader implementation here
+   ...
+ }
+```
+
+which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, 
+and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer locations. 
+The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate 
+for the implementation). The positions and velocities may be returned either relative to the SSB or relative to the 
+heliocenter, and accordingly, your function should set the value pointed at by origin to `NOVAS_BARYCENTER` or 
+`NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
+AU/day respectively. 
+
+This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the
+[CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
+ephemeris service you prefer.
+
+Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
+
+```c
+ set_ephem_provider(my_ephem_reader);
+```
+
+By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
+major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use the same function for the mentioned 
+'major planets' also via:
+
+```c
+ set_planet_provider(planet_ephem_provider);
+ set_planet_provider_hp(planet_ephem_provider_hp);
+```
+
+provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
+`solsys-ephem.c` explicitly. Easy-peasy.
+
+
+
 <a name="builtin-ephem-readers"></a>
-### Alternative support for (older) JPL major planet ephemerides
+### Legacy support for (older) JPL major planet ephemerides
 
 If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
 distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
@@ -1128,7 +1129,7 @@ planetary ephemeris data with SuperNOVAS.
 
 
 <a name="explicit-ephem-linking"></a>
-### Explicit linking of custom ephemeris functions
+### Legacy linking of custom ephemeris functions
 
 Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the 
 `DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own implementation of
