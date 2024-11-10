@@ -76,7 +76,8 @@ static int test_calceph() {
 
   sprintf(filename, "%s/" PLANET_EPH, prefix);
   eph = calceph_open(filename);
-  if(novas_use_calceph(eph)) return 1;
+
+  if(check("calceph:use", 0, novas_use_calceph(eph))) return 1;
 
   if(!is_ok("calceph:earth", ephemeris(jd2, &earth, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
   earth_sun_calc(jd, NOVAS_EARTH, NOVAS_BARYCENTER, pos0, vel0);
@@ -109,11 +110,11 @@ static int test_calceph_planet() {
 
   sprintf(filename, "%s/" MARS_EPH, prefix);
   eph = calceph_open(filename);
-  if(novas_use_calceph(eph)) return 1;
+  if(check("calceph_planet:use", 0, novas_use_calceph(eph))) return 1;
 
   sprintf(filename, "%s/" PLANET_EPH, prefix);
   eph = calceph_open(filename);
-  if(novas_use_calceph_planets(eph)) return 1;
+  if(check("calceph_planet:use_planets", 0, novas_use_calceph_planets(eph))) return 1;
 
   if(!is_ok("calceph_planet:ssb", ephemeris(jd2, &ssb, NOVAS_BARYCENTER, NOVAS_REDUCED_ACCURACY, pos, vel))) return 1;
   if(!is_ok("calceph_planet:ssb:pos", check_equal_pos(pos, pos0, 1e-5))) return 1;
@@ -179,6 +180,7 @@ static int test_errors() {
   double pos[3], vel[3];
   double jd = NOVAS_JD_J2000;
   double jd2[2] = { jd, 0.0 };
+  int n = 0;
 
   object earth, phobos;
   novas_planet_provider_hp pl = get_planet_provider_hp();
@@ -187,28 +189,21 @@ static int test_errors() {
   make_planet(NOVAS_EARTH, &earth);
   make_ephem_object("Phobos", 401, &phobos);
 
-  if(check("errors:tdb", -1, pl(NULL, NOVAS_MARS, NOVAS_BARYCENTER, pos, vel))) return 1;
-
-  if(check("errors:planet:number:-1", 1, pl(jd2, -1, NOVAS_BARYCENTER, pos, vel))) return 1;
-
-  if(check("errors:planet:number:hi", 1, pl(jd2, NOVAS_PLANETS, NOVAS_BARYCENTER, pos, vel))) return 1;
-
-  if(check("errors:planet:origin", 2, pl(jd2, NOVAS_MARS, -1, pos, vel))) return 1;
+  if(check("errors:tdb", -1, pl(NULL, NOVAS_MARS, NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:planet:number:-1", 1, pl(jd2, -1, NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:planet:number:hi", 1, pl(jd2, NOVAS_PLANETS, NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:planet:origin", 2, pl(jd2, NOVAS_MARS, -1, pos, vel))) n++;
 
   calceph_seterrorhandler(3, dummy_error_handler);
-
-  if(check("errors:body:name:NULL", -1, eph(NULL, -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
-
-  if(check("errors:body:name:empty", -1, eph("", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
-
-  if(check("errors:body:name:nomatch", 1, eph("blah", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
+  if(check("errors:body:name:NULL", -1, eph(NULL, -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:body:name:empty", -1, eph("", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:body:name:nomatch", 1, eph("blah", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
 
   jd2[0] = -999999.0;
-  if(check("errors:planet:time", 3, pl(jd2, NOVAS_MARS, NOVAS_BARYCENTER, pos, vel))) return 1;
+  if(check("errors:planet:time", 3, pl(jd2, NOVAS_MARS, NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:body:time", 3, eph("phobos", 401, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
 
-  if(check("errors:body:time", 3, eph("phobos", 401, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
-
-  return 0;
+  return n;
 }
 
 

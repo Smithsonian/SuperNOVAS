@@ -316,7 +316,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
     id = i;
   }
 
-  // Always return psoitions and velocities w.r.t. the SSB
+  // Always return positions and velocities w.r.t. the SSB
   if(origin)
     *origin = NOVAS_SSB;
 

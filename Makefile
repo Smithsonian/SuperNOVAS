@@ -61,6 +61,12 @@ ifeq ($(CALCEPH_SUPPORT),1)
   SHARED_TARGETS += $(LIB)/libsolsys-calceph.so
 endif
 
+ifeq ($(CSPICE_SUPPORT),1)
+  CPPFLAGS += -DUSE_CSPICE=1
+  SOLSYS_TARGETS += $(OBJ)/solsys-cspice.o
+  SHARED_TARGETS += $(LIB)/libsolsys-cspice.so
+endif
+
 # Default target for packaging with Linux distributions
 .PHONY: distro
 distro: $(SHARED_TARGETS) $(DOC_TARGETS)
@@ -118,6 +124,8 @@ $(LIB)/libsolsys-ephem.so: $(LIB)/libsolsys-ephem.so.$(SO_VERSION)
 
 $(LIB)/libsolsys-calceph.so: $(LIB)/libsolsys-calceph.so.$(SO_VERSION)
 
+$(LIB)/libsolsys-cspice.so: $(LIB)/libsolsys-cspice.so.$(SO_VERSION)
+
 $(LIB)/libnovas.so: $(LIB)/libsupernovas.so
 
 $(LIB)/libsolsys%.so.$(SO_VERSION): LDFLAGS += -L$(LIB) -lsupernovas
@@ -144,6 +152,10 @@ $(LIB)/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c | $(LIB)/libsuper
 # Shared library: libsolsys-calceph.so.1 (standalone solsys2.c functionality)
 $(LIB)/libsolsys-calceph.so.$(SO_VERSION): LDFLAGS += -lcalceph
 $(LIB)/libsolsys-calceph.so.$(SO_VERSION): $(SRC)/solsys-calceph.c | $(LIB)/libsupernovas.so
+
+# Shared library: libsolsys-cspice.so.1 (standalone solsys2.c functionality)
+$(LIB)/libsolsys-cspice.so.$(SO_VERSION): LDFLAGS += -lcspice
+$(LIB)/libsolsys-cspice.so.$(SO_VERSION): $(SRC)/solsys-cspice.c | $(LIB)/libsupernovas.so
 
 
 # Static library: libnovas.a
