@@ -147,9 +147,9 @@ Note, that implementations would typically use either the name or the ID argumen
 .PP
 \fBParameters\fP
 .RS 4
-\fIname\fP The name of the solar-system body (in case the ephemeris provider is name based, otherwiase it may be NULL)\&. 
+\fIname\fP The name of the solar-system body (in case the ephemeris provider supports lookup by name), or NULL to force ID based lookup\&. 
 .br
-\fIid\fP The ID number of the solar-system body for which the position in desired\&. (Typically a NAIF ID, or else an appropriate ID for the implementation -- corresponding minor planet objects should be created with the same type of ID\&.)\&. If the ephemeris provider is name based the ID is not used an can be set to anything (-1 might be a good default)\&. 
+\fIid\fP The ID number of the solar-system body for which the position in desired\&. (Typically a NAIF ID, or else an appropriate ID for the implementation -- corresponding minor planet objects should be created with the same type of ID\&.)\&. A value of -1 can be used to force name based lookups (provided the implementation supports it)\&. 
 .br
 \fIjd_tdb_high\fP [day] The high-order part of Barycentric Dynamical Time (TDB) based Julian date for which to find the position and velocity\&. Typically this may be the integer part of the Julian date for high-precision calculations, or else the entire Julian date for reduced precision\&. 
 .br
