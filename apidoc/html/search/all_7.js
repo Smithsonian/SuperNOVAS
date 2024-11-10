@@ -6,7 +6,7 @@ var searchData=
   ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md63',1,'']]],
   ['c_5fauday_4',['c_auday',['../novascon_8c.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c'],['../novascon_8h.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c']]],
   ['cal_5fdate_5',['cal_date',['../novas_8c.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c'],['../novas_8h.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c']]],
-  ['calceph_20integration_6',['Built-in support for CALCEPH integration',['../index.html#autotoc_md67',1,'']]],
+  ['calceph_20integration_6',['Optional support for CALCEPH integration',['../index.html#autotoc_md67',1,'']]],
   ['calculate_20an_20apparent_20place_20on_20sky_7',['Calculate an apparent place on sky',['../index.html#autotoc_md49',1,'']]],
   ['calculate_20apparent_20positions_20on_20sky_8',['Calculate apparent positions on sky',['../md_LEGACY.html#autotoc_md26',1,'']]],
   ['calculate_20azimuth_20and_20elevation_20angles_20at_20the_20observing_20location_9',['Calculate azimuth and elevation angles at the observing location',['../index.html#autotoc_md50',1,'']]],
@@ -37,5 +37,6 @@ var searchData=
   ['considerations_34',['Performance considerations',['../index.html#autotoc_md53',1,'']]],
   ['contents_35',['Table of Contents',['../index.html#autotoc_md30',1,'']]],
   ['contributing_20to_20supernovas_36',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]],
-  ['custom_20ephemeris_20functions_37',['Explicit linking of custom ephemeris functions',['../index.html#autotoc_md71',1,'']]]
+  ['cspice_20toolkit_20integration_37',['Optional support for NAIF CSPICE toolkit integration',['../index.html#autotoc_md68',1,'']]],
+  ['custom_20ephemeris_20functions_38',['Explicit linking of custom ephemeris functions',['../index.html#autotoc_md72',1,'']]]
 ];

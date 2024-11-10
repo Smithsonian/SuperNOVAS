@@ -3649,6 +3649,32 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>solsys-cspice.c</name>
+    <path>src/</path>
+    <filename>solsys-cspice_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_cspice</name>
+      <anchorfile>solsys-cspice_8c.html</anchorfile>
+      <anchor>a9b44218bca5fce1e9e5103494c15dde4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_cspice_ephem</name>
+      <anchorfile>solsys-cspice_8c.html</anchorfile>
+      <anchor>afb078e1df9b5b08999d24e68d7b4ecdc</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_cspice_planets</name>
+      <anchorfile>solsys-cspice_8c.html</anchorfile>
+      <anchor>a943549e395b19f6a91064e3d6fa1c577</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>solsys-ephem.c</name>
     <path>src/</path>
     <filename>solsys-ephem_8c.html</filename>
@@ -4767,6 +4793,7 @@
     <docanchor file="index.html">solarsystem</docanchor>
     <docanchor file="index.html">universal-ephemerides</docanchor>
     <docanchor file="index.html">calceph-integration</docanchor>
+    <docanchor file="index.html">cspice-integration</docanchor>
     <docanchor file="index.html">builtin-ephem-readers</docanchor>
     <docanchor file="index.html">explicit-ephem-linking</docanchor>
     <docanchor file="index.html">debug-support</docanchor>

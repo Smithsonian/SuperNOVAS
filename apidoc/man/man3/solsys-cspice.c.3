@@ -1,0 +1,132 @@
+.TH "src/solsys-cspice.c" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/solsys-cspice.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBnovas_use_cspice\fP ()"
+.br
+.ti -1c
+.RI "int \fBnovas_use_cspice_ephem\fP ()"
+.br
+.ti -1c
+.RI "int \fBnovas_use_cspice_planets\fP ()"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBAuthor\fP
+.RS 4
+A\&. Kovacs
+.RE
+.PP
+SuperNOVAS major planet ephemeris lookup implementation via the NAIF CSPICE library See https://naif.jpl.nasa.gov/naif/toolkit.html 
+.SH "Function Documentation"
+.PP 
+.SS "int novas_use_cspice ()"
+Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and NOVAS_EPHEM_OBJECT types)\&.
+.PP
+CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves\&. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively\&.
+.PP
+\fBReturns\fP
+.RS 4
+0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_use_cspice_planets()\fP 
+.PP
+\fBnovas_use_cspice_ephem()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBnovas_use_cspice_ephem()\fP, and \fBnovas_use_cspice_planets()\fP\&.
+.SS "int novas_use_cspice_ephem ()"
+Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library\&.
+.PP
+CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves\&. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively\&.
+.PP
+\fBReturns\fP
+.RS 4
+0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_use_cspice_planets()\fP 
+.PP
+\fBnovas_use_cspice()\fP 
+.PP
+\fBset_ephem_provider()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBset_ephem_provider()\fP\&.
+.SS "int novas_use_cspice_planets ()"
+Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, and SSB) using the NAIF CSPICE library\&.
+.PP
+CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves\&. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively\&.
+.PP
+\fBReturns\fP
+.RS 4
+0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_use_cspice_ephem()\fP 
+.PP
+\fBnovas_use_cspice()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBset_planet_provider()\fP, and \fBset_planet_provider_hp()\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

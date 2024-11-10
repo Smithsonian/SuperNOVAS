@@ -60,17 +60,18 @@ var NAVTREE =
         ] ],
         [ "Refinements to the NOVAS C API", "index.html#autotoc_md63", null ]
       ] ],
-      [ "External Solar-system ephemeris data or services", "index.html#autotoc_md65", [
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md65", [
         [ "Universal ephemeris data / service integration", "index.html#autotoc_md66", null ],
-        [ "Built-in support for CALCEPH integration", "index.html#autotoc_md67", null ],
-        [ "Built-in support for (old) JPL major planet ephemerides", "index.html#autotoc_md68", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md69", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md70", null ]
+        [ "Optional support for CALCEPH integration", "index.html#autotoc_md67", null ],
+        [ "Optional support for NAIF CSPICE toolkit integration", "index.html#autotoc_md68", null ],
+        [ "Alternative support for (older) JPL major planet ephemerides", "index.html#autotoc_md69", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md70", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md71", null ]
         ] ],
-        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md71", null ]
+        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md72", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md73", null ],
-      [ "Release schedule", "index.html#autotoc_md75", null ],
+      [ "Runtime debug support", "index.html#autotoc_md74", null ],
+      [ "Release schedule", "index.html#autotoc_md76", null ],
       [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", null ],
       [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
       [ "[1.1.1] - 2024-10-28", "md_CHANGELOG.html#autotoc_md3", [
@@ -135,9 +136,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#aa6fad38297a49ba78a6bd49cedf889b1",
-"novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055",
-"structobject.html#a0ead8b30742e9c76887f5ff76cabae7c"
+"novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7",
+"novas_8h.html#ab970f5de5d5e04874cb31865459b0b4f",
+"structnovas__transform.html#a5fe73fdfdc0f8933168a1c50df2db4ed"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

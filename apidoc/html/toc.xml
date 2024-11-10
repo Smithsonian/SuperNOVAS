@@ -32,17 +32,18 @@
       </topic>
       <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md63"/>
     </topic>
-    <topic label="External Solar-system ephemeris data or services" href="index.html#autotoc_md65">
+    <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md65">
       <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md66"/>
-      <topic label="Built-in support for CALCEPH integration" href="index.html#autotoc_md67"/>
-      <topic label="Built-in support for (old) JPL major planet ephemerides" href="index.html#autotoc_md68">
-        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md69"/>
-        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md70"/>
+      <topic label="Optional support for CALCEPH integration" href="index.html#autotoc_md67"/>
+      <topic label="Optional support for NAIF CSPICE toolkit integration" href="index.html#autotoc_md68"/>
+      <topic label="Alternative support for (older) JPL major planet ephemerides" href="index.html#autotoc_md69">
+        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md70"/>
+        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md71"/>
       </topic>
-      <topic label="Explicit linking of custom ephemeris functions" href="index.html#autotoc_md71"/>
+      <topic label="Explicit linking of custom ephemeris functions" href="index.html#autotoc_md72"/>
     </topic>
-    <topic label="Runtime debug support" href="index.html#autotoc_md73"/>
-    <topic label="Release schedule" href="index.html#autotoc_md75"/>
+    <topic label="Runtime debug support" href="index.html#autotoc_md74"/>
+    <topic label="Release schedule" href="index.html#autotoc_md76"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>
@@ -868,6 +869,11 @@
           <topic label="novas_calceph_use_ids" href="solsys-calceph_8c.html#a5531b937a5bb5491cb475d2536346ad8"/>
           <topic label="novas_use_calceph" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31"/>
           <topic label="novas_use_calceph_planets" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331"/>
+        </topic>
+        <topic label="solsys-cspice.c" href="solsys-cspice_8c.html">
+          <topic label="novas_use_cspice" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4"/>
+          <topic label="novas_use_cspice_ephem" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc"/>
+          <topic label="novas_use_cspice_planets" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577"/>
         </topic>
         <topic label="solsys-ephem.c" href="solsys-ephem_8c.html">
           <topic label="planet_ephem_provider" href="solsys-ephem_8c.html#a61c60adf57c00d797fac94bb5841c271"/>
