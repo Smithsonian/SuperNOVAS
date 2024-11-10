@@ -914,56 +914,11 @@ and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 
 [JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
 all known solar systems bodies, down to the tiniest rocks. 
 
- - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Optional support for CALCEPH integration](#calceph-integration)
  - [Optional support for NAIF CSPICE toolkit integration](#cspice-integration)
  - [Alternative support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
+ - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Explicit linking of custom ephemeris functions](#explicit-ephem-linking)
-
-
-<a name="universal-ephemerides"></a>
-### Universal ephemeris data / service integration 
-
-Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
-`novas_ephem_provider`, e.g.:
-
-```c
- int my_ephem_reader(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
-                     enum novas_origin *origin, double *pos, double *vel) {
-   // Your custom ephemeris reader implementation here
-   ...
- }
-```
-
-which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, 
-and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer locations. 
-The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate 
-for the implementation). The positions and velocities may be returned either relative to the SSB or relative to the 
-heliocenter, and accordingly, your function should set the value pointed at by origin to `NOVAS_BARYCENTER` or 
-`NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
-AU/day respectively. 
-
-This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the
-[CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
-ephemeris service you prefer.
-
-Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
-
-```c
- set_ephem_provider(my_ephem_reader);
-```
-
-By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
-major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use the same function for the mentioned 
-'major planets' also via:
-
-```c
- set_planet_provider(planet_ephem_provider);
- set_planet_provider_hp(planet_ephem_provider_hp);
-```
-
-provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
-`solsys-ephem.c` explicitly. Easy-peasy.
 
 
 <a name="calceph-integration"></a>
@@ -1108,6 +1063,52 @@ of the world), but you may also have to modify `jplint.f` (providing the interme
 `jplihp_()` interfaces to `pleph_()`) to work with the version of `pleph.f` that you will be using. Unless you already 
 have code that relies on this method, you are probably better off choosing one of the other ways for integrating 
 planetary ephemeris data with SuperNOVAS.
+
+
+<a name="universal-ephemerides"></a>
+### Universal ephemeris data / service integration 
+
+Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
+`novas_ephem_provider`, e.g.:
+
+```c
+ int my_ephem_reader(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
+                     enum novas_origin *origin, double *pos, double *vel) {
+   // Your custom ephemeris reader implementation here
+   ...
+ }
+```
+
+which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, 
+and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer locations. 
+The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate 
+for the implementation). The positions and velocities may be returned either relative to the SSB or relative to the 
+heliocenter, and accordingly, your function should set the value pointed at by origin to `NOVAS_BARYCENTER` or 
+`NOVAS_HELIOCENTER` accordingly. Positions and velocities are rectangular ICRS _x,y,z_ vectors in units of AU and 
+AU/day respectively. 
+
+This way you can easily integrate current ephemeris data for JPL Horizons, e.g. using the
+[CSPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), or for the Minor Planet Center (MPC), or whatever other 
+ephemeris service you prefer.
+
+Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
+
+```c
+ set_ephem_provider(my_ephem_reader);
+```
+
+By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
+major planets, the Sun, Moon, and the Solar System Barycenter). And, you can use the same function for the mentioned 
+'major planets' also via:
+
+```c
+ set_planet_provider(planet_ephem_provider);
+ set_planet_provider_hp(planet_ephem_provider_hp);
+```
+
+provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
+`solsys-ephem.c` explicitly. Easy-peasy.
+
 
 
 <a name="explicit-ephem-linking"></a>

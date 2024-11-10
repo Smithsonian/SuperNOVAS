@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['s_20tt_20pleph_20tt_20fortran_20interface_0',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md71',1,'']]],
+  ['s_20tt_20pleph_20tt_20fortran_20interface_0',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md70',1,'']]],
   ['sc_5fpos_1',['sc_pos',['../structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8',1,'in_space']]],
   ['sc_5fvel_2',['sc_vel',['../structin__space.html#a9615dabeef0c31f47546c8083b768257',1,'in_space']]],
   ['schedule_3',['Release schedule',['../index.html#autotoc_md76',1,'']]],
-  ['service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md66',1,'']]],
+  ['service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md71',1,'']]],
   ['services_5',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md65',1,'']]],
   ['set_20up_20the_20observing_20frame_6',['Set up the observing frame',['../index.html#autotoc_md48',1,'']]],
   ['set_5fcio_5flocator_5ffile_7',['set_cio_locator_file',['../novas_8h.html#a13c40b89c2cecd6a23720d181a800591',1,'set_cio_locator_file(const char *filename):&#160;novas.c'],['../novas_8c.html#a13c40b89c2cecd6a23720d181a800591',1,'set_cio_locator_file(const char *filename):&#160;novas.c']]],
@@ -59,9 +59,9 @@ var searchData=
   ['supernovas_5frelease_5fstring_56',['SUPERNOVAS_RELEASE_STRING',['../novas_8h.html#aadef42ba39811e058ee9efe2c6f7d151',1,'novas.h']]],
   ['supernovas_5fversion_5fstring_57',['SUPERNOVAS_VERSION_STRING',['../novas_8h.html#a44de9d1672290d153a1dfb0685886208',1,'novas.h']]],
   ['support_58',['Runtime debug support',['../index.html#autotoc_md74',1,'']]],
-  ['support_20for_20calceph_20integration_59',['Optional support for CALCEPH integration',['../index.html#autotoc_md67',1,'']]],
-  ['support_20for_20naif_20cspice_20toolkit_20integration_60',['Optional support for NAIF CSPICE toolkit integration',['../index.html#autotoc_md68',1,'']]],
-  ['support_20for_20older_20jpl_20major_20planet_20ephemerides_61',['Alternative support for (older) JPL major planet ephemerides',['../index.html#autotoc_md69',1,'']]],
+  ['support_20for_20calceph_20integration_59',['Optional support for CALCEPH integration',['../index.html#autotoc_md66',1,'']]],
+  ['support_20for_20naif_20cspice_20toolkit_20integration_60',['Optional support for NAIF CSPICE toolkit integration',['../index.html#autotoc_md67',1,'']]],
+  ['support_20for_20older_20jpl_20major_20planet_20ephemerides_61',['Alternative support for (older) JPL major planet ephemerides',['../index.html#autotoc_md68',1,'']]],
   ['system_20ephemeris_20data_20or_20services_62',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md65',1,'']]],
   ['system_20source_63',['system source',['../index.html#autotoc_md51',1,'Calculating positions for a Solar-system source'],['../md_LEGACY.html#autotoc_md29',1,'Calculating positions for a Solar-system source']]]
 ];

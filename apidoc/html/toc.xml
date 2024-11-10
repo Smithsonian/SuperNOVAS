@@ -33,13 +33,13 @@
       <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md63"/>
     </topic>
     <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md65">
-      <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md66"/>
-      <topic label="Optional support for CALCEPH integration" href="index.html#autotoc_md67"/>
-      <topic label="Optional support for NAIF CSPICE toolkit integration" href="index.html#autotoc_md68"/>
-      <topic label="Alternative support for (older) JPL major planet ephemerides" href="index.html#autotoc_md69">
-        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md70"/>
-        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md71"/>
+      <topic label="Optional support for CALCEPH integration" href="index.html#autotoc_md66"/>
+      <topic label="Optional support for NAIF CSPICE toolkit integration" href="index.html#autotoc_md67"/>
+      <topic label="Alternative support for (older) JPL major planet ephemerides" href="index.html#autotoc_md68">
+        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md69"/>
+        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md70"/>
       </topic>
+      <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md71"/>
       <topic label="Explicit linking of custom ephemeris functions" href="index.html#autotoc_md72"/>
     </topic>
     <topic label="Runtime debug support" href="index.html#autotoc_md74"/>

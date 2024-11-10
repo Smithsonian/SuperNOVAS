@@ -12,7 +12,7 @@ var searchData=
   ['added_20in_20v1_201_9',['Added in v1.1',['../index.html#autotoc_md61',1,'']]],
   ['added_20in_20v1_202_10',['Added in v1.2',['../index.html#autotoc_md62',1,'']]],
   ['alternative_20methodologies_11',['Note on alternative methodologies',['../index.html#autotoc_md43',1,'']]],
-  ['alternative_20support_20for_20older_20jpl_20major_20planet_20ephemerides_12',['Alternative support for (older) JPL major planet ephemerides',['../index.html#autotoc_md69',1,'']]],
+  ['alternative_20support_20for_20older_20jpl_20major_20planet_20ephemerides_12',['Alternative support for (older) JPL major planet ephemerides',['../index.html#autotoc_md68',1,'']]],
   ['an_20apparent_20place_20on_20sky_13',['Calculate an apparent place on sky',['../index.html#autotoc_md49',1,'']]],
   ['and_20declination_14',['A. True apparent R.A. and declination',['../md_LEGACY.html#autotoc_md27',1,'']]],
   ['and_20elevation_20angles_20at_20the_20observing_20location_15',['and elevation angles at the observing location',['../md_LEGACY.html#autotoc_md28',1,'B. Azimuth and elevation angles at the observing location'],['../index.html#autotoc_md50',1,'Calculate azimuth and elevation angles at the observing location']]],
