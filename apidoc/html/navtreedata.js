@@ -63,12 +63,12 @@ var NAVTREE =
       [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md65", [
         [ "Optional support for CALCEPH integration", "index.html#autotoc_md66", null ],
         [ "Optional support for NAIF CSPICE toolkit integration", "index.html#autotoc_md67", null ],
-        [ "Alternative support for (older) JPL major planet ephemerides", "index.html#autotoc_md68", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md69", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md70", null ]
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md68", null ],
+        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md69", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md70", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md71", null ]
         ] ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md71", null ],
-        [ "Explicit linking of custom ephemeris functions", "index.html#autotoc_md72", null ]
+        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md72", null ]
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md74", null ],
       [ "Release schedule", "index.html#autotoc_md76", null ],

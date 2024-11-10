@@ -2,7 +2,7 @@ var searchData=
 [
   ['m_0',['M',['../structnovas__matrix.html#ac842f2eec8c8b880e2aca8792d63359b',1,'novas_matrix']]],
   ['m_5fpi_1',['M_PI',['../novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3',1,'novas.h']]],
-  ['major_20planet_20ephemerides_2',['Alternative support for (older) JPL major planet ephemerides',['../index.html#autotoc_md68',1,'']]],
+  ['major_20planet_20ephemerides_2',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md69',1,'']]],
   ['make_5fairborne_5fobserver_3',['make_airborne_observer',['../super_8c.html#aa423a88cd3f434642fc89d47390184f4',1,'make_airborne_observer(const on_surface *location, const double *vel, observer *obs):&#160;super.c'],['../novas_8h.html#aa423a88cd3f434642fc89d47390184f4',1,'make_airborne_observer(const on_surface *location, const double *vel, observer *obs):&#160;super.c']]],
   ['make_5fcat_5fentry_4',['make_cat_entry',['../novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac',1,'make_cat_entry(const char *star_name, const char *catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star):&#160;novas.c'],['../novas_8h.html#a9950f7973fc3b5d40b0d0a9f4eceddac',1,'make_cat_entry(const char *star_name, const char *catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star):&#160;novas.c']]],
   ['make_5fcat_5fobject_5',['make_cat_object',['../super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f',1,'make_cat_object(const cat_entry *star, object *source):&#160;super.c'],['../novas_8h.html#ab9b7a622486f2904615ceed1ba94cd8f',1,'make_cat_object(const cat_entry *star, object *source):&#160;super.c']]],

@@ -38,5 +38,5 @@ var searchData=
   ['contents_35',['Table of Contents',['../index.html#autotoc_md30',1,'']]],
   ['contributing_20to_20supernovas_36',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]],
   ['cspice_20toolkit_20integration_37',['Optional support for NAIF CSPICE toolkit integration',['../index.html#autotoc_md67',1,'']]],
-  ['custom_20ephemeris_20functions_38',['Explicit linking of custom ephemeris functions',['../index.html#autotoc_md72',1,'']]]
+  ['custom_20ephemeris_20functions_38',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md72',1,'']]]
 ];

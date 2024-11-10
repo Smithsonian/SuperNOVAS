@@ -11,13 +11,13 @@ var searchData=
   ['for_20a_20solar_20system_20source_8',['for a solar system source',['../md_LEGACY.html#autotoc_md29',1,'Calculating positions for a Solar-system source'],['../index.html#autotoc_md51',1,'Calculating positions for a Solar-system source']]],
   ['for_20calceph_20integration_9',['Optional support for CALCEPH integration',['../index.html#autotoc_md66',1,'']]],
   ['for_20naif_20cspice_20toolkit_20integration_10',['Optional support for NAIF CSPICE toolkit integration',['../index.html#autotoc_md67',1,'']]],
-  ['for_20older_20jpl_20major_20planet_20ephemerides_11',['Alternative support for (older) JPL major planet ephemerides',['../index.html#autotoc_md68',1,'']]],
-  ['fortran_20interface_12',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md70',1,'']]],
+  ['for_20older_20jpl_20major_20planet_20ephemerides_11',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md69',1,'']]],
+  ['fortran_20interface_12',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md71',1,'']]],
   ['frame_13',['frame',['../structnovas__transform.html#aa4ab682491bbdc54f9fbf6a26c8245a1',1,'novas_transform::frame'],['../index.html#autotoc_md48',1,'Set up the observing frame']]],
   ['frame_5ftie_14',['frame_tie',['../novas_8c.html#aa11d2253a44261370af8d0c32f0715e9',1,'frame_tie(const double *in, enum novas_frametie_direction direction, double *out):&#160;novas.c'],['../novas_8h.html#aa11d2253a44261370af8d0c32f0715e9',1,'frame_tie(const double *in, enum novas_frametie_direction direction, double *out):&#160;novas.c']]],
   ['frames_2ec_15',['frames.c',['../frames_8c.html',1,'']]],
   ['from_5fsystem_16',['from_system',['../structnovas__transform.html#a5fe73fdfdc0f8933168a1c50df2db4ed',1,'novas_transform']]],
   ['functionality_17',['Newly added functionality',['../index.html#autotoc_md60',1,'']]],
-  ['functions_18',['Explicit linking of custom ephemeris functions',['../index.html#autotoc_md72',1,'']]],
+  ['functions_18',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md72',1,'']]],
   ['fund_5fargs_19',['fund_args',['../novas_8h.html#aaac686274606e79ba666f94306eece8b',1,'fund_args(double t, novas_delaunay_args *a):&#160;novas.c'],['../novas_8c.html#aaac686274606e79ba666f94306eece8b',1,'fund_args(double t, novas_delaunay_args *a):&#160;novas.c']]]
 ];
