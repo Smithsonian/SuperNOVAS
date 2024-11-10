@@ -8,6 +8,14 @@
  *  can live in a separate, more manageably sized, module.
  */
 
+// We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
+// gcc 5.1 was released 2015-04-22...
+#if __GNUC__ >= 5
+#  define _DEFAULT_SOURCE        ///< strcasdecmp() feature macro starting glibc 2.20 (2014-09-08)
+#else
+#  define _BSD_SOURCE           ///< strcasecmp() feature macro for glibc <= 2.19
+#endif
+
 #include <math.h>
 #include <errno.h>
 #include <string.h>
@@ -1277,3 +1285,47 @@ double novas_z_inv(double z) {
   return 1.0 / (1.0 + z) - 1.0;
 }
 
+/**
+ * Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found.
+ *
+ * @param name    The planet name, or that for the "Sun", "Moon" or "SSB" (case insensitive).
+ *                The spelled out "Solar System Barycenter" is also recognized with either spaces,
+ *                hyphens ('-') or underscores ('_') separating the case insensitive words.
+ * @return        The NOVAS major planet ID, or -1 (errno set to EINVAL) if the input name is
+ *                NULL or if there is no match for the name provided.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ *
+ * @sa make_planet()
+ */
+enum novas_planet novas_planet_for_name(const char *name) {
+  static const char *fn = "novas_planet_for_name()";
+  static const char *names[] = NOVAS_PLANET_NAMES_INIT;
+
+  char *tok;
+  int i;
+
+  if(!name)
+    return novas_error(-1, EINVAL, fn, "Input name is NULL");
+
+  if(!name[0])
+    return novas_error(-1, EINVAL, fn, "Input name is empty");
+
+  for(i = 0; i < NOVAS_PLANETS; i++)
+    if(strcasecmp(name, (const char *) names[i]) == 0)
+      return i;
+
+  // Check for Solar System Barycenter (and variants)
+  tok = strtok(strdup(name), " \t-_");
+  if(strcasecmp("solar", tok) == 0) {
+    tok = strtok(NULL, " \t-_");
+    if(tok && strcasecmp("system", tok) == 0) {
+      tok = strtok(NULL, " \t-_");
+      if(tok && strcasecmp("barycenter", tok) == 0)
+        return NOVAS_SSB;
+    }
+  }
+
+  return novas_error(-1, EINVAL, fn, "No match for name: '%s'", name);
+}

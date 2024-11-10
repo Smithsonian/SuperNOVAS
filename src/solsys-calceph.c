@@ -261,10 +261,10 @@ static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_or
  * when CALCEPH and the ephemeris data may not be. When necessary, the ephemeris access will be
  * mutexed to ensure sequential access under the hood.
  *
- * @param name          The name of the solar-system body. It is important only if the id is
+ * @param name          The name of the solar-system body. It is important only if the 'id' is
  *                      -1.
  * @param id            The NAIF ID number of the solar-system body for which the position in
- *                      desired, or -1 if the name should be used instead to identify the
+ *                      desired, or -1 if the 'name' should be used instead to identify the
  *                      object.
  * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
  *                      Julian date for which to find the position and velocity. Typically
@@ -301,9 +301,18 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
   int i, success, center;
 
   if(id == -1) {
+    // Lookup by name...
+
+    if(!name)
+      return novas_error(-1, EINVAL, fn, "id=-1 and name is NULL");
+
+    if(!name[0])
+      return novas_error(-1, EINVAL, fn, "id=-1 and name is empty");
+
     // Use name to get NAIF ID.
     if(!calceph_getidbyname(bodies, name, compute_flags, &i))
       return novas_error(1, EINVAL, fn, "CALCEPH could not find a NAIF ID for '%s'", name);
+
     id = i;
   }
 

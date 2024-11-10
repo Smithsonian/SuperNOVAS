@@ -1478,6 +1478,20 @@ static int test_naif_to_novas_planet() {
   return n;
 }
 
+static int test_planet_for_name() {
+  int n = 0;
+
+  if(check("planet_for_name:NULL", -1, novas_planet_for_name(NULL))) n++;
+  if(check("planet_for_name:blah", -1, novas_planet_for_name(""))) n++;
+  if(check("planet_for_name:blah", -1, novas_planet_for_name("blah"))) n++;
+  if(check("planet_for_name:blah", -1, novas_planet_for_name("solar"))) n++;
+  if(check("planet_for_name:blah", -1, novas_planet_for_name("Solar flare"))) n++;
+  if(check("planet_for_name:blah", -1, novas_planet_for_name("Solar system"))) n++;
+  if(check("planet_for_name:blah", -1, novas_planet_for_name("Solar system size"))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1605,6 +1619,8 @@ int main() {
   if(test_novas_to_naif_planet()) n++;
   if(test_novas_to_dexxx_planet()) n++;
   if(test_naif_to_novas_planet()) n++;
+
+  if(test_planet_for_name()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

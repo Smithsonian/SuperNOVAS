@@ -1285,8 +1285,6 @@ int make_redshifted_object(const char *name, double ra, double dec, double z, ob
 
 double novas_z2v(double z);
 
-
-// in util.c
 double novas_v2z(double vel);
 
 double grav_redshift(double M_kg, double r_m);
@@ -1298,6 +1296,8 @@ double unredshift_vrad(double vrad, double z);
 double novas_z_add(double z1, double z2);
 
 double novas_z_inv(double z);
+
+enum novas_planet novas_planet_for_name(const char *name);
 
 
 // <================= END of SuperNOVAS API =====================>

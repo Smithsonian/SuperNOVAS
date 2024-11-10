@@ -197,13 +197,16 @@ static int test_errors() {
 
   calceph_seterrorhandler(3, dummy_error_handler);
 
+  if(check("errors:body:name:NULL", -1, eph(NULL, -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
+
+  if(check("errors:body:name:empty", -1, eph("", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
+
+  if(check("errors:body:name:nomatch", 1, eph("blah", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
+
   jd2[0] = -999999.0;
   if(check("errors:planet:time", 3, pl(jd2, NOVAS_MARS, NOVAS_BARYCENTER, pos, vel))) return 1;
 
   if(check("errors:body:time", 3, eph("phobos", 401, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
-
-  if(check("errors:body:name", 1, eph("blah", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) return 1;
-
 
   return 0;
 }
