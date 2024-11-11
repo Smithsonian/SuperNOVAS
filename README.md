@@ -932,15 +932,15 @@ and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 
 [JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
 all known solar systems bodies, down to the tiniest rocks. 
 
- - [Optional support for CALCEPH integration](#calceph-integration)
- - [Optional support for NAIF CSPICE toolkit integration](#cspice-integration)
+ - [Optional CALCEPH integration](#calceph-integration)
+ - [Optional NAIF CSPICE toolkit integration](#cspice-integration)
  - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Legacy support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
  - [Legacy linking of custom ephemeris functions](#explicit-ephem-linking)
 
 
 <a name="calceph-integration"></a>
-### Optional support for CALCEPH integration
+### Optional CALCEPH integration
 
 The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides an easy-to-use access to JPL and
 INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing the CALCEPH C library 
@@ -981,7 +981,7 @@ don't forget to add `-lsolsys-calceph` to your link flags. That's all there is t
 
 
 <a name="cspice-integration"></a>
-### Optional support for NAIF CSPICE toolkit integration
+### Optional NAIF CSPICE toolkit integration
 
 The [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) is the canonical standard library for JPL 
 ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing CSPICE with SuperNOVAS for 
