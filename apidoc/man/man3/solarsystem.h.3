@@ -134,11 +134,15 @@ include/solarsystem.h
 G\&. Kaplan and A\&. Kovacs
 .RE
 .PP
-SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter\&. The source files \fBsolsys1\&.c\fP, \fBsolsys2\&.c\fP, \fBsolsys3\&.c\fP and \fBsolsys-ephem\&.c\fP provide various standard implementations that users may use (some require additional sources, or user-specific implementations), or you can write your own version if that seems more appropriate\&.
+SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter\&.
 .PP
-If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see Makefile), then the library is compiled with that version providing a built-in default implementation (the default is to use solsys3, which is a self-contained orbital calculation)\&.
+The source files \fBsolsys-calceph\&.c\fP and \fBsolsys-cspice\&.c\fP provide implementations that interface with the CALCEPH C library and the NAIF CSPICE Toolkit, respectively\&. CSPICE is the canocical library for handling JPL (SPK) ephemeris data, while CALCEPH is a more modern tool, which allows handling most types of JPL ephemerides, as well INPOP 2\&.0/3\&.0 format data files\&.
 .PP
-Additionally, users may set their custom choice of major planet ephemeris handler at runtime via the \fBset_planet_provider()\fP and/or \fBset_planet_provider_hp()\fP functions\&. They may also define custom handlers for all other types of Solar-system objects (i\&.e\&. \fCNOVAS_EPHEM_OBJEVT\fP types) via \fBset_ephem_provider()\fP
+The source files \fBsolsys1\&.c\fP, \fBsolsys2\&.c\fP, \fBsolsys3\&.c\fP and \fBsolsys-ephem\&.c\fP provide various legacy implementations that users may use (some require additional sources, or user-specific implementations)\&.
+.PP
+If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see \fCconfig\&.mk\fP), then the library is compiled with that version providing a built-in default implementation (the default is to use \fC\fBsolsys3\&.c\fP\fP, which is a self-contained orbital calculation for the Sun and Earth only)\&.
+.PP
+Additionally, users may set their custom choice of major planet ephemeris handler at runtime via the \fBset_planet_provider()\fP and/or \fBset_planet_provider_hp()\fP functions\&. They may also define custom handlers for all other types of Solar-system objects (i\&.e\&. \fCNOVAS_EPHEM_OBJECT\fP types) via \fBset_ephem_provider()\fP\&.
 .PP
 Based on the NOVAS C Edition, Version 3\&.1:
 .PP
