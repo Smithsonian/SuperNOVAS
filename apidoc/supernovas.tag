@@ -2212,41 +2212,6 @@
     <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
     <member kind="define">
       <type>#define</type>
-      <name>NAIF_EARTH</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a58a3ee779a2235702283b32a762df2f6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_EMB</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a71a4a929a85a2b77c2adb2284894ca9d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_MOON</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a172c6c114d2f18ae91003a1f293682bc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_SSB</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a4a8e127d97f48f2ef918b61182436490</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_SUN</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a4a4d693821f595d86497eb2befc746c1</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
       <name>NOVAS_ID_TYPES</name>
       <anchorfile>solarsystem_8h.html</anchorfile>
       <anchor>a9a736e59fc9bfdc92b7245aa37d529ee</anchor>

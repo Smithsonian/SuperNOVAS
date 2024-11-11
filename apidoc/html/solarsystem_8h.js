@@ -1,10 +1,5 @@
 var solarsystem_8h =
 [
-    [ "NAIF_EARTH", "solarsystem_8h.html#a58a3ee779a2235702283b32a762df2f6", null ],
-    [ "NAIF_EMB", "solarsystem_8h.html#a71a4a929a85a2b77c2adb2284894ca9d", null ],
-    [ "NAIF_MOON", "solarsystem_8h.html#a172c6c114d2f18ae91003a1f293682bc", null ],
-    [ "NAIF_SSB", "solarsystem_8h.html#a4a8e127d97f48f2ef918b61182436490", null ],
-    [ "NAIF_SUN", "solarsystem_8h.html#a4a4d693821f595d86497eb2befc746c1", null ],
     [ "NOVAS_ID_TYPES", "solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee", null ],
     [ "novas_ephem_provider", "solarsystem_8h.html#ac2ae695519a5b600a105243f4e30c3ab", null ],
     [ "novas_planet_provider", "solarsystem_8h.html#ae7eb9e64aa00ee757946488fa99351ec", null ],
