@@ -350,7 +350,11 @@ int novas_use_cspice_ephem();
 
 int novas_use_cspice_planets();
 
-#endif /* USE_CALCEPH */
+int novas_cspice_add_kernel(const char *filename);
+
+int novas_cspice_remove_kernel(const char *filename);
+
+#endif /* USE_CSPICE */
 
 
 /// \cond PRIVATE

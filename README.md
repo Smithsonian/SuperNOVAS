@@ -825,7 +825,8 @@ before that level of accuracy is reached.
    
  - NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()` to use the 
    NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
-   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup).
+   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides
+   `novas_cspice_add_kernel()` and `novas_cspice_remove_kernel()`.
    
  - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
    `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
@@ -1000,17 +1001,20 @@ repository to help you build CSPICE with shared libraries and dynamically linked
 Here is an example on how you might use CSPICE with SuperNOVAS in your application code:
 
 ```c
-  // You can load the desired kernels for CSPICE, using the CSPICE API.
+  // You can load the desired kernels for CSPICE
   // E.g. load DE440s and the Mars satellites from /data/ephem:
-  furnsh_c("/data/ephem/de440s.bsp");
-  furnsh_c("/data/ephem/mar097.bsp");
-  ...
+  int status;
   
-  // check for CSPICE errors
-  if(return_c()) {
-    // oops, one of the kernels must not have loaded...
+  status = novas_cspice_add_kernel("/data/ephem/de440s.bsp");
+  if(status < 0) {
+    // oops, the kernels must not have loaded...
     ...
   }
+  
+  // Load additional kernels as needed...
+  status = novas_cspice_add_kernel("/data/ephem/mar097.bsp");
+  ...
+ 
   
   // Then use CSPICE as your SuperNOVAS ephemeris provider
   novas_use_cspice();

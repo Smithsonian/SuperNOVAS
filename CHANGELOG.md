@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Changes expected for the next feature release, expected around 1 February 2025.
 
-## Added
+### Added
 
  - #57: New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are characterized
    with a redshift measure rather than a radial velocity value.
@@ -34,11 +34,12 @@ Changes expected for the next feature release, expected around 1 February 2025.
    
  - #86: NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()`
    to use the NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
-   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). These functions are 
-   provided by the `libsolsys-cspice.so[.1]` and/or `.a` plugin libraries, which are built contingent on the 
-   `CSPICE_SUPPORT` variable being set to 1 prior to the build. The build of the plugin module requires an accessible 
-   installation of the CSPICE development files (C headers and unversioned static or shared libraries depending on the 
-   needs of the build).
+   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). 
+   Also provides `novas_cspice_add_kernel()` and `novas_cspice_remove_kernel()` for convenience to manage the set of
+   active kernels (#89). These functions are provided by the `libsolsys-cspice.so[.1]` and/or `.a` plugin libraries, 
+   which are built contingent on the `CSPICE_SUPPORT` variable being set to 1 prior to the build. The build of the 
+   plugin module requires an accessible installation of the CSPICE development files (C headers and unversioned static 
+   or shared libraries depending on the needs of the build).
    
  - #87: Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
    

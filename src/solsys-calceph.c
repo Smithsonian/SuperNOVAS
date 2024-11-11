@@ -202,8 +202,10 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
     return novas_error(3, EAGAIN, fn, "calceph_compute() failure (NOVAS ID=%d)", body);
 
   for(i = 3; --i >= 0;) {
-    if(position) position[i] = pv[i] * NORM_POS;
-    if(velocity) velocity[i] = pv[3 + i] * NORM_VEL;
+    if(position)
+      position[i] = pv[i] * NORM_POS;
+    if(velocity)
+      velocity[i] = pv[3 + i] * NORM_VEL;
   }
 
   return 0;
@@ -334,8 +336,10 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
     return novas_error(3, EAGAIN, fn, "calceph_compute() failure (name='%s', NAIF=%ld)", name ? name : "<null>", id);
 
   for(i = 3; --i >= 0;) {
-    if(pos) pos[i] = pv[i] * NORM_POS;
-    if(vel) vel[i] = pv[3 + i] * NORM_VEL;
+    if(pos)
+      pos[i] = pv[i] * NORM_POS;
+    if(vel)
+      vel[i] = pv[3 + i] * NORM_VEL;
   }
 
   return 0;
