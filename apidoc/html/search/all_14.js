@@ -40,6 +40,6 @@ var searchData=
   ['pressure_37',['pressure',['../structon__surface.html#aee1c5d07ac79c5c036195858afe33405',1,'on_surface']]],
   ['promodec_38',['promodec',['../structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c',1,'cat_entry']]],
   ['promora_39',['promora',['../structcat__entry.html#ab9301cf1c67c13114b22950650b17789',1,'cat_entry']]],
-  ['proper_5fmotion_40',['proper_motion',['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a197e40a273d8132592b60efe3f87a065',1,'PROPER_MOTION:&#160;novas.h'],['../novas_8h.html#ade8207981b6f840d1f0a79dd0c72beb2',1,'proper_motion(double jd_tdb_in, const double *pos, const double *vel, double jd_tdb_out, double *out):&#160;novas.c'],['../novas_8c.html#ade8207981b6f840d1f0a79dd0c72beb2',1,'proper_motion(double jd_tdb_in, const double *pos, const double *vel, double jd_tdb_out, double *out):&#160;novas.c']]],
+  ['proper_5fmotion_40',['proper_motion',['../novas_8h.html#ade8207981b6f840d1f0a79dd0c72beb2',1,'proper_motion(double jd_tdb_in, const double *pos, const double *vel, double jd_tdb_out, double *out):&#160;novas.c'],['../novas_8c.html#ade8207981b6f840d1f0a79dd0c72beb2',1,'proper_motion(double jd_tdb_in, const double *pos, const double *vel, double jd_tdb_out, double *out):&#160;novas.c'],['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a197e40a273d8132592b60efe3f87a065',1,'PROPER_MOTION:&#160;novas.h']]],
   ['psi_5fcor_41',['PSI_COR',['../novas_8c.html#a103c28cd84e81dde365238ee3599f5b0',1,'novas.c']]]
 ];

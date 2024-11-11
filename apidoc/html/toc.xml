@@ -199,13 +199,6 @@
   <topic label="Files" href="files.html">
     <topic label="File List" href="files.html">
       <topic label="include" href="dir_d44c64559bbebec7f509842c48db8b23.html">
-        <topic label="naif.h" href="naif_8h.html">
-          <topic label="NAIF_EARTH" href="naif_8h.html#a58a3ee779a2235702283b32a762df2f6"/>
-          <topic label="NAIF_EMB" href="naif_8h.html#a71a4a929a85a2b77c2adb2284894ca9d"/>
-          <topic label="NAIF_MOON" href="naif_8h.html#a172c6c114d2f18ae91003a1f293682bc"/>
-          <topic label="NAIF_SSB" href="naif_8h.html#a4a8e127d97f48f2ef918b61182436490"/>
-          <topic label="NAIF_SUN" href="naif_8h.html#a4a4d693821f595d86497eb2befc746c1"/>
-        </topic>
         <topic label="novas.h" href="novas_8h.html">
           <topic label="cat_entry" href="structcat__entry.html">
             <topic label="catalog" href="structcat__entry.html#a128c876f7e50045e1c469dbabb400c58"/>

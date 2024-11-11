@@ -1,46 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile doxygen_version="1.9.8">
   <compound kind="file">
-    <name>naif.h</name>
-    <path>include/</path>
-    <filename>naif_8h.html</filename>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_EARTH</name>
-      <anchorfile>naif_8h.html</anchorfile>
-      <anchor>a58a3ee779a2235702283b32a762df2f6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_EMB</name>
-      <anchorfile>naif_8h.html</anchorfile>
-      <anchor>a71a4a929a85a2b77c2adb2284894ca9d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_MOON</name>
-      <anchorfile>naif_8h.html</anchorfile>
-      <anchor>a172c6c114d2f18ae91003a1f293682bc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_SSB</name>
-      <anchorfile>naif_8h.html</anchorfile>
-      <anchor>a4a8e127d97f48f2ef918b61182436490</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>NAIF_SUN</name>
-      <anchorfile>naif_8h.html</anchorfile>
-      <anchor>a4a4d693821f595d86497eb2befc746c1</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>novas.h</name>
     <path>include/</path>
     <filename>novas_8h.html</filename>
@@ -2770,7 +2730,6 @@
     <path>src/</path>
     <filename>naif_8c.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
-    <includes id="naif_8h" name="naif.h" local="yes" import="no" module="no" objc="no">naif.h</includes>
     <member kind="define">
       <type>#define</type>
       <name>__NOVAS_INTERNAL_API__</name>
