@@ -666,6 +666,8 @@
             <topic label="NOVAS_ID_NAIF" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db"/>
             <topic label="NOVAS_ID_CALCEPH" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719"/>
           </topic>
+          <topic label="cspice_add_kernel" href="solarsystem_8h.html#ae02d26964099f56c375dc78172ad135b"/>
+          <topic label="cspice_remove_kernel" href="solarsystem_8h.html#a38e3b3155cad3b3822fbc3e553060ab1"/>
           <topic label="earth_sun_calc" href="solarsystem_8h.html#ab5d74f84f8e75e90dfc30ebde562d076"/>
           <topic label="earth_sun_calc_hp" href="solarsystem_8h.html#a3e6398e29968a48f9de090e82423750f"/>
           <topic label="enable_earth_sun_hp" href="solarsystem_8h.html#a279bca0519117cee9a3bd4382f38e7ad"/>
@@ -673,8 +675,14 @@
           <topic label="get_planet_provider" href="solarsystem_8h.html#a0f0a786b5614a788c02b37a462eae2d2"/>
           <topic label="get_planet_provider_hp" href="solarsystem_8h.html#ae45badb450c1ca73920d982e12346c5b"/>
           <topic label="naif_to_novas_planet" href="solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86"/>
+          <topic label="novas_calceph_use_ids" href="solarsystem_8h.html#a5531b937a5bb5491cb475d2536346ad8"/>
           <topic label="novas_to_dexxx_planet" href="solarsystem_8h.html#ac3eb54acf22dc155879163de89c6865e"/>
           <topic label="novas_to_naif_planet" href="solarsystem_8h.html#ab51ac9bdf7736e1c1582e0981046daf3"/>
+          <topic label="novas_use_calceph" href="solarsystem_8h.html#a35fc86a939602ec910dbdfde180d7f31"/>
+          <topic label="novas_use_calceph_planets" href="solarsystem_8h.html#ab86ec03898e658c86c671a8b6399e331"/>
+          <topic label="novas_use_cspice" href="solarsystem_8h.html#a9b44218bca5fce1e9e5103494c15dde4"/>
+          <topic label="novas_use_cspice_ephem" href="solarsystem_8h.html#afb078e1df9b5b08999d24e68d7b4ecdc"/>
+          <topic label="novas_use_cspice_planets" href="solarsystem_8h.html#a943549e395b19f6a91064e3d6fa1c577"/>
           <topic label="planet_eph_manager" href="solarsystem_8h.html#a71d2bfef45818d56e359205c57db0694"/>
           <topic label="planet_eph_manager_hp" href="solarsystem_8h.html#acacfbde919107d0514da5c7d8508917b"/>
           <topic label="planet_ephem_provider" href="solarsystem_8h.html#a61c60adf57c00d797fac94bb5841c271"/>
