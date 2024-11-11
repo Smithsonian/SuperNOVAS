@@ -119,10 +119,10 @@ $(document).ready(function(){initNavTree('solsys-cspice_8c.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a20a88172a14b70ff4acc1dae9886cf4c" id="r_a20a88172a14b70ff4acc1dae9886cf4c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solsys-cspice_8c.html#a20a88172a14b70ff4acc1dae9886cf4c">novas_cspice_add_kernel</a> (const char *filename)</td></tr>
-<tr class="separator:a20a88172a14b70ff4acc1dae9886cf4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bf5342d976d48229b8651a3b6db49db" id="r_a5bf5342d976d48229b8651a3b6db49db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solsys-cspice_8c.html#a5bf5342d976d48229b8651a3b6db49db">novas_cspice_remove_kernel</a> (const char *filename)</td></tr>
-<tr class="separator:a5bf5342d976d48229b8651a3b6db49db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae02d26964099f56c375dc78172ad135b" id="r_ae02d26964099f56c375dc78172ad135b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a> (const char *filename)</td></tr>
+<tr class="separator:ae02d26964099f56c375dc78172ad135b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e3b3155cad3b3822fbc3e553060ab1" id="r_a38e3b3155cad3b3822fbc3e553060ab1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel</a> (const char *filename)</td></tr>
+<tr class="separator:a38e3b3155cad3b3822fbc3e553060ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b44218bca5fce1e9e5103494c15dde4" id="r_a9b44218bca5fce1e9e5103494c15dde4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice</a> ()</td></tr>
 <tr class="separator:a9b44218bca5fce1e9e5103494c15dde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb078e1df9b5b08999d24e68d7b4ecdc" id="r_afb078e1df9b5b08999d24e68d7b4ecdc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem</a> ()</td></tr>
@@ -134,14 +134,14 @@ Functions</h2></td></tr>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>A. Kovacs</dd></dl>
 <p>SuperNOVAS major planet ephemeris lookup implementation via the NAIF CSPICE library See <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">https://naif.jpl.nasa.gov/naif/toolkit.html</a> </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a20a88172a14b70ff4acc1dae9886cf4c" name="a20a88172a14b70ff4acc1dae9886cf4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20a88172a14b70ff4acc1dae9886cf4c">&#9670;&#160;</a></span>novas_cspice_add_kernel()</h2>
+<a id="ae02d26964099f56c375dc78172ad135b" name="ae02d26964099f56c375dc78172ad135b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae02d26964099f56c375dc78172ad135b">&#9670;&#160;</a></span>cspice_add_kernel()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int novas_cspice_add_kernel </td>
+          <td class="memname">int cspice_add_kernel </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>filename</em></td><td>)</td>
@@ -161,20 +161,20 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to EINVAL).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a5bf5342d976d48229b8651a3b6db49db">novas_cspice_remove_kernel()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
 </div>
 </div>
-<a id="a5bf5342d976d48229b8651a3b6db49db" name="a5bf5342d976d48229b8651a3b6db49db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bf5342d976d48229b8651a3b6db49db">&#9670;&#160;</a></span>novas_cspice_remove_kernel()</h2>
+<a id="a38e3b3155cad3b3822fbc3e553060ab1" name="a38e3b3155cad3b3822fbc3e553060ab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38e3b3155cad3b3822fbc3e553060ab1">&#9670;&#160;</a></span>cspice_remove_kernel()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int novas_cspice_remove_kernel </td>
+          <td class="memname">int cspice_remove_kernel </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>filename</em></td><td>)</td>
@@ -194,7 +194,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to EINVAL).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a20a88172a14b70ff4acc1dae9886cf4c">novas_cspice_add_kernel()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 

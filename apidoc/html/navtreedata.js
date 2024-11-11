@@ -72,7 +72,7 @@ var NAVTREE =
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md74", null ],
       [ "Release schedule", "index.html#autotoc_md76", null ],
-      [ "[1.2.0-rc1] – 2024-11-11", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[1.2.0-rc1] - 2024-11-11", "md_CHANGELOG.html#autotoc_md1", [
         [ "Added", "md_CHANGELOG.html#autotoc_md2", null ]
       ] ],
       [ "[1.1.1] - 2024-10-28", "md_CHANGELOG.html#autotoc_md3", [

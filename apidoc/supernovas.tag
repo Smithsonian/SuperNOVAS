@@ -3654,16 +3654,16 @@
     <filename>solsys-cspice_8c.html</filename>
     <member kind="function">
       <type>int</type>
-      <name>novas_cspice_add_kernel</name>
+      <name>cspice_add_kernel</name>
       <anchorfile>solsys-cspice_8c.html</anchorfile>
-      <anchor>a20a88172a14b70ff4acc1dae9886cf4c</anchor>
+      <anchor>ae02d26964099f56c375dc78172ad135b</anchor>
       <arglist>(const char *filename)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
-      <name>novas_cspice_remove_kernel</name>
+      <name>cspice_remove_kernel</name>
       <anchorfile>solsys-cspice_8c.html</anchorfile>
-      <anchor>a5bf5342d976d48229b8651a3b6db49db</anchor>
+      <anchor>a38e3b3155cad3b3822fbc3e553060ab1</anchor>
       <arglist>(const char *filename)</arglist>
     </member>
     <member kind="function">

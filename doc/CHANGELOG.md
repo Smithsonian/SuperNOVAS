@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.2.0-rc1] -- 2024-11-11
+## [1.2.0-rc1] - 2024-11-11
 
 Release candidate for the next feature release, expected around 1 February 2025.
 
@@ -36,7 +36,7 @@ Release candidate for the next feature release, expected around 1 February 2025.
  - #86: NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()`
    to use the NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
    `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). 
-   Also provides `novas_cspice_add_kernel()` and `novas_cspice_remove_kernel()` for convenience to manage the set of
+   Also provides `cspice_add_kernel()` and `cspice_remove_kernel()` functions for convenience to manage the set of
    active kernels (#89). These functions are provided by the `libsolsys-cspice.so[.1]` and/or `.a` plugin libraries, 
    which are built contingent on the `CSPICE_SUPPORT` variable being set to 1 prior to the build. The build of the 
    plugin module requires an accessible installation of the CSPICE development files (C headers and unversioned static 
