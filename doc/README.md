@@ -998,7 +998,6 @@ Here is an example on how you might use CSPICE with SuperNOVAS in your applicati
   // Load additional kernels as needed...
   status = cspice_add_kernel("/data/ephem/mar097.bsp");
   ...
- 
   
   // Then use CSPICE as your SuperNOVAS ephemeris provider
   novas_use_cspice();
