@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [1.2.0-rc1] - 2024-11-11
 
-Release candidate for the next feature release, expected around 1 February 2025.
+Changes expected for the next feature release, expected around 1 February 2025.
 
 
 ### Added
