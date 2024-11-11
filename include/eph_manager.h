@@ -2,7 +2,7 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS header for managing 1997 version of JPL ephemerides specifically for solsys2.c.
+ *  SuperNOVAS header for managing 1997 version of JPL ephemerides specifically for solsys1.c.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *

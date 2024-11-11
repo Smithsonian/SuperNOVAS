@@ -30,7 +30,7 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 #include "calceph.h"
-#include "naif.h"
+#include "novas-naif.h"
 
 #define CALCEPH_MOON                10  ///< Moon in CALCEPH
 #define CALCEPH_SUN                 11  ///< Sun in CALCEPH

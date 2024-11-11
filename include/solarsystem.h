@@ -4,18 +4,27 @@
  * @author G. Kaplan and A. Kovacs
  *
  *  SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus
- *  the Sun, Moon, and the Solar-system barycenter. The source files solsys1.c, solsys2.c,
- *  solsys3.c and solsys-ephem.c provide various standard implementations that users may use
- *  (some require additional sources, or user-specific implementations), or you can write your
- *  own version if that seems more appropriate.
+ *  the Sun, Moon, and the Solar-system barycenter.
+ *
+ *  The source files solsys-calceph.c and solsys-cspice.c provide implementations that
+ *  interface with the CALCEPH C library and the NAIF CSPICE Toolkit, respectively. CSPICE is
+ *  the canocical library for handling JPL (SPK) ephemeris data, while CALCEPH is a more
+ *  modern tool, which allows handling most types of JPL ephemerides, as well INPOP 2.0/3.0
+ *  format data files.
+ *
+ *  The source files solsys1.c, solsys2.c, solsys3.c and solsys-ephem.c provide various legacy
+ *  implementations that users may use (some require additional sources, or user-specific
+ *  implementations).
  *
  *  If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see
- *  Makefile), then the library is compiled with that version providing a built-in default
- *  implementation (the default is to use solsys3, which is a self-contained orbital
- *  calculation).
+ *  `config.mk`), then the library is compiled with that version providing a built-in default
+ *  implementation (the default is to use `solsys3.c`, which is a self-contained orbital
+ *  calculation for the Sun and Earth only).
  *
  *  Additionally, users may set their custom choice of major planet ephemeris handler at
- *  runtime via the set_ephem_size().
+ *  runtime via the set_planet_provider() and/or set_planet_provider_hp() functions. They may
+ *  also define custom handlers for all other types of Solar-system objects (i.e.
+ *  `NOVAS_EPHEM_OBJECT` types) via set_ephem_provider().
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *
@@ -25,6 +34,8 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
+ *  @sa solsys-calceph.c
+ *  @sa solsys-cspice.c
  *  @sa solsys1.c
  *  @sa solsys2.c
  *  @sa solsys3.c
@@ -362,6 +373,22 @@ int cspice_remove_kernel(const char *filename);
 // <================= SuperNOVAS internals ======================>
 
 #  ifdef __NOVAS_INTERNAL_API__
+
+/// NAIF ID for the geocenter
+#define NAIF_EARTH      399
+
+/// NAIF ID for the Moon
+#define NAIF_MOON       301
+
+/// NAIF_ID for the Sun
+#define NAIF_SUN        10
+
+/// NAIF ID for the Solar-System Barycenter (SSB)
+#define NAIF_SSB        0
+
+/// NAIF ID for the Earth-Moon Barycenter (EMB)
+#define NAIF_EMB        3
+
 
 /**
  * The function to use to provide planet ephemeris data.

@@ -12,8 +12,8 @@
 #include <math.h>
 #include <string.h>
 
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
-#include "naif.h"
 
 static int check(const char *func, int exp, int error) {
   if(error != exp) {

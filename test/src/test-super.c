@@ -23,11 +23,8 @@
 #include <unistd.h>
 #include <libgen.h>
 
-
-
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
-#include "naif.h"
 
 #define J2000   2451545.0
 #define DAY     86400.0

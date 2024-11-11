@@ -19,7 +19,6 @@
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
-#include "naif.h"
 
 /**
  * Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun, Moon and SSB.
