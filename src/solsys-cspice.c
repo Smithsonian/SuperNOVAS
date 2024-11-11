@@ -56,6 +56,131 @@ static int mutex_unlock() {
 }
 
 /**
+ * Supresses CSPICE error output and disables exit on error behavior, so we can check and process
+ * CSPICE errors gracefully ourselves.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/erract_c.html</li>
+ * <li>https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/errprt_c.html</li>
+ * </ol>
+ *
+ * @return 0
+ */
+static int suppress_cspice_errors() {
+  erract_c("SET", 0, "RETURN");       // Do not exit in case of CSPICE errors.
+  errprt_c("SET", 0, "NONE");         // Suppress CSPICE error messages
+  return 0;
+}
+
+/**
+ * Returns a short description of the CSPICE error in the supplied buffer, and resets the
+ * CSPICE error state.
+ *
+ * @param[out] msg  the buffer in which to return the message.
+ * @param len       (bytes) maximum length of the message to return including termination
+ * @return          the CSPICE error code.
+ */
+static int get_cspice_error(char *msg, int len) {
+  int err = return_c();
+  getmsg_c("SHORT", len, msg);
+  reset_c();
+  return err;
+}
+
+/**
+ * Adds a SPICE kernel to the currently managed open kernels. Subsequent ephemeris lookups through
+ * CSPICE will use the added kernel. It's simply a wrapper around the CSPICE `furnsh_c()` routine,
+ * with graceful error handling. You can of course add kernels using `furnsh_c()` directly to the
+ * same effect.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/furnsh_c.html</li>
+ * </ol>
+ *
+ * @param filename      The fully qualified path to the ephemeris kernel data (e.g.
+ *                      "/data/ephem/de440s.bsp")
+ * @return              0 if successful, or else -1 if there was an error (errno will be set to
+ *                      EINVAL).
+ *
+ * @sa novas_cspice_remove_kernel()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+int novas_cspice_add_kernel(const char *filename) {
+  static const char *fn = "novas_cspice_add_kernel";
+
+  char msg[100];
+  int err;
+
+  if(!filename)
+    return novas_error(-1, EINVAL, fn, "input filename is NULL");
+  if(!filename[0])
+    return novas_error(-1, EINVAL, fn, "input filename is empty");
+
+  suppress_cspice_errors();
+
+  prop_error(fn, mutex_lock(), 0);
+  reset_c();
+  furnsh_c(filename);
+  err = get_cspice_error(msg, sizeof(msg));
+  mutex_unlock();
+
+  if(err)
+    return novas_error(-1, EINVAL, fn, "furnsh_c(%s): %s", filename, msg);
+
+  return 0;
+}
+
+/**
+ * Removes a SPICE kernel from the currently managed open kernels. Subsequent ephemeris lookups
+ * through CSPICE will not use the removed kernel data. It's simply a wrapper around the CSPICE
+ * `unload_c()` routine, with graceful error handling. You can of course remove kernels using
+ * `unload_c()` directly to the same effect.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unload_c.html</li>
+ * </ol>
+ *
+ * @param filename      The fully qualified path to the ephemeris kernel data (e.g.
+ *                      "/data/ephem/de440s.bsp")
+ * @return              0 if successful, or else -1 if there was an error (errno will be set to
+ *                      EINVAL).
+ *
+ * @sa novas_cspice_add_kernel()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+int novas_cspice_remove_kernel(const char *filename) {
+  static const char *fn = "novas_cspice_remove_kernel";
+
+  char msg[100];
+  int err;
+
+  if(!filename)
+    return novas_error(-1, EINVAL, fn, "input filename is NULL");
+  if(!filename[0])
+    return novas_error(-1, EINVAL, fn, "input filename is empty");
+
+  suppress_cspice_errors();
+
+  prop_error(fn, mutex_lock(), 0);
+  reset_c();
+  unload_c(filename);
+  err = get_cspice_error(msg, sizeof(msg));
+  mutex_unlock();
+
+  if(err)
+    return novas_error(-1, EINVAL, fn, "unload_c(%s): %s", filename, msg);
+
+  return 0;
+}
+
+/**
  * Provides an interface between the NAIF CSPICE C library and NOVAS-C for regular (reduced)
  * precision applications. The user must set the cspice ephemeris binary data to use using the
  * novas_use_cspice() or novas_use_cspice_planet() to activate CSPICE as the NOVAS ephemeris
@@ -71,6 +196,7 @@ static int mutex_unlock() {
  * REFERENCES:
  * <ol>
  *  <li>NAIF CSPICE: https://naif.jpl.nasa.gov/naif/toolkit.html</li>
+ *  <li>https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkez_c.html</li>
  *  <li>Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
  *  Subroutines"; USNO internal document dated 20 Oct 1988;
  *  revised 15 Mar 1990.</li>
@@ -102,6 +228,7 @@ static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, en
         double *velocity) {
   static const char *fn = "planet_cspice_hp";
 
+  char msg[100];
   SpiceDouble pv[6];
   SpiceDouble lt;
   SpiceInt target, center;
@@ -112,7 +239,8 @@ static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, en
     return novas_error(-1, EINVAL, fn, "jd_tdb input time array is NULL.");
 
   target = novas_to_naif_planet(body);
-  if(target < 0) return novas_trace(fn, 1, 0);
+  if(target < 0)
+    return novas_trace(fn, 1, 0);
 
   switch(origin) {
     case NOVAS_BARYCENTER:
@@ -135,27 +263,27 @@ static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, en
   // "J2000" and "ICRF" are treated the same, with "J2000" being the compatibility label.
   reset_c();
   spkez_c(target, tdb2000, "J2000", "NONE", center, pv, &lt);
-  err = return_c();
-  reset_c();
+  err = get_cspice_error(msg, sizeof(msg));
 
   if(err) {
     SpiceInt alt = novas_to_dexxx_planet(body);
     if(alt != target) {
       // Try with DExxx ID (barycenter vs planet center)
       spkez_c(alt, tdb2000, "J2000", "NONE", center, pv, &lt);
-      err = return_c();
-      reset_c();
+      err = get_cspice_error(msg, sizeof(msg));
     }
   }
 
   mutex_unlock(sem);
 
   if(err)
-    return novas_error(3, EAGAIN, fn, "spkez_c() error (NOVAS ID=%d)", body);
+    return novas_error(3, EAGAIN, fn, "spkez_c(NOVAS ID=%d, JD=%.1f): %s", body, (jd_tdb[0] + jd_tdb[1]), msg);
 
   for(i = 3; --i >= 0;) {
-    if(position) position[i] = pv[i] * NORM_POS;
-    if(velocity) velocity[i] = pv[3 + i] * NORM_VEL;
+    if(position)
+      position[i] = pv[i] * NORM_POS;
+    if(velocity)
+      velocity[i] = pv[3 + i] * NORM_VEL;
   }
 
   return 0;
@@ -218,6 +346,11 @@ static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_ori
  * The call will use whatever ephemeris (SPK) files were loaded by the CSPICE library prior
  * to the call (see furnsh_c() function)
  *
+ * REFERENCES:
+ * <ol>
+ * <li>https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkez_c.html</li>
+ * </ol>
+ *
  * @param name          The name of the solar-system body. It is important only if the 'id' is
  *                      -1.
  * @param id            The NAIF ID number of the solar-system body for which the position in
@@ -253,6 +386,7 @@ static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_ori
 static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
   static const char *fn = "novas_cspice";
 
+  char msg[100];
   SpiceDouble pv[6];
   SpiceDouble lt;
   SpiceInt target, center;
@@ -276,14 +410,13 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
 
     reset_c();
     bodn2c_c(spiceName, &spiceCode, &spiceFound);
-    err = return_c();
-    reset_c();
+    err = get_cspice_error(msg, sizeof(msg));
 
     if(!spiceFound)
       return novas_error(1, EINVAL, fn, "CSPICE could not find a NAIF ID for '%s'", name);
 
     if(err)
-      return novas_error(1, EINVAL, fn, "CSPICE name lookup error for '%s'", name);
+      return novas_error(1, EINVAL, fn, "CSPICE name lookup error for '%s': %s", name, msg);
 
     id = spiceCode;
   }
@@ -304,17 +437,19 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
   // "J2000" and "ICRF" are treated the same, with "J2000" being the compatibility label.
   reset_c();
   spkez_c(target, tdb2000, "J2000", "NONE", center, pv, &lt);
-  err = return_c();
-  reset_c();
+  err = get_cspice_error(msg, sizeof(msg));
 
   mutex_unlock();
 
   if(err)
-    return novas_error(3, EAGAIN, fn, "spkez_c() failure (name='%s', NAIF=%ld)", name ? name : "<null>", id);
+    return novas_error(3, EAGAIN, fn, "spkez_c(name='%s', NAIF=%ld, JD=%.1f): %s",
+            name ? name : "<null>", id, (jd_tdb_high + jd_tdb_low), msg);
 
   for(i = 3; --i >= 0;) {
-    if(pos) pos[i] = pv[i] * NORM_POS;
-    if(vel) vel[i] = pv[3 + i] * NORM_VEL;
+    if(pos)
+      pos[i] = pv[i] * NORM_POS;
+    if(vel)
+      vel[i] = pv[3 + i] * NORM_VEL;
   }
 
   return 0;
@@ -337,8 +472,7 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
  * @since 1.2
  */
 int novas_use_cspice_ephem() {
-  errprt_c("SET", 100, "NONE");       // Suppress CSPICE error messages
-  erract_c("SET", 0, "RETURN");       // Do not exit in case of CSPICE errors.
+  suppress_cspice_errors();
   set_ephem_provider(novas_cspice);
   return 0;
 }
@@ -362,8 +496,7 @@ int novas_use_cspice_ephem() {
  * @since 1.2
  */
 int novas_use_cspice_planets() {
-  errprt_c("SET", 100, "NONE");       // Suppress CSPICE error messages
-  erract_c("SET", 0, "RETURN");       // Do not exit in case of CSPICE errors.
+  suppress_cspice_errors();
   set_planet_provider_hp(planet_cspice_hp);
   set_planet_provider(planet_cspice);
   return 0;

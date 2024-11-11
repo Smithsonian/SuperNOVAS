@@ -172,18 +172,44 @@ static int test_errors() {
   return n;
 }
 
-
-
-static void load_eph(const char *name) {
+static int load_eph(const char *name) {
   char filename[1024];
 
   sprintf(filename, "%s/%s", prefix, name);
-  reset_c();
-  furnsh_c(filename);
-  if(return_c()) {
-    fprintf(stderr, "ERROR! furnsh_c() failed for %s\n", name);
-    exit(1);
-  }
+  return novas_cspice_add_kernel(filename);
+}
+
+static int unload_eph(const char *name) {
+  char filename[1024];
+
+  sprintf(filename, "%s/%s", prefix, name);
+  return novas_cspice_remove_kernel(filename);
+}
+
+static int test_remove_kernel() {
+  int n = 0;
+
+  if(!is_ok("remove_kernel:planets", unload_eph(PLANET_EPH))) n++;
+  if(!is_ok("remove_kernel:mars", unload_eph(MARS_EPH))) n++;
+
+  if(check("remove_kernel:null", -1, novas_cspice_remove_kernel(NULL))) n++;
+  if(check("remove_kernel:empty", -1, novas_cspice_remove_kernel(""))) n++;
+
+  return n;
+}
+
+
+
+static int init() {
+  int n = 0;
+
+  if(!is_ok("init:planets", load_eph(PLANET_EPH))) n++;
+  if(!is_ok("init:mars", load_eph(MARS_EPH))) n++;
+
+  if(check("init:add_kernel:null", -1, novas_cspice_add_kernel(NULL))) n++;
+  if(check("init:add_kernel:empty", -1, novas_cspice_add_kernel(""))) n++;
+
+  return n;
 }
 
 int main(int argc, char *argv[]) {
@@ -193,8 +219,7 @@ int main(int argc, char *argv[]) {
 
   prefix = strdup(argv[1]);
 
-  load_eph(PLANET_EPH);
-  load_eph(MARS_EPH);
+  if(init()) return 1;
 
   enable_earth_sun_hp(1);
 
@@ -203,6 +228,8 @@ int main(int argc, char *argv[]) {
 
   novas_debug(NOVAS_DEBUG_OFF);
   if(test_errors()) n++;
+
+  if(test_remove_kernel()) n++;
 
   return n;
 }
