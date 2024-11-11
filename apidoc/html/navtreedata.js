@@ -61,8 +61,8 @@ var NAVTREE =
         [ "Refinements to the NOVAS C API", "index.html#autotoc_md63", null ]
       ] ],
       [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md65", [
-        [ "Optional support for CALCEPH integration", "index.html#autotoc_md66", null ],
-        [ "Optional support for NAIF CSPICE toolkit integration", "index.html#autotoc_md67", null ],
+        [ "Optional CALCEPH integration", "index.html#autotoc_md66", null ],
+        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md67", null ],
         [ "Universal ephemeris data / service integration", "index.html#autotoc_md68", null ],
         [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md69", [
           [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md70", null ],
@@ -72,8 +72,9 @@ var NAVTREE =
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md74", null ],
       [ "Release schedule", "index.html#autotoc_md76", null ],
-      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", null ],
-      [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
+      [ "[1.2.0-rc1] – 2024-11-11", "md_CHANGELOG.html#autotoc_md1", [
+        [ "Added", "md_CHANGELOG.html#autotoc_md2", null ]
+      ] ],
       [ "[1.1.1] - 2024-10-28", "md_CHANGELOG.html#autotoc_md3", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md4", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md5", null ]
@@ -138,7 +139,7 @@ var NAVTREEINDEX =
 "annotated.html",
 "novas_8c.html#aa41408d8cbbe3cfc12930414a9c79fc7",
 "novas_8h.html#ab970f5de5d5e04874cb31865459b0b4f",
-"structnovas__transform.html#a5fe73fdfdc0f8933168a1c50df2db4ed"
+"structnovas__timespec.html#acd6082033a111e30cda6bab81b7a32ec"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

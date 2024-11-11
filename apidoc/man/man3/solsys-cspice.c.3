@@ -10,6 +10,12 @@ src/solsys-cspice.c
 
 .in +1c
 .ti -1c
+.RI "int \fBnovas_cspice_add_kernel\fP (const char *filename)"
+.br
+.ti -1c
+.RI "int \fBnovas_cspice_remove_kernel\fP (const char *filename)"
+.br
+.ti -1c
 .RI "int \fBnovas_use_cspice\fP ()"
 .br
 .ti -1c
@@ -31,6 +37,76 @@ A\&. Kovacs
 SuperNOVAS major planet ephemeris lookup implementation via the NAIF CSPICE library See https://naif.jpl.nasa.gov/naif/toolkit.html 
 .SH "Function Documentation"
 .PP 
+.SS "int novas_cspice_add_kernel (const char * filename)"
+Adds a SPICE kernel to the currently managed open kernels\&. Subsequent ephemeris lookups through CSPICE will use the added kernel\&. It's simply a wrapper around the CSPICE \fCfurnsh_c()\fP routine, with graceful error handling\&. You can of course add kernels using \fCfurnsh_c()\fP directly to the same effect\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/furnsh_c.html 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP The fully qualified path to the ephemeris kernel data (e\&.g\&. '/data/ephem/de440s\&.bsp') 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_cspice_remove_kernel()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.SS "int novas_cspice_remove_kernel (const char * filename)"
+Removes a SPICE kernel from the currently managed open kernels\&. Subsequent ephemeris lookups through CSPICE will not use the removed kernel data\&. It's simply a wrapper around the CSPICE \fCunload_c()\fP routine, with graceful error handling\&. You can of course remove kernels using \fCunload_c()\fP directly to the same effect\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unload_c.html 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP The fully qualified path to the ephemeris kernel data (e\&.g\&. '/data/ephem/de440s\&.bsp') 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if there was an error (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_cspice_add_kernel()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
 .SS "int novas_use_cspice ()"
 Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and NOVAS_EPHEM_OBJECT types)\&.
 .PP

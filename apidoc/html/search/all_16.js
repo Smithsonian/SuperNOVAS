@@ -34,11 +34,11 @@ var searchData=
   ['source_31',['source',['../md_LEGACY.html#autotoc_md21',1,'Calculating positions for a sidereal source'],['../index.html#autotoc_md44',1,'Calculating positions for a sidereal source'],['../index.html#autotoc_md51',1,'Calculating positions for a Solar-system source'],['../md_LEGACY.html#autotoc_md29',1,'Calculating positions for a Solar-system source']]],
   ['specific_20features_32',['SuperNOVAS specific features',['../index.html#autotoc_md59',1,'']]],
   ['specify_20earth_20orientation_20parameters_33',['Specify Earth orientation parameters',['../md_LEGACY.html#autotoc_md25',1,'']]],
-  ['specify_20the_20object_20of_20interest_34',['specify the object of interest',['../index.html#autotoc_md45',1,'Specify the object of interest'],['../md_LEGACY.html#autotoc_md22',1,'Specify the object of interest']]],
+  ['specify_20the_20object_20of_20interest_34',['specify the object of interest',['../md_LEGACY.html#autotoc_md22',1,'Specify the object of interest'],['../index.html#autotoc_md45',1,'Specify the object of interest']]],
   ['specify_20the_20observer_20location_35',['Specify the observer location',['../index.html#autotoc_md46',1,'']]],
   ['specify_20the_20time_20of_20observation_36',['specify the time of observation',['../index.html#autotoc_md47',1,'Specify the time of observation'],['../md_LEGACY.html#autotoc_md24',1,'Specify the time of observation']]],
   ['spefify_20the_20observer_20location_37',['Spefify the observer location',['../md_LEGACY.html#autotoc_md23',1,'']]],
-  ['spin_38',['spin',['../novas_8h.html#af4090e519d7ce7ab1fcdb24b10126eb4',1,'spin(double angle, const double *in, double *out):&#160;novas.c'],['../novas_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4',1,'spin(double angle, const double *in, double *out):&#160;novas.c']]],
+  ['spin_38',['spin',['../novas_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4',1,'spin(double angle, const double *in, double *out):&#160;novas.c'],['../novas_8h.html#af4090e519d7ce7ab1fcdb24b10126eb4',1,'spin(double angle, const double *in, double *out):&#160;novas.c']]],
   ['split_39',['split',['../eph__manager_8c.html#a50981955ef4594e094650db69472ec94',1,'eph_manager.c']]],
   ['ss_40',['SS',['../eph__manager_8c.html#a20c09a36fbddf8e712b5f937f06b1b66',1,'eph_manager.c']]],
   ['star_41',['star',['../structobject.html#a0ead8b30742e9c76887f5ff76cabae7c',1,'object']]],
@@ -59,9 +59,7 @@ var searchData=
   ['supernovas_5frelease_5fstring_56',['SUPERNOVAS_RELEASE_STRING',['../novas_8h.html#aadef42ba39811e058ee9efe2c6f7d151',1,'novas.h']]],
   ['supernovas_5fversion_5fstring_57',['SUPERNOVAS_VERSION_STRING',['../novas_8h.html#a44de9d1672290d153a1dfb0685886208',1,'novas.h']]],
   ['support_58',['Runtime debug support',['../index.html#autotoc_md74',1,'']]],
-  ['support_20for_20calceph_20integration_59',['Optional support for CALCEPH integration',['../index.html#autotoc_md66',1,'']]],
-  ['support_20for_20naif_20cspice_20toolkit_20integration_60',['Optional support for NAIF CSPICE toolkit integration',['../index.html#autotoc_md67',1,'']]],
-  ['support_20for_20older_20jpl_20major_20planet_20ephemerides_61',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md69',1,'']]],
-  ['system_20ephemeris_20data_20or_20services_62',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md65',1,'']]],
-  ['system_20source_63',['system source',['../index.html#autotoc_md51',1,'Calculating positions for a Solar-system source'],['../md_LEGACY.html#autotoc_md29',1,'Calculating positions for a Solar-system source']]]
+  ['support_20for_20older_20jpl_20major_20planet_20ephemerides_59',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md69',1,'']]],
+  ['system_20ephemeris_20data_20or_20services_60',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md65',1,'']]],
+  ['system_20source_61',['system source',['../index.html#autotoc_md51',1,'Calculating positions for a Solar-system source'],['../md_LEGACY.html#autotoc_md29',1,'Calculating positions for a Solar-system source']]]
 ];

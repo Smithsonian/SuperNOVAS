@@ -7,11 +7,10 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[Unreleased]"
+.SH "[1\&.2\&.0-rc1] &ndash; 2024-11-11"
 .PP
-Changes expected for the next feature release, expected around 1 February 2025\&.
-.SH "Added"
-.PP
+Release candidate for the next feature release, expected around 1 February 2025\&.
+.SS "Added"
 .IP "\(bu" 2
 #57: New \fCnovas_make_redshifted_object()\fP to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value\&.
 .IP "\(bu" 2
@@ -21,7 +20,7 @@ Changes expected for the next feature release, expected around 1 February 2025\&
 .IP "\(bu" 2
 #83: CALCEPH integration: \fC\fBnovas_use_calceph()\fP\fP and/or \fC\fBnovas_use_calceph_planets()\fP\fP to specify and use ephemeris data via CALCEPH for Solar-system sources in general, and for major planets specifically; and \fC\fBnovas_calceph_use_ids()\fP\fP to specify whether \fC\fBobject\&.number\fP\fP in \fCNOVAS_EPHEM_OBJECT\fP type objects is a NAIF ID (default) or else a CALCEPH ID number of the Solar-system body\&. These functions are provided by the \fClibsolsys-calceph\&.so[\&.1]\fP and/or \fC\&.a\fP plugin libraries, which are built contingent on the \fCCALCEPH_SUPPORT\fP variable being set to 1 prior to the build\&. The build of the plugin module requires an accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries depending on the needs of the build)\&.
 .IP "\(bu" 2
-#86: NAIF CSPICE integration: \fC\fBnovas_use_cspice()\fP\fP, \fC\fBnovas_use_cspice_planets()\fP\fP, \fC\fBnovas_use_cspice_ephem()\fP\fP to use the NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only\&. \fCNOVAS_EPHEM_OBJECTS\fP should use NAIF IDs with CSPICE (or else -1 for name-based lookup)\&. These functions are provided by the \fClibsolsys-cspice\&.so[\&.1]\fP and/or \fC\&.a\fP plugin libraries, which are built contingent on the \fCCSPICE_SUPPORT\fP variable being set to 1 prior to the build\&. The build of the plugin module requires an accessible installation of the CSPICE development files (C headers and unversioned static or shared libraries depending on the needs of the build)\&.
+#86: NAIF CSPICE integration: \fC\fBnovas_use_cspice()\fP\fP, \fC\fBnovas_use_cspice_planets()\fP\fP, \fC\fBnovas_use_cspice_ephem()\fP\fP to use the NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only\&. \fCNOVAS_EPHEM_OBJECTS\fP should use NAIF IDs with CSPICE (or else -1 for name-based lookup)\&. Also provides \fC\fBnovas_cspice_add_kernel()\fP\fP and \fC\fBnovas_cspice_remove_kernel()\fP\fP for convenience to manage the set of active kernels (#89)\&. These functions are provided by the \fClibsolsys-cspice\&.so[\&.1]\fP and/or \fC\&.a\fP plugin libraries, which are built contingent on the \fCCSPICE_SUPPORT\fP variable being set to 1 prior to the build\&. The build of the plugin module requires an accessible installation of the CSPICE development files (C headers and unversioned static or shared libraries depending on the needs of the build)\&.
 .IP "\(bu" 2
 #87: Added \fC\fBnovas_planet_for_name()\fP\fP function to return the NOVAS planet ID for a given (case insensitive) name\&.
 .IP "\(bu" 2

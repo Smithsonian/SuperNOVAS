@@ -33,8 +33,8 @@
       <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md63"/>
     </topic>
     <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md65">
-      <topic label="Optional support for CALCEPH integration" href="index.html#autotoc_md66"/>
-      <topic label="Optional support for NAIF CSPICE toolkit integration" href="index.html#autotoc_md67"/>
+      <topic label="Optional CALCEPH integration" href="index.html#autotoc_md66"/>
+      <topic label="Optional NAIF CSPICE toolkit integration" href="index.html#autotoc_md67"/>
       <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md68"/>
       <topic label="Legacy support for (older) JPL major planet ephemerides" href="index.html#autotoc_md69">
         <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md70"/>
@@ -46,8 +46,9 @@
     <topic label="Release schedule" href="index.html#autotoc_md76"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>
-    <topic label="Added" href="md_CHANGELOG.html#autotoc_md2"/>
+    <topic label="[1.2.0-rc1] &amp;ndash; 2024-11-11" href="md_CHANGELOG.html#autotoc_md1">
+      <topic label="Added" href="md_CHANGELOG.html#autotoc_md2"/>
+    </topic>
     <topic label="[1.1.1] - 2024-10-28" href="md_CHANGELOG.html#autotoc_md3">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md4"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md5"/>
@@ -871,6 +872,8 @@
           <topic label="novas_use_calceph_planets" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331"/>
         </topic>
         <topic label="solsys-cspice.c" href="solsys-cspice_8c.html">
+          <topic label="novas_cspice_add_kernel" href="solsys-cspice_8c.html#a20a88172a14b70ff4acc1dae9886cf4c"/>
+          <topic label="novas_cspice_remove_kernel" href="solsys-cspice_8c.html#a5bf5342d976d48229b8651a3b6db49db"/>
           <topic label="novas_use_cspice" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4"/>
           <topic label="novas_use_cspice_ephem" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc"/>
           <topic label="novas_use_cspice_planets" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577"/>

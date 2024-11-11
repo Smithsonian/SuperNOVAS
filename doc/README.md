@@ -808,7 +808,8 @@ before that level of accuracy is reached.
    
  - NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()` to use the 
    NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
-   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup).
+   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides
+   `novas_cspice_add_kernel()` and `novas_cspice_remove_kernel()`.
    
  - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
    `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
@@ -914,15 +915,15 @@ and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 
 [JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
 all known solar systems bodies, down to the tiniest rocks. 
 
- - [Optional support for CALCEPH integration](#calceph-integration)
- - [Optional support for NAIF CSPICE toolkit integration](#cspice-integration)
+ - [Optional CALCEPH integration](#calceph-integration)
+ - [Optional NAIF CSPICE toolkit integration](#cspice-integration)
  - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Legacy support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
  - [Legacy linking of custom ephemeris functions](#explicit-ephem-linking)
 
 
 <a name="calceph-integration"></a>
-### Optional support for CALCEPH integration
+### Optional CALCEPH integration
 
 The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides an easy-to-use access to JPL and
 INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing the CALCEPH C library 
@@ -963,7 +964,7 @@ don't forget to add `-lsolsys-calceph` to your link flags. That's all there is t
 
 
 <a name="cspice-integration"></a>
-### Optional support for NAIF CSPICE toolkit integration
+### Optional NAIF CSPICE toolkit integration
 
 The [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) is the canonical standard library for JPL 
 ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing CSPICE with SuperNOVAS for 
@@ -983,17 +984,20 @@ repository to help you build CSPICE with shared libraries and dynamically linked
 Here is an example on how you might use CSPICE with SuperNOVAS in your application code:
 
 ```c
-  // You can load the desired kernels for CSPICE, using the CSPICE API.
+  // You can load the desired kernels for CSPICE
   // E.g. load DE440s and the Mars satellites from /data/ephem:
-  furnsh_c("/data/ephem/de440s.bsp");
-  furnsh_c("/data/ephem/mar097.bsp");
-  ...
+  int status;
   
-  // check for CSPICE errors
-  if(return_c()) {
-    // oops, one of the kernels must not have loaded...
+  status = novas_cspice_add_kernel("/data/ephem/de440s.bsp");
+  if(status < 0) {
+    // oops, the kernels must not have loaded...
     ...
   }
+  
+  // Load additional kernels as needed...
+  status = novas_cspice_add_kernel("/data/ephem/mar097.bsp");
+  ...
+ 
   
   // Then use CSPICE as your SuperNOVAS ephemeris provider
   novas_use_cspice();

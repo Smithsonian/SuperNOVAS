@@ -23,8 +23,8 @@ var searchData=
   ['on_20sky_20',['on sky',['../index.html#autotoc_md49',1,'Calculate an apparent place on sky'],['../md_LEGACY.html#autotoc_md26',1,'Calculate apparent positions on sky']]],
   ['on_5fsurf_21',['on_surf',['../structobserver.html#a0ed422bd2a08c6b3870b545e16484501',1,'observer']]],
   ['on_5fsurface_22',['on_surface',['../structon__surface.html',1,'']]],
-  ['optional_20support_20for_20calceph_20integration_23',['Optional support for CALCEPH integration',['../index.html#autotoc_md66',1,'']]],
-  ['optional_20support_20for_20naif_20cspice_20toolkit_20integration_24',['Optional support for NAIF CSPICE toolkit integration',['../index.html#autotoc_md67',1,'']]],
+  ['optional_20calceph_20integration_23',['Optional CALCEPH integration',['../index.html#autotoc_md66',1,'']]],
+  ['optional_20naif_20cspice_20toolkit_20integration_24',['Optional NAIF CSPICE toolkit integration',['../index.html#autotoc_md67',1,'']]],
   ['or_20services_25',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md65',1,'']]],
   ['orientation_20parameters_26',['Specify Earth orientation parameters',['../md_LEGACY.html#autotoc_md25',1,'']]]
 ];
