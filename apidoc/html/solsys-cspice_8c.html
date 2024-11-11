@@ -133,7 +133,16 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>A. Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
-<p>SuperNOVAS major planet ephemeris lookup implementation via the NAIF CSPICE library See <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">https://naif.jpl.nasa.gov/naif/toolkit.html</a> </p>
+<p>SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library</p>
+<p>This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit. As such, you may need the CSPICE runtime libraries in an accessible location (such as in <code>/usr/lib</code>), and you will need development files (C headers and unversioned libraries) also to build. Thus, this module is compiled only if <code>CALCEPH_SUPPORT</code> is set to 1 prior to the build.</p>
+<p>Before building SuperNOVAS against CSPICE, you might want to check out the <code>Smithsonian/cspice-sharedlib</code> repository on Github to facilitate the building of CSPICE as a shared library instead of the static library built by the uptream distribution.</p>
+<p>REFERENCES: </p><ol>
+<li>
+The NAIF CSPICE Toolkit: <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">https://naif.jpl.nasa.gov/naif/toolkit.html</a> </li>
+<li>
+the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithsonian/cspice-sharedlib">https://github.com/Smithsonian/cspice-sharedlib</a> </li>
+</ol>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-calceph_8c.html">solsys-calceph.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ae02d26964099f56c375dc78172ad135b" name="ae02d26964099f56c375dc78172ad135b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae02d26964099f56c375dc78172ad135b">&#9670;&#160;</a></span>cspice_add_kernel()</h2>
@@ -162,7 +171,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to EINVAL).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a> </dd>
+<dd>
+<a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
@@ -220,7 +231,9 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a> </dd>
 <dd>
-<a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a></dd></dl>
+<a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a> </dd>
+<dd>
+<a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
@@ -248,6 +261,8 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a> </dd>
 <dd>
 <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd>
+<dd>
+<a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
@@ -277,6 +292,8 @@ Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a> </dd>
 <dd>
 <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd>
+<dd>
+<a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>

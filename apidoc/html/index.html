@@ -586,7 +586,7 @@ Optional CALCEPH integration</h3>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="asolsys-calceph_8c_html_a35fc86a939602ec910dbdfde180d7f31"><div class="ttname"><a href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph</a></div><div class="ttdeci">int novas_use_calceph(t_calcephbin *eph)</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:369</div></div>
+<div class="ttc" id="asolsys-calceph_8c_html_a35fc86a939602ec910dbdfde180d7f31"><div class="ttname"><a href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph</a></div><div class="ttdeci">int novas_use_calceph(t_calcephbin *eph)</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:379</div></div>
 </div><!-- fragment --><p>All modern JPL (SPK) ephemeris files should work with the <code>solsys-calceph</code> plugin. When linking your application, don't forget to add <code>-lsolsys-calceph</code> to your link flags. That's all there is to it.</p>
 <p><a class="anchor" id="cspice-integration"></a> </p>
 <h3><a class="anchor" id="autotoc_md67"></a>
@@ -611,7 +611,7 @@ Optional NAIF CSPICE toolkit integration</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Then use CSPICE as your SuperNOVAS ephemeris provider</span></div>
 <div class="line">novas_use_cspice();</div>
-<div class="ttc" id="asolsys-cspice_8c_html_ae02d26964099f56c375dc78172ad135b"><div class="ttname"><a href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a></div><div class="ttdeci">int cspice_add_kernel(const char *filename)</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:110</div></div>
+<div class="ttc" id="asolsys-cspice_8c_html_ae02d26964099f56c375dc78172ad135b"><div class="ttname"><a href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a></div><div class="ttdeci">int cspice_add_kernel(const char *filename)</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:127</div></div>
 </div><!-- fragment --><p>All JPL ephemeris data will work with the <code>solsys-cspice</code> plugin. When linking your application, don't forget to add <code>-lsolsys-cspice</code> to your link flags. That's all there is to it.</p>
 <p><a class="anchor" id="universal-ephemerides"></a> </p>
 <h3><a class="anchor" id="autotoc_md68"></a>

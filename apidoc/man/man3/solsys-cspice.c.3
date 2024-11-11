@@ -39,7 +39,26 @@ A\&. Kovacs
 1\&.2
 .RE
 .PP
-SuperNOVAS major planet ephemeris lookup implementation via the NAIF CSPICE library See https://naif.jpl.nasa.gov/naif/toolkit.html 
+SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library
+.PP
+This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit\&. As such, you may need the CSPICE runtime libraries in an accessible location (such as in \fC/usr/lib\fP), and you will need development files (C headers and unversioned libraries) also to build\&. Thus, this module is compiled only if \fCCALCEPH_SUPPORT\fP is set to 1 prior to the build\&.
+.PP
+Before building SuperNOVAS against CSPICE, you might want to check out the \fCSmithsonian/cspice-sharedlib\fP repository on Github to facilitate the building of CSPICE as a shared library instead of the static library built by the uptream distribution\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+The NAIF CSPICE Toolkit: https://naif.jpl.nasa.gov/naif/toolkit.html 
+.IP "2." 4
+the Smithsonian/cspice-sharedlib repository: https://github.com/Smithsonian/cspice-sharedlib 
+.PP
+.PP
+\fBSee also\fP
+.RS 4
+\fBsolsys-calceph\&.c\fP 
+.RE
+.PP
+
 .SH "Function Documentation"
 .PP 
 .SS "int cspice_add_kernel (const char * filename)"
@@ -63,7 +82,9 @@ https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/furnsh_c.html
 .PP
 \fBSee also\fP
 .RS 4
-\fBcspice_remove_kernel()\fP
+\fBcspice_remove_kernel()\fP 
+.PP
+\fBnovas_use_cspice()\fP
 .RE
 .PP
 \fBAuthor\fP
@@ -126,7 +147,9 @@ CSPICE is configured to suppress error messages and to not exit on errors, since
 .RS 4
 \fBnovas_use_cspice_planets()\fP 
 .PP
-\fBnovas_use_cspice_ephem()\fP
+\fBnovas_use_cspice_ephem()\fP 
+.PP
+\fBcspice_add_kernel()\fP
 .RE
 .PP
 \fBAuthor\fP
@@ -157,6 +180,8 @@ CSPICE is configured to suppress error messages and to not exit on errors, since
 \fBnovas_use_cspice_planets()\fP 
 .PP
 \fBnovas_use_cspice()\fP 
+.PP
+\fBcspice_add_kernel()\fP 
 .PP
 \fBset_ephem_provider()\fP
 .RE
@@ -189,6 +214,8 @@ CSPICE is configured to suppress error messages and to not exit on errors, since
 \fBnovas_use_cspice_ephem()\fP 
 .PP
 \fBnovas_use_cspice()\fP 
+.PP
+\fBcspice_add_kernel()\fP 
 .PP
 \fBset_planet_provider()\fP 
 .PP
