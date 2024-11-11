@@ -72,7 +72,7 @@ var NAVTREE =
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md74", null ],
       [ "Release schedule", "index.html#autotoc_md76", null ],
-      [ "[1.2.0-rc1] - 2024-11-11", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Added", "md_CHANGELOG.html#autotoc_md2", null ]
       ] ],
       [ "[1.1.1] - 2024-10-28", "md_CHANGELOG.html#autotoc_md3", [
@@ -97,7 +97,7 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Contributing to SuperNOVAS", "md_CONTRIBUTING.html", null ],
-    [ "SuperNOVAS: Astrometric Positions the Old Way", "md_LEGACY.html", [
+    [ "Astrometric Positions the Old Way", "md_LEGACY.html", [
       [ "Calculating positions for a sidereal source", "md_LEGACY.html#autotoc_md21", [
         [ "Specify the object of interest", "md_LEGACY.html#autotoc_md22", null ],
         [ "Spefify the observer location", "md_LEGACY.html#autotoc_md23", null ],

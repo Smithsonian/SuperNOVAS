@@ -15,7 +15,7 @@ var searchData=
   ['of_20custom_20ephemeris_20functions_12',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md72',1,'']]],
   ['of_20interest_13',['of interest',['../index.html#autotoc_md45',1,'Specify the object of interest'],['../md_LEGACY.html#autotoc_md22',1,'Specify the object of interest']]],
   ['of_20observation_14',['of observation',['../md_LEGACY.html#autotoc_md24',1,'Specify the time of observation'],['../index.html#autotoc_md47',1,'Specify the time of observation']]],
-  ['old_20way_15',['SuperNOVAS: Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
+  ['old_20way_15',['Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
   ['older_20jpl_20major_20planet_20ephemerides_16',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md69',1,'']]],
   ['omega_17',['Omega',['../structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737',1,'novas_delaunay_args']]],
   ['on_20alternative_20methodologies_18',['Note on alternative methodologies',['../index.html#autotoc_md43',1,'']]],

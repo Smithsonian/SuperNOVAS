@@ -11,7 +11,7 @@ var searchData=
   ['the_20observer_20location_8',['the observer location',['../index.html#autotoc_md46',1,'Specify the observer location'],['../md_LEGACY.html#autotoc_md23',1,'Spefify the observer location']]],
   ['the_20observing_20frame_9',['Set up the observing frame',['../index.html#autotoc_md48',1,'']]],
   ['the_20observing_20location_10',['the observing location',['../md_LEGACY.html#autotoc_md28',1,'B. Azimuth and elevation angles at the observing location'],['../index.html#autotoc_md50',1,'Calculate azimuth and elevation angles at the observing location']]],
-  ['the_20old_20way_11',['SuperNOVAS: Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
+  ['the_20old_20way_11',['Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
   ['the_20time_20of_20observation_12',['the time of observation',['../index.html#autotoc_md47',1,'Specify the time of observation'],['../md_LEGACY.html#autotoc_md24',1,'Specify the time of observation']]],
   ['threaded_20calculations_13',['Multi-threaded calculations',['../index.html#autotoc_md54',1,'']]],
   ['time_14',['time',['../structnovas__frame.html#a430880330b471a12c587f77d1c73b49a',1,'novas_frame']]],

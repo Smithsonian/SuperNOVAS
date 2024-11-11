@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['way_0',['SuperNOVAS: Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
+  ['way_0',['Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
   ['where_1',['where',['../structobserver.html#a11f2eb69df64b674d938b34bbb842ab1',1,'observer']]],
   ['with_20novas_20c_203_201_2',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md37',1,'']]],
   ['with_20supernovas_3',['Building your application with SuperNOVAS',['../index.html#autotoc_md40',1,'']]],

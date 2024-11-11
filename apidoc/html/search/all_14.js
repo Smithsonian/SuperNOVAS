@@ -32,7 +32,7 @@ var searchData=
   ['positions_20for_20a_20sidereal_20source_29',['positions for a sidereal source',['../md_LEGACY.html#autotoc_md21',1,'Calculating positions for a sidereal source'],['../index.html#autotoc_md44',1,'Calculating positions for a sidereal source']]],
   ['positions_20for_20a_20solar_20system_20source_30',['positions for a solar system source',['../index.html#autotoc_md51',1,'Calculating positions for a Solar-system source'],['../md_LEGACY.html#autotoc_md29',1,'Calculating positions for a Solar-system source']]],
   ['positions_20on_20sky_31',['Calculate apparent positions on sky',['../md_LEGACY.html#autotoc_md26',1,'']]],
-  ['positions_20the_20old_20way_32',['SuperNOVAS: Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
+  ['positions_20the_20old_20way_32',['Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
   ['precession_33',['precession',['../novas_8h.html#a9178358732325399f3a5e3582080ced3',1,'precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out):&#160;novas.c'],['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a6833dbc8bfb3b8ba2cdd7a2da0b82353',1,'PRECESSION:&#160;novas.h'],['../structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c',1,'novas_frame::precession'],['../novas_8c.html#a9178358732325399f3a5e3582080ced3',1,'precession():&#160;novas.c']]],
   ['precise_20results_34',['Prerequisites to precise results',['../index.html#autotoc_md57',1,'']]],
   ['precision_35',['Notes on precision',['../index.html#autotoc_md56',1,'']]],

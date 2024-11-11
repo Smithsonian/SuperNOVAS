@@ -46,7 +46,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md76"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.2.0-rc1] - 2024-11-11" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md2"/>
     </topic>
     <topic label="[1.1.1] - 2024-10-28" href="md_CHANGELOG.html#autotoc_md3">
@@ -71,7 +71,7 @@
     </topic>
   </topic>
   <topic label="Contributing to SuperNOVAS" href="md_CONTRIBUTING.html"/>
-  <topic label="SuperNOVAS: Astrometric Positions the Old Way" href="md_LEGACY.html">
+  <topic label="Astrometric Positions the Old Way" href="md_LEGACY.html">
     <topic label="Calculating positions for a sidereal source" href="md_LEGACY.html#autotoc_md21">
       <topic label="Specify the object of interest" href="md_LEGACY.html#autotoc_md22"/>
       <topic label="Spefify the observer location" href="md_LEGACY.html#autotoc_md23"/>

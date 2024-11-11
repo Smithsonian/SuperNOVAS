@@ -4793,7 +4793,7 @@
   </compound>
   <compound kind="page">
     <name>md_LEGACY</name>
-    <title>SuperNOVAS: Astrometric Positions the Old Way</title>
+    <title>Astrometric Positions the Old Way</title>
     <filename>md_LEGACY.html</filename>
     <docanchor file="md_LEGACY.html">old-sidereal-example</docanchor>
     <docanchor file="md_LEGACY.html">old-solsys-example</docanchor>
