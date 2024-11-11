@@ -138,7 +138,7 @@ SuperNOVAS header for custom solar-system ephemeris calculations for major plane
 .PP
 If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see Makefile), then the library is compiled with that version providing a built-in default implementation (the default is to use solsys3, which is a self-contained orbital calculation)\&.
 .PP
-Additionally, users may set their custom choice of major planet ephemeris handler at runtime via the set_ephem_size()\&.
+Additionally, users may set their custom choice of major planet ephemeris handler at runtime via the \fBset_planet_provider()\fP and/or \fBset_planet_provider_hp()\fP functions\&. They may also define custom handlers for all other types of Solar-system objects (i\&.e\&. \fCNOVAS_EPHEM_OBJEVT\fP types) via \fBset_ephem_provider()\fP
 .PP
 Based on the NOVAS C Edition, Version 3\&.1:
 .PP
@@ -152,6 +152,10 @@ U\&. S\&. Naval Observatory
 .PP
 \fBSee also\fP
 .RS 4
+\fBsolsys-calceph\&.c\fP 
+.PP
+\fBsolsys-cspice\&.c\fP 
+.PP
 \fBsolsys1\&.c\fP 
 .PP
 \fBsolsys2\&.c\fP 
