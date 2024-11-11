@@ -5636,6 +5636,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  * @sa ephemeris()
+ * @sa solsys-ephem.c
  *
  */
 int set_ephem_provider(novas_ephem_provider func) {

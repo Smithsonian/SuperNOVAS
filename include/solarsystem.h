@@ -173,6 +173,7 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  * @sa set_ephem_provider()
  * @sa ephemeris()
  * @sa NOVAS_EPHEM_OBJECT
+ * @sa solsys-ephem.c
  *
  * @since 1.0
  * @author Attila Kovacs

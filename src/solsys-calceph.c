@@ -18,6 +18,7 @@
  *  <li>CALCEPH source code is at https://gitlab.obspm.fr/imcce_calceph/calceph</li>
  * </ol>
  *
+ * @sa solarsystem.h
  * @sa solsys-cspice.c
  */
 

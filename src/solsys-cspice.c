@@ -22,6 +22,7 @@
  *  <li>the Smithsonian/cspice-sharedlib repository: https://github.com/Smithsonian/cspice-sharedlib</li>
  *  </ol>
  *
+ * @sa solarsystem.h
  * @sa solsys-calceph.c
  */
 
