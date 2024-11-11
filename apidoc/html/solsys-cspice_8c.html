@@ -134,7 +134,7 @@ Functions</h2></td></tr>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>A. Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <p>SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library.</p>
-<p>This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit. As such, you may need the CSPICE runtime libraries in an accessible location (such as in <code>/usr/lib</code>), and you will need development files (C headers under a <code>cspice/</code> sub-folder, such as in <code>/usr/include/cspice/</code>; and unversioned libraries) to build. Thus, this module is compiled only if <code>CALCEPH_SUPPORT</code> is set to 1 prior to the build.</p>
+<p>This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit. As such, you may need the CSPICE runtime libraries in an accessible location (such as in <code>/usr/lib</code>), and you will need development files (C headers under a <code>cspice/</code> sub-folder, such as in <code>/usr/include/cspice/</code>; and unversioned libraries) to build. Thus, this module is compiled only if <code>CSPICE_SUPPORT</code> is set to 1 prior to the build.</p>
 <p>Before building SuperNOVAS against CSPICE, you might want to check out the <code>Smithsonian/cspice-sharedlib</code> repository on Github to facilitate the building of CSPICE as a shared library instead of the static library built by the uptream distribution.</p>
 <p>REFERENCES: </p><ol>
 <li>

@@ -41,7 +41,7 @@ A\&. Kovacs
 .PP
 SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library\&.
 .PP
-This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit\&. As such, you may need the CSPICE runtime libraries in an accessible location (such as in \fC/usr/lib\fP), and you will need development files (C headers under a \fCcspice/\fP sub-folder, such as in \fC/usr/include/cspice/\fP; and unversioned libraries) to build\&. Thus, this module is compiled only if \fCCALCEPH_SUPPORT\fP is set to 1 prior to the build\&.
+This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit\&. As such, you may need the CSPICE runtime libraries in an accessible location (such as in \fC/usr/lib\fP), and you will need development files (C headers under a \fCcspice/\fP sub-folder, such as in \fC/usr/include/cspice/\fP; and unversioned libraries) to build\&. Thus, this module is compiled only if \fCCSPICE_SUPPORT\fP is set to 1 prior to the build\&.
 .PP
 Before building SuperNOVAS against CSPICE, you might want to check out the \fCSmithsonian/cspice-sharedlib\fP repository on Github to facilitate the building of CSPICE as a shared library instead of the static library built by the uptream distribution\&.
 .PP
