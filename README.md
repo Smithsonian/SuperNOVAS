@@ -86,7 +86,7 @@ Outside contributions are very welcome. See
  - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemeris
    from JPL and/or in INPOP 2.0/3.0 format.
  - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
-   via from JPL.
+   from JPL.
  - [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) for building CSPICE as a shared
    library for dynamic linking.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
