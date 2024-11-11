@@ -1,4 +1,4 @@
-# SuperNOVAS: Astrometric Positions the Old Way
+# Astrometric Positions the Old Way
 
 As of version 1.1, the SuperNOVAS library offers a new, more versatile, more intuitive, and more efficient way to 
 calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see `README.md`). 

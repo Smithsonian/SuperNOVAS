@@ -10,6 +10,9 @@
  *  this set (and no defined ID for EMB), thus for all other objects we'll assume and use NOVAS IDs that match NAIF.
  *
  * @since 1.2
+ *
+ * @sa solsys-calceph.c
+ * @sa solsys-cspice.c
  */
 
 #include <errno.h>

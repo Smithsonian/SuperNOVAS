@@ -4,9 +4,25 @@
  * @author A. Kovacs
  * @since 1.2
  *
- *  SuperNOVAS major planet ephemeris lookup implementation via the NAIF CSPICE library
- *  See https://naif.jpl.nasa.gov/naif/toolkit.html
+ *  SuperNOVAS Solar-system ephemeris lookup implementation via the NAIF CSPICE library.
  *
+ *  This is an optional component of SuperNOVAS, which interfaces to the NAIF CSPICE Toolkit.
+ *  As such, you may need the CSPICE runtime libraries in an accessible location (such
+ *  as in `/usr/lib`), and you will need development files (C headers under a `cspice/`
+ *  sub-folder, such as in `/usr/include/cspice/`; and unversioned libraries) to build. Thus,
+ *  this module is compiled only if `CSPICE_SUPPORT` is set to 1 prior to the build.
+ *
+ *  Before building SuperNOVAS against CSPICE, you might want to check out the
+ *  `Smithsonian/cspice-sharedlib` repository on Github to facilitate the building of CSPICE
+ *  as a shared library instead of the static library built by the uptream distribution.
+ *
+ *  REFERENCES:
+ *  <ol>
+ *  <li>The NAIF CSPICE Toolkit: https://naif.jpl.nasa.gov/naif/toolkit.html</li>
+ *  <li>the Smithsonian/cspice-sharedlib repository: https://github.com/Smithsonian/cspice-sharedlib</li>
+ *  </ol>
+ *
+ * @sa solsys-calceph.c
  */
 
 #include <string.h>
@@ -103,6 +119,7 @@ static int get_cspice_error(char *msg, int len) {
  *                      EINVAL).
  *
  * @sa cspice_remove_kernel()
+ * @sa novas_use_cspice()
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -460,6 +477,7 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
  *
  * @sa novas_use_cspice_planets()
  * @sa novas_use_cspice()
+ * @sa cspice_add_kernel()
  * @sa set_ephem_provider()
  *
  * @author Attila Kovacs
@@ -483,6 +501,7 @@ int novas_use_cspice_ephem() {
  *
  * @sa novas_use_cspice_ephem()
  * @sa novas_use_cspice()
+ * @sa cspice_add_kernel()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  *
@@ -508,6 +527,7 @@ int novas_use_cspice_planets() {
  *
  * @sa novas_use_cspice_planets()
  * @sa novas_use_cspice_ephem()
+ * @sa cspice_add_kernel()
  *
  * @author Attila Kovacs
  * @since 1.2

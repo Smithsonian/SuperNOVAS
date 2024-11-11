@@ -4,11 +4,21 @@
  * @author A. Kovacs
  * @since 1.2
  *
- *  SuperNOVAS major planet ephemeris lookup implementation via the CALCEPH C library
- *  See https://calceph.imcce.fr/docs/4.0.0/html/c/
+ *  SuperNOVAS Solar-system ephemeris lookup implementation via the CALCEPH C library.
  *
- *  CALCEPH source code is at https://gitlab.obspm.fr/imcce_calceph/calceph
+ *  This is an optional component of SuperNOVAS, which interfaces to the CALCEPH C library.
+ *  As such, you may need the CALCEPH runtime libraries in an accessible location (such
+ *  as in `/usr/lib`) to use, and you will need development files (C headers and unversioned
+ *  libraries) to build. Thus, this module is compiled only if `CALCEPH_SUPPORT` is set
+ *  to 1 prior to the build.
  *
+ * REFERENCES:
+ * <ol>
+ *  <li>CALCEPH is at https://calceph.imcce.fr/docs/4.0.0/html/c/</li>
+ *  <li>CALCEPH source code is at https://gitlab.obspm.fr/imcce_calceph/calceph</li>
+ * </ol>
+ *
+ * @sa solsys-cspice.c
  */
 
 #include <string.h>
