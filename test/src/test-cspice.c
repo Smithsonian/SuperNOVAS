@@ -176,14 +176,14 @@ static int load_eph(const char *name) {
   char filename[1024];
 
   sprintf(filename, "%s/%s", prefix, name);
-  return novas_cspice_add_kernel(filename);
+  return cspice_add_kernel(filename);
 }
 
 static int unload_eph(const char *name) {
   char filename[1024];
 
   sprintf(filename, "%s/%s", prefix, name);
-  return novas_cspice_remove_kernel(filename);
+  return cspice_remove_kernel(filename);
 }
 
 static int test_remove_kernel() {
@@ -192,8 +192,8 @@ static int test_remove_kernel() {
   if(!is_ok("remove_kernel:planets", unload_eph(PLANET_EPH))) n++;
   if(!is_ok("remove_kernel:mars", unload_eph(MARS_EPH))) n++;
 
-  if(check("remove_kernel:null", -1, novas_cspice_remove_kernel(NULL))) n++;
-  if(check("remove_kernel:empty", -1, novas_cspice_remove_kernel(""))) n++;
+  if(check("remove_kernel:null", -1, cspice_remove_kernel(NULL))) n++;
+  if(check("remove_kernel:empty", -1, cspice_remove_kernel(""))) n++;
 
   return n;
 }
@@ -206,8 +206,8 @@ static int init() {
   if(!is_ok("init:planets", load_eph(PLANET_EPH))) n++;
   if(!is_ok("init:mars", load_eph(MARS_EPH))) n++;
 
-  if(check("init:add_kernel:null", -1, novas_cspice_add_kernel(NULL))) n++;
-  if(check("init:add_kernel:empty", -1, novas_cspice_add_kernel(""))) n++;
+  if(check("init:add_kernel:null", -1, cspice_add_kernel(NULL))) n++;
+  if(check("init:add_kernel:empty", -1, cspice_add_kernel(""))) n++;
 
   return n;
 }

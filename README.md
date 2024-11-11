@@ -826,7 +826,7 @@ before that level of accuracy is reached.
  - NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()` to use the 
    NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
    `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides
-   `novas_cspice_add_kernel()` and `novas_cspice_remove_kernel()`.
+   `cspice_add_kernel()` and `cspice_remove_kernel()`.
    
  - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
    `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
@@ -991,7 +991,8 @@ Prior to building SuperNOVAS simply set `CSPICE_SUPPORT` to 1 in `config.mk` or 
 build target, it will build `libsolsys-cspice.so[.1]` (target `shared`) or `libsolsys-cspice.a` (target `static`) 
 libraries, which provide the `novas_use_cspice()`, `novas_use_cspice_planets()`, and `novas_use_cspice_ephem()` 
 functions to enable CSPICE for providing data for all Solar-system sources, or for major planets only, or for other
-bodies only, respectively.
+bodies only, respectively. You can also manage the active kernels with the `cspice_add_kernel()` and 
+`cspice_remove_kernel()` functions.
 
 Of course, you will need access to the CSPICE development files (C headers, installed under a `cspice/` directory 
 of an header search location, and the unversioned `libcspice.so` or `.a` library) for the build to succeed. You may 
@@ -1005,14 +1006,14 @@ Here is an example on how you might use CSPICE with SuperNOVAS in your applicati
   // E.g. load DE440s and the Mars satellites from /data/ephem:
   int status;
   
-  status = novas_cspice_add_kernel("/data/ephem/de440s.bsp");
+  status = cspice_add_kernel("/data/ephem/de440s.bsp");
   if(status < 0) {
     // oops, the kernels must not have loaded...
     ...
   }
   
   // Load additional kernels as needed...
-  status = novas_cspice_add_kernel("/data/ephem/mar097.bsp");
+  status = cspice_add_kernel("/data/ephem/mar097.bsp");
   ...
  
   

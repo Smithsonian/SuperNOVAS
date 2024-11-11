@@ -340,7 +340,6 @@ int novas_calceph_use_ids(enum novas_id_type idtype);
 
 #endif /* USE_CALCEPH */
 
-
 // in solsys-cspice.c
 #if USE_CSPICE
 
@@ -350,9 +349,9 @@ int novas_use_cspice_ephem();
 
 int novas_use_cspice_planets();
 
-int novas_cspice_add_kernel(const char *filename);
+int cspice_add_kernel(const char *filename);
 
-int novas_cspice_remove_kernel(const char *filename);
+int cspice_remove_kernel(const char *filename);
 
 #endif /* USE_CSPICE */
 

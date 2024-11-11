@@ -104,13 +104,13 @@ static int get_cspice_error(char *msg, int len) {
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
  *                      EINVAL).
  *
- * @sa novas_cspice_remove_kernel()
+ * @sa cspice_remove_kernel()
  *
  * @author Attila Kovacs
  * @since 1.2
  */
-int novas_cspice_add_kernel(const char *filename) {
-  static const char *fn = "novas_cspice_add_kernel";
+int cspice_add_kernel(const char *filename) {
+  static const char *fn = "cspice_add_kernel";
 
   char msg[100];
   int err;
@@ -150,13 +150,13 @@ int novas_cspice_add_kernel(const char *filename) {
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
  *                      EINVAL).
  *
- * @sa novas_cspice_add_kernel()
+ * @sa cspice_add_kernel()
  *
  * @author Attila Kovacs
  * @since 1.2
  */
-int novas_cspice_remove_kernel(const char *filename) {
-  static const char *fn = "novas_cspice_remove_kernel";
+int cspice_remove_kernel(const char *filename) {
+  static const char *fn = "cspice_remove_kernel";
 
   char msg[100];
   int err;
