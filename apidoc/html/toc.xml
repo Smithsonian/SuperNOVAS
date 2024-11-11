@@ -651,6 +651,11 @@
           <topic label="nu2000k" href="nutation_8h.html#ab17083c5bc84987d4dda1172a4dab843"/>
         </topic>
         <topic label="solarsystem.h" href="solarsystem_8h.html">
+          <topic label="NAIF_EARTH" href="solarsystem_8h.html#a58a3ee779a2235702283b32a762df2f6"/>
+          <topic label="NAIF_EMB" href="solarsystem_8h.html#a71a4a929a85a2b77c2adb2284894ca9d"/>
+          <topic label="NAIF_MOON" href="solarsystem_8h.html#a172c6c114d2f18ae91003a1f293682bc"/>
+          <topic label="NAIF_SSB" href="solarsystem_8h.html#a4a8e127d97f48f2ef918b61182436490"/>
+          <topic label="NAIF_SUN" href="solarsystem_8h.html#a4a4d693821f595d86497eb2befc746c1"/>
           <topic label="NOVAS_ID_TYPES" href="solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee"/>
           <topic label="novas_ephem_provider" href="solarsystem_8h.html#ac2ae695519a5b600a105243f4e30c3ab"/>
           <topic label="novas_planet_provider" href="solarsystem_8h.html#ae7eb9e64aa00ee757946488fa99351ec"/>

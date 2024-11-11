@@ -139,7 +139,7 @@ var NAVTREEINDEX =
 "annotated.html",
 "novas_8c.html#abceec12c6cac2693b45b7778374455f4",
 "novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a",
-"structnovas__timespec.html#a696e598955615f729a92870c8213a10c"
+"structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

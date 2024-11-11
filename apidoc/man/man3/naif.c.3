@@ -90,7 +90,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+References \fBNAIF_EMB\fP, \fBNAIF_MOON\fP, \fBNAIF_SSB\fP, \fBNAIF_SUN\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SS "long novas_to_dexxx_planet (enum \fBnovas_planet\fP id)"
 Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files\&. The DExxx (e\&.g\&. DE440) ephemeris files use NAIF IDs, but for most planets contain barycentric data only rather than that of the planet center\&. For Earth-based observations, it only really makes a difference whether the 3 is used for the Earth-Moon Barycenter (EMB) or 399 for the geocenter\&.
 .PP
@@ -123,7 +123,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_EARTH\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+References \fBNAIF_EARTH\fP, \fBNAIF_MOON\fP, \fBNAIF_SSB\fP, \fBNAIF_SUN\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SS "long novas_to_naif_planet (enum \fBnovas_planet\fP id)"
 Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID\&. NOVAS and NAIF use slightly different IDs for major planets, the Moon, and the Solar-system Barycenter (SSB)\&. In NOVAS, major planets are have IDs ranging from 1 through 9, but for NAIF 1--9 are the planetary barycenters and the planet centers have numbers in the hundreds ending with 99 (e\&.g\&. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon Barycenter [EMB])\&. The Sun and Moon also have distinct IDs in NAIF vs NOVAS\&.
 .PP
@@ -154,7 +154,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+References \fBNAIF_MOON\fP, \fBNAIF_SSB\fP, \fBNAIF_SUN\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.
