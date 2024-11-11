@@ -31,7 +31,9 @@ src/solsys1.c
 G\&. Kaplan and A\&. Kovacs
 .RE
 .PP
-SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be used together with \fBeph_manager\&.c\fP\&. A more generic solution is to implement a novas_ephem_provider (e\&.g\&. relying on the current version of the CSPICE library) and set it as the default ephemeris handler via \fBset_ephem_provider()\fP, and then use \fBsolsys-ephem\&.c\fP instead to use the same implementation for major planets\&.
+SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be used together with \fBeph_manager\&.c\fP\&. This is a legacy API, maiunly for supporting older code written for NOVAS C\&.
+.PP
+A more generic solution is to implement a novas_ephem_provider (e\&.g\&. relying on the current version of the CSPICE library) and set it as the default ephemeris handler via \fBset_ephem_provider()\fP, and then use \fBsolsys-ephem\&.c\fP instead to use the same implementation for major planets\&.
 .PP
 Based on the NOVAS C Edition, Version 3\&.1:
 .PP
@@ -45,9 +47,11 @@ U\&. S\&. Naval Observatory
 .PP
 \fBSee also\fP
 .RS 4
-\fBsolsys-ephem\&.c\fP 
+\fBsolarsystem\&.h\fP 
 .PP
-\fBsolsys1\&.c\fP 
+\fBsolsys-calceph\&.c\fP 
+.PP
+\fBsolsys-cspice\&.c\fP 
 .RE
 .PP
 
