@@ -2,6 +2,7 @@
  * @file
  *
  * @author A. Kovacs
+ * @since 1.2
  *
  *  SuperNOVAS major planet ephemeris lookup implementation via the CALCEPH C library
  *  See https://calceph.imcce.fr/docs/4.0.0/html/c/

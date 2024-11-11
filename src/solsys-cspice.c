@@ -2,6 +2,7 @@
  * @file
  *
  * @author A. Kovacs
+ * @since 1.2
  *
  *  SuperNOVAS major planet ephemeris lookup implementation via the NAIF CSPICE library
  *  See https://naif.jpl.nasa.gov/naif/toolkit.html
@@ -20,9 +21,6 @@
 
 #include "cspice/SpiceUsr.h"
 #include "cspice/SpiceZpr.h"        // for reset_c
-
-#define SPICE_FILE_SIZE 128         ///< (bytes) Maximum length of SPICE file names.
-#define SPICE_WORD_SIZE 80          ///< (bytes) Maximum length for SPICE strings
 
 /// Multiplicative normalization for the positions returned by km to AU
 #define NORM_POS                    (1e3 / NOVAS_AU)
@@ -395,7 +393,6 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
 
   if(id == -1) {
     // Lookup by name...
-    SpiceChar spiceName[SPICE_WORD_SIZE] = {};
     SpiceInt spiceCode = 0;
     SpiceBoolean spiceFound = 0;
 
@@ -405,11 +402,8 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
     if(!name[0])
       return novas_error(-1, EINVAL, fn, "id=-1 and name is empty");
 
-    // Use name to get NAIF ID.
-    strncpy(spiceName, name, sizeof(spiceName) - 1);
-
     reset_c();
-    bodn2c_c(spiceName, &spiceCode, &spiceFound);
+    bodn2c_c(name, &spiceCode, &spiceFound);
     err = get_cspice_error(msg, sizeof(msg));
 
     if(!spiceFound)
