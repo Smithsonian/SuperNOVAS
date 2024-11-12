@@ -62,7 +62,7 @@ jobs:
       
       
   test-platforms:
-    name: Test on ${{ matrix.arch }}
+    name: ${{ matrix.arch }}
     # The host should always be linux
     runs-on: ubuntu-latest
 

@@ -23,9 +23,7 @@ on:
 
 jobs:
 
-  build:
-    name: Build library
-
+  install:
     runs-on: ubuntu-latest
     env:
       CC: gcc
