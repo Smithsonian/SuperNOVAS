@@ -223,6 +223,7 @@ install-apidoc: local-dox
 	install -d $(htmldir)/search
 	install -m 644 -D apidoc/html/search/* $(htmldir)/search/
 	install -m 644 -D apidoc/html/*.* $(htmldir)/
+	@echo "installing Doxygen tag file to $(docdir)"
 	install -d $(docdir)
 	install -m 644 apidoc/supernovas.tag $(docdir)/supernovas.tag
 
