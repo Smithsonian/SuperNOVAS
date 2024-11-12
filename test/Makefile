@@ -17,7 +17,6 @@ TESTS := test-compat test-cio_file test-super test-errors
 COVFILES := novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov naif.c.gcov
 
 ifeq ($(CALCEPH_SUPPORT), 1)
-  CPPFLAGS += -DUSE_CALCEPH=1
   LDFLAGS += -lcalceph
   OBJECTS += solsys-calceph.o
   TESTS += test-calceph
@@ -25,7 +24,6 @@ ifeq ($(CALCEPH_SUPPORT), 1)
 endif
 
 ifeq ($(CSPICE_SUPPORT), 1)
-  CPPFLAGS += -DUSE_CSPICE=1
   LDFLAGS += -lcspice
   OBJECTS += solsys-cspice.o
   TESTS += test-cspice

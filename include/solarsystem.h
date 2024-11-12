@@ -340,34 +340,6 @@ long novas_to_naif_planet(enum novas_planet id);
 
 long novas_to_dexxx_planet(enum novas_planet id);
 
-// in solsys-calceph.c
-#if USE_CALCEPH
-#  include "calceph.h"
-
-int novas_use_calceph(t_calcephbin *eph);
-
-int novas_use_calceph_planets(t_calcephbin *eph);
-
-int novas_calceph_use_ids(enum novas_id_type idtype);
-
-#endif /* USE_CALCEPH */
-
-// in solsys-cspice.c
-#if USE_CSPICE
-
-int novas_use_cspice();
-
-int novas_use_cspice_ephem();
-
-int novas_use_cspice_planets();
-
-int cspice_add_kernel(const char *filename);
-
-int cspice_remove_kernel(const char *filename);
-
-#endif /* USE_CSPICE */
-
-
 /// \cond PRIVATE
 
 

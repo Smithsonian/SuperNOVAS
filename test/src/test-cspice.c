@@ -15,12 +15,8 @@
 #include <string.h>
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
-#define USE_CSPICE 1               ///< Use cspice routines
 #include "novas.h"
-#include "solarsystem.h"
-
-#include "cspice/SpiceUsr.h"
-#include "cspice/SpiceZpr.h"        // for reset_c
+#include "novas-cspice.h"
 
 #define PLANET_EPH                  "de440s-j2000.bsp"
 #define MARS_EPH                    "mar097-j2000.bsp"

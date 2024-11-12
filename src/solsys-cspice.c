@@ -31,9 +31,9 @@
 #include <semaphore.h>
 
 /// \cond PRIVATE
-#define USE_CSIPCE 1                ///< NOVAS cspice integration prototypes
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+#include "novas-cspice.h"
 
 #include "cspice/SpiceUsr.h"
 #include "cspice/SpiceZpr.h"        // for reset_c

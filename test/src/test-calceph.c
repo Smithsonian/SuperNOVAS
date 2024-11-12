@@ -16,9 +16,8 @@
 #include <calceph.h>
 
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
-#define USE_CALCEPH 1               ///< Use calceph routines
 #include "novas.h"
-#include "solarsystem.h"
+#include "novas-calceph.h"
 
 #define PLANET_EPH                  "de440s-j2000.bsp"
 #define MARS_EPH                    "mar097-j2000.bsp"
