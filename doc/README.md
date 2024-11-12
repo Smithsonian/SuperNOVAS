@@ -299,8 +299,8 @@ application can specify these functions as the provider at runtime:
 For `readeph()` implementations, it is recommended that you change both the name and the footprint to e.g.:
 
 ```c
-  int my_ephem_provider(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin,
-                        double *pos, double *vel);
+  int my_ephem_provider(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
+                        enum novas_origin *origin, double *pos, double *vel);
 ```
 
 and then then apply it in your application as:
