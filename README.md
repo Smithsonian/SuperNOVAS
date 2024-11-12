@@ -235,9 +235,17 @@ Alternatively, you can build select components of the above with the `make` targ
 respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
-system-wide install you may place the static or shared library into `/usr/local/lib/`, copy the CIO locator file to 
-the place you specified in `config.mk` etc. You may also want to copy the header files in `include/` to e.g. 
-`/usr/local/include` so you can compile your application against SuperNOVAS easily on your system.
+system-wide install you may simply run:
+
+```bash
+  $ sudo make install
+```
+
+Or, to install in some other locations, you may set an prefix. For example to install under `/opt` instead, you can:
+
+```bash
+  $ sudo make prefix=/opt install
+```
 
 
 ### Building your application with SuperNOVAS

@@ -52,6 +52,11 @@ Changes expected for the next feature release, expected around 1 February 2025.
    / `solarsystem_hp()` type custom planet ephemeris provider functions currently configured, so they may be used
    directly, outside of `ephemeris()` calls.
    
+ - #93: Now supporting `make install` with prefix support (e.g. `make prefix=/opt install` to install under `/opt`).
+   You can also set other standard directory variables, as prescribed in the 
+   [GNU standard](https://www.gnu.org/prep/standards/html_node/Directory-Variables.html) to further customize the
+   install locations.
+   
    
 ## [1.1.1] - 2024-10-28
 
