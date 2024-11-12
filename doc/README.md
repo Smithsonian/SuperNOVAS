@@ -23,6 +23,7 @@ This document has been updated for the `v1.2` and later releases.
  - [Fixed NOVAS C 3.1 issues](#fixed-issues)
  - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Building and installation](#installation)
+ - [Building your application with SuperNOVAS](#integration)
  - [Example usage](#examples)
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
@@ -167,21 +168,10 @@ Before compiling the library take a look a `config.mk` and edit it as necessary 
 the necessary variables in the shell prior to invoking `make`. For example:
 
  - Choose which planet calculator function routines are built into the library (for example to provide 
-   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`,
-   and or for `planet_calceph()` / `novas_calceph()` set `BUILTIN_SOLSYS_CALCEPH = 1`. You can then specify these 
-   functions as the default planet calculator for `ephemeris()` in your application dynamically via 
-   `set_planet_provider()`.
+   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
+   You can then specify these functions (or others) as the default planet calculator for `ephemeris()` in your 
+   application dynamically via `set_planet_provider()`.
    
- - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
-   `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
-   want to link your own `solarsystem()` implementation(s) against the library, you should not set `DEFAULT_SOLSYS` 
-   (i.e. delete or comment out the corresponding line or else set `DEFAULT_SOLSYS` to 0).
-   
- - You may also want to specify the source file that will provide the `readeph()` implementation for it by setting 
-   `DEFAULT_READEPH` appropriately. (The default setting uses the dummy `readeph0.c` which simply returns an error if 
-   one tries to use the functions from `solsys1.c`). Note, that a `readeph()` implementation is not always necessary 
-   and you can provide a superior ephemeris reader implementation at runtime via the `set_ephem_provider()` call.
-
  - You can enable integration with the [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library, by 
    setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
    `libsolsys-calceph.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
@@ -195,11 +185,22 @@ the necessary variables in the shell prior to invoking `make`. For example:
    sub-folder in the header search path, and unversioned static or shared libraries depending on the needs of the 
    build). You might want to check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) 
    repository for building CSPICE as a shared library.
+   
+ - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
+   `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
+   want to link your own `solarsystem()` implementation(s) against the library, you should not set `DEFAULT_SOLSYS` 
+   (i.e. delete or comment out the corresponding line or else set `DEFAULT_SOLSYS` to 0).
+   
+ - You may also specify the source file that will provide a `readeph()` implementation, by setting `DEFAULT_READEPH`. 
+   (The default setting uses the dummy `readeph0.c` which simply returns an error). Note, that a `readeph()` 
+   implementation is a relic of NOVAS C and not always necessary. You can provide a superior ephemeris reader 
+   implementation at runtime via the `set_ephem_provider()` call or equivalent (e.g. `novas_use_calceph()` or 
+   `novas_use_cspice()`, if they are available).
 
  - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
    file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
-   variable prior to calling `make`. (The CIO locator file is not at all necessary for the functioning of the library, 
-   unless  you specifically require CIO positions relative to GCRS.)
+   variable prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, 
+   unless you specifically require CIO positions relative to GCRS.)
    
  - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
@@ -218,54 +219,100 @@ Alternatively, you can build select components of the above with the `make` targ
 respectively. And, if unsure, you can always call `make help` to see what build targets are available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
-system-wide install you may place the static or shared library into `/usr/local/lib/`, copy the CIO locator file to 
-the place you specified in `config.mk` etc. You may also want to copy the header files in `include/` to e.g. 
-`/usr/local/include` so you can compile your application against SuperNOVAS easily on your system.
+system-wide install you may simply run:
+
+```bash
+  $ sudo make install
+```
+
+Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+
+```bash
+  $ sudo make prefix=/opt install
+```
 
 
-### Building your application with SuperNOVAS
+-----------------------------------------------------------------------------
 
-Provided you have installed the SuperNOVAS headers into a standard location (such as `/usr/include` or 
-`/usr/local/include`) and the static or shared library into `usr/lib` (or `/usr/local/lib` or similar), you
-can build your application against it very easily. For example, to build `myastroapp.c` against SuperNOVAS, 
-you might have a `Makefile` with contents like:
+
+<a name="integration"></a>
+## Building your application with SuperNOVAS
+
+Provided you have installed the SuperNOVAS headers into a standard location, you can build your application against it 
+very easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have a `Makefile` with contents like:
 
 ```make
   myastroapp: myastroapp.c 
   	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas
 ```
 
-If you have a legacy NOVAS C 3.1 application, it is possible that the compilation will give you errors due
-to missing includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`. This is because these were explicitly
-included in `novas.h` in NOVAS C 3.1, but not in SuperNOVAS (at least not by default), as a matter of best
-practice. If this is a problem for you can 'fix' it in one of two ways: (1) Add the missing `#include` 
-directives to your application source explicitly, or if that's not an option for you, then (2) set the 
-`-DCOMPAT=1` compiler flag when compiling your application:
+If you have a legacy NOVAS C 3.1 application, it is possible that the compilation will give you errors due to missing 
+includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`. This is because these were explicitly included in 
+`novas.h` in NOVAS C 3.1, but not in SuperNOVAS (at least not by default), as a matter of best practice. If this is a 
+problem for you can 'fix' it in one of two ways: (1) Add the missing `#include` directives to your application source 
+explicitly, or if that's not an option for you, then (2) set the `-DCOMPAT=1` compiler flag when compiling your 
+application:
 
 ```make
   myastroapp: myastroapp.c 
   	$(CC) -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lsupernovas
 ```
 
-If your application uses the legacy `solsys1.c` or `solsys2.c` implementations for `solarsystem()` calls
-you may additionally specify the appropriate optional shared library also:
+If your application uses optional planet or ephemeris calculator modules, you may need to specify the appropriate 
+optional shared library also:
 
 ```make
   myastroapp: myastroapp.c 
-  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys1
+  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys-calceph
 ```
 
-To use your own `solarsystem()` implementation for `ephemeris()`, you will want to build the library with
-`DEFAULT_SOLSYS` not set (or else set to 0) in `config.mk` (see section above), and your applications 
-`Makefile` may contain something like:
+### Legacy linking `solarsystem()` and `readeph()` modules
+
+The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the
+`solarsystem()` / `solarsystem_hp()` and `readeph()` functions. This approach is discouraged in SuperNOVAS, since we 
+now allow selecting different implementations at runtime, but the old way is supported for legacy applications,
+nevertheless.
+
+To use your own existing default `solarsystem()` implementation in this way, you must build the library with 
+`DEFAULT_SOLSYS` unset (or else set to 0) in `config.mk` (see section above), and your applications `Makefile` may 
+contain something like:
 
 ```make
   myastroapp: myastroapp.c my_solsys.c 
   	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas
 ```
 
-The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` 
-being unset in `config.mk`).
+The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` being unset 
+in `config.mk`).
+
+### Legacy modules: a better way...
+
+Note, a better way to recycle your old planet and ephemeris calculator modules may be to rename `solarsystem()` / 
+`solarsystem_hp()` functions therein to e.g. `my_planet_calculator()` / `my_planet_calculator_hp()` and then in your 
+application can specify these functions as the provider at runtime:
+
+```c
+  set_planet_calculator(my_planet_calculator);
+  set_planet_calculator(my_planet_calculator_hp);
+```
+
+For `readeph()` implementations, it is recommended that you change both the name and the footprint to e.g.:
+
+```c
+  int my_ephem_provider(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin,
+                        double *pos, double *vel);
+```
+
+and then then apply it in your application as:
+
+```c
+  set_ephem_provider(my_ephem_provider);
+```
+
+While it requires some minimal changes to the old code, the advantage of this preferred approach is (a) that you do 
+not need to re-build the library with the `DEFAULT_SOLSYS` and `DEFAULT_READEPH` options disabled, and (b) you can 
+switch between different planet and ephemeris calculator functions at will, during runtime.
+
 
 -----------------------------------------------------------------------------
 
@@ -503,8 +550,21 @@ will handle the respective ephemeris data at runtime before making the NOVAS cal
  set_ephem_provider(my_ephemeris_provider_function);
 ```
 
-Instead of `make_cat_object()` you define your source as an `object` with an name or ID number that is used by the 
-ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
+Or, if you have the CALCEPH library installed on your system, and you have built SuperNOVAS with `CALCEPH_SUPPORT = 1`, 
+then you might call:
+
+```c
+  #include <novas-calceph.h>
+  
+  // Use calceph to open se set of ephemeris files...
+  t_calcephbin *ephem_data = calceph_open_array(...);
+  
+  // Use CALCEPH with the specified data for all Solar-system objects.
+  novas_use_calceph(ephem_data);
+```
+
+Next, instead of `make_cat_object()` you define your source as an `object` with an name or ID number that is used by 
+the ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
 
@@ -528,7 +588,6 @@ Other than that, it's the same spiel as before, e.g.:
    ...
  }
 ```
-
 
 <a name="accuracy-notes"></a>
 ### Reduced accuracy shortcuts
@@ -818,8 +877,6 @@ before that level of accuracy is reached.
 
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
 
- 
-
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
@@ -938,7 +995,8 @@ library) for the build to succeed. Here is an example on how you'd use CALCEPH w
 code:
 
 ```c
-  #include <calceph.h>
+  #include <novas.h>
+  #include <novas-calceph.h>
   
   // You can open a set of JPL/INPOP ephemeris files with CALCEPH...
   t_calcephbin *eph = calceph_open_array(...);
@@ -960,7 +1018,7 @@ code:
 ```
 
 All modern JPL (SPK) ephemeris files should work with the `solsys-calceph` plugin. When linking your application, 
-don't forget to add `-lsolsys-calceph` to your link flags. That's all there is to it.
+add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`). That's all there is to it.
 
 
 <a name="cspice-integration"></a>
@@ -985,6 +1043,9 @@ repository to help you build CSPICE with shared libraries and dynamically linked
 Here is an example on how you might use CSPICE with SuperNOVAS in your application code:
 
 ```c
+  #include <novas.h>
+  #include <novas-cspice.h>
+
   // You can load the desired kernels for CSPICE
   // E.g. load DE440s and the Mars satellites from /data/ephem:
   int status;
@@ -1003,8 +1064,8 @@ Here is an example on how you might use CSPICE with SuperNOVAS in your applicati
   novas_use_cspice();
 ```
 
-All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking your application, don't forget to add 
-`-lsolsys-cspice` to your link flags. That's all there is to it.
+All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking your application, add `-lsolsys-cspice` 
+to your link flags (or else link with `solsys-cspice.o`). That's all there is to it.
 
 
 <a name="universal-ephemerides"></a>

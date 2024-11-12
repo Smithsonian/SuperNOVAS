@@ -1,6 +1,72 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile doxygen_version="1.9.8">
   <compound kind="file">
+    <name>novas-calceph.h</name>
+    <path>include/</path>
+    <filename>novas-calceph_8h.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_calceph_use_ids</name>
+      <anchorfile>novas-calceph_8h.html</anchorfile>
+      <anchor>a5531b937a5bb5491cb475d2536346ad8</anchor>
+      <arglist>(enum novas_id_type idtype)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_calceph</name>
+      <anchorfile>novas-calceph_8h.html</anchorfile>
+      <anchor>a35fc86a939602ec910dbdfde180d7f31</anchor>
+      <arglist>(t_calcephbin *eph)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_calceph_planets</name>
+      <anchorfile>novas-calceph_8h.html</anchorfile>
+      <anchor>ab86ec03898e658c86c671a8b6399e331</anchor>
+      <arglist>(t_calcephbin *eph)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>novas-cspice.h</name>
+    <path>include/</path>
+    <filename>novas-cspice_8h.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>cspice_add_kernel</name>
+      <anchorfile>novas-cspice_8h.html</anchorfile>
+      <anchor>ae02d26964099f56c375dc78172ad135b</anchor>
+      <arglist>(const char *filename)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cspice_remove_kernel</name>
+      <anchorfile>novas-cspice_8h.html</anchorfile>
+      <anchor>a38e3b3155cad3b3822fbc3e553060ab1</anchor>
+      <arglist>(const char *filename)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_cspice</name>
+      <anchorfile>novas-cspice_8h.html</anchorfile>
+      <anchor>a9b44218bca5fce1e9e5103494c15dde4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_cspice_ephem</name>
+      <anchorfile>novas-cspice_8h.html</anchorfile>
+      <anchor>afb078e1df9b5b08999d24e68d7b4ecdc</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_use_cspice_planets</name>
+      <anchorfile>novas-cspice_8h.html</anchorfile>
+      <anchor>a943549e395b19f6a91064e3d6fa1c577</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>novas.h</name>
     <path>include/</path>
     <filename>novas_8h.html</filename>
@@ -2258,20 +2324,6 @@
       <arglist></arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>cspice_add_kernel</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>ae02d26964099f56c375dc78172ad135b</anchor>
-      <arglist>(const char *filename)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>cspice_remove_kernel</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a38e3b3155cad3b3822fbc3e553060ab1</anchor>
-      <arglist>(const char *filename)</arglist>
-    </member>
-    <member kind="function">
       <type>short</type>
       <name>earth_sun_calc</name>
       <anchorfile>solarsystem_8h.html</anchorfile>
@@ -2321,13 +2373,6 @@
       <arglist>(long id)</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>novas_calceph_use_ids</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a5531b937a5bb5491cb475d2536346ad8</anchor>
-      <arglist>(enum novas_id_type idtype)</arglist>
-    </member>
-    <member kind="function">
       <type>long</type>
       <name>novas_to_dexxx_planet</name>
       <anchorfile>solarsystem_8h.html</anchorfile>
@@ -2340,41 +2385,6 @@
       <anchorfile>solarsystem_8h.html</anchorfile>
       <anchor>ab51ac9bdf7736e1c1582e0981046daf3</anchor>
       <arglist>(enum novas_planet id)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_use_calceph</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a35fc86a939602ec910dbdfde180d7f31</anchor>
-      <arglist>(t_calcephbin *eph)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_use_calceph_planets</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>ab86ec03898e658c86c671a8b6399e331</anchor>
-      <arglist>(t_calcephbin *eph)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_use_cspice</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a9b44218bca5fce1e9e5103494c15dde4</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_use_cspice_ephem</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>afb078e1df9b5b08999d24e68d7b4ecdc</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_use_cspice_planets</name>
-      <anchorfile>solarsystem_8h.html</anchorfile>
-      <anchor>a943549e395b19f6a91064e3d6fa1c577</anchor>
-      <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -4807,6 +4817,7 @@
     <docanchor file="index.html">fixed-issues</docanchor>
     <docanchor file="index.html">compatibility</docanchor>
     <docanchor file="index.html">installation</docanchor>
+    <docanchor file="index.html">integration</docanchor>
     <docanchor file="index.html">examples</docanchor>
     <docanchor file="index.html">methodologies</docanchor>
     <docanchor file="index.html">sidereal-example</docanchor>

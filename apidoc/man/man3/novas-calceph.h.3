@@ -1,0 +1,136 @@
+.TH "include/novas-calceph.h" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+include/novas-calceph.h
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBnovas_calceph_use_ids\fP (enum \fBnovas_id_type\fP idtype)"
+.br
+.ti -1c
+.RI "int \fBnovas_use_calceph\fP (t_calcephbin *eph)"
+.br
+.ti -1c
+.RI "int \fBnovas_use_calceph_planets\fP (t_calcephbin *eph)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Nov 12, 2024 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+SuperNOVAS functions interfacing with the CALCEPH C library\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int novas_calceph_use_ids (enum \fBnovas_id_type\fP idtype)"
+Sets the type of Solar-system body IDs to use as \fBobject\&.number\fP with NOVAS_EPHEM_OBJECT types\&. CALCEPH supports the use of both NAIF and its own numbering system to identify Solar-system bodies\&. So, this function gives you the choice on which numbering system you want to use in object data structures\&. The choice does not affect major planets (which always use the NOVAS numbering scheme), or catalog objects\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIidtype\fP NOVAS_ID_NAIF to use NAIF IDs (default) or else NOVAS_ID_CALCEPH to use the CALCEPH body numbering convention for object\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful or else -1 (errno set to EINVAL) if the input value is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobject\fP 
+.PP
+\fBNOVAS_EPHEM_OBJECT\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_ID_CALCEPH\fP, and \fBNOVAS_ID_NAIF\fP\&.
+.SS "int novas_use_calceph (t_calcephbin * eph)"
+Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set of ephemeris files\&. If the supplied ephemeris files contain data for major planets also, they can be used by planet_calceph() / planet_calceph_hp() also, unless a separate CALCEPH ephemeris data is set via \fBnovas_use_calceph_planets()\fP\&.
+.PP
+The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects\&. If you want to use another provider for major planets, you need to call \fBset_planet_provider()\fP / \fBset_planet_provider_hp()\fP afterwards to specify a different provider for major planets (and Sun, Moon, SSB)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIeph\fP Pointer to the CALCEPH ephemeris data that have been opened\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_calceph_use_ids()\fP 
+.PP
+\fBnovas_use_calceph_planets()\fP 
+.PP
+\fBset_ephem_provider()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBnovas_use_calceph_planets()\fP, and \fBset_ephem_provider()\fP\&.
+.SS "int novas_use_calceph_planets (t_calcephbin * eph)"
+Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major planets (and Sun, Moon, and SSB)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIeph\fP Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, and SSB) that have been opened\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_use_calceph()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBset_planet_provider()\fP, and \fBset_planet_provider_hp()\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

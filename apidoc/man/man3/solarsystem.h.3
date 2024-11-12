@@ -38,12 +38,6 @@ include/solarsystem.h
 
 .in +1c
 .ti -1c
-.RI "int \fBcspice_add_kernel\fP (const char *filename)"
-.br
-.ti -1c
-.RI "int \fBcspice_remove_kernel\fP (const char *filename)"
-.br
-.ti -1c
 .RI "short \fBearth_sun_calc\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
 .br
 .ti -1c
@@ -65,28 +59,10 @@ include/solarsystem.h
 .RI "enum \fBnovas_planet\fP \fBnaif_to_novas_planet\fP (long id)"
 .br
 .ti -1c
-.RI "int \fBnovas_calceph_use_ids\fP (enum \fBnovas_id_type\fP idtype)"
-.br
-.ti -1c
 .RI "long \fBnovas_to_dexxx_planet\fP (enum \fBnovas_planet\fP id)"
 .br
 .ti -1c
 .RI "long \fBnovas_to_naif_planet\fP (enum \fBnovas_planet\fP id)"
-.br
-.ti -1c
-.RI "int \fBnovas_use_calceph\fP (t_calcephbin *eph)"
-.br
-.ti -1c
-.RI "int \fBnovas_use_calceph_planets\fP (t_calcephbin *eph)"
-.br
-.ti -1c
-.RI "int \fBnovas_use_cspice\fP ()"
-.br
-.ti -1c
-.RI "int \fBnovas_use_cspice_ephem\fP ()"
-.br
-.ti -1c
-.RI "int \fBnovas_use_cspice_planets\fP ()"
 .br
 .ti -1c
 .RI "short \fBplanet_eph_manager\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
@@ -311,78 +287,6 @@ If the ephemeris provider should use NAIF IDs\&.
 If the ephemeris provider should use CALCEPH IDs\&. 
 .SH "Function Documentation"
 .PP 
-.SS "int cspice_add_kernel (const char * filename)"
-Adds a SPICE kernel to the currently managed open kernels\&. Subsequent ephemeris lookups through CSPICE will use the added kernel\&. It's simply a wrapper around the CSPICE \fCfurnsh_c()\fP routine, with graceful error handling\&. You can of course add kernels using \fCfurnsh_c()\fP directly to the same effect\&.
-.PP
-REFERENCES: 
-.PD 0
-.IP "1." 4
-https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/furnsh_c.html 
-.PP
-.PP
-\fBParameters\fP
-.RS 4
-\fIfilename\fP The fully qualified path to the ephemeris kernel data (e\&.g\&. '/data/ephem/de440s\&.bsp') 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-0 if successful, or else -1 if there was an error (errno will be set to EINVAL)\&.
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBcspice_remove_kernel()\fP 
-.PP
-\fBnovas_use_cspice()\fP
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.2 
-.RE
-.PP
-
-.SS "int cspice_remove_kernel (const char * filename)"
-Removes a SPICE kernel from the currently managed open kernels\&. Subsequent ephemeris lookups through CSPICE will not use the removed kernel data\&. It's simply a wrapper around the CSPICE \fCunload_c()\fP routine, with graceful error handling\&. You can of course remove kernels using \fCunload_c()\fP directly to the same effect\&.
-.PP
-REFERENCES: 
-.PD 0
-.IP "1." 4
-https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/unload_c.html 
-.PP
-.PP
-\fBParameters\fP
-.RS 4
-\fIfilename\fP The fully qualified path to the ephemeris kernel data (e\&.g\&. '/data/ephem/de440s\&.bsp') 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-0 if successful, or else -1 if there was an error (errno will be set to EINVAL)\&.
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBcspice_add_kernel()\fP
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.2 
-.RE
-.PP
-
 .SS "short earth_sun_calc (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides the position and velocity of the Earth and Sun only at epoch 'jd_tdb' by evaluating a closed-form theory without reference to an external file\&. This function can also provide the position and velocity of the Sun\&.
 .PP
@@ -603,29 +507,6 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
-.SS "int novas_calceph_use_ids (enum \fBnovas_id_type\fP idtype)"
-Sets the type of Solar-system body IDs to use as \fBobject\&.number\fP with NOVAS_EPHEM_OBJECT types\&. CALCEPH supports the use of both NAIF and its own numbering system to identify Solar-system bodies\&. So, this function gives you the choice on which numbering system you want to use in object data structures\&. The choice does not affect major planets (which always use the NOVAS numbering scheme), or catalog objects\&.
-.PP
-\fBParameters\fP
-.RS 4
-\fIidtype\fP NOVAS_ID_NAIF to use NAIF IDs (default) or else NOVAS_ID_CALCEPH to use the CALCEPH body numbering convention for object\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-0 if successful or else -1 (errno set to EINVAL) if the input value is invalid\&.
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBobject\fP 
-.PP
-\fBNOVAS_EPHEM_OBJECT\fP 
-.RE
-.PP
-
-.PP
-References \fBNOVAS_ID_CALCEPH\fP, and \fBNOVAS_ID_NAIF\fP\&.
 .SS "long novas_to_dexxx_planet (enum \fBnovas_planet\fP id)"
 Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files\&. The DExxx (e\&.g\&. DE440) ephemeris files use NAIF IDs, but for most planets contain barycentric data only rather than that of the planet center\&. For Earth-based observations, it only really makes a difference whether the 3 is used for the Earth-Moon Barycenter (EMB) or 399 for the geocenter\&.
 .PP
@@ -690,180 +571,6 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
-.SS "int novas_use_calceph (t_calcephbin * eph)"
-Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set of ephemeris files\&. If the supplied ephemeris files contain data for major planets also, they can be used by planet_calceph() / planet_calceph_hp() also, unless a separate CALCEPH ephemeris data is set via \fBnovas_use_calceph_planets()\fP\&.
-.PP
-The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects\&. If you want to use another provider for major planets, you need to call \fBset_planet_provider()\fP / \fBset_planet_provider_hp()\fP afterwards to specify a different provider for major planets (and Sun, Moon, SSB)\&.
-.PP
-\fBParameters\fP
-.RS 4
-\fIeph\fP Pointer to the CALCEPH ephemeris data that have been opened\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-0 if successful, or else -1 (errno will indicate the type of error)\&.
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_calceph_use_ids()\fP 
-.PP
-\fBnovas_use_calceph_planets()\fP 
-.PP
-\fBset_ephem_provider()\fP
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.2 
-.RE
-.PP
-
-.PP
-References \fBnovas_use_calceph_planets()\fP, and \fBset_ephem_provider()\fP\&.
-.SS "int novas_use_calceph_planets (t_calcephbin * eph)"
-Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major planets (and Sun, Moon, and SSB)\&.
-.PP
-\fBParameters\fP
-.RS 4
-\fIeph\fP Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, and SSB) that have been opened\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-0 if successful, or else -1 (errno will indicate the type of error)\&.
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_use_calceph()\fP 
-.PP
-\fBset_planet_provider()\fP 
-.PP
-\fBset_planet_provider_hp()\fP
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.2 
-.RE
-.PP
-
-.PP
-References \fBset_planet_provider()\fP, and \fBset_planet_provider_hp()\fP\&.
-.SS "int novas_use_cspice ()"
-Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and NOVAS_EPHEM_OBJECT types)\&.
-.PP
-CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves\&. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively\&.
-.PP
-\fBReturns\fP
-.RS 4
-0
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_use_cspice_planets()\fP 
-.PP
-\fBnovas_use_cspice_ephem()\fP 
-.PP
-\fBcspice_add_kernel()\fP
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.2 
-.RE
-.PP
-
-.PP
-References \fBnovas_use_cspice_ephem()\fP, and \fBnovas_use_cspice_planets()\fP\&.
-.SS "int novas_use_cspice_ephem ()"
-Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library\&.
-.PP
-CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves\&. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively\&.
-.PP
-\fBReturns\fP
-.RS 4
-0
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_use_cspice_planets()\fP 
-.PP
-\fBnovas_use_cspice()\fP 
-.PP
-\fBcspice_add_kernel()\fP 
-.PP
-\fBset_ephem_provider()\fP
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.2 
-.RE
-.PP
-
-.PP
-References \fBset_ephem_provider()\fP\&.
-.SS "int novas_use_cspice_planets ()"
-Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, and SSB) using the NAIF CSPICE library\&.
-.PP
-CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves\&. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively\&.
-.PP
-\fBReturns\fP
-.RS 4
-0
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_use_cspice_ephem()\fP 
-.PP
-\fBnovas_use_cspice()\fP 
-.PP
-\fBcspice_add_kernel()\fP 
-.PP
-\fBset_planet_provider()\fP 
-.PP
-\fBset_planet_provider_hp()\fP
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.2 
-.RE
-.PP
-
-.PP
-References \fBset_planet_provider()\fP, and \fBset_planet_provider_hp()\fP\&.
 .SS "short planet_eph_manager (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for regular (reduced) precision applications\&.
 .PP
