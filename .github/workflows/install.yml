@@ -1,0 +1,38 @@
+name: Test install
+
+on: 
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'tools/src/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/install.yml'
+
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'tools/src/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/install.yml'
+
+jobs:
+
+  install:
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+    steps:
+    - name: install doxygen
+      run: sudo apt-get install doxygen
+    
+    - uses: actions/checkout@v4
+
+    - name: Install to default location
+      run: sudo make install
+

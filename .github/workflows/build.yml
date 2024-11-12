@@ -2,7 +2,7 @@ name: Build
 
 on: 
   push:
-    breanches:
+    branches:
       - main
     paths:
       - 'src/**'
@@ -24,26 +24,21 @@ on:
 jobs:
 
   build:
-    name: Build library
-
     runs-on: ubuntu-latest
     env:
       CC: gcc
       CFLAGS: -Os -Wall -Wextra -Werror -std=c99
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Build static library
       run: make static
-      
+
     - name: Build shared library
       run: make shared
-   
+
     - name: Compile solsys variants
       run: make solsys
-   
-    - name: Generate CIO locator data
-      run: make cio_file      
 
-      
-   
+    - name: Generate CIO locator data
+      run: make cio_file

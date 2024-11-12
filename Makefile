@@ -184,6 +184,56 @@ Doxyfile.local: Doxyfile Makefile
 local-dox: README-orig.md Doxyfile.local
 	doxygen Doxyfile.local
 
+# Default values for install locations
+# See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
+prefix ?= /usr
+exec_prefix ?= $(prefix)
+libdir ?= $(exec_prefix)/lib
+includedir ?= $(prefix)/include
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+mydatadir ?= $(datadir)/supernovas
+docdir ?= $(datarootdir)/doc/supernovas
+htmldir ?= $(docdir)/html
+
+.PHONY: install
+install: install-libs install-cio-data install-headers install-apidoc install-examples
+
+.PHONY: install-libs
+install-libs: shared
+	@echo "installing libraries to $(libdir)"
+	install -d $(libdir)
+	install -m 755 -D $(LIB)/lib*.so* $(libdir)/
+
+.PHONY: install-cio-data
+install-cio-data:
+	@echo "installing CIO locator data to $(mydatadir)"
+	install -d $(mydatadir)
+	install -m 644 data/CIO_RA.TXT $(mydatadir)/CIO_RA.TXT
+
+.PHONY: install-headers
+install-headers:
+	@echo "installing headers to $(includedir)"
+	install -d $(includedir)
+	install -m 644 -D include/* $(includedir)/
+
+.PHONY: install-apidoc
+install-apidoc: local-dox
+	@echo "installing API documentation to $(htmldir)"
+	install -d $(htmldir)/search
+	install -m 644 -D apidoc/html/search/* $(htmldir)/search/
+	install -m 644 -D apidoc/html/*.* $(htmldir)/
+	@echo "installing Doxygen tag file to $(docdir)"
+	install -d $(docdir)
+	install -m 644 apidoc/supernovas.tag $(docdir)/supernovas.tag
+
+.PHONY: install-examples
+install-examples:
+	@echo "installing examples to $(docdir)"
+	install -d $(docdir)
+	install -m 644 -D examples/* $(docdir)
+
+
 # Built-in help screen for `make help`
 .PHONY: help
 help:
@@ -207,6 +257,7 @@ help:
 	@echo "  test          Runs regression tests."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
 	@echo "  all           All of the above."
+	@echo "  install       Install components (e.g. 'make prefix=<path> install')"
 	@echo "  clean         Removes intermediate products."
 	@echo "  distclean     Deletes all generated files."
 	@echo
