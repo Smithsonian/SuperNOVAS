@@ -200,10 +200,14 @@ htmldir ?= $(docdir)/html
 install: install-libs install-cio-data install-headers install-apidoc install-examples
 
 .PHONY: install-libs
-install-libs: shared
+install-libs:
+ifneq ($(wildcard $(LIB)/*),)
 	@echo "installing libraries to $(libdir)"
 	install -d $(libdir)
 	install -m 755 -D $(LIB)/lib*.so* $(libdir)/
+else
+	@echo "WARNING! Skipping libs install: needs 'shared' and/or 'static'"
+endif
 
 .PHONY: install-cio-data
 install-cio-data:
@@ -218,7 +222,8 @@ install-headers:
 	install -m 644 -D include/* $(includedir)/
 
 .PHONY: install-apidoc
-install-apidoc: local-dox
+install-apidoc:
+ifneq ($(wildcard apidoc/html/search/*),)
 	@echo "installing API documentation to $(htmldir)"
 	install -d $(htmldir)/search
 	install -m 644 -D apidoc/html/search/* $(htmldir)/search/
@@ -226,6 +231,9 @@ install-apidoc: local-dox
 	@echo "installing Doxygen tag file to $(docdir)"
 	install -d $(docdir)
 	install -m 644 apidoc/supernovas.tag $(docdir)/supernovas.tag
+else
+	@echo "WARNING! Skipping apidocs install: needs doxygen and 'local-dox'"
+endif
 
 .PHONY: install-examples
 install-examples:
