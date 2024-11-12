@@ -1,4 +1,4 @@
-name: Build
+name: Test install
 
 on: 
   push:
@@ -10,7 +10,7 @@ on:
       - 'tools/src/**'
       - 'Makefile'
       - '*.mk'
-      - '.github/workflows/build.yml'
+      - '.github/workflows/install.yml'
 
   pull_request:
     paths:
@@ -19,7 +19,7 @@ on:
       - 'tools/src/**'
       - 'Makefile'
       - '*.mk'
-      - '.github/workflows/build.yml'
+      - '.github/workflows/install.yml'
 
 jobs:
 
@@ -29,18 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CC: gcc
-      CFLAGS: -Os -Wall -Wextra -Werror -std=c99
     steps:
+    - name: install doxygen
+      run: sudo apt-get install doxygen
+    
     - uses: actions/checkout@v4
 
-    - name: Build static library
-      run: make static
+    - name: Install to default location
+      run: sudo make install
 
-    - name: Build shared library
-      run: make shared
-
-    - name: Compile solsys variants
-      run: make solsys
-
-    - name: Generate CIO locator data
-      run: make cio_file
