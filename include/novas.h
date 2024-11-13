@@ -54,10 +54,10 @@
 #  include <ctype.h>
 #  include <string.h>
 
-#  include "novascon.h"
+#  include <novascon.h>
 #endif
 
-#include "nutation.h"
+#include <nutation.h>
 
 /// API major version
 #define SUPERNOVAS_MAJOR_VERSION  1
@@ -1304,7 +1304,7 @@ enum novas_planet novas_planet_for_name(const char *name);
 
 
 
-#include "solarsystem.h"
+#include <solarsystem.h>
 
 
 // <================= SuperNOVAS internals ======================>

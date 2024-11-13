@@ -45,7 +45,7 @@
 #ifndef _SOLSYS_
 #define _SOLSYS_
 
-#include "novas.h"
+#include <novas.h>
 
 /**
  * Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types. JPL ephemerides
