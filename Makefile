@@ -232,7 +232,7 @@ ifneq ($(wildcard apidoc/html/search/*),)
 	install -d $(docdir)
 	install -m 644 apidoc/supernovas.tag $(docdir)/supernovas.tag
 else
-	@echo "WARNING! Skipping apidocs install: needs doxygen and 'local-dox'"
+	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
 endif
 
 .PHONY: install-examples
