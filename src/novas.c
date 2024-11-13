@@ -40,6 +40,7 @@
 #endif
 
 #define C2                  (C * C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light squared
+#define EPREC               1e-12     ///< Required precision for eccentric anomaly in orbital calculation
 
 // <---------- GLOBAL VARIABLES -------------->
 
@@ -1394,7 +1395,6 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, const double *geo_pos,
         const double *geo_vel, double *pos, double *vel) {
   static const char *fn = "get_obs_posvel";
-  static const cat_entry zero_star = CAT_ENTRY_INIT;
 
   if(!obs)
     return novas_error(-1, EINVAL, fn, "NULL observer parameter");
@@ -1415,7 +1415,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
 
   if(!geo_pos || !geo_vel) {
     const double tdb2[2] = { jd_tdb };
-    object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", zero_star };
+    object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", CAT_ENTRY_INIT, NOVAS_ORBIT_INIT };
     double gpos[3], gvel[3];
     prop_error(fn, ephemeris(tdb2, &earth, NOVAS_BARYCENTER, accuracy, gpos, gvel), 0);
     if(pos)
@@ -3412,7 +3412,6 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   static THREAD_LOCAL double t_last = 0;
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double gast;
-  static const cat_entry zero_star = CAT_ENTRY_INIT;
 
   double gmst, eqeq, pos1[3], vel1[3], jd_tdb, jd_ut1;
 
@@ -3487,7 +3486,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
     }
 
     case NOVAS_SOLAR_SYSTEM_OBSERVER: {               // Observer in Solar orbit
-      const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", zero_star };
+      const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", CAT_ENTRY_INIT, NOVAS_ORBIT_INIT };
       const double tdb[2] = { jd_tdb, 0.0 };
       int i;
 
@@ -5769,9 +5768,120 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
       break;
     }
 
+    case NOVAS_ORBITAL_OBJECT: {
+      object center;
+      double pos0[3] = {0}, vel0[3] = {0};
+      int i;
+
+      prop_error(fn, make_planet(body->orbit.center, &center), 0);
+      prop_error(fn, ephemeris(jd_tdb, &center, origin, accuracy, pos0, vel0), 0);
+      prop_error(fn, novas_orbit_posvel(jd_tdb[0] + jd_tdb[1], &body->orbit, pos, vel), 0);
+
+      for(i = 3; --i >= 0; ) {
+        if(pos) pos[i] += pos0[i];
+        if(vel) vel[i] += vel0[i];
+      }
+
+      break;
+    }
+
     default:
       return novas_error(2, EINVAL, fn, "invalid Solar-system body type: %d", body->type);
 
+  }
+
+  return 0;
+}
+
+/**
+ * Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the
+ * specified time of observation.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://en.wikipedia.org/wiki/Orbital_elements</li>
+ * <li>https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf</li>
+ * <li>https://orbitalofficial.com/</li>
+ * </ol>
+ *
+ * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
+ * @param orb       Orbital parameters
+ * @param[out] pos  [AU] Output position vector, or NULL if not required
+ * @param[out] vel  [AU/day] Output velocity vector, or NULL if not required
+ * @return          0 if successful, or else -1 if the orbital parameters are NULL
+ *                  or if the position and velocity output vectors are the same (errno set to EINVAL),
+ *                  or if the calculation did not converge (errno set to ECANCELED).
+ */
+int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, double *pos, double *vel) {
+  static const char *fn = "novas_orbit_posvel";
+
+  double dt, M, E, nu, r;
+  double cO, sO, ci, si, co, so;
+  double xx, yx, zx, xy, yy, zy;
+  int i = novas_inv_max_iter;
+
+  if(!orb)
+    return novas_error(-1, EINVAL, fn, "input orbital elements is NULL");
+
+  if(pos == vel)
+    return novas_error(-1, EINVAL, fn, "output pos = vel (@ %p)", pos);
+
+  dt = jd_tdb - orb->jd_tdb;
+  E = M = orb->M0 + orb->n * dt;
+
+  // Iteratively determine E, using Newton-Raphson method...
+  while(--i >= 0) {
+    double s = sin(E);
+    double c = cos(E);
+    double dE = (E - s - M) / (1.0 - c);
+
+    E -= dE;
+    if(fabs(dE) < EPREC) break;
+  }
+
+  if(i < 0)
+    return novas_error(-1, ECANCELED, fn, "Eccentric anomaly convergence failure");
+
+  nu = 2.0 * atan2(sqrt(1.0 + orb->e) * sin(0.5 * E), sqrt(1.0 - orb->e) * cos(0.5 * E));
+  r = orb->a * (1.0 - orb->e * E);
+
+  // pos = Rz(-Omega) . Rx(-i) . Rz(-omega) . orb
+  cO = cos(orb->Omega);
+  sO = sin(orb->Omega);
+  ci = cos(orb->i);
+  si = sin(orb->i);
+  co = cos(orb->omega);
+  so = sin(orb->omega);
+
+  // Rotation matrix
+  // See https://en.wikipedia.org/wiki/Euler_angles
+  // (note the Wikipedia has opposite sign convention for angles...)
+  xx = cO * co - sO * ci * so;
+  yx = sO * co + cO * ci * so;
+  zx = si * so;
+  xy = -cO * so - sO * ci * co;
+  yy = -sO * so + cO * ci * co;
+  zy = si * co;
+
+  if(pos) {
+    double x = cos(nu);
+    double y = sin(nu);
+
+    // Perform rotation
+    pos[0] = xx * x + xy * y;
+    pos[1] = yx * x + yy * y;
+    pos[2] = zx * x + zy * y;
+  }
+
+  if(vel) {
+    double vt = orb->n / r;
+    double x = -vt * sin(E);
+    double y = vt * sqrt(1.0 - orb->e * orb->e) * cos(E);
+
+    // Perform rotation
+    vel[0] = xx * x + xy * y;
+    vel[1] = yx * x + yy * y;
+    vel[2] = zx * x + zy * y;
   }
 
   return 0;

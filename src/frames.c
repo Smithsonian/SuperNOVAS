@@ -315,8 +315,8 @@ static int is_frame_initialized(const novas_frame *frame) {
 int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double dx, double dy,
         novas_frame *frame) {
   static const char *fn = "novas_make_frame";
-  static const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", CAT_ENTRY_INIT };
-  static const object sun = { NOVAS_PLANET, NOVAS_SUN, "Sun", CAT_ENTRY_INIT };
+  static const object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth", CAT_ENTRY_INIT, NOVAS_ORBIT_INIT };
+  static const object sun = { NOVAS_PLANET, NOVAS_SUN, "Sun", CAT_ENTRY_INIT, NOVAS_ORBIT_INIT };
 
   double tdb2[2];
   double mobl, tobl, ee, dpsi, deps;

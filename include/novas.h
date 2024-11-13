@@ -246,11 +246,17 @@ enum novas_object_type {
 
   /// Any non-solar system object that may be handled via 'catalog' coordinates, such as a star
   /// or a quasar.
-  NOVAS_CATALOG_OBJECT
+  /// @sa cat_entry
+  NOVAS_CATALOG_OBJECT,
+
+  /// Any Solar-system body, whose position is determined by a set of orbital elements
+  /// @since 1.2
+  /// @sa novas_orbital_elements
+  NOVAS_ORBITAL_OBJECT
 };
 
 /// The number of object types distinguished by NOVAS.
-#define NOVAS_OBJECT_TYPES      (NOVAS_CATALOG_OBJECT + 1)
+#define NOVAS_OBJECT_TYPES      (NOVAS_ORBITAL_OBJECT + 1)
 
 /**
  * Enumeration for the 'major planet' numbers in NOVAS to use as the solar-system body number whenever
@@ -623,6 +629,35 @@ typedef struct {
 #define CAT_ENTRY_INIT { {'\0'}, {'\0'}, 0L, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 /**
+ * Orbital elements for NOVAS_ORBITAL_OBJECT type.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ *
+ * @sa object
+ * @sa enum NOVAS_ORBITAL_OBJECT
+ */
+typedef struct {
+  enum novas_planet center;         ///< major body at orbital center (default is NOVAS_SUN).
+  double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of parameters.
+  double a;                         ///< [AU] semi-major axis
+  double e;                         ///< eccentricity
+  double omega;                     ///< [rad] argument of periapsis / perihelion
+  double Omega;                     ///< [rad] argument of ascending node
+  double i;                         ///< [rad] inclination
+  double M0;                        ///< [rad] mean anomaly at tjd
+  double n;                         ///< [rad/day] mean daily motion
+} novas_orbital_elements;
+
+/**
+ * Initializer for novas_orbital_elements for heliocentric orbits
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+#define NOVAS_ORBIT_INIT { NOVAS_SUN, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+
+/**
  * Celestial object of interest.
  *
  * Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type'
@@ -633,7 +668,8 @@ typedef struct {
   enum novas_object_type type;    ///< NOVAS object type
   long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
-  cat_entry star;                 ///< basic astrometric data for any 'catalog' object.
+  cat_entry star;                 ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
+  novas_orbital_elements orbit;   ///< orbital data for NOVAS_ORBITAL_OBJECT TYPE
 } object;
 
 /**

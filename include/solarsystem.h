@@ -341,6 +341,8 @@ long novas_to_naif_planet(enum novas_planet id);
 
 long novas_to_dexxx_planet(enum novas_planet id);
 
+int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, double *pos, double *vel);
+
 /// \cond PRIVATE
 
 

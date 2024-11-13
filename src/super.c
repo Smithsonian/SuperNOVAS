@@ -1329,3 +1329,4 @@ enum novas_planet novas_planet_for_name(const char *name) {
 
   return novas_error(-1, EINVAL, fn, "No match for name: '%s'", name);
 }
+
