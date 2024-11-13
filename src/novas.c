@@ -864,7 +864,7 @@ int radec_planet(double jd_tt, const object *ss_body, const observer *obs, doubl
   if(rv)
     *rv = NAN;
 
-  if(ss_body->type != NOVAS_PLANET && ss_body->type != NOVAS_EPHEM_OBJECT)
+  if(ss_body->type != NOVAS_PLANET && ss_body->type != NOVAS_EPHEM_OBJECT && ss_body->type != NOVAS_ORBITAL_OBJECT)
     return novas_error(-1, EINVAL, fn, "object is not solar-system type: type=%d", ss_body->type);
 
   prop_error(fn, place(jd_tt, ss_body, obs, ut1_to_tt, sys, accuracy, &output), 10);
@@ -4377,6 +4377,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
       /* fallthrough */
 
     case NOVAS_EPHEM_OBJECT:
+    case NOVAS_ORBITAL_OBJECT:
       // Solar potential at source (bodies strictly outside the Sun's volume)
       if(d_src_sun * AU > NOVAS_SOLAR_RADIUS)
         rel /= 1.0 - GS / (d_src_sun * AU) / C2;
@@ -5775,11 +5776,13 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
 
       prop_error(fn, make_planet(body->orbit.center, &center), 0);
       prop_error(fn, ephemeris(jd_tdb, &center, origin, accuracy, pos0, vel0), 0);
-      prop_error(fn, novas_orbit_posvel(jd_tdb[0] + jd_tdb[1], &body->orbit, pos, vel), 0);
+      prop_error(fn, novas_orbit_posvel(jd_tdb[0] + jd_tdb[1], &body->orbit, accuracy, pos, vel), 0);
 
       for(i = 3; --i >= 0; ) {
-        if(pos) pos[i] += pos0[i];
-        if(vel) vel[i] += vel0[i];
+        if(pos)
+          pos[i] += pos0[i];
+        if(vel)
+          vel[i] += vel0[i];
       }
 
       break;
@@ -5787,10 +5790,24 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
 
     default:
       return novas_error(2, EINVAL, fn, "invalid Solar-system body type: %d", body->type);
-
   }
 
   return 0;
+}
+
+static int equ2gcrs(double jd_tdb, const double *in, enum novas_equator_type sys, double *out) {
+  switch(sys) {
+    case NOVAS_GCRS_EQUATOR:
+      memcpy(out, in, XYZ_VECTOR_SIZE);
+      return 0;
+    case NOVAS_TRUE_EQUATOR:
+      return tod_to_gcrs(jd_tdb, NOVAS_REDUCED_ACCURACY, in, out);
+    case NOVAS_MEAN_EQUATOR:
+      precession(jd_tdb, in, NOVAS_JD_J2000, out);
+      return j2000_to_gcrs(out, out);
+    default:
+      return novas_error(-1, EINVAL, "equ2gcrs", "invalid equator type: %d", sys);
+  }
 }
 
 /**
@@ -5799,59 +5816,69 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
  *
  * REFERENCES:
  * <ol>
+ * <li>https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
  * <li>https://en.wikipedia.org/wiki/Orbital_elements</li>
- * <li>https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf</li>
  * <li>https://orbitalofficial.com/</li>
+ * <li>https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf</li>
  * </ol>
  *
  * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
- * @param orb       Orbital parameters
- * @param[out] pos  [AU] Output position vector, or NULL if not required
- * @param[out] vel  [AU/day] Output velocity vector, or NULL if not required
+ * @param orbit     Orbital parameters
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
+ * @param[out] pos  [AU] Output ICRS equatorial position vector, or NULL if not required
+ * @param[out] vel  [AU/day] Output ICRS equatorial velocity vector, or NULL if not required
  * @return          0 if successful, or else -1 if the orbital parameters are NULL
  *                  or if the position and velocity output vectors are the same (errno set to EINVAL),
  *                  or if the calculation did not converge (errno set to ECANCELED).
+ *
+ * @sa ephemeris()
+ * @sa novas_geom_posvel()
+ * @sa place()
+ * @sa make_orbital_object()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  */
-int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, double *pos, double *vel) {
+int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum novas_accuracy accuracy, double *pos, double *vel) {
   static const char *fn = "novas_orbit_posvel";
 
-  double dt, M, E, nu, r;
+  double M, E, nu, r;
   double cO, sO, ci, si, co, so;
   double xx, yx, zx, xy, yy, zy;
   int i = novas_inv_max_iter;
 
-  if(!orb)
+  if(!orbit)
     return novas_error(-1, EINVAL, fn, "input orbital elements is NULL");
 
   if(pos == vel)
     return novas_error(-1, EINVAL, fn, "output pos = vel (@ %p)", pos);
 
-  dt = jd_tdb - orb->jd_tdb;
-  E = M = orb->M0 + orb->n * dt;
+  E = M = orbit->M0 + orbit->n * (jd_tdb - orbit->jd_tdb);
 
   // Iteratively determine E, using Newton-Raphson method...
   while(--i >= 0) {
-    double s = sin(E);
-    double c = cos(E);
-    double dE = (E - s - M) / (1.0 - c);
+    double es = orbit->e * sin(E);
+    double ec = orbit->e * cos(E);
+    double dE = (E - es - M) / (1.0 - ec);
 
     E -= dE;
-    if(fabs(dE) < EPREC) break;
+    if(fabs(dE) < EPREC)
+      break;
   }
 
   if(i < 0)
     return novas_error(-1, ECANCELED, fn, "Eccentric anomaly convergence failure");
 
-  nu = 2.0 * atan2(sqrt(1.0 + orb->e) * sin(0.5 * E), sqrt(1.0 - orb->e) * cos(0.5 * E));
-  r = orb->a * (1.0 - orb->e * E);
+  nu = 2.0 * atan2(sqrt(1.0 + orbit->e) * sin(0.5 * E), sqrt(1.0 - orbit->e) * cos(0.5 * E));
+  r = orbit->a * (1.0 - orbit->e * cos(E));
 
   // pos = Rz(-Omega) . Rx(-i) . Rz(-omega) . orb
-  cO = cos(orb->Omega);
-  sO = sin(orb->Omega);
-  ci = cos(orb->i);
-  si = sin(orb->i);
-  co = cos(orb->omega);
-  so = sin(orb->omega);
+  cO = cos(orbit->Omega);
+  sO = sin(orbit->Omega);
+  ci = cos(orbit->i);
+  si = sin(orbit->i);
+  co = cos(orbit->omega);
+  so = sin(orbit->omega);
 
   // Rotation matrix
   // See https://en.wikipedia.org/wiki/Euler_angles
@@ -5859,29 +5886,40 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, double 
   xx = cO * co - sO * ci * so;
   yx = sO * co + cO * ci * so;
   zx = si * so;
+
   xy = -cO * so - sO * ci * co;
   yy = -sO * so + cO * ci * co;
   zy = si * co;
 
   if(pos) {
-    double x = cos(nu);
-    double y = sin(nu);
+    double x = r * cos(nu);
+    double y = r * sin(nu);
 
     // Perform rotation
     pos[0] = xx * x + xy * y;
     pos[1] = yx * x + yy * y;
     pos[2] = zx * x + zy * y;
+
+    if(orbit->plane == NOVAS_ECLIPTIC_PLANE)
+      prop_error(fn, ecl2equ_vec(jd_tdb, orbit->sys, accuracy, pos, pos), 0);
+
+    equ2gcrs(jd_tdb, pos, orbit->sys, pos);
   }
 
   if(vel) {
-    double vt = orb->n / r;
-    double x = -vt * sin(E);
-    double y = vt * sqrt(1.0 - orb->e * orb->e) * cos(E);
+    double v = orbit->n * orbit->a * orbit->a / r;    // [AU/day]
+    double x = -v * sin(E);
+    double y = v * sqrt(1.0 - orbit->e * orbit->e) * cos(E);
 
     // Perform rotation
     vel[0] = xx * x + xy * y;
     vel[1] = yx * x + yy * y;
     vel[2] = zx * x + zy * y;
+
+    if(orbit->plane == NOVAS_ECLIPTIC_PLANE)
+      prop_error(fn, ecl2equ_vec(jd_tdb, orbit->sys, accuracy, vel, vel), 0);
+
+    equ2gcrs(jd_tdb, vel, orbit->sys, vel);
   }
 
   return 0;
@@ -6521,7 +6559,7 @@ void novas_case_sensitive(int value) {
  * however enable case-sensitive processing by calling novas_case_sensitive() before.
  *
  * @param type          The type of object. NOVAS_PLANET (0), NOVAS_EPHEM_OBJECT (1) or
- *                      NOVAS_CATALOG_OBJECT (2)
+ *                      NOVAS_CATALOG_OBJECT (2), or NOVAS_ORBITAL_OBJECT (3).
  * @param number        The novas ID number (for solar-system bodies only, otherwise ignored)
  * @param name          The name of the object (case insensitive). It should be shorter than
  *                      SIZE_OF_OBJ_NAME or else an error will be returned. The name is
@@ -6540,6 +6578,8 @@ void novas_case_sensitive(int value) {
  * @sa make_redshifted_object()
  * @sa make_planet()
  * @sa make_ephem_object()
+ * @sa make_orbital_object()
+ * @sa novas_geom_posvel()
  * @sa place()
  *
  */

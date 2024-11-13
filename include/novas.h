@@ -584,6 +584,16 @@ enum novas_nutation_direction {
 };
 
 /**
+ * The plane in which values, such as orbital parameyters are referenced.
+ *
+ * @since 1.2
+ */
+enum novas_reference_plane {
+  NOVAS_ECLIPTIC_PLANE = 0,     ///< the plane of the ecliptic
+  NOVAS_EQUATORIAL_PLANE        ///< The plane of the equator
+};
+
+/**
  * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3),
  * precession = 5028.8200 arcsec/cy)
  *
@@ -638,7 +648,9 @@ typedef struct {
  * @sa enum NOVAS_ORBITAL_OBJECT
  */
 typedef struct {
-  enum novas_planet center;         ///< major body at orbital center (default is NOVAS_SUN).
+  enum novas_planet center;         ///< major body at the center of the orbit (default is NOVAS_SUN).
+  enum novas_reference_plane plane; ///< Reference plane NOVAS_ECLIPTIC_PLANE (0) or NOVAS_EQUATORIAL_PLANE (1)
+  enum novas_equator_type sys;      ///< The type of equator to which coordinates are referenced (true, mean, or GCRS).
   double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of parameters.
   double a;                         ///< [AU] semi-major axis
   double e;                         ///< eccentricity
@@ -646,7 +658,7 @@ typedef struct {
   double Omega;                     ///< [rad] argument of ascending node
   double i;                         ///< [rad] inclination
   double M0;                        ///< [rad] mean anomaly at tjd
-  double n;                         ///< [rad/day] mean daily motion
+  double n;                         ///< [rad/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body
 } novas_orbital_elements;
 
 /**
@@ -655,7 +667,7 @@ typedef struct {
  * @author Attila Kovacs
  * @since 1.2
  */
-#define NOVAS_ORBIT_INIT { NOVAS_SUN, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+#define NOVAS_ORBIT_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS_EQUATOR, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 /**
  * Celestial object of interest.
@@ -1340,6 +1352,10 @@ double novas_z_add(double z1, double z2);
 double novas_z_inv(double z);
 
 enum novas_planet novas_planet_for_name(const char *name);
+
+int make_orbital_object(const char *name, long num, const novas_orbital_elements *orbit, object *body);
+
+int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, enum novas_accuracy accuracy, double *pos, double *vel);
 
 
 // <================= END of SuperNOVAS API =====================>

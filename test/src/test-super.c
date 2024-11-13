@@ -2213,6 +2213,47 @@ static int test_planet_for_name() {
 }
 
 
+static int test_orbit_posvel() {
+  object ceres = {};
+  novas_orbital_elements orbit;
+  observer obs = {};
+  sky_pos pos = {};
+
+  // This is for SMA, so topocentric with Earth rot...
+  double tjd = NOVAS_JD_MJD0 + 60627.796269;
+  double RA0 = 19.679722;         // 19:40:47.000
+  double DEC0 = -28.633014;       // -28:37:58.849
+  double rv0 = 21.138;            // km/s
+  double r = 3.323;               // AU
+  int n = 0;
+
+  orbit.center = NOVAS_SUN;
+  orbit.plane = NOVAS_ECLIPTIC_PLANE;
+  orbit.sys = NOVAS_GCRS_EQUATOR;
+
+  orbit.jd_tdb = 2460600.5;
+  orbit.a = 2.7666197;
+  orbit.e = 0.079184;
+  orbit.i = 10.5879 * DEGREE;
+  orbit.omega = 73.28579 * DEGREE;
+  orbit.Omega = 80.25414 * DEGREE;
+  orbit.M0 = 145.84905 * DEGREE;
+  orbit.n = 0.21418047 * DEGREE;
+
+  make_observer_at_geocenter(&obs);
+  make_orbital_object("Ceres", -1, &orbit, &ceres);
+
+  if(!is_ok("orbit_posvel", place(tjd, &ceres, &obs, ut12tt, NOVAS_TOD, NOVAS_REDUCED_ACCURACY, &pos))) return 1;
+
+  // TODO refine with HORIZONS data...
+  if(!is_equal("orbit_posvel:ra", pos.ra, RA0, 5e-5)) n++;
+  if(!is_equal("orbit_posvel:dec", pos.dec, DEC0, 1e-3)) n++;
+  if(!is_equal("orbit_posvel:dist", pos.dis, r, 2e-3)) n++;
+  if(!is_equal("orbit_posvel:vrad", pos.rv, rv0, 0.5)) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -2277,6 +2318,7 @@ int main(int argc, char *argv[]) {
   if(test_naif_to_novas_planet()) n++;
 
   if(test_planet_for_name()) n++;
+  if(test_orbit_posvel()) n++;
 
   n += test_dates();
 
