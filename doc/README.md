@@ -983,12 +983,13 @@ all known solar systems bodies, down to the tiniest rocks.
 ### Optional CALCEPH integration
 
 The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides an easy-to-use access to JPL and
-INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing the CALCEPH C library 
-with SuperNOVAS for handling Solar-system objects.
+INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with the 
+the CALCEPH C library for handling Solar-system objects.
 
 Prior to building SuperNOVAS simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your environment. Depending on the 
 build target, it will build `libsolsys-calceph.so[.1]` (target `shared`) or `libsolsys-calceph.a` (target `static`) 
-libraries, which provide the `novas_use_calceph()` and `novas_use_calceph_planets()` functions.
+libraries or `solsys-calceph.o` (target `solsys`), which provide the `novas_use_calceph()` and 
+`novas_use_calceph_planets()`, and `novas_calceph_use_ids()` functions.
 
 Of course, you will need access to the CALCEPH C development files (C headers and unversioned `libcalceph.so` or `.a` 
 library) for the build to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application 
@@ -1025,15 +1026,15 @@ add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`)
 ### Optional NAIF CSPICE toolkit integration
 
 The [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) is the canonical standard library for JPL 
-ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing CSPICE with SuperNOVAS for 
+ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with CSPICE for 
 handling Solar-system objects.
 
 Prior to building SuperNOVAS simply set `CSPICE_SUPPORT` to 1 in `config.mk` or in your environment. Depending on the 
 build target, it will build `libsolsys-cspice.so[.1]` (target `shared`) or `libsolsys-cspice.a` (target `static`) 
-libraries, which provide the `novas_use_cspice()`, `novas_use_cspice_planets()`, and `novas_use_cspice_ephem()` 
-functions to enable CSPICE for providing data for all Solar-system sources, or for major planets only, or for other
-bodies only, respectively. You can also manage the active kernels with the `cspice_add_kernel()` and 
-`cspice_remove_kernel()` functions.
+libraries or `solsys-cspice.o` (target `solsys`), which provide the `novas_use_cspice()`, 
+`novas_use_cspice_planets()`, and `novas_use_cspice_ephem()` functions to enable CSPICE for providing data for all 
+Solar-system sources, or for major planets only, or for other bodies only, respectively. You can also manage the 
+active kernels with the `cspice_add_kernel()` and `cspice_remove_kernel()` functions.
 
 Of course, you will need access to the CSPICE development files (C headers, installed under a `cspice/` directory 
 of an header search location, and the unversioned `libcspice.so` or `.a` library) for the build to succeed. You may 
