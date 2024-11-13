@@ -57,6 +57,9 @@ Changes expected for the next feature release, expected around 1 February 2025.
    [GNU standard](https://www.gnu.org/prep/standards/html_node/Directory-Variables.html) to further customize the
    install locations.
    
+ - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
+   really but it is more proper for an installation of the library, and works with our own `Makefile` too.
+   
    
 ## [1.1.1] - 2024-10-28
 
