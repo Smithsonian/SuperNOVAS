@@ -27,7 +27,7 @@
  * @param jd_tdb         [day] Barycentric Dynamical Time (TDB) based Julian date, split into
  *                       high and low order components (e.g. integer and fractional parts) for
  *                       high-precision calculations.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB...)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                       report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
@@ -86,7 +86,7 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
  * version.
  *
  * @param jd_tdb         [day] Barycentric Dynamical Time (TDB) based Julian date.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB...)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to
  *                       report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular

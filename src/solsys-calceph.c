@@ -143,7 +143,7 @@ int novas_calceph_use_ids(enum novas_id_type idtype) {
  *                       split any way (although the first element is usually the
  *                       "integer" part, and the second element is the "fractional"
  *                       part).  Julian date is on the TDB or "T_eph" time scale.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB...)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1)
  *                       -- relative to which to report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
@@ -242,7 +242,7 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
  *                       split any way (although the first element is usually the
  *                       "integer" part, and the second element is the "fractional"
  *                       part).  Julian date is on the TDB or "T_eph" time scale.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB...)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
  *                       -- relative to which to report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
@@ -363,7 +363,8 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
  *
  * The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects. If you
  * want to use another provider for major planets, you need to call set_planet_provider() /
- * set_planet_provider_hp() afterwards to specify a different provider for major planets (and Sun, Moon, SSB).
+ * set_planet_provider_hp() afterwards to specify a different provider for major planets (and Sun, Moon,
+ * SSB...).
  *
  * @param eph   Pointer to the CALCEPH ephemeris data that have been opened.
  * @return  0 if successful, or else -1 (errno will indicate the type of error).
@@ -403,9 +404,9 @@ int novas_use_calceph(t_calcephbin *eph) {
 
 /**
  * Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major planets
- * (and Sun, Moon, and SSB).
+ * (and Sun, Moon, SSB...).
  *
- * @param eph   Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, and SSB) that
+ * @param eph   Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, SSB...) that
  *              have been opened.
  * @return  0 if successful, or else -1 (errno will indicate the type of error).
  *

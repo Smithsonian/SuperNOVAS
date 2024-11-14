@@ -887,13 +887,16 @@ before that level of accuracy is reached.
    `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides
    `cspice_add_kernel()` and `cspice_remove_kernel()`.
    
- - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
+ - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB...): `novas_to_naif_planet()`, 
    `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
    
  - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
 
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
 
+ - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
+   from the corresponding planet centers in calculations.
+   
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
@@ -985,7 +988,7 @@ SuperNOVAS flexibility in this area, you have several options on doing that. The
 NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
 example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
-and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
+and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the 
 [JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
 all known solar systems bodies, down to the tiniest rocks. 
 
@@ -1118,7 +1121,7 @@ Once you have your adapter function, you can set it as your ephemeris service vi
 ```
 
 By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
-major planets, the Sun, Moon, and the Solar System Barycenter). But, you can use the same function for the mentioned 
+major planets, the Sun, Moon, Solar-system Barycenter...). But, you can use the same function for the mentioned 
 'major planets' also via:
 
 ```c

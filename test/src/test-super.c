@@ -2135,6 +2135,7 @@ static int test_novas_to_naif_planet() {
   if(!is_ok("novas_to_naif_planet:sun", novas_to_naif_planet(NOVAS_SUN) != NAIF_SUN)) n++;
   if(!is_ok("novas_to_naif_planet:moon", novas_to_naif_planet(NOVAS_MOON) != NAIF_MOON)) n++;
   if(!is_ok("novas_to_naif_planet:earth", novas_to_naif_planet(NOVAS_EARTH) != NAIF_EARTH)) n++;
+  if(!is_ok("novas_to_naif_planet:earth", novas_to_naif_planet(NOVAS_EMB) != NAIF_EMB)) n++;
   if(!is_ok("novas_to_naif_planet:mercury", novas_to_naif_planet(NOVAS_MERCURY) != 199)) n++;
   if(!is_ok("novas_to_naif_planet:venus", novas_to_naif_planet(NOVAS_VENUS) != 299)) n++;
   if(!is_ok("novas_to_naif_planet:mars", novas_to_naif_planet(NOVAS_MARS) != 499)) n++;
@@ -2143,6 +2144,7 @@ static int test_novas_to_naif_planet() {
   if(!is_ok("novas_to_naif_planet:uranus", novas_to_naif_planet(NOVAS_URANUS) != 799)) n++;
   if(!is_ok("novas_to_naif_planet:neptune", novas_to_naif_planet(NOVAS_NEPTUNE) != 899)) n++;
   if(!is_ok("novas_to_naif_planet:pluto", novas_to_naif_planet(NOVAS_PLUTO) != 999)) n++;
+  if(!is_ok("novas_to_dexxx_planet:pluto", novas_to_naif_planet(NOVAS_PLUTO_BARYCENTER) != 9)) n++;
 
   return n;
 }
@@ -2154,6 +2156,7 @@ static int test_novas_to_dexxx_planet() {
   if(!is_ok("novas_to_dexxx_planet:sun", novas_to_dexxx_planet(NOVAS_SUN) != NAIF_SUN)) n++;
   if(!is_ok("novas_to_dexxx_planet:moon", novas_to_dexxx_planet(NOVAS_MOON) != NAIF_MOON)) n++;
   if(!is_ok("novas_to_dexxx_planet:earth", novas_to_dexxx_planet(NOVAS_EARTH) != NAIF_EARTH)) n++;
+  if(!is_ok("novas_to_dexxx_planet:earth", novas_to_dexxx_planet(NOVAS_EMB) != NAIF_EMB)) n++;
   if(!is_ok("novas_to_dexxx_planet:mercury", novas_to_dexxx_planet(NOVAS_MERCURY) != 1)) n++;
   if(!is_ok("novas_to_dexxx_planet:venus", novas_to_dexxx_planet(NOVAS_VENUS) != 2)) n++;
   if(!is_ok("novas_to_dexxx_planet:mars", novas_to_dexxx_planet(NOVAS_MARS) != 4)) n++;
@@ -2162,6 +2165,7 @@ static int test_novas_to_dexxx_planet() {
   if(!is_ok("novas_to_dexxx_planet:uranus", novas_to_dexxx_planet(NOVAS_URANUS) != 7)) n++;
   if(!is_ok("novas_to_dexxx_planet:neptune", novas_to_dexxx_planet(NOVAS_NEPTUNE) != 8)) n++;
   if(!is_ok("novas_to_dexxx_planet:pluto", novas_to_dexxx_planet(NOVAS_PLUTO) != 9)) n++;
+  if(!is_ok("novas_to_dexxx_planet:pluto", novas_to_dexxx_planet(NOVAS_PLUTO_BARYCENTER) != 9)) n++;
 
   return n;
 }
@@ -2173,6 +2177,7 @@ static int test_naif_to_novas_planet() {
   if(!is_ok("naif_to_novas_planet:sun", naif_to_novas_planet(NAIF_SUN) != NOVAS_SUN)) n++;
   if(!is_ok("naif_to_novas_planet:moon", naif_to_novas_planet(NAIF_MOON) != NOVAS_MOON)) n++;
   if(!is_ok("naif_to_novas_planet:earth", naif_to_novas_planet(NAIF_EARTH) != NOVAS_EARTH)) n++;
+  if(!is_ok("naif_to_novas_planet:earth", naif_to_novas_planet(NAIF_EMB) != NOVAS_EMB)) n++;
   if(!is_ok("naif_to_novas_planet:mercury", naif_to_novas_planet(199) != NOVAS_MERCURY)) n++;
   if(!is_ok("naif_to_novas_planet:venus", naif_to_novas_planet(299) != NOVAS_VENUS)) n++;
   if(!is_ok("naif_to_novas_planet:mars", naif_to_novas_planet(499) != NOVAS_MARS)) n++;
@@ -2188,7 +2193,8 @@ static int test_naif_to_novas_planet() {
   if(!is_ok("naif_to_novas_planet:saturn", naif_to_novas_planet(6) != NOVAS_SATURN)) n++;
   if(!is_ok("naif_to_novas_planet:uranus", naif_to_novas_planet(7) != NOVAS_URANUS)) n++;
   if(!is_ok("naif_to_novas_planet:neptune", naif_to_novas_planet(8) != NOVAS_NEPTUNE)) n++;
-  if(!is_ok("naif_to_novas_planet:pluto", naif_to_novas_planet(9) != NOVAS_PLUTO)) n++;
+  if(!is_ok("naif_to_novas_planet:pluto", naif_to_novas_planet(9) != NOVAS_PLUTO_BARYCENTER)) n++;
+  if(!is_ok("naif_to_novas_planet:pluto", naif_to_novas_planet(999) != NOVAS_PLUTO)) n++;
 
   return n;
 }

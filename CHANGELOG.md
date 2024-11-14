@@ -60,6 +60,14 @@ Changes expected for the next feature release, expected around 1 February 2025.
  - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
    
+ - #97: Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
+   from the planet center in calculations.
+   
+### Changed
+
+ - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT` and `NOVAS_RMASS_INIT` macros to include the added planet 
+   constants.
+   
    
 ## [1.1.1] - 2024-10-28
 
