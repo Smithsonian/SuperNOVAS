@@ -5774,7 +5774,7 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
       double pos0[3] = {0}, vel0[3] = {0};
       int i;
 
-      prop_error(fn, make_planet(body->orbit.center, &center), 0);
+      prop_error(fn, make_planet(body->orbit.system.center, &center), 0);
       prop_error(fn, ephemeris(jd_tdb, &center, origin, accuracy, pos0, vel0), 0);
       prop_error(fn, novas_orbit_posvel(jd_tdb[0] + jd_tdb[1], &body->orbit, accuracy, pos, vel), 0);
 
@@ -5795,6 +5795,55 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
   return 0;
 }
 
+
+/**
+ * Change xzy vectors to the new polar orientation. &theta, &phi define the orientation of the input pole in the output system.
+ *
+ *
+ * @param in        input 3-vector in the original system (pole = z)
+ * @param theta     [rad] polar angle of original pole in the new system
+ * @param phi       [rad] azimuthal angle of original pole in the new system
+ * @param[out] out  output 3-vector in the new (rotated) system. It may be the same vector as the input.
+ * @return          0 if successful, or else -1 (rrno set to EINVAL) if either vector parameters are NULL.
+ *
+ */
+static int change_pole(const double *in, double theta, double phi, double *out) {
+  static const char *fn = "novas_change_pole";
+  double x, y, z;
+
+  if(!in)
+    return novas_error(-1, EINVAL, fn, "input 3-vector is NULL");
+
+  if(!out)
+    return novas_error(-1, EINVAL, fn, "output 3-vector is NULL");
+
+  x = in[0];
+  y = in[1];
+  z = in[2];
+
+  // looking in Rz (phi) Rx (theta)
+  double ca = sin(phi);
+  double sa = cos(phi);
+  double cb = cos(theta);
+  double sb = sin(theta);
+
+  out[0] = ca * x - sa * cb * y + sa * sb * z;
+  out[1] = sb * x + ca * cb * y - ca * sb * z;
+  out[3] = sb * y + cb * z;
+
+  return 0;
+}
+
+/**
+ * Converts equatorial coordinates of a given type to GCRS equatorial coordinates
+ *
+ * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian Date
+ * @param[in] in    input 3-vector
+ * @param sys       the type of equator assumed for the input (mean, true, or GCRS).
+ * @param[out] out  output 3-vector. It may be the same as the input.
+ * @return          0 if successful, or else -1 (errno set to EINVAL) if the 'sys'
+ *                  argument is invalid.
+ */
 static int equ2gcrs(double jd_tdb, const double *in, enum novas_equator_type sys, double *out) {
   switch(sys) {
     case NOVAS_GCRS_EQUATOR:
@@ -5808,6 +5857,29 @@ static int equ2gcrs(double jd_tdb, const double *in, enum novas_equator_type sys
     default:
       return novas_error(-1, EINVAL, "equ2gcrs", "invalid equator type: %d", sys);
   }
+}
+
+
+/**
+ * Convert coordinates in an orbital system to GCRS equatorial coordinates
+ *
+ * @param jd_tdb        [day] Barycentric Dynamic Time (TDB) based Julian Date
+ * @param sys           Orbital system specification
+ * @param accuracy      NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+ * @param[in, out] vec  Coordinates
+ * @return              0 if successful, or else an error from ecl2equ_vec().
+ *
+ */
+static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas_accuracy accuracy, double *vec) {
+  if(sys->obl)
+    change_pole(vec, sys->obl, sys->Omega, vec);
+
+  if(sys->plane == NOVAS_ECLIPTIC_PLANE)
+    prop_error("orbit2gcrs", ecl2equ_vec(jd_tdb, sys->type, accuracy, vec, vec), 0);
+
+  equ2gcrs(jd_tdb, vec, sys->type, vec);
+
+  return 0;
 }
 
 /**
@@ -5900,10 +5972,7 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum 
     pos[1] = yx * x + yy * y;
     pos[2] = zx * x + zy * y;
 
-    if(orbit->plane == NOVAS_ECLIPTIC_PLANE)
-      prop_error(fn, ecl2equ_vec(jd_tdb, orbit->sys, accuracy, pos, pos), 0);
-
-    equ2gcrs(jd_tdb, pos, orbit->sys, pos);
+    prop_error(fn, orbit2gcrs(jd_tdb, &orbit->system, accuracy, pos), 0);
   }
 
   if(vel) {
@@ -5916,10 +5985,7 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum 
     vel[1] = yx * x + yy * y;
     vel[2] = zx * x + zy * y;
 
-    if(orbit->plane == NOVAS_ECLIPTIC_PLANE)
-      prop_error(fn, ecl2equ_vec(jd_tdb, orbit->sys, accuracy, vel, vel), 0);
-
-    equ2gcrs(jd_tdb, vel, orbit->sys, vel);
+    prop_error(fn, orbit2gcrs(jd_tdb, &orbit->system, accuracy, vel), 0);
   }
 
   return 0;

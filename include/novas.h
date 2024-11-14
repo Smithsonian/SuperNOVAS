@@ -639,7 +639,61 @@ typedef struct {
 #define CAT_ENTRY_INIT { {'\0'}, {'\0'}, 0L, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 /**
- * Orbital elements for NOVAS_ORBITAL_OBJECT type.
+ * Specification of an orbital system, in which orbital elements are defined. Systems can be defined around
+ * all major planets (and Sun, Moon, SSB). They may be referenced to the GCRS, mean, or true equator or ecliptic
+ * of date, or to a plane that is tilted relative to that.
+ *
+ * For example, The Minor Planet Center (MPC) publishes up-to-date orbital elements for asteroids and comets,
+ * which are heliocentric and referenced to the GCRS ecliptic. Hence 'center' for these is `NOVAS_SUN`, the `plane`
+ * is `NOVAS_ECLIPTIC_PLANE` and the `type` is `NOVAS_GCRS_EQUATOR`.
+ *
+ * The orbits of planetary satellites may be parametrized in their local Laplace planes, which are typically close
+ * to the host planet's equatorial planes. You can, for example, obtain the RA/Dec orientation of the planetary
+ * North poles of planets from JPL Horizons, and use them as a proxy for the Laplace planes of their satellite orbits.
+ * In this case you would set the `center` to the host planet (e.g. `NOVAS_SATURN`), the reference plane to
+ * `NOVAS_EQUATORIAL_PLANE` and the `type` to `NOVAS_GCRS_EQUATOR` (since the equator's orientation is defined in
+ * GCRS equatorial RA/Dec). The obliquity is then 90&deg; - Dec (in radians), and `phi` is RA (in radians).
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ *
+ * @sa novas_orbital_elements
+ */
+typedef struct {
+  enum novas_planet center;          ///< major body at the center of the orbit (default is NOVAS_SUN).
+  enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE (default) or NOVAS_EQUATORIAL_PLANE
+  enum novas_equator_type type;      ///< the type of equator in which orientation is referenced (true, mean, or GCRS [default]).
+  double obl;                        ///< [rad] obliquity of orbital reference plane (e.g. 90&deg; - Dec<sub>pole</sub>)
+  double Omega;                      ///< [rad] argument of ascending node of the orbital reference plane (e.g. RA<sub>pole</sub>)
+} novas_orbital_system;
+
+
+/// Default orbital system initializer for heliocentric GCRS ecliptic orbits.
+/// @since 1.2
+#define NOVAS_ORBITAL_SYSTEM_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS_EQUATOR, 0.0, 0.0 }
+
+/**
+ * Orbital elements for `NOVAS_ORBITAL_OBJECT` type. Orbital elements can be used to provide approximate
+ * positions for various Solar-system bodies. JPL publishes orbital parameters for the major planets and
+ * their satellites. However, these are suitable only for very approximate calculations, with up to
+ * degree scale errors for the gas giants for the time range between 1850 AD and 2050 AD. Accurate
+ * positions and velocities for planets and their satellites should generally require the use of precise
+ * ephemeris data instead, such as obtained from the JPL Horizons system.
+ *
+ * Orbital elements descrive motion from a purely Keplerian perspective. However, for short periods, for
+ * which the perturbing bodies can be ignored, this description can be quite accurate provided that an
+ * up-to-date set of values are used. The Minor Planet Center (MPC) thus regularly publishes orbital
+ * elements for all known asteroids and comets. For such objects, orbital elements can offer precise, and
+ * the most up-to-date positions and velocities.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Up-to-date orbital elements for asteroids, comets, etc from the Minor Planet Center (MPC):
+ * https://minorplanetcenter.net/data</li>
+ * <li>Mean elements for planetary satellites from JPL Horizons: https://ssd.jpl.nasa.gov/sats/elem/</li>
+ * <li>Low accuracy mean elements for planets from JPL Horizons:
+ * https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
+ * </ol>
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -648,9 +702,7 @@ typedef struct {
  * @sa enum NOVAS_ORBITAL_OBJECT
  */
 typedef struct {
-  enum novas_planet center;         ///< major body at the center of the orbit (default is NOVAS_SUN).
-  enum novas_reference_plane plane; ///< Reference plane NOVAS_ECLIPTIC_PLANE (0) or NOVAS_EQUATORIAL_PLANE (1)
-  enum novas_equator_type sys;      ///< The type of equator to which coordinates are referenced (true, mean, or GCRS).
+  novas_orbital_system system;      ///< orbital reference system assumed for the paramtetrization
   double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of parameters.
   double a;                         ///< [AU] semi-major axis
   double e;                         ///< eccentricity
@@ -667,7 +719,7 @@ typedef struct {
  * @author Attila Kovacs
  * @since 1.2
  */
-#define NOVAS_ORBIT_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS_EQUATOR, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+#define NOVAS_ORBIT_INIT { NOVAS_ORBITAL_SYSTEM_INIT, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 /**
  * Celestial object of interest.

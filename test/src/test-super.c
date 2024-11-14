@@ -2215,7 +2215,7 @@ static int test_planet_for_name() {
 
 static int test_orbit_posvel() {
   object ceres = {};
-  novas_orbital_elements orbit;
+  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
   observer obs = {};
   sky_pos pos = {};
 
@@ -2226,10 +2226,6 @@ static int test_orbit_posvel() {
   double rv0 = 21.138;            // km/s
   double r = 3.323;               // AU
   int n = 0;
-
-  orbit.center = NOVAS_SUN;
-  orbit.plane = NOVAS_ECLIPTIC_PLANE;
-  orbit.sys = NOVAS_GCRS_EQUATOR;
 
   orbit.jd_tdb = 2460600.5;
   orbit.a = 2.7666197;
