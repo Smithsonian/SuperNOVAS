@@ -171,18 +171,20 @@
 
 
 /// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
-/// [0]: Earth/Moon barycenter, MASS[1] = Mercury, ...,
-/// [9]: Pluto, [10]: Sun, [11]: Moon.
+/// [0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,
+/// [9]: Pluto (barycenter), [10]: Sun, [11]: Moon.
+/// Barycentric reciprocal masses (index 12, 13) are not set.
 #define NOVAS_RMASS_INIT  { \
       328900.561400, 6023600.0, 408523.71, 332946.050895, 3098708.0, 1047.3486, 3497.898, \
-      22902.98, 19412.24, 135200000.0, 1.0, 27068700.387534 }
+      22902.98, 19412.24, 135200000.0, 1.0, 27068700.387534, 0.0, 0.0 }
 
 /// Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
-/// and detected at a large distance away.
+/// and detected at a large distance away. Barycenters are not considered, and for Pluto the
+/// redshift for the Pluto system is assumed for distant observers.
 /// @since 1.1.1
 #define NOVAS_PLANET_GRAV_Z_INIT { \
   0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
-  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11 }
+  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
 
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
@@ -258,22 +260,24 @@ enum novas_object_type {
  * @sa NOVAS_PLANET_NAMES_INIT
  */
 enum novas_planet {
-  NOVAS_SSB = 0,        ///< Solar-system barycenter position ID
-  NOVAS_MERCURY,        ///< Major planet number for the Mercury in NOVAS.
-  NOVAS_VENUS,          ///< Major planet number for the Venus in NOVAS.
-  NOVAS_EARTH,          ///< Major planet number for the Earth in NOVAS.
-  NOVAS_MARS,           ///< Major planet number for the Mars in NOVAS.
-  NOVAS_JUPITER,        ///< Major planet number for the Jupiter in NOVAS.
-  NOVAS_SATURN,         ///< Major planet number for the Saturn in NOVAS.
-  NOVAS_URANUS,         ///< Major planet number for the Uranus in NOVAS.
-  NOVAS_NEPTUNE,        ///< Major planet number for the Neptune in NOVAS.
-  NOVAS_PLUTO,          ///< Major planet number for the Pluto in NOVAS.
-  NOVAS_SUN,            ///< Numerical ID for the Sun in NOVAS.
-  NOVAS_MOON            ///< Numerical ID for the Moon in NOVAS.
+  NOVAS_SSB = 0,          ///< Solar-system barycenter position ID
+  NOVAS_MERCURY,          ///< Major planet number for the Mercury in NOVAS.
+  NOVAS_VENUS,            ///< Major planet number for the Venus in NOVAS.
+  NOVAS_EARTH,            ///< Major planet number for the Earth in NOVAS.
+  NOVAS_MARS,             ///< Major planet number for the Mars in NOVAS.
+  NOVAS_JUPITER,          ///< Major planet number for the Jupiter in NOVAS.
+  NOVAS_SATURN,           ///< Major planet number for the Saturn in NOVAS.
+  NOVAS_URANUS,           ///< Major planet number for the Uranus in NOVAS.
+  NOVAS_NEPTUNE,          ///< Major planet number for the Neptune in NOVAS.
+  NOVAS_PLUTO,            ///< Major planet number for the Pluto in NOVAS.
+  NOVAS_SUN,              ///< Numerical ID for the Sun in NOVAS.
+  NOVAS_MOON,             ///< Numerical ID for the Moon in NOVAS.
+  NOVAS_EMB,              ///< NOVAS ID for the Earth-Moon Barycenter (EMB). @since 1.2
+  NOVAS_PLUTO_BARYCENTER  ///< NOVAS ID for the barycenter of the Pluto System. @since 1.2
 };
 
 /// The number of major planets defined in NOVAS.
-#define NOVAS_PLANETS             (NOVAS_MOON + 1)
+#define NOVAS_PLANETS             (NOVAS_PLUTO_BARYCENTER + 1)
 
 /**
  * String array initializer for Major planet names, matching the enum novas_planet. E.g.
@@ -284,7 +288,9 @@ enum novas_planet {
  *
  * @sa novas_majot_planet
  */
-#define NOVAS_PLANET_NAMES_INIT { "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Sun", "Moon" }
+#define NOVAS_PLANET_NAMES_INIT { \
+  "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
+  "Sun", "Moon", "EMB", "Pluto-Barycenter" };
 
 /**
  * Types of places on and around Earth that may serve a a reference position for the observation.

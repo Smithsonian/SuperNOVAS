@@ -46,7 +46,9 @@ enum novas_planet naif_to_novas_planet(long id) {
     case NAIF_SSB:
       return NOVAS_SSB;
     case NAIF_EMB:
-      return novas_error(-1, EINVAL, "naif_to_novas_planet", "No NOVAS ID for EMB (NAIF=%ld)", NAIF_EMB);
+      return NOVAS_EMB;
+    case NAIF_PLUTO_BARYCENTER:
+      return NOVAS_PLUTO_BARYCENTER;
   }
 
   // Major planets
@@ -85,6 +87,10 @@ long novas_to_naif_planet(enum novas_planet id) {
       return NAIF_MOON;
     case NOVAS_SSB:
       return NAIF_SSB;
+    case NOVAS_EMB:
+      return NAIF_EMB;
+    case NOVAS_PLUTO_BARYCENTER:
+      return NAIF_PLUTO_BARYCENTER;
     default:
       return novas_error(-1, EINVAL, "novas_to_naif_planet", "Invalid NOVAS major planet no: %d", id);
   }
@@ -117,6 +123,10 @@ long novas_to_dexxx_planet(enum novas_planet id) {
       return NAIF_MOON;
     case NOVAS_SSB:
       return NAIF_SSB;
+    case NOVAS_EMB:
+      return NAIF_EMB;
+    case NOVAS_PLUTO_BARYCENTER:
+      return NAIF_PLUTO_BARYCENTER;
     default:
       return (id >= NOVAS_MERCURY && id <= NOVAS_PLUTO) ?
               (long) id :

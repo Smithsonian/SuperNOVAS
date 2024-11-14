@@ -1469,7 +1469,6 @@ static int test_naif_to_novas_planet() {
   if(check("naif_to_novas_planet:-2", -1, naif_to_novas_planet(-1))) n++;
   if(check("naif_to_novas_planet:-1", -1, naif_to_novas_planet(-1))) n++;
   if(check("naif_to_novas_planet:", -1, naif_to_novas_planet(-1))) n++;
-  if(check("naif_to_novas_planet:emb", -1, naif_to_novas_planet(NAIF_EMB))) n++;
   if(check("naif_to_novas_planet:500", -1, naif_to_novas_planet(500))) n++;
   if(check("naif_to_novas_planet:501", -1, naif_to_novas_planet(501))) n++;
   if(check("naif_to_novas_planet:598", -1, naif_to_novas_planet(598))) n++;

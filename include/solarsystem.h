@@ -362,6 +362,8 @@ long novas_to_dexxx_planet(enum novas_planet id);
 /// NAIF ID for the Earth-Moon Barycenter (EMB)
 #define NAIF_EMB        3
 
+/// NAIF ID for the barycenter of the Pluto system
+#define NAIF_PLUTO_BARYCENTER   9
 
 /**
  * The function to use to provide planet ephemeris data.
