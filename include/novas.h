@@ -640,8 +640,8 @@ typedef struct {
 
 /**
  * Specification of an orbital system, in which orbital elements are defined. Systems can be defined around
- * all major planets (and Sun, Moon, SSB). They may be referenced to the GCRS, mean, or true equator or ecliptic
- * of date, or to a plane that is tilted relative to that.
+ * all major planets and barycenters (and Sun, Moon, SSB..). They may be referenced to the GCRS, mean, or true equator
+ * or ecliptic of date, or to a plane that is tilted relative to that.
  *
  * For example, The Minor Planet Center (MPC) publishes up-to-date orbital elements for asteroids and comets,
  * which are heliocentric and referenced to the GCRS ecliptic. Hence 'center' for these is `NOVAS_SUN`, the `plane`
@@ -649,10 +649,11 @@ typedef struct {
  *
  * The orbits of planetary satellites may be parametrized in their local Laplace planes, which are typically close
  * to the host planet's equatorial planes. You can, for example, obtain the RA/Dec orientation of the planetary
- * North poles of planets from JPL Horizons, and use them as a proxy for the Laplace planes of their satellite orbits.
+ * North poles of planets from JPL Horizons, and use them as a proxy for the Laplace planes for their satellite orbits.
  * In this case you would set the `center` to the host planet (e.g. `NOVAS_SATURN`), the reference plane to
- * `NOVAS_EQUATORIAL_PLANE` and the `type` to `NOVAS_GCRS_EQUATOR` (since the equator's orientation is defined in
- * GCRS equatorial RA/Dec). The obliquity is then 90&deg; - Dec (in radians), and `phi` is RA (in radians).
+ * `NOVAS_EQUATORIAL_PLANE` and the `type` to `NOVAS_GCRS_EQUATOR` (since the plane is defined by the North pole
+ * orientation in GCRS equatorial RA/Dec). The obliquity is then 90&deg; - Dec<sub>pole</sub> (in radians), and `phi`
+ * is RA<sub>pole</sub> (in radians).
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -660,11 +661,11 @@ typedef struct {
  * @sa novas_orbital_elements
  */
 typedef struct {
-  enum novas_planet center;          ///< major body at the center of the orbit (default is NOVAS_SUN).
+  enum novas_planet center;          ///< major planet or barycenter at the center of the orbit (default is NOVAS_SUN).
   enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE (default) or NOVAS_EQUATORIAL_PLANE
   enum novas_equator_type type;      ///< the type of equator in which orientation is referenced (true, mean, or GCRS [default]).
-  double obl;                        ///< [rad] obliquity of orbital reference plane (e.g. 90&deg; - Dec<sub>pole</sub>)
-  double Omega;                      ///< [rad] argument of ascending node of the orbital reference plane (e.g. RA<sub>pole</sub>)
+  double obl;                        ///< [rad] relative obliquity of orbital reference plane (e.g. 90&deg; - Dec<sub>pole</sub>)
+  double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane (e.g. RA<sub>pole</sub>)
 } novas_orbital_system;
 
 
@@ -702,8 +703,8 @@ typedef struct {
  * @sa enum NOVAS_ORBITAL_OBJECT
  */
 typedef struct {
-  novas_orbital_system system;      ///< orbital reference system assumed for the paramtetrization
-  double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of parameters.
+  novas_orbital_system system;      ///< orbital reference system assumed for the parametrization
+  double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of the parameters.
   double a;                         ///< [AU] semi-major axis
   double e;                         ///< eccentricity
   double omega;                     ///< [rad] argument of periapsis / perihelion
@@ -714,7 +715,7 @@ typedef struct {
 } novas_orbital_elements;
 
 /**
- * Initializer for novas_orbital_elements for heliocentric orbits
+ * Initializer for novas_orbital_elements for heliocentric orbits using GCRS ecliptic pqrametrization.
  *
  * @author Attila Kovacs
  * @since 1.2

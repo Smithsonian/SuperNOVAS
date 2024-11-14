@@ -596,6 +596,24 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
+As of version 1.2 you can also define solar system sources with orbital elements (such as the most up-to-date ones 
+provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for asteroids, comets, etc.):
+
+```c
+  object NEA;		// e.g. a Near-Earth Asteroid
+  
+  // Fill in the orbital parameters (pay attention to units!)
+  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  orbit.a = ...;
+  ...
+  
+  // Create an object for that orbit
+  make_orbital_object("NEAxxx", -1, &orbit, object);
+```
+
+Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise
+positions for the Sun or planet, around which the orbit is defined.
+
 Other than that, it's the same spiel as before, e.g.:
 
 ```c
@@ -893,6 +911,14 @@ before that level of accuracy is reached.
  - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
 
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
+
+ - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
+   can be defined by the set of `novas_orbital_elements`, within a `novas_orbital_system`. You can initialize an 
+   `object` with a set of orbital elements using `make_orbital_object()`. For such objects, `ephemeris()` will now 
+   call on the new `novas_orbit_posvel()` to calculate positions. While orbital elements do not always yield precise 
+   positions, they can for shorter periods, provided that the orbital elements are up-to-date. For example, the Minor 
+   Planer Center (MPC) publishes orbital elements for all known asteroids and comets regularly. For newly discovered 
+   objects, this may be the only and/or most accurate information available anywhere.
 
  - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
    from the corresponding planet centers in calculations.
