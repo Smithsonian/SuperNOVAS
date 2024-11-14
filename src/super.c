@@ -1363,3 +1363,40 @@ enum novas_planet novas_planet_for_name(const char *name) {
   return novas_error(-1, EINVAL, fn, "No match for name: '%s'", name);
 }
 
+/**
+ * Sets the orientation of an orbital system using the RA and DEC coordinates of the pole
+ * of the Laplace (or else equatorial) plane relative to which the orbital elements are
+ * defined. Orbital parameters of planetary satellites normally include the R.A. and
+ * declination of the pole of the local Laplace plane in which the Keplerian orbital elements
+ * are referenced.
+ *
+ * The system will become referenced to the equatorial plane, the relative obliquity is set
+ * to (90&deg; - `dec`), while the argument of the ascending node ('Omega') is set to
+ * (90&deg; + `ra`).
+ *
+ * NOTES:
+ * <ol>
+ * <li>You should not expect much precision from the long-range orbital approximations for
+ * planetary satellites. For applications that require precision at any level, you should rely
+ * on appropriate ephemerides, or else on up-to-date short-term orbital elements.</li>
+ * </ol>
+ *
+ * @param ra    [h] the R.A. of the pole of the oribtal reference plane.
+ * @param dec   [deg] the declination of the pole of the oribtal reference plane.
+ * @param[out]  sys   The orbital system
+ * @return      0 if successful, or else -1 (errno will be set to EINVAL) if the output `sys`
+ *              pointer is NULL.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys) {
+  if (!sys)
+    return novas_error(-1, EINVAL, "novas_set_orbital_pole", "input system is NULL");
+
+  sys->plane = NOVAS_EQUATORIAL_PLANE;
+  sys->obl = remainder((90.0 - dec) * DEGREE, TWOPI);
+  sys->Omega = remainder((ra + 6.0) * HOURANGLE, TWOPI);
+
+  return 0;
+}

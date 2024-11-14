@@ -2213,20 +2213,21 @@ static int test_planet_for_name() {
 }
 
 
-static int test_orbit_posvel() {
+static int test_orbit_place() {
   object ceres = {};
   novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
   observer obs = {};
   sky_pos pos = {};
 
-  // This is for SMA, so topocentric with Earth rot...
-  double tjd = NOVAS_JD_MJD0 + 60627.796269;
-  double RA0 = 19.679722;         // 19:40:47.000
-  double DEC0 = -28.633014;       // -28:37:58.849
-  double rv0 = 21.138;            // km/s
-  double r = 3.323;               // AU
+  // Nov 14 0 UTC, geocentric from JPL Horizons.
+  double tjd = 2460628.50079861;      // 0 UT as TT.
+  double RA0 = 19.684415;
+  double DEC0 = -28.62084;
+  double rv0 = 21.4255198;            // km/s
+  double r = 3.32557776285144;        // AU
   int n = 0;
 
+  // Orbital Parameters for JD 2460600.5 from MPC
   orbit.jd_tdb = 2460600.5;
   orbit.a = 2.7666197;
   orbit.e = 0.079184;
@@ -2239,13 +2240,71 @@ static int test_orbit_posvel() {
   make_observer_at_geocenter(&obs);
   make_orbital_object("Ceres", -1, &orbit, &ceres);
 
-  if(!is_ok("orbit_posvel", place(tjd, &ceres, &obs, ut12tt, NOVAS_TOD, NOVAS_REDUCED_ACCURACY, &pos))) return 1;
+  if(!is_ok("orbit_place", place(tjd, &ceres, &obs, ut12tt, NOVAS_TOD, NOVAS_REDUCED_ACCURACY, &pos))) return 1;
 
-  // TODO refine with HORIZONS data...
-  if(!is_equal("orbit_posvel:ra", pos.ra, RA0, 5e-5)) n++;
-  if(!is_equal("orbit_posvel:dec", pos.dec, DEC0, 1e-3)) n++;
-  if(!is_equal("orbit_posvel:dist", pos.dis, r, 2e-3)) n++;
-  if(!is_equal("orbit_posvel:vrad", pos.rv, rv0, 0.5)) n++;
+  if(!is_equal("orbit_place:ra", pos.ra, RA0, 1e-5)) n++;
+  if(!is_equal("orbit_place:dec", pos.dec, DEC0, 1e-4)) n++;
+  if(!is_equal("orbit_place:dist", pos.dis, r, 1e-4)) n++;
+  if(!is_equal("orbit_place:vrad", pos.rv, rv0, 1e-2)) n++;
+
+  return n;
+}
+
+
+static int test_orbit_posvel_callisto() {
+  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  novas_orbital_system *sys = &orbit.system;
+  double pos0[3] = {}, pos[3] = {}, vel[3] = {}, ra, dec, dra, ddec;
+  int i;
+
+  // 2000-01-01 12 UT, geocentric from JPL Horizons.
+
+  double dist = 4.62117513332102;
+  double lt = 0.00577551831217194 * dist;                 // day
+  double tjd = 2451545.00079861 - lt;   // 0 UT as TT, corrected or light time
+  double dyr;
+
+  double RA0 = 23.86983 * DEGREE;
+  double DEC0 = 8.59590 * DEGREE;
+
+  double dRA = (23.98606 * DEGREE - RA0) / cos(DEC0);
+  double dDEC = (8.64868 * DEGREE - DEC0);
+  int n = 0;
+
+  // Planet pos;
+  radec2vector(RA0 / HOURANGLE, DEC0 / DEGREE, dist, pos0);
+
+  // Callisto's parameters from JPL Horizons
+  // https://ssd.jpl.nasa.gov/sats/elem/sep.html
+  // 1882700. 0.007 43.8  87.4  0.3 309.1 16.690440 277.921 577.264 268.7 64.8
+  sys->center = NOVAS_JUPITER;
+  novas_set_orbital_pole(268.7 / 15.0, 64.8, sys);
+
+  orbit.jd_tdb = NOVAS_JD_J2000;
+  dyr = (tjd - orbit.jd_tdb) / 365.25;   //(yr) time since J2000.0
+
+  orbit.a = 1882700.0 * 1e3 / AU;
+  orbit.e = 0.007;
+  orbit.omega = remainder(43.8 * DEGREE + TWOPI * dyr / 277.921, TWOPI);
+  orbit.M0 = 87.4 * DEGREE;
+  orbit.i = 0.3 * DEGREE;
+  orbit.Omega = remainder(309.1 * DEGREE + TWOPI * dyr / 577.264, TWOPI);
+  orbit.n = TWOPI / 16.690440;
+
+  if(!is_ok("orbit_posvel_callisto", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos, vel))) return 1;
+
+  for(i = 3 ;--i >= 0; ) pos[i] += pos0[i];
+  vector2radec(pos, &ra, &dec);
+
+  ra *= HOURANGLE;
+  dec *= DEGREE;
+
+  dra = (ra - RA0) * cos(DEC0);
+  ddec = (dec - DEC0);
+
+  if(!is_equal("orbit_posvel_callisto:dist", hypot(dra, ddec) / ARCSEC, hypot(dRA, dDEC) / ARCSEC, 15.0)) n++;
+  if(!is_equal("orbit_posvel_callisto:ra", dra / ARCSEC, dRA / ARCSEC, 15.0)) n++;
+  if(!is_equal("orbit_posvel_callisto:dec", ddec / ARCSEC, dDEC / ARCSEC, 15.0)) n++;
 
   return n;
 }
@@ -2314,7 +2373,9 @@ int main(int argc, char *argv[]) {
   if(test_naif_to_novas_planet()) n++;
 
   if(test_planet_for_name()) n++;
-  if(test_orbit_posvel()) n++;
+
+  if(test_orbit_place()) n++;
+  if(test_orbit_posvel_callisto()) n++;
 
   n += test_dates();
 

@@ -5795,41 +5795,31 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
   return 0;
 }
 
-
 /**
  * Change xzy vectors to the new polar orientation. &theta, &phi define the orientation of the input pole in the output system.
- *
  *
  * @param in        input 3-vector in the original system (pole = z)
  * @param theta     [rad] polar angle of original pole in the new system
  * @param phi       [rad] azimuthal angle of original pole in the new system
  * @param[out] out  output 3-vector in the new (rotated) system. It may be the same vector as the input.
- * @return          0 if successful, or else -1 (rrno set to EINVAL) if either vector parameters are NULL.
+ * @return          0
  *
  */
 static int change_pole(const double *in, double theta, double phi, double *out) {
-  static const char *fn = "novas_change_pole";
   double x, y, z;
-
-  if(!in)
-    return novas_error(-1, EINVAL, fn, "input 3-vector is NULL");
-
-  if(!out)
-    return novas_error(-1, EINVAL, fn, "output 3-vector is NULL");
 
   x = in[0];
   y = in[1];
   z = in[2];
 
-  // looking in Rz (phi) Rx (theta)
-  double ca = sin(phi);
-  double sa = cos(phi);
+  double ca = cos(phi);
+  double sa = sin(phi);
   double cb = cos(theta);
   double sb = sin(theta);
 
   out[0] = ca * x - sa * cb * y + sa * sb * z;
-  out[1] = sb * x + ca * cb * y - ca * sb * z;
-  out[3] = sb * y + cb * z;
+  out[1] = sa * x + ca * cb * y - ca * sb * z;
+  out[2] = sb * y + cb * z;
 
   return 0;
 }
@@ -5858,7 +5848,6 @@ static int equ2gcrs(double jd_tdb, const double *in, enum novas_equator_type sys
       return novas_error(-1, EINVAL, "equ2gcrs", "invalid equator type: %d", sys);
   }
 }
-
 
 /**
  * Convert coordinates in an orbital system to GCRS equatorial coordinates
@@ -5925,13 +5914,13 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum 
   if(pos == vel)
     return novas_error(-1, EINVAL, fn, "output pos = vel (@ %p)", pos);
 
-  E = M = orbit->M0 + orbit->n * (jd_tdb - orbit->jd_tdb);
+  E = M = remainder(orbit->M0 + orbit->n * (jd_tdb - orbit->jd_tdb), TWOPI);
 
   // Iteratively determine E, using Newton-Raphson method...
   while(--i >= 0) {
-    double es = orbit->e * sin(E);
-    double ec = orbit->e * cos(E);
-    double dE = (E - es - M) / (1.0 - ec);
+    double esE = orbit->e * sin(E);
+    double ecE = orbit->e * cos(E);
+    double dE = (E - esE - M) / (1.0 - ecE);
 
     E -= dE;
     if(fabs(dE) < EPREC)

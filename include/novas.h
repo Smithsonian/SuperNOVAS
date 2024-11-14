@@ -48,7 +48,6 @@
 // for compiling your code, which may have relied on these, you can add '-DCOMPAT=1' to the
 // compiler options
 //
-//
 #if COMPAT
 #  include <stdio.h>
 #  include <ctype.h>
@@ -664,8 +663,10 @@ typedef struct {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit (default is NOVAS_SUN).
   enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE (default) or NOVAS_EQUATORIAL_PLANE
   enum novas_equator_type type;      ///< the type of equator in which orientation is referenced (true, mean, or GCRS [default]).
-  double obl;                        ///< [rad] relative obliquity of orbital reference plane (e.g. 90&deg; - Dec<sub>pole</sub>)
-  double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane (e.g. RA<sub>pole</sub>)
+  double obl;                        ///< [rad] relative obliquity of orbital reference plane
+                                     ///< (e.g. 90&deg; - &delta;<sub>pole</sub>)
+  double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane
+                                     ///< (e.g. &alpha;<sub>pole</sub> + 90&deg;)
 } novas_orbital_system;
 
 
@@ -674,14 +675,14 @@ typedef struct {
 #define NOVAS_ORBITAL_SYSTEM_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS_EQUATOR, 0.0, 0.0 }
 
 /**
- * Orbital elements for `NOVAS_ORBITAL_OBJECT` type. Orbital elements can be used to provide approximate
- * positions for various Solar-system bodies. JPL publishes orbital parameters for the major planets and
- * their satellites. However, these are suitable only for very approximate calculations, with up to
- * degree scale errors for the gas giants for the time range between 1850 AD and 2050 AD. Accurate
- * positions and velocities for planets and their satellites should generally require the use of precise
- * ephemeris data instead, such as obtained from the JPL Horizons system.
+ * Keplerian orbital elements for `NOVAS_ORBITAL_OBJECT` type. Orbital elements can be used to provide
+ * approximate positions for various Solar-system bodies. JPL publishes orbital elements (and their evolution)
+ * for the major planets and their satellites. However, these are suitable only for very approximate
+ * calculations, with up to degree scale errors for the gas giants for the time range between 1850 AD and
+ * 2050 AD. Accurate positions and velocities for planets and their satellites should generally require the
+ * use of precise ephemeris data instead, such as obtained from the JPL Horizons system.
  *
- * Orbital elements descrive motion from a purely Keplerian perspective. However, for short periods, for
+ * Orbital elements describe motion from a purely Keplerian perspective. However, for short periods, for
  * which the perturbing bodies can be ignored, this description can be quite accurate provided that an
  * up-to-date set of values are used. The Minor Planet Center (MPC) thus regularly publishes orbital
  * elements for all known asteroids and comets. For such objects, orbital elements can offer precise, and
@@ -707,11 +708,12 @@ typedef struct {
   double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of the parameters.
   double a;                         ///< [AU] semi-major axis
   double e;                         ///< eccentricity
-  double omega;                     ///< [rad] argument of periapsis / perihelion
-  double Omega;                     ///< [rad] argument of ascending node
+  double omega;                     ///< [rad] argument of periapsis / perihelion, at the reference time
+  double Omega;                     ///< [rad] argument of ascending node, at the reference time
   double i;                         ///< [rad] inclination
   double M0;                        ///< [rad] mean anomaly at tjd
-  double n;                         ///< [rad/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body
+  double n;                         ///< [rad/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
+                                    ///< or 2&pi;/T, where T is orbital period in days.
 } novas_orbital_elements;
 
 /**
@@ -1405,6 +1407,8 @@ double novas_z_add(double z1, double z2);
 double novas_z_inv(double z);
 
 enum novas_planet novas_planet_for_name(const char *name);
+
+int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys);
 
 int make_orbital_object(const char *name, long num, const novas_orbital_elements *orbit, object *body);
 
