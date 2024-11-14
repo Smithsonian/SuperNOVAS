@@ -67,7 +67,7 @@ extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel
  *                       split any way (although the first element is usually the
  *                       "integer" part, and the second element is the "fractional"
  *                       part).  Julian date is on the TDB or "T_eph" time scale.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB..)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
  *                       -- relative to which to report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
@@ -159,7 +159,7 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  *                       split any way (although the first element is usually the
  *                       "integer" part, and the second element is the "fractional"
  *                       part).  Julian date is on the TDB or "T_eph" time scale.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB...)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
  *                       -- relative to which to report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular

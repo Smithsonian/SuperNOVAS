@@ -648,7 +648,7 @@ int set_planet_provider(novas_planet_provider func) {
 
 /**
  * Returns the custom (low-precision) ephemeris provider function for major planets
- * (and Sun, Moon, SSB), if any.
+ * (and Sun, Moon, SSB...), if any.
  *
  * @return    the custom (low-precision) planet ephemeris provider function.
  *
@@ -689,7 +689,7 @@ int set_planet_provider_hp(novas_planet_provider_hp func) {
 
 /**
  * Returns the custom high-precision ephemeris provider function for major planets
- * (and Sun, Moon, SSB), if any.
+ * (and Sun, Moon, SSB...), if any.
  *
  * @return    the custom high-precision planet ephemeris provider function.
  *
@@ -6478,7 +6478,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
 }
 
 /**
- * Sets a celestial object to be a major planet, or the Sun, Moon or Solar-system Barycenter.
+ * Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter, etc.
  *
  * @param num           Planet ID number (NOVAS convention)
  * @param[out] planet   Pointer to structure to populate.

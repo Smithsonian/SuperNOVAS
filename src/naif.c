@@ -21,10 +21,10 @@
 #include "novas.h"
 
 /**
- * Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun, Moon and SSB.
- * Otherwise NAIF planet barycenters are mapped to the corresponding bodies, except EMB (3), which will return
- * -1. NAIF body centers <i>n</i>99 (e.g. 399 for Earth), are mapped to the corresponding NOVAS planet number
- * <i>n</i>. All other NAIF IDs will return -1, indicating no match to a NOVAS planet ID.
+ * Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun, Moon, SSB, EMB
+ * and the Pluto system. Otherwise NAIF planet barycenters are mapped to the corresponding bodies. NAIF body centers
+ * <i>n</i>99 (e.g. 399 for Earth) are mapped to the corresponding NOVAS planet number <i>n</i>. All other NAIF IDs
+ * will return -1, indicating no match to a NOVAS planet ID.
  *
  *
  * @param id      The NAIF ID of the major planet of interest
@@ -62,7 +62,7 @@ enum novas_planet naif_to_novas_planet(long id) {
 
 /**
  * Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID. NOVAS and NAIF use slightly different IDs for
- * major planets, the Moon, and the Solar-system Barycenter (SSB). In NOVAS, major planets are have IDs ranging from
+ * major planets, the Moon, SSB, EMB, and the Pluto system. In NOVAS, major planets are have IDs ranging from
  * 1 through 9, but for NAIF 1--9 are the planetary barycenters and the planet centers have numbers in the hundreds
  * ending with 99 (e.g. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon
  * Barycenter [EMB]). The Sun and Moon also have distinct IDs in NAIF vs NOVAS.

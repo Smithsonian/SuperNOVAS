@@ -221,7 +221,7 @@ int cspice_remove_kernel(const char *filename) {
  *                       split any way (although the first element is usually the
  *                       "integer" part, and the second element is the "fractional"
  *                       part).  Julian date is on the TDB or "T_eph" time scale.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB...)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1)
  *                       -- relative to which to report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
@@ -327,7 +327,7 @@ static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, en
  *                       split any way (although the first element is usually the
  *                       "integer" part, and the second element is the "fractional"
  *                       part).  Julian date is on the TDB or "T_eph" time scale.
- * @param body           Major planet number (or that for Sun, Moon, or Solar-system barycenter)
+ * @param body           Major planet number (or that for Sun, Moon, SSB...)
  * @param origin         NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter
  *                       -- relative to which to report positions and velocities.
  * @param[out] position  [AU] Position vector of 'body' at jd_tdb; equatorial rectangular
@@ -490,7 +490,7 @@ int novas_use_cspice_ephem() {
 }
 
 /**
- * Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, and SSB) using the
+ * Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB...) using the
  * NAIF CSPICE library.
  *
  * CSPICE is configured to suppress error messages and to not exit on errors, since we will check
