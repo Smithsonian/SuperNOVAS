@@ -708,12 +708,14 @@ typedef struct {
   double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of the parameters.
   double a;                         ///< [AU] semi-major axis
   double e;                         ///< eccentricity
-  double omega;                     ///< [rad] argument of periapsis / perihelion, at the reference time
-  double Omega;                     ///< [rad] argument of ascending node, at the reference time
-  double i;                         ///< [rad] inclination
-  double M0;                        ///< [rad] mean anomaly at tjd
-  double n;                         ///< [rad/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
-                                    ///< or 2&pi;/T, where T is orbital period in days.
+  double omega;                     ///< [deg] argument of periapsis / perihelion, at the reference time
+  double Omega;                     ///< [deg] argument of ascending node on the reference plane, at the reference time
+  double i;                         ///< [deg] inclination of orbit to reference plane
+  double M0;                        ///< [deg] mean anomaly at tjd
+  double n;                         ///< [deg/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
+                                    ///< or 360/T, where T is orbital period in days.
+  double apsis_period;              ///< [day] Precession period of the apsis, if known.
+  double node_period;               ///< [day] Precession period of the ascending node, if known.
 } novas_orbital_elements;
 
 /**
@@ -722,7 +724,7 @@ typedef struct {
  * @author Attila Kovacs
  * @since 1.2
  */
-#define NOVAS_ORBIT_INIT { NOVAS_ORBITAL_SYSTEM_INIT, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+#define NOVAS_ORBIT_INIT { NOVAS_ORBITAL_SYSTEM_INIT, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 /**
  * Celestial object of interest.

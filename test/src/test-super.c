@@ -2231,18 +2231,18 @@ static int test_orbit_place() {
   orbit.jd_tdb = 2460600.5;
   orbit.a = 2.7666197;
   orbit.e = 0.079184;
-  orbit.i = 10.5879 * DEGREE;
-  orbit.omega = 73.28579 * DEGREE;
-  orbit.Omega = 80.25414 * DEGREE;
-  orbit.M0 = 145.84905 * DEGREE;
-  orbit.n = 0.21418047 * DEGREE;
+  orbit.i = 10.5879;
+  orbit.omega = 73.28579;
+  orbit.Omega = 80.25414;
+  orbit.M0 = 145.84905;
+  orbit.n = 0.21418047;
 
   make_observer_at_geocenter(&obs);
   make_orbital_object("Ceres", -1, &orbit, &ceres);
 
   if(!is_ok("orbit_place", place(tjd, &ceres, &obs, ut12tt, NOVAS_TOD, NOVAS_REDUCED_ACCURACY, &pos))) return 1;
 
-  if(!is_equal("orbit_place:ra", pos.ra, RA0, 1e-5)) n++;
+  if(!is_equal("orbit_place:ra", pos.ra, RA0, 1e-5 / cos(DEC0 * DEGREE))) n++;
   if(!is_equal("orbit_place:dec", pos.dec, DEC0, 1e-4)) n++;
   if(!is_equal("orbit_place:dist", pos.dis, r, 1e-4)) n++;
   if(!is_equal("orbit_place:vrad", pos.rv, rv0, 1e-2)) n++;
@@ -2262,7 +2262,6 @@ static int test_orbit_posvel_callisto() {
   double dist = 4.62117513332102;
   double lt = 0.00577551831217194 * dist;                 // day
   double tjd = 2451545.00079861 - lt;   // 0 UT as TT, corrected or light time
-  double dyr;
 
   double RA0 = 23.86983 * DEGREE;
   double DEC0 = 8.59590 * DEGREE;
@@ -2281,15 +2280,15 @@ static int test_orbit_posvel_callisto() {
   novas_set_orbital_pole(268.7 / 15.0, 64.8, sys);
 
   orbit.jd_tdb = NOVAS_JD_J2000;
-  dyr = (tjd - orbit.jd_tdb) / 365.25;   //(yr) time since J2000.0
-
   orbit.a = 1882700.0 * 1e3 / AU;
   orbit.e = 0.007;
-  orbit.omega = remainder(43.8 * DEGREE + TWOPI * dyr / 277.921, TWOPI);
-  orbit.M0 = 87.4 * DEGREE;
-  orbit.i = 0.3 * DEGREE;
-  orbit.Omega = remainder(309.1 * DEGREE + TWOPI * dyr / 577.264, TWOPI);
+  orbit.omega = 43.8;
+  orbit.M0 = 87.4;
+  orbit.i = 0.3;
+  orbit.Omega = 309.1;
   orbit.n = TWOPI / 16.690440;
+  orbit.apsis_period = 277.921 * 365.25;
+  orbit.node_period = 577.264 * 365.25;
 
   if(!is_ok("orbit_posvel_callisto", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos, vel))) return 1;
 

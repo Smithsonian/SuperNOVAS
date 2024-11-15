@@ -5799,8 +5799,8 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
  * Change xzy vectors to the new polar orientation. &theta, &phi define the orientation of the input pole in the output system.
  *
  * @param in        input 3-vector in the original system (pole = z)
- * @param theta     [rad] polar angle of original pole in the new system
- * @param phi       [rad] azimuthal angle of original pole in the new system
+ * @param theta     [deg] polar angle of original pole in the new system
+ * @param phi       [deg] azimuthal angle of original pole in the new system
  * @param[out] out  output 3-vector in the new (rotated) system. It may be the same vector as the input.
  * @return          0
  *
@@ -5811,6 +5811,9 @@ static int change_pole(const double *in, double theta, double phi, double *out) 
   x = in[0];
   y = in[1];
   z = in[2];
+
+  theta *= DEGREE;
+  phi *= DEGREE;
 
   double ca = cos(phi);
   double sa = sin(phi);
@@ -5903,7 +5906,7 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
 int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum novas_accuracy accuracy, double *pos, double *vel) {
   static const char *fn = "novas_orbit_posvel";
 
-  double M, E, nu, r;
+  double dt, M, E, nu, r, omega, Omega;
   double cO, sO, ci, si, co, so;
   double xx, yx, zx, xy, yy, zy;
   int i = novas_inv_max_iter;
@@ -5914,7 +5917,8 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum 
   if(pos == vel)
     return novas_error(-1, EINVAL, fn, "output pos = vel (@ %p)", pos);
 
-  E = M = remainder(orbit->M0 + orbit->n * (jd_tdb - orbit->jd_tdb), TWOPI);
+  dt = (jd_tdb - orbit->jd_tdb);
+  E = M = remainder(orbit->M0 + orbit->n * dt, 360.0) * DEGREE;
 
   // Iteratively determine E, using Newton-Raphson method...
   while(--i >= 0) {
@@ -5933,13 +5937,21 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum 
   nu = 2.0 * atan2(sqrt(1.0 + orbit->e) * sin(0.5 * E), sqrt(1.0 - orbit->e) * cos(0.5 * E));
   r = orbit->a * (1.0 - orbit->e * cos(E));
 
+  omega = orbit->omega * DEGREE;
+  if(orbit->apsis_period > 0.0)
+    omega += TWOPI * remainder(dt / orbit->apsis_period, 1.0);
+
+  Omega = orbit->Omega * DEGREE;
+  if(orbit->node_period > 0.0)
+    Omega += TWOPI * remainder(dt / orbit->node_period, 1.0);
+
   // pos = Rz(-Omega) . Rx(-i) . Rz(-omega) . orb
-  cO = cos(orbit->Omega);
-  sO = sin(orbit->Omega);
-  ci = cos(orbit->i);
-  si = sin(orbit->i);
-  co = cos(orbit->omega);
-  so = sin(orbit->omega);
+  cO = cos(Omega);
+  sO = sin(Omega);
+  ci = cos(orbit->i * DEGREE);
+  si = sin(orbit->i * DEGREE);
+  co = cos(omega);
+  so = sin(omega);
 
   // Rotation matrix
   // See https://en.wikipedia.org/wiki/Euler_angles
@@ -5965,7 +5977,7 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum 
   }
 
   if(vel) {
-    double v = orbit->n * orbit->a * orbit->a / r;    // [AU/day]
+    double v = orbit->n * DEGREE * orbit->a * orbit->a / r;    // [AU/day]
     double x = -v * sin(E);
     double y = v * sqrt(1.0 - orbit->e * orbit->e) * cos(E);
 

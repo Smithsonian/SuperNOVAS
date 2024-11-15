@@ -1395,8 +1395,8 @@ int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys) {
     return novas_error(-1, EINVAL, "novas_set_orbital_pole", "input system is NULL");
 
   sys->plane = NOVAS_EQUATORIAL_PLANE;
-  sys->obl = remainder((90.0 - dec) * DEGREE, TWOPI);
-  sys->Omega = remainder((ra + 6.0) * HOURANGLE, TWOPI);
+  sys->obl = remainder(90.0 - dec, 360.0);
+  sys->Omega = remainder(15.0 * ra + 90.0, 360.0);
 
   return 0;
 }
