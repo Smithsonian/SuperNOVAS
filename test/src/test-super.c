@@ -2213,6 +2213,125 @@ static int test_planet_for_name() {
 }
 
 
+static int test_orbit_place() {
+  object ceres = {};
+  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  observer obs = {};
+  sky_pos pos = {};
+
+  // Nov 14 0 UTC, geocentric from JPL Horizons.
+  double tjd = 2460628.50079861;      // 0 UT as TT.
+  double RA0 = 19.684415;
+  double DEC0 = -28.62084;
+  double rv0 = 21.4255198;            // km/s
+  double r = 3.32557776285144;        // AU
+  int n = 0;
+
+  // Orbital Parameters for JD 2460600.5 from MPC
+  orbit.jd_tdb = 2460600.5;
+  orbit.a = 2.7666197;
+  orbit.e = 0.079184;
+  orbit.i = 10.5879;
+  orbit.omega = 73.28579;
+  orbit.Omega = 80.25414;
+  orbit.M0 = 145.84905;
+  orbit.n = 0.21418047;
+
+  make_observer_at_geocenter(&obs);
+  make_orbital_object("Ceres", -1, &orbit, &ceres);
+
+  if(!is_ok("orbit_place", place(tjd, &ceres, &obs, ut12tt, NOVAS_TOD, NOVAS_REDUCED_ACCURACY, &pos))) return 1;
+
+  if(!is_equal("orbit_place:ra", pos.ra, RA0, 1e-5 / cos(DEC0 * DEGREE))) n++;
+  if(!is_equal("orbit_place:dec", pos.dec, DEC0, 1e-4)) n++;
+  if(!is_equal("orbit_place:dist", pos.dis, r, 1e-4)) n++;
+  if(!is_equal("orbit_place:vrad", pos.rv, rv0, 1e-2)) n++;
+
+  return n;
+}
+
+
+
+
+static int test_orbit_posvel_callisto() {
+  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  novas_orbital_system *sys = &orbit.system;
+  double pos0[3] = {}, pos[3] = {}, vel[3] = {}, pos1[3] = {}, vel1[3] = {}, ra, dec, dra, ddec;
+  int i;
+
+  // 2000-01-01 12 UT, geocentric from JPL Horizons.
+
+  double dist = 4.62117513332102;
+  double lt = 0.00577551831217194 * dist;                 // day
+  double tjd = 2451545.00079861 - lt;   // 0 UT as TT, corrected or light time
+
+  double RA0 = 23.86983 * DEGREE;
+  double DEC0 = 8.59590 * DEGREE;
+
+  double dRA = (23.98606 * DEGREE - RA0) / cos(DEC0);
+  double dDEC = (8.64868 * DEGREE - DEC0);
+  int n = 0;
+
+  // Planet pos;
+  radec2vector(RA0 / HOURANGLE, DEC0 / DEGREE, dist, pos1);
+
+  // Callisto's parameters from JPL Horizons
+  // https://ssd.jpl.nasa.gov/sats/elem/sep.html
+  // 1882700. 0.007 43.8  87.4  0.3 309.1 16.690440 277.921 577.264 268.7 64.8
+  sys->center = NOVAS_JUPITER;
+  novas_set_orbital_pole(268.7 / 15.0, 64.8, sys);
+
+  orbit.jd_tdb = NOVAS_JD_J2000;
+  orbit.a = 1882700.0 * 1e3 / AU;
+  orbit.e = 0.007;
+  orbit.omega = 43.8;
+  orbit.M0 = 87.4;
+  orbit.i = 0.3;
+  orbit.Omega = 309.1;
+  orbit.n = TWOPI / 16.690440;
+  orbit.apsis_period = 277.921 * 365.25;
+  orbit.node_period = 577.264 * 365.25;
+
+  if(!is_ok("orbit_posvel_callisto", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos, vel))) return 1;
+  memcpy(pos0, pos, sizeof(pos));
+
+  for(i = 3 ;--i >= 0; ) pos[i] += pos1[i];
+  vector2radec(pos, &ra, &dec);
+
+  ra *= HOURANGLE;
+  dec *= DEGREE;
+
+  dra = (ra - RA0) * cos(DEC0);
+  ddec = (dec - DEC0);
+
+  if(!is_equal("orbit_posvel_callisto:dist", hypot(dra, ddec) / ARCSEC, hypot(dRA, dDEC) / ARCSEC, 15.0)) n++;
+  if(!is_equal("orbit_posvel_callisto:ra", dra / ARCSEC, dRA / ARCSEC, 15.0)) n++;
+  if(!is_equal("orbit_posvel_callisto:dec", ddec / ARCSEC, dDEC / ARCSEC, 15.0)) n++;
+
+
+
+  if(!is_ok("orbit_posvel_callisto:vel:null", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
+  if(!is_ok("orbit_posvel_callisto:vel:null:check", check_equal_pos(pos1, pos0, 1e-8))) n++;
+
+  if(!is_ok("orbit_posvel_callisto:pos:null", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, NULL, vel1))) n++;
+  if(!is_ok("orbit_posvel_callisto:pos:null:check", check_equal_pos(vel1, vel, 1e-8))) n++;
+
+
+  sys->type = NOVAS_MEAN_EQUATOR;
+  if(!is_ok("orbit_posvel_callisto:mod", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
+  precession(tjd, pos0, NOVAS_JD_J2000, pos);
+  j2000_to_gcrs(pos, pos);
+  if(!is_ok("orbit_posvel_callisto:mod:check", check_equal_pos(pos1, pos, 1e-8))) n++;
+
+  sys->type = NOVAS_TRUE_EQUATOR;
+  if(!is_ok("orbit_posvel_callisto:mod", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
+  tod_to_j2000(tjd, NOVAS_FULL_ACCURACY, pos0, pos);
+  j2000_to_gcrs(pos, pos);
+  if(!is_ok("orbit_posvel_callisto:mod:check", check_equal_pos(pos1, pos, 1e-8))) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -2277,6 +2396,9 @@ int main(int argc, char *argv[]) {
   if(test_naif_to_novas_planet()) n++;
 
   if(test_planet_for_name()) n++;
+
+  if(test_orbit_place()) n++;
+  if(test_orbit_posvel_callisto()) n++;
 
   n += test_dates();
 

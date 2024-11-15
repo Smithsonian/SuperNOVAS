@@ -990,6 +990,7 @@ int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_ap
  * @sa make_cat_entry()
  * @sa make_planet()
  * @sa make_ephem_object()
+ * @sa novas_geom_posvel()
  * @sa place()
  *
  * @since 1.1
@@ -1015,13 +1016,14 @@ int make_cat_object(const cat_entry *star, object *source) {
  *                      ephemeris provider used with NOVAS. (If the ephemeris provider is by name and not
  *                      ID number, then the number here is not important).
  * @param[out] body     Pointer to structure to populate.
- * @return              0 if successful, or else -1 if the 'planet' pointer is NULL or the name
+ * @return              0 if successful, or else -1 if the 'body' pointer is NULL or the name
  *                      is too long.
  *
  *
  * @sa set_ephem_provider()
  * @sa make_planet()
  * @sa make_cat_entry()
+ * @sa novas_geom_posvel()
  * @sa place()
  *
  * @since 1.0
@@ -1029,6 +1031,37 @@ int make_cat_object(const cat_entry *star, object *source) {
  */
 int make_ephem_object(const char *name, long num, object *body) {
   prop_error("make_ephem_object", (make_object(NOVAS_EPHEM_OBJECT, num, name, NULL, body) ? -1 : 0), 0);
+  return 0;
+}
+
+/**
+ * Sets a celestial object to be a Solar-system orbital body. Typically this would be used to define
+ * minor planets, asteroids, comets, or even planetary satellites.
+ *
+ * @param name          Name of object. It may be NULL if not relevant.
+ * @param num           Solar-system body ID number (e.g. NAIF). It is not required and can be set e.g. to
+ *                      -1 if not relevant to the caller.
+ * @param orbit         The orbital parameters to adopt. The data will be copied, not referenced.
+ * @param[out] body     Pointer to structure to populate.
+ * @return              0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or the name
+ *                      is too long.
+ *
+ *
+ * @sa novas_orbit_posvel()
+ * @sa make_planet()
+ * @sa make_ephem_object()
+ * @sa novas_geom_posvel()
+ * @sa place()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
+ */
+int make_orbital_object(const char *name, long num, const novas_orbital_elements *orbit, object *body) {
+  static const char *fn = "make_orbital_object";
+  if(!orbit)
+    return novas_error(-1, EINVAL, fn, "Input orbital elements is NULL");
+  prop_error(fn, (make_object(NOVAS_ORBITAL_OBJECT, num, name, NULL, body) ? -1 : 0), 0);
+  memcpy(&body->orbit, orbit, sizeof(novas_orbital_elements));
   return 0;
 }
 
@@ -1328,4 +1361,42 @@ enum novas_planet novas_planet_for_name(const char *name) {
   }
 
   return novas_error(-1, EINVAL, fn, "No match for name: '%s'", name);
+}
+
+/**
+ * Sets the orientation of an orbital system using the RA and DEC coordinates of the pole
+ * of the Laplace (or else equatorial) plane relative to which the orbital elements are
+ * defined. Orbital parameters of planetary satellites normally include the R.A. and
+ * declination of the pole of the local Laplace plane in which the Keplerian orbital elements
+ * are referenced.
+ *
+ * The system will become referenced to the equatorial plane, the relative obliquity is set
+ * to (90&deg; - `dec`), while the argument of the ascending node ('Omega') is set to
+ * (90&deg; + `ra`).
+ *
+ * NOTES:
+ * <ol>
+ * <li>You should not expect much precision from the long-range orbital approximations for
+ * planetary satellites. For applications that require precision at any level, you should rely
+ * on appropriate ephemerides, or else on up-to-date short-term orbital elements.</li>
+ * </ol>
+ *
+ * @param ra    [h] the R.A. of the pole of the oribtal reference plane.
+ * @param dec   [deg] the declination of the pole of the oribtal reference plane.
+ * @param[out]  sys   The orbital system
+ * @return      0 if successful, or else -1 (errno will be set to EINVAL) if the output `sys`
+ *              pointer is NULL.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys) {
+  if (!sys)
+    return novas_error(-1, EINVAL, "novas_set_orbital_pole", "input system is NULL");
+
+  sys->plane = NOVAS_EQUATORIAL_PLANE;
+  sys->obl = remainder(90.0 - dec, 360.0);
+  sys->Omega = remainder(15.0 * ra + 90.0, 360.0);
+
+  return 0;
 }

@@ -48,7 +48,6 @@
 // for compiling your code, which may have relied on these, you can add '-DCOMPAT=1' to the
 // compiler options
 //
-//
 #if COMPAT
 #  include <stdio.h>
 #  include <ctype.h>
@@ -246,11 +245,17 @@ enum novas_object_type {
 
   /// Any non-solar system object that may be handled via 'catalog' coordinates, such as a star
   /// or a quasar.
-  NOVAS_CATALOG_OBJECT
+  /// @sa cat_entry
+  NOVAS_CATALOG_OBJECT,
+
+  /// Any Solar-system body, whose position is determined by a set of orbital elements
+  /// @since 1.2
+  /// @sa novas_orbital_elements
+  NOVAS_ORBITAL_OBJECT
 };
 
 /// The number of object types distinguished by NOVAS.
-#define NOVAS_OBJECT_TYPES      (NOVAS_CATALOG_OBJECT + 1)
+#define NOVAS_OBJECT_TYPES      (NOVAS_ORBITAL_OBJECT + 1)
 
 /**
  * Enumeration for the 'major planet' numbers in NOVAS to use as the solar-system body number whenever
@@ -370,6 +375,10 @@ enum novas_equator_type {
   NOVAS_TRUE_EQUATOR,     ///< True equator (pre IAU 2006 system).
   NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference System (GCRS).
 };
+
+/// The number of equator types we define.
+/// @since 1.2
+#define NOVAS_EQUATOR_TYPES (NOVAS_GCRS_EQUATOR + 1)
 
 /**
  * Constants that determine the type of dynamical system type for gcrs2equ()
@@ -578,6 +587,16 @@ enum novas_nutation_direction {
 };
 
 /**
+ * The plane in which values, such as orbital parameyters are referenced.
+ *
+ * @since 1.2
+ */
+enum novas_reference_plane {
+  NOVAS_ECLIPTIC_PLANE = 0,     ///< the plane of the ecliptic
+  NOVAS_EQUATORIAL_PLANE        ///< The plane of the equator
+};
+
+/**
  * Fundamental Delaunay arguments of the Sun and Moon, from Simon section 3.4(b.3),
  * precession = 5028.8200 arcsec/cy)
  *
@@ -623,6 +642,96 @@ typedef struct {
 #define CAT_ENTRY_INIT { {'\0'}, {'\0'}, 0L, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 /**
+ * Specification of an orbital system, in which orbital elements are defined. Systems can be defined around
+ * all major planets and barycenters (and Sun, Moon, SSB..). They may be referenced to the GCRS, mean, or true equator
+ * or ecliptic of date, or to a plane that is tilted relative to that.
+ *
+ * For example, The Minor Planet Center (MPC) publishes up-to-date orbital elements for asteroids and comets,
+ * which are heliocentric and referenced to the GCRS ecliptic. Hence 'center' for these is `NOVAS_SUN`, the `plane`
+ * is `NOVAS_ECLIPTIC_PLANE` and the `type` is `NOVAS_GCRS_EQUATOR`.
+ *
+ * The orbits of planetary satellites may be parametrized in their local Laplace planes, which are typically close
+ * to the host planet's equatorial planes. You can, for example, obtain the RA/Dec orientation of the planetary
+ * North poles of planets from JPL Horizons, and use them as a proxy for the Laplace planes for their satellite orbits.
+ * In this case you would set the `center` to the host planet (e.g. `NOVAS_SATURN`), the reference plane to
+ * `NOVAS_EQUATORIAL_PLANE` and the `type` to `NOVAS_GCRS_EQUATOR` (since the plane is defined by the North pole
+ * orientation in GCRS equatorial RA/Dec). The obliquity is then 90&deg; - Dec<sub>pole</sub> (in radians), and `phi`
+ * is RA<sub>pole</sub> (in radians).
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ *
+ * @sa novas_orbital_elements
+ */
+typedef struct {
+  enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
+  enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE
+  enum novas_equator_type type;      ///< the type of equator in which orientation is referenced (NOVAS_TRUE_EQUATOR,
+                                     ///< NOVAS_MEAN_EQUATOR, or NOVAS_GCRS_EQUATOR).
+  double obl;                        ///< [rad] relative obliquity of orbital reference plane
+                                     ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
+  double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane
+                                     ///<       (e.g. &alpha;<sub>pole</sub> + 90&deg;)
+} novas_orbital_system;
+
+
+/// Default orbital system initializer for heliocentric GCRS ecliptic orbits.
+/// @since 1.2
+#define NOVAS_ORBITAL_SYSTEM_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS_EQUATOR, 0.0, 0.0 }
+
+/**
+ * Keplerian orbital elements for `NOVAS_ORBITAL_OBJECT` type. Orbital elements can be used to provide
+ * approximate positions for various Solar-system bodies. JPL publishes orbital elements (and their evolution)
+ * for the major planets and their satellites. However, these are suitable only for very approximate
+ * calculations, with up to degree scale errors for the gas giants for the time range between 1850 AD and
+ * 2050 AD. Accurate positions and velocities for planets and their satellites should generally require the
+ * use of precise ephemeris data instead, such as obtained from the JPL Horizons system.
+ *
+ * Orbital elements describe motion from a purely Keplerian perspective. However, for short periods, for
+ * which the perturbing bodies can be ignored, this description can be quite accurate provided that an
+ * up-to-date set of values are used. The Minor Planet Center (MPC) thus regularly publishes orbital
+ * elements for all known asteroids and comets. For such objects, orbital elements can offer precise, and
+ * the most up-to-date positions and velocities.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Up-to-date orbital elements for asteroids, comets, etc from the Minor Planet Center (MPC):
+ * https://minorplanetcenter.net/data</li>
+ * <li>Mean elements for planetary satellites from JPL Horizons: https://ssd.jpl.nasa.gov/sats/elem/</li>
+ * <li>Low accuracy mean elements for planets from JPL Horizons:
+ * https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
+ * </ol>
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ *
+ * @sa object
+ * @sa enum NOVAS_ORBITAL_OBJECT
+ */
+typedef struct {
+  novas_orbital_system system;      ///< orbital reference system assumed for the parametrization
+  double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of the parameters.
+  double a;                         ///< [AU] semi-major axis
+  double e;                         ///< eccentricity
+  double omega;                     ///< [deg] argument of periapsis / perihelion, at the reference time
+  double Omega;                     ///< [deg] argument of ascending node on the reference plane, at the reference time
+  double i;                         ///< [deg] inclination of orbit to the reference plane
+  double M0;                        ///< [deg] mean anomaly at the reference time
+  double n;                         ///< [deg/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
+                                    ///< or 360/T, where T is orbital period in days.
+  double apsis_period;              ///< [day] Precession period of the apsis, if known.
+  double node_period;               ///< [day] Precession period of the ascending node, if known.
+} novas_orbital_elements;
+
+/**
+ * Initializer for novas_orbital_elements for heliocentric orbits using GCRS ecliptic pqrametrization.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+#define NOVAS_ORBIT_INIT { NOVAS_ORBITAL_SYSTEM_INIT, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+
+/**
  * Celestial object of interest.
  *
  * Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type'
@@ -633,7 +742,8 @@ typedef struct {
   enum novas_object_type type;    ///< NOVAS object type
   long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
-  cat_entry star;                 ///< basic astrometric data for any 'catalog' object.
+  cat_entry star;                 ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
+  novas_orbital_elements orbit;   ///< orbital data for NOVAS_ORBITAL_OBJECT TYPE
 } object;
 
 /**
@@ -1304,6 +1414,12 @@ double novas_z_add(double z1, double z2);
 double novas_z_inv(double z);
 
 enum novas_planet novas_planet_for_name(const char *name);
+
+int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys);
+
+int make_orbital_object(const char *name, long num, const novas_orbital_elements *orbit, object *body);
+
+int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, enum novas_accuracy accuracy, double *pos, double *vel);
 
 
 // <================= END of SuperNOVAS API =====================>
