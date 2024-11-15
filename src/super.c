@@ -1061,7 +1061,7 @@ int make_orbital_object(const char *name, long num, const novas_orbital_elements
   if(!orbit)
     return novas_error(-1, EINVAL, fn, "Input orbital elements is NULL");
   prop_error(fn, (make_object(NOVAS_ORBITAL_OBJECT, num, name, NULL, body) ? -1 : 0), 0);
-  memcpy(&body->orbit, orbit, sizeof(novas_orbital_elements));
+  body->orbit = *orbit;
   return 0;
 }
 

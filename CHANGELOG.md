@@ -76,7 +76,7 @@ Changes expected for the next feature release, expected around 1 February 2025.
 
  - #96: Changed `object` structure to include `novas_orbital_elements` for `NOVAS_ORBITAL_OBJECT` types.
 
- - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT` and `NOVAS_RMASS_INIT` macros to include the added planet 
+ - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.
    
    
