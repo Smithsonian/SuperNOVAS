@@ -913,12 +913,13 @@ before that level of accuracy is reached.
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
 
  - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
-   can be defined by the set of `novas_orbital_elements`, within a `novas_orbital_system`. You can initialize an 
-   `object` with a set of orbital elements using `make_orbital_object()`. For such objects, `ephemeris()` will now 
-   call on the new `novas_orbit_posvel()` to calculate positions. While orbital elements do not always yield precise 
-   positions, they can for shorter periods, provided that the orbital elements are up-to-date. For example, the Minor 
-   Planer Center (MPC) publishes orbital elements for all known asteroids and comets regularly. For newly discovered 
-   objects, this may be the only and/or most accurate information available anywhere.
+   can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
+   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
+   use `novas_set_orbital_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+   calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
+   provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
+   orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
+   and/or most accurate information available anywhere.
 
  - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
    from the corresponding planet centers in calculations.

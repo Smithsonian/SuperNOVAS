@@ -864,8 +864,14 @@ int radec_planet(double jd_tt, const object *ss_body, const observer *obs, doubl
   if(rv)
     *rv = NAN;
 
-  if(ss_body->type != NOVAS_PLANET && ss_body->type != NOVAS_EPHEM_OBJECT && ss_body->type != NOVAS_ORBITAL_OBJECT)
-    return novas_error(-1, EINVAL, fn, "object is not solar-system type: type=%d", ss_body->type);
+  switch(ss_body->type) {
+    case NOVAS_PLANET:
+    case NOVAS_EPHEM_OBJECT:
+    case NOVAS_ORBITAL_OBJECT:
+      break;
+    default:
+      return novas_error(-1, EINVAL, fn, "object is not solar-system type: type=%d", ss_body->type);
+  }
 
   prop_error(fn, place(jd_tt, ss_body, obs, ut1_to_tt, sys, accuracy, &output), 10);
 
@@ -5779,10 +5785,8 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
       prop_error(fn, novas_orbit_posvel(jd_tdb[0] + jd_tdb[1], &body->orbit, accuracy, pos, vel), 0);
 
       for(i = 3; --i >= 0; ) {
-        if(pos)
-          pos[i] += pos0[i];
-        if(vel)
-          vel[i] += vel0[i];
+        pos[i] += pos0[i];
+        vel[i] += vel0[i];
       }
 
       break;
@@ -5863,13 +5867,20 @@ static int equ2gcrs(double jd_tdb, const double *in, enum novas_equator_type sys
  *
  */
 static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas_accuracy accuracy, double *vec) {
+  static const char *fn = "orbit2gcrs";
+
   if(sys->obl)
     change_pole(vec, sys->obl, sys->Omega, vec);
 
-  if(sys->plane == NOVAS_ECLIPTIC_PLANE)
-    prop_error("orbit2gcrs", ecl2equ_vec(jd_tdb, sys->type, accuracy, vec, vec), 0);
 
-  equ2gcrs(jd_tdb, vec, sys->type, vec);
+  if(sys->plane == NOVAS_ECLIPTIC_PLANE) {
+    if(ecl2equ_vec(jd_tdb, sys->type, accuracy, vec, vec) != 0)
+      return novas_trace(fn, -1, 0);
+  }
+  else if(sys->plane != NOVAS_EQUATORIAL_PLANE)
+    return novas_error(-1, EINVAL, fn, "invalid orbital system reference plane type: %d", sys->type);
+
+  prop_error(fn, equ2gcrs(jd_tdb, vec, sys->type, vec), 0);
 
   return 0;
 }
@@ -5892,8 +5903,9 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
  * @param[out] pos  [AU] Output ICRS equatorial position vector, or NULL if not required
  * @param[out] vel  [AU/day] Output ICRS equatorial velocity vector, or NULL if not required
  * @return          0 if successful, or else -1 if the orbital parameters are NULL
- *                  or if the position and velocity output vectors are the same (errno set to EINVAL),
- *                  or if the calculation did not converge (errno set to ECANCELED).
+ *                  or if the position and velocity output vectors are the same or the orbital
+ *                  system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to
+ *                  ECANCELED), or
  *
  * @sa ephemeris()
  * @sa novas_geom_posvel()

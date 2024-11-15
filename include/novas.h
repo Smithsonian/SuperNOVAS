@@ -376,6 +376,10 @@ enum novas_equator_type {
   NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference System (GCRS).
 };
 
+/// The number of equator types we define.
+/// @since 1.2
+#define NOVAS_EQUATOR_TYPES (NOVAS_GCRS_EQUATOR + 1)
+
 /**
  * Constants that determine the type of dynamical system type for gcrs2equ()
  */
@@ -660,13 +664,14 @@ typedef struct {
  * @sa novas_orbital_elements
  */
 typedef struct {
-  enum novas_planet center;          ///< major planet or barycenter at the center of the orbit (default is NOVAS_SUN).
-  enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE (default) or NOVAS_EQUATORIAL_PLANE
-  enum novas_equator_type type;      ///< the type of equator in which orientation is referenced (true, mean, or GCRS [default]).
+  enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
+  enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE
+  enum novas_equator_type type;      ///< the type of equator in which orientation is referenced (NOVAS_TRUE_EQUATOR,
+                                     ///< NOVAS_MEAN_EQUATOR, or NOVAS_GCRS_EQUATOR).
   double obl;                        ///< [rad] relative obliquity of orbital reference plane
-                                     ///< (e.g. 90&deg; - &delta;<sub>pole</sub>)
+                                     ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
   double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane
-                                     ///< (e.g. &alpha;<sub>pole</sub> + 90&deg;)
+                                     ///<       (e.g. &alpha;<sub>pole</sub> + 90&deg;)
 } novas_orbital_system;
 
 
@@ -710,8 +715,8 @@ typedef struct {
   double e;                         ///< eccentricity
   double omega;                     ///< [deg] argument of periapsis / perihelion, at the reference time
   double Omega;                     ///< [deg] argument of ascending node on the reference plane, at the reference time
-  double i;                         ///< [deg] inclination of orbit to reference plane
-  double M0;                        ///< [deg] mean anomaly at tjd
+  double i;                         ///< [deg] inclination of orbit to the reference plane
+  double M0;                        ///< [deg] mean anomaly at the reference time
   double n;                         ///< [deg/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
                                     ///< or 360/T, where T is orbital period in days.
   double apsis_period;              ///< [day] Precession period of the apsis, if known.

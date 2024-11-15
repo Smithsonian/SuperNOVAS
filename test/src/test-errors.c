@@ -1491,6 +1491,64 @@ static int test_planet_for_name() {
   return n;
 }
 
+static int test_make_orbital_object() {
+  int n = 0;
+  novas_orbital_elements orbit = {};
+  object body = {};
+
+  if(check("make_orbital_object:orbit", -1, make_orbital_object("blah", -1, NULL, &body))) n++;
+  if(check("make_orbital_object:body", -1, make_orbital_object("blah", -1, &orbit, NULL))) n++;
+  if(check("make_orbital_object:orbit+body", -1, make_orbital_object("blah", -1, NULL, NULL))) n++;
+
+  return n;
+}
+
+static int test_orbit_posvel() {
+  extern int novas_inv_max_iter;
+
+  int n = 0;
+  double pos[3] = {}, vel[3] = {};
+  int saved = novas_inv_max_iter;
+  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+
+  orbit.a = 1.0;
+
+  if(check("set_orbital_pole:orbit", -1, novas_orbit_posvel(0.0, NULL, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  if(check("set_orbital_pole:pos=vel", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, pos))) n++;
+  if(check("set_orbital_pole:pos=vel:NULL", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, NULL, NULL))) n++;
+
+  if(check("set_orbital_pole:orbit:converge", 0, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+
+  novas_inv_max_iter = 0;
+  if(check("set_orbital_pole:orbit:converge", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  else if(check("set_orbital_pole:orbit:converge:errno", ECANCELED, errno)) n++;
+  novas_inv_max_iter = saved;
+
+  orbit.system.type = -1;
+  if(check("set_orbital_pole:orbit:type:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+
+  orbit.system.type = NOVAS_EQUATOR_TYPES;
+  if(check("set_orbital_pole:orbit:type:hi", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+
+  orbit.system.plane = NOVAS_EQUATORIAL_PLANE;
+  orbit.system.type = NOVAS_EQUATOR_TYPES;
+  if(check("set_orbital_pole:orbit:type:-1:eq", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+
+  orbit.system.type = NOVAS_GCRS_EQUATOR;
+  orbit.system.plane = -1;
+  if(check("set_orbital_pole:orbit:plane:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+
+  return n;
+}
+
+static int test_set_orbital_pole() {
+  int n = 0;
+
+  if(check("set_orbital_pole:orbit", -1, novas_set_orbital_pole(0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1620,6 +1678,9 @@ int main() {
   if(test_naif_to_novas_planet()) n++;
 
   if(test_planet_for_name()) n++;
+  if(test_make_orbital_object()) n++;
+  if(test_set_orbital_pole()) n++;
+  if(test_orbit_posvel()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
