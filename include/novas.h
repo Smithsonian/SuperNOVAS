@@ -169,22 +169,6 @@
 #define NOVAS_TAI_TO_TT           32.184
 
 
-/// Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
-/// [0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,
-/// [9]: Pluto (barycenter), [10]: Sun, [11]: Moon.
-/// Barycentric reciprocal masses (index 12, 13) are not set.
-#define NOVAS_RMASS_INIT  { \
-      328900.561400, 6023600.0, 408523.71, 332946.050895, 3098708.0, 1047.3486, 3497.898, \
-      22902.98, 19412.24, 135200000.0, 1.0, 27068700.387534, 0.0, 0.0 }
-
-/// Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
-/// and detected at a large distance away. Barycenters are not considered, and for Pluto the
-/// redshift for the Pluto system is assumed for distant observers.
-/// @since 1.1.1
-#define NOVAS_PLANET_GRAV_Z_INIT { \
-  0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
-  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
-
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
 // as variables in novascon.h (with implementation in novascon.c), then define
@@ -230,6 +214,7 @@ enum novas_debug_mode {
 /**
  * The type of astronomical objects distinguied by the NOVAS library.
  *
+ * @sa NOVAS_OBJECT_TYPES
  */
 enum novas_object_type {
   /// A major planet, or else the Sun, the Moon, or the Solar-System Barycenter (SSB).
@@ -254,7 +239,11 @@ enum novas_object_type {
   NOVAS_ORBITAL_OBJECT
 };
 
-/// The number of object types distinguished by NOVAS.
+/**
+ * The number of object types distinguished by NOVAS.
+ *
+ * @sa enum novas_object_type
+ */
 #define NOVAS_OBJECT_TYPES      (NOVAS_ORBITAL_OBJECT + 1)
 
 /**
@@ -262,6 +251,7 @@ enum novas_object_type {
  * the object type is NOVAS_PLANET.
  *
  * @sa NOVAS_PLANET
+ * @sa NOVAS_PLANETS
  * @sa NOVAS_PLANET_NAMES_INIT
  */
 enum novas_planet {
@@ -281,14 +271,18 @@ enum novas_planet {
   NOVAS_PLUTO_BARYCENTER  ///< NOVAS ID for the barycenter of the Pluto System. @since 1.2
 };
 
-/// The number of major planets defined in NOVAS.
+/**
+ * The number of major planets defined in NOVAS.
+ *
+ * @sa enum novas_planet
+ */
 #define NOVAS_PLANETS             (NOVAS_PLUTO_BARYCENTER + 1)
 
 /**
  * String array initializer for Major planet names, matching the enum novas_planet. E.g.
  *
  * \code
- * char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
+ * const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
  * \endcode
  *
  * @sa novas_majot_planet
@@ -298,8 +292,36 @@ enum novas_planet {
   "Sun", "Moon", "EMB", "Pluto-Barycenter" };
 
 /**
+ * Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
+ * [0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, ...,
+ * [9]: Pluto (barycenter), [10]: Sun, [11]: Moon.
+ * Barycentric reciprocal masses (index 12, 13) are not set.
+ *
+ * @sa enum novas_planet
+ * @sa NOVAS_PLANETS
+ */
+#define NOVAS_RMASS_INIT  { \
+      328900.561400, 6023600.0, 408523.71, 332946.050895, 3098708.0, 1047.3486, 3497.898, \
+      22902.98, 19412.24, 135200000.0, 1.0, 27068700.387534, 0.0, 0.0 }
+
+/**
+ * Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
+ * and detected at a large distance away. Barycenters are not considered, and for Pluto the
+ * redshift for the Pluto system is assumed for distant observers.
+ *
+ * @sa enum novas_planet
+ * @sa NOVAS_PLANETS
+ *
+ * @since 1.1.1
+ */
+#define NOVAS_PLANET_GRAV_Z_INIT { \
+  0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
+  3.0893e-9, 9.1338e-12, 2.120483e-6, 3.1397e-11, 0.0, 0.0 }
+
+/**
  * Types of places on and around Earth that may serve a a reference position for the observation.
  *
+ * @sa NOVAS_OBSERVER_PLACES
  */
 enum novas_observer_place {
   /// Calculate coordinates as if observing from the geocenter for location and Earth rotation
@@ -323,7 +345,11 @@ enum novas_observer_place {
   NOVAS_SOLAR_SYSTEM_OBSERVER
 };
 
-/// The number of observer place types supported
+/**
+ * The number of observer place types supported
+ *
+ * @sa enum novas_observer_place
+ */
 #define NOVAS_OBSERVER_PLACES     (NOVAS_SOLAR_SYSTEM_OBSERVER + 1)
 
 /**
@@ -333,6 +359,7 @@ enum novas_observer_place {
  * specify one of the values defined here.
  *
  * @sa novas_frame
+ * @sa NOVAS_REFERENCE_SYSTEMS
  */
 enum novas_reference_system {
   /// Geocentric Celestial Reference system. Essentially the same as ICRS but includes
@@ -364,24 +391,36 @@ enum novas_reference_system {
   NOVAS_MOD,
 };
 
-/// The number of basic coordinate reference systems in NOVAS.
+/**
+ * The number of basic coordinate reference systems in NOVAS.
+ *
+ * @sa enum novas_reference_system
+ */
 #define NOVAS_REFERENCE_SYSTEMS   (NOVAS_MOD + 1)
 
 /**
  * Constants that determine the type of equator to be used for the coordinate system.
+ *
+ * @sa NOVAS_EQUATOR_TYPES
  */
 enum novas_equator_type {
-  NOVAS_MEAN_EQUATOR = 0, ///< Mean equator without nutation (pre IAU 2006 system).
-  NOVAS_TRUE_EQUATOR,     ///< True equator (pre IAU 2006 system).
+  NOVAS_MEAN_EQUATOR = 0, ///< Mean equator of date without nutation (pre IAU 2006 system).
+  NOVAS_TRUE_EQUATOR,     ///< True equator of date (pre IAU 2006 system).
   NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference System (GCRS).
 };
 
-/// The number of equator types we define.
-/// @since 1.2
+/**
+ * The number of equator types defined in `enum novas_equator_type`.
+ *
+ * @sa enum novas_equator_type
+ * @author Attila Kovacs
+ * @since 1.2
+ */
 #define NOVAS_EQUATOR_TYPES (NOVAS_GCRS_EQUATOR + 1)
 
 /**
- * Constants that determine the type of dynamical system type for gcrs2equ()
+ * Constants that determine the type of dynamical system. I.e., the 'current' equatorial coordinate
+ * system used for a given epoch of observation.
  */
 enum novas_dynamical_type {
   /// Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
@@ -415,6 +454,7 @@ enum novas_accuracy {
  * model, or whatever weather parameters have been been specified for the observing location.
  *
  * @sa on_surface
+ * @sa refract()
  */
 enum novas_refraction_model {
   /// Do not apply atmospheric refraction correction
@@ -441,7 +481,7 @@ enum novas_earth_rotation_measure {
 };
 
 /**
- * Constants for ter2cel() and cel2ter()
+ * The class of celestial coordinates used as parameters for ter2cel() and cel2ter().
  */
 enum novas_equatorial_class {
   NOVAS_REFERENCE_CLASS = 0,        ///< Celestial coordinates are in GCRS
@@ -462,7 +502,7 @@ enum novas_pole_offset_type {
 };
 
 /**
- * The type of equinox (old methodology)
+ * The type of equinox used in the pre IAU 2006 (old) methodology.
  *
  */
 enum novas_equinox_type {
@@ -472,25 +512,32 @@ enum novas_equinox_type {
 
 /**
  * The origin of the ICRS system for referencing positions and velocities for solar-system bodies.
+ *
+ * @sa NOVAS_ORIGIN_TYPES
  */
 enum novas_origin {
   NOVAS_BARYCENTER = 0,           ///< Origin at the Solar-system baricenter (i.e. BCRS)
   NOVAS_HELIOCENTER               ///< Origin at the center of the Sun.
 };
 
-/// the number of different ICSR origins available in NOVAS.
+/**
+ * The number of different ICSR origins available in NOVAS.
+ *
+ * @sa enum novas_origin
+ */
 #define NOVAS_ORIGIN_TYPES        (NOVAS_HELIOCENTER + 1)
 
-/// @deprecated Old definition of the Barycenter origin. NOVAS_BARYCENTER is preferred.
+/** @deprecated Old definition of the Barycenter origin. NOVAS_BARYCENTER is preferred. */
 #define BARYC                     NOVAS_BARYCENTER
 
-/// @deprecated Old definition of the Center of Sun as the origin. NOVAS_HELIOCENTER is preferred.
+/** @deprecated Old definition of the Center of Sun as the origin. NOVAS_HELIOCENTER is preferred. */
 #define HELIOC                    NOVAS_HELIOCENTER
 
 /**
  * The types of coordinate transformations available for tranform_cat().
  *
  * @sa transform_cat()
+ * @sa NOVAS_TRANSFORM_TYPES
  */
 enum novas_transform_type {
   /// Updates the star's data to account for the star's space motion between
@@ -513,7 +560,11 @@ enum novas_transform_type {
   CHANGE_ICRS_TO_J2000
 };
 
-/// The number of coordinate transfor types in NOVAS.
+/**
+ * The number of coordinate transfor types in NOVAS.
+ *
+ * @sa enum novas_transform_type
+ */
 #define NOVAS_TRANSFORM_TYPES     (ICRS_TO_J2000 + 1)
 
 /**
@@ -588,7 +639,7 @@ enum novas_nutation_direction {
 
 /**
  * The plane in which values, such as orbital parameyters are referenced.
- *
+ * @author Attila Kovacs
  * @since 1.2
  */
 enum novas_reference_plane {
@@ -622,6 +673,7 @@ typedef struct {
  * as the original NOVAS C version, allowing for cross-compatible binary exchange (I/O) of
  * these structures.
  *
+ * @sa CAT_ENTRY_INIT
  */
 typedef struct {
   char starname[SIZE_OF_OBJ_NAME];  ///< name of celestial object
@@ -637,6 +689,8 @@ typedef struct {
 
 /**
  * Initializer for a NOVAS cat_entry structure.
+ * @sa cat_entry
+ * @author Attila Kovacs
  * @since 1.1.1
  */
 #define CAT_ENTRY_INIT { {'\0'}, {'\0'}, 0L, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
@@ -661,7 +715,9 @@ typedef struct {
  * @author Attila Kovacs
  * @since 1.2
  *
+ * @sa novas_set_orbital_pole()
  * @sa novas_orbital_elements
+ * @sa NOVAS_ORBITAL_SYSTEM_INIT
  */
 typedef struct {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
@@ -675,8 +731,12 @@ typedef struct {
 } novas_orbital_system;
 
 
-/// Default orbital system initializer for heliocentric GCRS ecliptic orbits.
-/// @since 1.2
+/**
+ * Default orbital system initializer for heliocentric GCRS ecliptic orbits.
+ * @sa novas_orbital_system
+ * @author Attila Kovacs
+ * @since 1.2
+ */
 #define NOVAS_ORBITAL_SYSTEM_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS_EQUATOR, 0.0, 0.0 }
 
 /**
@@ -707,6 +767,7 @@ typedef struct {
  *
  * @sa object
  * @sa enum NOVAS_ORBITAL_OBJECT
+ * @sa NOVAS_ORBIT_INIT
  */
 typedef struct {
   novas_orbital_system system;      ///< orbital reference system assumed for the parametrization
@@ -725,7 +786,7 @@ typedef struct {
 
 /**
  * Initializer for novas_orbital_elements for heliocentric orbits using GCRS ecliptic pqrametrization.
- *
+ * @sa novas_orbital_elements
  * @author Attila Kovacs
  * @since 1.2
  */
@@ -743,7 +804,7 @@ typedef struct {
   long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
   cat_entry star;                 ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
-  novas_orbital_elements orbit;   ///< orbital data for NOVAS_ORBITAL_OBJECT TYPE
+  novas_orbital_elements orbit;   ///< orbital data for NOVAS_ORBITAL_OBJECT TYPE. @since 1.2
 } object;
 
 /**
@@ -754,6 +815,7 @@ typedef struct {
  * added to this structure if a more sophisticated
  * refraction model is employed.
  *
+ * @sa observer
  */
 typedef struct {
   double latitude;      ///< [deg] geodetic (ITRS) latitude; north positive
@@ -767,6 +829,8 @@ typedef struct {
 /**
  * data for an observer's location on Earth orbit
  *
+ * @sa observer
+ * @sa IN_SPACE_INIT
  */
 typedef struct {
   double sc_pos[3];     ///< [km] geocentric (or [AU] ICRS barycentric) position vector (x, y, z)
@@ -775,12 +839,13 @@ typedef struct {
 
 /**
  * Initializer for a NOVAS in_space structure.
+ * @sa in_space
  * @since 1.1.1
  */
 #define IN_SPACE_INIT   {{0.0}, {0.0}}
 
 /**
- * Observer location (somewhere around Earth).
+ * Observer location.
  *
  */
 typedef struct {
@@ -800,6 +865,7 @@ typedef struct {
  * Celestial object's place on the sky; contains the output from place()
  *
  * @sa place()
+ * @sa SKY_POS_INIT
  */
 typedef struct {
   double r_hat[3];  ///< unit vector toward object (dimensionless)
@@ -811,6 +877,7 @@ typedef struct {
 
 /**
  * Initializer for a NOVAS sky_pos structure.
+ * @sa sky_pos
  * @since 1.1.1
  */
 #define SKY_POS_INIT { {0.0}, 0.0, 0.0, 0.0, 0.0 }
@@ -828,6 +895,8 @@ typedef struct {
 /**
  * Constants to reference various astrnomical timescales used
  *
+ * @sa NOVAS_TIMESCALES
+ * @sa timescale.c
  * @since 1.1
  */
 enum novas_timescale {
@@ -844,6 +913,7 @@ enum novas_timescale {
 /**
  * The number of asronomical time scales supported.
  *
+ * @sa novas_timescale
  * @since 1.1
  */
 #define NOVAS_TIMESCALES    (NOVAS_UT1 + 1)
@@ -853,7 +923,8 @@ enum novas_timescale {
  * astronomical timescales. Precisions to picosecond accuracy are supported, which ought to be
  * plenty accurate for any real astronomical application.
  *
- * @see enum novas_timescale
+ * @sa enum novas_timescale
+ * @sa timescale.c
  *
  * @since 1.1
  */

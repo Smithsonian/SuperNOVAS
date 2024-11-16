@@ -12,6 +12,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
+ * @sa eph_manager.c
  * @sa solsys1.c
  */
 
@@ -26,7 +27,15 @@
 #endif
 
 
-/// Planet codes for JPL DE ephemeris files.
+/**
+ * Planet codes for JPL DE ephemeris files.
+ *
+ * @sa DE_PLANETS
+ * @sa eph_manager.c
+ *
+ * @author Attila Kovacs
+ * @since 1.0
+ */
 enum de_planet {
   DE_MERCURY = 0, ///< Number for Mercury in the JPL DE ephemeris files
   DE_VENUS,       ///< Number for Venus in the JPL DE ephemeris files
@@ -44,11 +53,18 @@ enum de_planet {
   DE_NUTATIONS    ///< Number for Nutations in the JPL DE ephemeris files
 };
 
-
+/**
+ * Number planets defined for eph_manager.c functions.
+ *
+ * @sa de_planet
+ *
+ * @author Attila Kovacs
+ * @since 1.0
+ */
 #define DE_PLANETS (DE_NUTATIONS + 1)
 
 
-// External variables
+// External variables ------------------------------>
 extern short KM;
 
 extern int IPT[3][12], LPT[3];

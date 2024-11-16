@@ -5840,6 +5840,9 @@ static int change_pole(const double *in, double theta, double phi, double *out) 
  * @param[out] out  output 3-vector. It may be the same as the input.
  * @return          0 if successful, or else -1 (errno set to EINVAL) if the 'sys'
  *                  argument is invalid.
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  */
 static int equ2gcrs(double jd_tdb, const double *in, enum novas_equator_type sys, double *out) {
   switch(sys) {
@@ -5865,6 +5868,8 @@ static int equ2gcrs(double jd_tdb, const double *in, enum novas_equator_type sys
  * @param[in, out] vec  Coordinates
  * @return              0 if successful, or else an error from ecl2equ_vec().
  *
+ * @author Attila Kovacs
+ * @since 1.2
  */
 static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas_accuracy accuracy, double *vec) {
   static const char *fn = "orbit2gcrs";

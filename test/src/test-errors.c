@@ -1504,8 +1504,6 @@ static int test_make_orbital_object() {
 }
 
 static int test_orbit_posvel() {
-  extern int novas_inv_max_iter;
-
   int n = 0;
   double pos[3] = {}, vel[3] = {};
   int saved = novas_inv_max_iter;

@@ -57,13 +57,24 @@
  *
  * @sa object
  * @sa NOVAS_EPHEM_OBJECT
+ * @sa NOVAS_ID_TYPES
+ *
+ * @author Attila Kovacs
+ * @since 1.2
  */
 enum novas_id_type {
   NOVAS_ID_NAIF = 0,  ///< If the ephemeris provider should use NAIF IDs
   NOVAS_ID_CALCEPH    ///< If the ephemeris provider should use CALCEPH IDs
 };
 
-/// Number of different Solar-system body ID types enumerated
+/**
+ * Number of different Solar-system body ID types enumerated
+ *
+ * @sa enum novas_id_type
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
 #define NOVAS_ID_TYPES      (NOVAS_ID_CALCEPH + 1)
 
 /**
@@ -95,6 +106,9 @@ enum novas_id_type {
  * @sa set_planet_provider()
  * @sa ephemeris()
  * @sa novas_solarsystem_hp_func
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 
@@ -130,6 +144,9 @@ typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, en
  * @sa set_planet_provider_hp()
  * @sa novas_solarsystem_func
  * @sa ephemeris()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
 

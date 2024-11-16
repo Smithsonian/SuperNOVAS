@@ -36,6 +36,9 @@
  * @sa iau2000a()
  * @sa iau2000b()
  * @sa iau2000k()
+ *
+ * @author Attila Kovacs
+ * @since 1.0
  */
 typedef int (*novas_nutation_provider)(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
 

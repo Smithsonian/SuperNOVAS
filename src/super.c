@@ -1389,6 +1389,8 @@ enum novas_planet novas_planet_for_name(const char *name) {
  *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa make_orbital_object()
  */
 int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys) {
   if (!sys)
