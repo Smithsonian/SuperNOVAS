@@ -1,90 +1,91 @@
 <toc label="SuperNOVAS" topic="index.html">
-    <topic label="Table of Contents" href="index.html#autotoc_md30"/>
-    <topic label="Introduction" href="index.html#autotoc_md32">
-      <topic label="Related links" href="index.html#autotoc_md33"/>
-    <topic label="Fixed NOVAS C 3.1 issues" href="index.html#autotoc_md35"/>
-    <topic label="Compatibility with NOVAS C 3.1" href="index.html#autotoc_md37"/>
-    <topic label="Building and installation" href="index.html#autotoc_md39"/>
-    <topic label="Building your application with SuperNOVAS" href="index.html#autotoc_md41">
-      <topic label="Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules" href="index.html#autotoc_md42"/>
-      <topic label="Legacy modules: a better way..." href="index.html#autotoc_md43"/>
+    <topic label="Table of Contents" href="index.html#autotoc_md31"/>
+    <topic label="Introduction" href="index.html#autotoc_md33">
+      <topic label="Related links" href="index.html#autotoc_md34"/>
+    <topic label="Fixed NOVAS C 3.1 issues" href="index.html#autotoc_md36"/>
+    <topic label="Compatibility with NOVAS C 3.1" href="index.html#autotoc_md38"/>
+    <topic label="Building and installation" href="index.html#autotoc_md40"/>
+    <topic label="Building your application with SuperNOVAS" href="index.html#autotoc_md42">
+      <topic label="Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules" href="index.html#autotoc_md43"/>
+      <topic label="Legacy modules: a better way..." href="index.html#autotoc_md44"/>
     </topic>
-    <topic label="Example usage" href="index.html#autotoc_md45">
-      <topic label="Note on alternative methodologies" href="index.html#autotoc_md46"/>
-      <topic label="Calculating positions for a sidereal source" href="index.html#autotoc_md47">
-        <topic label="Specify the object of interest" href="index.html#autotoc_md48"/>
-        <topic label="Specify the observer location" href="index.html#autotoc_md49"/>
-        <topic label="Specify the time of observation" href="index.html#autotoc_md50"/>
-        <topic label="Set up the observing frame" href="index.html#autotoc_md51"/>
-        <topic label="Calculate an apparent place on sky" href="index.html#autotoc_md52"/>
-        <topic label="Calculate azimuth and elevation angles at the observing location" href="index.html#autotoc_md53"/>
+    <topic label="Example usage" href="index.html#autotoc_md46">
+      <topic label="Note on alternative methodologies" href="index.html#autotoc_md47"/>
+      <topic label="Calculating positions for a sidereal source" href="index.html#autotoc_md48">
+        <topic label="Specify the object of interest" href="index.html#autotoc_md49"/>
+        <topic label="Specify the observer location" href="index.html#autotoc_md50"/>
+        <topic label="Specify the time of observation" href="index.html#autotoc_md51"/>
+        <topic label="Set up the observing frame" href="index.html#autotoc_md52"/>
+        <topic label="Calculate an apparent place on sky" href="index.html#autotoc_md53"/>
+        <topic label="Calculate azimuth and elevation angles at the observing location" href="index.html#autotoc_md54"/>
       </topic>
-      <topic label="Calculating positions for a Solar-system source" href="index.html#autotoc_md54"/>
-      <topic label="Reduced accuracy shortcuts" href="index.html#autotoc_md55"/>
-      <topic label="Performance considerations" href="index.html#autotoc_md56"/>
-      <topic label="Multi-threaded calculations" href="index.html#autotoc_md57"/>
+      <topic label="Calculating positions for a Solar-system source" href="index.html#autotoc_md55"/>
+      <topic label="Reduced accuracy shortcuts" href="index.html#autotoc_md56"/>
+      <topic label="Performance considerations" href="index.html#autotoc_md57"/>
+      <topic label="Multi-threaded calculations" href="index.html#autotoc_md58"/>
     </topic>
-    <topic label="Notes on precision" href="index.html#autotoc_md59">
-      <topic label="Prerequisites to precise results" href="index.html#autotoc_md60"/>
+    <topic label="Notes on precision" href="index.html#autotoc_md60">
+      <topic label="Prerequisites to precise results" href="index.html#autotoc_md61"/>
     </topic>
-    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md62">
-      <topic label="Newly added functionality" href="index.html#autotoc_md63">
-        <topic label="Added in v1.1" href="index.html#autotoc_md64"/>
-        <topic label="Added in v1.2" href="index.html#autotoc_md65"/>
+    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md63">
+      <topic label="Newly added functionality" href="index.html#autotoc_md64">
+        <topic label="Added in v1.1" href="index.html#autotoc_md65"/>
+        <topic label="Added in v1.2" href="index.html#autotoc_md66"/>
       </topic>
-      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md66"/>
+      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md67"/>
     </topic>
-    <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md68">
-      <topic label="Optional CALCEPH integration" href="index.html#autotoc_md69"/>
-      <topic label="Optional NAIF CSPICE toolkit integration" href="index.html#autotoc_md70"/>
-      <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md71"/>
-      <topic label="Legacy support for (older) JPL major planet ephemerides" href="index.html#autotoc_md72">
-        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md73"/>
-        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md74"/>
+    <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md69">
+      <topic label="Optional CALCEPH integration" href="index.html#autotoc_md70"/>
+      <topic label="Optional NAIF CSPICE toolkit integration" href="index.html#autotoc_md71"/>
+      <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md72"/>
+      <topic label="Legacy support for (older) JPL major planet ephemerides" href="index.html#autotoc_md73">
+        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md74"/>
+        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md75"/>
       </topic>
-      <topic label="Legacy linking of custom ephemeris functions" href="index.html#autotoc_md75"/>
+      <topic label="Legacy linking of custom ephemeris functions" href="index.html#autotoc_md76"/>
     </topic>
-    <topic label="Runtime debug support" href="index.html#autotoc_md77"/>
-    <topic label="Release schedule" href="index.html#autotoc_md79"/>
+    <topic label="Runtime debug support" href="index.html#autotoc_md78"/>
+    <topic label="Release schedule" href="index.html#autotoc_md80"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.2.0-rc2] - 2024-11-18" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md2"/>
+      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md3"/>
     </topic>
-    <topic label="[1.1.1] - 2024-10-28" href="md_CHANGELOG.html#autotoc_md3">
-      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md4"/>
-      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md5"/>
+    <topic label="[1.1.1] - 2024-10-28" href="md_CHANGELOG.html#autotoc_md4">
+      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md5"/>
+      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md6"/>
     </topic>
-    <topic label="[1.1.0] - 2024-08-04" href="md_CHANGELOG.html#autotoc_md6">
-      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md7"/>
-      <topic label="Added" href="md_CHANGELOG.html#autotoc_md8"/>
-      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md9"/>
+    <topic label="[1.1.0] - 2024-08-04" href="md_CHANGELOG.html#autotoc_md7">
+      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md8"/>
+      <topic label="Added" href="md_CHANGELOG.html#autotoc_md9"/>
+      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md10"/>
     </topic>
-    <topic label="[1.0.1] - 2024-05-13" href="md_CHANGELOG.html#autotoc_md10">
-      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md11"/>
-      <topic label="Added" href="md_CHANGELOG.html#autotoc_md12"/>
-      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md13"/>
+    <topic label="[1.0.1] - 2024-05-13" href="md_CHANGELOG.html#autotoc_md11">
+      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md12"/>
+      <topic label="Added" href="md_CHANGELOG.html#autotoc_md13"/>
+      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md14"/>
     </topic>
-    <topic label="[1.0.0] - 2024-03-01" href="md_CHANGELOG.html#autotoc_md14">
-      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md15"/>
-      <topic label="Added" href="md_CHANGELOG.html#autotoc_md16"/>
-      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md17"/>
-      <topic label="Deprecated" href="md_CHANGELOG.html#autotoc_md18"/>
+    <topic label="[1.0.0] - 2024-03-01" href="md_CHANGELOG.html#autotoc_md15">
+      <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md16"/>
+      <topic label="Added" href="md_CHANGELOG.html#autotoc_md17"/>
+      <topic label="Changed" href="md_CHANGELOG.html#autotoc_md18"/>
+      <topic label="Deprecated" href="md_CHANGELOG.html#autotoc_md19"/>
     </topic>
   </topic>
   <topic label="Contributing to SuperNOVAS" href="md_CONTRIBUTING.html"/>
   <topic label="Astrometric Positions the Old Way" href="md_LEGACY.html">
-    <topic label="Calculating positions for a sidereal source" href="md_LEGACY.html#autotoc_md21">
-      <topic label="Specify the object of interest" href="md_LEGACY.html#autotoc_md22"/>
-      <topic label="Spefify the observer location" href="md_LEGACY.html#autotoc_md23"/>
-      <topic label="Specify the time of observation" href="md_LEGACY.html#autotoc_md24"/>
-      <topic label="Specify Earth orientation parameters" href="md_LEGACY.html#autotoc_md25"/>
-      <topic label="Calculate apparent positions on sky" href="md_LEGACY.html#autotoc_md26">
-        <topic label="A. True apparent R.A. and declination" href="md_LEGACY.html#autotoc_md27"/>
-        <topic label="B. Azimuth and elevation angles at the observing location" href="md_LEGACY.html#autotoc_md28"/>
+    <topic label="Calculating positions for a sidereal source" href="md_LEGACY.html#autotoc_md22">
+      <topic label="Specify the object of interest" href="md_LEGACY.html#autotoc_md23"/>
+      <topic label="Spefify the observer location" href="md_LEGACY.html#autotoc_md24"/>
+      <topic label="Specify the time of observation" href="md_LEGACY.html#autotoc_md25"/>
+      <topic label="Specify Earth orientation parameters" href="md_LEGACY.html#autotoc_md26"/>
+      <topic label="Calculate apparent positions on sky" href="md_LEGACY.html#autotoc_md27">
+        <topic label="A. True apparent R.A. and declination" href="md_LEGACY.html#autotoc_md28"/>
+        <topic label="B. Azimuth and elevation angles at the observing location" href="md_LEGACY.html#autotoc_md29"/>
       </topic>
     </topic>
-    <topic label="Calculating positions for a Solar-system source" href="md_LEGACY.html#autotoc_md29"/>
+    <topic label="Calculating positions for a Solar-system source" href="md_LEGACY.html#autotoc_md30"/>
   </topic>
   <topic label="Deprecated List" href="deprecated.html"/>
   <topic label="Data Structures" href="annotated.html">
@@ -143,6 +144,26 @@
       <topic label="novas_matrix" href="structnovas__matrix.html">
         <topic label="M" href="structnovas__matrix.html#ac842f2eec8c8b880e2aca8792d63359b"/>
       </topic>
+      <topic label="novas_orbital_elements" href="structnovas__orbital__elements.html">
+        <topic label="a" href="structnovas__orbital__elements.html#a1031d0e0a97a340abfe0a6ab9e831045"/>
+        <topic label="apsis_period" href="structnovas__orbital__elements.html#a18c1c30ab34602026b03269be48d36a1"/>
+        <topic label="e" href="structnovas__orbital__elements.html#ab17e17fb32b792781b807505e7f60c9c"/>
+        <topic label="i" href="structnovas__orbital__elements.html#a5659a38afd08966e6799fa0fb40a882a"/>
+        <topic label="jd_tdb" href="structnovas__orbital__elements.html#a0aefc536698706b7f8a15f23168c3486"/>
+        <topic label="M0" href="structnovas__orbital__elements.html#adc4cda6fcbff8922621b0a08f911957d"/>
+        <topic label="n" href="structnovas__orbital__elements.html#abe63e991a7bf5d666068b15c9064428d"/>
+        <topic label="node_period" href="structnovas__orbital__elements.html#abc96d50a65bae0b26750df2d93492fea"/>
+        <topic label="omega" href="structnovas__orbital__elements.html#a98ecc32b7ac0cf654d9f883cbe5cab35"/>
+        <topic label="Omega" href="structnovas__orbital__elements.html#a1b5bf6735b7465aec5c931281d240737"/>
+        <topic label="system" href="structnovas__orbital__elements.html#a2d7f51b64b1f15b7c85fdf1130d3ea87"/>
+      </topic>
+      <topic label="novas_orbital_system" href="structnovas__orbital__system.html">
+        <topic label="center" href="structnovas__orbital__system.html#ac3165061a779934bfe04da14ad5555d0"/>
+        <topic label="obl" href="structnovas__orbital__system.html#ae5014f0e96e7c220c55eb82d11c4133a"/>
+        <topic label="Omega" href="structnovas__orbital__system.html#a1b5bf6735b7465aec5c931281d240737"/>
+        <topic label="plane" href="structnovas__orbital__system.html#a2c38f985781586b7df387b437720174d"/>
+        <topic label="type" href="structnovas__orbital__system.html#aa80d24a56709991e21d09e9f89f60d66"/>
+      </topic>
       <topic label="novas_planet_bundle" href="structnovas__planet__bundle.html">
         <topic label="mask" href="structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd"/>
         <topic label="pos" href="structnovas__planet__bundle.html#afa2104ef635031a82766fd018c9ee9dd"/>
@@ -164,6 +185,7 @@
       <topic label="object" href="structobject.html">
         <topic label="name" href="structobject.html#ae73ef5f04701dc9d4e7cb1b1c3fa9c12"/>
         <topic label="number" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74"/>
+        <topic label="orbit" href="structobject.html#a9ad3978b06d4ce6a366ff84f6854796a"/>
         <topic label="star" href="structobject.html#a0ead8b30742e9c76887f5ff76cabae7c"/>
         <topic label="type" href="structobject.html#a2cc80aad5c0303449e2412b122504a10"/>
       </topic>
@@ -268,6 +290,26 @@
           <topic label="novas_matrix" href="structnovas__matrix.html">
             <topic label="M" href="structnovas__matrix.html#ac842f2eec8c8b880e2aca8792d63359b"/>
           </topic>
+          <topic label="novas_orbital_elements" href="structnovas__orbital__elements.html">
+            <topic label="a" href="structnovas__orbital__elements.html#a1031d0e0a97a340abfe0a6ab9e831045"/>
+            <topic label="apsis_period" href="structnovas__orbital__elements.html#a18c1c30ab34602026b03269be48d36a1"/>
+            <topic label="e" href="structnovas__orbital__elements.html#ab17e17fb32b792781b807505e7f60c9c"/>
+            <topic label="i" href="structnovas__orbital__elements.html#a5659a38afd08966e6799fa0fb40a882a"/>
+            <topic label="jd_tdb" href="structnovas__orbital__elements.html#a0aefc536698706b7f8a15f23168c3486"/>
+            <topic label="M0" href="structnovas__orbital__elements.html#adc4cda6fcbff8922621b0a08f911957d"/>
+            <topic label="n" href="structnovas__orbital__elements.html#abe63e991a7bf5d666068b15c9064428d"/>
+            <topic label="node_period" href="structnovas__orbital__elements.html#abc96d50a65bae0b26750df2d93492fea"/>
+            <topic label="omega" href="structnovas__orbital__elements.html#a98ecc32b7ac0cf654d9f883cbe5cab35"/>
+            <topic label="Omega" href="structnovas__orbital__elements.html#a1b5bf6735b7465aec5c931281d240737"/>
+            <topic label="system" href="structnovas__orbital__elements.html#a2d7f51b64b1f15b7c85fdf1130d3ea87"/>
+          </topic>
+          <topic label="novas_orbital_system" href="structnovas__orbital__system.html">
+            <topic label="center" href="structnovas__orbital__system.html#ac3165061a779934bfe04da14ad5555d0"/>
+            <topic label="obl" href="structnovas__orbital__system.html#ae5014f0e96e7c220c55eb82d11c4133a"/>
+            <topic label="Omega" href="structnovas__orbital__system.html#a1b5bf6735b7465aec5c931281d240737"/>
+            <topic label="plane" href="structnovas__orbital__system.html#a2c38f985781586b7df387b437720174d"/>
+            <topic label="type" href="structnovas__orbital__system.html#aa80d24a56709991e21d09e9f89f60d66"/>
+          </topic>
           <topic label="novas_planet_bundle" href="structnovas__planet__bundle.html">
             <topic label="mask" href="structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd"/>
             <topic label="pos" href="structnovas__planet__bundle.html#afa2104ef635031a82766fd018c9ee9dd"/>
@@ -289,6 +331,7 @@
           <topic label="object" href="structobject.html">
             <topic label="name" href="structobject.html#ae73ef5f04701dc9d4e7cb1b1c3fa9c12"/>
             <topic label="number" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74"/>
+            <topic label="orbit" href="structobject.html#a9ad3978b06d4ce6a366ff84f6854796a"/>
             <topic label="star" href="structobject.html#a0ead8b30742e9c76887f5ff76cabae7c"/>
             <topic label="type" href="structobject.html#a2cc80aad5c0303449e2412b122504a10"/>
           </topic>
@@ -337,6 +380,7 @@
           <topic label="NOVAS_EARTH_ANGVEL" href="novas_8h.html#ac50f27bc66238525124427551a956ec3"/>
           <topic label="NOVAS_EARTH_FLATTENING" href="novas_8h.html#a1830a25e886366263653167369213d8b"/>
           <topic label="NOVAS_EARTH_RADIUS" href="novas_8h.html#a139f16e134bf6119b6e04c8272c85668"/>
+          <topic label="NOVAS_EQUATOR_TYPES" href="novas_8h.html#ade30c5c72c918b2428e803e3f4430ceb"/>
           <topic label="NOVAS_G_EARTH" href="novas_8h.html#af125f22b69933024d6a8513b205dca8b"/>
           <topic label="NOVAS_G_SUN" href="novas_8h.html#a6d955f313593b4a56fef202708d5722b"/>
           <topic label="NOVAS_GPS_TO_TAI" href="novas_8h.html#a6355388ff4a44836eda6eb1e97da60cd"/>
@@ -349,6 +393,8 @@
           <topic label="NOVAS_MINOR_VERSION" href="novas_8h.html#af7a746fdca818e9d4c4aa27bf65a62be"/>
           <topic label="NOVAS_OBJECT_TYPES" href="novas_8h.html#a60037f5a7c8fe2b7cf8893cf461598d1"/>
           <topic label="NOVAS_OBSERVER_PLACES" href="novas_8h.html#a7af86c48f77394688f4ad43eb20760f4"/>
+          <topic label="NOVAS_ORBIT_INIT" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065"/>
+          <topic label="NOVAS_ORBITAL_SYSTEM_INIT" href="novas_8h.html#a61b4f45764a44517b867442de7749cd4"/>
           <topic label="NOVAS_ORIGIN_TYPES" href="novas_8h.html#aab57b6b4c8c96ed32414fe3964813e5f"/>
           <topic label="NOVAS_PLANET_GRAV_Z_INIT" href="novas_8h.html#a0ae90838b446c7d4c1d3386ec8857410"/>
           <topic label="NOVAS_PLANET_NAMES_INIT" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390"/>
@@ -418,6 +464,7 @@
             <topic label="NOVAS_PLANET" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8"/>
             <topic label="NOVAS_EPHEM_OBJECT" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269"/>
             <topic label="NOVAS_CATALOG_OBJECT" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5"/>
+            <topic label="NOVAS_ORBITAL_OBJECT" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a"/>
           </topic>
           <topic label="novas_observer_place" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3">
             <topic label="NOVAS_OBSERVER_AT_GEOCENTER" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2"/>
@@ -443,10 +490,16 @@
             <topic label="NOVAS_PLUTO" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5"/>
             <topic label="NOVAS_SUN" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2"/>
             <topic label="NOVAS_MOON" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf"/>
+            <topic label="NOVAS_EMB" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a"/>
+            <topic label="NOVAS_PLUTO_BARYCENTER" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677"/>
           </topic>
           <topic label="novas_pole_offset_type" href="novas_8h.html#a70c3951615b1ecf42818c79893678543">
             <topic label="POLE_OFFSETS_DPSI_DEPS" href="novas_8h.html#a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47"/>
             <topic label="POLE_OFFSETS_X_Y" href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77"/>
+          </topic>
+          <topic label="novas_reference_plane" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f">
+            <topic label="NOVAS_ECLIPTIC_PLANE" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e"/>
+            <topic label="NOVAS_EQUATORIAL_PLANE" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b"/>
           </topic>
           <topic label="novas_reference_system" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">
             <topic label="NOVAS_GCRS" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4"/>
@@ -555,6 +608,7 @@
           <topic label="make_observer_in_space" href="novas_8h.html#a6c146e4d10152d5e1ffb978f2fc962be"/>
           <topic label="make_observer_on_surface" href="novas_8h.html#a00d9f6909923cd3e559c8f011ff9b794"/>
           <topic label="make_on_surface" href="novas_8h.html#a9174488cd701172531174d85ed26819b"/>
+          <topic label="make_orbital_object" href="novas_8h.html#a5caf50e954f622e525e8a9e159ec0655"/>
           <topic label="make_planet" href="novas_8h.html#a618bbba887b9bc9e7df878234c66c215"/>
           <topic label="make_redshifted_object" href="novas_8h.html#ae579a49d84696a913fd0d9f348bb5b11"/>
           <topic label="make_solar_system_observer" href="novas_8h.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
@@ -582,8 +636,10 @@
           <topic label="novas_make_transform" href="novas_8h.html#a4d179c8573319fc25c775ce56ba055dc"/>
           <topic label="novas_offset_time" href="novas_8h.html#a01f98b2b8033c8dbacaeab37e9198e91"/>
           <topic label="novas_optical_refraction" href="novas_8h.html#ae4511a80a1defbb1e1fdc29c289e7de4"/>
+          <topic label="novas_orbit_posvel" href="novas_8h.html#af45c814a67b838383aa7c4785322e90a"/>
           <topic label="novas_planet_for_name" href="novas_8h.html#a92e869b101bd41e31ac6d3a2419bb0a3"/>
           <topic label="novas_radio_refraction" href="novas_8h.html#a6b49f92f8f818f2272613e3432185a39"/>
+          <topic label="novas_set_orbital_pole" href="novas_8h.html#a234ac7fa5849f414d7e4405786f2e537"/>
           <topic label="novas_set_split_time" href="novas_8h.html#a37c8f2d5e1ad2daed78d1bd7991fdba4"/>
           <topic label="novas_set_time" href="novas_8h.html#ac272a018a213965f07b21ac6facb4a62"/>
           <topic label="novas_set_unix_time" href="novas_8h.html#abacd89aa380c85da2d3c19a7e2187df3"/>
@@ -804,6 +860,7 @@
           <topic label="novas_case_sensitive" href="novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2"/>
           <topic label="novas_debug" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3"/>
           <topic label="novas_get_debug_mode" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79"/>
+          <topic label="novas_orbit_posvel" href="novas_8c.html#afad28eae3650f8ef3ea3bfa419900f28"/>
           <topic label="novas_z2v" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1"/>
           <topic label="nutation" href="novas_8c.html#a69df5671751c09a7575963b94ad1151e"/>
           <topic label="nutation_angles" href="novas_8c.html#a0dc364ae1963da0b916ed5a9d0862d3e"/>
@@ -934,9 +991,11 @@
           <topic label="make_airborne_observer" href="super_8c.html#aa423a88cd3f434642fc89d47390184f4"/>
           <topic label="make_cat_object" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f"/>
           <topic label="make_ephem_object" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2"/>
+          <topic label="make_orbital_object" href="super_8c.html#a5caf50e954f622e525e8a9e159ec0655"/>
           <topic label="make_redshifted_object" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11"/>
           <topic label="make_solar_system_observer" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
           <topic label="novas_planet_for_name" href="super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3"/>
+          <topic label="novas_set_orbital_pole" href="super_8c.html#a234ac7fa5849f414d7e4405786f2e537"/>
           <topic label="novas_v2z" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f"/>
           <topic label="novas_z_add" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3"/>
           <topic label="novas_z_inv" href="super_8c.html#a1130ad2ce520e948c71f03a25a713075"/>

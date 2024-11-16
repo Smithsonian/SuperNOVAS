@@ -8,5 +8,6 @@ var searchData=
   ['starnumber_5',['starnumber',['../structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8',1,'cat_entry']]],
   ['state_6',['state',['../structnovas__frame.html#ac8ddcc571efb6061ddf9dfbcfffb4cd1',1,'novas_frame']]],
   ['sun_5fpos_7',['sun_pos',['../structnovas__frame.html#a3d3fc00c5477b8f7a9b6593a748949d0',1,'novas_frame']]],
-  ['sun_5fvel_8',['sun_vel',['../structnovas__frame.html#ae949db92ce7c56e4b5ada1b8f80002d3',1,'novas_frame']]]
+  ['sun_5fvel_8',['sun_vel',['../structnovas__frame.html#ae949db92ce7c56e4b5ada1b8f80002d3',1,'novas_frame']]],
+  ['system_9',['system',['../structnovas__orbital__elements.html#a2d7f51b64b1f15b7c85fdf1130d3ea87',1,'novas_orbital_elements']]]
 ];

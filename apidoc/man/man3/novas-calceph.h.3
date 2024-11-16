@@ -62,7 +62,7 @@ References \fBNOVAS_ID_CALCEPH\fP, and \fBNOVAS_ID_NAIF\fP\&.
 .SS "int novas_use_calceph (t_calcephbin * eph)"
 Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set of ephemeris files\&. If the supplied ephemeris files contain data for major planets also, they can be used by planet_calceph() / planet_calceph_hp() also, unless a separate CALCEPH ephemeris data is set via \fBnovas_use_calceph_planets()\fP\&.
 .PP
-The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects\&. If you want to use another provider for major planets, you need to call \fBset_planet_provider()\fP / \fBset_planet_provider_hp()\fP afterwards to specify a different provider for major planets (and Sun, Moon, SSB)\&.
+The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects\&. If you want to use another provider for major planets, you need to call \fBset_planet_provider()\fP / \fBset_planet_provider_hp()\fP afterwards to specify a different provider for major planets (and Sun, Moon, SSB\&.\&.\&.)\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -97,11 +97,11 @@ Attila Kovacs
 .PP
 References \fBnovas_use_calceph_planets()\fP, and \fBset_ephem_provider()\fP\&.
 .SS "int novas_use_calceph_planets (t_calcephbin * eph)"
-Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major planets (and Sun, Moon, and SSB)\&.
+Sets the CALCEPH C library and the specified ephemeris data as the ephemeris provider for the major planets (and Sun, Moon, SSB\&.\&.\&.)\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIeph\fP Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, and SSB) that have been opened\&. 
+\fIeph\fP Pointer to the CALCEPH ephemeris data for the major planets (including Sun, Moon, SSB\&.\&.\&.) that have been opened\&. 
 .RE
 .PP
 \fBReturns\fP

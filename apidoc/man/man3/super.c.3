@@ -75,6 +75,9 @@ src/super.c
 .RI "int \fBmake_ephem_object\fP (const char *name, long num, \fBobject\fP *body)"
 .br
 .ti -1c
+.RI "int \fBmake_orbital_object\fP (const char *name, long num, const \fBnovas_orbital_elements\fP *orbit, \fBobject\fP *body)"
+.br
+.ti -1c
 .RI "int \fBmake_redshifted_object\fP (const char *name, double ra, double dec, double z, \fBobject\fP *source)"
 .br
 .ti -1c
@@ -82,6 +85,9 @@ src/super.c
 .br
 .ti -1c
 .RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
+.br
+.ti -1c
+.RI "int \fBnovas_set_orbital_pole\fP (double ra, double dec, \fBnovas_orbital_system\fP *sys)"
 .br
 .ti -1c
 .RI "double \fBnovas_v2z\fP (double vel)"
@@ -938,6 +944,8 @@ Populates and object data structure with the data for a catalog source\&.
 .PP
 \fBmake_ephem_object()\fP 
 .PP
+\fBnovas_geom_posvel()\fP 
+.PP
 \fBplace()\fP
 .RE
 .PP
@@ -968,7 +976,7 @@ Sets a celestial object to be a Solar-system ephemeris body\&. Typically this wo
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, or else -1 if the 'planet' pointer is NULL or the name is too long\&.
+0 if successful, or else -1 if the 'body' pointer is NULL or the name is too long\&.
 .RE
 .PP
 \fBSee also\fP
@@ -978,6 +986,8 @@ Sets a celestial object to be a Solar-system ephemeris body\&. Typically this wo
 \fBmake_planet()\fP 
 .PP
 \fBmake_cat_entry()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
 .PP
 \fBplace()\fP
 .RE
@@ -995,6 +1005,51 @@ Attila Kovacs
 
 .PP
 References \fBmake_object()\fP, and \fBNOVAS_EPHEM_OBJECT\fP\&.
+.SS "int make_orbital_object (const char * name, long num, const \fBnovas_orbital_elements\fP * orbit, \fBobject\fP * body)"
+Sets a celestial object to be a Solar-system orbital body\&. Typically this would be used to define minor planets, asteroids, comets, or even planetary satellites\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Name of object\&. It may be NULL if not relevant\&. 
+.br
+\fInum\fP Solar-system body ID number (e\&.g\&. NAIF)\&. It is not required and can be set e\&.g\&. to -1 if not relevant to the caller\&. 
+.br
+\fIorbit\fP The orbital parameters to adopt\&. The data will be copied, not referenced\&. 
+.br
+\fIbody\fP Pointer to structure to populate\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or the name is too long\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_orbit_posvel()\fP 
+.PP
+\fBmake_planet()\fP 
+.PP
+\fBmake_ephem_object()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
+.PP
+\fBplace()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBmake_object()\fP, \fBNOVAS_ORBITAL_OBJECT\fP, and \fBobject::orbit\fP\&.
 .SS "int make_redshifted_object (const char * name, double ra, double dec, double z, \fBobject\fP * source)"
 Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy\&. It is similar to \fC\fBmake_cat_object()\fP\fP except that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax and no proper motion (appropriately for a distant redshifted source)\&. The catalog name is set to \fCEXT\fP to indicate an extragalactic source, and the catalog number defaults to 0\&. The user may change these default field values as appropriate afterwards, if necessary\&.
 .PP
@@ -1112,6 +1167,49 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, and \fBNOVAS_SSB\fP\&.
+.SS "int novas_set_orbital_pole (double ra, double dec, \fBnovas_orbital_system\fP * sys)"
+Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace (or else equatorial) plane relative to which the orbital elements are defined\&. Orbital parameters of planetary satellites normally include the R\&.A\&. and declination of the pole of the local Laplace plane in which the Keplerian orbital elements are referenced\&.
+.PP
+The system will become referenced to the equatorial plane, the relative obliquity is set to (90 - \fCdec\fP), while the argument of the ascending node ('Omega') is set to (90 + \fCra\fP)\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+You should not expect much precision from the long-range orbital approximations for planetary satellites\&. For applications that require precision at any level, you should rely on appropriate ephemerides, or else on up-to-date short-term orbital elements\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIra\fP [h] the R\&.A\&. of the pole of the oribtal reference plane\&. 
+.br
+\fIdec\fP [deg] the declination of the pole of the oribtal reference plane\&. 
+.br
+\fIsys\fP The orbital system 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 (errno will be set to EINVAL) if the output \fCsys\fP pointer is NULL\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_orbital_object()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_EQUATORIAL_PLANE\fP, \fBnovas_orbital_system::obl\fP, \fBnovas_orbital_system::Omega\fP, and \fBnovas_orbital_system::plane\fP\&.
 .SS "double novas_v2z (double vel)"
 Converts a radial recession velocity to a redshift value (z = f / f\*<rest\*> )\&. It is based on the relativistic formula: 
 .PP

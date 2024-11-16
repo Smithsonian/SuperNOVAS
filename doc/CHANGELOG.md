@@ -7,15 +7,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.2.0-rc2] - 2024-11-18
 
-Changes expected for the next feature release, expected around 1 February 2025.
+Release candidate for the next feature release, expected around 1 February 2025.
 
 
 ### Added
 
- - #57: New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are characterized
-   with a redshift measure rather than a radial velocity value.
+ - #57: New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are 
+   characterized with a redshift measure rather than a radial velocity value.
 
  - #57: New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
  
@@ -56,9 +56,28 @@ Changes expected for the next feature release, expected around 1 February 2025.
    You can also set other standard directory variables, as prescribed in the 
    [GNU standard](https://www.gnu.org/prep/standards/html_node/Directory-Variables.html) to further customize the
    install locations.
+ 
+ - #95: Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
+   can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
+   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
+   use `novas_set_orbital_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+   calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
+   provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
+   orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
+   and/or most accurate information available anywhere.
+   
+ - #97: Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
+   from the planet center in calculations.
    
  - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
+   
+### Changed
+
+ - #96: Changed `object` structure to include `novas_orbital_elements` for `NOVAS_ORBITAL_OBJECT` types.
+
+ - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
+   constants.
    
    
 ## [1.1.1] - 2024-10-28

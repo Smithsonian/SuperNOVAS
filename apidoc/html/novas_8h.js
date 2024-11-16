@@ -5,6 +5,8 @@ var novas_8h =
     [ "novas_delaunay_args", "structnovas__delaunay__args.html", "structnovas__delaunay__args" ],
     [ "novas_frame", "structnovas__frame.html", "structnovas__frame" ],
     [ "novas_matrix", "structnovas__matrix.html", "structnovas__matrix" ],
+    [ "novas_orbital_elements", "structnovas__orbital__elements.html", "structnovas__orbital__elements" ],
+    [ "novas_orbital_system", "structnovas__orbital__system.html", "structnovas__orbital__system" ],
     [ "novas_planet_bundle", "structnovas__planet__bundle.html", "structnovas__planet__bundle" ],
     [ "novas_timespec", "structnovas__timespec.html", "structnovas__timespec" ],
     [ "novas_transform", "structnovas__transform.html", "structnovas__transform" ],
@@ -34,6 +36,7 @@ var novas_8h =
     [ "NOVAS_EARTH_ANGVEL", "novas_8h.html#ac50f27bc66238525124427551a956ec3", null ],
     [ "NOVAS_EARTH_FLATTENING", "novas_8h.html#a1830a25e886366263653167369213d8b", null ],
     [ "NOVAS_EARTH_RADIUS", "novas_8h.html#a139f16e134bf6119b6e04c8272c85668", null ],
+    [ "NOVAS_EQUATOR_TYPES", "novas_8h.html#ade30c5c72c918b2428e803e3f4430ceb", null ],
     [ "NOVAS_G_EARTH", "novas_8h.html#af125f22b69933024d6a8513b205dca8b", null ],
     [ "NOVAS_G_SUN", "novas_8h.html#a6d955f313593b4a56fef202708d5722b", null ],
     [ "NOVAS_GPS_TO_TAI", "novas_8h.html#a6355388ff4a44836eda6eb1e97da60cd", null ],
@@ -46,6 +49,8 @@ var novas_8h =
     [ "NOVAS_MINOR_VERSION", "novas_8h.html#af7a746fdca818e9d4c4aa27bf65a62be", null ],
     [ "NOVAS_OBJECT_TYPES", "novas_8h.html#a60037f5a7c8fe2b7cf8893cf461598d1", null ],
     [ "NOVAS_OBSERVER_PLACES", "novas_8h.html#a7af86c48f77394688f4ad43eb20760f4", null ],
+    [ "NOVAS_ORBIT_INIT", "novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065", null ],
+    [ "NOVAS_ORBITAL_SYSTEM_INIT", "novas_8h.html#a61b4f45764a44517b867442de7749cd4", null ],
     [ "NOVAS_ORIGIN_TYPES", "novas_8h.html#aab57b6b4c8c96ed32414fe3964813e5f", null ],
     [ "NOVAS_PLANET_GRAV_Z_INIT", "novas_8h.html#a0ae90838b446c7d4c1d3386ec8857410", null ],
     [ "NOVAS_PLANET_NAMES_INIT", "novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390", null ],
@@ -114,7 +119,8 @@ var novas_8h =
     [ "novas_object_type", "novas_8h.html#a1eecb357eeea0de4759e9c8d55af238f", [
       [ "NOVAS_PLANET", "novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8", null ],
       [ "NOVAS_EPHEM_OBJECT", "novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269", null ],
-      [ "NOVAS_CATALOG_OBJECT", "novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5", null ]
+      [ "NOVAS_CATALOG_OBJECT", "novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5", null ],
+      [ "NOVAS_ORBITAL_OBJECT", "novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a", null ]
     ] ],
     [ "novas_observer_place", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3", [
       [ "NOVAS_OBSERVER_AT_GEOCENTER", "novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aca54b3a0c7d5b31d09090a1f55ff72b2", null ],
@@ -139,11 +145,17 @@ var novas_8h =
       [ "NOVAS_NEPTUNE", "novas_8h.html#a219df36b21dc4476656e708d14d08045af12d26e56aa375fd2aa0c0edfd1c9ae3", null ],
       [ "NOVAS_PLUTO", "novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5", null ],
       [ "NOVAS_SUN", "novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2", null ],
-      [ "NOVAS_MOON", "novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf", null ]
+      [ "NOVAS_MOON", "novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf", null ],
+      [ "NOVAS_EMB", "novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a", null ],
+      [ "NOVAS_PLUTO_BARYCENTER", "novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677", null ]
     ] ],
     [ "novas_pole_offset_type", "novas_8h.html#a70c3951615b1ecf42818c79893678543", [
       [ "POLE_OFFSETS_DPSI_DEPS", "novas_8h.html#a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47", null ],
       [ "POLE_OFFSETS_X_Y", "novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77", null ]
+    ] ],
+    [ "novas_reference_plane", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f", [
+      [ "NOVAS_ECLIPTIC_PLANE", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e", null ],
+      [ "NOVAS_EQUATORIAL_PLANE", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b", null ]
     ] ],
     [ "novas_reference_system", "novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e", [
       [ "NOVAS_GCRS", "novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4", null ],
@@ -252,6 +264,7 @@ var novas_8h =
     [ "make_observer_in_space", "novas_8h.html#a6c146e4d10152d5e1ffb978f2fc962be", null ],
     [ "make_observer_on_surface", "novas_8h.html#a00d9f6909923cd3e559c8f011ff9b794", null ],
     [ "make_on_surface", "novas_8h.html#a9174488cd701172531174d85ed26819b", null ],
+    [ "make_orbital_object", "novas_8h.html#a5caf50e954f622e525e8a9e159ec0655", null ],
     [ "make_planet", "novas_8h.html#a618bbba887b9bc9e7df878234c66c215", null ],
     [ "make_redshifted_object", "novas_8h.html#ae579a49d84696a913fd0d9f348bb5b11", null ],
     [ "make_solar_system_observer", "novas_8h.html#a9c3f1a1bc3fd9ac6d211806913d2d529", null ],
@@ -279,8 +292,10 @@ var novas_8h =
     [ "novas_make_transform", "novas_8h.html#a4d179c8573319fc25c775ce56ba055dc", null ],
     [ "novas_offset_time", "novas_8h.html#a01f98b2b8033c8dbacaeab37e9198e91", null ],
     [ "novas_optical_refraction", "novas_8h.html#ae4511a80a1defbb1e1fdc29c289e7de4", null ],
+    [ "novas_orbit_posvel", "novas_8h.html#af45c814a67b838383aa7c4785322e90a", null ],
     [ "novas_planet_for_name", "novas_8h.html#a92e869b101bd41e31ac6d3a2419bb0a3", null ],
     [ "novas_radio_refraction", "novas_8h.html#a6b49f92f8f818f2272613e3432185a39", null ],
+    [ "novas_set_orbital_pole", "novas_8h.html#a234ac7fa5849f414d7e4405786f2e537", null ],
     [ "novas_set_split_time", "novas_8h.html#a37c8f2d5e1ad2daed78d1bd7991fdba4", null ],
     [ "novas_set_time", "novas_8h.html#ac272a018a213965f07b21ac6facb4a62", null ],
     [ "novas_set_unix_time", "novas_8h.html#abacd89aa380c85da2d3c19a7e2187df3", null ],

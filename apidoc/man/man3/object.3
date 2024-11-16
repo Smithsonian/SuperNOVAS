@@ -20,9 +20,13 @@ object
 .br
 .RI "enum novas_planet, or minor planet ID (e\&.g\&. NAIF), or star catalog ID\&. "
 .ti -1c
+.RI "\fBnovas_orbital_elements\fP \fBorbit\fP"
+.br
+.RI "orbital data for NOVAS_ORBITAL_OBJECT TYPE\&. "
+.ti -1c
 .RI "\fBcat_entry\fP \fBstar\fP"
 .br
-.RI "basic astrometric data for any 'catalog' object\&. "
+.RI "basic astrometric data for NOVAS_CATALOG_OBJECT type\&. "
 .ti -1c
 .RI "enum \fBnovas_object_type\fP \fBtype\fP"
 .br
@@ -33,6 +37,19 @@ object
 Celestial object of interest\&.
 .PP
 Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type' and the long vs\&. short 'number' values -- hence it is not cross-compatible for binary data exchange with NOVAS C 3\&.1\&. 
+.SH "Field Documentation"
+.PP 
+.SS "\fBnovas_orbital_elements\fP orbit"
+
+.PP
+orbital data for NOVAS_ORBITAL_OBJECT TYPE\&. 
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
 
 .SH "Author"
 .PP 

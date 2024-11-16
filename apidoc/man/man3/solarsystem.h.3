@@ -12,7 +12,6 @@ include/solarsystem.h
 .ti -1c
 .RI "#define \fBNOVAS_ID_TYPES\fP   (\fBNOVAS_ID_CALCEPH\fP + 1)"
 .br
-.RI "Number of different Solar-system body ID types enumerated\&. "
 .in -1c
 .SS "Typedefs"
 
@@ -110,7 +109,7 @@ include/solarsystem.h
 G\&. Kaplan and A\&. Kovacs
 .RE
 .PP
-SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter\&.
+SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter (and as of v1\&.2 also the Earth-Moon Barycenter and the barycenter of the Pluto system)\&.
 .PP
 The source files \fBsolsys-calceph\&.c\fP and \fBsolsys-cspice\&.c\fP provide implementations that interface with the CALCEPH C library and the NAIF CSPICE Toolkit, respectively\&. CSPICE is the canocical library for handling JPL (SPK) ephemeris data, while CALCEPH is a more modern tool, which allows handling most types of JPL ephemerides, as well INPOP 2\&.0/3\&.0 format data files\&.
 .PP
@@ -143,6 +142,27 @@ U\&. S\&. Naval Observatory
 \fBsolsys3\&.c\fP 
 .PP
 \fBsolsys-ephem\&.c\fP 
+.RE
+.PP
+
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define NOVAS_ID_TYPES   (\fBNOVAS_ID_CALCEPH\fP + 1)"
+Number of different Solar-system body ID types enumerated
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_id_type\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
 .RE
 .PP
 
@@ -198,7 +218,7 @@ Attila Kovacs
 .PP
 
 .SS "typedef short(* novas_planet_provider) (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
-Provides the position and velocity of major planets (as well as the Sun, Moon, and Solar-system Barycenter position\&. This version provides positions and velocities at regular precision (see NOVAS_REDUCED_PRECISION)\&.
+Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters)\&. This version provides positions and velocities at regular precision (see NOVAS_REDUCED_PRECISION)\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
 .PP
@@ -206,7 +226,7 @@ Since this is a function that may be provided by existing custom user implementa
 .RS 4
 \fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
 .br
-\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. 
+\fIbody\fP Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
 .br
@@ -226,12 +246,22 @@ Since this is a function that may be provided by existing custom user implementa
 .PP
 \fBephemeris()\fP 
 .PP
-novas_solarsystem_hp_func 
+novas_solarsystem_hp_func
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 
 .SS "typedef short(* novas_planet_provider_hp) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
-Provides the position and velocity of major planets (as well as the Sun, Moon, and Solar-system Barycenter position\&. This version provides positions and velocities at high precision (see NOVAS_FULL_PRECISION)\&.
+Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters)\&. This version provides positions and velocities at high precision (see NOVAS_FULL_PRECISION)\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
 .PP
@@ -239,7 +269,7 @@ Since this is a function that may be provided by existing custom user implementa
 .RS 4
 \fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order components, respectively\&. Typically, as the integer and fractional parts for the highest precision\&. 
 .br
-\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. 
+\fIbody\fP Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
 .br
@@ -259,7 +289,17 @@ Since this is a function that may be provided by existing custom user implementa
 .PP
 novas_solarsystem_func 
 .PP
-\fBephemeris()\fP 
+\fBephemeris()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 
@@ -273,6 +313,18 @@ Solar-system body IDs to use as \fBobject\&.number\fP with NOVAS_EPHEM_OBJECT ty
 \fBobject\fP 
 .PP
 \fBNOVAS_EPHEM_OBJECT\fP 
+.PP
+\fBNOVAS_ID_TYPES\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
 .RE
 .PP
 
@@ -419,7 +471,7 @@ Attila Kovacs
 .PP
 
 .SS "\fBnovas_planet_provider\fP get_planet_provider ()"
-Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB), if any\&.
+Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB\&.\&.\&.), if any\&.
 .PP
 \fBReturns\fP
 .RS 4
@@ -447,7 +499,7 @@ Attila Kovacs
 .PP
 
 .SS "\fBnovas_planet_provider_hp\fP get_planet_provider_hp ()"
-Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB), if any\&.
+Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB\&.\&.\&.), if any\&.
 .PP
 \fBReturns\fP
 .RS 4
@@ -475,7 +527,7 @@ Attila Kovacs
 .PP
 
 .SS "enum \fBnovas_planet\fP naif_to_novas_planet (long id)"
-Converts a NAIF ID to a NOVAS major planet ID\&. It account for the different IDs used for Sun, Moon and SSB\&. Otherwise NAIF planet barycenters are mapped to the corresponding bodies, except EMB (3), which will return -1\&. NAIF body centers \fIn\fP99 (e\&.g\&. 399 for Earth), are mapped to the corresponding NOVAS planet number \fIn\fP\&. All other NAIF IDs will return -1, indicating no match to a NOVAS planet ID\&.
+Converts a NAIF ID to a NOVAS major planet ID\&. It account for the different IDs used for Sun, Moon, SSB, EMB and the Pluto system\&. Otherwise NAIF planet barycenters are mapped to the corresponding bodies\&. NAIF body centers \fIn\fP99 (e\&.g\&. 399 for Earth) are mapped to the corresponding NOVAS planet number \fIn\fP\&. All other NAIF IDs will return -1, indicating no match to a NOVAS planet ID\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -506,7 +558,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+References \fBNOVAS_EMB\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_PLUTO_BARYCENTER\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SS "long novas_to_dexxx_planet (enum \fBnovas_planet\fP id)"
 Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files\&. The DExxx (e\&.g\&. DE440) ephemeris files use NAIF IDs, but for most planets contain barycentric data only rather than that of the planet center\&. For Earth-based observations, it only really makes a difference whether the 3 is used for the Earth-Moon Barycenter (EMB) or 399 for the geocenter\&.
 .PP
@@ -539,9 +591,9 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_EARTH\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+References \fBNOVAS_EARTH\fP, \fBNOVAS_EMB\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_PLUTO_BARYCENTER\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SS "long novas_to_naif_planet (enum \fBnovas_planet\fP id)"
-Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID\&. NOVAS and NAIF use slightly different IDs for major planets, the Moon, and the Solar-system Barycenter (SSB)\&. In NOVAS, major planets are have IDs ranging from 1 through 9, but for NAIF 1--9 are the planetary barycenters and the planet centers have numbers in the hundreds ending with 99 (e\&.g\&. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon Barycenter [EMB])\&. The Sun and Moon also have distinct IDs in NAIF vs NOVAS\&.
+Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID\&. NOVAS and NAIF use slightly different IDs for major planets, the Moon, SSB, EMB, and the Pluto system\&. In NOVAS, major planets are have IDs ranging from 1 through 9, but for NAIF 1--9 are the planetary barycenters and the planet centers have numbers in the hundreds ending with 99 (e\&.g\&. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon Barycenter [EMB])\&. The Sun and Moon also have distinct IDs in NAIF vs NOVAS\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -570,7 +622,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
+References \fBNOVAS_EMB\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_PLUTO_BARYCENTER\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
 .SS "short planet_eph_manager (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for regular (reduced) precision applications\&.
 .PP
@@ -591,7 +643,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .RS 4
 \fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
 .br
-\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+\fIbody\fP Major planet number (or that for Sun, Moon, SSB\&.\&.\&.) 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
 .br
@@ -646,7 +698,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .RS 4
 \fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
 .br
-\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+\fIbody\fP Major planet number (or that for Sun, Moon, SSB\&.\&.\&.) 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
 .br
@@ -686,7 +738,7 @@ Major planet ephemeris data via the same generic ephemeris provider that is conf
 .RS 4
 \fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date\&. 
 .br
-\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+\fIbody\fP Major planet number (or that for Sun, Moon, SSB\&.\&.\&.) 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to report positions and velocities\&. 
 .br
@@ -729,7 +781,7 @@ Major planet ephemeris data via the same generic ephemeris provider that is conf
 .RS 4
 \fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date, split into high and low order components (e\&.g\&. integer and fractional parts) for high-precision calculations\&. 
 .br
-\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+\fIbody\fP Major planet number (or that for Sun, Moon, SSB\&.\&.\&.) 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to report positions and velocities\&. 
 .br
@@ -785,7 +837,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .RS 4
 \fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
 .br
-\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+\fIbody\fP Major planet number (or that for Sun, Moon, SSB\&.\&.) 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
 .br
@@ -838,7 +890,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 .RS 4
 \fIjd_tdb\fP [day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the 'integer' part, and the second element is the 'fractional' part)\&. Julian date is on the TDB or 'T_eph' time scale\&. 
 .br
-\fIbody\fP Major planet number (or that for Sun, Moon, or Solar-system barycenter) 
+\fIbody\fP Major planet number (or that for Sun, Moon, SSB\&.\&.\&.) 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter -- relative to which to report positions and velocities\&. 
 .br
@@ -1024,7 +1076,7 @@ Since this is a function that may be provided by existing custom user implementa
 .RS 4
 \fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
 .br
-\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+\fIbody\fP Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
 .br
@@ -1055,7 +1107,7 @@ Since this is a function that may be provided by existing custom user implementa
 .PP
 References \fBearth_sun_calc()\fP, \fBplanet_eph_manager()\fP, \fBplanet_ephem_provider()\fP, and \fBplanet_jplint()\fP\&.
 .SS "short solarsystem_hp (const double jd_tdb[2], short body, short origin, double * position, double * velocity)"
-A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
+A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter (and other barycenters)\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
 .PP
@@ -1063,7 +1115,7 @@ Since this is a function that may be provided by existing custom user implementa
 .RS 4
 \fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order components, respectively\&. Typically, as the integer and fractional parts for the highest precision\&. 
 .br
-\fIbody\fP Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
+\fIbody\fP Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e\&.g\&. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0)\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
 .br
 \fIorigin\fP NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities\&. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here)\&. 
 .br

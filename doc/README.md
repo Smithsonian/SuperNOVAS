@@ -579,6 +579,24 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
+As of version 1.2 you can also define solar system sources with orbital elements (such as the most up-to-date ones 
+provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for asteroids, comets, etc.):
+
+```c
+  object NEA;		// e.g. a Near-Earth Asteroid
+  
+  // Fill in the orbital parameters (pay attention to units!)
+  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  orbit.a = ...;
+  ...
+  
+  // Create an object for that orbit
+  make_orbital_object("NEAxxx", -1, &orbit, object);
+```
+
+Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise
+positions for the Sun or planet, around which the orbit is defined.
+
 Other than that, it's the same spiel as before, e.g.:
 
 ```c
@@ -870,13 +888,25 @@ before that level of accuracy is reached.
    `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides
    `cspice_add_kernel()` and `cspice_remove_kernel()`.
    
- - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB): `novas_to_naif_planet()`, 
+ - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB...): `novas_to_naif_planet()`, 
    `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
    
  - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
 
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
 
+ - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
+   can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
+   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
+   use `novas_set_orbital_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+   calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
+   provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
+   orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
+   and/or most accurate information available anywhere.
+
+ - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
+   from the corresponding planet centers in calculations.
+   
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
@@ -968,7 +998,7 @@ SuperNOVAS flexibility in this area, you have several options on doing that. The
 NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
 example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
-and the Sun, Moon, and the Solar-System Barycenter (SSB) for times between 1550 AD and 2650 AD. Or, you can use the 
+and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the 
 [JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
 all known solar systems bodies, down to the tiniest rocks. 
 
@@ -1101,7 +1131,7 @@ Once you have your adapter function, you can set it as your ephemeris service vi
 ```
 
 By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
-major planets, the Sun, Moon, and the Solar System Barycenter). But, you can use the same function for the mentioned 
+major planets, the Sun, Moon, Solar-system Barycenter...). But, you can use the same function for the mentioned 
 'major planets' also via:
 
 ```c

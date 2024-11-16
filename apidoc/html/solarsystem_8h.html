@@ -122,9 +122,7 @@ $(document).ready(function(){initNavTree('solarsystem_8h.html',''); initResizabl
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a9a736e59fc9bfdc92b7245aa37d529ee" id="r_a9a736e59fc9bfdc92b7245aa37d529ee"><td class="memItemLeft" align="right" valign="top"><a id="a9a736e59fc9bfdc92b7245aa37d529ee" name="a9a736e59fc9bfdc92b7245aa37d529ee"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_ID_TYPES</b>&#160;&#160;&#160;(<a class="el" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719">NOVAS_ID_CALCEPH</a> + 1)</td></tr>
-<tr class="memdesc:a9a736e59fc9bfdc92b7245aa37d529ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of different Solar-system body ID types enumerated. <br /></td></tr>
+<tr class="memitem:a9a736e59fc9bfdc92b7245aa37d529ee" id="r_a9a736e59fc9bfdc92b7245aa37d529ee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee">NOVAS_ID_TYPES</a>&#160;&#160;&#160;(<a class="el" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719">NOVAS_ID_CALCEPH</a> + 1)</td></tr>
 <tr class="separator:a9a736e59fc9bfdc92b7245aa37d529ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -190,7 +188,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs</dd></dl>
-<p>SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter.</p>
+<p>SuperNOVAS header for custom solar-system ephemeris calculations for major planets plus the Sun, Moon, and the Solar-system barycenter (and as of v1.2 also the Earth-Moon Barycenter and the barycenter of the Pluto system).</p>
 <p>The source files <a class="el" href="solsys-calceph_8c.html">solsys-calceph.c</a> and <a class="el" href="solsys-cspice_8c.html">solsys-cspice.c</a> provide implementations that interface with the CALCEPH C library and the NAIF CSPICE Toolkit, respectively. CSPICE is the canocical library for handling JPL (SPK) ephemeris data, while CALCEPH is a more modern tool, which allows handling most types of JPL ephemerides, as well INPOP 2.0/3.0 format data files.</p>
 <p>The source files <a class="el" href="solsys1_8c.html">solsys1.c</a>, <a class="el" href="solsys2_8c.html">solsys2.c</a>, <a class="el" href="solsys3_8c.html">solsys3.c</a> and <a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> provide various legacy implementations that users may use (some require additional sources, or user-specific implementations).</p>
 <p>If the standard implementations are compiled with the DEFAULT_SOLSYS option set (see <code>config.mk</code>), then the library is compiled with that version providing a built-in default implementation (the default is to use <code><a class="el" href="solsys3_8c.html">solsys3.c</a></code>, which is a self-contained orbital calculation for the Sun and Earth only).</p>
@@ -211,7 +209,26 @@ Functions</h2></td></tr>
 <a class="el" href="solsys3_8c.html">solsys3.c</a> </dd>
 <dd>
 <a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> </dd></dl>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a9a736e59fc9bfdc92b7245aa37d529ee" name="a9a736e59fc9bfdc92b7245aa37d529ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a736e59fc9bfdc92b7245aa37d529ee">&#9670;&#160;</a></span>NOVAS_ID_TYPES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_ID_TYPES&#160;&#160;&#160;(<a class="el" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719">NOVAS_ID_CALCEPH</a> + 1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Number of different Solar-system body ID types enumerated</p>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531">novas_id_type</a></dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
 <a id="ac2ae695519a5b600a105243f4e30c3ab" name="ac2ae695519a5b600a105243f4e30c3ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac2ae695519a5b600a105243f4e30c3ab">&#9670;&#160;</a></span>novas_ephem_provider</h2>
 
@@ -261,12 +278,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Provides the position and velocity of major planets (as well as the Sun, Moon, and Solar-system Barycenter position. This version provides positions and velocities at regular precision (see NOVAS_REDUCED_PRECISION).</p>
+<p>Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters). This version provides positions and velocities at regular precision (see NOVAS_REDUCED_PRECISION).</p>
 <p>Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day. </td></tr>
@@ -278,7 +295,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a> </dd>
 <dd>
-novas_solarsystem_hp_func </dd></dl>
+novas_solarsystem_hp_func</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 </div>
 </div>
@@ -293,12 +312,12 @@ novas_solarsystem_hp_func </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Provides the position and velocity of major planets (as well as the Sun, Moon, and Solar-system Barycenter position. This version provides positions and velocities at high precision (see NOVAS_FULL_PRECISION).</p>
+<p>Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters). This version provides positions and velocities at high precision (see NOVAS_FULL_PRECISION).</p>
 <p>Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order components, respectively. Typically, as the integer and fractional parts for the highest precision. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day. </td></tr>
@@ -310,7 +329,9 @@ novas_solarsystem_hp_func </dd></dl>
 <dd>
 novas_solarsystem_func </dd>
 <dd>
-<a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a> </dd></dl>
+<a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 </div>
 </div>
@@ -329,7 +350,11 @@ novas_solarsystem_func </dd>
 <p>Solar-system body IDs to use as <a class="el" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74" title="enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.">object.number</a> with NOVAS_EPHEM_OBJECT types. JPL ephemerides use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a> to identify objects in the Solar-system, which is thus the most widely adopted convention for numbering Solar-system bodies. But other numbering systems also exists, for example the CALCEPH library uses its own convention for the numbering of asteroids.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structobject.html">object</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a> </dd></dl>
+<a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a> </dd>
+<dd>
+<a class="el" href="solarsystem_8h.html#a9a736e59fc9bfdc92b7245aa37d529ee">NOVAS_ID_TYPES</a></dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db" name="ac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db"></a>NOVAS_ID_NAIF&#160;</td><td class="fielddoc"><p>If the ephemeris provider should use NAIF IDs. </p>
 </td></tr>
@@ -555,7 +580,7 @@ This implementation will always propulate the output position and velocity vecto
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB), if any.</p>
+<p>Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB...), if any.</p>
 <dl class="section return"><dt>Returns</dt><dd>the custom (low-precision) planet ephemeris provider function.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
@@ -581,7 +606,7 @@ This implementation will always propulate the output position and velocity vecto
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB), if any.</p>
+<p>Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB...), if any.</p>
 <dl class="section return"><dt>Returns</dt><dd>the custom high-precision planet ephemeris provider function.</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
@@ -608,7 +633,7 @@ This implementation will always propulate the output position and velocity vecto
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun, Moon and SSB. Otherwise NAIF planet barycenters are mapped to the corresponding bodies, except EMB (3), which will return -1. NAIF body centers <em>n</em>99 (e.g. 399 for Earth), are mapped to the corresponding NOVAS planet number <em>n</em>. All other NAIF IDs will return -1, indicating no match to a NOVAS planet ID.</p>
+<p>Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun, Moon, SSB, EMB and the Pluto system. Otherwise NAIF planet barycenters are mapped to the corresponding bodies. NAIF body centers <em>n</em>99 (e.g. 399 for Earth) are mapped to the corresponding NOVAS planet number <em>n</em>. All other NAIF IDs will return -1, indicating no match to a NOVAS planet ID.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The NAIF ID of the major planet of interest </td></tr>
@@ -622,7 +647,7 @@ This implementation will always propulate the output position and velocity vecto
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677">NOVAS_PLUTO_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
 
 </div>
 </div>
@@ -655,7 +680,7 @@ This implementation will always propulate the output position and velocity vecto
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677">NOVAS_PLUTO_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
 
 </div>
 </div>
@@ -674,7 +699,7 @@ This implementation will always propulate the output position and velocity vecto
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID. NOVAS and NAIF use slightly different IDs for major planets, the Moon, and the Solar-system Barycenter (SSB). In NOVAS, major planets are have IDs ranging from 1 through 9, but for NAIF 1&ndash;9 are the planetary barycenters and the planet centers have numbers in the hundreds ending with 99 (e.g. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon Barycenter [EMB]). The Sun and Moon also have distinct IDs in NAIF vs NOVAS.</p>
+<p>Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID. NOVAS and NAIF use slightly different IDs for major planets, the Moon, SSB, EMB, and the Pluto system. In NOVAS, major planets are have IDs ranging from 1 through 9, but for NAIF 1&ndash;9 are the planetary barycenters and the planet centers have numbers in the hundreds ending with 99 (e.g. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon Barycenter [EMB]). The Sun and Moon also have distinct IDs in NAIF vs NOVAS.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The NOVAS ID of the major planet of interest </td></tr>
@@ -686,7 +711,7 @@ This implementation will always propulate the output position and velocity vecto
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677">NOVAS_PLUTO_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
 
 </div>
 </div>
@@ -746,7 +771,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the "integer" part, and the second element is the "fractional" part). Julian date is on the TDB or "T_eph" time scale. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, or Solar-system barycenter) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, SSB...) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter &ndash; relative to which to report positions and velocities. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day. </td></tr>
@@ -825,7 +850,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the "integer" part, and the second element is the "fractional" part). Julian date is on the TDB or "T_eph" time scale. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, or Solar-system barycenter) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, SSB...) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter &ndash; relative to which to report positions and velocities. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day. </td></tr>
@@ -893,7 +918,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, or Solar-system barycenter) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, SSB...) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to report positions and velocities. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day. </td></tr>
@@ -960,7 +985,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date, split into high and low order components (e.g. integer and fractional parts) for high-precision calculations. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, or Solar-system barycenter) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, SSB...) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to report positions and velocities. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day. </td></tr>
@@ -1036,7 +1061,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the "integer" part, and the second element is the "fractional" part). Julian date is on the TDB or "T_eph" time scale. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, or Solar-system barycenter) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, SSB..) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter &ndash; relative to which to report positions and velocities. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day. </td></tr>
@@ -1113,7 +1138,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the "integer" part, and the second element is the "fractional" part). Julian date is on the TDB or "T_eph" time scale. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, or Solar-system barycenter) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for Sun, Moon, SSB...) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1), or 2 for Earth geocenter &ndash; relative to which to report positions and velocities. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at jd_tdb; equatorial rectangular coordinates in AU referred to the ICRS. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at jd_tdb; equatorial rectangular system referred to the ICRS, in AU/day. </td></tr>
@@ -1347,7 +1372,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day. </td></tr>
@@ -1412,12 +1437,12 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
         </tr>
       </table>
 </div><div class="memdoc">
-<p>A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default. Applications can define their own preferred implementations at runtime via <a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
+<p>A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter (and other barycenters). See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default. Applications can define their own preferred implementations at runtime via <a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
 <p>Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date, broken into high and low order components, respectively. Typically, as the integer and fractional parts for the highest precision. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or Solar-system Barycenter position), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">body</td><td>Major planet number (or that for the Sun, Moon, or an appropriate barycenter), as defined by enum novas_planet, e.g. NOVAS_MARS (4), NOVAS_SUN (10) or NOVAS_SSB (0). (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>NOVAS_BARYCENTER (0) or NOVAS_HELIOCENTER (1) relative to which to return positions and velocities. (For compatibility with existing NOVAS C compatible user implementations, we keep the original NOVAS C argument type here). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector of 'body' at 'tjd'; equatorial rectangular coordinates in AU referred to the mean equator and equinox of J2000.0. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector of 'body' at 'tjd'; equatorial rectangular system referred to the mean equator and equinox of J2000.0, in AU/Day. </td></tr>

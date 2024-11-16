@@ -25,6 +25,12 @@ include/novas.h
 .RI "struct \fBnovas_matrix\fP"
 .br
 .ti -1c
+.RI "struct \fBnovas_orbital_elements\fP"
+.br
+.ti -1c
+.RI "struct \fBnovas_orbital_system\fP"
+.br
+.ti -1c
 .RI "struct \fBnovas_planet_bundle\fP"
 .br
 .ti -1c
@@ -126,6 +132,9 @@ include/novas.h
 .br
 .RI "[m] Radius of Earth in meters from IERS Conventions (2003)\&. "
 .ti -1c
+.RI "#define \fBNOVAS_EQUATOR_TYPES\fP   (\fBNOVAS_GCRS_EQUATOR\fP + 1)"
+.br
+.ti -1c
 .RI "#define \fBNOVAS_G_EARTH\fP   3\&.98600433e+14"
 .br
 .ti -1c
@@ -163,31 +172,32 @@ include/novas.h
 .br
 .RI "Minor version of NOVAS on which this library is based\&. "
 .ti -1c
-.RI "#define \fBNOVAS_OBJECT_TYPES\fP   (\fBNOVAS_CATALOG_OBJECT\fP + 1)"
+.RI "#define \fBNOVAS_OBJECT_TYPES\fP   (\fBNOVAS_ORBITAL_OBJECT\fP + 1)"
 .br
-.RI "The number of object types distinguished by NOVAS\&. "
 .ti -1c
 .RI "#define \fBNOVAS_OBSERVER_PLACES\fP   (\fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP + 1)"
 .br
-.RI "The number of observer place types supported\&. "
+.ti -1c
+.RI "#define \fBNOVAS_ORBIT_INIT\fP   { \fBNOVAS_ORBITAL_SYSTEM_INIT\fP, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+.br
+.ti -1c
+.RI "#define \fBNOVAS_ORBITAL_SYSTEM_INIT\fP   { \fBNOVAS_SUN\fP, \fBNOVAS_ECLIPTIC_PLANE\fP, \fBNOVAS_GCRS_EQUATOR\fP, 0\&.0, 0\&.0 }"
+.br
 .ti -1c
 .RI "#define \fBNOVAS_ORIGIN_TYPES\fP   (\fBNOVAS_HELIOCENTER\fP + 1)"
 .br
-.RI "the number of different ICSR origins available in NOVAS\&. "
 .ti -1c
 .RI "#define \fBNOVAS_PLANET_GRAV_Z_INIT\fP"
 .br
 .ti -1c
-.RI "#define \fBNOVAS_PLANET_NAMES_INIT\fP   { 'SSB', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Sun', 'Moon' }"
+.RI "#define \fBNOVAS_PLANET_NAMES_INIT\fP"
 .br
 .ti -1c
-.RI "#define \fBNOVAS_PLANETS\fP   (\fBNOVAS_MOON\fP + 1)"
+.RI "#define \fBNOVAS_PLANETS\fP   (\fBNOVAS_PLUTO_BARYCENTER\fP + 1)"
 .br
-.RI "The number of major planets defined in NOVAS\&. "
 .ti -1c
 .RI "#define \fBNOVAS_REFERENCE_SYSTEMS\fP   (\fBNOVAS_MOD\fP + 1)"
 .br
-.RI "The number of basic coordinate reference systems in NOVAS\&. "
 .ti -1c
 .RI "#define \fBNOVAS_RMASS_INIT\fP"
 .br
@@ -204,7 +214,6 @@ include/novas.h
 .ti -1c
 .RI "#define \fBNOVAS_TRANSFORM_TYPES\fP   (\fBICRS_TO_J2000\fP + 1)"
 .br
-.RI "The number of coordinate transfor types in NOVAS\&. "
 .ti -1c
 .RI "#define \fBNOVAS_VERSION_STRING\fP   #\fBNOVAS_MAJOR_VERSION\fP '\&.' \fBNOVAS_MINOR_VERSION\fP"
 .br
@@ -289,7 +298,7 @@ include/novas.h
 .RI "enum \fBnovas_nutation_direction\fP { \fBNUTATE_TRUE_TO_MEAN\fP = -1, \fBNUTATE_MEAN_TO_TRUE\fP }"
 .br
 .ti -1c
-.RI "enum \fBnovas_object_type\fP { \fBNOVAS_PLANET\fP = 0, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_CATALOG_OBJECT\fP }"
+.RI "enum \fBnovas_object_type\fP { \fBNOVAS_PLANET\fP = 0, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_ORBITAL_OBJECT\fP }"
 .br
 .ti -1c
 .RI "enum \fBnovas_observer_place\fP { \fBNOVAS_OBSERVER_AT_GEOCENTER\fP = 0, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP }"
@@ -298,10 +307,13 @@ include/novas.h
 .RI "enum \fBnovas_origin\fP { \fBNOVAS_BARYCENTER\fP = 0, \fBNOVAS_HELIOCENTER\fP }"
 .br
 .ti -1c
-.RI "enum \fBnovas_planet\fP { \fBNOVAS_SSB\fP = 0, \fBNOVAS_MERCURY\fP, \fBNOVAS_VENUS\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_MARS\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_URANUS\fP, \fBNOVAS_NEPTUNE\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SUN\fP, \fBNOVAS_MOON\fP }"
+.RI "enum \fBnovas_planet\fP { \fBNOVAS_SSB\fP = 0, \fBNOVAS_MERCURY\fP, \fBNOVAS_VENUS\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_MARS\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_URANUS\fP, \fBNOVAS_NEPTUNE\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_SUN\fP, \fBNOVAS_MOON\fP, \fBNOVAS_EMB\fP, \fBNOVAS_PLUTO_BARYCENTER\fP }"
 .br
 .ti -1c
 .RI "enum \fBnovas_pole_offset_type\fP { \fBPOLE_OFFSETS_DPSI_DEPS\fP = 1, \fBPOLE_OFFSETS_X_Y\fP }"
+.br
+.ti -1c
+.RI "enum \fBnovas_reference_plane\fP { \fBNOVAS_ECLIPTIC_PLANE\fP = 0, \fBNOVAS_EQUATORIAL_PLANE\fP }"
 .br
 .ti -1c
 .RI "enum \fBnovas_reference_system\fP { \fBNOVAS_GCRS\fP = 0, \fBNOVAS_TOD\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP }"
@@ -533,6 +545,9 @@ include/novas.h
 .RI "int \fBmake_on_surface\fP (double latitude, double longitude, double height, double temperature, double pressure, \fBon_surface\fP *loc)"
 .br
 .ti -1c
+.RI "int \fBmake_orbital_object\fP (const char *name, long num, const \fBnovas_orbital_elements\fP *orbit, \fBobject\fP *body)"
+.br
+.ti -1c
 .RI "int \fBmake_planet\fP (enum \fBnovas_planet\fP num, \fBobject\fP *planet)"
 .br
 .ti -1c
@@ -614,10 +629,16 @@ include/novas.h
 .RI "double \fBnovas_optical_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
 .br
 .ti -1c
+.RI "int \fBnovas_orbit_posvel\fP (double jd_tdb, const \fBnovas_orbital_elements\fP *orb, enum \fBnovas_accuracy\fP accuracy, double *pos, double *vel)"
+.br
+.ti -1c
 .RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
 .br
 .ti -1c
 .RI "double \fBnovas_radio_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
+.br
+.ti -1c
+.RI "int \fBnovas_set_orbital_pole\fP (double ra, double dec, \fBnovas_orbital_system\fP *sys)"
 .br
 .ti -1c
 .RI "int \fBnovas_set_split_time\fP (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP *time)"
@@ -834,6 +855,16 @@ Old definition of the Barycenter origin\&. NOVAS_BARYCENTER is preferred\&.
 .SS "#define CAT_ENTRY_INIT   { {'\\0'}, {'\\0'}, 0L, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
 Initializer for a NOVAS \fBcat_entry\fP structure\&. 
 .PP
+\fBSee also\fP
+.RS 4
+\fBcat_entry\fP 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
 \fBSince\fP
 .RS 4
 1\&.1\&.1 
@@ -901,6 +932,11 @@ Old definition of the Center of Sun as the origin\&. NOVAS_HELIOCENTER is prefer
 .SS "#define IN_SPACE_INIT   {{0\&.0}, {0\&.0}}"
 Initializer for a NOVAS \fBin_space\fP structure\&. 
 .PP
+\fBSee also\fP
+.RS 4
+\fBin_space\fP 
+.RE
+.PP
 \fBSince\fP
 .RS 4
 1\&.1\&.1 
@@ -920,20 +956,111 @@ Initializer for a NOVAS \fBin_space\fP structure\&.
 [rad/s] Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003)\&. 
 .SS "#define NOVAS_EARTH_FLATTENING   (1\&.0 / 298\&.25642)"
 Earth ellipsoid flattening from IERS Conventions (2003)\&. Value is 1 / 298\&.25642\&. 
+.SS "#define NOVAS_EQUATOR_TYPES   (\fBNOVAS_GCRS_EQUATOR\fP + 1)"
+The number of equator types defined in \fCenum novas_equator_type\fP\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_equator_type\fP 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
 .SS "#define NOVAS_G_EARTH   3\&.98600433e+14"
 [m\*{3\*} /s\*{2\*} ] Geocentric gravitational constant in meters^3 / second^2, from DE-405\&. 
 .SS "#define NOVAS_G_SUN   1\&.32712440017987e+20"
 [m\*{3\*} /s\*{2\*} ] Heliocentric gravitational constant in meters^3 / second^2, from DE-405\&. 
 .SS "#define NOVAS_JD_HIP   2448349\&.0625"
 [day] Julian date for J1991\&.25, which the Hipparcos catalog is referred to 
+.SS "#define NOVAS_OBJECT_TYPES   (\fBNOVAS_ORBITAL_OBJECT\fP + 1)"
+The number of object types distinguished by NOVAS\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_object_type\fP 
+.RE
+.PP
+
+.SS "#define NOVAS_OBSERVER_PLACES   (\fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP + 1)"
+The number of observer place types supported
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_observer_place\fP 
+.RE
+.PP
+
+.SS "#define NOVAS_ORBIT_INIT   { \fBNOVAS_ORBITAL_SYSTEM_INIT\fP, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+Initializer for \fBnovas_orbital_elements\fP for heliocentric orbits using GCRS ecliptic pqrametrization\&. 
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_orbital_elements\fP 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.SS "#define NOVAS_ORBITAL_SYSTEM_INIT   { \fBNOVAS_SUN\fP, \fBNOVAS_ECLIPTIC_PLANE\fP, \fBNOVAS_GCRS_EQUATOR\fP, 0\&.0, 0\&.0 }"
+Default orbital system initializer for heliocentric GCRS ecliptic orbits\&. 
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_orbital_system\fP 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.SS "#define NOVAS_ORIGIN_TYPES   (\fBNOVAS_HELIOCENTER\fP + 1)"
+The number of different ICSR origins available in NOVAS\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_origin\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_PLANET_GRAV_Z_INIT"
 \fBValue:\fP.PP
 .nf
   { \\
   0\&.0, 1\&.0047e\-10, 5\&.9724e\-10, 7\&.3050e\-10, 1\&.4058e\-10, 2\&.0166e\-8, 7\&.2491e\-9, 2\&.5420e\-9, \\
-  3\&.0893e\-9, 9\&.1338e\-12, 2\&.120483e\-6, 3\&.1397e\-11 }
+  3\&.0893e\-9, 9\&.1338e\-12, 2\&.120483e\-6, 3\&.1397e\-11, 0\&.0, 0\&.0 }
 .fi
-Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface and detected at a large distance away\&. 
+Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface and detected at a large distance away\&. Barycenters are not considered, and for Pluto the redshift for the Pluto system is assumed for distant observers\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_planet\fP 
+.PP
+\fBNOVAS_PLANETS\fP
+.RE
 .PP
 \fBSince\fP
 .RS 4
@@ -941,12 +1068,18 @@ Gravitational redshifts for major planets (and Moon and Sun) for light emitted a
 .RE
 .PP
 
-.SS "#define NOVAS_PLANET_NAMES_INIT   { 'SSB', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Sun', 'Moon' }"
+.SS "#define NOVAS_PLANET_NAMES_INIT"
+\fBValue:\fP.PP
+.nf
+  { \\
+  "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \\
+  "Sun", "Moon", "EMB", "Pluto\-Barycenter" };
+.fi
 String array initializer for Major planet names, matching the enum novas_planet\&. E\&.g\&.
 .PP
 .PP
 .nf
-char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
+const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
 .fi
 .PP
 .PP
@@ -956,14 +1089,43 @@ novas_majot_planet
 .RE
 .PP
 
+.SS "#define NOVAS_PLANETS   (\fBNOVAS_PLUTO_BARYCENTER\fP + 1)"
+The number of major planets defined in NOVAS\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_planet\fP 
+.RE
+.PP
+
+.SS "#define NOVAS_REFERENCE_SYSTEMS   (\fBNOVAS_MOD\fP + 1)"
+The number of basic coordinate reference systems in NOVAS\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_reference_system\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_RMASS_INIT"
 \fBValue:\fP.PP
 .nf
       { \\
       328900\&.561400, 6023600\&.0, 408523\&.71, 332946\&.050895, 3098708\&.0, 1047\&.3486, 3497\&.898, \\
-      22902\&.98, 19412\&.24, 135200000\&.0, 1\&.0, 27068700\&.387534 }
+      22902\&.98, 19412\&.24, 135200000\&.0, 1\&.0, 27068700\&.387534, 0\&.0, 0\&.0 }
 .fi
-Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass)\&. [0]: Earth/Moon barycenter, MASS[1] = Mercury, \&.\&.\&., [9]: Pluto, [10]: Sun, [11]: Moon\&. 
+Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass)\&. [0]: Earth/Moon barycenter (legacy from NOVAS C), MASS[1] = Mercury, \&.\&.\&.,
+.PP
+Barycentric reciprocal masses (index 12, 13) are not set\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_planet\fP 
+.PP
+\fBNOVAS_PLANETS\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_SOLAR_RADIUS   696340000\&.0"
 [m] Solar radius (photosphere) 
 .PP
@@ -976,14 +1138,33 @@ Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass)\&. 
 .SS "#define NOVAS_TIMESCALES   (\fBNOVAS_UT1\fP + 1)"
 The number of asronomical time scales supported\&.
 .PP
+\fBSee also\fP
+.RS 4
+\fBnovas_timescale\fP 
+.RE
+.PP
 \fBSince\fP
 .RS 4
 1\&.1 
 .RE
 .PP
 
+.SS "#define NOVAS_TRANSFORM_TYPES   (\fBICRS_TO_J2000\fP + 1)"
+The number of coordinate transfor types in NOVAS\&.
+.PP
+\fBSee also\fP
+.RS 4
+enum \fBnovas_transform_type\fP 
+.RE
+.PP
+
 .SS "#define SKY_POS_INIT   { {0\&.0}, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
 Initializer for a NOVAS \fBsky_pos\fP structure\&. 
+.PP
+\fBSee also\fP
+.RS 4
+\fBsky_pos\fP 
+.RE
 .PP
 \fBSince\fP
 .RS 4
@@ -1066,7 +1247,7 @@ Print errors and traces to the standard error\&.
 \fB\fINOVAS_DEBUG_EXTRA \fP\fP
 Print all errors and traces to the standard error, even if they may be acceptable behavior\&. 
 .SS "enum \fBnovas_dynamical_type\fP"
-Constants that determine the type of dynamical system type for \fBgcrs2equ()\fP 
+Constants that determine the type of dynamical system\&. I\&.e\&., the 'current' equatorial coordinate system used for a given epoch of observation\&. 
 .PP
 \fBEnumerator\fP
 .in +1c
@@ -1091,21 +1272,28 @@ Use Earth Rotation Angle (ERA) as the rotation measure, relative to the CIO (new
 \fB\fIEROT_GST \fP\fP
 Use GST as the rotation measure, relative to the true equinox (pre IAU 20006 standard) 
 .SS "enum \fBnovas_equator_type\fP"
-Constants that determine the type of equator to be used for the coordinate system\&. 
+Constants that determine the type of equator to be used for the coordinate system\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBNOVAS_EQUATOR_TYPES\fP 
+.RE
+.PP
+
 .PP
 \fBEnumerator\fP
 .in +1c
 .TP
 \fB\fINOVAS_MEAN_EQUATOR \fP\fP
-Mean equator without nutation (pre IAU 2006 system)\&. 
+Mean equator of date without nutation (pre IAU 2006 system)\&. 
 .TP
 \fB\fINOVAS_TRUE_EQUATOR \fP\fP
-True equator (pre IAU 2006 system)\&. 
+True equator of date (pre IAU 2006 system)\&. 
 .TP
 \fB\fINOVAS_GCRS_EQUATOR \fP\fP
 Geocentric Celestial Reference System (GCRS)\&. 
 .SS "enum \fBnovas_equatorial_class\fP"
-Constants for \fBter2cel()\fP and \fBcel2ter()\fP 
+The class of celestial coordinates used as parameters for \fBter2cel()\fP and \fBcel2ter()\fP\&. 
 .PP
 \fBEnumerator\fP
 .in +1c
@@ -1116,7 +1304,7 @@ Celestial coordinates are in GCRS\&.
 \fB\fINOVAS_DYNAMICAL_CLASS \fP\fP
 Celestial coordinates are apparent values (CIRS or TOD) 
 .SS "enum \fBnovas_equinox_type\fP"
-The type of equinox (old methodology) 
+The type of equinox used in the pre IAU 2006 (old) methodology\&. 
 .PP
 \fBEnumerator\fP
 .in +1c
@@ -1155,7 +1343,14 @@ Change from true equator to mean equator (i\&.e\&. undo wobble corrections)\&. Y
 \fB\fINUTATE_MEAN_TO_TRUE \fP\fP
 Change from mean equator to true equator (i\&.e\&. apply wobble corrections) 
 .SS "enum \fBnovas_object_type\fP"
-The type of astronomical objects distinguied by the NOVAS library\&. 
+The type of astronomical objects distinguied by the NOVAS library\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBNOVAS_OBJECT_TYPES\fP 
+.RE
+.PP
+
 .PP
 \fBEnumerator\fP
 .in +1c
@@ -1186,8 +1381,37 @@ A Solar-system body that does not fit the major planet type, and requires specif
 .TP
 \fB\fINOVAS_CATALOG_OBJECT \fP\fP
 Any non-solar system object that may be handled via 'catalog' coordinates, such as a star or a quasar\&. 
+.PP
+\fBSee also\fP
+.RS 4
+\fBcat_entry\fP 
+.RE
+.PP
+
+.TP
+\fB\fINOVAS_ORBITAL_OBJECT \fP\fP
+Any Solar-system body, whose position is determined by a set of orbital elements 
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_orbital_elements\fP 
+.RE
+.PP
+
 .SS "enum \fBnovas_observer_place\fP"
-Types of places on and around Earth that may serve a a reference position for the observation\&. 
+Types of places on and around Earth that may serve a a reference position for the observation\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBNOVAS_OBSERVER_PLACES\fP 
+.RE
+.PP
+
 .PP
 \fBEnumerator\fP
 .in +1c
@@ -1221,7 +1445,14 @@ Observer is orbiting the Sun\&.
 .PP
 
 .SS "enum \fBnovas_origin\fP"
-The origin of the ICRS system for referencing positions and velocities for solar-system bodies\&. 
+The origin of the ICRS system for referencing positions and velocities for solar-system bodies\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBNOVAS_ORIGIN_TYPES\fP 
+.RE
+.PP
+
 .PP
 \fBEnumerator\fP
 .in +1c
@@ -1237,6 +1468,8 @@ Enumeration for the 'major planet' numbers in NOVAS to use as the solar-system b
 \fBSee also\fP
 .RS 4
 \fBNOVAS_PLANET\fP 
+.PP
+\fBNOVAS_PLANETS\fP 
 .PP
 \fBNOVAS_PLANET_NAMES_INIT\fP 
 .RE
@@ -1281,6 +1514,26 @@ Numerical ID for the Sun in NOVAS\&.
 .TP
 \fB\fINOVAS_MOON \fP\fP
 Numerical ID for the Moon in NOVAS\&. 
+.TP
+\fB\fINOVAS_EMB \fP\fP
+NOVAS ID for the Earth-Moon Barycenter (EMB)\&. 
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.TP
+\fB\fINOVAS_PLUTO_BARYCENTER \fP\fP
+NOVAS ID for the barycenter of the Pluto System\&. 
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
 .SS "enum \fBnovas_pole_offset_type\fP"
 The convention in which the celestial pole offsets are defined for polar wobble\&. 
 .PP
@@ -1292,12 +1545,37 @@ Offsets are d, d pairs (pre IAU 2006 precession-nutation model)\&.
 .TP
 \fB\fIPOLE_OFFSETS_X_Y \fP\fP
 Offsets are dx, dy pairs (IAU 2006 precession-nutation model) 
+.SS "enum \fBnovas_reference_plane\fP"
+The plane in which values, such as orbital parameyters are referenced\&. 
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fINOVAS_ECLIPTIC_PLANE \fP\fP
+the plane of the ecliptic 
+.TP
+\fB\fINOVAS_EQUATORIAL_PLANE \fP\fP
+The plane of the equator\&. 
 .SS "enum \fBnovas_reference_system\fP"
 The basic types of positional coordinate reference systems supported by NOVAS\&. These determine only how the celestial pole is to be located, but not how velocities are to be referenced\&. specific pos-vel coordinates are referenced to an 'astro_frame', which must specify one of the values defined here\&.
 .PP
 \fBSee also\fP
 .RS 4
 \fBnovas_frame\fP 
+.PP
+\fBNOVAS_REFERENCE_SYSTEMS\fP 
 .RE
 .PP
 
@@ -1342,6 +1620,8 @@ Constants that determine whether refraction calculations should use a standard a
 \fBSee also\fP
 .RS 4
 \fBon_surface\fP 
+.PP
+\fBrefract()\fP 
 .RE
 .PP
 
@@ -1383,6 +1663,13 @@ Refract astrometric elevation value\&.
 .SS "enum \fBnovas_timescale\fP"
 Constants to reference various astrnomical timescales used
 .PP
+\fBSee also\fP
+.RS 4
+\fBNOVAS_TIMESCALES\fP 
+.PP
+\fBtimescale\&.c\fP 
+.RE
+.PP
 \fBSince\fP
 .RS 4
 1\&.1 
@@ -1422,6 +1709,8 @@ The types of coordinate transformations available for tranform_cat()\&.
 \fBSee also\fP
 .RS 4
 \fBtransform_cat()\fP 
+.PP
+\fBNOVAS_TRANSFORM_TYPES\fP 
 .RE
 .PP
 
@@ -2560,7 +2849,7 @@ It is recommended that the input structure 'cel_obj' be created using \fBmake_ob
 .PP
 
 .PP
-References \fBobject::name\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_ORIGIN_TYPES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBobject::number\fP, \fBreadeph()\fP, and \fBobject::type\fP\&.
+References \fBnovas_orbital_system::center\fP, \fBephemeris()\fP, \fBmake_planet()\fP, \fBobject::name\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_HELIOCENTER\fP, \fBnovas_orbit_posvel()\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_ORIGIN_TYPES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBobject::number\fP, \fBobject::orbit\fP, \fBreadeph()\fP, \fBnovas_orbital_elements::system\fP, and \fBobject::type\fP\&.
 .SS "short equ2ecl (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double ra, double dec, double * elon, double * elat)"
 Convert right ascension and declination to ecliptic longitude and latitude\&. To convert GCRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
 .PP
@@ -3025,7 +3314,7 @@ Computes the geocentric position and velocity of an observer\&. The final vector
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBCAT_ENTRY_INIT\fP, \fBe_tilt()\fP, \fBephemeris()\fP, \fBEROT_ERA\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBobserver::on_surf\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
+References \fBAU_KM\fP, \fBCAT_ENTRY_INIT\fP, \fBe_tilt()\fP, \fBephemeris()\fP, \fBEROT_ERA\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_ORBIT_INIT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBobserver::on_surf\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
 .SS "double get_ut1_to_tt (int leap_seconds, double dut1)"
 Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time difference as measured and published by IERS\&.
 .PP
@@ -4098,6 +4387,8 @@ Populates and object data structure with the data for a catalog source\&.
 .PP
 \fBmake_ephem_object()\fP 
 .PP
+\fBnovas_geom_posvel()\fP 
+.PP
 \fBplace()\fP
 .RE
 .PP
@@ -4128,7 +4419,7 @@ Sets a celestial object to be a Solar-system ephemeris body\&. Typically this wo
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, or else -1 if the 'planet' pointer is NULL or the name is too long\&.
+0 if successful, or else -1 if the 'body' pointer is NULL or the name is too long\&.
 .RE
 .PP
 \fBSee also\fP
@@ -4138,6 +4429,8 @@ Sets a celestial object to be a Solar-system ephemeris body\&. Typically this wo
 \fBmake_planet()\fP 
 .PP
 \fBmake_cat_entry()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
 .PP
 \fBplace()\fP
 .RE
@@ -4187,7 +4480,7 @@ Populates an object data structure using the parameters provided\&. By default (
 .PP
 \fBParameters\fP
 .RS 4
-\fItype\fP The type of object\&. NOVAS_PLANET (0), NOVAS_EPHEM_OBJECT (1) or NOVAS_CATALOG_OBJECT (2) 
+\fItype\fP The type of object\&. NOVAS_PLANET (0), NOVAS_EPHEM_OBJECT (1) or NOVAS_CATALOG_OBJECT (2), or NOVAS_ORBITAL_OBJECT (3)\&. 
 .br
 \fInumber\fP The novas ID number (for solar-system bodies only, otherwise ignored) 
 .br
@@ -4214,6 +4507,10 @@ Populates an object data structure using the parameters provided\&. By default (
 \fBmake_planet()\fP 
 .PP
 \fBmake_ephem_object()\fP 
+.PP
+\fBmake_orbital_object()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
 .PP
 \fBplace()\fP 
 .RE
@@ -4376,8 +4673,53 @@ Note, that because this is an original NOVAS C routine, it does not have an argu
 
 .PP
 References \fBon_surface::height\fP, \fBon_surface::humidity\fP, \fBon_surface::latitude\fP, \fBon_surface::longitude\fP, \fBon_surface::pressure\fP, and \fBon_surface::temperature\fP\&.
+.SS "int make_orbital_object (const char * name, long num, const \fBnovas_orbital_elements\fP * orbit, \fBobject\fP * body)"
+Sets a celestial object to be a Solar-system orbital body\&. Typically this would be used to define minor planets, asteroids, comets, or even planetary satellites\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Name of object\&. It may be NULL if not relevant\&. 
+.br
+\fInum\fP Solar-system body ID number (e\&.g\&. NAIF)\&. It is not required and can be set e\&.g\&. to -1 if not relevant to the caller\&. 
+.br
+\fIorbit\fP The orbital parameters to adopt\&. The data will be copied, not referenced\&. 
+.br
+\fIbody\fP Pointer to structure to populate\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or the name is too long\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_orbit_posvel()\fP 
+.PP
+\fBmake_planet()\fP 
+.PP
+\fBmake_ephem_object()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
+.PP
+\fBplace()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBmake_object()\fP, \fBNOVAS_ORBITAL_OBJECT\fP, and \fBobject::orbit\fP\&.
 .SS "int make_planet (enum \fBnovas_planet\fP num, \fBobject\fP * planet)"
-Sets a celestial object to be a major planet, or the Sun, Moon or Solar-system Barycenter\&.
+Sets a celestial object to be a major planet, or the Sun, Moon, Solar-system Barycenter, etc\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -5313,7 +5655,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBCAT_ENTRY_INIT\fP, \fBnovas_frame::deps0\fP, \fBnovas_frame::dpsi0\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBe_tilt()\fP, \fBnovas_frame::earth_pos\fP, \fBnovas_frame::earth_vel\fP, \fBnovas_frame::ee\fP, \fBephemeris()\fP, \fBnovas_frame::era\fP, \fBera()\fP, \fBEROT_GST\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gst\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_frame::mobl\fP, \fBNOVAS_BARYCENTER\fP, \fBnovas_change_observer()\fP, \fBNOVAS_EARTH\fP, \fBnovas_get_split_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBNOVAS_UT1\fP, \fBnutation_angles()\fP, \fBsidereal_time()\fP, \fBnovas_frame::state\fP, \fBnovas_frame::sun_pos\fP, \fBnovas_frame::sun_vel\fP, \fBnovas_frame::time\fP, \fBnovas_frame::tobl\fP, \fBtt2tdb()\fP, \fBnovas_timespec::ut1_to_tt\fP, and \fBobserver::where\fP\&.
+References \fBnovas_frame::accuracy\fP, \fBCAT_ENTRY_INIT\fP, \fBnovas_frame::deps0\fP, \fBnovas_frame::dpsi0\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBe_tilt()\fP, \fBnovas_frame::earth_pos\fP, \fBnovas_frame::earth_vel\fP, \fBnovas_frame::ee\fP, \fBephemeris()\fP, \fBnovas_frame::era\fP, \fBera()\fP, \fBEROT_GST\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gst\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_frame::mobl\fP, \fBNOVAS_BARYCENTER\fP, \fBnovas_change_observer()\fP, \fBNOVAS_EARTH\fP, \fBnovas_get_split_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_ORBIT_INIT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBNOVAS_UT1\fP, \fBnutation_angles()\fP, \fBsidereal_time()\fP, \fBnovas_frame::state\fP, \fBnovas_frame::sun_pos\fP, \fBnovas_frame::sun_vel\fP, \fBnovas_frame::time\fP, \fBnovas_frame::tobl\fP, \fBtt2tdb()\fP, \fBnovas_timespec::ut1_to_tt\fP, and \fBobserver::where\fP\&.
 .SS "int novas_make_transform (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP from_system, enum \fBnovas_reference_system\fP to_system, \fBnovas_transform\fP * transform)"
 Calculates a transformation matrix that can be used to convert positions and velocities from one coordinate reference system to another\&.
 .PP
@@ -5431,6 +5773,63 @@ Returns an optical refraction correction using the weather parameters defined fo
 
 .PP
 References \fBNOVAS_WEATHER_AT_LOCATION\fP\&.
+.SS "int novas_orbit_posvel (double jd_tdb, const \fBnovas_orbital_elements\fP * orbit, enum \fBnovas_accuracy\fP accuracy, double * pos, double * vel)"
+Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the specified time of observation\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+https://ssd.jpl.nasa.gov/planets/approx_pos.html 
+.IP "2." 4
+https://en.wikipedia.org/wiki/Orbital_elements 
+.IP "3." 4
+https://orbitalofficial.com/ 
+.IP "4." 4
+https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.br
+\fIorbit\fP Orbital parameters 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)\&. 
+.br
+\fIpos\fP [AU] Output ICRS equatorial position vector, or NULL if not required 
+.br
+\fIvel\fP [AU/day] Output ICRS equatorial velocity vector, or NULL if not required 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the orbital parameters are NULL or if the position and velocity output vectors are the same or the orbital system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to ECANCELED), or
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBephemeris()\fP 
+.PP
+\fBnovas_geom_posvel()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBmake_orbital_object()\fP
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+
+.PP
+References \fBnovas_orbital_elements::a\fP, \fBnovas_orbital_elements::apsis_period\fP, \fBnovas_orbital_elements::e\fP, \fBnovas_orbital_elements::i\fP, \fBnovas_orbital_elements::jd_tdb\fP, \fBnovas_orbital_elements::M0\fP, \fBnovas_orbital_elements::n\fP, \fBnovas_orbital_elements::node_period\fP, \fBnovas_inv_max_iter\fP, \fBnovas_orbital_elements::omega\fP, \fBnovas_orbital_elements::Omega\fP, \fBnovas_orbital_elements::system\fP, and \fBTWOPI\fP\&.
 .SS "enum \fBnovas_planet\fP novas_planet_for_name (const char * name)"
 Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found\&.
 .PP
@@ -5501,6 +5900,49 @@ Berman, Allan L\&., and Rockwell, Stephen T\&. (1976), NASA JPL Technical Report
 
 .PP
 References \fBon_surface::humidity\fP, \fBnovas_inv_refract()\fP, \fBnovas_radio_refraction()\fP, \fBNOVAS_REFRACT_ASTROMETRIC\fP, \fBNOVAS_REFRACT_OBSERVED\fP, \fBon_surface::pressure\fP, and \fBon_surface::temperature\fP\&.
+.SS "int novas_set_orbital_pole (double ra, double dec, \fBnovas_orbital_system\fP * sys)"
+Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace (or else equatorial) plane relative to which the orbital elements are defined\&. Orbital parameters of planetary satellites normally include the R\&.A\&. and declination of the pole of the local Laplace plane in which the Keplerian orbital elements are referenced\&.
+.PP
+The system will become referenced to the equatorial plane, the relative obliquity is set to (90 - \fCdec\fP), while the argument of the ascending node ('Omega') is set to (90 + \fCra\fP)\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+You should not expect much precision from the long-range orbital approximations for planetary satellites\&. For applications that require precision at any level, you should rely on appropriate ephemerides, or else on up-to-date short-term orbital elements\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIra\fP [h] the R\&.A\&. of the pole of the oribtal reference plane\&. 
+.br
+\fIdec\fP [deg] the declination of the pole of the oribtal reference plane\&. 
+.br
+\fIsys\fP The orbital system 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 (errno will be set to EINVAL) if the output \fCsys\fP pointer is NULL\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_orbital_object()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_EQUATORIAL_PLANE\fP, \fBnovas_orbital_system::obl\fP, \fBnovas_orbital_system::Omega\fP, and \fBnovas_orbital_system::plane\fP\&.
 .SS "int novas_set_split_time (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP * time)"
 Sets an astronomical time to the split Julian Date value, defined in the specified timescale\&. The split into the integer and fractional parts can be done in any convenient way\&. The highest precision is reached if the fractional part is  1 day\&. In that case, the time may be specified to picosecond accuracy, if needed\&.
 .PP
@@ -6135,7 +6577,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBCAT_ENTRY_INIT\fP, \fBephemeris()\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, and \fBobserver::where\fP\&.
+References \fBCAT_ENTRY_INIT\fP, \fBephemeris()\fP, \fBgeo_posvel()\fP, \fBobserver::near_earth\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_OBSERVER_PLACES\fP, \fBNOVAS_ORBIT_INIT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBin_space::sc_pos\fP, \fBin_space::sc_vel\fP, and \fBobserver::where\fP\&.
 .SS "short place (double jd_tt, const \fBobject\fP * source, const \fBobserver\fP * location, double ut1_to_tt, enum \fBnovas_reference_system\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * output)"
 Computes the apparent direction of a celestial object at a specified time and in a specified coordinate system and a specific near-Earth origin\&.
 .PP
@@ -6794,7 +7236,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBC_AUDAY\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBnovas_z2v()\fP, \fBobject::number\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References \fBAU\fP, \fBC\fP, \fBC_AUDAY\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBnovas_z2v()\fP, \fBobject::number\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
 .SS "int radec2vector (double ra, double dec, double dist, double * pos)"
 Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates)\&.
 .PP
@@ -6878,7 +7320,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBplace()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, \fBSKY_POS_INIT\fP, and \fBobject::type\fP\&.
+References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBplace()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, \fBSKY_POS_INIT\fP, and \fBobject::type\fP\&.
 .SS "int radec_star (double jd_tt, const \fBcat_entry\fP * star, const \fBobserver\fP * obs, double ut1_to_tt, enum \fBnovas_reference_system\fP sys, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * rv)"
 Computes the place of a star at date 'jd_tt', for an observer in the specified coordinate system, given the star's ICRS catalog place, proper motion, parallax, and radial velocity\&.
 .PP

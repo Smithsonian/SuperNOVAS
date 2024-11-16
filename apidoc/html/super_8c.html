@@ -165,12 +165,16 @@ Functions</h2></td></tr>
 <tr class="separator:ab9b7a622486f2904615ceed1ba94cd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22303f98df2d63edf6d8452ff3a43b2" id="r_aa22303f98df2d63edf6d8452ff3a43b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a> (const char *name, long num, <a class="el" href="structobject.html">object</a> *body)</td></tr>
 <tr class="separator:aa22303f98df2d63edf6d8452ff3a43b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5caf50e954f622e525e8a9e159ec0655" id="r_a5caf50e954f622e525e8a9e159ec0655"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a5caf50e954f622e525e8a9e159ec0655">make_orbital_object</a> (const char *name, long num, const <a class="el" href="structnovas__orbital__elements.html">novas_orbital_elements</a> *orbit, <a class="el" href="structobject.html">object</a> *body)</td></tr>
+<tr class="separator:a5caf50e954f622e525e8a9e159ec0655"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae579a49d84696a913fd0d9f348bb5b11" id="r_ae579a49d84696a913fd0d9f348bb5b11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a> (const char *name, double ra, double dec, double z, <a class="el" href="structobject.html">object</a> *source)</td></tr>
 <tr class="separator:ae579a49d84696a913fd0d9f348bb5b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c3f1a1bc3fd9ac6d211806913d2d529" id="r_a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer</a> (const double *sc_pos, const double *sc_vel, <a class="el" href="structobserver.html">observer</a> *obs)</td></tr>
 <tr class="separator:a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92e869b101bd41e31ac6d3a2419bb0a3" id="r_a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3">novas_planet_for_name</a> (const char *name)</td></tr>
 <tr class="separator:a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234ac7fa5849f414d7e4405786f2e537" id="r_a234ac7fa5849f414d7e4405786f2e537"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a234ac7fa5849f414d7e4405786f2e537">novas_set_orbital_pole</a> (double ra, double dec, <a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a> *sys)</td></tr>
+<tr class="separator:a234ac7fa5849f414d7e4405786f2e537"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa54cd00024b294d38fa29433c017c65f" id="r_aa54cd00024b294d38fa29433c017c65f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z</a> (double vel)</td></tr>
 <tr class="separator:aa54cd00024b294d38fa29433c017c65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a493ab751eee5804db77157c37e94e5c3" id="r_a493ab751eee5804db77157c37e94e5c3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add</a> (double z1, double z2)</td></tr>
@@ -1335,6 +1339,8 @@ novas_calc_geometric_position() </dd>
 <dd>
 <a class="el" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a> </dd>
 <dd>
+<a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a> </dd>
+<dd>
 <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
@@ -1383,18 +1389,84 @@ novas_calc_geometric_position() </dd>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the 'planet' pointer is NULL or the name is too long.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the 'body' pointer is NULL or the name is too long.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry()</a> </dd>
 <dd>
+<a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a> </dd>
+<dd>
 <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>, and <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a>.</p>
+
+</div>
+</div>
+<a id="a5caf50e954f622e525e8a9e159ec0655" name="a5caf50e954f622e525e8a9e159ec0655"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5caf50e954f622e525e8a9e159ec0655">&#9670;&#160;</a></span>make_orbital_object()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_orbital_object </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__orbital__elements.html">novas_orbital_elements</a> *&#160;</td>
+          <td class="paramname"><em>orbit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>body</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets a celestial object to be a Solar-system orbital body. Typically this would be used to define minor planets, asteroids, comets, or even planetary satellites.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">name</td><td>Name of object. It may be NULL if not relevant. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">num</td><td>Solar-system body ID number (e.g. NAIF). It is not required and can be set e.g. to -1 if not relevant to the caller. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">orbit</td><td>The orbital parameters to adopt. The data will be copied, not referenced. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">body</td><td>Pointer to structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or the name is too long.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#afad28eae3650f8ef3ea3bfa419900f28">novas_orbit_posvel()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a">NOVAS_ORBITAL_OBJECT</a>, and <a class="el" href="structobject.html#a9ad3978b06d4ce6a366ff84f6854796a">object::orbit</a>.</p>
 
 </div>
 </div>
@@ -1550,6 +1622,60 @@ novas_calc_geometric_position() </dd>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a618bbba887b9bc9e7df878234c66c215">make_planet()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>.</p>
+
+</div>
+</div>
+<a id="a234ac7fa5849f414d7e4405786f2e537" name="a234ac7fa5849f414d7e4405786f2e537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a234ac7fa5849f414d7e4405786f2e537">&#9670;&#160;</a></span>novas_set_orbital_pole()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_set_orbital_pole </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ra</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a> *&#160;</td>
+          <td class="paramname"><em>sys</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace (or else equatorial) plane relative to which the orbital elements are defined. Orbital parameters of planetary satellites normally include the R.A. and declination of the pole of the local Laplace plane in which the Keplerian orbital elements are referenced.</p>
+<p>The system will become referenced to the equatorial plane, the relative obliquity is set to (90&deg; - <code>dec</code>), while the argument of the ascending node ('Omega') is set to (90&deg; + <code>ra</code>).</p>
+<p>NOTES: </p><ol>
+<li>
+You should not expect much precision from the long-range orbital approximations for planetary satellites. For applications that require precision at any level, you should rely on appropriate ephemerides, or else on up-to-date short-term orbital elements. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] the R.A. of the pole of the oribtal reference plane. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] the declination of the pole of the oribtal reference plane. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">sys</td><td>The orbital system </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (errno will be set to EINVAL) if the output <code>sys</code> pointer is NULL.</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a5caf50e954f622e525e8a9e159ec0655">make_orbital_object()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b">NOVAS_EQUATORIAL_PLANE</a>, <a class="el" href="structnovas__orbital__system.html#ae5014f0e96e7c220c55eb82d11c4133a">novas_orbital_system::obl</a>, <a class="el" href="structnovas__orbital__system.html#a1b5bf6735b7465aec5c931281d240737">novas_orbital_system::Omega</a>, and <a class="el" href="structnovas__orbital__system.html#a2c38f985781586b7df387b437720174d">novas_orbital_system::plane</a>.</p>
 
 </div>
 </div>

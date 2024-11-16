@@ -1,0 +1,71 @@
+.TH "novas_orbital_system" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+novas_orbital_system
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <novas\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "enum \fBnovas_planet\fP \fBcenter\fP"
+.br
+.RI "major planet or barycenter at the center of the orbit\&. "
+.ti -1c
+.RI "double \fBobl\fP"
+.br
+.ti -1c
+.RI "double \fBOmega\fP"
+.br
+.ti -1c
+.RI "enum \fBnovas_reference_plane\fP \fBplane\fP"
+.br
+.RI "reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE "
+.ti -1c
+.RI "enum \fBnovas_equator_type\fP \fBtype\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Specification of an orbital system, in which orbital elements are defined\&. Systems can be defined around all major planets and barycenters (and Sun, Moon, SSB\&.\&.)\&. They may be referenced to the GCRS, mean, or true equator or ecliptic of date, or to a plane that is tilted relative to that\&.
+.PP
+For example, The Minor Planet Center (MPC) publishes up-to-date orbital elements for asteroids and comets, which are heliocentric and referenced to the GCRS ecliptic\&. Hence 'center' for these is \fCNOVAS_SUN\fP, the \fCplane\fP is \fCNOVAS_ECLIPTIC_PLANE\fP and the \fCtype\fP is \fCNOVAS_GCRS_EQUATOR\fP\&.
+.PP
+The orbits of planetary satellites may be parametrized in their local Laplace planes, which are typically close to the host planet's equatorial planes\&. You can, for example, obtain the RA/Dec orientation of the planetary North poles of planets from JPL Horizons, and use them as a proxy for the Laplace planes for their satellite orbits\&. In this case you would set the \fCcenter\fP to the host planet (e\&.g\&. \fCNOVAS_SATURN\fP), the reference plane to \fCNOVAS_EQUATORIAL_PLANE\fP and the \fCtype\fP to \fCNOVAS_GCRS_EQUATOR\fP (since the plane is defined by the North pole orientation in GCRS equatorial RA/Dec)\&. The obliquity is then 90 - Dec\*<pole\*>  (in radians), and \fCphi\fP is RA\*<pole\*>  (in radians)\&.
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_orbital_pole()\fP 
+.PP
+\fBnovas_orbital_elements\fP 
+.PP
+\fBNOVAS_ORBITAL_SYSTEM_INIT\fP 
+.RE
+.PP
+
+.SH "Field Documentation"
+.PP 
+.SS "double obl"
+[rad] relative obliquity of orbital reference plane (e\&.g\&. 90 - \*<pole\*> ) 
+.SS "double Omega"
+[rad] relative argument of ascending node of the orbital reference plane (e\&.g\&. \*<pole\*>  + 90) 
+.SS "enum \fBnovas_equator_type\fP type"
+the type of equator in which orientation is referenced (NOVAS_TRUE_EQUATOR, NOVAS_MEAN_EQUATOR, or NOVAS_GCRS_EQUATOR)\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.
