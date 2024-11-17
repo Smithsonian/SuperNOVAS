@@ -76,7 +76,7 @@ static int check_equal_pos(const double *posa, const double *posb, double tol) {
     if(fabs(posa[i] - posb[i]) <= tol) continue;
     if(isnan(posa[i]) && isnan(posb[i])) continue;
 
-    fprintf(stderr, "  A[%d] = %.9g vs B[%d] = %.9g\n", i, posa[i], i, posb[i]);
+    fprintf(stderr, "  A[%d] = %.9g vs B[%d] = %.9g (delta=%.1g)\n", i, posa[i], i, posb[i], posa[i] - posb[i]);
     return i + 1;
   }
 
@@ -744,7 +744,43 @@ static int test_transform_inv() {
   return 0;
 }
 
+static int test_gcrs_to_tod() {
+  double pos1[3] = {}, pos2[3] = {}, d;
+  int n = 0;
 
+  d = novas_vlen(pos0);
+
+  if(!is_ok("gcrs_to_tod", gcrs_to_tod(tdb, NOVAS_FULL_ACCURACY, pos0, pos1))) n++;
+
+  gcrs_to_j2000(pos0, pos2);
+  j2000_to_tod(tdb, NOVAS_FULL_ACCURACY, pos2, pos2);
+
+  if(!is_ok("gcrs_to_tod:check", check_equal_pos(pos1, pos2, 1e-9 * d))) n++;
+
+  if(!is_ok("gcrs_to_tod:tod_to_gcrs", tod_to_gcrs(tdb, NOVAS_FULL_ACCURACY, pos1, pos2))) n++;
+  if(!is_ok("gcrs_to_tod:tod_to_gcrs:check", check_equal_pos(pos2, pos0, 1e-9 * d))) n++;
+
+  return n;
+}
+
+static int test_gcrs_to_mod() {
+  double pos1[3] = {}, pos2[3] = {}, d;
+  int n = 0;
+
+  d = novas_vlen(pos0);
+
+  if(!is_ok("gcrs_to_mod", gcrs_to_mod(tdb, pos0, pos1))) n++;
+
+  gcrs_to_j2000(pos0, pos2);
+  precession(NOVAS_JD_J2000, pos2, tdb, pos2);
+
+  if(!is_ok("gcrs_to_mod:check", check_equal_pos(pos1, pos2, 1e-9 * d))) n++;
+
+  if(!is_ok("gcrs_to_mod:mod_to_gcrs", mod_to_gcrs(tdb, pos1, pos2))) n++;
+  if(!is_ok("gcrs_to_mod:mod_to_gcrs:check", check_equal_pos(pos2, pos0, 1e-9 * d))) n++;
+
+  return n;
+}
 
 static int test_source() {
   int k, n = 0;
@@ -781,6 +817,9 @@ static int test_source() {
   if(test_transform_j2000_mod()) n++;
   if(test_transform_mod_tod()) n++;
   if(test_transform_inv()) n++;
+
+  if(test_gcrs_to_tod()) n++;
+  if(test_gcrs_to_mod()) n++;
 
   for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_hor(k)) n++;
   for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_geom(k)) n++;
@@ -2218,6 +2257,7 @@ static int test_orbit_place() {
   novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
   observer obs = {};
   sky_pos pos = {};
+  double p0[3] = {}, p1[3] = {};
 
   // Nov 14 0 UTC, geocentric from JPL Horizons.
   double tjd = 2460628.50079861;      // 0 UT as TT.
@@ -2247,10 +2287,50 @@ static int test_orbit_place() {
   if(!is_equal("orbit_place:dist", pos.dis, r, 1e-4)) n++;
   if(!is_equal("orbit_place:vrad", pos.rv, rv0, 1e-2)) n++;
 
+  if(!is_ok("orbit_place", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p0, NULL))) return 1;
+  equ2ecl_vec(tjd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, p0, p0);
+
+  orbit.system.type = NOVAS_ICRS;
+  if(!is_ok("orbit_place:icrs", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p1, NULL))) n++;
+  else {
+    equ2ecl_vec(tjd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
+    if(!is_ok("orbit_place:icrs:check", check_equal_pos(p1, p0, 1e-9))) n++;
+  }
+
+  orbit.system.type = NOVAS_CIRS;
+  if(!is_ok("orbit_place:cirs", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p1, NULL))) n++;
+  else {
+    gcrs_to_cirs(tjd, NOVAS_REDUCED_ACCURACY, p1, p1);
+    equ2ecl_vec(tjd, NOVAS_TRUE_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
+    if(!is_ok("orbit_place:cirs:check", check_equal_pos(p1, p0, 1e-9))) n++;
+  }
+
+  orbit.system.type = NOVAS_J2000;
+  if(!is_ok("orbit_place:j2000", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p1, NULL))) n++;
+  else {
+    gcrs_to_j2000(p1, p1);
+    equ2ecl_vec(NOVAS_JD_J2000, NOVAS_TRUE_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
+    if(!is_ok("orbit_place:j2000:check", check_equal_pos(p1, p0, 1e-9))) n++;
+  }
+
+  orbit.system.type = NOVAS_MOD;
+  if(!is_ok("orbit_place:mod", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p1, NULL))) n++;
+  else {
+    gcrs_to_mod(tjd, p1, p1);
+    equ2ecl_vec(tjd, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
+    if(!is_ok("orbit_place:mod:check", check_equal_pos(p1, p0, 1e-9))) n++;
+  }
+
+  orbit.system.type = NOVAS_TOD;
+  if(!is_ok("orbit_place:tod", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p1, NULL))) n++;
+  else {
+    gcrs_to_tod(tjd, NOVAS_FULL_ACCURACY, p1, p1);
+    equ2ecl_vec(tjd, NOVAS_TRUE_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
+    if(!is_ok("orbit_place:tod:check", check_equal_pos(p1, p0, 1e-9))) n++;
+  }
+
   return n;
 }
-
-
 
 
 static int test_orbit_posvel_callisto() {
@@ -2279,7 +2359,7 @@ static int test_orbit_posvel_callisto() {
   // https://ssd.jpl.nasa.gov/sats/elem/sep.html
   // 1882700. 0.007 43.8  87.4  0.3 309.1 16.690440 277.921 577.264 268.7 64.8
   sys->center = NOVAS_JUPITER;
-  novas_set_orbital_pole(268.7 / 15.0, 64.8, sys);
+  novas_set_orbsys_pole(NOVAS_GCRS, 268.7 / 15.0, 64.8, sys);
 
   orbit.jd_tdb = NOVAS_JD_J2000;
   orbit.a = 1882700.0 * 1e3 / AU;
@@ -2308,26 +2388,33 @@ static int test_orbit_posvel_callisto() {
   if(!is_equal("orbit_posvel_callisto:ra", dra / ARCSEC, dRA / ARCSEC, 15.0)) n++;
   if(!is_equal("orbit_posvel_callisto:dec", ddec / ARCSEC, dDEC / ARCSEC, 15.0)) n++;
 
-
-
   if(!is_ok("orbit_posvel_callisto:vel:null", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
   if(!is_ok("orbit_posvel_callisto:vel:null:check", check_equal_pos(pos1, pos0, 1e-8))) n++;
 
   if(!is_ok("orbit_posvel_callisto:pos:null", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, NULL, vel1))) n++;
   if(!is_ok("orbit_posvel_callisto:pos:null:check", check_equal_pos(vel1, vel, 1e-8))) n++;
 
-
-  sys->type = NOVAS_MEAN_EQUATOR;
+  sys->type = NOVAS_MOD;
   if(!is_ok("orbit_posvel_callisto:mod", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
   precession(tjd, pos0, NOVAS_JD_J2000, pos);
   j2000_to_gcrs(pos, pos);
   if(!is_ok("orbit_posvel_callisto:mod:check", check_equal_pos(pos1, pos, 1e-8))) n++;
 
-  sys->type = NOVAS_TRUE_EQUATOR;
+  sys->type = NOVAS_TOD;
   if(!is_ok("orbit_posvel_callisto:mod", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
   tod_to_j2000(tjd, NOVAS_FULL_ACCURACY, pos0, pos);
   j2000_to_gcrs(pos, pos);
   if(!is_ok("orbit_posvel_callisto:mod:check", check_equal_pos(pos1, pos, 1e-8))) n++;
+
+  sys->type = NOVAS_CIRS;
+  if(!is_ok("orbit_posvel_callisto:cirs", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
+  cirs_to_gcrs(tjd, NOVAS_FULL_ACCURACY, pos0, pos);
+  if(!is_ok("orbit_posvel_callisto:cirs:check", check_equal_pos(pos1, pos, 1e-8))) n++;
+
+  sys->type = NOVAS_J2000;
+  if(!is_ok("orbit_posvel_callisto:j2000", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, pos1, NULL))) n++;
+  j2000_to_gcrs(pos0, pos);
+  if(!is_ok("orbit_posvel_callisto:j2000:check", check_equal_pos(pos1, pos, 1e-8))) n++;
 
   return n;
 }
