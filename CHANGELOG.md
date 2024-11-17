@@ -12,6 +12,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 Release candidate for the next feature release, expected around 1 February 2025.
 
 
+### Fixed
+
+ - `make_on_surface()` to leave humidity undefined. The `humidity` field was added in v1.1 only, and thus attempting
+   to initialize it to zero (as we did in v1.1) can result in memory corruption or even segfaulting if called by 
+   objects that have been compiled with v1.0. So, from now on the call will leave humidity uninitialized and it's up 
+   to the caller ro define it if it is needed for the specific refraction model.
+
 ### Added
 
  - #57: New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are 

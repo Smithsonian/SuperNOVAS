@@ -6840,6 +6840,7 @@ int make_planet(enum novas_planet num, object *planet) {
  * @sa make_observer_at_geocenter()
  * @sa make_observer_on_surface()
  * @sa make_observer_in_space()
+ * @sa make_solar_system_observer()
  */
 short make_observer(enum novas_observer_place where, const on_surface *loc_surface, const in_space *loc_space, observer *obs) {
   static const char *fn = "make_observer";
@@ -6956,9 +6957,9 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * the given parameters.
  *
  * Note, that because this is an original NOVAS C routine, it does not have an argument to set
- * a humidity value (e.g. for radio refraction). As such the call will set humidity to 0.0.
- * To set the humidity, set the output structure's field after calling this funcion. Its unit
- * is [%], and so the range is 0.0--100.0.
+ * a humidity value (e.g. for radio refraction). As such, the humidity value remains undefined
+ * after this call. To set the humidity, set the output structure's field after calling this
+ * funcion. Its unit is [%], and so the range is 0.0--100.0.
  *
  * @param latitude      [deg] Geodetic (ITRS) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (ITRS) longitude in degrees; east positive.
@@ -6971,6 +6972,8 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  *
  * @sa make_observer_on_surface()
  * @sa make_in_space()
+ * @sa ON_SURFACE_INIT
+ * @sa ON_SURFACE_LOC
  */
 int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure, on_surface *loc) {
   if(!loc)
@@ -6981,7 +6984,9 @@ int make_on_surface(double latitude, double longitude, double height, double tem
   loc->height = height;
   loc->temperature = temperature;
   loc->pressure = pressure;
-  loc->humidity = 0.0;
+
+  // FIXME starting v2.0 set humidity to 0.0
+  //loc->humidity = 0.0;
 
   return 0;
 }
@@ -7000,6 +7005,7 @@ int make_on_surface(double latitude, double longitude, double height, double tem
  *
  * @sa make_observer_in_space()
  * @sa make_on_surface()
+ * @sa IN_SPACE_INIT
  */
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc) {
   if(!loc)

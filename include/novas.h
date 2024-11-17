@@ -807,14 +807,13 @@ typedef struct {
 } object;
 
 /**
- * data for an observer's location on the surface of
- * the Earth.  The atmospheric parameters are used
- * only by the refraction function called from
- * function 'equ2hor'. Additional parameters can be
- * added to this structure if a more sophisticated
- * refraction model is employed.
+ * Data for an observer's location on the surface of the Earth, and optional local weather data for
+ * refraction calculations only.
  *
  * @sa observer
+ * @sa make_on_surface()
+ * @sa ON_SURFACE_INIT
+ * @sa ON_SURFACE_LOC
  */
 typedef struct {
   double latitude;      ///< [deg] geodetic (ITRS) latitude; north positive
@@ -826,10 +825,33 @@ typedef struct {
 } on_surface;
 
 /**
+ * Initializer for a NOVAS on_surface data structure.
+ *
+ * @sa on_surface
+ * @sa ON_SURFACE_INIT_LOC
+ * @since 1.2
+ */
+#define ON_SURFACE_INIT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+
+/**
+ * Initializer for a NOVAS on_surface data structure, for a specified geodetic location
+ *
+ * @param lon     [deg] Geodetic longitude of observer (East is positive)
+ * @param lat     [deg] Geodetic latitude of observer (North is positive)
+ * @param alt     [m] Observer altitude above sea level.
+ *
+ * @sa on_surface
+ * @sa ON_SURFACE_INIT
+ * @since 1.2
+ */
+#define ON_SURFACE_LOC(lon, lat, alt) { lon, lat, alt, 0.0, 0.0, 0.0 }
+
+/**
  * data for an observer's location on Earth orbit
  *
  * @sa observer
  * @sa IN_SPACE_INIT
+ * @sa make_in_space()
  */
 typedef struct {
   double sc_pos[3];     ///< [km] geocentric (or [AU] ICRS barycentric) position vector (x, y, z)
@@ -846,6 +868,11 @@ typedef struct {
 /**
  * Observer location.
  *
+ * @sa make_observer()
+ * @sa make_observer_at_geocenter()
+ * @sa make_observer_on_earth()
+ * @sa make_observer_in_space()
+ * @sa make_solar_system_observer()
  */
 typedef struct {
   enum novas_observer_place where;    ///< observer location type
@@ -859,6 +886,7 @@ typedef struct {
   /// for any Solar-system observer also (if where = NOVAS_SOLAR_SYSTEM_OBSERVER).
   in_space near_earth;
 } observer;
+
 
 /**
  * Celestial object's place on the sky; contains the output from place()

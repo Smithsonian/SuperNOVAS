@@ -1149,6 +1149,12 @@ static int test_refraction() {
   novas_optical_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0);
   novas_debug(0);
 
+  obs.humidity = -1.01;
+  if(check_nan("radio_refraction:humidity:lo", novas_radio_refraction(NOVAS_JD_J2000, &obs, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
+
+  obs.humidity = 101.01;
+  if(check_nan("radio_refraction:humidity:hi", novas_radio_refraction(NOVAS_JD_J2000, &obs, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
+
   return n;
 }
 

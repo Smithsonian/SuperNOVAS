@@ -176,6 +176,11 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
     return NAN;
   }
 
+  if(loc->humidity < 0.0 || loc->humidity > 100.0) {
+    novas_set_errno(EINVAL, fn, "invalid humidity value: %g", loc->humidity);
+    return NAN;
+  }
+
   if(type == NOVAS_REFRACT_OBSERVED)
     return novas_inv_refract(novas_radio_refraction, jd_tt, loc, NOVAS_REFRACT_ASTROMETRIC, el);
 
