@@ -1381,6 +1381,7 @@ enum novas_planet novas_planet_for_name(const char *name) {
  * on appropriate ephemerides, or else on up-to-date short-term orbital elements.</li>
  * </ol>
  *
+ * @param type  Coordinate reference system in which `ra` and `dec` are defined (e.g. NOVAS_GCRS).
  * @param ra    [h] the R.A. of the pole of the oribtal reference plane.
  * @param dec   [deg] the declination of the pole of the oribtal reference plane.
  * @param[out]  sys   The orbital system
@@ -1392,11 +1393,12 @@ enum novas_planet novas_planet_for_name(const char *name) {
  *
  * @sa make_orbital_object()
  */
-int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys) {
+int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys) {
   if (!sys)
-    return novas_error(-1, EINVAL, "novas_set_orbital_pole", "input system is NULL");
+    return novas_error(-1, EINVAL, "novas_set_obsys_pole", "input system is NULL");
 
   sys->plane = NOVAS_EQUATORIAL_PLANE;
+  sys->type = type;
   sys->obl = remainder(90.0 - dec, 360.0);
   sys->Omega = remainder(15.0 * ra + 90.0, 360.0);
 

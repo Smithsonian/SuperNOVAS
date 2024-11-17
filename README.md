@@ -915,7 +915,7 @@ before that level of accuracy is reached.
  - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
    can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
    `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
-   use `novas_set_orbital_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+   use `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
    calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
    provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
    orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
@@ -923,7 +923,9 @@ before that level of accuracy is reached.
 
  - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
    from the corresponding planet centers in calculations.
-   
+ 
+ - Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
+   convenience.
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API

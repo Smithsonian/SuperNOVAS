@@ -307,6 +307,48 @@ static int test_tod_to_j2000() {
   return n;
 }
 
+static int test_gcrs_to_tod() {
+  double p[3];
+  int n = 0;
+
+  if(check("gcrs_to_tod:in", -1, gcrs_to_tod(0.0, NOVAS_FULL_ACCURACY, NULL, p))) n++;
+  if(check("gcrs_to_tod:out", -1, gcrs_to_tod(0.0, NOVAS_FULL_ACCURACY, p, NULL))) n++;
+  if(check("gcrs_to_tod:accuracy", -1, gcrs_to_tod(0.0, -1, p, p))) n++;
+
+  return n;
+}
+
+static int test_tod_to_gcrs() {
+  double p[3] = {1.0};
+  int n = 0;
+
+  if(check("tod_to_gcrs:in", -1, tod_to_gcrs(0.0, NOVAS_FULL_ACCURACY, NULL, p))) n++;
+  if(check("tod_to_gcrs:out", -1, tod_to_gcrs(0.0, NOVAS_FULL_ACCURACY, p, NULL))) n++;
+  if(check("tod_to_gcrs:accuracy", -1, tod_to_gcrs(0.0, -1, p, p))) n++;
+
+  return n;
+}
+
+static int test_gcrs_to_mod() {
+  double p[3];
+  int n = 0;
+
+  if(check("gcrs_to_mod:in", -1, gcrs_to_mod(0.0, NULL, p))) n++;
+  if(check("gcrs_to_mod:out", -1, gcrs_to_mod(0.0, p, NULL))) n++;
+
+  return n;
+}
+
+static int test_mod_to_gcrs() {
+  double p[3] = {1.0};
+  int n = 0;
+
+  if(check("mod_to_gcrs:in", -1, mod_to_gcrs(0.0, NULL, p))) n++;
+  if(check("mod_to_gcrs:out", -1, mod_to_gcrs(0.0, p, NULL))) n++;
+
+  return n;
+}
+
 static int test_gcrs_to_cirs() {
   double p[3] = {1.0};
   int n = 0;
@@ -1511,38 +1553,40 @@ static int test_orbit_posvel() {
 
   orbit.a = 1.0;
 
-  if(check("set_orbital_pole:orbit", -1, novas_orbit_posvel(0.0, NULL, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
-  if(check("set_orbital_pole:pos=vel", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, pos))) n++;
-  if(check("set_orbital_pole:pos=vel:NULL", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, NULL, NULL))) n++;
+  if(check("set_obsys_pole:orbit", -1, novas_orbit_posvel(0.0, NULL, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  if(check("set_obsys_pole:pos=vel", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, pos))) n++;
+  if(check("set_obsys_pole:pos=vel:NULL", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, NULL, NULL))) n++;
+  if(check("set_obsys_pole:accuracy:-1", -1, novas_orbit_posvel(0.0, &orbit, -1, pos, vel))) n++;
+  if(check("set_obsys_pole:accuracy:2", -1, novas_orbit_posvel(0.0, &orbit, 2, pos, vel))) n++;
 
-  if(check("set_orbital_pole:orbit:converge", 0, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  if(check("set_obsys_pole:orbit:converge", 0, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
   novas_inv_max_iter = 0;
-  if(check("set_orbital_pole:orbit:converge", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
-  else if(check("set_orbital_pole:orbit:converge:errno", ECANCELED, errno)) n++;
+  if(check("set_obsys_pole:orbit:converge", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  else if(check("set_obsys_pole:orbit:converge:errno", ECANCELED, errno)) n++;
   novas_inv_max_iter = saved;
 
   orbit.system.type = -1;
-  if(check("set_orbital_pole:orbit:type:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  if(check("set_obsys_pole:orbit:type:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
-  orbit.system.type = NOVAS_EQUATOR_TYPES;
-  if(check("set_orbital_pole:orbit:type:hi", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  orbit.system.type = NOVAS_REFERENCE_SYSTEMS;
+  if(check("set_obsys_pole:orbit:type:hi", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
   orbit.system.plane = NOVAS_EQUATORIAL_PLANE;
-  orbit.system.type = NOVAS_EQUATOR_TYPES;
-  if(check("set_orbital_pole:orbit:type:-1:eq", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  orbit.system.type = NOVAS_REFERENCE_SYSTEMS;
+  if(check("set_obsys_pole:orbit:type:-1:eq", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
-  orbit.system.type = NOVAS_GCRS_EQUATOR;
+  orbit.system.type = NOVAS_GCRS;
   orbit.system.plane = -1;
-  if(check("set_orbital_pole:orbit:plane:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+  if(check("set_obsys_pole:orbit:plane:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
   return n;
 }
 
-static int test_set_orbital_pole() {
+static int test_set_obsys_pole() {
   int n = 0;
 
-  if(check("set_orbital_pole:orbit", -1, novas_set_orbital_pole(0.0, 0.0, NULL))) n++;
+  if(check("set_obsys_pole:orbit", -1, novas_set_orbsys_pole(NOVAS_GCRS, 0.0, 0.0, NULL))) n++;
 
   return n;
 }
@@ -1677,8 +1721,13 @@ int main() {
 
   if(test_planet_for_name()) n++;
   if(test_make_orbital_object()) n++;
-  if(test_set_orbital_pole()) n++;
+  if(test_set_obsys_pole()) n++;
   if(test_orbit_posvel()) n++;
+
+  if(test_gcrs_to_tod()) n++;
+  if(test_tod_to_gcrs()) n++;
+  if(test_gcrs_to_mod()) n++;
+  if(test_mod_to_gcrs()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

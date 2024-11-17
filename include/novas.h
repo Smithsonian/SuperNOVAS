@@ -715,15 +715,14 @@ typedef struct {
  * @author Attila Kovacs
  * @since 1.2
  *
- * @sa novas_set_orbital_pole()
+ * @sa novas_set_obsys_pole()
  * @sa novas_orbital_elements
  * @sa NOVAS_ORBITAL_SYSTEM_INIT
  */
 typedef struct {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
   enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE
-  enum novas_equator_type type;      ///< the type of equator in which orientation is referenced (NOVAS_TRUE_EQUATOR,
-                                     ///< NOVAS_MEAN_EQUATOR, or NOVAS_GCRS_EQUATOR).
+  enum novas_reference_system type;  ///< the coordinate reference system used for the reference plane and orbitals.
   double obl;                        ///< [rad] relative obliquity of orbital reference plane
                                      ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
   double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane
@@ -737,7 +736,7 @@ typedef struct {
  * @author Attila Kovacs
  * @since 1.2
  */
-#define NOVAS_ORBITAL_SYSTEM_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS_EQUATOR, 0.0, 0.0 }
+#define NOVAS_ORBITAL_SYSTEM_INIT { NOVAS_SUN, NOVAS_ECLIPTIC_PLANE, NOVAS_GCRS, 0.0, 0.0 }
 
 /**
  * Keplerian orbital elements for `NOVAS_ORBITAL_OBJECT` type. Orbital elements can be used to provide
@@ -1486,12 +1485,19 @@ double novas_z_inv(double z);
 
 enum novas_planet novas_planet_for_name(const char *name);
 
-int novas_set_orbital_pole(double ra, double dec, novas_orbital_system *sys);
+int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys);
 
 int make_orbital_object(const char *name, long num, const novas_orbital_elements *orbit, object *body);
 
 int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, enum novas_accuracy accuracy, double *pos, double *vel);
 
+int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
+
+int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
+
+int gcrs_to_mod(double jd_tdb, const double *in, double *out);
+
+int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 // <================= END of SuperNOVAS API =====================>
 
