@@ -803,7 +803,7 @@ typedef struct {
   long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
   cat_entry star;                 ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
-  novas_orbital_elements orbit;   ///< orbital data for NOVAS_ORBITAL_OBJECT TYPE. @since 1.2
+  novas_orbital_elements orbit;   ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
 } object;
 
 /**

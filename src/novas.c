@@ -21,6 +21,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <stdarg.h>   // stdarg.h before stdio.h (for older gcc...)
+#include <stddef.h>
 
 #if !COMPAT
 #  include <stdio.h>
@@ -6715,6 +6716,13 @@ void novas_case_sensitive(int value) {
  * compatibility with NOVAS C) source names are converted to upper-case internally. You can
  * however enable case-sensitive processing by calling novas_case_sensitive() before.
  *
+ * NOTES:
+ * <ol>
+ * <li>This call does not initialize the `orbit` field (added in v1.2) with zeroes to remain ABI
+ * compatible with versions &lt;1.2, and to avoid the possiblity of segfaulting if used to
+ * initialize a legacy `object` variable.</li>
+ * </ol>
+ *
  * @param type          The type of object. NOVAS_PLANET (0), NOVAS_EPHEM_OBJECT (1) or
  *                      NOVAS_CATALOG_OBJECT (2), or NOVAS_ORBITAL_OBJECT (3).
  * @param number        The novas ID number (for solar-system bodies only, otherwise ignored)
@@ -6746,7 +6754,8 @@ short make_object(enum novas_object_type type, long number, const char *name, co
   if(!source)
     return novas_error(-1, EINVAL, fn, "NULL input source");
 
-  memset(source, 0, sizeof(*source));
+  // FIXME for version v2.x initialize the entire structure again...
+  memset(source, 0, offsetof(object, orbit));
 
   // Set the object type.
   if(type < 0 || type >= NOVAS_OBJECT_TYPES)
@@ -6758,6 +6767,10 @@ short make_object(enum novas_object_type type, long number, const char *name, co
   if(type == NOVAS_PLANET)
     if(number < 0 || number >= NOVAS_PLANETS)
       return novas_error(2, EINVAL, fn, "planet number %ld is out of bounds [0:%d]", number, NOVAS_PLANETS - 1);
+
+  // FIXME will not need special case in v2.x
+  if(type == NOVAS_ORBITAL_OBJECT)
+    memset(&source->orbit, 0, sizeof(source->orbit));
 
   source->number = number;
 
