@@ -1395,7 +1395,7 @@ enum novas_planet novas_planet_for_name(const char *name) {
  */
 int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys) {
   if (!sys)
-    return novas_error(-1, EINVAL, "novas_set_obsys_pole", "input system is NULL");
+    return novas_error(-1, EINVAL, "novas_set_orbsys_pole", "input system is NULL");
 
   sys->plane = NOVAS_EQUATORIAL_PLANE;
   sys->type = type;
