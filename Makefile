@@ -196,50 +196,54 @@ mydatadir ?= $(datadir)/supernovas
 docdir ?= $(datarootdir)/doc/supernovas
 htmldir ?= $(docdir)/html
 
+# Standard install commands
+INSTALL_PROGRAM ?= install
+INSTALL_DATA ?= install -m 644
+
 .PHONY: install
 install: install-libs install-cio-data install-headers install-apidoc install-examples
 
 .PHONY: install-libs
 install-libs:
 ifneq ($(wildcard $(LIB)/*),)
-	@echo "installing libraries to $(libdir)"
-	install -d $(libdir)
-	install -m 755 -D $(LIB)/lib*.so* $(libdir)/
+	@echo "installing libraries to $(DESTDIR)$(libdir)"
+	install -d $(DESTDIR)$(libdir)
+	$(INSTALL_PROGRAM) -D $(LIB)/lib*.so* $(DESTDIR)$(libdir)/
 else
 	@echo "WARNING! Skipping libs install: needs 'shared' and/or 'static'"
 endif
 
 .PHONY: install-cio-data
 install-cio-data:
-	@echo "installing CIO locator data to $(mydatadir)"
-	install -d $(mydatadir)
-	install -m 644 data/CIO_RA.TXT $(mydatadir)/CIO_RA.TXT
+	@echo "installing CIO locator data to $(DESTDIR)$(mydatadir)"
+	install -d $(DESTDIR)$(mydatadir)
+	$(INSTALL_DATA) data/CIO_RA.TXT $(DESTDIR)$(mydatadir)/CIO_RA.TXT
 
 .PHONY: install-headers
 install-headers:
-	@echo "installing headers to $(includedir)"
-	install -d $(includedir)
-	install -m 644 -D include/* $(includedir)/
+	@echo "installing headers to $(DESTDIR)$(includedir)"
+	install -d $(DESTDIR)$(includedir)
+	$(INSTALL_DATA) -D include/* $(DESTDIR)$(includedir)/
 
 .PHONY: install-apidoc
 install-apidoc:
 ifneq ($(wildcard apidoc/html/search/*),)
-	@echo "installing API documentation to $(htmldir)"
-	install -d $(htmldir)/search
-	install -m 644 -D apidoc/html/search/* $(htmldir)/search/
-	install -m 644 -D apidoc/html/*.* $(htmldir)/
-	@echo "installing Doxygen tag file to $(docdir)"
-	install -d $(docdir)
-	install -m 644 apidoc/supernovas.tag $(docdir)/supernovas.tag
+	@echo "installing API documentation to $(DESTDIR)$(htmldir)"
+	install -d $(DESTDIR)$(htmldir)/search
+	$(INSTALL_DATA) -D apidoc/html/search/* $(DESTDIR)$(htmldir)/search/
+	$(INSTALL_DATA) -D apidoc/html/*.* $(DESTDIR)$(htmldir)/
+	@echo "installing Doxygen tag file to $(DESTDIR)$(docdir)"
+	install -d $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) apidoc/supernovas.tag $(DESTDIR)$(docdir)/supernovas.tag
 else
 	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
 endif
 
 .PHONY: install-examples
 install-examples:
-	@echo "installing examples to $(docdir)"
-	install -d $(docdir)
-	install -m 644 -D examples/* $(docdir)
+	@echo "installing examples to $(DESTDIR)$(docdir)"
+	install -d $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) -D examples/* $(DESTDIR)$(docdir)
 
 
 # Built-in help screen for `make help`
