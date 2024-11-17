@@ -87,7 +87,7 @@ src/super.c
 .RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
 .br
 .ti -1c
-.RI "int \fBnovas_set_orbital_pole\fP (double ra, double dec, \fBnovas_orbital_system\fP *sys)"
+.RI "int \fBnovas_set_orbsys_pole\fP (enum \fBnovas_reference_system\fP type, double ra, double dec, \fBnovas_orbital_system\fP *sys)"
 .br
 .ti -1c
 .RI "double \fBnovas_v2z\fP (double vel)"
@@ -1167,7 +1167,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, and \fBNOVAS_SSB\fP\&.
-.SS "int novas_set_orbital_pole (double ra, double dec, \fBnovas_orbital_system\fP * sys)"
+.SS "int novas_set_orbsys_pole (enum \fBnovas_reference_system\fP type, double ra, double dec, \fBnovas_orbital_system\fP * sys)"
 Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace (or else equatorial) plane relative to which the orbital elements are defined\&. Orbital parameters of planetary satellites normally include the R\&.A\&. and declination of the pole of the local Laplace plane in which the Keplerian orbital elements are referenced\&.
 .PP
 The system will become referenced to the equatorial plane, the relative obliquity is set to (90 - \fCdec\fP), while the argument of the ascending node ('Omega') is set to (90 + \fCra\fP)\&.
@@ -1180,6 +1180,8 @@ You should not expect much precision from the long-range orbital approximations 
 .PP
 \fBParameters\fP
 .RS 4
+\fItype\fP Coordinate reference system in which \fCra\fP and \fCdec\fP are defined (e\&.g\&. NOVAS_GCRS)\&. 
+.br
 \fIra\fP [h] the R\&.A\&. of the pole of the oribtal reference plane\&. 
 .br
 \fIdec\fP [deg] the declination of the pole of the oribtal reference plane\&. 
@@ -1209,7 +1211,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_EQUATORIAL_PLANE\fP, \fBnovas_orbital_system::obl\fP, \fBnovas_orbital_system::Omega\fP, and \fBnovas_orbital_system::plane\fP\&.
+References \fBNOVAS_EQUATORIAL_PLANE\fP, \fBnovas_orbital_system::obl\fP, \fBnovas_orbital_system::Omega\fP, \fBnovas_orbital_system::plane\fP, and \fBnovas_orbital_system::type\fP\&.
 .SS "double novas_v2z (double vel)"
 Converts a radial recession velocity to a redshift value (z = f / f\*<rest\*> )\&. It is based on the relativistic formula: 
 .PP
@@ -1632,7 +1634,7 @@ Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD)
 .PP
 \fBapp_to_cirs_ra()\fP 
 .PP
-tod_to_gcrs() 
+\fBtod_to_gcrs()\fP 
 .PP
 \fBtod_to_j2000()\fP 
 .PP
@@ -1699,7 +1701,7 @@ Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of
 .PP
 \fBj2000_to_tod()\fP 
 .PP
-tod_to_gcrs() 
+\fBtod_to_gcrs()\fP 
 .PP
 \fBtod_to_j2000()\fP 
 .PP

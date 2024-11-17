@@ -1362,6 +1362,20 @@
       <arglist>(const double *in, double *out)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_mod</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a75de6cca190c5fbc3056db726f317c7f</anchor>
+      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_tod</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9c900b81a718a184281a8a0b733b4db7</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
       <type>short</type>
       <name>geo_posvel</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -1635,6 +1649,13 @@
       <arglist>(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *ira, double *idec)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>mod_to_gcrs</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad9cc07f0e6af9339096e15a440b113e5</anchor>
+      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>norm_ang</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -1811,10 +1832,10 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>novas_set_orbital_pole</name>
+      <name>novas_set_orbsys_pole</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a234ac7fa5849f414d7e4405786f2e537</anchor>
-      <arglist>(double ra, double dec, novas_orbital_system *sys)</arglist>
+      <anchor>aee0ed43252017745574fa1e4b84a7b11</anchor>
+      <arglist>(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2116,6 +2137,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>adb48b2acaf76cc3a1e3a1412cc42c232</anchor>
       <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>tod_to_gcrs</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a6871e7fecde44084c7b4e1b8dda5ac70</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -3065,6 +3093,20 @@
       <arglist>(const double *in, double *out)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_mod</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a75de6cca190c5fbc3056db726f317c7f</anchor>
+      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_tod</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a9c900b81a718a184281a8a0b733b4db7</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
       <type>short</type>
       <name>geo_posvel</name>
       <anchorfile>novas_8c.html</anchorfile>
@@ -3245,6 +3287,13 @@
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>a8bd9c6d2127483551c98300e264977f5</anchor>
       <arglist>(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *ira, double *idec)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>mod_to_gcrs</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>ad9cc07f0e6af9339096e15a440b113e5</anchor>
+      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -3476,6 +3525,13 @@
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>aa111f8d21d960677fb91139adc96ff17</anchor>
       <arglist>(const on_surface *location, double lst, double *pos, double *vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>tod_to_gcrs</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a6871e7fecde44084c7b4e1b8dda5ac70</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -4136,10 +4192,10 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>novas_set_orbital_pole</name>
+      <name>novas_set_orbsys_pole</name>
       <anchorfile>super_8c.html</anchorfile>
-      <anchor>a234ac7fa5849f414d7e4405786f2e537</anchor>
-      <arglist>(double ra, double dec, novas_orbital_system *sys)</arglist>
+      <anchor>aee0ed43252017745574fa1e4b84a7b11</anchor>
+      <arglist>(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4750,10 +4806,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>enum novas_equator_type</type>
+      <type>enum novas_reference_system</type>
       <name>type</name>
       <anchorfile>structnovas__orbital__system.html</anchorfile>
-      <anchor>aa80d24a56709991e21d09e9f89f60d66</anchor>
+      <anchor>adaabf923501a3a0a47a8958b6a33c6b3</anchor>
       <arglist></arglist>
     </member>
   </compound>

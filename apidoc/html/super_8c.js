@@ -24,7 +24,7 @@ var super_8c =
     [ "make_redshifted_object", "super_8c.html#ae579a49d84696a913fd0d9f348bb5b11", null ],
     [ "make_solar_system_observer", "super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529", null ],
     [ "novas_planet_for_name", "super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3", null ],
-    [ "novas_set_orbital_pole", "super_8c.html#a234ac7fa5849f414d7e4405786f2e537", null ],
+    [ "novas_set_orbsys_pole", "super_8c.html#aee0ed43252017745574fa1e4b84a7b11", null ],
     [ "novas_v2z", "super_8c.html#aa54cd00024b294d38fa29433c017c65f", null ],
     [ "novas_z_add", "super_8c.html#a493ab751eee5804db77157c37e94e5c3", null ],
     [ "novas_z_inv", "super_8c.html#a1130ad2ce520e948c71f03a25a713075", null ],

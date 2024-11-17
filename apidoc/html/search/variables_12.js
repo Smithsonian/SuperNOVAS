@@ -7,5 +7,5 @@ var searchData=
   ['tobl_4',['tobl',['../structnovas__frame.html#ad68cbc6741fea66373829a8f50307c8e',1,'novas_frame']]],
   ['tt2tdb_5',['tt2tdb',['../structnovas__timespec.html#acd6082033a111e30cda6bab81b7a32ec',1,'novas_timespec']]],
   ['twot_6',['TWOT',['../eph__manager_8c.html#ad741a4fdb6d243507e3be0028cdeea9e',1,'eph_manager.c']]],
-  ['type_7',['type',['../structnovas__orbital__system.html#aa80d24a56709991e21d09e9f89f60d66',1,'novas_orbital_system::type'],['../structobject.html#a2cc80aad5c0303449e2412b122504a10',1,'object::type']]]
+  ['type_7',['type',['../structnovas__orbital__system.html#adaabf923501a3a0a47a8958b6a33c6b3',1,'novas_orbital_system::type'],['../structobject.html#a2cc80aad5c0303449e2412b122504a10',1,'object::type']]]
 ];

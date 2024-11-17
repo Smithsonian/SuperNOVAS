@@ -35,12 +35,12 @@ Release candidate for the next feature release, expected around 1 February 2025.
    
  - #86: NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()`
    to use the NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
-   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). 
-   Also provides `cspice_add_kernel()` and `cspice_remove_kernel()` functions for convenience to manage the set of
-   active kernels (#89). These functions are provided by the `libsolsys-cspice.so[.1]` and/or `.a` plugin libraries, 
-   which are built contingent on the `CSPICE_SUPPORT` variable being set to 1 prior to the build. The build of the 
-   plugin module requires an accessible installation of the CSPICE development files (C headers and unversioned static 
-   or shared libraries depending on the needs of the build).
+   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides 
+   `cspice_add_kernel()` and `cspice_remove_kernel()` functions for convenience to manage the set of active kernels 
+   (#89). These functions are provided by the `libsolsys-cspice.so[.1]` and/or `.a` plugin libraries, which are built 
+   contingent on the `CSPICE_SUPPORT` variable being set to 1 prior to the build. The build of the plugin module 
+   requires an accessible installation of the CSPICE development files (C headers and unversioned static or shared 
+   libraries depending on the needs of the build).
    
  - #87: Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
    
@@ -57,10 +57,10 @@ Release candidate for the next feature release, expected around 1 February 2025.
    [GNU standard](https://www.gnu.org/prep/standards/html_node/Directory-Variables.html) to further customize the
    install locations.
  
- - #95: Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
+ - #95, #98: Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
    can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
    `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
-   use `novas_set_orbital_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+   use `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
    calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
    provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
    orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
@@ -69,6 +69,9 @@ Release candidate for the next feature release, expected around 1 February 2025.
  - #97: Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
    from the planet center in calculations.
    
+ - #98: Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
+   convenience.
+ 
  - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
    
@@ -78,6 +81,7 @@ Release candidate for the next feature release, expected around 1 February 2025.
 
  - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.
+   
    
    
 ## [1.1.1] - 2024-10-28

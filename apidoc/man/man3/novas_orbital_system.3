@@ -26,8 +26,9 @@ novas_orbital_system
 .br
 .RI "reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE "
 .ti -1c
-.RI "enum \fBnovas_equator_type\fP \fBtype\fP"
+.RI "enum \fBnovas_reference_system\fP \fBtype\fP"
 .br
+.RI "the coordinate reference system used for the reference plane and orbitals\&. "
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -49,7 +50,7 @@ Attila Kovacs
 .PP
 \fBSee also\fP
 .RS 4
-\fBnovas_set_orbital_pole()\fP 
+novas_set_obsys_pole() 
 .PP
 \fBnovas_orbital_elements\fP 
 .PP
@@ -63,8 +64,6 @@ Attila Kovacs
 [rad] relative obliquity of orbital reference plane (e\&.g\&. 90 - \*<pole\*> ) 
 .SS "double Omega"
 [rad] relative argument of ascending node of the orbital reference plane (e\&.g\&. \*<pole\*>  + 90) 
-.SS "enum \fBnovas_equator_type\fP type"
-the type of equator in which orientation is referenced (NOVAS_TRUE_EQUATOR, NOVAS_MEAN_EQUATOR, or NOVAS_GCRS_EQUATOR)\&. 
 
 .SH "Author"
 .PP 

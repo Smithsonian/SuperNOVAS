@@ -173,8 +173,8 @@ Functions</h2></td></tr>
 <tr class="separator:a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92e869b101bd41e31ac6d3a2419bb0a3" id="r_a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3">novas_planet_for_name</a> (const char *name)</td></tr>
 <tr class="separator:a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a234ac7fa5849f414d7e4405786f2e537" id="r_a234ac7fa5849f414d7e4405786f2e537"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a234ac7fa5849f414d7e4405786f2e537">novas_set_orbital_pole</a> (double ra, double dec, <a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a> *sys)</td></tr>
-<tr class="separator:a234ac7fa5849f414d7e4405786f2e537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee0ed43252017745574fa1e4b84a7b11" id="r_aee0ed43252017745574fa1e4b84a7b11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aee0ed43252017745574fa1e4b84a7b11">novas_set_orbsys_pole</a> (enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> type, double ra, double dec, <a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a> *sys)</td></tr>
+<tr class="separator:aee0ed43252017745574fa1e4b84a7b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa54cd00024b294d38fa29433c017c65f" id="r_aa54cd00024b294d38fa29433c017c65f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z</a> (double vel)</td></tr>
 <tr class="separator:aa54cd00024b294d38fa29433c017c65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a493ab751eee5804db77157c37e94e5c3" id="r_a493ab751eee5804db77157c37e94e5c3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add</a> (double z1, double z2)</td></tr>
@@ -1625,15 +1625,21 @@ novas_calc_geometric_position() </dd>
 
 </div>
 </div>
-<a id="a234ac7fa5849f414d7e4405786f2e537" name="a234ac7fa5849f414d7e4405786f2e537"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a234ac7fa5849f414d7e4405786f2e537">&#9670;&#160;</a></span>novas_set_orbital_pole()</h2>
+<a id="aee0ed43252017745574fa1e4b84a7b11" name="aee0ed43252017745574fa1e4b84a7b11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee0ed43252017745574fa1e4b84a7b11">&#9670;&#160;</a></span>novas_set_orbsys_pole()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int novas_set_orbital_pole </td>
+          <td class="memname">int novas_set_orbsys_pole </td>
           <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">double&#160;</td>
           <td class="paramname"><em>ra</em>, </td>
         </tr>
@@ -1664,6 +1670,7 @@ You should not expect much precision from the long-range orbital approximations 
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">type</td><td>Coordinate reference system in which <code>ra</code> and <code>dec</code> are defined (e.g. NOVAS_GCRS). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] the R.A. of the pole of the oribtal reference plane. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] the declination of the pole of the oribtal reference plane. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">sys</td><td>The orbital system </td></tr>
@@ -1675,7 +1682,7 @@ You should not expect much precision from the long-range orbital approximations 
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a5caf50e954f622e525e8a9e159ec0655">make_orbital_object()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b">NOVAS_EQUATORIAL_PLANE</a>, <a class="el" href="structnovas__orbital__system.html#ae5014f0e96e7c220c55eb82d11c4133a">novas_orbital_system::obl</a>, <a class="el" href="structnovas__orbital__system.html#a1b5bf6735b7465aec5c931281d240737">novas_orbital_system::Omega</a>, and <a class="el" href="structnovas__orbital__system.html#a2c38f985781586b7df387b437720174d">novas_orbital_system::plane</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b">NOVAS_EQUATORIAL_PLANE</a>, <a class="el" href="structnovas__orbital__system.html#ae5014f0e96e7c220c55eb82d11c4133a">novas_orbital_system::obl</a>, <a class="el" href="structnovas__orbital__system.html#a1b5bf6735b7465aec5c931281d240737">novas_orbital_system::Omega</a>, <a class="el" href="structnovas__orbital__system.html#a2c38f985781586b7df387b437720174d">novas_orbital_system::plane</a>, and <a class="el" href="structnovas__orbital__system.html#adaabf923501a3a0a47a8958b6a33c6b3">novas_orbital_system::type</a>.</p>
 
 </div>
 </div>
@@ -2255,7 +2262,7 @@ You should not expect much precision from the long-range orbital approximations 
 <dd>
 <a class="el" href="super_8c.html#a3fa57a154f2f423612736e5e3a5addbf">app_to_cirs_ra()</a> </dd>
 <dd>
-tod_to_gcrs() </dd>
+<a class="el" href="novas_8c.html#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a> </dd>
 <dd>
@@ -2357,7 +2364,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dd>
 <a class="el" href="novas_8c.html#a02fa1ee652c20160055cbd2c7bd9ca63">j2000_to_tod()</a> </dd>
 <dd>
-tod_to_gcrs() </dd>
+<a class="el" href="novas_8c.html#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a6205edb1361e56cc0c7aed0f088f7437">tod_to_j2000()</a> </dd>
 <dd>
