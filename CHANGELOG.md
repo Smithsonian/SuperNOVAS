@@ -59,9 +59,9 @@ Release candidate for the next feature release, expected around 1 February 2025.
    / `solarsystem_hp()` type custom planet ephemeris provider functions currently configured, so they may be used
    directly, outside of `ephemeris()` calls.
    
- - #93: Now supporting `make install` with prefix and DESTDIR support (e.g. `make prefix=/opt install` to install under 
-   `/opt`,  or `make DESTDIR="/tmp/stage" install` to stage install under `/tmp/stage`). You can also set other 
-   standard directory variables, as prescribed in the 
+ - #93: Now supporting `make install` with `prefix` and `DESTDIR` support (e.g. `make prefix="/opt" install` to 
+   install under `/opt`, and/or `make DESTDIR="/tmp/stage" install` to stage install under `/tmp/stage`). You can also 
+   set other standard directory variables, as prescribed by the 
    [GNU standard](https://www.gnu.org/prep/standards/html_node/Directory-Variables.html) to further customize the
    install locations.
  
@@ -80,8 +80,13 @@ Release candidate for the next feature release, expected around 1 February 2025.
  - #98: Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
    convenience.
  
+ - Added various `object` initializer macros in `novas.h` for the major planets, Sun, Moon, and barycenters, e.g. 
+   `NOVAS_EARTH_INIT` or `NOVAS_SSB_INIT`. These wrap the parametric `NOVAS_PLANET_INIT(num, name)` macro, and can be
+   used to simplify the initialization of NOVAS `object`s.
+ 
  - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
+   
    
 ### Changed
 

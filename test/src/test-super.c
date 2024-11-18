@@ -1640,7 +1640,7 @@ static int test_airborne_observer() {
 
 static int test_solar_system_observer() {
   observer obs = {}, gc = {};
-  object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth"};
+  object earth = NOVAS_EARTH_INIT;
   double pos[3] = {1.0, 2.0, 3.0}, vel[3] = { 10.0, 11.0, 12.0 };
   double epos[3], evel[3], gpos[3], gvel[3], opos[3], ovel[3];
   double tdb2[2] = { tdb, 0.0 };
@@ -1679,7 +1679,7 @@ static int test_solar_system_observer() {
 static int test_obs_posvel() {
   double epos[3] = {}, evel[3] = {}, x[3];
   observer obs;
-  object earth = { NOVAS_PLANET, NOVAS_EARTH, "Earth"};
+  object earth = NOVAS_EARTH_INIT;
   double tdb2[2] = { tdb, 0.0 };
   double sc_pos[3] = {1.0, 2.0, 3.0}, sc_vel[3] = {4.0, 5.0, 6.0};
   double gpos[3], gvel[3];

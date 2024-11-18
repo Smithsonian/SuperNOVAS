@@ -25,7 +25,7 @@ The NOVAS C astrometry library, made better.
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
 fork of the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) 
-C version 3.1, providing bug fixes and making it easier to use overall.
+C version 3.1, providing bug fixes, tons of extra features, while making it easier (and safer) to use also.
 
 SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
@@ -242,13 +242,14 @@ system-wide install you may simply run:
   $ sudo make install
 ```
 
-Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+Or, to install in some other locations, you may set a prefix and/or `DESTDIR`. For example, to install under `/opt` 
+instead, you can:
 
 ```bash
-  $ sudo make prefix=/opt install
+  $ sudo make prefix="/opt" install
 ```
 
-And, you can also set `DESTDIR` to stage the installation under a 'build root', e.g.:
+Or, to stage the installation under a 'build root' first:
 
 ```bash
   $ make DESTDIR="/tmp/stage" install
@@ -932,6 +933,11 @@ before that level of accuracy is reached.
  
  - Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
    convenience.
+   
+ - Added various `object` initializer macros in `novas.h` for the major planets, Sun, Moon, and barycenters, e.g. 
+   `NOVAS_EARTH_INIT` or `NOVAS_SSB_INIT`. These wrap the parametric `NOVAS_PLANET_INIT(num, name)` macro, and can be
+   used to simplify the initialization of NOVAS `object`s.
+
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
