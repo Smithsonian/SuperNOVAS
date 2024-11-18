@@ -114,12 +114,29 @@
 /// [day] Julian date at B1900
 #define NOVAS_JD_B1900            15019.81352
 
-/// [day] Julian date for J1991.25, which the Hipparcos catalog is
-/// referred to
+/// [day] Julian date for J1991.25, which the Hipparcos catalog is referred to.
 #define NOVAS_JD_HIP              2448349.0625
 
 /// [m/s] Speed of light in meters/second is a defining physical constant.
 #define NOVAS_C                   299792458.0
+
+/// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
+#define NOVAS_DAY                 86400.0
+
+/// [rad] A degree expressed in radians. @since 1.2
+#define NOVAS_DEGREE              (M_PI / 180.0)
+
+/// [rad] An arc minute expressed in radians. @since 1.2
+#define NOVAS_ARCMIN              (NOVAS_DEGREE / 60.0)
+
+/// [rad] An arc second expressed in radians. @since 1.2
+#define NOVAS_ARCSEC              (NOVAS_ARCMIN / 60.0)
+
+/// [rad] An hour of angle expressed in radians. @since 1.2
+#define NOVAS_HOURANGLE           (M_PI / 12.0)
+
+/// [m] A kilometer (km) in meters. @since 1.2
+#define NOVAS_KM                  1000.0
 
 /// [m] Astronomical unit (AU). IAU definition.
 /// See <a href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">IAU 2012 Resolution B2</a>.
@@ -133,18 +150,16 @@
 /// [s] Light-time for one astronomical unit (AU) in seconds.
 #define NOVAS_AU_SEC              ( NOVAS_AU / NOVAS_C )
 
-/// [AU/day] Speed of light in AU/day.  Value is 86400 / AU_SEC.
-#define NOVAS_C_AU_PER_DAY        ( 86400.0 / AU_SEC )
+/// [AU/day] Speed of light in units of AU/day.
+#define NOVAS_C_AU_PER_DAY        ( NOVAS_DAY / AU_SEC )
 
-/// [km] Astronomical Unit in kilometers.
+/// [km] Astronomical Unit (AU) in kilometers.
 #define NOVAS_AU_KM               ( 1e-3 * NOVAS_AU )
 
-/// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant in
-/// meters^3 / second^2, from DE-405.
+/// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant, from DE-405.
 #define NOVAS_G_SUN               1.32712440017987e+20
 
-/// [m<sup>3</sup>/s<sup>2</sup>] Geocentric gravitational constant in
-/// meters^3 / second^2, from DE-405.
+/// [m<sup>3</sup>/s<sup>2</sup>] Geocentric gravitational constant, from DE-405.
 #define NOVAS_G_EARTH             3.98600433e+14
 
 /// [m] Solar radius (photosphere)
@@ -154,12 +169,10 @@
 /// [m] Radius of Earth in meters from IERS Conventions (2003).
 #define NOVAS_EARTH_RADIUS        6378136.6
 
-/// Earth ellipsoid flattening from IERS Conventions (2003). Value is
-/// 1 / 298.25642.
+/// Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
 #define NOVAS_EARTH_FLATTENING    (1.0 / 298.25642)
 
-/// [rad/s] Rotational angular velocity of Earth in radians/sec from IERS
-/// Conventions (2003).
+/// [rad/s] Rotational angular velocity of Earth from IERS Conventions (2003).
 #define NOVAS_EARTH_ANGVEL        7.2921150e-5
 
 /// [s] TAI - GPS time offset
@@ -1671,14 +1684,14 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 #define ANGVEL              NOVAS_EARTH_ANGVEL
 
 // Various locally used physical units
-#define DAY                 86400.0               ///< [s] seconds in a day
+#define DAY                 NOVAS_DAY
 #define DAY_HOURS           24.0
 #define DEG360              360.0
 #define JULIAN_YEAR_DAYS    365.25
 #define JULIAN_CENTURY_DAYS 36525.0
-#define ARCSEC              ASEC2RAD
-#define DEGREE              DEG2RAD
-#define HOURANGLE           (M_PI / 12.0)
+#define ARCSEC              NOVAS_ARCSEC
+#define DEGREE              NOVAS_DEGREE
+#define HOURANGLE           NOVAS_HOURANGLE
 #define MAS                 (1e-3 * ASEC2RAD)
 
 // On some older platform NAN may not be defined, so define it here if need be

@@ -344,7 +344,7 @@ double novas_z2v(double z) {
   }
   z += 1.0;
   z *= z;
-  return 1e-3 * (z - 1.0) / (z + 1.0) * C;
+  return (z - 1.0) / (z + 1.0) * C / NOVAS_KM;
 }
 
 /**
@@ -2894,9 +2894,9 @@ int terra(const on_surface *location, double lst, double *pos, double *vel) {
   cosphi = cos(phi);
   c = 1.0 / sqrt(cosphi * cosphi + df2 * sinphi * sinphi);
   s = df2 * c;
-  ht_km = location->height / 1000.0;
-  ach = 1e-3 * ERAD * c + ht_km;
-  ash = 1e-3 * ERAD * s + ht_km;
+  ht_km = location->height / NOVAS_KM;
+  ach = ERAD * c / NOVAS_KM + ht_km;
+  ash = ERAD / NOVAS_KM * s + ht_km;
 
   // Compute local sidereal time factors at the observer's longitude.
   stlocl = lst * HOURANGLE + location->longitude * DEGREE;
@@ -4405,7 +4405,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
 
       // Compute radial velocity measure of sidereal source rel. barycenter
       // Including proper motion
-      beta_src = 1e3 * star->radialvelocity / C;
+      beta_src = NOVAS_KM * star->radialvelocity / C;
 
       if(star->parallax > 0.0) {
         double du[3];
@@ -5041,13 +5041,13 @@ int starvectors(const cat_entry *star, double *pos, double *vel) {
   if(vel) {
     // Compute Doppler factor, which accounts for change in
     // light travel time to star.
-    const double k = 1.0 / (1.0 - 1000.0 * star->radialvelocity / C);
+    const double k = 1.0 / (1.0 - NOVAS_KM * star->radialvelocity / C);
 
     // Convert proper motion and radial velocity to orthogonal components of
     // motion with units of AU/day.
     const double pmr = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
     const double pmd = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
-    const double rvl = k * 1000.0 * star->radialvelocity / (AU / DAY);
+    const double rvl = k * NOVAS_KM * star->radialvelocity / (AU / DAY);
 
     // Transform motion vector to equatorial system.
     vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
@@ -6218,7 +6218,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   pos[2] = dist * sdc;
 
   // Compute Doppler factor, which accounts for change in light travel time to star.
-  k = 1.0 / (1.0 - in->radialvelocity / C * 1000.0);
+  k = 1.0 / (1.0 - in->radialvelocity / C * NOVAS_KM);
 
   // Convert proper motion and radial velocity to orthogonal components
   // of motion, in spherical polar system at star's original position,

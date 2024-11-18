@@ -84,6 +84,9 @@ Release candidate for the next feature release, expected around 1 February 2025.
    `NOVAS_EARTH_INIT` or `NOVAS_SSB_INIT`. These wrap the parametric `NOVAS_PLANET_INIT(num, name)` macro, and can be
    used to simplify the initialization of NOVAS `object`s.
  
+ - Added more physical unit constants to `novas.h` and a corresponding section in the README on how these may be used
+   to convert to/from NOVAS conventional quantities.
+ 
  - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
    

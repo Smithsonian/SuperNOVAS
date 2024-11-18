@@ -39,7 +39,7 @@
 #include "cspice/SpiceZpr.h"        // for reset_c
 
 /// Multiplicative normalization for the positions returned by km to AU
-#define NORM_POS                    (1e3 / NOVAS_AU)
+#define NORM_POS                    (NOVAS_KM / NOVAS_AU)
 
 /// Multiplicative normalization for the velocities returned by km/s to AU/day
 #define NORM_VEL                    (NORM_POS * 86400.0)

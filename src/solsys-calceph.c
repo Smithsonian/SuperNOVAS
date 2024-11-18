@@ -40,7 +40,7 @@
 #define CALCEPH_UNITS               (CALCEPH_UNIT_KM | CALCEPH_UNIT_DAY)
 
 /// Multiplicative normalization for the positions returned by CALCEPH to AU
-#define NORM_POS                    (1e3 / NOVAS_AU)
+#define NORM_POS                    (NOVAS_KM / NOVAS_AU)
 
 /// Multiplicative normalization for the velocities returned by CALCEPH to AU/day
 #define NORM_VEL                    (NORM_POS)

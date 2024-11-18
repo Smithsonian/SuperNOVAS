@@ -1182,9 +1182,9 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
  * @since 1.2
  */
 double novas_v2z(double vel) {
-  vel *= 1e3 / C;   // [km/s] -> beta
+  vel *= NOVAS_KM / C;   // [km/s] -> beta
   if(fabs(vel) > 1.0) {
-    novas_error(-1, EINVAL, "novas_v2z", "velocity exceeds speed of light v=%g km/s", 1e-3 * vel * C);
+    novas_error(-1, EINVAL, "novas_v2z", "velocity exceeds speed of light v=%g km/s", vel * C / NOVAS_KM);
     return NAN;
   }
   return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;

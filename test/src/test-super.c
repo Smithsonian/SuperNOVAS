@@ -26,8 +26,8 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-#define J2000   2451545.0
-#define DAY     86400.0
+#define J2000   NOVAS_JD_J2000
+
 
 static char *workPath;
 
