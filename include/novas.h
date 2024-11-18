@@ -235,7 +235,7 @@ enum novas_object_type {
 
   /// Any Solar-system body, whose position is determined by a set of orbital elements
   /// @since 1.2
-  /// @sa novas_orbital_elements
+  /// @sa novas_orbital
   NOVAS_ORBITAL_OBJECT
 };
 
@@ -716,7 +716,7 @@ typedef struct {
  * @since 1.2
  *
  * @sa novas_set_obsys_pole()
- * @sa novas_orbital_elements
+ * @sa novas_orbital
  * @sa NOVAS_ORBITAL_SYSTEM_INIT
  */
 typedef struct {
@@ -781,11 +781,11 @@ typedef struct {
                                     ///< or 360/T, where T is orbital period in days.
   double apsis_period;              ///< [day] Precession period of the apsis, if known.
   double node_period;               ///< [day] Precession period of the ascending node, if known.
-} novas_orbital_elements;
+} novas_orbital;
 
 /**
- * Initializer for novas_orbital_elements for heliocentric orbits using GCRS ecliptic pqrametrization.
- * @sa novas_orbital_elements
+ * Initializer for novas_orbital for heliocentric orbits using GCRS ecliptic pqrametrization.
+ * @sa novas_orbital
  * @author Attila Kovacs
  * @since 1.2
  */
@@ -803,7 +803,7 @@ typedef struct {
   long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
   cat_entry star;                 ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
-  novas_orbital_elements orbit;   ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
+  novas_orbital orbit;            ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
 } object;
 
 /**
@@ -1515,9 +1515,9 @@ enum novas_planet novas_planet_for_name(const char *name);
 
 int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys);
 
-int make_orbital_object(const char *name, long num, const novas_orbital_elements *orbit, object *body);
+int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
 
-int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orb, enum novas_accuracy accuracy, double *pos, double *vel);
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *orb, enum novas_accuracy accuracy, double *pos, double *vel);
 
 int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 

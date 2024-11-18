@@ -5994,7 +5994,7 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
  * @author Attila Kovacs
  * @since 1.2
  */
-int novas_orbit_posvel(double jd_tdb, const novas_orbital_elements *orbit, enum novas_accuracy accuracy, double *pos, double *vel) {
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *orbit, enum novas_accuracy accuracy, double *pos, double *vel) {
   static const char *fn = "novas_orbit_posvel";
 
   double dt, M, E, nu, r, omega, Omega;

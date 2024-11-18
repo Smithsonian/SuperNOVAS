@@ -1541,7 +1541,7 @@ static int test_planet_for_name() {
 
 static int test_make_orbital_object() {
   int n = 0;
-  novas_orbital_elements orbit = {};
+  novas_orbital orbit = {};
   object body = {};
 
   if(check("make_orbital_object:orbit", -1, make_orbital_object("blah", -1, NULL, &body))) n++;
@@ -1555,7 +1555,7 @@ static int test_orbit_posvel() {
   int n = 0;
   double pos[3] = {}, vel[3] = {};
   int saved = novas_inv_max_iter;
-  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  novas_orbital orbit = NOVAS_ORBIT_INIT;
 
   orbit.a = 1.0;
 

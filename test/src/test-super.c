@@ -2254,7 +2254,7 @@ static int test_planet_for_name() {
 
 static int test_orbit_place() {
   object ceres = {};
-  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  novas_orbital orbit = NOVAS_ORBIT_INIT;
   observer obs = {};
   sky_pos pos = {};
   double p0[3] = {}, p1[3] = {};
@@ -2334,7 +2334,7 @@ static int test_orbit_place() {
 
 
 static int test_orbit_posvel_callisto() {
-  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  novas_orbital orbit = NOVAS_ORBIT_INIT;
   novas_orbital_system *sys = &orbit.system;
   double pos0[3] = {}, pos[3] = {}, vel[3] = {}, pos1[3] = {}, vel1[3] = {}, ra, dec, dra, ddec;
   int i;

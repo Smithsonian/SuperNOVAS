@@ -1056,7 +1056,7 @@ int make_ephem_object(const char *name, long num, object *body) {
  * @since 1.2
  * @author Attila Kovacs
  */
-int make_orbital_object(const char *name, long num, const novas_orbital_elements *orbit, object *body) {
+int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body) {
   static const char *fn = "make_orbital_object";
   if(!orbit)
     return novas_error(-1, EINVAL, fn, "Input orbital elements is NULL");

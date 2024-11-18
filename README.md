@@ -248,6 +248,12 @@ Or, to install in some other locations, you may set a prefix. For example to ins
   $ sudo make prefix=/opt install
 ```
 
+And, you can also set `DESTDIR` to stage the installation under a 'build root', e.g.:
+
+```bash
+  $ make DESTDIR="/tmp/stage" install
+```
+
 
 -----------------------------------------------------------------------------
 
@@ -603,7 +609,7 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
   object NEA;		// e.g. a Near-Earth Asteroid
   
   // Fill in the orbital parameters (pay attention to units!)
-  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  novas_orbital orbit = NOVAS_ORBIT_INIT;
   orbit.a = ...;
   ...
   
@@ -912,10 +918,10 @@ before that level of accuracy is reached.
 
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
 
- - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
-   can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
-   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
-   use `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+ - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit can 
+   be defined by the set of `novas_orbital`, relative to a `novas_orbital_system`. You can initialize an `object` with 
+   a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might use 
+   `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
    calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
    provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
    orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 

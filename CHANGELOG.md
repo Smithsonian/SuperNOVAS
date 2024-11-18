@@ -66,13 +66,13 @@ Release candidate for the next feature release, expected around 1 February 2025.
    install locations.
  
  - #95, #98: Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose 
-   orbit can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can 
-   initialize an `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite 
-   orbits you might use `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new 
-   `novas_orbit_posvel()` to calculate positions. While orbital elements do not always yield precise positions, they 
-   can for shorter periods, provided that the orbital elements are up-to-date. For example, the Minor Planer Center 
-   (MPC) publishes accurate orbital elements for all known asteroids and comets regularly. For newly discovered 
-   objects, this may be the only and/or most accurate information available anywhere.
+   orbit can be defined by the set of `novas_orbital`, relative to a `novas_orbital_system`. You can initialize an 
+   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might 
+   use `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+   calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
+   provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
+   orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
+   and/or most accurate information available anywhere.
    
  - #97: Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
    from the planet center in calculations.
@@ -85,7 +85,7 @@ Release candidate for the next feature release, expected around 1 February 2025.
    
 ### Changed
 
- - #96: Changed `object` structure to include `novas_orbital_elements` for `NOVAS_ORBITAL_OBJECT` types.
+ - #96: Changed `object` structure to include `novas_orbital` for `NOVAS_ORBITAL_OBJECT` types.
 
  - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.
