@@ -84,14 +84,14 @@ Outside contributions are very welcome. See
 ### Related links
 
  - [NOVAS](https://aa.usno.navy.mil/software/novas_info) home page at the US Naval Observatory.
- - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemeris
+ - [CALCEPH C library](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) for integrating Solar-system ephemerides
    from JPL and/or in INPOP 2.0/3.0 format.
- - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemeris
+ - [NAIF SPICE toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) for integrating Solar-system ephemerides
    from JPL.
  - [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) for building CSPICE as a shared
    library for dynamic linking.
- - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
-   of ephemeris data.
+ - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides up-to-date orbital elements
+   for asteroid and comets, including for newly discovered objects.
 
 
 -----------------------------------------------------------------------------
