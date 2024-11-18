@@ -77,7 +77,7 @@
     <class kind="struct">novas_delaunay_args</class>
     <class kind="struct">novas_frame</class>
     <class kind="struct">novas_matrix</class>
-    <class kind="struct">novas_orbital_elements</class>
+    <class kind="struct">novas_orbital</class>
     <class kind="struct">novas_orbital_system</class>
     <class kind="struct">novas_planet_bundle</class>
     <class kind="struct">novas_timespec</class>
@@ -173,6 +173,20 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_ARCMIN</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aacce04f99c506d5ff67ff4daf1ccda95</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_ARCSEC</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a0fb993148083be267e8321f4f5227527</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_AU</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>abc8f275a2d431e59a1ec9e276abaca1a</anchor>
@@ -215,6 +229,20 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_DAY</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a0b0c2c5ccc61c8740de2e2ac277cd836</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_DEGREE</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a6d9698dbaf6260d7fe8a531a0e96d2a8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_EARTH_ANGVEL</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ac50f27bc66238525124427551a956ec3</anchor>
@@ -229,9 +257,23 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_EARTH_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>abad802a863342aebe9a40587b4e47bab</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_EARTH_RADIUS</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a139f16e134bf6119b6e04c8272c85668</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_EMB_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a209cb6db7acbde105772520150f238de</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -260,6 +302,13 @@
       <name>NOVAS_GPS_TO_TAI</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a6355388ff4a44836eda6eb1e97da60cd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_HOURANGLE</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aee2680f03d1dfa4c9fbeea2be806dbf7</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -299,6 +348,20 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_JUPITER_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a8f05bb45f646e41b78bbe79175114d57</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_KM</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a0a84af1a760ed2aaa01dd93e9e22bdf1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_MAJOR_VERSION</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ac73482ee628f676b44bb1476688f223e</anchor>
@@ -306,9 +369,37 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_MARS_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a26aff9425f7df9a4559da8daac284cc5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_MERCURY_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ab40e33a03ee368c2496b54f9b222fc89</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_MINOR_VERSION</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>af7a746fdca818e9d4c4aa27bf65a62be</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_MOON_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a4cbd3c168b9357e3af2274252a6d1a5b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_NEPTUNE_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a341603d54c8cfc1ae9bb23034ba3ef5a</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -355,6 +446,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_PLANET_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad34a88c2c04b624f8f85fc86e7935967</anchor>
+      <arglist>(num, name)</arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_PLANET_NAMES_INIT</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>abbd19f57e31db2ac91cbe22f9a95f390</anchor>
@@ -365,6 +463,20 @@
       <name>NOVAS_PLANETS</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a1853540eae9f8699b6aaff9c0b518e08</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_PLUTO_BARYCENTER_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aead51c753fb72d7c603298c654795ea1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_PLUTO_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a451602e14e6a5512d0e969e4d9878c34</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -383,9 +495,30 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_SATURN_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a2cd97d849a1f16d6b85b8d2976f56472</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_SOLAR_RADIUS</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ae548ecdfc646914084936acb32e9c993</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_SSB_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aebdfbe27bf764b69018291054ad9130d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_SUN_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a6afeda74c9df859ae6504eebfee01092</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -411,10 +544,38 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_URANUS_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad873085559e1141614264d15c4885a87</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_VENUS_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>af126344dc5cbee61df9e55bd92322839</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_VERSION_STRING</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>afc8e7b02d26a13c380dcff4ec2d6530e</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_SURFACE_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad8e67e1b12b3699a361f87e95d333334</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ON_SURFACE_LOC</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a4fe5e792ca262b3f45fe992b4c49e9b4</anchor>
+      <arglist>(lon, lat, alt)</arglist>
     </member>
     <member kind="define">
       <type>#define</type>
@@ -1610,8 +1771,8 @@
       <type>int</type>
       <name>make_orbital_object</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a5caf50e954f622e525e8a9e159ec0655</anchor>
-      <arglist>(const char *name, long num, const novas_orbital_elements *orbit, object *body)</arglist>
+      <anchor>a3c5e215babeeba078ca7b3e9be42e555</anchor>
+      <arglist>(const char *name, long num, const novas_orbital *orbit, object *body)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1813,8 +1974,8 @@
       <type>int</type>
       <name>novas_orbit_posvel</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>af45c814a67b838383aa7c4785322e90a</anchor>
-      <arglist>(double jd_tdb, const novas_orbital_elements *orb, enum novas_accuracy accuracy, double *pos, double *vel)</arglist>
+      <anchor>a7f69ea5de4ddbd6011b2c31b5fcd0d77</anchor>
+      <arglist>(double jd_tdb, const novas_orbital *orb, enum novas_accuracy accuracy, double *pos, double *vel)</arglist>
     </member>
     <member kind="function">
       <type>enum novas_planet</type>
@@ -3327,8 +3488,8 @@
       <type>int</type>
       <name>novas_orbit_posvel</name>
       <anchorfile>novas_8c.html</anchorfile>
-      <anchor>afad28eae3650f8ef3ea3bfa419900f28</anchor>
-      <arglist>(double jd_tdb, const novas_orbital_elements *orbit, enum novas_accuracy accuracy, double *pos, double *vel)</arglist>
+      <anchor>a445ad14faede9dc912601de27fb52bc0</anchor>
+      <arglist>(double jd_tdb, const novas_orbital *orbit, enum novas_accuracy accuracy, double *pos, double *vel)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4166,8 +4327,8 @@
       <type>int</type>
       <name>make_orbital_object</name>
       <anchorfile>super_8c.html</anchorfile>
-      <anchor>a5caf50e954f622e525e8a9e159ec0655</anchor>
-      <arglist>(const char *name, long num, const novas_orbital_elements *orbit, object *body)</arglist>
+      <anchor>a3c5e215babeeba078ca7b3e9be42e555</anchor>
+      <arglist>(const char *name, long num, const novas_orbital *orbit, object *body)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -4694,82 +4855,82 @@
     </member>
   </compound>
   <compound kind="struct">
-    <name>novas_orbital_elements</name>
-    <filename>structnovas__orbital__elements.html</filename>
+    <name>novas_orbital</name>
+    <filename>structnovas__orbital.html</filename>
     <member kind="variable">
       <type>double</type>
       <name>a</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>a1031d0e0a97a340abfe0a6ab9e831045</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>apsis_period</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>a18c1c30ab34602026b03269be48d36a1</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>e</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>ab17e17fb32b792781b807505e7f60c9c</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>i</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>a5659a38afd08966e6799fa0fb40a882a</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>jd_tdb</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>a0aefc536698706b7f8a15f23168c3486</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>M0</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>adc4cda6fcbff8922621b0a08f911957d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>n</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>abe63e991a7bf5d666068b15c9064428d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>node_period</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>abc96d50a65bae0b26750df2d93492fea</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>omega</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>a98ecc32b7ac0cf654d9f883cbe5cab35</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>double</type>
       <name>Omega</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>a1b5bf6735b7465aec5c931281d240737</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>novas_orbital_system</type>
       <name>system</name>
-      <anchorfile>structnovas__orbital__elements.html</anchorfile>
+      <anchorfile>structnovas__orbital.html</anchorfile>
       <anchor>a2d7f51b64b1f15b7c85fdf1130d3ea87</anchor>
       <arglist></arglist>
     </member>
@@ -4927,10 +5088,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_orbital_elements</type>
+      <type>novas_orbital</type>
       <name>orbit</name>
       <anchorfile>structobject.html</anchorfile>
-      <anchor>a9ad3978b06d4ce6a366ff84f6854796a</anchor>
+      <anchor>a92255a8fae4e61f344eaf20e071bcb7e</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5110,6 +5271,7 @@
     <docanchor file="index.html">accuracy-notes</docanchor>
     <docanchor file="index.html">performance-note</docanchor>
     <docanchor file="index.html">multi-threading</docanchor>
+    <docanchor file="index.html">physical-units</docanchor>
     <docanchor file="index.html">precision</docanchor>
     <docanchor file="index.html">supernovas-features</docanchor>
     <docanchor file="index.html">added-functionality</docanchor>

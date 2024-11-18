@@ -75,7 +75,7 @@ src/super.c
 .RI "int \fBmake_ephem_object\fP (const char *name, long num, \fBobject\fP *body)"
 .br
 .ti -1c
-.RI "int \fBmake_orbital_object\fP (const char *name, long num, const \fBnovas_orbital_elements\fP *orbit, \fBobject\fP *body)"
+.RI "int \fBmake_orbital_object\fP (const char *name, long num, const \fBnovas_orbital\fP *orbit, \fBobject\fP *body)"
 .br
 .ti -1c
 .RI "int \fBmake_redshifted_object\fP (const char *name, double ra, double dec, double z, \fBobject\fP *source)"
@@ -1005,7 +1005,7 @@ Attila Kovacs
 
 .PP
 References \fBmake_object()\fP, and \fBNOVAS_EPHEM_OBJECT\fP\&.
-.SS "int make_orbital_object (const char * name, long num, const \fBnovas_orbital_elements\fP * orbit, \fBobject\fP * body)"
+.SS "int make_orbital_object (const char * name, long num, const \fBnovas_orbital\fP * orbit, \fBobject\fP * body)"
 Sets a celestial object to be a Solar-system orbital body\&. Typically this would be used to define minor planets, asteroids, comets, or even planetary satellites\&.
 .PP
 \fBParameters\fP
@@ -1251,7 +1251,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBC\fP\&.
+References \fBC\fP, and \fBNOVAS_KM\fP\&.
 .SS "double novas_z_add (double z1, double z2)"
 Compounds two redshift corrections, e\&.g\&. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer\&. It's effectively using (1 + z) = (1 + z1) * (1 + z2)\&.
 .PP

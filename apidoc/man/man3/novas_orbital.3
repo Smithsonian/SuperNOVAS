@@ -1,0 +1,101 @@
+.TH "novas_orbital" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+novas_orbital
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <novas\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "double \fBa\fP"
+.br
+.RI "[AU] semi-major axis "
+.ti -1c
+.RI "\fBdouble\fP \fBapsis_period\fP"
+.br
+.RI "[day] Precession period of the apsis, if known\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBe\fP"
+.br
+.RI "eccentricity "
+.ti -1c
+.RI "\fBdouble\fP \fBi\fP"
+.br
+.RI "[deg] inclination of orbit to the reference plane "
+.ti -1c
+.RI "\fBdouble\fP \fBjd_tdb\fP"
+.br
+.RI "[day] Barycentri Dynamical Time (TDB) based Julian date of the parameters\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBM0\fP"
+.br
+.RI "[deg] mean anomaly at the reference time "
+.ti -1c
+.RI "\fBdouble\fP \fBn\fP"
+.br
+.ti -1c
+.RI "\fBdouble\fP \fBnode_period\fP"
+.br
+.RI "[day] Precession period of the ascending node, if known\&. "
+.ti -1c
+.RI "\fBdouble\fP \fBomega\fP"
+.br
+.RI "[deg] argument of periapsis / perihelion, at the reference time "
+.ti -1c
+.RI "\fBdouble\fP \fBOmega\fP"
+.br
+.RI "[deg] argument of ascending node on the reference plane, at the reference time "
+.ti -1c
+.RI "\fBnovas_orbital_system\fP \fBsystem\fP"
+.br
+.RI "orbital reference system assumed for the parametrization "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Keplerian orbital elements for \fCNOVAS_ORBITAL_OBJECT\fP type\&. Orbital elements can be used to provide approximate positions for various Solar-system bodies\&. JPL publishes orbital elements (and their evolution) for the major planets and their satellites\&. However, these are suitable only for very approximate calculations, with up to degree scale errors for the gas giants for the time range between 1850 AD and 2050 AD\&. Accurate positions and velocities for planets and their satellites should generally require the use of precise ephemeris data instead, such as obtained from the JPL Horizons system\&.
+.PP
+Orbital elements describe motion from a purely Keplerian perspective\&. However, for short periods, for which the perturbing bodies can be ignored, this description can be quite accurate provided that an up-to-date set of values are used\&. The Minor Planet Center (MPC) thus regularly publishes orbital elements for all known asteroids and comets\&. For such objects, orbital elements can offer precise, and the most up-to-date positions and velocities\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Up-to-date orbital elements for asteroids, comets, etc from the Minor Planet Center (MPC): https://minorplanetcenter.net/data 
+.IP "2." 4
+Mean elements for planetary satellites from JPL Horizons: https://ssd.jpl.nasa.gov/sats/elem/ 
+.IP "3." 4
+Low accuracy mean elements for planets from JPL Horizons: https://ssd.jpl.nasa.gov/planets/approx_pos.html 
+.PP
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobject\fP 
+.PP
+\fBenum\fP \fBNOVAS_ORBITAL_OBJECT\fP 
+.PP
+\fBNOVAS_ORBIT_INIT\fP 
+.RE
+.PP
+
+.SH "Field Documentation"
+.PP 
+.SS "\fBdouble\fP n"
+[deg/day] mean daily motion, i\&.e\&. (\fIGM\fP/_a_\*{3\*} )\*{1/2\*}  for the central body, or 360/T, where T is orbital period in days\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

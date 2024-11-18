@@ -8,7 +8,7 @@ The NOVAS C astrometry library, made better.
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
 fork of the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) 
-C version 3.1, providing bug fixes and making it easier to use overall.
+C version 3.1, providing bug fixes, tons of extra features, while making it easier (and safer) to use also.
 
 SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
@@ -73,8 +73,8 @@ Outside contributions are very welcome. See
    from JPL.
  - [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) for building CSPICE as a shared
    library for dynamic linking.
- - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides another source
-   of ephemeris data.
+ - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides up-to-date orbital elements
+   for asteroid and comets, including nwly discovered objects.
 
 
 -----------------------------------------------------------------------------
@@ -225,10 +225,17 @@ system-wide install you may simply run:
   $ sudo make install
 ```
 
-Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+Or, to install in some other locations, you may set a prefix and/or `DESTDIR`. For example, to install under `/opt` 
+instead, you can:
 
 ```bash
-  $ sudo make prefix=/opt install
+  $ sudo make prefix="/opt" install
+```
+
+Or, to stage the installation under a 'build root' first:
+
+```bash
+  $ make DESTDIR="/tmp/stage" install
 ```
 
 
@@ -325,6 +332,7 @@ switch between different planet and ephemeris calculator functions at will, duri
  - [Calculating positions for a Solar-system source](#solsys-example)
  - [Reduced accuracy shortcuts](#accuracy-notes)
  - [Performance considerations](#performance-note)
+ - [Physical units](#physical-units)
 
 
 <a name="methodologies"></a>
@@ -358,6 +366,7 @@ SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
+
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -586,7 +595,7 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
   object NEA;		// e.g. a Near-Earth Asteroid
   
   // Fill in the orbital parameters (pay attention to units!)
-  novas_orbital_elements orbit = NOVAS_ORBIT_INIT;
+  novas_orbital orbit = NOVAS_ORBIT_INIT;
   orbit.a = ...;
   ...
   
@@ -646,6 +655,62 @@ Just make sure that you:
  - or else, set the appropriate non-standard keyword to use for declaring thread-local variables for your compiler in 
    `config.mk` or in your equivalent build setup.
  
+ 
+<a name="physical-units"></a>
+### Physical units
+
+The NOVAS API has been using conventional units (e.g. AU, km, day, deg, h) typically for its parameters and return 
+values alike. Hence, SuperNOVAS follows the same conventions for its added functions and data structures also. 
+However, when interfacing SuperNOVAS with other programs, libraries, or data files, it is often necessary to use
+quantities that are expressed in different units, such as SI or CGS. To facilitate such conversions, `novas.h` 
+provides a set of unit constants, which can be used for converting to/from SI units (and radians). For example, 
+`novas.h` contains the following definitions:
+
+```c
+  /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
+  #define NOVAS_DAY                 86400.0
+
+  /// [rad] A degree expressed in radians. @since 1.2
+  #define NOVAS_DEGREE              (M_PI / 180.0)
+
+  /// [rad] An hour of angle expressed in radians. @since 1.2
+  #define NOVAS_HOURANGLE           (M_PI / 12.0)
+```
+
+You can use these, for example, to convert quantities expressed in conventional units for NOVAS to standard (SI) 
+values, by multiplying NOVAS quantities with the corresponding unit definition. E.g.:
+
+```c
+  // A difference in Julian Dates [day] in seconds.
+  double delta_t = (tjd - tjd0) * NOVAS_DAY;
+  
+  // R.A. [h] / declination [deg] converted radians (e.g. for trigonometric functions).
+  double ra_rad = ra_h * NOVAS_HOURANGLE;
+  double dec_rad = dec_d * NOVAS_DEGREE; 
+```
+
+And vice-versa: to convert values expressed in standard (SI) units, you can divide by the appropriate constant to
+'cast' an SI value into the particular physical unit, e.g.:
+
+```c
+  // Increment a Julian Date [day] with some time differential [s].
+  double tjd = tjd0 + delta_t / NOVAS_DAY;
+  
+  // convert R.A. / declination in radians to hours and degrees
+  double ra_h = ra_rad / NOVAS_HOURANGLE;
+  double dec_d = dec_rad / NOVAS_DEGREE;
+```
+
+Finally, you can combine them to convert between two different conventional units, e.g.:
+
+```c
+  // Convert angle from [h] -> [rad] -> [deg]
+  double lst_d = lst_h * HOURANGLE / DEGREE; 
+  
+  // Convert [AU/day] -> [m/s] (SI) -> [km/s]
+  double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KM
+```
+
  
 -----------------------------------------------------------------------------
 
@@ -895,10 +960,10 @@ before that level of accuracy is reached.
 
  - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
 
- - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
-   can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
-   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
-   use `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
+ - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit can 
+   be defined by the set of `novas_orbital`, relative to a `novas_orbital_system`. You can initialize an `object` with 
+   a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might use 
+   `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
    calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
    provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
    orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
@@ -909,6 +974,13 @@ before that level of accuracy is reached.
  
  - Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
    convenience.
+   
+ - Added various `object` initializer macros in `novas.h` for the major planets, Sun, Moon, and barycenters, e.g. 
+   `NOVAS_EARTH_INIT` or `NOVAS_SSB_INIT`. These wrap the parametric `NOVAS_PLANET_INIT(num, name)` macro, and can be
+   used to simplify the initialization of NOVAS `object`s.
+
+ - Added more physical unit constants to `novas.h`.
+
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API

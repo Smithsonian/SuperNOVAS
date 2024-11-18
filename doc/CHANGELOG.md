@@ -7,10 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.2.0-rc2] - 2024-11-18
+## [Unreleased]
 
 Release candidate for the next feature release, expected around 1 February 2025.
 
+
+### Fixed
+
+ - `make_on_surface()` to leave humidity undefined. The `humidity` field was added in v1.1 only, and thus attempting
+   to initialize it to zero (as we did in v1.1) can result in memory corruption or even segfaulting if called by 
+   objects that have been compiled with v1.0. So, from now on the call will leave humidity uninitialized and it's up 
+   to the caller ro define it if it is needed for the specific refraction model.
 
 ### Added
 
@@ -52,14 +59,15 @@ Release candidate for the next feature release, expected around 1 February 2025.
    / `solarsystem_hp()` type custom planet ephemeris provider functions currently configured, so they may be used
    directly, outside of `ephemeris()` calls.
    
- - #93: Now supporting `make install` with prefix support (e.g. `make prefix=/opt install` to install under `/opt`).
-   You can also set other standard directory variables, as prescribed in the 
+ - #93: Now supporting `make install` with `prefix` and `DESTDIR` support (e.g. `make prefix="/opt" install` to 
+   install under `/opt`, and/or `make DESTDIR="/tmp/stage" install` to stage install under `/tmp/stage`). You can also 
+   set other standard directory variables, as prescribed by the 
    [GNU standard](https://www.gnu.org/prep/standards/html_node/Directory-Variables.html) to further customize the
    install locations.
  
- - #95, #98: Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit
-   can be defined by the set of `novas_orbital_elements`, relative to a `novas_orbital_system`. You can initialize an 
-   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might
+ - #95, #98: Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose 
+   orbit can be defined by the set of `novas_orbital`, relative to a `novas_orbital_system`. You can initialize an 
+   `object` with a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might 
    use `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
    calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
    provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
@@ -72,12 +80,20 @@ Release candidate for the next feature release, expected around 1 February 2025.
  - #98: Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
    convenience.
  
+ - Added various `object` initializer macros in `novas.h` for the major planets, Sun, Moon, and barycenters, e.g. 
+   `NOVAS_EARTH_INIT` or `NOVAS_SSB_INIT`. These wrap the parametric `NOVAS_PLANET_INIT(num, name)` macro, and can be
+   used to simplify the initialization of NOVAS `object`s.
+ 
+ - Added more physical unit constants to `novas.h` and a corresponding section in the README on how these may be used
+   to convert to/from NOVAS conventional quantities.
+ 
  - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
    
+   
 ### Changed
 
- - #96: Changed `object` structure to include `novas_orbital_elements` for `NOVAS_ORBITAL_OBJECT` types.
+ - #96: Changed `object` structure to include `novas_orbital` for `NOVAS_ORBITAL_OBJECT` types.
 
  - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.

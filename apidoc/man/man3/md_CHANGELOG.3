@@ -7,9 +7,13 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.2\&.0-rc2] - 2024-11-18"
+.SH "[Unreleased]"
 .PP
 Release candidate for the next feature release, expected around 1 February 2025\&.
+.SS "Fixed"
+.IP "\(bu" 2
+\fC\fBmake_on_surface()\fP\fP to leave humidity undefined\&. The \fChumidity\fP field was added in v1\&.1 only, and thus attempting to initialize it to zero (as we did in v1\&.1) can result in memory corruption or even segfaulting if called by objects that have been compiled with v1\&.0\&. So, from now on the call will leave humidity uninitialized and it's up to the caller ro define it if it is needed for the specific refraction model\&.
+.PP
 .SS "Added"
 .IP "\(bu" 2
 #57: New \fCnovas_make_redshifted_object()\fP to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value\&.
@@ -28,19 +32,23 @@ NOVAS-NAIF conversions for major planets (and Sun, Moon, SSB): \fC\fBnovas_to_na
 .IP "\(bu" 2
 Added \fC\fBget_planet_provider()\fP\fP and \fC\fBget_planet_provider_hp()\fP\fP functions for convenience to return the \fC\fBsolarsystem()\fP\fP / \fC\fBsolarsystem_hp()\fP\fP type custom planet ephemeris provider functions currently configured, so they may be used directly, outside of \fC\fBephemeris()\fP\fP calls\&.
 .IP "\(bu" 2
-#93: Now supporting \fCmake install\fP with prefix support (e\&.g\&. \fCmake prefix=/opt install\fP to install under \fC/opt\fP)\&. You can also set other standard directory variables, as prescribed in the \fCGNU standard\fP to further customize the install locations\&.
+#93: Now supporting \fCmake install\fP with \fCprefix\fP and \fCDESTDIR\fP support (e\&.g\&. \fCmake prefix='/opt' install\fP to install under \fC/opt\fP, and/or \fCmake DESTDIR='/tmp/stage' install\fP to stage install under \fC/tmp/stage\fP)\&. You can also set other standard directory variables, as prescribed by the \fCGNU standard\fP to further customize the install locations\&.
 .IP "\(bu" 2
-#95, #98: Added support for using orbital elements\&. \fC\fBobject\&.type\fP\fP can now be set to \fCNOVAS_ORBITAL_OBJECT\fP, whose orbit can be defined by the set of \fC\fBnovas_orbital_elements\fP\fP, relative to a \fC\fBnovas_orbital_system\fP\fP\&. You can initialize an \fCobject\fP with a set of orbital elements using \fC\fBmake_orbital_object()\fP\fP, and for planetary satellite orbits you might use \fC\fBnovas_set_orbsys_pole()\fP\fP\&. For orbital objects, \fC\fBephemeris()\fP\fP will call on the new \fC\fBnovas_orbit_posvel()\fP\fP to calculate positions\&. While orbital elements do not always yield precise positions, they can for shorter periods, provided that the orbital elements are up-to-date\&. For example, the Minor Planer Center (MPC) publishes accurate orbital elements for all known asteroids and comets regularly\&. For newly discovered objects, this may be the only and/or most accurate information available anywhere\&.
+#95, #98: Added support for using orbital elements\&. \fC\fBobject\&.type\fP\fP can now be set to \fCNOVAS_ORBITAL_OBJECT\fP, whose orbit can be defined by the set of \fC\fBnovas_orbital\fP\fP, relative to a \fC\fBnovas_orbital_system\fP\fP\&. You can initialize an \fCobject\fP with a set of orbital elements using \fC\fBmake_orbital_object()\fP\fP, and for planetary satellite orbits you might use \fC\fBnovas_set_orbsys_pole()\fP\fP\&. For orbital objects, \fC\fBephemeris()\fP\fP will call on the new \fC\fBnovas_orbit_posvel()\fP\fP to calculate positions\&. While orbital elements do not always yield precise positions, they can for shorter periods, provided that the orbital elements are up-to-date\&. For example, the Minor Planer Center (MPC) publishes accurate orbital elements for all known asteroids and comets regularly\&. For newly discovered objects, this may be the only and/or most accurate information available anywhere\&.
 .IP "\(bu" 2
 #97: Added \fCNOVAS_EMB\fP (Earth-Moon Barycenter) and \fCNOVAS_PLUTO_BARYCENTER\fP to \fCenum novas_planets\fP to distinguish from the planet center in calculations\&.
 .IP "\(bu" 2
 #98: Added \fC\fBgcrs_to_tod()\fP\fP / \fC\fBtod_to_gcrs()\fP\fP and \fC\fBgcrs_to_mod()\fP\fP / \fC\fBmod_to_gcrs()\fP\fP vector conversion functions for convenience\&.
 .IP "\(bu" 2
+Added various \fCobject\fP initializer macros in \fC\fBnovas\&.h\fP\fP for the major planets, Sun, Moon, and barycenters, e\&.g\&. \fCNOVAS_EARTH_INIT\fP or \fCNOVAS_SSB_INIT\fP\&. These wrap the parametric \fC\fBNOVAS_PLANET_INIT(num, name)\fP\fP macro, and can be used to simplify the initialization of NOVAS \fCobject\fPs\&.
+.IP "\(bu" 2
+Added more physical unit constants to \fC\fBnovas\&.h\fP\fP and a corresponding section in the README on how these may be used to convert to/from NOVAS conventional quantities\&.
+.IP "\(bu" 2
 SuperNOVAS headers now include each other as system-headers, not local headers\&. This is unlikely to affect anything really but it is more proper for an installation of the library, and works with our own \fCMakefile\fP too\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-#96: Changed \fCobject\fP structure to include \fC\fBnovas_orbital_elements\fP\fP for \fCNOVAS_ORBITAL_OBJECT\fP types\&.
+#96: Changed \fCobject\fP structure to include \fC\fBnovas_orbital\fP\fP for \fCNOVAS_ORBITAL_OBJECT\fP types\&.
 .IP "\(bu" 2
 #97: Updated \fCNOVAS_PLANETS\fP, \fCNOVAS_PLANET_NAMES_INIT\fP, and \fCNOVAS_RMASS_INIT\fP macros to include the added planet constants\&.
 .PP
