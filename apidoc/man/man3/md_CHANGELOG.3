@@ -7,13 +7,9 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.2\&.0-rc3] - 2024-11-24"
+.SH "[Unreleased]"
 .PP
-Release candidate for the next feature release, expected around 1 February 2025\&.
-.SS "Fixed"
-.IP "\(bu" 2
-\fC\fBmake_on_surface()\fP\fP to leave humidity undefined\&. The \fChumidity\fP field was added in v1\&.1 only, and thus attempting to initialize it to zero (as we did in v1\&.1) can result in memory corruption or even segfaulting if called by objects that have been compiled with v1\&.0\&. So, from now on the call will leave humidity uninitialized and it's up to the caller ro define it if it is needed for the specific refraction model\&.
-.PP
+Changes for the next feature release, expected around 1 February 2025\&.
 .SS "Added"
 .IP "\(bu" 2
 #57: New \fCnovas_make_redshifted_object()\fP to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value\&.

@@ -360,7 +360,7 @@ In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively s
 positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
 Earth (at the geocenter, on the surface, or in Earth orbit).
 
-| ![SuperNOVAS coordinate systems and conversions](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/SuperNOVAS-systems.png) |
+| ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
 | __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only.              |
 
