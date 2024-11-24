@@ -379,7 +379,7 @@ Earth (at the geocenter, on the surface, or in Earth orbit).
 
 | ![SuperNOVAS coordinate systems and conversions](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/SuperNOVAS-systems.png) |
 |:--:| 
-| __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Bold face routines and shaded boxes indicate systems and functions available in NOVAS C also. All other systems and functions are available in SuperNOVAS only.              |
+| __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only.              |
 
 SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
@@ -400,7 +400,6 @@ for which we have B1950 (i.e. FK4) coordinates:
 
 ```c
  cat_entry star; // Structure to contain information on sidereal source 
-
 
  // Let's assume we have B1950 (FK4) coordinates...
  // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year, 

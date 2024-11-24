@@ -5282,7 +5282,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, 
     *loc_type = -1;
 
   if(!ra_cio || !loc_type)
-    return novas_error(-1, EINVAL, fn, "NULL output poointer: ra_cio=%p, loc_type=%p", ra_cio, loc_type);
+    return novas_error(-1, EINVAL, fn, "NULL output pointer: ra_cio=%p, loc_type=%p", ra_cio, loc_type);
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
