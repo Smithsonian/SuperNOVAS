@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.2.0-rc3] - 2024-11-24
 
 Release candidate for the next feature release, expected around 1 February 2025.
 
@@ -89,6 +89,8 @@ Release candidate for the next feature release, expected around 1 February 2025.
  
  - SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
+   
+ - Added 'Coordinate Systems and Conversions' flowchart to `README`.
    
    
 ### Changed

@@ -173,18 +173,16 @@ the necessary variables in the shell prior to invoking `make`. For example:
    application dynamically via `set_planet_provider()`.
    
  - You can enable integration with the [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library, by 
-   setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
-   `libsolsys-calceph.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
-   modules requires an accessible installation of the CALCEPH development files (C headers and unversioned static or 
-   shared libraries depending on the needs of the build).
+   setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. The build will require an 
+   accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries 
+   depending on the needs of the build).
    
  - You can enable integration with the [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), by setting 
-   `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. When enabled it will build 
-   `libsolsys-cspice.so[.1]` and/or `.a` supplemental libraries, depending on the build target. The build of the 
-   modules requires an accessible installation of the CSPICE development files (C headers, under a `cspice/` 
-   sub-folder in the header search path, and unversioned static or shared libraries depending on the needs of the 
-   build). You might want to check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) 
-   repository for building CSPICE as a shared library.
+   `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. The build will require an accessible 
+   installation of the CSPICE development files (C headers, under a `cspice/` sub-folder in the header search path, 
+   and unversioned static or shared libraries depending on the needs of the build). You might want to check out the 
+   [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) repository for building CSPICE as a 
+   shared library.
    
  - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
    `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
@@ -193,14 +191,14 @@ the necessary variables in the shell prior to invoking `make`. For example:
    
  - You may also specify the source file that will provide a `readeph()` implementation, by setting `DEFAULT_READEPH`. 
    (The default setting uses the dummy `readeph0.c` which simply returns an error). Note, that a `readeph()` 
-   implementation is a relic of NOVAS C and not always necessary. You can provide a superior ephemeris reader 
+   implementation is a relic of NOVAS C and not generally needed. You can provide a superior ephemeris reader 
    implementation at runtime via the `set_ephem_provider()` call or equivalent (e.g. `novas_use_calceph()` or 
    `novas_use_cspice()`, if they are available).
 
- - If you want to use the CIO locator binary file for `cio_location()`, you can specify the path to the CIO locator
-   file (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
-   variable prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, 
-   unless you specifically require CIO positions relative to GCRS.)
+ - If you want to use a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file (e.g. 
+   `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable 
+   prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless you 
+   specifically require CIO positions relative to GCRS.)
    
  - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
@@ -232,7 +230,7 @@ instead, you can:
   $ sudo make prefix="/opt" install
 ```
 
-Or, to stage the installation under a 'build root' first:
+Or, to stage the installation (to `/usr`) under a 'build root':
 
 ```bash
   $ make DESTDIR="/tmp/stage" install
@@ -362,6 +360,10 @@ In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively s
 positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
 Earth (at the geocenter, on the surface, or in Earth orbit).
 
+| ![SuperNOVAS coordinate systems and conversions](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/SuperNOVAS-systems.png) |
+|:--:| 
+| __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only.              |
+
 SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
@@ -381,7 +383,6 @@ for which we have B1950 (i.e. FK4) coordinates:
 
 ```c
  cat_entry star; // Structure to contain information on sidereal source 
-
 
  // Let's assume we have B1950 (FK4) coordinates...
  // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year, 

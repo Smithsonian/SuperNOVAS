@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
+[1.2.0-rc3] - 2024-11-24</h1>
 <p>Release candidate for the next feature release, expected around 1 February 2025.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
@@ -142,6 +142,7 @@ Added</h2>
 <li>Added various <code>object</code> initializer macros in <code><a class="el" href="novas_8h.html">novas.h</a></code> for the major planets, Sun, Moon, and barycenters, e.g. <code>NOVAS_EARTH_INIT</code> or <code>NOVAS_SSB_INIT</code>. These wrap the parametric <code><a class="el" href="novas_8h.html#ad34a88c2c04b624f8f85fc86e7935967">NOVAS_PLANET_INIT(num, name)</a></code> macro, and can be used to simplify the initialization of NOVAS <code>object</code>s.</li>
 <li>Added more physical unit constants to <code><a class="el" href="novas_8h.html">novas.h</a></code> and a corresponding section in the README on how these may be used to convert to/from NOVAS conventional quantities.</li>
 <li>SuperNOVAS headers now include each other as system-headers, not local headers. This is unlikely to affect anything really but it is more proper for an installation of the library, and works with our own <code>Makefile</code> too.</li>
+<li>Added 'Coordinate Systems and Conversions' flowchart to <code>README</code>.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
