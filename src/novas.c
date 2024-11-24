@@ -6984,9 +6984,7 @@ int make_on_surface(double latitude, double longitude, double height, double tem
   loc->height = height;
   loc->temperature = temperature;
   loc->pressure = pressure;
-
-  // FIXME starting v2.0 set humidity to 0.0
-  //loc->humidity = 0.0;
+  loc->humidity = 0.0;
 
   return 0;
 }
