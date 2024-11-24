@@ -82,6 +82,12 @@ jobs:
     - name: Copy API documentation
       run: cp -a apidoc site/
         
+    - name: Assert site/resources/
+      run: mkdir -p site/resources 
+        
+    - name: Copy Figures
+      run: cp -a resources/SuperNOVAS-systems.png site/resources/
+        
     - name: Push to pages
       run: |
         cd site

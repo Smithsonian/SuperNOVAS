@@ -374,10 +374,9 @@ See the various enums and constants defined in `novas.h`, as well as the descrip
 on how they are appropriate for the old and new methodologies respectively.
 
 In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS. The origin for
-positions and for velocities, in any reference system, is determined by the `observer` location in the vicinity of 
-Earth (at the geocenter, on the surface, or in Earth orbit).
+positions and for velocities, in any reference system, is determined by the `observer` location.
 
-| ![SuperNOVAS coordinate systems and conversions](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/SuperNOVAS-systems.png) |
+| ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
 | __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only.              |
 
