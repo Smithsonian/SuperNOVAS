@@ -1616,6 +1616,8 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 
 
 // ---------------------- Added in 1.2.0 -------------------------
+int make_redshifted_cat_entry(const char *name, double ra, double dec, double z, cat_entry *source);
+
 int make_redshifted_object(const char *name, double ra, double dec, double z, object *source);
 
 double novas_z2v(double z);
