@@ -1082,7 +1082,42 @@ int make_orbital_object(const char *name, long num, const novas_orbital *orbit, 
  * @return            0 if successful, or 5 if 'name' is too long, else -1 if the 'source'
  *                    pointer is NULL.
  *
- * @sa make_cat_object()
+ * @sa make_redshifted_object()
+ * @sa novas_v2z()
+ *
+ * @since 1.2
+ * @author Attila Kovacs
+ */
+int make_redshifted_cat_entry(const char *name, double ra, double dec, double z, cat_entry *source) {
+  static const char *fn = "make_redshifted_cat_entry";
+
+  double v =  novas_z2v(z);
+
+  if(isnan(v))
+    return novas_error(-1, EINVAL, fn, "invalid redshift value: %f\n", z);
+
+  prop_error(fn, make_cat_entry(name, "EXT", 0, ra, dec, 0.0, 0.0, 0.0, v, source), 0);
+  return 0;
+}
+
+/**
+ * Populates a celestial object data structure with the parameters for a redhifted catalog
+ * source, such as a distant quasar or galaxy. It is similar to `make_cat_object()` except
+ * that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax
+ * and no proper motion (appropriately for a distant redshifted source). The catalog name
+ * is set to `EXT` to indicate an extragalactic source, and the catalog number defaults to 0.
+ * The user may change these default field values as appropriate afterwards, if necessary.
+ *
+ * @param name        Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL.
+ * @param ra          [h] Right ascension of the object (hours).
+ * @param dec         [deg] Declination of the object (degrees).
+ * @param z           Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 =
+ *                    f<sub>rest</sub> / f<sub>obs</sub> - 1).
+ * @param[out] source Pointer to structure to populate.
+ * @return            0 if successful, or 5 if 'name' is too long, else -1 if the 'source'
+ *                    pointer is NULL.
+ *
+ * @sa make_redshifted_cat_object()
  * @sa novas_v2z()
  *
  * @since 1.2
@@ -1092,13 +1127,10 @@ int make_redshifted_object(const char *name, double ra, double dec, double z, ob
   static const char *fn = "make_redshifted_source";
 
   cat_entry c;
-  double v = novas_z2v(z);
 
-  if(isnan(v))
-    return novas_error(-1, EINVAL, fn, "invalid redshift value: %f\n", z);
-
-  prop_error(fn, make_cat_entry(name, "EXT", 0, ra, dec, 0.0, 0.0, 0.0, v, &c), 0);
-  return make_cat_object(&c, source);
+  prop_error(fn, make_redshifted_cat_entry(name, ra, dec, z, &c), 0);
+  prop_error(fn, make_cat_object(&c, source), 0);
+  return 0;
 }
 
 /**
@@ -1207,12 +1239,8 @@ double novas_v2z(double vel) {
  * @author Attila Kovacs
  */
 double grav_redshift(double M_kg, double r_m) {
-  static const double G = 6.6743e-11; // G in SI units.
-  static const double c2 = C * C;
-
-  const double rs = 2 * G * M_kg / c2;
-
-  return 1.0 / sqrt(1.0 - rs / r_m) - 1.0;
+  static const double twoGoverC2 = 2.0 * 6.6743e-11 / (C * C); // 2G/c^2 in SI units.
+  return 1.0 / sqrt(1.0 - twoGoverC2 * M_kg / r_m) - 1.0;
 }
 
 /**
