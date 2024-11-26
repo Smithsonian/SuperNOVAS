@@ -1239,12 +1239,8 @@ double novas_v2z(double vel) {
  * @author Attila Kovacs
  */
 double grav_redshift(double M_kg, double r_m) {
-  static const double G = 6.6743e-11; // G in SI units.
-  static const double c2 = C * C;
-
-  const double rs = 2 * G * M_kg / c2;
-
-  return 1.0 / sqrt(1.0 - rs / r_m) - 1.0;
+  static const double twoGoverC2 = 2.0 * 6.6743e-11 / (C * C); // 2G/c^2 in SI units.
+  return 1.0 / sqrt(1.0 - twoGoverC2 * M_kg / r_m) - 1.0;
 }
 
 /**
