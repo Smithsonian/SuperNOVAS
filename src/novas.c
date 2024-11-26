@@ -6656,6 +6656,7 @@ double norm_ang(double angle) {
  * @return            0 if successful, or -1 if the output argument is NULL, 1 if the
  *                    'star_name' is too long or 2 if the 'catalog' name is too long.
  *
+ * @sa make_redshifted_cat_entry()
  * @sa make_object()
  * @sa transform_cat()
  */
