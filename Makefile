@@ -85,12 +85,16 @@ solsys: $(SOLSYS_TARGETS)
 
 # All of the above
 .PHONY: all
-all: distro static test coverage check
+all: distro static test coverage analyze
 
 # Run regression tests
 .PHONY: test
 test:
 	make -C test run
+
+# Perform checks (test + analyze)
+.PHONY: check
+check: test analyze
 
 # Measure test coverage (on test set of files only)
 .PHONY: coverage
@@ -201,7 +205,7 @@ INSTALL_PROGRAM ?= install
 INSTALL_DATA ?= install -m 644
 
 .PHONY: install
-install: install-libs install-cio-data install-headers install-apidoc install-examples
+install: install-libs install-cio-data install-headers install-html install-examples
 
 .PHONY: install-libs
 install-libs:
@@ -225,8 +229,8 @@ install-headers:
 	install -d $(DESTDIR)$(includedir)
 	$(INSTALL_DATA) -D include/* $(DESTDIR)$(includedir)/
 
-.PHONY: install-apidoc
-install-apidoc:
+.PHONY: install-html
+install-html:
 ifneq ($(wildcard apidoc/html/search/*),)
 	@echo "installing API documentation to $(DESTDIR)$(htmldir)"
 	install -d $(DESTDIR)$(htmldir)/search
@@ -244,6 +248,20 @@ install-examples:
 	@echo "installing examples to $(DESTDIR)$(docdir)"
 	install -d $(DESTDIR)$(docdir)
 	$(INSTALL_DATA) -D examples/* $(DESTDIR)$(docdir)
+
+
+# Some standard GNU targets, that should always exist...
+.PHONY: html
+html: local-dox
+
+.PHONY: dvi
+dvi:
+
+.PHONY: ps
+ps:
+
+.PHONY: pdf
+pdf:
 
 
 # Built-in help screen for `make help`
@@ -265,8 +283,9 @@ help:
 	@echo "                call implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
 	@echo "  cio_ra.bin    Generates a platform-specific binary CIO locator lookup data file"
 	@echo "                'cio_ra.bin' from the ASCII 'data/CIO_RA.TXT'."
-	@echo "  check         Performs static analysis with 'cppcheck'."
 	@echo "  test          Runs regression tests."
+	@echo "  analyze       Performs static code analysis with 'cppcheck'."
+	@echo "  check         Same as 'test' and then 'analyze'."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
 	@echo "  all           All of the above."
 	@echo "  install       Install components (e.g. 'make prefix=<path> install')"

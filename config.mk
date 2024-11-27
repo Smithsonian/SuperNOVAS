@@ -22,7 +22,7 @@ CPPFLAGS += -I$(INC)
 
 # Base compiler options (if not defined externally...)
 # -std=c99 may not be supported by some very old compilers...
-CFLAGS ?= -Os -Wall -std=c99
+CFLAGS ?= -g -Os -Wall -std=c99
 
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra
