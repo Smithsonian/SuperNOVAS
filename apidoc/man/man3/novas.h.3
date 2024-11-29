@@ -5140,7 +5140,7 @@ Note, that because this is an original NOVAS C routine, it does not have an argu
 NOTES 
 .PD 0
 .IP "1." 4
-This implementation breaks strict v1\&.0 ABI compatibility since it writes to (initializes) a field (\fChumidity\fP) that was not yet part of the \fC\fBon_surface\fP\fP structure in v1\&.0\&. As such, linking SuperNOVAS v1\&.1\&.0 or later with application code compiled for SuperNOVAS v1\&.0 can result in memory corruption or segmentation fault when this function is called\&. To be safe, make sure your application has been (re)compiled against SuperNOVAS v1\&.1 or later\&. 
+This implementation breaks strict v1\&.0 ABI compatibility since it writes to (initializes) a field (\fChumidity\fP) that was not yet part of the \fC\fBon_surface\fP\fP structure in v1\&.0\&. As such, linking SuperNOVAS v1\&.1 or later with application code compiled for SuperNOVAS v1\&.0 can result in memory corruption or segmentation fault when this function is called\&. To be safe, make sure your application has been (re)compiled against SuperNOVAS v1\&.1 or later\&. 
 .PP
 .PP
 \fBParameters\fP
