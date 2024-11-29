@@ -600,7 +600,7 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
   ...
   
   // Create an object for that orbit
-  make_orbital_object("NEAxxx", -1, &orbit, object);
+  make_orbital_object("NEAxxx", -1, &orbit, &NEA);
 ```
 
 Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise
