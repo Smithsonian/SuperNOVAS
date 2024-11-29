@@ -442,14 +442,15 @@ Calculating positions for a Solar-system source</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Fill in the orbital parameters (pay attention to units!)</span></div>
 <div class="line"><a class="code hl_struct" href="structnovas__orbital.html">novas_orbital</a> orbit = <a class="code hl_define" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>;</div>
-<div class="line">orbit.<a class="code hl_variable" href="structnovas__orbital.html#a1031d0e0a97a340abfe0a6ab9e831045">a</a> = ...;</div>
-<div class="line">...</div>
+<div class="line">orbit.<a class="code hl_variable" href="structnovas__orbital.html#a1031d0e0a97a340abfe0a6ab9e831045">a</a> = ...;    <span class="comment">// Major axis in AU...</span></div>
+<div class="line">...           <span class="comment">// ... and the rest of the orbital elements</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Create an object for that orbit</span></div>
-<div class="line">make_orbital_object(<span class="stringliteral">&quot;NEAxxx&quot;</span>, -1, &amp;orbit, &amp;NEA);</div>
+<div class="line"><a class="code hl_function" href="super_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a>(<span class="stringliteral">&quot;NEAxxx&quot;</span>, -1, &amp;orbit, &amp;NEA);</div>
 <div class="ttc" id="anovas_8h_html_a85243a6b9eee259d3fb84ee1a587e065"><div class="ttname"><a href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a></div><div class="ttdeci">#define NOVAS_ORBIT_INIT</div><div class="ttdef"><b>Definition</b> novas.h:805</div></div>
 <div class="ttc" id="astructnovas__orbital_html"><div class="ttname"><a href="structnovas__orbital.html">novas_orbital</a></div><div class="ttdef"><b>Definition</b> novas.h:784</div></div>
 <div class="ttc" id="astructnovas__orbital_html_a1031d0e0a97a340abfe0a6ab9e831045"><div class="ttname"><a href="structnovas__orbital.html#a1031d0e0a97a340abfe0a6ab9e831045">novas_orbital::a</a></div><div class="ttdeci">double a</div><div class="ttdoc">[AU] semi-major axis</div><div class="ttdef"><b>Definition</b> novas.h:787</div></div>
+<div class="ttc" id="asuper_8c_html_a3c5e215babeeba078ca7b3e9be42e555"><div class="ttname"><a href="super_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a></div><div class="ttdeci">int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body)</div><div class="ttdef"><b>Definition</b> super.c:1059</div></div>
 </div><!-- fragment --><p>Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise positions for the Sun or planet, around which the orbit is defined.</p>
 <p>Other than that, it's the same spiel as before, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos</a>(&amp;mars, &amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, &amp;apparent);</div>

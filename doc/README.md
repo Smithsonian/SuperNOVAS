@@ -597,8 +597,8 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
   
   // Fill in the orbital parameters (pay attention to units!)
   novas_orbital orbit = NOVAS_ORBIT_INIT;
-  orbit.a = ...;
-  ...
+  orbit.a = ...;	// Major axis in AU...
+  ...			// ... and the rest of the orbital elements
   
   // Create an object for that orbit
   make_orbital_object("NEAxxx", -1, &orbit, &NEA);
