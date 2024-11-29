@@ -4627,7 +4627,7 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
     return novas_error(-1, EINVAL, "nutation", "NULL input or output 3-vector: in=%p, out=%p", in, out);
 
   // Call 'e_tilt' to get the obliquity and nutation angles.
-  e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, &psi, NULL);
+  prop_error("nutation", e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, &psi, NULL), 0);
 
   oblm *= DEGREE;
   oblt *= DEGREE;

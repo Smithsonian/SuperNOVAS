@@ -163,7 +163,7 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   static const double E[] = { 0.0, 46.625, 45.375, 4.1572, 1.4468, 0.25391, 2.2716, -1.3465, -4.3877, 3.1484, 4.520, -1.8982, 0.8900 };
 
   double E0, TK;
-  double y = 1.0, z;
+  double y, z;
   double poly;
   double fptem;
   double refraction;
