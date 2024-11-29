@@ -42,6 +42,7 @@ This document has been updated for the `v1.2` and later releases.
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#integration)
  - [Example usage](#examples)
+ - [Tips and Tricks](#tips)
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
  - [Incorporating Solar-system ephemeris data or services](#solarsystem)
@@ -613,8 +614,8 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
   
   // Fill in the orbital parameters (pay attention to units!)
   novas_orbital orbit = NOVAS_ORBIT_INIT;
-  orbit.a = ...;
-  ...
+  orbit.a = ...;	// Major axis in AU...
+  ...			// ... and the rest of the orbital elements
   
   // Create an object for that orbit
   make_orbital_object("NEAxxx", -1, &orbit, &NEA);
@@ -632,6 +633,11 @@ Other than that, it's the same spiel as before, e.g.:
    ...
  }
 ```
+
+------------------------------------------------------------------------------
+
+<a name="tips"></a>
+## Tips and Tricks
 
 <a name="accuracy-notes"></a>
 ### Reduced accuracy shortcuts
@@ -877,7 +883,7 @@ before that level of accuracy is reached.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_eph_manager` vs `planet_ephem_provider()`. See the section on 
+   `planet_eph_manager()` vs `planet_ephem_provider()`. See the section on 
    [Building and installation](#installation) further above on including a selection of these in your library 
    build.)
 
@@ -950,8 +956,8 @@ before that level of accuracy is reached.
 
 #### Added in v1.2
 
- - New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are characterized
-   with a redshift measure rather than a radial velocity value.
+ - New `make_redshifted_cat_entry()` and `make_redshifted_object()` to simplify the creation of distant catalog 
+   sources that are characterized with a redshift measure rather than a radial velocity value.
 
  - New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
  
@@ -1238,8 +1244,8 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 <a name="builtin-ephem-readers"></a>
 ### Legacy support for (older) JPL major planet ephemerides
 
-If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
-distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
+If you only need support for major planets, you may be able to use one of the modules included with the distribution. 
+The legacy NOVAS modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
 either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph` interface with `solsys2.c`.
 
 #### Planets via `eph_manager`
@@ -1271,8 +1277,8 @@ And, when you are done using the ephemeris file, you should close it with
 ```
  
 Note, that at any given time `eph_manager` can have only one ephemeris data file opened. You cannot use it to 
-retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
-can integrate as discussed further above!)
+retrieve data from multiple ephemeris input files at the same time. (But you can with CALCEPH or the CSPICE toolkit, 
+either of which you can interface as discussed further above!)
 
 That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
 

@@ -486,7 +486,7 @@ from which SuperNOVAS is forked from.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_eph_manager` vs `planet_ephem_provider()`.
+   `planet_eph_manager()` vs `planet_ephem_provider()`.
 
  - New `novas_case_sensitive(int)` to enable (or disable) case-sensitive processing of object names. (By default NOVAS 
    `object` names are converted to upper-case, making them effectively case-insensitive.)
