@@ -290,7 +290,7 @@ New \fC\fBradec_star()\fP\fP and \fC\fBradec_planet()\fP\fP as the common point 
 .IP "\(bu" 2
 New time conversion utilities \fC\fBtt2tdb()\fP\fP, \fC\fBget_utc_to_tt()\fP\fP, and \fC\fBget_ut1_to_tt()\fP\fP make it simpler to convert between UTC, UT1, TT, and TDB time scales, and to supply \fCut1_to_tt\fP arguments to \fC\fBplace()\fP\fP or topocentric calculations\&.
 .IP "\(bu" 2
-Co-existing \fC\fBsolarsystem()\fP\fP variants\&. It is possible to use the different \fC\fBsolarsystem()\fP\fP implementations provided by \fC\fBsolsys1\&.c\fP\fP, \fC\fBsolsys2\&.c\fP\fP, \fC\fBsolsys3\&.c\fP\fP and/or \fC\fBsolsys-ephem\&.c\fP\fP side-by-side, as they define their functionalities with distinct, non-conflicting names, e\&.g\&. \fC\fBearth_sun_calc()\fP\fP vs \fC\fBplanet_jplint()\fP\fP vs \fCplanet_eph_manager\fP vs \fC\fBplanet_ephem_provider()\fP\fP\&.
+Co-existing \fC\fBsolarsystem()\fP\fP variants\&. It is possible to use the different \fC\fBsolarsystem()\fP\fP implementations provided by \fC\fBsolsys1\&.c\fP\fP, \fC\fBsolsys2\&.c\fP\fP, \fC\fBsolsys3\&.c\fP\fP and/or \fC\fBsolsys-ephem\&.c\fP\fP side-by-side, as they define their functionalities with distinct, non-conflicting names, e\&.g\&. \fC\fBearth_sun_calc()\fP\fP vs \fC\fBplanet_jplint()\fP\fP vs \fC\fBplanet_eph_manager()\fP\fP vs \fC\fBplanet_ephem_provider()\fP\fP\&.
 .IP "\(bu" 2
 New \fC\fBnovas_case_sensitive(int)\fP\fP to enable (or disable) case-sensitive processing of object names\&. (By default NOVAS \fCobject\fP names are converted to upper-case, making them effectively case-insensitive\&.)
 .IP "\(bu" 2

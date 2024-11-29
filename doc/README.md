@@ -866,7 +866,7 @@ before that level of accuracy is reached.
  - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
    provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
    functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_eph_manager` vs `planet_ephem_provider()`. See the section on 
+   `planet_eph_manager()` vs `planet_ephem_provider()`. See the section on 
    [Building and installation](#installation) further above on including a selection of these in your library 
    build.)
 
