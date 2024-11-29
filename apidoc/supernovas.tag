@@ -5282,6 +5282,7 @@
     <docanchor file="index.html">methodologies</docanchor>
     <docanchor file="index.html">sidereal-example</docanchor>
     <docanchor file="index.html">solsys-example</docanchor>
+    <docanchor file="index.html">tips</docanchor>
     <docanchor file="index.html">accuracy-notes</docanchor>
     <docanchor file="index.html">performance-note</docanchor>
     <docanchor file="index.html">multi-threading</docanchor>

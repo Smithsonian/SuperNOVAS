@@ -25,6 +25,7 @@ This document has been updated for the `v1.2` and later releases.
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#integration)
  - [Example usage](#examples)
+ - [Tips and Tricks](#tips)
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
  - [Incorporating Solar-system ephemeris data or services](#solarsystem)
@@ -615,6 +616,11 @@ Other than that, it's the same spiel as before, e.g.:
    ...
  }
 ```
+
+------------------------------------------------------------------------------
+
+<a name="tips"></a>
+## Tips and Tricks
 
 <a name="accuracy-notes"></a>
 ### Reduced accuracy shortcuts

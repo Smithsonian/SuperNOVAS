@@ -47,34 +47,36 @@ var NAVTREE =
           [ "Calculate an apparent place on sky", "index.html#autotoc_md53", null ],
           [ "Calculate azimuth and elevation angles at the observing location", "index.html#autotoc_md54", null ]
         ] ],
-        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md55", null ],
-        [ "Reduced accuracy shortcuts", "index.html#autotoc_md56", null ],
-        [ "Performance considerations", "index.html#autotoc_md57", null ],
-        [ "Multi-threaded calculations", "index.html#autotoc_md58", null ],
-        [ "Physical units", "index.html#autotoc_md59", null ]
+        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md55", null ]
       ] ],
-      [ "Notes on precision", "index.html#autotoc_md61", [
-        [ "Prerequisites to precise results", "index.html#autotoc_md62", null ]
+      [ "Tips and Tricks", "index.html#autotoc_md57", [
+        [ "Reduced accuracy shortcuts", "index.html#autotoc_md58", null ],
+        [ "Performance considerations", "index.html#autotoc_md59", null ],
+        [ "Multi-threaded calculations", "index.html#autotoc_md60", null ],
+        [ "Physical units", "index.html#autotoc_md61", null ]
       ] ],
-      [ "SuperNOVAS specific features", "index.html#autotoc_md64", [
-        [ "Newly added functionality", "index.html#autotoc_md65", [
-          [ "Added in v1.1", "index.html#autotoc_md66", null ],
-          [ "Added in v1.2", "index.html#autotoc_md67", null ]
+      [ "Notes on precision", "index.html#autotoc_md63", [
+        [ "Prerequisites to precise results", "index.html#autotoc_md64", null ]
+      ] ],
+      [ "SuperNOVAS specific features", "index.html#autotoc_md66", [
+        [ "Newly added functionality", "index.html#autotoc_md67", [
+          [ "Added in v1.1", "index.html#autotoc_md68", null ],
+          [ "Added in v1.2", "index.html#autotoc_md69", null ]
         ] ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md68", null ]
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md70", null ]
       ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md70", [
-        [ "Optional CALCEPH integration", "index.html#autotoc_md71", null ],
-        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md72", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md73", null ],
-        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md74", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md75", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md76", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md72", [
+        [ "Optional CALCEPH integration", "index.html#autotoc_md73", null ],
+        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md74", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md75", null ],
+        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md76", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md77", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md78", null ]
         ] ],
-        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md77", null ]
+        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md79", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md79", null ],
-      [ "Release schedule", "index.html#autotoc_md81", null ],
+      [ "Runtime debug support", "index.html#autotoc_md81", null ],
+      [ "Release schedule", "index.html#autotoc_md83", null ],
       [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md3", null ]
@@ -141,9 +143,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#a9174488cd701172531174d85ed26819b",
-"novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b",
-"structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a"
+"novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2",
+"novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f",
+"structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
