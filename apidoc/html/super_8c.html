@@ -167,6 +167,8 @@ Functions</h2></td></tr>
 <tr class="separator:aa22303f98df2d63edf6d8452ff3a43b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c5e215babeeba078ca7b3e9be42e555" id="r_a3c5e215babeeba078ca7b3e9be42e555"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a> (const char *name, long num, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *orbit, <a class="el" href="structobject.html">object</a> *body)</td></tr>
 <tr class="separator:a3c5e215babeeba078ca7b3e9be42e555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11aa3ce6bcdda5b7065b38d6cfaf63d3" id="r_a11aa3ce6bcdda5b7065b38d6cfaf63d3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3">make_redshifted_cat_entry</a> (const char *name, double ra, double dec, double z, <a class="el" href="structcat__entry.html">cat_entry</a> *source)</td></tr>
+<tr class="separator:a11aa3ce6bcdda5b7065b38d6cfaf63d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae579a49d84696a913fd0d9f348bb5b11" id="r_ae579a49d84696a913fd0d9f348bb5b11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a> (const char *name, double ra, double dec, double z, <a class="el" href="structobject.html">object</a> *source)</td></tr>
 <tr class="separator:ae579a49d84696a913fd0d9f348bb5b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c3f1a1bc3fd9ac6d211806913d2d529" id="r_a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer</a> (const double *sc_pos, const double *sc_vel, <a class="el" href="structobserver.html">observer</a> *obs)</td></tr>
@@ -1470,6 +1472,71 @@ novas_calc_geometric_position() </dd>
 
 </div>
 </div>
+<a id="a11aa3ce6bcdda5b7065b38d6cfaf63d3" name="a11aa3ce6bcdda5b7065b38d6cfaf63d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11aa3ce6bcdda5b7065b38d6cfaf63d3">&#9670;&#160;</a></span>make_redshifted_cat_entry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_redshifted_cat_entry </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ra</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structcat__entry.html">cat_entry</a> *&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy. It is similar to <code><a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a></code> except that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax and no proper motion (appropriately for a distant redshifted source). The catalog name is set to <code>EXT</code> to indicate an extragalactic source, and the catalog number defaults to 0. The user may change these default field values as appropriate afterwards, if necessary.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">name</td><td>Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Right ascension of the object (hours). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Declination of the object (degrees). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">z</td><td>Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 = f<sub>rest</sub> / f<sub>obs</sub> - 1). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or 5 if 'name' is too long, else -1 if the 'source' pointer is NULL.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry()</a>, and <a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>.</p>
+
+</div>
+</div>
 <a id="ae579a49d84696a913fd0d9f348bb5b11" name="ae579a49d84696a913fd0d9f348bb5b11"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae579a49d84696a913fd0d9f348bb5b11">&#9670;&#160;</a></span>make_redshifted_object()</h2>
 
@@ -1525,13 +1592,13 @@ novas_calc_geometric_position() </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or 5 if 'name' is too long, else -1 if the 'source' pointer is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>make_redshifted_cat_object() </dd>
 <dd>
 <a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a9950f7973fc3b5d40b0d0a9f4eceddac">make_cat_entry()</a>, <a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a>, and <a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>.</p>
+<p class="reference">References <a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a>, and <a class="el" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3">make_redshifted_cat_entry()</a>.</p>
 
 </div>
 </div>

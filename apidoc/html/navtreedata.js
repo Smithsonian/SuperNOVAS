@@ -142,8 +142,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "novas_8c.html#a9174488cd701172531174d85ed26819b",
-"novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e",
-"structcat__entry.html#ab9301cf1c67c13114b22950650b17789"
+"novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b",
+"structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

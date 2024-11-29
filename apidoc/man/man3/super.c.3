@@ -78,6 +78,9 @@ src/super.c
 .RI "int \fBmake_orbital_object\fP (const char *name, long num, const \fBnovas_orbital\fP *orbit, \fBobject\fP *body)"
 .br
 .ti -1c
+.RI "int \fBmake_redshifted_cat_entry\fP (const char *name, double ra, double dec, double z, \fBcat_entry\fP *source)"
+.br
+.ti -1c
 .RI "int \fBmake_redshifted_object\fP (const char *name, double ra, double dec, double z, \fBobject\fP *source)"
 .br
 .ti -1c
@@ -1050,6 +1053,47 @@ Attila Kovacs
 
 .PP
 References \fBmake_object()\fP, \fBNOVAS_ORBITAL_OBJECT\fP, and \fBobject::orbit\fP\&.
+.SS "int make_redshifted_cat_entry (const char * name, double ra, double dec, double z, \fBcat_entry\fP * source)"
+Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy\&. It is similar to \fC\fBmake_cat_object()\fP\fP except that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax and no proper motion (appropriately for a distant redshifted source)\&. The catalog name is set to \fCEXT\fP to indicate an extragalactic source, and the catalog number defaults to 0\&. The user may change these default field values as appropriate afterwards, if necessary\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Object name (less than SIZE_OF_OBJ_NAME in length)\&. It may be NULL\&. 
+.br
+\fIra\fP [h] Right ascension of the object (hours)\&. 
+.br
+\fIdec\fP [deg] Declination of the object (degrees)\&. 
+.br
+\fIz\fP Redhift value (\*<obs\*>  / \*<rest\*>  - 1 = f\*<rest\*>  / f\*<obs\*>  - 1)\&. 
+.br
+\fIsource\fP Pointer to structure to populate\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or 5 if 'name' is too long, else -1 if the 'source' pointer is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_redshifted_object()\fP 
+.PP
+\fBnovas_v2z()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBmake_cat_entry()\fP, and \fBnovas_z2v()\fP\&.
 .SS "int make_redshifted_object (const char * name, double ra, double dec, double z, \fBobject\fP * source)"
 Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy\&. It is similar to \fC\fBmake_cat_object()\fP\fP except that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax and no proper motion (appropriately for a distant redshifted source)\&. The catalog name is set to \fCEXT\fP to indicate an extragalactic source, and the catalog number defaults to 0\&. The user may change these default field values as appropriate afterwards, if necessary\&.
 .PP
@@ -1073,7 +1117,7 @@ Populates a celestial object data structure with the parameters for a redhifted 
 .PP
 \fBSee also\fP
 .RS 4
-\fBmake_cat_object()\fP 
+make_redshifted_cat_object() 
 .PP
 \fBnovas_v2z()\fP
 .RE
@@ -1090,7 +1134,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBmake_cat_entry()\fP, \fBmake_cat_object()\fP, and \fBnovas_z2v()\fP\&.
+References \fBmake_cat_object()\fP, and \fBmake_redshifted_cat_entry()\fP\&.
 .SS "int make_solar_system_observer (const double * sc_pos, const double * sc_vel, \fBobserver\fP * obs)"
 Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft, with the specified geocentric position and velocity vectors\&. Solar-system observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative to the Solar System Barycenter, instead of the geocenter\&.
 .PP

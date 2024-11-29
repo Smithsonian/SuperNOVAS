@@ -35,7 +35,7 @@ var searchData=
   ['positions_20for_20a_20solar_20system_20source_32',['positions for a solar system source',['../index.html#autotoc_md55',1,'Calculating positions for a Solar-system source'],['../md_LEGACY.html#autotoc_md30',1,'Calculating positions for a Solar-system source']]],
   ['positions_20on_20sky_33',['Calculate apparent positions on sky',['../md_LEGACY.html#autotoc_md27',1,'']]],
   ['positions_20the_20old_20way_34',['Astrometric Positions the Old Way',['../md_LEGACY.html',1,'']]],
-  ['precession_35',['precession',['../novas_8h.html#a9178358732325399f3a5e3582080ced3',1,'precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out):&#160;novas.c'],['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a6833dbc8bfb3b8ba2cdd7a2da0b82353',1,'PRECESSION:&#160;novas.h'],['../structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c',1,'novas_frame::precession'],['../novas_8c.html#a9178358732325399f3a5e3582080ced3',1,'precession():&#160;novas.c']]],
+  ['precession_35',['precession',['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367a6833dbc8bfb3b8ba2cdd7a2da0b82353',1,'PRECESSION:&#160;novas.h'],['../novas_8c.html#a9178358732325399f3a5e3582080ced3',1,'precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out):&#160;novas.c'],['../structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c',1,'novas_frame::precession'],['../novas_8h.html#a9178358732325399f3a5e3582080ced3',1,'precession():&#160;novas.c']]],
   ['precise_20results_36',['Prerequisites to precise results',['../index.html#autotoc_md62',1,'']]],
   ['precision_37',['Notes on precision',['../index.html#autotoc_md61',1,'']]],
   ['prerequisites_20to_20precise_20results_38',['Prerequisites to precise results',['../index.html#autotoc_md62',1,'']]],

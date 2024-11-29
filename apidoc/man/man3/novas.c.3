@@ -2356,6 +2356,8 @@ Populates the data structure for a 'catalog' source, such as a star\&.
 .PP
 \fBSee also\fP
 .RS 4
+\fBmake_redshifted_cat_entry()\fP 
+.PP
 \fBmake_object()\fP 
 .PP
 \fBtransform_cat()\fP 
@@ -2441,7 +2443,7 @@ This call does not initialize the \fCorbit\fP field (added in v1\&.2) with zeroe
 .PP
 
 .PP
-References \fBobject::name\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_OBJECT_TYPES\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANETS\fP, \fBobject::number\fP, \fBobject::orbit\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References \fBobject::name\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_OBJECT_TYPES\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANETS\fP, \fBobject::number\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
 .SS "short make_observer (enum \fBnovas_observer_place\fP where, const \fBon_surface\fP * loc_surface, const \fBin_space\fP * loc_space, \fBobserver\fP * obs)"
 Populates an 'observer' data structure given the parameters\&. The output data structure may be used an the the inputs to NOVAS-C function '\fBplace()\fP'\&.
 .PP

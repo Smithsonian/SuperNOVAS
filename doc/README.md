@@ -1086,7 +1086,7 @@ all known solar systems bodies, down to the tiniest rocks.
 <a name="calceph-integration"></a>
 ### Optional CALCEPH integration
 
-The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides an easy-to-use access to JPL and
+The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides easy-to-use access to JPL and 
 INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with the 
 the CALCEPH C library for handling Solar-system objects.
 
@@ -1113,10 +1113,10 @@ code:
   }
   
   // -----------------------------------------------------------------------
-  // Optionally you may use a separate ephemeris data for major planets
+  // Optionally you may use a separate ephemeris dataset for major planets
   // (or if planet ephemeris was included in 'eph' above, you don't have to) 
   t_calcephbin *pleph = calceph_open(...);
-  int status = novas_use_calceph(pleph);
+  int status = novas_use_calceph_planets(pleph);
   if(status < 0) {
     // Ooops something went wrong...
   }

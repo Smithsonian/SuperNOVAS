@@ -12,7 +12,7 @@ The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSe
 Changes for the next feature release, expected around 1 February 2025\&.
 .SS "Added"
 .IP "\(bu" 2
-#57: New \fCnovas_make_redshifted_object()\fP to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value\&.
+#57, #102: New \fC\fBmake_redshifted_cat_entry()\fP\fP and \fC\fBmake_redshifted_object()\fP\fP to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value\&.
 .IP "\(bu" 2
 #57: New generic redshift-handling functions \fC\fBnovas_v2z()\fP\fP, \fC\fBnovas_z2v()\fP\fP,
 .IP "\(bu" 2
@@ -46,7 +46,7 @@ Added 'Coordinate Systems and Conversions' flowchart to \fCREADME\fP\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-#96: Changed \fCobject\fP structure to include \fC\fBnovas_orbital\fP\fP for \fCNOVAS_ORBITAL_OBJECT\fP types\&.
+#96: Changed \fCobject\fP structure to include \fC\fBnovas_orbital\fP\fP for \fCNOVAS_ORBITAL_OBJECT\fP types\&. To keep ABI compatibility to earlier SuperNOVAS releases, \fC\fBmake_object()\fP\fP will not initialize the new \fC\&.orbit\fP field \fIunless\fP \fCtype\fP is set to \fCNOVAS_ORBITAL_OBJECT\fP (which was not available before)\&.
 .IP "\(bu" 2
 #97: Updated \fCNOVAS_PLANETS\fP, \fCNOVAS_PLANET_NAMES_INIT\fP, and \fCNOVAS_RMASS_INIT\fP macros to include the added planet constants\&.
 .PP

@@ -636,6 +636,7 @@
           <topic label="make_on_surface" href="novas_8h.html#a9174488cd701172531174d85ed26819b"/>
           <topic label="make_orbital_object" href="novas_8h.html#a3c5e215babeeba078ca7b3e9be42e555"/>
           <topic label="make_planet" href="novas_8h.html#a618bbba887b9bc9e7df878234c66c215"/>
+          <topic label="make_redshifted_cat_entry" href="novas_8h.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3"/>
           <topic label="make_redshifted_object" href="novas_8h.html#ae579a49d84696a913fd0d9f348bb5b11"/>
           <topic label="make_solar_system_observer" href="novas_8h.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
           <topic label="mean_obliq" href="novas_8h.html#af182ee8cc4239f581f746aa974827d61"/>
@@ -1024,6 +1025,7 @@
           <topic label="make_cat_object" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f"/>
           <topic label="make_ephem_object" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2"/>
           <topic label="make_orbital_object" href="super_8c.html#a3c5e215babeeba078ca7b3e9be42e555"/>
+          <topic label="make_redshifted_cat_entry" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3"/>
           <topic label="make_redshifted_object" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11"/>
           <topic label="make_solar_system_observer" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
           <topic label="novas_planet_for_name" href="super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3"/>

@@ -1783,6 +1783,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>make_redshifted_cat_entry</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a11aa3ce6bcdda5b7065b38d6cfaf63d3</anchor>
+      <arglist>(const char *name, double ra, double dec, double z, cat_entry *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>make_redshifted_object</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ae579a49d84696a913fd0d9f348bb5b11</anchor>
@@ -4329,6 +4336,13 @@
       <anchorfile>super_8c.html</anchorfile>
       <anchor>a3c5e215babeeba078ca7b3e9be42e555</anchor>
       <arglist>(const char *name, long num, const novas_orbital *orbit, object *body)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_redshifted_cat_entry</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>a11aa3ce6bcdda5b7065b38d6cfaf63d3</anchor>
+      <arglist>(const char *name, double ra, double dec, double z, cat_entry *source)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

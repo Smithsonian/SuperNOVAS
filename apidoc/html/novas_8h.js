@@ -291,6 +291,7 @@ var novas_8h =
     [ "make_on_surface", "novas_8h.html#a9174488cd701172531174d85ed26819b", null ],
     [ "make_orbital_object", "novas_8h.html#a3c5e215babeeba078ca7b3e9be42e555", null ],
     [ "make_planet", "novas_8h.html#a618bbba887b9bc9e7df878234c66c215", null ],
+    [ "make_redshifted_cat_entry", "novas_8h.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3", null ],
     [ "make_redshifted_object", "novas_8h.html#ae579a49d84696a913fd0d9f348bb5b11", null ],
     [ "make_solar_system_observer", "novas_8h.html#a9c3f1a1bc3fd9ac6d211806913d2d529", null ],
     [ "mean_obliq", "novas_8h.html#af182ee8cc4239f581f746aa974827d61", null ],

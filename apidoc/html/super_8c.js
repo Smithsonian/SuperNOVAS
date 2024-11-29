@@ -21,6 +21,7 @@ var super_8c =
     [ "make_cat_object", "super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f", null ],
     [ "make_ephem_object", "super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2", null ],
     [ "make_orbital_object", "super_8c.html#a3c5e215babeeba078ca7b3e9be42e555", null ],
+    [ "make_redshifted_cat_entry", "super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3", null ],
     [ "make_redshifted_object", "super_8c.html#ae579a49d84696a913fd0d9f348bb5b11", null ],
     [ "make_solar_system_observer", "super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529", null ],
     [ "novas_planet_for_name", "super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3", null ],

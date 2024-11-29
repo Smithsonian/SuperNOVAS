@@ -14,8 +14,8 @@ Changes for the next feature release, expected around 1 February 2025.
 
 ### Added
 
- - #57: New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are 
-   characterized with a redshift measure rather than a radial velocity value.
+ - #57, #102: New `make_redshifted_cat_entry()` and `make_redshifted_object()` to simplify the creation of distant 
+   catalog sources that are characterized with a redshift measure rather than a radial velocity value.
 
  - #57: New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
  
@@ -88,7 +88,9 @@ Changes for the next feature release, expected around 1 February 2025.
    
 ### Changed
 
- - #96: Changed `object` structure to include `novas_orbital` for `NOVAS_ORBITAL_OBJECT` types.
+ - #96: Changed `object` structure to include `novas_orbital` for `NOVAS_ORBITAL_OBJECT` types. To keep ABI 
+   compatibility to earlier SuperNOVAS releases, `make_object()` will not initialize the new `.orbit` field _unless_
+   `type` is set to `NOVAS_ORBITAL_OBJECT` (which was not available before).
 
  - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.
