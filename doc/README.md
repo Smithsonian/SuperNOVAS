@@ -1227,8 +1227,8 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 <a name="builtin-ephem-readers"></a>
 ### Legacy support for (older) JPL major planet ephemerides
 
-If you only need support for major planets, you may be able to use one of the modules included in the SuperNOVAS
-distribution. The modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
+If you only need support for major planets, you may be able to use one of the modules included with the distribution. 
+The legacy NOVAS modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
 either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph` interface with `solsys2.c`.
 
 #### Planets via `eph_manager`
