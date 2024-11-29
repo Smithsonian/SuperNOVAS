@@ -939,8 +939,8 @@ before that level of accuracy is reached.
 
 #### Added in v1.2
 
- - New `novas_make_redshifted_object()` to simplify the creation of distant catalog sources that are characterized
-   with a redshift measure rather than a radial velocity value.
+ - New `make_redshifted_cat_entry()` and `make_redshifted_object()` to simplify the creation of distant catalog 
+   sources that are characterized with a redshift measure rather than a radial velocity value.
 
  - New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
  
