@@ -617,7 +617,7 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
   ...
   
   // Create an object for that orbit
-  make_orbital_object("NEAxxx", -1, &orbit, object);
+  make_orbital_object("NEAxxx", -1, &orbit, &NEA);
 ```
 
 Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise
@@ -1133,7 +1133,7 @@ code:
   // Optionally you may use a separate ephemeris dataset for major planets
   // (or if planet ephemeris was included in 'eph' above, you don't have to) 
   t_calcephbin *pleph = calceph_open(...);
-  int status = novas_use_calceph(pleph);
+  int status = novas_use_calceph_planets(pleph);
   if(status < 0) {
     // Ooops something went wrong...
   }

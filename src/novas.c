@@ -6755,8 +6755,8 @@ short make_object(enum novas_object_type type, long number, const char *name, co
   if(!source)
     return novas_error(-1, EINVAL, fn, "NULL input source");
 
-  // FIXME for version v2.x initialize the entire structure again...
-  memset(source, 0, offsetof(object, orbit));
+  // FIXME will not need special case in v2.x
+  memset(source, 0, type == NOVAS_ORBITAL_OBJECT ? sizeof(object) : offsetof(object, orbit));
 
   // Set the object type.
   if(type < 0 || type >= NOVAS_OBJECT_TYPES)
@@ -6768,10 +6768,6 @@ short make_object(enum novas_object_type type, long number, const char *name, co
   if(type == NOVAS_PLANET)
     if(number < 0 || number >= NOVAS_PLANETS)
       return novas_error(2, EINVAL, fn, "planet number %ld is out of bounds [0:%d]", number, NOVAS_PLANETS - 1);
-
-  // FIXME will not need special case in v2.x
-  if(type == NOVAS_ORBITAL_OBJECT)
-    memset(&source->orbit, 0, sizeof(source->orbit));
 
   source->number = number;
 
@@ -6961,6 +6957,15 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * a humidity value (e.g. for radio refraction). As such, the humidity value remains undefined
  * after this call. To set the humidity, set the output structure's field after calling this
  * funcion. Its unit is [%], and so the range is 0.0--100.0.
+ *
+ * NOTES
+ * <ol>
+ * <li>This implementation breaks strict v1.0 ABI compatibility since it writes to (initializes)
+ * a field (`humidity`) that was not yet part of the `on_surface` structure in v1.0. As such,
+ * linking SuperNOVAS v1.1 or later with application code compiled for SuperNOVAS v1.0 can
+ * result in memory corruption or segmentation fault when this function is called. To be safe,
+ * make sure your application has been (re)compiled against SuperNOVAS v1.1 or later.</li>
+ * </ol>
  *
  * @param latitude      [deg] Geodetic (ITRS) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (ITRS) longitude in degrees; east positive.
