@@ -95,6 +95,7 @@ Changes for the next feature release, expected around 1 February 2025.
  - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.
    
+ - Added `-g` to default `CFLAGS` as a matter of GNU best practice.
    
    
 ## [1.1.1] - 2024-10-28

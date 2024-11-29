@@ -144,6 +144,7 @@ Changed</h2>
 <ul>
 <li>#96: Changed <code>object</code> structure to include <code><a class="el" href="structnovas__orbital.html">novas_orbital</a></code> for <code>NOVAS_ORBITAL_OBJECT</code> types. To keep ABI compatibility to earlier SuperNOVAS releases, <code><a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a></code> will not initialize the new <code>.orbit</code> field <em>unless</em> <code>type</code> is set to <code>NOVAS_ORBITAL_OBJECT</code> (which was not available before).</li>
 <li>#97: Updated <code>NOVAS_PLANETS</code>, <code>NOVAS_PLANET_NAMES_INIT</code>, and <code>NOVAS_RMASS_INIT</code> macros to include the added planet constants.</li>
+<li>Added <code>-g</code> to default <code>CFLAGS</code> as a matter of GNU best practice.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md4"></a>
 [1.1.1] - 2024-10-28</h1>

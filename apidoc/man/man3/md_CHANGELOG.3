@@ -49,6 +49,8 @@ Added 'Coordinate Systems and Conversions' flowchart to \fCREADME\fP\&.
 #96: Changed \fCobject\fP structure to include \fC\fBnovas_orbital\fP\fP for \fCNOVAS_ORBITAL_OBJECT\fP types\&. To keep ABI compatibility to earlier SuperNOVAS releases, \fC\fBmake_object()\fP\fP will not initialize the new \fC\&.orbit\fP field \fIunless\fP \fCtype\fP is set to \fCNOVAS_ORBITAL_OBJECT\fP (which was not available before)\&.
 .IP "\(bu" 2
 #97: Updated \fCNOVAS_PLANETS\fP, \fCNOVAS_PLANET_NAMES_INIT\fP, and \fCNOVAS_RMASS_INIT\fP macros to include the added planet constants\&.
+.IP "\(bu" 2
+Added \fC-g\fP to default \fCCFLAGS\fP as a matter of GNU best practice\&.
 .PP
 .SH "[1\&.1\&.1] - 2024-10-28"
 .PP
