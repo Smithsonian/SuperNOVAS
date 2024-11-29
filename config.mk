@@ -100,7 +100,7 @@ DEFAULT_SOLSYS ?= 3
 # LD_LIBRARY_PATH, and calceph.h in /usr/include or some other accessible
 # location (you may also  set an appropriate -I<path> option to CPPFLAGS 
 # prior to calling make).
-CALCEPH_SUPPORT ?= 0
+#CALCEPH_SUPPORT = 1
 
 
 # Whether or not to build solsys-cspice libraries. You need the CSPICE 
@@ -108,7 +108,7 @@ CALCEPH_SUPPORT ?= 0
 # LD_LIBRARY_PATH, and CSPICE header files in /usr/include/cspice or some 
 # other accessible location (you may also  set an appropriate -I<path> 
 # option to CPPFLAGS prior to calling make).
-CSPICE_SUPPORT ?= 0
+#CSPICE_SUPPORT = 1
 
 
 # cppcheck options for 'check' target. You can add additional options by
@@ -185,10 +185,29 @@ ifdef (DEFAULT_READEPH)
   CPPFLAGS += -DDEFAULT_READEPH=1
 endif
 
+# Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
+ifneq ($(shell which ldconfig), )
+  # Detect CALCEPH automatically, and enable support if present
+  ifndef CALCEPH_SUPPORT 
+    ifneq ($(shell ldconfig -p | grep libcalceph), )
+      $(info INFO: CALCEPH support is enabled automatically.)
+      CALCEPH_SUPPORT = 1
+    else
+      $(info INFO: optional CALCEPH support is not enabled.)
+      CALCEPH_SUPPORT = 0
+    endif
+  endif
 
-# Compiler and linker options etc.
-ifeq ($(BUILD_MODE),debug)
-	CFLAGS += -g
+  # Detect CSPICE automatically, and enable support if present
+  ifndef CPSICE_SUPPORT
+    ifneq ($(shell ldconfig -p | grep libcspice), )
+      $(info INFO: CSPICE support is enabled automatically.)
+      CSPICE_SUPPORT = 1
+    else
+      $(info INFO: optional CSPICE support is not enabled.)
+      CSPICE_SUPPORT = 0
+    endif
+  endif
 endif
 
 # Generate a list of object (obj/*.o) files from the input sources

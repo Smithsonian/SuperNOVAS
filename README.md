@@ -187,20 +187,22 @@ the necessary variables in the shell prior to invoking `make`. For example:
 
  - Choose which planet calculator function routines are built into the library (for example to provide 
    `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
-   You can then specify these functions (or others) as the default planet calculator for `ephemeris()` in your 
+   You can then specify these functions (or others) as your planet calculator of choice for `ephemeris()` in your 
    application dynamically via `set_planet_provider()`.
    
- - You can enable integration with the [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library, by 
-   setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. The build will require an 
+ - [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library integration is automatic if `ldconfig` can 
+   locate the `libcalceph` shared library. You can also control CALCEPH integration manually, e.g. by setting 
+   `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CALCEPH integration will require an 
    accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries 
    depending on the needs of the build).
    
- - You can enable integration with the [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html), by setting 
-   `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. The build will require an accessible 
-   installation of the CSPICE development files (C headers, under a `cspice/` sub-folder in the header search path, 
-   and unversioned static or shared libraries depending on the needs of the build). You might want to check out the 
-   [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) repository for building CSPICE as a 
-   shared library.
+ - [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) integration automatic, if `ldconfig` can locate 
+   the `libcspice` shared library. You can also control CSPICE integration manually, e.g. by setting 
+   `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CSPICE integration will require an 
+   accessible installation of the CSPICE development files (C headers, under a `cspice/` sub-folder in the header 
+   search path, and unversioned static or shared libraries depending on the needs of the build). You might want to 
+   check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) repository for 
+   building CSPICE as a shared library.
    
  - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
    `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
@@ -262,7 +264,7 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 ## Building your application with SuperNOVAS
 
 Provided you have installed the SuperNOVAS headers into a standard location, you can build your application against it 
-very easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have a `Makefile` with contents like:
+easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have a `Makefile` with contents like:
 
 ```make
   myastroapp: myastroapp.c 
@@ -270,7 +272,7 @@ very easily. For example, to build `myastroapp.c` against SuperNOVAS, you might 
 ```
 
 If you have a legacy NOVAS C 3.1 application, it is possible that the compilation will give you errors due to missing 
-includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`. This is because these were explicitly included in 
+includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`. This is because these headers were explicitly included by 
 `novas.h` in NOVAS C 3.1, but not in SuperNOVAS (at least not by default), as a matter of best practice. If this is a 
 problem for you can 'fix' it in one of two ways: (1) Add the missing `#include` directives to your application source 
 explicitly, or if that's not an option for you, then (2) set the `-DCOMPAT=1` compiler flag when compiling your 
