@@ -86,7 +86,7 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
 
 short state(const double *jed, enum de_planet target, double *target_pos, double *target_vel);
 
-int interpolate(const double *buf, const double *t, long ncm, long na, double *position, double *velocity);
+int interpolate(const double *buf, const double *t, long ncf, long na, double *position, double *velocity);
 
 int split(double tt, double *fr);
 

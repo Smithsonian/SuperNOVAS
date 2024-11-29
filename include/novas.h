@@ -1303,14 +1303,14 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
         double *out);
 
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
-        const on_surface *location, double ra, double dec, enum novas_refraction_model option, double *zd, double *az,
+        const on_surface *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd, double *az,
         double *rar, double *decr);
 
 short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg,
         double *ra, double *dec);
 
 short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type,
-        enum novas_earth_rotation_measure method, enum novas_accuracy accuracy, double *gst);
+        enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *gst);
 
 double era(double jd_ut1_high, double jd_ut1_low);
 
@@ -1354,9 +1354,9 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
 
 int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out);
 
-int aberration(const double *pos, const double *vobs, double lighttime, double *pos2);
+int aberration(const double *pos, const double *vobs, double lighttime, double *out);
 
-int rad_vel(const object *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo,
+int rad_vel(const object *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo,
         double d_obs_sun, double d_src_sun, double *rv);
 
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out);
@@ -1416,7 +1416,7 @@ double norm_ang(double angle);
 short make_cat_entry(const char *star_name, const char *catalog, long cat_num, double ra, double dec, double pm_ra,
         double pm_dec, double parallax, double rad_vel, cat_entry *star);
 
-short make_object(enum novas_object_type, long number, const char *name, const cat_entry *star_data, object *source);
+short make_object(enum novas_object_type, long number, const char *name, const cat_entry *star, object *source);
 
 short make_observer(enum novas_observer_place, const on_surface *loc_surface, const in_space *loc_space, observer *obs);
 
@@ -1468,10 +1468,10 @@ int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double 
 int radec_planet(double jd_tt, const object *ss_body, const observer *obs, double ut1_to_tt,
         enum novas_reference_system sys, enum novas_accuracy accuracy, double *ra, double *dec, double *dis, double *rv);
 
-double refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_calc);
+double refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_astro);
 
 int light_time2(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
-        double *pos_src_obs, double *v_ssb, double *tlight);
+        double *p_src_obs, double *v_ssb, double *tlight);
 
 double tt2tdb(double jd_tt);
 
@@ -1485,7 +1485,7 @@ int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy
 int gal2equ(double glon, double glat, double *ra, double *dec);
 
 // GCRS - CIRS - ITRS conversions
-int gcrs_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
 int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
         double *out);
@@ -1493,12 +1493,12 @@ int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
 int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
         double *out);
 
-int cirs_to_gcrs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
 // GCRS - J2000 - TOD - ITRS conversions
 int gcrs_to_j2000(const double *in, double *out);
 
-int j2000_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
 int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
         double *out);
@@ -1506,7 +1506,7 @@ int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
 int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
         double *out);
 
-int tod_to_j2000(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
+int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
 int j2000_to_gcrs(const double *in, double *out);
 
@@ -1585,7 +1585,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
 
 int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_reference_system sys, sky_pos *out);
 
-int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *output);
+int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *out);
 
 int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model,
         double *az, double *el);
@@ -1640,7 +1640,7 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
 
 int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
 
-int novas_orbit_posvel(double jd_tdb, const novas_orbital *orb, enum novas_accuracy accuracy, double *pos, double *vel);
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *orbit, enum novas_accuracy accuracy, double *pos, double *vel);
 
 int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
