@@ -2571,6 +2571,12 @@ Populates an '\fBon_surface\fP' data structure, for an observer on the surface o
 .PP
 Note, that because this is an original NOVAS C routine, it does not have an argument to set a humidity value (e\&.g\&. for radio refraction)\&. As such, the humidity value remains undefined after this call\&. To set the humidity, set the output structure's field after calling this funcion\&. Its unit is [%], and so the range is 0\&.0--100\&.0\&.
 .PP
+NOTES 
+.PD 0
+.IP "1." 4
+This implementation breaks strict v1\&.0 ABI compatibility since it writes to (initializes) a field (\fChumidity\fP) that was not yet part of the \fC\fBon_surface\fP\fP structure in v1\&.0\&. As such, linking SuperNOVAS v1\&.1\&.0 or later with application code compiled for SuperNOVAS v1\&.0 can result in memory corruption or segmentation fault when this function is called\&. To be safe, make sure your application has been (re)compiled against SuperNOVAS v1\&.1 or later\&. 
+.PP
+.PP
 \fBParameters\fP
 .RS 4
 \fIlatitude\fP [deg] Geodetic (ITRS) latitude in degrees; north positive\&. 
