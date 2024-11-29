@@ -330,7 +330,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
 
   // Always return positions and velocities w.r.t. the SSB
   if(origin)
-    *origin = NOVAS_SSB;
+    *origin = NOVAS_BARYCENTER;
 
   center = (compute_flags & CALCEPH_USE_NAIFID) ? NAIF_SSB : CALCEPH_SSB;
 

@@ -270,7 +270,7 @@ static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, en
 
   tdb2000 = (jd_tdb[0] + jd_tdb[1] - NOVAS_JD_J2000) * 86400.0;
 
-  prop_error(fn, mutex_lock(sem), 0);
+  prop_error(fn, mutex_lock(), 0);
 
   // Try with proper planet center NAIF ID first...
   //
@@ -289,7 +289,7 @@ static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, en
     }
   }
 
-  mutex_unlock(sem);
+  mutex_unlock();
 
   if(err)
     return novas_error(3, EAGAIN, fn, "spkez_c(NOVAS ID=%d, JD=%.1f): %s", body, (jd_tdb[0] + jd_tdb[1]), msg);
@@ -436,7 +436,7 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
 
   // Always return positions and velocities w.r.t. the SSB
   if(origin)
-    *origin = NOVAS_SSB;
+    *origin = NOVAS_BARYCENTER;
 
   center = NAIF_SSB;
 

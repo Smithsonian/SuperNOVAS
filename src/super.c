@@ -11,9 +11,9 @@
 // We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
 // gcc 5.1 was released 2015-04-22...
 #if __GNUC__ >= 5
-#  define _DEFAULT_SOURCE        ///< strcasdecmp() feature macro starting glibc 2.20 (2014-09-08)
+#  define _DEFAULT_SOURCE         ///< strcasdecmp() feature macro starting glibc 2.20 (2014-09-08)
 #else
-#  define _BSD_SOURCE           ///< strcasecmp() feature macro for glibc <= 2.19
+#  define _BSD_SOURCE             ///< strcasecmp() feature macro for glibc <= 2.19
 #endif
 
 #include <math.h>
