@@ -757,7 +757,7 @@ Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
 </div><!-- fragment --><p>And, when you are done using the ephemeris file, you should close it with</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a>();</div>
 <div class="ttc" id="aeph__manager_8c_html_a333da81ba7453316e26f32f628fefc0e"><div class="ttname"><a href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a></div><div class="ttdeci">short ephem_close(void)</div><div class="ttdef"><b>Definition</b> eph_manager.c:224</div></div>
-</div><!-- fragment --><p>Note, that at any given time <code>eph_manager</code> can have only one ephemeris data file opened. You cannot use it to retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you can integrate as discussed further above!)</p>
+</div><!-- fragment --><p>Note, that at any given time <code>eph_manager</code> can have only one ephemeris data file opened. You cannot use it to retrieve data from multiple ephemeris input files at the same time. (But you can with CALCEPH or the CSPICE toolkit, either of which you can interface as discussed further above!)</p>
 <p>That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.</p>
 <h4><a class="anchor" id="autotoc_md78"></a>
 Planets via JPL's &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface</h4>

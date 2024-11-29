@@ -1260,8 +1260,8 @@ And, when you are done using the ephemeris file, you should close it with
 ```
  
 Note, that at any given time `eph_manager` can have only one ephemeris data file opened. You cannot use it to 
-retrieve data from multiple ephemeris input files at the same time. (But you can with the CSPICE toolkit, which you 
-can integrate as discussed further above!)
+retrieve data from multiple ephemeris input files at the same time. (But you can with CALCEPH or the CSPICE toolkit, 
+either of which you can interface as discussed further above!)
 
 That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
 
