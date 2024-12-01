@@ -7,10 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.2.0-rc4] - 2024-12-01
 
-Changes for the next feature release, expected around 1 February 2025.
+Release candidate for the next feature release, expected around 1 February 2025.
 
+### Fixed
+
+ - Fixed missing error tracing in `nutation()`.
+ 
 
 ### Added
 
@@ -84,7 +88,11 @@ Changes for the next feature release, expected around 1 February 2025.
    really but it is more proper for an installation of the library, and works with our own `Makefile` too.
    
  - Added 'Coordinate Systems and Conversions' flowchart to `README`.
-   
+ 
+ - Added a GNU standard documentation targets to `Makefile`.
+ 
+ - Added `infer` make target for running Facebook's `infer` static analysis tool.
+ 
    
 ### Changed
 
@@ -95,7 +103,11 @@ Changes for the next feature release, expected around 1 February 2025.
  - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.
    
+ - `make check` now runs both static analysis by cppcheck (new `analysis` target) and regression tests (`test` 
+   target), in closer conformance to GNU Makefile standards.
+   
  - Added `-g` to default `CFLAGS` as a matter of GNU best practice.
+ 
    
    
 ## [1.1.1] - 2024-10-28

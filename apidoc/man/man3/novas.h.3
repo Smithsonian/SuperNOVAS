@@ -326,7 +326,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc4'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1'\&. "
 .ti -1c
@@ -418,7 +418,7 @@ include/novas.h
 
 .in +1c
 .ti -1c
-.RI "int \fBaberration\fP (const double *pos, const double *vobs, double lighttime, double *pos2)"
+.RI "int \fBaberration\fP (const double *pos, const double *vobs, double lighttime, double *out)"
 .br
 .ti -1c
 .RI "double \fBaccum_prec\fP (double t)"
@@ -466,7 +466,7 @@ include/novas.h
 .RI "double \fBcirs_to_app_ra\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
 .br
 .ti -1c
-.RI "int \fBcirs_to_gcrs\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.RI "int \fBcirs_to_gcrs\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
 .br
 .ti -1c
 .RI "int \fBcirs_to_itrs\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
@@ -502,7 +502,7 @@ include/novas.h
 .RI "int \fBequ2gal\fP (double ra, double dec, double *glon, double *glat)"
 .br
 .ti -1c
-.RI "int \fBequ2hor\fP (double jd_ut1, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const \fBon_surface\fP *location, double ra, double dec, enum \fBnovas_refraction_model\fP option, double *zd, double *az, double *rar, double *decr)"
+.RI "int \fBequ2hor\fP (double jd_ut1, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const \fBon_surface\fP *location, double ra, double dec, enum \fBnovas_refraction_model\fP ref_option, double *zd, double *az, double *rar, double *decr)"
 .br
 .ti -1c
 .RI "double \fBera\fP (double jd_ut1_high, double jd_ut1_low)"
@@ -520,7 +520,7 @@ include/novas.h
 .RI "short \fBgcrs2equ\fP (double jd_tt, enum \fBnovas_dynamical_type\fP sys, enum \fBnovas_accuracy\fP accuracy, double rag, double decg, double *ra, double *dec)"
 .br
 .ti -1c
-.RI "int \fBgcrs_to_cirs\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.RI "int \fBgcrs_to_cirs\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
 .br
 .ti -1c
 .RI "int \fBgcrs_to_j2000\fP (const double *in, double *out)"
@@ -577,7 +577,7 @@ include/novas.h
 .RI "int \fBj2000_to_gcrs\fP (const double *in, double *out)"
 .br
 .ti -1c
-.RI "int \fBj2000_to_tod\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.RI "int \fBj2000_to_tod\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
 .br
 .ti -1c
 .RI "double \fBjulian_date\fP (short year, short month, short day, double hour)"
@@ -586,7 +586,7 @@ include/novas.h
 .RI "short \fBlight_time\fP (double jd_tdb, const \fBobject\fP *body, const double *pos_obs, double tlight0, enum \fBnovas_accuracy\fP accuracy, double *pos_src_obs, double *tlight)"
 .br
 .ti -1c
-.RI "int \fBlight_time2\fP (double jd_tdb, const \fBobject\fP *body, const double *pos_obs, double tlight0, enum \fBnovas_accuracy\fP accuracy, double *pos_src_obs, double *v_ssb, double *tlight)"
+.RI "int \fBlight_time2\fP (double jd_tdb, const \fBobject\fP *body, const double *pos_obs, double tlight0, enum \fBnovas_accuracy\fP accuracy, double *p_src_obs, double *v_ssb, double *tlight)"
 .br
 .ti -1c
 .RI "int \fBlimb_angle\fP (const double *pos_src, const double *pos_obs, double *limb_ang, double *nadir_ang)"
@@ -613,7 +613,7 @@ include/novas.h
 .RI "int \fBmake_in_space\fP (const double *sc_pos, const double *sc_vel, \fBin_space\fP *loc)"
 .br
 .ti -1c
-.RI "short \fBmake_object\fP (enum \fBnovas_object_type\fP, long number, const char *name, const \fBcat_entry\fP *star_data, \fBobject\fP *source)"
+.RI "short \fBmake_object\fP (enum \fBnovas_object_type\fP, long number, const char *name, const \fBcat_entry\fP *star, \fBobject\fP *source)"
 .br
 .ti -1c
 .RI "short \fBmake_observer\fP (enum \fBnovas_observer_place\fP, const \fBon_surface\fP *loc_surface, const \fBin_space\fP *loc_space, \fBobserver\fP *obs)"
@@ -721,7 +721,7 @@ include/novas.h
 .RI "double \fBnovas_optical_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
 .br
 .ti -1c
-.RI "int \fBnovas_orbit_posvel\fP (double jd_tdb, const \fBnovas_orbital\fP *orb, enum \fBnovas_accuracy\fP accuracy, double *pos, double *vel)"
+.RI "int \fBnovas_orbit_posvel\fP (double jd_tdb, const \fBnovas_orbital\fP *orbit, enum \fBnovas_accuracy\fP accuracy, double *pos, double *vel)"
 .br
 .ti -1c
 .RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
@@ -742,7 +742,7 @@ include/novas.h
 .RI "int \fBnovas_set_unix_time\fP (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP *time)"
 .br
 .ti -1c
-.RI "int \fBnovas_sky_pos\fP (const \fBobject\fP *\fBobject\fP, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *output)"
+.RI "int \fBnovas_sky_pos\fP (const \fBobject\fP *\fBobject\fP, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *out)"
 .br
 .ti -1c
 .RI "double \fBnovas_standard_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
@@ -811,7 +811,7 @@ include/novas.h
 .RI "int \fBproper_motion\fP (double jd_tdb_in, const double *pos, const double *vel, double jd_tdb_out, double *out)"
 .br
 .ti -1c
-.RI "int \fBrad_vel\fP (const \fBobject\fP *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)"
+.RI "int \fBrad_vel\fP (const \fBobject\fP *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)"
 .br
 .ti -1c
 .RI "double \fBrad_vel2\fP (const \fBobject\fP *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun)"
@@ -832,7 +832,7 @@ include/novas.h
 .RI "double \fBrefract\fP (const \fBon_surface\fP *location, enum \fBnovas_refraction_model\fP option, double zd_obs)"
 .br
 .ti -1c
-.RI "double \fBrefract_astro\fP (const \fBon_surface\fP *location, enum \fBnovas_refraction_model\fP option, double zd_calc)"
+.RI "double \fBrefract_astro\fP (const \fBon_surface\fP *location, enum \fBnovas_refraction_model\fP option, double zd_astro)"
 .br
 .ti -1c
 .RI "int \fBset_cio_locator_file\fP (const char *filename)"
@@ -841,7 +841,7 @@ include/novas.h
 .RI "int \fBset_nutation_lp_provider\fP (\fBnovas_nutation_provider\fP func)"
 .br
 .ti -1c
-.RI "short \fBsidereal_time\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_equinox_type\fP gst_type, enum \fBnovas_earth_rotation_measure\fP method, enum \fBnovas_accuracy\fP accuracy, double *gst)"
+.RI "short \fBsidereal_time\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_equinox_type\fP gst_type, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, double *gst)"
 .br
 .ti -1c
 .RI "int \fBspin\fP (double angle, const double *in, double *out)"
@@ -868,7 +868,7 @@ include/novas.h
 .RI "int \fBtod_to_itrs\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
 .br
 .ti -1c
-.RI "int \fBtod_to_j2000\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.RI "int \fBtod_to_j2000\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
 .br
 .ti -1c
 .RI "short \fBtopo_planet\fP (double jd_tt, const \fBobject\fP *ss_body, double ut1_to_tt, const \fBon_surface\fP *position, enum \fBnovas_accuracy\fP accuracy, double *ra, double *dec, double *dis)"

@@ -7,9 +7,13 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[Unreleased]"
+.SH "[1\&.2\&.0-rc4] - 2024-12-01"
 .PP
-Changes for the next feature release, expected around 1 February 2025\&.
+Release candidate for the next feature release, expected around 1 February 2025\&.
+.SS "Fixed"
+.IP "\(bu" 2
+Fixed missing error tracing in \fC\fBnutation()\fP\fP\&.
+.PP
 .SS "Added"
 .IP "\(bu" 2
 #57, #102: New \fC\fBmake_redshifted_cat_entry()\fP\fP and \fC\fBmake_redshifted_object()\fP\fP to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value\&.
@@ -43,12 +47,18 @@ Added more physical unit constants to \fC\fBnovas\&.h\fP\fP and a corresponding 
 SuperNOVAS headers now include each other as system-headers, not local headers\&. This is unlikely to affect anything really but it is more proper for an installation of the library, and works with our own \fCMakefile\fP too\&.
 .IP "\(bu" 2
 Added 'Coordinate Systems and Conversions' flowchart to \fCREADME\fP\&.
+.IP "\(bu" 2
+Added a GNU standard documentation targets to \fCMakefile\fP\&.
+.IP "\(bu" 2
+Added \fCinfer\fP make target for running Facebook's \fCinfer\fP static analysis tool\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
 #96: Changed \fCobject\fP structure to include \fC\fBnovas_orbital\fP\fP for \fCNOVAS_ORBITAL_OBJECT\fP types\&. To keep ABI compatibility to earlier SuperNOVAS releases, \fC\fBmake_object()\fP\fP will not initialize the new \fC\&.orbit\fP field \fIunless\fP \fCtype\fP is set to \fCNOVAS_ORBITAL_OBJECT\fP (which was not available before)\&.
 .IP "\(bu" 2
 #97: Updated \fCNOVAS_PLANETS\fP, \fCNOVAS_PLANET_NAMES_INIT\fP, and \fCNOVAS_RMASS_INIT\fP macros to include the added planet constants\&.
+.IP "\(bu" 2
+\fCmake check\fP now runs both static analysis by cppcheck (new \fCanalysis\fP target) and regression tests (\fCtest\fP target), in closer conformance to GNU Makefile standards\&.
 .IP "\(bu" 2
 Added \fC-g\fP to default \fCCFLAGS\fP as a matter of GNU best practice\&.
 .PP

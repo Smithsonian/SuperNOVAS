@@ -1274,8 +1274,8 @@
       <type>int</type>
       <name>aberration</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>ac8be269d973cea93f249b7e60dad7d91</anchor>
-      <arglist>(const double *pos, const double *vobs, double lighttime, double *pos2)</arglist>
+      <anchor>a033f1bf4b01e0e21a0e05e13c19c02f6</anchor>
+      <arglist>(const double *pos, const double *vobs, double lighttime, double *out)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -1386,8 +1386,8 @@
       <type>int</type>
       <name>cirs_to_gcrs</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>ad0db0cf9077844f6f1df94a46972c8f2</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+      <anchor>ac0ba048cd1732d0d0398397396d158bc</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1470,8 +1470,8 @@
       <type>int</type>
       <name>equ2hor</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a08d295e7b5853f0938c3addd2af67200</anchor>
-      <arglist>(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra, double dec, enum novas_refraction_model option, double *zd, double *az, double *rar, double *decr)</arglist>
+      <anchor>a5f229207d8a775119565a52f7e586cf8</anchor>
+      <arglist>(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -1512,8 +1512,8 @@
       <type>int</type>
       <name>gcrs_to_cirs</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>ac27c155ecd4c28aaf9cac12dfd72ddb8</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+      <anchor>a51ea4a016336dd3cf7783061c14d165c</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1645,8 +1645,8 @@
       <type>int</type>
       <name>j2000_to_tod</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>ad214e87caefca35f5f3af7f643f25c73</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+      <anchor>a02fa1ee652c20160055cbd2c7bd9ca63</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -1666,8 +1666,8 @@
       <type>int</type>
       <name>light_time2</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>ac800815a32e81e7befdb828c29d1efcc</anchor>
-      <arglist>(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos_src_obs, double *v_ssb, double *tlight)</arglist>
+      <anchor>a8a93137b6201bedd8d47cc954684ebe3</anchor>
+      <arglist>(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *p_src_obs, double *v_ssb, double *tlight)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1729,8 +1729,8 @@
       <type>short</type>
       <name>make_object</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a449c9223f9601d7c93ba13b0aca2ab0e</anchor>
-      <arglist>(enum novas_object_type, long number, const char *name, const cat_entry *star_data, object *source)</arglist>
+      <anchor>a859c6c09e05d95d047c92408454a1b1e</anchor>
+      <arglist>(enum novas_object_type, long number, const char *name, const cat_entry *star, object *source)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -1981,8 +1981,8 @@
       <type>int</type>
       <name>novas_orbit_posvel</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a7f69ea5de4ddbd6011b2c31b5fcd0d77</anchor>
-      <arglist>(double jd_tdb, const novas_orbital *orb, enum novas_accuracy accuracy, double *pos, double *vel)</arglist>
+      <anchor>a445ad14faede9dc912601de27fb52bc0</anchor>
+      <arglist>(double jd_tdb, const novas_orbital *orbit, enum novas_accuracy accuracy, double *pos, double *vel)</arglist>
     </member>
     <member kind="function">
       <type>enum novas_planet</type>
@@ -2030,8 +2030,8 @@
       <type>int</type>
       <name>novas_sky_pos</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a3539b76356a7f8853fbb639aaa6bf02e</anchor>
-      <arglist>(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *output)</arglist>
+      <anchor>a4e894a83f3065bbb706212d1267dd2ab</anchor>
+      <arglist>(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *out)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -2191,8 +2191,8 @@
       <type>int</type>
       <name>rad_vel</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a304b2220e084b4b12e674aad897972bc</anchor>
-      <arglist>(const object *source, const double *pos, const double *vel, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)</arglist>
+      <anchor>a9f76e2386515e2023172e05891c3fa28</anchor>
+      <arglist>(const object *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *rv)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -2240,8 +2240,8 @@
       <type>double</type>
       <name>refract_astro</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a46d245f56c6eea9b1a7dc32d3feeaeb8</anchor>
-      <arglist>(const on_surface *location, enum novas_refraction_model option, double zd_calc)</arglist>
+      <anchor>aa41408d8cbbe3cfc12930414a9c79fc7</anchor>
+      <arglist>(const on_surface *location, enum novas_refraction_model option, double zd_astro)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2261,8 +2261,8 @@
       <type>short</type>
       <name>sidereal_time</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a1ac03856ab026b374a4b73b834b45acd</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type, enum novas_earth_rotation_measure method, enum novas_accuracy accuracy, double *gst)</arglist>
+      <anchor>a3236e72771f2c363f342547d80f5d50f</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *gst)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2324,8 +2324,8 @@
       <type>int</type>
       <name>tod_to_j2000</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a111fc0f74e2b2f066617d7e61af15e3d</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+      <anchor>a6205edb1361e56cc0c7aed0f088f7437</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
