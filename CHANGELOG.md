@@ -7,14 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.2.0-rc4] - 2024-12-01
+## [Unreleased]
 
 Release candidate for the next feature release, expected around 1 February 2025.
 
-### Fixed
-
- - Fixed missing error tracing in `nutation()`.
- 
 
 ### Added
 
@@ -92,6 +88,8 @@ Release candidate for the next feature release, expected around 1 February 2025.
  - Added a GNU standard documentation targets to `Makefile`.
  
  - Added `infer` make target for running Facebook's `infer` static analysis tool.
+ 
+ - Added missing error tracing in `nutation()`.
  
    
 ### Changed
