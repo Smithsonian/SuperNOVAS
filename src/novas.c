@@ -43,6 +43,9 @@
 #define C2                  (C * C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light squared
 #define EPREC               1e-12     ///< Required precision for eccentric anomaly in orbital calculation
 
+/// [bytes] Sizeof binary CIO locator file header
+#define CIO_BIN_HEADER_SIZE   (3*sizeof(double) + sizeof(long))
+
 // <---------- GLOBAL VARIABLES -------------->
 
 #if !DEFAULT_SOLSYS
@@ -5492,12 +5495,14 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
   static const char *fn = "cio_array";
 
   // Packed struct in case long is not the same width a double
-  struct __attribute__ ((packed)) cio_file_header {
+  struct cio_file_header {
     double jd_start;
     double jd_end;
     double jd_interval;
     long n_recs;
   };
+
+
 
   static const FILE *last_file;
   static struct cio_file_header lookup;
@@ -5555,13 +5560,13 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio) {
     }
     else {
       is_ascii = 0;
-      header_size = sizeof(struct cio_file_header);
+      header_size = CIO_BIN_HEADER_SIZE;
       lrec = sizeof(ra_of_cio);
 
       fseek(cio_file, 0, SEEK_SET);
 
       // Read the file header
-      if(fread(&lookup, sizeof(struct cio_file_header), 1, cio_file) != 1)
+      if(fread(&lookup, header_size, 1, cio_file) != 1)
         return novas_error(-1, errno, fn, "incomplete or corrupted binary CIO locator data header: %s", strerror(errno));
     }
 

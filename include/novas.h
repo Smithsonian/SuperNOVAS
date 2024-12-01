@@ -1704,7 +1704,7 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 #  ifndef THREAD_LOCAL
 #    if __STDC_VERSION__ >= 201112L
 #      define THREAD_LOCAL _Thread_local          ///< C11 standard for thread-local variables
-#    elif __GNUC__ >= 3 && __GNUC_MINOR__ >= 3
+#    elif __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)
 #      define THREAD_LOCAL __thread               ///< pre C11 gcc >= 3.3 standard for thread-local variables
 #    else
 #      define THREAD_LOCAL                        ///< no thread-local variables
