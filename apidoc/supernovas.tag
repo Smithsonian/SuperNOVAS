@@ -4192,9 +4192,9 @@
     <filename>super_8c.html</filename>
     <member kind="define">
       <type>#define</type>
-      <name>_BSD_SOURCE</name>
+      <name>_DEFAULT_SOURCE</name>
       <anchorfile>super_8c.html</anchorfile>
-      <anchor>ad3d8a3bd0c0b677acef144f2c2ef6d73</anchor>
+      <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -5284,7 +5284,6 @@
     <docanchor file="index.html">solsys-example</docanchor>
     <docanchor file="index.html">tips</docanchor>
     <docanchor file="index.html">accuracy-notes</docanchor>
-    <docanchor file="index.html">performance-note</docanchor>
     <docanchor file="index.html">multi-threading</docanchor>
     <docanchor file="index.html">physical-units</docanchor>
     <docanchor file="index.html">precision</docanchor>

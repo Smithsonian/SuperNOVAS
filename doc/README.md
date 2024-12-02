@@ -25,7 +25,7 @@ This document has been updated for the `v1.2` and later releases.
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#integration)
  - [Example usage](#examples)
- - [Tips and Tricks](#tips)
+ - [Tips and tricks](#tips)
  - [Notes on precision](#precision)
  - [SuperNOVAS specific features](#supernovas-features)
  - [Incorporating Solar-system ephemeris data or services](#solarsystem)
@@ -52,8 +52,8 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
-NOVAS C library, such that it can be used as a drop-in, _build-time_ replacement for NOVAS in your application without 
-having to change existing (functional) code you may have written for NOVAS C.
+NOVAS C library, such that it can be used as a _build-time_ replacement for NOVAS in your application without having 
+to change existing (functional) code you may have written for NOVAS C.
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
@@ -331,9 +331,6 @@ switch between different planet and ephemeris calculator functions at will, duri
  - [Note on alternative methodologies](#methodologies)
  - [Calculating positions for a sidereal source](#sidereal-example)
  - [Calculating positions for a Solar-system source](#solsys-example)
- - [Reduced accuracy shortcuts](#accuracy-notes)
- - [Performance considerations](#performance-note)
- - [Physical units](#physical-units)
 
 
 <a name="methodologies"></a>
@@ -622,7 +619,12 @@ Other than that, it's the same spiel as before, e.g.:
 ------------------------------------------------------------------------------
 
 <a name="tips"></a>
-## Tips and Tricks
+## Tips and tricks
+
+ - [Reduced accuracy shortcuts](#accuracy-notes)
+ - [Multi-threaded calculations](#multi-threading)
+ - [Physical units](#physical-units)
+
 
 <a name="accuracy-notes"></a>
 ### Reduced accuracy shortcuts
@@ -630,16 +632,9 @@ Other than that, it's the same spiel as before, e.g.:
 When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
 
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
-   effect at the milliarcsecond level only, but may be much faster to calculate.
- - You might skip the pole offsets dx, dy. These are tenths of arcsec, typically.
+   effect at or below the milliarcsecond level only, but may be much faster to calculate.
+ - You might skip the pole offsets _dx_, _dy_. These are tenths of arcsec, typically.
  
-
-<a name="performance-note"></a>
-### Performance considerations
-
-If accuracy below the milliarcsecond level is not required `NOVAS_REDUCED_ACCURACY` mode offers faster calculations, 
-in general.
-
  
 <a name="multi-threading"></a>
 ### Multi-threaded calculations
@@ -655,8 +650,8 @@ parameters. Thus, when running calculations in more than one thread, the results
 or more precisely they may not correspond to the requested input parameters.
  
 While you should never call NOVAS C from  multiple threads simultaneously, SuperNOVAS caches the results in thread
-local variables (provided your compiler supports it), and is therefore safe to use in multi-threaded applications.
-Just make sure that you:
+local variables (provided your compiler supports it), and is therefore generally safe to use in multi-threaded 
+applications. Just make sure that you:
 
  - use a compiler which supports the C11 language standard;
  - or, compile with GCC &gt;= 3.3;

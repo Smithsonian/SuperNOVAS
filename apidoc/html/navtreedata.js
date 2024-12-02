@@ -49,35 +49,34 @@ var NAVTREE =
         ] ],
         [ "Calculating positions for a Solar-system source", "index.html#autotoc_md56", null ]
       ] ],
-      [ "Tips and Tricks", "index.html#autotoc_md58", [
+      [ "Tips and tricks", "index.html#autotoc_md58", [
         [ "Reduced accuracy shortcuts", "index.html#autotoc_md59", null ],
-        [ "Performance considerations", "index.html#autotoc_md60", null ],
-        [ "Multi-threaded calculations", "index.html#autotoc_md61", null ],
-        [ "Physical units", "index.html#autotoc_md62", null ]
+        [ "Multi-threaded calculations", "index.html#autotoc_md60", null ],
+        [ "Physical units", "index.html#autotoc_md61", null ]
       ] ],
-      [ "Notes on precision", "index.html#autotoc_md64", [
-        [ "Prerequisites to precise results", "index.html#autotoc_md65", null ]
+      [ "Notes on precision", "index.html#autotoc_md63", [
+        [ "Prerequisites to precise results", "index.html#autotoc_md64", null ]
       ] ],
-      [ "SuperNOVAS specific features", "index.html#autotoc_md67", [
-        [ "Newly added functionality", "index.html#autotoc_md68", [
-          [ "Added in v1.1", "index.html#autotoc_md69", null ],
-          [ "Added in v1.2", "index.html#autotoc_md70", null ]
+      [ "SuperNOVAS specific features", "index.html#autotoc_md66", [
+        [ "Newly added functionality", "index.html#autotoc_md67", [
+          [ "Added in v1.1", "index.html#autotoc_md68", null ],
+          [ "Added in v1.2", "index.html#autotoc_md69", null ]
         ] ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md71", null ]
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md70", null ]
       ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md73", [
-        [ "Optional CALCEPH integration", "index.html#autotoc_md74", null ],
-        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md75", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md76", null ],
-        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md77", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md78", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md79", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md72", [
+        [ "Optional CALCEPH integration", "index.html#autotoc_md73", null ],
+        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md74", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md75", null ],
+        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md76", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md77", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md78", null ]
         ] ],
-        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md80", null ]
+        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md79", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md82", null ],
-      [ "Release schedule", "index.html#autotoc_md84", null ],
-      [ "[1.2.0-rc4] - 2024-12-01", "md_CHANGELOG.html#autotoc_md1", [
+      [ "Runtime debug support", "index.html#autotoc_md81", null ],
+      [ "Release schedule", "index.html#autotoc_md83", null ],
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ]
@@ -144,9 +143,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#a8bd9c6d2127483551c98300e264977f5",
-"novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609",
-"structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8"
+"novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2",
+"novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62",
+"structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,6 +1,6 @@
 var super_8c =
 [
-    [ "_BSD_SOURCE", "super_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73", null ],
+    [ "_DEFAULT_SOURCE", "super_8c.html#a8fb447618db946a9e2a596d9ea18763f", null ],
     [ "app_to_cirs_ra", "super_8c.html#a3fa57a154f2f423612736e5e3a5addbf", null ],
     [ "cirs_to_app_ra", "super_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b", null ],
     [ "cirs_to_itrs", "super_8c.html#aa2768d89d499a7155f90a6fd8c176d8d", null ],

@@ -117,18 +117,18 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[1.2.0-rc4] - 2024-12-01</h1>
+[Unreleased]</h1>
 <p>Release candidate for the next feature release, expected around 1 February 2025.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
-<li>Fixed missing error tracing in <code><a class="el" href="novas_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a></code>.</li>
+<li>Fixes to GCC version checking for macros.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Added</h2>
 <ul>
+<li>#57: New generic redshift-handling functions <code><a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></code>, <code><a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a></code>.</li>
 <li>#57, #102: New <code><a class="el" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3">make_redshifted_cat_entry()</a></code> and <code><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a></code> to simplify the creation of distant catalog sources that are characterized with a redshift measure rather than a radial velocity value.</li>
-<li>#57: New generic redshift-handling functions <code><a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></code>, <code><a class="el" href="novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a></code>,</li>
 <li>#58: New functions to calculate and apply additional gravitational redshift corrections for light that originates near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive gravitating bodies (other than the Sun and Earth). The added functions are <code><a class="el" href="super_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a></code>, <code>redhift_vrad()</code>, <code><a class="el" href="super_8c.html#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a></code>, <code><a class="el" href="super_8c.html#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></code>, and <code><a class="el" href="super_8c.html#a1130ad2ce520e948c71f03a25a713075">novas_z_inv()</a></code>.</li>
 <li>#83: CALCEPH integration: <code><a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a></code> and/or <code><a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a></code> to specify and use ephemeris data via CALCEPH for Solar-system sources in general, and for major planets specifically; and <code><a class="el" href="solsys-calceph_8c.html#a5531b937a5bb5491cb475d2536346ad8">novas_calceph_use_ids()</a></code> to specify whether <code><a class="el" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74" title="enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.">object.number</a></code> in <code>NOVAS_EPHEM_OBJECT</code> type objects is a NAIF ID (default) or else a CALCEPH ID number of the Solar-system body. These functions are provided by the <code>libsolsys-calceph.so[.1]</code> and/or <code>.a</code> plugin libraries, which are built contingent on the <code>CALCEPH_SUPPORT</code> variable being set to 1 prior to the build. The build of the plugin module requires an accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries depending on the needs of the build).</li>
 <li>#86: NAIF CSPICE integration: <code><a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a></code>, <code><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a></code>, <code><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a></code> to use the NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. <code>NOVAS_EPHEM_OBJECTS</code> should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides <code><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></code> and <code><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a></code> functions for convenience to manage the set of active kernels (#89). These functions are provided by the <code>libsolsys-cspice.so[.1]</code> and/or <code>.a</code> plugin libraries, which are built contingent on the <code>CSPICE_SUPPORT</code> variable being set to 1 prior to the build. The build of the plugin module requires an accessible installation of the CSPICE development files (C headers and unversioned static or shared libraries depending on the needs of the build).</li>
@@ -145,6 +145,7 @@ Added</h2>
 <li>Added 'Coordinate Systems and Conversions' flowchart to <code>README</code>.</li>
 <li>Added a GNU standard documentation targets to <code>Makefile</code>.</li>
 <li>Added <code>infer</code> make target for running Facebook's <code>infer</code> static analysis tool.</li>
+<li>Added missing error tracing in <code><a class="el" href="novas_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a></code>.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
