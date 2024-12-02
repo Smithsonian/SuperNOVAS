@@ -1066,18 +1066,16 @@ before that level of accuracy is reached.
 ## Incorporating Solar-system ephemeris data or services
 
 If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
-sufficient precision, you will have to interface it to a suitable provider of ephemeris data, such as 
-[JPL Horizons](https://ssd.jpl.nasa.gov/horizons/app.html#/) or the 
-[Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html). Given the NOVAS C heritage, and some added 
-SuperNOVAS flexibility in this area, you have several options on doing that. These are listed from the most practical
-(and preferred) to the least so (the old ways). 
+precision, you will have to interface it to a suitable provider of ephemeris data. Given the NOVAS C heritage, and 
+some added SuperNOVAS flexibility in this area, you have several options for going about it. These are listed from the 
+most practical (and preferred) to the least so (the old ways). 
 
 NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
 example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
 and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the 
-[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system to generate custom ephemeris data for pretty much
-all known solar systems bodies, down to the tiniest rocks. 
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/app.html#/) system (via the telnet interface) to generate custom 
+ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.
 
  - [Optional CALCEPH integration](#calceph-integration)
  - [Optional NAIF CSPICE toolkit integration](#cspice-integration)
