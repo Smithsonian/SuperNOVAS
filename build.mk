@@ -57,8 +57,8 @@ analyze:
 
 # Static code analysis viacat Facebook's infer
 .PHONY: infer
-infer: CC := infer run -- $(CC)
-infer: distclean shared
+infer: clean
+	infer run -- make shared
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
