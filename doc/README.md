@@ -1074,8 +1074,8 @@ NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/gener
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
 example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
 and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the 
-[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/) system (via the commnad-line / telnet interface) to generate custom 
-ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/) system (via the commnad-line / telnet or API interfaces) to 
+generate custom ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.
 
  - [Optional CALCEPH integration](#calceph-integration)
  - [Optional NAIF CSPICE toolkit integration](#cspice-integration)
