@@ -12,12 +12,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 Release candidate for the next feature release, expected around 1 February 2025.
 
 
+### Fixed
+
+ - Fixes to GCC version checking for macros.
+
+
 ### Added
+
+ - #57: New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`.
 
  - #57, #102: New `make_redshifted_cat_entry()` and `make_redshifted_object()` to simplify the creation of distant 
    catalog sources that are characterized with a redshift measure rather than a radial velocity value.
-
- - #57: New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
  
  - #58: New functions to calculate and apply additional gravitational redshift corrections for light that originates
    near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive
