@@ -1134,7 +1134,7 @@ code:
   // Optionally you may use a separate ephemeris dataset for major planets
   // (or if planet ephemeris was included in 'eph' above, you don't have to) 
   t_calcephbin *pleph = calceph_open(...);
-  int status = novas_use_calceph_planets(pleph);
+  status = novas_use_calceph_planets(pleph);
   if(status < 0) {
     // Ooops something went wrong...
   }
