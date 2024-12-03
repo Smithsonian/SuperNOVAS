@@ -680,7 +680,7 @@ Optional CALCEPH integration</h3>
 <div class="line"><span class="comment">// Optionally you may use a separate ephemeris dataset for major planets</span></div>
 <div class="line"><span class="comment">// (or if planet ephemeris was included in &#39;eph&#39; above, you don&#39;t have to) </span></div>
 <div class="line">t_calcephbin *pleph = calceph_open(...);</div>
-<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a>(pleph);</div>
+<div class="line">status = <a class="code hl_function" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a>(pleph);</div>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
 <div class="line">}</div>
