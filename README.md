@@ -225,6 +225,25 @@ the necessary variables in the shell prior to invoking `make`. For example:
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
    quotes in `config.mk`, or unescaped if defining the `THREAD_LOCAL` shell variable prior to invoking `make`.)
 
+
+Additionally, you may set number of environment variables to futher customize the build, such as:
+
+ - `CC`: The C compiler to use (default: `gcc`).
+
+ - `CPPFLAGS`: C preprocessor flags, such as externally defined compiler constants.
+ 
+ - `CFLAGS`: Flags to pass onto the C compiler (default: `-g -Os -Wall`). Note, `-Iinclude` will be added 
+   automatically.
+   
+ - `CSTANDARD`: Optionally, specify the C standard to compile for, e.g. `c99` to compile for the C99 standard. If
+   defined then `-std=$(CSTANDARD)` is added to `CFLAGS` automatically.
+   
+ - `WEXTRA`: If set to 1, `-Wextra` is added to `CFLAGS` automatically.
+   
+ - `LDFLAGS`: Extra linker flags (default is _not set_). Note, `-lm -lxchange` will be added automatically.
+
+ - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
+
 Now you are ready to build the library:
 
 ```bash

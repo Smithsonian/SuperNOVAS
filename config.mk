@@ -22,10 +22,17 @@ CPPFLAGS += -I$(INC)
 
 # Base compiler options (if not defined externally...)
 # -std=c99 may not be supported by some very old compilers...
-CFLAGS ?= -g -Os -Wall -std=c99
+CFLAGS ?= -g -Os -Wall
+
+# Compile for specific C standard
+ifdef CSTANDARD
+  CFLAGS += -std=$(CSTANDARD)
+endif
 
 # Extra warnings (not supported on all compilers)
-#CFLAGS += -Wextra
+ifeq ($(WEXTRA), 1) 
+  CFLAGS += -Wextra
+endif
 
 # Specific Doxygen to use if not the default one
 #DOXYGEN ?= /opt/bin/doxygen
