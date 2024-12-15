@@ -432,6 +432,17 @@ handles both catalog and ephemeris sources).
  make_cat_object(&star, &source);
 ```
 
+Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object()` instead,
+e.g.:
+
+```c
+  object 3c273;
+  
+  // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
+  make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &3c273);
+```
+
+
 #### Specify the observer location
 
 Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
@@ -447,6 +458,7 @@ Next, we define the location where we observe from. Here we can (but don't have 
 
 Similarly, you can also specify observers in Earth orbit, in Sun orbit, at the geocenter, or at the Solar-system 
 barycenter.
+
 
 #### Specify the time of observation
 
@@ -482,6 +494,7 @@ or, for the best precision we may do the same with an integer / fractional split
   
  novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &obs_time);
 ```
+
 
 #### Set up the observing frame
 
@@ -557,6 +570,7 @@ elevation coordinates at the observing location, using the `novas_standard_refra
 suitable refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data 
 embedded in the frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate 
 unrefracted elevation angles.
+
 
 <a name="solsys-example"></a>
 ### Calculating positions for a Solar-system source
