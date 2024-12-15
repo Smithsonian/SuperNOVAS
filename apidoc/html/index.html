@@ -334,10 +334,10 @@ Specify the object of interest</h4>
 <div class="line"><a class="code hl_function" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object</a>(&amp;star, &amp;source);</div>
 <div class="ttc" id="asuper_8c_html_ab9b7a622486f2904615ceed1ba94cd8f"><div class="ttname"><a href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object</a></div><div class="ttdeci">int make_cat_object(const cat_entry *star, object *source)</div><div class="ttdef"><b>Definition</b> super.c:1002</div></div>
 </div><!-- fragment --><p>Alternatively, for high-_z_ sources you might use <code><a class="el" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3">make_redshifted_cat_entry()</a></code> or <code><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a></code> instead, e.g.:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">object</span> 3c273;</div>
+<div class="fragment"><div class="line"><span class="keywordtype">object</span> quasar;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339</span></div>
-<div class="line"><a class="code hl_function" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a>(<span class="stringliteral">&quot;3c273&quot;</span>, 12.4851944, 2.0523883, 0.158339, &amp;3c273);</div>
+<div class="line"><a class="code hl_function" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a>(<span class="stringliteral">&quot;3c273&quot;</span>, 12.4851944, 2.0523883, 0.158339, &amp;quasar);</div>
 <div class="ttc" id="asuper_8c_html_ae579a49d84696a913fd0d9f348bb5b11"><div class="ttname"><a href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a></div><div class="ttdeci">int make_redshifted_object(const char *name, double ra, double dec, double z, object *source)</div><div class="ttdef"><b>Definition</b> super.c:1128</div></div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md51"></a>
 Specify the observer location</h4>

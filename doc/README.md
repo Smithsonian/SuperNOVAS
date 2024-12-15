@@ -436,10 +436,10 @@ Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` 
 e.g.:
 
 ```c
-  object 3c273;
+  object quasar;
   
   // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
-  make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &3c273);
+  make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &quasar);
 ```
 
 
