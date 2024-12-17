@@ -385,6 +385,9 @@ In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively s
 for positions and for velocities, in any reference system, is determined by the `observer` location, while aberration
 and gravitational deflection is included for apparent places only (as seen from the observer location). 
 
+Older catalogs, such as B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) coordinates for the B1950
+and B1900 epochs, respectively.
+
 TIRS (Intermediate Terrestrial Reference System) is not explicitly referenced in SuperNOVAS. But it can be thought 
 of as a special case of ITRS (International Terrestrial Reference System) with DUT1 (= UT1-UTC), the polar offsets 
 (_dx_, _dy_) all set to zero.
