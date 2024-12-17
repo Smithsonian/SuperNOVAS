@@ -1665,36 +1665,39 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 #  include <stdio.h>
 #  include <math.h>
 
-#define _CONSTS_
+#ifndef _CONSTS_
+#  define _CONSTS_
 
-#define HALF_PI             (0.5 * M_PI)
-#define ERAD_AU             (ERAD/AU)
+#  define HALF_PI             (0.5 * M_PI)
+#  define ERAD_AU             (ERAD/AU)
 
-#define XYZ_VECTOR_SIZE     (3 * sizeof(double))
+#  define XYZ_VECTOR_SIZE     (3 * sizeof(double))
 
 // Use shorthand definitions for our constants
-#define JD_J2000            NOVAS_JD_J2000
-#define C                   NOVAS_C
-#define AU_SEC              NOVAS_AU_SEC
-#define C_AUDAY             NOVAS_C_AU_PER_DAY
-#define AU                  NOVAS_AU
-#define AU_KM               NOVAS_AU_KM
-#define GS                  NOVAS_G_SUN
-#define GE                  NOVAS_G_EARTH
-#define ERAD                NOVAS_EARTH_RADIUS
-#define EF                  NOVAS_EARTH_FLATTENING
-#define ANGVEL              NOVAS_EARTH_ANGVEL
+#  define JD_J2000            NOVAS_JD_J2000
+#  define C                   NOVAS_C
+#  define AU_SEC              NOVAS_AU_SEC
+#  define C_AUDAY             NOVAS_C_AU_PER_DAY
+#  define AU                  NOVAS_AU
+#  define AU_KM               NOVAS_AU_KM
+#  define GS                  NOVAS_G_SUN
+#  define GE                  NOVAS_G_EARTH
+#  define ERAD                NOVAS_EARTH_RADIUS
+#  define EF                  NOVAS_EARTH_FLATTENING
+#  define ANGVEL              NOVAS_EARTH_ANGVEL
 
 // Various locally used physical units
-#define DAY                 NOVAS_DAY
-#define DAY_HOURS           24.0
-#define DEG360              360.0
-#define JULIAN_YEAR_DAYS    365.25
-#define JULIAN_CENTURY_DAYS 36525.0
-#define ARCSEC              NOVAS_ARCSEC
-#define DEGREE              NOVAS_DEGREE
-#define HOURANGLE           NOVAS_HOURANGLE
-#define MAS                 (1e-3 * ASEC2RAD)
+#  define DAY                 NOVAS_DAY
+#  define DAY_HOURS           24.0
+#  define DEG360              360.0
+#  define JULIAN_YEAR_DAYS    365.25
+#  define JULIAN_CENTURY_DAYS 36525.0
+#  define ARCSEC              NOVAS_ARCSEC
+#  define DEGREE              NOVAS_DEGREE
+#  define HOURANGLE           NOVAS_HOURANGLE
+#  define MAS                 (1e-3 * ASEC2RAD)
+
+#endif /* _CONSTS_ */
 
 // On some older platform NAN may not be defined, so define it here if need be
 #ifndef NAN
