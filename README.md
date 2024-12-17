@@ -75,7 +75,7 @@ to change existing (functional) code you may have written for NOVAS C.
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
  
-SuperNOVAS is maintained by [Attila Kovacs](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
+SuperNOVAS is maintained by [Attila Kovács](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
 &amp; Smithsonian, and it is available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) 
 repository on GitHub.
 
@@ -369,6 +369,11 @@ switch between different planet and ephemeris calculator functions at will, duri
  - [Calculating positions for a Solar-system source](#solsys-example)
 
 
+SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
+astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
+NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
+showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
+
 <a name="methodologies"></a>
 ### Note on alternative methodologies
 
@@ -393,17 +398,22 @@ See the various enums and constants defined in `novas.h`, as well as the descrip
 on how they are appropriate for the old and new methodologies respectively. Figure 1 also shows the relation of the
 various old and new coordinate systems and the (Super)NOVAS functions for converting among them.
 
-In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS. The origin for
-positions and for velocities, in any reference system, is determined by the `observer` location.
+In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin 
+for positions and for velocities, in any reference system, is determined by the `observer` location, while aberration
+and gravitational deflection is included for apparent places only (as seen from the observer location). 
+
+TIRS (Intermediate Terrestrial Reference System) is not explicitly referenced in SuperNOVAS. But it can be thought 
+of as a special case of ITRS (International Terrestrial Reference System) with DUT1 (= UT1-UTC), the polar offsets 
+(_dx_, _dy_) all set to zero.
+
+WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
+10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
+coordinates are effectively assumed as ITRS, whether explicitly or implicitly. There is nothing WGS84-specific in the 
+implementation.
 
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
 | __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only.              |
-
-SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
-astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
-NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
-showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
 
 
 <a name="sidereal-example"></a>
