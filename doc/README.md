@@ -352,6 +352,11 @@ switch between different planet and ephemeris calculator functions at will, duri
  - [Calculating positions for a Solar-system source](#solsys-example)
 
 
+SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
+astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
+NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
+showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
+
 <a name="methodologies"></a>
 ### Note on alternative methodologies
 
@@ -382,11 +387,6 @@ positions and for velocities, in any reference system, is determined by the `obs
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
 | __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only.              |
-
-SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
-astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
-NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
-showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
 
 
 <a name="sidereal-example"></a>
