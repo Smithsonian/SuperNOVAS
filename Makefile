@@ -236,6 +236,9 @@ ifneq ($(wildcard apidoc/html/search/*),)
 	install -d $(DESTDIR)$(htmldir)/search
 	$(INSTALL_DATA) -D apidoc/html/search/* $(DESTDIR)$(htmldir)/search/
 	$(INSTALL_DATA) -D apidoc/html/*.* $(DESTDIR)$(htmldir)/
+	@echo "installing images to $(DESTDIR)$(htmldir)/resources"
+	install -d $(DESTDIR)$(htmldir)/resources
+	$(INSTALL_DATA) -D resources/SuperNOVAS-systems.png $(DESTDIR)$(htmldir)/resources/
 	@echo "installing Doxygen tag file to $(DESTDIR)$(docdir)"
 	install -d $(DESTDIR)$(docdir)
 	$(INSTALL_DATA) apidoc/supernovas.tag $(DESTDIR)$(docdir)/supernovas.tag

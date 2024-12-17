@@ -4506,6 +4506,9 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
  * @sa tt2tdb()
  * @sa cio_basis()
  * @sa NOVAS_TOD
+ * @sa NOVAS_JD_J2000
+ * @sa NOVAS_JD_B1950
+ * @sa NOVAS_JD_B1900
  */
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
   static THREAD_LOCAL double t_last;
