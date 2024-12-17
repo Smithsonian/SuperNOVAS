@@ -96,6 +96,9 @@ Release candidate for the next feature release, expected around 1 February 2025.
  
  - Added missing error tracing in `nutation()`.
  
+ - Added `README.md` Figure 1, to clarify relation of coordinate systems and (Super)NOVAS function to convert vectors
+   among them.
+ 
    
 ### Changed
 
@@ -110,6 +113,10 @@ Release candidate for the next feature release, expected around 1 February 2025.
    target), in closer conformance to GNU Makefile standards.
    
  - Added `-g` to default `CFLAGS` as a matter of GNU best practice.
+ 
+ - Various small tweaks to Makefiles.
+ 
+ - Updated `README.md` documentation.
  
    
    

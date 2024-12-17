@@ -405,8 +405,8 @@ and gravitational deflection is included for apparent places only (as seen from 
 Older catalogs, such as B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) coordinates for the B1950
 and B1900 epochs, respectively.
 
-TIRS (Intermediate Terrestrial Reference System) is not explicitly referenced in SuperNOVAS. But it can be thought 
-of as a special case of ITRS (International Terrestrial Reference System) with DUT1 (= UT1-UTC), the polar offsets 
+TIRS (Terrestrial Intermediate Reference System) is not explicitly referenced in SuperNOVAS. But it can be thought 
+of as a special case of ITRS (International Terrestrial Reference System) with DUT1 (= UT1-UTC), and the polar offsets 
 (_dx_, _dy_) all set to zero.
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
@@ -453,10 +453,10 @@ adjustment to convert from J2000 to ICRS coordinates.
 
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
 start.) Once the catalog entry is defined in ICRS, you can proceed wrapping it in a generic source structure (which
-handles both catalog and ephemeris sources).
+handles both catalog and Solar-system sources).
 
 ```c
- object source;   // Common structure for a sidereal or an ephemeris source
+ object source;   // Common structure for a sidereal or an Solar-system source
   
  // Wrap it in a generic source data structure
  make_cat_object(&star, &source);
@@ -1122,7 +1122,8 @@ before that level of accuracy is reached.
    major Solar system bodies).
 
  - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
-   to radial velocity for light originating at the surface, and observed near Earth or at a large distance away.
+   to radial velocity for light originating at the surface, and observed near Earth or at a large distance away from 
+   the source.
 
 -----------------------------------------------------------------------------
 
