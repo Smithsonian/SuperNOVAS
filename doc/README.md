@@ -384,8 +384,9 @@ various old and new coordinate systems and the (Super)NOVAS functions for conver
 In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin 
 for positions and for velocities, in any reference system, is determined by the `observer` location. 
 
-TIRS is not explicitly referenced in SuperNOVAS. But it can be thought of as a special case of ITRS with DUT1 
-(= UT1-UTC), the polar offsets (_dx_, _dy_) all set to zero.
+TIRS (the Intermediate Terrestrial Reference System) is not explicitly referenced in SuperNOVAS. But it can be thought 
+of as a special case of ITRS (the International Terrestrial Reference System) with DUT1 (= UT1-UTC), the polar offsets 
+(_dx_, _dy_) all set to zero.
 
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
