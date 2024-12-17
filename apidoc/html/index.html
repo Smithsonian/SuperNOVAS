@@ -294,7 +294,8 @@ Note on alternative methodologies</h3>
 <td class="markdownTableBodyNone">Fixed Earth System   </td><td class="markdownTableBodyNone">WGS84   </td><td class="markdownTableBodyNone">International Terrestrial Reference System (ITRS)   </td></tr>
 </table>
 <p>See the various enums and constants defined in <code><a class="el" href="novas_8h.html">novas.h</a></code>, as well as the descriptions on the various NOVAS routines on how they are appropriate for the old and new methodologies respectively. Figure 1 also shows the relation of the various old and new coordinate systems and the (Super)NOVAS functions for converting among them.</p>
-<p>In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin for positions and for velocities, in any reference system, is determined by the <code>observer</code> location. TIRS is not explicitly referenced in SuperNOVAS. But it can be thought of as a special case of ITRS with DUT1 (= UT1-UTC), the polar offsets (<em>dx</em>, <em>dy</em>) all set to zero.</p>
+<p>In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin for positions and for velocities, in any reference system, is determined by the <code>observer</code> location.</p>
+<p>TIRS is not explicitly referenced in SuperNOVAS. But it can be thought of as a special case of ITRS with DUT1 (= UT1-UTC), the polar offsets (<em>dx</em>, <em>dy</em>) all set to zero.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter"><img src="resources/SuperNOVAS-systems.png" alt="SuperNOVAS coordinate systems and conversions" class="inline"/>    </th></tr>
