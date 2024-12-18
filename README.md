@@ -49,7 +49,6 @@ This document has been updated for the `v1.2` and later releases.
  - [Runtime debug support](#debug-support)
  - [Release schedule](#release-schedule)
 
-
 -----------------------------------------------------------------------------
 
 <a name="introduction"></a>
