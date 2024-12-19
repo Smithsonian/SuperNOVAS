@@ -250,7 +250,7 @@ endif
 install-examples:
 	@echo "installing examples to $(DESTDIR)$(docdir)"
 	install -d $(DESTDIR)$(docdir)
-	$(INSTALL_DATA) -D examples/* $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) -D examples/* $(DESTDIR)$(docdir)/
 
 
 # Some standard GNU targets, that should always exist...
