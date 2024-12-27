@@ -28,7 +28,7 @@ $(LIB)/%.a:
 
 # Create sub-directories for build targets
 $(OBJ) $(LIB) $(BIN) apidoc:
-	mkdir $@
+	mkdir -p $@
 
 # Remove intermediate files locally
 .PHONY: clean-local
