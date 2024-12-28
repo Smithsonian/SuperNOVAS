@@ -56,8 +56,8 @@ cov.info:
 .PHONY: coverage
 
 coverage: $(COVFILES)
-	make clean-test
-	make cov
+	$(MAKE) clean-test
+	$(MAKE) cov
 
 data:
 	mkdir data
@@ -84,11 +84,11 @@ bad-cio-data:
 
 .PRECIOUS: %.gcno %.gcda
 %.gcno %.gcda: ../src/%.c
-	make clean
-	make run
+	$(MAKE) clean
+	$(MAKE) run
 
 ../cio_ra.bin:
-	make -C .. cio_ra.bin
+	$(MAKE) -C .. cio_ra.bin
 
 test-%: test-%.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)

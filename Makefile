@@ -90,7 +90,7 @@ all: distro static test coverage analyze
 # Run regression tests
 .PHONY: test
 test:
-	make -C test run
+	$(MAKE) -C test run
 
 # Perform checks (test + analyze)
 .PHONY: check
@@ -99,13 +99,13 @@ check: test analyze
 # Measure test coverage (on test set of files only)
 .PHONY: coverage
 coverage:
-	make -C test coverage
+	$(MAKE) -C test coverage
 
 # Remove intermediates
 .PHONY: clean
 clean:
 	rm -f $(OBJECTS) README-orig.md $(BIN)/cio_file gmon.out
-	make -C test clean
+	$(MAKE) -C test clean
 
 # Remove all generated files
 .PHONY: distclean
