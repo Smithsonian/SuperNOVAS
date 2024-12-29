@@ -404,9 +404,9 @@ and gravitational deflection is included for apparent places only (as seen from 
 Older catalogs, such as B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) coordinates for the B1950
 and B1900 epochs, respectively.
 
-TIRS (Terrestrial Intermediate Reference System) is not explicitly referenced in SuperNOVAS. But it can be thought 
-of as a special case of ITRS (International Terrestrial Reference System) with DUT1 (= UT1-UTC), and the polar offsets 
-(_dx_, _dy_) all set to zero.
+TIRS (Terrestrial Intermediate Reference System) and its older equivalent PEF (Pseudo-Earth-Fixed) are not explicitly 
+referenced in SuperNOVAS. But they can be thought of as a special case of ITRS (International Terrestrial Reference 
+System) or TOD (True of Date) with DUT1 (= UT1-UTC), and the polar offsets (_dx_, _dy_) all set to zero.
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
