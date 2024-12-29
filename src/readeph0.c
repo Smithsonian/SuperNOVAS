@@ -28,17 +28,19 @@ double * readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
 
   if(!name || !error) {
     novas_set_errno(EINVAL, fn, "NULL parameter: name=%p, error=%p", name, error);
+    if(error) *error = -1;
     return NULL;
   }
 
   if(isnanf(jd_tdb)) {
-    novas_set_errno(-1, EINVAL, fn, "NaN jd_tdb");
+    novas_set_errno(EINVAL, fn, "NaN jd_tdb");
     *error = -1;
     return NULL;
   }
 
   pv = (double*) calloc(6, sizeof(double));
-  *error = 9;
+  if(pv) *error = 0;
+  else *error = -1;
 
   return pv;
 }

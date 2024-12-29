@@ -16,6 +16,9 @@ Release candidate for the next feature release, expected around 1 February 2025.
 
  - Fixes to GCC version checking for macros.
 
+ - Fixed dummy `readeph()` implementation in `readeph0.c`, and `DEFAULT_READEPH` in `config.mk`. `readeph0.c` is not
+   linked by default, and was not linked in prior releases either.
+
 
 ### Added
 
@@ -113,6 +116,8 @@ Release candidate for the next feature release, expected around 1 February 2025.
    target), in closer conformance to GNU Makefile standards.
    
  - Added `-g` to default `CFLAGS` as a matter of GNU best practice.
+ 
+ - Static library is now named `ibsupernovas.a`, which is symlinked to `libnovas.a` for back compatibility.
  
  - Various small tweaks to Makefiles.
  

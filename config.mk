@@ -74,7 +74,7 @@ endif
 # Compile library with a default readeph() implementation for solsys1.c, which 
 # will be used only if the application does not define another implementation 
 # via calls to the to set_ephem_reader() function.
-DEFAULT_READEPH ?= $(SRC)/readeph0.c
+#DEFAULT_READEPH ?= $(SRC)/readeph0.c
 
 
 # Whether to build into the library planet_jplint() routines provided in 
@@ -190,7 +190,7 @@ ifeq ($(BUILTIN_SOLSYS_EPHEM), 1)
   SOURCES += $(SRC)/solsys-ephem.c
 endif
 
-ifdef (DEFAULT_READEPH) 
+ifdef DEFAULT_READEPH
   SOURCES += $(DEFAULT_READEPH)
   CPPFLAGS += -DDEFAULT_READEPH=1
 endif

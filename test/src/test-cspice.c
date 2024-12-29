@@ -65,7 +65,6 @@ static int test_cspice() {
   double jd = NOVAS_JD_J2000;
   double jd2[2] = { jd, 0.0 };
 
-  char filename[1024];
   object earth, mars;
 
   make_planet(NOVAS_EARTH, &earth);
@@ -91,7 +90,6 @@ static int test_cspice_planet() {
   double jd = NOVAS_JD_J2000;
   double jd2[2] = { jd, 0.0 };
 
-  char filename[1024];
   object ssb, sun, earth, moon, mars, phobos;
 
   make_planet(NOVAS_SSB, &ssb);
