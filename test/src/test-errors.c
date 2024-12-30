@@ -279,8 +279,10 @@ static int test_ephemeris() {
   if(check("ephemeris:pos+vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, NULL, NULL))) n++;
   if(check("ephemeris:pos=vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, p))) n++;
   if(check("ephemeris:origin", 1, ephemeris(tdb, &ceres, -1, NOVAS_FULL_ACCURACY, p, v))) n++;
-  if(check("ephemeris:noephem", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
 
+#ifndef DEFAULT_READEPH
+  if(check("ephemeris:noephem", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, v))) n++;
+#endif
 
   return n;
 }
@@ -1254,9 +1256,11 @@ static int test_geom_posvel() {
   frame.accuracy = 2;
   if(check("geom_posvel:frame:accuracy:2", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
 
+#ifndef DEFAULT_READEPH
   frame.accuracy = NOVAS_REDUCED_ACCURACY;
   make_ephem_object("blah", 111111, &o);
   if(check("geom_posvel:ephem_object", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, vel))) n++;
+#endif
 
   return n;
 }

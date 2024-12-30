@@ -207,8 +207,8 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  * statically compiled readeph() implementation, or else a dynamically defined one via
  * ephemeris_set_reader().
  *
- * You can set the built-in implementation for the library by setting the DEFAULT_READEPH
- * variable in the Makefile.
+ * You can set the built-in implementation for the library at build time by setting the
+ * DEFAULT_READEPH variable in the `config.mk`.
  *
  * @deprecated This old ephemeris reader is prone to memory leaks, and lacks some useful
  *             functionality. Users are strongly encouraged to use the new
@@ -216,8 +216,10 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  *             implementations at runtime.
  *
  * @param mp            The ID number of the solar-system body for which the position are
- *                      desired.
- * @param name          The name of the solar-system body (usually upper-case)
+ *                      desired. An actual implementation might use this and/or the name to
+ *                      identify the object.
+ * @param name          The name of the solar-system body (usually upper-case). An actual
+ *                      implementation might use this and/or `mp` to identify the object.
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date for which to
  *                      find the position and velocity.
  * @param[out] error    Pointer to integer to populate with the error status: 0 if successful,
@@ -230,6 +232,7 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  *                      is responsible for calling free() on the returned value when it is no
  *                      longer needed.
  *
+ * @sa set_ephem_provider()
  * @sa novas_ephem_provider
  * @sa ephemeris()
  * @sa NOVAS_EPHEM_OBJECT
