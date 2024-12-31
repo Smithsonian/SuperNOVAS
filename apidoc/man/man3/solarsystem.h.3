@@ -926,7 +926,7 @@ References \fBjplihp_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fB
 .SS "double * readeph (int mp, const char * name, double jd_tdb, int * error)"
 Provides a default ephemeris implementation to handle position and velocity calculations for minor planets, which are not handled by the \fBsolarsystem()\fP type calls\&. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled \fBreadeph()\fP implementation, or else a dynamically defined one via ephemeris_set_reader()\&.
 .PP
-You can set the built-in implementation for the library by setting the DEFAULT_READEPH variable in the Makefile\&.
+You can set the built-in implementation for the library at build time by setting the DEFAULT_READEPH variable in the \fCconfig\&.mk\fP\&.
 .PP
 \fBDeprecated\fP
 .RS 4
@@ -936,9 +936,9 @@ This old ephemeris reader is prone to memory leaks, and lacks some useful functi
 .PP
 \fBParameters\fP
 .RS 4
-\fImp\fP The ID number of the solar-system body for which the position are desired\&. 
+\fImp\fP The ID number of the solar-system body for which the position are desired\&. An actual implementation might use this and/or the name to identify the object\&. 
 .br
-\fIname\fP The name of the solar-system body (usually upper-case) 
+\fIname\fP The name of the solar-system body (usually upper-case)\&. An actual implementation might use this and/or \fCmp\fP to identify the object\&. 
 .br
 \fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date for which to find the position and velocity\&. 
 .br
@@ -952,6 +952,8 @@ This old ephemeris reader is prone to memory leaks, and lacks some useful functi
 .PP
 \fBSee also\fP
 .RS 4
+\fBset_ephem_provider()\fP 
+.PP
 \fBnovas_ephem_provider\fP 
 .PP
 \fBephemeris()\fP 

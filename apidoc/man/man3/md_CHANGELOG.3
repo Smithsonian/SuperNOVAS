@@ -13,6 +13,8 @@ Release candidate for the next feature release, expected around 1 February 2025\
 .SS "Fixed"
 .IP "\(bu" 2
 Fixes to GCC version checking for macros\&.
+.IP "\(bu" 2
+Fixed dummy \fC\fBreadeph()\fP\fP implementation in \fCreadeph0\&.c\fP, and the use of \fCDEFAULT_READEPH\fP in \fCconfig\&.mk\fP\&. \fCreadeph0\&.c\fP is not linked by default, and was not linked in prior releases either\&.
 .PP
 .SS "Added"
 .IP "\(bu" 2
@@ -65,6 +67,10 @@ Added \fCREADME\&.md\fP Figure 1, to clarify relation of coordinate systems and 
 \fCmake check\fP now runs both static analysis by cppcheck (new \fCanalysis\fP target) and regression tests (\fCtest\fP target), in closer conformance to GNU Makefile standards\&.
 .IP "\(bu" 2
 Added \fC-g\fP to default \fCCFLAGS\fP as a matter of GNU best practice\&.
+.IP "\(bu" 2
+Static library is now named \fCibsupernovas\&.a\fP, which is symlinked to \fClibnovas\&.a\fP for back compatibility\&.
+.IP "\(bu" 2
+\fCreadeph0\&.c\fP moved to \fCexamples/\fP\&. It's a dummy legacy NOVAS C implementation that is not really needed in SuperNOVAS\&.
 .IP "\(bu" 2
 Various small tweaks to Makefiles\&.
 .IP "\(bu" 2
