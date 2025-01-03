@@ -2314,9 +2314,9 @@ ON_SURFACE_INIT_LOC </dd></dl>
 <dd>
 WOBBLE_ITRS_TO_TIRS </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9" name="aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9"></a>WOBBLE_ITRS_TO_PEF&#160;</td><td class="fielddoc"><p>use for <a class="el" href="novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a> to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF). </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9" name="aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9"></a>WOBBLE_ITRS_TO_PEF&#160;</td><td class="fielddoc"><p>use for <a class="el" href="novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a> to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF) / TIRS. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10" name="aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10"></a>WOBBLE_PEF_TO_ITRS&#160;</td><td class="fielddoc"><p>use for <a class="el" href="novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a> to change from Pseudo Earth Fixed (PEF) to ITRS (actual rotating Earth). (You can use any non-zero value as well.) </p>
+<tr><td class="fieldname"><a id="aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10" name="aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10"></a>WOBBLE_PEF_TO_ITRS&#160;</td><td class="fielddoc"><p>use for <a class="el" href="novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a> to change from Pseudo Earth Fixed (PEF) / TIRS to ITRS (actual rotating Earth). </p>
 </td></tr>
 </table>
 
@@ -12743,7 +12743,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin (TIO). The ITRS vector is thereby transformed to the terrestrial intermediate system, based on the true (rotational) equator and TIO. Because the true equator is the plane orthogonal to the direction of the Celestial Intermediate Pole (CIP), the components of the output vector are referred to z and x axes toward the CIP and TIO, respectively.</p>
+<p>Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin (TIO). The ITRS vector is thereby transformed to the terrestrial intermediate reference system (TIRS) or Pseudo Earth Fixed (PEF), based on the true (rotational) equator and TIO; or vice versa. Because the true equator is the plane orthogonal to the direction of the Celestial Intermediate Pole (CIP), the components of the output vector are referred to z and x axes toward the CIP and TIO, respectively.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -12753,7 +12753,7 @@ Lambert &amp; Bizouard (2002), Astronomy and Astrophysics 394, 317-321. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">direction</td><td>WOBBLE_ITRS_TO_PEF (0) or WOBBLE_PEF_TO_ITRS (1; or nonzero) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">direction</td><td>WOBBLE_ITRS_TO_PEF (0) or WOBBLE_PEF_TO_ITRS (nonzero) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[arcsec] Conventionally-defined X coordinate of Celestial Intermediate Pole with respect to ITRS pole, in arcseconds. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">yp</td><td>[arcsec] Conventionally-defined Y coordinate of Celestial Intermediate Pole with respect to ITRS pole, in arcseconds. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Input position vector, geocentric equatorial rectangular coordinates, in the original system defined by 'direction' </td></tr>
