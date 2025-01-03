@@ -2779,10 +2779,11 @@ int spin(double angle, const double *in, double *out) {
 /**
  * Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also
  * corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin
- * (TIO).  The ITRS vector is thereby transformed to the terrestrial intermediate system,
- * based on the true (rotational) equator and TIO.  Because the true equator is the plane
- * orthogonal to the direction of the Celestial Intermediate Pole (CIP), the components of
- * the output vector are referred to z and x axes toward the CIP and TIO, respectively.
+ * (TIO).  The ITRS vector is thereby transformed to the terrestrial intermediate reference
+ * system (TIRS) or Pseudo Earth Fixed (PEF), based on the true (rotational) equator and TIO;
+ * or vice versa.  Because the true equator is the plane orthogonal to the direction of the
+ * Celestial Intermediate Pole (CIP), the components of the output vector are referred to z
+ * and x axes toward the CIP and TIO, respectively.
  *
  * REFERENCES:
  * <ol>
@@ -2791,7 +2792,7 @@ int spin(double angle, const double *in, double *out) {
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
- * @param direction     WOBBLE_ITRS_TO_PEF (0) or WOBBLE_PEF_TO_ITRS (1; or nonzero)
+ * @param direction     WOBBLE_ITRS_TO_PEF (0) or WOBBLE_PEF_TO_ITRS (nonzero)
  * @param xp            [arcsec] Conventionally-defined X coordinate of Celestial Intermediate
  *                      Pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of Celestial Intermediate

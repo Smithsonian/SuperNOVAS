@@ -612,11 +612,12 @@ enum novas_cio_location_type {
  * @sa WOBBLE_ITRS_TO_TIRS
  */
 enum novas_wobble_direction {
-  /// use for wobble() to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF).
+  /// use for wobble() to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF) /
+  /// TIRS.
   WOBBLE_ITRS_TO_PEF = 0,
 
-  /// use for wobble() to change from Pseudo Earth Fixed (PEF) to ITRS (actual rotating Earth).
-  /// (You can use any non-zero value as well.)
+  /// use for wobble() to change from Pseudo Earth Fixed (PEF) / TIRS to ITRS (actual rotating
+  /// Earth).
   WOBBLE_PEF_TO_ITRS
 };
 
