@@ -378,7 +378,8 @@ terms differently:
  
 See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
 on how they are appropriate for the old and new methodologies respectively. Figure 1 also shows the relation of the
-various old and new coordinate systems and the (Super)NOVAS functions for converting among them.
+various old and new coordinate systems and the (Super)NOVAS functions for converting position / velocity vectors among 
+them.
 
 In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin 
 for positions and for velocities, in any reference system, is determined by the `observer` location, while aberration
