@@ -395,7 +395,8 @@ terms differently:
  
 See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
 on how they are appropriate for the old and new methodologies respectively. Figure 1 also shows the relation of the
-various old and new coordinate systems and the (Super)NOVAS functions for converting among them.
+various old and new coordinate systems and the (Super)NOVAS functions for converting position / velocity vectors among 
+them.
 
 In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin 
 for positions and for velocities, in any reference system, is determined by the `observer` location, while aberration
@@ -406,7 +407,7 @@ and B1900 epochs, respectively.
 
 TIRS (Terrestrial Intermediate Reference System) and its older equivalent PEF (Pseudo-Earth-Fixed) are not explicitly 
 referenced in SuperNOVAS. But they can be thought of as a special case of ITRS (International Terrestrial Reference 
-System) with DUT1 (= UT1-UTC), and the polar offsets (_dx_, _dy_) all set to zero.
+System) with zero polar offsets (_dx_, _dy_).
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
