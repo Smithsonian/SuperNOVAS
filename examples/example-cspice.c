@@ -5,12 +5,22 @@
  * @author Attila Kovacs
  *
  *  Example file for using the SuperNOVAS C/C++ library for determining positions for
- *  nearby (non-high-z) sidereal sources, such as a star.
+ *  Solary-system sources, with the NAIF CSPICE toolkit providing access to ephemeris
+ *  files.
  *
- *  Link with
+ *  You will need access to the NAIF CSPICE library (unversioned `libcspice.so` or else
+ *  `libcspice.a`) and C headers (`cspice/*.h`), and the SuperNOVAS `libsolsys-cspice.so`
+ *  (or `libsoslsys-cspice.a`) module.
+ *
+ *  To compile CSPICE as a shared (.so) library, you may want to check out the GitHub
+ *  repository:
+ *
+ *   - https://github.com/Smithsonian/cspice-sharedlib
+ *
+ *  Link with:
  *
  *  ```
- *   -lsupernovas
+ *   -lsupernovas -lsolsys-cspice -lcspice
  *  ```
  */
 
@@ -18,7 +28,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <novas.h>      ///< SuperNOVAS functions and definitions
+#include <novas.h>            ///< SuperNOVAS functions and definitions
+#include <novas-cspice.h>     ///< CSPICE adapter functions to SuperNOVAS
 
 
 // Below are some Earth orientation values. Here we define them as constants, but they may
@@ -33,7 +44,7 @@
 int main() {
   // SuperNOVAS aariables used for the calculations ------------------------->
   cat_entry star = CAT_ENTRY_INIT;  // catalog information about a sidereal source
-  object source;                    // a celestial object: sidereal, planet, ephemeris or orbital source
+  object source;                    // observed source
   observer obs;                     // observer location
   novas_timespec obs_time;          // astrometric time of observation
   novas_frame obs_frame;            // observing frame defined for observing time and location
@@ -52,35 +63,45 @@ int main() {
 
 
   // -------------------------------------------------------------------------
-  // Define a sidereal source
+  // We'll use the NAIF CSPICE Toolkit to provide ephemeris data
 
-  // Let's assume we have B1950 (FK4) coordinates...
-  // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year,
-  // parallax 5.89 mas, radial velocity -3.4 km/s.
-  if(make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
-    fprintf(stderr, "ERROR! defining cat_entry.\n");
+  // Open one or more ephemeris files to use...'
+  // E.g. the DE440 (short-term) ephemeris data from JPL.
+  if(cspice_add_kernel("path/to/de440s.bsp") != 0) {
+    fprintf(stderr, "ERROR! could not open ephemeris data\n");
     return 1;
   }
 
-  // First change the catalog coordinates (in place) to the J2000 (FK5) system...
-  if(transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star) != 0) {
-    fprintf(stderr, "ERROR! converting B1950 catalog coordinates to J2000.\n");
-    return 1;
-  }
+  // ... You can open multiple NAIF kernels
+  // E.g. add Jovian satellites...
+  // cspice_add_kernel("path/to/jup365.bsp");
 
-  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
-  if(transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &star, 0.0, "ICRS", &star) != 0) {
-    fprintf(stderr, "ERROR! converting J2000 catalog coordinates to ICRS.\n");
-    return 1;
-  }
+  // Now we can use the loaded ephemeris files for Solar-system objects.
+  // (major planets and minor bodies alike).
+  novas_use_cspice();
+
+  // And, since we have an ephemeris provider for major planets, we can unlock
+  // the ultimate accuracy of SuperNOVAS.
+  accuracy = NOVAS_FULL_ACCURACY;      // sub-uas precision
 
 
   // -------------------------------------------------------------------------
-  // Wrap the sidereal souce into an object structure...
-  if(make_cat_object(&star, &source) != 0) {
-    fprintf(stderr, "ERROR! configuring observed object\n");
+  // Define a Solar-system source
+
+  // To define a major planet (or Sun, Moon, SSB, or EMB):
+  if(make_planet(NOVAS_MARS, &source) != 0) {
+    fprintf(stderr, "ERROR! defining planet.\n");
     return 1;
   }
+
+  // ... Or, to define a minor body, such as an asteroid or satellite
+  // with a name and NAIF ID.
+  /*
+  if(make_ephem_object("Io", 501, &source) != 0) {
+    fprintf(stderr, "ERROR! defining ephemeris body.\n");
+    return 1;
+  }
+  */
 
 
   // -------------------------------------------------------------------------
@@ -115,26 +136,6 @@ int main() {
     return 1;
   }
   */
-
-
-  // -------------------------------------------------------------------------
-  // You might want to set a provider for precise planet positions so we might
-  // calculate Earth, Sun and major planet positions accurately. If an planet
-  // provider is configured, we can unlock the ultimate (sub-uas) accuracy of
-  // SuperNOVAS.
-  //
-  // There are many ways to set a provider of planet positions. For example,
-  // you may use CALCEPH:
-  //
-  // t_calcephbin *planets = calceph_open("path/to/de440s.bsp");
-  // novas_use_calceph(planets);
-  //
-  // accuracy = NOVAS_FULL_ACCURACY;      // sub-uas precision
-
-  // Without a planet provider, we are stuck with reduced (mas) precisions
-  // only...
-  accuracy = NOVAS_REDUCED_ACCURACY;      // mas-level precision, typically
-
 
   // -------------------------------------------------------------------------
   // Initialize the observing frame with the given observing and Earth

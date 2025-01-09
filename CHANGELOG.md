@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.2.0-rc5] - 2025-01-01
+## [Unreleased]
 
 Release candidate for the next feature release, expected around 1 February 2025.
 
@@ -80,6 +80,9 @@ Release candidate for the next feature release, expected around 1 February 2025.
    
  - #98: Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
    convenience.
+   
+ - #106: New example files under `examples/` demonstrating the recommended approach for using SuperNOVAS to calculate
+   positions for various types of object.
  
  - Added various `object` initializer macros in `novas.h` for the major planets, Sun, Moon, and barycenters, e.g. 
    `NOVAS_EARTH_INIT` or `NOVAS_SSB_INIT`. These wrap the parametric `NOVAS_PLANET_INIT(num, name)` macro, and can be
@@ -111,6 +114,9 @@ Release candidate for the next feature release, expected around 1 February 2025.
 
  - #97: Updated `NOVAS_PLANETS`, `NOVAS_PLANET_NAMES_INIT`, and `NOVAS_RMASS_INIT` macros to include the added planet 
    constants.
+   
+ - #106: The old (legacy) NOVAS C example has been removed. Instead a new set of examples are provided, which are 
+   better suited for SuperNOVAS.
    
  - `make check` now runs both static analysis by cppcheck (new `analysis` target) and regression tests (`test` 
    target), in closer conformance to GNU Makefile standards.

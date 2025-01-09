@@ -5,12 +5,17 @@
  * @author Attila Kovacs
  *
  *  Example file for using the SuperNOVAS C/C++ library for determining positions for
- *  nearby (non-high-z) sidereal sources, such as a star.
+ *  Solary-system sources, with the CALCEPH C library providing access to ephemeris
+ *  files.
  *
- *  Link with
+ *  You will need access to the CALCEPH library (unversioned `libcalceph.so` or else
+ *  `libcalceph.a`) and C headers (`calceph.h`), and the SuperNOVAS
+ *  `libsolsys-calceph.so` (or `libsoslsys-calceph.a`) module.
+ *
+ *  Link with:
  *
  *  ```
- *   -lsupernovas
+ *   -lsupernovas -lsolsys-calceph -lcalceph
  *  ```
  */
 
@@ -18,7 +23,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <novas.h>      ///< SuperNOVAS functions and definitions
+#include <novas.h>            ///< SuperNOVAS functions and definitions
+#include <novas-calceph.h>    ///< CALCEPH adapter functions to SuperNOVAS
 
 
 // Below are some Earth orientation values. Here we define them as constants, but they may
@@ -33,7 +39,7 @@
 int main() {
   // SuperNOVAS aariables used for the calculations ------------------------->
   cat_entry star = CAT_ENTRY_INIT;  // catalog information about a sidereal source
-  object source;                    // a celestial object: sidereal, planet, ephemeris or orbital source
+  object source;                    // observed source
   observer obs;                     // observer location
   novas_timespec obs_time;          // astrometric time of observation
   novas_frame obs_frame;            // observing frame defined for observing time and location
@@ -44,43 +50,62 @@ int main() {
   double az, el;                    // calculated azimuth and elevation at observing site
 
   // Intermediate variables we'll use -------------------------------------->
+  t_calcephbin *de440;              // CALCEPH ephemeris binary
   struct timespec unix_time;        // Standard precision UNIX time structure
 
 
   // We'll print debugging messages and error traces...
   novas_debug(NOVAS_DEBUG_ON);
 
+  // -------------------------------------------------------------------------
+  // We'll use the CALCEPH library to provide ephemeris data
+
+  // First open one or more ephemeris files with CALCEPH to use
+  // E.g. the DE440 (short-term) ephemeris data from JPL.
+  de440 = calceph_open("path/to/de440s.bsp");
+  if(!de440) {
+    fprintf(stderr, "ERROR! could not open ephemeris data\n");
+    return 1;
+  }
+
+  // Make de440 provide ephemeris data for the major planets.
+  novas_use_calceph_planets(de440);
+
+  // We could specify to use a calceph ephemeris binary for generic
+  // Solar-systems sources also (including planets too if
+  // novas_use_calceph_planets() is not called separately
+  //
+  // E.g. Jovian satellites:
+  // t_calcephbin jovian = calceph_open("/path/to/jup365.bsp");
+  // novas_use_calceph(jovian);
+
+  // Since we have an ephemeris provider for major planets, we can unlock the
+  // ultimate accuracy of SuperNOVAS.
+  accuracy = NOVAS_FULL_ACCURACY;      // sub-uas precision
+
 
   // -------------------------------------------------------------------------
-  // Define a sidereal source
+  // Define a Solar-system source
 
-  // Let's assume we have B1950 (FK4) coordinates...
-  // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year,
-  // parallax 5.89 mas, radial velocity -3.4 km/s.
-  if(make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
-    fprintf(stderr, "ERROR! defining cat_entry.\n");
+  // To define a major planet (or Sun, Moon, SSB, or EMB):
+  if(make_planet(NOVAS_MARS, &source) != 0) {
+    fprintf(stderr, "ERROR! defining planet.\n");
     return 1;
   }
 
-  // First change the catalog coordinates (in place) to the J2000 (FK5) system...
-  if(transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star) != 0) {
-    fprintf(stderr, "ERROR! converting B1950 catalog coordinates to J2000.\n");
+  // ... Or, to define a minor body, such as an asteroid or satellite
+  // with a name and ID number.
+  /*
+  if(make_ephem_object("Io", 501, &source) != 0) {
+    fprintf(stderr, "ERROR! defining ephemeris body.\n");
     return 1;
   }
+  */
 
-  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
-  if(transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &star, 0.0, "ICRS", &star) != 0) {
-    fprintf(stderr, "ERROR! converting J2000 catalog coordinates to ICRS.\n");
-    return 1;
-  }
-
-
-  // -------------------------------------------------------------------------
-  // Wrap the sidereal souce into an object structure...
-  if(make_cat_object(&star, &source) != 0) {
-    fprintf(stderr, "ERROR! configuring observed object\n");
-    return 1;
-  }
+  /*
+  // If the object uses CALCEPH IDs instead of NAIF, then
+  novas_calceph_use_ids(NOVAS_ID_CALCEPH);
+  */
 
 
   // -------------------------------------------------------------------------
@@ -115,26 +140,6 @@ int main() {
     return 1;
   }
   */
-
-
-  // -------------------------------------------------------------------------
-  // You might want to set a provider for precise planet positions so we might
-  // calculate Earth, Sun and major planet positions accurately. If an planet
-  // provider is configured, we can unlock the ultimate (sub-uas) accuracy of
-  // SuperNOVAS.
-  //
-  // There are many ways to set a provider of planet positions. For example,
-  // you may use CALCEPH:
-  //
-  // t_calcephbin *planets = calceph_open("path/to/de440s.bsp");
-  // novas_use_calceph(planets);
-  //
-  // accuracy = NOVAS_FULL_ACCURACY;      // sub-uas precision
-
-  // Without a planet provider, we are stuck with reduced (mas) precisions
-  // only...
-  accuracy = NOVAS_REDUCED_ACCURACY;      // mas-level precision, typically
-
 
   // -------------------------------------------------------------------------
   // Initialize the observing frame with the given observing and Earth

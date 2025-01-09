@@ -5,13 +5,17 @@
  * @author Attila Kovacs
  *
  *  Example file for using the SuperNOVAS C/C++ library for determining positions for
- *  nearby (non-high-z) sidereal sources, such as a star.
+ *  distant galaxies and quasars, or other high-redshift objects.
  *
- *  Link with
+ *  It's the same recipe as `example-star.c`, except that we define the object of
+ *  interest a little differently.
+ *
+ *  Link with:
  *
  *  ```
  *   -lsupernovas
  *  ```
+ *
  */
 
 #include <stdio.h>
@@ -19,7 +23,6 @@
 #include <time.h>
 
 #include <novas.h>      ///< SuperNOVAS functions and definitions
-
 
 // Below are some Earth orientation values. Here we define them as constants, but they may
 // of course be variables. They should be set to the appropriate values for the time
@@ -32,7 +35,6 @@
 
 int main() {
   // SuperNOVAS aariables used for the calculations ------------------------->
-  cat_entry star = CAT_ENTRY_INIT;  // catalog information about a sidereal source
   object source;                    // a celestial object: sidereal, planet, ephemeris or orbital source
   observer obs;                     // observer location
   novas_timespec obs_time;          // astrometric time of observation
@@ -52,35 +54,27 @@ int main() {
 
 
   // -------------------------------------------------------------------------
-  // Define a sidereal source
+  // Define a high-z source.
 
-  // Let's assume we have B1950 (FK4) coordinates...
-  // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year,
-  // parallax 5.89 mas, radial velocity -3.4 km/s.
-  if(make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
+  // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
+  if(make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &source) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;
   }
 
-  // First change the catalog coordinates (in place) to the J2000 (FK5) system...
-  if(transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star) != 0) {
+  // If we did not use ICRS catalog coordinates, we would have to convert them to ICRS...
+
+  /* E.g. change B1950 to the J2000 (FK5) system...
+  if(transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &source.star, NOVAS_JD_J2000, "FK5", &source.star) != 0) {
     fprintf(stderr, "ERROR! converting B1950 catalog coordinates to J2000.\n");
     return 1;
-  }
+  } */
 
-  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
-  if(transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &star, 0.0, "ICRS", &star) != 0) {
+  /* Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
+  if(transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source.star, 0.0, "ICRS", &source.star) != 0) {
     fprintf(stderr, "ERROR! converting J2000 catalog coordinates to ICRS.\n");
     return 1;
-  }
-
-
-  // -------------------------------------------------------------------------
-  // Wrap the sidereal souce into an object structure...
-  if(make_cat_object(&star, &source) != 0) {
-    fprintf(stderr, "ERROR! configuring observed object\n");
-    return 1;
-  }
+  } */
 
 
   // -------------------------------------------------------------------------
@@ -154,7 +148,7 @@ int main() {
   }
 
   // Let's print the apparent position
-  printf(" RA = %.9f h, Dec = %.9f deg, rad_vel = %.6f km/s\n", apparent.ra, apparent.dec, apparent.rv);
+  printf(" RA = %.9f h, Dec = %.9f deg, z_obs = %.9f\n", apparent.ra, apparent.dec, novas_v2z(apparent.rv));
 
 
   // -------------------------------------------------------------------------
