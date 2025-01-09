@@ -1,6 +1,6 @@
 name: Example
 
-on: 
+on:
   push:
     branches:
       - main
@@ -14,18 +14,24 @@ on:
       - '.github/workflows/example.yml'
 
 jobs:
-
   build:
     name: Check examples
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
-    - name: Compile example.c
+
+    - name: Compile example-star.c
       run: |
         cd examples
-        gcc -c -Wall -Werror -I ../include example.c 
+        gcc -c -Wall -Werror -I ../include example-star.c
 
-      
-   
+    - name: Compile example-high-z.c
+      run: |
+        cd examples
+        gcc -c -Wall -Werror -I ../include example-high-z.c
+
+    - name: Compile example-orbital.c
+      run: |
+        cd examples
+        gcc -c -Wall -Werror -I ../include example-orbital.c
+
