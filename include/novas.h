@@ -302,7 +302,7 @@ enum novas_planet {
  */
 #define NOVAS_PLANET_NAMES_INIT { \
   "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
-  "Sun", "Moon", "EMB", "Pluto-Barycenter" };
+  "Sun", "Moon", "EMB", "Pluto-Barycenter" }
 
 /**
  * Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
@@ -835,98 +835,98 @@ typedef struct {
  * @since 1.2
  * @sa object
  */
-#define NOVAS_SSB_INIT NOVAS_PLANET_INIT(NOVAS_SSB, "SSB");
+#define NOVAS_SSB_INIT NOVAS_PLANET_INIT(NOVAS_SSB, "SSB")
 
 /**
  * `object` initializer for the planet Venus
  * @since 1.2
  * @sa object
  */
-#define NOVAS_MERCURY_INIT NOVAS_PLANET_INIT(NOVAS_MERCURY, "Mercury");
+#define NOVAS_MERCURY_INIT NOVAS_PLANET_INIT(NOVAS_MERCURY, "Mercury")
 
 /**
  * `object` initializer for the planet Mercury
  * @since 1.2
  * @sa object
  */
-#define NOVAS_VENUS_INIT NOVAS_PLANET_INIT(NOVAS_VENUS, "Venus");
+#define NOVAS_VENUS_INIT NOVAS_PLANET_INIT(NOVAS_VENUS, "Venus")
 
 /**
  * `object` initializer for the planet Earth
  * @since 1.2
  * @sa object
  */
-#define NOVAS_EARTH_INIT NOVAS_PLANET_INIT(NOVAS_EARTH, "Earth");
+#define NOVAS_EARTH_INIT NOVAS_PLANET_INIT(NOVAS_EARTH, "Earth")
 
 /**
  * `object` initializer for the planet Mars
  * @since 1.2
  * @sa object
  */
-#define NOVAS_MARS_INIT NOVAS_PLANET_INIT(NOVAS_MERCURY, "Mars");
+#define NOVAS_MARS_INIT NOVAS_PLANET_INIT(NOVAS_MERCURY, "Mars")
 
 /**
  * `object` initializer for the planet Jupiter
  * @since 1.2
  * @sa object
  */
-#define NOVAS_JUPITER_INIT NOVAS_PLANET_INIT(NOVAS_JUPITER, "Jupiter");
+#define NOVAS_JUPITER_INIT NOVAS_PLANET_INIT(NOVAS_JUPITER, "Jupiter")
 
 /**
  * `object` initializer for the planet Saturn
  * @since 1.2
  * @sa object
  */
-#define NOVAS_SATURN_INIT NOVAS_PLANET_INIT(NOVAS_SATURN, "Saturn");
+#define NOVAS_SATURN_INIT NOVAS_PLANET_INIT(NOVAS_SATURN, "Saturn")
 
 /**
  * `object` initializer for the planet Uranus
  * @since 1.2
  * @sa object
  */
-#define NOVAS_URANUS_INIT NOVAS_PLANET_INIT(NOVAS_URANUS, "Uranus");
+#define NOVAS_URANUS_INIT NOVAS_PLANET_INIT(NOVAS_URANUS, "Uranus")
 
 /**
  * `object` initializer for the planet Neptune
  * @since 1.2
  * @sa object
  */
-#define NOVAS_NEPTUNE_INIT NOVAS_PLANET_INIT(NOVAS_NEPTUNE, "Neptune");
+#define NOVAS_NEPTUNE_INIT NOVAS_PLANET_INIT(NOVAS_NEPTUNE, "Neptune")
 
 /**
  * `object` initializer for the minor planet Pluto
  * @since 1.2
  * @sa object
  */
-#define NOVAS_PLUTO_INIT NOVAS_PLANET_INIT(NOVAS_PLUTO, "Pluto");
+#define NOVAS_PLUTO_INIT NOVAS_PLANET_INIT(NOVAS_PLUTO, "Pluto")
 
 /**
  * `object` initializer for the Sun
  * @since 1.2
  * @sa object
  */
-#define NOVAS_SUN_INIT NOVAS_PLANET_INIT(NOVAS_SUN, "Sun");
+#define NOVAS_SUN_INIT NOVAS_PLANET_INIT(NOVAS_SUN, "Sun")
 
 /**
  * `object` initializer for the Moon
  * @since 1.2
  * @sa object
  */
-#define NOVAS_MOON_INIT NOVAS_PLANET_INIT(NOVAS_MOON, "Moon");
+#define NOVAS_MOON_INIT NOVAS_PLANET_INIT(NOVAS_MOON, "Moon")
 
 /**
  * `object` initializer for the the Earth-Moon Barycenter (EMB)
  * @since 1.2
  * @sa object
  */
-#define NOVAS_EMB_INIT NOVAS_PLANET_INIT(NOVAS_EMB, "EMB");
+#define NOVAS_EMB_INIT NOVAS_PLANET_INIT(NOVAS_EMB, "EMB")
 
 /**
  * `object` initializer for the Pluto system barycenter
  * @since 1.2
  * @sa object
  */
-#define NOVAS_PLUTO_BARYCENTER_INIT NOVAS_PLANET_INIT(NOVAS_PLUTO_BARYCENTER, "Pluto-Barycenter");
+#define NOVAS_PLUTO_BARYCENTER_INIT NOVAS_PLANET_INIT(NOVAS_PLUTO_BARYCENTER, "Pluto-Barycenter")
 
 /**
  * Data for an observer's location on the surface of the Earth, and optional local weather data for
