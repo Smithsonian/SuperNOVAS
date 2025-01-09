@@ -5867,6 +5867,7 @@ short ephemeris(const double *jd_tdb, const object *body, enum novas_origin orig
  */
 static int change_pole(const double *in, double theta, double phi, double *out) {
   double x, y, z;
+  double ca, sa, cb, sb;
 
   x = in[0];
   y = in[1];
@@ -5875,10 +5876,10 @@ static int change_pole(const double *in, double theta, double phi, double *out) 
   theta *= DEGREE;
   phi *= DEGREE;
 
-  double ca = cos(phi);
-  double sa = sin(phi);
-  double cb = cos(theta);
-  double sb = sin(theta);
+  ca = cos(phi);
+  sa = sin(phi);
+  cb = cos(theta);
+  sb = sin(theta);
 
   out[0] = ca * x - sa * cb * y + sa * sb * z;
   out[1] = sa * x + ca * cb * y - ca * sb * z;
