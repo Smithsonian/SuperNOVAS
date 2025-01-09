@@ -134,6 +134,15 @@ int main() {
     return 1;
   }
 
+  // ... Or you could set a time explicily in any known timescale.
+  /*
+  // Let's set a TDB-based time for the start of the J2000 epoch exactly...
+  if(novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, LEAP_SECONDS, DUT1, &obs_time) != 0) {
+    fprintf(stderr, "ERROR! failed to set time of observation.\n");
+    return 1;
+  }
+  */
+
 
   // -------------------------------------------------------------------------
   // You might want to set a provider for precise planet positions so we might
