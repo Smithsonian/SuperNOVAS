@@ -10,7 +10,7 @@
  *
  *  You will need access to the NAIF CSPICE library (unversioned `libcspice.so` or else
  *  `libcspice.a`) and C headers (`cspice/*.h`), and the SuperNOVAS `libsolsys-cspice.so`
- *  (or `libsoslsys-cspice.a`) module.
+ *  (or `libsolsys-cspice.a`) module.
  *
  *  To compile CSPICE as a shared (.so) library, you may want to check out the GitHub
  *  repository:

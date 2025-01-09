@@ -10,7 +10,7 @@
  *
  *  You will need access to the CALCEPH library (unversioned `libcalceph.so` or else
  *  `libcalceph.a`) and C headers (`calceph.h`), and the SuperNOVAS
- *  `libsolsys-calceph.so` (or `libsoslsys-calceph.a`) module.
+ *  `libsolsys-calceph.so` (or `libsolsys-calceph.a`) module.
  *
  *  Link with:
  *
