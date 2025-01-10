@@ -168,21 +168,22 @@ int main() {
 
 
   // -------------------------------------------------------------------------
-  // Calculate the precise apparent position (for the true equator and equinox of date).
-  if(novas_sky_pos(&source, &obs_frame, NOVAS_TOD, &apparent) != 0) {
+  // Calculate the precise apparent position (e.g. in CIRS).
+  if(novas_sky_pos(&source, &obs_frame, NOVAS_CIRS, &apparent) != 0) {
     fprintf(stderr, "ERROR! failed to calculate apparent position.\n");
     return 1;
   }
 
   // Let's print the apparent position
+  // (Note, CIRS R.A. is relative to CIO, not the true equinox of date.)
   printf(" RA = %.9f h, Dec = %.9f deg, rad_vel = %.6f km/s\n", apparent.ra, apparent.dec, apparent.rv);
 
 
   // -------------------------------------------------------------------------
-  // Convert the apparent position in TOD on sky to horizontal coordinates
+  // Convert the apparent position in CIRS on sky to horizontal coordinates
   // We'll use a standard (fixed) atmospheric model to estimate an optical refraction
   // (You might use other refraction models, or NULL to ignore refraction corrections)
-  if(novas_app_to_hor(&obs_frame, NOVAS_TOD, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el) != 0) {
+  if(novas_app_to_hor(&obs_frame, NOVAS_CIRS, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el) != 0) {
     fprintf(stderr, "ERROR! failed to calculate azimuth / elevation.\n");
     return 1;
   }
