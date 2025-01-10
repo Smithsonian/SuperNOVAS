@@ -31,7 +31,7 @@
 // of course be variables. They should be set to the appropriate values for the time
 // of observation based on the IERS Bulletins...
 
-#define  LEAP_SECONDS     37        ///< [s] current leap seconds
+#define  LEAP_SECONDS     37        ///< [s] current leap seconds from IERS Bulletin C
 #define  DUT1             0.114     ///< [s] current UT1 - UTC time difference from IERS Bulletin A
 #define  POLAR_DX         230.0     ///< [mas] Earth polar offset x, e.g. from IERS Bulletin A.
 #define  POLAR_DY         -62.0     ///< [mas] Earth polar offset y, e.g. from IERS Bulletin A.
