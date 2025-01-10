@@ -115,6 +115,7 @@ int main() {
 
   // Specify the location we are observing from
   // 50.7374 deg N, 7.0982 deg E, 60m elevation
+  // (We'll ignore the local weather parameters here, but you can set those too.)
   if(make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs) != 0) {
     fprintf(stderr, "ERROR! defining Earth-based observer location.\n");
     return 1;
@@ -137,7 +138,7 @@ int main() {
   // ... Or you could set a time explicily in any known timescale.
   /*
   // Let's set a TDB-based time for the start of the J2000 epoch exactly...
-  if(novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, LEAP_SECONDS, DUT1, &obs_time) != 0) {
+  if(novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32, 0.0, &obs_time) != 0) {
     fprintf(stderr, "ERROR! failed to set time of observation.\n");
     return 1;
   }
@@ -150,7 +151,7 @@ int main() {
   // if you have orbitals defined around a major planet.
   //
   // There are many ways to set a provider of planet positions. For example,
-  // you may use CALCEPH:
+  // you may use the CALCEPH library:
   //
   // t_calcephbin *planets = calceph_open("path/to/de440s.bsp");
   // novas_use_calceph(planets);
@@ -165,9 +166,10 @@ int main() {
     return 1;
   }
 
+
   // -------------------------------------------------------------------------
-  // Calculate the precise apparent position (here in CIRS coordinates)
-  if(novas_sky_pos(&source, &obs_frame, NOVAS_CIRS, &apparent) != 0) {
+  // Calculate the precise apparent position (for the true equator and equinox of date).
+  if(novas_sky_pos(&source, &obs_frame, NOVAS_TOD, &apparent) != 0) {
     fprintf(stderr, "ERROR! failed to calculate apparent position.\n");
     return 1;
   }
@@ -177,10 +179,10 @@ int main() {
 
 
   // -------------------------------------------------------------------------
-  // Convert the apparent position in CIRS on sky to horizontal coordinates
+  // Convert the apparent position in TOD on sky to horizontal coordinates
   // We'll use a standard (fixed) atmospheric model to estimate an optical refraction
   // (You might use other refraction models, or NULL to ignore refraction corrections)
-  if(novas_app_to_hor(&obs_frame, NOVAS_CIRS, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el) != 0) {
+  if(novas_app_to_hor(&obs_frame, NOVAS_TOD, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el) != 0) {
     fprintf(stderr, "ERROR! failed to calculate azimuth / elevation.\n");
     return 1;
   }
