@@ -464,6 +464,14 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * It implements the same geometric transformations as `place()` but at a reduced computational
  * cost. See `place()` for references.
  *
+ * NOTES:
+ * <ol>
+ * <li>If `sys` is `NOVAS_TOD` (true equator and equinox of date), the less precise old (pre IAU
+ * 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the
+ * original NOVAS C place() for that system. To obtain more precise TOD coordinates, set `sys` to
+ * `NOVAS_CIRS` here, and follow with cirs_to_tod() after.</li>
+ * </ol>
+ *
  * @param source        Pointer to a celestial source data structure that is observed
  * @param frame         Observer frame, defining the location and time of observation
  * @param sys           The coordinate system in which to return positions and velocities.
@@ -480,6 +488,7 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * @sa novas_sky_pos()
  * @sa novas_transform_vector()
  * @sa place()
+ * @sa cirs_to_tod()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -573,6 +582,14 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * for all coordinate systems (and you can use novas_geom_posvel() instead to get positions without
  * aberration or deflection in any system).
  *
+ * NOTES:
+ * <ol>
+ * <li>If `sys` is `NOVAS_TOD` (true equator and equinox of date), the less precise old (pre IAU
+ * 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the
+ * original NOVAS C place() for that system. To obtain more precise TOD coordinates, set `sys` to
+ * `NOVAS_CIRS` here, and follow with cirs_to_tod() after.</li>
+ * </ol>
+ *
  * @param object        Pointer to a celestial object data structure that is observed
  * @param frame         The observer frame, defining the location and time of observation
  * @param sys           The coordinate system in which to return the apparent sky location
@@ -586,6 +603,7 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * @sa novas_geom_to_app()
  * @sa novas_app_to_hor()
  * @sa place()
+ * @sa cirs_to_tod()
  *
  * @since 1.1
  * @author Attila Kovacs

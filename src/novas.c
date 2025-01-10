@@ -951,6 +951,12 @@ int radec_planet(double jd_tt, const object *ss_body, const observer *obs, doubl
  * place_star() with a NULL observer location and NOVAS_TOD as the system for an object that
  * specifies the star.
  *
+ * NOTES:
+ * <ol>
+ * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977
+ * nutation model, matching the behavior of the original NOVAS C function.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -1067,6 +1073,12 @@ short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accura
  * place() for the body with NOVAS_TOD as the system, except the different set of
  * return values used.
  *
+ * NOTES:
+ * <ol>
+ * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977
+ * nutation model, matching the behavior of the original NOVAS C function.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -1181,6 +1193,12 @@ short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accu
  * Notwithstanding the different set of return values, this is the same as calling place_star()
  * with the same observer location and NOVAS_TOD for an object that specifies the star.
  *
+ * NOTES:
+ * <ol>
+ * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977
+ * nutation model, matching the behavior of the original NOVAS C function.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -1269,16 +1287,22 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on
  * This is the same as calling place() for the body for the same observer location and
  * NOVAS_TOD as the reference system, except the different set of return values used.
  *
- * @deprecated Using place() with system NOVAS_CIRS is now preferred for topocentric
- *             calculations, especially when high precision is required. However, you will
- *             have to follow the IAU 2000 method consistently to produce equivalent
- *             calculations throughout.
+ * NOTES:
+ * <ol>
+ * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977
+ * nutation model, matching the behavior of the original NOVAS C function.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
  * </ol>
+ *
+ * @deprecated Using place() with system NOVAS_CIRS is now preferred for topocentric
+ *             calculations, especially when high precision is required. However, you will
+ *             have to follow the IAU 2000 method consistently to produce equivalent
+ *             calculations throughout.
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar
@@ -1549,6 +1573,10 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <li>In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and
  * Moon) includes gravitational redshift corrections for light originating at the surface, assuming
  * it's observed from near Earth or else from a large distance away.</li>
+ * <li>If `sys` is `NOVAS_TOD` (true equator and equinox of date), the less precise old (pre IAU
+ * 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the
+ * original NOVAS C place() for that system. To obtain more precise TOD coordinates, set `sys` to
+ * `NOVAS_CIRS` here, and follow with cirs_to_tod() after.</li>
  * </ol>
  *
  * REFERENCES:
