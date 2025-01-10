@@ -524,7 +524,7 @@ This function implements the same aberration and gravitational deflection correc
 NOTES: 
 .PD 0
 .IP "1." 4
-If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP after\&. 
+If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP / \fBcirs_to_app_ra()\fP on the \fCout->r_hat\fP / \fCout->ra\fP respectively after (or you can use just convert one of the quantities, and use \fBradec2vector()\fP or \fBvector2radec()\fP to get the other even faster)\&. 
 .PP
 .PP
 \fBParameters\fP
