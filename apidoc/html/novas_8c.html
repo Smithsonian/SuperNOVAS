@@ -501,6 +501,10 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
       </table>
 </div><div class="memdoc">
 <p>Computes the apparent place of a solar system body. This is the same as calling <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> for the body with NOVAS_TOD as the system, except the different set of return values used.</p>
+<p>NOTES: </p><ol>
+<li>
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -581,6 +585,10 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 </div><div class="memdoc">
 <p>Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="novas_8c.html#a078b5e764d5cf3fdca600fada992b409">place_star()</a> with a NULL observer location and NOVAS_TOD as the system for an object that specifies the star.</p>
+<p>NOTES: </p><ol>
+<li>
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -4830,6 +4838,8 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not antedated for light-travel time. </li>
 <li>
 In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and Moon) includes gravitational redshift corrections for light originating at the surface, assuming it's observed from near Earth or else from a large distance away. </li>
+<li>
+If <code>sys</code> is <code>NOVAS_TOD</code> (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> for that system. To obtain more precise TOD coordinates, set <code>sys</code> to <code>NOVAS_CIRS</code> here, and follow with <a class="el" href="super_8c.html#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a> after. </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
@@ -6518,13 +6528,17 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
       </table>
 </div><div class="memdoc">
 <p>Computes the topocentric apparent place of a solar system body at the specified time. This is the same as calling <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> for the body for the same observer location and NOVAS_TOD as the reference system, except the different set of return values used.</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>Using <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> with system NOVAS_CIRS is now preferred for topocentric calculations, especially when high precision is required. However, you will have to follow the IAU 2000 method consistently to produce equivalent calculations throughout.</dd></dl>
+<p>NOTES: </p><ol>
+<li>
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <li>
 Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 </ol>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>Using <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> with system NOVAS_CIRS is now preferred for topocentric calculations, especially when high precision is required. However, you will have to follow the IAU 2000 method consistently to produce equivalent calculations throughout.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terretrial Time (TT) based Julian date. </td></tr>
@@ -6612,6 +6626,10 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 </div><div class="memdoc">
 <p>Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given its ICRS catalog place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="novas_8c.html#a078b5e764d5cf3fdca600fada992b409">place_star()</a> with the same observer location and NOVAS_TOD for an object that specifies the star.</p>
+<p>NOTES: </p><ol>
+<li>
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>

@@ -1656,6 +1656,12 @@ References \fBnovas_v2z()\fP, and \fBnovas_z2v()\fP\&.
 .SS "int tod_to_cirs (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the \&.
 .PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The accuracy of the output CIRS coordinates depends on how the input TOD coordinates were obtained\&. If TOD was calculated via the old (pre IAU 2006) method, using the Lieske et al\&. 1997 nutation model, then the limited accuracy of that model will affect the resulting coordinates\&. This is the case for the SuperNOVAS functions \fBnovas_geom_posvel()\fP and \fBnovas_sky_pos()\fP also, when called with \fCNOVAS_TOD\fP as the system, as well as all legacy NOVAS C functions that produce TOD coordinates\&. 
+.PP
+.PP
 \fBParameters\fP
 .RS 4
 \fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 

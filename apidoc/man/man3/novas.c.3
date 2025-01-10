@@ -446,6 +446,12 @@ References \fBTWOPI\fP\&.
 .SS "short app_planet (double jd_tt, const \fBobject\fP * ss_body, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * dis)"
 Computes the apparent place of a solar system body\&. This is the same as calling \fBplace()\fP for the body with NOVAS_TOD as the system, except the different set of return values used\&.
 .PP
+NOTES: 
+.PD 0
+.IP "1." 4
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C function\&. 
+.PP
+.PP
 REFERENCES: 
 .PD 0
 .IP "1." 4
@@ -502,6 +508,12 @@ References \fBNOVAS_TOD\fP, and \fBradec_planet()\fP\&.
 Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity\&.
 .PP
 Notwithstanding the different set of return values, this is the same as calling \fBplace_star()\fP with a NULL observer location and NOVAS_TOD as the system for an object that specifies the star\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C function\&. 
+.PP
 .PP
 REFERENCES: 
 .PD 0
@@ -3153,6 +3165,8 @@ NOTES:
 This version fixes a NOVAS C 3\&.1 issue that velocities and solar-system distances were not antedated for light-travel time\&. 
 .IP "2." 4
 In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and Moon) includes gravitational redshift corrections for light originating at the surface, assuming it's observed from near Earth or else from a large distance away\&. 
+.IP "3." 4
+If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP after\&. 
 .PP
 .PP
 REFERENCES: 
@@ -4287,10 +4301,10 @@ References \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNUTATE_TR
 .SS "short topo_planet (double jd_tt, const \fBobject\fP * ss_body, double ut1_to_tt, const \fBon_surface\fP * position, enum \fBnovas_accuracy\fP accuracy, double * ra, double * dec, double * dis)"
 Computes the topocentric apparent place of a solar system body at the specified time\&. This is the same as calling \fBplace()\fP for the body for the same observer location and NOVAS_TOD as the reference system, except the different set of return values used\&.
 .PP
-\fBDeprecated\fP
-.RS 4
-Using \fBplace()\fP with system NOVAS_CIRS is now preferred for topocentric calculations, especially when high precision is required\&. However, you will have to follow the IAU 2000 method consistently to produce equivalent calculations throughout\&.
-.RE
+NOTES: 
+.PD 0
+.IP "1." 4
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C function\&. 
 .PP
 .PP
 REFERENCES: 
@@ -4299,6 +4313,12 @@ REFERENCES:
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
 Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&. 
+.PP
+.PP
+\fBDeprecated\fP
+.RS 4
+Using \fBplace()\fP with system NOVAS_CIRS is now preferred for topocentric calculations, especially when high precision is required\&. However, you will have to follow the IAU 2000 method consistently to produce equivalent calculations throughout\&.
+.RE
 .PP
 .PP
 \fBParameters\fP
@@ -4347,6 +4367,12 @@ References \fBmake_observer()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_TOD\fP
 Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given its ICRS catalog place, proper motion, parallax, and radial velocity\&.
 .PP
 Notwithstanding the different set of return values, this is the same as calling \fBplace_star()\fP with the same observer location and NOVAS_TOD for an object that specifies the star\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C function\&. 
+.PP
 .PP
 REFERENCES: 
 .PD 0

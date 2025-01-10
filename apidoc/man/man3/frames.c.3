@@ -233,6 +233,12 @@ You can also use \fBnovas_transform_vector()\fP to convert the output position a
 .PP
 It implements the same geometric transformations as \fC\fBplace()\fP\fP but at a reduced computational cost\&. See \fC\fBplace()\fP\fP for references\&.
 .PP
+NOTES: 
+.PD 0
+.IP "1." 4
+If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP after\&. 
+.PP
+.PP
 \fBParameters\fP
 .RS 4
 \fIsource\fP Pointer to a celestial source data structure that is observed 
@@ -259,7 +265,9 @@ It implements the same geometric transformations as \fC\fBplace()\fP\fP but at a
 .PP
 \fBnovas_transform_vector()\fP 
 .PP
-\fBplace()\fP
+\fBplace()\fP 
+.PP
+\fBcirs_to_tod()\fP
 .RE
 .PP
 \fBSince\fP
@@ -513,6 +521,12 @@ The approximate 'inverse' of this function is \fBnovas_app_to_geom()\fP\&.
 .PP
 This function implements the same aberration and gravitational deflection corrections as \fC\fBplace()\fP\fP, but at reduced computational cost\&. See \fC\fBplace()\fP\fP for references\&. Unlike \fC\fBplace()\fP\fP, however, the output always reports the distance calculated from the parallax for sidereal sources\&. Note also, that while \fC\fBplace()\fP\fP does not apply aberration and gravitational deflection corrections when \fCsys\fP is NOVAS_ICRS (3), this routine will apply those corrections consistently for all coordinate systems (and you can use \fBnovas_geom_posvel()\fP instead to get positions without aberration or deflection in any system)\&.
 .PP
+NOTES: 
+.PD 0
+.IP "1." 4
+If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP after\&. 
+.PP
+.PP
 \fBParameters\fP
 .RS 4
 \fIobject\fP Pointer to a celestial object data structure that is observed 
@@ -535,7 +549,9 @@ This function implements the same aberration and gravitational deflection correc
 .PP
 \fBnovas_app_to_hor()\fP 
 .PP
-\fBplace()\fP
+\fBplace()\fP 
+.PP
+\fBcirs_to_tod()\fP
 .RE
 .PP
 \fBSince\fP

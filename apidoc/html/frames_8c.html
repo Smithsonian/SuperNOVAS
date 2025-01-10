@@ -424,6 +424,10 @@ novas_geom_to_hor() </dd>
 <p>If you want apparent positions, which account for aberration and gravitational deflection, use novas_skypos() instead.</p>
 <p>You can also use <a class="el" href="frames_8c.html#aadb7bc88119eed4ea54373a42e22a0d4">novas_transform_vector()</a> to convert the output position and velocity vectors to a dfferent coordinate system of choice afterwards if you want the results expressed in more than one coordinate system.</p>
 <p>It implements the same geometric transformations as <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> but at a reduced computational cost. See <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> for references.</p>
+<p>NOTES: </p><ol>
+<li>
+If <code>sys</code> is <code>NOVAS_TOD</code> (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> for that system. To obtain more precise TOD coordinates, set <code>sys</code> to <code>NOVAS_CIRS</code> here, and follow with <a class="el" href="super_8c.html#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a> after. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Pointer to a celestial source data structure that is observed </td></tr>
@@ -441,7 +445,9 @@ novas_geom_to_hor() </dd>
 <dd>
 <a class="el" href="frames_8c.html#aadb7bc88119eed4ea54373a42e22a0d4">novas_transform_vector()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
+<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -827,6 +833,10 @@ novas_geom_to_hor() </dd>
 <p>And if you want geometric positions instead (not corrected for aberration or gravitational deflection), you may want to use <a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a> instead.</p>
 <p>The approximate 'inverse' of this function is <a class="el" href="frames_8c.html#a83db7db5a0ed0311610391f199b9f66c">novas_app_to_geom()</a>.</p>
 <p>This function implements the same aberration and gravitational deflection corrections as <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, but at reduced computational cost. See <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> for references. Unlike <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, however, the output always reports the distance calculated from the parallax for sidereal sources. Note also, that while <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> does not apply aberration and gravitational deflection corrections when <code>sys</code> is NOVAS_ICRS (3), this routine will apply those corrections consistently for all coordinate systems (and you can use <a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a> instead to get positions without aberration or deflection in any system).</p>
+<p>NOTES: </p><ol>
+<li>
+If <code>sys</code> is <code>NOVAS_TOD</code> (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C <a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> for that system. To obtain more precise TOD coordinates, set <code>sys</code> to <code>NOVAS_CIRS</code> here, and follow with <a class="el" href="super_8c.html#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a> after. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">object</td><td>Pointer to a celestial object data structure that is observed </td></tr>
@@ -841,7 +851,9 @@ novas_geom_to_hor() </dd>
 <dd>
 <a class="el" href="frames_8c.html#ae84debf8ab4d3b16feaaefdcb0ebbd08">novas_app_to_hor()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></dd></dl>
+<a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 

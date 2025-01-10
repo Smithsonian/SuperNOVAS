@@ -2315,6 +2315,10 @@ You should not expect much precision from the long-range orbital approximations 
       </table>
 </div><div class="memdoc">
 <p>Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the .</p>
+<p>NOTES: </p><ol>
+<li>
+The accuracy of the output CIRS coordinates depends on how the input TOD coordinates were obtained. If TOD was calculated via the old (pre IAU 2006) method, using the Lieske et al. 1997 nutation model, then the limited accuracy of that model will affect the resulting coordinates. This is the case for the SuperNOVAS functions <a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a> and <a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a> also, when called with <code>NOVAS_TOD</code> as the system, as well as all legacy NOVAS C functions that produce TOD coordinates. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
