@@ -7,7 +7,7 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.2\&.0-rc5] - 2025-01-01"
+.SH "[Unreleased]"
 .PP
 Release candidate for the next feature release, expected around 1 February 2025\&.
 .SS "Fixed"
@@ -42,6 +42,8 @@ Added \fC\fBget_planet_provider()\fP\fP and \fC\fBget_planet_provider_hp()\fP\fP
 .IP "\(bu" 2
 #98: Added \fC\fBgcrs_to_tod()\fP\fP / \fC\fBtod_to_gcrs()\fP\fP and \fC\fBgcrs_to_mod()\fP\fP / \fC\fBmod_to_gcrs()\fP\fP vector conversion functions for convenience\&.
 .IP "\(bu" 2
+#106: New example files under \fCexamples/\fP demonstrating the recommended approach for using SuperNOVAS to calculate positions for various types of object\&.
+.IP "\(bu" 2
 Added various \fCobject\fP initializer macros in \fC\fBnovas\&.h\fP\fP for the major planets, Sun, Moon, and barycenters, e\&.g\&. \fCNOVAS_EARTH_INIT\fP or \fCNOVAS_SSB_INIT\fP\&. These wrap the parametric \fC\fBNOVAS_PLANET_INIT(num, name)\fP\fP macro, and can be used to simplify the initialization of NOVAS \fCobject\fPs\&.
 .IP "\(bu" 2
 Added more physical unit constants to \fC\fBnovas\&.h\fP\fP and a corresponding section in the README on how these may be used to convert to/from NOVAS conventional quantities\&.
@@ -63,6 +65,8 @@ Added \fCREADME\&.md\fP Figure 1, to clarify relation of coordinate systems and 
 #96: Changed \fCobject\fP structure to include \fC\fBnovas_orbital\fP\fP for \fCNOVAS_ORBITAL_OBJECT\fP types\&. To keep ABI compatibility to earlier SuperNOVAS releases, \fC\fBmake_object()\fP\fP will not initialize the new \fC\&.orbit\fP field \fIunless\fP \fCtype\fP is set to \fCNOVAS_ORBITAL_OBJECT\fP (which was not available before)\&.
 .IP "\(bu" 2
 #97: Updated \fCNOVAS_PLANETS\fP, \fCNOVAS_PLANET_NAMES_INIT\fP, and \fCNOVAS_RMASS_INIT\fP macros to include the added planet constants\&.
+.IP "\(bu" 2
+#106: The old (legacy) NOVAS C example has been removed\&. Instead a new set of examples are provided, which are better suited for SuperNOVAS\&.
 .IP "\(bu" 2
 \fCmake check\fP now runs both static analysis by cppcheck (new \fCanalysis\fP target) and regression tests (\fCtest\fP target), in closer conformance to GNU Makefile standards\&.
 .IP "\(bu" 2
