@@ -25,6 +25,12 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+
+#if __Lynx__ && __powerpc__
+// strcasecmp() is not defined on PowerPC / LynxOS 3.1
+int strcasecmp(const char *s1, const char *s2);
+#endif
+
 /// \endcond
 
 /**
