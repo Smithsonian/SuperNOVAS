@@ -143,9 +143,6 @@ endif
 # If the CIO_LOCATOR_FILE variable is defined, the use its definition
 ifdef CIO_LOCATOR_FILE
   CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(CIO_LOCATOR_FILE)\"
-else
-  $(info WARNING! No default CIO_LOCATOR_FILE defined.)
-  $(info .        Will use local 'cio_ra.bin' if present.)
 endif
 
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
@@ -196,7 +193,7 @@ ifdef DEFAULT_READEPH
 endif
 
 # Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
-ifneq ($(shell which ldconfig), )
+ifneq ($(shell which ldconfig > /dev/null 2>&1), )
   # Detect CALCEPH automatically, and enable support if present
   ifndef CALCEPH_SUPPORT 
     ifneq ($(shell ldconfig -p | grep libcalceph), )

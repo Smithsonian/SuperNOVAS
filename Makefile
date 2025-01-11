@@ -73,11 +73,11 @@ distro: $(SHARED_TARGETS) $(DOC_TARGETS)
 
 # Shared libraries (versioned and unversioned)
 .PHONY: shared
-shared: $(SHARED_TARGETS)
+shared: check-cio-locator $(SHARED_TARGETS)
 
 # Legacy static libraries (locally built)
 .PHONY: static
-static: $(LIB)/libnovas.a solsys
+static: check-cio-locator $(LIB)/libnovas.a solsys
 
 # solarsystem() call handler objects
 .PHONY: solsys
@@ -111,6 +111,13 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -f $(LIB)/libsupernovas.so* $(LIB)/libsupernovas.a $(LIB)/libnovas.so* $(LIB)/libnovas.a $(LIB)/libsolsys*.so* cio_ra.bin
+
+.PHONY:
+check-cio-locator:
+ifndef CIO_LOCATOR_FILE
+	  $(info WARNING! No default CIO_LOCATOR_FILE defined. Will use local 'cio_ra.bin' if present.)
+endif
+
 
 # ----------------------------------------------------------------------------
 # The nitty-gritty stuff below
