@@ -173,7 +173,7 @@ $(LIB)/libsupernovas.a: $(OBJECTS) | $(LIB) Makefile
 
 $(LIB)/libnovas.a: $(LIB)/libsupernovas.a
 	@rm -f $@
-	ln -sr $< $@
+	( cd $(LIB); ln -s libsupernovas.a libnovas.a )
 
 # CIO locator data
 cio_ra.bin: data/CIO_RA.TXT $(BIN)/cio_file
