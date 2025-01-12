@@ -1,6 +1,4 @@
 /**
- * @file
- *
  * @date Created  on Feb 19, 2024
  * @author Attila Kovacs
  */
@@ -1120,6 +1118,10 @@ static int test_time() {
 
 static double switching_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   static int count;
+  (void) jd_tt;
+  (void) loc;
+  (void) type;
+  (void) el;
   return (count++) % 2 ? -0.1 : 0.1;
 }
 
@@ -1199,7 +1201,7 @@ static int test_change_observer() {
   if(check("change_observer:obs", -1, novas_change_observer(&frame, NULL, &out))) n++;
   if(check("change_observer:out", -1, novas_change_observer(&frame, &obs, NULL))) n++;
 
-  return 0;
+  return n;
 }
 
 static int test_make_transform() {

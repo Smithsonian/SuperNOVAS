@@ -1,6 +1,4 @@
 /**
- * @file
- *
  * @date Created  on Feb 18, 2024
  * @author Attila Kovacs
  */

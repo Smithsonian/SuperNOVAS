@@ -1,6 +1,4 @@
 /**
- * @file
- *
  * @date Created  on Feb 18, 2024
  * @author Attila Kovacs
  */
@@ -8,12 +6,10 @@
 
 // We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
 // gcc 5.1 was released 2015-04-22...
-#ifndef __GNUC__
-#  define _DEFAULT_SOURCE        ///< strcasecmp() feature macro starting glibc 2.20 (2014-09-08)
-#elif __GNUC__ >= 5
-#  define _DEFAULT_SOURCE        ///< strcasecmp() feature macro starting glibc 2.20 (2014-09-08)
-#else
+#if defined(__GNUC__) && (__GNUC__ < 5)
 #  define _BSD_SOURCE            ///< strcasecmp() feature macro for glibc <= 2.19
+#else
+#  define _DEFAULT_SOURCE        ///< strcasecmp() feature macro starting glibc 2.20 (2014-09-08)
 #endif
 
 #include <stdio.h>
@@ -47,6 +43,8 @@ static double pos0[3];
 static enum novas_origin ephem_origin;
 
 static short dummy_planet_hp(const double *jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+  (void) jd_tdb;
+  (void) origin;
   memset(position, 0, 3 * sizeof(double));
   memset(velocity, 0, 3 * sizeof(double));
   position[0] = body % 10;
@@ -56,10 +54,14 @@ static short dummy_planet_hp(const double *jd_tdb, enum novas_planet body, enum 
 
 static short dummy_planet(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
   double tdb2[2] = { tdb };
+  (void) jd_tdb;
   return dummy_planet_hp(tdb2, body, origin, position, velocity);
 }
 
 static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
+  (void) name;
+  (void) jd_tdb_high;
+  (void) jd_tdb_low;
   *origin = ephem_origin;
   memset(pos, 0, 3 * sizeof(double));
   memset(vel, 0, 3 * sizeof(double));
@@ -1792,7 +1794,7 @@ static int test_unix_time() {
     printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), sec);
     return 1;
   }
-  if(!is_ok("sunix_time:check:nsec", abs(nsec - nanos) > 0)) {
+  if(!is_ok("sunix_time:check:nsec", labs(nsec - nanos) > 0)) {
     printf("!!! nsec %ld  %ld\n", nsec, nanos);
     return 1;
   }
@@ -1809,7 +1811,7 @@ static int test_unix_time() {
     printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), (long) sec);
     return 1;
   }
-  if(!is_ok("unix_time:offset:check:incr:nsec", abs(nsec - nanos) > 0)) {
+  if(!is_ok("unix_time:offset:check:incr:nsec", labs(nsec - nanos) > 0)) {
     printf("!!! nsec %ld  %ld\n", nsec, nanos);
     return 1;
   }
@@ -1820,7 +1822,7 @@ static int test_unix_time() {
     printf("!!! sec: %ld  %ld\n", (long) novas_get_unix_time(&t, &nsec), (long) sec);
     return 1;
   }
-  if(!is_ok("unix_time:neg:check:nsec", abs(nsec - nanos) > 0)) {
+  if(!is_ok("unix_time:neg:check:nsec", labs(nsec - nanos) > 0)) {
     printf("!!! nsec %ld  %ld\n", nsec, nanos);
     return 1;
   }
@@ -2424,6 +2426,7 @@ static int test_orbit_posvel_callisto() {
 int main(int argc, char *argv[]) {
   int n = 0;
 
+  (void) argc;
   workPath = dirname(argv[0]);
 
   novas_debug(NOVAS_DEBUG_ON);

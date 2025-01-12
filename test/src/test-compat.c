@@ -1,6 +1,4 @@
 /**
- * @file
- *
  * @date Created  on Jan 30, 2024
  * @author Attila Kovacs
  */
@@ -671,7 +669,7 @@ static void test_light_time() {
 static void test_grav_def() {
   double pos1[3], pos2[3], ps[3], vs[3];
   double d, jd2[2] = { tdb };
-  object sun = { 0, 10, "Sun" };
+  object sun = NOVAS_SUN_INIT;
   int k;
 
   if(source.type != 2) return;
@@ -1081,7 +1079,7 @@ static int test_accuracy() {
 }
 
 
-int main(int argc, char *argv[]) {
+int main() {
   test_basics();
   test_accuracy();
   fprintf(fp, "\n");
