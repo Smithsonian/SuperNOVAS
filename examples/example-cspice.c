@@ -9,7 +9,7 @@
  *  files.
  *
  *  You will need access to the NAIF CSPICE library (unversioned `libcspice.so` or else
- *  `libcspice.a`) and C headers (`cspice/*.h`), and the SuperNOVAS `libsolsys-cspice.so`
+ *  `libcspice.a`) and C headers (under `cspice/`), and the SuperNOVAS `libsolsys-cspice.so`
  *  (or `libsolsys-cspice.a`) module.
  *
  *  To compile CSPICE as a shared (.so) library, you may want to check out the GitHub
@@ -23,6 +23,8 @@
  *   -lsupernovas -lsolsys-cspice -lcspice
  *  ```
  */
+
+#define _POSIX_C_SOURCE 199309L   ///< for clock_gettime()
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,7 +45,6 @@
 
 int main() {
   // SuperNOVAS aariables used for the calculations ------------------------->
-  cat_entry star = CAT_ENTRY_INIT;  // catalog information about a sidereal source
   object source;                    // observed source
   observer obs;                     // observer location
   novas_timespec obs_time;          // astrometric time of observation

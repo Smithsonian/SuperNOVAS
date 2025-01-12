@@ -19,6 +19,8 @@
  *  ```
  */
 
+#define _POSIX_C_SOURCE 199309L   ///< for clock_gettime()
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -38,7 +40,6 @@
 
 int main() {
   // SuperNOVAS aariables used for the calculations ------------------------->
-  cat_entry star = CAT_ENTRY_INIT;  // catalog information about a sidereal source
   object source;                    // observed source
   observer obs;                     // observer location
   novas_timespec obs_time;          // astrometric time of observation

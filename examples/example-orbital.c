@@ -22,6 +22,8 @@
  *  ```
  */
 
+#define _POSIX_C_SOURCE 199309L   ///< for clock_gettime()
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
