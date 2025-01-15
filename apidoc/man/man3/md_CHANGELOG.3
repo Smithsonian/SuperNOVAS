@@ -7,14 +7,16 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[Unreleased]"
+.SH "[1\&.2\&.0] - 2025-01-15"
 .PP
-Release candidate for the next feature release, expected around 1 February 2025\&.
+Feature release\&. New easy to use adapter modules for CALCEPH or the NAIF CSPICE Toolkit to provide precise positions for Solar-system sources\&. Also, added support for Keplerian orbitals, such as the ones published by the IAU Minor Planet Center (MPC) for asteroids, comets, and Near-Earth-Objects (NEOs)\&. And, many more fixes and improvements\&.
 .SS "Fixed"
 .IP "\(bu" 2
 Fixes to GCC version checking for macros\&.
 .IP "\(bu" 2
 Fixed dummy \fC\fBreadeph()\fP\fP implementation in \fCreadeph0\&.c\fP, and the use of \fCDEFAULT_READEPH\fP in \fCconfig\&.mk\fP\&. \fCreadeph0\&.c\fP is not linked by default, and was not linked in prior releases either\&.
+.IP "\(bu" 2
+Cure LLVM \fCclang\fP compiler warnings, in tests and examples also\&.
 .PP
 .SS "Added"
 .IP "\(bu" 2
@@ -78,7 +80,7 @@ Static library is now named \fCibsupernovas\&.a\fP, which is symlinked to \fClib
 .IP "\(bu" 2
 Various small tweaks to Makefiles\&.
 .IP "\(bu" 2
-Updated \fCREADME\&.md\fP documentation\&.
+Updated \fCREADME\&.md\fP and API documentation\&.
 .PP
 .SH "[1\&.1\&.1] - 2024-10-28"
 .PP

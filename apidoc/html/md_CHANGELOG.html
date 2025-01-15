@@ -117,13 +117,14 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
-<p>Release candidate for the next feature release, expected around 1 February 2025.</p>
+[1.2.0] - 2025-01-15</h1>
+<p>Feature release. New easy to use adapter modules for CALCEPH or the NAIF CSPICE Toolkit to provide precise positions for Solar-system sources. Also, added support for Keplerian orbitals, such as the ones published by the IAU Minor Planet Center (MPC) for asteroids, comets, and Near-Earth-Objects (NEOs). And, many more fixes and improvements.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
 <li>Fixes to GCC version checking for macros.</li>
 <li>Fixed dummy <code><a class="el" href="solarsystem_8h.html#abb70fdad016c3a2ea45990eaa16b9245">readeph()</a></code> implementation in <code>readeph0.c</code>, and the use of <code>DEFAULT_READEPH</code> in <code>config.mk</code>. <code>readeph0.c</code> is not linked by default, and was not linked in prior releases either.</li>
+<li>Cure LLVM <code>clang</code> compiler warnings, in tests and examples also.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Added</h2>
@@ -161,7 +162,7 @@ Changed</h2>
 <li>Static library is now named <code>ibsupernovas.a</code>, which is symlinked to <code>libnovas.a</code> for back compatibility.</li>
 <li><code>readeph0.c</code> moved to <code>examples/</code>. It's a dummy legacy NOVAS C implementation that is not really needed in SuperNOVAS.</li>
 <li>Various small tweaks to Makefiles.</li>
-<li>Updated <code>README.md</code> documentation.</li>
+<li>Updated <code>README.md</code> and API documentation.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md5"></a>
 [1.1.1] - 2024-10-28</h1>
