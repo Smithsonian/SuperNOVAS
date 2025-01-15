@@ -7,9 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.2.0] - 2025-01-15
 
-Release candidate for the next feature release, expected around 1 February 2025.
+Feature release. New easy to use adapter modules for CALCEPH or the NAIF CSPICE Toolkit to provide precise positions 
+for Solar-system sources. Also, added support for Keplerian orbitals, such as the ones published by the IAU Minor 
+Planet Center (MPC) for asteroids, comets, and Near-Earth-Objects (NEOs). And, many more fixes and improvements. 
 
 
 ### Fixed
@@ -19,6 +21,8 @@ Release candidate for the next feature release, expected around 1 February 2025.
  - Fixed dummy `readeph()` implementation in `readeph0.c`, and the use of `DEFAULT_READEPH` in `config.mk`. `readeph0.c` 
    is not linked by default, and was not linked in prior releases either.
 
+ - Cure LLVM `clang` compiler warnings, in tests and examples also.
+ 
 
 ### Added
 
@@ -130,7 +134,7 @@ Release candidate for the next feature release, expected around 1 February 2025.
  
  - Various small tweaks to Makefiles.
  
- - Updated `README.md` documentation.
+ - Updated `README.md` and API documentation.
  
    
    

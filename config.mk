@@ -193,7 +193,7 @@ ifdef DEFAULT_READEPH
 endif
 
 # Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
-ifneq ($(shell which ldconfig > /dev/null 2>&1), )
+ifneq ($(shell which ldconfig), )
   # Detect CALCEPH automatically, and enable support if present
   ifndef CALCEPH_SUPPORT 
     ifneq ($(shell ldconfig -p | grep libcalceph), )
@@ -225,4 +225,5 @@ OBJECTS := $(subst .c,.o,$(OBJECTS))
 vpath %.h $(INCLUDE)
 vpath %.c $(SRC)
 vpath %.o $(OBJ)
-vpath %.d dep 
+vpath %.d dep
+
