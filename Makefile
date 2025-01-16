@@ -222,7 +222,7 @@ install-libs:
 ifneq ($(wildcard $(LIB)/*),)
 	@echo "installing libraries to $(DESTDIR)$(libdir)"
 	install -d $(DESTDIR)$(libdir)
-	$(INSTALL_PROGRAM) -D $(LIB)/lib* $(DESTDIR)$(libdir)/
+	cp -a $(LIB)/lib* $(DESTDIR)$(libdir)/
 else
 	@echo "WARNING! Skipping libs install: needs 'shared' and/or 'static'"
 endif
