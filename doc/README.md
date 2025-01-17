@@ -76,7 +76,7 @@ Outside contributions are very welcome. See
  - [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) for building CSPICE as a shared
    library for dynamic linking.
  - [IAU Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) provides up-to-date orbital elements
-   for asteroid and comets, including for newly discovered objects.
+   for asteroids, comets, and near-Earth objects (NEOs), including newly discovered objects.
 
 
 -----------------------------------------------------------------------------

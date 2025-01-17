@@ -7,12 +7,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
-
-Upcoming bug fix release, targeted for 1 May 2025.
-
-
-
 ## [1.2.0] - 2025-01-15
 
 Feature release. New easy to use adapter modules for CALCEPH or the NAIF CSPICE Toolkit to provide precise positions 
