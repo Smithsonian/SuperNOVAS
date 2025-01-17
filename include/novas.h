@@ -40,7 +40,7 @@
 // were declared as 'const' variables, rather than precompiler constants, which meant (a) that they
 // needed to be defined in an actual source code "novascon.c"; a minor inconvenience, and (b)
 // they could not be undefined in case the application needed something else locally with
-// the same name. The rather non unique naming of constants such as 'C', 'F', 'T0', or 'AU' made
+// the same name. The rather non unique naming of constants such as 'C', 'F', 'T0', or 'AU'
 // exacerbated the chance of namespace conflicts when compiled or linked against the user's
 // application code, which may have defined their own constants or variables by the same name.
 //
@@ -65,10 +65,10 @@
 #define SUPERNOVAS_MINOR_VERSION  2
 
 /// Integer sub version of the release
-#define SUPERNOVAS_PATCHLEVEL     0
+#define SUPERNOVAS_PATCHLEVEL     1
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
-#define SUPERNOVAS_RELEASE_STRING ""
+#define SUPERNOVAS_RELEASE_STRING "-devel"
 
 /// \cond PRIVATE
 
