@@ -59,7 +59,7 @@ Computes the reverse atmospheric refraction for a given refraction model\&. Thus
 .br
 \fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
 .br
-\fItype\fP Refraction type to use for the original model: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+\fItype\fP Refraction type to use for the original model: NOVAS_REFRACT_OBSERVED (-1) or NOVAS_REFRACT_ASTROMETRIC (0)\&. 
 .br
 \fIel0\fP [deg] input elevation for the inverse refraction model\&. 
 .RE
@@ -98,7 +98,7 @@ Returns an optical refraction correction using the weather parameters defined fo
 .br
 \fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
 .br
-\fItype\fP Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+\fItype\fP Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or NOVAS_REFRACT_ASTROMETRIC (0)\&. 
 .br
 \fIel\fP [deg] Astrometric (unrefracted) source elevation 
 .RE
@@ -141,7 +141,7 @@ Berman, Allan L\&., and Rockwell, Stephen T\&. (1976), NASA JPL Technical Report
 .br
 \fIloc\fP Pointer to structure defining the observer's location on earth, and local weather\&. Make sure all weather values, including humidity (added in v1\&.1), are fully populated\&. 
 .br
-\fItype\fP Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+\fItype\fP Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or NOVAS_REFRACT_ASTROMETRIC (0)\&. 
 .br
 \fIel\fP [deg] source elevation of the specified type\&. 
 .RE
@@ -172,7 +172,7 @@ Returns an optical refraction correction for a standard atmosphere\&.
 .br
 \fIloc\fP Pointer to structure defining the observer's location on earth, and local weather 
 .br
-\fItype\fP Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or REFRACT_ASTROMETRIC (0)\&. 
+\fItype\fP Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or NOVAS_REFRACT_ASTROMETRIC (0)\&. 
 .br
 \fIel\fP [deg] Astrometric (unrefracted) source elevation 
 .RE
