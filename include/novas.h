@@ -62,10 +62,10 @@
 #define SUPERNOVAS_MAJOR_VERSION  1
 
 /// API minor version
-#define SUPERNOVAS_MINOR_VERSION  2
+#define SUPERNOVAS_MINOR_VERSION  3
 
 /// Integer sub version of the release
-#define SUPERNOVAS_PATCHLEVEL     1
+#define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
 #define SUPERNOVAS_RELEASE_STRING "-devel"
@@ -138,6 +138,9 @@
 /// [m] A kilometer (km) in meters. @since 1.2
 #define NOVAS_KM                  1000.0
 
+/// [m] One km/s in m/s. @since 1.3
+#define NOVAS_KMS                 (NOVAS_KM)
+
 /// [m] Astronomical unit (AU). IAU definition.
 /// See <a href="https://www.iau.org/static/resolutions/IAU2012_English.pdf">IAU 2012 Resolution B2</a>.
 /// @sa DE405_AU
@@ -180,6 +183,12 @@
 
 /// [s] TT - TAI time offset
 #define NOVAS_TAI_TO_TT           32.184
+
+/// [W/m<sup>2</sup>] The Solar Constant i.e., typical incident Solar power on Earth.
+/// The value of 1367 Wm<sup>−2</sup> was adopted by the World Radiation Center
+/// (Gueymard, 2004).
+/// @since 1.3
+#define NOVAS_SOLAR_CONSTANT      1367.0
 
 
 #if !COMPAT
@@ -698,7 +707,9 @@ typedef struct {
   double promora;                   ///< [mas/yr] ICRS proper motion in right ascension
   double promodec;                  ///< [mas/yr] ICRS proper motion in declination
   double parallax;                  ///< [mas] parallax
-  double radialvelocity;            ///< [km/s] catalog radial velocity
+  double radialvelocity;            ///< [km/s] catalog radial velocity (w.r.t. SSB)
+                                    ///< To specify radial velocities defined in the Local Standard of Rest (LSR)
+                                    ///< you might use novas_set_lsr_vel()
 } cat_entry;
 
 /**
@@ -1015,13 +1026,16 @@ typedef struct {
  *
  * @sa place()
  * @sa SKY_POS_INIT
+ * @sa novas_z_lsr()
  */
 typedef struct {
   double r_hat[3];  ///< unit vector toward object (dimensionless)
   double ra;        ///< [h] apparent, topocentric, or astrometric right ascension (hours)
   double dec;       ///< [deg] apparent, topocentric, or astrometric declination (degrees)
   double dis;       ///< [AU] true (geometric, Euclidian) distance to solar system body or 0.0 for star (AU)
-  double rv;        ///< [km/s] radial velocity (km/s)
+  double rv;        ///< [km/s] radial velocity (km/s). As of SuperNOVAS v1.3, this is always a proper
+                    ///< observer-based spectroscopic velocity measure, which relates the observed wavelength
+                    ///< to the rest wavelength as &lambda;<sub>obs</sub> = (1 + rv / c) &lambda;<sub>rest</sub>.
 } sky_pos;
 
 /**
@@ -1156,6 +1170,7 @@ typedef struct {
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
   novas_planet_bundle planets;    ///< Planet positions and velocities (ICRS)
+  // TODO [v2] add ra_cio
 } novas_frame;
 
 /**
@@ -1177,6 +1192,7 @@ typedef struct {
   novas_frame frame;                        ///< The observer place and time for which the transform is valid
   novas_matrix matrix;                      ///< Transformation matrix elements
 } novas_transform;
+
 
 /**
  * The type of elevation value for which to calculate a refraction.
@@ -1258,6 +1274,38 @@ extern int grav_bodies_full_accuracy;
  * @since 1.1
  */
 typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
+
+/**
+ * Spherical and spectral coordinate set.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_track
+ */
+typedef struct {
+  double lon;           ///< [deg] apparent longitude coordinate in coordinate system
+  double lat;           ///< [deg] apparent latitude coordinate in coordinate system
+  double dist;          ///< [AU] apparent distance to source from observer
+  double z;             ///< redshift
+} novas_observable;
+
+/**
+ * The spherical and spectral tracking position of a source, and its first and second time derivatives. As such,
+ * it may be useful for telescope drive control (position, velocity, and acceleration), or else for fast
+ * extrapolation of momentary positions without a full, and costly, recalculation of the positions at high
+ * rate over a suitable short period.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ */
+typedef struct {
+  novas_timespec time;     ///< The astronomical time for which the track is calculated.
+  novas_observable pos;    ///< [deg,AU,1] Apparent source position
+  novas_observable rate;   ///< [deg/s,AU/s,1/s] Apparent position rate of change
+  novas_observable accel;  ///< [deg/s<sup>2</sup>,AU/s<sup>2</sup>,1/s<sup>2</sup>] Apparent position acceleration.
+} novas_track;
+
 
 
 short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
@@ -1379,7 +1427,7 @@ short vector2radec(const double *pos, double *ra, double *dec);
 
 int radec2vector(double ra, double dec, double dist, double *pos);
 
-int starvectors(const cat_entry *star, double *pos, double *vel);
+int starvectors(const cat_entry *star, double *pos, double *motion);
 
 double get_ut1_to_tt(int leap_seconds, double dut1);
 
@@ -1651,8 +1699,52 @@ int gcrs_to_mod(double jd_tdb, const double *in, double *out);
 
 int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
-// <================= END of SuperNOVAS API =====================>
 
+// ---------------------- Added in 1.3.0 -------------------------
+int novas_starvel(const cat_entry *star, double *vel);
+
+double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
+
+double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR);
+
+double novas_hms_hours(const char *hms);
+
+double novas_dms_degrees(const char *dms);
+
+double novas_hpa(double az, double el, double lat);
+
+double novas_epa(double ha, double dec, double lat);
+
+int novas_h2e_offset(double daz, double del, double pa, double *dra, double *ddec);
+
+int novas_e2h_offset(double dra, double ddec, double pa, double *daz, double *del);
+
+double novas_sep(double lon1, double lat1, double lon2, double lat2);
+
+double novas_equ_sep(double ra1, double dec1, double ra2, double dec2);
+
+int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
+
+double novas_frame_lst(const novas_frame *frame);
+
+double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model);
+
+double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model);
+
+double novas_object_sep(const object *source1, const object *source2, const novas_frame *frame);
+
+double novas_sun_angle(const object *source, const novas_frame *frame);
+
+double novas_moon_angle(const object *source, const novas_frame *frame);
+
+int novas_equ_track(const object *source, const novas_frame *frame, double dt, novas_track *track);
+
+int novas_hor_track(const object *source, const novas_frame *frame, RefractionModel ref_model, novas_track *track);
+
+int novas_track_pos(const novas_track *track, const novas_timespec *time, double *lon, double *lat, double *dist, double *z);
+
+
+// <================= END of SuperNOVAS API =====================>
 
 
 #include <solarsystem.h>
@@ -1735,6 +1827,8 @@ int novas_error(int ret, int en, const char *from, const char *desc, ...);
   if (__ret != 0) \
     return __ret; \
 }
+
+double novas_add_beta(double beta1, double beta2);
 
 double novas_vlen(const double *v);
 double novas_vdist(const double *v1, const double *v2);

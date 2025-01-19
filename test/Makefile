@@ -87,9 +87,6 @@ bad-cio-data:
 	$(MAKE) clean
 	$(MAKE) run
 
-../cio_ra.bin:
-	$(MAKE) -C .. cio_ra.bin
-
 test-%: test-%.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
 

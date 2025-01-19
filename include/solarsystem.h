@@ -361,6 +361,16 @@ long novas_to_naif_planet(enum novas_planet id);
 
 long novas_to_dexxx_planet(enum novas_planet id);
 
+
+// Added in v1.3 --------------------------------->
+
+double novas_helio_dist(double jd_tdb, const object *source, double *rate);
+
+double novas_solar_power(double jd_tdb, const object *source);
+
+double novas_solar_illum(const object *source, const novas_frame *frame);
+
+
 /// \cond PRIVATE
 
 

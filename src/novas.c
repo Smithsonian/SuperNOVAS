@@ -301,7 +301,7 @@ double novas_vdot(const double *v1, const double *v2) {
   return (v1[0] * v2[0]) + (v1[1] * v2[1]) + (v1[2] * v2[2]);
 }
 
-static double novas_add_beta(double beta1, double beta2) {
+double novas_add_beta(double beta1, double beta2) {
   return (beta1 + beta2) / (1 + beta1 * beta2);
 }
 
@@ -347,7 +347,7 @@ double novas_z2v(double z) {
   }
   z += 1.0;
   z *= z;
-  return (z - 1.0) / (z + 1.0) * C / NOVAS_KM;
+  return (z - 1.0) / (z + 1.0) * C / NOVAS_KMS;
 }
 
 /**
@@ -765,6 +765,13 @@ novas_planet_provider_hp get_planet_provider_hp() {
  * Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt',
  * given its catalog mean place, proper motion, parallax, and radial velocity. See `place()`
  * for more information.
+ *
+ * NOTES:
+ * <ol>
+ * <li>As of SuperNOVAS v1.3, the returned radial velocity component is a proper observer-based
+ * spectroscopic measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with
+ * pseudo LSR-based measures being returned for catalog sources.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>
@@ -1547,6 +1554,8 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
   return 0;
 }
 
+
+
 /**
  * Computes the apparent direction of a celestial object at a specified time and in a specified
  * coordinate system and a specific near-Earth origin.
@@ -1577,6 +1586,9 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the
  * original NOVAS C place() for that system. To obtain more precise TOD coordinates, set `sys` to
  * `NOVAS_CIRS` here, and follow with cirs_to_tod() after.</li>
+ * <li>As of SuperNOVAS v1.3, the returned radial velocity component is a proper observer-based
+ * spectroscopic measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with
+ * pseudo LSR-based measures being returned for catalog sources.</li>
  * </ol>
  *
  * REFERENCES:
@@ -1691,7 +1703,8 @@ short place(double jd_tt, const object *source, const observer *location, double
     double dt = 0.0;
 
     // Get position of star updated for its space motion.
-    starvectors(&source->star, pos, vel);
+    starvectors(&source->star, pos, NULL);
+    novas_starvel(&source->star, vel);
 
     dt = d_light(pos, pob);
     proper_motion(JD_J2000, pos, vel, (jd_tdb + dt), pos);
@@ -4437,7 +4450,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
 
       // Compute radial velocity measure of sidereal source rel. barycenter
       // Including proper motion
-      beta_src = NOVAS_KM * star->radialvelocity / C;
+      beta_src = star->radialvelocity * NOVAS_KMS / C;
 
       if(star->parallax > 0.0) {
         double du[3];
@@ -4446,7 +4459,7 @@ double rad_vel2(const object *source, const double *pos_emit, const double *vel_
         du[1] = uk[1] - (cosdec * sin(ra));
         du[2] = uk[2] - sin(dec);
 
-        beta_src += novas_vdot(vel_src, du) / C_AUDAY;
+        beta_src = novas_add_beta(beta_src, novas_vdot(vel_src, du) / C_AUDAY);
       }
 
       break;
@@ -5022,7 +5035,75 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
 }
 
 /**
+ * Calculates the physical 3D velocity of a star, given its proper motion and measured radial
+ * velocity. All velocities are relative to the Solar-System Barycenter. It may be used
+ * for deriving spectroscopic velocity (e.g. radial velocity) measures.
+ *
+ * @param star    A catalog object.
+ * @param vel     [AU/day] The physical 3D equatorial rectangular motion of the the star
+ *                relative to the Solar-System Barycenter (SSB).
+ * @return        0 if successful, or else -1 if either input argument is NULL
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa starvectors()
+ * @sa place()
+ * @sa novas_geom_posvel()
+ */
+int novas_starvel(const cat_entry *star, double *vel) {
+  static const char *fn = "starvectors";
+
+  double paralx, r, d, cra, sra, cdc, sdc;
+  double k, pmr, pmd, rvl;
+
+  if(!star)
+    return novas_error(-1, EINVAL, fn, "NULL input cat_entry");
+
+  if(!vel)
+    return novas_error(-1, EINVAL, fn, "NULL output velocity vector");
+
+  // If parallax is unknown, undetermined, or zero, set it to 1e-6
+  // milliarcsecond, corresponding to a distance of 1 gigaparsec.
+  paralx = star->parallax;
+  if(star->parallax <= 0.0)
+    paralx = 1.0e-6;
+
+  r = star->ra * HOURANGLE;
+  d = star->dec * DEGREE;
+
+  cra = cos(r);
+  sra = sin(r);
+  cdc = cos(d);
+  sdc = sin(d);
+
+  // Compute Doppler factor, which accounts for change in
+  // light travel time to star.
+  k = 1.0 / (1.0 - star->radialvelocity * NOVAS_KMS / C);
+
+  // Convert proper motion and radial velocity to orthogonal components of
+  // motion with units of AU/day.
+  pmr = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
+  pmd = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
+  rvl = star->radialvelocity * NOVAS_KMS / (AU / DAY);
+
+  // Transform motion vector to equatorial system.
+  vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
+  vel[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
+  vel[2] = pmd * cdc + rvl * sdc;
+
+  return 0;
+}
+
+/**
  * Converts angular quantities for stars to vectors.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The velocity returned should not be used for deriving spectroscopic radial velocity. It is
+ * a measure of the perceived change of the stars position, not a true physical velocity.
+ * To obtain a physical velocity, use `novas_starvel()` instead.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>
@@ -5032,23 +5113,30 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
  * @param star         Pointer to catalog entry structure containing ICRS catalog
  * @param[out] pos     [AU] Position vector, equatorial rectangular coordinates,
  *                     components in AU. It may be NULL if not required.
- * @param[out] vel     [AU/day] Velocity vector, equatorial rectangular coordinates,
- *                     components in AU/Day. It must be distinct from the pos output
- *                     vector, and may be NULL if not required.
+ * @param[out] motion  [AU/day] Perceived motion of star, in equatorial rectangular
+ *                     coordinates, components in AU/Day. It must be distinct from the
+ *                     pos output vector, and may be NULL if not required.
+ *                     Note, that it is suitable only for calculating the apparent 3D
+ *                     location of the star at a different time, and should not be
+ *                     used as a measure of physical velocity, e.g. for spectroscopic
+ *                     radial velocity determination.
  *
  * @return             0 if successful, or -1 if the star argument is NULL or the
  *                     output vectors are the same pointer.
  *
+ * @sa novas_starvel()
  * @sa make_cat_entry()
  */
-int starvectors(const cat_entry *star, double *pos, double *vel) {
+int starvectors(const cat_entry *star, double *pos, double *motion) {
+  static const char *fn = "starvectors";
+
   double paralx, r, d, cra, sra, cdc, sdc;
 
   if(!star)
-    return novas_error(-1, EINVAL, "starvectors", "NULL input cat_entry");
+    return novas_error(-1, EINVAL, fn, "NULL input cat_entry");
 
-  if(pos == vel)
-    return novas_error(-1, EINVAL, "starvectors", "identical output pos and vel 3-vectors @ %p", pos, vel);
+  if(pos == motion)
+    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p", pos, motion);
 
   // If parallax is unknown, undetermined, or zero, set it to 1e-6
   // milliarcsecond, corresponding to a distance of 1 gigaparsec.
@@ -5073,21 +5161,21 @@ int starvectors(const cat_entry *star, double *pos, double *vel) {
     pos[2] = dist * sdc;
   }
 
-  if(vel) {
+  if(motion) {
     // Compute Doppler factor, which accounts for change in
     // light travel time to star.
-    const double k = 1.0 / (1.0 - NOVAS_KM * star->radialvelocity / C);
+    const double k = 1.0 / (1.0 - star->radialvelocity * NOVAS_KMS / C);
 
     // Convert proper motion and radial velocity to orthogonal components of
     // motion with units of AU/day.
     const double pmr = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
     const double pmd = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
-    const double rvl = k * NOVAS_KM * star->radialvelocity / (AU / DAY);
+    const double rvl = k * star->radialvelocity * NOVAS_KMS / (AU / DAY);
 
     // Transform motion vector to equatorial system.
-    vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
-    vel[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
-    vel[2] = pmd * cdc + rvl * sdc;
+    motion[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
+    motion[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
+    motion[2] = pmd * cdc + rvl * sdc;
   }
 
   return 0;
@@ -6212,6 +6300,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   double paralx, dist, r, d, cra, sra, cdc, sdc, k;
   double pos[3], vel[3], term1, pmr, pmd, rvl, xyproj;
+  double djd = (jd_tt_out - jd_tt_in);
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: in=%p, out=%p", in, out);
@@ -6256,15 +6345,15 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   pos[2] = dist * sdc;
 
   // Compute Doppler factor, which accounts for change in light travel time to star.
-  k = 1.0 / (1.0 - in->radialvelocity / C * NOVAS_KM);
+  k = 1.0 / (1.0 - in->radialvelocity * NOVAS_KMS / C);
 
   // Convert proper motion and radial velocity to orthogonal components
   // of motion, in spherical polar system at star's original position,
   // with units of AU/day.
   term1 = paralx * JULIAN_YEAR_DAYS;
-  pmr = in->promora / term1 * k;
-  pmd = in->promodec / term1 * k;
-  rvl = in->radialvelocity * DAY / AU_KM * k;
+  pmr = k * in->promora / term1;
+  pmd = k * in->promodec / term1;
+  rvl = k * in->radialvelocity * DAY / AU_KM;
 
   // Transform motion vector to equatorial system.
   vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
@@ -6275,7 +6364,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   if((option == PROPER_MOTION) || (option == CHANGE_EPOCH)) {
     int j;
     for(j = 0; j < 3; j++)
-      pos[j] += vel[j] * (jd_tt_out - jd_tt_in);
+      pos[j] += vel[j] * djd;
   }
 
   switch(option) {
@@ -6331,6 +6420,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   sra = sin(r);
   cdc = cos(d);
   sdc = sin(d);
+
   pmr = -vel[0] * sra + vel[1] * cra;
   pmd = -vel[0] * cra * sdc - vel[1] * sra * sdc + vel[2] * cdc;
   rvl = vel[0] * cra * cdc + vel[1] * sra * cdc + vel[2] * sdc;
@@ -6689,11 +6779,14 @@ double norm_ang(double angle) {
  * @param pm_ra       [mas/yr] Proper motion in right ascension (milliarcseconds/year).
  * @param pm_dec      [mas/yr] Proper motion in declination (milliarcseconds/year).
  * @param parallax    [mas] Parallax (milliarcseconds).
- * @param rad_vel     [km/s] Radial velocity (LSR)
+ * @param rad_vel     [km/s] Radial velocity relative to the Solar-System Barycenter (SSB)
+ *                    To convert velocities defined against the Local Standard of Rest (LSR),
+ *                    you may use `novas_lsr_to_ssb_vel()` to convert appropriately.
  * @param[out] star   Pointer to data structure to populate.
  * @return            0 if successful, or -1 if the output argument is NULL, 1 if the
  *                    'star_name' is too long or 2 if the 'catalog' name is too long.
  *
+ * @sa novas_lsr_to_ssb_vel()
  * @sa make_redshifted_cat_entry()
  * @sa make_object()
  * @sa transform_cat()
@@ -6793,7 +6886,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
   if(!source)
     return novas_error(-1, EINVAL, fn, "NULL input source");
 
-  // FIXME will not need special case in v2.x
+  // FIXME [v2] will not need special case in v2.x
   memset(source, 0, type == NOVAS_ORBITAL_OBJECT ? sizeof(object) : offsetof(object, orbit));
 
   // Set the object type.

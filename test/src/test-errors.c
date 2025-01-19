@@ -1603,6 +1603,210 @@ static int test_set_obsys_pole() {
   return n;
 }
 
+static int test_hms_hours() {
+  int n = 0;
+
+  if(check_nan("hms_hours:null", novas_hms_hours(NULL))) n++;
+  if(check_nan("hms_hours:empty", novas_hms_hours(""))) n++;
+  if(check_nan("hms_hours:empty", novas_hms_hours(""))) n++;
+  if(check_nan("hms_hours:few", novas_hms_hours("12 39"))) n++;
+  if(check_nan("hms_hours:dms", novas_hms_hours("12d 39m 33.0"))) n++;
+  if(check_nan("hms_hours:sep", novas_hms_hours("12,39,33.0"))) n++;
+  if(check_nan("hms_hours:min:neg", novas_hms_hours("12 -1 33.0"))) n++;
+  if(check_nan("hms_hours:min:60", novas_hms_hours("12 60 33.0"))) n++;
+  if(check_nan("hms_hours:sec:neg", novas_hms_hours("12 39 -0.1"))) n++;
+  if(check_nan("hms_hours:min:60", novas_hms_hours("12 39 60.0"))) n++;
+
+  return n;
+}
+
+static int test_dms_degrees() {
+  int n = 0;
+
+  if(check_nan("dms_degrees:null", novas_dms_degrees(NULL))) n++;
+  if(check_nan("dms_degrees:empty", novas_dms_degrees(""))) n++;
+  if(check_nan("dms_degrees:empty", novas_dms_degrees(""))) n++;
+  if(check_nan("dms_degrees:few", novas_dms_degrees("122 39"))) n++;
+  if(check_nan("dms_degrees:hms", novas_dms_degrees("122h 39m 33.0"))) n++;
+  if(check_nan("dms_degrees:sep", novas_dms_degrees("122,39,33.0"))) n++;
+  if(check_nan("dms_degrees:min:neg", novas_dms_degrees("122 -1 33.0"))) n++;
+  if(check_nan("dms_degrees:min:60", novas_dms_degrees("122 60 33.0"))) n++;
+  if(check_nan("dms_degrees:sec:neg", novas_dms_degrees("122 39 -0.1"))) n++;
+  if(check_nan("dms_degrees:min:60", novas_dms_degrees("122 39 60.0"))) n++;
+
+  return n;
+}
+
+static int test_helio_dist() {
+  int n = 0;
+  double rate = 0.0;
+  object star = {};
+
+  star.type = NOVAS_CATALOG_OBJECT;
+
+  if(check_nan("helio_dist:null", novas_helio_dist(JD_J2000, NULL, NULL))) n++;
+  if(check_nan("helio_dist:cat_object", novas_helio_dist(JD_J2000, &star, NULL))) n++;
+  if(check_nan("helio_dist:null:rate", novas_helio_dist(JD_J2000, NULL, &rate))) n++;
+  if(check_nan("helio_dist:null:rate:nan", rate)) n++;
+  if(check_nan("helio_dist:cat_object:rate", novas_helio_dist(JD_J2000, &star, &rate))) n++;
+  if(check_nan("helio_dist:cat_object:rate:nan", rate)) n++;
+
+  return n;
+}
+
+static int test_xyz_to_uvw() {
+  int n = 0;
+  double p[3] = {};
+
+  if(check("xyz_to_uvw:xyz", -1, novas_xyz_to_uvw(NULL, 0.0, 0.0, p))) n++;
+  if(check("xyz_to_uvw:uvw", -1, novas_xyz_to_uvw(p, 0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
+static int test_frame_lst() {
+  int n = 0;
+  novas_timespec time = {};
+  observer obs = {};
+  novas_frame frame = {};
+
+  if(check_nan("frame_lst:frame:null", novas_frame_lst(NULL))) n++;
+  if(check_nan("frame_lst:frame:init", novas_frame_lst(&frame))) n++;
+
+  novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
+  make_observer_at_geocenter(&obs);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame);
+
+  if(check_nan("frame_lst:obs:invalid", novas_frame_lst(&frame))) n++;
+
+  return n;
+}
+
+static int test_rise_set() {
+  int n = 0;
+  object sun = NOVAS_SUN_INIT;
+  novas_timespec time = {};
+  observer obs = {};
+  novas_frame frame = {};
+  int save = novas_inv_max_iter;
+
+  if(check_nan("rise_set:rises_above:frame:null", novas_rises_above(0.0, &sun, NULL, NULL))) n++;
+  if(check_nan("rise_set:rises_above:frame:init", novas_rises_above(0.0, &sun, &frame, NULL))) n++;
+  if(check_nan("rise_set:sets_below:frame:null", novas_sets_below(0.0, &sun, NULL, NULL))) n++;
+  if(check_nan("rise_set:sets_below:frame:init", novas_sets_below(0.0, &sun, &frame, NULL))) n++;
+
+  // noon (near transit)
+  novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
+  make_observer_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, &obs);
+  if(check("rise_set:make_frame", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+
+  if(check_nan("rise_set:rises_above:source:null", novas_rises_above(0.0, NULL, &frame, NULL))) n++;
+  if(check_nan("rise_set:sets_below:source:null", novas_sets_below(0.0, NULL, &frame, NULL))) n++;
+
+  make_observer_on_surface(60.0, 0.0, 0.0, 0.0, 0.0, &obs);
+  novas_change_observer(&frame, &obs, &frame);
+  if(check_nan("rise_set:rises_above:source:null", novas_rises_above(31.0, &sun, &frame, NULL))) n++;
+
+  novas_inv_max_iter = 0;
+  if(check_nan("rise_set:rises_above:source:null", novas_rises_above(0.0, &sun, &frame, NULL))) n++;
+  novas_inv_max_iter = save;
+
+  return n;
+}
+
+static int test_tracks() {
+  int n = 0;
+  object sun = NOVAS_SUN_INIT;
+  novas_timespec time = {};
+  observer obs = {};
+  novas_frame frame = {};
+  novas_track track = {};
+  double vel[3] = {}, x;
+
+  if(check("equ_track:frame:null", -1, novas_equ_track(&sun, NULL, 1000.0, &track))) n++;
+  if(check("equ_track:frame:init", -1, novas_equ_track(&sun, &frame, 1000.0, &track))) n++;
+  if(check("hor_track:frame:null", -1, novas_hor_track(&sun, NULL, NULL, &track))) n++;
+  if(check("hor_track:frame:init", -1, novas_hor_track(&sun, &frame, NULL, &track))) n++;
+
+  // noon (near transit)
+  novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
+  make_observer_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, &obs);
+  if(check("rise_set:make_frame", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+
+  if(check("equ_track:source:null", -1, novas_equ_track(NULL, &frame, 1000.0, &track))) n++;
+  if(check("equ_track:track:null", -1, novas_equ_track(&sun, &frame, 1000.0, NULL))) n++;
+  if(check("hor_track:source:null", -1, novas_hor_track(NULL, &frame, NULL, &track))) n++;
+  if(check("hor_track:track:null", -1, novas_hor_track(&sun, &frame, NULL, NULL))) n++;
+
+  if(check("hor_track:make_airborne_observer", 0, make_airborne_observer(&obs.on_surf, vel, &obs))) n++;
+  if(check("rise_set:make_frame:airborne", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+  if(check("hor_track:track:null", 0, novas_hor_track(&sun, &frame, NULL, &track))) n++;
+
+  make_observer_at_geocenter(&obs);
+  if(check("rise_set:make_frame:geocenter", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+  if(check("hor_track:track:null", -1, novas_hor_track(&sun, &frame, NULL, &track))) n++;
+
+  if(check("track_pos:track:null", -1, novas_track_pos(NULL, &time, &x, NULL, NULL, NULL))) n++;
+  if(check("track_pos:time:null", -1, novas_track_pos(&track, NULL, &x, NULL, NULL, NULL))) n++;
+
+  return n;
+}
+
+static int test_solar_illum() {
+  int n = 0;
+  object earth = NOVAS_EARTH_INIT;
+  object jupiter = NOVAS_JUPITER_INIT;
+  novas_timespec time = {};
+  observer obs;
+  novas_frame frame = {};
+  double pos[3] = {1.0, 1.0, 0.0}, vel[3] = {};
+
+  make_solar_system_observer(pos, vel, &obs);
+  novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
+
+  if(check_nan("solar_illum:frame:null", novas_solar_illum(&earth, NULL))) n++;
+  if(check_nan("solar_illum:frame:init", novas_solar_illum(&earth, &frame))) n++;
+
+  if(check("solar_illum:make_frame", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+  if(check_nan("solar_illum:source:null", novas_solar_illum(NULL, &frame))) n++;
+  if(check_nan("solar_illum:source:invalid", novas_solar_illum(&jupiter, &frame))) n++;
+
+  return n;
+}
+
+static int test_object_sep() {
+  int n = 0;
+  object sun = NOVAS_SUN_INIT;
+  object earth = NOVAS_EARTH_INIT;
+  object jupiter = NOVAS_JUPITER_INIT;
+  novas_timespec time = {};
+  observer obs;
+  novas_frame frame = {};
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
+
+  if(check_nan("object_sep:frame:null", novas_object_sep(&sun, &sun, NULL))) n++;
+  if(check_nan("object_sep:frame:init", novas_object_sep(&sun, &sun, &frame))) n++;
+
+  if(check("object_sep:make_frame", 0, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+
+  if(check_nan("object_sep:a:null", novas_object_sep(NULL, &sun, &frame))) n++;
+  if(check_nan("object_sep:b:null", novas_object_sep(&sun, NULL, &frame))) n++;
+
+  if(check_nan("object_sep:a:invalid", novas_object_sep(&jupiter, &sun, &frame))) n++;
+  if(check_nan("object_sep:b:invalid", novas_object_sep(&sun, &jupiter, &frame))) n++;
+
+  if(check_nan("object_sep:a=obs", novas_object_sep(&earth, &sun, &frame))) n++;
+  if(check_nan("object_sep:b=obs", novas_object_sep(&sun, &earth, &frame))) n++;
+  if(check_nan("object_sep:a=b=obs", novas_object_sep(&earth, &earth, &frame))) n++;
+
+  if(check_nan("object_sep:sun_angle", novas_sun_angle(&earth, &frame))) n++;
+  if(check_nan("object_sep:sun_angle", novas_moon_angle(&earth, &frame))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1740,6 +1944,17 @@ int main() {
   if(test_tod_to_gcrs()) n++;
   if(test_gcrs_to_mod()) n++;
   if(test_mod_to_gcrs()) n++;
+
+  if(test_hms_hours()) n++;
+  if(test_dms_degrees()) n++;
+  if(test_helio_dist()) n++;
+  if(test_xyz_to_uvw()) n++;
+
+  if(test_frame_lst()) n++;
+  if(test_rise_set()) n++;
+  if(test_tracks()) n++;
+  if(test_solar_illum()) n++;
+  if(test_object_sep()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

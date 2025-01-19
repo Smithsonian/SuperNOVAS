@@ -1230,9 +1230,9 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
  * @since 1.2
  */
 double novas_v2z(double vel) {
-  vel *= NOVAS_KM / C;   // [km/s] -> beta
+  vel *= NOVAS_KMS / C;   // [km/s] -> beta
   if(fabs(vel) > 1.0) {
-    novas_error(-1, EINVAL, "novas_v2z", "velocity exceeds speed of light v=%g km/s", vel * C / NOVAS_KM);
+    novas_error(-1, EINVAL, "novas_v2z", "velocity exceeds speed of light v=%g km/s", vel * C / NOVAS_KMS);
     return NAN;
   }
   return sqrt((1.0 + vel) / (1.0 - vel)) - 1.0;
@@ -1428,7 +1428,7 @@ enum novas_planet novas_planet_for_name(const char *name) {
  * @param type  Coordinate reference system in which `ra` and `dec` are defined (e.g. NOVAS_GCRS).
  * @param ra    [h] the R.A. of the pole of the oribtal reference plane.
  * @param dec   [deg] the declination of the pole of the oribtal reference plane.
- * @param[out]  sys   The orbital system
+ * @param[out]  sys   Orbital system
  * @return      0 if successful, or else -1 (errno will be set to EINVAL) if the output `sys`
  *              pointer is NULL.
  *
@@ -1447,4 +1447,528 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
   sys->Omega = remainder(15.0 * ra + 90.0, 360.0);
 
   return 0;
+}
+
+/**
+ * Returns the decimal hours for a HMS string specification. The hour, minute, and second
+ * components may be separated by spaces, tabs, colons `:`, or a combination thereof.
+ * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the
+ * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all
+ * of the lines below specify the same time:
+ *
+ * <pre>
+ *  23:59:59.999
+ *  23h 59m 59.999
+ *  23h 59' 59.999
+ *  23H59'59.999
+ * </pre>
+ *
+ *
+ * @param hms     String specifying hours, minutes, and seconds, which correspond to
+ *                a time between 0 and 24 h. Time in any range is permitted, but the minutes and
+ *                seconds must be &gt;=0 and &lt;60.
+ * @return        [hours] Corresponding decimal time value, or else NAN if there was an
+ *                error parsing the string (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_dms_degrees()
+ */
+double novas_hms_hours(const char *hms) {
+  static const char *fn = "novas_hms_hours";
+
+  int h = 0, m = 0;
+  double s = NAN;
+
+  if(!hms) {
+    novas_error(-1, EINVAL, fn, "input string is NULL");
+    return NAN;
+  }
+  if(!hms[0]) {
+    novas_error(-1, EINVAL, fn, "input string is empty");
+    return NAN;
+  }
+
+  if(sscanf(hms, "%d%*[:hH \t]%d%*[:mM' \t]%lf", &h, &m, &s) != 3) {
+    novas_error(-1, EINVAL, fn, "not in HMS format: '%s'", hms);
+    return NAN;
+  }
+
+  if(m < 0 || m >= 60) {
+    novas_error(-1, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
+    return NAN;
+  }
+
+  if(s < 0.0 || s >= 60.0) {
+    novas_error(-1, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
+    return NAN;
+  }
+
+  s = abs(h) + (m / 60.0) + (s / 3600.0);
+  return h < 0 ? -s : s;
+}
+
+/**
+ * Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and
+ * (arc)second components may be separated by spaces, tabs, colons `:`, or a combination thereof.
+ * Additionally, the degree and minutes may be semarated by the letter `d` or `D`, and the
+ * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all of
+ * the lines below specify the same angle:
+ *
+ * <pre>
+ *  -179:59:59.999
+ *  -179 59m 59.999
+ *  -179d 59' 59.999
+ *  -179D59'59.999
+ * </pre>
+ *
+ *
+ * @param dms     String specifying degrees, minutes, and seconds, which correspond to
+ *                an angle. Angles in any range are permitted, but the minutes and
+ *                seconds must be &gt;=0 and &lt;60.
+ * @return        [deg] Corresponding decimal angle value, or else NAN if there was
+ *                an error parsing the string (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_hms_hours()
+ */
+double novas_dms_degrees(const char *dms) {
+  static const char *fn = "novas_dms_degrees";
+
+  int d = 0, m = 0;
+  double s = NAN;
+
+  if(!dms) {
+    novas_error(-1, EINVAL, fn, "input string is NULL");
+    return NAN;
+  }
+  if(!dms[0]) {
+    novas_error(-1, EINVAL, fn, "input string is empty");
+    return NAN;
+  }
+
+  if(sscanf(dms, "%d%*[:dD \t]%d%*[:mM' \t]%lf", &d, &m, &s) != 3) {
+    novas_error(-1, EINVAL, fn, "not in DMS format: '%s'", dms);
+    return NAN;
+  }
+
+  if(m < 0 || m >= 60) {
+    novas_error(-1, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
+    return NAN;
+  }
+
+  if(s < 0.0 || s >= 60.0) {
+    novas_error(-1, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
+    return NAN;
+  }
+
+  s = abs(d) + (m / 60.0) + (s / 3600.0);
+
+  return d < 0 ? -s : s;
+}
+
+/**
+ * Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky. The PA
+ * is the angle between the local horizontal coordinate directions and the local true-of-date equatorial
+ * coordinate directions at the given location. The polar wobble is not included in the calculation.
+ *
+ * The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the
+ * same quantity.
+ *
+ * @param az    [deg] Azimuth angle
+ * @param el    [deg] Elevation angle
+ * @param lat   [deg] Geodetic latitude of observer
+ * @return      [deg] Parallactic Angle (PA). I.e., the clockwise position angle of the declination direction
+ *              w.r.t. the elevation axis in the horizontal system. Same as the the clockwise position angle
+ *              of the elevation direction w.r.t. the declination axis in the equatorial system.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_epa()
+ * @sa novas_h2e_offset()
+ */
+double novas_hpa(double az, double el, double lat) {
+  double s, c;
+
+  lat *= DEGREE;
+  az *= DEGREE;
+  el *= DEGREE;
+
+  s = sin(lat);
+  c = cos(lat);
+
+  return atan2(-c * sin(az), s * cos(el) - c * sin(el) * cos(az)) / DEGREE;
+}
+
+/**
+ * Returns the equatorial Parallactic Angle (PA) calculated for an R.A./Dec location of the sky at a given
+ * sidereal time. The PA is the angle between the local horizontal coordinate directions and the local
+ * true-of-date equatorial coordinate directions, at the given location and time. The polar wobble is not
+ * included in the calculation.
+ *
+ * The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the
+ * same quantity.
+ *
+ * @param ha      [h] Hour angle (LST - RA) i.e., the difference between the Local (apparent) Sidereal Time
+ *                and the apparent (true-of-date) Right Ascension of observed source.
+ * @param dec     [deg] Apparent (true-of-date) declination of observed source
+ * @param lat     [deg] Geodetic latitude of observer
+ * @return        [deg] Parallactic Angle (PA). I.e., the clockwise position angle of the elevation direction
+ *                w.r.t. the declination axis in the equatorial system. Same as the clockwise position angle
+ *                of the declination direction w.r.t. the elevation axis, in the horizontal system.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_hpa()
+ * @sa novas_lst()
+ * @sa novas_e2h_offset()
+ */
+double novas_epa(double ha, double dec, double lat) {
+  double coslat;
+
+  ha *= HOURANGLE;
+  lat *= DEGREE;
+  dec *= DEGREE;
+
+  coslat = cos(lat);
+  return atan2(coslat * sin(ha), sin(lat) * cos(dec) - coslat * sin(dec) * cos(ha)) / DEGREE;
+}
+
+/**
+ * Converts coordinate offsets, from the local horizontal system to local equatorial offsets.
+ * Converting between local flat projections and spherical coordinates usually requires a WCS
+ * projection.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Calabretta, M.R., & Greisen, E.W., (2002), Astronomy & Astrophysics, 395, 1077-1122.</li>
+ * </ol>
+ *
+ * @param daz         [arcsec] Projected offset position in the azimuth direction. The projected
+ *                    offset between two azimuth positions at the same reference elevation is
+ *                    &delta;Az = (Az2 - Az1) * cos(El<sub>0</sub>).
+ * @param del         [arcsec] projected offset position in the elevation direction
+ * @param pa          [deg] Parallactic Angle
+ * @param[out] dra    [arcsec] Output offset position in the local true-of-date R.A. direction. It
+ *                    can be a pointer to one of the input coordinates, or NULL if not required.
+ * @param[out] ddec   [arcsec] Output offset position in the local true-of-date declination
+ *                    direction. It can be a pointer to one of the input coordinates, or NULL if not
+ *                    required.
+ * @return            0
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_e2h_offset()
+ * @sa novas_hpa()
+ */
+int novas_h2e_offset(double daz, double del, double pa, double *dra, double *ddec) {
+  double dx = daz, dy = del, c, s;
+
+  pa *= DEGREE;
+  c = cos(pa);
+  s = sin(pa);
+
+  if(dra) *dra =  s * dy - c * dx;
+  if(ddec) *ddec = s * dx + c * dy;
+
+  return 0;
+}
+
+/**
+ * Converts coordinate offsets, from the local equatorial system to local horizontal offsets.
+ * Converting between local flat projections and spherical coordinates usually requires a WCS
+ * projection.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Calabretta, M.R., & Greisen, E.W., (2002), Astronomy & Astrophysics, 395, 1077-1122.</li>
+ * </ol>
+ *
+ * @param dra         [arcsec] Projected ffset position in the apparent true-of-date R.A. direction.
+ *                    E.g. The projected offset between two RA coordinates at a same reference
+ *                    declination, is
+ *                    &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>)
+ * @param ddec        [arcsec] Projected offset position in the apparent true-of-date declination
+ *                    direction.
+ * @param pa          [deg] Parallactic Angle
+ * @param[out] daz    [arcsec] Output offset position in the local azimuth direction. It can be a pointer
+ *                    to one of the input coordinates, or NULL if not required.
+ * @param[out] del    [arcsec] Output offset position in the local elevation direction. It can be a
+ *                    pointer to one of the input coordinates, or NULL if not required.
+ * @return            0
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_h2e_offset()
+ * @sa novas_epa()
+ */
+int novas_e2h_offset(double dra, double ddec, double pa, double *daz, double *del) {
+  return novas_h2e_offset(dra, ddec, pa, daz, del);
+}
+
+/**
+ * Returns a Solar-system body's distance from the Sun, and optionally also the rate of recession.
+ * It may be useful, e.g. to calculate the body's heating from the Sun.
+ *
+ * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date. You may want to
+ *                    use a time that is antedated to when the observed light originated from the
+ *                    source.
+ * @param source      Observed Solar-system source
+ * @param[out] rate   [AU/day] (optional) Returned rate of recession from Sun
+ * @return            [AU] Distance from the Sun, or NAN if not a Solar-system source.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_solar_power()
+ * @sa novas_solar_illum()
+ */
+double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
+  static const char *fn = "novas_helio_dist";
+
+  const double jd2[2] = { jd_tdb, 0.0 };
+  double pos[3], vel[3], d;
+
+  if(!source) {
+    novas_error(0, EINVAL, fn, "input source is NULL");
+    if(rate) *rate = NAN;
+    return NAN;
+  }
+
+  if(source->type == NOVAS_CATALOG_OBJECT) {
+    novas_error(0, EINVAL, fn, "input source is not a Solar-system body: type %d", source->type);
+    if(rate) *rate = NAN;
+    return NAN;
+  }
+
+  if(ephemeris(jd2, source, NOVAS_HELIOCENTER, NOVAS_REDUCED_ACCURACY, pos, vel) != 0) return novas_trace_nan(fn);
+
+  d = novas_vlen(pos);
+  if(!d) {
+    // The Sun itself...
+    if(rate) *rate = 0.0;
+    return 0.0;
+  }
+
+  if(rate) *rate = novas_vlen(vel);
+  return d;
+
+}
+
+/**
+ * Returns the incident Solar power on a Solar-system body at the time of observation.
+ *
+ * @param jd_tdb  [day] Barycentric Dynamical Time (TDB) based Julian date. You may want to
+ *                use a time that is antedated to when the observed light originated from the
+ *                source.
+ * @param source  Observed Solar-system source
+ * @return        [W/m<sup>2</sup>] Incident Solar power on the illuminated side of the object,
+ *                or NAN if not a Solar-system source or if the source is the Sun itself.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_solar_illum()
+ */
+double novas_solar_power(double jd_tdb, const object *source) {
+  double d = novas_helio_dist(jd_tdb, source, NULL);
+  return NOVAS_SOLAR_CONSTANT / (d * d);
+}
+
+/**
+ * Returns the angular separation of two locations on a sphere.
+ *
+ * @param lon1    [deg] longitude of first location
+ * @param lat1    [deg] latitude of first location
+ * @param lon2    [deg] longitude of second location
+ * @param lat2    [deg] latitude of second location
+ * @return        [deg] the angular separation of the two locations.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_equ_sep()
+ * @sa novas_sun_angle()
+ * @sa novas_moon_angle()
+ */
+double novas_sep(double lon1, double lat1, double lon2, double lat2) {
+  double c = sin(lat1 * DEGREE) * sin(lat2 * DEGREE) + cos(lat1 * DEGREE) * cos(lat2 * DEGREE) * cos((lon1 - lon2) * DEGREE);
+  return atan2(sqrt(1.0 - c * c), c) / DEGREE;
+}
+
+/**
+ * Returns the angular separation of two equatorial locations on a sphere.
+ *
+ * @param ra1     [h] right ascension of first location
+ * @param dec1    [deg] declination of first location
+ * @param ra2     [h] right ascension of second location
+ * @param dec2    [deg] declination of second location
+ * @return        [deg] the angular separation of the two locations.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_sep()
+ * @sa novas_sun_angle()
+ * @sa novas_moon_angle()
+ */
+double novas_equ_sep(double ra1, double dec1, double ra2, double dec2) {
+  return novas_sep(15.0 * ra1, dec1, 15.0 * ra2, dec2);
+}
+
+/**
+ * Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) toequatorial
+ * u,v,w projected coordinates for a specified line of sight.
+ *
+ * x,y,z are Cartesian coordinates w.r.t the Greenwitch meridian. The directions are x: long=0, lat=0;
+ * y: long=90, lat=0; z: lat=90.
+ *
+ * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as
+ * seen from a direction on the sky (w).
+ *
+ * @param xyz           [arb.u.] Absolute or relative x,y,z coordinates (double[3]).
+ * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local
+ *                      (apparent) Sidereal Time and the apparent (true-of-date) Right
+ *                      Ascension of observed source.
+ * @param dec           [deg] Apparent (true-of-date) declination of source
+ * @param[out] uvw      [arb.u.] Converted u,v,w coordinates (double[3]) in same units as xyz.
+ *                      It may be the same vector as the input.
+ *
+ * @return              0 if successful, or else -1 if either vector argument is NULL
+ *                      (errno will be set to EINVAL)
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_xyz2enu()
+ */
+int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw) {
+  static const char *fn = "novas_xyz_to_uvw";
+
+  double dX, dY, dZ, sHA, cHA, sDec, cDec;
+
+  if(!xyz)
+    return novas_error(-1, EINVAL, fn, "input xyz vector is NULL");
+  if(!uvw)
+    return novas_error(-1, EINVAL, fn, "output uvw vector is NULL");
+
+  dX = xyz[0];
+  dY = xyz[1];
+  dZ = xyz[2];
+
+  ha *= HOURANGLE;
+  dec *= DEGREE;
+
+  sHA = sin(ha);
+  cHA = cos(ha);
+
+  sDec = sin(dec);
+  cDec = cos(dec);
+
+  uvw[0] = sHA * dX + cHA * dY;
+  uvw[1] = -cHA * sDec * dX + sHA * sDec * dY + cDec * dZ;
+  uvw[2] = cHA * cDec * dX - sHA * cDec * dY + sDec * dZ;
+
+  return 0;
+}
+
+static int convert_lsr_ssb_vel(const double *vLSR, int sign, double *vSSB) {
+  static const double betaSSB[3] = { 11.1 * NOVAS_KMS / C, 12.24 * NOVAS_KMS / C, 7.25 * NOVAS_KMS / C };
+  int i;
+
+  for(i = 3; --i >= 0; )
+    vSSB[i] = novas_add_beta(vLSR[i] * NOVAS_KMS / C, sign * betaSSB[i]) * C / NOVAS_KMS;
+
+  return 0;
+}
+
+/**
+ * Returns a Solar System Baricentric (SSB) radial velocity for a radial velocity that is referenced to the
+ * Local Standard of Rest (LSR). Internally, NOVAS always uses barycentric radial velocities, but it
+ * is just as common to have catalogs define radial velocities referenced to the LSR.
+ *
+ * The SSB motion w.r.t. the barycenter is assumed to be (11.1, 12.24, 7.25) km/s in ICRS (Shoenrich et al.
+ * 2010).
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astronomical Society,
+ * Volume 403, Issue 4, April 2010, Pages 1829–1833, https://doi.org/10.1111/j.1365-2966.2010.16253.x</li>
+ * </ol>
+ *
+ * @param epoch     [yr] Coordinate epoch in which the coordinates and velocities are defined. E.g. 2000.0.
+ * @param ra        [h] Right-ascenscion of source at given epoch.
+ * @param dec       [deg] Declination of source at given epoch.
+ * @param vLSR      [km/s] radial velocity defined against the Local Standard of Rest (LSR), at given epoch.
+ *
+ * @return          [km/s] Equivalent Solar-System Barycentric radial velocity.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa make_cat_entry()
+ * @sa novas_ssb_to_lsr_vel()
+ */
+double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
+  double u[3] = {}, v[3];
+  double jd = NOVAS_JD_J2000 + 365.25 * (epoch - 2000.0);
+  int i;
+
+  radec2vector(ra, dec, 1.0, u);
+  for(i = 3; --i >= 0; ) v[i] = vLSR * u[i];
+
+  precession(jd, v, NOVAS_JD_J2000, v);
+  convert_lsr_ssb_vel(v, -1, v);
+  precession(NOVAS_JD_J2000, v, jd, v);
+
+  return novas_vdot(u, v);
+}
+
+/**
+ * Returns a radial-velocity referenced to the Local Standard of Rest (LSR) for a given Solar-System
+ * Barycentric (SSB) radial velocity. Internally, NOVAS always uses barycentric radial velocities, but it
+ * is just as common to have catalogs define radial velocities referenced to the LSR.
+ *
+ * The SSB motion w.r.t. the barycenter is assumed to be (11.1, 12.24, 7.25) km/s in ICRS (Shoenrich et al.
+ * 2010).
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astronomical Society,
+ * Volume 403, Issue 4, April 2010, Pages 1829–1833, https://doi.org/10.1111/j.1365-2966.2010.16253.x</li>
+ * </ol>
+ *
+ * @param epoch     [yr] Coordinate epoch in which the coordinates and velocities are defined. E.g. 2000.0.
+ * @param ra        [h] Right-ascenscion of source at given epoch.
+ * @param dec       [deg] Declination of source at given epoch.
+ * @param vLSR      [km/s] radial velocity defined against the Local Standard of Rest (LSR), at given epoch.
+ *
+ * @return          [km/s] Equivalent Solar-System Barycentric radial velocity.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa make_cat_entry()
+ * @sa novas_lsr_to_ssb_vel()
+ */
+double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
+  double u[3] = {}, v[3];
+  double jd = NOVAS_JD_J2000 + 365.25 * (epoch - 2000.0);
+  int i;
+
+  radec2vector(ra, dec, 1.0, u);
+  for(i = 3; --i >= 0; ) v[i] = vLSR * u[i];
+
+  precession(jd, v, NOVAS_JD_J2000, v);
+  convert_lsr_ssb_vel(v, 1, v);
+  precession(NOVAS_JD_J2000, v, jd, v);
+
+  return novas_vdot(u, v);
 }
