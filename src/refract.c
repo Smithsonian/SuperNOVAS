@@ -49,8 +49,8 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
  * @param model     The original refraction model
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Refraction type to use for the original model: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
+ * @param type      Refraction type to use for the original model: NOVAS_REFRACT_OBSERVED (-1) or
+ *                  NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el0       [deg] input elevation for the inverse refraction model.
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
@@ -83,8 +83,8 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel)
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
+ *                  NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
@@ -109,8 +109,8 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel)
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
+ *                  NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
  * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
@@ -147,8 +147,8 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * @param loc       Pointer to structure defining the observer's location on earth, and local weather.
  *                  Make sure all weather values, including humidity (added in v1.1), are fully
  *                  populated.
- * @param type      Whether the input elevation is observed or astrometric: REFRACT_OBSERVED (-1) or
- *                  REFRACT_ASTROMETRIC (0).
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
+ *                  NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] source elevation of the specified type.
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).

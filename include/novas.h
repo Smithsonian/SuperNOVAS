@@ -1142,20 +1142,20 @@ typedef struct {
   double dy;                      ///< [mas] Polar wobble parameter dy.
   double era;                     ///< [deg] Earth Rotation Angle (ERA);
   double gst;                     ///< [h] Greenwich (Apparent) Sidereal Time (GST / GAST)
-  double obs_pos[3];              ///< [AU] Observer position rel. to barycenter
-  double obs_vel[3];              ///< [AU/day] Observer movement rel. to barycenter
+  double obs_pos[3];              ///< [AU] Observer position rel. to barycenter (ICRS)
+  double obs_vel[3];              ///< [AU/day] Observer movement rel. to barycenter (ICRS)
   double v_obs;                   ///< [AU/day] Magnitude of observer motion rel. to barycenter
   double beta;                    ///< Observer relativistic &beta; rel SSB
   double gamma;                   ///< Observer Lorentz factor &Gamma; rel SSB
-  double sun_pos[3];              ///< [AU] Sun's geometric position, rel SSB.
-  double sun_vel[3];              ///< [AU/day] Sun's velocity, rel SSB.
-  double earth_pos[3];            ///< [AU] Earth's geometric position, rel SSB.
-  double earth_vel[3];            ///< [AU/day] Earth's velocity, rel SSB.
+  double sun_pos[3];              ///< [AU] Sun's geometric position, rel SSB. (ICRS)
+  double sun_vel[3];              ///< [AU/day] Sun's velocity, rel SSB. (ICRS)
+  double earth_pos[3];            ///< [AU] Earth's geometric position, rel SSB. (ICRS)
+  double earth_vel[3];            ///< [AU/day] Earth's velocity, rel SSB. (ICRS)
   novas_matrix icrs_to_j2000;     ///< ICRS to J2000 matrix
   novas_matrix precession;        ///< precession matrix
   novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
-  novas_planet_bundle planets;    ///< Planet positions and velocities
+  novas_planet_bundle planets;    ///< Planet positions and velocities (ICRS)
 } novas_frame;
 
 /**
