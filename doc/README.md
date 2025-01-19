@@ -1389,11 +1389,9 @@ addresses these in the upcoming quarter. The dates are placeholders only, with n
 actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release 
 being published.
 
-_Feature releases_ (e.g. __1.x.0__ version bumps) are provided at least 6 months apart, to reduce stress on adopters 
-who may need/want to tweak their code to integrate these. Between feature releases, _bug fix releases_ (without 
-significant API changes) may be provided as needed to address issues. New features are generally reserved for the 
-feature releases, although they may also be rolled out in bug-fix releases as long as they do not affect the existing 
-API -- in line with the desire to keep bug-fix releases fully backwards compatible with their parent versions.
+New features are generally reserved for the feature releases (e.g. __1.x.0__ version bumps), although they may also be 
+rolled out in bug-fix releases as long as they do not affect the existing API -- in line with the desire to keep 
+bug-fix releases fully backwards compatible with their parent versions.
 
 In the weeks and month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be published 
 temporarily on GitHub, under [Releases](https://github.com/Smithsonian/SuperNOVAS/releases), so that changes can be 
