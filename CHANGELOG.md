@@ -15,6 +15,8 @@ Upcoming feature release, expected around 1 May 2025.
 
  - #115: Modified `place()` and `novas_geom_posvel()` to use physical velocity, rather than projected movement, for 
    calculating radial velocities for sidereal sources.
+   
+ - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
   
 ### Added
 
