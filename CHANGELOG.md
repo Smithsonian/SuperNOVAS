@@ -44,7 +44,7 @@ Upcoming feature release, expected around 1 May 2025.
    for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively. 
    The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image or detector 
    array) between the local horizontal and equatorial orientations, e.g. via the newly added `novas_h2e_offset()` or 
-   `novas_e2j_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
+   `novas_e2h_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
    projections, such as described in Calabretta &amp; Greisen 2002.
    
  - New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 

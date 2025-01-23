@@ -1059,6 +1059,10 @@ before that level of accuracy is reached.
  
 ### Added in v1.3
 
+ - New `novas_starvel()` function to calculate a _physical_ 3D velocity vector for a star, in contrast to 
+   `starvectors()`, which provides a measure of the rate at which the perceived position changes over time (i.e.,
+   projected movement).
+
  - New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
@@ -1081,7 +1085,7 @@ before that level of accuracy is reached.
    for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively. 
    The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image or detector 
    array) between the local horizontal and equatorial orientations, e.g. via the newly added `novas_h2e_offset()` or 
-   `novas_e2j_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
+   `novas_e2h_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
    projections, such as described in Calabretta &amp; Greisen 2002.
    
  - New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 
@@ -1175,6 +1179,10 @@ before that level of accuracy is reached.
  - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
    to radial velocity for light originating at the surface, and observed near Earth or at a large distance away from 
    the source.
+   
+ - [__v1.3__] Modified `place()` and `novas_geom_posvel()` to use physical velocity, rather than projected movement, 
+   for calculating radial velocities for sidereal sources.
+
 
 -----------------------------------------------------------------------------
 
