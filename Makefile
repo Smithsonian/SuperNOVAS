@@ -92,6 +92,10 @@ all: distro static test coverage analyze
 test: cio_ra.bin
 	$(MAKE) -C test run
 
+.PHONY: benchmark
+benchmark: shared
+	$(MAKE) LD_LIBRARY_PATH=$(shell pwd)/$(LIB) -C benchmark
+
 # Perform checks (test + analyze)
 .PHONY: check
 check: test analyze
@@ -106,11 +110,13 @@ coverage:
 clean:
 	rm -f $(OBJECTS) README-orig.md $(BIN)/cio_file gmon.out
 	$(MAKE) -C test clean
+	$(MAKE) -C benchmark clean
 
 # Remove all generated files
 .PHONY: distclean
 distclean: clean
 	rm -f $(LIB)/libsupernovas.so* $(LIB)/libsupernovas.a $(LIB)/libnovas.so* $(LIB)/libnovas.a $(LIB)/libsolsys*.so* cio_ra.bin
+
 
 .PHONY:
 check-cio-locator:
@@ -297,6 +303,7 @@ help:
 	@echo "  cio_ra.bin    Generates a platform-specific binary CIO locator lookup data file"
 	@echo "                'cio_ra.bin' from the ASCII 'data/CIO_RA.TXT'."
 	@echo "  test          Runs regression tests."
+	@echo "  benchmark     Runs benchmarks."
 	@echo "  analyze       Performs static code analysis with 'cppcheck'."
 	@echo "  check         Same as 'test' and then 'analyze'."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
