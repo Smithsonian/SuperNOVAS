@@ -6170,11 +6170,10 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
 }
 
 /**
- * Converts a 3D polar vector (&delta;&phi;, &delta;&theta; &delta;r) along a line-of-sight to a
- * rectangular equatorial (&delta;x, &delta;y, &delta;z) vector.
+ * Converts a 3D line-of-sight vector (&delta;&phi;, &delta;&theta; &delta;r) to a rectangular
+ * equatorial (&delta;x, &delta;y, &delta;z) vector.
  *
- * @param los         [arb.u.] Input polar 3-vector (&delta;&phi;, &delta;&theta; &delta;r) along the
- *                    line of sight.
+ * @param los         [arb.u.] Line-of-sight 3-vector (&delta;&phi;, &delta;&theta; &delta;r).
  * @param lon         [deg] Line-of-sight longitude.
  * @param lat         [deg] Line-of-sight latitude.
  * @param[out] xyz    [arb.u.] Output rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z),
@@ -6223,12 +6222,11 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
  * Converts a 3D rectangular equatorial (&delta;x, &delta;y, &delta;z) vector to a polar
  * (&delta;&phi;, &delta;&theta; &delta;r) vector along a line-of-sight.
  *
- * @param xyz         [arb.u.] Input rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z).
+ * @param xyz         [arb.u.] Rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z).
  * @param lon         [deg] Line-of-sight longitude.
  * @param lat         [deg] Line-of-sight latitude.
- * @param[out] los    [arb.u.] Output polar-oriented 3-vector (&delta;&phi;, &delta;&theta; &delta;r)
- *                    along the specified line of sight, in the same units as the input. It may be
- *                    the same vector as the input.
+ * @param[out] los    [arb.u.] Output line-of-sight 3-vector (&delta;&phi;, &delta;&theta; &delta;r),
+ *                    in the same units as the input. It may be the same vector as the input.
  * @return            0 if successful, or else -1 if either vector argument is NULL (errno will
  *                    be set to EINVAL).
  *

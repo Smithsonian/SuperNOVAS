@@ -1098,9 +1098,8 @@ before that level of accuracy is reached.
    sources (hence the name). You can also obtain instantaneous projected (extrapolated) positions from the tracking 
    parameters via `novas_track_pos()` at low computational cost.
    
- - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between polar-oriented (&delta;&phi;, 
-   &delta;&theta;, &delta;r) vectors along a line of sight, and rectangular equatorial (&delta;x, &delta;y, &delta;z) 
-   vectors.
+ - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
+   &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.
    
  - New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial projections
    along a line of sight in the direction of a source. Such projections are oft used in interferometry.

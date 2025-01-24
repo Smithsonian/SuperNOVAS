@@ -13,8 +13,8 @@ Upcoming feature release, expected around 1 May 2025.
    
 ### Fixed
 
- - #115: Modified `place()` and `novas_geom_posvel()` to use physical velocity, rather than projected movement, for 
-   calculating radial velocities for sidereal sources.
+ - #115: Modified `place()` and `novas_geom_posvel()` to use the specified SSB-based radial velocity, rather than 
+   projected movement, for for calculating observer based radial velocities for sidereal sources.
    
  - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
   
@@ -57,9 +57,8 @@ Upcoming feature release, expected around 1 May 2025.
    sources (hence the name). You can also obtain instantaneous projected (extrapolated) positions from the tracking 
    parameters via `novas_track_pos()` at low computational cost.
  
- - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between polar-oriented (&delta;&phi;, 
-   &delta;&theta;, &delta;r) vectors along a line of sight, and rectangular equatorial (&delta;x, &delta;y, &delta;z) 
-   vectors.
+ - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
+   &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.
    
  - New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial projections
    along a line of sight in the direction of a source. Such projections are oft used in interferometry.
