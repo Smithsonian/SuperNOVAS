@@ -1703,6 +1703,7 @@ short place(double jd_tt, const object *source, const observer *location, double
     double dt = 0.0;
 
     // Get position of star updated for its space motion.
+    // (The motion calculated here is not used for radial velocity in `rad_vel2()`)
     starvectors(&source->star, pos, vel);
 
     dt = d_light(pos, pob);
