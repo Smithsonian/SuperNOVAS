@@ -1807,17 +1807,6 @@ static int test_object_sep() {
   return n;
 }
 
-static int test_starvel() {
-  int n = 0;
-  cat_entry star = {};
-  double v[3] = {};
-
-  if(check("starvel:star:null", -1, novas_starvel(NULL, v))) n++;
-  if(check("starvel:vel:null", -1, novas_starvel(&star, NULL))) n++;
-
-  return n;
-}
-
 static int test_los_to_xyz() {
   int n = 0;
   double v[3] = {};
@@ -1986,7 +1975,6 @@ int main() {
   if(test_tracks()) n++;
   if(test_solar_illum()) n++;
   if(test_object_sep()) n++;
-  if(test_starvel()) n++;
   if(test_los_to_xyz()) n++;
   if(test_xyz_to_los()) n++;
 

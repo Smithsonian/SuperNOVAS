@@ -20,10 +20,6 @@ Upcoming feature release, expected around 1 May 2025.
   
 ### Added
 
- - #115: New `novas_starvel()` function to calculate a _physical_ 3D velocity vector for a star, in contrast to 
-   `starvectors()`, which provides a measure of the rate at which the perceived position changes over time (i.e.,
-   projected movement).
-
  - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 

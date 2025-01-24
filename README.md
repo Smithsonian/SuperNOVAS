@@ -1061,10 +1061,6 @@ before that level of accuracy is reached.
  
 ### Added in v1.3
 
- - New `novas_starvel()` function to calculate a _physical_ 3D velocity vector for a star, in contrast to 
-   `starvectors()`, which provides a measure of the rate at which the perceived position changes over time (i.e.,
-   projected movement).
-
  - New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
@@ -1091,7 +1087,7 @@ before that level of accuracy is reached.
    projections, such as described in Calabretta &amp; Greisen 2002.
    
  - New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 
-   apparent distance between to spherical or equatorial locations, or between two sources, respectively. 
+   apparent distance between two spherical or equatorial locations, or between two sources, respectively. 
    `novas_sun_angle()` and `novas_moon_angle()` can be used to calculate the apparent angular distance of sources from 
    the Sun and Moon, respectively.
 

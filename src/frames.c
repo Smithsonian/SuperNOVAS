@@ -527,7 +527,9 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
 
     // Get position of star updated for its space motion.
     starvectors(&source->star, pos1, NULL);
-    novas_starvel(&source->star, vel1);
+
+    // Convert radial velocity to 3d vector
+    radec2vector(source->star.ra, source->star.dec, source->star.radialvelocity, vel1);
 
     dt = d_light(pos1, frame->obs_pos);
     proper_motion(NOVAS_JD_J2000, pos1, vel1, (jd_tdb + dt), pos1);

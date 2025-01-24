@@ -1704,7 +1704,9 @@ short place(double jd_tt, const object *source, const observer *location, double
 
     // Get position of star updated for its space motion.
     starvectors(&source->star, pos, NULL);
-    novas_starvel(&source->star, vel);
+
+    // Convert radial velocity to 3d vector
+    radec2vector(source->star.ra, source->star.dec, source->star.radialvelocity, vel);
 
     dt = d_light(pos, pob);
     proper_motion(JD_J2000, pos, vel, (jd_tdb + dt), pos);
@@ -5035,65 +5037,12 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
 }
 
 /**
- * Calculates the physical 3D velocity of a star, given its proper motion and measured radial
- * velocity. All velocities are relative to the Solar-System Barycenter. It may be used
- * for deriving spectroscopic velocity (e.g. radial velocity) measures.
- *
- * @param star    A catalog object.
- * @param vel     [AU/day] The physical 3D equatorial rectangular motion of the the star
- *                relative to the Solar-System Barycenter (SSB), in the same coordinate
- *                reference frame, in which the star's position was defined (e.g. ICRS or
- *                FK5).
- * @return        0 if successful, or else -1 if either input argument is NULL
- *
- * @since 1.3
- * @author Attila Kovacs
- *
- * @sa starvectors()
- * @sa place()
- * @sa novas_geom_posvel()
- */
-int novas_starvel(const cat_entry *star, double *vel) {
-  static const char *fn = "novas_starvel";
-
-  double paralx;
-  double k;
-
-  if(!star)
-    return novas_error(-1, EINVAL, fn, "NULL input cat_entry");
-
-  if(!vel)
-    return novas_error(-1, EINVAL, fn, "NULL output velocity vector");
-
-  // If parallax is unknown, undetermined, or zero, set it to 1e-6
-  // milliarcsecond, corresponding to a distance of 1 gigaparsec.
-  paralx = star->parallax;
-  if(star->parallax <= 0.0)
-    paralx = 1.0e-6;
-
-  // Compute Doppler factor, which accounts for change in
-  // light travel time to star.
-  k = 1.0 / (1.0 - star->radialvelocity * NOVAS_KMS / C) / (paralx * JULIAN_YEAR_DAYS);
-
-  // Convert proper motion and radial velocity to orthogonal components of
-  // motion with units of AU/day.
-  vel[0]= k * star->promora;
-  vel[1] = k * star->promodec;
-  vel[2] = star->radialvelocity * NOVAS_KMS / (AU / DAY);
-
-  // Transform motion vector to equatorial system.
-  novas_los_to_xyz(vel, 15.0 * star->ra, star->dec, vel);
-  return 0;
-}
-
-/**
  * Converts angular quantities for stars to vectors.
  *
  * NOTES:
  * <ol>
  * <li>The velocity returned should not be used for deriving spectroscopic radial velocity. It is
- * a measure of the perceived change of the stars position, not a true physical velocity.
- * To obtain a physical velocity, use `novas_starvel()` instead.</li>
+ * a measure of the perceived change of the stars position, not a true physical velocity.</li>
  * </ol>
  *
  * REFERENCES:
@@ -5115,7 +5064,6 @@ int novas_starvel(const cat_entry *star, double *vel) {
  * @return             0 if successful, or -1 if the star argument is NULL or the
  *                     output vectors are the same pointer.
  *
- * @sa novas_starvel()
  * @sa make_cat_entry()
  */
 int starvectors(const cat_entry *star, double *pos, double *motion) {
