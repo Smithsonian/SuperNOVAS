@@ -879,10 +879,10 @@ gravitational deflection corrections from the observer's point of view.
  |                                     |   full    |           20106 |
  
 
-As one may observe, the SuperNOVAS `novas_geom_posvel()` significantly outperforms the legacy `place()`, when 
-repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
-2 orders of magnitude faster performance than for inidividual observing times and/or observer locations. Also, when 
-observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
+As one may observe, the SuperNOVAS `novas_sky_pos()` significantly outperforms the legacy `place()`, when repeatedly 
+calculating positions for sources for the same instant of time and same observer location, providing up to 2 orders of 
+magnitude faster performance than for inidividual observing times and/or observer locations. Also, when observing 
+frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
 individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
 
 | ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
