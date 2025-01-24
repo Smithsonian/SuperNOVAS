@@ -35,6 +35,12 @@ src/frames.c
 .RI "int \fBnovas_change_observer\fP (const \fBnovas_frame\fP *orig, const \fBobserver\fP *obs, \fBnovas_frame\fP *out)"
 .br
 .ti -1c
+.RI "int \fBnovas_equ_track\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame, double dt, \fBnovas_track\fP *track)"
+.br
+.ti -1c
+.RI "double \fBnovas_frame_lst\fP (const \fBnovas_frame\fP *frame)"
+.br
+.ti -1c
 .RI "int \fBnovas_geom_posvel\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, double *pos, double *vel)"
 .br
 .ti -1c
@@ -42,6 +48,9 @@ src/frames.c
 .br
 .ti -1c
 .RI "int \fBnovas_hor_to_app\fP (const \fBnovas_frame\fP *frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double *ra, double *dec)"
+.br
+.ti -1c
+.RI "int \fBnovas_hor_track\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame, \fBRefractionModel\fP ref_model, \fBnovas_track\fP *track)"
 .br
 .ti -1c
 .RI "int \fBnovas_invert_transform\fP (const \fBnovas_transform\fP *transform, \fBnovas_transform\fP *inverse)"
@@ -53,7 +62,28 @@ src/frames.c
 .RI "int \fBnovas_make_transform\fP (const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP from_system, enum \fBnovas_reference_system\fP to_system, \fBnovas_transform\fP *transform)"
 .br
 .ti -1c
+.RI "double \fBnovas_moon_angle\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.br
+.ti -1c
+.RI "double \fBnovas_object_sep\fP (const \fBobject\fP *source1, const \fBobject\fP *source2, const \fBnovas_frame\fP *frame)"
+.br
+.ti -1c
+.RI "double \fBnovas_rises_above\fP (double el, const \fBobject\fP *source, const \fBnovas_frame\fP *frame, \fBRefractionModel\fP ref_model)"
+.br
+.ti -1c
+.RI "double \fBnovas_sets_below\fP (double el, const \fBobject\fP *source, const \fBnovas_frame\fP *frame, \fBRefractionModel\fP ref_model)"
+.br
+.ti -1c
 .RI "int \fBnovas_sky_pos\fP (const \fBobject\fP *\fBobject\fP, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *out)"
+.br
+.ti -1c
+.RI "double \fBnovas_solar_illum\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.br
+.ti -1c
+.RI "double \fBnovas_sun_angle\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.br
+.ti -1c
+.RI "int \fBnovas_track_pos\fP (const \fBnovas_track\fP *track, const \fBnovas_timespec\fP *time, double *lon, double *lat, double *dist, double *z)"
 .br
 .ti -1c
 .RI "int \fBnovas_transform_sky_pos\fP (const \fBsky_pos\fP *in, const \fBnovas_transform\fP *transform, \fBsky_pos\fP *out)"
@@ -224,6 +254,71 @@ Attila Kovacs
 
 .PP
 References \fBnovas_frame::accuracy\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_TDB\fP, \fBobs_planets()\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBnovas_frame::planets\fP, \fBnovas_frame::state\fP, and \fBnovas_frame::time\fP\&.
+.SS "int novas_equ_track (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, double dt, \fBnovas_track\fP * track)"
+Calculates equatorial tracking position and motion (first and second time derivatives) for the specified source in the given observing frame\&. The position and its derivatives are calculated via the more precise IAU2006 method, and CIRS\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP Observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.br
+\fIdt\fP [s] Time step used for calculating derivatives\&. 
+.br
+\fItrack\fP Output tracking parameters to populate 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if any of the pointer arguments are NULL, or else an error code from \fBcio_ra()\fP or from \fBnovas_sky_pos()\fP\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_hor_track()\fP 
+.PP
+\fBnovas_track_pos()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_track::accel\fP, \fBnovas_frame::accuracy\fP, \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_observable::dist\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_observable::lat\fP, \fBnovas_observable::lon\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBnovas_sky_pos()\fP, \fBnovas_v2z()\fP, \fBnovas_frame::observer\fP, \fBnovas_track::pos\fP, \fBsky_pos::ra\fP, \fBnovas_track::rate\fP, \fBsky_pos::rv\fP, \fBnovas_frame::time\fP, \fBnovas_track::time\fP, and \fBnovas_observable::z\fP\&.
+.SS "double novas_frame_lst (const \fBnovas_frame\fP * frame)"
+Returns the Local (apparent) Sidereal Time for an observing frame of an Earth-bound observer\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIframe\fP Observer frame, defining the location and time of observation 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[h] The LST for an Earth-bound observer [0\&.0--24\&.0), or NAN otherwise\&. If NAN is returned errno will indicate the type of error\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_frame::gst\fP, \fBon_surface::longitude\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_frame::observer\fP, \fBobserver::on_surf\fP, and \fBobserver::where\fP\&.
 .SS "int novas_geom_posvel (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double * pos, double * vel)"
 Calculates the geometric position and velocity vectors, relative to the observer, for a source in the given observing frame, in the specified coordinate system of choice\&. The geometric position includes proper motion, and for solar-system bodies it is antedated for light travel time, so it effectively represents the geometric position as seen by the observer\&. However, the geometric does not include aberration correction, nor gravitational deflection\&.
 .PP
@@ -237,6 +332,8 @@ NOTES:
 .PD 0
 .IP "1." 4
 If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP after\&. 
+.IP "2." 4
+As of SuperNOVAS v1\&.3, the returned velocity vector is a proper observer-based velocity measure\&. In prior releases, and in NOVAS C 3\&.1, this was inconsistent, with pseudo LSR-based measures being returned for catalog sources\&. 
 .PP
 .PP
 \fBParameters\fP
@@ -377,6 +474,45 @@ Attila Kovacs
 
 .PP
 References \fBnovas_frame::era\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::gst\fP, \fBhor_to_itrs()\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REFRACT_OBSERVED\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::observer\fP, \fBobserver::on_surf\fP, \fBnovas_frame::precession\fP, \fBspin()\fP, \fBnovas_frame::time\fP, \fBvector2radec()\fP, and \fBobserver::where\fP\&.
+.SS "int novas_hor_track (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model, \fBnovas_track\fP * track)"
+Calculates horizontal tracking position and motion (first and second time derivatives) for the specified source in the given observing frame\&. The position and its derivatives are calculated via the more precise IAU2006 method, and CIRS, and then converted to local horizontal coordinates using the specified refraction model (if any)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP Observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.br
+\fIref_model\fP Refraction model to use, or NULL for an unrefracted track\&. 
+.br
+\fItrack\fP Output tracking parameters to populate 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if any of the pointer arguments are NULL, or else an error code from \fBcio_ra()\fP or from \fBnovas_sky_pos()\fP, or from novas_app_hor()\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_equ_track()\fP 
+.PP
+\fBnovas_track_pos()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_track::accel\fP, \fBnovas_frame::accuracy\fP, \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_observable::dist\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_observable::lat\fP, \fBnovas_observable::lon\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBnovas_app_to_hor()\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_sky_pos()\fP, \fBNOVAS_TOD\fP, \fBnovas_v2z()\fP, \fBnovas_frame::observer\fP, \fBnovas_track::pos\fP, \fBsky_pos::ra\fP, \fBnovas_track::rate\fP, \fBsky_pos::rv\fP, \fBnovas_frame::time\fP, \fBnovas_track::time\fP, \fBobserver::where\fP, and \fBnovas_observable::z\fP\&.
 .SS "int novas_invert_transform (const \fBnovas_transform\fP * transform, \fBnovas_transform\fP * inverse)"
 Inverts a novas coordinate transformation matrix\&.
 .PP
@@ -510,6 +646,148 @@ Attila Kovacs
 
 .PP
 References \fBnovas_transform::frame\fP, \fBnovas_transform::from_system\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBnovas_matrix::M\fP, \fBnovas_transform::matrix\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::precession\fP, and \fBnovas_transform::to_system\fP\&.
+.SS "double novas_moon_angle (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+Returns the apparent angular distance of a source from the Moon from the observer's point of view\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP An observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] Apparent angular distance between the source an the Moon, from the observer's point of view
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_sun_angle()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_MOON_INIT\fP, and \fBnovas_object_sep()\fP\&.
+.SS "double novas_object_sep (const \fBobject\fP * source1, const \fBobject\fP * source2, const \fBnovas_frame\fP * frame)"
+Returns the angular separation of two objects from the observer's point of view\&. The calculated separation includes light-time corrections, aberration and gravitational deflection for both sources, and thus represents a precise observed separation between the two sources\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource1\fP An observed source 
+.br
+\fIsource2\fP Another observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] Apparent angular separation between the two observed sources from the observer's point-of-view\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_sun_angle()\fP 
+.PP
+\fBnovas_moon_angle()\fP 
+.PP
+\fBnovas_sep()\fP 
+.RE
+.PP
+
+.PP
+References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, and \fBsky_pos::ra\fP\&.
+.SS "double novas_rises_above (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
+Returns the UTC date at which a source appears to rise above the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric refraction also\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIel\fP [deg] Elevation angle\&. 
+.br
+\fIsource\fP Observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.br
+\fIref_model\fP Refraction model, or NULL to calculate unrefracted rise time\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] UTC-based Julian date at which the object rises above the specified elevation in the 24 hour period after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour period\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_sets_below()\fP 
+.RE
+.PP
+
+.SS "double novas_sets_below (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
+Returns the UTC date at which a source appears to set below the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmopsheric refraction also\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIel\fP [deg] Elevation angle\&. 
+.br
+\fIsource\fP Observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.br
+\fIref_model\fP Refraction model, or NULL to calculate unrefracted setting time\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] UTC-based Julian date at which the object sets below the specified elevation in the 24 hour period after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour day\&.\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_rises_above()\fP 
+.RE
+.PP
+
 .SS "int novas_sky_pos (const \fBobject\fP * object, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP * out)"
 Calculates an apparent location on sky for the source\&. The position takes into account the proper motion (for sidereal soure), or is antedated for light-travel time (for Solar-System bodies)\&. It also applies an appropriate aberration correction and gravitational deflection of the light\&.
 .PP
@@ -525,6 +803,8 @@ NOTES:
 .PD 0
 .IP "1." 4
 If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP / \fBcirs_to_app_ra()\fP on the \fCout->r_hat\fP / \fCout->ra\fP respectively after (or you can use just convert one of the quantities, and use \fBradec2vector()\fP or \fBvector2radec()\fP to get the other even faster)\&. 
+.IP "2." 4
+As of SuperNOVAS v1\&.3, the returned radial velocity component is a proper observer-based spectroscopic measure\&. In prior releases, and in NOVAS C 3\&.1, this was inconsistent, with LSR-based measures being returned for catalog sources\&. 
 .PP
 .PP
 \fBParameters\fP
@@ -569,6 +849,114 @@ Attila Kovacs
 
 .PP
 References \fBnovas_frame::accuracy\fP, \fBsky_pos::dis\fP, \fBnovas_frame::earth_pos\fP, \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::obs_vel\fP, \fBnovas_frame::planets\fP, \fBrad_vel2()\fP, \fBsky_pos::rv\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
+.SS "double novas_solar_illum (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP Observed source\&. Usually a Solar-system source\&. (For other source types, 1\&.0 is returned by default\&.) 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Solar illumination fraction [0\&.0:1\&.0] of a spherical body observed at the source location from the given observer location, or NAN if there was an error (errno will indicate the type of error)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, \fBNOVAS_ICRS\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
+.SS "double novas_sun_angle (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+Returns the apparent angular distance of a source from the Sun from the observer's point of view\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP An observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] the apparent angular distance between the source an the Sun, from the observer's point of view
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_moon_angle()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_object_sep()\fP, and \fBNOVAS_SUN_INIT\fP\&.
+.SS "int novas_track_pos (const \fBnovas_track\fP * track, const \fBnovas_timespec\fP * time, double * lon, double * lat, double * dist, double * z)"
+Calculates a projected position and redshift for a source, given the available tracking position and derivatives\&. Using 'tracks' to project positions can be much faster than the repeated full recalculation of the source position over some short period\&.
+.PP
+In SuperNOVAS terminology a 'track' is a 2nd order Taylor series expansion of the observed position and redshift in time\&. For most but the fastest moving sources, horizontal (Az/El) tracks are sufficiently precise on minute timescales, whereas depending on the type of source equatorial tracks can be precise for up to days\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItrack\fP Tracking position and motion (first and second derivatives) 
+.br
+\fItime\fP Astrometric time of observation 
+.br
+\fIlon\fP [deg] projected observed Eastward longitude in tracking coordinate system 
+.br
+\fIlat\fP [deg] projected observed latitude in tracking coordinate system 
+.br
+\fIdist\fP [AU] projected apparent distance to source from observer 
+.br
+\fIz\fP projected observed redshift 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if either input pointer is NULL (errno is set to EINVAL)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_equ_track()\fP 
+.PP
+\fBnovas_hor_track()\fP 
+.PP
+\fBnovas_z2v()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_track::accel\fP, \fBnovas_observable::dist\fP, \fBnovas_observable::lat\fP, \fBnovas_observable::lon\fP, \fBnovas_diff_time()\fP, \fBnovas_track::pos\fP, \fBnovas_track::rate\fP, \fBnovas_track::time\fP, and \fBnovas_observable::z\fP\&.
 .SS "int novas_transform_sky_pos (const \fBsky_pos\fP * in, const \fBnovas_transform\fP * transform, \fBsky_pos\fP * out)"
 Transforms a position or velocity 3-vector from one coordinate reference system to another\&.
 .PP

@@ -7,6 +7,35 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
+.SH "[Unreleased]"
+.PP
+Upcoming feature release, expected around 1 May 2025\&.
+.SS "Fixed"
+.IP "\(bu" 2
+#116: \fC\fBtransform_cat()\fP\fP to update parallax to the recalculated value when precessing or changing epochs\&.
+.PP
+.SS "Added"
+.IP "\(bu" 2
+#114: New \fC\fBnovas_lsr_to_ssb_vel()\fP\fP can be used to convert velocity vectors referenced to the LSR to Solar-System Barycentric velocities\&. And, \fC\fBnovas_ssb_to_lsr_vel()\fP\fP to provide the inverse conversion\&.
+.IP "\(bu" 2
+New \fC\fBnovas_hms_hours(const char *str)\fP\fP and \fC\fBnovas_dms_degrees(const char *str)\fP\fP convenience functions to make it easier to parse HMS or DMS based time/angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS\&.
+.IP "\(bu" 2
+New \fC\fBnovas_frame_lst()\fP\fP convenience function to readily return the Local (apparent) Sidereal Time for a given Earth-based observing frame\&.
+.IP "\(bu" 2
+New \fC\fBnovas_rises_above()\fP\fP and \fC\fBnovas_sets_below()\fP\fP functions to return the date/time a source rises above or sets below a specific elevation on a given date\&. (Useful for Earth-based observers only)\&.
+.IP "\(bu" 2
+New \fC\fBnovas_helio_dist()\fP\fP function to calculate the heliocentric distance of a Solar-system body on a given date\&. The \fC\fBnovas_solar_power()\fP\fP function can be used to estimate the incident Solar power on a Solar-system body, while \fC\fBnovas_solar_illum()\fP\fP can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen from the observer location\&.
+.IP "\(bu" 2
+New \fC\fBnovas_hpa()\fP\fP and \fC\fBnovas_epa()\fP\fP functions to calculate the parallactic angle (a\&.k\&.a\&. vertical position angle) for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively\&. The parallactic angle (PA) can be useful to convert local Cartesian offsets (e\&.g\&. from a flat image or detector array) between the local horizontal and equatorial orientations, e\&.g\&. via the newly added \fC\fBnovas_h2e_offset()\fP\fP or \fC\fBnovas_e2h_offset()\fP\fP functions\&. The conversion between offsets and absolute coordinates usually requires a WCS projections, such as described in Calabretta & Greisen 2002\&.
+.IP "\(bu" 2
+New \fC\fBnovas_sep()\fP\fP, \fC\fBnovas_equ_sep()\fP\fP, and \fC\fBnovas_object_sep()\fP\fP functions can be used to calculate the precise apparent distance between to spherical or equatorial locations, or between two sources, respectively\&. \fC\fBnovas_sun_angle()\fP\fP and \fC\fBnovas_moon_angle()\fP\fP can be used to calculate the apparent angular distance of sources from the Sun and Moon, respectively\&.
+.IP "\(bu" 2
+New \fC\fBnovas_observable\fP\fP and \fC\fBnovas_track\fP\fP data structures to provide second order Taylor series expansion of the apparent horizontal or equatorial positions, distances and redshifts for sources\&. They can be calculated with the newly added \fC\fBnovas_hor_track()\fP\fP or \fC\fBnovas_equ_track()\fP\fP functions\&. Such tracking values, including rates and accelerations can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources (hence the name)\&. You can also obtain instantaneous projected (extrapolated) positions from the tracking parameters via \fC\fBnovas_track_pos()\fP\fP at low computational cost\&.
+.IP "\(bu" 2
+New \fC\fBnovas_los_to_xyz()\fP\fP and \fC\fBnovas_xyz_to_los()\fP\fP functions to convert between line-of-sight (, , r) vectors and rectangular equatorial (x, y, z) vectors\&.
+.IP "\(bu" 2
+New \fC\fBnovas_xyz_to_uvw()\fP\fP function to convert ITRS Earth locations (absolute or differential) to equatorial projections along a line of sight in the direction of a source\&. Such projections are oft used in interferometry\&.
+.PP
 .SH "[1\&.2\&.0] - 2025-01-15"
 .PP
 Feature release\&. New easy to use adapter modules for CALCEPH or the NAIF CSPICE Toolkit to provide precise positions for Solar-system sources\&. Also, added support for Keplerian orbitals, such as the ones published by the IAU Minor Planet Center (MPC) for asteroids, comets, and Near-Earth-Objects (NEOs)\&. And, many more fixes and improvements\&.

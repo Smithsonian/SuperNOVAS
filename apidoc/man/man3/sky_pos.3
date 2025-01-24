@@ -30,7 +30,6 @@ sky_pos
 .ti -1c
 .RI "double \fBrv\fP"
 .br
-.RI "[km/s] radial velocity (km/s) "
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -41,9 +40,15 @@ Celestial object's place on the sky; contains the output from \fBplace()\fP
 \fBplace()\fP 
 .PP
 \fBSKY_POS_INIT\fP 
+.PP
+novas_z_lsr() 
 .RE
 .PP
 
+.SH "Field Documentation"
+.PP 
+.SS "double rv"
+[km/s] radial velocity (km/s)\&. As of SuperNOVAS v1\&.3, this is always a proper observer-based spectroscopic velocity measure, which relates the observed wavelength to the rest wavelength as \*<obs\*>  = (1 + rv / c) \*<rest\*> \&. 
 
 .SH "Author"
 .PP 

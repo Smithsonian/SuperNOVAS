@@ -199,7 +199,13 @@ src/novas.c
 .RI "enum \fBnovas_debug_mode\fP \fBnovas_get_debug_mode\fP ()"
 .br
 .ti -1c
+.RI "int \fBnovas_los_to_xyz\fP (const double *los, double lon, double lat, double *xyz)"
+.br
+.ti -1c
 .RI "int \fBnovas_orbit_posvel\fP (double jd_tdb, const \fBnovas_orbital\fP *orbit, enum \fBnovas_accuracy\fP accuracy, double *pos, double *vel)"
+.br
+.ti -1c
+.RI "int \fBnovas_xyz_to_los\fP (const double *xyz, double lon, double lat, double *los)"
 .br
 .ti -1c
 .RI "double \fBnovas_z2v\fP (double z)"
@@ -274,7 +280,7 @@ src/novas.c
 .RI "int \fBspin\fP (double angle, const double *in, double *out)"
 .br
 .ti -1c
-.RI "int \fBstarvectors\fP (const \fBcat_entry\fP *star, double *pos, double *vel)"
+.RI "int \fBstarvectors\fP (const \fBcat_entry\fP *star, double *pos, double *motion)"
 .br
 .ti -1c
 .RI "int \fBtdb2tt\fP (double jd_tdb, double *jd_tt, double *secdiff)"
@@ -2356,7 +2362,7 @@ Populates the data structure for a 'catalog' source, such as a star\&.
 .br
 \fIparallax\fP [mas] Parallax (milliarcseconds)\&. 
 .br
-\fIrad_vel\fP [km/s] Radial velocity (LSR) 
+\fIrad_vel\fP [km/s] Radial velocity relative to the Solar-System Barycenter (SSB) To convert velocities defined against the Local Standard of Rest (LSR), you may use \fC\fBnovas_lsr_to_ssb_vel()\fP\fP to convert appropriately\&. 
 .br
 \fIstar\fP Pointer to data structure to populate\&. 
 .RE
@@ -2368,6 +2374,8 @@ Populates the data structure for a 'catalog' source, such as a star\&.
 .PP
 \fBSee also\fP
 .RS 4
+\fBnovas_lsr_to_ssb_vel()\fP 
+.PP
 \fBmake_redshifted_cat_entry()\fP 
 .PP
 \fBmake_object()\fP 
@@ -2871,6 +2879,41 @@ Attila Kovacs
 .RE
 .PP
 
+.SS "int novas_los_to_xyz (const double * los, double lon, double lat, double * xyz)"
+Converts a 3D line-of-sight vector (,  r) to a rectangular equatorial (x, y, z) vector\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIlos\fP [arb\&.u\&.] Line-of-sight 3-vector (,  r)\&. 
+.br
+\fIlon\fP [deg] Line-of-sight longitude\&. 
+.br
+\fIlat\fP [deg] Line-of-sight latitude\&. 
+.br
+\fIxyz\fP [arb\&.u\&.] Output rectangular equatorial 3-vector (x, y, z), in the same units as the input\&. It may be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_xyz_to_los()\fP 
+.RE
+.PP
+
 .SS "int novas_orbit_posvel (double jd_tdb, const \fBnovas_orbital\fP * orbit, enum \fBnovas_accuracy\fP accuracy, double * pos, double * vel)"
 Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the specified time of observation\&.
 .PP
@@ -2928,6 +2971,41 @@ Attila Kovacs
 
 .PP
 References \fBnovas_orbital::a\fP, \fBnovas_orbital::apsis_period\fP, \fBnovas_orbital::e\fP, \fBnovas_orbital::i\fP, \fBnovas_orbital::jd_tdb\fP, \fBnovas_orbital::M0\fP, \fBnovas_orbital::n\fP, \fBnovas_orbital::node_period\fP, \fBnovas_inv_max_iter\fP, \fBnovas_orbital::omega\fP, \fBnovas_orbital::Omega\fP, \fBnovas_orbital::system\fP, and \fBTWOPI\fP\&.
+.SS "int novas_xyz_to_los (const double * xyz, double lon, double lat, double * los)"
+Converts a 3D rectangular equatorial (x, y, z) vector to a polar (,  r) vector along a line-of-sight\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIxyz\fP [arb\&.u\&.] Rectangular equatorial 3-vector (x, y, z)\&. 
+.br
+\fIlon\fP [deg] Line-of-sight longitude\&. 
+.br
+\fIlat\fP [deg] Line-of-sight latitude\&. 
+.br
+\fIlos\fP [arb\&.u\&.] Output line-of-sight 3-vector (,  r), in the same units as the input\&. It may be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_los_to_xyz()\fP 
+.RE
+.PP
+
 .SS "double novas_z2v (double z)"
 Converts a redshift value (z = f / f\*<rest\*> ) to a radial velocity (i\&.e\&. rate) of recession\&. It is based on the relativistic formula: 
 .PP
@@ -2967,7 +3045,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBC\fP, and \fBNOVAS_KM\fP\&.
+References \fBC\fP, and \fBNOVAS_KMS\fP\&.
 .SS "int nutation (double jd_tdb, enum \fBnovas_nutation_direction\fP direction, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and equinox of epoch\&. Inverse transformation may be applied by setting flag 'direction'\&.
 .PP
@@ -3167,6 +3245,8 @@ This version fixes a NOVAS C 3\&.1 issue that velocities and solar-system distan
 In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and Moon) includes gravitational redshift corrections for light originating at the surface, assuming it's observed from near Earth or else from a large distance away\&. 
 .IP "3." 4
 If \fCsys\fP is \fCNOVAS_TOD\fP (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al\&. 1977 nutation model, matching the behavior of the original NOVAS C \fBplace()\fP for that system\&. To obtain more precise TOD coordinates, set \fCsys\fP to \fCNOVAS_CIRS\fP here, and follow with \fBcirs_to_tod()\fP after\&. 
+.IP "4." 4
+As of SuperNOVAS v1\&.3, the returned radial velocity component is a proper observer-based spectroscopic measure\&. In prior releases, and in NOVAS C 3\&.1, this was inconsistent, with pseudo LSR-based measures being returned for catalog sources\&. 
 .PP
 .PP
 REFERENCES: 
@@ -3245,6 +3325,12 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597\&.
 References \fBaberration()\fP, \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_j2000()\fP, \fBgcrs_to_mod()\fP, \fBgcrs_to_tod()\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBlight_time2()\fP, \fBmake_observer_at_geocenter()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TOD\fP, \fBobs_planets()\fP, \fBobs_posvel()\fP, \fBproper_motion()\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBrad_vel2()\fP, \fBsky_pos::rv\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, \fBobject::type\fP, and \fBvector2radec()\fP\&.
 .SS "int place_star (double jd_tt, const \fBcat_entry\fP * star, const \fBobserver\fP * obs, double ut1_to_tt, enum \fBnovas_reference_system\fP system, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity\&. See \fC\fBplace()\fP\fP for more information\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+As of SuperNOVAS v1\&.3, the returned radial velocity component is a proper observer-based spectroscopic measure\&. In prior releases, and in NOVAS C 3\&.1, this was inconsistent, with pseudo LSR-based measures being returned for catalog sources\&. 
+.PP
 .PP
 REFERENCES: 
 .PD 0
@@ -3560,7 +3646,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBC_AUDAY\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_KM\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBnovas_z2v()\fP, \fBobject::number\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
+References \fBAU\fP, \fBC\fP, \fBC_AUDAY\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_KMS\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBnovas_z2v()\fP, \fBobject::number\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBobject::star\fP, and \fBobject::type\fP\&.
 .SS "int radec2vector (double ra, double dec, double dist, double * pos)"
 Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates)\&.
 .PP
@@ -4028,8 +4114,14 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 
 .PP
 References \fBTWOPI\fP\&.
-.SS "int starvectors (const \fBcat_entry\fP * star, double * pos, double * vel)"
+.SS "int starvectors (const \fBcat_entry\fP * star, double * pos, double * motion)"
 Converts angular quantities for stars to vectors\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The velocity returned should not be used for deriving spectroscopic radial velocity\&. It is a measure of the perceived change of the stars position, not a true physical velocity\&. 
+.PP
 .PP
 REFERENCES: 
 .PD 0
@@ -4043,7 +4135,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .br
 \fIpos\fP [AU] Position vector, equatorial rectangular coordinates, components in AU\&. It may be NULL if not required\&. 
 .br
-\fIvel\fP [AU/day] Velocity vector, equatorial rectangular coordinates, components in AU/Day\&. It must be distinct from the pos output vector, and may be NULL if not required\&.
+\fImotion\fP [AU/day] Perceived motion of star, in equatorial rectangular coordinates, components in AU/Day\&. It must be distinct from the pos output vector, and may be NULL if not required\&. Note, that it is suitable only for calculating the apparent 3D location of the star at a different time, and should not be used as a measure of physical velocity, e\&.g\&. for spectroscopic radial velocity determination\&.
 .RE
 .PP
 \fBReturns\fP
@@ -4058,7 +4150,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBcat_entry::dec\fP, \fBNOVAS_KM\fP, \fBcat_entry::parallax\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBcat_entry::ra\fP, and \fBcat_entry::radialvelocity\fP\&.
+References \fBAU\fP, \fBC\fP, \fBcat_entry::dec\fP, \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, \fBcat_entry::parallax\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBcat_entry::ra\fP, \fBradec2vector()\fP, and \fBcat_entry::radialvelocity\fP\&.
 .SS "int tdb2tt (double jd_tdb, double * jd_tt, double * secdiff)"
 Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date corresponding to a Barycentric Dynamical Time (TDB) Julian date\&.
 .PP
@@ -4474,7 +4566,7 @@ This function cannot be properly used to bring data from old star catalogs into 
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBC\fP, \fBcat_entry::catalog\fP, \fBCHANGE_EPOCH\fP, \fBCHANGE_ICRS_TO_J2000\fP, \fBCHANGE_J2000_TO_ICRS\fP, \fBcat_entry::dec\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_KM\fP, \fBcat_entry::parallax\fP, \fBPRECESSION\fP, \fBprecession()\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBPROPER_MOTION\fP, \fBcat_entry::ra\fP, \fBcat_entry::radialvelocity\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
+References \fBAU_KM\fP, \fBC\fP, \fBcat_entry::catalog\fP, \fBCHANGE_EPOCH\fP, \fBCHANGE_ICRS_TO_J2000\fP, \fBCHANGE_J2000_TO_ICRS\fP, \fBcat_entry::dec\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, \fBnovas_xyz_to_los()\fP, \fBcat_entry::parallax\fP, \fBPRECESSION\fP, \fBprecession()\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBPROPER_MOTION\fP, \fBcat_entry::ra\fP, \fBradec2vector()\fP, \fBcat_entry::radialvelocity\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
 .SS "int transform_hip (const \fBcat_entry\fP * hipparcos, \fBcat_entry\fP * hip_2000)"
 Convert Hipparcos catalog data at epoch J1991\&.25 to epoch J2000\&.0, for use within NOVAS\&. To be used only for Hipparcos or Tycho stars with linear space motion\&. Both input and output data is in the ICRS\&.
 .PP

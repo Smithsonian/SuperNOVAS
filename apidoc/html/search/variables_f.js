@@ -4,7 +4,7 @@ var searchData=
   ['pc_1',['PC',['../eph__manager_8c.html#a0fcf3bf4c37f78e5ef7557cb03029eff',1,'eph_manager.c']]],
   ['plane_2',['plane',['../structnovas__orbital__system.html#a2c38f985781586b7df387b437720174d',1,'novas_orbital_system']]],
   ['planets_3',['planets',['../structnovas__frame.html#a78ace4b8a99aace5313f4011a842d199',1,'novas_frame']]],
-  ['pos_4',['pos',['../structnovas__planet__bundle.html#afa2104ef635031a82766fd018c9ee9dd',1,'novas_planet_bundle']]],
+  ['pos_4',['pos',['../structnovas__planet__bundle.html#afa2104ef635031a82766fd018c9ee9dd',1,'novas_planet_bundle::pos'],['../structnovas__track.html#a33e0ba55c500f6f927c7fb21c1710972',1,'novas_track::pos']]],
   ['precession_5',['precession',['../structnovas__frame.html#a1768e94e9ee04287bc18b3eb6a79f36c',1,'novas_frame']]],
   ['pressure_6',['pressure',['../structon__surface.html#aee1c5d07ac79c5c036195858afe33405',1,'on_surface']]],
   ['promodec_7',['promodec',['../structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c',1,'cat_entry']]],

@@ -38,7 +38,6 @@ cat_entry
 .ti -1c
 .RI "double \fBradialvelocity\fP"
 .br
-.RI "[km/s] catalog radial velocity "
 .ti -1c
 .RI "char \fBstarname\fP [\fBSIZE_OF_OBJ_NAME\fP]"
 .br
@@ -60,6 +59,10 @@ Note, that despite the slightly expanded catalog name, this has the same memory 
 .RE
 .PP
 
+.SH "Field Documentation"
+.PP 
+.SS "double radialvelocity"
+[km/s] catalog radial velocity (w\&.r\&.t\&. SSB) To specify radial velocities defined in the Local Standard of Rest (LSR) you might use novas_set_lsr_vel() 
 
 .SH "Author"
 .PP 

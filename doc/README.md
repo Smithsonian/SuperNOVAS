@@ -16,7 +16,7 @@ SuperNOVAS is entirely free to use without licensing restrictions.  Its source c
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
-This document has been updated for the `v1.2` and later releases.
+This document has been updated for the `v1.3` and later releases.
 
 
 ## Table of Contents
@@ -29,6 +29,7 @@ This document has been updated for the `v1.2` and later releases.
  - [Example usage](#examples)
  - [Tips and tricks](#tips)
  - [Notes on precision](#precision)
+ - [Representative benchmarks](#benchmarks)
  - [SuperNOVAS specific features](#supernovas-features)
  - [Incorporating Solar-system ephemeris data or services](#solarsystem)
  - [Runtime debug support](#debug-support)
@@ -133,7 +134,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` has a number of issues that produce inaccurate results. 
    The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.
    
-
+ - [__v1.3__] `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
+ 
+   
 -----------------------------------------------------------------------------
 
 <a name="compatibility"></a>
@@ -423,6 +426,9 @@ for which we have B1950 (i.e. FK4) coordinates:
  // parallax 5.89 mas, radial velocity -3.4 km/s.
  make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star);
 ```
+
+Note, that if you have LSR-based radial velocities instead of Solar-system Barycentric radial velocities, you may 
+convert them to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_ssb_vel()`.
 
 We must convert these coordinates to the now standard ICRS system for calculations in SuperNOVAS, first by calculating 
 equivalent J2000 coordinates, by applying the proper motion and the appropriate precession. Then, we apply a small 
@@ -830,6 +836,50 @@ before that level of accuracy is reached.
 
 -----------------------------------------------------------------------------
 
+<a name="benchmarks"></a>
+## Representative benchmarks
+
+To get an idea of the speed of SuperNOVAS, you can use the `make benchmark` on your machine. The table below 
+summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the 
+state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not 
+so new, run-of-the-mill PC might perform.
+
+The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either 
+the SuperNOVAS `novas_sky_pos()` or the legacy NOVAS C `place()`, both in full accuracy and reduced accuracy modes. 
+The two methods are equivalent, and both include calculating a precise geometric position, as well as aberration and 
+gravitational deflection corrections from the observer's point of view.
+
+
+ | Description                         | accuracy  | positions / sec |
+ |-------------------------------------|-----------|-----------------|
+ | `novas_sky_pos()`, same frame       | reduced   |         2016408 |
+ |                                     |   full    |         2036795 |
+ | `place()`, same time, same observer | reduced   |          158418 |
+ |                                     |   full    |          112681 |
+ | `novas_sky_pos()`, individual       | reduced   |           56218 |
+ |                                     |   full    |           23828 |
+ | `place()`, individual               | reduced   |           50441 |
+ |                                     |   full    |           20106 |
+ 
+
+As one may observe, the SuperNOVAS `novas_geom_posvel()` significantly outperforms the legacy `place()`, when 
+repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
+2 orders of magnitude faster performance than for inidividual observing times and/or observer locations. Also, when 
+observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
+individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
+
+| ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
+|:--:| 
+| __Figure 2.__ *SuperNOVAS apparent position calculation benchmarks. |
+
+
+The above benchmarks are all for single-threaded performance. Since SuperNOVAS is generally thread-safe, you can 
+expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
+core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
+perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
+one minute.
+
+
 
 <a name="supernovas-features"></a>
 ## SuperNOVAS specific features
@@ -1032,6 +1082,51 @@ before that level of accuracy is reached.
    used to simplify the initialization of NOVAS `object`s.
 
  - Added more physical unit constants to `novas.h`.
+ 
+### Added in v1.3
+
+ - New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
+   Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
+
+ - New `novas_hms_hours(const char *str)` and `novas_dms_degrees(const char *str)` convenience functions to make it 
+   easier to parse HMS or DMS based time/angle values, returning the result in units of hours or degrees, 
+   appropriately for use in SuperNOVAS.
+
+ - New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
+   Earth-based observing frame.
+   
+ - New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or sets
+   below a specific elevation on a given date. (Useful for Earth-based observers only).
+
+ - New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given date. 
+   The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, while
+   `novas_solar_illum()` can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen
+   from the observer location.
+
+ - New `novas_hpa()` and `novas_epa()` functions to calculate the parallactic angle (a.k.a. vertical position angle) 
+   for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively. 
+   The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image or detector 
+   array) between the local horizontal and equatorial orientations, e.g. via the newly added `novas_h2e_offset()` or 
+   `novas_e2h_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
+   projections, such as described in Calabretta &amp; Greisen 2002.
+   
+ - New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 
+   apparent distance between two spherical or equatorial locations, or between two sources, respectively. 
+   `novas_sun_angle()` and `novas_moon_angle()` can be used to calculate the apparent angular distance of sources from 
+   the Sun and Moon, respectively.
+
+ - New `novas_observable` and `novas_track` data structures to provide second order Taylor series expansion of the 
+   apparent horizontal or equatorial positions, distances and redshifts for sources. They can be calculated with the 
+   newly added `novas_hor_track()` or `novas_equ_track()` functions. Such tracking values, including rates and 
+   accelerations can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track 
+   sources (hence the name). You can also obtain instantaneous projected (extrapolated) positions from the tracking 
+   parameters via `novas_track_pos()` at low computational cost.
+   
+ - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
+   &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.
+   
+ - New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial projections
+   along a line of sight in the direction of a source. Such projections are oft used in interferometry.
 
 
 <a name="api-changes"></a>
@@ -1109,6 +1204,10 @@ before that level of accuracy is reached.
  - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
    to radial velocity for light originating at the surface, and observed near Earth or at a large distance away from 
    the source.
+   
+ - [__v1.3__] Modified `place()` and `novas_geom_posvel()` to use physical velocity, rather than projected movement, 
+   for calculating radial velocities for sidereal sources.
+
 
 -----------------------------------------------------------------------------
 

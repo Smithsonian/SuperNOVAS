@@ -157,6 +157,12 @@ Functions</h2></td></tr>
 <tr class="separator:ae45badb450c1ca73920d982e12346c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c4b3f67a3b82808dd16ae43dfaf0f86" id="r_a1c4b3f67a3b82808dd16ae43dfaf0f86"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86">naif_to_novas_planet</a> (long id)</td></tr>
 <tr class="separator:a1c4b3f67a3b82808dd16ae43dfaf0f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b1204e7ad069e62b0cb7024fbfee0d" id="r_a13b1204e7ad069e62b0cb7024fbfee0d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a13b1204e7ad069e62b0cb7024fbfee0d">novas_helio_dist</a> (double jd_tdb, const <a class="el" href="structobject.html">object</a> *source, double *rate)</td></tr>
+<tr class="separator:a13b1204e7ad069e62b0cb7024fbfee0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cdf3285614f58221cda45adb297112b" id="r_a3cdf3285614f58221cda45adb297112b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a3cdf3285614f58221cda45adb297112b">novas_solar_illum</a> (const <a class="el" href="structobject.html">object</a> *source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
+<tr class="separator:a3cdf3285614f58221cda45adb297112b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad03d69e61d1a2d5da8063fcd0c05ab7c" id="r_ad03d69e61d1a2d5da8063fcd0c05ab7c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ad03d69e61d1a2d5da8063fcd0c05ab7c">novas_solar_power</a> (double jd_tdb, const <a class="el" href="structobject.html">object</a> *source)</td></tr>
+<tr class="separator:ad03d69e61d1a2d5da8063fcd0c05ab7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3eb54acf22dc155879163de89c6865e" id="r_ac3eb54acf22dc155879163de89c6865e"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ac3eb54acf22dc155879163de89c6865e">novas_to_dexxx_planet</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id)</td></tr>
 <tr class="separator:ac3eb54acf22dc155879163de89c6865e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab51ac9bdf7736e1c1582e0981046daf3" id="r_ab51ac9bdf7736e1c1582e0981046daf3"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ab51ac9bdf7736e1c1582e0981046daf3">novas_to_naif_planet</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id)</td></tr>
@@ -648,6 +654,140 @@ This implementation will always propulate the output position and velocity vecto
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677">NOVAS_PLUTO_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
+
+</div>
+</div>
+<a id="a13b1204e7ad069e62b0cb7024fbfee0d" name="a13b1204e7ad069e62b0cb7024fbfee0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b1204e7ad069e62b0cb7024fbfee0d">&#9670;&#160;</a></span>novas_helio_dist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_helio_dist </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>rate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a Solar-system body's distance from the Sun, and optionally also the rate of recession. It may be useful, e.g. to calculate the body's heating from the Sun.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. You may want to use a time that is antedated to when the observed light originated from the source. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">source</td><td>Observed Solar-system source </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rate</td><td>[AU/day] (optional) Returned rate of recession from Sun </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[AU] Distance from the Sun, or NAN if not a Solar-system source.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#ad03d69e61d1a2d5da8063fcd0c05ab7c">novas_solar_power()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#a3cdf3285614f58221cda45adb297112b">novas_solar_illum()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="structobject.html#a2cc80aad5c0303449e2412b122504a10">object::type</a>.</p>
+
+</div>
+</div>
+<a id="a3cdf3285614f58221cda45adb297112b" name="a3cdf3285614f58221cda45adb297112b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cdf3285614f58221cda45adb297112b">&#9670;&#160;</a></span>novas_solar_illum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_solar_illum </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *&#160;</td>
+          <td class="paramname"><em>frame</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>Observed source. Usually a Solar-system source. (For other source types, 1.0 is returned by default.) </td></tr>
+    <tr><td class="paramname">frame</td><td>Observing frame, defining the observer location and astronomical time of observation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Solar illumination fraction [0.0:1.0] of a spherical body observed at the source location from the given observer location, or NAN if there was an error (errno will indicate the type of error).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, <a class="el" href="structnovas__frame.html#ac2558d2b29171b29bad2599c75d3cc6c">novas_frame::obs_pos</a>, <a class="el" href="structnovas__frame.html#a3d3fc00c5477b8f7a9b6593a748949d0">novas_frame::sun_pos</a>, and <a class="el" href="structobject.html#a2cc80aad5c0303449e2412b122504a10">object::type</a>.</p>
+
+</div>
+</div>
+<a id="ad03d69e61d1a2d5da8063fcd0c05ab7c" name="ad03d69e61d1a2d5da8063fcd0c05ab7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad03d69e61d1a2d5da8063fcd0c05ab7c">&#9670;&#160;</a></span>novas_solar_power()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_solar_power </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the incident Solar power on a Solar-system body at the time of observation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. You may want to use a time that is antedated to when the observed light originated from the source. </td></tr>
+    <tr><td class="paramname">source</td><td>Observed Solar-system source </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[W/m<sup>2</sup>] Incident Solar power on the illuminated side of the object, or NAN if not a Solar-system source or if the source is the Sun itself.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a3cdf3285614f58221cda45adb297112b">novas_solar_illum()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="super_8c.html#a13b1204e7ad069e62b0cb7024fbfee0d">novas_helio_dist()</a>, and <a class="el" href="novas_8h.html#a5e72489b5d24fa737d04cb9ec303b71e">NOVAS_SOLAR_CONSTANT</a>.</p>
 
 </div>
 </div>
