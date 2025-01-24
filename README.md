@@ -421,7 +421,7 @@ implementation.
 
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
-| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. Dotted arrows indicate possible loss of precision due to the inadequacy of the old precession-nutation (Lieske et al. 1977) model. |
+| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. Dotted arrows indicate possible loss of precision due to the inadequacy of the old precession-nutation (Lieske et al. 1977) model. |
 
 
 <a name="sidereal-example"></a>
