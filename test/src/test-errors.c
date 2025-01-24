@@ -1641,6 +1641,7 @@ static int test_helio_dist() {
   int n = 0;
   double rate = 0.0;
   object star = {};
+  object jupiter = NOVAS_JUPITER_INIT;
 
   star.type = NOVAS_CATALOG_OBJECT;
 
@@ -1650,6 +1651,7 @@ static int test_helio_dist() {
   if(check_nan("helio_dist:null:rate:nan", rate)) n++;
   if(check_nan("helio_dist:cat_object:rate", novas_helio_dist(JD_J2000, &star, &rate))) n++;
   if(check_nan("helio_dist:cat_object:rate:nan", rate)) n++;
+  if(check_nan("helio_dist:source:invalid", novas_helio_dist(JD_J2000, &jupiter, &rate))) n++;
 
   return n;
 }
