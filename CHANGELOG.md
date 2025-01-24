@@ -13,9 +13,6 @@ Upcoming feature release, expected around 1 May 2025.
    
 ### Fixed
 
- - #115: Modified `place()` and `novas_geom_posvel()` to use the specified SSB-based radial velocity, rather than 
-   projected movement, for calculating observer based radial velocities for sidereal sources.
-   
  - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
   
 ### Added

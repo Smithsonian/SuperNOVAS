@@ -1792,6 +1792,7 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
 #  define DEGREE              NOVAS_DEGREE
 #  define HOURANGLE           NOVAS_HOURANGLE
 #  define MAS                 (1e-3 * ASEC2RAD)
+#  define KMS                 NOVAS_KMS
 
 #endif /* _CONSTS_ */
 

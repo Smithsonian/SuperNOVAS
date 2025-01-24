@@ -1645,7 +1645,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   observer obs;
   novas_planet_bundle planets = {0};
   int pl_mask = (accuracy == NOVAS_FULL_ACCURACY) ? grav_bodies_full_accuracy : grav_bodies_reduced_accuracy;
-  double x, jd_tdb, pob[3], vob[3], pos[3] = { 0 }, vel[3], vpos[3], t_light, d_sb;
+  double x, jd_tdb, pob[3], vob[3], pos[3] = {0.0}, vel[3], vpos[3], t_light, d_sb;
   int i;
 
   if(!source)
@@ -1703,10 +1703,7 @@ short place(double jd_tt, const object *source, const observer *location, double
     double dt = 0.0;
 
     // Get position of star updated for its space motion.
-    starvectors(&source->star, pos, NULL);
-
-    // Convert radial velocity to 3d vector
-    radec2vector(source->star.ra, source->star.dec, source->star.radialvelocity, vel);
+    starvectors(&source->star, pos, vel);
 
     dt = d_light(pos, pob);
     proper_motion(JD_J2000, pos, vel, (jd_tdb + dt), pos);
