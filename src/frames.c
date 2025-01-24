@@ -1251,8 +1251,8 @@ double novas_frame_lst(const novas_frame *frame) {
     return NAN;
   }
 
-  lst = remainder(frame->gst + frame->observer.on_surf.longitude / 15.0, 24.0);
-  if(lst < 0.0) lst += 24.0;
+  lst = remainder(frame->gst + frame->observer.on_surf.longitude / 15.0, DAY_HOURS);
+  if(lst < 0.0) lst += DAY_HOURS;
 
   return lst;
 }
@@ -1339,17 +1339,17 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
       return novas_trace_nan(fn);
 
     // Calculate transit UTC at observer location
-    tUTC = remainder(pos.ra - novas_frame_lst(frame), 24.0);
+    tUTC = remainder(pos.ra - novas_frame_lst(frame), DAY_HOURS);
 
     // Adjusted frame time for last crossing time estimate
     t->ijd_tt = frame->time.ijd_tt;
-    t->fjd_tt = utc2tt + (tUTC + sign * lha) / 24.0;
+    t->fjd_tt = utc2tt + (tUTC + sign * lha) / DAY_HOURS;
 
     if(t->fjd_tt < frame->time.fjd_tt) t->ijd_tt++;         // Make sure to check rise/set time after input frame time.
 
     if(source->type == NOVAS_CATALOG_OBJECT)
       break;           // That's it for catalog sources
-    if(fabs(remainder(pos.ra - lastRA, 24.0)) < 1e-8)
+    if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-8)
       break;  // Check if converged (ms precision)
 
     lastRA = pos.ra;
@@ -1568,11 +1568,11 @@ double novas_unwrap_angles(double *a, double *b, double *c) {
   // Careful with Az wraps
   if(*a >= 270.0 || *b >= 270.0 || *c >= 270.0) {
     if(*a < 90.0)
-      *a += 360.0;
+      *a += DEG360;
     if(*b < 90.0)
-      *b += 360.0;
+      *b += DEG360;
     if(*c < 90.0)
-      *c += 360.0;
+      *c += DEG360;
   }
   return 0;
 }
@@ -1794,7 +1794,7 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
   dt = novas_diff_time(time, &track->time);
   dt2 = dt * dt;
 
-  if(lon) *lon = remainder(track->pos.lon + track->rate.lon * dt + track->accel.lon * dt2, 360.0);
+  if(lon) *lon = remainder(track->pos.lon + track->rate.lon * dt + track->accel.lon * dt2, DEG360);
   if(lat) *lat = track->pos.lat + track->rate.lat * dt + track->accel.lat * dt2;
   if(dist) *dist = track->pos.dist + track->rate.dist * dt + track->accel.dist * dt2;
   if(z) *z = track->pos.z + track->rate.z * dt + track->accel.z * dt2;

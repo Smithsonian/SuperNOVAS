@@ -627,9 +627,9 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
     return novas_trace_nan("cirs_to_app_ra");
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
-  ra = remainder(ra + ra_cio, 24.0);
+  ra = remainder(ra + ra_cio, DAY_HOURS);
   if(ra < 0.0)
-    ra += 24.0;
+    ra += DAY_HOURS;
 
   return ra;
 }
@@ -659,9 +659,9 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
     return novas_trace_nan("app_to_cirs_ra");
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
-  ra = remainder(ra - ra_cio, 24.0);
+  ra = remainder(ra - ra_cio, DAY_HOURS);
   if(ra < 0.0)
-    ra += 24.0;
+    ra += DAY_HOURS;
 
   return ra;
 }
@@ -1443,8 +1443,8 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
 
   sys->plane = NOVAS_EQUATORIAL_PLANE;
   sys->type = type;
-  sys->obl = remainder(90.0 - dec, 360.0);
-  sys->Omega = remainder(15.0 * ra + 90.0, 360.0);
+  sys->obl = remainder(90.0 - dec, DEG360);
+  sys->Omega = remainder(15.0 * ra + 90.0, DEG360);
 
   return 0;
 }
@@ -1846,36 +1846,9 @@ double novas_equ_sep(double ra1, double dec1, double ra2, double dec2) {
  *
  * @since 1.3
  * @author Attila Kovacs
- *
- * @sa novas_xyz2enu()
  */
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw) {
-  static const char *fn = "novas_xyz_to_uvw";
-
-  double dX, dY, dZ, sHA, cHA, sDec, cDec;
-
-  if(!xyz)
-    return novas_error(-1, EINVAL, fn, "input xyz vector is NULL");
-  if(!uvw)
-    return novas_error(-1, EINVAL, fn, "output uvw vector is NULL");
-
-  dX = xyz[0];
-  dY = xyz[1];
-  dZ = xyz[2];
-
-  ha *= HOURANGLE;
-  dec *= DEGREE;
-
-  sHA = sin(ha);
-  cHA = cos(ha);
-
-  sDec = sin(dec);
-  cDec = cos(dec);
-
-  uvw[0] = sHA * dX + cHA * dY;
-  uvw[1] = -cHA * sDec * dX + sHA * sDec * dY + cDec * dZ;
-  uvw[2] = cHA * cDec * dX - sHA * cDec * dY + sDec * dZ;
-
+  prop_error("novas_xyz_to_uvw", novas_xyz_to_los(xyz, -15.0 * ha, dec, uvw), 0);
   return 0;
 }
 

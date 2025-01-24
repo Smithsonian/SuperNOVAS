@@ -5041,7 +5041,9 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
  *
  * @param star    A catalog object.
  * @param vel     [AU/day] The physical 3D equatorial rectangular motion of the the star
- *                relative to the Solar-System Barycenter (SSB).
+ *                relative to the Solar-System Barycenter (SSB), in the same coordinate
+ *                reference frame, in which the star's position was defined (e.g. ICRS or
+ *                FK5).
  * @return        0 if successful, or else -1 if either input argument is NULL
  *
  * @since 1.3
@@ -5052,10 +5054,10 @@ int radec2vector(double ra, double dec, double dist, double *pos) {
  * @sa novas_geom_posvel()
  */
 int novas_starvel(const cat_entry *star, double *vel) {
-  static const char *fn = "starvectors";
+  static const char *fn = "novas_starvel";
 
-  double paralx, r, d, cra, sra, cdc, sdc;
-  double k, pmr, pmd, rvl;
+  double paralx;
+  double k;
 
   if(!star)
     return novas_error(-1, EINVAL, fn, "NULL input cat_entry");
@@ -5069,29 +5071,18 @@ int novas_starvel(const cat_entry *star, double *vel) {
   if(star->parallax <= 0.0)
     paralx = 1.0e-6;
 
-  r = star->ra * HOURANGLE;
-  d = star->dec * DEGREE;
-
-  cra = cos(r);
-  sra = sin(r);
-  cdc = cos(d);
-  sdc = sin(d);
-
   // Compute Doppler factor, which accounts for change in
   // light travel time to star.
-  k = 1.0 / (1.0 - star->radialvelocity * NOVAS_KMS / C);
+  k = 1.0 / (1.0 - star->radialvelocity * NOVAS_KMS / C) / (paralx * JULIAN_YEAR_DAYS);
 
   // Convert proper motion and radial velocity to orthogonal components of
   // motion with units of AU/day.
-  pmr = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
-  pmd = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
-  rvl = star->radialvelocity * NOVAS_KMS / (AU / DAY);
+  vel[0]= k * star->promora;
+  vel[1] = k * star->promodec;
+  vel[2] = star->radialvelocity * NOVAS_KMS / (AU / DAY);
 
   // Transform motion vector to equatorial system.
-  vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
-  vel[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
-  vel[2] = pmd * cdc + rvl * sdc;
-
+  novas_los_to_xyz(vel, 15.0 * star->ra, star->dec, vel);
   return 0;
 }
 
@@ -5130,7 +5121,7 @@ int novas_starvel(const cat_entry *star, double *vel) {
 int starvectors(const cat_entry *star, double *pos, double *motion) {
   static const char *fn = "starvectors";
 
-  double paralx, r, d, cra, sra, cdc, sdc;
+  double paralx;
 
   if(!star)
     return novas_error(-1, EINVAL, fn, "NULL input cat_entry");
@@ -5144,22 +5135,10 @@ int starvectors(const cat_entry *star, double *pos, double *motion) {
   if(star->parallax <= 0.0)
     paralx = 1.0e-6;
 
-  r = star->ra * HOURANGLE;
-  d = star->dec * DEGREE;
-
-  cra = cos(r);
-  sra = sin(r);
-  cdc = cos(d);
-  sdc = sin(d);
-
   // Convert right ascension, declination, and parallax to position vector
   // in equatorial system with units of AU.
-  if(pos) {
-    const double dist = 1.0 / sin(paralx * MAS);
-    pos[0] = dist * cdc * cra;
-    pos[1] = dist * cdc * sra;
-    pos[2] = dist * sdc;
-  }
+  if(pos)
+    radec2vector(star->ra, star->dec, 1.0 / sin(paralx * MAS), pos);
 
   if(motion) {
     // Compute Doppler factor, which accounts for change in
@@ -5168,14 +5147,12 @@ int starvectors(const cat_entry *star, double *pos, double *motion) {
 
     // Convert proper motion and radial velocity to orthogonal components of
     // motion with units of AU/day.
-    const double pmr = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
-    const double pmd = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
-    const double rvl = k * star->radialvelocity * NOVAS_KMS / (AU / DAY);
+    motion[0] = k * star->promora / (paralx * JULIAN_YEAR_DAYS);
+    motion[1] = k * star->promodec / (paralx * JULIAN_YEAR_DAYS);
+    motion[2] = k * star->radialvelocity * NOVAS_KMS / (AU / DAY);
 
     // Transform motion vector to equatorial system.
-    motion[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
-    motion[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
-    motion[2] = pmd * cdc + rvl * sdc;
+    novas_los_to_xyz(motion, 15.0 * star->ra, star->dec, motion);
   }
 
   return 0;
@@ -6135,7 +6112,7 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital *orbit, enum novas_acc
     return novas_error(-1, EINVAL, fn, "output pos = vel (@ %p)", pos);
 
   dt = (jd_tdb - orbit->jd_tdb);
-  E = M = remainder(orbit->M0 + orbit->n * dt, 360.0) * DEGREE;
+  E = M = remainder(orbit->M0 + orbit->n * dt, DEG360) * DEGREE;
 
   // Iteratively determine E, using Newton-Raphson method...
   while(--i >= 0) {
@@ -6245,6 +6222,106 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000) {
 }
 
 /**
+ * Converts a 3D polar vector (&delta;&phi;, &delta;&theta; &delta;r) along a line-of-sight to a
+ * rectangular equatorial (&delta;x, &delta;y, &delta;z) vector.
+ *
+ * @param los         [arb.u.] Input polar 3-vector (&delta;&phi;, &delta;&theta; &delta;r) along the
+ *                    line of sight.
+ * @param lon         [deg] Line-of-sight longitude.
+ * @param lat         [deg] Line-of-sight latitude.
+ * @param[out] xyz    [arb.u.] Output rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z),
+ *                    in the same units as the input. It may be the same vector as the input.
+ * @return            0 if successful, or else -1 if either vector argument is NULL (errno will
+ *                    be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_xyz_to_los()
+ */
+int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
+  static const char *fn = "novas_polar_to_xyz";
+
+  double slon, clon, slat, clat;
+  double dlon, dlat, dr;
+
+  if(!los)
+    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
+
+  if(!xyz)
+    return novas_error(-1, EINVAL, fn, "output polar-orineted vector is NULL");
+
+  lon *= DEGREE;
+  lat *= DEGREE;
+
+  slon = sin(lon);
+  clon = cos(lon);
+  slat = sin(lat);
+  clat = cos(lat);
+
+  dlon = los[0];
+  dlat = los[1];
+  dr = los[2];
+
+  // Transform motion vector to equatorial system.
+  xyz[0] = -slon * dlon - clon * slat * dlat + clon * clat * dr;
+  xyz[1] = clon * dlon - slon * slat * dlat + slon * clat * dr;
+  xyz[2] = clat * dlat + slat * dr;
+
+  return 0;
+}
+
+/**
+ * Converts a 3D rectangular equatorial (&delta;x, &delta;y, &delta;z) vector to a polar
+ * (&delta;&phi;, &delta;&theta; &delta;r) vector along a line-of-sight.
+ *
+ * @param xyz         [arb.u.] Input rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z).
+ * @param lon         [deg] Line-of-sight longitude.
+ * @param lat         [deg] Line-of-sight latitude.
+ * @param[out] los    [arb.u.] Output polar-oriented 3-vector (&delta;&phi;, &delta;&theta; &delta;r)
+ *                    along the specified line of sight, in the same units as the input. It may be
+ *                    the same vector as the input.
+ * @return            0 if successful, or else -1 if either vector argument is NULL (errno will
+ *                    be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_los_to_xyz()
+ */
+int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
+  static const char *fn = "novas_xyz_to_polar";
+
+  double slon, clon, slat, clat;
+  double x, y, z;
+
+  if(!xyz)
+    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
+
+  if(!los)
+    return novas_error(-1, EINVAL, fn, "output polar-orineted vector is NULL");
+
+  lon *= DEGREE;
+  lat *= DEGREE;
+
+  slon = sin(lon);
+  clon = cos(lon);
+  slat = sin(lat);
+  clat = cos(lat);
+
+  x = xyz[0];
+  y = xyz[1];
+  z = xyz[2];
+
+  // Transform motion vector to equatorial system.
+  los[0] = -slon * x + clon * y;
+  los[1] = -clon * slat * x - slon * slat * y + clat * z;
+  los[2] = clon * clat * x + slon * clat * y + slat * z;
+
+  return 0;
+}
+
+/**
  * Transform a star's catalog quantities for a change the coordinate system
  * and/or the date for which the positions are calculated.  Also used to
  * rotate catalog quantities on the dynamical equator and equinox of J2000.0
@@ -6298,8 +6375,8 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
         cat_entry *out) {
   static const char *fn = "transform_cat";
 
-  double paralx, dist, r, d, cra, sra, cdc, sdc, k;
-  double pos[3], vel[3], term1, pmr, pmd, rvl, xyproj;
+  double paralx, k;
+  double pos[3], vel[3], term1, xyproj;
   double djd = (jd_tt_out - jd_tt_in);
 
   if(!in || !out)
@@ -6333,16 +6410,7 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   // Convert right ascension, declination, and parallax to position
   // vector in equatorial system with units of AU.
-  dist = 1.0 / sin(paralx * MAS);
-  r = in->ra * HOURANGLE;
-  d = in->dec * DEGREE;
-  cra = cos(r);
-  sra = sin(r);
-  cdc = cos(d);
-  sdc = sin(d);
-  pos[0] = dist * cdc * cra;
-  pos[1] = dist * cdc * sra;
-  pos[2] = dist * sdc;
+  radec2vector(in->ra, in->dec, 1.0 / sin(paralx * MAS), pos);
 
   // Compute Doppler factor, which accounts for change in light travel time to star.
   k = 1.0 / (1.0 - in->radialvelocity * NOVAS_KMS / C);
@@ -6351,14 +6419,12 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   // of motion, in spherical polar system at star's original position,
   // with units of AU/day.
   term1 = paralx * JULIAN_YEAR_DAYS;
-  pmr = k * in->promora / term1;
-  pmd = k * in->promodec / term1;
-  rvl = k * in->radialvelocity * DAY / AU_KM;
+  vel[0] = k * in->promora / term1;
+  vel[1] = k * in->promodec / term1;
+  vel[2] = k * in->radialvelocity * DAY / AU_KM;
 
   // Transform motion vector to equatorial system.
-  vel[0] = -pmr * sra - pmd * sdc * cra + rvl * cdc * cra;
-  vel[1] = pmr * cra - pmd * sdc * sra + rvl * cdc * sra;
-  vel[2] = pmd * cdc + rvl * sdc;
+  novas_los_to_xyz(vel, 15.0 * in->ra, in->dec, vel);
 
   // Update star's position vector for space motion (only if 'option' = 1 or 'option' = 3).
   if((option == PROPER_MOTION) || (option == CHANGE_EPOCH)) {
@@ -6403,31 +6469,21 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   // From updated position vector, obtain star's new position expressed as angular quantities.
   xyproj = sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
 
-  r = (xyproj > 0.0) ? atan2(pos[1], pos[0]) : 0.0;
-  out->ra = r / HOURANGLE;
+  out->ra = (xyproj > 0.0) ? atan2(pos[1], pos[0]) / HOURANGLE : 0.0;
   if(out->ra < 0.0)
     out->ra += DAY_HOURS;
 
-  d = atan2(pos[2], xyproj);
-  out->dec = d / DEGREE;
+  out->dec = atan2(pos[2], xyproj) / DEGREE;
 
-  dist = novas_vlen(pos);
-  paralx = asin(1.0 / dist) / MAS;
+  paralx = asin(1.0 / novas_vlen(pos)) / MAS;
 
   // Transform motion vector back to spherical polar system at star's new position.
-  cra = cos(r);
-  sra = sin(r);
-  cdc = cos(d);
-  sdc = sin(d);
-
-  pmr = -vel[0] * sra + vel[1] * cra;
-  pmd = -vel[0] * cra * sdc - vel[1] * sra * sdc + vel[2] * cdc;
-  rvl = vel[0] * cra * cdc + vel[1] * sra * cdc + vel[2] * sdc;
+  novas_xyz_to_los(vel, 15.0 * out->ra, out->dec, vel);
 
   // Convert components of motion to from AU/day to normal catalog units.
-  out->promora = pmr * paralx * JULIAN_YEAR_DAYS / k;
-  out->promodec = pmd * paralx * JULIAN_YEAR_DAYS / k;
-  out->radialvelocity = rvl * (AU_KM / DAY) / k;
+  out->promora = vel[0] * term1 / k;
+  out->promodec = vel[1] * term1 / k;
+  out->radialvelocity = vel[2] * (AU_KM / DAY) / k;
   out->parallax = (in->parallax > 0.0) ? paralx : 0.0;
 
   // Set the catalog identification code for the transformed catalog entry.
@@ -6450,6 +6506,8 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   return 0;
 }
+
+
 
 /**
  * Determines the angle of an object above or below the Earth's limb (horizon).  The geometric

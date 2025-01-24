@@ -1818,6 +1818,26 @@ static int test_starvel() {
   return n;
 }
 
+static int test_los_to_xyz() {
+  int n = 0;
+  double v[3] = {};
+
+  if(check("los_to_xyz:los:null", -1, novas_los_to_xyz(NULL, 0.0, 0.0, v))) n++;
+  if(check("xyz_to_los:xyz:null", -1, novas_los_to_xyz(v, 0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
+static int test_xyz_to_los() {
+  int n = 0;
+  double v[3] = {};
+
+  if(check("xyz_to_los:xyz:null", -1, novas_xyz_to_los(NULL, 0.0, 0.0, v))) n++;
+  if(check("xyz_to_los:los:null", -1, novas_xyz_to_los(v, 0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1967,6 +1987,8 @@ int main() {
   if(test_solar_illum()) n++;
   if(test_object_sep()) n++;
   if(test_starvel()) n++;
+  if(test_los_to_xyz()) n++;
+  if(test_xyz_to_los()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

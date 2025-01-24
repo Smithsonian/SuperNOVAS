@@ -1723,6 +1723,10 @@ double novas_sep(double lon1, double lat1, double lon2, double lat2);
 
 double novas_equ_sep(double ra1, double dec1, double ra2, double dec2);
 
+int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz);
+
+int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los);
+
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 
 double novas_frame_lst(const novas_frame *frame);
