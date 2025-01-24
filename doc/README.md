@@ -404,7 +404,7 @@ implementation.
 
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
-| __Figure 1.__ *SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. Dotted arrows indicate possible loss of precision due to the inadequacy of the old precession-nutation (Lieske et al. 1977) model. |
+| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. Dotted arrows indicate possible loss of precision due to the inadequacy of the old precession-nutation (Lieske et al. 1977) model. |
 
 
 <a name="sidereal-example"></a>
@@ -870,7 +870,7 @@ individual observing times or observer locations are generally around 2x faster 
 
 | ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
 |:--:| 
-| __Figure 2.__ *SuperNOVAS apparent position calculation benchmarks. |
+| __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
 
 
 The above benchmarks are all for single-threaded performance. Since SuperNOVAS is generally thread-safe, you can 

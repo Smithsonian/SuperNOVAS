@@ -305,7 +305,7 @@ Note on alternative methodologies</h3>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter"><img src="resources/SuperNOVAS-systems.png" alt="SuperNOVAS coordinate systems and conversions" class="inline"/>    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter"><b>Figure 1.</b> <em>SuperNOVAS Coordinate Systems and Conversions</em>. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. Dotted arrows indicate possible loss of precision due to the inadequacy of the old precession-nutation (Lieske et al. 1977) model.   </td></tr>
+<td class="markdownTableBodyCenter"><b>Figure 1.</b> SuperNOVAS Coordinate Systems and Conversions*. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. Dotted arrows indicate possible loss of precision due to the inadequacy of the old precession-nutation (Lieske et al. 1977) model.   </td></tr>
 </table>
 <p><a class="anchor" id="sidereal-example"></a> </p>
 <h3><a class="anchor" id="autotoc_md52"></a>
@@ -599,7 +599,7 @@ Representative benchmarks</h2>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter"><img src="resources/SuperNOVAS-benchmark.png" alt="SuperNOVAS benchmarks" class="inline"/>    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter"><b>Figure 2.</b> *SuperNOVAS apparent position calculation benchmarks.   </td></tr>
+<td class="markdownTableBodyCenter"><b>Figure 2.</b> SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations.   </td></tr>
 </table>
 <p>The above benchmarks are all for single-threaded performance. Since SuperNOVAS is generally thread-safe, you can expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under one minute.</p>
 <p><a class="anchor" id="supernovas-features"></a> </p>
