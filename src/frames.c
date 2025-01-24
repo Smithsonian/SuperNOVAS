@@ -1254,7 +1254,8 @@ double novas_frame_lst(const novas_frame *frame) {
   }
 
   lst = remainder(frame->gst + frame->observer.on_surf.longitude / 15.0, DAY_HOURS);
-  if(lst < 0.0) lst += DAY_HOURS;
+  if(lst < 0.0)
+    lst += DAY_HOURS;
 
   return lst;
 }
@@ -1347,7 +1348,8 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     t->ijd_tt = frame->time.ijd_tt;
     t->fjd_tt = utc2tt + (tUTC + sign * lha) / DAY_HOURS;
 
-    if(t->fjd_tt < frame->time.fjd_tt) t->ijd_tt++;         // Make sure to check rise/set time after input frame time.
+    if(t->fjd_tt < frame->time.fjd_tt)
+      t->ijd_tt++;         // Make sure to check rise/set time after input frame time.
 
     if(source->type == NOVAS_CATALOG_OBJECT)
       break;           // That's it for catalog sources
@@ -1462,7 +1464,8 @@ double novas_solar_illum(const object *source, const novas_frame *frame) {
 
   dSrc = novas_vlen(pos);
 
-  for(i = 3; --i >= 0; ) pos[i] += frame->obs_pos[i];
+  for(i = 3; --i >= 0; )
+    pos[i] += frame->obs_pos[i];
 
   dSun = novas_vdist(pos, frame->sun_pos);
   dObs = novas_vdist(frame->obs_pos, frame->sun_pos);
@@ -1796,10 +1799,14 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
   dt = novas_diff_time(time, &track->time);
   dt2 = dt * dt;
 
-  if(lon) *lon = remainder(track->pos.lon + track->rate.lon * dt + track->accel.lon * dt2, DEG360);
-  if(lat) *lat = track->pos.lat + track->rate.lat * dt + track->accel.lat * dt2;
-  if(dist) *dist = track->pos.dist + track->rate.dist * dt + track->accel.dist * dt2;
-  if(z) *z = track->pos.z + track->rate.z * dt + track->accel.z * dt2;
+  if(lon)
+    *lon = remainder(track->pos.lon + track->rate.lon * dt + track->accel.lon * dt2, DEG360);
+  if(lat)
+    *lat = track->pos.lat + track->rate.lat * dt + track->accel.lat * dt2;
+  if(dist)
+    *dist = track->pos.dist + track->rate.dist * dt + track->accel.dist * dt2;
+  if(z)
+    *z = track->pos.z + track->rate.z * dt + track->accel.z * dt2;
 
   return 0;
 }

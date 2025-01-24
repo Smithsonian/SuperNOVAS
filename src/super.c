@@ -1674,8 +1674,10 @@ int novas_h2e_offset(double daz, double del, double pa, double *dra, double *dde
   c = cos(pa);
   s = sin(pa);
 
-  if(dra) *dra =  s * dy - c * dx;
-  if(ddec) *ddec = s * dx + c * dy;
+  if(dra)
+    *dra =  s * dy - c * dx;
+  if(ddec)
+    *ddec = s * dx + c * dy;
 
   return 0;
 }
@@ -1738,17 +1740,20 @@ double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
 
   if(!source) {
     novas_error(0, EINVAL, fn, "input source is NULL");
-    if(rate) *rate = NAN;
+    if(rate)
+      *rate = NAN;
     return NAN;
   }
 
   if(source->type == NOVAS_CATALOG_OBJECT) {
     novas_error(0, EINVAL, fn, "input source is not a Solar-system body: type %d", source->type);
-    if(rate) *rate = NAN;
+    if(rate)
+      *rate = NAN;
     return NAN;
   }
 
-  if(ephemeris(jd2, source, NOVAS_HELIOCENTER, NOVAS_REDUCED_ACCURACY, pos, vel) != 0) return novas_trace_nan(fn);
+  if(ephemeris(jd2, source, NOVAS_HELIOCENTER, NOVAS_REDUCED_ACCURACY, pos, vel) != 0)
+    return novas_trace_nan(fn);
 
   d = novas_vlen(pos);
   if(!d) {
@@ -1757,7 +1762,8 @@ double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
     return 0.0;
   }
 
-  if(rate) *rate = novas_vlen(vel);
+  if(rate)
+    *rate = novas_vlen(vel);
   return d;
 
 }
@@ -1895,7 +1901,8 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
   int i;
 
   radec2vector(ra, dec, 1.0, u);
-  for(i = 3; --i >= 0; ) v[i] = vLSR * u[i];
+  for(i = 3; --i >= 0; )
+    v[i] = vLSR * u[i];
 
   precession(jd, v, NOVAS_JD_J2000, v);
   convert_lsr_ssb_vel(v, -1, v);
@@ -1937,7 +1944,8 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
   int i;
 
   radec2vector(ra, dec, 1.0, u);
-  for(i = 3; --i >= 0; ) v[i] = vLSR * u[i];
+  for(i = 3; --i >= 0; )
+    v[i] = vLSR * u[i];
 
   precession(jd, v, NOVAS_JD_J2000, v);
   convert_lsr_ssb_vel(v, 1, v);
