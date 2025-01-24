@@ -44,7 +44,7 @@
 #define  POLAR_DY         -62.0     ///< [mas] Earth polar offset y, e.g. from IERS Bulletin A.
 
 int main() {
-  // SuperNOVAS aariables used for the calculations ------------------------->
+  // SuperNOVAS variables used for the calculations ------------------------->
   object source;                    // observed source
   observer obs;                     // observer location
   novas_timespec obs_time;          // astrometric time of observation

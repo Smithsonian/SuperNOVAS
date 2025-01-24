@@ -7,6 +7,64 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+Upcoming feature release, expected around 1 May 2025.
+   
+### Fixed
+
+ - #115: Modified `place()` and `novas_geom_posvel()` to use the specified SSB-based radial velocity, rather than 
+   projected movement, for calculating observer based radial velocities for sidereal sources.
+   
+ - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
+  
+### Added
+
+ - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
+   Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
+
+ - New `novas_hms_hours(const char *str)` and `novas_dms_degrees(const char *str)` convenience functions to make it 
+   easier to parse HMS or DMS based time/angle values, returning the result in units of hours or degrees, 
+   appropriately for use in SuperNOVAS.
+
+ - New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
+   Earth-based observing frame.
+   
+ - New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or sets
+   below a specific elevation on a given date. (Useful for Earth-based observers only).
+
+ - New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given date. 
+   The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, while
+   `novas_solar_illum()` can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen
+   from the observer location.
+
+ - New `novas_hpa()` and `novas_epa()` functions to calculate the parallactic angle (a.k.a. vertical position angle) 
+   for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively. 
+   The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image or detector 
+   array) between the local horizontal and equatorial orientations, e.g. via the newly added `novas_h2e_offset()` or 
+   `novas_e2h_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
+   projections, such as described in Calabretta &amp; Greisen 2002.
+   
+ - New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 
+   apparent distance between to spherical or equatorial locations, or between two sources, respectively. 
+   `novas_sun_angle()` and `novas_moon_angle()` can be used to calculate the apparent angular distance of sources from 
+   the Sun and Moon, respectively.
+
+ - New `novas_observable` and `novas_track` data structures to provide second order Taylor series expansion of the 
+   apparent horizontal or equatorial positions, distances and redshifts for sources. They can be calculated with the 
+   newly added `novas_hor_track()` or `novas_equ_track()` functions. Such tracking values, including rates and 
+   accelerations can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track 
+   sources (hence the name). You can also obtain instantaneous projected (extrapolated) positions from the tracking 
+   parameters via `novas_track_pos()` at low computational cost.
+ 
+ - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
+   &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.
+   
+ - New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial projections
+   along a line of sight in the direction of a source. Such projections are oft used in interferometry.
+
+
+
 ## [1.2.0] - 2025-01-15
 
 Feature release. New easy to use adapter modules for CALCEPH or the NAIF CSPICE Toolkit to provide precise positions 

@@ -41,7 +41,7 @@
 #define  POLAR_DY         -62.0     ///< [mas] Earth polar offset y, e.g. from IERS Bulletin A.
 
 int main() {
-  // SuperNOVAS aariables used for the calculations ------------------------->
+  // SuperNOVAS variables used for the calculations ------------------------->
   novas_orbital orbit = NOVAS_ORBIT_INIT;     // Orbital parameters
   object source;                    // a celestial object: sidereal, planet, ephemeris or orbital source
   observer obs;                     // observer location

@@ -11,6 +11,11 @@ LDFLAGS += -fprofile-arcs -ftest-coverage -lm
 
 include ../config.mk
 
+# cppcheck options for 'check' target. You can add additional options by
+# setting the CHECKEXTRA variable (e.g. in shell) prior to invoking 'make'.
+CHECKOPTS = --enable=performance,warning,portability --language=c \
+            --error-exitcode=1 --std=c99 --inline-suppr $(CHECKEXTRA)
+
 #OBJECTS := $(subst obj/,,$(OBJECTS))
 OBJECTS := novas.o nutation.o solsys3.o super.o frames.o timescale.o refract.o naif.o
 TESTS := test-compat test-cio_file test-super test-errors
@@ -87,9 +92,6 @@ bad-cio-data:
 	$(MAKE) clean
 	$(MAKE) run
 
-../cio_ra.bin:
-	$(MAKE) -C .. cio_ra.bin
-
 test-%: test-%.o $(OBJECTS) | Makefile data
 	$(CC) -o $@ $^ $(LDFLAGS)
 
@@ -103,6 +105,12 @@ test-%.o: src/test-%.c | Makefile
 test-calceph: LDFLAGS += -lcalceph
 
 test-cspice: LDFLAGS += -lcspice
+
+# Static code analysis using 'cppcheck'
+.PHONY: analyze
+analyze:
+	@echo "   [analyze]"
+	@cppcheck $(CPPFLAGS) $(CHECKOPTS) $(SRC)
 
 .PHONY: clean-test
 clean-test:
@@ -129,6 +137,7 @@ help:
 	@echo
 	@echo "  run           (default) Compiles and runs regression tests."
 	@echo "  coverage      Extracts test coverage data."
+	@echo "  analyze       Static analysis with cppcheck."
 	@echo "  clean         Removes intermediate products."
 	@echo "  distclean     Deletes all generated files."
 	@echo

@@ -34,6 +34,8 @@
 #define FRAME_INITIALIZED   0xdeadbeadcafeba5e  ///< frame.state for a properly initialized frame.
 #define GEOM_TO_APP         1                   ///< Geometric to apparent conversion
 #define APP_TO_GEOM         (-1)                ///< Apparent to geometric conversion
+
+#define NOVAS_TRACK_DELTA   30.0                ///< [s] Time step for evaluation horizontal tracking derivatives.
 /// \endcond
 
 static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b) {
@@ -470,6 +472,9 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the
  * original NOVAS C place() for that system. To obtain more precise TOD coordinates, set `sys` to
  * `NOVAS_CIRS` here, and follow with cirs_to_tod() after.</li>
+ * <li>As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based
+ * velocity measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with
+ * pseudo LSR-based measures being returned for catalog sources.</li>
  * </ol>
  *
  * @param source        Pointer to a celestial source data structure that is observed
@@ -521,7 +526,10 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
     double dt = 0.0;
 
     // Get position of star updated for its space motion.
-    starvectors(&source->star, pos1, vel1);
+    starvectors(&source->star, pos1, NULL);
+
+    // Convert radial velocity to 3d vector
+    radec2vector(source->star.ra, source->star.dec, source->star.radialvelocity, vel1);
 
     dt = d_light(pos1, frame->obs_pos);
     proper_motion(NOVAS_JD_J2000, pos1, vel1, (jd_tdb + dt), pos1);
@@ -590,6 +598,9 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * `NOVAS_CIRS` here, and follow with cirs_to_tod() / cirs_to_app_ra() on the `out->r_hat` /
  * `out->ra` respectively after (or you can use just convert one of the quantities, and use
  * radec2vector() or vector2radec() to get the other even faster).</li>
+ * <li>As of SuperNOVAS v1.3, the returned radial velocity component is a proper observer-based
+ * spectroscopic measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with
+ * LSR-based measures being returned for catalog sources.</li>
  * </ol>
  *
  * @param object        Pointer to a celestial object data structure that is observed
@@ -1209,6 +1220,593 @@ int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform,
 
   prop_error(fn, matrix_transform(in->r_hat, &transform->matrix, out->r_hat), 0);
   vector2radec(out->r_hat, &out->ra, &out->dec);
+
+  return 0;
+}
+
+/**
+ * Returns the Local (apparent) Sidereal Time for an observing frame of an Earth-bound observer.
+ *
+ * @param frame   Observer frame, defining the location and time of observation
+ * @return        [h] The LST for an Earth-bound observer [0.0--24.0), or NAN otherwise. If NAN is
+ *                returned errno will indicate the type of error.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ */
+double novas_frame_lst(const novas_frame *frame) {
+  static const char *fn = "novas_frame_lst";
+  double lst;
+
+  if(!frame) {
+    novas_error(0, EINVAL, fn, "input frame is NULL");
+    return NAN;
+  }
+
+  if(!is_frame_initialized(frame)) {
+    novas_error(0, EINVAL, fn, "input frame is not initialized");
+    return NAN;
+  }
+
+  if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER) {
+    novas_error(0, EINVAL, fn, "Not an Earth-bound observer: where=%d", frame->observer.where);
+    return NAN;
+  }
+
+  lst = remainder(frame->gst + frame->observer.on_surf.longitude / 15.0, DAY_HOURS);
+  if(lst < 0.0)
+    lst += DAY_HOURS;
+
+  return lst;
+}
+
+/**
+ * Returns the hourangle at which the object crosses the specified elevation angle.
+ *
+ *
+ * @param el          [rad] Elevation angle.
+ * @param dec         [rad] Apparent Source declination.
+ * @param lat         [rad] Geodetic latitude of observer.
+ * @return            [h] the hour angle at which the source crosses the specified elevation
+ *                    angle, or else NAN if the source stays above or below the specified
+ *                    elevation at all times.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_sets_below()
+ */
+static double calc_lha(double el, double dec, double lat) {
+  double c = (sin(el) - sin(lat) * sin(dec)) / (cos(lat) * cos(dec));
+  return acos(c) / NOVAS_HOURANGLE;
+}
+
+/**
+ * Returns the UTC date at which a source appears cross the specified elevation angle. The calculated
+ * time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric
+ * refraction also.
+ *
+ * @param el          [deg] Elevation angle.
+ * @param sign        1 for rise time, or -1 for setting time.
+ * @param source      Observed source
+ * @param frame       Observing frame, defining the observer location and astronomical time
+ *                    of observation.
+ * @param ref_model   Refraction model, or NULL to calculate unrefracted rise time.
+ * @return            [day] UTC-based Julian date at which the object crosses the specified elevation
+ *                    in the 24 hour period after the specified date, or else NAN if the source stays
+ *                    above or below the given elevation for the entire 24-hour period.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_sets_below()
+ */
+static double novas_cross_el_date(double el, int sign, const object *source, const novas_frame *frame, RefractionModel ref_model) {
+  static const char *fn = "novas_cross_el_time";
+
+  const on_surface *loc;
+  novas_frame frame1;
+  sky_pos pos = {};
+  double lst, utc2tt, lastRA = NAN;
+  int i;
+
+  if(!source) {
+    novas_error(0, EINVAL, fn, "input source is NULL");
+    return NAN;
+  }
+
+  lst = novas_frame_lst(frame);
+  if(isnan(lst))
+    return novas_trace_nan(fn);
+
+  if(ref_model) {
+    // Apply refraction correction
+    double ref = ref_model(novas_get_time(&frame->time, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
+    el -= ref / 3600.0;
+  }
+
+  el *= DEGREE;                     // convert to degrees.
+  frame1 = *frame;                  // Time shifted frame
+  loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
+  utc2tt = (frame->time.dut1 + frame->time.ut1_to_tt) / DAY;
+
+  for(i = 0; i < novas_inv_max_iter; i++) {
+    novas_timespec *t = &frame1.time;
+    double lha, tUTC;
+
+    prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
+
+    // Hourangle when source crosses nominal elevation
+    lha = calc_lha(el, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE);
+    if(isnan(lha))
+      return novas_trace_nan(fn);
+
+    // Calculate transit UTC at observer location
+    tUTC = remainder(pos.ra - novas_frame_lst(frame), DAY_HOURS);
+
+    // Adjusted frame time for last crossing time estimate
+    t->ijd_tt = frame->time.ijd_tt;
+    t->fjd_tt = utc2tt + (tUTC + sign * lha) / DAY_HOURS;
+
+    if(t->fjd_tt < frame->time.fjd_tt)
+      t->ijd_tt++;         // Make sure to check rise/set time after input frame time.
+
+    if(source->type == NOVAS_CATALOG_OBJECT)
+      break;           // That's it for catalog sources
+    if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-8)
+      break;  // Check if converged (ms precision)
+
+    lastRA = pos.ra;
+  }
+
+  if(i >= novas_inv_max_iter) {
+    novas_error(0, ECANCELED, fn, "failed to converge");
+    return NAN;
+  }
+
+  return novas_get_time(&frame1.time, NOVAS_UTC);
+}
+
+/**
+ * Returns the UTC date at which a source appears to rise above the specified elevation angle. The
+ * calculated time will account for the motion of the source (for Solar-system objects), and optionally
+ * for atmospheric refraction also.
+ *
+ *
+ * @param el          [deg] Elevation angle.
+ * @param source      Observed source
+ * @param frame       Observing frame, defining the observer location and astronomical time
+ *                    of observation.
+ * @param ref_model   Refraction model, or NULL to calculate unrefracted rise time.
+ * @return            [day] UTC-based Julian date at which the object rises above the specified elevation
+ *                    in the 24 hour period after the specified date, or else NAN if the source stays
+ *                    above or below the given elevation for the entire 24-hour period.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_sets_below()
+ */
+double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
+  double utc = novas_cross_el_date(el, -1, source, frame, ref_model);
+  if(isnan(utc))
+    return novas_trace_nan("novas_rises_above");
+  return utc;
+}
+
+/**
+ * Returns the UTC date at which a source appears to set below the specified elevation angle. The
+ * calculated time will account for the motion of the source (for Solar-system objects), and optionally
+ * for atmopsheric refraction also.
+ *
+ *
+ * @param el          [deg] Elevation angle.
+ * @param source      Observed source
+ * @param frame       Observing frame, defining the observer location and astronomical time
+ *                    of observation.
+ * @param ref_model   Refraction model, or NULL to calculate unrefracted setting time.
+ * @return            [day] UTC-based Julian date at which the object sets below the specified elevation
+ *                    in the 24 hour period after the specified date, or else NAN if the source stays
+ *                    above or below the given elevation for the entire 24-hour day..
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_rises_above()
+ */
+double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
+  double utc = novas_cross_el_date(el, 1, source, frame, ref_model);
+  if(isnan(utc))
+    return novas_trace_nan("novas_sets_below");
+  return utc;
+}
+
+/**
+ * Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body.
+ *
+ * @param source    Observed source. Usually a Solar-system source. (For other source types, 1.0
+ *                  is returned by default.)
+ * @param frame     Observing frame, defining the observer location and astronomical time
+ *                  of observation.
+ * @return          Solar illumination fraction [0.0:1.0] of a spherical body observed at the
+ *                  source location from the given observer location, or NAN if there was an error
+ *                  (errno will indicate the type of error).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ */
+double novas_solar_illum(const object *source, const novas_frame *frame) {
+  static const char *fn = "novas_solar_illum";
+
+  double pos[3], dSrc, dObs, dSun;
+  int i;
+
+  if(!source) {
+    novas_error(0, EINVAL, fn, "input source is NULL");
+    return NAN;
+  }
+
+  if(!frame) {
+    novas_error(0, EINVAL, fn, "input frame is NULL");
+    return NAN;
+  }
+
+  if(!is_frame_initialized(frame)) {
+    novas_error(0, EINVAL, fn, "input frame is not initialized");
+    return NAN;
+  }
+
+  if(source->type == NOVAS_CATALOG_OBJECT)
+    return 1.0;
+
+  if(novas_geom_posvel(source, frame, NOVAS_ICRS, pos, NULL) != 0)
+    return novas_trace_nan(fn);
+
+  dSrc = novas_vlen(pos);
+
+  for(i = 3; --i >= 0; )
+    pos[i] += frame->obs_pos[i];
+
+  dSun = novas_vdist(pos, frame->sun_pos);
+  dObs = novas_vdist(frame->obs_pos, frame->sun_pos);
+
+  return 0.5 + 0.5 * (dSrc * dSrc + dSun * dSun - dObs * dObs) / (2.0 * dSun * dSrc);
+}
+
+/**
+ * Returns the angular separation of two objects from the observer's point of view.
+ * The calculated separation includes light-time corrections, aberration and gravitational
+ * deflection for both sources, and thus represents a precise observed separation between
+ * the two sources.
+ *
+ * @param source1   An observed source
+ * @param source2   Another observed source
+ * @param frame     Observing frame, defining the observer location and astronomical time
+ *                  of observation.
+ * @return          [deg] Apparent angular separation between the two observed sources
+ *                  from the observer's point-of-view.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_sun_angle()
+ * @sa novas_moon_angle()
+ * @sa novas_sep()
+ */
+double novas_object_sep(const object *source1, const object *source2, const novas_frame *frame) {
+  static const char *fn = "novas_object_sep";
+
+  sky_pos p1 = {}, p2 = {};
+
+  if(!source1) {
+    novas_error(0, EINVAL, fn, "input source1 is NULL");
+    return NAN;
+  }
+
+  if(!source2) {
+    novas_error(0, EINVAL, fn, "input source2 is NULL");
+    return NAN;
+  }
+
+  if(novas_sky_pos(source1, frame, NOVAS_GCRS, &p1) != 0)
+    return novas_trace_nan(fn);
+
+  if(novas_sky_pos(source2, frame, NOVAS_GCRS, &p2) != 0)
+    return novas_trace_nan(fn);
+
+  if(p1.dis < 1e-11 || p2.dis < 1e-11) {
+    novas_error(0, EINVAL, fn, "source is at observer location");
+    return NAN;
+  }
+
+  return novas_equ_sep(p1.ra, p1.dec, p2.ra, p2.dec);
+}
+
+/**
+ * Returns the apparent angular distance of a source from the Sun from the observer's
+ * point of view.
+ *
+ * @param source    An observed source
+ * @param frame     Observing frame, defining the observer location and astronomical time
+ *                  of observation.
+ * @return          [deg] the apparent angular distance between the source an the Sun, from
+ *                  the observer's point of view
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_moon_angle()
+ */
+double novas_sun_angle(const object *source, const novas_frame *frame) {
+  object sun = NOVAS_SUN_INIT;
+  double d = novas_object_sep(source, &sun, frame);
+  if(isnan(d))
+    return novas_trace_nan("novas_sun_angle");
+  return d;
+}
+
+/**
+ * Returns the apparent angular distance of a source from the Moon from the observer's
+ * point of view.
+ *
+ * @param source    An observed source
+ * @param frame     Observing frame, defining the observer location and astronomical time
+ *                  of observation.
+ * @return          [deg] Apparent angular distance between the source an the Moon, from
+ *                  the observer's point of view
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_sun_angle()
+ */
+double novas_moon_angle(const object *source, const novas_frame *frame) {
+  object moon = NOVAS_MOON_INIT;
+  double d = novas_object_sep(source, &moon, frame);
+  if(isnan(d))
+    return novas_trace_nan("novas_moon_angle");
+  return d;
+}
+
+/// \cond PRIVATE
+double novas_unwrap_angles(double *a, double *b, double *c) {
+  // Careful with Az wraps
+  if(*a >= 270.0 || *b >= 270.0 || *c >= 270.0) {
+    if(*a < 90.0)
+      *a += DEG360;
+    if(*b < 90.0)
+      *b += DEG360;
+    if(*c < 90.0)
+      *c += DEG360;
+  }
+  return 0;
+}
+/// \endcond
+
+/**
+ * Calculates equatorial tracking position and motion (first and second time derivatives) for the
+ * specified source in the given observing frame. The position and its derivatives are calculated
+ * via the more precise IAU2006 method, and CIRS.
+ *
+ * @param source        Observed source
+ * @param frame         Observing frame, defining the observer location and astronomical time
+ *                      of observation.
+ * @param dt            [s] Time step used for calculating derivatives.
+ * @param[out] track    Output tracking parameters to populate
+ * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
+ *                      or else an error code from cio_ra() or from novas_sky_pos().
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_hor_track()
+ * @sa novas_track_pos()
+ */
+int novas_equ_track(const object *source, const novas_frame *frame, double dt, novas_track *track) {
+  static const char *fn = "novas_equ_track";
+
+  novas_timespec time1;
+  novas_frame frame1;
+  sky_pos pos0 = {}, posm = {}, posp = {};
+  double ra_cio;
+  double idt2;
+
+  if(dt <= 0.0) dt = NOVAS_TRACK_DELTA;
+  idt2 = 1.0 / (dt * dt);
+
+  if(!source)
+    return novas_error(-1, EINVAL, fn, "input source is NULL");
+
+  if(!frame)
+    return novas_error(-1, EINVAL, fn, "input frame is NULL");
+
+  if(!is_frame_initialized(frame))
+    return novas_error(-1, EINVAL, fn, "input frame is not initialized");
+
+  if(!track)
+    return novas_error(-1, EINVAL, fn, "output track is NULL");
+
+  track->time = frame->time;
+  prop_error(fn, cio_ra(frame->time.ijd_tt + frame->time.fjd_tt, frame->accuracy, &ra_cio), 0);
+
+  prop_error(fn, novas_sky_pos(source, frame, NOVAS_CIRS, &pos0), 0);
+  pos0.ra += ra_cio;
+  pos0.rv = novas_v2z(pos0.rv);
+
+  track->pos.lon = 15.0 * pos0.ra;
+  track->pos.lat = pos0.dec;
+  track->pos.dist = pos0.dis;
+  track->pos.z = pos0.rv;
+
+  time1 = frame->time;
+  time1.fjd_tt -= dt / DAY;
+  prop_error(fn, novas_make_frame(frame->accuracy, &frame->observer, &time1, frame->dx, frame->dy, &frame1), 0);
+  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_CIRS, &posm), 0);
+  posm.ra += ra_cio;
+  posm.rv = novas_v2z(posm.rv);
+
+  time1.fjd_tt += 2.0 * dt / DAY;
+  prop_error(fn, novas_make_frame(frame->accuracy, &frame->observer, &time1, frame->dx, frame->dy, &frame1), 0);
+  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_CIRS, &posp), 0);
+  posp.ra += ra_cio;
+  posp.rv = novas_v2z(posp.rv);
+
+  // hours -> degrees...
+  pos0.ra *= 15.0;
+  posm.ra *= 15.0;
+  posp.ra *= 15.0;
+
+  // Careful with RA wraps.
+  novas_unwrap_angles(&posm.ra, &pos0.ra, &posp.ra);
+
+  track->rate.lon = 0.5 * (posp.ra - posm.ra) / dt;
+  track->rate.lat = 0.5 * (posp.dec - posm.dec) / dt;
+  track->rate.dist = 0.5 * (posp.dis - posm.dis) / dt;
+  track->rate.z = 0.5 * (posp.rv - posm.rv) / dt;
+
+  track->accel.lon = (0.5 * (posp.ra + posm.ra) - pos0.ra) * idt2;
+  track->accel.lat = (0.5 * (posp.dec + posm.dec) - pos0.dec) * idt2;
+  track->accel.dist = (0.5 * (posp.dis + posm.dis) - pos0.dis) * idt2;
+  track->accel.z = (0.5 * (posp.rv + posm.rv) - pos0.rv) * idt2;
+
+  return 0;
+}
+
+/**
+ * Calculates horizontal tracking position and motion (first and second time derivatives) for the
+ * specified source in the given observing frame. The position and its derivatives are calculated
+ * via the more precise IAU2006 method, and CIRS, and then converted to local horizontal
+ * coordinates using the specified refraction model (if any).
+ *
+ * @param source        Observed source
+ * @param frame         Observing frame, defining the observer location and astronomical time
+ *                      of observation.
+ * @param ref_model     Refraction model to use, or NULL for an unrefracted track.
+ * @param[out] track    Output tracking parameters to populate
+ * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
+ *                      or else an error code from cio_ra() or from novas_sky_pos(), or from
+ *                      novas_app_hor().
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_equ_track()
+ * @sa novas_track_pos()
+ */
+int novas_hor_track(const object *source, const novas_frame *frame, RefractionModel ref_model, novas_track *track) {
+  static const char *fn = "novas_equ_track";
+
+  novas_timespec time1;
+  novas_frame frame1;
+  sky_pos pos = {};
+  double ra_cio;
+  double az0, el0, azm, elm, dm, zm, azp, elp, dp, zp;
+  const double idt2 = 1.0 / (NOVAS_TRACK_DELTA * NOVAS_TRACK_DELTA);
+
+  if(!source)
+    return novas_error(-1, EINVAL, fn, "input source is NULL");
+
+  if(!frame)
+    return novas_error(-1, EINVAL, fn, "input frame is NULL");
+
+  if(!is_frame_initialized(frame))
+    return novas_error(-1, EINVAL, fn, "input frame is not initialized");
+
+  if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER)
+    return novas_error(-1, EINVAL, fn, "observer is not Earth-bound: where = %d", frame->observer.where);
+
+  if(!track)
+    return novas_error(-1, EINVAL, fn, "output track is NULL");
+
+  track->time = frame->time;
+  prop_error(fn, cio_ra(frame->time.ijd_tt + frame->time.fjd_tt, frame->accuracy, &ra_cio), 0);
+
+  prop_error(fn, novas_sky_pos(source, frame, NOVAS_CIRS, &pos), 0);
+  prop_error(fn, novas_app_to_hor(frame, NOVAS_TOD, pos.ra + ra_cio, pos.dec, ref_model, &az0, &el0), 0);
+  track->pos.lon = az0;
+  track->pos.lat = el0;
+  track->pos.dist = pos.dis;
+  track->pos.z = novas_v2z(pos.rv);
+
+  time1 = frame->time;
+  time1.fjd_tt -= NOVAS_TRACK_DELTA / DAY;
+  prop_error(fn, novas_make_frame(frame->accuracy, &frame->observer, &time1, frame->dx, frame->dy, &frame1), 0);
+  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_CIRS, &pos), 0);
+  prop_error(fn, novas_app_to_hor(&frame1, NOVAS_TOD, pos.ra + ra_cio, pos.dec, ref_model, &azm, &elm), 0);
+  dp = pos.dis;
+  zm = novas_v2z(pos.rv);
+
+  time1.fjd_tt += 2.0 * NOVAS_TRACK_DELTA / DAY;
+  prop_error(fn, novas_make_frame(frame->accuracy, &frame->observer, &time1, frame->dx, frame->dy, &frame1), 0);
+  prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_CIRS, &pos), 0);
+  prop_error(fn, novas_app_to_hor(&frame1, NOVAS_TOD, pos.ra + ra_cio, pos.dec, ref_model, &azp, &elp), 0);
+  dm = pos.dis;
+  zp = novas_v2z(pos.rv);
+
+  // Careful with Az wraps
+  novas_unwrap_angles(&azm, &az0, &azp);
+
+  track->rate.lon = 0.5 * (azp - azm) / NOVAS_TRACK_DELTA;
+  track->rate.lat = 0.5 * (elp - elm) / NOVAS_TRACK_DELTA;
+  track->rate.dist = 0.5 * (dp - dm) / NOVAS_TRACK_DELTA;
+  track->rate.z = 0.5 * (zp - zm) / NOVAS_TRACK_DELTA;
+
+  track->accel.lon = (0.5 * (azp + azm) - az0) * idt2;
+  track->accel.lat = (0.5 * (elp + elm) - el0) * idt2;
+  track->accel.dist = (0.5 * (dp + dm) - track->pos.dist) * idt2;
+  track->accel.z = (0.5 * (zp + zm) - track->pos.z) * idt2;
+
+  return 0;
+}
+
+/**
+ * Calculates a projected position and redshift for a source, given the available tracking position and
+ * derivatives. Using 'tracks' to project positions can be much faster than the repeated full recalculation
+ * of the source position over some short period.
+ *
+ * In SuperNOVAS terminology a 'track' is a 2nd order Taylor series expansion of the observed position and
+ * redshift in time. For most but the fastest moving sources, horizontal (Az/El) tracks are sufficiently
+ * precise on minute timescales, whereas depending on the type of source equatorial tracks can be precise for
+ * up to days.
+ *
+ * @param track       Tracking position and motion (first and second derivatives)
+ * @param time        Astrometric time of observation
+ * @param[out] lon    [deg] projected observed Eastward longitude in tracking coordinate system
+ * @param[out] lat    [deg] projected observed latitude in tracking coordinate system
+ * @param[out] dist   [AU] projected apparent distance to source from observer
+ * @param[out] z      projected observed redshift
+ * @return            0 if successful, or else -1 if either input pointer is NULL
+ *                    (errno is set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_equ_track()
+ * @sa novas_hor_track()
+ * @sa novas_z2v()
+ */
+int novas_track_pos(const novas_track *track, const novas_timespec *time, double *lon, double *lat, double *dist, double *z) {
+  static const char *fn = "novas_track_pos";
+
+  double dt, dt2;
+
+  if(!time)
+    return novas_error(-1, EINVAL, fn, "input time is NULL");
+
+  if(!track)
+    return novas_error(-1, EINVAL, fn, "input track is NULL");
+
+  dt = novas_diff_time(time, &track->time);
+  dt2 = dt * dt;
+
+  if(lon)
+    *lon = remainder(track->pos.lon + track->rate.lon * dt + track->accel.lon * dt2, DEG360);
+  if(lat)
+    *lat = track->pos.lat + track->rate.lat * dt + track->accel.lat * dt2;
+  if(dist)
+    *dist = track->pos.dist + track->rate.dist * dt + track->accel.dist * dt2;
+  if(z)
+    *z = track->pos.z + track->rate.z * dt + track->accel.z * dt2;
 
   return 0;
 }

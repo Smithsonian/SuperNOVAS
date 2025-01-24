@@ -89,7 +89,7 @@ all: distro static test coverage analyze
 
 # Run regression tests
 .PHONY: test
-test:
+test: cio_ra.bin
 	$(MAKE) -C test run
 
 # Perform checks (test + analyze)

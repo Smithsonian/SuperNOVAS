@@ -43,7 +43,6 @@
 #define E9          1000000000           ///< 10<sup>9</sup> as integer
 /// \endcond
 
-
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
  * timescale. The time set this way is accurate to a few &mu;s (microseconds) due to the inherent

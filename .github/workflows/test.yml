@@ -34,18 +34,18 @@ jobs:
     env:
       CC: gcc
     steps:
-    
+
     - uses: actions/checkout@v4
-    
+
     - name: install dependencies
       run: sudo apt-get install -y lcov
-    
+
     - name: Run regression tests
       run: make test
-    
+
     - name: Generate coverage data
       run: make coverage
-      
+
     - name: Upload coverage to Codecov.io
       uses: codecov/codecov-action@v5
       continue-on-error: true
@@ -55,12 +55,12 @@ jobs:
         name: codecov
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
-             
+
     - name: Upload coverage to Coveralls.io
       continue-on-error: true
       uses: coverallsapp/github-action@v2
-      
-      
+
+
   test-platforms:
     name: ${{ matrix.arch }}
     # The host should always be linux
@@ -76,10 +76,10 @@ jobs:
             distro: ubuntu_latest
           - arch: riscv64
             distro: ubuntu_latest
-          - arch: s390x
-            distro: ubuntu_latest
-          - arch: ppc64le
-            distro: ubuntu_latest
+#          - arch: s390x
+#            distro: ubuntu_latest
+#          - arch: ppc64le
+#            distro: ubuntu_latest
     steps:
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2

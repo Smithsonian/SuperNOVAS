@@ -33,7 +33,7 @@
 #define  POLAR_DY         -62.0     ///< [mas] Earth polar offset y, e.g. from IERS Bulletin A.
 
 int main() {
-  // SuperNOVAS aariables used for the calculations ------------------------->
+  // SuperNOVAS variables used for the calculations ------------------------->
   cat_entry star = CAT_ENTRY_INIT;  // catalog information about a sidereal source
   object source;                    // a celestial object: sidereal, planet, ephemeris or orbital source
   observer obs;                     // observer location
@@ -59,6 +59,10 @@ int main() {
   // Let's assume we have B1950 (FK4) coordinates...
   // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year,
   // parallax 5.89 mas, radial velocity -3.4 km/s.
+  //
+  // NOTE, that make_cat_entry() expects radial velocities defined relative to the
+  // Solar-System Barycenter (SSB). But you can convert LSR-basec velocities to
+  // the required SSB-based radial velocities using novas_lsr_to_ssb_vel() if needed.
   if(make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;
