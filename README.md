@@ -885,6 +885,11 @@ repeatedly calculating positions for sources for the same instant of time and sa
 observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
 individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
 
+| ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
+|:--:| 
+| __Figure 2.__ *SuperNOVAS apparent position calculation benchmarks. |
+
+
 The above benchmarks are all for single-threaded performance. Since SuperNOVAS is generally thread-safe, you can 
 expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
 core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
