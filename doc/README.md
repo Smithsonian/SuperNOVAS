@@ -864,12 +864,17 @@ aberration and gravitational deflection corrections from the observer's point of
  |                                     |   full    |           23828 |
  | `place()`, individual               | reduced   |           50441 |
  |                                     |   full    |           20106 |
- 
 
-For comparison, [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the same machine, provides 56.9 
-positions / second with a fixed frame, and 33.7 positions per second with individual frames. As such, __SuperNOVAS__ 
-is a whopping 35400 times faster than __astropy__ for calculations in the same observing frame, and 1670 times faster 
-than __astropy__ for individual frames.
+ 
+For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
+same machine, provides 56.9 positions / second with a fixed frame, and 33.7 positions per second with individual 
+frames. As such, __SuperNOVAS__ is a whopping 35400 times faster than __astropy__ for calculations in the same 
+observing frame, and 1670 times faster than __astropy__ for individual frames.
+ 
+ | Description                         | positions / sec |
+ |-------------------------------------|-----------------|
+ | __astropy__, same frame             |            56.9 |
+ | __astropy__, individual             |            33.7 |
  
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
