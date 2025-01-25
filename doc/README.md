@@ -18,7 +18,7 @@ support for the IAU 2000/2006 standards for sub-microarcsecond position calculat
 
 SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](#benchmarks)) in a single thread, and its 
-performance scales with the number of CPUs when paralellized.
+performance scales with the number of CPUs when parallelized.
 
 This document has been updated for the `v1.3` and later releases.
 
