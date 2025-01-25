@@ -33,6 +33,10 @@ SuperNOVAS is entirely free to use without licensing restrictions.  Its source c
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
+SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
+[astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](#benchmarks)) in a single thread, and its 
+performance scales with the number of CPUs when parallelized.
+
 This document has been updated for the `v1.3` and later releases.
 
 
@@ -856,19 +860,19 @@ before that level of accuracy is reached.
 <a name="benchmarks"></a>
 ## Representative benchmarks
 
-To get an idea of the speed of SuperNOVAS, you can use the `make benchmark` on your machine. The table below 
+To get an idea of the speed of __SuperNOVAS__, you can use the `make benchmark` on your machine. The table below 
 summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the 
 state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not 
 so new, run-of-the-mill PC might perform.
 
 The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either 
-the SuperNOVAS `novas_sky_pos()` or the legacy NOVAS C `place()`, both in full accuracy and reduced accuracy modes. 
-The two methods are equivalent, and both include calculating a precise geometric position, as well as aberration and 
-gravitational deflection corrections from the observer's point of view.
+the __SuperNOVAS__ `novas_sky_pos()` or the legacy NOVAS C `place()`, both in full accuracy and reduced accuracy 
+modes. The two methods are equivalent, and both include calculating a precise geometric position, as well as 
+aberration and gravitational deflection corrections from the observer's point of view.
 
 
  | Description                         | accuracy  | positions / sec |
- |-------------------------------------|-----------|-----------------|
+ |-------------------------------------|:---------:|----------------:|
  | `novas_sky_pos()`, same frame       | reduced   |         2016408 |
  |                                     |   full    |         2036795 |
  | `place()`, same time, same observer | reduced   |          158418 |
@@ -877,12 +881,23 @@ gravitational deflection corrections from the observer's point of view.
  |                                     |   full    |           23828 |
  | `place()`, individual               | reduced   |           50441 |
  |                                     |   full    |           20106 |
- 
 
-As one may observe, the SuperNOVAS `novas_sky_pos()` significantly outperforms the legacy `place()`, when repeatedly 
-calculating positions for sources for the same instant of time and same observer location, providing up to 2 orders of 
-magnitude faster performance than for inidividual observing times and/or observer locations. Also, when observing 
-frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
+ 
+For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
+same machine, provides 56.9 positions / second with a fixed frame, and 33.7 positions per second with individual 
+frames. As such, __SuperNOVAS__ is a whopping 35400 times faster than __astropy__ for calculations in the same 
+observing frame, and 1670 times faster than __astropy__ for individual frames.
+ 
+ | Description                         | positions / sec |
+ |-------------------------------------|----------------:|
+ | __astropy__, same frame             |            56.9 |
+ | __astropy__, individual             |            33.7 |
+ 
+ 
+As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
+repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
+2 orders of magnitude faster performance than for inidividual observing times and/or observer locations. Also, when 
+observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
 individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
 
 | ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
@@ -890,7 +905,7 @@ individual observing times or observer locations are generally around 2x faster 
 | __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
 
 
-The above benchmarks are all for single-threaded performance. Since SuperNOVAS is generally thread-safe, you can 
+The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
 expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
 core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
 perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
