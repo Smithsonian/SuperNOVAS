@@ -577,23 +577,23 @@ Representative benchmarks</h2>
 <p>The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either the <b>SuperNOVAS</b> <code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code> or the legacy NOVAS C <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, both in full accuracy and reduced accuracy modes. The two methods are equivalent, and both include calculating a precise geometric position, as well as aberration and gravitational deflection corrections from the observer's point of view.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Description   </th><th class="markdownTableHeadNone">accuracy   </th><th class="markdownTableHeadNone">positions / sec    </th></tr>
+<th class="markdownTableHeadNone">Description   </th><th class="markdownTableHeadCenter">accuracy   </th><th class="markdownTableHeadRight">positions / sec    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code>, same frame   </td><td class="markdownTableBodyNone">reduced   </td><td class="markdownTableBodyNone">2016408    </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code>, same frame   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">2016408    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">full   </td><td class="markdownTableBodyNone">2036795    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">2036795    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, same time, same observer   </td><td class="markdownTableBodyNone">reduced   </td><td class="markdownTableBodyNone">158418    </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, same time, same observer   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">158418    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">full   </td><td class="markdownTableBodyNone">112681    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">112681    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code>, individual   </td><td class="markdownTableBodyNone">reduced   </td><td class="markdownTableBodyNone">56218    </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code>, individual   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">56218    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">full   </td><td class="markdownTableBodyNone">23828    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">23828    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, individual   </td><td class="markdownTableBodyNone">reduced   </td><td class="markdownTableBodyNone">50441    </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code>, individual   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">50441    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">full   </td><td class="markdownTableBodyNone">20106   </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">20106   </td></tr>
 </table>
 <p>For comparison, <a href="https://www.astropy.org/">astropy</a> (v7.0.0 on Python v3.13.1) on the same machine, provides 56.9 positions / second with a fixed frame, and 33.7 positions per second with individual frames. As such, <b>SuperNOVAS</b> is a whopping 35400 times faster than <b>astropy</b> for calculations in the same observing frame, and 1670 times faster than <b>astropy</b> for individual frames.</p>
 <p>As one may observe, the <b>SuperNOVAS</b> <code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code> significantly outperforms the legacy <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> function, when repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 2 orders of magnitude faster performance than for inidividual observing times and/or observer locations. Also, when observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.</p>

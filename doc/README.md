@@ -855,7 +855,7 @@ aberration and gravitational deflection corrections from the observer's point of
 
 
  | Description                         | accuracy  | positions / sec |
- |-------------------------------------|-----------|-----------------|
+ |-------------------------------------|:---------:|----------------:|
  | `novas_sky_pos()`, same frame       | reduced   |         2016408 |
  |                                     |   full    |         2036795 |
  | `place()`, same time, same observer | reduced   |          158418 |
