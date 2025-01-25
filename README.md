@@ -889,10 +889,10 @@ __SuperNOVAS__ is a whopping ~30000 times faster than __astropy__ for calculatio
 ~850 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
 the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  
- | Description                         | positions / sec |
- |-------------------------------------|----------------:|
- | __astropy__, same frame             |              67 |
- | __astropy__, individual             |              66 |
+ | Description                                     | positions / sec |
+ |-------------------------------------------------|----------------:|
+ | __astropy__ 7.0.0 (python 3.13.1), same frame   |              67 |
+ | __astropy__ 7.0.0 (python 3.13.1), individual   |              66 |
  
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
