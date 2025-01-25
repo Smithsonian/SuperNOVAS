@@ -14,41 +14,35 @@ import astropy
 import random
 import time
 import astropy.units as u
-from astropy.coordinates import SkyCoord
-from astropy.coordinates import EarthLocation, Longitude, Latitude, CIRS
+from astropy.coordinates import SkyCoord, EarthLocation, Longitude, Latitude, CIRS
 
-# Function to set up n sidereal sources with random parameters
-def configure_sources(n):
-	sources = []
-	
-	for i in range(0, n):
-		# Generate random source properties
-		ra = Longitude(360.0 * (random.random() - 0.5) * u.degree)
-		dec = Latitude(180.0 * (random.random() - 0.5) * u.degree)
-		d = (1.0 + 1000.0 * random.random()) * u.pc
-		pmra = 100.0 * (random.random() - 0.5) * u.mas / u.yr
-		pmdec = 100.0 * (random.random() - 0.5) * u.mas / u.yr
-		rv = 1000.0 * (random.random() - 0.5) * u.km / u.s
-
-		sc = SkyCoord(ra, dec, d, pm_ra_cosdec=pmra, pm_dec=pmdec, radial_velocity=rv)
-		sources.append(sc)
-
-	return sources
-	
-	
 # ----------------------------------------------------------------------------
 # main program entry point
 
 # Number of sources / iterations to test with
 N = 300			
 
+# ----------------------------------------------------------------------------
+# Set up a source 'catalog' with the desired number of sources and random 
+# properties
+sources = []
+	
+for i in range(0, N):
+	# Generate random source properties
+	ra = Longitude(360.0 * (random.random() - 0.5) * u.degree)
+	dec = Latitude(180.0 * (random.random() - 0.5) * u.degree)
+	d = (1.0 + 1000.0 * random.random()) * u.pc
+	pmra = 100.0 * (random.random() - 0.5) * u.mas / u.yr
+	pmdec = 100.0 * (random.random() - 0.5) * u.mas / u.yr
+	rv = 1000.0 * (random.random() - 0.5) * u.km / u.s
+
+	sc = SkyCoord(ra, dec, d, pm_ra_cosdec=pmra, pm_dec=pmdec, radial_velocity=rv)
+	sources.append(sc)
+
 
 # ----------------------------------------------------------------------------
 # Benchmark 1: calculating positions in the same frame
 
-# Set up a source 'catalog' with the desired number of sources and random 
-# properties
-sources = configure_sources(N)		
 
 # Set up a fixed observing frame...
 tim = astropy.time.Time("2025-01-25T15:32:00")
