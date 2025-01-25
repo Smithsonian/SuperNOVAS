@@ -865,6 +865,12 @@ aberration and gravitational deflection corrections from the observer's point of
  | `place()`, individual               | reduced   |           50441 |
  |                                     |   full    |           20106 |
  
+
+For comparison, [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the same machine, provides 56.9 
+positions / second with a fixed frame, and 33.7 positions per second with individual frames. As such, __SuperNOVAS__ 
+is a whopping 35400 times faster than __astropy__ for calculations in the same observing frame, and 1670 times faster 
+than __astropy__ for individual frames.
+ 
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
 repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
@@ -882,11 +888,6 @@ expect that performance shall scale with the number of concurrent CPUs used. So,
 core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
 perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
 one minute.
-
-For comparison, [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the same machine, provides 56.9 
-positions / second with a fixed frame, and 33.7 positions per second with individual frames. As such, __SuperNOVAS__ 
-is a whopping 35400 times faster than __astropy__ for calculations in the same observing frame, and 1670 times faster 
-than __astropy__ for individual frames.
 
 -----------------------------------------------------------------------------
 
