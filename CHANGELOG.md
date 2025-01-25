@@ -60,6 +60,12 @@ Upcoming feature release, expected around 1 May 2025.
  - New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial projections
    along a line of sight in the direction of a source. Such projections are oft used in interferometry.
 
+ - Added benchmarks under the `benchmark/` forlder, for SuperNOVAS as well as equivalent benchmarks for __astropy__.
+   To run the SuperNOVAS benchmarks, simply `make benchmark` in the distribution directory.
+   
+### Changed
+
+ - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
 
 
 ## [1.2.0] - 2025-01-15
