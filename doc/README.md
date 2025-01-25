@@ -16,6 +16,10 @@ SuperNOVAS is entirely free to use without licensing restrictions.  Its source c
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
+SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
+[astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](#benchmarks)) in a single thread, and its 
+performance scales with the number of CPUs when paralellized.
+
 This document has been updated for the `v1.3` and later releases.
 
 
@@ -861,7 +865,7 @@ gravitational deflection corrections from the observer's point of view.
  | `place()`, individual               | reduced   |           50441 |
  |                                     |   full    |           20106 |
  
-
+ 
 As one may observe, the SuperNOVAS `novas_sky_pos()` significantly outperforms the legacy `place()`, when repeatedly 
 calculating positions for sources for the same instant of time and same observer location, providing up to 2 orders of 
 magnitude faster performance than for inidividual observing times and/or observer locations. Also, when observing 
@@ -878,6 +882,11 @@ expect that performance shall scale with the number of concurrent CPUs used. So,
 core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
 perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
 one minute.
+
+For comparison, [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the same machine, provides 56.9 
+positions / second with a fixed frame, and 33.7 positions per second with individual frames. As such, SuperNOVAS is a 
+whopping 35400 times faster than astropy for calculations in the same observing frame, and 1670 times faster than 
+astropy for individual frames.
 
 -----------------------------------------------------------------------------
 
