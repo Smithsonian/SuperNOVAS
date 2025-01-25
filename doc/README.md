@@ -872,7 +872,7 @@ frames. As such, __SuperNOVAS__ is a whopping 35400 times faster than __astropy_
 observing frame, and 1670 times faster than __astropy__ for individual frames.
  
  | Description                         | positions / sec |
- |-------------------------------------|-----------------|
+ |-------------------------------------|----------------:|
  | __astropy__, same frame             |            56.9 |
  | __astropy__, individual             |            33.7 |
  
