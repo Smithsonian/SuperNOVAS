@@ -58,26 +58,26 @@ var NAVTREE =
         [ "Prerequisites to precise results", "index.html#autotoc_md67", null ]
       ] ],
       [ "Representative benchmarks", "index.html#autotoc_md69", null ],
-      [ "SuperNOVAS specific features", "index.html#autotoc_md70", [
-        [ "Newly added functionality", "index.html#autotoc_md71", [
-          [ "Added in v1.1", "index.html#autotoc_md72", null ],
-          [ "Added in v1.2", "index.html#autotoc_md73", null ]
+      [ "SuperNOVAS specific features", "index.html#autotoc_md71", [
+        [ "Newly added functionality", "index.html#autotoc_md72", [
+          [ "Added in v1.1", "index.html#autotoc_md73", null ],
+          [ "Added in v1.2", "index.html#autotoc_md74", null ]
         ] ],
-        [ "Added in v1.3", "index.html#autotoc_md74", null ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md75", null ]
+        [ "Added in v1.3", "index.html#autotoc_md75", null ],
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md76", null ]
       ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md77", [
-        [ "Optional CALCEPH integration", "index.html#autotoc_md78", null ],
-        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md79", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md80", null ],
-        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md81", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md82", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md83", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md78", [
+        [ "Optional CALCEPH integration", "index.html#autotoc_md79", null ],
+        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md80", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md81", null ],
+        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md82", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md83", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md84", null ]
         ] ],
-        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md84", null ]
+        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md85", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md86", null ],
-      [ "Release schedule", "index.html#autotoc_md88", null ],
+      [ "Runtime debug support", "index.html#autotoc_md87", null ],
+      [ "Release schedule", "index.html#autotoc_md89", null ],
       [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ]
