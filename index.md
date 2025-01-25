@@ -14,6 +14,10 @@ SuperNOVAS is entirely free to use without licensing restrictions.  Its source c
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
+SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
+[astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](doc/README.md#benchmarks)) in a single thread, 
+and its performance scales with the number of CPUs when parallelized.
+
 SuperNOVAS is maintained by [Attila Kovacs](https://github.com/attipaci) at the Center for Astrophysics \| Harvard & 
 Smithsonian, and it available via the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/)
 repository on GitHub.
