@@ -169,7 +169,7 @@ int main(int argc, const char *argv[]) {
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) calc_place(&stars[i], &obs_frame);
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - full accuracy place() same time:      %12.1f positions/sec\n",
+  printf(" - full accuracy place() same frame:     %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
 
@@ -195,7 +195,7 @@ int main(int argc, const char *argv[]) {
     calc_place(&stars[i], &obs_frame);
   }
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - reduced accuracy, place() own time:   %12.1f positions/sec\n",
+  printf(" - reduced accuracy, place() own frames: %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
 

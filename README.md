@@ -896,7 +896,7 @@ core performance, you could calculate up to 32 million precise positions per sec
 perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
 one minute.
 
-
+-----------------------------------------------------------------------------
 
 <a name="supernovas-features"></a>
 ## SuperNOVAS specific features

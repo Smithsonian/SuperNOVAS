@@ -1097,6 +1097,7 @@ typedef struct {
   double tt2tdb;      ///< [s] TDB - TT time difference
   double ut1_to_tt;   ///< [s] UT1 - TT time difference
   double dut1;        ///< [s] UT1 - UTC time difference
+  // int leap_seconds;  -- add so we can access it also...  TODO for v2
 } novas_timespec;
 
 /**
