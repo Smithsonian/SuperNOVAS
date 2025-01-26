@@ -865,6 +865,11 @@ summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U lapt
 state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not 
 so new, run-of-the-mill PC might perform.
 
+| ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
+|:--:| 
+| __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
+
+
 The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either 
 the __SuperNOVAS__ `novas_sky_pos()` or the legacy NOVAS C `place()`, both in full accuracy and reduced accuracy 
 modes. The two methods are equivalent, and both include calculating a precise geometric position, as well as 
@@ -900,16 +905,14 @@ the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  | __astropy__ 7.0.0 (python 3.13.1), same frame   |              67 |
  | __astropy__ 7.0.0 (python 3.13.1), individual   |              66 |
  
+
+Figure 2 offers a visual comparison for the above mentioned performance measures.
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
 repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
 2 orders of magnitude faster performance than for inidividual observing times and/or observer locations. Also, when 
 observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
 individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
-
-| ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
-|:--:| 
-| __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
 
 
 The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
