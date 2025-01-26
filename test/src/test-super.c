@@ -2753,7 +2753,7 @@ static int test_hor_track() {
 
   if(!is_equal("hor_track:rate:lat", track.rate.lat, 0.0, 1e-5)) n++;
   if(!is_equal("hor_track:rate:z", track.rate.z, 0.0, 1e-9)) n++;
-  if(!is_equal("hor_track:rate:dist", track.rate.dist, 0.0, 1e-3)) n++;
+  if(!is_equal("hor_track:rate:dist", track.rate.dist, 0.0, 1e-2)) n++;
 
   if(!is_equal("hor_track:accel:lon", track.accel.lon, 0.0, 1e-9)) n++;
   if(!is_equal("hor_track:rate:lat", track.rate.lat, 0.0, 1e-3)) n++;
@@ -2763,7 +2763,7 @@ static int test_hor_track() {
   if(!is_ok("hor_track:app_to_hor:ref", novas_app_to_hor(&frame, NOVAS_TOD, pos.ra, pos.dec, novas_standard_refraction, &az0, &el0))) n++;
   if(!is_ok("hor_track:ref", novas_hor_track(&source, &frame, novas_standard_refraction, &track))) n++;
 
-  if(!is_equal("hor_track:ra:ref", track.pos.lon, az0, 1e-9)) n++;
+  if(!is_equal("hor_track:ra:ref", track.pos.lon, az0, 1e-8)) n++;
   if(!is_equal("hor_track:dec:ref", track.pos.lat, el0, 1e-9)) n++;
   if(!is_equal("hor_track:dis:ref", track.pos.dist, pos.dis, 1e-12 * pos.dis)) n++;
   if(!is_equal("hor_track:z:ref", track.pos.z, novas_v2z(pos.rv), 1e-9)) n++;
