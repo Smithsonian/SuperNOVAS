@@ -179,7 +179,7 @@ Macros</h2></td></tr>
 <tr class="separator:a4caf1f6e33a208827eb99df7e387d6d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cb74da554b236c835302480688cfaac" id="r_a4cb74da554b236c835302480688cfaac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a4cb74da554b236c835302480688cfaac">DEFAULT_GRAV_BODIES_FULL_ACCURACY</a>&#160;&#160;&#160;( <a class="el" href="novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>) | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>) )</td></tr>
 <tr class="separator:a4cb74da554b236c835302480688cfaac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec64bf67d5a03b2b4fb2583e5918f1de" id="r_aec64bf67d5a03b2b4fb2583e5918f1de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a>&#160;&#160;&#160;( (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>) | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>) )</td></tr>
+<tr class="memitem:aec64bf67d5a03b2b4fb2583e5918f1de" id="r_aec64bf67d5a03b2b4fb2583e5918f1de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a>&#160;&#160;&#160;( (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>) )</td></tr>
 <tr class="separator:aec64bf67d5a03b2b4fb2583e5918f1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e8592d0a634bd3642e9fd508ea8022" id="r_af7e8592d0a634bd3642e9fd508ea8022"><td class="memItemLeft" align="right" valign="top"><a id="af7e8592d0a634bd3642e9fd508ea8022" name="af7e8592d0a634bd3642e9fd508ea8022"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>DEG2RAD</b>&#160;&#160;&#160;(<a class="el" href="novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a> / 180.0)</td></tr>
@@ -1017,11 +1017,11 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY&#160;&#160;&#160;( (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>) | (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>) )</td>
+          <td class="memname">#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY&#160;&#160;&#160;( (1 &lt;&lt; <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>) )</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.</p>
+<p>Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode. (only apply gravitational deflection for the Sun.)</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a03a4df8961a0cd05f89aca478d2dcd24">grav_bodies_reduced_accuracy</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>

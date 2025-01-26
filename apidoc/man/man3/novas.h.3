@@ -88,7 +88,7 @@ include/novas.h
 .RI "#define \fBDEFAULT_GRAV_BODIES_FULL_ACCURACY\fP   ( \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP | (1 << \fBNOVAS_JUPITER\fP) | (1 << \fBNOVAS_SATURN\fP) )"
 .br
 .ti -1c
-.RI "#define \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP   ( (1 << \fBNOVAS_SUN\fP) | (1 << \fBNOVAS_EARTH\fP) )"
+.RI "#define \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP   ( (1 << \fBNOVAS_SUN\fP) )"
 .br
 .ti -1c
 .RI "#define \fBDEG2RAD\fP   (\fBM_PI\fP / 180\&.0)"
@@ -1075,8 +1075,8 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << \fBNOVAS_SUN\fP) | (1 << \fBNOVAS_EARTH\fP) )"
-Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode\&.
+.SS "#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << \fBNOVAS_SUN\fP) )"
+Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode\&. (only apply gravitational deflection for the Sun\&.)
 .PP
 \fBSee also\fP
 .RS 4

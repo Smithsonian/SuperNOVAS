@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"novas_8h.html#a87867e8e7fc7decaa44777a696465353":[5,0,0,2,256],
 "novas_8h.html#a882279981a7d5a67ed596fa0937a12c1":[5,0,0,2,301],
 "novas_8h.html#a88972e93665bb1903795bfff264c14f6":[5,0,0,2,252],
 "novas_8h.html#a891866f26535e79526ed85e52e2ee67c":[5,0,0,2,225],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "solarsystem_8h.html#ac2ae695519a5b600a105243f4e30c3ab":[5,0,0,5,1],
 "solarsystem_8h.html#ac3eb54acf22dc155879163de89c6865e":[5,0,0,5,15],
 "solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531":[5,0,0,5,4],
-"solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719":[5,0,0,5,4,1],
-"solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531ab3e6efc1ad89e02f915df25265ec32db":[5,0,0,5,4,0]
+"solarsystem_8h.html#ac42df1db80fbcb6f7a72de80d9f9c531a074c723dfc1f03c82d52347c46ee0719":[5,0,0,5,4,1]
 };

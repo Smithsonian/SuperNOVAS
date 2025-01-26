@@ -856,20 +856,26 @@ aberration and gravitational deflection corrections from the observer's point of
 
  | Description                         | accuracy  | positions / sec |
  |-------------------------------------|:---------:|----------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         2016408 |
- |                                     |   full    |         2036795 |
- | `place()`, same time, same observer | reduced   |          158418 |
- |                                     |   full    |          112681 |
- | `novas_sky_pos()`, individual       | reduced   |           56218 |
- |                                     |   full    |           23828 |
- | `place()`, individual               | reduced   |           50441 |
- |                                     |   full    |           20106 |
+ | `novas_sky_pos()`, same frame       | reduced   |         2310331 |
+ |                                     |   full    |         2325610 |
+ | `place()`, same time, same observer | reduced   |          723561 |
+ |                                     |   full    |          656688 |
+ | `novas_sky_pos()`, individual       | reduced   |           78094 |
+ |                                     |   full    |           33577 |
+ | `place()`, individual               | reduced   |           67956 |
+ |                                     |   full    |           24018 |
 
+For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
+
+ | Description                         | accuracy  | positions / sec |
+ |-------------------------------------|:---------:|----------------:|
+ | NOVAS C 3.1 `place()`, same         | reduced   |          318539 |
+ | NOVAS C 3.1 `place()`, individual   | reduced   |           49729 |
  
 For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
 same machine, provides ~67 positions / second both for a fixed frame and for individual frames. As such, 
 __SuperNOVAS__ is a whopping ~30000 times faster than __astropy__ for calculations in the same observing frame, and 
-~850 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
+~1200 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
 the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  
  | Description                                     | positions / sec |
