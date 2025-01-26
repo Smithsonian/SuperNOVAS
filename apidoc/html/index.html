@@ -613,6 +613,7 @@ Representative benchmarks</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><b>astropy</b> 7.0.0 (python 3.13.1), individual   </td><td class="markdownTableBodyRight">66   </td></tr>
 </table>
+<p>Figure 2 offers a visual comparison for the above mentioned performance measures.</p>
 <p>As one may observe, the <b>SuperNOVAS</b> <code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code> significantly outperforms the legacy <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> function, when repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 2 orders of magnitude faster performance than for inidividual observing times and/or observer locations. Also, when observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">

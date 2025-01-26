@@ -883,6 +883,8 @@ the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  | __astropy__ 7.0.0 (python 3.13.1), same frame   |              67 |
  | __astropy__ 7.0.0 (python 3.13.1), individual   |              66 |
  
+
+Figure 2 offers a visual comparison for the above mentioned performance measures.
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
 repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
