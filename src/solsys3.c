@@ -300,10 +300,10 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
   if(!jd_tdb)
     return novas_error(-1, EINVAL, fn, "NULL jd_tdb parameter");
 
-  prop_error(fn, earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity), 0);
-
   if(!allow_lp_for_hp)
     return novas_error(3, EAGAIN, fn, "low-precision calculation is not currently allowed as a substitute");
+
+  prop_error(fn, earth_sun_calc(jd_tdb[0] + jd_tdb[1], body, origin, position, velocity), 0);
 
   return 0;
 }

@@ -1209,13 +1209,14 @@ enum novas_refraction_type {
 
 /**
  * Default set of gravitating bodies to use for deflection calculations in reduced accuracy mode.
+ * (only apply gravitational deflection for the Sun.)
  *
  * @sa grav_bodies_reduced_accuracy
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) | (1 << NOVAS_EARTH) )
+#define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) )
 
 /**
  * Default set of gravitating bodies to use for deflection calculations in full accuracy mode.

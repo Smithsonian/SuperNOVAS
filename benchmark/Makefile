@@ -1,7 +1,7 @@
 CC ?= gcc
 CFLAGS ?= -O2 -Wall -I../include
 
-BENCHMARKS = benchmark-place
+BENCHMARKS = benchmark-nutation benchmark-place
 
 .PHONY: run
 run: all
