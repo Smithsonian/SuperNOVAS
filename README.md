@@ -896,15 +896,15 @@ For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
  | NOVAS C 3.1 `place()`, individual   | reduced   |           49729 |
  
 For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
-same machine, provides ~67 positions / second both for a fixed frame and for individual frames. As such, 
+same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, 
 __SuperNOVAS__ is a whopping ~35000 times faster than __astropy__ for calculations in the same observing frame, and 
-~1200 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
+~500 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
 the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  
  | Description                                     | positions / sec |
  |-------------------------------------------------|----------------:|
- | __astropy__ 7.0.0 (python 3.13.1), same frame   |              67 |
- | __astropy__ 7.0.0 (python 3.13.1), individual   |              66 |
+ | __astropy__ 7.0.0 (python 3.13.1), same frame   |              71 |
+ | __astropy__ 7.0.0 (python 3.13.1), individual   |              70 |
  
 
 Figure 2 offers a visual comparison for the above mentioned performance measures.
