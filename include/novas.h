@@ -1308,6 +1308,19 @@ typedef struct {
   novas_observable accel;  ///< [deg/s<sup>2</sup>,AU/s<sup>2</sup>,1/s<sup>2</sup>] Apparent position acceleration.
 } novas_track;
 
+/**
+ * The general order of date components for parsing.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_parse_date_format()
+ */
+enum novas_date_format {
+  NOVAS_YMD = 0,          ///< year, then month, then day.
+  NOVAS_DMY,              ///< day, then month, then year
+  NOVAS_MDY               ///< month, then day, then year
+};
 
 
 short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
@@ -1704,6 +1717,7 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 // ---------------------- Added in 1.3.0 -------------------------
 
+// in super.c
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
 
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR);
@@ -1711,6 +1725,10 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR);
 double novas_hms_hours(const char *hms);
 
 double novas_dms_degrees(const char *dms);
+
+double novas_parse_hms(const char *str, char **tail);
+
+double novas_parse_dms(const char *str, char **tail);
 
 double novas_hpa(double az, double el, double lat);
 
@@ -1730,6 +1748,7 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los);
 
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 
+// in frames.c
 double novas_frame_lst(const novas_frame *frame);
 
 double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model);
@@ -1747,6 +1766,14 @@ int novas_equ_track(const object *source, const novas_frame *frame, double dt, n
 int novas_hor_track(const object *source, const novas_frame *frame, RefractionModel ref_model, novas_track *track);
 
 int novas_track_pos(const novas_track *track, const novas_timespec *time, double *lon, double *lat, double *dist, double *z);
+
+// in timescale.c
+double novas_parse_date(const char *date, char **tail);
+
+double novas_parse_date_format(enum novas_date_format format, const char *date, char **tail);
+
+int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen);
+
 
 
 // <================= END of SuperNOVAS API =====================>

@@ -2426,6 +2426,7 @@ static int test_orbit_posvel_callisto() {
 static int test_hms_hours() {
   int n = 0;
   double hours = 23.0 + 59.0/60.0 + 59.999/3600.0;
+  char *tail = NULL;
 
   if(!is_equal("hms_hours:colons", novas_hms_hours("23:59:59.999"), hours, 1e-10)) n++;
   if(!is_equal("hms_hours:spaces", novas_hms_hours("23 59 59.999"), hours, 1e-10)) n++;
@@ -2433,6 +2434,7 @@ static int test_hms_hours() {
   if(!is_equal("hms_hours:HM", novas_hms_hours("23H59M59.999"), hours, 1e-10)) n++;
   if(!is_equal("hms_hours:hprime", novas_hms_hours("23h59'59.999"), hours, 1e-10)) n++;
   if(!is_equal("hms_hours:combo", novas_hms_hours("23h 59' 59.999"), hours, 1e-10)) n++;
+  if(!is_equal("hms_hours:parse", novas_parse_hms("23 59 59.999", &tail), hours, 1e-10)) n++;
 
   return n;
 }
@@ -2440,6 +2442,7 @@ static int test_hms_hours() {
 static int test_dms_degrees() {
   int n = 0;
   double degs = 179.0 + 59.0/60.0 + 59.999/3600.0;
+  char *tail = NULL;
 
   if(!is_equal("dms_degrees:colons", novas_dms_degrees("179:59:59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:spaces", novas_dms_degrees("179 59 59.999"), degs, 1e-9)) n++;
@@ -2447,6 +2450,8 @@ static int test_dms_degrees() {
   if(!is_equal("dms_degrees:DM", novas_dms_degrees("179D59M59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:dprime", novas_dms_degrees("179d59'59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:combo", novas_dms_degrees("179d 59' 59.999"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:signed", novas_dms_degrees("+179 59 59.999"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:parse", novas_parse_dms("179 59 59.999", &tail), degs, 1e-9)) n++;
 
   if(!is_equal("dms_degrees:neg:colons", novas_dms_degrees("-179:59:59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:spaces", novas_dms_degrees("-179 59 59.999"), -degs, 1e-9)) n++;
@@ -2911,6 +2916,143 @@ static int test_lsr_vel() {
   return n;
 }
 
+static int test_parse_date() {
+  int n = 0;
+  double jd;
+  char *tail = NULL;
+
+  //  2025-01-26
+  //  2025 January 26
+  //  2025_Jan_26
+  //  2025-01-26T19:33:08Z
+  //  2025.01.26T19:33:08
+  //  2025 1 26 19h33m28.113
+  //  2025/1/26 19:33:28+02
+  //  2025-01-26T19:33:28-0600
+  //  2025 Jan 26 19:33:28+0530
+
+
+  jd = julian_date(2025, 1, 26, 0.0);
+
+
+  //  2025-01-26
+  if(!is_equal("parse_date:1", novas_parse_date("2025-01-26", &tail), jd, 1e-6)) n++;
+  if(!is_ok("parse_date:1:tail", tail == NULL)) n++;
+  if(!is_equal("parse_date:1:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025 January 26
+  if(!is_equal("parse_date:2", novas_parse_date("2025 January 26", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:2:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025_Jan_26
+  if(!is_equal("parse_date:3", novas_parse_date("2025_Jan_26", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:3:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_date:4", novas_parse_date("2025/1/26", &tail), jd, 1e-6)) n++;
+  if(!is_ok("parse_date:4:tail", tail == NULL)) n++;
+  if(!is_equal("parse_date:4:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_date:5", novas_parse_date("2025/1/26 _", &tail), jd, 1e-6)) n++;
+  if(!is_ok("parse_date:5:tail", tail == NULL)) n++;
+  if(!is_equal("parse_date:5:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_date:6", novas_parse_date("2025 1 26 blah", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:6:tail", *tail, 'b', 1e-6)) n++;
+
+  jd += (19.0 + 33.0/60.0 + 8.0/3600.0) / 24.0;
+
+  //  2025-01-26T19:33:08Z
+  if(!is_equal("parse_date:7", novas_parse_date("2025-01-26T19:33:08Z", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:7:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025.01.26T19:33:08
+  if(!is_equal("parse_date:8", novas_parse_date("2025.01.26T19:33:08", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:8:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025/1/26 19:33:8+02
+  if(!is_equal("parse_date:9", novas_parse_date("2025/1/26 19:33:8+02", &tail), jd - (2.0/24.0), 1e-6)) n++;
+  if(!is_equal("parse_date:9:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025-01-26T19:33:08-0600
+  if(!is_equal("parse_date:10", novas_parse_date("2025-01-26t19:33:08-0600", &tail), jd + (6.0/24.0), 1e-6)) n++;
+  if(!is_equal("parse_date:10:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025 Jan 26 19:33:08+05:30
+  if(!is_equal("parse_date:11", novas_parse_date("2025 Jan 26 19:33:08+05:30", &tail), jd - (5.5/24.0), 1e-6)) n++;
+  if(!is_equal("parse_date:11:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025 Jan 26 19:33:08+05:
+  if(!is_equal("parse_date:12", novas_parse_date("2025 Jan 26 19:33:08+05:", &tail), jd - (5.0/24.0), 1e-6)) n++;
+  if(!is_equal("parse_date:12:tail", *tail, ':', 1e-6)) n++;
+
+  //  2025 1 26 19h33m28.113
+  jd += 0.113 / DAY;
+  if(!is_equal("parse_date:13", novas_parse_date("2025 1 26 19h33m08.113", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:13:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_date:14", novas_parse_date("2025 1 26 19h33m08.113 _", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:14:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_date:15", novas_parse_date("2025 1 26 19h33m08.113z _", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:15:tail", *tail, 0, 1e-6)) n++;
+
+  return n;
+}
+
+static int test_parse_date_format() {
+  int n = 0;
+  double jd;
+  char *tail = NULL;
+
+  jd = julian_date(2025, 1, 26, 0.0);
+
+  //  2025-01-26
+  if(!is_equal("parse_date_format:YMD", novas_parse_date_format(NOVAS_YMD, "2025-01-26", &tail), jd, 1e-6)) n++;
+  if(!is_ok("parse_date_format:YMD:tail", tail == NULL)) n++;
+  if(!is_equal("parse_date_format:YMD:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025-01-26
+  if(!is_equal("parse_date_format:DMY", novas_parse_date_format(NOVAS_DMY, "26.01.2025", &tail), jd, 1e-6)) n++;
+  if(!is_ok("parse_date_format:DMY:tail", tail == NULL)) n++;
+  if(!is_equal("parse_date_format:DMY:tail", *tail, 0, 1e-6)) n++;
+
+  //  2025-01-26
+  if(!is_equal("parse_date_format:MDY", novas_parse_date_format(NOVAS_MDY, "1/26/2025", &tail), jd, 1e-6)) n++;
+  if(!is_ok("parse_date_format:MDY:tail", tail == NULL)) n++;
+  if(!is_equal("parse_date_format:MDY:tail", *tail, 0, 1e-6)) n++;
+
+  return n;
+}
+
+static int test_iso_timestamp() {
+  int n = 0;
+  int i;
+  novas_timespec time = {};
+  char str[30] = {};
+
+  for(i = 0; i < 100.0; i++) {
+    double jd = NOVAS_JD_J2000 + M_PI * i;
+    char label[40];
+
+    sprintf(label, "iso_timestamp:set_time:%d", i);
+    if(!is_ok(label, novas_set_time(NOVAS_UTC, jd, 32, 0.0, &time))) n++;
+
+    sprintf(label, "iso_timestamp:round:%d", i);
+    if(!is_ok(label, novas_iso_timestamp(&time, str, sizeof(str)) < 0)) n++;
+
+    sprintf(label, "iso_timestamp:check:%d", i);
+    if(!is_equal(label, novas_parse_date(str, NULL), jd, 1e-6)) {
+      printf("### %s\n", str);
+      n++;
+    }
+  }
+
+  if(!is_ok("iso_timestamp:set_time", novas_set_time(NOVAS_UTC, NOVAS_JD_J2000, 32, 0.0, &time))) n++;
+  if(!is_equal("is_timestamp:truncate", novas_iso_timestamp(&time, str, 10), 10, 1e-6)) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -2999,6 +3141,9 @@ int main(int argc, char *argv[]) {
   if(test_sun_moon_angle()) n++;
   if(test_unwrap_angles()) n++;
   if(test_lsr_vel()) n++;
+  if(test_parse_date()) n++;
+  if(test_parse_date_format()) n++;
+  if(test_iso_timestamp()) n++;
 
   n += test_dates();
 

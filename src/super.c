@@ -1450,6 +1450,75 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
 }
 
 /**
+ * Parses the decimal hours for a HMS string specification. The hour, minute, and second
+ * components may be separated by spaces, tabs, colons `:`, or a combination thereof.
+ * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the
+ * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all
+ * of the lines below specify the same time:
+ *
+ * <pre>
+ *  23:59:59.999
+ *  23h 59m 59.999
+ *  23h 59' 59.999
+ *  23H59'59.999
+ * </pre>
+ *
+ *
+ * @param hms         String specifying hours, minutes, and seconds, which correspond to
+ *                    a time between 0 and 24 h. Time in any range is permitted, but the minutes and
+ *                    seconds must be &gt;=0 and &lt;60.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string after
+ *                    the parsed time.
+ * @return        [hours] Corresponding decimal time value, or else NAN if there was an
+ *                error parsing the string (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_hms_hours()
+ * @sa novas_parse_dms()
+ */
+double novas_parse_hms(const char *hms, char **tail) {
+  static const char *fn = "novas_hms_hours";
+
+  int h = 0, m = 0, n = 0;
+  double s = NAN;
+
+  if(tail)
+    *tail = (char *) hms;
+
+  if(!hms) {
+    novas_error(0, EINVAL, fn, "input string is NULL");
+    return NAN;
+  }
+  if(!hms[0]) {
+    novas_error(0, EINVAL, fn, "input string is empty");
+    return NAN;
+  }
+
+  if(sscanf(hms, "%d%*[:hH \t]%d%*[:mM' \t]%lf%n", &h, &m, &s, &n) < 3) {
+    novas_error(0, EINVAL, fn, "not in HMS format: '%s'", hms);
+    return NAN;
+  }
+
+  if(m < 0 || m >= 60) {
+    novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
+    return NAN;
+  }
+
+  if(s < 0.0 || s >= 60.0) {
+    novas_error(0, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
+    return NAN;
+  }
+
+  if(tail)
+    *tail += n;
+
+  s = abs(h) + (m / 60.0) + (s / 3600.0);
+  return h < 0 ? -s : s;
+}
+
+/**
  * Returns the decimal hours for a HMS string specification. The hour, minute, and second
  * components may be separated by spaces, tabs, colons `:`, or a combination thereof.
  * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the
@@ -1464,9 +1533,9 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
  * </pre>
  *
  *
- * @param hms     String specifying hours, minutes, and seconds, which correspond to
- *                a time between 0 and 24 h. Time in any range is permitted, but the minutes and
- *                seconds must be &gt;=0 and &lt;60.
+ * @param hms         String specifying hours, minutes, and seconds, which correspond to
+ *                    a time between 0 and 24 h. Time in any range is permitted, but the minutes and
+ *                    seconds must be &gt;=0 and &lt;60.
  * @return        [hours] Corresponding decimal time value, or else NAN if there was an
  *                error parsing the string (errno will be set to EINVAL).
  *
@@ -1476,37 +1545,77 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
  * @sa novas_dms_degrees()
  */
 double novas_hms_hours(const char *hms) {
-  static const char *fn = "novas_hms_hours";
+  return novas_parse_hms(hms, NULL);
+}
 
-  int h = 0, m = 0;
+/**
+ * Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and
+ * (arc)second components may be separated by spaces, tabs, colons `:`, or a combination thereof.
+ * Additionally, the degree and minutes may be semarated by the letter `d` or `D`, and the
+ * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all of
+ * the lines below specify the same angle:
+ *
+ * <pre>
+ *  -179:59:59.999
+ *  -179 59m 59.999
+ *  -179d 59' 59.999
+ *  -179D59'59.999
+ * </pre>
+ *
+ *
+ * @param dms         String specifying degrees, minutes, and seconds, which correspond to
+ *                    an angle. Angles in any range are permitted, but the minutes and
+ *                    seconds must be &gt;=0 and &lt;60.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string after
+ *                    the parsed time.
+ * @return            [deg] Corresponding decimal angle value, or else NAN if there was
+ *                    an error parsing the string (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_dms_degrees()
+ * @sa novas_parse_hms()
+ */
+double novas_parse_dms(const char *dms, char **tail) {
+  static const char *fn = "novas_dms_degrees";
+
+  int d = 0, m = 0, n = 0;
   double s = NAN;
 
-  if(!hms) {
-    novas_error(-1, EINVAL, fn, "input string is NULL");
+  if(tail)
+    *tail = (char *) dms;
+
+  if(!dms) {
+    novas_error(0, EINVAL, fn, "input string is NULL");
     return NAN;
   }
-  if(!hms[0]) {
-    novas_error(-1, EINVAL, fn, "input string is empty");
+  if(!dms[0]) {
+    novas_error(0, EINVAL, fn, "input string is empty");
     return NAN;
   }
 
-  if(sscanf(hms, "%d%*[:hH \t]%d%*[:mM' \t]%lf", &h, &m, &s) != 3) {
-    novas_error(-1, EINVAL, fn, "not in HMS format: '%s'", hms);
+  if(sscanf(dms, "%d%*[:dD \t]%d%*[:mM' \t]%lf%n", &d, &m, &s, &n) < 3) {
+    novas_error(0, EINVAL, fn, "not in DMS format: '%s'", dms);
     return NAN;
   }
 
   if(m < 0 || m >= 60) {
-    novas_error(-1, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
+    novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
     return NAN;
   }
 
   if(s < 0.0 || s >= 60.0) {
-    novas_error(-1, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
+    novas_error(0, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
     return NAN;
   }
 
-  s = abs(h) + (m / 60.0) + (s / 3600.0);
-  return h < 0 ? -s : s;
+  if(tail)
+    *tail += n;
+
+  s = abs(d) + (m / 60.0) + (s / 3600.0);
+
+  return d < 0 ? -s : s;
 }
 
 /**
@@ -1524,11 +1633,11 @@ double novas_hms_hours(const char *hms) {
  * </pre>
  *
  *
- * @param dms     String specifying degrees, minutes, and seconds, which correspond to
- *                an angle. Angles in any range are permitted, but the minutes and
- *                seconds must be &gt;=0 and &lt;60.
- * @return        [deg] Corresponding decimal angle value, or else NAN if there was
- *                an error parsing the string (errno will be set to EINVAL).
+ * @param dms         String specifying degrees, minutes, and seconds, which correspond to
+ *                    an angle. Angles in any range are permitted, but the minutes and
+ *                    seconds must be &gt;=0 and &lt;60.
+ * @return            [deg] Corresponding decimal angle value, or else NAN if there was
+ *                    an error parsing the string (errno will be set to EINVAL).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1536,39 +1645,9 @@ double novas_hms_hours(const char *hms) {
  * @sa novas_hms_hours()
  */
 double novas_dms_degrees(const char *dms) {
-  static const char *fn = "novas_dms_degrees";
-
-  int d = 0, m = 0;
-  double s = NAN;
-
-  if(!dms) {
-    novas_error(-1, EINVAL, fn, "input string is NULL");
-    return NAN;
-  }
-  if(!dms[0]) {
-    novas_error(-1, EINVAL, fn, "input string is empty");
-    return NAN;
-  }
-
-  if(sscanf(dms, "%d%*[:dD \t]%d%*[:mM' \t]%lf", &d, &m, &s) != 3) {
-    novas_error(-1, EINVAL, fn, "not in DMS format: '%s'", dms);
-    return NAN;
-  }
-
-  if(m < 0 || m >= 60) {
-    novas_error(-1, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
-    return NAN;
-  }
-
-  if(s < 0.0 || s >= 60.0) {
-    novas_error(-1, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
-    return NAN;
-  }
-
-  s = abs(d) + (m / 60.0) + (s / 3600.0);
-
-  return d < 0 ? -s : s;
+  return novas_parse_dms(dms, NULL);
 }
+
 
 /**
  * Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky. The PA
@@ -1758,7 +1837,8 @@ double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
   d = novas_vlen(pos);
   if(!d) {
     // The Sun itself...
-    if(rate) *rate = 0.0;
+    if(rate)
+      *rate = 0.0;
     return 0.0;
   }
 
@@ -1944,7 +2024,7 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
   int i;
 
   radec2vector(ra, dec, 1.0, u);
-  for(i = 3; --i >= 0; )
+  for(i = 3; --i >= 0;)
     v[i] = vLSR * u[i];
 
   precession(jd, v, NOVAS_JD_J2000, v);

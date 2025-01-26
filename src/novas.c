@@ -6655,17 +6655,25 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  * can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have
  * the same basis.
  *
+ * NOTES:
+ * <ol>
+ * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of
+ * the normal range (for a leap year).</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p.
  *  657.</li>
  * </ol>
  *
- * @param year    [yr] Gregorian calendar year
+ * @param year    [yr] Gregorian calendar year (BC dates are 0 or negative, with 0 corresponding
+ *                to 1 BC, hence X BC is `1 - X`).
  * @param month   [month] Gregorian calendar month [1:12]
  * @param day     [day] Day of month [1:31]
  * @param hour    [hr] Hour of day [0:24]
- * @return        [day] the fractional Julian date for the input calendar date
+ * @return        [day] the fractional Julian date for the input calendar date, ot NAN if
+ *                month or day components are out of range.
  *
  * @sa cal_date()
  * @sa get_utc_to_tt()
@@ -6674,7 +6682,22 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  *
  */
 double julian_date(short year, short month, short day, double hour) {
-  long jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
+  static const char *fn = "julian_date";
+  static const int md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+  long jd12h;
+
+  if(month < 1 || month > 12) {
+    novas_error(0, EINVAL, fn, "invalid month: %d, expected 1-12", month);
+    return NAN;
+  }
+
+  if(day < 1 || day > md[month]) {
+    novas_error(0, EINVAL, fn, "invalid day-of-month: %d, expected 1-%d", day, md[month]);
+    return NAN;
+  }
+
+  jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
           - 3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L;
   return jd12h - 0.5 + hour / DAY_HOURS;
 }

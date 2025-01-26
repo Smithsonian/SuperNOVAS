@@ -68,7 +68,7 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues).
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
- - [Faster calculations](#benchmarks)
+ - [Faster calculations](#benchmarks).
  - [New features](#added-functionality).
  - [Refining the API](#api-changes) to promote best programming practices.
  - [Thread-safe calculations](#multi-threading).
@@ -157,6 +157,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.
    
  - [__v1.3__] `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
+ 
+ - [__v1.3__] `julian_date()` to work with negative (B.C.) years also. E.g. the year -1 denotes 1 BC.
  
    
 -----------------------------------------------------------------------------
@@ -536,6 +538,12 @@ or, for the best precision we may do the same with an integer / fractional split
  double fjd_tai = ...   // Fractional part of the TAI-based Julian Date 
   
  novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &obs_time);
+```
+
+or, you can use a string date, such as an ISO timestamp:
+
+```c
+  novas_set_string_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", 37, 0.042, &obs_time);
 ```
 
 
@@ -1131,9 +1139,14 @@ one minute.
  - New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
- - New `novas_hms_hours(const char *str)` and `novas_dms_degrees(const char *str)` convenience functions to make it 
-   easier to parse HMS or DMS based time/angle values, returning the result in units of hours or degrees, 
-   appropriately for use in SuperNOVAS.
+ - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 
+   time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and
+
+ - New `novas_parse_date()` / `novas_parse_date_format()` to parse date/time specifications, `novas_parse_dms()` and 
+   `novas_parse_hms()` to return hours and degrees for HMS and DMS specifications, as well as the updated parse 
+   position.
+ 
+ - New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision.
 
  - New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
    Earth-based observing frame.
@@ -1250,6 +1263,14 @@ one minute.
    
  - [__v1.3__] Modified `place()` and `novas_geom_posvel()` to use physical velocity, rather than projected movement, 
    for calculating radial velocities for sidereal sources.
+   
+ - [__v1.3__] In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection 
+   corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
+   accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
+   
+ - [__v1.3__] Modified `julian_date()` to allow BC dates as negative years, e.g. use -1 to indicate 1 BC. Also add 
+   range checking for month and day arguments, and return NAN (with errno set to EINVAL) if the input values are 
+   invalid.
 
 
 -----------------------------------------------------------------------------

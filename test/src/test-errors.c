@@ -1829,6 +1829,59 @@ static int test_xyz_to_los() {
   return n;
 }
 
+static int test_julian_date() {
+  int n = 0;
+
+  if(check_nan("julian_date:m:0", julian_date(2000.0, 0, 1, 0.0))) n++;
+  if(check_nan("julian_date:m:13", julian_date(2000.0, 13, 1, 0.0))) n++;
+  if(check_nan("julian_date:d:0", julian_date(2000.0, 2, 0, 0.0))) n++;
+  if(check_nan("julian_date:feb:d:30", julian_date(2000.0, 2, 30, 0.0))) n++;
+
+  return n;
+}
+
+static int test_parse_date() {
+  int n = 0;
+  char *tail = NULL;
+
+  if(check_nan("parse_date:null", novas_parse_date(NULL, &tail))) n++;
+  if(check_nan("parse_date:empty", novas_parse_date("", &tail))) n++;
+
+  if(check_nan("parse_date_time:format:-1", novas_parse_date_format(-1, "2025-01-28", &tail))) n++;
+  if(check_nan("parse_date_time:format:3", novas_parse_date_format(3, "2025-01-28", &tail))) n++;
+
+  if(check_nan("parse_date_time:few", novas_parse_date_format(NOVAS_YMD, "2025-01", &tail))) n++;
+  if(check_nan("parse_date_time:sep:invalid", novas_parse_date_format(3, "2025$01$28", &tail))) n++;
+
+  if(check_nan("parse_date_time:m:0", novas_parse_date_format(NOVAS_YMD, "2025-00-28", &tail))) n++;
+  if(check_nan("parse_date_time:m:13", novas_parse_date_format(NOVAS_YMD, "2025-13-28", &tail))) n++;
+  if(check_nan("parse_date_time:d:0", novas_parse_date_format(NOVAS_YMD, "2025-2-0", &tail))) n++;
+  if(check_nan("parse_date_time:feb:d:30", novas_parse_date_format(NOVAS_YMD, "2025-2-30", &tail))) n++;
+
+  if(check_nan("parse_date_time:m:invalid", novas_parse_date_format(NOVAS_YMD, "2025-blah-28", &tail))) n++;
+
+  if(check_nan("parse_date_time:zone:missing", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+", &tail))) n++;
+  if(check_nan("parse_date_time:zone:bad", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+:", &tail))) n++;
+  if(check_nan("parse_date_time:zone:bad2", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+0:", &tail))) n++;
+  if(check_nan("parse_date_time:zone:hours:24", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+2400", &tail))) n++;
+  if(check_nan("parse_date_time:zone:mins:60", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+0260", &tail))) n++;
+  if(check_nan("parse_date_time:zone:mins:incomplete", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+020", &tail))) n++;
+
+  return n;
+}
+
+static int test_iso_timestamp() {
+  int n = 0;
+  char buf[30] = {};
+  novas_timespec time = {};
+
+  if(check("iso_timestamp:time:null", -1, novas_iso_timestamp(NULL, buf, sizeof(buf)))) n++;
+  if(check("iso_timestamp:buf:null", -1, novas_iso_timestamp(&time, NULL, sizeof(buf)))) n++;
+  if(check("iso_timestamp:len:0", -1, novas_iso_timestamp(&time, buf, 0))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -1979,6 +2032,9 @@ int main() {
   if(test_object_sep()) n++;
   if(test_los_to_xyz()) n++;
   if(test_xyz_to_los()) n++;
+  if(test_julian_date()) n++;
+  if(test_parse_date()) n++;
+  if(test_iso_timestamp()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
