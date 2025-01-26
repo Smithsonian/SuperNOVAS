@@ -67,9 +67,9 @@ Upcoming feature release, expected around 1 May 2025.
 
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
  
- - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions &gt;=1.1 and &lt; 1.3, 
-   deflections werre applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
-   accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are ~4x faster.
+ - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
+   were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
+   without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
 
 
 ## [1.2.0] - 2025-01-15
