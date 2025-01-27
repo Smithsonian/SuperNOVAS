@@ -915,12 +915,12 @@ repeatedly calculating positions for sources for the same instant of time and sa
 observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
 individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
 
-
 The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
 expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
 core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
 perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
 one minute.
+
 
 -----------------------------------------------------------------------------
 

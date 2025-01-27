@@ -86,7 +86,7 @@ jobs:
       run: mkdir -p site/resources 
         
     - name: Copy Figures
-      run: cp -a resources/SuperNOVAS-systems.png site/resources/
+      run: cp -a resources/SuperNOVAS-*.png site/resources/
         
     - name: Push to pages
       run: |
