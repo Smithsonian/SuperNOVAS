@@ -59,7 +59,7 @@ jobs:
     - name: Generate headless README
       run: make README-orig.md
         
-    - uses: mattnotmitt/doxygen-action@v1.9.8
+    - uses: mattnotmitt/doxygen-action@v1.12.0
       with:
         additional-packages: font-roboto
        
