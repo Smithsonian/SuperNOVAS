@@ -192,7 +192,15 @@ bin/cio_file: $(OBJ)/cio_file.o | $(BIN)
 README-orig.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
 
-dox: README-orig.md
+
+dox: 
+
+# Doxygen documentation (HTML and man pages) under apidocs/
+.PHONY: dox
+dox: README.md Doxyfile apidoc $(SRC) $(INC) README-orig.md
+	@echo "   [doxygen]"
+	@$(DOXYGEN)
+	( cd apidoc/html; ln -s ../../resources )
 
 .INTERMEDIATE: Doxyfile.local
 Doxyfile.local: Doxyfile Makefile
@@ -202,7 +210,8 @@ Doxyfile.local: Doxyfile Makefile
 # Google Search or Analytics tracking info.
 .PHONY: local-dox
 local-dox: README-orig.md Doxyfile.local
-	doxygen Doxyfile.local
+	$(DOXYGEN) Doxyfile.local
+	( cd apidoc/html; ln -s ../../resources )
 
 # Default values for install locations
 # See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
