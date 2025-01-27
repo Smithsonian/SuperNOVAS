@@ -18,6 +18,8 @@ SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculati
 [astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](doc/README.md#benchmarks)) in a single thread, 
 and its performance scales with the number of CPUs when parallelized.
 
+![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png)
+
 SuperNOVAS is maintained by [Attila Kovacs](https://github.com/attipaci) at the Center for Astrophysics \| Harvard & 
 Smithsonian, and it available via the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/)
 repository on GitHub.
