@@ -50,14 +50,15 @@ SuperNOVAS is also available in packaged for for both RPM and Debian-based Linux
 structure, which allows non-bloated installations of just the parts that are needed for the particular use case(s):
 
 
- | __Fedora RPM__           |  __Debian package__       |
- |--------------------------|---------------------------|
- | `supernovas`             | `libsupernovas1`          |
- | `supernovas-cio-data`    | `libsupernovas-cio-data`  |
- | `supernovas-solsys1`     | `libsolsys1_1`            |
- | `supernovas-solsys2`     | `libsolsys2_1`            |
- | `supernovas-devel`       | `libsupernovas-dev`       |
- | `supernovas-doc`         | `libsupernovas-doc`       |
+ | __Fedora RPM__                        |  __Debian package__                          |
+ |---------------------------------------|----------------------------------------------|
+ | `supernovas`                          | `libsupernovas1`                             |
+ | `supernovas-cio-data`                 | `libsupernovas-cio-data`                     |
+ | `supernovas-solsys1`                  | `libsolsys1_1`                               |
+ | `supernovas-solsys2`                  | `libsolsys2_1`                               |
+ | `supernovas-solsys-calceph`           | `libsolsys-calceph1`                         |
+ | `supernovas-devel`                    | `libsupernovas-dev`                          |
+ | `supernovas-doc`                      | `libsupernovas-doc`                          |
  
 
 The differences in package naming are due to the different naming policies for RedHat/Fedora vs Debian. Otherwise, the 
