@@ -14,15 +14,26 @@ Upcoming feature release, expected around 1 May 2025.
 ### Fixed
 
  - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
+ 
+ - `julian_date()` to work with negative years (for B.C. dates). E.g. the year -1 denotes 1 BC.
   
 ### Added
 
  - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
- - New `novas_hms_hours(const char *str)` and `novas_dms_degrees(const char *str)` convenience functions to make it 
-   easier to parse HMS or DMS based time/angle values, returning the result in units of hours or degrees, 
-   appropriately for use in SuperNOVAS.
+ - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 
+   time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and
+
+ - New `novas_parse_date()` / `novas_parse_date_format()` to parse date/time specifications, `novas_parse_dms()` and 
+   `novas_parse_hms()` to return hours and degrees for HMS and DMS specifications, as well as the updated parse 
+   position.
+ 
+ - New `novas_timescale_for_string()` to match timescale constants to string representations, such as "UTC", or "TAI",
+   and `novas_print_timescale()` to convert to string representation.
+ 
+ - New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision, and
+   `novas_timestamp()` to print timestamps in specific timescales.
 
  - New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
    Earth-based observing frame.
@@ -64,12 +75,16 @@ Upcoming feature release, expected around 1 May 2025.
    To run the SuperNOVAS benchmarks, simply `make benchmark` in the distribution directory.
    
 ### Changed
-
- - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
    without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
+   
+ - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with errno set to 
+   EINVAL) if the input values are invalid.
+
+ - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
+
 
 
 ## [1.2.0] - 2025-01-15
