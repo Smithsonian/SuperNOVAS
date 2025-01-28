@@ -477,7 +477,9 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * pseudo LSR-based measures being returned for catalog sources.</li>
  * </ol>
  *
- * @param source        Pointer to a celestial source data structure that is observed
+ * @param source        Pointer to a celestial source data structure that is observed. Catalog
+ *                      sources should have coordinates and properties in ICRS. You can use
+ *                      `transform_cat()` to convert catalog entries to ICRS as necessary.
  * @param frame         Observer frame, defining the location and time of observation
  * @param sys           The coordinate system in which to return positions and velocities.
  * @param[out] pos      [AU] Calculated geometric position vector of the source relative
@@ -601,7 +603,9 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * LSR-based measures being returned for catalog sources.</li>
  * </ol>
  *
- * @param object        Pointer to a celestial object data structure that is observed
+ * @param object        Pointer to a celestial object data structure that is observed. Catalog
+ *                      sources should have coordinates and properties in ICRS. You can use
+ *                      `transform_cat()` to convert catalog entries to ICRS as necessary.
  * @param frame         The observer frame, defining the location and time of observation
  * @param sys           The coordinate system in which to return the apparent sky location
  * @param[out] out      Pointer to the data structure which is populated with the calculated

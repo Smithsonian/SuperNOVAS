@@ -1598,7 +1598,9 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
- * @param source        Pointer to a celestrial object data structure
+ * @param source        Pointer to a celestrial object data structure. Catalog objects musy have
+ *                      ICRS coordinates. You can use `transform_cat()` to convert other catalog
+ *                      systems to ICRS as necessary.
  * @param location      The observer location, relative to which the output positions and velocities
  *                      are to be calculated
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
