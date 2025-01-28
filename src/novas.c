@@ -6669,8 +6669,8 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  *  657.</li>
  * </ol>
  *
- * @param year    [yr] Gregorian calendar year (BC dates are 0 or negative, with 0 corresponding
- *                to 1 BC, hence X BC is `1 - X`).
+ * @param year    [yr] Gregorian calendar year. B.C. years can be simply represented as
+ *                negative years, e.g. 1 B.C. as -1.
  * @param month   [month] Gregorian calendar month [1:12]
  * @param day     [day] Day of month [1:31]
  * @param hour    [hr] Hour of day [0:24]
@@ -6699,6 +6699,10 @@ double julian_date(short year, short month, short day, double hour) {
     return NAN;
   }
 
+  // B.C. dates: -1 (i.e. 1 B.C. is equivalent to 0 A.D.)
+  if(year < 0)
+    year++;
+
   jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
           - 3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L;
   return jd12h - 0.5 + hour / DAY_HOURS;
@@ -6717,6 +6721,8 @@ double julian_date(short year, short month, short day, double hour) {
  *
  * @param tjd          [day] Julian date
  * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
+ *                     B.C. years are represented as negative values, e.g. -1 corresponds
+ *                     to 1 B.C.
  * @param[out] month   [month] Gregorian calendat month [1:12]. It may be NULL if not
  *                     required.
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
@@ -6730,8 +6736,52 @@ double julian_date(short year, short month, short day, double hour) {
  * @sa tt2tdb()
  */
 int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
+  int y, m, d;
+
+  cal_date2(tjd, &y, &m, &d, hour);
+
+  if(year)
+    *year = (short) y;
+  if(month)
+    *month = (short) m;
+  if(day)
+    *day = (short) d;
+
+  return 0;
+}
+
+/**
+ * This function will compute a broken down date on the Gregorian calendar for given the
+ * Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1,
+ * TT, etc.) - output time value will have same basis.
+ *
+ * It is the same as cal_date(), except that it takes `int` pointers, instead of `short`.
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
+ *  p. 657.</li>
+ * </ol>
+ *
+ * @param tjd          [day] Julian date
+ * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
+ *                     B.C. years are represented as negative values, e.g. -1 corresponds
+ *                     to 1 B.C.
+ * @param[out] month   [month] Gregorian calendat month [1:12]. It may be NULL if not
+ *                     required.
+ * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
+ * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
+ *
+ * @return              0
+ *
+ * @sa julian_date()
+ * @sa get_utc_to_tt()
+ * @sa get_ut1_to_tt()
+ * @sa tt2tdb()
+ */
+int cal_date2(double tjd, int *year, int *month, int *day, double *hour) {
   long jd, k, m, n;
-  short y, mo, d;
+  int y, mo, d;
   double djd, h;
 
   djd = tjd + 0.5;
@@ -6748,12 +6798,15 @@ int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
   m = 4000L * (k + 1L) / 1461001L;
   k = k - 1461L * m / 4L + 31L;
 
-  mo = (short) (80L * k / 2447L);
-  d = (short) (k - 2447L * (long) mo / 80L);
+  mo = (int) (80L * k / 2447L);
+  d = (int) (k - 2447L * (long) mo / 80L);
   k = mo / 11L;
 
-  mo = (short) ((long) mo + 2L - 12L * k);
-  y = (short) (100L * (n - 49L) + m + k);
+  mo = (int) ((long) mo + 2L - 12L * k);
+  y = (int) (100L * (n - 49L) + m + k);
+
+  if(y <= 0)
+    y--;      // B.C. year
 
   if(year)
     *year = y;

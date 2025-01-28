@@ -586,9 +586,8 @@ static int parse_zone(const char *str, char **tail) {
  *
  * are all valid dates that can be parsed.
  *
- * BC dates can be specified with year being zero or negative. Since 1 BC is immediately before 1
- * CE, it corresponds to year 0, and thus X BC is generally denoted as (1 - X). So January 26, 253
- * BC should be expressed e.g. as `-252 01 26`.
+ * B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g.
+ * as `-253 01 26`.
  *
  * If your date format cannot be parsed with this function, you may parse it with your own
  * function into year, month, day, and decimal hour-of-day components, and use julian_date() with
@@ -749,9 +748,8 @@ double novas_parse_date_format(enum novas_date_format format, const char *date, 
  *
  * are all valid dates that can be parsed.
  *
- * BC dates can be specified with year being zero or negative. Since 1 BC in immediately before 1
- * CE, it corresponds to year 0, and thus X BC is generally denoted as (1 - X). So January 26, 253
- * BC should be expressed e.g. as `-252 01 26`.
+ * B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g.
+ * as `-253 01 26`.
  *
  * @param date        The date specification, possibly including time and timezone, in a standard
  *                    format.
@@ -778,17 +776,30 @@ double novas_parse_date(const char *date, char **tail) {
   return jd;
 }
 
-static int timestamp(time_t sec, long nsec, char *buf) {
-  struct tm tm = {};
-  int ds;
+static int timestamp(long ijd, double fjd, char *buf) {
+  int y, M, d, h, m, ds;
+  double s;
 
-  nsec -= nsec % 1000000;     // round to ms...
-  gmtime_r(&sec, &tm);
+  fjd -= remainder(fjd, 1e-3 / DAY); // round to ms.
 
-  ds = tm.tm_sec / 10;
-  tm.tm_sec -= 10 * ds;
+  d = (short) floor(fjd - 0.5);
+  ijd += d;
+  fjd -= d;
 
-  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%d%5.3f", 1900 + tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, ds, tm.tm_sec + 1e-9 * nsec);
+  cal_date2(ijd + 0.5, &y, &M, &d, NULL);
+
+  s = 24.0 * (fjd - 0.5);
+
+  h = (short) s;
+  s = 60.0 * (s - h);
+
+  m = (short) s;
+  s = 60.0 * (s - m);
+
+  ds = s / 10;
+  s -= 10 * ds;
+
+  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%d%5.3f", y, M, d, h, m, ds, s);
 }
 
 /**
@@ -819,7 +830,8 @@ static int timestamp(time_t sec, long nsec, char *buf) {
 int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
   static const char *fn = "novas_iso_timestamp";
 
-  struct timespec ts = {};
+  double fjd;
+  long ijd;
   char buf[40];
   int l;
 
@@ -832,9 +844,9 @@ int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
   if(maxlen < 1)
     return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
 
-  ts.tv_sec = novas_get_unix_time(time, &ts.tv_nsec);
+  fjd = novas_get_split_time(time, NOVAS_UTC, &ijd);
 
-  l = timestamp(ts.tv_sec, ts.tv_nsec, buf);
+  l = timestamp(ijd, fjd, buf);
   buf[l++] = 'Z';
   buf[l] = '\0';
 
@@ -916,10 +928,8 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
 int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen) {
   static const char *fn = "novas_timestamp_scale";
 
-  time_t sec;
-  long nsec;
-  long ijd, ijd_utc;
-  double fjd, fjd_utc, dt;
+  long ijd;
+  double fjd;
   int i;
   char buf[40];
 
@@ -932,22 +942,8 @@ int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char
   if(maxlen < 1)
     return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
 
-  sec = novas_get_unix_time(time, &nsec);
-  fjd_utc = novas_get_split_time(time, NOVAS_UTC, &ijd_utc);
   fjd = novas_get_split_time(time, scale, &ijd);
-
-  dt = ((ijd - ijd_utc) + (fjd - fjd_utc)) * DAY;
-  i = (int) floor(dt);
-
-  sec += i;
-  nsec += floor(1e9 * (dt - i) + 0.5);
-
-  if(nsec >= E9) {
-    sec++;
-    nsec -= E9;
-  }
-
-  i = timestamp(sec, nsec, buf);
+  i = timestamp(ijd, fjd, buf);
 
   buf[i++] = ' ';
 

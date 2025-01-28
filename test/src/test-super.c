@@ -1020,6 +1020,23 @@ static int test_cal_date() {
   if(!is_ok("cal_date:d:null", cal_date(tdb, &y, &m, NULL, &h))) return 1;
   if(!is_ok("cal_date:h:null", cal_date(tdb, &y, &m, &d, NULL))) return 1;
 
+  if(!is_ok("cal_date:y:null", cal_date2(tdb, NULL, &m, &d, &h))) return 1;
+  if(!is_ok("cal_date:m:null", cal_date2(tdb, &y, NULL, &d, &h))) return 1;
+  if(!is_ok("cal_date:d:null", cal_date2(tdb, &y, &m, NULL, &h))) return 1;
+  if(!is_ok("cal_date:h:null", cal_date2(tdb, &y, &m, &d, NULL))) return 1;
+
+  if(!is_ok("cal_date:1AD", cal_date(1721426.0, &y, &m, &d, NULL))) return 1;
+  if(!is_equal("cal_date:1AD:check", y, 1, 1e-6)) return 1;
+
+  if(!is_ok("cal_date:1BC", cal_date(1721425.0, &y, &m, &d, NULL))) return 1;
+  if(!is_equal("cal_date:1BC:check", y, -1, 1e-6)) return 1;
+
+  return 0;
+}
+
+static int test_julian_date() {
+  if(!is_equal("julian_date:J2000", julian_date(2000, 1, 1, 12.0), NOVAS_JD_J2000, 1e-6)) return 1;
+  if(!is_equal("julian_date:AD-BC", julian_date(1, 1, 1, 0.0), julian_date(-1, 12, 31, 0.0) + 1, 1e-6)) return 1;
   return 0;
 }
 
@@ -3203,6 +3220,7 @@ int main(int argc, char *argv[]) {
   if(test_iso_timestamp()) n++;
   if(test_timestamp()) n++;
   if(test_timescale_for_string()) n++;
+  if(test_julian_date()) n++;
 
   n += test_dates();
 
