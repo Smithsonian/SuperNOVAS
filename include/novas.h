@@ -1717,6 +1717,8 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 // ---------------------- Added in 1.3.0 -------------------------
 
+int cal_date2(double tjd, int *year, int *month, int *day, double *hour);
+
 // in super.c
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
 

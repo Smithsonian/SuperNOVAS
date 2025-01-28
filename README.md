@@ -158,8 +158,6 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - [__v1.3__] `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
  
- - [__v1.3__] `julian_date()` to work with negative (B.C.) years also. E.g. the year -1 denotes 1 BC.
- 
    
 -----------------------------------------------------------------------------
 
@@ -1272,9 +1270,9 @@ one minute.
    corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
    accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
    
- - [__v1.3__] Modified `julian_date()` to allow BC dates as negative years, e.g. use -1 to indicate 1 BC. Also add 
-   range checking for month and day arguments, and return NAN (with errno set to EINVAL) if the input values are 
-   invalid.
+ - [__v1.3__] Modified `julian_date()` to use negative years for B.C. dates. E.g. the year -1 denotes 1 BC. And, same 
+   for the inverse `cal_date()`. Also add range checking for month and day arguments, and return NAN (with errno set to 
+   EINVAL) if the input values are invalid. And, same for the inverse `cal_date()`.
 
 
 -----------------------------------------------------------------------------
