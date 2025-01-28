@@ -710,6 +710,31 @@
     </member>
     <member kind="enumeration">
       <type></type>
+      <name>novas_date_format</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9f2b43ae4b048783dc09c2a3d9b46ca4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_YMD</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_DMY</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_MDY</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
       <name>novas_debug_mode</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a9d8d2a1f5c06b488e4c817bc9877e3ba</anchor>
@@ -1348,6 +1373,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a410a61c67f5893584b09953fa4885fe5</anchor>
       <arglist>(double tjd, short *year, short *month, short *day, double *hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cal_date2</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a8451d21415047d15b26f0d3bb7fae5ca</anchor>
+      <arglist>(double tjd, int *year, int *month, int *day, double *hour)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -2037,6 +2069,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>novas_iso_timestamp</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a1b7e1fa279dc7502805cc76af2ae07fe</anchor>
+      <arglist>(const novas_timespec *time, char *dst, int maxlen)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>novas_los_to_xyz</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a601d246673742cf72a5dbe1449c97560</anchor>
@@ -2099,11 +2138,46 @@
       <arglist>(double jd_tdb, const novas_orbital *orbit, enum novas_accuracy accuracy, double *pos, double *vel)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_parse_date</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a48866c233886213c4d347efb5ce30dd1</anchor>
+      <arglist>(const char *date, char **tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_date_format</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a632e0bd3bb5ff20c9f385231e9db035d</anchor>
+      <arglist>(enum novas_date_format format, const char *date, char **tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_dms</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a3966d939b4bd0233f13ed1a9e8ae1f80</anchor>
+      <arglist>(const char *str, char **tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_hms</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ab731deea99a64dc57cd8d4ee55b4d60d</anchor>
+      <arglist>(const char *str, char **tail)</arglist>
+    </member>
+    <member kind="function">
       <type>enum novas_planet</type>
       <name>novas_planet_for_name</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a92e869b101bd41e31ac6d3a2419bb0a3</anchor>
       <arglist>(const char *name)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_print_timescale</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a18bd698f5c504b5f0a581227e1649bd2</anchor>
+      <arglist>(enum novas_timescale scale, char *buf)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -2188,6 +2262,20 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a1a1323a247aa7164c73b16148eb32411</anchor>
       <arglist>(const object *source, const novas_frame *frame)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_timescale</type>
+      <name>novas_timescale_for_string</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5e447ec1ea688fe3fb688387ac669f7a</anchor>
+      <arglist>(const char *str)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_timestamp</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9bc66e41d10e6a6b88cd6a352ab9da17</anchor>
+      <arglist>(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -3366,6 +3454,13 @@
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>a410a61c67f5893584b09953fa4885fe5</anchor>
       <arglist>(double tjd, short *year, short *month, short *day, double *hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cal_date2</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a8451d21415047d15b26f0d3bb7fae5ca</anchor>
+      <arglist>(double tjd, int *year, int *month, int *day, double *hour)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -4697,6 +4792,20 @@
       <arglist>(double epoch, double ra, double dec, double vLSR)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_parse_dms</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>aa9828ebb241e8a6500cac46f7e1e0e0c</anchor>
+      <arglist>(const char *dms, char **tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_hms</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>af9fc57f5df90c5beceb0b5c9c4fc15d6</anchor>
+      <arglist>(const char *hms, char **tail)</arglist>
+    </member>
+    <member kind="function">
       <type>enum novas_planet</type>
       <name>novas_planet_for_name</name>
       <anchorfile>super_8c.html</anchorfile>
@@ -4835,6 +4944,13 @@
     <path>src/</path>
     <filename>timescale_8c.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_DEFAULT_SOURCE</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>double</type>
       <name>novas_diff_tcb</name>
@@ -4879,10 +4995,38 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>novas_iso_timestamp</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a1b7e1fa279dc7502805cc76af2ae07fe</anchor>
+      <arglist>(const novas_timespec *time, char *dst, int maxlen)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>novas_offset_time</name>
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>a01f98b2b8033c8dbacaeab37e9198e91</anchor>
       <arglist>(const novas_timespec *time, double seconds, novas_timespec *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_date</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a48866c233886213c4d347efb5ce30dd1</anchor>
+      <arglist>(const char *date, char **tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_date_format</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a632e0bd3bb5ff20c9f385231e9db035d</anchor>
+      <arglist>(enum novas_date_format format, const char *date, char **tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_print_timescale</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a18bd698f5c504b5f0a581227e1649bd2</anchor>
+      <arglist>(enum novas_timescale scale, char *buf)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -4904,6 +5048,20 @@
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>abacd89aa380c85da2d3c19a7e2187df3</anchor>
       <arglist>(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *time)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_timescale</type>
+      <name>novas_timescale_for_string</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a5e447ec1ea688fe3fb688387ac669f7a</anchor>
+      <arglist>(const char *str)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_timestamp</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a9bc66e41d10e6a6b88cd6a352ab9da17</anchor>
+      <arglist>(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen)</arglist>
     </member>
   </compound>
   <compound kind="struct">

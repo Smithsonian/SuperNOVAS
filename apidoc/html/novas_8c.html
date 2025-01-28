@@ -136,6 +136,8 @@ Functions</h2></td></tr>
 <tr class="separator:aada778ddcc75a355b6753f5372775094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a410a61c67f5893584b09953fa4885fe5" id="r_a410a61c67f5893584b09953fa4885fe5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5">cal_date</a> (double tjd, short *year, short *month, short *day, double *hour)</td></tr>
 <tr class="separator:a410a61c67f5893584b09953fa4885fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8451d21415047d15b26f0d3bb7fae5ca" id="r_a8451d21415047d15b26f0d3bb7fae5ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a8451d21415047d15b26f0d3bb7fae5ca">cal_date2</a> (double tjd, int *year, int *month, int *day, double *hour)</td></tr>
+<tr class="separator:a8451d21415047d15b26f0d3bb7fae5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95f02377ce41d4e251654449dda82986" id="r_a95f02377ce41d4e251654449dda82986"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> class, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="separator:a95f02377ce41d4e251654449dda82986"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8937180de2ee1545d19b8fc840f35fe2" id="r_a8937180de2ee1545d19b8fc840f35fe2"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543">novas_pole_offset_type</a> type, double dpole1, double dpole2)</td></tr>
@@ -904,7 +906,79 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Gregorian calendar year. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Gregorian calendar year. It may be NULL if not required. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Gregorian calendat month [1:12]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a8451d21415047d15b26f0d3bb7fae5ca">cal_date2()</a>.</p>
+
+</div>
+</div>
+<a id="a8451d21415047d15b26f0d3bb7fae5ca" name="a8451d21415047d15b26f0d3bb7fae5ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8451d21415047d15b26f0d3bb7fae5ca">&#9670;&#160;</a></span>cal_date2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cal_date2 </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tjd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>year</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>month</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>day</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>hour</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function will compute a broken down date on the Gregorian calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
+<p>It is the same as <a class="el" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5">cal_date()</a>, except that it takes <code>int</code> pointers, instead of <code>short</code>.</p>
+<p>REFERENCES: </p><ol>
+<li>
+Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Gregorian calendar year. It may be NULL if not required. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Gregorian calendat month [1:12]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
@@ -3085,20 +3159,24 @@ Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). 
       </table>
 </div><div class="memdoc">
 <p>Returns the Julian date for a given Gregorian calendar date. This function makes no checks for a valid input calendar date. Input calendar date must be Gregorian. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
+<p>NOTES: </p><ol>
+<li>
+Added argument range checking in v1.3.0, returning NAN if the month or day are out of the normal range (for a leap year). </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">year</td><td>[yr] Gregorian calendar year </td></tr>
+    <tr><td class="paramname">year</td><td>[yr] Gregorian calendar year. B.C. years can be simply represented as negative years, e.g. 1 B.C. as -1. </td></tr>
     <tr><td class="paramname">month</td><td>[month] Gregorian calendar month [1:12] </td></tr>
     <tr><td class="paramname">day</td><td>[day] Day of month [1:31] </td></tr>
     <tr><td class="paramname">hour</td><td>[hr] Hour of day [0:24] </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian date for the input calendar date</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian date for the input calendar date, ot NAN if month or day components are out of range.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5">cal_date()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
@@ -4966,7 +5044,7 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">source</td><td>Pointer to a celestrial object data structure </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">source</td><td>Pointer to a celestrial object data structure. Catalog objects musy have ICRS coordinates. You can use <code><a class="el" href="novas_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a></code> to convert other catalog systems to ICRS as necessary. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">location</td><td>The observer location, relative to which the output positions and velocities are to be calculated </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] TT - UT1 time difference. Used only when 'location-&gt;where' is NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The coordinate system that defines the orientation of the celestial pole. If it is NOVAS_ICRS (3), a geometric position and radial velocity is returned. For all other systems, the returned position is the apparent position including aberration and gravitational deflection corrections, and the radial velocity is in the direction the eflected light was emitted from the source. </td></tr>

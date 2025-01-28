@@ -114,6 +114,12 @@ src/super.c
 .RI "double \fBnovas_lsr_to_ssb_vel\fP (double epoch, double ra, double dec, double vLSR)"
 .br
 .ti -1c
+.RI "double \fBnovas_parse_dms\fP (const char *dms, char **tail)"
+.br
+.ti -1c
+.RI "double \fBnovas_parse_hms\fP (const char *hms, char **tail)"
+.br
+.ti -1c
 .RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
 .br
 .ti -1c
@@ -1258,6 +1264,8 @@ Attila Kovacs
 .RE
 .PP
 
+.PP
+References \fBnovas_parse_dms()\fP\&.
 .SS "int novas_e2h_offset (double dra, double ddec, double pa, double * daz, double * del)"
 Converts coordinate offsets, from the local equatorial system to local horizontal offsets\&. Converting between local flat projections and spherical coordinates usually requires a WCS projection\&.
 .PP
@@ -1506,6 +1514,8 @@ Attila Kovacs
 .RE
 .PP
 
+.PP
+References \fBnovas_parse_hms()\fP\&.
 .SS "double novas_hpa (double az, double el, double lat)"
 Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky\&. The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions at the given location\&. The polar wobble is not included in the calculation\&.
 .PP
@@ -1590,6 +1600,92 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_JD_J2000\fP, \fBprecession()\fP, and \fBradec2vector()\fP\&.
+.SS "double novas_parse_dms (const char * dms, char ** tail)"
+Parses the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same angle:
+.PP
+.PP
+.nf
+
+ -179:59:59\&.999
+ -179 59m 59\&.999
+ -179d 59' 59\&.999
+ -179D59'59\&.999
+.fi
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIdms\fP String specifying degrees, minutes, and seconds, which correspond to an angle\&. Angles in any range are permitted, but the minutes and seconds must be >=0 and <60\&. 
+.br
+\fItail\fP (optional) If not NULL it will be set to the next character in the string after the parsed time\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] Corresponding decimal angle value, or else NAN if there was an error parsing the string (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_dms_degrees()\fP 
+.PP
+\fBnovas_parse_hms()\fP 
+.RE
+.PP
+
+.SS "double novas_parse_hms (const char * hms, char ** tail)"
+Parses the decimal hours for a HMS string specification\&. The hour, minute, and second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the hour and minutes may be semarated by the letter \fCh\fP or \fCH\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same time:
+.PP
+.PP
+.nf
+
+ 23:59:59\&.999
+ 23h 59m 59\&.999
+ 23h 59' 59\&.999
+ 23H59'59\&.999
+.fi
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIhms\fP String specifying hours, minutes, and seconds, which correspond to a time between 0 and 24 h\&. Time in any range is permitted, but the minutes and seconds must be >=0 and <60\&. 
+.br
+\fItail\fP (optional) If not NULL it will be set to the next character in the string after the parsed time\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[hours] Corresponding decimal time value, or else NAN if there was an error parsing the string (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_hms_hours()\fP 
+.PP
+\fBnovas_parse_dms()\fP 
+.RE
+.PP
+
 .SS "enum \fBnovas_planet\fP novas_planet_for_name (const char * name)"
 Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found\&.
 .PP

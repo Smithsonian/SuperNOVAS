@@ -540,7 +540,7 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">source</td><td>Pointer to a celestial source data structure that is observed </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">source</td><td>Pointer to a celestial source data structure that is observed. Catalog sources should have coordinates and properties in ICRS. You can use <code><a class="el" href="novas_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a></code> to convert catalog entries to ICRS as necessary. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">frame</td><td>Observer frame, defining the location and time of observation </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">sys</td><td>The coordinate system in which to return positions and velocities. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Calculated geometric position vector of the source relative to the observer location, in the designated coordinate system. It may be NULL if not required. </td></tr>
@@ -1212,7 +1212,7 @@ As of SuperNOVAS v1.3, the returned radial velocity component is a proper observ
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">object</td><td>Pointer to a celestial object data structure that is observed </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">object</td><td>Pointer to a celestial object data structure that is observed. Catalog sources should have coordinates and properties in ICRS. You can use <code><a class="el" href="novas_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a></code> to convert catalog entries to ICRS as necessary. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">frame</td><td>The observer frame, defining the location and time of observation </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">sys</td><td>The coordinate system in which to return the apparent sky location </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Pointer to the data structure which is populated with the calculated apparent location in the designated coordinate system. </td></tr>

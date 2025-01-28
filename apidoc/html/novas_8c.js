@@ -8,6 +8,7 @@ var novas_8c =
     [ "astro_star", "novas_8c.html#a60ea97a77320c52b566f8e8fb5faf304", null ],
     [ "bary2obs", "novas_8c.html#aada778ddcc75a355b6753f5372775094", null ],
     [ "cal_date", "novas_8c.html#a410a61c67f5893584b09953fa4885fe5", null ],
+    [ "cal_date2", "novas_8c.html#a8451d21415047d15b26f0d3bb7fae5ca", null ],
     [ "cel2ter", "novas_8c.html#a95f02377ce41d4e251654449dda82986", null ],
     [ "cel_pole", "novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2", null ],
     [ "cio_array", "novas_8c.html#a2ed632ae8df4a3737c200c96fe2362e2", null ],

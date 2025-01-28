@@ -18,11 +18,19 @@ Upcoming feature release, expected around 1 May 2025\&.
 .IP "\(bu" 2
 #114: New \fC\fBnovas_lsr_to_ssb_vel()\fP\fP can be used to convert velocity vectors referenced to the LSR to Solar-System Barycentric velocities\&. And, \fC\fBnovas_ssb_to_lsr_vel()\fP\fP to provide the inverse conversion\&.
 .IP "\(bu" 2
-New \fC\fBnovas_hms_hours(const char *str)\fP\fP and \fC\fBnovas_dms_degrees(const char *str)\fP\fP convenience functions to make it easier to parse HMS or DMS based time/angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS\&.
+#121: New \fC\fBcal_date2()\fP\fP, which is exactly like \fC\fBcal_date()\fP\fP except that it takes \fCint\fP pointers instead of \fCshort\fP\&.
+.IP "\(bu" 2
+New \fC\fBnovas_hms_hours()\fP\fP and \fC\fBnovas_dms_degrees()\fP\fP convenience functions to make it easier to parse HMS or DMS based time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and
+.IP "\(bu" 2
+New \fC\fBnovas_parse_date()\fP\fP / \fC\fBnovas_parse_date_format()\fP\fP to parse date/time specifications, \fC\fBnovas_parse_dms()\fP\fP and \fC\fBnovas_parse_hms()\fP\fP to return hours and degrees for HMS and DMS specifications, as well as the updated parse position\&.
+.IP "\(bu" 2
+New \fC\fBnovas_timescale_for_string()\fP\fP to match timescale constants to string representations, such as 'UTC', or 'TAI', and \fC\fBnovas_print_timescale()\fP\fP to convert to string representation\&.
+.IP "\(bu" 2
+New \fC\fBnovas_iso_timestamp()\fP\fP to print UTC timestamps in ISO date format with millisecond precision, and \fC\fBnovas_timestamp()\fP\fP to print timestamps in specific timescales\&.
 .IP "\(bu" 2
 New \fC\fBnovas_frame_lst()\fP\fP convenience function to readily return the Local (apparent) Sidereal Time for a given Earth-based observing frame\&.
 .IP "\(bu" 2
-New \fC\fBnovas_rises_above()\fP\fP and \fC\fBnovas_sets_below()\fP\fP functions to return the date/time a source rises above or sets below a specific elevation on a given date\&. (Useful for Earth-based observers only)\&.
+New \fC\fBnovas_rises_above()\fP\fP and \fC\fBnovas_sets_below()\fP\fP functions to return the date/time a source rises above or sets below a specific elevation on a given date\&. (For Earth-based observers only)\&.
 .IP "\(bu" 2
 New \fC\fBnovas_helio_dist()\fP\fP function to calculate the heliocentric distance of a Solar-system body on a given date\&. The \fC\fBnovas_solar_power()\fP\fP function can be used to estimate the incident Solar power on a Solar-system body, while \fC\fBnovas_solar_illum()\fP\fP can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen from the observer location\&.
 .IP "\(bu" 2
@@ -40,9 +48,13 @@ Added benchmarks under the \fCbenchmark/\fP forlder, for SuperNOVAS as well as e
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-Updated \fCREADME\&.md\fP for v1\&.3 and benchmarks, including comparisons to \fBastropy\fP\&.
-.IP "\(bu" 2
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
+.IP "\(bu" 2
+Modified \fC\fBjulian_date()\fP\fP to add range checking for month and day arguments, and return NAN (with errno set to EINVAL) if the input values are invalid\&.
+.IP "\(bu" 2
+#121: \fC\fBjulian_date()\fP\fP to use negative years for B\&.C\&. dates\&. E\&.g\&. the year -1 denotes 1 BC\&. And, same for the inverse \fC\fBcal_date()\fP\fP\&.
+.IP "\(bu" 2
+Updated \fCREADME\&.md\fP for v1\&.3 and benchmarks, including comparisons to \fBastropy\fP\&.
 .PP
 .SH "[1\&.2\&.0] - 2025-01-15"
 .PP

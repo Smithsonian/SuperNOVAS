@@ -33,6 +33,8 @@ var super_8c =
     [ "novas_hms_hours", "super_8c.html#a5f564fbf4c22367d7eed6a060a99cc37", null ],
     [ "novas_hpa", "super_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c", null ],
     [ "novas_lsr_to_ssb_vel", "super_8c.html#aad80bf94be2efc36c340994829df8207", null ],
+    [ "novas_parse_dms", "super_8c.html#aa9828ebb241e8a6500cac46f7e1e0e0c", null ],
+    [ "novas_parse_hms", "super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6", null ],
     [ "novas_planet_for_name", "super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3", null ],
     [ "novas_sep", "super_8c.html#a9f33de2b26a19a5e20827e9e918b3375", null ],
     [ "novas_set_orbsys_pole", "super_8c.html#aee0ed43252017745574fa1e4b84a7b11", null ],

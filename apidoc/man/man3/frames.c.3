@@ -338,7 +338,7 @@ As of SuperNOVAS v1\&.3, the returned velocity vector is a proper observer-based
 .PP
 \fBParameters\fP
 .RS 4
-\fIsource\fP Pointer to a celestial source data structure that is observed 
+\fIsource\fP Pointer to a celestial source data structure that is observed\&. Catalog sources should have coordinates and properties in ICRS\&. You can use \fC\fBtransform_cat()\fP\fP to convert catalog entries to ICRS as necessary\&. 
 .br
 \fIframe\fP Observer frame, defining the location and time of observation 
 .br
@@ -809,7 +809,7 @@ As of SuperNOVAS v1\&.3, the returned radial velocity component is a proper obse
 .PP
 \fBParameters\fP
 .RS 4
-\fIobject\fP Pointer to a celestial object data structure that is observed 
+\fIobject\fP Pointer to a celestial object data structure that is observed\&. Catalog sources should have coordinates and properties in ICRS\&. You can use \fC\fBtransform_cat()\fP\fP to convert catalog entries to ICRS as necessary\&. 
 .br
 \fIframe\fP The observer frame, defining the location and time of observation 
 .br

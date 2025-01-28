@@ -6,6 +6,14 @@ src/timescale.c
 .SH SYNOPSIS
 .br
 .PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_DEFAULT_SOURCE\fP"
+.br
+.RI "strcasecmp() feature macro starting glibc 2\&.20 (2014-09-08) "
+.in -1c
 .SS "Functions"
 
 .in +1c
@@ -28,7 +36,19 @@ src/timescale.c
 .RI "time_t \fBnovas_get_unix_time\fP (const \fBnovas_timespec\fP *time, long *nanos)"
 .br
 .ti -1c
+.RI "int \fBnovas_iso_timestamp\fP (const \fBnovas_timespec\fP *time, char *dst, int maxlen)"
+.br
+.ti -1c
 .RI "int \fBnovas_offset_time\fP (const \fBnovas_timespec\fP *time, double seconds, \fBnovas_timespec\fP *out)"
+.br
+.ti -1c
+.RI "double \fBnovas_parse_date\fP (const char *date, char **tail)"
+.br
+.ti -1c
+.RI "double \fBnovas_parse_date_format\fP (enum \fBnovas_date_format\fP format, const char *date, char **tail)"
+.br
+.ti -1c
+.RI "int \fBnovas_print_timescale\fP (enum \fBnovas_timescale\fP scale, char *buf)"
 .br
 .ti -1c
 .RI "int \fBnovas_set_split_time\fP (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP *time)"
@@ -38,6 +58,12 @@ src/timescale.c
 .br
 .ti -1c
 .RI "int \fBnovas_set_unix_time\fP (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP *time)"
+.br
+.ti -1c
+.RI "enum \fBnovas_timescale\fP \fBnovas_timescale_for_string\fP (const char *str)"
+.br
+.ti -1c
+.RI "int \fBnovas_timestamp\fP (const \fBnovas_timespec\fP *time, enum \fBnovas_timescale\fP scale, char *dst, int maxlen)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -81,7 +107,7 @@ Returns the Barycentric Coordinate Time (TCB) based time difference (t1 - t2) in
 .PP
 \fBReturns\fP
 .RS 4
-[day] Precise TCB time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
+[s] Precise TCB time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
 .RE
 .PP
 \fBSee also\fP
@@ -116,7 +142,7 @@ Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in 
 .PP
 \fBReturns\fP
 .RS 4
-[day] Precise TCG time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
+[s] Precise TCG time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
 .RE
 .PP
 \fBSee also\fP
@@ -151,7 +177,7 @@ Returns the Terrestrial Time (TT) based time difference (t1 - t2) in days betwee
 .PP
 \fBReturns\fP
 .RS 4
-[day] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
+[s] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)
 .RE
 .PP
 \fBSee also\fP
@@ -303,6 +329,50 @@ Attila Kovacs
 
 .PP
 References \fBnovas_get_split_time()\fP, and \fBNOVAS_UTC\fP\&.
+.SS "int novas_iso_timestamp (const \fBnovas_timespec\fP * time, char * dst, int maxlen)"
+Prints a UTC-based ISO timestamp to millisecond precision to the specified string buffer\&. E\&.g\&.:
+.PP
+.PP
+.nf
+
+ 2025-01-26T21:32:49\&.701Z
+.fi
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP Pointer to the astronomical time specification data structure\&. 
+.br
+\fIdst\fP Output string buffer\&. At least 25 bytes are required for a complete timestamp with termination\&. 
+.br
+\fImaxlen\fP The maximum number of characters that can be printed into the output buffer, including the string termination\&. If the full ISO timestamp is longer than \fCmaxlen\fP, then it will be truncated to fit in the allotted space, including a termination character\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the number of characters printed into the string buffer, not including the termination\&. As such it is at most \fCmaxlen - 1\fP\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_timestamp()\fP 
+.PP
+novas_parse_time() 
+.RE
+.PP
+
+.PP
+References \fBnovas_get_split_time()\fP, and \fBNOVAS_UTC\fP\&.
 .SS "int novas_offset_time (const \fBnovas_timespec\fP * time, double seconds, \fBnovas_timespec\fP * out)"
 Increments the astrometric time by a given amount\&.
 .PP
@@ -340,6 +410,167 @@ Attila Kovacs
 
 .PP
 References \fBnovas_timespec::fjd_tt\fP, and \fBnovas_timespec::ijd_tt\fP\&.
+.SS "double novas_parse_date (const char * date, char ** tail)"
+Parses a date/time string into a Julian date specification\&. Typically the date may be an ISO date specification, but with some added flexibility\&. The date must be YMD-type with full year, followed the month (numerical or name or 3-letter abbreviation), and the day\&. The components may be separated by dash \fC-\fP, underscore \fC_\fP, dot \fC\&.\fP, slash '/', or spaces/tabs, or any combination thereof\&. The date may be followed by a time specification in HMS format, separated from the date by the letter \fCT\fP or \fCt\fP, or spaces, comma \fC,\fP, or semicolon \fC;\fP, or underscore \fC_\fP or a combination thereof\&. Finally, the time may be followed by the letter \fCZ\fP, or \fCz\fP (for UTC) or else {+/-}HH[:[MM]] time zone specification\&.
+.PP
+For example:
+.PP
+.PP
+.nf
+
+ 2025-01-26
+ 2025 January 26
+ 2025_Jan_26
+ 2025-01-26T19:33:08Z
+ 2025\&.01\&.26T19:33:08
+ 2025 1 26 19h33m28\&.113
+ 2025/1/26 19:33:28+02
+ 2025-01-26T19:33:28-0600
+ 2025 Jan 26 19:33:28+05:30
+.fi
+.PP
+.PP
+are all valid dates that can be parsed\&.
+.PP
+B\&.C\&. dates can be represented as negative years\&. So January 26, 253 B\&.C\&. should be expressed e\&.g\&. as \fC-253 01 26\fP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdate\fP The date specification, possibly including time and timezone, in a standard format\&. 
+.br
+\fItail\fP (optional) If not NULL it will be set to the next character in the string after the parsed time\&. The parsing will consume empty space characters after the time specification also, returning a pointer to the next token after\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The Julian Date corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_parse_date_format()\fP 
+.PP
+\fBnovas_timescale_for_string()\fP 
+.PP
+\fBnovas_iso_timestamp()\fP 
+.PP
+\fBnovas_timestamp()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_parse_date_format()\fP, and \fBNOVAS_YMD\fP\&.
+.SS "double novas_parse_date_format (enum \fBnovas_date_format\fP format, const char * date, char ** tail)"
+Parses a date/time string into a Julian date specification\&. The date must be composed of a full year (e\&.g\&. 2025), a month (numerical or name or 3-letter abbreviation, e\&.g\&. '01', '1', 'January', or 'Jan'), and a day (e\&.g\&. '08' or '8')\&. The components may be separated by dash \fC-\fP, underscore \fC_\fP, dot \fC\&.\fP, slash '/', or spaces/tabs, or any combination thereof\&. The components will be parsed in the specified order\&.
+.PP
+The date may be followed by a time specification in HMS format, separated from the date by the letter \fCT\fP or \fCt\fP, or spaces, comma \fC,\fP, or semicolon \fC;\fP or underscore '_', or a combination thereof\&. Finally, the time may be followed by the letter \fCZ\fP, or \fCz\fP (for UTC) or else by a {+/-}HH[:[MM]] time zone specification\&.
+.PP
+For example, for \fCformat\fP NOVAS_YMD, all of the following strings may specify the date:
+.PP
+.PP
+.nf
+
+ 2025-01-26
+ 2025 January 26
+ 2025_Jan_26
+ 2025-01-26T19:33:08Z
+ 2025\&.01\&.26T19:33:08
+ 2025 1 26 19h33m28\&.113
+ 2025/1/26 19:33:28+02
+ 2025-01-26T19:33:28-0600
+ 2025 Jan 26 19:33:28+05:30
+.fi
+.PP
+.PP
+are all valid dates that can be parsed\&.
+.PP
+B\&.C\&. dates can be represented as negative years\&. So January 26, 253 B\&.C\&. should be expressed e\&.g\&. as \fC-253 01 26\fP\&.
+.PP
+If your date format cannot be parsed with this function, you may parse it with your own function into year, month, day, and decimal hour-of-day components, and use \fBjulian_date()\fP with those\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIformat\fP Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY\&. 
+.br
+\fIdate\fP The date specification, possibly including time and timezone, in the specified standard format\&. 
+.br
+\fItail\fP (optional) If not NULL it will be set to the next character in the string after the parsed time\&. The parsing will consume empty space characters after the time specification also, returning a pointer to the next token after\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The Julian Date corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_parse_date()\fP 
+.PP
+\fBnovas_timescale_for_string()\fP 
+.PP
+\fBnovas_iso_timestamp()\fP 
+.PP
+\fBjulian_date()\fP 
+.RE
+.PP
+
+.PP
+References \fBjulian_date()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DMY\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_MDY\fP, \fBnovas_parse_hms()\fP, and \fBNOVAS_YMD\fP\&.
+.SS "int novas_print_timescale (enum \fBnovas_timescale\fP scale, char * buf)"
+Prints the standard string representation of the timescale to the specified buffer\&. The string is terminated after\&. E\&.g\&. 'UTC', or 'TAI'\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIscale\fP The timescale 
+.br
+\fIbuf\fP String in which to print\&. It should have at least 4-bytes of available storage\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the number of characters printed, not including termination, or else -1 if the timescale is invalid or the output buffer is NULL\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_timestamp()\fP 
+.PP
+\fBnovas_timescale_for_string()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, and \fBNOVAS_UTC\fP\&.
 .SS "int novas_set_split_time (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP * time)"
 Sets an astronomical time to the split Julian Date value, defined in the specified timescale\&. The split into the integer and fractional parts can be done in any convenient way\&. The highest precision is reached if the fractional part is  1 day\&. In that case, the time may be specified to picosecond accuracy, if needed\&.
 .PP
@@ -387,7 +618,9 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 \fBnovas_set_unix_time()\fP 
 .PP
-\fBnovas_get_split_time()\fP
+\fBnovas_get_split_time()\fP 
+.PP
+\fBnovas_timescale_for_string()\fP
 .RE
 .PP
 \fBSince\fP
@@ -430,7 +663,9 @@ Sets an astronomical time to the fractional Julian Date value, defined in the sp
 .PP
 \fBnovas_set_unix_time()\fP 
 .PP
-\fBnovas_get_time()\fP
+\fBnovas_get_time()\fP 
+.PP
+\fBnovas_timescale_for_string()\fP
 .RE
 .PP
 \fBSince\fP
@@ -491,6 +726,85 @@ Attila Kovacs
 
 .PP
 References \fBnovas_set_split_time()\fP, and \fBNOVAS_UTC\fP\&.
+.SS "enum \fBnovas_timescale\fP novas_timescale_for_string (const char * str)"
+Returns the timescale constant for a string that denotes the timescale in with a standard abbreviation (case insensitive)\&. The following values are recognised: 'UTC', 'UT', 'UT0', 'UT1', 'GMT', 'TAI', 'GPS', 'TT', 'ET', 'TCG', 'TCB', 'TDB'\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP String specifying an astronomical timescale 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The SuperNOVAS timescale constant (<=0), or else -1 if the string was NULL, empty, or could not be matched to a timescale value (errno will be set to EINVAL also)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_set_time()\fP 
+.PP
+\fBnovas_set_split_time()\fP 
+.PP
+\fBnovas_print_timescale()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, and \fBNOVAS_UTC\fP\&.
+.SS "int novas_timestamp (const \fBnovas_timespec\fP * time, enum \fBnovas_timescale\fP scale, char * dst, int maxlen)"
+Prints a an ISO timestamp to millisecond precision in the specified timescale to the specified string buffer\&. E\&.g\&.:
+.PP
+.PP
+.nf
+
+ 2025-01-26T21:32:49\&.701 TAI
+.fi
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fItime\fP Pointer to the astronomical time specification data structure\&. 
+.br
+\fIscale\fP The timescale to use\&. 
+.br
+\fIdst\fP Output string buffer\&. At least 29 bytes are required for a complete timestamp with termination\&. 
+.br
+\fImaxlen\fP The maximum number of characters that can be printed into the output buffer, including the string termination\&. If the full ISO timestamp is longer than \fCmaxlen\fP, then it will be truncated to fit in the allotted space, including a termination character\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+the number of characters printed into the string buffer, not including the termination\&. As such it is at most \fCmaxlen - 1\fP\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_iso_timestamp()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_get_split_time()\fP, and \fBnovas_print_timescale()\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.

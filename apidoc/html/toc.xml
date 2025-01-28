@@ -484,6 +484,11 @@
             <topic label="CIO_VS_GCRS" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fa9928da41a130a60eb1762cbe52e691ce"/>
             <topic label="CIO_VS_EQUINOX" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fae8c1b78646fefbd0ffdcae083b597241"/>
           </topic>
+          <topic label="novas_date_format" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">
+            <topic label="NOVAS_YMD" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab"/>
+            <topic label="NOVAS_DMY" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203"/>
+            <topic label="NOVAS_MDY" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61"/>
+          </topic>
           <topic label="novas_debug_mode" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3ba">
             <topic label="NOVAS_DEBUG_OFF" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf"/>
             <topic label="NOVAS_DEBUG_ON" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baadc10e15517b94fdd3d9eba3359909c65"/>
@@ -607,6 +612,7 @@
           <topic label="astro_star" href="novas_8h.html#a60ea97a77320c52b566f8e8fb5faf304"/>
           <topic label="bary2obs" href="novas_8h.html#aada778ddcc75a355b6753f5372775094"/>
           <topic label="cal_date" href="novas_8h.html#a410a61c67f5893584b09953fa4885fe5"/>
+          <topic label="cal_date2" href="novas_8h.html#a8451d21415047d15b26f0d3bb7fae5ca"/>
           <topic label="cel2ter" href="novas_8h.html#a95f02377ce41d4e251654449dda82986"/>
           <topic label="cel_pole" href="novas_8h.html#a8937180de2ee1545d19b8fc840f35fe2"/>
           <topic label="cio_array" href="novas_8h.html#a2ed632ae8df4a3737c200c96fe2362e2"/>
@@ -705,6 +711,7 @@
           <topic label="novas_hpa" href="novas_8h.html#a73fcb54e47b2be0aa92810b5f55f7a3c"/>
           <topic label="novas_inv_refract" href="novas_8h.html#a93ac897d3f7a2f2a7f8d92f3e8cd9ea0"/>
           <topic label="novas_invert_transform" href="novas_8h.html#ad2081e123024609d3071b33b183502b7"/>
+          <topic label="novas_iso_timestamp" href="novas_8h.html#a1b7e1fa279dc7502805cc76af2ae07fe"/>
           <topic label="novas_los_to_xyz" href="novas_8h.html#a601d246673742cf72a5dbe1449c97560"/>
           <topic label="novas_lsr_to_ssb_vel" href="novas_8h.html#aad80bf94be2efc36c340994829df8207"/>
           <topic label="novas_make_frame" href="novas_8h.html#abfee69517c7432733c8382c88371c983"/>
@@ -714,7 +721,12 @@
           <topic label="novas_offset_time" href="novas_8h.html#a01f98b2b8033c8dbacaeab37e9198e91"/>
           <topic label="novas_optical_refraction" href="novas_8h.html#ae4511a80a1defbb1e1fdc29c289e7de4"/>
           <topic label="novas_orbit_posvel" href="novas_8h.html#a445ad14faede9dc912601de27fb52bc0"/>
+          <topic label="novas_parse_date" href="novas_8h.html#a48866c233886213c4d347efb5ce30dd1"/>
+          <topic label="novas_parse_date_format" href="novas_8h.html#a632e0bd3bb5ff20c9f385231e9db035d"/>
+          <topic label="novas_parse_dms" href="novas_8h.html#a3966d939b4bd0233f13ed1a9e8ae1f80"/>
+          <topic label="novas_parse_hms" href="novas_8h.html#ab731deea99a64dc57cd8d4ee55b4d60d"/>
           <topic label="novas_planet_for_name" href="novas_8h.html#a92e869b101bd41e31ac6d3a2419bb0a3"/>
+          <topic label="novas_print_timescale" href="novas_8h.html#a18bd698f5c504b5f0a581227e1649bd2"/>
           <topic label="novas_radio_refraction" href="novas_8h.html#a6b49f92f8f818f2272613e3432185a39"/>
           <topic label="novas_rises_above" href="novas_8h.html#ae947cd79282aafd79436a1bee4b2fd8a"/>
           <topic label="novas_sep" href="novas_8h.html#a9f33de2b26a19a5e20827e9e918b3375"/>
@@ -727,6 +739,8 @@
           <topic label="novas_ssb_to_lsr_vel" href="novas_8h.html#a99ed25baa029f3980924da8c8af54d1a"/>
           <topic label="novas_standard_refraction" href="novas_8h.html#ab04bff3b97c132e358e11c3a5b7a3081"/>
           <topic label="novas_sun_angle" href="novas_8h.html#a1a1323a247aa7164c73b16148eb32411"/>
+          <topic label="novas_timescale_for_string" href="novas_8h.html#a5e447ec1ea688fe3fb688387ac669f7a"/>
+          <topic label="novas_timestamp" href="novas_8h.html#a9bc66e41d10e6a6b88cd6a352ab9da17"/>
           <topic label="novas_track_pos" href="novas_8h.html#a24d627df1c1788bcaae4a768da63c18c"/>
           <topic label="novas_transform_sky_pos" href="novas_8h.html#a88972e93665bb1903795bfff264c14f6"/>
           <topic label="novas_transform_vector" href="novas_8h.html#aadb7bc88119eed4ea54373a42e22a0d4"/>
@@ -907,6 +921,7 @@
           <topic label="astro_star" href="novas_8c.html#a60ea97a77320c52b566f8e8fb5faf304"/>
           <topic label="bary2obs" href="novas_8c.html#aada778ddcc75a355b6753f5372775094"/>
           <topic label="cal_date" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5"/>
+          <topic label="cal_date2" href="novas_8c.html#a8451d21415047d15b26f0d3bb7fae5ca"/>
           <topic label="cel2ter" href="novas_8c.html#a95f02377ce41d4e251654449dda82986"/>
           <topic label="cel_pole" href="novas_8c.html#a8937180de2ee1545d19b8fc840f35fe2"/>
           <topic label="cio_array" href="novas_8c.html#a2ed632ae8df4a3737c200c96fe2362e2"/>
@@ -1109,6 +1124,8 @@
           <topic label="novas_hms_hours" href="super_8c.html#a5f564fbf4c22367d7eed6a060a99cc37"/>
           <topic label="novas_hpa" href="super_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c"/>
           <topic label="novas_lsr_to_ssb_vel" href="super_8c.html#aad80bf94be2efc36c340994829df8207"/>
+          <topic label="novas_parse_dms" href="super_8c.html#aa9828ebb241e8a6500cac46f7e1e0e0c"/>
+          <topic label="novas_parse_hms" href="super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6"/>
           <topic label="novas_planet_for_name" href="super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3"/>
           <topic label="novas_sep" href="super_8c.html#a9f33de2b26a19a5e20827e9e918b3375"/>
           <topic label="novas_set_orbsys_pole" href="super_8c.html#aee0ed43252017745574fa1e4b84a7b11"/>
@@ -1130,16 +1147,23 @@
           <topic label="unredshift_vrad" href="super_8c.html#aea89203030ca831260dec18f83081d23"/>
         </topic>
         <topic label="timescale.c" href="timescale_8c.html">
+          <topic label="_DEFAULT_SOURCE" href="timescale_8c.html#a8fb447618db946a9e2a596d9ea18763f"/>
           <topic label="novas_diff_tcb" href="timescale_8c.html#a4818ab9be2f0891091c719db01bcfa98"/>
           <topic label="novas_diff_tcg" href="timescale_8c.html#ab904df0f504d07bbf73f84e2a1c43e07"/>
           <topic label="novas_diff_time" href="timescale_8c.html#abdcc8e194d79787838d1ffc064449932"/>
           <topic label="novas_get_split_time" href="timescale_8c.html#ab4ea1b646b23a76936b2a6459b1bac6d"/>
           <topic label="novas_get_time" href="timescale_8c.html#aa65f86f70b2ea6e77bf0799d6859ca05"/>
           <topic label="novas_get_unix_time" href="timescale_8c.html#aa29034a9e6579d5982083c5c6ea8d773"/>
+          <topic label="novas_iso_timestamp" href="timescale_8c.html#a1b7e1fa279dc7502805cc76af2ae07fe"/>
           <topic label="novas_offset_time" href="timescale_8c.html#a01f98b2b8033c8dbacaeab37e9198e91"/>
+          <topic label="novas_parse_date" href="timescale_8c.html#a48866c233886213c4d347efb5ce30dd1"/>
+          <topic label="novas_parse_date_format" href="timescale_8c.html#a632e0bd3bb5ff20c9f385231e9db035d"/>
+          <topic label="novas_print_timescale" href="timescale_8c.html#a18bd698f5c504b5f0a581227e1649bd2"/>
           <topic label="novas_set_split_time" href="timescale_8c.html#a37c8f2d5e1ad2daed78d1bd7991fdba4"/>
           <topic label="novas_set_time" href="timescale_8c.html#ac272a018a213965f07b21ac6facb4a62"/>
           <topic label="novas_set_unix_time" href="timescale_8c.html#abacd89aa380c85da2d3c19a7e2187df3"/>
+          <topic label="novas_timescale_for_string" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a"/>
+          <topic label="novas_timestamp" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17"/>
         </topic>
       </topic>
     </topic>

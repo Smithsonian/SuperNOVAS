@@ -112,11 +112,19 @@ $(document).ready(function(){initNavTree('timescale_8c.html',''); initResizable(
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">timescale.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a8fb447618db946a9e2a596d9ea18763f" id="r_a8fb447618db946a9e2a596d9ea18763f"><td class="memItemLeft" align="right" valign="top"><a id="a8fb447618db946a9e2a596d9ea18763f" name="a8fb447618db946a9e2a596d9ea18763f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_DEFAULT_SOURCE</b></td></tr>
+<tr class="memdesc:a8fb447618db946a9e2a596d9ea18763f"><td class="mdescLeft">&#160;</td><td class="mdescRight">strcasecmp() feature macro starting glibc 2.20 (2014-09-08) <br /></td></tr>
+<tr class="separator:a8fb447618db946a9e2a596d9ea18763f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4818ab9be2f0891091c719db01bcfa98" id="r_a4818ab9be2f0891091c719db01bcfa98"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a4818ab9be2f0891091c719db01bcfa98">novas_diff_tcb</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t1, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t2)</td></tr>
@@ -131,14 +139,26 @@ Functions</h2></td></tr>
 <tr class="separator:aa65f86f70b2ea6e77bf0799d6859ca05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa29034a9e6579d5982083c5c6ea8d773" id="r_aa29034a9e6579d5982083c5c6ea8d773"><td class="memItemLeft" align="right" valign="top">time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#aa29034a9e6579d5982083c5c6ea8d773">novas_get_unix_time</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, long *nanos)</td></tr>
 <tr class="separator:aa29034a9e6579d5982083c5c6ea8d773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b7e1fa279dc7502805cc76af2ae07fe" id="r_a1b7e1fa279dc7502805cc76af2ae07fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a1b7e1fa279dc7502805cc76af2ae07fe">novas_iso_timestamp</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, char *dst, int maxlen)</td></tr>
+<tr class="separator:a1b7e1fa279dc7502805cc76af2ae07fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01f98b2b8033c8dbacaeab37e9198e91" id="r_a01f98b2b8033c8dbacaeab37e9198e91"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a01f98b2b8033c8dbacaeab37e9198e91">novas_offset_time</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, double seconds, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *out)</td></tr>
 <tr class="separator:a01f98b2b8033c8dbacaeab37e9198e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48866c233886213c4d347efb5ce30dd1" id="r_a48866c233886213c4d347efb5ce30dd1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a48866c233886213c4d347efb5ce30dd1">novas_parse_date</a> (const char *date, char **tail)</td></tr>
+<tr class="separator:a48866c233886213c4d347efb5ce30dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a632e0bd3bb5ff20c9f385231e9db035d" id="r_a632e0bd3bb5ff20c9f385231e9db035d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a632e0bd3bb5ff20c9f385231e9db035d">novas_parse_date_format</a> (enum <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">novas_date_format</a> format, const char *date, char **tail)</td></tr>
+<tr class="separator:a632e0bd3bb5ff20c9f385231e9db035d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18bd698f5c504b5f0a581227e1649bd2" id="r_a18bd698f5c504b5f0a581227e1649bd2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a18bd698f5c504b5f0a581227e1649bd2">novas_print_timescale</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale, char *buf)</td></tr>
+<tr class="separator:a18bd698f5c504b5f0a581227e1649bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c8f2d5e1ad2daed78d1bd7991fdba4" id="r_a37c8f2d5e1ad2daed78d1bd7991fdba4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a37c8f2d5e1ad2daed78d1bd7991fdba4">novas_set_split_time</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale, long ijd, double fjd, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time)</td></tr>
 <tr class="separator:a37c8f2d5e1ad2daed78d1bd7991fdba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac272a018a213965f07b21ac6facb4a62" id="r_ac272a018a213965f07b21ac6facb4a62"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ac272a018a213965f07b21ac6facb4a62">novas_set_time</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale, double jd, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time)</td></tr>
 <tr class="separator:ac272a018a213965f07b21ac6facb4a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abacd89aa380c85da2d3c19a7e2187df3" id="r_abacd89aa380c85da2d3c19a7e2187df3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#abacd89aa380c85da2d3c19a7e2187df3">novas_set_unix_time</a> (time_t unix_time, long nanos, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time)</td></tr>
 <tr class="separator:abacd89aa380c85da2d3c19a7e2187df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e447ec1ea688fe3fb688387ac669f7a" id="r_a5e447ec1ea688fe3fb688387ac669f7a"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string</a> (const char *str)</td></tr>
+<tr class="separator:a5e447ec1ea688fe3fb688387ac669f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bc66e41d10e6a6b88cd6a352ab9da17" id="r_a9bc66e41d10e6a6b88cd6a352ab9da17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale, char *dst, int maxlen)</td></tr>
+<tr class="separator:a9bc66e41d10e6a6b88cd6a352ab9da17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Jun 24, 2024 </dd></dl>
@@ -180,7 +200,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] Precise TCB time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] Precise TCB time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ab904df0f504d07bbf73f84e2a1c43e07">novas_diff_tcg()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#abdcc8e194d79787838d1ffc064449932">novas_diff_time()</a></dd></dl>
@@ -224,7 +244,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] Precise TCG time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] Precise TCG time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4818ab9be2f0891091c719db01bcfa98">novas_diff_tcb()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#abdcc8e194d79787838d1ffc064449932">novas_diff_time()</a></dd></dl>
@@ -268,7 +288,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno will be set to EINVAL)</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ac272a018a213965f07b21ac6facb4a62">novas_set_time()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#a01f98b2b8033c8dbacaeab37e9198e91">novas_offset_time()</a> </dd>
@@ -437,6 +457,59 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 
 </div>
 </div>
+<a id="a1b7e1fa279dc7502805cc76af2ae07fe" name="a1b7e1fa279dc7502805cc76af2ae07fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b7e1fa279dc7502805cc76af2ae07fe">&#9670;&#160;</a></span>novas_iso_timestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_iso_timestamp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxlen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Prints a UTC-based ISO timestamp to millisecond precision to the specified string buffer. E.g.:</p>
+<pre>
+ 2025-01-26T21:32:49.701Z
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">time</td><td>Pointer to the astronomical time specification data structure. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>Output string buffer. At least 25 bytes are required for a complete timestamp with termination. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">maxlen</td><td>The maximum number of characters that can be printed into the output buffer, including the string termination. If the full ISO timestamp is longer than <code>maxlen</code>, then it will be truncated to fit in the allotted space, including a termination character. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of characters printed into the string buffer, not including the termination. As such it is at most <code>maxlen - 1</code>.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp()</a> </dd>
+<dd>
+novas_parse_time() </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#ab4ea1b646b23a76936b2a6459b1bac6d">novas_get_split_time()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+
+</div>
+</div>
 <a id="a01f98b2b8033c8dbacaeab37e9198e91" name="a01f98b2b8033c8dbacaeab37e9198e91"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01f98b2b8033c8dbacaeab37e9198e91">&#9670;&#160;</a></span>novas_offset_time()</h2>
 
@@ -485,6 +558,181 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="structnovas__timespec.html#a696e598955615f729a92870c8213a10c">novas_timespec::fjd_tt</a>, and <a class="el" href="structnovas__timespec.html#ab1b769234049ec8d7cdbb22800116184">novas_timespec::ijd_tt</a>.</p>
+
+</div>
+</div>
+<a id="a48866c233886213c4d347efb5ce30dd1" name="a48866c233886213c4d347efb5ce30dd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48866c233886213c4d347efb5ce30dd1">&#9670;&#160;</a></span>novas_parse_date()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_parse_date </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>date</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>tail</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses a date/time string into a Julian date specification. Typically the date may be an ISO date specification, but with some added flexibility. The date must be YMD-type with full year, followed the month (numerical or name or 3-letter abbreviation), and the day. The components may be separated by dash <code>-</code>, underscore <code>_</code>, dot <code>.</code>, slash '/', or spaces/tabs, or any combination thereof. The date may be followed by a time specification in HMS format, separated from the date by the letter <code>T</code> or <code>t</code>, or spaces, comma <code>,</code>, or semicolon <code>;</code>, or underscore <code>_</code> or a combination thereof. Finally, the time may be followed by the letter <code>Z</code>, or <code>z</code> (for UTC) or else {+/-}HH[:[MM]] time zone specification.</p>
+<p>For example:</p>
+<pre>
+ 2025-01-26
+ 2025 January 26
+ 2025_Jan_26
+ 2025-01-26T19:33:08Z
+ 2025.01.26T19:33:08
+ 2025 1 26 19h33m28.113
+ 2025/1/26 19:33:28+02
+ 2025-01-26T19:33:28-0600
+ 2025 Jan 26 19:33:28+05:30
+</pre><p>are all valid dates that can be parsed.</p>
+<p>B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g. as <code>-253 01 26</code>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time. The parsing will consume empty space characters after the time specification also, returning a pointer to the next token after.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The Julian Date corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a632e0bd3bb5ff20c9f385231e9db035d">novas_parse_date_format()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a1b7e1fa279dc7502805cc76af2ae07fe">novas_iso_timestamp()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#a632e0bd3bb5ff20c9f385231e9db035d">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+
+</div>
+</div>
+<a id="a632e0bd3bb5ff20c9f385231e9db035d" name="a632e0bd3bb5ff20c9f385231e9db035d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a632e0bd3bb5ff20c9f385231e9db035d">&#9670;&#160;</a></span>novas_parse_date_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_parse_date_format </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">novas_date_format</a>&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>date</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>tail</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses a date/time string into a Julian date specification. The date must be composed of a full year (e.g. 2025), a month (numerical or name or 3-letter abbreviation, e.g. "01", "1", "January", or "Jan"), and a day (e.g. "08" or "8"). The components may be separated by dash <code>-</code>, underscore <code>_</code>, dot <code>.</code>, slash '/', or spaces/tabs, or any combination thereof. The components will be parsed in the specified order.</p>
+<p>The date may be followed by a time specification in HMS format, separated from the date by the letter <code>T</code> or <code>t</code>, or spaces, comma <code>,</code>, or semicolon <code>;</code> or underscore '_', or a combination thereof. Finally, the time may be followed by the letter <code>Z</code>, or <code>z</code> (for UTC) or else by a {+/-}HH[:[MM]] time zone specification.</p>
+<p>For example, for <code>format</code> NOVAS_YMD, all of the following strings may specify the date:</p>
+<pre>
+ 2025-01-26
+ 2025 January 26
+ 2025_Jan_26
+ 2025-01-26T19:33:08Z
+ 2025.01.26T19:33:08
+ 2025 1 26 19h33m28.113
+ 2025/1/26 19:33:28+02
+ 2025-01-26T19:33:28-0600
+ 2025 Jan 26 19:33:28+05:30
+</pre><p>are all valid dates that can be parsed.</p>
+<p>B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g. as <code>-253 01 26</code>.</p>
+<p>If your date format cannot be parsed with this function, you may parse it with your own function into year, month, day, and decimal hour-of-day components, and use <a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> with those.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">format</td><td>Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in the specified standard format. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time. The parsing will consume empty space characters after the time specification also, returning a pointer to the next token after.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The Julian Date corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a48866c233886213c4d347efb5ce30dd1">novas_parse_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a1b7e1fa279dc7502805cc76af2ae07fe">novas_iso_timestamp()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a>, <a class="el" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+
+</div>
+</div>
+<a id="a18bd698f5c504b5f0a581227e1649bd2" name="a18bd698f5c504b5f0a581227e1649bd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18bd698f5c504b5f0a581227e1649bd2">&#9670;&#160;</a></span>novas_print_timescale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_print_timescale </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>buf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Prints the standard string representation of the timescale to the specified buffer. The string is terminated after. E.g. "UTC", or "TAI".</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scale</td><td>The timescale </td></tr>
+    <tr><td class="paramname">buf</td><td>String in which to print. It should have at least 4-bytes of available storage. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of characters printed, not including termination, or else -1 if the timescale is invalid or the output buffer is NULL.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0bac29f535fdae4e29e1baeccacf8f0b98d">NOVAS_GPS</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba328f2523f4f064c5252f4ac858bddc4b">NOVAS_TAI</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4">NOVAS_TCB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba5935a299729a67971b12a78ee682f89a">NOVAS_TCG</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d">NOVAS_TDB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baadb0d1437b46022bca75d4e7ab0542c7">NOVAS_TT</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baa6fc4520426c4c9cbe497ab87f2ad583">NOVAS_UT1</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
 
 </div>
 </div>
@@ -569,7 +817,9 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dd>
 <a class="el" href="timescale_8c.html#abacd89aa380c85da2d3c19a7e2187df3">novas_set_unix_time()</a> </dd>
 <dd>
-<a class="el" href="timescale_8c.html#ab4ea1b646b23a76936b2a6459b1bac6d">novas_get_split_time()</a></dd></dl>
+<a class="el" href="timescale_8c.html#ab4ea1b646b23a76936b2a6459b1bac6d">novas_get_split_time()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -636,7 +886,9 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dd>
 <a class="el" href="timescale_8c.html#abacd89aa380c85da2d3c19a7e2187df3">novas_set_unix_time()</a> </dd>
 <dd>
-<a class="el" href="timescale_8c.html#aa65f86f70b2ea6e77bf0799d6859ca05">novas_get_time()</a></dd></dl>
+<a class="el" href="timescale_8c.html#aa65f86f70b2ea6e77bf0799d6859ca05">novas_get_time()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -710,6 +962,99 @@ struct timespec</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="timescale_8c.html#a37c8f2d5e1ad2daed78d1bd7991fdba4">novas_set_split_time()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+
+</div>
+</div>
+<a id="a5e447ec1ea688fe3fb688387ac669f7a" name="a5e447ec1ea688fe3fb688387ac669f7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e447ec1ea688fe3fb688387ac669f7a">&#9670;&#160;</a></span>novas_timescale_for_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> novas_timescale_for_string </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the timescale constant for a string that denotes the timescale in with a standard abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", "TDB".</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>String specifying an astronomical timescale </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL, empty, or could not be matched to a timescale value (errno will be set to EINVAL also).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ac272a018a213965f07b21ac6facb4a62">novas_set_time()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a37c8f2d5e1ad2daed78d1bd7991fdba4">novas_set_split_time()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a18bd698f5c504b5f0a581227e1649bd2">novas_print_timescale()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0bac29f535fdae4e29e1baeccacf8f0b98d">NOVAS_GPS</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba328f2523f4f064c5252f4ac858bddc4b">NOVAS_TAI</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4">NOVAS_TCB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba5935a299729a67971b12a78ee682f89a">NOVAS_TCG</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d">NOVAS_TDB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baadb0d1437b46022bca75d4e7ab0542c7">NOVAS_TT</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baa6fc4520426c4c9cbe497ab87f2ad583">NOVAS_UT1</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+
+</div>
+</div>
+<a id="a9bc66e41d10e6a6b88cd6a352ab9da17" name="a9bc66e41d10e6a6b88cd6a352ab9da17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bc66e41d10e6a6b88cd6a352ab9da17">&#9670;&#160;</a></span>novas_timestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_timestamp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxlen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Prints a an ISO timestamp to millisecond precision in the specified timescale to the specified string buffer. E.g.:</p>
+<pre>
+ 2025-01-26T21:32:49.701 TAI
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">time</td><td>Pointer to the astronomical time specification data structure. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">scale</td><td>The timescale to use. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>Output string buffer. At least 29 bytes are required for a complete timestamp with termination. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">maxlen</td><td>The maximum number of characters that can be printed into the output buffer, including the string termination. If the full ISO timestamp is longer than <code>maxlen</code>, then it will be truncated to fit in the allotted space, including a termination character. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of characters printed into the string buffer, not including the termination. As such it is at most <code>maxlen - 1</code>.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a1b7e1fa279dc7502805cc76af2ae07fe">novas_iso_timestamp()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#ab4ea1b646b23a76936b2a6459b1bac6d">novas_get_split_time()</a>, and <a class="el" href="timescale_8c.html#a18bd698f5c504b5f0a581227e1649bd2">novas_print_timescale()</a>.</p>
 
 </div>
 </div>

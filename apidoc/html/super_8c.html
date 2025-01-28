@@ -191,6 +191,10 @@ Functions</h2></td></tr>
 <tr class="separator:a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad80bf94be2efc36c340994829df8207" id="r_aad80bf94be2efc36c340994829df8207"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel</a> (double epoch, double ra, double dec, double vLSR)</td></tr>
 <tr class="separator:aad80bf94be2efc36c340994829df8207"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9828ebb241e8a6500cac46f7e1e0e0c" id="r_aa9828ebb241e8a6500cac46f7e1e0e0c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aa9828ebb241e8a6500cac46f7e1e0e0c">novas_parse_dms</a> (const char *dms, char **tail)</td></tr>
+<tr class="separator:aa9828ebb241e8a6500cac46f7e1e0e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9fc57f5df90c5beceb0b5c9c4fc15d6" id="r_af9fc57f5df90c5beceb0b5c9c4fc15d6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6">novas_parse_hms</a> (const char *hms, char **tail)</td></tr>
+<tr class="separator:af9fc57f5df90c5beceb0b5c9c4fc15d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92e869b101bd41e31ac6d3a2419bb0a3" id="r_a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a92e869b101bd41e31ac6d3a2419bb0a3">novas_planet_for_name</a> (const char *name)</td></tr>
 <tr class="separator:a92e869b101bd41e31ac6d3a2419bb0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f33de2b26a19a5e20827e9e918b3375" id="r_a9f33de2b26a19a5e20827e9e918b3375"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a9f33de2b26a19a5e20827e9e918b3375">novas_sep</a> (double lon1, double lat1, double lon2, double lat2)</td></tr>
@@ -1719,6 +1723,8 @@ novas_calc_geometric_position() </dd>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a5f564fbf4c22367d7eed6a060a99cc37">novas_hms_hours()</a> </dd></dl>
 
+<p class="reference">References <a class="el" href="super_8c.html#aa9828ebb241e8a6500cac46f7e1e0e0c">novas_parse_dms()</a>.</p>
+
 </div>
 </div>
 <a id="afd4387a6a7b3b5a8f6404ce27117adb3" name="afd4387a6a7b3b5a8f6404ce27117adb3"></a>
@@ -2052,6 +2058,8 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#abf05d010ebf128f6300d4cc378616d90">novas_dms_degrees()</a> </dd></dl>
 
+<p class="reference">References <a class="el" href="super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6">novas_parse_hms()</a>.</p>
+
 </div>
 </div>
 <a id="a73fcb54e47b2be0aa92810b5f55f7a3c" name="a73fcb54e47b2be0aa92810b5f55f7a3c"></a>
@@ -2164,6 +2172,100 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
 <a class="el" href="super_8c.html#a99ed25baa029f3980924da8c8af54d1a">novas_ssb_to_lsr_vel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, and <a class="el" href="novas_8c.html#acf86ce700b3d3509ebba13e5f16a4327">radec2vector()</a>.</p>
+
+</div>
+</div>
+<a id="aa9828ebb241e8a6500cac46f7e1e0e0c" name="aa9828ebb241e8a6500cac46f7e1e0e0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9828ebb241e8a6500cac46f7e1e0e0c">&#9670;&#160;</a></span>novas_parse_dms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_parse_dms </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>dms</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>tail</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same angle:</p>
+<pre>
+ -179:59:59.999
+ -179 59m 59.999
+ -179d 59' 59.999
+ -179D59'59.999
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">dms</td><td>String specifying degrees, minutes, and seconds, which correspond to an angle. Angles in any range are permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] Corresponding decimal angle value, or else NAN if there was an error parsing the string (errno will be set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#abf05d010ebf128f6300d4cc378616d90">novas_dms_degrees()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6">novas_parse_hms()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af9fc57f5df90c5beceb0b5c9c4fc15d6" name="af9fc57f5df90c5beceb0b5c9c4fc15d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9fc57f5df90c5beceb0b5c9c4fc15d6">&#9670;&#160;</a></span>novas_parse_hms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_parse_hms </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>hms</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>tail</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the hour and minutes may be semarated by the letter <code>h</code> or <code>H</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same time:</p>
+<pre>
+ 23:59:59.999
+ 23h 59m 59.999
+ 23h 59' 59.999
+ 23H59'59.999
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">hms</td><td>String specifying hours, minutes, and seconds, which correspond to a time between 0 and 24 h. Time in any range is permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[hours] Corresponding decimal time value, or else NAN if there was an error parsing the string (errno will be set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a5f564fbf4c22367d7eed6a060a99cc37">novas_hms_hours()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#aa9828ebb241e8a6500cac46f7e1e0e0c">novas_parse_dms()</a> </dd></dl>
 
 </div>
 </div>
