@@ -1450,11 +1450,11 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
 }
 
 /**
- * Parses the decimal hours for a HMS string specification. The hour, minute, and second
- * components may be separated by spaces, tabs, colons `:`, or a combination thereof.
- * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the
- * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all
- * of the lines below specify the same time:
+ * Parses the decimal hours for a HMS string specification. The hour, minute, and second components
+ * may be separated by spaces, tabs, colons `:`, underscore `_`, or a combination thereof.
+ * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the minutes
+ * and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all of the lines
+ * below specify the same time:
  *
  * <pre>
  *  23:59:59.999
@@ -1496,7 +1496,7 @@ double novas_parse_hms(const char *hms, char **tail) {
     return NAN;
   }
 
-  if(sscanf(hms, "%d%*[:hH \t]%d%*[:mM' \t]%lf%n", &h, &m, &s, &n) < 3) {
+  if(sscanf(hms, "%d%*[:hH _\t]%d%*[:mM' _\t]%lf%n", &h, &m, &s, &n) < 3) {
     novas_error(0, EINVAL, fn, "not in HMS format: '%s'", hms);
     return NAN;
   }
@@ -1550,10 +1550,10 @@ double novas_hms_hours(const char *hms) {
 
 /**
  * Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and
- * (arc)second components may be separated by spaces, tabs, colons `:`, or a combination thereof.
- * Additionally, the degree and minutes may be semarated by the letter `d` or `D`, and the
- * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all of
- * the lines below specify the same angle:
+ * (arc)second components may be separated by spaces, tabs, colons `:`, underscore `_`, or a
+ * combination thereof. Additionally, the degree and minutes may be semarated by the letter `d`
+ * or `D`, and the minutes and seconds may be separated by `m` or `M`, or a single quote `'`.
+ * For example, all of the lines below specify the same angle:
  *
  * <pre>
  *  -179:59:59.999
@@ -1595,7 +1595,7 @@ double novas_parse_dms(const char *dms, char **tail) {
     return NAN;
   }
 
-  if(sscanf(dms, "%d%*[:dD \t]%d%*[:mM' \t]%lf%n", &d, &m, &s, &n) < 3) {
+  if(sscanf(dms, "%d%*[:dD _\t]%d%*[:mM' _\t]%lf%n", &d, &m, &s, &n) < 3) {
     novas_error(0, EINVAL, fn, "not in DMS format: '%s'", dms);
     return NAN;
   }
