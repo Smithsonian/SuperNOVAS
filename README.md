@@ -1154,7 +1154,7 @@ one minute.
    Earth-based observing frame.
    
  - New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or sets
-   below a specific elevation on a given date. (Useful for Earth-based observers only).
+   below a specific elevation on a given date. (For Earth-based observers only).
 
  - New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given date. 
    The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, while
@@ -1262,9 +1262,6 @@ one minute.
  - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
    to radial velocity for light originating at the surface, and observed near Earth or at a large distance away from 
    the source.
-   
- - [__v1.3__] Modified `place()` and `novas_geom_posvel()` to use physical velocity, rather than projected movement, 
-   for calculating radial velocities for sidereal sources.
    
  - [__v1.3__] In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection 
    corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 

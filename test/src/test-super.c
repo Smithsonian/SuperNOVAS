@@ -1054,8 +1054,6 @@ static int test_cirs_app_ra() {
   return 0;
 }
 
-
-
 static int test_set_time() {
   novas_timespec tt, tt1, tai, gps, TDB, tcb, tcg, utc, ut1;
   int leap = 32;
@@ -1272,7 +1270,6 @@ static int test_geom_posvel() {
   return 0;
 }
 
-
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
   int i, n = 0;
@@ -1450,7 +1447,6 @@ static int test_planet_provider() {
   return status;
 }
 
-
 static int test_ephem_provider() {
   novas_ephem_provider prior = get_ephem_provider();
 
@@ -1489,7 +1485,6 @@ static int test_ephem_provider() {
   return status;
 }
 
-
 static int test_enable_earth_sun_calc_hp() {
   double tdb2[2] = { tdb }, p[3], v[3], p0[3], v0[3];
   int status = 1;
@@ -1516,7 +1511,6 @@ static int test_ira_equinox() {
   if(!is_ok("ira_equinox", e1 != e2)) return 1;
   return 0;
 }
-
 
 static int test_iau2000a() {
   double dpsi, deps;
@@ -1738,7 +1732,6 @@ static int test_obs_posvel() {
   return 0;
 }
 
-
 static int test_dxdy_to_dpsideps() {
   double x;
 
@@ -1853,7 +1846,6 @@ static int test_unix_time() {
     return 1;
   }
 
-
   return 0;
 }
 
@@ -1962,7 +1954,6 @@ static int test_radio_refraction() {
   return 0;
 }
 
-
 static int test_inv_refract() {
   on_surface obs = {};
   int el;
@@ -2061,7 +2052,6 @@ static int test_transform() {
   return 0;
 }
 
-
 static int test_app_hor2() {
   novas_timespec ts = {};
   observer obs = {};
@@ -2118,7 +2108,6 @@ static int test_rad_vel2() {
 
   return n;
 }
-
 
 static int test_grav_redshift() {
   static const double G = 6.6743e-11; // G in SI units.
@@ -2272,7 +2261,6 @@ static int test_planet_for_name() {
   return n;
 }
 
-
 static int test_orbit_place() {
   object ceres = {};
   novas_orbital orbit = NOVAS_ORBIT_INIT;
@@ -2352,7 +2340,6 @@ static int test_orbit_place() {
 
   return n;
 }
-
 
 static int test_orbit_posvel_callisto() {
   novas_orbital orbit = NOVAS_ORBIT_INIT;
@@ -2502,7 +2489,6 @@ static int test_epa() {
 
   return n;
 }
-
 
 static int test_helio_dist() {
   int n = 0;

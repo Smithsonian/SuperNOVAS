@@ -39,7 +39,7 @@ Upcoming feature release, expected around 1 May 2025.
    Earth-based observing frame.
    
  - New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or sets
-   below a specific elevation on a given date. (Useful for Earth-based observers only).
+   below a specific elevation on a given date. (For Earth-based observers only).
 
  - New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given date. 
    The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, while
