@@ -326,7 +326,7 @@ double novas_get_split_time(const novas_timespec *time, enum novas_timescale tim
  *
  * @param t1    First time
  * @param t2    Second time
- * @return      [day] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno
+ * @return      [s] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno
  *              will be set to EINVAL)
  *
  * @sa novas_set_time()
@@ -354,7 +354,7 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
  *
  * @param t1    First time
  * @param t2    Second time
- * @return      [day] Precise TCB time difference (t1-t2), or NAN if one of the inputs was
+ * @return      [s] Precise TCB time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
  * @sa novas_diff_tcg()
@@ -381,7 +381,7 @@ double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
  *
  * @param t1    First time
  * @param t2    Second time
- * @return      [day] Precise TCG time difference (t1-t2), or NAN if one of the inputs was
+ * @return      [s] Precise TCG time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
  * @sa novas_diff_tcb()
