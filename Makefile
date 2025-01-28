@@ -200,7 +200,8 @@ dox:
 dox: README.md Doxyfile apidoc $(SRC) $(INC) README-orig.md
 	@echo "   [doxygen]"
 	@$(DOXYGEN)
-	( cd apidoc/html; ln -s ../../resources )
+	@rm -f apidoc/html/resources
+	@( cd apidoc/html; ln -s ../../resources )
 
 .INTERMEDIATE: Doxyfile.local
 Doxyfile.local: Doxyfile Makefile
