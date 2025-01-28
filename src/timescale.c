@@ -75,6 +75,7 @@
  * @sa novas_set_split_time()
  * @sa novas_set_unix_time()
  * @sa novas_get_time()
+ * @sa novas_timescale_for_string()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -120,6 +121,7 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @sa novas_set_time()
  * @sa novas_set_unix_time()
  * @sa novas_get_split_time()
+ * @sa novas_timescale_for_string()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -606,6 +608,8 @@ static int parse_zone(const char *str, char **tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
+ * @sa novas_parse_date()
+ * @sa novas_timescale_for_string()
  * @sa novas_iso_timestamp()
  * @sa julian_date()
  */
@@ -763,13 +767,28 @@ double novas_parse_date_format(enum novas_date_format format, const char *date, 
  * @author Attila Kovacs
  *
  * @sa novas_parse_date_format()
+ * @sa novas_timescale_for_string()
  * @sa novas_iso_timestamp()
+ * @sa novas_timestamp()
  */
 double novas_parse_date(const char *date, char **tail) {
   double jd = novas_parse_date_format(NOVAS_YMD, date, tail);
   if(isnan(jd))
     return novas_trace_nan("novas_parse_date");
   return jd;
+}
+
+static int timestamp(time_t sec, long nsec, char *buf) {
+  struct tm tm = {};
+  int ds;
+
+  nsec -= nsec % 1000000;     // round to ms...
+  gmtime_r(&sec, &tm);
+
+  ds = tm.tm_sec / 10;
+  tm.tm_sec -= 10 * ds;
+
+  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%d%5.3f", 1900 + tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, ds, tm.tm_sec + 1e-9 * nsec);
 }
 
 /**
@@ -794,15 +813,15 @@ double novas_parse_date(const char *date, char **tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
+ * @sa novas_timestamp()
  * @sa novas_parse_time()
  */
 int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
   static const char *fn = "novas_iso_timestamp";
 
-  char buf[100];
   struct timespec ts = {};
-  struct tm tm = {};
-  int ds;
+  char buf[40];
+  int l;
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "input time is NULL");
@@ -815,17 +834,182 @@ int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
 
   ts.tv_sec = novas_get_unix_time(time, &ts.tv_nsec);
 
-  ts.tv_nsec -= ts.tv_nsec % 1000000;     // round to ms...
-  gmtime_r(&ts.tv_sec, &tm);
-
-  ds = tm.tm_sec / 10;
-  tm.tm_sec -= 10 * ds;
-
-  sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%d%5.3fZ", 1900 + tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, ds, tm.tm_sec + 1e-9 * ts.tv_nsec);
+  l = timestamp(ts.tv_sec, ts.tv_nsec, buf);
+  buf[l++] = 'Z';
+  buf[l] = '\0';
 
   strncpy(dst, buf, maxlen - 1);
   dst[maxlen-1] = '\0';
 
   return strlen(dst) + 1;
+}
+
+/**
+ * Prints the standard string representation of the timescale to the specified buffer. The
+ * string is terminated after. E.g. "UTC", or "TAI".
+ *
+ * @param scale   The timescale
+ * @param buf     String in which to print. It should have at least 4-bytes of available
+ *                storage.
+ * @return        the number of characters printed, not including termination, or else -1
+ *                if the timescale is invalid or the output buffer is NULL.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_timestamp()
+ * @sa novas_timescale_for_string()
+ */
+int novas_print_timescale(enum novas_timescale scale, char *buf) {
+  static const char *fn = "novas_print_timescale";
+
+  if(!buf)
+    return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  switch(scale) {
+    case NOVAS_UT1:
+      return sprintf(buf, "UT1");
+    case NOVAS_UTC:
+      return sprintf(buf, "UTC");
+    case NOVAS_GPS:
+      return sprintf(buf, "GPS");
+    case NOVAS_TAI:
+      return sprintf(buf, "TAI");
+    case NOVAS_TT:
+      return sprintf(buf, "TT");
+    case NOVAS_TCG:
+      return sprintf(buf, "TCG");
+    case NOVAS_TCB:
+      return sprintf(buf, "TCB");
+    case NOVAS_TDB:
+      return sprintf(buf, "TDB");
+  }
+
+  return novas_error(-1, EINVAL, fn, "invalid timescale: %d", scale);
+}
+
+/**
+ * Prints a an ISO timestamp to millisecond precision in the specified timescale to the specified
+ * string buffer. E.g.:
+ *
+ * <pre>
+ *  2025-01-26T21:32:49.701 TAI
+ * </pre>
+ *
+ *
+ * @param time      Pointer to the astronomical time specification data structure.
+ * @param scale     The timescale to use.
+ * @param[out] dst  Output string buffer. At least 29 bytes are required for a complete
+ *                  timestamp with termination.
+ * @param maxlen    The maximum number of characters that can be printed into the output
+ *                  buffer, including the string termination. If the full ISO timestamp
+ *                  is longer than `maxlen`, then it will be truncated to fit in the allotted
+ *                  space, including a termination character.
+ * @return          the number of characters printed into the string buffer, not including
+ *                  the termination. As such it is at most `maxlen - 1`.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_iso_timestamp()
+ */
+int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen) {
+  static const char *fn = "novas_timestamp_scale";
+
+  time_t sec;
+  long nsec;
+  long ijd, ijd_utc;
+  double fjd, fjd_utc, dt;
+  int i;
+  char buf[40];
+
+  if(!time)
+    return novas_error(-1, EINVAL, fn, "input time is NULL");
+
+  if(!dst)
+    return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  if(maxlen < 1)
+    return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
+
+  sec = novas_get_unix_time(time, &nsec);
+  fjd_utc = novas_get_split_time(time, NOVAS_UTC, &ijd_utc);
+  fjd = novas_get_split_time(time, scale, &ijd);
+
+  dt = ((ijd - ijd_utc) + (fjd - fjd_utc)) * DAY;
+  i = (int) floor(dt);
+
+  sec += i;
+  nsec += floor(1e9 * (dt - i) + 0.5);
+
+  if(nsec >= E9) {
+    sec++;
+    nsec -= E9;
+  }
+
+  i = timestamp(sec, nsec, buf);
+
+  buf[i++] = ' ';
+
+  i += novas_print_timescale(scale, &buf[i]);
+
+  strncpy(dst, buf, maxlen-1);
+  dst[maxlen-1] = '\0';
+
+  return i;
+}
+
+/**
+ * Returns the timescale constant for a string that denotes the timescale in
+ * with a standard abbreviation (case insensitive). The following values are
+ * recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET",
+ * "TCG", "TCB", "TDB".
+ *
+ * @param str     String specifying an astronomical timescale
+ * @return        The SuperNOVAS timescale constant (&lt;=0), or else -1 if
+ *                the string was NULL, empty, or could not be matched to
+ *                a timescale value (errno will be set to EINVAL also).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_time()
+ * @sa novas_set_split_time()
+ * @sa novas_print_timescale()
+ */
+enum novas_timescale novas_timescale_for_string(const char *str) {
+  static const char *fn = "novas_str_timescale";
+
+  if(!str)
+    return novas_error(-1, EINVAL, fn, "input string is NULL");
+
+  if(!str[0])
+    return novas_error(-1, EINVAL, fn, "input string is empty");
+
+  if(strcasecmp("UTC", str) == 0 || strcasecmp("UT", str) == 0 || strcasecmp("UT0", str) == 0 || strcasecmp("GMT", str) == 0)
+    return NOVAS_UTC;
+
+  if(strcasecmp("UT1", str) == 0)
+    return NOVAS_UT1;
+
+  if(strcasecmp("TAI", str) == 0)
+      return NOVAS_TAI;
+
+  if(strcasecmp("GPS", str) == 0)
+    return NOVAS_GPS;
+
+  if(strcasecmp("TT", str) == 0 || strcasecmp("ET", str) == 0)
+      return NOVAS_TT;
+
+  if(strcasecmp("TCG", str) == 0)
+      return NOVAS_TCG;
+
+  if(strcasecmp("TCB", str) == 0)
+      return NOVAS_TCB;
+
+  if(strcasecmp("TDB", str) == 0)
+      return NOVAS_TDB;
+
+  return novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
 }
 

@@ -1882,6 +1882,41 @@ static int test_iso_timestamp() {
   return n;
 }
 
+static int test_timestamp() {
+  int n = 0;
+  char buf[30] = {};
+  novas_timespec time = {};
+
+  if(check("timestamp:time:null", -1, novas_timestamp(NULL, NOVAS_UTC, buf, sizeof(buf)))) n++;
+  if(check("timestamp:time:scale:-1", -1, novas_timestamp(NULL, -1, buf, sizeof(buf)))) n++;
+  if(check("timestamp:time:scale:hi", -1, novas_timestamp(NULL, NOVAS_TIMESCALES, buf, sizeof(buf)))) n++;
+  if(check("timestamp:buf:null", -1, novas_timestamp(&time, NOVAS_UTC, NULL, sizeof(buf)))) n++;
+  if(check("timestamp:len:0", -1, novas_timestamp(&time, NOVAS_UTC, buf, 0))) n++;
+
+  return n;
+}
+
+static int test_timescale_for_string() {
+  int n = 0;
+
+  if(check("timescale_for_string:null", -1, novas_timescale_for_string(NULL))) n++;
+  if(check("timescale_for_string:empty", -1, novas_timescale_for_string(""))) n++;
+  if(check("timescale_for_string:invalid", -1, novas_timescale_for_string("blah"))) n++;
+
+  return n;
+}
+
+int test_print_timescale() {
+  int n = 0;
+  char buf[4] = {};
+
+  if(check("print_timescale:buf:null", -1, novas_print_timescale(NOVAS_UTC, NULL))) n++;
+  if(check("print_timescale:buf:-1", -1, novas_print_timescale(-1, buf))) n++;
+  if(check("print_timescale:buf:hi", -1, novas_print_timescale(NOVAS_TIMESCALES, buf))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2035,6 +2070,9 @@ int main() {
   if(test_julian_date()) n++;
   if(test_parse_date()) n++;
   if(test_iso_timestamp()) n++;
+  if(test_timestamp()) n++;
+  if(test_timescale_for_string()) n++;
+  if(test_print_timescale()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

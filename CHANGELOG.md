@@ -29,7 +29,11 @@ Upcoming feature release, expected around 1 May 2025.
    `novas_parse_hms()` to return hours and degrees for HMS and DMS specifications, as well as the updated parse 
    position.
  
- - New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision.
+ - New `novas_timescale_for_string()` to match timescale constants to string representations, such as "UTC", or "TAI",
+   and `novas_print_timescale()` to convert to string representation.
+ 
+ - New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision, and
+   `novas_timestamp()` to print timestamps in specific timescales.
 
  - New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
    Earth-based observing frame.

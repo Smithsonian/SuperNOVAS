@@ -1774,6 +1774,11 @@ double novas_parse_date_format(enum novas_date_format format, const char *date, 
 
 int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen);
 
+int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen);
+
+int novas_print_timescale(enum novas_timescale scale, char *buf);
+
+enum novas_timescale novas_timescale_for_string(const char *str);
 
 
 // <================= END of SuperNOVAS API =====================>

@@ -3053,6 +3053,63 @@ static int test_iso_timestamp() {
   return n;
 }
 
+static int test_timescale_for_string() {
+  int n = 0;
+
+  if(!is_equal("timescale_for_string:UTC", novas_timescale_for_string("UTC"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:UT", novas_timescale_for_string("UT"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:UT0", novas_timescale_for_string("UT0"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:GMT", novas_timescale_for_string("GMT"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:UT1", novas_timescale_for_string("UT1"), NOVAS_UT1, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:GPS", novas_timescale_for_string("GPS"), NOVAS_GPS, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:TAI", novas_timescale_for_string("TAI"), NOVAS_TAI, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:TT", novas_timescale_for_string("TT"), NOVAS_TT, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:ET", novas_timescale_for_string("ET"), NOVAS_TT, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:TCG", novas_timescale_for_string("TCG"), NOVAS_TCG, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:TCB", novas_timescale_for_string("TCB"), NOVAS_TCB, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:TDB", novas_timescale_for_string("TDB"), NOVAS_TDB, 1e-6)) n++;
+
+  if(!is_equal("timescale_for_string:utc", novas_timescale_for_string("utc"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:ut", novas_timescale_for_string("ut"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:ut0", novas_timescale_for_string("ut0"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:gmt", novas_timescale_for_string("gmt"), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:ut1", novas_timescale_for_string("ut1"), NOVAS_UT1, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:gps", novas_timescale_for_string("gps"), NOVAS_GPS, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:tai", novas_timescale_for_string("tai"), NOVAS_TAI, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:tt", novas_timescale_for_string("tt"), NOVAS_TT, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:et", novas_timescale_for_string("et"), NOVAS_TT, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:tcg", novas_timescale_for_string("tcg"), NOVAS_TCG, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:tcb", novas_timescale_for_string("tcb"), NOVAS_TCB, 1e-6)) n++;
+  if(!is_equal("timescale_for_string:tdb", novas_timescale_for_string("tdb"), NOVAS_TDB, 1e-6)) n++;
+
+  return n;
+}
+
+static int test_timestamp() {
+  int n = 0;
+  int i;
+  novas_timespec time = {};
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &time);
+
+  for(i = 0; i < NOVAS_TIMESCALES; i++) {
+    char label[40], ts[40] = {};
+    double jd;
+    novas_timespec time1 = {};
+
+    sprintf(label, "timestamp:%d", i);
+    if(!is_ok(label, novas_timestamp(&time, i, ts, sizeof(ts)) < 0)) n++;
+
+    jd = novas_parse_date(ts, NULL);
+    novas_set_time(i, jd, 32, 0.0, &time1);
+
+    sprintf(label, "timestamp:%d:check", i);
+    if(!is_equal(label, novas_diff_time(&time1, &time), 0.0, 1e-3)) n++;
+  }
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -3144,6 +3201,8 @@ int main(int argc, char *argv[]) {
   if(test_parse_date()) n++;
   if(test_parse_date_format()) n++;
   if(test_iso_timestamp()) n++;
+  if(test_timestamp()) n++;
+  if(test_timescale_for_string()) n++;
 
   n += test_dates();
 
