@@ -605,7 +605,7 @@ static int parse_zone(const char *str, char **tail) {
  * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </oL>
  *
- * @param calendar    The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR,
+ * @param calendar    The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR,
  *                    NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
  * @param format      Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY.
  * @param date        The date specification, possibly including time and timezone, in the
@@ -791,7 +791,7 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * @sa novas_timestamp()
  */
 double novas_parse_date(const char *date, char **tail) {
-  double jd = novas_parse_date_format(NOVAS_CALENDAR_OF_DATE, NOVAS_YMD, date, tail);
+  double jd = novas_parse_date_format(NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_YMD, date, tail);
   if(isnan(jd))
     return novas_trace_nan("novas_parse_date");
   return jd;
@@ -807,7 +807,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
   ijd += d;
   fjd -= d;
 
-  novas_jd_to_calendar(ijd + 0.5, NOVAS_CALENDAR_OF_DATE, &y, &M, &d, NULL);
+  novas_jd_to_calendar(ijd + 0.5, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
 
   s = 24.0 * (fjd - 0.5);
 
@@ -939,8 +939,9 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
  *
  * NOTES:
  * <ol>
- * <li>The timestamp uses the conventional date of the time. That is Gregorian dates after the
+ * <li>The timestamp uses the astronomical date. That is Gregorian dates after the
  * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ *
  * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
  * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </ol>

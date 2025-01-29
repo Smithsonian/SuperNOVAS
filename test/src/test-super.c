@@ -1069,8 +1069,8 @@ static int test_calendar_to_jd() {
   int n = 0;
 
   if(!is_equal("julian_date:gregorian",
-          novas_calendar_to_jd(NOVAS_CALENDAR_OF_DATE, 1582, 10, 15, 0.0),
-          novas_calendar_to_jd(NOVAS_CALENDAR_OF_DATE, 1582, 10, 4, 0.0) + 1, 1e-6)) n++;
+          novas_calendar_to_jd(NOVAS_ASTRONOMICAL_CALENDAR, 1582, 10, 15, 0.0),
+          novas_calendar_to_jd(NOVAS_ASTRONOMICAL_CALENDAR, 1582, 10, 4, 0.0) + 1, 1e-6)) n++;
 
   return n;
 }

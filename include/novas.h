@@ -1337,7 +1337,7 @@ enum novas_date_format {
  */
 enum novas_calendar_type {
   NOVAS_ROMAN_CALENDAR = -1,    ///< The Roman (a.k.a. Julian) calendar by Julius Caesar, introduced in -45 B.C.
-  NOVAS_CALENDAR_OF_DATE,       ///< Roman (a.k.a. Julian) calendar until the Gregorian calendar reform,
+  NOVAS_ASTRONOMICAL_CALENDAR,  ///< Roman (a.k.a. Julian) calendar until the Gregorian calendar reform,
                                 ///< after which it is the Gregorian calendar
   NOVAS_GREGORIAN_CALENDAR      ///< The Gregorian calendar introduced on 15 October 1582, the day after 4 October
                                 ///< 1582 in the Roman (a.k.a. Julian) calendar.
