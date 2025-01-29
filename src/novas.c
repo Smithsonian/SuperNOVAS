@@ -6690,7 +6690,7 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  * @sa get_ut1_to_tt()
  * @sa tt2tdb()
  */
-double novas_calendar_to_jd(enum novas_calendar_type calendar, short year, short month, short day, double hour) {
+double novas_calendar_to_jd(enum novas_calendar_type calendar, int year, int month, int day, double hour) {
   static const char *fn = "julian_date";
   static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 

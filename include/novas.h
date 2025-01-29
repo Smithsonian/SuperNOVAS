@@ -1337,7 +1337,7 @@ enum novas_date_format {
  */
 enum novas_calendar_type {
   NOVAS_ROMAN_CALENDAR = -1,    ///< The Roman (a.k.a. Julian) calendar by Julius Caesar, introduced in -45 B.C.
-  NOVAS_ASTRONOMICAL_CALENDAR,  ///< Roman (a.k.a. Julian) calendar until the Gregorian calendar reform,
+  NOVAS_ASTRONOMICAL_CALENDAR,  ///< Roman (a.k.a. Julian) calendar until the Gregorian calendar reform of 1582,
                                 ///< after which it is the Gregorian calendar
   NOVAS_GREGORIAN_CALENDAR      ///< The Gregorian calendar introduced on 15 October 1582, the day after 4 October
                                 ///< 1582 in the Roman (a.k.a. Julian) calendar.
@@ -1739,7 +1739,7 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour);
 
-double novas_calendar_to_jd(enum novas_calendar_type calendar, short year, short month, short day, double hour);
+double novas_calendar_to_jd(enum novas_calendar_type calendar, int year, int month, int day, double hour);
 
 // in super.c
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);

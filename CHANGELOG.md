@@ -84,7 +84,7 @@ Upcoming feature release, expected around 1 May 2025.
  - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with errno set to 
    EINVAL) if the input values are invalid.
    
- - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates prior.
+ - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates pf before.
    Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
 
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
