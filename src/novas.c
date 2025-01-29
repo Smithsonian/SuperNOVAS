@@ -6652,13 +6652,18 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
 }
 
 /**
- * Returns the Julian date for a given Gregorian calendar date. This function makes no checks
- * for a valid input calendar date. Input calendar date must be Gregorian. Input time value
- * can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have
- * the same basis.
+ * Returns the Julian date for a given calendar date. Input time value can be based on any
+ * UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.
+ *
+ * The input date is the conventional calendar date, affected by the Gregorian calendar
+ * reform of 1582. Thus, the input date is for the Gregorian calendar for dates starting
+ * 15 October 1582, and for the Julian (Roman) calendar (introduced in 45 B.C.) for
+ * dates prior to that.
  *
  * NOTES:
  * <ol>
+ * <li>B.C. dates should be indicated as negative years, e.g. 1 B.C. as -1.</li>
+ *
  * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of
  * the normal range (for a leap year).</li>
  * </ol>
@@ -6669,25 +6674,27 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  *  657.</li>
  * </ol>
  *
- * @param year    [yr] Gregorian calendar year. B.C. years can be simply represented as
- *                negative years, e.g. 1 B.C. as -1.
- * @param month   [month] Gregorian calendar month [1:12]
- * @param day     [day] Day of month [1:31]
- * @param hour    [hr] Hour of day [0:24]
- * @return        [day] the fractional Julian date for the input calendar date, ot NAN if
- *                month or day components are out of range.
+ * @param calendar  The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR,
+ *                  NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
+ * @param year      [yr] Calendar year. B.C. years can be simply represented as
+ *                  negative years, e.g. 1 B.C. as -1.
+ * @param month     [month] Calendar month [1:12]
+ * @param day       [day] Day of month [1:31]
+ * @param hour      [hr] Hour of day [0:24]
+ * @return          [day] the fractional Julian date for the input calendar date, ot NAN if
+ *                  month or day components are out of range.
  *
- * @sa cal_date()
+ * @sa novas_jd_to_calendar()
  * @sa get_utc_to_tt()
  * @sa get_ut1_to_tt()
  * @sa tt2tdb()
- *
  */
-double julian_date(short year, short month, short day, double hour) {
+double novas_calendar_to_jd(enum novas_calendar_type calendar, short year, short month, short day, double hour) {
   static const char *fn = "julian_date";
-  static const int md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+  static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-  long jd12h;
+  long jd;
+  double fjd;
 
   if(month < 1 || month > 12) {
     novas_error(0, EINVAL, fn, "invalid month: %d, expected 1-12", month);
@@ -6703,15 +6710,26 @@ double julian_date(short year, short month, short day, double hour) {
   if(year < 0)
     year++;
 
-  jd12h = day - 32075L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L
-          - 3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L;
-  return jd12h - 0.5 + hour / DAY_HOURS;
+  jd = day - 32123L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L;
+  fjd = (hour - 12.0) / DAY_HOURS;
+
+  if(calendar == NOVAS_CALENDAR_OF_DATE)
+    calendar = (jd + fjd >= NOVAS_JD_START_GREGORIAN) ? NOVAS_GREGORIAN_CALENDAR : NOVAS_ROMAN_CALENDAR;
+
+  if(calendar == NOVAS_GREGORIAN_CALENDAR)
+    jd -= 3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L - 48L;  // Gregorian calendar reform
+  else
+    jd += 10L;                                                            // Julian (Roman) calendar
+
+  return jd + fjd;
 }
 
 /**
- * This function will compute a broken down date on the Gregorian calendar for given the
+ * This function will compute a broken down date on the specified calendar for given the
  * Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1,
  * TT, etc.) - output time value will have same basis.
+ *
+ * B.C. dates are returned as negative years, e.g. 1 B.C. is year -1.
  *
  * REFERENCES:
  * <ol>
@@ -6720,66 +6738,24 @@ double julian_date(short year, short month, short day, double hour) {
  * </ol>
  *
  * @param tjd          [day] Julian date
+ * @param calendar     The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR,
+ *                     NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
  * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
  *                     B.C. years are represented as negative values, e.g. -1 corresponds
  *                     to 1 B.C.
- * @param[out] month   [month] Gregorian calendat month [1:12]. It may be NULL if not
+ * @param[out] month   [month] Gregorian calendar month [1:12]. It may be NULL if not
  *                     required.
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
  * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
  *
  * @return              0
  *
- * @sa julian_date()
+ * @sa novas_calendar_to_jd()
  * @sa get_utc_to_tt()
  * @sa get_ut1_to_tt()
  * @sa tt2tdb()
  */
-int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
-  int y, m, d;
-
-  cal_date2(tjd, &y, &m, &d, hour);
-
-  if(year)
-    *year = (short) y;
-  if(month)
-    *month = (short) m;
-  if(day)
-    *day = (short) d;
-
-  return 0;
-}
-
-/**
- * This function will compute a broken down date on the Gregorian calendar for given the
- * Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1,
- * TT, etc.) - output time value will have same basis.
- *
- * It is the same as cal_date(), except that it takes `int` pointers, instead of `short`.
- *
- * REFERENCES:
- * <ol>
- *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
- *  p. 657.</li>
- * </ol>
- *
- * @param tjd          [day] Julian date
- * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
- *                     B.C. years are represented as negative values, e.g. -1 corresponds
- *                     to 1 B.C.
- * @param[out] month   [month] Gregorian calendat month [1:12]. It may be NULL if not
- *                     required.
- * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
- * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
- *
- * @return              0
- *
- * @sa julian_date()
- * @sa get_utc_to_tt()
- * @sa get_ut1_to_tt()
- * @sa tt2tdb()
- */
-int cal_date2(double tjd, int *year, int *month, int *day, double *hour) {
+int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour) {
   long jd, k, m, n;
   int y, mo, d;
   double djd, h;
@@ -6788,15 +6764,26 @@ int cal_date2(double tjd, int *year, int *month, int *day, double *hour) {
   jd = (long) floor(djd);
 
   h = remainder(djd, 1.0) * DAY_HOURS;
-  if(h < 0)
-    h += 24;
+  if(h < 0.0)
+    h += 24.0;
 
   k = jd + 68569L;
   n = 4L * k / 146097L;
 
-  k = k - (146097L * n + 3L) / 4L;
+  if(calendar == NOVAS_CALENDAR_OF_DATE)
+    calendar = (tjd >= NOVAS_JD_START_GREGORIAN) ? NOVAS_GREGORIAN_CALENDAR : NOVAS_ROMAN_CALENDAR;
+
+  if(calendar == NOVAS_GREGORIAN_CALENDAR)
+    k -= (146097L * n + 3L) / 4L;
+  else
+    k -= (146100L * n + 3L) / 4L;
+
   m = 4000L * (k + 1L) / 1461001L;
-  k = k - 1461L * m / 4L + 31L;
+
+  k += 31L - 1461L * m / 4L;
+
+  if(calendar == NOVAS_ROMAN_CALENDAR)
+    k += 38L;
 
   mo = (int) (80L * k / 2447L);
   d = (int) (k - 2447L * (long) mo / 80L);
@@ -6816,6 +6803,104 @@ int cal_date2(double tjd, int *year, int *month, int *day, double *hour) {
     *day = d;
   if(hour)
     *hour = h;
+
+  return 0;
+}
+
+/**
+ * Returns the Julian date for a given Gregorian calendar date. Input time value can be based
+ * on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5
+ * October of the previously used Julian calendar). Thus, this function is not suitable for
+ * converting the previously used Julian calendar dates prior to the reform. You can
+ * use `novas_calendar_to_jd()` to convert dates to JD days with more specificity and
+ * flexibility.</li>
+ *
+ * <li>B.C. dates should be indicated as negative years, e.g. 1 B.C. as -1.</li>
+ *
+ * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of
+ * the normal range (for a leap year).</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p.
+ *  657.</li>
+ * </ol>
+ *
+ * @param year    [yr] Gregorian calendar year. B.C. years can be simply represented as
+ *                negative years, e.g. 1 B.C. as -1.
+ * @param month   [month] Gregorian calendar month [1:12]
+ * @param day     [day] Gregorian day of month [1:31]
+ * @param hour    [hr] Hour of day [0:24]
+ * @return        [day] the fractional Julian date for the input calendar date, ot NAN if
+ *                month or day components are out of range.
+ *
+ * @sa novas_calendar_to_jd()
+ * @sa novas_jd_to_calendar()
+ * @sa get_utc_to_tt()
+ * @sa get_ut1_to_tt()
+ * @sa tt2tdb()
+ */
+double julian_date(short year, short month, short day, double hour) {
+  double jd = novas_calendar_to_jd(NOVAS_GREGORIAN_CALENDAR, year, month, day, hour);
+  if(isnan(jd))
+    return novas_trace_nan("julian_date");
+  return jd;
+}
+
+/**
+ * This function will compute a broken down date on the Gregorian calendar for given the
+ * Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1,
+ * TT, etc.) - output time value will have same basis.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5
+ * October of the previously used Julian calendar). Thus you should not use this function
+ * to obtain dates prior to that. You can use `novas_id_to_calendar()1 instead to convert
+ * JD days to dates in specific calendars.</li>
+ *
+ * <li>B.C. dates are returned as negative years, e.g. 1 B.C. is year -1.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
+ *  p. 657.</li>15 October 1582
+ * </ol>
+ *
+ * @param tjd          [day] Julian date
+ * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
+ *                     B.C. years are represented as negative values, e.g. -1 corresponds
+ *                     to 1 B.C.
+ * @param[out] month   [month] Gregorian calendat month [1:12]. It may be NULL if not
+ *                     required.
+ * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
+ * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
+ *
+ * @return              0
+ *
+ * @sa novas_jd_to_calendar()
+ * @sa novas_calendar_to_jd()
+ * @sa get_utc_to_tt()
+ * @sa get_ut1_to_tt()
+ * @sa tt2tdb()
+ */
+int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
+  int y, m, d;
+
+  novas_jd_to_calendar(tjd, NOVAS_GREGORIAN_CALENDAR, &y, &m, &d, hour);
+
+  if(year)
+    *year = (short) y;
+  if(month)
+    *month = (short) m;
+  if(day)
+    *day = (short) d;
 
   return 0;
 }

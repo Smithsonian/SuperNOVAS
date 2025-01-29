@@ -190,6 +190,9 @@
 /// @since 1.3
 #define NOVAS_SOLAR_CONSTANT      1367.0
 
+/// [day] The Julian day the Gregorian calendar was introduced in 15 October 1582.
+/// The day prior to that was 4 October 1582 in the Julian Calendar.
+#define NOVAS_JD_START_GREGORIAN  2299160.5
 
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
@@ -1323,6 +1326,23 @@ enum novas_date_format {
 };
 
 
+/**
+ * Constants to disambiguate which type of calendar yo use for interpreting calendar dates. Roman/Julian or Gregorian/
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_calendar_to_jd()
+ * @sa novas_jd_to_calendar()
+ */
+enum novas_calendar_type {
+  NOVAS_ROMAN_CALENDAR = -1,    ///< The Roman (a.k.a. Julian) calendar by Julius Caesar, introduced in -45 B.C.
+  NOVAS_CALENDAR_OF_DATE,       ///< Roman (a.k.a. Julian) calendar until the Gregorian calendar reform,
+                                ///< after which it is the Gregorian calendar
+  NOVAS_GREGORIAN_CALENDAR      ///< The Gregorian calendar introduced on 15 October 1582, the day after 4 October
+                                ///< 1582 in the Roman (a.k.a. Julian) calendar.
+};
+
 short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
 
 short virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
@@ -1717,7 +1737,9 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 // ---------------------- Added in 1.3.0 -------------------------
 
-int cal_date2(double tjd, int *year, int *month, int *day, double *hour);
+int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour);
+
+double novas_calendar_to_jd(enum novas_calendar_type calendar, short year, short month, short day, double hour);
 
 // in super.c
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
@@ -1772,7 +1794,7 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
 // in timescale.c
 double novas_parse_date(const char *date, char **tail);
 
-double novas_parse_date_format(enum novas_date_format format, const char *date, char **tail);
+double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *date, char **tail);
 
 int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen);
 

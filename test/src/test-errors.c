@@ -1847,25 +1847,25 @@ static int test_parse_date() {
   if(check_nan("parse_date:null", novas_parse_date(NULL, &tail))) n++;
   if(check_nan("parse_date:empty", novas_parse_date("", &tail))) n++;
 
-  if(check_nan("parse_date_time:format:-1", novas_parse_date_format(-1, "2025-01-28", &tail))) n++;
-  if(check_nan("parse_date_time:format:3", novas_parse_date_format(3, "2025-01-28", &tail))) n++;
+  if(check_nan("parse_date_time:format:-1", novas_parse_date_format(0, -1, "2025-01-28", &tail))) n++;
+  if(check_nan("parse_date_time:format:3", novas_parse_date_format(0, 3, "2025-01-28", &tail))) n++;
 
-  if(check_nan("parse_date_time:few", novas_parse_date_format(NOVAS_YMD, "2025-01", &tail))) n++;
-  if(check_nan("parse_date_time:sep:invalid", novas_parse_date_format(3, "2025$01$28", &tail))) n++;
+  if(check_nan("parse_date_time:few", novas_parse_date_format(0, NOVAS_YMD, "2025-01", &tail))) n++;
+  if(check_nan("parse_date_time:sep:invalid", novas_parse_date_format(0, 3, "2025$01$28", &tail))) n++;
 
-  if(check_nan("parse_date_time:m:0", novas_parse_date_format(NOVAS_YMD, "2025-00-28", &tail))) n++;
-  if(check_nan("parse_date_time:m:13", novas_parse_date_format(NOVAS_YMD, "2025-13-28", &tail))) n++;
-  if(check_nan("parse_date_time:d:0", novas_parse_date_format(NOVAS_YMD, "2025-2-0", &tail))) n++;
-  if(check_nan("parse_date_time:feb:d:30", novas_parse_date_format(NOVAS_YMD, "2025-2-30", &tail))) n++;
+  if(check_nan("parse_date_time:m:0", novas_parse_date_format(0, NOVAS_YMD, "2025-00-28", &tail))) n++;
+  if(check_nan("parse_date_time:m:13", novas_parse_date_format(0, NOVAS_YMD, "2025-13-28", &tail))) n++;
+  if(check_nan("parse_date_time:d:0", novas_parse_date_format(0, NOVAS_YMD, "2025-2-0", &tail))) n++;
+  if(check_nan("parse_date_time:feb:d:30", novas_parse_date_format(0, NOVAS_YMD, "2025-2-30", &tail))) n++;
 
-  if(check_nan("parse_date_time:m:invalid", novas_parse_date_format(NOVAS_YMD, "2025-blah-28", &tail))) n++;
+  if(check_nan("parse_date_time:m:invalid", novas_parse_date_format(0, NOVAS_YMD, "2025-blah-28", &tail))) n++;
 
-  if(check_nan("parse_date_time:zone:missing", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+", &tail))) n++;
-  if(check_nan("parse_date_time:zone:bad", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+:", &tail))) n++;
-  if(check_nan("parse_date_time:zone:bad2", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+0:", &tail))) n++;
-  if(check_nan("parse_date_time:zone:hours:24", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+2400", &tail))) n++;
-  if(check_nan("parse_date_time:zone:mins:60", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+0260", &tail))) n++;
-  if(check_nan("parse_date_time:zone:mins:incomplete", novas_parse_date_format(NOVAS_YMD, "2025-01-28 12:50:00+020", &tail))) n++;
+  if(check_nan("parse_date_time:zone:missing", novas_parse_date_format(0, NOVAS_YMD, "2025-01-28 12:50:00+", &tail))) n++;
+  if(check_nan("parse_date_time:zone:bad", novas_parse_date_format(0, NOVAS_YMD, "2025-01-28 12:50:00+:", &tail))) n++;
+  if(check_nan("parse_date_time:zone:bad2", novas_parse_date_format(0, NOVAS_YMD, "2025-01-28 12:50:00+0:", &tail))) n++;
+  if(check_nan("parse_date_time:zone:hours:24", novas_parse_date_format(0, NOVAS_YMD, "2025-01-28 12:50:00+2400", &tail))) n++;
+  if(check_nan("parse_date_time:zone:mins:60", novas_parse_date_format(0, NOVAS_YMD, "2025-01-28 12:50:00+0260", &tail))) n++;
+  if(check_nan("parse_date_time:zone:mins:incomplete", novas_parse_date_format(0, NOVAS_YMD, "2025-01-28 12:50:00+020", &tail))) n++;
 
   return n;
 }

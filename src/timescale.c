@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <strings.h>              // strcasecmp() / strncasecmp()
 #include <errno.h>
 #include <math.h>
 #include <ctype.h>                // isspace()
@@ -56,6 +57,14 @@
 #define MONTH_SPEC      "%9[^" DATE_SEP_CHARS "]"   ///< Parse pattern for month specification, either as a 1-2 digit integer or as a
 ///< month name or abbreviation.
 /// \endcond
+
+#if __Lynx__ && __powerpc__
+// strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
+int strcasecmp(const char *s1, const char *s2);
+int strncasecmp(const char *s1, const char *s2, size_t n);
+#endif
+
+
 
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
@@ -559,11 +568,11 @@ static int parse_zone(const char *str, char **tail) {
 
 
 /**
- * Parses a date/time string into a Julian date specification. The date must be composed of a full
- * year (e.g. 2025), a month (numerical or name or 3-letter abbreviation, e.g. "01", "1",
- * "January", or "Jan"), and a day (e.g. "08" or "8"). The components may be separated by dash
- * `-`, underscore `_`, dot `.`,  slash '/', or spaces/tabs, or any combination thereof. The
- * components will be parsed in the specified order.
+ * Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian
+ * day (JD). The date must be composed of a full year (e.g. 2025), a month (numerical or name or
+ * 3-letter abbreviation, e.g. "01", "1", "January", or "Jan"), and a day (e.g. "08" or "8"). The
+ * components may be separated by dash `-`, underscore `_`, dot `.`,  slash '/', or spaces/tabs,
+ * or any combination thereof. The components will be parsed in the specified order.
  *
  * The date may be followed by a time specification in HMS format, separated from the date by the
  * letter `T` or `t`, or spaces, comma `,`, or semicolon `;` or underscore '_', or a combination
@@ -586,13 +595,18 @@ static int parse_zone(const char *str, char **tail) {
  *
  * are all valid dates that can be parsed.
  *
- * B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g.
- * as `-253 01 26`.
- *
  * If your date format cannot be parsed with this function, you may parse it with your own
  * function into year, month, day, and decimal hour-of-day components, and use julian_date() with
  * those.
  *
+ * NOTES:
+ * <ol>
+ * <li>B.C. dates can be represented as negative years. So January 26, 253 B.C. should
+ * be expressed e.g. as "-253 01 26".</li>
+ * </oL>
+ *
+ * @param calendar    The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR,
+ *                    NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
  * @param format      Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY.
  * @param date        The date specification, possibly including time and timezone, in the
  *                    specified standard format.
@@ -612,9 +626,9 @@ static int parse_zone(const char *str, char **tail) {
  * @sa novas_iso_timestamp()
  * @sa julian_date()
  */
-double novas_parse_date_format(enum novas_date_format format, const char *date, char **tail) {
+double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *date, char **tail) {
   static const char *fn = "novas_parse_date";
-  static const int md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+  static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
   int y = 0, m = 0, d = 0, n = 0, N = 0;
   double h = 0.0;
@@ -719,7 +733,7 @@ double novas_parse_date_format(enum novas_date_format format, const char *date, 
   if(tail)
     *tail = next;
 
-  return julian_date(y, m, d, h);
+  return novas_calendar_to_jd(calendar, y, m, d, h);
 }
 
 /**
@@ -748,8 +762,14 @@ double novas_parse_date_format(enum novas_date_format format, const char *date, 
  *
  * are all valid dates that can be parsed.
  *
- * B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g.
- * as `-253 01 26`.
+ * NOTES:
+ * <ol>
+ * <li>This function uses Gregorian dates since their introduction on 1582 October 15, and
+ * Julian/Roman datew before that, as was the convention of the time. I.e., the day before of the
+ * introduction of the Gregorian calendar reform is 1582 October 4.</li>
+ * <li>B.C. dates can be represented as negative years. So January 26, 253 B.C. should
+ * be expressed e.g. as "-253 01 26".</li>
+ * </oL>
  *
  * @param date        The date specification, possibly including time and timezone, in a standard
  *                    format.
@@ -770,7 +790,7 @@ double novas_parse_date_format(enum novas_date_format format, const char *date, 
  * @sa novas_timestamp()
  */
 double novas_parse_date(const char *date, char **tail) {
-  double jd = novas_parse_date_format(NOVAS_YMD, date, tail);
+  double jd = novas_parse_date_format(NOVAS_CALENDAR_OF_DATE, NOVAS_YMD, date, tail);
   if(isnan(jd))
     return novas_trace_nan("novas_parse_date");
   return jd;
@@ -786,7 +806,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
   ijd += d;
   fjd -= d;
 
-  cal_date2(ijd + 0.5, &y, &M, &d, NULL);
+  novas_jd_to_calendar(ijd + 0.5, NOVAS_CALENDAR_OF_DATE, &y, &M, &d, NULL);
 
   s = 24.0 * (fjd - 0.5);
 
@@ -810,6 +830,11 @@ static int timestamp(long ijd, double fjd, char *buf) {
  *  2025-01-26T21:32:49.701Z
  * </pre>
  *
+ * NOTES:
+ * <ol>
+ * <li>The timestamp uses the conventional date of the time. That is Gregorian dates after the
+ * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ * </ol>
  *
  * @param time      Pointer to the astronomical time specification data structure.
  * @param[out] dst  Output string buffer. At least 25 bytes are required for a complete
@@ -858,7 +883,8 @@ int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
 
 /**
  * Prints the standard string representation of the timescale to the specified buffer. The
- * string is terminated after. E.g. "UTC", or "TAI".
+ * string is terminated after. E.g. "UTC", or "TAI". It will print dates in the Gregorian
+ * calendar, which was introduced in was introduced on 15 October 1582 only. Thus the
  *
  * @param scale   The timescale
  * @param buf     String in which to print. It should have at least 4-bytes of available
@@ -908,6 +934,11 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
  *  2025-01-26T21:32:49.701 TAI
  * </pre>
  *
+ * NOTES:
+ * <ol>
+ * <li>The timestamp uses the conventional date of the time. That is Gregorian dates after the
+ * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ * </ol>
  *
  * @param time      Pointer to the astronomical time specification data structure.
  * @param scale     The timescale to use.
