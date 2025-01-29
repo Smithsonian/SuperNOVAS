@@ -144,6 +144,7 @@ static int test_errors() {
   object earth, phobos;
   novas_planet_provider_hp pl = get_planet_provider_hp();
   novas_ephem_provider eph = get_ephem_provider();
+  enum novas_origin origin = NOVAS_BARYCENTER;
 
   make_planet(NOVAS_EARTH, &earth);
   make_ephem_object("Phobos", 401, &phobos);
@@ -152,14 +153,14 @@ static int test_errors() {
   if(check("errors:planet:number:-1", 1, pl(jd2, -1, NOVAS_BARYCENTER, pos, vel))) n++;
   if(check("errors:planet:number:hi", 1, pl(jd2, NOVAS_PLANETS, NOVAS_BARYCENTER, pos, vel))) n++;
   if(check("errors:planet:origin", 2, pl(jd2, NOVAS_MARS, -1, pos, vel))) n++;
-  if(check("errors:body:name:NULL", -1, eph(NULL, -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
-  if(check("errors:body:name:empty", -1, eph("", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
-  if(check("errors:body:name:nomatch", 1, eph("blah", -1, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:body:name:NULL", -1, eph(NULL, -1, jd2[0], jd2[1], &origin, pos, vel))) n++;
+  if(check("errors:body:name:empty", -1, eph("", -1, jd2[0], jd2[1], &origin, pos, vel))) n++;
+  if(check("errors:body:name:nomatch", 1, eph("blah", -1, jd2[0], jd2[1], &origin, pos, vel))) n++;
 
   jd2[0] = -999999.0;
 
   if(check("errors:planet:time", 3, pl(jd2, NOVAS_MARS, NOVAS_BARYCENTER, pos, vel))) n++;
-  if(check("errors:body:time", 3, eph("phobos", 401, jd2[0], jd2[1], NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("errors:body:time", 3, eph("phobos", 401, jd2[0], jd2[1], &origin, pos, vel))) n++;
 
   return n;
 }
