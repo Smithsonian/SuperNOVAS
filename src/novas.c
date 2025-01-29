@@ -6694,7 +6694,7 @@ double novas_calendar_to_jd(enum novas_calendar_type calendar, int year, int mon
   static const char *fn = "julian_date";
   static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-  long jd;
+  long jd, m14 = month - 14L;;
   double fjd;
 
   if(month < 1 || month > 12) {
@@ -6707,14 +6707,14 @@ double novas_calendar_to_jd(enum novas_calendar_type calendar, int year, int mon
     return NAN;
   }
 
-  jd = day - 32123L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L;
+  jd = day - 32123L + 1461L * (year + 4800L + m14 / 12L) / 4L + 367L * (month - 2L - m14 / 12L * 12L) / 12L;
   fjd = (hour - 12.0) / DAY_HOURS;
 
   if(calendar == NOVAS_ASTRONOMICAL_CALENDAR)
     calendar = (jd + fjd >= NOVAS_JD_START_GREGORIAN) ? NOVAS_GREGORIAN_CALENDAR : NOVAS_ROMAN_CALENDAR;
 
   if(calendar == NOVAS_GREGORIAN_CALENDAR)
-    jd -= 3L * ((year + 4900L + (month - 14L) / 12L) / 100L) / 4L - 48L;  // Gregorian calendar reform
+    jd -= 3L * ((year + 4900L + m14 / 12L) / 100L) / 4L - 48L;  // Gregorian calendar reform
   else
     jd += 10L;                                                            // Julian (Roman) calendar
 
