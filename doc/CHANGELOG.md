@@ -20,7 +20,7 @@ Upcoming feature release, expected around 1 May 2025.
  - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
- - #122: New `novas_jd_to_calendar()`, and `novas_calendar_to_jd()` which convert between JD day and calendar dates 
+ - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
  - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 
@@ -84,7 +84,7 @@ Upcoming feature release, expected around 1 May 2025.
  - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with errno set to 
    EINVAL) if the input values are invalid.
    
- - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates prior.
+ - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates pf before.
    Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
 
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.

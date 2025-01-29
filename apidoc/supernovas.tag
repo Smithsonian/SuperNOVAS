@@ -1918,13 +1918,6 @@
       <arglist>(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model, double *az, double *el)</arglist>
     </member>
     <member kind="function">
-      <type>double</type>
-      <name>novas_calendar_to_jd</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a2e2c0999c4baf5aee06d8fad03640c22</anchor>
-      <arglist>(enum novas_calendar_type calendar, short year, short month, short day, double hour)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>novas_case_sensitive</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -2107,10 +2100,17 @@
       <arglist>(const novas_timespec *time, char *dst, int maxlen)</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>novas_jd_to_calendar</name>
+      <type>double</type>
+      <name>novas_jd_from_date</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a6cd9d6258777678f126c60de9999cecd</anchor>
+      <anchor>a54eee84c46900c80ca9966857c217cc8</anchor>
+      <arglist>(enum novas_calendar_type calendar, int year, int month, int day, double hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_jd_to_date</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9ac93f616777166e0c38cd0b92620322</anchor>
       <arglist>(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour)</arglist>
     </member>
     <member kind="function">
@@ -3859,13 +3859,6 @@
       <arglist>(double angle)</arglist>
     </member>
     <member kind="function">
-      <type>double</type>
-      <name>novas_calendar_to_jd</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a2e2c0999c4baf5aee06d8fad03640c22</anchor>
-      <arglist>(enum novas_calendar_type calendar, short year, short month, short day, double hour)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>novas_case_sensitive</name>
       <anchorfile>novas_8c.html</anchorfile>
@@ -3887,10 +3880,17 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>novas_jd_to_calendar</name>
+      <type>double</type>
+      <name>novas_jd_from_date</name>
       <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6cd9d6258777678f126c60de9999cecd</anchor>
+      <anchor>a54eee84c46900c80ca9966857c217cc8</anchor>
+      <arglist>(enum novas_calendar_type calendar, int year, int month, int day, double hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_jd_to_date</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a9ac93f616777166e0c38cd0b92620322</anchor>
       <arglist>(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour)</arglist>
     </member>
     <member kind="function">

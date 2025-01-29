@@ -691,7 +691,6 @@
           <topic label="norm_ang" href="novas_8h.html#a416fd587496210c45028352f409fd73f"/>
           <topic label="novas_app_to_geom" href="novas_8h.html#a83db7db5a0ed0311610391f199b9f66c"/>
           <topic label="novas_app_to_hor" href="novas_8h.html#ae84debf8ab4d3b16feaaefdcb0ebbd08"/>
-          <topic label="novas_calendar_to_jd" href="novas_8h.html#a2e2c0999c4baf5aee06d8fad03640c22"/>
           <topic label="novas_case_sensitive" href="novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2"/>
           <topic label="novas_change_observer" href="novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d"/>
           <topic label="novas_debug" href="novas_8h.html#a5f35633b872751df4dacd2fb2cbe4ac3"/>
@@ -718,7 +717,8 @@
           <topic label="novas_inv_refract" href="novas_8h.html#a93ac897d3f7a2f2a7f8d92f3e8cd9ea0"/>
           <topic label="novas_invert_transform" href="novas_8h.html#ad2081e123024609d3071b33b183502b7"/>
           <topic label="novas_iso_timestamp" href="novas_8h.html#a1b7e1fa279dc7502805cc76af2ae07fe"/>
-          <topic label="novas_jd_to_calendar" href="novas_8h.html#a6cd9d6258777678f126c60de9999cecd"/>
+          <topic label="novas_jd_from_date" href="novas_8h.html#a54eee84c46900c80ca9966857c217cc8"/>
+          <topic label="novas_jd_to_date" href="novas_8h.html#a9ac93f616777166e0c38cd0b92620322"/>
           <topic label="novas_los_to_xyz" href="novas_8h.html#a601d246673742cf72a5dbe1449c97560"/>
           <topic label="novas_lsr_to_ssb_vel" href="novas_8h.html#aad80bf94be2efc36c340994829df8207"/>
           <topic label="novas_make_frame" href="novas_8h.html#abfee69517c7432733c8382c88371c983"/>
@@ -980,11 +980,11 @@
           <topic label="mean_star" href="novas_8c.html#a8bd9c6d2127483551c98300e264977f5"/>
           <topic label="mod_to_gcrs" href="novas_8c.html#ad9cc07f0e6af9339096e15a440b113e5"/>
           <topic label="norm_ang" href="novas_8c.html#a416fd587496210c45028352f409fd73f"/>
-          <topic label="novas_calendar_to_jd" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22"/>
           <topic label="novas_case_sensitive" href="novas_8c.html#a8f832afe92680a11c3489aaa224ac2e2"/>
           <topic label="novas_debug" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3"/>
           <topic label="novas_get_debug_mode" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79"/>
-          <topic label="novas_jd_to_calendar" href="novas_8c.html#a6cd9d6258777678f126c60de9999cecd"/>
+          <topic label="novas_jd_from_date" href="novas_8c.html#a54eee84c46900c80ca9966857c217cc8"/>
+          <topic label="novas_jd_to_date" href="novas_8c.html#a9ac93f616777166e0c38cd0b92620322"/>
           <topic label="novas_los_to_xyz" href="novas_8c.html#a601d246673742cf72a5dbe1449c97560"/>
           <topic label="novas_orbit_posvel" href="novas_8c.html#a445ad14faede9dc912601de27fb52bc0"/>
           <topic label="novas_xyz_to_los" href="novas_8c.html#a14deb6fdce80ba213e1f1d5238306e17"/>

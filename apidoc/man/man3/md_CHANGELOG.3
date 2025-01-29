@@ -18,7 +18,7 @@ Upcoming feature release, expected around 1 May 2025\&.
 .IP "\(bu" 2
 #114: New \fC\fBnovas_lsr_to_ssb_vel()\fP\fP can be used to convert velocity vectors referenced to the LSR to Solar-System Barycentric velocities\&. And, \fC\fBnovas_ssb_to_lsr_vel()\fP\fP to provide the inverse conversion\&.
 .IP "\(bu" 2
-#122: New \fC\fBnovas_jd_to_calendar()\fP\fP, and \fC\fBnovas_calendar_to_jd()\fP\fP which convert between JD day and calendar dates using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date\&.
+#122: New \fC\fBnovas_jd_to_date()\fP\fP, and \fC\fBnovas_jd_from_date()\fP\fP which convert between JD day and calendar dates using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date\&.
 .IP "\(bu" 2
 New \fC\fBnovas_hms_hours()\fP\fP and \fC\fBnovas_dms_degrees()\fP\fP convenience functions to make it easier to parse HMS or DMS based time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and
 .IP "\(bu" 2
@@ -51,6 +51,8 @@ Added benchmarks under the \fCbenchmark/\fP forlder, for SuperNOVAS as well as e
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
 .IP "\(bu" 2
 Modified \fC\fBjulian_date()\fP\fP to add range checking for month and day arguments, and return NAN (with errno set to EINVAL) if the input values are invalid\&.
+.IP "\(bu" 2
+\fC\fBjulian_date()\fP\fP and \fC\fBcal_date()\fP\fP now use astronomical calendar dates instead of the fixed Gregorian dates pf before\&. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582\&.
 .IP "\(bu" 2
 Updated \fCREADME\&.md\fP for v1\&.3 and benchmarks, including comparisons to \fBastropy\fP\&.
 .PP

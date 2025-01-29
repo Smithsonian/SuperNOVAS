@@ -151,7 +151,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "novas_8c.html#a618bbba887b9bc9e7df878234c66c215",
-"novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4",
+"novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3",
 "solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86",
 "timescale_8c.html#abacd89aa380c85da2d3c19a7e2187df3"
 ];
