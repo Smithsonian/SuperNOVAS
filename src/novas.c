@@ -6741,10 +6741,9 @@ double novas_calendar_to_jd(enum novas_calendar_type calendar, short year, short
  * @param tjd          [day] Julian date
  * @param calendar     The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR,
  *                     NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
- * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
- *                     B.C. years are represented as negative values, e.g. -1 corresponds
- *                     to 1 B.C.
- * @param[out] month   [month] Gregorian calendar month [1:12]. It may be NULL if not
+ * @param[out] year    [yr] Calendar year. B.C. years are represented as negative values,
+ *                     e.g. -1 corresponds to 1 B.C. It may be NULL if not required.
+ * @param[out] month   [month] Calendar month [1:12]. It may be NULL if not
  *                     required.
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
  * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
