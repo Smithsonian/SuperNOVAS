@@ -715,12 +715,12 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 References \fBC_AUDAY\fP\&.
 .SS "int cal_date (double tjd, short * year, short * month, short * day, double * hour)"
-This function will compute a broken down date on the Gregorian calendar for given the Julian date input\&. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output time value will have same basis\&.
+This function will compute a broken down date on the astronomical calendar for given the Julian date input\&. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output time value will have same basis\&.
 .PP
 NOTES: 
 .PD 0
 .IP "1." 4
-The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar)\&. Thus you should not use this function to obtain dates prior to that\&. You can use `novas_id_to_calendar()1 instead to convert JD days to dates in specific calendars\&.
+The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar)\&. Prior to it this function returns Julian/Roman calendar dates, e\&.g\&. the day before the reform is 1582 October 4\&. You can use \fCnovas_id_to_calendar()\fP instead to convert JD days to dates in specific calendars\&.
 .PP
 
 .IP "2." 4
@@ -737,9 +737,9 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .RS 4
 \fItjd\fP [day] Julian date 
 .br
-\fIyear\fP [yr] Gregorian calendar year\&. It may be NULL if not required\&. B\&.C\&. years are represented as <=0, i\&.e\&. 1 B\&.C\&. as 0 and \fIX\fP B\&.C\&. as (1 - \fIX\fP) 
+\fIyear\fP [yr] Astronomical calendar year\&. It may be NULL if not required\&. B\&.C\&. years are represented as <=0, i\&.e\&. 1 B\&.C\&. as 0 and \fIX\fP B\&.C\&. as (1 - \fIX\fP) 
 .br
-\fImonth\fP [month] Gregorian calendat month [1:12]\&. It may be NULL if not required\&. 
+\fImonth\fP [month] Astronomical calendar month [1:12]\&. It may be NULL if not required\&. 
 .br
 \fIday\fP [day] Day of the month [1:31]\&. It may be NULL if not required\&. 
 .br
@@ -766,7 +766,7 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .PP
 
 .PP
-References \fBNOVAS_GREGORIAN_CALENDAR\fP, and \fBnovas_jd_to_calendar()\fP\&.
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, and \fBnovas_jd_to_calendar()\fP\&.
 .SS "short cel2ter (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double * in, double * out)"
 Rotates a vector from the celestial to the terrestrial system\&. Specifically, it transforms a vector in the GCRS, or the dynamcal CIRS or TOD frames to the ITRS (a rotating earth-fixed system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth rotation, and polar motion\&.
 .PP
@@ -2104,12 +2104,12 @@ Attila Kovacs
 .PP
 References \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNUTATE_MEAN_TO_TRUE\fP, \fBnutation()\fP, and \fBprecession()\fP\&.
 .SS "double julian_date (short year, short month, short day, double hour)"
-Returns the Julian date for a given Gregorian calendar date\&. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output Julian date will have the same basis\&.
+Returns the Julian date for a given astronomical calendar date\&. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output Julian date will have the same basis\&.
 .PP
 NOTES: 
 .PD 0
 .IP "1." 4
-The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar)\&. Thus, this function is not suitable for converting the previously used Julian calendar dates prior to the reform\&. You can use \fC\fBnovas_calendar_to_jd()\fP\fP to convert dates to JD days with more specificity and flexibility\&.
+The Gregorian calendar was introduced on 1582 October 15 only\&. Prior to that, astronomical dates are Julian/Roman dates, so the day before the reform was 1582 October 4\&. You can also use \fC\fBnovas_calendar_to_jd()\fP\fP to convert dates with more flexibility\&.
 .PP
 
 .IP "2." 4
@@ -2128,11 +2128,11 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .PP
 \fBParameters\fP
 .RS 4
-\fIyear\fP [yr] Gregorian calendar year\&. B\&.C\&. years can be simply represented as <=0, e\&.g\&. 1 B\&.C\&. as 0, and \fIX\fP B\&.C\&. as (1 - \fIX\fP)\&. 
+\fIyear\fP [yr] Astronomical calendar year\&. B\&.C\&. years can be simply represented as <=0, e\&.g\&. 1 B\&.C\&. as 0, and \fIX\fP B\&.C\&. as (1 - \fIX\fP)\&. 
 .br
-\fImonth\fP [month] Gregorian calendar month [1:12] 
+\fImonth\fP [month] Astronomical calendar month [1:12] 
 .br
-\fIday\fP [day] Gregorian day of month [1:31] 
+\fIday\fP [day] Astronomical day of month [1:31] 
 .br
 \fIhour\fP [hr] Hour of day [0:24] 
 .RE
@@ -2157,7 +2157,7 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .PP
 
 .PP
-References \fBnovas_calendar_to_jd()\fP, and \fBNOVAS_GREGORIAN_CALENDAR\fP\&.
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, and \fBnovas_calendar_to_jd()\fP\&.
 .SS "short light_time (double jd_tdb, const \fBobject\fP * body, const double * pos_obs, double tlight0, enum \fBnovas_accuracy\fP accuracy, double * pos_src_obs, double * tlight)"
 Computes the geocentric position of a solar system body, as antedated for light-time\&.
 .PP
@@ -2866,7 +2866,7 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .PP
 \fBParameters\fP
 .RS 4
-\fIcalendar\fP The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
+\fIcalendar\fP The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
 .br
 \fIyear\fP [yr] Calendar year\&. B\&.C\&. years can be simply represented as negative years, e\&.g\&. 1 B\&.C\&. as -1\&. 
 .br
@@ -2895,7 +2895,7 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .PP
 
 .PP
-References \fBNOVAS_CALENDAR_OF_DATE\fP, \fBNOVAS_GREGORIAN_CALENDAR\fP, \fBNOVAS_JD_START_GREGORIAN\fP, and \fBNOVAS_ROMAN_CALENDAR\fP\&.
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, \fBNOVAS_GREGORIAN_CALENDAR\fP, \fBNOVAS_JD_START_GREGORIAN\fP, and \fBNOVAS_ROMAN_CALENDAR\fP\&.
 .SS "void novas_case_sensitive (int value)"
 Enables or disables case-sensitive processing of the object name\&. The effect is not retroactive\&. The setting will only affect the celestial objects that are defined after the call\&. Note, that catalog names, set via \fBmake_cat_entry()\fP are always case sensitive regardless of this setting\&.
 .PP
@@ -2989,7 +2989,7 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .RS 4
 \fItjd\fP [day] Julian date 
 .br
-\fIcalendar\fP The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
+\fIcalendar\fP The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
 .br
 \fIyear\fP [yr] Calendar year\&. B\&.C\&. years are represented as negative values, e\&.g\&. -1 corresponds to 1 B\&.C\&. It may be NULL if not required\&. 
 .br
@@ -3018,7 +3018,7 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 .PP
 
 .PP
-References \fBNOVAS_CALENDAR_OF_DATE\fP, \fBNOVAS_GREGORIAN_CALENDAR\fP, \fBNOVAS_JD_START_GREGORIAN\fP, and \fBNOVAS_ROMAN_CALENDAR\fP\&.
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, \fBNOVAS_GREGORIAN_CALENDAR\fP, \fBNOVAS_JD_START_GREGORIAN\fP, and \fBNOVAS_ROMAN_CALENDAR\fP\&.
 .SS "int novas_los_to_xyz (const double * los, double lon, double lat, double * xyz)"
 Converts a 3D line-of-sight vector (,  r) to a rectangular equatorial (x, y, z) vector\&.
 .PP

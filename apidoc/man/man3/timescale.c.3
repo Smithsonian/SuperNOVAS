@@ -485,7 +485,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_CALENDAR_OF_DATE\fP, \fBnovas_parse_date_format()\fP, and \fBNOVAS_YMD\fP\&.
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, \fBnovas_parse_date_format()\fP, and \fBNOVAS_YMD\fP\&.
 .SS "double novas_parse_date_format (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char * date, char ** tail)"
 Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian day (JD)\&. The date must be composed of a full year (e\&.g\&. 2025), a month (numerical or name or 3-letter abbreviation, e\&.g\&. '01', '1', 'January', or 'Jan'), and a day (e\&.g\&. '08' or '8')\&. The components may be separated by dash \fC-\fP, underscore \fC_\fP, dot \fC\&.\fP, slash '/', or spaces/tabs, or any combination thereof\&. The components will be parsed in the specified order\&.
 .PP
@@ -520,7 +520,7 @@ B\&.C\&. dates are indicated with years <=0 according to the astronomical and IS
 .PP
 \fBParameters\fP
 .RS 4
-\fIcalendar\fP The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
+\fIcalendar\fP The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
 .br
 \fIformat\fP Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY\&. 
 .br
@@ -796,7 +796,9 @@ Prints a an ISO timestamp to millisecond precision in the specified timescale to
 NOTES: 
 .PD 0
 .IP "1." 4
-The timestamp uses the conventional date of the time\&. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that\&. 
+The timestamp uses the astronomical date\&. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that\&.
+.PP
+
 .IP "2." 4
 B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&. 
 .PP

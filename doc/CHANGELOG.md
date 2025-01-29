@@ -84,9 +84,6 @@ Upcoming feature release, expected around 1 May 2025.
  - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with errno set to 
    EINVAL) if the input values are invalid.
 
- - #121: `julian_date()` to use negative years for B.C. dates. E.g. the year -1 denotes 1 BC. And, same for the inverse 
-   `cal_date()`.
-
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
 
 

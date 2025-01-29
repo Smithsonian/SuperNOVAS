@@ -631,7 +631,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dd>
 <a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>, <a class="el" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, <a class="el" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
 
 </div>
 </div>
@@ -693,7 +693,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">format</td><td>Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in the specified standard format. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time. The parsing will consume empty space characters after the time specification also, returning a pointer to the next token after.</td></tr>
@@ -1065,7 +1065,9 @@ struct timespec</dd></dl>
  2025-01-26T21:32:49.701 TAI
 </pre><p>NOTES: </p><ol>
 <li>
-The timestamp uses the conventional date of the time. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that. </li>
+<p class="startli">The timestamp uses the astronomical date. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</p>
+<p class="endli"></p>
+</li>
 <li>
 B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
 </ol>

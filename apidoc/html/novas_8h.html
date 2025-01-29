@@ -411,7 +411,7 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="separator:a3cba2735c32163fab062b1a904a83b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8cfc18bfdf8ebd0198065c9d07e3bba" id="r_aa8cfc18bfdf8ebd0198065c9d07e3bba"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> { <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a> = -1
-, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>
+, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>
 , <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>
  }</td></tr>
 <tr class="separator:aa8cfc18bfdf8ebd0198065c9d07e3bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1927,7 +1927,7 @@ ON_SURFACE_INIT_LOC </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13" name="aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13"></a>NOVAS_ROMAN_CALENDAR&#160;</td><td class="fielddoc"><p>The Roman (a.k.a. Julian) calendar by Julius Caesar, introduced in -45 B.C. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728" name="aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728"></a>NOVAS_CALENDAR_OF_DATE&#160;</td><td class="fielddoc"><p>Roman (a.k.a. Julian) calendar until the Gregorian calendar reform, after which it is the Gregorian calendar </p>
+<tr><td class="fieldname"><a id="aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed" name="aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed"></a>NOVAS_ASTRONOMICAL_CALENDAR&#160;</td><td class="fielddoc"><p>Roman (a.k.a. Julian) calendar until the Gregorian calendar reform, after which it is the Gregorian calendar </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322" name="aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322"></a>NOVAS_GREGORIAN_CALENDAR&#160;</td><td class="fielddoc"><p>The Gregorian calendar introduced on 15 October 1582, the day after 4 October 1582 in the Roman (a.k.a. Julian) calendar. </p>
 </td></tr>
@@ -3102,10 +3102,10 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function will compute a broken down date on the Gregorian calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
+<p>This function will compute a broken down date on the astronomical calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
 <p>NOTES: </p><ol>
 <li>
-<p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Thus you should not use this function to obtain dates prior to that. You can use `novas_id_to_calendar()1 instead to convert JD days to dates in specific calendars.</p>
+<p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Prior to it this function returns Julian/Roman calendar dates, e.g. the day before the reform is 1582 October 4. You can use <code>novas_id_to_calendar()</code> instead to convert JD days to dates in specific calendars.</p>
 <p class="endli"></p>
 </li>
 <li>
@@ -3118,8 +3118,8 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Gregorian calendar year. It may be NULL if not required. B.C. years are represented as &lt;=0, i.e. 1 B.C. as 0 and <em>X</em> B.C. as (1 - <em>X</em>) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Gregorian calendat month [1:12]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Astronomical calendar year. It may be NULL if not required. B.C. years are represented as &lt;=0, i.e. 1 B.C. as 0 and <em>X</em> B.C. as (1 - <em>X</em>) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Astronomical calendar month [1:12]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
   </table>
@@ -3136,7 +3136,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dd>
 <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, and <a class="el" href="novas_8c.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, and <a class="el" href="novas_8c.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar()</a>.</p>
 
 </div>
 </div>
@@ -6204,10 +6204,10 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the Julian date for a given Gregorian calendar date. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
+<p>Returns the Julian date for a given astronomical calendar date. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
 <p>NOTES: </p><ol>
 <li>
-<p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Thus, this function is not suitable for converting the previously used Julian calendar dates prior to the reform. You can use <code><a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a></code> to convert dates to JD days with more specificity and flexibility.</p>
+<p class="startli">The Gregorian calendar was introduced on 1582 October 15 only. Prior to that, astronomical dates are Julian/Roman dates, so the day before the reform was 1582 October 4. You can also use <code><a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a></code> to convert dates with more flexibility.</p>
 <p class="endli"></p>
 </li>
 <li>
@@ -6223,9 +6223,9 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">year</td><td>[yr] Gregorian calendar year. B.C. years can be simply represented as &lt;=0, e.g. 1 B.C. as 0, and <em>X</em> B.C. as (1 - <em>X</em>). </td></tr>
-    <tr><td class="paramname">month</td><td>[month] Gregorian calendar month [1:12] </td></tr>
-    <tr><td class="paramname">day</td><td>[day] Gregorian day of month [1:31] </td></tr>
+    <tr><td class="paramname">year</td><td>[yr] Astronomical calendar year. B.C. years can be simply represented as &lt;=0, e.g. 1 B.C. as 0, and <em>X</em> B.C. as (1 - <em>X</em>). </td></tr>
+    <tr><td class="paramname">month</td><td>[month] Astronomical calendar month [1:12] </td></tr>
+    <tr><td class="paramname">day</td><td>[day] Astronomical day of month [1:31] </td></tr>
     <tr><td class="paramname">hour</td><td>[hr] Hour of day [0:24] </td></tr>
   </table>
   </dd>
@@ -6241,7 +6241,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dd>
 <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, and <a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a>.</p>
 
 </div>
 </div>
@@ -8064,7 +8064,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
+    <tr><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
     <tr><td class="paramname">year</td><td>[yr] Calendar year. B.C. years can be simply represented as negative years, e.g. 1 B.C. as -1. </td></tr>
     <tr><td class="paramname">month</td><td>[month] Calendar month [1:12] </td></tr>
     <tr><td class="paramname">day</td><td>[day] Day of month [1:31] </td></tr>
@@ -8081,7 +8081,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dd>
 <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a>.</p>
 
 </div>
 </div>
@@ -9474,7 +9474,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Calendar year. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Calendar month [1:12]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
@@ -9491,7 +9491,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dd>
 <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a>.</p>
 
 </div>
 </div>
@@ -10110,7 +10110,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dd>
 <a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>, <a class="el" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, <a class="el" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
 
 </div>
 </div>
@@ -10172,7 +10172,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">format</td><td>Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in the specified standard format. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time. The parsing will consume empty space characters after the time specification also, returning a pointer to the next token after.</td></tr>
@@ -11200,7 +11200,9 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
  2025-01-26T21:32:49.701 TAI
 </pre><p>NOTES: </p><ol>
 <li>
-The timestamp uses the conventional date of the time. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that. </li>
+<p class="startli">The timestamp uses the astronomical date. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</p>
+<p class="endli"></p>
+</li>
 <li>
 B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
 </ol>

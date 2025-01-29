@@ -107,7 +107,7 @@ var novas_8h =
     ] ],
     [ "novas_calendar_type", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba", [
       [ "NOVAS_ROMAN_CALENDAR", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13", null ],
-      [ "NOVAS_CALENDAR_OF_DATE", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728", null ],
+      [ "NOVAS_ASTRONOMICAL_CALENDAR", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed", null ],
       [ "NOVAS_GREGORIAN_CALENDAR", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322", null ]
     ] ],
     [ "novas_cio_location_type", "novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2f", [

@@ -1253,6 +1253,8 @@ one minute.
    corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
    accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
 
+ - [__v1.3__] - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian 
+   dates prior. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
 
 -----------------------------------------------------------------------------
 

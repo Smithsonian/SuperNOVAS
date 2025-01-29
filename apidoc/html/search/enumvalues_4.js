@@ -1,8 +1,8 @@
 var searchData=
 [
   ['novas_5fairborne_5fobserver_0',['NOVAS_AIRBORNE_OBSERVER',['../novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058',1,'novas.h']]],
-  ['novas_5fbarycenter_1',['NOVAS_BARYCENTER',['../novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c',1,'novas.h']]],
-  ['novas_5fcalendar_5fof_5fdate_2',['NOVAS_CALENDAR_OF_DATE',['../novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728',1,'novas.h']]],
+  ['novas_5fastronomical_5fcalendar_1',['NOVAS_ASTRONOMICAL_CALENDAR',['../novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed',1,'novas.h']]],
+  ['novas_5fbarycenter_2',['NOVAS_BARYCENTER',['../novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c',1,'novas.h']]],
   ['novas_5fcatalog_5fobject_3',['NOVAS_CATALOG_OBJECT',['../novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5',1,'novas.h']]],
   ['novas_5fcirs_4',['NOVAS_CIRS',['../novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044',1,'novas.h']]],
   ['novas_5fdebug_5fextra_5',['NOVAS_DEBUG_EXTRA',['../novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baaa03b175422e9603e87ab87f93a45c07c',1,'novas.h']]],

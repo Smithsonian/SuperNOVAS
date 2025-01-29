@@ -710,9 +710,9 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>NOVAS_CALENDAR_OF_DATE</name>
+      <name>NOVAS_ASTRONOMICAL_CALENDAR</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728</anchor>
+      <anchor>aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
