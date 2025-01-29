@@ -1120,6 +1120,9 @@ one minute.
  - New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
+ - New `novas_jd_to_calendar()`, and `novas_calendar_to_jd()` which convert between JD day and calendar dates using 
+   the specific type of calendar (Gregorian, Roman/Julian, or the conventional Western calendar).
+
  - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 
    time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and
 
@@ -1249,10 +1252,6 @@ one minute.
  - [__v1.3__] In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection 
    corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
    accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
-   
- - [__v1.3__] Modified `julian_date()` to use negative years for B.C. dates. E.g. the year -1 denotes 1 BC. And, same 
-   for the inverse `cal_date()`. Also add range checking for month and day arguments, and return NAN (with errno set to 
-   EINVAL) if the input values are invalid. And, same for the inverse `cal_date()`.
 
 
 -----------------------------------------------------------------------------

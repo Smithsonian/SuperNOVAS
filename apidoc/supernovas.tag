@@ -350,6 +350,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_JD_START_GREGORIAN</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a509afe7095f4d597125e9bfd6d0399ad</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_JUPITER_INIT</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a8f05bb45f646e41b78bbe79175114d57</anchor>
@@ -687,6 +694,31 @@
       <name>NOVAS_REDUCED_ACCURACY</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
+      <name>novas_calendar_type</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aa8cfc18bfdf8ebd0198065c9d07e3bba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_ROMAN_CALENDAR</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_CALENDAR_OF_DATE</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_GREGORIAN_CALENDAR</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1375,13 +1407,6 @@
       <arglist>(double tjd, short *year, short *month, short *day, double *hour)</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>cal_date2</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a8451d21415047d15b26f0d3bb7fae5ca</anchor>
-      <arglist>(double tjd, int *year, int *month, int *day, double *hour)</arglist>
-    </member>
-    <member kind="function">
       <type>short</type>
       <name>cel2ter</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -1893,6 +1918,13 @@
       <arglist>(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model, double *az, double *el)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_calendar_to_jd</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a2e2c0999c4baf5aee06d8fad03640c22</anchor>
+      <arglist>(enum novas_calendar_type calendar, short year, short month, short day, double hour)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>novas_case_sensitive</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -2076,6 +2108,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>novas_jd_to_calendar</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a6cd9d6258777678f126c60de9999cecd</anchor>
+      <arglist>(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>novas_los_to_xyz</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a601d246673742cf72a5dbe1449c97560</anchor>
@@ -2148,8 +2187,8 @@
       <type>double</type>
       <name>novas_parse_date_format</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a632e0bd3bb5ff20c9f385231e9db035d</anchor>
-      <arglist>(enum novas_date_format format, const char *date, char **tail)</arglist>
+      <anchor>ab7b63f4a8cb2c50d4cbc972d2ffc4122</anchor>
+      <arglist>(enum novas_calendar_type calendar, enum novas_date_format format, const char *date, char **tail)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -3456,13 +3495,6 @@
       <arglist>(double tjd, short *year, short *month, short *day, double *hour)</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>cal_date2</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a8451d21415047d15b26f0d3bb7fae5ca</anchor>
-      <arglist>(double tjd, int *year, int *month, int *day, double *hour)</arglist>
-    </member>
-    <member kind="function">
       <type>short</type>
       <name>cel2ter</name>
       <anchorfile>novas_8c.html</anchorfile>
@@ -3827,6 +3859,13 @@
       <arglist>(double angle)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_calendar_to_jd</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a2e2c0999c4baf5aee06d8fad03640c22</anchor>
+      <arglist>(enum novas_calendar_type calendar, short year, short month, short day, double hour)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>novas_case_sensitive</name>
       <anchorfile>novas_8c.html</anchorfile>
@@ -3846,6 +3885,13 @@
       <anchorfile>novas_8c.html</anchorfile>
       <anchor>a29cad12337acfce5f1e370320dcefb79</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_jd_to_calendar</name>
+      <anchorfile>novas_8c.html</anchorfile>
+      <anchor>a6cd9d6258777678f126c60de9999cecd</anchor>
+      <arglist>(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -5018,8 +5064,8 @@
       <type>double</type>
       <name>novas_parse_date_format</name>
       <anchorfile>timescale_8c.html</anchorfile>
-      <anchor>a632e0bd3bb5ff20c9f385231e9db035d</anchor>
-      <arglist>(enum novas_date_format format, const char *date, char **tail)</arglist>
+      <anchor>ab7b63f4a8cb2c50d4cbc972d2ffc4122</anchor>
+      <arglist>(enum novas_calendar_type calendar, enum novas_date_format format, const char *date, char **tail)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

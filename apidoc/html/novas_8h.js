@@ -54,6 +54,7 @@ var novas_8h =
     [ "NOVAS_JD_HIP", "novas_8h.html#a4100ecc5d9badfa07301024baffe9ded", null ],
     [ "NOVAS_JD_J2000", "novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422", null ],
     [ "NOVAS_JD_MJD0", "novas_8h.html#ac266a346b8e22946f50079897b0baefa", null ],
+    [ "NOVAS_JD_START_GREGORIAN", "novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad", null ],
     [ "NOVAS_JUPITER_INIT", "novas_8h.html#a8f05bb45f646e41b78bbe79175114d57", null ],
     [ "NOVAS_KM", "novas_8h.html#a0a84af1a760ed2aaa01dd93e9e22bdf1", null ],
     [ "NOVAS_KMS", "novas_8h.html#a7822b81ad3f75b448f446ed4da774e75", null ],
@@ -103,6 +104,11 @@ var novas_8h =
     [ "novas_accuracy", "novas_8h.html#a3cba2735c32163fab062b1a904a83b56", [
       [ "NOVAS_FULL_ACCURACY", "novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660", null ],
       [ "NOVAS_REDUCED_ACCURACY", "novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846", null ]
+    ] ],
+    [ "novas_calendar_type", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba", [
+      [ "NOVAS_ROMAN_CALENDAR", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13", null ],
+      [ "NOVAS_CALENDAR_OF_DATE", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728", null ],
+      [ "NOVAS_GREGORIAN_CALENDAR", "novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322", null ]
     ] ],
     [ "novas_cio_location_type", "novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2f", [
       [ "CIO_VS_GCRS", "novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fa9928da41a130a60eb1762cbe52e691ce", null ],
@@ -236,7 +242,6 @@ var novas_8h =
     [ "astro_star", "novas_8h.html#a60ea97a77320c52b566f8e8fb5faf304", null ],
     [ "bary2obs", "novas_8h.html#aada778ddcc75a355b6753f5372775094", null ],
     [ "cal_date", "novas_8h.html#a410a61c67f5893584b09953fa4885fe5", null ],
-    [ "cal_date2", "novas_8h.html#a8451d21415047d15b26f0d3bb7fae5ca", null ],
     [ "cel2ter", "novas_8h.html#a95f02377ce41d4e251654449dda82986", null ],
     [ "cel_pole", "novas_8h.html#a8937180de2ee1545d19b8fc840f35fe2", null ],
     [ "cio_array", "novas_8h.html#a2ed632ae8df4a3737c200c96fe2362e2", null ],
@@ -310,6 +315,7 @@ var novas_8h =
     [ "norm_ang", "novas_8h.html#a416fd587496210c45028352f409fd73f", null ],
     [ "novas_app_to_geom", "novas_8h.html#a83db7db5a0ed0311610391f199b9f66c", null ],
     [ "novas_app_to_hor", "novas_8h.html#ae84debf8ab4d3b16feaaefdcb0ebbd08", null ],
+    [ "novas_calendar_to_jd", "novas_8h.html#a2e2c0999c4baf5aee06d8fad03640c22", null ],
     [ "novas_case_sensitive", "novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2", null ],
     [ "novas_change_observer", "novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d", null ],
     [ "novas_debug", "novas_8h.html#a5f35633b872751df4dacd2fb2cbe4ac3", null ],
@@ -336,6 +342,7 @@ var novas_8h =
     [ "novas_inv_refract", "novas_8h.html#a93ac897d3f7a2f2a7f8d92f3e8cd9ea0", null ],
     [ "novas_invert_transform", "novas_8h.html#ad2081e123024609d3071b33b183502b7", null ],
     [ "novas_iso_timestamp", "novas_8h.html#a1b7e1fa279dc7502805cc76af2ae07fe", null ],
+    [ "novas_jd_to_calendar", "novas_8h.html#a6cd9d6258777678f126c60de9999cecd", null ],
     [ "novas_los_to_xyz", "novas_8h.html#a601d246673742cf72a5dbe1449c97560", null ],
     [ "novas_lsr_to_ssb_vel", "novas_8h.html#aad80bf94be2efc36c340994829df8207", null ],
     [ "novas_make_frame", "novas_8h.html#abfee69517c7432733c8382c88371c983", null ],
@@ -346,7 +353,7 @@ var novas_8h =
     [ "novas_optical_refraction", "novas_8h.html#ae4511a80a1defbb1e1fdc29c289e7de4", null ],
     [ "novas_orbit_posvel", "novas_8h.html#a445ad14faede9dc912601de27fb52bc0", null ],
     [ "novas_parse_date", "novas_8h.html#a48866c233886213c4d347efb5ce30dd1", null ],
-    [ "novas_parse_date_format", "novas_8h.html#a632e0bd3bb5ff20c9f385231e9db035d", null ],
+    [ "novas_parse_date_format", "novas_8h.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122", null ],
     [ "novas_parse_dms", "novas_8h.html#a3966d939b4bd0233f13ed1a9e8ae1f80", null ],
     [ "novas_parse_hms", "novas_8h.html#ab731deea99a64dc57cd8d4ee55b4d60d", null ],
     [ "novas_planet_for_name", "novas_8h.html#a92e869b101bd41e31ac6d3a2419bb0a3", null ],

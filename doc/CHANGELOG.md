@@ -20,7 +20,8 @@ Upcoming feature release, expected around 1 May 2025.
  - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
- - #121: New `cal_date2()`, which is exactly like `cal_date()` except that it takes `int` pointers instead of `short`.
+ - #122: New `novas_jd_to_calendar()`, and `novas_calendar_to_jd()` which convert between JD day and calendar dates 
+   using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
  - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 
    time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and

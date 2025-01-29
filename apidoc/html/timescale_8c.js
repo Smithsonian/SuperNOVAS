@@ -10,7 +10,7 @@ var timescale_8c =
     [ "novas_iso_timestamp", "timescale_8c.html#a1b7e1fa279dc7502805cc76af2ae07fe", null ],
     [ "novas_offset_time", "timescale_8c.html#a01f98b2b8033c8dbacaeab37e9198e91", null ],
     [ "novas_parse_date", "timescale_8c.html#a48866c233886213c4d347efb5ce30dd1", null ],
-    [ "novas_parse_date_format", "timescale_8c.html#a632e0bd3bb5ff20c9f385231e9db035d", null ],
+    [ "novas_parse_date_format", "timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122", null ],
     [ "novas_print_timescale", "timescale_8c.html#a18bd698f5c504b5f0a581227e1649bd2", null ],
     [ "novas_set_split_time", "timescale_8c.html#a37c8f2d5e1ad2daed78d1bd7991fdba4", null ],
     [ "novas_set_time", "timescale_8c.html#ac272a018a213965f07b21ac6facb4a62", null ],

@@ -280,6 +280,8 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NOVAS_JD_MJD0</b>&#160;&#160;&#160;2400000.5</td></tr>
 <tr class="memdesc:ac266a346b8e22946f50079897b0baefa"><td class="mdescLeft">&#160;</td><td class="mdescRight">[day] Julian date at which the Modified Julian Date (MJD) is zero <br /></td></tr>
 <tr class="separator:ac266a346b8e22946f50079897b0baefa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a509afe7095f4d597125e9bfd6d0399ad" id="r_a509afe7095f4d597125e9bfd6d0399ad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>&#160;&#160;&#160;2299160.5</td></tr>
+<tr class="separator:a509afe7095f4d597125e9bfd6d0399ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f05bb45f646e41b78bbe79175114d57" id="r_a8f05bb45f646e41b78bbe79175114d57"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a8f05bb45f646e41b78bbe79175114d57">NOVAS_JUPITER_INIT</a>&#160;&#160;&#160;<a class="el" href="novas_8h.html#ad34a88c2c04b624f8f85fc86e7935967">NOVAS_PLANET_INIT</a>(<a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, &quot;Jupiter&quot;)</td></tr>
 <tr class="separator:a8f05bb45f646e41b78bbe79175114d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a84af1a760ed2aaa01dd93e9e22bdf1" id="r_a0a84af1a760ed2aaa01dd93e9e22bdf1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a0a84af1a760ed2aaa01dd93e9e22bdf1">NOVAS_KM</a>&#160;&#160;&#160;1000.0</td></tr>
@@ -408,6 +410,11 @@ Enumerations</h2></td></tr>
 , <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>
  }</td></tr>
 <tr class="separator:a3cba2735c32163fab062b1a904a83b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8cfc18bfdf8ebd0198065c9d07e3bba" id="r_aa8cfc18bfdf8ebd0198065c9d07e3bba"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> { <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a> = -1
+, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>
+, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>
+ }</td></tr>
+<tr class="separator:aa8cfc18bfdf8ebd0198065c9d07e3bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee3f2f5b3807612025e2ce25d368ff2f" id="r_aee3f2f5b3807612025e2ce25d368ff2f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2f">novas_cio_location_type</a> { <a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fa9928da41a130a60eb1762cbe52e691ce">CIO_VS_GCRS</a> = 1
 , <a class="el" href="novas_8h.html#aee3f2f5b3807612025e2ce25d368ff2fae8c1b78646fefbd0ffdcae083b597241">CIO_VS_EQUINOX</a>
  }</td></tr>
@@ -569,8 +576,6 @@ Functions</h2></td></tr>
 <tr class="separator:aada778ddcc75a355b6753f5372775094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a410a61c67f5893584b09953fa4885fe5" id="r_a410a61c67f5893584b09953fa4885fe5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a410a61c67f5893584b09953fa4885fe5">cal_date</a> (double tjd, short *year, short *month, short *day, double *hour)</td></tr>
 <tr class="separator:a410a61c67f5893584b09953fa4885fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8451d21415047d15b26f0d3bb7fae5ca" id="r_a8451d21415047d15b26f0d3bb7fae5ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a8451d21415047d15b26f0d3bb7fae5ca">cal_date2</a> (double tjd, int *year, int *month, int *day, double *hour)</td></tr>
-<tr class="separator:a8451d21415047d15b26f0d3bb7fae5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95f02377ce41d4e251654449dda82986" id="r_a95f02377ce41d4e251654449dda82986"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a95f02377ce41d4e251654449dda82986">cel2ter</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> class, double xp, double yp, const double *in, double *out)</td></tr>
 <tr class="separator:a95f02377ce41d4e251654449dda82986"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8937180de2ee1545d19b8fc840f35fe2" id="r_a8937180de2ee1545d19b8fc840f35fe2"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543">novas_pole_offset_type</a> type, double dpole1, double dpole2)</td></tr>
@@ -717,6 +722,8 @@ Functions</h2></td></tr>
 <tr class="separator:a83db7db5a0ed0311610391f199b9f66c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae84debf8ab4d3b16feaaefdcb0ebbd08" id="r_ae84debf8ab4d3b16feaaefdcb0ebbd08"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#ae84debf8ab4d3b16feaaefdcb0ebbd08">novas_app_to_hor</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, double ra, double dec, <a class="el" href="novas_8h.html#ad4899a6116cfbbe17400e7ef0c8426a9">RefractionModel</a> ref_model, double *az, double *el)</td></tr>
 <tr class="separator:ae84debf8ab4d3b16feaaefdcb0ebbd08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e2c0999c4baf5aee06d8fad03640c22" id="r_a2e2c0999c4baf5aee06d8fad03640c22"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd</a> (enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> calendar, short year, short month, short day, double hour)</td></tr>
+<tr class="separator:a2e2c0999c4baf5aee06d8fad03640c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f832afe92680a11c3489aaa224ac2e2" id="r_a8f832afe92680a11c3489aaa224ac2e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive</a> (int value)</td></tr>
 <tr class="separator:a8f832afe92680a11c3489aaa224ac2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2972b3eafa2d7f6c29cff34bad9fcf0d" id="r_a2972b3eafa2d7f6c29cff34bad9fcf0d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d">novas_change_observer</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *orig, const <a class="el" href="structobserver.html">observer</a> *obs, <a class="el" href="structnovas__frame.html">novas_frame</a> *out)</td></tr>
@@ -769,6 +776,8 @@ Functions</h2></td></tr>
 <tr class="separator:ad2081e123024609d3071b33b183502b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b7e1fa279dc7502805cc76af2ae07fe" id="r_a1b7e1fa279dc7502805cc76af2ae07fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a1b7e1fa279dc7502805cc76af2ae07fe">novas_iso_timestamp</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, char *dst, int maxlen)</td></tr>
 <tr class="separator:a1b7e1fa279dc7502805cc76af2ae07fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cd9d6258777678f126c60de9999cecd" id="r_a6cd9d6258777678f126c60de9999cecd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar</a> (double tjd, enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> calendar, int *year, int *month, int *day, double *hour)</td></tr>
+<tr class="separator:a6cd9d6258777678f126c60de9999cecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a601d246673742cf72a5dbe1449c97560" id="r_a601d246673742cf72a5dbe1449c97560"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz</a> (const double *los, double lon, double lat, double *xyz)</td></tr>
 <tr class="separator:a601d246673742cf72a5dbe1449c97560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad80bf94be2efc36c340994829df8207" id="r_aad80bf94be2efc36c340994829df8207"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel</a> (double epoch, double ra, double dec, double vLSR)</td></tr>
@@ -789,8 +798,8 @@ Functions</h2></td></tr>
 <tr class="separator:a445ad14faede9dc912601de27fb52bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48866c233886213c4d347efb5ce30dd1" id="r_a48866c233886213c4d347efb5ce30dd1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a48866c233886213c4d347efb5ce30dd1">novas_parse_date</a> (const char *date, char **tail)</td></tr>
 <tr class="separator:a48866c233886213c4d347efb5ce30dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a632e0bd3bb5ff20c9f385231e9db035d" id="r_a632e0bd3bb5ff20c9f385231e9db035d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a632e0bd3bb5ff20c9f385231e9db035d">novas_parse_date_format</a> (enum <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">novas_date_format</a> format, const char *date, char **tail)</td></tr>
-<tr class="separator:a632e0bd3bb5ff20c9f385231e9db035d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b63f4a8cb2c50d4cbc972d2ffc4122" id="r_ab7b63f4a8cb2c50d4cbc972d2ffc4122"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format</a> (enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> calendar, enum <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">novas_date_format</a> format, const char *date, char **tail)</td></tr>
+<tr class="separator:ab7b63f4a8cb2c50d4cbc972d2ffc4122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3966d939b4bd0233f13ed1a9e8ae1f80" id="r_a3966d939b4bd0233f13ed1a9e8ae1f80"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a3966d939b4bd0233f13ed1a9e8ae1f80">novas_parse_dms</a> (const char *str, char **tail)</td></tr>
 <tr class="separator:a3966d939b4bd0233f13ed1a9e8ae1f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab731deea99a64dc57cd8d4ee55b4d60d" id="r_ab731deea99a64dc57cd8d4ee55b4d60d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#ab731deea99a64dc57cd8d4ee55b4d60d">novas_parse_hms</a> (const char *str, char **tail)</td></tr>
@@ -1232,6 +1241,21 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a509afe7095f4d597125e9bfd6d0399ad" name="a509afe7095f4d597125e9bfd6d0399ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a509afe7095f4d597125e9bfd6d0399ad">&#9670;&#160;</a></span>NOVAS_JD_START_GREGORIAN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NOVAS_JD_START_GREGORIAN&#160;&#160;&#160;2299160.5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>[day] The Julian day the Gregorian calendar was introduced in 15 October 1582. The day prior to that was 4 October 1582 in the Julian Calendar. </p>
+
+</div>
+</div>
 <a id="a8f05bb45f646e41b78bbe79175114d57" name="a8f05bb45f646e41b78bbe79175114d57"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8f05bb45f646e41b78bbe79175114d57">&#9670;&#160;</a></span>NOVAS_JUPITER_INIT</h2>
 
@@ -1503,7 +1527,7 @@ Variables</h2></td></tr>
 <div class="line">  <span class="stringliteral">&quot;Sun&quot;</span>, <span class="stringliteral">&quot;Moon&quot;</span>, <span class="stringliteral">&quot;EMB&quot;</span>, <span class="stringliteral">&quot;Pluto-Barycenter&quot;</span> }</div>
 </div><!-- fragment --><p>String array initializer for Major planet names, matching the enum novas_planet. E.g.</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *planet_names[] = <a class="code hl_define" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>;</div>
-<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdef"><b>Definition</b> novas.h:312</div></div>
+<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdef"><b>Definition</b> novas.h:315</div></div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>novas_majot_planet </dd></dl>
 
 </div>
@@ -1883,6 +1907,34 @@ ON_SURFACE_INIT_LOC </dd></dl>
 
 </div>
 </div>
+<a id="aa8cfc18bfdf8ebd0198065c9d07e3bba" name="aa8cfc18bfdf8ebd0198065c9d07e3bba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8cfc18bfdf8ebd0198065c9d07e3bba">&#9670;&#160;</a></span>novas_calendar_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constants to disambiguate which type of calendar yo use for interpreting calendar dates. Roman/Julian or Gregorian/</p>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar()</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13" name="aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13"></a>NOVAS_ROMAN_CALENDAR&#160;</td><td class="fielddoc"><p>The Roman (a.k.a. Julian) calendar by Julius Caesar, introduced in -45 B.C. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728" name="aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728"></a>NOVAS_CALENDAR_OF_DATE&#160;</td><td class="fielddoc"><p>Roman (a.k.a. Julian) calendar until the Gregorian calendar reform, after which it is the Gregorian calendar </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322" name="aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322"></a>NOVAS_GREGORIAN_CALENDAR&#160;</td><td class="fielddoc"><p>The Gregorian calendar introduced on 15 October 1582, the day after 4 October 1582 in the Roman (a.k.a. Julian) calendar. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="aee3f2f5b3807612025e2ce25d368ff2f" name="aee3f2f5b3807612025e2ce25d368ff2f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee3f2f5b3807612025e2ce25d368ff2f">&#9670;&#160;</a></span>novas_cio_location_type</h2>
 
@@ -1918,7 +1970,7 @@ ON_SURFACE_INIT_LOC </dd></dl>
 <p>The general order of date components for parsing.</p>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a632e0bd3bb5ff20c9f385231e9db035d">novas_parse_date_format()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format()</a> </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab" name="a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab"></a>NOVAS_YMD&#160;</td><td class="fielddoc"><p>year, then month, then day. </p>
 </td></tr>
@@ -3051,14 +3103,22 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
       </table>
 </div><div class="memdoc">
 <p>This function will compute a broken down date on the Gregorian calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
+<p>NOTES: </p><ol>
+<li>
+<p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Thus you should not use this function to obtain dates prior to that. You can use `novas_id_to_calendar()1 instead to convert JD days to dates in specific calendars.</p>
+<p class="endli"></p>
+</li>
+<li>
+B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
-Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657. </li>
+Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657.15 October 1582 </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Gregorian calendar year. It may be NULL if not required. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Gregorian calendar year. It may be NULL if not required. B.C. years are represented as &lt;=0, i.e. 1 B.C. as 0 and <em>X</em> B.C. as (1 - <em>X</em>) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Gregorian calendat month [1:12]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
@@ -3066,7 +3126,9 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
 <dd>
@@ -3074,77 +3136,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dd>
 <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a8451d21415047d15b26f0d3bb7fae5ca">cal_date2()</a>.</p>
-
-</div>
-</div>
-<a id="a8451d21415047d15b26f0d3bb7fae5ca" name="a8451d21415047d15b26f0d3bb7fae5ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8451d21415047d15b26f0d3bb7fae5ca">&#9670;&#160;</a></span>cal_date2()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int cal_date2 </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tjd</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>year</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>month</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>day</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>hour</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function will compute a broken down date on the Gregorian calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
-<p>It is the same as <a class="el" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5">cal_date()</a>, except that it takes <code>int</code> pointers, instead of <code>short</code>.</p>
-<p>REFERENCES: </p><ol>
-<li>
-Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657. </li>
-</ol>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Gregorian calendar year. It may be NULL if not required. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Gregorian calendat month [1:12]. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd>
-<dd>
-<a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
-<dd>
-<a class="el" href="super_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
-<dd>
-<a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, and <a class="el" href="novas_8c.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar()</a>.</p>
 
 </div>
 </div>
@@ -6212,8 +6204,16 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the Julian date for a given Gregorian calendar date. This function makes no checks for a valid input calendar date. Input calendar date must be Gregorian. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
+<p>Returns the Julian date for a given Gregorian calendar date. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
 <p>NOTES: </p><ol>
+<li>
+<p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Thus, this function is not suitable for converting the previously used Julian calendar dates prior to the reform. You can use <code><a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a></code> to convert dates to JD days with more specificity and flexibility.</p>
+<p class="endli"></p>
+</li>
+<li>
+<p class="startli">B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</p>
+<p class="endli"></p>
+</li>
 <li>
 Added argument range checking in v1.3.0, returning NAN if the month or day are out of the normal range (for a leap year). </li>
 </ol>
@@ -6223,21 +6223,25 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">year</td><td>[yr] Gregorian calendar year. B.C. years can be simply represented as negative years, e.g. 1 B.C. as -1. </td></tr>
+    <tr><td class="paramname">year</td><td>[yr] Gregorian calendar year. B.C. years can be simply represented as &lt;=0, e.g. 1 B.C. as 0, and <em>X</em> B.C. as (1 - <em>X</em>). </td></tr>
     <tr><td class="paramname">month</td><td>[month] Gregorian calendar month [1:12] </td></tr>
-    <tr><td class="paramname">day</td><td>[day] Day of month [1:31] </td></tr>
+    <tr><td class="paramname">day</td><td>[day] Gregorian day of month [1:31] </td></tr>
     <tr><td class="paramname">hour</td><td>[hr] Hour of day [0:24] </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian date for the input calendar date, ot NAN if month or day components are out of range.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5">cal_date()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>.</p>
 
 </div>
 </div>
@@ -8001,6 +8005,86 @@ novas_geom_to_hor() </dd>
 
 </div>
 </div>
+<a id="a2e2c0999c4baf5aee06d8fad03640c22" name="a2e2c0999c4baf5aee06d8fad03640c22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e2c0999c4baf5aee06d8fad03640c22">&#9670;&#160;</a></span>novas_calendar_to_jd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_calendar_to_jd </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a>&#160;</td>
+          <td class="paramname"><em>calendar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>year</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>month</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>day</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>hour</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the Julian date for a given calendar date. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
+<p>The input date is the conventional calendar date, affected by the Gregorian calendar reform of 1582. Thus, the input date is for the Gregorian calendar for dates starting 15 October 1582, and for the Julian (Roman) calendar (introduced in 45 B.C.) for dates prior to that.</p>
+<p>NOTES: </p><ol>
+<li>
+<p class="startli">B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</p>
+<p class="endli"></p>
+</li>
+<li>
+Added argument range checking in v1.3.0, returning NAN if the month or day are out of the normal range (for a leap year). </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
+    <tr><td class="paramname">year</td><td>[yr] Calendar year. B.C. years can be simply represented as negative years, e.g. 1 B.C. as -1. </td></tr>
+    <tr><td class="paramname">month</td><td>[month] Calendar month [1:12] </td></tr>
+    <tr><td class="paramname">day</td><td>[day] Day of month [1:31] </td></tr>
+    <tr><td class="paramname">hour</td><td>[hr] Hour of day [0:24] </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian date for the input calendar date, ot NAN if month or day components are out of range.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a6cd9d6258777678f126c60de9999cecd">novas_jd_to_calendar()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a>.</p>
+
+</div>
+</div>
 <a id="a8f832afe92680a11c3489aaa224ac2e2" name="a8f832afe92680a11c3489aaa224ac2e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8f832afe92680a11c3489aaa224ac2e2">&#9670;&#160;</a></span>novas_case_sensitive()</h2>
 
@@ -9304,7 +9388,13 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <p>Prints a UTC-based ISO timestamp to millisecond precision to the specified string buffer. E.g.:</p>
 <pre>
  2025-01-26T21:32:49.701Z
-</pre><dl class="params"><dt>Parameters</dt><dd>
+</pre><p>NOTES: </p><ol>
+<li>
+The timestamp uses the conventional date of the time. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that. </li>
+<li>
+B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">time</td><td>Pointer to the astronomical time specification data structure. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">dst</td><td>Output string buffer. At least 25 bytes are required for a complete timestamp with termination. </td></tr>
@@ -9320,6 +9410,88 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 novas_parse_time() </dd></dl>
 
 <p class="reference">References <a class="el" href="timescale_8c.html#ab4ea1b646b23a76936b2a6459b1bac6d">novas_get_split_time()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+
+</div>
+</div>
+<a id="a6cd9d6258777678f126c60de9999cecd" name="a6cd9d6258777678f126c60de9999cecd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cd9d6258777678f126c60de9999cecd">&#9670;&#160;</a></span>novas_jd_to_calendar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_jd_to_calendar </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tjd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a>&#160;</td>
+          <td class="paramname"><em>calendar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>year</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>month</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>day</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>hour</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function will compute a broken down date on the specified calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
+<p>NOTES: </p><ol>
+<li>
+B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Calendar year. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Calendar month [1:12]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="novas_8h.html#a509afe7095f4d597125e9bfd6d0399ad">NOVAS_JD_START_GREGORIAN</a>, and <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa73cfd3e5c66bdfdf63a2d792251e0d13">NOVAS_ROMAN_CALENDAR</a>.</p>
 
 </div>
 </div>
@@ -9912,7 +10084,14 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
  2025-01-26T19:33:28-0600
  2025 Jan 26 19:33:28+05:30
 </pre><p>are all valid dates that can be parsed.</p>
-<p>B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g. as <code>-253 01 26</code>.</p>
+<p>NOTES: </p><ol>
+<li>
+<p class="startli">This function uses Gregorian dates since their introduction on 1582 October 15, and Julian/Roman datew before that, as was the convention of the time. I.e., the day before of the introduction of the Gregorian calendar reform is 1582 October 4.</p>
+<p class="endli"></p>
+</li>
+<li>
+B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. </td></tr>
@@ -9923,7 +10102,7 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
 <dl class="section return"><dt>Returns</dt><dd>The Julian Date corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a632e0bd3bb5ff20c9f385231e9db035d">novas_parse_date_format()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string()</a> </dd>
 <dd>
@@ -9931,12 +10110,12 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
 <dd>
 <a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="timescale_8c.html#a632e0bd3bb5ff20c9f385231e9db035d">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa714288c1e87219a83b61acebb2341728">NOVAS_CALENDAR_OF_DATE</a>, <a class="el" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
 
 </div>
 </div>
-<a id="a632e0bd3bb5ff20c9f385231e9db035d" name="a632e0bd3bb5ff20c9f385231e9db035d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a632e0bd3bb5ff20c9f385231e9db035d">&#9670;&#160;</a></span>novas_parse_date_format()</h2>
+<a id="ab7b63f4a8cb2c50d4cbc972d2ffc4122" name="ab7b63f4a8cb2c50d4cbc972d2ffc4122"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7b63f4a8cb2c50d4cbc972d2ffc4122">&#9670;&#160;</a></span>novas_parse_date_format()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9944,6 +10123,12 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         <tr>
           <td class="memname">double novas_parse_date_format </td>
           <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a>&#160;</td>
+          <td class="paramname"><em>calendar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">enum <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">novas_date_format</a>&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
@@ -9966,7 +10151,7 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses a date/time string into a Julian date specification. The date must be composed of a full year (e.g. 2025), a month (numerical or name or 3-letter abbreviation, e.g. "01", "1", "January", or "Jan"), and a day (e.g. "08" or "8"). The components may be separated by dash <code>-</code>, underscore <code>_</code>, dot <code>.</code>, slash '/', or spaces/tabs, or any combination thereof. The components will be parsed in the specified order.</p>
+<p>Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian day (JD). The date must be composed of a full year (e.g. 2025), a month (numerical or name or 3-letter abbreviation, e.g. "01", "1", "January", or "Jan"), and a day (e.g. "08" or "8"). The components may be separated by dash <code>-</code>, underscore <code>_</code>, dot <code>.</code>, slash '/', or spaces/tabs, or any combination thereof. The components will be parsed in the specified order.</p>
 <p>The date may be followed by a time specification in HMS format, separated from the date by the letter <code>T</code> or <code>t</code>, or spaces, comma <code>,</code>, or semicolon <code>;</code> or underscore '_', or a combination thereof. Finally, the time may be followed by the letter <code>Z</code>, or <code>z</code> (for UTC) or else by a {+/-}HH[:[MM]] time zone specification.</p>
 <p>For example, for <code>format</code> NOVAS_YMD, all of the following strings may specify the date:</p>
 <pre>
@@ -9980,10 +10165,14 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
  2025-01-26T19:33:28-0600
  2025 Jan 26 19:33:28+05:30
 </pre><p>are all valid dates that can be parsed.</p>
-<p>B.C. dates can be represented as negative years. So January 26, 253 B.C. should be expressed e.g. as <code>-253 01 26</code>.</p>
 <p>If your date format cannot be parsed with this function, you may parse it with your own function into year, month, day, and decimal hour-of-day components, and use <a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> with those.</p>
+<p>NOTES: </p><ol>
+<li>
+B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">format</td><td>Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in the specified standard format. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time. The parsing will consume empty space characters after the time specification also, returning a pointer to the next token after.</td></tr>
@@ -10001,7 +10190,7 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
 <dd>
 <a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a>, <a class="el" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#a2e2c0999c4baf5aee06d8fad03640c22">novas_calendar_to_jd()</a>, <a class="el" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="super_8c.html#af9fc57f5df90c5beceb0b5c9c4fc15d6">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
 
 </div>
 </div>
@@ -10155,7 +10344,7 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Prints the standard string representation of the timescale to the specified buffer. The string is terminated after. E.g. "UTC", or "TAI".</p>
+<p>Prints the standard string representation of the timescale to the specified buffer. The string is terminated after. E.g. "UTC", or "TAI". It will print dates in the Gregorian calendar, which was introduced in was introduced on 15 October 1582 only. Thus the</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">scale</td><td>The timescale </td></tr>
@@ -11009,7 +11198,13 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
 <p>Prints a an ISO timestamp to millisecond precision in the specified timescale to the specified string buffer. E.g.:</p>
 <pre>
  2025-01-26T21:32:49.701 TAI
-</pre><dl class="params"><dt>Parameters</dt><dd>
+</pre><p>NOTES: </p><ol>
+<li>
+The timestamp uses the conventional date of the time. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that. </li>
+<li>
+B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">time</td><td>Pointer to the astronomical time specification data structure. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">scale</td><td>The timescale to use. </td></tr>

@@ -45,7 +45,7 @@ src/timescale.c
 .RI "double \fBnovas_parse_date\fP (const char *date, char **tail)"
 .br
 .ti -1c
-.RI "double \fBnovas_parse_date_format\fP (enum \fBnovas_date_format\fP format, const char *date, char **tail)"
+.RI "double \fBnovas_parse_date_format\fP (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char *date, char **tail)"
 .br
 .ti -1c
 .RI "int \fBnovas_print_timescale\fP (enum \fBnovas_timescale\fP scale, char *buf)"
@@ -339,6 +339,14 @@ Prints a UTC-based ISO timestamp to millisecond precision to the specified strin
 .fi
 .PP
 .PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The timestamp uses the conventional date of the time\&. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that\&. 
+.IP "2." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&. 
+.PP
+.PP
 \fBParameters\fP
 .RS 4
 \fItime\fP Pointer to the astronomical time specification data structure\&. 
@@ -432,7 +440,15 @@ For example:
 .PP
 are all valid dates that can be parsed\&.
 .PP
-B\&.C\&. dates can be represented as negative years\&. So January 26, 253 B\&.C\&. should be expressed e\&.g\&. as \fC-253 01 26\fP\&.
+NOTES: 
+.PD 0
+.IP "1." 4
+This function uses Gregorian dates since their introduction on 1582 October 15, and Julian/Roman datew before that, as was the convention of the time\&. I\&.e\&., the day before of the introduction of the Gregorian calendar reform is 1582 October 4\&.
+.PP
+
+.IP "2." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&. 
+.PP
 .PP
 \fBParameters\fP
 .RS 4
@@ -469,9 +485,9 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_parse_date_format()\fP, and \fBNOVAS_YMD\fP\&.
-.SS "double novas_parse_date_format (enum \fBnovas_date_format\fP format, const char * date, char ** tail)"
-Parses a date/time string into a Julian date specification\&. The date must be composed of a full year (e\&.g\&. 2025), a month (numerical or name or 3-letter abbreviation, e\&.g\&. '01', '1', 'January', or 'Jan'), and a day (e\&.g\&. '08' or '8')\&. The components may be separated by dash \fC-\fP, underscore \fC_\fP, dot \fC\&.\fP, slash '/', or spaces/tabs, or any combination thereof\&. The components will be parsed in the specified order\&.
+References \fBNOVAS_CALENDAR_OF_DATE\fP, \fBnovas_parse_date_format()\fP, and \fBNOVAS_YMD\fP\&.
+.SS "double novas_parse_date_format (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char * date, char ** tail)"
+Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian day (JD)\&. The date must be composed of a full year (e\&.g\&. 2025), a month (numerical or name or 3-letter abbreviation, e\&.g\&. '01', '1', 'January', or 'Jan'), and a day (e\&.g\&. '08' or '8')\&. The components may be separated by dash \fC-\fP, underscore \fC_\fP, dot \fC\&.\fP, slash '/', or spaces/tabs, or any combination thereof\&. The components will be parsed in the specified order\&.
 .PP
 The date may be followed by a time specification in HMS format, separated from the date by the letter \fCT\fP or \fCt\fP, or spaces, comma \fC,\fP, or semicolon \fC;\fP or underscore '_', or a combination thereof\&. Finally, the time may be followed by the letter \fCZ\fP, or \fCz\fP (for UTC) or else by a {+/-}HH[:[MM]] time zone specification\&.
 .PP
@@ -494,12 +510,18 @@ For example, for \fCformat\fP NOVAS_YMD, all of the following strings may specif
 .PP
 are all valid dates that can be parsed\&.
 .PP
-B\&.C\&. dates can be represented as negative years\&. So January 26, 253 B\&.C\&. should be expressed e\&.g\&. as \fC-253 01 26\fP\&.
-.PP
 If your date format cannot be parsed with this function, you may parse it with your own function into year, month, day, and decimal hour-of-day components, and use \fBjulian_date()\fP with those\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&. 
+.PP
 .PP
 \fBParameters\fP
 .RS 4
+\fIcalendar\fP The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
+.br
 \fIformat\fP Expected order of date components: NOVAS_YMD, NOVAS_DMY, or NOVAS_MDY\&. 
 .br
 \fIdate\fP The date specification, possibly including time and timezone, in the specified standard format\&. 
@@ -535,9 +557,9 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBjulian_date()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DMY\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_MDY\fP, \fBnovas_parse_hms()\fP, and \fBNOVAS_YMD\fP\&.
+References \fBnovas_calendar_to_jd()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DMY\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_MDY\fP, \fBnovas_parse_hms()\fP, and \fBNOVAS_YMD\fP\&.
 .SS "int novas_print_timescale (enum \fBnovas_timescale\fP scale, char * buf)"
-Prints the standard string representation of the timescale to the specified buffer\&. The string is terminated after\&. E\&.g\&. 'UTC', or 'TAI'\&.
+Prints the standard string representation of the timescale to the specified buffer\&. The string is terminated after\&. E\&.g\&. 'UTC', or 'TAI'\&. It will print dates in the Gregorian calendar, which was introduced in was introduced on 15 October 1582 only\&. Thus the
 .PP
 \fBParameters\fP
 .RS 4
@@ -769,6 +791,14 @@ Prints a an ISO timestamp to millisecond precision in the specified timescale to
 
  2025-01-26T21:32:49\&.701 TAI
 .fi
+.PP
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The timestamp uses the conventional date of the time\&. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that\&. 
+.IP "2." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&. 
 .PP
 .PP
 \fBParameters\fP
