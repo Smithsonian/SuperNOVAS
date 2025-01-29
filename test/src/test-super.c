@@ -1014,30 +1014,65 @@ static int test_nutation_lp_provider() {
 static int test_cal_date() {
   short y, m, d;
   double h;
+  int n = 0;
 
-  if(!is_ok("cal_date:y:null", cal_date(tdb, NULL, &m, &d, &h))) return 1;
-  if(!is_ok("cal_date:m:null", cal_date(tdb, &y, NULL, &d, &h))) return 1;
-  if(!is_ok("cal_date:d:null", cal_date(tdb, &y, &m, NULL, &h))) return 1;
-  if(!is_ok("cal_date:h:null", cal_date(tdb, &y, &m, &d, NULL))) return 1;
+  if(!is_ok("cal_date:y:null", cal_date(tdb, NULL, &m, &d, &h))) n++;
+  if(!is_ok("cal_date:m:null", cal_date(tdb, &y, NULL, &d, &h))) n++;
+  if(!is_ok("cal_date:d:null", cal_date(tdb, &y, &m, NULL, &h))) n++;
+  if(!is_ok("cal_date:h:null", cal_date(tdb, &y, &m, &d, NULL))) n++;
 
-  if(!is_ok("cal_date:y:null", cal_date2(tdb, NULL, &m, &d, &h))) return 1;
-  if(!is_ok("cal_date:m:null", cal_date2(tdb, &y, NULL, &d, &h))) return 1;
-  if(!is_ok("cal_date:d:null", cal_date2(tdb, &y, &m, NULL, &h))) return 1;
-  if(!is_ok("cal_date:h:null", cal_date2(tdb, &y, &m, &d, NULL))) return 1;
+  return n;
+}
 
-  if(!is_ok("cal_date:1AD", cal_date(1721426.0, &y, &m, &d, NULL))) return 1;
-  if(!is_equal("cal_date:1AD:check", y, 1, 1e-6)) return 1;
 
-  if(!is_ok("cal_date:1BC", cal_date(1721425.0, &y, &m, &d, NULL))) return 1;
-  if(!is_equal("cal_date:1BC:check", y, -1, 1e-6)) return 1;
+static int test_jd_to_calendar() {
+  int n = 0;
+  int y, m, d;
+  double h;
+  double tdb = NOVAS_JD_J2000;
 
-  return 0;
+  if(!is_ok("jd_to_calendar:1AD", novas_jd_to_calendar(1721424.0, 0, &y, &m, &d, NULL))) n++;
+  if(!is_equal("jd_to_calendar:1AD:check", y, 1, 1e-6)) n++;
+
+  if(!is_ok("jd_to_calendar:gregorian", novas_jd_to_calendar(NOVAS_JD_START_GREGORIAN, 0, &y, &m, &d, NULL))) n++;
+  if(!is_equal("jd_to_calendar:gregorian:year", y, 1582, 1e-6)) n++;
+  if(!is_equal("jd_to_calendar:gregorian:month", m, 10, 1e-6)) n++;
+  if(!is_equal("jd_to_calendar:gregorian:day", d, 15, 1e-6)) n++;
+
+  if(!is_ok("jd_to_calendar:roman", novas_jd_to_calendar(NOVAS_JD_START_GREGORIAN - 0.5, 0, &y, &m, &d, NULL))) n++;
+  if(!is_equal("jd_to_calendar:roman:year", y, 1582, 1e-6)) n++;
+  if(!is_equal("jd_to_calendar:roman:month", m, 10, 1e-6)) n++;
+  if(!is_equal("jd_to_calendar:roman:day", d, 4, 1e-6)) n++;
+
+  if(!is_ok("jd_to_calendar:1BC", novas_jd_to_calendar(1721423.0, 0, &y, &m, &d, NULL))) n++;
+  if(!is_equal("jd_to_calendar:1BC:check", y, -1, 1e-6)) n++;
+
+  if(!is_ok("jd_to_calendar:y:null", novas_jd_to_calendar(tdb, 0, NULL, &m, &d, &h))) n++;
+  if(!is_ok("jd_to_calendar:m:null", novas_jd_to_calendar(tdb, 0, &y, NULL, &d, &h))) n++;
+  if(!is_ok("jd_to_calendar:d:null", novas_jd_to_calendar(tdb, 0, &y, &m, NULL, &h))) n++;
+  if(!is_ok("jd_to_calendar:h:null", novas_jd_to_calendar(tdb, 0, &y, &m, &d, NULL))) n++;
+
+  return n;
 }
 
 static int test_julian_date() {
-  if(!is_equal("julian_date:J2000", julian_date(2000, 1, 1, 12.0), NOVAS_JD_J2000, 1e-6)) return 1;
-  if(!is_equal("julian_date:AD-BC", julian_date(1, 1, 1, 0.0), julian_date(-1, 12, 31, 0.0) + 1, 1e-6)) return 1;
-  return 0;
+  int n = 0;
+
+  if(!is_equal("julian_date:J2000", julian_date(2000, 1, 1, 12.0), NOVAS_JD_J2000, 1e-6)) n++;
+  if(!is_equal("julian_date:AD-BC", julian_date(1, 1, 1, 0.0), julian_date(-1, 12, 31, 0.0) + 1, 1e-6)) n++;
+
+
+  return n;
+}
+
+static int test_calendar_to_jd() {
+  int n = 0;
+
+  if(!is_equal("julian_date:gregorian",
+          novas_calendar_to_jd(NOVAS_CALENDAR_OF_DATE, 1582, 10, 15, 0.0),
+          novas_calendar_to_jd(NOVAS_CALENDAR_OF_DATE, 1582, 10, 4, 0.0) + 1, 1e-6)) n++;
+
+  return n;
 }
 
 static int test_cirs_app_ra() {
@@ -3010,17 +3045,17 @@ static int test_parse_date_format() {
   jd = julian_date(2025, 1, 26, 0.0);
 
   //  2025-01-26
-  if(!is_equal("parse_date_format:YMD", novas_parse_date_format(NOVAS_YMD, "2025-01-26", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date_format:YMD", novas_parse_date_format(0, NOVAS_YMD, "2025-01-26", &tail), jd, 1e-6)) n++;
   if(!is_ok("parse_date_format:YMD:tail", tail == NULL)) n++;
   if(!is_equal("parse_date_format:YMD:tail", *tail, 0, 1e-6)) n++;
 
   //  2025-01-26
-  if(!is_equal("parse_date_format:DMY", novas_parse_date_format(NOVAS_DMY, "26.01.2025", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date_format:DMY", novas_parse_date_format(0, NOVAS_DMY, "26.01.2025", &tail), jd, 1e-6)) n++;
   if(!is_ok("parse_date_format:DMY:tail", tail == NULL)) n++;
   if(!is_equal("parse_date_format:DMY:tail", *tail, 0, 1e-6)) n++;
 
   //  2025-01-26
-  if(!is_equal("parse_date_format:MDY", novas_parse_date_format(NOVAS_MDY, "1/26/2025", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date_format:MDY", novas_parse_date_format(0, NOVAS_MDY, "1/26/2025", &tail), jd, 1e-6)) n++;
   if(!is_ok("parse_date_format:MDY:tail", tail == NULL)) n++;
   if(!is_equal("parse_date_format:MDY:tail", *tail, 0, 1e-6)) n++;
 
@@ -3207,6 +3242,8 @@ int main(int argc, char *argv[]) {
   if(test_timestamp()) n++;
   if(test_timescale_for_string()) n++;
   if(test_julian_date()) n++;
+  if(test_jd_to_calendar()) n++;
+  if(test_calendar_to_jd()) n++;
 
   n += test_dates();
 
