@@ -1031,31 +1031,31 @@ static int test_jd_to_calendar() {
   double h;
   double tdb = NOVAS_JD_J2000;
 
-  if(!is_ok("jd_to_calendar:J2000", novas_jd_to_calendar(NOVAS_JD_J2000, 0, &y, &m, &d, NULL))) n++;
+  if(!is_ok("jd_to_calendar:J2000", novas_jd_to_date(NOVAS_JD_J2000, 0, &y, &m, &d, NULL))) n++;
   if(!is_equal("jd_to_calendar:J2000:year", y, 2000, 1e-6)) n++;
   if(!is_equal("jd_to_calendar:J2000:month", m, 1, 1e-6)) n++;
   if(!is_equal("jd_to_calendar:J2000:day", d, 1, 1e-6)) n++;
 
-  if(!is_ok("jd_to_calendar:1AD", novas_jd_to_calendar(1721424.0, 0, &y, &m, &d, NULL))) n++;
+  if(!is_ok("jd_to_calendar:1AD", novas_jd_to_date(1721424.0, 0, &y, &m, &d, NULL))) n++;
   if(!is_equal("jd_to_calendar:1AD:check", y, 1, 1e-6)) n++;
 
-  if(!is_ok("jd_to_calendar:1BC", novas_jd_to_calendar(1721423.0, 0, &y, &m, &d, NULL))) n++;
+  if(!is_ok("jd_to_calendar:1BC", novas_jd_to_date(1721423.0, 0, &y, &m, &d, NULL))) n++;
   if(!is_equal("jd_to_calendar:1BC:check", y, 0, 1e-6)) n++;
 
-  if(!is_ok("jd_to_calendar:gregorian", novas_jd_to_calendar(NOVAS_JD_START_GREGORIAN, 0, &y, &m, &d, NULL))) n++;
+  if(!is_ok("jd_to_calendar:gregorian", novas_jd_to_date(NOVAS_JD_START_GREGORIAN, 0, &y, &m, &d, NULL))) n++;
   if(!is_equal("jd_to_calendar:gregorian:year", y, 1582, 1e-6)) n++;
   if(!is_equal("jd_to_calendar:gregorian:month", m, 10, 1e-6)) n++;
   if(!is_equal("jd_to_calendar:gregorian:day", d, 15, 1e-6)) n++;
 
-  if(!is_ok("jd_to_calendar:roman", novas_jd_to_calendar(NOVAS_JD_START_GREGORIAN - 0.5, 0, &y, &m, &d, NULL))) n++;
+  if(!is_ok("jd_to_calendar:roman", novas_jd_to_date(NOVAS_JD_START_GREGORIAN - 0.5, 0, &y, &m, &d, NULL))) n++;
   if(!is_equal("jd_to_calendar:roman:year", y, 1582, 1e-6)) n++;
   if(!is_equal("jd_to_calendar:roman:month", m, 10, 1e-6)) n++;
   if(!is_equal("jd_to_calendar:roman:day", d, 4, 1e-6)) n++;
 
-  if(!is_ok("jd_to_calendar:y:null", novas_jd_to_calendar(tdb, 0, NULL, &m, &d, &h))) n++;
-  if(!is_ok("jd_to_calendar:m:null", novas_jd_to_calendar(tdb, 0, &y, NULL, &d, &h))) n++;
-  if(!is_ok("jd_to_calendar:d:null", novas_jd_to_calendar(tdb, 0, &y, &m, NULL, &h))) n++;
-  if(!is_ok("jd_to_calendar:h:null", novas_jd_to_calendar(tdb, 0, &y, &m, &d, NULL))) n++;
+  if(!is_ok("jd_to_calendar:y:null", novas_jd_to_date(tdb, 0, NULL, &m, &d, &h))) n++;
+  if(!is_ok("jd_to_calendar:m:null", novas_jd_to_date(tdb, 0, &y, NULL, &d, &h))) n++;
+  if(!is_ok("jd_to_calendar:d:null", novas_jd_to_date(tdb, 0, &y, &m, NULL, &h))) n++;
+  if(!is_ok("jd_to_calendar:h:null", novas_jd_to_date(tdb, 0, &y, &m, &d, NULL))) n++;
 
   return n;
 }
@@ -1073,11 +1073,11 @@ static int test_julian_date() {
 static int test_calendar_to_jd() {
   int n = 0;
 
-  if(!is_equal("calendar_to_jd:J2000", novas_calendar_to_jd(NOVAS_ASTRONOMICAL_CALENDAR, 2000, 1, 1, 12.0), NOVAS_JD_J2000, 1e-6)) n++;
+  if(!is_equal("calendar_to_jd:J2000", novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2000, 1, 1, 12.0), NOVAS_JD_J2000, 1e-6)) n++;
 
   if(!is_equal("julian_date:gregorian",
-          novas_calendar_to_jd(NOVAS_ASTRONOMICAL_CALENDAR, 1582, 10, 15, 0.0),
-          novas_calendar_to_jd(NOVAS_ASTRONOMICAL_CALENDAR, 1582, 10, 4, 0.0) + 1, 1e-6)) n++;
+          novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 1582, 10, 15, 0.0),
+          novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 1582, 10, 4, 0.0) + 1, 1e-6)) n++;
 
   return n;
 }

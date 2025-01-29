@@ -1137,7 +1137,7 @@ one minute.
  - New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
- - New `novas_jd_to_calendar()`, and `novas_calendar_to_jd()` which convert between JD day and calendar dates using 
+ - New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates using 
    the specific type of calendar (Gregorian, Roman/Julian, or the conventional Western calendar).
 
  - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 

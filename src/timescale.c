@@ -733,7 +733,7 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
   if(tail)
     *tail = next;
 
-  return novas_calendar_to_jd(calendar, y, m, d, h);
+  return novas_jd_from_date(calendar, y, m, d, h);
 }
 
 /**
@@ -807,7 +807,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
   ijd += d;
   fjd -= d;
 
-  novas_jd_to_calendar(ijd + 0.5, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
+  novas_jd_to_date(ijd + 0.5, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
 
   s = 24.0 * (fjd - 0.5);
 

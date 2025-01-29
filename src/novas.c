@@ -6685,13 +6685,13 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  * @return          [day] the fractional Julian date for the input calendar date, ot NAN if
  *                  month or day components are out of range.
  *
- * @sa novas_jd_to_calendar()
+ * @sa novas_jd_to_date()
  * @sa get_utc_to_tt()
  * @sa get_ut1_to_tt()
  * @sa tt2tdb()
  */
-double novas_calendar_to_jd(enum novas_calendar_type calendar, int year, int month, int day, double hour) {
-  static const char *fn = "julian_date";
+double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month, int day, double hour) {
+  static const char *fn = "novas_cal_to_jd";
   static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
   long jd, m14 = month - 14L;;
@@ -6750,12 +6750,12 @@ double novas_calendar_to_jd(enum novas_calendar_type calendar, int year, int mon
  *
  * @return              0
  *
- * @sa novas_calendar_to_jd()
+ * @sa novas_jd_from_date()
  * @sa get_utc_to_tt()
  * @sa get_ut1_to_tt()
  * @sa tt2tdb()
  */
-int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour) {
+int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour) {
   long jd, k, m, n;
   int y, mo, d;
   double djd, h;
@@ -6812,7 +6812,7 @@ int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *yea
  * <ol>
  * <li>The Gregorian calendar was introduced on 1582 October 15 only. Prior to that, astronomical
  * dates are Julian/Roman dates, so the day before the reform was 1582 October 4. You can also
- * use `novas_calendar_to_jd()` to convert dates with more flexibility.</li>
+ * use `novas_jd_from_date()` to convert dates with more flexibility.</li>
  *
  * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
  * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
@@ -6835,14 +6835,14 @@ int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *yea
  * @return        [day] the fractional Julian date for the input calendar date, ot NAN if
  *                month or day components are out of range.
  *
- * @sa novas_calendar_to_jd()
- * @sa novas_jd_to_calendar()
+ * @sa novas_jd_from_date()
+ * @sa novas_jd_to_date()
  * @sa get_utc_to_tt()
  * @sa get_ut1_to_tt()
  * @sa tt2tdb()
  */
 double julian_date(short year, short month, short day, double hour) {
-  double jd = novas_calendar_to_jd(NOVAS_ASTRONOMICAL_CALENDAR, year, month, day, hour);
+  double jd = novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, year, month, day, hour);
   if(isnan(jd))
     return novas_trace_nan("julian_date");
   return jd;
@@ -6883,8 +6883,8 @@ double julian_date(short year, short month, short day, double hour) {
  *
  * @return              0
  *
- * @sa novas_jd_to_calendar()
- * @sa novas_calendar_to_jd()
+ * @sa novas_jd_to_date()
+ * @sa novas_jd_from_date()
  * @sa get_utc_to_tt()
  * @sa get_ut1_to_tt()
  * @sa tt2tdb()
@@ -6892,7 +6892,7 @@ double julian_date(short year, short month, short day, double hour) {
 int cal_date(double tjd, short *year, short *month, short *day, double *hour) {
   int y, m, d;
 
-  novas_jd_to_calendar(tjd, NOVAS_ASTRONOMICAL_CALENDAR, &y, &m, &d, hour);
+  novas_jd_to_date(tjd, NOVAS_ASTRONOMICAL_CALENDAR, &y, &m, &d, hour);
 
   if(year)
     *year = (short) y;

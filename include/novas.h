@@ -1332,8 +1332,8 @@ enum novas_date_format {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_calendar_to_jd()
- * @sa novas_jd_to_calendar()
+ * @sa novas_jd_from_date()
+ * @sa novas_jd_to_date()
  */
 enum novas_calendar_type {
   NOVAS_ROMAN_CALENDAR = -1,    ///< The Roman (a.k.a. Julian) calendar by Julius Caesar, introduced in -45 B.C.
@@ -1737,9 +1737,9 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 // ---------------------- Added in 1.3.0 -------------------------
 
-int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour);
+int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour);
 
-double novas_calendar_to_jd(enum novas_calendar_type calendar, int year, int month, int day, double hour);
+double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month, int day, double hour);
 
 // in super.c
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
