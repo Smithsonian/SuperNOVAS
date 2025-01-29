@@ -1045,7 +1045,7 @@ static int test_jd_to_calendar() {
   if(!is_equal("jd_to_calendar:roman:day", d, 4, 1e-6)) n++;
 
   if(!is_ok("jd_to_calendar:1BC", novas_jd_to_calendar(1721423.0, 0, &y, &m, &d, NULL))) n++;
-  if(!is_equal("jd_to_calendar:1BC:check", y, -1, 1e-6)) n++;
+  if(!is_equal("jd_to_calendar:1BC:check", y, 0, 1e-6)) n++;
 
   if(!is_ok("jd_to_calendar:y:null", novas_jd_to_calendar(tdb, 0, NULL, &m, &d, &h))) n++;
   if(!is_ok("jd_to_calendar:m:null", novas_jd_to_calendar(tdb, 0, &y, NULL, &d, &h))) n++;
@@ -1059,7 +1059,7 @@ static int test_julian_date() {
   int n = 0;
 
   if(!is_equal("julian_date:J2000", julian_date(2000, 1, 1, 12.0), NOVAS_JD_J2000, 1e-6)) n++;
-  if(!is_equal("julian_date:AD-BC", julian_date(1, 1, 1, 0.0), julian_date(-1, 12, 31, 0.0) + 1, 1e-6)) n++;
+  if(!is_equal("julian_date:AD-BC", julian_date(1, 1, 1, 0.0), julian_date(0, 12, 31, 0.0) + 1, 1e-6)) n++;
 
 
   return n;

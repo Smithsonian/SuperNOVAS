@@ -601,8 +601,8 @@ static int parse_zone(const char *str, char **tail) {
  *
  * NOTES:
  * <ol>
- * <li>B.C. dates can be represented as negative years. So January 26, 253 B.C. should
- * be expressed e.g. as "-253 01 26".</li>
+ *  <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </oL>
  *
  * @param calendar    The type of calendar to use: NOVAS_CONVENTIONAL_CALENDAR,
@@ -767,8 +767,9 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * <li>This function uses Gregorian dates since their introduction on 1582 October 15, and
  * Julian/Roman datew before that, as was the convention of the time. I.e., the day before of the
  * introduction of the Gregorian calendar reform is 1582 October 4.</li>
- * <li>B.C. dates can be represented as negative years. So January 26, 253 B.C. should
- * be expressed e.g. as "-253 01 26".</li>
+ *
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </oL>
  *
  * @param date        The date specification, possibly including time and timezone, in a standard
@@ -834,6 +835,8 @@ static int timestamp(long ijd, double fjd, char *buf) {
  * <ol>
  * <li>The timestamp uses the conventional date of the time. That is Gregorian dates after the
  * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </ol>
  *
  * @param time      Pointer to the astronomical time specification data structure.
@@ -938,6 +941,8 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
  * <ol>
  * <li>The timestamp uses the conventional date of the time. That is Gregorian dates after the
  * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </ol>
  *
  * @param time      Pointer to the astronomical time specification data structure.

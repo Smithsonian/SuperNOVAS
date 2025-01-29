@@ -6662,7 +6662,8 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  *
  * NOTES:
  * <ol>
- * <li>B.C. dates should be indicated as negative years, e.g. 1 B.C. as -1.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  *
  * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of
  * the normal range (for a leap year).</li>
@@ -6706,10 +6707,6 @@ double novas_calendar_to_jd(enum novas_calendar_type calendar, short year, short
     return NAN;
   }
 
-  // B.C. dates: -1 (i.e. 1 B.C. is equivalent to 0 A.D.)
-  if(year < 0)
-    year++;
-
   jd = day - 32123L + 1461L * (year + 4800L + (month - 14L) / 12L) / 4L + 367L * (month - 2L - (month - 14L) / 12L * 12L) / 12L;
   fjd = (hour - 12.0) / DAY_HOURS;
 
@@ -6729,7 +6726,11 @@ double novas_calendar_to_jd(enum novas_calendar_type calendar, short year, short
  * Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1,
  * TT, etc.) - output time value will have same basis.
  *
- * B.C. dates are returned as negative years, e.g. 1 B.C. is year -1.
+ * NOTES:
+ * <ol>
+ *  <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>
@@ -6792,9 +6793,6 @@ int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *yea
   mo = (int) ((long) mo + 2L - 12L * k);
   y = (int) (100L * (n - 49L) + m + k);
 
-  if(y <= 0)
-    y--;      // B.C. year
-
   if(year)
     *year = y;
   if(month)
@@ -6819,7 +6817,8 @@ int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *yea
  * use `novas_calendar_to_jd()` to convert dates to JD days with more specificity and
  * flexibility.</li>
  *
- * <li>B.C. dates should be indicated as negative years, e.g. 1 B.C. as -1.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  *
  * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of
  * the normal range (for a leap year).</li>
@@ -6832,7 +6831,7 @@ int novas_jd_to_calendar(double tjd, enum novas_calendar_type calendar, int *yea
  * </ol>
  *
  * @param year    [yr] Gregorian calendar year. B.C. years can be simply represented as
- *                negative years, e.g. 1 B.C. as -1.
+ *                &lt;=0, e.g. 1 B.C. as 0, and _X_ B.C. as (1 - _X_).
  * @param month   [month] Gregorian calendar month [1:12]
  * @param day     [day] Gregorian day of month [1:31]
  * @param hour    [hr] Hour of day [0:24]
@@ -6864,19 +6863,21 @@ double julian_date(short year, short month, short day, double hour) {
  * to obtain dates prior to that. You can use `novas_id_to_calendar()1 instead to convert
  * JD days to dates in specific calendars.</li>
  *
- * <li>B.C. dates are returned as negative years, e.g. 1 B.C. is year -1.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </ol>
  *
  * REFERENCES:
  * <ol>
+ *
  *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
  *  p. 657.</li>15 October 1582
  * </ol>
  *
  * @param tjd          [day] Julian date
  * @param[out] year    [yr] Gregorian calendar year. It may be NULL if not required.
- *                     B.C. years are represented as negative values, e.g. -1 corresponds
- *                     to 1 B.C.
+ *                     B.C. years are represented as &lt;=0, i.e. 1 B.C. as 0 and _X_ B.C.
+ *                     as (1 - _X_)
  * @param[out] month   [month] Gregorian calendat month [1:12]. It may be NULL if not
  *                     required.
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
