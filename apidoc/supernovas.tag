@@ -5924,7 +5924,6 @@
     <docanchor file="index.html">benchmarks</docanchor>
     <docanchor file="index.html">supernovas-features</docanchor>
     <docanchor file="index.html">added-functionality</docanchor>
-    <docanchor file="index.html">debug-mode</docanchor>
     <docanchor file="index.html">api-changes</docanchor>
     <docanchor file="index.html">solarsystem</docanchor>
     <docanchor file="index.html">calceph-integration</docanchor>

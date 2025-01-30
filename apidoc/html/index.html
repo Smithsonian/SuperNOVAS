@@ -154,7 +154,7 @@ Introduction</h2>
 <li><a class="el" href="index.html#added-functionality">New features</a>.</li>
 <li><a class="el" href="index.html#api-changes">Refining the API</a> to promote best programming practices.</li>
 <li><a class="el" href="index.html#multi-threading">Thread-safe calculations</a>.</li>
-<li><a class="el" href="index.html#debug-mode">Debug mode</a> with informative error tracing.</li>
+<li><a class="el" href="index.html#debug-support">Debug mode</a> with informative error tracing.</li>
 <li><a href="https://codecov.io/gh/Smithsonian/SuperNOVAS">Regression testing</a> and continuous integration on GitHub.</li>
 </ul>
 <p>At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream NOVAS C library, such that it can be used as a <em>build-time</em> replacement for NOVAS in your application without having to change existing (functional) code you may have written for NOVAS C.</p>
@@ -631,7 +631,7 @@ Representative benchmarks</h2>
 <h2><a class="anchor" id="autotoc_md72"></a>
 SuperNOVAS specific features</h2>
 <ul>
-<li><a class="el" href="index.html#added-functionality">Newly added functionality</a></li>
+<li><a class="el" href="index.html#added-functionality">Newly functionality highlights</a></li>
 <li><a class="el" href="index.html#api-changes">Refinements to the NOVAS C API</a></li>
 </ul>
 <p><a class="anchor" id="added-functionality"></a> </p>
@@ -640,14 +640,14 @@ New functionality highlights</h3>
 <p>Below is a non-exhaustive enumeration of some of the new features added by SuperNOVAS on top of the existing NOVAS C API. See <code>CHANGELOG.md</code> for more details.</p>
 <h3><a class="anchor" id="autotoc_md74"></a>
 New in v1.0</h3>
-<p><a class="anchor" id="debug-mode"></a></p><ul>
-<li>Changed to <a class="el" href="index.html#multi-threading">support for calculations in parallel threads</a> by making cached results thread-local. This works using the C11 standard <code>_Thread_local</code> or else the earlier GNU C &gt;= 3.3 standard <code>__thread</code> modifier. You can also set the preferred thread-local keyword for your compiler by passing it via <code>-DTHREAD_LOCAL=...</code> in <code>config.mk</code> to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.</li>
+<ul>
 <li>New runtime configuration:<ul>
 <li>The planet position, and generic Solar-system position calculator functions can be set at runtime, and users can provide their own custom implementations, e.g. to read ephemeris data, such as from a JPL <code>.bsp</code> file.</li>
 <li>If CIO locations vs GCRS are important to the user, the user may call <code><a class="el" href="novas_8c.html#a13c40b89c2cecd6a23720d181a800591">set_cio_locator_file()</a></code> at runtime to specify the location of the binary CIO interpolation table (e.g. <code>CIO_RA.TXT</code> or <code>cio_ra.bin</code>) to use, even if the library was compiled with the different default CIO locator path.</li>
 <li>The default low-precision nutation calculator <code><a class="el" href="nutation_8c.html#ab17083c5bc84987d4dda1172a4dab843">nu2000k()</a></code> can be replaced by another suitable IAU 2006 nutation approximation. For example, the user may want to use the <code><a class="el" href="nutation_8c.html#ae1a30706385dd901d96d28c816b51c87">iau2000b()</a></code> model or some custom algorithm instead.</li>
 </ul>
 </li>
+<li>New constants, and enums &ndash; adding more specificity and transparency to option switches and physical units.</li>
 <li>Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.</li>
 </ul>
 <h4><a class="anchor" id="autotoc_md75"></a>
@@ -682,6 +682,7 @@ New in v1.3</h3>
 <h3><a class="anchor" id="autotoc_md78"></a>
 Refinements to the NOVAS C API</h3>
 <ul>
+<li>Changed to <a class="el" href="index.html#multi-threading">support for calculations in parallel threads</a> by making cached results thread-local. This works using the C11 standard <code>_Thread_local</code> or else the earlier GNU C &gt;= 3.3 standard <code>__thread</code> modifier. You can also set the preferred thread-local keyword for your compiler by passing it via <code>-DTHREAD_LOCAL=...</code> in <code>config.mk</code> to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.</li>
 <li>SuperNOVAS functions take <code>enum</code>s as their option arguments instead of raw integers. The enums allow for some compiler checking (e.g. using the wrong enum), and make for more readable code that is easier to debug. They also make it easy to see what choices are available for each function argument, without having to consult the documentation each and every time.</li>
 <li>All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal duplicate arguments) and will return -1 (with <code>errno</code> set, usually to <code>EINVAL</code>) if the arguments supplied are invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C error code is returned for compatibility).</li>
 <li>All erroneous returns now set <code>errno</code> so that users can track the source of the error in the standard C way and use functions such as <code>perror()</code> and <code>strerror()</code> to print human-readable error messages.</li>
@@ -757,17 +758,17 @@ Optional NAIF CSPICE toolkit integration</h3>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas-cspice_8h.html">novas-cspice.h</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// You can load the desired kernels for CSPICE</span></div>
-<div class="line"><span class="comment">// E.g. load DE440s and the Mars satellites from /data/ephem:</span></div>
+<div class="line"><span class="comment">// E.g. load DE440s and the Mars satellites:</span></div>
 <div class="line"><span class="keywordtype">int</span> status;</div>
 <div class="line"> </div>
-<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/data/ephem/de440s.bsp&quot;</span>);</div>
+<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/path/to/de440s.bsp&quot;</span>);</div>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">  <span class="comment">// oops, the kernels must not have loaded...</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Load additional kernels as needed...</span></div>
-<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/data/ephem/mar097.bsp&quot;</span>);</div>
+<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/path/to/mar097.bsp&quot;</span>);</div>
 <div class="line">...</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Then use CSPICE as your SuperNOVAS ephemeris provider</span></div>
@@ -809,7 +810,7 @@ Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> de_number;          <span class="comment">// The DE number, e.g. 405 for DE405</span></div>
 <div class="line"><span class="keywordtype">double</span> from_jd, to_jd;  <span class="comment">// [day] Julian date range of the ephemeris data</span></div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_function" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open</a>(<span class="stringliteral">&quot;path-to/de405.bsp&quot;</span>, &amp;from_jd, &amp;to_jd, &amp;de_number);</div>
+<div class="line"><a class="code hl_function" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open</a>(<span class="stringliteral">&quot;path/to/de405.bsp&quot;</span>, &amp;from_jd, &amp;to_jd, &amp;de_number);</div>
 <div class="ttc" id="aeph__manager_8c_html_aabd581657809499fb433e4f9f56ace80"><div class="ttname"><a href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open</a></div><div class="ttdeci">short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number)</div><div class="ttdef"><b>Definition</b> eph_manager.c:85</div></div>
 </div><!-- fragment --><p>And, when you are done using the ephemeris file, you should close it with</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a>();</div>
