@@ -944,7 +944,7 @@ one minute.
  API. See `CHANGELOG.md` for more details.
  
  
-### New in v1.0
+#### New in v1.0
     
  - New runtime configuration:
 
@@ -962,7 +962,7 @@ one minute.
  
  - Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.
  
- 
+
 #### New in v1.1
 
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
@@ -1018,7 +1018,7 @@ one minute.
  - Added more physical unit constants to `novas.h`.
  
  
-### New in v1.3
+#### New in v1.3
 
  - New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always 
    defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.
@@ -1033,9 +1033,9 @@ one minute.
    Moon angles, and much more. 
  
  - New functions and data structures provide second order Taylor series expansion of the apparent horizontal or 
-   equatorial positions, distances and redshifts for sources. These values, including rates and accelerations can be 
+   equatorial positions, distances, and redshifts for sources. These values, including rates and accelerations, can be 
    directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also 
-   use themto obtain instantaneous projected (extrapolated) positions at low computational cost.
+   use them to obtain instantaneous projected (extrapolated) positions at low computational cost.
 
 
 
