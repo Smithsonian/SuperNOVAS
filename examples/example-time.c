@@ -94,6 +94,7 @@ int main() {
 
   // - Or for higher precision, get a split JD...
   fjd = novas_get_split_time(&time1, NOVAS_TDB, &ijd);
+  printf("Split date is %ld / %.9f", ijd, fjd);
 
 
   // -------------------------------------------------------------------------

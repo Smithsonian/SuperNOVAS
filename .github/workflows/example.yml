@@ -22,16 +22,16 @@ jobs:
 
     - name: Compile example-star.c
       run: |
-        cd examples
-        gcc -c -Wall -Werror -I ../include example-star.c
+        gcc -c -Wall -Werror -Iinclude examples/example-star.c
 
     - name: Compile example-high-z.c
       run: |
-        cd examples
-        gcc -c -Wall -Werror -I ../include example-high-z.c
+        gcc -c -Wall -Werror -Iinclude examples/example-high-z.c
 
     - name: Compile example-orbital.c
       run: |
-        cd examples
-        gcc -c -Wall -Werror -I ../include example-orbital.c
+        gcc -c -Wall -Werror -Iinclude examples/example-orbital.c
 
+    - name: Compile example-time.c
+      run: |
+        gcc -c -Wall -Werror -Iinclude examples/example-time.c
