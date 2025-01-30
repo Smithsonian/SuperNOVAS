@@ -72,7 +72,7 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
  - [New features](#added-functionality).
  - [Refining the API](#api-changes) to promote best programming practices.
  - [Thread-safe calculations](#multi-threading).
- - [Debug mode](#debug-mode) with informative error tracing.
+ - [Debug mode](#debug-support) with informative error tracing.
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
@@ -933,7 +933,7 @@ one minute.
 <a name="supernovas-features"></a>
 ## SuperNOVAS specific features
 
-- [Newly added functionality](#added-functionality)
+- [Newly functionality highlights](#added-functionality)
 - [Refinements to the NOVAS C API](#api-changes)
 
 
@@ -945,14 +945,7 @@ one minute.
  
  
 ### New in v1.0
-
- <a name="debug-mode"></a>
- - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
-   This works using the C11 standard `_Thread_local` or else the earlier GNU C &gt;= 3.3 standard `__thread` modifier.
-   You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
-   `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
-   thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
-   
+    
  - New runtime configuration:
 
    * The planet position, and generic Solar-system position calculator functions can be set at runtime, and users
@@ -964,6 +957,8 @@ one minute.
  
    * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
      approximation. For example, the user may want to use the `iau2000b()` model or some custom algorithm instead.
+ 
+ - New constants, and enums -- adding more specificity and transparency to option switches and physical units.
  
  - Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.
  
@@ -1046,6 +1041,12 @@ one minute.
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
+
+ - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
+   This works using the C11 standard `_Thread_local` or else the earlier GNU C &gt;= 3.3 standard `__thread` modifier.
+   You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
+   `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
+   thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
 
  - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. The enums allow for some 
    compiler checking (e.g. using the wrong enum), and make for more readable code that is easier to debug. They also 
@@ -1220,17 +1221,17 @@ Here is an example on how you might use CSPICE with SuperNOVAS in your applicati
   #include <novas-cspice.h>
 
   // You can load the desired kernels for CSPICE
-  // E.g. load DE440s and the Mars satellites from /data/ephem:
+  // E.g. load DE440s and the Mars satellites:
   int status;
   
-  status = cspice_add_kernel("/data/ephem/de440s.bsp");
+  status = cspice_add_kernel("/path/to/de440s.bsp");
   if(status < 0) {
     // oops, the kernels must not have loaded...
     ...
   }
   
   // Load additional kernels as needed...
-  status = cspice_add_kernel("/data/ephem/mar097.bsp");
+  status = cspice_add_kernel("/path/to/mar097.bsp");
   ...
   
   // Then use CSPICE as your SuperNOVAS ephemeris provider
@@ -1312,7 +1313,7 @@ Either way, before you can use the ephemeris, you must also open the relevant ep
  int de_number;	         // The DE number, e.g. 405 for DE405
  double from_jd, to_jd;  // [day] Julian date range of the ephemeris data
   
- ephem_open("path-to/de405.bsp", &from_jd, &to_jd, &de_number);
+ ephem_open("path/to/de405.bsp", &from_jd, &to_jd, &de_number);
 ```
 
 And, when you are done using the ephemeris file, you should close it with
