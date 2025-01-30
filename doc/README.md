@@ -1016,9 +1016,9 @@ one minute.
    Moon angles, and much more. 
  
  - New functions and data structures provide second order Taylor series expansion of the apparent horizontal or 
-   equatorial positions, distances and redshifts for sources. These values, including rates and accelerations can be 
+   equatorial positions, distances, and redshifts for sources. These values, including rates and accelerations, can be 
    directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also 
-   use themto obtain instantaneous projected (extrapolated) positions at low computational cost.
+   use them to obtain instantaneous projected (extrapolated) positions at low computational cost.
 
 
 
