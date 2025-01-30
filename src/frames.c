@@ -1309,7 +1309,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   const on_surface *loc;
   novas_frame frame1;
   sky_pos pos = {};
-  double lst, utc2tt, lastRA = NAN;
+  double lst, hUTC0, utc2tt, lastRA = NAN;
   int i;
 
   if(!source) {
@@ -1331,6 +1331,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   frame1 = *frame;                  // Time shifted frame
   loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
   utc2tt = (frame->time.dut1 + frame->time.ut1_to_tt) / DAY;
+  hUTC0 = novas_get_split_time(&frame->time, NOVAS_UTC, NULL) * 24.0;
 
   for(i = 0; i < novas_inv_max_iter; i++) {
     novas_timespec *t = &frame1.time;
@@ -1339,14 +1340,17 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
 
     // Hourangle when source crosses nominal elevation
+    // TODO use equ_track to get better estimate for moving sources (at t > t0)...
     lha = calc_lha(el, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE);
     if(isnan(lha))
       return novas_trace_nan(fn);
 
-    // Calculate transit UTC at observer location
-    tUTC = remainder(pos.ra - novas_frame_lst(frame), DAY_HOURS);
+    // Calculate nearest transit UTC at observer location (frame UTC plus hour angle)
+    // TODO use equ_track to get better estimate for moving sources (at t > t0)...
+    tUTC = remainder(hUTC0 + pos.ra - novas_frame_lst(frame), DAY_HOURS);
 
     // Adjusted frame time for last crossing time estimate
+    // TODO use equ_track to get better estimate for moving sources (at t > t0)...
     t->ijd_tt = frame->time.ijd_tt;
     t->fjd_tt = utc2tt + (tUTC + sign * lha) / DAY_HOURS;
 
