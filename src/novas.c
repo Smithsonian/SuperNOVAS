@@ -6192,11 +6192,14 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
   double slon, clon, slat, clat;
   double dlon, dlat, dr;
 
-  if(!los)
-    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
-
   if(!xyz)
     return novas_error(-1, EINVAL, fn, "output polar-orineted vector is NULL");
+
+  if(xyz != los)
+    memset(xyz, 0, XYZ_VECTOR_SIZE);
+
+  if(!los)
+    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
 
   lon *= DEGREE;
   lat *= DEGREE;
@@ -6241,11 +6244,14 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
   double slon, clon, slat, clat;
   double x, y, z;
 
-  if(!xyz)
-    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
-
   if(!los)
     return novas_error(-1, EINVAL, fn, "output polar-orineted vector is NULL");
+
+  if(los != xyz)
+    memset(los, 0, XYZ_VECTOR_SIZE);
+
+  if(!xyz)
+    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
 
   lon *= DEGREE;
   lat *= DEGREE;
@@ -6759,6 +6765,16 @@ int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *year, i
   long jd, k, m, n;
   int y, mo, d;
   double djd, h;
+
+  // Default return values
+  if(year)
+    *year = 0;
+  if(month)
+    *month = 0;
+  if(day)
+    *day = 0;
+  if(hour)
+    *hour = NAN;
 
   djd = tjd + 0.5;
   jd = (long) floor(djd);

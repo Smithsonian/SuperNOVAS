@@ -1818,17 +1818,16 @@ double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
   const double jd2[2] = { jd_tdb, 0.0 };
   double pos[3], vel[3], d;
 
+  if(rate)
+    *rate = NAN;
+
   if(!source) {
     novas_error(0, EINVAL, fn, "input source is NULL");
-    if(rate)
-      *rate = NAN;
     return NAN;
   }
 
   if(source->type == NOVAS_CATALOG_OBJECT) {
     novas_error(0, EINVAL, fn, "input source is not a Solar-system body: type %d", source->type);
-    if(rate)
-      *rate = NAN;
     return NAN;
   }
 

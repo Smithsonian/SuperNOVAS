@@ -863,11 +863,13 @@ int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
   char buf[40];
   int l;
 
-  if(!time)
-    return novas_error(-1, EINVAL, fn, "input time is NULL");
-
   if(!dst)
     return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  *dst = '\0';
+
+  if(!time)
+    return novas_error(-1, EINVAL, fn, "input time is NULL");
 
   if(maxlen < 1)
     return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
@@ -926,6 +928,8 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
       return sprintf(buf, "TDB");
   }
 
+  *buf = '\0';
+
   return novas_error(-1, EINVAL, fn, "invalid timescale: %d", scale);
 }
 
@@ -970,11 +974,13 @@ int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char
   int i;
   char buf[40];
 
-  if(!time)
-    return novas_error(-1, EINVAL, fn, "input time is NULL");
-
   if(!dst)
     return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  *dst = '\0';
+
+  if(!time)
+    return novas_error(-1, EINVAL, fn, "input time is NULL");
 
   if(maxlen < 1)
     return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
