@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['s_20tt_20pleph_20tt_20fortran_20interface_0',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md85',1,'']]],
+  ['s_20tt_20pleph_20tt_20fortran_20interface_0',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md86',1,'']]],
   ['sc_5fpos_1',['sc_pos',['../structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8',1,'in_space']]],
   ['sc_5fvel_2',['sc_vel',['../structin__space.html#a9615dabeef0c31f47546c8083b768257',1,'in_space']]],
-  ['schedule_3',['Release schedule',['../index.html#autotoc_md90',1,'']]],
-  ['service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md82',1,'']]],
-  ['services_5',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md79',1,'']]],
+  ['schedule_3',['Release schedule',['../index.html#autotoc_md91',1,'']]],
+  ['service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md83',1,'']]],
+  ['services_5',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md80',1,'']]],
   ['set_20up_20the_20observing_20frame_6',['Set up the observing frame',['../index.html#autotoc_md57',1,'']]],
   ['set_5fcio_5flocator_5ffile_7',['set_cio_locator_file',['../novas_8c.html#a13c40b89c2cecd6a23720d181a800591',1,'set_cio_locator_file(const char *filename):&#160;novas.c'],['../novas_8h.html#a13c40b89c2cecd6a23720d181a800591',1,'set_cio_locator_file(const char *filename):&#160;novas.c']]],
   ['set_5fephem_5fprovider_8',['set_ephem_provider',['../solarsystem_8h.html#a6097083c438a8d1872c2e00a66360030',1,'set_ephem_provider(novas_ephem_provider func):&#160;novas.c'],['../novas_8c.html#a6097083c438a8d1872c2e00a66360030',1,'set_ephem_provider(novas_ephem_provider func):&#160;novas.c']]],
@@ -20,7 +20,7 @@ var searchData=
   ['sky_17',['sky',['../index.html#autotoc_md58',1,'Calculate an apparent place on sky'],['../md_LEGACY.html#autotoc_md32',1,'Calculate apparent positions on sky']]],
   ['sky_5fpos_18',['sky_pos',['../structsky__pos.html',1,'']]],
   ['sky_5fpos_5finit_19',['SKY_POS_INIT',['../novas_8h.html#a462bdac0f370f0c5b421ae5b3f3e35f2',1,'novas.h']]],
-  ['solar_20system_20ephemeris_20data_20or_20services_20',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md79',1,'']]],
+  ['solar_20system_20ephemeris_20data_20or_20services_20',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md80',1,'']]],
   ['solar_20system_20source_21',['solar system source',['../md_LEGACY.html#autotoc_md35',1,'Calculating positions for a Solar-system source'],['../index.html#autotoc_md60',1,'Calculating positions for a Solar-system source']]],
   ['solarsystem_22',['solarsystem',['../solsys-ephem_8c.html#a5e2d599b1dc7a0e87bfd29dbd6413398',1,'solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity):&#160;solsys-ephem.c'],['../solsys1_8c.html#a5e2d599b1dc7a0e87bfd29dbd6413398',1,'solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity):&#160;solsys1.c'],['../solsys2_8c.html#a5e2d599b1dc7a0e87bfd29dbd6413398',1,'solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity):&#160;solsys2.c'],['../solsys3_8c.html#a5e2d599b1dc7a0e87bfd29dbd6413398',1,'solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity):&#160;solsys3.c'],['../solarsystem_8h.html#a5e2d599b1dc7a0e87bfd29dbd6413398',1,'solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity):&#160;solsys-ephem.c']]],
   ['solarsystem_20tt_20and_20tt_20readeph_20tt_20modules_23',['Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules',['../index.html#autotoc_md48',1,'']]],
@@ -58,9 +58,9 @@ var searchData=
   ['supernovas_5fpatchlevel_55',['SUPERNOVAS_PATCHLEVEL',['../novas_8h.html#a9b926427954233b94ebd6925d86f9f81',1,'novas.h']]],
   ['supernovas_5frelease_5fstring_56',['SUPERNOVAS_RELEASE_STRING',['../novas_8h.html#aadef42ba39811e058ee9efe2c6f7d151',1,'novas.h']]],
   ['supernovas_5fversion_5fstring_57',['SUPERNOVAS_VERSION_STRING',['../novas_8h.html#a44de9d1672290d153a1dfb0685886208',1,'novas.h']]],
-  ['support_58',['Runtime debug support',['../index.html#autotoc_md88',1,'']]],
-  ['support_20for_20older_20jpl_20major_20planet_20ephemerides_59',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md83',1,'']]],
+  ['support_58',['Runtime debug support',['../index.html#autotoc_md89',1,'']]],
+  ['support_20for_20older_20jpl_20major_20planet_20ephemerides_59',['Legacy support for (older) JPL major planet ephemerides',['../index.html#autotoc_md84',1,'']]],
   ['system_60',['system',['../structnovas__orbital.html#a2d7f51b64b1f15b7c85fdf1130d3ea87',1,'novas_orbital']]],
-  ['system_20ephemeris_20data_20or_20services_61',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md79',1,'']]],
+  ['system_20ephemeris_20data_20or_20services_61',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md80',1,'']]],
   ['system_20source_62',['system source',['../index.html#autotoc_md60',1,'Calculating positions for a Solar-system source'],['../md_LEGACY.html#autotoc_md35',1,'Calculating positions for a Solar-system source']]]
 ];

@@ -921,7 +921,13 @@ one minute.
 
 
 <a name="added-functionality"></a>
-### Newly added functionality
+### New functionality highlights
+
+ Below is a non-exhaustive enumeration of some of the new features added by SuperNOVAS on top of the existing NOVAS C
+ API. See `CHANGELOG.md` for more details.
+ 
+ 
+### New in v1.0
 
  <a name="debug-mode"></a>
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
@@ -929,113 +935,35 @@ one minute.
    You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
    `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
    thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
- 
- - New debug mode and error traces. Simply call `novas_debug(NOVAS_DEBUG_ON)` or `novas_debug(NOVAS_DEBUG_EXTRA)`
-   to enable. When enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
-   be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can have
-   a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing
-   `NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application
-   calls `grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug 
-   mode is `NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to 
-   planets):
-   ```
-    ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
-         @ earth_sun_calc_hp [=> 2]
-         @ solarsystem_hp [=> 2]
-         @ ephemeris:planet [=> 12]
-         @ grav_def:Jupiter [=> 12]
-   ```
    
  - New runtime configuration:
 
-   * The planet position calculator function used by `ephemeris()` can be set at runtime via `set_planet_provider()`, 
-     and `set_planet_provider_hp()` (for high precision calculations). Similarly, if `planet_ephem_provider()` or 
-     `planet_ephem_provider_hp()` (defined in `solsys-ephem.c`) are set as the planet calculator functions, then 
-     `set_ephem_provider()` can set the user-specified function to use with these to actually read ephemeris data
-     (e.g. from a JPL `.bsp` file).
+   * The planet position, and generic Solar-system position calculator functions can be set at runtime, and users
+     can provide their own custom implementations, e.g. to read ephemeris data, such as from a JPL `.bsp` file.
  
    * If CIO locations vs GCRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
-     specify the location of the binary CIO interpolation table (e.g. `cio_ra.bin`) to use, even if the library was
-     compiled with the different default CIO locator path. 
+     specify the location of the binary CIO interpolation table (e.g. `CIO_RA.TXT` or `cio_ra.bin`) to use, even if 
+     the library was compiled with the different default CIO locator path. 
  
    * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
-     approximation via `set_nutation_lp_provider()`. For example, the user may want to use the `iau2000b()` model 
-     or some custom algorithm instead.
+     approximation. For example, the user may want to use the `iau2000b()` model or some custom algorithm instead.
  
- - New intuitive XYZ coordinate conversion functions:
-   * for GCRS - CIRS - ITRS (IAU 2000 standard): `gcrs_to_cirs()`, `cirs_to_itrs()`, and `itrs_to_cirs()`, 
-     `cirs_to_gcrs()`.
-   * for GCRS - J2000 - TOD - ITRS (old methodology): `gcrs_to_j2000()`, `j2000_to_tod()`, `tod_to_itrs()`, and 
-     `itrs_to_tod()`, `tod_to_j2000()`, `j2000_to_gcrs()`.
-
- - New `itrs_to_hor()` and `hor_to_itrs()` to convert Earth-fixed ITRS coordinates to astrometric azimuth and 
-   elevation or back. Whereas `tod_to_itrs()` followed by `itrs_to_hor()` is effectively a just a more explicit 2-step 
-   version of the existing `equ2hor()` for converting from TOD to to local horizontal (old methodology), the 
-   `cirs_to_itrs()`  followed by `itrs_to_hor()` does the same from CIRS (new IAU standard methodology), and had no 
-   prior equivalent in NOVAS C 3.1.
-   
- - New `ecl2equ()` for converting ecliptic coordinates to equatorial, complementing existing `equ2ecl()`.
-   
- - New `gal2equ()` for converting galactic coordinates to ICRS equatorial, complementing existing `equ2gal()`.
-   
- - New `refract_astro()` complements the existing `refract()` but takes an unrefracted (astrometric) zenith angle as 
-   its argument.
-
- - New convenience functions to wrap `place()` for simpler specific use: `place_star()`, `place_icrs()`, 
-   `place_gcrs()`, `place_cirs()`, and `place_tod()`.
-   
- - New `radec_star()` and `radec_planet()` as the common point for existing functions such as `astro_star()`, 
-   `local_star()`, `virtual_planet()`, `topo_planet()` etc.
+ - Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.
  
- - New time conversion utilities `tt2tdb()`, `get_utc_to_tt()`, and `get_ut1_to_tt()` make it simpler to convert 
-   between UTC, UT1, TT, and TDB time scales, and to supply `ut1_to_tt` arguments to `place()` or topocentric 
-   calculations.
  
- - Co-existing `solarsystem()` variants. It is possible to use the different `solarsystem()` implementations 
-   provided by `solsys1.c`, `solsys2.c`, `solsys3.c` and/or `solsys-ephem.c` side-by-side, as they define their
-   functionalities with distinct, non-conflicting names, e.g. `earth_sun_calc()` vs `planet_jplint()` vs
-   `planet_eph_manager()` vs `planet_ephem_provider()`. See the section on 
-   [Building and installation](#installation) further above on including a selection of these in your library 
-   build.)
-
- - New `novas_case_sensitive(int)` to enable (or disable) case-sensitive processing of object names. (By default NOVAS 
-   `object` names are converted to upper-case, making them effectively case-insensitive.)
-
- - New `make_planet()` and `make_ephem_object()` to make it simpler to configure Solar-system objects.
-
-
-#### Added in v1.1
+#### New in v1.1
 
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
    place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
    defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum 
    additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C 
    approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
-   their internal state is never modified during the calculations. The following new functions were added: 
-   `novas_make_frame()`, `novas_change_observer()`, `novas_geom_posvel()`, `novas_geom_to_app()`, `novas_sky_pos()`, 
-   `novas_app_to_hor()`, `novas_app_to_geom()`, `novas_hor_to_app()`, `novas_make_transform()`, 
-   `novas_invert_transform()`, `novas_transform_vector()`, and `novas_transform_sky_pos()`.
+   their internal state is never modified during the calculations.
    
  - New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). You 
-   can set the time via `novas_set_time()` or `novas_set_split_time()` to a JD date in the timescale of choice (UTC, 
-   UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX time with `novas_set_unix_time()`. Once set, you can obtain an 
-   expression of that time in any timescale of choice via `novas_get_time()`, `novas_get_split_time()` or 
-   `novas_get_unix_time()`. And, you can create a new time specification by incrementing an existing one, using 
-   `novas_increment_time()`, or measure time differences via `novas_diff_time()`, `novas_diff_tcg()`, or 
-   `novas_diff_tcb()`.
- 
- - Added `novas_planet_bundle` structure to handle planet positions and velocities more elegantly (e.g. for 
-   gravitational deflection calculations).
-   
- - `obs_posvel()` to calculate the observer position and velocity relative to the Solar System Barycenter (SSB).
- 
- - `obs_planets()` to calculate planet positions (relative to observer) and velocities (w.r.t. SSB).
-   
- - `grav_undef()` to undo gravitational bending of the observed light to obtain geometric positions from
-   observed ones.
-   
- - `grav_planets()` and `grav_undo_planets()` functions to apply/ or undo gravitational deflection using a specific
-   set of gravitating bodies.
+   can set the time to a JD date in the timescale of choice (UTC, UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX 
+   time. Once set, you can obtain an expression of that time in any timescale of choice. And, you can create a new 
+   time specification by incrementing an existing one, or measure precise time differences.
    
  - New coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
    `NOVAS_J2000` for the J2000 dynamical reference system.
@@ -1046,140 +974,62 @@ one minute.
    Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system
    observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative
    to the Solar System Barycenter (SSB), instead of the geocenter.
-
- - Added humidity field to `on_surface` structure, e.g. for refraction calculations at radio wavelengths. The
-   `make_on_surface()` function will set humidity to 0.0, but the user can set the field appropriately afterwards.
-
- - New set of built-in refraction models to use with the frame-based `novas_app_to_hor()` / `novas_hor_to_app()` 
-   functions. The models `novas_standard_refraction()` and `novas_optical_refraction()` implement the same refraction 
-   model as `refract()` in NOVAS C 3.1, with `NOVAS_STANDARD_ATMOSPHERE` and `NOVAS_WEATHER_AT_LOCATION` 
-   respectively, including the reversed direction provided by `refract_astro()`. The user may supply their own custom 
-   refraction model also, and may make use of the generic reversal function `novas_inv_refract()` to calculate 
-   refraction in the reverse direction (observer vs astrometric elevations) as needed.
-
- - Added radio refraction model `novas_radio_refraction()` based on the formulae by Berman &amp; Rockwell 1976.
- 
- - Added `cirs_to_tod()` and `tod_to_cirs()` functions for efficient transformation between True of Date (TOD) and
-   Celestial Intermediate Reference System (CIRS), and vice versa.
-
- - Added `make_cat_object()` function to create a NOVAS celestial `object` structure from existing `cat_entry` data.
+   
+ - New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model
+   based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and 
+   may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in the reverse 
+   direction (observer vs astrometric elevations) as needed.
 
 
-#### Added in v1.2
+#### New in v1.2
 
- - New `make_redshifted_cat_entry()` and `make_redshifted_object()` to simplify the creation of distant catalog 
-   sources that are characterized with a redshift measure rather than a radial velocity value.
-
- - New generic redshift-handling functions `novas_v2z()`, `novas_z2v()`, 
- 
  - New functions to calculate and apply additional gravitational redshift corrections for light that originates
    near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive
-   gravitating bodies (other than the Sun and Earth). The added functions are `grav_redshift()`, `redhift_vrad()`,
-   `unredshift_vrad()`, `novas_z_add()`, and `novas_z_inv()`.
-
- - CALCEPH integration: `novas_use_calceph()` and/or `novas_use_calceph_planets()` to specify and use ephemeris data 
-   via CALCEPH for Solar-system sources in general, and for major planets specifically; and `novas_calceph_use_ids()` 
-   to specify whether `object.number` in `NOVAS_EPHEM_OBJECT` type objects is a NAIF ID (default) or else a CALCEPH ID 
-   number of the Solar-system body.
+   gravitating bodies (other than the Sun and Earth).
    
- - NAIF CSPICE integration: `novas_use_cspice()`, `novas_use_cspice_planets()`, `novas_use_cspice_ephem()` to use the 
-   NAIF CSPICE library for all Solar-system sources, major planets only, or for other bodies only. 
-   `NOVAS_EPHEM_OBJECTS` should use NAIF IDs with CSPICE (or else -1 for name-based lookup). Also provides
-   `cspice_add_kernel()` and `cspice_remove_kernel()`.
+ - [CALCEPH integration](#calceph-integration) to specify and use ephemeris data via the CALCEPH library for 
+   Solar-system sources in general, and for major planets specifically.
    
- - NAIF/NOVAS ID conversions for major planets (and Sun, Moon, SSB...): `novas_to_naif_planet()`, 
-   `novas_to_dexxx_planet()`, and `naif_to_novas_planet()`.
+ - [NAIF CSPICE integration](#cspice-integration) to use the NAIF CSPICE library for all Solar-system sources, or for
+   major planets or other bodies only. 
    
- - Access to custom ephemeris provider functions: `get_planet_provider()` and `get_planet_provider_hp()`.
-
- - Added `novas_planet_for_name()` function to return the NOVAS planet ID for a given (case insensitive) name.
-
  - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit can 
-   be defined by the set of `novas_orbital`, relative to a `novas_orbital_system`. You can initialize an `object` with 
-   a set of orbital elements using `make_orbital_object()`, and for planetary satellite orbits you might use 
-   `novas_set_orbsys_pole()`. For orbital objects, `ephemeris()` will call on the new `novas_orbit_posvel()` to 
-   calculate positions. While orbital elements do not always yield precise positions, they can for shorter periods, 
-   provided that the orbital elements are up-to-date. For example, the Minor Planer Center (MPC) publishes accurate 
-   orbital elements for all known asteroids and comets regularly. For newly discovered objects, this may be the only 
-   and/or most accurate information available anywhere.
+   be defined by the set of `novas_orbital`, relative to a `novas_orbital_system`. While orbital elements do not 
+   always yield precise positions, they can for shorter periods, provided that the orbital elements are up-to-date. 
+   For example, the Minor Planer Center (MPC) publishes accurate orbital elements for all known asteroids and comets 
+   regularly. For newly discovered objects, this may be the only and/or most accurate information available anywhere.
 
  - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
    from the corresponding planet centers in calculations.
- 
- - Added `gcrs_to_tod()` / `tod_to_gcrs()` and `gcrs_to_mod()` / `mod_to_gcrs()` vector conversion functions for
-   convenience.
-   
- - Added various `object` initializer macros in `novas.h` for the major planets, Sun, Moon, and barycenters, e.g. 
-   `NOVAS_EARTH_INIT` or `NOVAS_SSB_INIT`. These wrap the parametric `NOVAS_PLANET_INIT(num, name)` macro, and can be
-   used to simplify the initialization of NOVAS `object`s.
 
  - Added more physical unit constants to `novas.h`.
  
-### Added in v1.3
-
- - New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
-   Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
-
- - New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates using 
-   the specific type of calendar (Gregorian, Roman/Julian, or the conventional Western calendar).
-
- - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 
-   time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and
-
- - New `novas_parse_date()` / `novas_parse_date_format()` to parse date/time specifications, `novas_parse_dms()` and 
-   `novas_parse_hms()` to return hours and degrees for HMS and DMS specifications, as well as the updated parse 
-   position.
  
- - New `novas_timescale_for_string()` to match timescale constants to string representations, such as "UTC", or "TAI",
-   and `novas_print_timescale()` to convert to string representation.
+### New in v1.3
+
+ - New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always 
+   defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.
+
+ - Many new functions to convert dates/times and angles to/from their string representations.
+
+ - New convenience function for oft-used astronomical calculations, such as rise/set times, LST, parallactic angle 
+   (a.k.a. Vertical Position Angle), heliocentric distance, illumination fraction, or incident solar power, Sun and 
+   Moon angles, and much more. 
  
- - New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision, and
-   `novas_timestamp()` to print timestamps in specific timescales.
+ - New data structures to provide second order Taylor series expansion of the apparent horizontal or equatorial 
+   positions, distances and redshifts for sources. These values, including rates and accelerations can be directly 
+   useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also use them
+   to obtain instantaneous projected (extrapolated) positions at low computational cost.
 
- - New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
-   Earth-based observing frame.
-   
- - New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or sets
-   below a specific elevation on a given date. (For Earth-based observers only).
-
- - New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given date. 
-   The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, while
-   `novas_solar_illum()` can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen
-   from the observer location.
-
- - New `novas_hpa()` and `novas_epa()` functions to calculate the parallactic angle (a.k.a. vertical position angle) 
-   for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively. 
-   The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image or detector 
-   array) between the local horizontal and equatorial orientations, e.g. via the newly added `novas_h2e_offset()` or 
-   `novas_e2h_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
-   projections, such as described in Calabretta &amp; Greisen 2002.
-   
- - New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 
-   apparent distance between two spherical or equatorial locations, or between two sources, respectively. 
-   `novas_sun_angle()` and `novas_moon_angle()` can be used to calculate the apparent angular distance of sources from 
-   the Sun and Moon, respectively.
-
- - New `novas_observable` and `novas_track` data structures to provide second order Taylor series expansion of the 
-   apparent horizontal or equatorial positions, distances and redshifts for sources. They can be calculated with the 
-   newly added `novas_hor_track()` or `novas_equ_track()` functions. Such tracking values, including rates and 
-   accelerations can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track 
-   sources (hence the name). You can also obtain instantaneous projected (extrapolated) positions from the tracking 
-   parameters via `novas_track_pos()` at low computational cost.
-   
- - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
-   &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.
-   
- - New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial projections
-   along a line of sight in the direction of a source. Such projections are oft used in interferometry.
 
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
 
- - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. These enums are defined in 
-   `novas.h`. The same header also defines a number of useful constants. The enums allow for some compiler checking, 
-   and make for more readable code that is easier to debug. They also make it easy to see what choices are available
-   for each function argument, without having to consult the documentation each and every time.
+ - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. The enums allow for some 
+   compiler checking (e.g. using the wrong enum), and make for more readable code that is easier to debug. They also 
+   make it easy to see what choices are available for each function argument, without having to consult the 
+   documentation each and every time.
 
  - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
    duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
@@ -1210,8 +1060,8 @@ one minute.
    the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchange of `cat_entry` records
    with NOVAS C 3.1.
 
- - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` value
-   in the supplied `cat_entry` structure).
+ - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` 
+   value in the supplied `cat_entry` structure).
    
  - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL. (NOVAS C
    3.1 would return an error if a CIO locator file was previously opened but cannot provide the data for whatever
@@ -1518,6 +1368,20 @@ to a major planet. Thus, with `NOVAS_DEBUG_ON`, `place()` go about as usual even
 known. However, `NOVAS_DEBUG_EXTRA` will not give it a free pass, and will make `place()` return an error (and print 
 the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.
 
+When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
+be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can havev a 
+better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing 
+`NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application calls 
+`grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug mode is 
+`NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):
+
+```
+  ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
+       @ earth_sun_calc_hp [=> 2]
+       @ solarsystem_hp [=> 2]
+       @ ephemeris:planet [=> 12]
+       @ grav_def:Jupiter [=> 12]
+```
 
 -----------------------------------------------------------------------------
 

@@ -3,10 +3,10 @@ var searchData=
   ['c_0',['c',['../novascon_8c.html#a9e8a46a0e00368ad98642587ca4ebdbe',1,'C:&#160;novascon.c'],['../novascon_8h.html#a9e8a46a0e00368ad98642587ca4ebdbe',1,'C:&#160;novascon.c']]],
   ['c_203_201_1',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md43',1,'']]],
   ['c_203_201_20issues_2',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md41',1,'']]],
-  ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md77',1,'']]],
+  ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md78',1,'']]],
   ['c_5fauday_4',['c_auday',['../novascon_8c.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c'],['../novascon_8h.html#a55379c7fece80070614c09bb218275b6',1,'C_AUDAY:&#160;novascon.c']]],
   ['cal_5fdate_5',['cal_date',['../novas_8c.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c'],['../novas_8h.html#a410a61c67f5893584b09953fa4885fe5',1,'cal_date(double tjd, short *year, short *month, short *day, double *hour):&#160;novas.c']]],
-  ['calceph_20integration_6',['Optional CALCEPH integration',['../index.html#autotoc_md80',1,'']]],
+  ['calceph_20integration_6',['Optional CALCEPH integration',['../index.html#autotoc_md81',1,'']]],
   ['calculate_20an_20apparent_20place_20on_20sky_7',['Calculate an apparent place on sky',['../index.html#autotoc_md58',1,'']]],
   ['calculate_20apparent_20positions_20on_20sky_8',['Calculate apparent positions on sky',['../md_LEGACY.html#autotoc_md32',1,'']]],
   ['calculate_20azimuth_20and_20elevation_20angles_20at_20the_20observing_20location_9',['Calculate azimuth and elevation angles at the observing location',['../index.html#autotoc_md59',1,'']]],
@@ -37,8 +37,8 @@ var searchData=
   ['compatibility_20with_20novas_20c_203_201_34',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md43',1,'']]],
   ['contents_35',['Table of Contents',['../index.html#autotoc_md36',1,'']]],
   ['contributing_20to_20supernovas_36',['Contributing to SuperNOVAS',['../md_CONTRIBUTING.html',1,'']]],
-  ['cspice_20toolkit_20integration_37',['Optional NAIF CSPICE toolkit integration',['../index.html#autotoc_md81',1,'']]],
+  ['cspice_20toolkit_20integration_37',['Optional NAIF CSPICE toolkit integration',['../index.html#autotoc_md82',1,'']]],
   ['cspice_5fadd_5fkernel_38',['cspice_add_kernel',['../novas-cspice_8h.html#ae02d26964099f56c375dc78172ad135b',1,'cspice_add_kernel(const char *filename):&#160;solsys-cspice.c'],['../solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b',1,'cspice_add_kernel(const char *filename):&#160;solsys-cspice.c']]],
   ['cspice_5fremove_5fkernel_39',['cspice_remove_kernel',['../novas-cspice_8h.html#a38e3b3155cad3b3822fbc3e553060ab1',1,'cspice_remove_kernel(const char *filename):&#160;solsys-cspice.c'],['../solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1',1,'cspice_remove_kernel(const char *filename):&#160;solsys-cspice.c']]],
-  ['custom_20ephemeris_20functions_40',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md86',1,'']]]
+  ['custom_20ephemeris_20functions_40',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md87',1,'']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['2_0',['Added in v1.2',['../index.html#autotoc_md75',1,'']]],
+  ['2_0',['New in v1.2',['../index.html#autotoc_md76',1,'']]],
   ['2_200_202025_2001_2015_1',['[1.2.0] - 2025-01-15',['../md_CHANGELOG.html#autotoc_md5',1,'']]],
   ['2024_2003_2001_2',['[1.0.0] - 2024-03-01',['../md_CHANGELOG.html#autotoc_md20',1,'']]],
   ['2024_2005_2013_3',['[1.0.1] - 2024-05-13',['../md_CHANGELOG.html#autotoc_md16',1,'']]],

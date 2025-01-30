@@ -59,25 +59,26 @@ var NAVTREE =
       ] ],
       [ "Representative benchmarks", "index.html#autotoc_md70", null ],
       [ "SuperNOVAS specific features", "index.html#autotoc_md72", [
-        [ "Newly added functionality", "index.html#autotoc_md73", [
-          [ "Added in v1.1", "index.html#autotoc_md74", null ],
-          [ "Added in v1.2", "index.html#autotoc_md75", null ]
+        [ "New functionality highlights", "index.html#autotoc_md73", null ],
+        [ "New in v1.0", "index.html#autotoc_md74", [
+          [ "New in v1.1", "index.html#autotoc_md75", null ],
+          [ "New in v1.2", "index.html#autotoc_md76", null ]
         ] ],
-        [ "Added in v1.3", "index.html#autotoc_md76", null ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md77", null ]
+        [ "New in v1.3", "index.html#autotoc_md77", null ],
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md78", null ]
       ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md79", [
-        [ "Optional CALCEPH integration", "index.html#autotoc_md80", null ],
-        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md81", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md82", null ],
-        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md83", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md84", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md85", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md80", [
+        [ "Optional CALCEPH integration", "index.html#autotoc_md81", null ],
+        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md82", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md83", null ],
+        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md84", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md85", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md86", null ]
         ] ],
-        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md86", null ]
+        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md87", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md88", null ],
-      [ "Release schedule", "index.html#autotoc_md90", null ],
+      [ "Runtime debug support", "index.html#autotoc_md89", null ],
+      [ "Release schedule", "index.html#autotoc_md91", null ],
       [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ],
@@ -150,10 +151,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#a618bbba887b9bc9e7df878234c66c215",
-"novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3",
-"solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86",
-"timescale_8c.html#abacd89aa380c85da2d3c19a7e2187df3"
+"novas_8c.html#a60ea97a77320c52b566f8e8fb5faf304",
+"novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4",
+"solarsystem_8h.html#a13b1204e7ad069e62b0cb7024fbfee0d",
+"timescale_8c.html#ab904df0f504d07bbf73f84e2a1c43e07"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
