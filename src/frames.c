@@ -1292,7 +1292,7 @@ static double calc_lha(double el, double dec, double lat) {
  * NOTES:
  * <ol>
  * <li>The current implementation is not suitable for calculating rise/set times for near-Earth objects,
- * such as Low-Earth Orbit (LEO) satellites, which move at degrees-per-second rates.</li>
+ * such as Low-Earth Orbit (LEO) satellites, which move at rates above 15 arcseconds per second.</li>
  * </ol>
  *
  * @param el          [deg] Elevation angle.
@@ -1333,6 +1333,9 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     el -= ref / 3600.0;
   }
 
+  // TODO for fast moving sources, we might want to time-step, say in ~30-deg steps, to bracket
+  //      the next rise / set first before entering convergent loop.
+
   el *= DEGREE;                     // convert to degrees.
   frame1 = *frame;                  // Time shifted frame
   loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
@@ -1347,17 +1350,14 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
 
     // Hourangle when source crosses nominal elevation
-    // TODO use equ_track to get better estimate for moving sources (at t > t0)...
     lha = calc_lha(el, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE);
     if(isnan(lha))
       return novas_trace_nan(fn);
 
     // Calculate nearest transit UTC at observer location (frame UTC plus hour angle)
-    // TODO use equ_track to get better estimate for moving sources (at t > t0)...
     tUTC = remainder(hUTC0 + pos.ra - lst / SIDEREAL_RATE, DAY_HOURS);
 
     // Adjusted frame time for last crossing time estimate
-    // TODO use equ_track to get better estimate for moving sources (at t > t0)...
     t->ijd_tt = frame->time.ijd_tt;
     t->fjd_tt = utc2tt + (tUTC + sign * lha / SIDEREAL_RATE) / DAY_HOURS;
 
