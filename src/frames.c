@@ -36,6 +36,7 @@
 #define APP_TO_GEOM         (-1)                ///< Apparent to geometric conversion
 
 #define NOVAS_TRACK_DELTA   30.0                ///< [s] Time step for evaluation horizontal tracking derivatives.
+#define SIDEREAL_RATE       1.002737891         ///< rate at which sidereal time advances faster than UTC
 /// \endcond
 
 static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b) {
@@ -1288,6 +1289,12 @@ static double calc_lha(double el, double dec, double lat) {
  * time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric
  * refraction also.
  *
+ * NOTES:
+ * <ol>
+ * <li>The current implementation is not suitable for calculating rise/set times for near-Earth objects,
+ * such as Low-Earth Orbit (LEO) satellites, which move at degrees-per-second rates.</li>
+ * </ol>
+ *
  * @param el          [deg] Elevation angle.
  * @param sign        1 for rise time, or -1 for setting time.
  * @param source      Observed source
@@ -1308,7 +1315,6 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
   const on_surface *loc;
   novas_frame frame1;
-  sky_pos pos = {};
   double lst, hUTC0, utc2tt, lastRA = NAN;
   int i;
 
@@ -1331,10 +1337,11 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   frame1 = *frame;                  // Time shifted frame
   loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
   utc2tt = (frame->time.dut1 + frame->time.ut1_to_tt) / DAY;
-  hUTC0 = novas_get_split_time(&frame->time, NOVAS_UTC, NULL) * 24.0;
+  hUTC0 = 24.0 * novas_get_split_time(&frame->time, NOVAS_UTC, NULL);
 
   for(i = 0; i < novas_inv_max_iter; i++) {
     novas_timespec *t = &frame1.time;
+    sky_pos pos = {};
     double lha, tUTC;
 
     prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
@@ -1347,20 +1354,20 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
     // Calculate nearest transit UTC at observer location (frame UTC plus hour angle)
     // TODO use equ_track to get better estimate for moving sources (at t > t0)...
-    tUTC = remainder(hUTC0 + pos.ra - novas_frame_lst(frame), DAY_HOURS);
+    tUTC = remainder(hUTC0 + pos.ra - lst / SIDEREAL_RATE, DAY_HOURS);
 
     // Adjusted frame time for last crossing time estimate
     // TODO use equ_track to get better estimate for moving sources (at t > t0)...
     t->ijd_tt = frame->time.ijd_tt;
-    t->fjd_tt = utc2tt + (tUTC + sign * lha) / DAY_HOURS;
+    t->fjd_tt = utc2tt + (tUTC + sign * lha / SIDEREAL_RATE) / DAY_HOURS;
 
     if(t->fjd_tt < frame->time.fjd_tt)
-      t->ijd_tt++;         // Make sure to check rise/set time after input frame time.
+      t->ijd_tt++;        // Make sure to check rise/set time after input frame time.
 
     if(source->type == NOVAS_CATALOG_OBJECT)
-      break;           // That's it for catalog sources
+      break;              // That's it for catalog sources
     if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-8)
-      break;  // Check if converged (ms precision)
+      break;              // Check if converged (ms precision)
 
     lastRA = pos.ra;
   }
