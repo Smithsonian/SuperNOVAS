@@ -1011,10 +1011,11 @@ one minute.
    major planets or other bodies only. 
    
  - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit can 
-   be defined by the set of `novas_orbital`, relative to a `novas_orbital_system`. While orbital elements do not 
-   always yield precise positions, they can for shorter periods, provided that the orbital elements are up-to-date. 
-   For example, the Minor Planer Center (MPC) publishes accurate orbital elements for all known asteroids and comets 
-   regularly. For newly discovered objects, this may be the only and/or most accurate information available anywhere.
+   be defined by `novas_orbital`, relative to a `novas_orbital_system`. While orbital elements do not always yield 
+   precise positions, they can for shorter periods, provided that the orbital elements are up-to-date. For example, 
+   the [Minor Planer Center](https://www.minorplanetcenter.net/iau/mpc.html) (MPC) publishes accurate orbital elements 
+   for all known asteroids and comets regularly. For newly discovered objects, this may be the only and/or most 
+   accurate information available anywhere.
 
  - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
    from the corresponding planet centers in calculations.
@@ -1028,15 +1029,18 @@ one minute.
    defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.
 
  - Many new functions to convert dates/times and angles to/from their string representations.
+ 
+ - New function to convert between Julian Days and calendar dates in the calendar of choice (astronomical, Gregorian, 
+   or Roman/Julian).
 
- - New convenience function for oft-used astronomical calculations, such as rise/set times, LST, parallactic angle 
+ - New convenience functions for oft-used astronomical calculations, such as rise/set times, LST, parallactic angle 
    (a.k.a. Vertical Position Angle), heliocentric distance, illumination fraction, or incident solar power, Sun and 
    Moon angles, and much more. 
  
- - New data structures to provide second order Taylor series expansion of the apparent horizontal or equatorial 
-   positions, distances and redshifts for sources. These values, including rates and accelerations can be directly 
-   useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also use them
-   to obtain instantaneous projected (extrapolated) positions at low computational cost.
+ - New finctions and data structures provide second order Taylor series expansion of the apparent horizontal or 
+   equatorial positions, distances and redshifts for sources. These values, including rates and accelerations can be 
+   directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also 
+   use themto obtain instantaneous projected (extrapolated) positions at low computational cost.
 
 
 

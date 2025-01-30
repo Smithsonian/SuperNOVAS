@@ -4,7 +4,7 @@
  * @date Created  on Jan 29, 2025
  * @author Attila Kovacs
  *
- *  Example file for using the time-related functions og thr SuperNOVAS C/C++ library
+ *  Example file for using the time-related functions of the SuperNOVAS C/C++ library
  *
  *  Link with
  *
