@@ -927,7 +927,7 @@ one minute.
  API. See `CHANGELOG.md` for more details.
  
  
-### New in v1.0
+#### New in v1.0
     
  - New runtime configuration:
 
@@ -945,7 +945,7 @@ one minute.
  
  - Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.
  
- 
+
 #### New in v1.1
 
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
@@ -1001,7 +1001,7 @@ one minute.
  - Added more physical unit constants to `novas.h`.
  
  
-### New in v1.3
+#### New in v1.3
 
  - New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always 
    defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.

@@ -31,12 +31,12 @@
     </topic>
     <topic label="Representative benchmarks" href="index.html#autotoc_md70"/>
     <topic label="SuperNOVAS specific features" href="index.html#autotoc_md72">
-      <topic label="New functionality highlights" href="index.html#autotoc_md73"/>
-      <topic label="New in v1.0" href="index.html#autotoc_md74">
+      <topic label="New functionality highlights" href="index.html#autotoc_md73">
+        <topic label="New in v1.0" href="index.html#autotoc_md74"/>
         <topic label="New in v1.1" href="index.html#autotoc_md75"/>
         <topic label="New in v1.2" href="index.html#autotoc_md76"/>
+        <topic label="New in v1.3" href="index.html#autotoc_md77"/>
       </topic>
-      <topic label="New in v1.3" href="index.html#autotoc_md77"/>
       <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md78"/>
     </topic>
     <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md80">

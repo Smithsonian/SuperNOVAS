@@ -59,12 +59,12 @@ var NAVTREE =
       ] ],
       [ "Representative benchmarks", "index.html#autotoc_md70", null ],
       [ "SuperNOVAS specific features", "index.html#autotoc_md72", [
-        [ "New functionality highlights", "index.html#autotoc_md73", null ],
-        [ "New in v1.0", "index.html#autotoc_md74", [
+        [ "New functionality highlights", "index.html#autotoc_md73", [
+          [ "New in v1.0", "index.html#autotoc_md74", null ],
           [ "New in v1.1", "index.html#autotoc_md75", null ],
-          [ "New in v1.2", "index.html#autotoc_md76", null ]
+          [ "New in v1.2", "index.html#autotoc_md76", null ],
+          [ "New in v1.3", "index.html#autotoc_md77", null ]
         ] ],
-        [ "New in v1.3", "index.html#autotoc_md77", null ],
         [ "Refinements to the NOVAS C API", "index.html#autotoc_md78", null ]
       ] ],
       [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md80", [
