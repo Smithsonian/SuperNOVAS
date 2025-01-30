@@ -1011,7 +1011,7 @@ one minute.
  - New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always 
    defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.
 
- - Many new functions to convert dates/times and angles to/from their string representations.
+ - New functions to convert dates/times and angles to/from their string representations.
  
  - New function to convert between Julian Days and calendar dates in the calendar of choice (astronomical, Gregorian, 
    or Roman/Julian).
@@ -1020,7 +1020,7 @@ one minute.
    (a.k.a. Vertical Position Angle), heliocentric distance, illumination fraction, or incident solar power, Sun and 
    Moon angles, and much more. 
  
- - New finctions and data structures provide second order Taylor series expansion of the apparent horizontal or 
+ - New functions and data structures provide second order Taylor series expansion of the apparent horizontal or 
    equatorial positions, distances and redshifts for sources. These values, including rates and accelerations can be 
    directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also 
    use themto obtain instantaneous projected (extrapolated) positions at low computational cost.
