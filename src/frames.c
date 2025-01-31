@@ -1315,6 +1315,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
   const on_surface *loc;
   const novas_timespec *t0;
+  novas_timespec t = {};
   novas_frame frame1;
   double lst, lastRA = NAN;
   int i;
@@ -1340,7 +1341,6 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
 
   for(i = 0; i < novas_inv_max_iter; i++) {
-    novas_timespec *t = &frame1.time;
     sky_pos pos = {};
     double lha;
 
@@ -1352,11 +1352,11 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
       return novas_trace_nan(fn);
 
     // Adjusted frame time for last crossing time estimate
-    *t = *t0;
-    t->fjd_tt += remainder(pos.ra + (sign * lha - lst) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
+    t = *t0;
+    t.fjd_tt += remainder(pos.ra + (sign * lha - lst) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
 
-    if(t->fjd_tt < t0->fjd_tt)
-      t->ijd_tt++;        // Make sure to check rise/set time after input frame time.
+    if(t.fjd_tt < t0->fjd_tt)
+      t.ijd_tt++;        // Make sure to check rise/set time after input frame time.
 
     if(source->type == NOVAS_CATALOG_OBJECT)
       break;              // That's it for catalog sources
@@ -1364,6 +1364,9 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
       break;              // Check if converged (ms precision)
 
     lastRA = pos.ra;
+
+    // Make a new observer frame for the shifted time for the next iteration
+    novas_make_frame(frame->accuracy, &frame->observer, &t, frame->dx, frame->dy, &frame1);
   }
 
   if(i >= novas_inv_max_iter) {
@@ -1371,7 +1374,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     return NAN;
   }
 
-  return novas_get_time(&frame1.time, NOVAS_UTC);
+  return novas_get_time(&t, NOVAS_UTC);
 }
 
 /**
