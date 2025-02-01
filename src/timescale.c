@@ -614,7 +614,7 @@ static int parse_zone(const char *str, char **tail) {
  *                    after the parsed time. The parsing will consume empty space characters after
  *                    the time specification also, returning a pointer to the next token after.
  *
- * @return            The Julian Date corresponding to the string date/time specification or NAN
+ * @return            The Julian Day corresponding to the string date/time specification or NAN
  *                    if the string is NULL or if it does not specify a date/time in the expected
  *                    format.
  *
@@ -778,7 +778,7 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  *                    after the parsed time. The parsing will consume empty space characters after
  *                    the time specification also, returning a pointer to the next token after.
  *
- * @return            The Julian Date corresponding to the string date/time specification or NAN
+ * @return            The Julian Day corresponding to the string date/time specification or NAN
  *                    if the string is NULL or if it does not specify a date/time in the expected
  *                    format.
  *
@@ -934,7 +934,7 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
 }
 
 /**
- * Prints a an ISO timestamp to millisecond precision in the specified timescale to the specified
+ * Prints a timestamp to millisecond precision in the specified timescale to the specified
  * string buffer. E.g.:
  *
  * <pre>

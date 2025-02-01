@@ -1285,14 +1285,14 @@ static double calc_lha(double el, double dec, double lat) {
 }
 
 /**
- * Returns the UTC date at which a source appears cross the specified elevation angle. The calculated
- * time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric
- * refraction also.
+ * Returns the UTC date at which a distant source appears cross the specified elevation angle. The
+ * calculated time will account for the motion of the source (for Solar-system objects), and optionally
+ * for atmospheric refraction also.
  *
  * NOTES:
  * <ol>
- * <li>The current implementation is not suitable for calculating rise/set times for near-Earth objects,
- * at or within the geostationary orbit.</li>
+ * <li>The current implementation is not suitable for calculating nearest successive rise/set times for
+ * near-Earth objects, at or within the geostationary orbit.</li>
  * </ol>
  *
  * @param el          [deg] Elevation angle.
@@ -1378,10 +1378,15 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 }
 
 /**
- * Returns the UTC date at which a source appears to rise above the specified elevation angle. The
- * calculated time will account for the motion of the source (for Solar-system objects), and optionally
- * for atmospheric refraction also.
+ * Returns the UTC date at which a distant source appears to rise above the specified elevation angle.
+ * The calculated time will account for the motion of the source (for Solar-system objects), and
+ * optionally for atmospheric refraction also.
  *
+ * NOTES:
+ * <ol>
+ * <li>The current implementation is not suitable for calculating the nearest successive rise times
+ * for near-Earth objects, at or within the geostationary orbit.</li>
+ * </ol>
  *
  * @param el          [deg] Elevation angle.
  * @param source      Observed source
@@ -1405,10 +1410,15 @@ double novas_rises_above(double el, const object *source, const novas_frame *fra
 }
 
 /**
- * Returns the UTC date at which a source appears to set below the specified elevation angle. The
- * calculated time will account for the motion of the source (for Solar-system objects), and optionally
- * for atmopsheric refraction also.
+ * Returns the UTC date at which a distant source appears to set below the specified elevation angle.
+ * The calculated time will account for the motion of the source (for Solar-system objects), and
+ * optionally for atmopsheric refraction also.
  *
+ * NOTES:
+ * <ol>
+ * <li>The current implementation is not suitable for calculating the nearest successive set times
+ * for near-Earth objects, at or within the geostationary orbit.</li>
+ * </ol>
  *
  * @param el          [deg] Elevation angle.
  * @param source      Observed source

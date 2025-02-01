@@ -6658,8 +6658,8 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
 }
 
 /**
- * Returns the Julian date for a given calendar date. Input time value can be based on any
- * UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.
+ * Returns the Julian day for a given calendar date. Input time value can be based on any
+ * astronomical time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.
  *
  * The input date is the conventional calendar date, affected by the Gregorian calendar
  * reform of 1582. Thus, the input date is for the Gregorian calendar for dates starting
@@ -6688,8 +6688,11 @@ double refract(const on_surface *location, enum novas_refraction_model option, d
  * @param month     [month] Calendar month [1:12]
  * @param day       [day] Day of month [1:31]
  * @param hour      [hr] Hour of day [0:24]
- * @return          [day] the fractional Julian date for the input calendar date, ot NAN if
+ * @return          [day] the fractional Julian day for the input calendar date, ot NAN if
  *                  month or day components are out of range.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
  *
  * @sa novas_jd_to_date()
  * @sa get_utc_to_tt()
@@ -6729,7 +6732,7 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
 
 /**
  * This function will compute a broken down date on the specified calendar for given the
- * Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1,
+ * Julian day input. Input Julian day can be based on any astronomical time scale (UTC, UT1,
  * TT, etc.) - output time value will have same basis.
  *
  * NOTES:
@@ -6744,7 +6747,7 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
  *  p. 657.</li>
  * </ol>
  *
- * @param tjd          [day] Julian date
+ * @param tjd          [day] Julian day.
  * @param calendar     The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR,
  *                     NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
  * @param[out] year    [yr] Calendar year. B.C. years are represented as negative values,
@@ -6755,6 +6758,9 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
  * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
  *
  * @return              0
+ *
+ * @since 1.3
+ * @author Attila Kovacs
  *
  * @sa novas_jd_from_date()
  * @sa get_utc_to_tt()
@@ -6821,8 +6827,8 @@ int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *year, i
 }
 
 /**
- * Returns the Julian date for a given astronomical calendar date. Input time value can be based
- * on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.
+ * Returns the Julian day for a given astronomical calendar date. Input time value can be based
+ * on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian day will have the same basis.
  *
  * NOTES:
  * <ol>
@@ -6866,7 +6872,7 @@ double julian_date(short year, short month, short day, double hour) {
 
 /**
  * This function will compute a broken down date on the astronomical calendar for
- * given the Julian date input. Input Julian date can be based on any UT-like time scale
+ * given the Julian day input. Input Julian day can be based on any UT-like time scale
  * (UTC, UT1, TT, etc.) - output time value will have same basis.
  *
  * NOTES:

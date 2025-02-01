@@ -1849,11 +1849,11 @@ double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
 }
 
 /**
- * Returns the incident Solar power on a Solar-system body at the time of observation.
+ * Returns the typical incident Solar power on a Solar-system body at the time of observation.
  *
  * @param jd_tdb  [day] Barycentric Dynamical Time (TDB) based Julian date. You may want to
- *                use a time that is antedated to when the observed light originated from the
- *                source.
+ *                use a time that is antedated to when the observed light originated (
+ *                was reflected) from the source.
  * @param source  Observed Solar-system source
  * @return        [W/m<sup>2</sup>] Incident Solar power on the illuminated side of the object,
  *                or NAN if not a Solar-system source or if the source is the Sun itself.
@@ -1910,10 +1910,10 @@ double novas_equ_sep(double ra1, double dec1, double ra2, double dec2) {
 }
 
 /**
- * Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) toequatorial
+ * Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial
  * u,v,w projected coordinates for a specified line of sight.
  *
- * x,y,z are Cartesian coordinates w.r.t the Greenwitch meridian. The directions are x: long=0, lat=0;
+ * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0;
  * y: long=90, lat=0; z: lat=90.
  *
  * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as
