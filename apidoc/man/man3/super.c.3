@@ -1802,11 +1802,11 @@ Attila Kovacs
 .PP
 References \fBNOVAS_EQUATORIAL_PLANE\fP, \fBnovas_orbital_system::obl\fP, \fBnovas_orbital_system::Omega\fP, \fBnovas_orbital_system::plane\fP, and \fBnovas_orbital_system::type\fP\&.
 .SS "double novas_solar_power (double jd_tdb, const \fBobject\fP * source)"
-Returns the incident Solar power on a Solar-system body at the time of observation\&.
+Returns the typical incident Solar power on a Solar-system body at the time of observation\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date\&. You may want to use a time that is antedated to when the observed light originated from the source\&. 
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date\&. You may want to use a time that is antedated to when the observed light originated ( was reflected) from the source\&. 
 .br
 \fIsource\fP Observed Solar-system source 
 .RE
@@ -1922,9 +1922,9 @@ Attila Kovacs
 .PP
 References \fBC\fP, and \fBNOVAS_KMS\fP\&.
 .SS "int novas_xyz_to_uvw (const double * xyz, double ha, double dec, double * uvw)"
-Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) toequatorial u,v,w projected coordinates for a specified line of sight\&.
+Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,v,w projected coordinates for a specified line of sight\&.
 .PP
-x,y,z are Cartesian coordinates w\&.r\&.t the Greenwitch meridian\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
+x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
 .PP
 u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&.
 .PP

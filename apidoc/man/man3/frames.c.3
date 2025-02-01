@@ -719,7 +719,13 @@ Attila Kovacs
 .PP
 References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, and \fBsky_pos::ra\fP\&.
 .SS "double novas_rises_above (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
-Returns the UTC date at which a source appears to rise above the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric refraction also\&.
+Returns the UTC date at which a distant source appears to rise above the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric refraction also\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The current implementation is not suitable for calculating the nearest successive rise times for near-Earth objects, at or within the geostationary orbit\&. 
+.PP
 .PP
 \fBParameters\fP
 .RS 4
@@ -754,7 +760,13 @@ Attila Kovacs
 .PP
 
 .SS "double novas_sets_below (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
-Returns the UTC date at which a source appears to set below the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmopsheric refraction also\&.
+Returns the UTC date at which a distant source appears to set below the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmopsheric refraction also\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The current implementation is not suitable for calculating the nearest successive set times for near-Earth objects, at or within the geostationary orbit\&. 
+.PP
 .PP
 \fBParameters\fP
 .RS 4

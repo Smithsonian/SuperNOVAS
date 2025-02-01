@@ -2444,10 +2444,10 @@ You should not expect much precision from the long-range orbital approximations 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the incident Solar power on a Solar-system body at the time of observation.</p>
+<p>Returns the typical incident Solar power on a Solar-system body at the time of observation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. You may want to use a time that is antedated to when the observed light originated from the source. </td></tr>
+    <tr><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. You may want to use a time that is antedated to when the observed light originated ( was reflected) from the source. </td></tr>
     <tr><td class="paramname">source</td><td>Observed Solar-system source </td></tr>
   </table>
   </dd>
@@ -2596,8 +2596,8 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) toequatorial u,v,w projected coordinates for a specified line of sight.</p>
-<p>x,y,z are Cartesian coordinates w.r.t the Greenwitch meridian. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
+<p>Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,v,w projected coordinates for a specified line of sight.</p>
+<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
 <p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

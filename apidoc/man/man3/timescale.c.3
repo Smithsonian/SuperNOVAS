@@ -459,7 +459,7 @@ B\&.C\&. dates are indicated with years <=0 according to the astronomical and IS
 .PP
 \fBReturns\fP
 .RS 4
-The Julian Date corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
 .RE
 .PP
 \fBSince\fP
@@ -531,7 +531,7 @@ B\&.C\&. dates are indicated with years <=0 according to the astronomical and IS
 .PP
 \fBReturns\fP
 .RS 4
-The Julian Date corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
 .RE
 .PP
 \fBSince\fP
@@ -784,7 +784,7 @@ Attila Kovacs
 .PP
 References \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, and \fBNOVAS_UTC\fP\&.
 .SS "int novas_timestamp (const \fBnovas_timespec\fP * time, enum \fBnovas_timescale\fP scale, char * dst, int maxlen)"
-Prints a an ISO timestamp to millisecond precision in the specified timescale to the specified string buffer\&. E\&.g\&.:
+Prints a timestamp to millisecond precision in the specified timescale to the specified string buffer\&. E\&.g\&.:
 .PP
 .PP
 .nf

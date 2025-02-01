@@ -900,7 +900,7 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function will compute a broken down date on the astronomical calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
+<p>This function will compute a broken down date on the astronomical calendar for given the Julian day input. Input Julian day can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
 <p>NOTES: </p><ol>
 <li>
 <p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Prior to it this function returns Julian/Roman calendar dates, e.g. the day before the reform is 1582 October 4. You can use <code>novas_id_to_calendar()</code> instead to convert JD days to dates in specific calendars.</p>
@@ -3100,7 +3100,7 @@ Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the Julian date for a given astronomical calendar date. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
+<p>Returns the Julian day for a given astronomical calendar date. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian day will have the same basis.</p>
 <p>NOTES: </p><ol>
 <li>
 <p class="startli">The Gregorian calendar was introduced on 1582 October 15 only. Prior to that, astronomical dates are Julian/Roman dates, so the day before the reform was 1582 October 4. You can also use <code><a class="el" href="novas_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a></code> to convert dates with more flexibility.</p>
@@ -4444,7 +4444,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the Julian date for a given calendar date. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
+<p>Returns the Julian day for a given calendar date. Input time value can be based on any astronomical time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
 <p>The input date is the conventional calendar date, affected by the Gregorian calendar reform of 1582. Thus, the input date is for the Gregorian calendar for dates starting 15 October 1582, and for the Julian (Roman) calendar (introduced in 45 B.C.) for dates prior to that.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -4468,7 +4468,9 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian date for the input calendar date, ot NAN if month or day components are out of range.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian day for the input calendar date, ot NAN if month or day components are out of range.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a9ac93f616777166e0c38cd0b92620322">novas_jd_to_date()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
@@ -4530,7 +4532,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function will compute a broken down date on the specified calendar for given the Julian date input. Input Julian date can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
+<p>This function will compute a broken down date on the specified calendar for given the Julian day input. Input Julian day can be based on any astronomical time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
 <p>NOTES: </p><ol>
 <li>
 B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
@@ -4541,7 +4543,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian day. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Calendar year. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Calendar month [1:12]. It may be NULL if not required. </td></tr>
@@ -4551,6 +4553,8 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>

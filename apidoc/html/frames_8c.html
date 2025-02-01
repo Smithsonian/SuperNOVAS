@@ -1091,7 +1091,11 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the UTC date at which a source appears to rise above the specified elevation angle. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric refraction also.</p>
+<p>Returns the UTC date at which a distant source appears to rise above the specified elevation angle. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric refraction also.</p>
+<p>NOTES: </p><ol>
+<li>
+The current implementation is not suitable for calculating the nearest successive rise times for near-Earth objects, at or within the geostationary orbit. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">el</td><td>[deg] Elevation angle. </td></tr>
@@ -1145,7 +1149,11 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the UTC date at which a source appears to set below the specified elevation angle. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmopsheric refraction also.</p>
+<p>Returns the UTC date at which a distant source appears to set below the specified elevation angle. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmopsheric refraction also.</p>
+<p>NOTES: </p><ol>
+<li>
+The current implementation is not suitable for calculating the nearest successive set times for near-Earth objects, at or within the geostationary orbit. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">el</td><td>[deg] Elevation angle. </td></tr>
