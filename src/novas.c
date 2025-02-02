@@ -766,13 +766,6 @@ novas_planet_provider_hp get_planet_provider_hp() {
  * given its catalog mean place, proper motion, parallax, and radial velocity. See `place()`
  * for more information.
  *
- * NOTES:
- * <ol>
- * <li>As of SuperNOVAS v1.3, the returned radial velocity component is a proper observer-based
- * spectroscopic measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with
- * pseudo LSR-based measures being returned for catalog sources.</li>
- * </ol>
- *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
@@ -782,7 +775,7 @@ novas_planet_provider_hp get_planet_provider_hp() {
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
  * @param star      Pointer to catalog entry structure containing catalog data for
  *                  the object in the ICRS.
- * @param obs       Observer location (can be NULL if not relevant)
+ * @param obs       Observer location (NULL defaults to geocentric)
  * @param ut1_to_tt   [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
  * @param system    The type of coordinate reference system in which coordinates are to
  *                  be returned.
@@ -960,14 +953,14 @@ int radec_planet(double jd_tt, const object *ss_body, const observer *obs, doubl
  *
  * NOTES:
  * <ol>
- * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977
- * nutation model, matching the behavior of the original NOVAS C function.</li>
+ * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et
+ * al. 1977 nutation model, matching the behavior of the original NOVAS C function.</li>
  * </ol>
  *
  * REFERENCES:
  * <ol>
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
- *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
+ *     <li>Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3.</li>
  * </ol>
  *
  * @deprecated Use place_cirs() is now preferred, especially for high accuracy calculations.
@@ -1637,9 +1630,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
 short place(double jd_tt, const object *source, const observer *location, double ut1_to_tt, enum novas_reference_system coord_sys,
         enum novas_accuracy accuracy, sky_pos *output) {
   static const char *fn = "place";
-  static object earth, sun;
 
-  static int first_time = 1;
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double tlast1 = 0.0;
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
@@ -1665,13 +1656,6 @@ short place(double jd_tt, const object *source, const observer *location, double
   else
     obs = *location;
 
-  // Create a null star 'cat_entry' and  Earth and Sun 'object's.
-  if(first_time) {
-    make_planet(NOVAS_EARTH, &earth);
-    make_planet(NOVAS_SUN, &sun);
-    first_time = 0;
-  }
-
   // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
   jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
@@ -1679,6 +1663,7 @@ short place(double jd_tt, const object *source, const observer *location, double
   // Get position and velocity of Earth (geocenter) and Sun.
   // ---------------------------------------------------------------------
   if(!time_equals(jd_tt, tlast1) || accuracy != acc_last) {
+    static object earth = NOVAS_EARTH_INIT, sun = NOVAS_SUN_INIT;
     double vsb[3];
     const double jd[2] = { jd_tdb };
 
