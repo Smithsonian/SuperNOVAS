@@ -1696,6 +1696,9 @@ static int test_rise_set() {
   if(check_nan("rise_set:rises_above:frame:init", novas_rises_above(0.0, &sun, &frame, NULL))) n++;
   if(check_nan("rise_set:sets_below:frame:null", novas_sets_below(0.0, &sun, NULL, NULL))) n++;
   if(check_nan("rise_set:sets_below:frame:init", novas_sets_below(0.0, &sun, &frame, NULL))) n++;
+  if(check_nan("rise_set:transit_time:frame:null", novas_transit_time(&sun, NULL))) n++;
+  if(check_nan("rise_set:transit_time:frame:init", novas_transit_time(&sun, &frame))) n++;
+
 
   // noon (near transit)
   novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
@@ -1704,6 +1707,7 @@ static int test_rise_set() {
 
   if(check_nan("rise_set:rises_above:source:null", novas_rises_above(0.0, NULL, &frame, NULL))) n++;
   if(check_nan("rise_set:sets_below:source:null", novas_sets_below(0.0, NULL, &frame, NULL))) n++;
+  if(check_nan("rise_set:transit_time:source:null", novas_transit_time(NULL, &frame))) n++;
 
   make_observer_on_surface(60.0, 0.0, 0.0, 0.0, 0.0, &obs);
   novas_change_observer(&frame, &obs, &frame);

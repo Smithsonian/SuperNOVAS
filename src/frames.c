@@ -1285,9 +1285,9 @@ static double calc_lha(double el, double dec, double lat) {
 }
 
 /**
- * Returns the UTC date at which a distant source appears cross the specified elevation angle. The
- * calculated time will account for the motion of the source (for Solar-system objects), and optionally
- * for atmospheric refraction also.
+ * Returns the UTC date at which a distant source appears cross the specified elevation angle, or when
+ * it transits the local meridian. The calculated time will account for the (slow) motion of the source
+ * (for Solar-system objects), and optionally for atmospheric refraction also.
  *
  * NOTES:
  * <ol>
@@ -1295,8 +1295,8 @@ static double calc_lha(double el, double dec, double lat) {
  * near-Earth objects, at or within the geostationary orbit.</li>
  * </ol>
  *
- * @param el          [deg] Elevation angle.
- * @param sign        1 for rise time, or -1 for setting time.
+ * @param el          [deg] Elevation angle (not used for transit times).
+ * @param sign        1 for rise time, or -1 for setting time, or 0 for transit.
  * @param source      Observed source
  * @param frame       Observing frame, defining the observer location and astronomical time
  *                    of observation.
@@ -1308,7 +1308,6 @@ static double calc_lha(double el, double dec, double lat) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_sets_below()
  */
 static double novas_cross_el_date(double el, int sign, const object *source, const novas_frame *frame, RefractionModel ref_model) {
   static const char *fn = "novas_cross_el_time";
@@ -1347,7 +1346,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
 
     // Hourangle when source crosses nominal elevation
-    lha = calc_lha(el, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE);
+    lha = sign ? calc_lha(el, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE) : 0.0;
     if(isnan(lha))
       return novas_trace_nan(fn);
 
@@ -1378,9 +1377,38 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 }
 
 /**
+ * Returns the UTC date at which a source transits the local meridian. The calculated time will
+ * account for the (slow) motion of Solar-system bodies.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The current implementation is not suitable for calculating the nearest successive transit times
+ * for near-Earth objects, at or within the geostationary orbit.</li>
+ * </ol>
+ *
+ * @param source      Observed source
+ * @param frame       Observing frame, defining the observer location and astronomical time
+ *                    of observation.
+ * @return            [day] UTC-based Julian date at which the object transits the local meridian
+ *                    next after the specified date, or NAN if either input pointer is NULL.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_rises_above()
+ * @sa novas_sets_below()
+ */
+double novas_transit_time(const object *source, const novas_frame *frame) {
+  double utc = novas_cross_el_date(NAN, 0, source, frame, NULL);
+  if(isnan(utc))
+    return novas_trace_nan("novas_rises_above");
+  return utc;
+}
+
+/**
  * Returns the UTC date at which a distant source appears to rise above the specified elevation angle.
- * The calculated time will account for the motion of the source (for Solar-system objects), and
- * optionally for atmospheric refraction also.
+ * The calculated time will account for the (slow) motion for Solar-system bodies, and optionally for
+ * atmospheric refraction also.
  *
  * NOTES:
  * <ol>
@@ -1394,13 +1422,14 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
  *                    of observation.
  * @param ref_model   Refraction model, or NULL to calculate unrefracted rise time.
  * @return            [day] UTC-based Julian date at which the object rises above the specified elevation
- *                    in the 24 hour period after the specified date, or else NAN if the source stays
- *                    above or below the given elevation for the entire 24-hour period.
+ *                    next after the specified date, or else NAN if the source stays above or below the
+ *                    given elevation for the entire 24-hour period.
  *
  * @since 1.3
  * @author Attila Kovacs
  *
  * @sa novas_sets_below()
+ * @sa novas_transit_time()
  */
 double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
   double utc = novas_cross_el_date(el, -1, source, frame, ref_model);
@@ -1411,8 +1440,8 @@ double novas_rises_above(double el, const object *source, const novas_frame *fra
 
 /**
  * Returns the UTC date at which a distant source appears to set below the specified elevation angle.
- * The calculated time will account for the motion of the source (for Solar-system objects), and
- * optionally for atmopsheric refraction also.
+ * The calculated time will account for the (slow) motion of Solar-system bodies, and optionally for
+ * atmopsheric refraction also.
  *
  * NOTES:
  * <ol>
@@ -1426,13 +1455,14 @@ double novas_rises_above(double el, const object *source, const novas_frame *fra
  *                    of observation.
  * @param ref_model   Refraction model, or NULL to calculate unrefracted setting time.
  * @return            [day] UTC-based Julian date at which the object sets below the specified elevation
- *                    in the 24 hour period after the specified date, or else NAN if the source stays
- *                    above or below the given elevation for the entire 24-hour day..
+ *                    next after the specified date, or else NAN if the source stays above or below the
+ *                    given elevation for the entire 24-hour day..
  *
  * @since 1.3
  * @author Attila Kovacs
  *
  * @sa novas_rises_above()
+ * @sa novas_transit_time()
  */
 double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
   double utc = novas_cross_el_date(el, 1, source, frame, ref_model);

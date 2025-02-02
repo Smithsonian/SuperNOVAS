@@ -9,7 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Upcoming feature release, expected around 1 May 2025.
+Upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such as for handling 
+times and angles as strings, rise and set times, and other common astrometric calculations.
    
 ### Fixed
 
@@ -40,7 +41,8 @@ Upcoming feature release, expected around 1 May 2025.
    Earth-based observing frame.
    
  - New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or sets
-   below a specific elevation on a given date. (For Earth-based observers only).
+   below a specific elevation on a given date, and `novas_transit_time()` to calculate the time a source transits over
+   the local meridian. (For Earth-based observers only).
 
  - New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given date. 
    The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, while
@@ -75,6 +77,8 @@ Upcoming feature release, expected around 1 May 2025.
  - Added benchmarks under the `benchmark/` forlder, for SuperNOVAS as well as equivalent benchmarks for __astropy__.
    To run the SuperNOVAS benchmarks, simply `make benchmark` in the distribution directory.
    
+ - Added `example-time.c` under `examples/`, for demonstrating date/time handling functions.
+
 ### Changed
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 

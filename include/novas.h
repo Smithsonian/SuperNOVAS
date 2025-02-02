@@ -1775,6 +1775,8 @@ int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 // in frames.c
 double novas_frame_lst(const novas_frame *frame);
 
+double novas_transit_time(const object *source, const novas_frame *frame);
+
 double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model);
 
 double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model);

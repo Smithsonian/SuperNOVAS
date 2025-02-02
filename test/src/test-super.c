@@ -2724,6 +2724,28 @@ static int test_rise_set() {
   return n;
 }
 
+static int test_transit_time() {
+  int n = 0;
+
+  observer obs = {};
+  novas_timespec time = {};
+  novas_frame frame = {};
+  object sun = NOVAS_SUN_INIT;
+
+  // midnight (near transit)
+  novas_set_time(NOVAS_TDB, NOVAS_JD_J2000 - 0.5, 32.0, 0.0, &time);
+  make_observer_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, &obs);
+  if(!is_ok("transit_time:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+
+  if(!is_equal("transit_time:lon=0", novas_transit_time(&sun, &frame), NOVAS_JD_J2000, 0.01)) n++;
+
+  make_observer_on_surface(0.0, -90.0, 0.0, 0.0, 0.0, &obs);
+  novas_change_observer(&frame, &obs, &frame);
+  if(!is_equal("transit_time:lon=-90", novas_transit_time(&sun, &frame), NOVAS_JD_J2000 + 0.25, 0.01)) n++;
+
+  return n;
+}
+
 static int test_equ_track() {
   int n = 0;
   observer obs = {};
@@ -3237,6 +3259,7 @@ int main(int argc, char *argv[]) {
 
   if(test_frame_lst()) n++;
   if(test_rise_set()) n++;
+  if(test_transit_time()) n++;
   if(test_equ_track()) n++;
   if(test_hor_track()) n++;
   if(test_xyz_to_uvw()) n++;
