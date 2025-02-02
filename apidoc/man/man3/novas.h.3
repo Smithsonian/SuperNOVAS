@@ -2517,7 +2517,7 @@ REFERENCES:
 .IP "1." 4
 Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
 .IP "2." 4
-Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&. 
+Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3\&. 
 .PP
 .PP
 \fBDeprecated\fP
@@ -8924,7 +8924,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597\&.
 .PP
 
 .PP
-References \fBaberration()\fP, \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_j2000()\fP, \fBgcrs_to_mod()\fP, \fBgcrs_to_tod()\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBlight_time2()\fP, \fBmake_observer_at_geocenter()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN\fP, \fBNOVAS_TOD\fP, \fBobs_planets()\fP, \fBobs_posvel()\fP, \fBproper_motion()\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBrad_vel2()\fP, \fBsky_pos::rv\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, \fBobject::type\fP, and \fBvector2radec()\fP\&.
+References \fBaberration()\fP, \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_j2000()\fP, \fBgcrs_to_mod()\fP, \fBgcrs_to_tod()\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBlight_time2()\fP, \fBmake_observer_at_geocenter()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH_INIT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN_INIT\fP, \fBNOVAS_TOD\fP, \fBobs_planets()\fP, \fBobs_posvel()\fP, \fBproper_motion()\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBrad_vel2()\fP, \fBsky_pos::rv\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, \fBobject::type\fP, and \fBvector2radec()\fP\&.
 .SS "int place_cirs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the Celestial Intermediate Reference System (CIRS) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
@@ -9141,12 +9141,6 @@ References \fBNOVAS_MOD\fP, and \fBplace()\fP\&.
 .SS "int place_star (double jd_tt, const \fBcat_entry\fP * star, const \fBobserver\fP * obs, double ut1_to_tt, enum \fBnovas_reference_system\fP system, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
 Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
-NOTES: 
-.PD 0
-.IP "1." 4
-As of SuperNOVAS v1\&.3, the returned radial velocity component is a proper observer-based spectroscopic measure\&. In prior releases, and in NOVAS C 3\&.1, this was inconsistent, with pseudo LSR-based measures being returned for catalog sources\&. 
-.PP
-.PP
 REFERENCES: 
 .PD 0
 .IP "1." 4
@@ -9161,7 +9155,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3\&.
 .br
 \fIstar\fP Pointer to catalog entry structure containing catalog data for the object in the ICRS\&. 
 .br
-\fIobs\fP Observer location (can be NULL if not relevant) 
+\fIobs\fP Observer location (NULL defaults to geocentric) 
 .br
 \fIut1_to_tt\fP [s] Difference TT-UT1 at 'jd_tt', in seconds of time\&. 
 .br

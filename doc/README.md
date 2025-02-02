@@ -857,7 +857,7 @@ so new, run-of-the-mill PC might perform.
 
 | ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
 |:--:| 
-| __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
+| __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
 
 
 The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either 

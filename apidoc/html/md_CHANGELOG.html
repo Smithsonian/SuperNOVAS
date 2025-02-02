@@ -148,7 +148,7 @@ Changed</h2>
 <ul>
 <li>In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for <code><a class="el" href="novas_8c.html#a263de1618d80fcc737984951fa97c5a3">place()</a></code> and <code><a class="el" href="frames_8c.html#a4e894a83f3065bbb706212d1267dd2ab">novas_sky_pos()</a></code> are significantly faster.</li>
 <li>Modified <code><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> to add range checking for month and day arguments, and return NAN (with errno set to EINVAL) if the input values are invalid.</li>
-<li><code><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> and <code><a class="el" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5">cal_date()</a></code> now use astronomical calendar dates instead of the fixed Gregorian dates pf before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.</li>
+<li><code><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> and <code><a class="el" href="novas_8c.html#a410a61c67f5893584b09953fa4885fe5">cal_date()</a></code> now use astronomical calendar dates instead of the fixed Gregorian dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.</li>
 <li>Updated <code>README.md</code> for v1.3 and benchmarks, including comparisons to <b>astropy</b>.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md5"></a>
