@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.3.0-rc1]
+## [Unreleased]
 
 Release candidate for upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, 
 such as for handling times and angles as strings, rise and set times, and other common astrometric calculations.
@@ -86,7 +86,7 @@ such as for handling times and angles as strings, rise and set times, and other 
    without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
    
  - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with errno set to 
-   EINVAL) if the input values are invalid.
+   `EINVAL`) if the input values are invalid.
    
  - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates of before.
    Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
