@@ -2,7 +2,7 @@
  * @file
  *
  * @author G. Kaplan and A. Kovacs
- * @version 1.2.0
+ * @version 1.3.0
  *
  *  SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS).
  *  It has been modified to fix outstanding issues and to make it easier to use.
@@ -68,7 +68,7 @@
 #define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING "-rc1"
 
 /// \cond PRIVATE
 

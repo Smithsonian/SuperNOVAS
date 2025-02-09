@@ -1025,7 +1025,7 @@ one minute.
 
  - New functions to convert dates/times and angles to/from their string representations.
  
- - New function to convert between Julian Days and calendar dates in the calendar of choice (astronomical, Gregorian, 
+ - New functions to convert between Julian Days and calendar dates in the calendar of choice (astronomical, Gregorian, 
    or Roman/Julian).
 
  - New convenience functions for oft-used astronomical calculations, such as rise/set times, LST, parallactic angle 
