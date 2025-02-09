@@ -53,7 +53,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md91"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.3.0-rc1]" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -752,6 +752,7 @@
           <topic label="novas_track_pos" href="novas_8h.html#a24d627df1c1788bcaae4a768da63c18c"/>
           <topic label="novas_transform_sky_pos" href="novas_8h.html#a88972e93665bb1903795bfff264c14f6"/>
           <topic label="novas_transform_vector" href="novas_8h.html#aadb7bc88119eed4ea54373a42e22a0d4"/>
+          <topic label="novas_transit_time" href="novas_8h.html#ae9673b008eb169ea09e4d59077cc733b"/>
           <topic label="novas_v2z" href="novas_8h.html#aa54cd00024b294d38fa29433c017c65f"/>
           <topic label="novas_xyz_to_los" href="novas_8h.html#a14deb6fdce80ba213e1f1d5238306e17"/>
           <topic label="novas_xyz_to_uvw" href="novas_8h.html#a87867e8e7fc7decaa44777a696465353"/>
@@ -913,6 +914,7 @@
           <topic label="novas_track_pos" href="frames_8c.html#a24d627df1c1788bcaae4a768da63c18c"/>
           <topic label="novas_transform_sky_pos" href="frames_8c.html#a88972e93665bb1903795bfff264c14f6"/>
           <topic label="novas_transform_vector" href="frames_8c.html#aadb7bc88119eed4ea54373a42e22a0d4"/>
+          <topic label="novas_transit_time" href="frames_8c.html#ae9673b008eb169ea09e4d59077cc733b"/>
         </topic>
         <topic label="naif.c" href="naif_8c.html">
           <topic label="__NOVAS_INTERNAL_API__" href="naif_8c.html#af46d8e51fc53d94b0d48c8201c3c84a6"/>

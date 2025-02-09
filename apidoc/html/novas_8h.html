@@ -46,7 +46,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.2</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.3</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -389,7 +389,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release. <br /></td></tr>
 <tr class="separator:a9b926427954233b94ebd6925d86f9f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft" align="right" valign="top"><a id="aadef42ba39811e058ee9efe2c6f7d151" name="aadef42ba39811e058ee9efe2c6f7d151"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-devel&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc1&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases. <br /></td></tr>
 <tr class="separator:aadef42ba39811e058ee9efe2c6f7d151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a44de9d1672290d153a1dfb0685886208">SUPERNOVAS_VERSION_STRING</a></td></tr>
@@ -842,6 +842,8 @@ Functions</h2></td></tr>
 <tr class="separator:a88972e93665bb1903795bfff264c14f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb7bc88119eed4ea54373a42e22a0d4" id="r_aadb7bc88119eed4ea54373a42e22a0d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aadb7bc88119eed4ea54373a42e22a0d4">novas_transform_vector</a> (const double *in, const <a class="el" href="structnovas__transform.html">novas_transform</a> *transform, double *out)</td></tr>
 <tr class="separator:aadb7bc88119eed4ea54373a42e22a0d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9673b008eb169ea09e4d59077cc733b" id="r_ae9673b008eb169ea09e4d59077cc733b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#ae9673b008eb169ea09e4d59077cc733b">novas_transit_time</a> (const <a class="el" href="structobject.html">object</a> *source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
+<tr class="separator:ae9673b008eb169ea09e4d59077cc733b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa54cd00024b294d38fa29433c017c65f" id="r_aa54cd00024b294d38fa29433c017c65f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z</a> (double vel)</td></tr>
 <tr class="separator:aa54cd00024b294d38fa29433c017c65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14deb6fdce80ba213e1f1d5238306e17" id="r_a14deb6fdce80ba213e1f1d5238306e17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los</a> (const double *xyz, double lon, double lat, double *los)</td></tr>
@@ -954,7 +956,7 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs </dd></dl>
-<dl class="section version"><dt>Version</dt><dd>1.2.0</dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.3.0</dd></dl>
 <p>SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS). It has been modified to fix outstanding issues and to make it easier to use.</p>
 <p>Based on the NOVAS C Edition, Version 3.1:</p>
 <p>U. S. Naval Observatory<br  />
@@ -10467,7 +10469,7 @@ Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the UTC date at which a distant source appears to rise above the specified elevation angle. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric refraction also.</p>
+<p>Returns the UTC date at which a distant source appears to rise above the specified elevation angle. The calculated time will account for the (slow) motion for Solar-system bodies, and optionally for atmospheric refraction also.</p>
 <p>NOTES: </p><ol>
 <li>
 The current implementation is not suitable for calculating the nearest successive rise times for near-Earth objects, at or within the geostationary orbit. </li>
@@ -10481,10 +10483,12 @@ The current implementation is not suitable for calculating the nearest successiv
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] UTC-based Julian date at which the object rises above the specified elevation in the 24 hour period after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour period.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] UTC-based Julian date at which the object rises above the specified elevation next after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour period.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a0c2383896d4bfba77a91272aa09d6a24">novas_sets_below()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a0c2383896d4bfba77a91272aa09d6a24">novas_sets_below()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ae9673b008eb169ea09e4d59077cc733b">novas_transit_time()</a> </dd></dl>
 
 </div>
 </div>
@@ -10873,7 +10877,7 @@ struct timespec</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the UTC date at which a distant source appears to set below the specified elevation angle. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmopsheric refraction also.</p>
+<p>Returns the UTC date at which a distant source appears to set below the specified elevation angle. The calculated time will account for the (slow) motion of Solar-system bodies, and optionally for atmopsheric refraction also.</p>
 <p>NOTES: </p><ol>
 <li>
 The current implementation is not suitable for calculating the nearest successive set times for near-Earth objects, at or within the geostationary orbit. </li>
@@ -10887,10 +10891,12 @@ The current implementation is not suitable for calculating the nearest successiv
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] UTC-based Julian date at which the object sets below the specified elevation in the 24 hour period after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour day..</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] UTC-based Julian date at which the object sets below the specified elevation next after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour day..</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ae947cd79282aafd79436a1bee4b2fd8a">novas_rises_above()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ae947cd79282aafd79436a1bee4b2fd8a">novas_rises_above()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ae9673b008eb169ea09e4d59077cc733b">novas_transit_time()</a> </dd></dl>
 
 </div>
 </div>
@@ -11410,6 +11416,52 @@ novas_transform_skypos()</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="structnovas__transform.html#a7a4a2e27593c1af2ae14cfb323ba4aba">novas_transform::matrix</a>.</p>
+
+</div>
+</div>
+<a id="ae9673b008eb169ea09e4d59077cc733b" name="ae9673b008eb169ea09e4d59077cc733b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9673b008eb169ea09e4d59077cc733b">&#9670;&#160;</a></span>novas_transit_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_transit_time </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *&#160;</td>
+          <td class="paramname"><em>frame</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the UTC date at which a source transits the local meridian. The calculated time will account for the (slow) motion of Solar-system bodies.</p>
+<p>NOTES: </p><ol>
+<li>
+The current implementation is not suitable for calculating the nearest successive transit times for near-Earth objects, at or within the geostationary orbit. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>Observed source </td></tr>
+    <tr><td class="paramname">frame</td><td>Observing frame, defining the observer location and astronomical time of observation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] UTC-based Julian date at which the object transits the local meridian next after the specified date, or NAN if either input pointer is NULL.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ae947cd79282aafd79436a1bee4b2fd8a">novas_rises_above()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#a0c2383896d4bfba77a91272aa09d6a24">novas_sets_below()</a> </dd></dl>
 
 </div>
 </div>

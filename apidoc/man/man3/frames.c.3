@@ -1,4 +1,4 @@
-.TH "src/frames.c" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
+.TH "src/frames.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -90,6 +90,9 @@ src/frames.c
 .br
 .ti -1c
 .RI "int \fBnovas_transform_vector\fP (const double *in, const \fBnovas_transform\fP *transform, double *out)"
+.br
+.ti -1c
+.RI "double \fBnovas_transit_time\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -719,7 +722,7 @@ Attila Kovacs
 .PP
 References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, and \fBsky_pos::ra\fP\&.
 .SS "double novas_rises_above (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
-Returns the UTC date at which a distant source appears to rise above the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmospheric refraction also\&.
+Returns the UTC date at which a distant source appears to rise above the specified elevation angle\&. The calculated time will account for the (slow) motion for Solar-system bodies, and optionally for atmospheric refraction also\&.
 .PP
 NOTES: 
 .PD 0
@@ -740,7 +743,7 @@ The current implementation is not suitable for calculating the nearest successiv
 .PP
 \fBReturns\fP
 .RS 4
-[day] UTC-based Julian date at which the object rises above the specified elevation in the 24 hour period after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour period\&.
+[day] UTC-based Julian date at which the object rises above the specified elevation next after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour period\&.
 .RE
 .PP
 \fBSince\fP
@@ -756,11 +759,13 @@ Attila Kovacs
 \fBSee also\fP
 .RS 4
 \fBnovas_sets_below()\fP 
+.PP
+\fBnovas_transit_time()\fP 
 .RE
 .PP
 
 .SS "double novas_sets_below (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
-Returns the UTC date at which a distant source appears to set below the specified elevation angle\&. The calculated time will account for the motion of the source (for Solar-system objects), and optionally for atmopsheric refraction also\&.
+Returns the UTC date at which a distant source appears to set below the specified elevation angle\&. The calculated time will account for the (slow) motion of Solar-system bodies, and optionally for atmopsheric refraction also\&.
 .PP
 NOTES: 
 .PD 0
@@ -781,7 +786,7 @@ The current implementation is not suitable for calculating the nearest successiv
 .PP
 \fBReturns\fP
 .RS 4
-[day] UTC-based Julian date at which the object sets below the specified elevation in the 24 hour period after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour day\&.\&.
+[day] UTC-based Julian date at which the object sets below the specified elevation next after the specified date, or else NAN if the source stays above or below the given elevation for the entire 24-hour day\&.\&.
 .RE
 .PP
 \fBSince\fP
@@ -797,6 +802,8 @@ Attila Kovacs
 \fBSee also\fP
 .RS 4
 \fBnovas_rises_above()\fP 
+.PP
+\fBnovas_transit_time()\fP 
 .RE
 .PP
 
@@ -1043,6 +1050,45 @@ Attila Kovacs
 
 .PP
 References \fBnovas_transform::matrix\fP\&.
+.SS "double novas_transit_time (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+Returns the UTC date at which a source transits the local meridian\&. The calculated time will account for the (slow) motion of Solar-system bodies\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The current implementation is not suitable for calculating the nearest successive transit times for near-Earth objects, at or within the geostationary orbit\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIsource\fP Observed source 
+.br
+\fIframe\fP Observing frame, defining the observer location and astronomical time of observation\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] UTC-based Julian date at which the object transits the local meridian next after the specified date, or NAN if either input pointer is NULL\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_rises_above()\fP 
+.PP
+\fBnovas_sets_below()\fP 
+.RE
+.PP
+
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.

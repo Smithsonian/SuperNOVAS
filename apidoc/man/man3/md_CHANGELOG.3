@@ -1,4 +1,4 @@
-.TH "md_CHANGELOG" 3 "Version v1.2" "SuperNOVAS" \" -*- nroff -*-
+.TH "md_CHANGELOG" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,9 +7,9 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[Unreleased]"
+.SH "[1\&.3\&.0-rc1]"
 .PP
-Upcoming feature release, expected around 1 May 2025\&.
+Release candidate for upcoming feature release, expected around 1 May 2025\&. It brings many new convenience functions, such as for handling times and angles as strings, rise and set times, and other common astrometric calculations\&.
 .SS "Fixed"
 .IP "\(bu" 2
 #116: \fC\fBtransform_cat()\fP\fP to update parallax to the recalculated value when precessing or changing epochs\&.
@@ -30,7 +30,7 @@ New \fC\fBnovas_iso_timestamp()\fP\fP to print UTC timestamps in ISO date format
 .IP "\(bu" 2
 New \fC\fBnovas_frame_lst()\fP\fP convenience function to readily return the Local (apparent) Sidereal Time for a given Earth-based observing frame\&.
 .IP "\(bu" 2
-New \fC\fBnovas_rises_above()\fP\fP and \fC\fBnovas_sets_below()\fP\fP functions to return the date/time a source rises above or sets below a specific elevation on a given date\&. (For Earth-based observers only)\&.
+New \fC\fBnovas_rises_above()\fP\fP and \fC\fBnovas_sets_below()\fP\fP functions to return the date/time a source rises above or sets below a specific elevation on a given date, and \fC\fBnovas_transit_time()\fP\fP to calculate the time a source transits over the local meridian\&. (For Earth-based observers only)\&.
 .IP "\(bu" 2
 New \fC\fBnovas_helio_dist()\fP\fP function to calculate the heliocentric distance of a Solar-system body on a given date\&. The \fC\fBnovas_solar_power()\fP\fP function can be used to estimate the incident Solar power on a Solar-system body, while \fC\fBnovas_solar_illum()\fP\fP can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen from the observer location\&.
 .IP "\(bu" 2
@@ -45,6 +45,8 @@ New \fC\fBnovas_los_to_xyz()\fP\fP and \fC\fBnovas_xyz_to_los()\fP\fP functions 
 New \fC\fBnovas_xyz_to_uvw()\fP\fP function to convert ITRS Earth locations (absolute or differential) to equatorial projections along a line of sight in the direction of a source\&. Such projections are oft used in interferometry\&.
 .IP "\(bu" 2
 Added benchmarks under the \fCbenchmark/\fP forlder, for SuperNOVAS as well as equivalent benchmarks for \fBastropy\fP\&. To run the SuperNOVAS benchmarks, simply \fCmake benchmark\fP in the distribution directory\&.
+.IP "\(bu" 2
+Added \fCexample-time\&.c\fP under \fCexamples/\fP, for demonstrating date/time handling functions\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2

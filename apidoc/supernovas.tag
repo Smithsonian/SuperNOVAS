@@ -2339,6 +2339,13 @@
     </member>
     <member kind="function">
       <type>double</type>
+      <name>novas_transit_time</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae9673b008eb169ea09e4d59077cc733b</anchor>
+      <arglist>(const object *source, const novas_frame *frame)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
       <name>novas_v2z</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aa54cd00024b294d38fa29433c017c65f</anchor>
@@ -3398,6 +3405,13 @@
       <anchorfile>frames_8c.html</anchorfile>
       <anchor>aadb7bc88119eed4ea54373a42e22a0d4</anchor>
       <arglist>(const double *in, const novas_transform *transform, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_transit_time</name>
+      <anchorfile>frames_8c.html</anchorfile>
+      <anchor>ae9673b008eb169ea09e4d59077cc733b</anchor>
+      <arglist>(const object *source, const novas_frame *frame)</arglist>
     </member>
   </compound>
   <compound kind="file">

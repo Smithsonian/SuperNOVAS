@@ -46,7 +46,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.2</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.3</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -117,8 +117,8 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
-<p>Upcoming feature release, expected around 1 May 2025.</p>
+[1.3.0-rc1]</h1>
+<p>Release candidate for upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such as for handling times and angles as strings, rise and set times, and other common astrometric calculations.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
@@ -134,7 +134,7 @@ Added</h2>
 <li>New <code><a class="el" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string()</a></code> to match timescale constants to string representations, such as "UTC", or "TAI", and <code><a class="el" href="timescale_8c.html#a18bd698f5c504b5f0a581227e1649bd2">novas_print_timescale()</a></code> to convert to string representation.</li>
 <li>New <code><a class="el" href="timescale_8c.html#a1b7e1fa279dc7502805cc76af2ae07fe">novas_iso_timestamp()</a></code> to print UTC timestamps in ISO date format with millisecond precision, and <code><a class="el" href="timescale_8c.html#a9bc66e41d10e6a6b88cd6a352ab9da17">novas_timestamp()</a></code> to print timestamps in specific timescales.</li>
 <li>New <code><a class="el" href="frames_8c.html#a4f05d543ba427bb850425a06850ee054">novas_frame_lst()</a></code> convenience function to readily return the Local (apparent) Sidereal Time for a given Earth-based observing frame.</li>
-<li>New <code><a class="el" href="frames_8c.html#ae947cd79282aafd79436a1bee4b2fd8a">novas_rises_above()</a></code> and <code><a class="el" href="frames_8c.html#a0c2383896d4bfba77a91272aa09d6a24">novas_sets_below()</a></code> functions to return the date/time a source rises above or sets below a specific elevation on a given date. (For Earth-based observers only).</li>
+<li>New <code><a class="el" href="frames_8c.html#ae947cd79282aafd79436a1bee4b2fd8a">novas_rises_above()</a></code> and <code><a class="el" href="frames_8c.html#a0c2383896d4bfba77a91272aa09d6a24">novas_sets_below()</a></code> functions to return the date/time a source rises above or sets below a specific elevation on a given date, and <code><a class="el" href="frames_8c.html#ae9673b008eb169ea09e4d59077cc733b">novas_transit_time()</a></code> to calculate the time a source transits over the local meridian. (For Earth-based observers only).</li>
 <li>New <code><a class="el" href="super_8c.html#a13b1204e7ad069e62b0cb7024fbfee0d">novas_helio_dist()</a></code> function to calculate the heliocentric distance of a Solar-system body on a given date. The <code><a class="el" href="super_8c.html#ad03d69e61d1a2d5da8063fcd0c05ab7c">novas_solar_power()</a></code> function can be used to estimate the incident Solar power on a Solar-system body, while <code><a class="el" href="frames_8c.html#a3cdf3285614f58221cda45adb297112b">novas_solar_illum()</a></code> can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen from the observer location.</li>
 <li>New <code><a class="el" href="super_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c">novas_hpa()</a></code> and <code><a class="el" href="super_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0">novas_epa()</a></code> functions to calculate the parallactic angle (a.k.a. vertical position angle) for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively. The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image or detector array) between the local horizontal and equatorial orientations, e.g. via the newly added <code><a class="el" href="super_8c.html#aacd8ca48294bf635e5adc60084db0f26">novas_h2e_offset()</a></code> or <code><a class="el" href="super_8c.html#afd4387a6a7b3b5a8f6404ce27117adb3">novas_e2h_offset()</a></code> functions. The conversion between offsets and absolute coordinates usually requires a WCS projections, such as described in Calabretta &amp; Greisen 2002.</li>
 <li>New <code><a class="el" href="super_8c.html#a9f33de2b26a19a5e20827e9e918b3375">novas_sep()</a></code>, <code><a class="el" href="super_8c.html#a4f7e06b2fa5b3145b37aec4f9c2d1602">novas_equ_sep()</a></code>, and <code><a class="el" href="frames_8c.html#aa12a28c250dbb1e452f1979317216baf">novas_object_sep()</a></code> functions can be used to calculate the precise apparent distance between to spherical or equatorial locations, or between two sources, respectively. <code><a class="el" href="frames_8c.html#a1a1323a247aa7164c73b16148eb32411">novas_sun_angle()</a></code> and <code><a class="el" href="frames_8c.html#a6b829d25720d5bd8e6dae228b6fa690b">novas_moon_angle()</a></code> can be used to calculate the apparent angular distance of sources from the Sun and Moon, respectively.</li>
@@ -142,6 +142,7 @@ Added</h2>
 <li>New <code><a class="el" href="novas_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a></code> and <code><a class="el" href="novas_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a></code> functions to convert between line-of-sight (&delta;&phi;, &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.</li>
 <li>New <code><a class="el" href="super_8c.html#a87867e8e7fc7decaa44777a696465353">novas_xyz_to_uvw()</a></code> function to convert ITRS Earth locations (absolute or differential) to equatorial projections along a line of sight in the direction of a source. Such projections are oft used in interferometry.</li>
 <li>Added benchmarks under the <code>benchmark/</code> forlder, for SuperNOVAS as well as equivalent benchmarks for <b>astropy</b>. To run the SuperNOVAS benchmarks, simply <code>make benchmark</code> in the distribution directory.</li>
+<li>Added <code>example-time.c</code> under <code>examples/</code>, for demonstrating date/time handling functions.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>

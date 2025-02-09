@@ -24,5 +24,6 @@ var frames_8c =
     [ "novas_sun_angle", "frames_8c.html#a1a1323a247aa7164c73b16148eb32411", null ],
     [ "novas_track_pos", "frames_8c.html#a24d627df1c1788bcaae4a768da63c18c", null ],
     [ "novas_transform_sky_pos", "frames_8c.html#a88972e93665bb1903795bfff264c14f6", null ],
-    [ "novas_transform_vector", "frames_8c.html#aadb7bc88119eed4ea54373a42e22a0d4", null ]
+    [ "novas_transform_vector", "frames_8c.html#aadb7bc88119eed4ea54373a42e22a0d4", null ],
+    [ "novas_transit_time", "frames_8c.html#ae9673b008eb169ea09e4d59077cc733b", null ]
 ];

@@ -375,6 +375,7 @@ var novas_8h =
     [ "novas_track_pos", "novas_8h.html#a24d627df1c1788bcaae4a768da63c18c", null ],
     [ "novas_transform_sky_pos", "novas_8h.html#a88972e93665bb1903795bfff264c14f6", null ],
     [ "novas_transform_vector", "novas_8h.html#aadb7bc88119eed4ea54373a42e22a0d4", null ],
+    [ "novas_transit_time", "novas_8h.html#ae9673b008eb169ea09e4d59077cc733b", null ],
     [ "novas_v2z", "novas_8h.html#aa54cd00024b294d38fa29433c017c65f", null ],
     [ "novas_xyz_to_los", "novas_8h.html#a14deb6fdce80ba213e1f1d5238306e17", null ],
     [ "novas_xyz_to_uvw", "novas_8h.html#a87867e8e7fc7decaa44777a696465353", null ],
