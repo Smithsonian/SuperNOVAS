@@ -76,10 +76,10 @@ jobs:
             distro: ubuntu_latest
           - arch: riscv64
             distro: ubuntu_latest
-#          - arch: s390x
-#            distro: ubuntu_latest
-#          - arch: ppc64le
-#            distro: ubuntu_latest
+          - arch: s390x
+            distro: ubuntu22.04
+          - arch: ppc64le
+            distro: ubuntu22.04
     steps:
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
