@@ -6319,8 +6319,8 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: in=%p, out=%p", in, out);
 
-  if(out_id && strlen(out_id) >= sizeof(out->starname))
-    return novas_error(2, EINVAL, fn, "output catalog ID is too long (%d > %d)", (int) strlen(out_id), (int) sizeof(out->starname) - 1);
+  if(out_id && strlen(out_id) >= SIZE_OF_OBJ_NAME)
+    return novas_error(2, EINVAL, fn, "output catalog ID is too long (%d > %d)", (int) strlen(out_id), SIZE_OF_OBJ_NAME - 1);
 
   if(option == CHANGE_J2000_TO_ICRS || option == CHANGE_ICRS_TO_J2000) {
     // ICRS frame ties always assume J2000 for both input and output...
@@ -6425,19 +6425,19 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   // Set the catalog identification code for the transformed catalog entry.
   if(out_id)
-    strncpy(out->catalog, out_id, sizeof(out->catalog));
+    strncpy(out->catalog, out_id, SIZE_OF_CAT_NAME);
   else if(out != in)
-    strncpy(out->catalog, in->catalog, sizeof(out->catalog));
+    strncpy(out->catalog, in->catalog, SIZE_OF_CAT_NAME);
 
   if(out != in) {
     // Copy unchanged quantities from the input catalog entry to the transformed catalog entry.
-    strncpy(out->starname, in->starname, sizeof(out->starname));
-    out->starname[sizeof(out->starname) - 1] = '\0';
+    strncpy(out->starname, in->starname, SIZE_OF_OBJ_NAME);
+    out->starname[SIZE_OF_OBJ_NAME - 1] = '\0';
     out->starnumber = in->starnumber;
   }
 
-  // Make sure ctaalog name is terminated.
-  out->catalog[sizeof(out->catalog) - 1] = '\0';
+  // Make sure catalog name is terminated.
+  out->catalog[SIZE_OF_CAT_NAME - 1] = '\0';
 
   return 0;
 }
@@ -6966,15 +6966,15 @@ short make_cat_entry(const char *star_name, const char *catalog, long cat_num, d
 
   // Set up the 'star' structure.
   if(star_name) {
-    if(strlen(star_name) >= sizeof(star->starname))
-      return novas_error(1, EINVAL, fn, "Input star_name is too long (%d > %d)", (int) strlen(star_name), (int) sizeof(star->starname) - 1);
-    strncpy(star->starname, star_name, sizeof(star->starname) - 1);
+    if(strlen(star_name) >= SIZE_OF_OBJ_NAME)
+      return novas_error(1, EINVAL, fn, "Input star_name is too long (%d > %d)", (int) strlen(star_name), SIZE_OF_OBJ_NAME - 1);
+    strncpy(star->starname, star_name, SIZE_OF_OBJ_NAME - 1);
   }
 
   if(catalog) {
-    if(strlen(catalog) >= sizeof(star->catalog))
-      return novas_error(2, EINVAL, fn, "Input cataog ID is too long (%d > %d)", (int) strlen(catalog), (int) sizeof(star->catalog) - 1);
-    strncpy(star->catalog, catalog, sizeof(star->catalog) - 1);
+    if(strlen(catalog) >= SIZE_OF_CAT_NAME)
+      return novas_error(2, EINVAL, fn, "Input cataog ID is too long (%d > %d)", (int) strlen(catalog), SIZE_OF_CAT_NAME - 1);
+    strncpy(star->catalog, catalog, SIZE_OF_CAT_NAME - 1);
   }
 
   star->starnumber = cat_num;

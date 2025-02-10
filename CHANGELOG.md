@@ -91,6 +91,9 @@ such as for handling times and angles as strings, rise and set times, and other 
  - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates of before.
    Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
 
+ - Use `SIZE_OF_OBJ_NAME` and `SIZE_OF_CAT_NAME` instead of `sizeof(obj->starname)` and `sizeof(obj->catalog)` 
+   internally for improved portability.
+
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
 
 
