@@ -3154,8 +3154,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
-    double arg = 0.0;
-    double sarg, carg;
+    double arg = 0.0, sarg, carg;
 
     if(n[0])
       arg += n[0] * a.l;
@@ -4250,7 +4249,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   novas_delaunay_args a;
 
-  double arg, sarg, carg, dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
+  double dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
 
   int i;
 
@@ -4263,8 +4262,8 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     const int8_t *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
-    // Argument and functions.
-    arg = 0.0;
+    double arg = 0.0, sarg, carg;
+
     if(n[0])
       arg += n[0] * a.l;
     if(n[1])
@@ -4292,7 +4291,8 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     const int16_t *c = &cpl_t[i][0];
 
     // Argument and functions.
-    arg = 0.0;
+    double arg = 0.0, sarg, carg;
+
     if(n[0])
       arg += n[0] * a.l;
     /* This version of Nutation does not contain terms for l1
