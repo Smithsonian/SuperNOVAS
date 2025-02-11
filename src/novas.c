@@ -3302,7 +3302,13 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
     fa[13] = accum_prec(t);
 
     // Evaluate the complementary terms.
-    for(i = 33; --i >= 0;) {
+#if _OPENMP
+#  pragma omp parallel for shared(s0)
+    for(i = 0; i < 33; i++)
+#else
+    for(i = 33; --i >= 0;)
+#endif
+    {
       const int8_t *ke = &ke0_t[i][0];
       const float *se = &se0_t[i][0];
 
@@ -3313,9 +3319,9 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
         if(ke[j])
           a += ke[j] * fa[j];
 
-      s0 += se[0] * sin(a);
+      s0 += se[0] * sinf(a);
       if(se[1])
-        s0 += se[1] * cos(a);
+        s0 += se[1] * cosf(a);
     }
 
     // AK: Skip 0 terms from ke1[]

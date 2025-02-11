@@ -409,12 +409,18 @@ int sun_eph(double jd, double *ra, double *dec, double *dis) {
   t = u * 100.0;
 
   // Compute longitude and distance terms from the series.
-  for(i = 50; --i >= 0;) {
+#if _OPENMP
+#  pragma omp parallel for shared(sum_lon, sum_r)
+  for(i = 0; i < 50; i++)
+#else
+  for(i = 50; --i >= 0;)
+#endif
+  {
     const struct sun_con *c = &con[i];
     const double arg = c->alpha + c->nu * u;
-    sum_lon += c->l * sin(arg);
+    sum_lon += c->l * sinf(arg);
     if(c->r)
-      sum_r += c->r * cos(arg);
+      sum_r += c->r * cosf(arg);
   }
 
   // Compute longitude, latitude, and distance referred to mean equinox

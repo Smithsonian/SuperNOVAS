@@ -18,6 +18,7 @@
  */
 
 #include <stdint.h>
+#include <math.h>
 #include <errno.h>
 
 #include "novas.h"
@@ -2813,57 +2814,66 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
     // @formatter:on
 
+
   // Convert from 0.1 microarcsec units to radians.
   const double factor = 1.0e-7 * ASEC2RAD;
 
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
-  // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
-  // ecliptic and equinox of J2000
-  // (Simon et al. 1994, 5.8.1-5.8.8).
-  const double alme = planet_lon(t, NOVAS_MERCURY);
-  const double alve = planet_lon(t, NOVAS_VENUS);
-  const double alea = planet_lon(t, NOVAS_EARTH);
-  const double alma = planet_lon(t, NOVAS_MARS);
-  const double alju = planet_lon(t, NOVAS_JUPITER);
-  const double alsa = planet_lon(t, NOVAS_SATURN);
-  const double alur = planet_lon(t, NOVAS_URANUS);
-  const double alne = planet_lon(t, NOVAS_NEPTUNE);
 
-  // General precession in longitude (Simon et al. 1994), equivalent
-  // to 5028.8200 arcsec/cy at J2000.
-  const double apa = accum_prec(t);
+  const double a[14] = { 0.0, 0.0, 0.0, 0.0, 0.0, //
+          // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
+          // ecliptic and equinox of J2000
+          // (Simon et al. 1994, 5.8.1-5.8.8).
+          planet_lon(t, NOVAS_MERCURY), //
+          planet_lon(t, NOVAS_VENUS),   //
+          planet_lon(t, NOVAS_EARTH),   //
+          planet_lon(t, NOVAS_MARS),    //
+          planet_lon(t, NOVAS_JUPITER), //
+          planet_lon(t, NOVAS_SATURN),  //
+          planet_lon(t, NOVAS_URANUS),  //
+          planet_lon(t, NOVAS_NEPTUNE), //
 
-  novas_delaunay_args a;
+          // General precession in longitude (Simon et al. 1994), equivalent
+          // to 5028.8200 arcsec/cy at J2000.
+          accum_prec(t)
+  };
+
   double dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
   int i;
 
   // Compute fundamental arguments from Simon et al. (1994), in radians.
-  fund_args(t, &a);
+  fund_args(t, (novas_delaunay_args *) a);
 
   // ** Luni-solar nutation. **
+#if _OPENACC
+#  pragma acc enter data present_or_copyin(nals_t, cls_t)
+#  pragma acc enter data copyin(a)
+#  pragma acc parallel loop reduction(+:dpsils,depsls)
+  for(i = 0; i < 678; i++)
+#elif _OPENMP
+#  pragma omp parallel for shared(dpsils, depsls)
+  for(i = 0; i < 678; i++)
+#else
   // Summation of luni-solar nutation series (in reverse order).
-  for(i = 678; --i >= 0;) {
+  for(i = 678; --i >= 0;)
+#endif
+  {
     const int8_t *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
-    double arg = 0.0, sarg, carg;
+    double arg = 0.0;
+    float sarg, carg;
+    int k;
 
-    if(n[0])
-      arg += n[0] * a.l;
-    if(n[1])
-      arg += n[1] * a.l1;
-    if(n[2])
-      arg += n[2] * a.F;
-    if(n[3])
-      arg += n[3] * a.D;
-    if(n[4])
-      arg += n[4] * a.Omega;
+    for(k = 5; --k >= 0;)
+      if(n[k])
+        arg += n[k] * a[k];
 
-    sarg = sin(arg);
-    carg = cos(arg);
+    sarg = sinf(arg);
+    carg = cosf(arg);
 
     // Term.
     dpsils += (c[0] + c[1] * t) * sarg + c[2] * carg;
@@ -2871,53 +2881,41 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   }
 
   // ** Planetary nutation. **
-
+#if _OPENACC
+#  pragma acc enter data present_or_copyin(napl_t, cpl_t)
+#  pragma acc parallel loop reduction(+:dpsipl,depspl)
+  for(i = 0; i < 687; i++)
+#elif _OPENMP
+#  pragma omp parallel for shared(dpsipl, depspl)
+  for(i = 0; i < 687; i++)
+#else
   // Summation of planetary nutation series (in reverse order).
-  for(i = 687; --i >= 0;) {
+  for(i = 687; --i >= 0;)
+#endif
+  {
     const int8_t *n = &napl_t[i][0];
     const int16_t *c = &cpl_t[i][0];
 
     // Argument and functions.
-    double arg = 0.0, sarg, carg;
+    double arg = 0.0;
+    float sarg, carg;
+    int k;
 
-    if(n[0])
-      arg += n[0] * a.l;
-    /* The series does not contain terms for l1
-    if(n[1])
-      arg += n[1] * a.l1;
-    */
-    if(n[2])
-      arg += n[2] * a.F;
-    if(n[3])
-      arg += n[3] * a.D;
-    if(n[4])
-      arg += n[4] * a.Omega;
-    if(n[5])
-      arg += n[5] * alme;
-    if(n[6])
-      arg += n[6] * alve;
-    if(n[7])
-      arg += n[7] * alea;
-    if(n[8])
-      arg += n[8] * alma;
-    if(n[9])
-      arg += n[9] * alju;
-    if(n[10])
-      arg += n[10] * alsa;
-    if(n[11])
-      arg += n[11] * alur;
-    if(n[12])
-      arg += n[12] * alne;
-    if(n[13])
-      arg += n[13] * apa;
+    for(k = 14; --k >= 0;)
+      if(n[k])
+        arg += n[k] * a[k];
 
-    sarg = sin(arg);
-    carg = cos(arg);
+    sarg = sinf(arg);
+    carg = cosf(arg);
 
     // Term.
     dpsipl += c[0] * sarg + c[1] * carg;
     depspl += c[2] * sarg + c[3] * carg;
   }
+
+#if _OPENACC
+#  pragma acc exit data delete(a)
+#endif
 
   // Total: Add planetary and luni-solar components.
   if(dpsi)
@@ -3136,6 +3134,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
     // @formatter:on
 
+
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
@@ -3149,13 +3148,23 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
   fund_args(t, &a);
 
   // Summation of luni-solar nutation series (in reverse order)
-  for(i = 77; --i >= 0;) {
+#if _OPENACC
+#  pragma acc enter data present_or_copyin(nals_t, cls_t)
+#  pragma acc parallel loop reduction(+:dpsils,depsls)
+  for(i = 0; i < 77; i++)
+#elif _OPENMP
+#  pragma omp parallel for shared(dpsils, depsls)
+  for(i = 0; i < 77; i++)
+#else
+  for(i = 77; --i >= 0;)
+#endif
+  {
     const int8_t *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
     // Argument and functions.
     double arg = 0.0;
-    double sarg, carg;
+    float sarg, carg;
 
     if(n[0])
       arg += n[0] * a.l;
@@ -3168,8 +3177,8 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     if(n[4])
       arg += n[4] * a.Omega;
 
-    sarg = sin(arg);
-    carg = cos(arg);
+    sarg = sinf(arg);
+    carg = cosf(arg);
 
     // Term.
     dpsils += (c[0] + c[1] * t) * sarg + c[2] * carg;
@@ -4250,21 +4259,32 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   novas_delaunay_args a;
 
-  double arg, sarg, carg, dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
+ double dpsils = 0.0, depsls = 0.0, dpsipl = 0.0, depspl = 0.0;
 
   int i;
 
   // Compute fundamental arguments from Simon et al. (1994), in radians.
   fund_args(t, &a);
 
-  // ** Luni-solar nutation. **
   // Summation of luni-solar nutation series (in reverse order).
-  for(i = 323; --i >= 0;) {
+#if _OPENACC
+#  pragma acc enter data present_or_copyin(nals_t, cls_t)
+#  pragma acc enter data copyin(a)
+#  pragma acc parallel loop reduction(+:dpsils,depsls)
+  for(i = 0; i < 323; i++)
+#elif _OPENMP
+#  pragma omp parallel for shared(dpsils, depsls)
+  for(i = 0; i < 323; i++)
+#else
+  for(i = 323; --i >= 0;)
+#endif
+  {
     const int8_t *n = &nals_t[i][0];
     const int32_t *c = &cls_t[i][0];
 
-    // Argument and functions.
-    arg = 0.0;
+    double arg = 0.0;
+    float sarg, carg;
+
     if(n[0])
       arg += n[0] * a.l;
     if(n[1])
@@ -4276,8 +4296,8 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     if(n[4])
       arg += n[4] * a.Omega;
 
-    sarg = sin(arg);
-    carg = cos(arg);
+    sarg = sinf(arg);
+    carg = cosf(arg);
 
     // Term.
     dpsils += (c[0] + c[1] * t) * sarg + c[2] * carg;
@@ -4286,13 +4306,24 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
 
   // ** Planetary nutation. **
 
+#if _OPENACC
+#  pragma acc enter data present_or_copyin(napl_t, cpl_t)
+#  pragma acc parallel loop reduction(+:dpsipl,depspl)
+  for(i = 0; i < 165; i++)
+#elif _OPENMP
+#  pragma omp parallel for shared(dpsipl, depspl)
+  for(i = 0; i < 165; i++)
+#else
   // Summation of planetary nutation series (in reverse order).
-  for(i = 165; --i >= 0;) {
+  for(i = 165; --i >= 0;)
+#endif
+  {
     const int8_t *n = &napl_t[i][0];
     const int16_t *c = &cpl_t[i][0];
 
-    // Argument and functions.
-    arg = 0.0;
+    double arg = 0.0;
+    float sarg, carg;
+
     if(n[0])
       arg += n[0] * a.l;
     /* This version of Nutation does not contain terms for l1
@@ -4328,13 +4359,17 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
     if(n[13])
       arg += n[13] * apa;
 
-    sarg = sin(arg);
-    carg = cos(arg);
+    sarg = sinf(arg);
+    carg = cosf(arg);
 
     // Term.
     dpsipl += c[0] * sarg + c[1] * carg;
     depspl += c[2] * sarg + c[3] * carg;
   }
+
+#if _OPENACC
+#  pragma acc exit data delete(a)
+#endif
 
   // Total: Add planetary and luni-solar components.
   if(dpsi)

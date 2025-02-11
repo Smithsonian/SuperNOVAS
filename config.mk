@@ -22,7 +22,27 @@ CPPFLAGS += -I$(INC)
 
 # Base compiler options (if not defined externally...)
 # -std=c99 may not be supported by some very old compilers...
-CFLAGS ?= -g -Os -Wall
+CFLAGS ?= -g -Os -Wall 
+
+# (experimental) You can enabled OpenACC offloading, by setting the appropriate
+# -foffload options in ACC_OFFLOAD. When defined, it will automatically enabled
+# OpenACC for some of the intensive calculations. You should be careful though,
+# it is not guaranteed to result in performanc gains, and may even significantly
+# slow down performance, depending on the efficacy of the OpenACC optimization.
+#
+# E.g. for NVIDIA GPUs, you might set 
+# ACC_OFFLOAD = -foffload=nvptx-none
+ifdef ACC_OFFLOAD
+LDFLAGS += -fopenacc $(ACC_OFFLOAD)
+endif
+
+# You can enable parallelized intensive calculations, e.g. for nutation, which
+# might increase the performance of sequential calculations on multi-core
+# systems. However, it is in general better to parallelize the calculations
+# at a higher level...
+ifdef OPENMP
+LDFLAGS += -fopenmp
+endif
 
 # Compile for specific C standard
 ifdef CSTANDARD
