@@ -1416,4 +1416,4 @@ candidates are typically available for one week only before they are superseded 
 release.
 
 -----------------------------------------------------------------------------
-Copyright (C) 2024 Attila Kovács
+Copyright (C) 2025 Attila Kovács
