@@ -380,7 +380,7 @@ terms differently:
  | Catalog coordinate system  | FK4, FK5, HIP...              | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
- | Precession, nutation, bias | separate, no tidal terms      | IAU 2006 precession/nutation model                |
+ | Precession, nutation, bias | separate, no tidal terms      | IAU 2000 precession/nutation model                |
  | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
  | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |

@@ -7,7 +7,7 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.3\&.0-rc1]"
+.SH "[Unreleased]"
 .PP
 Release candidate for upcoming feature release, expected around 1 May 2025\&. It brings many new convenience functions, such as for handling times and angles as strings, rise and set times, and other common astrometric calculations\&.
 .SS "Fixed"
@@ -52,9 +52,11 @@ Added \fCexample-time\&.c\fP under \fCexamples/\fP, for demonstrating date/time 
 .IP "\(bu" 2
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
 .IP "\(bu" 2
-Modified \fC\fBjulian_date()\fP\fP to add range checking for month and day arguments, and return NAN (with errno set to EINVAL) if the input values are invalid\&.
+Modified \fC\fBjulian_date()\fP\fP to add range checking for month and day arguments, and return NAN (with errno set to \fCEINVAL\fP) if the input values are invalid\&.
 .IP "\(bu" 2
 \fC\fBjulian_date()\fP\fP and \fC\fBcal_date()\fP\fP now use astronomical calendar dates instead of the fixed Gregorian dates of before\&. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582\&.
+.IP "\(bu" 2
+Use \fCSIZE_OF_OBJ_NAME\fP and \fCSIZE_OF_CAT_NAME\fP instead of \fCsizeof(obj->starname)\fP and \fCsizeof(obj->catalog)\fP internally for improved portability\&.
 .IP "\(bu" 2
 Updated \fCREADME\&.md\fP for v1\&.3 and benchmarks, including comparisons to \fBastropy\fP\&.
 .PP

@@ -342,7 +342,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc1'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1', or empty string '' for releases\&. "
 .ti -1c
@@ -5100,7 +5100,7 @@ Populates the data structure for a 'catalog' source, such as a star\&.
 .PP
 
 .PP
-References \fBcat_entry::catalog\fP, \fBcat_entry::dec\fP, \fBcat_entry::parallax\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBcat_entry::ra\fP, \fBrad_vel()\fP, \fBcat_entry::radialvelocity\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
+References \fBcat_entry::catalog\fP, \fBcat_entry::dec\fP, \fBcat_entry::parallax\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBcat_entry::ra\fP, \fBrad_vel()\fP, \fBcat_entry::radialvelocity\fP, \fBSIZE_OF_CAT_NAME\fP, \fBSIZE_OF_OBJ_NAME\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
 .SS "int make_cat_object (const \fBcat_entry\fP * star, \fBobject\fP * source)"
 Populates and object data structure with the data for a catalog source\&.
 .PP
@@ -10522,7 +10522,7 @@ This function cannot be properly used to bring data from old star catalogs into 
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBC\fP, \fBcat_entry::catalog\fP, \fBCHANGE_EPOCH\fP, \fBCHANGE_ICRS_TO_J2000\fP, \fBCHANGE_J2000_TO_ICRS\fP, \fBcat_entry::dec\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, \fBnovas_xyz_to_los()\fP, \fBcat_entry::parallax\fP, \fBPRECESSION\fP, \fBprecession()\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBPROPER_MOTION\fP, \fBcat_entry::ra\fP, \fBradec2vector()\fP, \fBcat_entry::radialvelocity\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
+References \fBAU_KM\fP, \fBC\fP, \fBcat_entry::catalog\fP, \fBCHANGE_EPOCH\fP, \fBCHANGE_ICRS_TO_J2000\fP, \fBCHANGE_J2000_TO_ICRS\fP, \fBcat_entry::dec\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, \fBnovas_xyz_to_los()\fP, \fBcat_entry::parallax\fP, \fBPRECESSION\fP, \fBprecession()\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBPROPER_MOTION\fP, \fBcat_entry::ra\fP, \fBradec2vector()\fP, \fBcat_entry::radialvelocity\fP, \fBSIZE_OF_CAT_NAME\fP, \fBSIZE_OF_OBJ_NAME\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
 .SS "int transform_hip (const \fBcat_entry\fP * hipparcos, \fBcat_entry\fP * hip_2000)"
 Convert Hipparcos catalog data at epoch J1991\&.25 to epoch J2000\&.0, for use within NOVAS\&. To be used only for Hipparcos or Tycho stars with linear space motion\&. Both input and output data is in the ICRS\&.
 .PP
