@@ -649,7 +649,7 @@ observer frame.
 ```
 
 Note, that in the current implementation these calls are not well-suited sources that are at or within the 
-geostationary orbit, such as such as low-Earth orbit (LEOs) satellites, geostationary satellites (which never really 
+geostationary orbit, such as such as low-Earth orbit satellites (LEOs), geostationary satellites (which never really 
 rise, set, or transit), or some Near Earth Objects (NEOs). For these, the above calls may still return a valid time, 
 only without the guarantee that it is the time of the first such event after the specified frame instant. A future 
 implementation may address near-Earth orbits better, so stay tuned for updates.
@@ -660,7 +660,7 @@ implementation may address near-Earth orbits better, so stay tuned for updates.
 
 Solar-system sources work similarly to the above with a few important differences.
 
-First, You will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
+First, you will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
 source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on integrating 
 [External Solar-system ephemeris data or services](#solarsystem) with SuperNOVAS. You can specify the functions that 
 will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:
