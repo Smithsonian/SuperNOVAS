@@ -642,7 +642,7 @@ observer frame.
 Note, that in the current implementation these calls are not well-suited sources that are at or within the 
 geostationary orbit, such as such as low-Earth orbit (LEOs) satellites, geostationary satellites (which never really 
 rise, set, or transit), or some Near Earth Objects (NEOs). For these, the above calls may still return a valid time, 
-only without the guarantee that it is the time of the first such event after the frame instant. A future 
+only without the guarantee that it is the time of the first such event after the specified frame instant. A future 
 implementation may address near-Earth orbits better, so stay tuned for updates.
 
 
