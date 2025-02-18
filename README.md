@@ -435,6 +435,15 @@ implementation.
 A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
 galactic molecular cloud, or a distant quasar. 
 
+ - [Specify the object of interest](#specify-object)
+ - [Specify the observer location](#specify-observer)
+ - [Specify the time of observation](#specify-time)
+ - [Set up the observing frame](#observing-frame)
+ - [Calculate an apparent place on sky](#apparent-place)
+ - [Calculate azimuth and elevation angles at the observing location](#horizontal-place)
+ - [Calculate rise, set, and transit times](#rise-set-transit)
+
+<a name="specify-object"></a>
 #### Specify the object of interest
 
 First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star 
@@ -486,8 +495,7 @@ handles both catalog and Solar-system sources).
  make_cat_object(&star, &source);
 ```
 
-Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object()` with 
-ICRS coordinate from the start, e.g.:
+Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object()` e.g.:
 
 ```c
  object quasar;
@@ -496,7 +504,7 @@ ICRS coordinate from the start, e.g.:
  make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &quasar);
 ```
 
-
+<a name="specify-observer"></a>
 #### Specify the observer location
 
 Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
@@ -514,6 +522,7 @@ Again you might use `novas_dms_degrees()` for string representations of the long
 You can also specify observers in Earth orbit, in Sun orbit, at the geocenter, or at the Solar-system barycenter.
 
 
+<a name="specify-time"></a>
 #### Specify the time of observation
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the
@@ -555,7 +564,7 @@ or, you can use a string date, such as an ISO timestamp:
  novas_set_string_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", 37, 0.042, &obs_time);
 ```
 
-
+<a name="observing-frame"></a>
 #### Set up the observing frame
 
 Next, we set up an observing frame, which is defined for a unique combination of the observer location and the time of
@@ -576,9 +585,9 @@ converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame
 if sub-arcsecond precision is not required.
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
-in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it 
-will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames
-for different observer locations, if need be, via `novas_change_observer()`.
+in that frame (see the [benchmarks](#benchmarks)). So, if you need to calculate positions for thousands of sources for 
+the same observer and time, it will be significantly faster than using the low-level NOVAS C routines instead. You can 
+create derivative frames for different observer locations, if need be, via `novas_change_observer()`.
 
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
@@ -588,7 +597,7 @@ planets. Without it, &mu;as accuracy cannot be ensured, in general. Therefore, a
 frames without an appropriate high-precision ephemeris provider will result in an error from the requisite 
 `ephemeris()` call. 
 
-
+<a name="apparent-place"></a>
 #### Calculate an apparent place on sky
 
 Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal
@@ -612,7 +621,7 @@ deflection, you might use `novas_geom_posvel()` instead. And regardless, which f
 and efficiently change the coordinate system in which your results are expressed by creating an appropriate transform 
 via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
 
-
+<a name="horizontal-place"></a>
 #### Calculate azimuth and elevation angles at the observing location
 
 If your ultimate goal is to calculate the azimuth and elevation angles of the source at the specified observing 
@@ -632,7 +641,7 @@ suitable refraction correction. We could have used `novas_optical_refraction()` 
 embedded in the frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate 
 unrefracted elevation angles.
 
-
+<a name="rise-set-transit"></a>
 #### Calculate rise, set, and transit times
 
 You may be interested to know when sources rise above or set below some specific elevation angle, or at what time they 
@@ -657,7 +666,7 @@ observer frame.
 ```
 
 Note, that in the current implementation these calls are not well-suited sources that are at or within the 
-geostationary orbit, such as such as low-Earth orbit (LEOs) satellites, geostationary satellites (which never really 
+geostationary orbit, such as such as low-Earth orbit satellites (LEOs), geostationary satellites (which never really 
 rise, set, or transit), or some Near Earth Objects (NEOs). For these, the above calls may still return a valid time, 
 only without the guarantee that it is the time of the first such event after the specified frame instant. A future 
 implementation may address near-Earth orbits better, so stay tuned for updates.
@@ -668,7 +677,7 @@ implementation may address near-Earth orbits better, so stay tuned for updates.
 
 Solar-system sources work similarly to the above with a few important differences.
 
-First, You will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
+First, you will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
 source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on integrating 
 [External Solar-system ephemeris data or services](#solarsystem) with SuperNOVAS. You can specify the functions that 
 will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:
@@ -838,7 +847,7 @@ Finally, you can combine them to convert between two different conventional unit
  double lst_d = lst_h * HOURANGLE / DEGREE; 
   
  // Convert [AU/day] -> [m/s] (SI) -> [km/s]
- double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KM
+ double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KMS
 ```
 
 <a name="string-times-and-angles"></a>
@@ -934,7 +943,8 @@ flexibility for parsing dates using the `novas_parse_date_format()` and `novas_t
    scale = NOVAS_UTC;
  }
 
- // Now set the time for the given calendar, date format, and timescale of the string representation.
+ // Now set the time for the given calendar, date format, and timescale of the 
+ // string representation.
  novas_set_time(scale, jd, leap_seconds, dut1, &time);
 ``` 
 
