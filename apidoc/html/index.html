@@ -612,7 +612,8 @@ String dates</h3>
 <div class="line"><span class="keyword">enum</span> <a class="code hl_enumeration" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale;  <span class="comment">// We&#39;ll parse the timescale here (if we can)</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// We&#39;ll parse the M/D/Y date up to the &#39;TAI&#39; timescale specification...</span></div>
-<div class="line"><span class="keywordtype">double</span> jd = <a class="code hl_function" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format</a>(<a class="code hl_enumvalue" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="code hl_enumvalue" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <span class="stringliteral">&quot;2/16/2025 20:08:49.082 TAI&quot;</span>, &amp;pos);</div>
+<div class="line"><span class="keywordtype">double</span> jd = <a class="code hl_function" href="timescale_8c.html#ab7b63f4a8cb2c50d4cbc972d2ffc4122">novas_parse_date_format</a>(<a class="code hl_enumvalue" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="code hl_enumvalue" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, </div>
+<div class="line">  <span class="stringliteral">&quot;2/16/2025 20:08:49.082 TAI&quot;</span>, &amp;pos);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// We&#39;ll parse the &#39;TAI&#39; timescale marker, after the date/time specification</span></div>
 <div class="line">scale = <a class="code hl_function" href="timescale_8c.html#a5e447ec1ea688fe3fb688387ac669f7a">novas_timescale_for_string</a>(pos);</div>

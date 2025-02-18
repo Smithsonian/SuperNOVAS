@@ -876,7 +876,8 @@ flexibility for parsing dates using the `novas_parse_date_format()` and `novas_t
  enum novas_timescale scale;  // We'll parse the timescale here (if we can)
 
  // We'll parse the M/D/Y date up to the 'TAI' timescale specification...
- double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_MDY, "2/16/2025 20:08:49.082 TAI", &pos);
+ double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_MDY, 
+   "2/16/2025 20:08:49.082 TAI", &pos);
   
  // We'll parse the 'TAI' timescale marker, after the date/time specification
  scale = novas_timescale_for_string(pos);
