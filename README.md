@@ -622,7 +622,8 @@ location, you can proceed from the `sky_pos` data you obtained above (in whichev
  double az, el;   // [deg] local azimuth and elevation angles to populate
   
  // Convert the apparent position in CIRS on sky to horizontal coordinates
- novas_app_to_hor(&obs_frame, NOVAS_CIRS, apparent.ra, apparent.dec, novas_standard_refraction, &az, &el);
+ novas_app_to_hor(&obs_frame, NOVAS_CIRS, apparent.ra, apparent.dec, novas_standard_refraction, 
+   &az, &el);
 ```
 
 Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and 
@@ -630,6 +631,36 @@ elevation coordinates at the observing location, using the `novas_standard_refra
 suitable refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data 
 embedded in the frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate 
 unrefracted elevation angles.
+
+
+#### Calculate rise, set, and transit times
+
+You may be interested to know when sources rise above or set below some specific elevation angle, or at what time they 
+appear to transit at the observer location. SuperNOVAS has routines to help you with that too. Given that rise, set, 
+or transit times are dependent on the day of observation, and observer location, they are effectively tied to an 
+observer frame.
+
+```c
+ novas_frame frame = ...;  // Earth-based observer location and lower-bound time of interest.
+ object source = ...;      // Source of interest
+
+ // UTC-based Julian day *after* observer frame, when source rises above 30 degrees of elevation 
+ // next, given a standard optical refraction model.
+ double jd_rise = novas_rises_above(30.0, &source, &frame, novas_standard_refraction);
+
+ // UTC-based Julian day *after* observer frame, of next source transit
+ double jd_transit = novas_transit_time(&source, &frame);
+ 
+ // UTC-based Julian day *after* observer frame, when source sets below 30 degrees of elevation 
+ // next, not accounting for refraction.
+ double jd_rise = novas_sets_below(30.0, &source, &frame, NULL);
+```
+
+Note, that in the current implementation these calls are not well-suited sources that are at or within the 
+geostationary orbit, such as such as low-Earth orbit (LEOs) satellites, geostationary satellites (which never really 
+rise, set, or transit), or some Near Earth Objects (NEOs). For these, the above calls may still return a valid time, 
+only without the guarantee that it is the time of the first such event after the specified frame instant. A future 
+implementation may address near-Earth orbits better, so stay tuned for updates.
 
 
 <a name="solsys-example"></a>
