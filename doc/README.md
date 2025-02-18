@@ -568,9 +568,9 @@ converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame
 if sub-arcsecond precision is not required.
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
-in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it 
-will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames
-for different observer locations, if need be, via `novas_change_observer()`.
+in that frame (see the [benchmarks](#benchmarks)). So, if you need to calculate positions for thousands of sources for 
+the same observer and time, it will be significantly faster than using the low-level NOVAS C routines instead. You can 
+create derivative frames for different observer locations, if need be, via `novas_change_observer()`.
 
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
