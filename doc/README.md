@@ -478,8 +478,7 @@ handles both catalog and Solar-system sources).
  make_cat_object(&star, &source);
 ```
 
-Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object()` with 
-ICRS coordinate from the start, e.g.:
+Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object()` e.g.:
 
 ```c
  object quasar;
