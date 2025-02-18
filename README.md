@@ -34,8 +34,8 @@ standard, and hence should be suitable for old and new platforms alike. It is li
 support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
 
 SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
-[astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](#benchmarks)) in a single thread, and its 
-performance scales with the number of CPUs when parallelized.
+[astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
+scales with the number of CPUs when parallelized.
 
 This document has been updated for the `v1.3` and later releases.
 
@@ -490,10 +490,10 @@ Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` 
 ICRS coordinate from the start, e.g.:
 
 ```c
-  object quasar;
+ object quasar;
   
-  // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
-  make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &quasar);
+ // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
+ make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &quasar);
 ```
 
 
@@ -517,7 +517,7 @@ You can also specify observers in Earth orbit, in Sun orbit, at the geocenter, o
 #### Specify the time of observation
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the
-UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.114,
+UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.042,
 then we can set the time of observation, for example, using the current UNIX time:
 
 ```c
@@ -528,7 +528,7 @@ then we can set the time of observation, for example, using the current UNIX tim
  clock_gettime(CLOCK_REALTIME, &unix_time);
  
  // Set the time of observation to the precise UTC-based UNIX time
- novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.114, &obs_time);
+ novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.042, &obs_time);
 ```
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
@@ -546,13 +546,13 @@ or, for the best precision we may do the same with an integer / fractional split
  long ijd_tai = ...     // Integer part of the TAI-based Julian Date
  double fjd_tai = ...   // Fractional part of the TAI-based Julian Date 
   
- novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, 37, 0.114, &obs_time);
+ novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, leap_seconds, dut1, &obs_time);
 ```
 
 or, you can use a string date, such as an ISO timestamp:
 
 ```c
-  novas_set_string_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", 37, 0.042, &obs_time);
+ novas_set_string_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", 37, 0.042, &obs_time);
 ```
 
 
@@ -597,9 +597,9 @@ and gravitational deflection around the major Solar System bodies. You can calcu
 coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, or TOD):
 
 ```c
-  sky_pos apparent;    // Structure containing the precise observed position
+ sky_pos apparent;    // Structure containing the precise observed position
   
-  novas_sky_pos(&source, &obs_frame, NOVAS_CIRS, &apparent);
+ novas_sky_pos(&source, &obs_frame, NOVAS_CIRS, &apparent);
 ```
 
 Apart from providing precise apparent R.A. and declination coordinates, the `sky_pos` structure also provides the 
@@ -657,13 +657,13 @@ Or, if you have the CALCEPH library installed on your system, and you have built
 then you might call:
 
 ```c
-  #include <novas-calceph.h>
+ #include <novas-calceph.h>
   
-  // Use calceph to open se set of ephemeris files...
-  t_calcephbin *ephem_data = calceph_open_array(...);
+ // Use calceph to open se set of ephemeris files...
+ t_calcephbin *ephem_data = calceph_open_array(...);
   
-  // Use CALCEPH with the specified data for all Solar-system objects.
-  novas_use_calceph(ephem_data);
+ // Use CALCEPH with the specified data for all Solar-system objects.
+ novas_use_calceph(ephem_data);
 ```
 
 Next, instead of `make_cat_object()` you define your source as an `object` with an name or ID number that is used by 
@@ -686,15 +686,15 @@ As of version 1.2 you can also define solar system sources with orbital elements
 provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for asteroids, comets, etc.):
 
 ```c
-  object NEA;		// e.g. a Near-Earth Asteroid
+ object NEA;		// e.g. a Near-Earth Asteroid
   
-  // Fill in the orbital parameters (pay attention to units!)
-  novas_orbital orbit = NOVAS_ORBIT_INIT;
-  orbit.a = ...;	// Major axis in AU...
-  ...			// ... and the rest of the orbital elements
+ // Fill in the orbital parameters (pay attention to units!)
+ novas_orbital orbit = NOVAS_ORBIT_INIT;
+ orbit.a = ...;	        // Major axis in AU...
+ ...                    // ... and the rest of the orbital elements
   
-  // Create an object for that orbit
-  make_orbital_object("NEAxxx", -1, &orbit, &NEA);
+ // Create an object for that orbit
+ make_orbital_object("NEAxxx", -1, &orbit, &NEA);
 ```
 
 Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise
@@ -718,6 +718,8 @@ Other than that, it's the same spiel as before, e.g.:
  - [Reduced accuracy shortcuts](#accuracy-notes)
  - [Multi-threaded calculations](#multi-threading)
  - [Physical units](#physical-units)
+ - [String times and angles](#string-times-and-angles)
+ - [String dates](#string-dates)
 
 
 <a name="accuracy-notes"></a>
@@ -764,51 +766,146 @@ provides a set of unit constants, which can be used for converting to/from SI un
 `novas.h` contains the following definitions:
 
 ```c
-  /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
-  #define NOVAS_DAY                 86400.0
+ /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
+ #define NOVAS_DAY                 86400.0
 
-  /// [rad] A degree expressed in radians. @since 1.2
-  #define NOVAS_DEGREE              (M_PI / 180.0)
+ /// [rad] A degree expressed in radians. @since 1.2
+ #define NOVAS_DEGREE              (M_PI / 180.0)
 
-  /// [rad] An hour of angle expressed in radians. @since 1.2
-  #define NOVAS_HOURANGLE           (M_PI / 12.0)
+ /// [rad] An hour of angle expressed in radians. @since 1.2
+ #define NOVAS_HOURANGLE           (M_PI / 12.0)
 ```
 
 You can use these, for example, to convert quantities expressed in conventional units for NOVAS to standard (SI) 
 values, by multiplying NOVAS quantities with the corresponding unit definition. E.g.:
 
 ```c
-  // A difference in Julian Dates [day] in seconds.
-  double delta_t = (tjd - tjd0) * NOVAS_DAY;
+ // A difference in Julian Dates [day] in seconds.
+ double delta_t = (tjd - tjd0) * NOVAS_DAY;
   
-  // R.A. [h] / declination [deg] converted radians (e.g. for trigonometric functions).
-  double ra_rad = ra_h * NOVAS_HOURANGLE;
-  double dec_rad = dec_d * NOVAS_DEGREE; 
+ // R.A. [h] / declination [deg] converted radians (e.g. for trigonometric functions).
+ double ra_rad = ra_h * NOVAS_HOURANGLE;
+ double dec_rad = dec_d * NOVAS_DEGREE; 
 ```
 
 And vice-versa: to convert values expressed in standard (SI) units, you can divide by the appropriate constant to
 'cast' an SI value into the particular physical unit, e.g.:
 
 ```c
-  // Increment a Julian Date [day] with some time differential [s].
-  double tjd = tjd0 + delta_t / NOVAS_DAY;
+ // Increment a Julian Date [day] with some time differential [s].
+ double tjd = tjd0 + delta_t / NOVAS_DAY;
   
-  // convert R.A. / declination in radians to hours and degrees
-  double ra_h = ra_rad / NOVAS_HOURANGLE;
-  double dec_d = dec_rad / NOVAS_DEGREE;
+ // convert R.A. / declination in radians to hours and degrees
+ double ra_h = ra_rad / NOVAS_HOURANGLE;
+ double dec_d = dec_rad / NOVAS_DEGREE;
 ```
 
 Finally, you can combine them to convert between two different conventional units, e.g.:
 
 ```c
-  // Convert angle from [h] -> [rad] -> [deg]
-  double lst_d = lst_h * HOURANGLE / DEGREE; 
+ // Convert angle from [h] -> [rad] -> [deg]
+ double lst_d = lst_h * HOURANGLE / DEGREE; 
   
-  // Convert [AU/day] -> [m/s] (SI) -> [km/s]
-  double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KM
+ // Convert [AU/day] -> [m/s] (SI) -> [km/s]
+ double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KM
 ```
 
+<a name="string-times-and-angles"></a>
+### String times and angles
+
+__SuperNOVAS__ functions typically input and output time and angles as decimal values (hours and degrees, but also as 
+days and hour-angles), but that is not how these are represented in many cases. Time and right-ascention are often 
+given as string values indicating hours, minutes, and seconds (e.g. "11:32:31.595", or "11h 32m 31.595s"). Similarly 
+angles, are commonly represented as degrees, arc-minutes, and arc-seconds (e.g. "+53 60 19.9"). For that reason, 
+__SuperNOVAS__ provides a set of functions to convert broken-down string values to decimal representations. E.g.,
+
+```c
+ // Right ascention as space-separated values
+ double ra_h = novas_hms_hours("9 18 49.068");
+
+ // ... or separated by 'h', 'm'...
+ ra_h = novas_hms_hours("09h18m49.068s");
+  
+ // ... or with colons
+ ra_h = novas_hms_hours("09:18:068");
+  
+ // Declination as space separated degrees, arc-minutes, and arc-seconds
+ double dec_d = novas_dms_degrees("-53 10 07.33");
+  
+ // .. or separated by colons
+ dec_d = novas_dms_degrees("-53:10:07.33");
+  
+ // .. or with 'd', 'm'...
+ dec_d = novas_dms_degrees("-53d10m07.33s");
+```
+
+<a name="string-dates"></a>
+### String dates
+
+Dates are typically represented broken down into year, month, and day (e.g. "2025-02-16", or "16.02.2025", or 
+"2/16/2025"), with or without a time marker, which itself may or may not include a time-zone specification. In 
+astronomy, the most commonly used string representation of dates is with ISO 8601 timestamps. The following are
+all valid ISO date specifications:
+
+```
+ 2025-02-16			# Date only (0 UTC)
+ 2025-02-16T19:35:21Z		# UTC date/time
+ 2025-02-16T19:35:21.832Z	# UTC date/time with decimals
+ 2025-02-16T14:35:21+0500	# date in time-zone (e.g. EST)
+ 2025-02-16T14:35:21.832+05:00  # alternative time-zone specification
+```
+
+SuperNOVAS provides functions to convert between ISO dates/times and their string representation for convenience. 
+E.g.,
+
+```c
+ novas_timespec time;		// Astronomical time specification
+ char timestamp[40];		// A string to contain an ISO representation
+
+ // Parse an ISO timestamp into a Julian day
+ double jd = novas_parse_date("2025-02-16T19:35:21Z", NULL);
+  
+ // Use the parsed JD date in any timescale, e.g. in TAI
+ // with the appropriate leap seconds and UT1-UTC time difference
+ novas_set_time(NOVAS_TAI, jd, leap_seconds, dut1, &time);
+  
+ // Print an ISO timestamp, with millisecond precision, into the 
+ // designated string buffer.
+ novas_iso_timestamp(&time, timestamp, sizeof(timestamp));
+```
  
+Above, `novas_parse_date()` will always interpret dates in the astronomical calendar of date, that is in the Gregorian 
+calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. And, SuperNOVAS
+string timestamps are also always in the (conventional) astronomical calendar of date also. And while 
+`novas_iso_timestamp()` will always express dates as UTC dates, you can use the somewhat more generic 
+`novas_timestamp()` function instead to timestamp in other timescales, e.g.:
+
+```c
+ // Print a TDB timestamp instead
+ novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
+```
+
+ISO timestamps are best, but sometimes your input dates represented in other formats. You can have additional 
+flexibility for parsing dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions. E.g.,
+
+```c
+ char *pos = NULL;            // We'll keep track of the string parse position here
+ enum novas_timescale scale;  // We'll parse the timescale here (if we can)
+
+ // We'll parse the M/D/Y date up to the 'TAI' timescale specification...
+ double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_MDY, "2/16/2025 20:08:49.082 TAI", &pos);
+  
+ // We'll parse the 'TAI' timescale marker, after the date/time specification
+ scale = novas_timescale_for_string(pos);
+ if(scale < 0) {
+   // Ooops, not a valid timescale marker. Perhaps assume UTC...
+   scale = NOVAS_UTC;
+ }
+
+ // Now set the time for the given calendar, date format, and timescale of the string representation.
+ novas_set_time(scale, jd, leap_seconds, dut1, &time);
+``` 
+
 -----------------------------------------------------------------------------
 
 <a name="precision"></a>
@@ -928,7 +1025,7 @@ Figure 2 offers a visual comparison for the above mentioned performance measures
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
 repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
-2 orders of magnitude faster performance than for inidividual observing times and/or observer locations. Also, when 
+2 orders of magnitude faster performance than for individual observing times and/or observer locations. Also, when 
 observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
 individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
 
@@ -1180,26 +1277,26 @@ library) for the build to succeed. Here is an example on how you'd use CALCEPH w
 code:
 
 ```c
-  #include <novas.h>
-  #include <novas-calceph.h>
+ #include <novas.h>
+ #include <novas-calceph.h>
   
-  // You can open a set of JPL/INPOP ephemeris files with CALCEPH...
-  t_calcephbin *eph = calceph_open_array(...);
+ // You can open a set of JPL/INPOP ephemeris files with CALCEPH...
+ t_calcephbin *eph = calceph_open_array(...);
   
-  // Then use them as your generic SuperNOVAS ephemeris provider
-  int status = novas_use_calceph(eph);
-  if(status < 0) {
-    // Ooops something went wrong...
-  }
+ // Then use them as your generic SuperNOVAS ephemeris provider
+ int status = novas_use_calceph(eph);
+ if(status < 0) {
+   // Ooops something went wrong...
+ }
   
-  // -----------------------------------------------------------------------
-  // Optionally you may use a separate ephemeris dataset for major planets
-  // (or if planet ephemeris was included in 'eph' above, you don't have to) 
-  t_calcephbin *pleph = calceph_open(...);
-  status = novas_use_calceph_planets(pleph);
-  if(status < 0) {
-    // Ooops something went wrong...
-  }
+ // -----------------------------------------------------------------------
+ // Optionally you may use a separate ephemeris dataset for major planets
+ // (or if planet ephemeris was included in 'eph' above, you don't have to) 
+ t_calcephbin *pleph = calceph_open(...);
+ status = novas_use_calceph_planets(pleph);
+ if(status < 0) {
+   // Ooops something went wrong...
+ }
 ```
 
 All modern JPL (SPK) ephemeris files should work with the `solsys-calceph` plugin. When linking your application, 
@@ -1228,25 +1325,25 @@ repository to help you build CSPICE with shared libraries and dynamically linked
 Here is an example on how you might use CSPICE with SuperNOVAS in your application code:
 
 ```c
-  #include <novas.h>
-  #include <novas-cspice.h>
+ #include <novas.h>
+ #include <novas-cspice.h>
 
-  // You can load the desired kernels for CSPICE
-  // E.g. load DE440s and the Mars satellites:
-  int status;
+ // You can load the desired kernels for CSPICE
+ // E.g. load DE440s and the Mars satellites:
+ int status;
   
-  status = cspice_add_kernel("/path/to/de440s.bsp");
-  if(status < 0) {
-    // oops, the kernels must not have loaded...
-    ...
-  }
+ status = cspice_add_kernel("/path/to/de440s.bsp");
+ if(status < 0) {
+   // oops, the kernels must not have loaded...
+   ...
+ }
   
-  // Load additional kernels as needed...
-  status = cspice_add_kernel("/path/to/mar097.bsp");
-  ...
+ // Load additional kernels as needed...
+ status = cspice_add_kernel("/path/to/mar097.bsp");
+ ...
   
-  // Then use CSPICE as your SuperNOVAS ephemeris provider
-  novas_use_cspice();
+ // Then use CSPICE as your SuperNOVAS ephemeris provider
+ novas_use_cspice();
 ```
 
 All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking your application, add `-lsolsys-cspice` 
