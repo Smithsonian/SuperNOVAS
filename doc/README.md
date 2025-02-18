@@ -830,7 +830,7 @@ Finally, you can combine them to convert between two different conventional unit
  double lst_d = lst_h * HOURANGLE / DEGREE; 
   
  // Convert [AU/day] -> [m/s] (SI) -> [km/s]
- double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KM
+ double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KMS
 ```
 
 <a name="string-times-and-angles"></a>
