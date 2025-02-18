@@ -446,7 +446,7 @@ Calculate rise, set, and transit times</h4>
 <div class="line"><span class="comment">// UTC-based Julian day *after* observer frame, of next source transit</span></div>
 <div class="line"><span class="keywordtype">double</span> jd_transit = <a class="code hl_function" href="frames_8c.html#ae9673b008eb169ea09e4d59077cc733b">novas_transit_time</a>(&amp;source, &amp;frame);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// UTC-based Julian day *after* observer frame, when source sets below 30 degrese of elevation </span></div>
+<div class="line"><span class="comment">// UTC-based Julian day *after* observer frame, when source sets below 30 degrees of elevation </span></div>
 <div class="line"><span class="comment">// next, not accounting for refraction.</span></div>
 <div class="line"><span class="keywordtype">double</span> jd_rise = <a class="code hl_function" href="frames_8c.html#a0c2383896d4bfba77a91272aa09d6a24">novas_sets_below</a>(30.0, &amp;source, &amp;frame, NULL);</div>
 <div class="ttc" id="aframes_8c_html_a0c2383896d4bfba77a91272aa09d6a24"><div class="ttname"><a href="frames_8c.html#a0c2383896d4bfba77a91272aa09d6a24">novas_sets_below</a></div><div class="ttdeci">double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model)</div><div class="ttdef"><b>Definition</b> frames.c:1467</div></div>

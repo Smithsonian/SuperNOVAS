@@ -634,7 +634,7 @@ observer frame.
  // UTC-based Julian day *after* observer frame, of next source transit
  double jd_transit = novas_transit_time(&source, &frame);
  
- // UTC-based Julian day *after* observer frame, when source sets below 30 degrese of elevation 
+ // UTC-based Julian day *after* observer frame, when source sets below 30 degrees of elevation 
  // next, not accounting for refraction.
  double jd_rise = novas_sets_below(30.0, &source, &frame, NULL);
 ```
