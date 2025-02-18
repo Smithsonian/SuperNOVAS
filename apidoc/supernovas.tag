@@ -5934,6 +5934,8 @@
     <docanchor file="index.html">accuracy-notes</docanchor>
     <docanchor file="index.html">multi-threading</docanchor>
     <docanchor file="index.html">physical-units</docanchor>
+    <docanchor file="index.html">string-times-and-angles</docanchor>
+    <docanchor file="index.html">string-dates</docanchor>
     <docanchor file="index.html">precision</docanchor>
     <docanchor file="index.html">benchmarks</docanchor>
     <docanchor file="index.html">supernovas-features</docanchor>

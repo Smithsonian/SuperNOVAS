@@ -25,32 +25,34 @@
       <topic label="Reduced accuracy shortcuts" href="index.html#autotoc_md63"/>
       <topic label="Multi-threaded calculations" href="index.html#autotoc_md64"/>
       <topic label="Physical units" href="index.html#autotoc_md65"/>
+      <topic label="String times and angles" href="index.html#autotoc_md66"/>
+      <topic label="String dates" href="index.html#autotoc_md67"/>
     </topic>
-    <topic label="Notes on precision" href="index.html#autotoc_md67">
-      <topic label="Prerequisites to precise results" href="index.html#autotoc_md68"/>
+    <topic label="Notes on precision" href="index.html#autotoc_md69">
+      <topic label="Prerequisites to precise results" href="index.html#autotoc_md70"/>
     </topic>
-    <topic label="Representative benchmarks" href="index.html#autotoc_md70"/>
-    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md72">
-      <topic label="New functionality highlights" href="index.html#autotoc_md73">
-        <topic label="New in v1.0" href="index.html#autotoc_md74"/>
-        <topic label="New in v1.1" href="index.html#autotoc_md75"/>
-        <topic label="New in v1.2" href="index.html#autotoc_md76"/>
-        <topic label="New in v1.3" href="index.html#autotoc_md77"/>
+    <topic label="Representative benchmarks" href="index.html#autotoc_md72"/>
+    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md74">
+      <topic label="New functionality highlights" href="index.html#autotoc_md75">
+        <topic label="New in v1.0" href="index.html#autotoc_md76"/>
+        <topic label="New in v1.1" href="index.html#autotoc_md77"/>
+        <topic label="New in v1.2" href="index.html#autotoc_md78"/>
+        <topic label="New in v1.3" href="index.html#autotoc_md79"/>
       </topic>
-      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md78"/>
+      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md80"/>
     </topic>
-    <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md80">
-      <topic label="Optional CALCEPH integration" href="index.html#autotoc_md81"/>
-      <topic label="Optional NAIF CSPICE toolkit integration" href="index.html#autotoc_md82"/>
-      <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md83"/>
-      <topic label="Legacy support for (older) JPL major planet ephemerides" href="index.html#autotoc_md84">
-        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md85"/>
-        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md86"/>
+    <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md82">
+      <topic label="Optional CALCEPH integration" href="index.html#autotoc_md83"/>
+      <topic label="Optional NAIF CSPICE toolkit integration" href="index.html#autotoc_md84"/>
+      <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md85"/>
+      <topic label="Legacy support for (older) JPL major planet ephemerides" href="index.html#autotoc_md86">
+        <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md87"/>
+        <topic label="Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface" href="index.html#autotoc_md88"/>
       </topic>
-      <topic label="Legacy linking of custom ephemeris functions" href="index.html#autotoc_md87"/>
+      <topic label="Legacy linking of custom ephemeris functions" href="index.html#autotoc_md89"/>
     </topic>
-    <topic label="Runtime debug support" href="index.html#autotoc_md89"/>
-    <topic label="Release schedule" href="index.html#autotoc_md91"/>
+    <topic label="Runtime debug support" href="index.html#autotoc_md91"/>
+    <topic label="Release schedule" href="index.html#autotoc_md93"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
