@@ -624,8 +624,8 @@ or transit times are dependent on the day of observation, and observer location,
 observer frame.
 
 ```c
- novas_frame frame = ...  // Earth-based observer location and lower-bound time of interest.
- object source = ...      // Source of interest
+ novas_frame frame = ...;  // Earth-based observer location and lower-bound time of interest.
+ object source = ...;      // Source of interest
 
  // UTC-based Julian day *after* observer frame, when source rises above 30 degrees of elevation 
  // next, given a standard optical refraction model.

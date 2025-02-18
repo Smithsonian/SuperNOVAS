@@ -436,8 +436,8 @@ Calculate azimuth and elevation angles at the observing location</h4>
 <h4><a class="anchor" id="autotoc_md60"></a>
 Calculate rise, set, and transit times</h4>
 <p>You may be interested to know when sources rise above or set below some specific elevation angle, or at what time they appear to transit at the observer location. SuperNOVAS has routines to help you with that too. Given that rise, set, or transit times are dependent on the day of observation, and observer location, they are effectively tied to an observer frame.</p>
-<div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__frame.html">novas_frame</a> frame = ...  <span class="comment">// Earth-based observer location and lower-bound time of interest.</span></div>
-<div class="line"><span class="keywordtype">object</span> source = ...      <span class="comment">// Source of interest</span></div>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__frame.html">novas_frame</a> frame = ...;  <span class="comment">// Earth-based observer location and lower-bound time of interest.</span></div>
+<div class="line"><span class="keywordtype">object</span> source = ...;      <span class="comment">// Source of interest</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// UTC-based Julian day *after* observer frame, when source rises above 30 degrees of elevation </span></div>
 <div class="line"><span class="comment">// next, given a standard optical refraction model.</span></div>
