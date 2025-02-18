@@ -926,7 +926,8 @@ flexibility for parsing dates using the `novas_parse_date_format()` and `novas_t
    scale = NOVAS_UTC;
  }
 
- // Now set the time for the given calendar, date format, and timescale of the string representation.
+ // Now set the time for the given calendar, date format, and timescale of the 
+ // string representation.
  novas_set_time(scale, jd, leap_seconds, dut1, &time);
 ``` 
 
