@@ -925,7 +925,7 @@ string timestamps are also always in the (conventional) astronomical calendar of
  novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
 ```
 
-ISO timestamps are best, but sometimes your input dates represented in other formats. You can have additional 
+ISO timestamps are best, but sometimes your input dates are represented in other formats. You can have additional 
 flexibility for parsing dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions. E.g.,
 
 ```c
