@@ -313,6 +313,16 @@ Note on alternative methodologies</h3>
 <h3><a class="anchor" id="autotoc_md53"></a>
 Calculating positions for a sidereal source</h3>
 <p>A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a galactic molecular cloud, or a distant quasar.</p>
+<ul>
+<li><a class="el" href="index.html#specify-object">Specify the object of interest</a></li>
+<li><a class="el" href="index.html#specify-observer">Specify the observer location</a></li>
+<li><a class="el" href="index.html#specify-time">Specify the time of observation</a></li>
+<li><a class="el" href="index.html#observing-frame">Set up the observing frame</a></li>
+<li><a class="el" href="index.html#apparent-place">Calculate an apparent place on sky</a></li>
+<li><a class="el" href="index.html#horizontal-place">Calculate azimuth and elevation angles at the observing location</a></li>
+<li><a class="el" href="index.html#rise-set-transit">Calculate rise, set, and transit times</a></li>
+</ul>
+<p><a class="anchor" id="specify-object"></a> </p>
 <h4><a class="anchor" id="autotoc_md54"></a>
 Specify the object of interest</h4>
 <p>First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star for which we have B1950 (i.e. FK4) coordinates:</p>
@@ -355,7 +365,8 @@ Specify the object of interest</h4>
 <div class="line"><span class="comment">// 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339</span></div>
 <div class="line"><a class="code hl_function" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a>(<span class="stringliteral">&quot;3c273&quot;</span>, 12.4851944, 2.0523883, 0.158339, &amp;quasar);</div>
 <div class="ttc" id="asuper_8c_html_ae579a49d84696a913fd0d9f348bb5b11"><div class="ttname"><a href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a></div><div class="ttdeci">int make_redshifted_object(const char *name, double ra, double dec, double z, object *source)</div><div class="ttdef"><b>Definition</b> super.c:1143</div></div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md55"></a>
+</div><!-- fragment --><p><a class="anchor" id="specify-observer"></a> </p>
+<h4><a class="anchor" id="autotoc_md55"></a>
 Specify the observer location</h4>
 <p>Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;    <span class="comment">// Structure to contain observer location </span></div>
@@ -366,6 +377,7 @@ Specify the observer location</h4>
 <div class="ttc" id="anovas_8c_html_a00d9f6909923cd3e559c8f011ff9b794"><div class="ttname"><a href="novas_8c.html#a00d9f6909923cd3e559c8f011ff9b794">make_observer_on_surface</a></div><div class="ttdeci">int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure, observer *obs)</div><div class="ttdef"><b>Definition</b> novas.c:7216</div></div>
 <div class="ttc" id="astructobserver_html"><div class="ttname"><a href="structobserver.html">observer</a></div><div class="ttdef"><b>Definition</b> novas.h:1013</div></div>
 </div><!-- fragment --><p>Again you might use <code><a class="el" href="super_8c.html#abf05d010ebf128f6300d4cc378616d90">novas_dms_degrees()</a></code> for string representations of the longitude and latitude coordinates here. You can also specify observers in Earth orbit, in Sun orbit, at the geocenter, or at the Solar-system barycenter.</p>
+<p><a class="anchor" id="specify-time"></a> </p>
 <h4><a class="anchor" id="autotoc_md56"></a>
 Specify the time of observation</h4>
 <p>Next, we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.042, then we can set the time of observation, for example, using the current UNIX time:</p>
@@ -394,7 +406,8 @@ Specify the time of observation</h4>
 </div><!-- fragment --><p>or, you can use a string date, such as an ISO timestamp:</p>
 <div class="fragment"><div class="line">novas_set_string_time(<a class="code hl_enumvalue" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>, <span class="stringliteral">&quot;2025-01-26T22:05:14.234+0200&quot;</span>, 37, 0.042, &amp;obs_time);</div>
 <div class="ttc" id="anovas_8h_html_aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d"><div class="ttname"><a href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a></div><div class="ttdeci">@ NOVAS_UTC</div><div class="ttdoc">Universal Coordinated Time (UTC)</div><div class="ttdef"><b>Definition</b> novas.h:1075</div></div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md57"></a>
+</div><!-- fragment --><p><a class="anchor" id="observing-frame"></a> </p>
+<h4><a class="anchor" id="autotoc_md57"></a>
 Set up the observing frame</h4>
 <p>Next, we set up an observing frame, which is defined for a unique combination of the observer location and the time of observation:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__frame.html">novas_frame</a> obs_frame;  <span class="comment">// Structure that will define the observing frame</span></div>
@@ -409,6 +422,7 @@ Set up the observing frame</h4>
 </div><!-- fragment --><p>Here <code>dx</code> and <code>dy</code> are small diurnal (sub-arcsec level) corrections to Earth orientation, which are published in the <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html">IERS Bulletins</a>. They are needed when converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. You may ignore these and set zeroes if sub-arcsecond precision is not required.</p>
 <p>The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects in that frame. So, if you need to calculate positions for thousands of sources for the same observer and time, it will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames for different observer locations, if need be, via <code><a class="el" href="frames_8c.html#a2972b3eafa2d7f6c29cff34bad9fcf0d">novas_change_observer()</a></code>.</p>
 <p>Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with <code>NOVAS_REDUCED_ACCURACY</code> frames, providing milliarcsecond precision only. To create <code>NOVAS_FULL_ACCURACY</code> frames, with sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the low-precision Earth and Sun calculator included by default), to account for gravitational bending around massive planets. Without it, &mu;as accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision ephemeris provider will result in an error from the requisite <code><a class="el" href="novas_8c.html#a3221fff69d0ca52ae4694ec3ab0368ad">ephemeris()</a></code> call.</p>
+<p><a class="anchor" id="apparent-place"></a> </p>
 <h4><a class="anchor" id="autotoc_md58"></a>
 Calculate an apparent place on sky</h4>
 <p>Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal sources) or light-time correction (for Solar-system bodies), and also aberration corrections for the moving observer and gravitational deflection around the major Solar System bodies. You can calculate an apparent location in the coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, or TOD):</p>
@@ -420,6 +434,7 @@ Calculate an apparent place on sky</h4>
 <div class="ttc" id="astructsky__pos_html"><div class="ttname"><a href="structsky__pos.html">sky_pos</a></div><div class="ttdef"><b>Definition</b> novas.h:1034</div></div>
 </div><!-- fragment --><p>Apart from providing precise apparent R.A. and declination coordinates, the <code><a class="el" href="structsky__pos.html">sky_pos</a></code> structure also provides the <em>x,y,z</em> unit vector pointing in the observed direction of the source (in the designated coordinate system). We also get radial velocity (for spectroscopy), and apparent distance for Solar-system bodies (e.g. for apparent-to-physical size conversion).</p>
 <p>Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational deflection, you might use <code><a class="el" href="frames_8c.html#ae6f4d3710a277c8b284487fe175e4d49">novas_geom_posvel()</a></code> instead. And regardless, which function you use you can always easily and efficiently change the coordinate system in which your results are expressed by creating an appropriate transform via <code><a class="el" href="frames_8c.html#a4d179c8573319fc25c775ce56ba055dc">novas_make_transform()</a></code> and then using <code><a class="el" href="frames_8c.html#aadb7bc88119eed4ea54373a42e22a0d4">novas_transform_vector()</a></code> or <code>novas_transform_skypos()</code>.</p>
+<p><a class="anchor" id="horizontal-place"></a> </p>
 <h4><a class="anchor" id="autotoc_md59"></a>
 Calculate azimuth and elevation angles at the observing location</h4>
 <p>If your ultimate goal is to calculate the azimuth and elevation angles of the source at the specified observing location, you can proceed from the <code><a class="el" href="structsky__pos.html">sky_pos</a></code> data you obtained above (in whichever coordinate system!) as:</p>
@@ -433,6 +448,7 @@ Calculate azimuth and elevation angles at the observing location</h4>
 <div class="ttc" id="astructsky__pos_html_a713a0c71a86d92fa6892fdb2cb7c9422"><div class="ttname"><a href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a></div><div class="ttdeci">double ra</div><div class="ttdoc">[h] apparent, topocentric, or astrometric right ascension (hours)</div><div class="ttdef"><b>Definition</b> novas.h:1036</div></div>
 <div class="ttc" id="astructsky__pos_html_ac4ae7989694321b540abb75c30eec690"><div class="ttname"><a href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a></div><div class="ttdeci">double dec</div><div class="ttdoc">[deg] apparent, topocentric, or astrometric declination (degrees)</div><div class="ttdef"><b>Definition</b> novas.h:1037</div></div>
 </div><!-- fragment --><p>Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and elevation coordinates at the observing location, using the <code><a class="el" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction()</a></code> function to provide a suitable refraction correction. We could have used <code><a class="el" href="refract_8c.html#ae4511a80a1defbb1e1fdc29c289e7de4">novas_optical_refraction()</a></code> instead to use the weather data embedded in the frame's <code>observer</code> structure, or some user-defined refraction model, or else <code>NULL</code> to calculate unrefracted elevation angles.</p>
+<p><a class="anchor" id="rise-set-transit"></a> </p>
 <h4><a class="anchor" id="autotoc_md60"></a>
 Calculate rise, set, and transit times</h4>
 <p>You may be interested to know when sources rise above or set below some specific elevation angle, or at what time they appear to transit at the observer location. SuperNOVAS has routines to help you with that too. Given that rise, set, or transit times are dependent on the day of observation, and observer location, they are effectively tied to an observer frame.</p>

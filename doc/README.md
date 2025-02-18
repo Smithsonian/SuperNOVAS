@@ -418,6 +418,15 @@ implementation.
 A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
 galactic molecular cloud, or a distant quasar. 
 
+ - [Specify the object of interest](#specify-object)
+ - [Specify the observer location](#specify-observer)
+ - [Specify the time of observation](#specify-time)
+ - [Set up the observing frame](#observing-frame)
+ - [Calculate an apparent place on sky](#apparent-place)
+ - [Calculate azimuth and elevation angles at the observing location](#horizontal-place)
+ - [Calculate rise, set, and transit times](#rise-set-transit)
+
+<a name="specify-object"></a>
 #### Specify the object of interest
 
 First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star 
@@ -479,7 +488,7 @@ ICRS coordinate from the start, e.g.:
  make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &quasar);
 ```
 
-
+<a name="specify-observer"></a>
 #### Specify the observer location
 
 Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
@@ -497,6 +506,7 @@ Again you might use `novas_dms_degrees()` for string representations of the long
 You can also specify observers in Earth orbit, in Sun orbit, at the geocenter, or at the Solar-system barycenter.
 
 
+<a name="specify-time"></a>
 #### Specify the time of observation
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the
@@ -538,7 +548,7 @@ or, you can use a string date, such as an ISO timestamp:
  novas_set_string_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", 37, 0.042, &obs_time);
 ```
 
-
+<a name="observing-frame"></a>
 #### Set up the observing frame
 
 Next, we set up an observing frame, which is defined for a unique combination of the observer location and the time of
@@ -571,7 +581,7 @@ planets. Without it, &mu;as accuracy cannot be ensured, in general. Therefore, a
 frames without an appropriate high-precision ephemeris provider will result in an error from the requisite 
 `ephemeris()` call. 
 
-
+<a name="apparent-place"></a>
 #### Calculate an apparent place on sky
 
 Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal
@@ -595,7 +605,7 @@ deflection, you might use `novas_geom_posvel()` instead. And regardless, which f
 and efficiently change the coordinate system in which your results are expressed by creating an appropriate transform 
 via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
 
-
+<a name="horizontal-place"></a>
 #### Calculate azimuth and elevation angles at the observing location
 
 If your ultimate goal is to calculate the azimuth and elevation angles of the source at the specified observing 
@@ -615,7 +625,7 @@ suitable refraction correction. We could have used `novas_optical_refraction()` 
 embedded in the frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate 
 unrefracted elevation angles.
 
-
+<a name="rise-set-transit"></a>
 #### Calculate rise, set, and transit times
 
 You may be interested to know when sources rise above or set below some specific elevation angle, or at what time they 

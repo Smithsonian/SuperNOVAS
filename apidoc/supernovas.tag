@@ -5929,6 +5929,13 @@
     <docanchor file="index.html">examples</docanchor>
     <docanchor file="index.html">methodologies</docanchor>
     <docanchor file="index.html">sidereal-example</docanchor>
+    <docanchor file="index.html">specify-object</docanchor>
+    <docanchor file="index.html">specify-observer</docanchor>
+    <docanchor file="index.html">specify-time</docanchor>
+    <docanchor file="index.html">observing-frame</docanchor>
+    <docanchor file="index.html">apparent-place</docanchor>
+    <docanchor file="index.html">horizontal-place</docanchor>
+    <docanchor file="index.html">rise-set-transit</docanchor>
     <docanchor file="index.html">solsys-example</docanchor>
     <docanchor file="index.html">tips</docanchor>
     <docanchor file="index.html">accuracy-notes</docanchor>
