@@ -14,7 +14,7 @@ C version 3.1, providing bug fixes, tons of extra features, while making it easi
 
 SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
-support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
+support for the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
 
 SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
@@ -60,7 +60,8 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a _build-time_ replacement for NOVAS in your application without having 
-to change existing (functional) code you may have written for NOVAS C.
+to change existing (functional) code you may have written for NOVAS C. (Note, that NOVAS and SuperNOVAS are not in any 
+way related to the similarly named [NOVA](https://nova.sourceforge.net/) library.)
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
@@ -502,7 +503,8 @@ Next, we define the location where we observe from. Here we can (but don't have 
 ```
 
 Again you might use `novas_dms_degrees()` for string representations of the longitude and latitude coordinates here.
-You can also specify observers in Earth orbit, in Sun orbit, at the geocenter, or at the Solar-system barycenter.
+You can also specify airborne observers, or observers in Earth orbit, in Sun orbit, at the geocenter, or at the 
+Solar-system barycenter.
 
 
 <a name="specify-time"></a>
@@ -908,7 +910,7 @@ string timestamps are also always in the (conventional) astronomical calendar of
  novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
 ```
 
-ISO timestamps are best, but sometimes your input dates represented in other formats. You can have additional 
+ISO timestamps are best, but sometimes your input dates are represented in other formats. You can have additional 
 flexibility for parsing dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions. E.g.,
 
 ```c

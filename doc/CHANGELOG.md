@@ -18,65 +18,65 @@ such as for handling times and angles as strings, rise and set times, and other 
   
 ### Added
 
- - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
-   Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
-
- - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
-   using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
-
- - New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS based 
-   time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS, and
-
- - New `novas_parse_date()` / `novas_parse_date_format()` to parse date/time specifications, `novas_parse_dms()` and 
-   `novas_parse_hms()` to return hours and degrees for HMS and DMS specifications, as well as the updated parse 
-   position.
- 
- - New `novas_timescale_for_string()` to match timescale constants to string representations, such as "UTC", or "TAI",
-   and `novas_print_timescale()` to convert to string representation.
- 
- - New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision, and
-   `novas_timestamp()` to print timestamps in specific timescales.
-
- - New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
+ - #113: New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
    Earth-based observing frame.
-   
- - New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or sets
-   below a specific elevation on a given date, and `novas_transit_time()` to calculate the time a source transits over
-   the local meridian. (For Earth-based observers only).
 
- - New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given date. 
-   The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, while
-   `novas_solar_illum()` can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen
-   from the observer location.
-
- - New `novas_hpa()` and `novas_epa()` functions to calculate the parallactic angle (a.k.a. vertical position angle) 
-   for a given location on sky, using the local horizontal coordinates, or else the equatorial position, respectively. 
-   The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image or detector 
-   array) between the local horizontal and equatorial orientations, e.g. via the newly added `novas_h2e_offset()` or 
-   `novas_e2h_offset()` functions. The conversion between offsets and absolute coordinates usually requires a WCS
-   projections, such as described in Calabretta &amp; Greisen 2002.
+ - #113: New `novas_hms_hours()` and `novas_dms_degrees()` convenience functions to make it easier to parse HMS or DMS 
+   based time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS.
    
- - New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 
+ - #113: New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or 
+   sets below a specific elevation on a given date, and `novas_transit_time()` to calculate the time a source transits 
+   over the local meridian. (For Earth-based observers only).
+
+ - #113: New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given 
+   date. The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, 
+   while `novas_solar_illum()` can be used to calculate the fraction of a spherical body that is illuminated by the Sun 
+   seen from the observer location.
+
+ - #113: New `novas_hpa()` and `novas_epa()` functions to calculate the parallactic angle (a.k.a. vertical position 
+   angle) for a given location on sky, using the local horizontal coordinates, or else the equatorial position, 
+   respectively. The parallactic angle (PA) can be useful to convert local Cartesian offsets (e.g. from a flat image 
+   or detector array) between the local horizontal and equatorial orientations, e.g. via the newly added 
+   `novas_h2e_offset()` or `novas_e2h_offset()` functions. The conversion between offsets and absolute coordinates 
+   usually requires a WCS projections, such as described in Calabretta &amp; Greisen 2002.
+   
+ - #113: New `novas_sep()`, `novas_equ_sep()`, and `novas_object_sep()` functions can be used to calculate the precise 
    apparent distance between to spherical or equatorial locations, or between two sources, respectively. 
    `novas_sun_angle()` and `novas_moon_angle()` can be used to calculate the apparent angular distance of sources from 
    the Sun and Moon, respectively.
 
- - New `novas_observable` and `novas_track` data structures to provide second order Taylor series expansion of the 
-   apparent horizontal or equatorial positions, distances and redshifts for sources. They can be calculated with the 
-   newly added `novas_hor_track()` or `novas_equ_track()` functions. Such tracking values, including rates and 
+ - #113: New `novas_observable` and `novas_track` data structures to provide second order Taylor series expansion of 
+   the apparent horizontal or equatorial positions, distances and redshifts for sources. They can be calculated with 
+   the newly added `novas_hor_track()` or `novas_equ_track()` functions. Such tracking values, including rates and 
    accelerations can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track 
    sources (hence the name). You can also obtain instantaneous projected (extrapolated) positions from the tracking 
    parameters via `novas_track_pos()` at low computational cost.
  
- - New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
+ - #113: New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
    &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.
    
- - New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial projections
-   along a line of sight in the direction of a source. Such projections are oft used in interferometry.
+ - #113: New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial 
+   projections along a line of sight in the direction of a source. Such projections are oft used in interferometry.
 
- - Added benchmarks under the `benchmark/` forlder, for SuperNOVAS as well as equivalent benchmarks for __astropy__.
-   To run the SuperNOVAS benchmarks, simply `make benchmark` in the distribution directory.
+ - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
+   Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
+
+ - #117: Added benchmarks under the `benchmark/` forlder, for SuperNOVAS as well as equivalent benchmarks for 
+   __astropy__. To run the SuperNOVAS benchmarks, simply `make benchmark` in the distribution directory.
    
+ - #118: New `novas_parse_date()` / `novas_parse_date_format()` to parse date/time specifications, `novas_parse_dms()` 
+   and `novas_parse_hms()` to return hours and degrees for HMS and DMS specifications, as well as the updated parse 
+   position.
+ 
+ - #118: New `novas_timescale_for_string()` to match timescale constants to string representations, such as "UTC", or 
+   "TAI", and `novas_print_timescale()` to convert to string representation.
+ 
+ - #118: New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision, and
+   `novas_timestamp()` to print timestamps in specific timescales.
+
+ - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
+   using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
+
  - Added `example-time.c` under `examples/`, for demonstrating date/time handling functions.
 
 ### Changed
@@ -88,8 +88,8 @@ such as for handling times and angles as strings, rise and set times, and other 
  - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with errno set to 
    `EINVAL`) if the input values are invalid.
    
- - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates of before.
-   Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
+ - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates of 
+   before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
 
  - Use `SIZE_OF_OBJ_NAME` and `SIZE_OF_CAT_NAME` instead of `sizeof(obj->starname)` and `sizeof(obj->catalog)` 
    internally for improved portability.
