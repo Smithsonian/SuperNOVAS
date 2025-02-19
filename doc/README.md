@@ -45,7 +45,8 @@ This document has been updated for the `v1.3` and later releases.
 ## Introduction
 
 SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)).
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)). (Note, that despite the name resemblence, it is in no way 
+related to the NOVA / libnova library.)
 
 The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
@@ -60,8 +61,7 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a _build-time_ replacement for NOVAS in your application without having 
-to change existing (functional) code you may have written for NOVAS C. (Note, that NOVAS and SuperNOVAS are not in any 
-way related to the similarly named [NOVA](https://nova.sourceforge.net/) library.)
+to change existing (functional) code you may have written for NOVAS C. 
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
