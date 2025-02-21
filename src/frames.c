@@ -1347,8 +1347,10 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
     // Hourangle when source crosses nominal elevation
     lha = sign ? calc_lha(el, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE) : 0.0;
-    if(isnan(lha))
-      return novas_trace_nan(fn);
+    if(isnan(lha)) {
+      errno = 0;      // It's to be expected for some sources.
+      return NAN;
+    }
 
     // Adjusted frame time for last crossing time estimate
     t = *t0;
@@ -1432,9 +1434,14 @@ double novas_transit_time(const object *source, const novas_frame *frame) {
  * @sa novas_transit_time()
  */
 double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
-  double utc = novas_cross_el_date(el, -1, source, frame, ref_model);
-  if(isnan(utc))
+  double utc;
+
+  errno = 0;
+
+  utc = novas_cross_el_date(el, -1, source, frame, ref_model);
+  if(isnan(utc) && errno)
     return novas_trace_nan("novas_rises_above");
+
   return utc;
 }
 
@@ -1465,9 +1472,14 @@ double novas_rises_above(double el, const object *source, const novas_frame *fra
  * @sa novas_transit_time()
  */
 double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
-  double utc = novas_cross_el_date(el, 1, source, frame, ref_model);
-  if(isnan(utc))
+  double utc;
+
+  errno = 0;
+
+  utc = novas_cross_el_date(el, 1, source, frame, ref_model);
+  if(isnan(utc) && errno)
     return novas_trace_nan("novas_sets_below");
+
   return utc;
 }
 

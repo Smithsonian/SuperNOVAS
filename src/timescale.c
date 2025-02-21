@@ -858,32 +858,32 @@ static int timestamp(long ijd, double fjd, char *buf) {
 int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
   static const char *fn = "novas_iso_timestamp";
 
-  double fjd;
-  long ijd;
   char buf[40];
+  long ijd = 0;
+  double fjd;
   int l;
 
   if(!dst)
     return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  if(maxlen < 1)
+    return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
 
   *dst = '\0';
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "input time is NULL");
 
-  if(maxlen < 1)
-    return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
-
   fjd = novas_get_split_time(time, NOVAS_UTC, &ijd);
-
   l = timestamp(ijd, fjd, buf);
-  buf[l++] = 'Z';
-  buf[l] = '\0';
 
-  strncpy(dst, buf, maxlen - 1);
-  dst[maxlen-1] = '\0';
+  if(l >= maxlen)
+    l = maxlen - 1;
 
-  return strlen(dst) + 1;
+  strncpy(dst, buf, l);
+  dst[l] = '\0';
+
+  return l;
 }
 
 /**
@@ -933,6 +933,7 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
   return novas_error(-1, EINVAL, fn, "invalid timescale: %d", scale);
 }
 
+
 /**
  * Prints a timestamp to millisecond precision in the specified timescale to the specified
  * string buffer. E.g.:
@@ -969,33 +970,36 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
 int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen) {
   static const char *fn = "novas_timestamp_scale";
 
+  char buf[40];
   long ijd;
   double fjd;
-  int i;
-  char buf[40];
+  int n;
 
   if(!dst)
     return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  if(maxlen < 1)
+      return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
 
   *dst = '\0';
 
   if(!time)
     return novas_error(-1, EINVAL, fn, "input time is NULL");
 
-  if(maxlen < 1)
-    return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
-
   fjd = novas_get_split_time(time, scale, &ijd);
-  i = timestamp(ijd, fjd, buf);
+  n = timestamp(ijd, fjd, buf);
 
-  buf[i++] = ' ';
+  buf[n++] = ' ';
 
-  i += novas_print_timescale(scale, &buf[i]);
+  n += novas_print_timescale(scale, &buf[n]);
 
-  strncpy(dst, buf, maxlen-1);
-  dst[maxlen-1] = '\0';
+  if(n >= maxlen)
+    n = maxlen - 1;
 
-  return i;
+  memcpy(dst, buf, n);
+  dst[n] = '\0';
+
+  return n;
 }
 
 /**

@@ -3115,7 +3115,7 @@ static int test_iso_timestamp() {
   }
 
   if(!is_ok("iso_timestamp:set_time", novas_set_time(NOVAS_UTC, NOVAS_JD_J2000, 32, 0.0, &time))) n++;
-  if(!is_equal("is_timestamp:truncate", novas_iso_timestamp(&time, str, 10), 10, 1e-6)) n++;
+  if(!is_equal("iso_timestamp:truncate", novas_iso_timestamp(&time, str, 10), 9, 1e-6)) n++;
 
   return n;
 }
@@ -3172,6 +3172,9 @@ static int test_timestamp() {
 
     sprintf(label, "timestamp:%d:check", i);
     if(!is_equal(label, novas_diff_time(&time1, &time), 0.0, 1e-3)) n++;
+
+    sprintf(label, "timestamp:%d:truncate", i);
+    if(!is_equal(label, novas_timestamp(&time, i, ts, 10), 9, 1e-6)) n++;
   }
 
   return n;
