@@ -82,7 +82,7 @@ such as for handling times and angles as strings, rise and set times, and other 
  - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
- - Added `example-time.c` and `example-riseset.c` under `examples/`, for demonstrating date/time handling functions
+ - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations.
 
 ### Changed

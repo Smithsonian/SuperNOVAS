@@ -36,6 +36,6 @@ jobs:
       run: |
         gcc -c -Wall -Werror -Iinclude examples/example-time.c
         
-    - name: Compile example-riseset.c
+    - name: Compile example-rise-set.c
       run: |
-        gcc -c -Wall -Werror -Iinclude examples/example-riseset.c
+        gcc -c -Wall -Werror -Iinclude examples/example-rise-set.c
