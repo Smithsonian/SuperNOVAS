@@ -240,8 +240,8 @@ static int test_transform_cat() {
   cat_entry c = {}, c1;
   int n = 0;
 
-  char longname[SIZE_OF_OBJ_NAME + 1];
-  memset(longname, 'A', SIZE_OF_OBJ_NAME);
+  char longname[SIZE_OF_CAT_NAME + 1] = {};
+  memset(longname, 'A', SIZE_OF_CAT_NAME);
 
   if(check("transform_cat:in", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, NULL, NOVAS_JD_J2000, "FK5", &c))) n++;
   if(check("transform_cat:out", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, &c, NOVAS_JD_J2000, "FK5", NULL))) n++;

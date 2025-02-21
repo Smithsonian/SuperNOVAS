@@ -6319,8 +6319,8 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: in=%p, out=%p", in, out);
 
-  if(out_id && strlen(out_id) >= SIZE_OF_OBJ_NAME)
-    return novas_error(2, EINVAL, fn, "output catalog ID is too long (%d > %d)", (int) strlen(out_id), SIZE_OF_OBJ_NAME - 1);
+  if(out_id && strlen(out_id) >= SIZE_OF_CAT_NAME)
+    return novas_error(2, EINVAL, fn, "output catalog ID is too long (%d > %d)", (int) strlen(out_id), SIZE_OF_CAT_NAME - 1);
 
   if(option == CHANGE_J2000_TO_ICRS || option == CHANGE_ICRS_TO_J2000) {
     // ICRS frame ties always assume J2000 for both input and output...
