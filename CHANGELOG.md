@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.3.0-rc2] - 2025-02-21
+## [Unreleased]
 
 Release candidate for upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, 
 such as for handling times and angles as strings, rise and set times, and other common astrometric calculations.
@@ -15,6 +15,11 @@ such as for handling times and angles as strings, rise and set times, and other 
 ### Fixed
 
  - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
+ 
+ - #128: `transform_cat()` had insufficient string length checking of `out_id` parameter. Prior to the fix it checked 
+   for the longer object name size instead of the catalog name size. However, even if longer than expected input names 
+   were left uncaught, only the appropriatre number of characters were used -- hence it broke nothing, only failed to 
+   remind the caller (with an error) that the supplied name was not quite right.
   
 ### Added
 
