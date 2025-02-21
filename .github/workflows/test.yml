@@ -79,7 +79,7 @@ jobs:
           - arch: s390x
             distro: ubuntu_latest
           - arch: ppc64le
-            distro: ubuntu_latest
+            distro: ubuntu22.04
     steps:
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
