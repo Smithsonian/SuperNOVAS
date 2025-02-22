@@ -544,8 +544,8 @@ static int parse_zone(const char *str, char **tail) {
     }
 
     if(isdigit(next[0])) {
-        if(!isdigit(next[1]))
-          return novas_error(-1, EINVAL, fn, "invalid time zone specification");
+      if(!isdigit(next[1]))
+        return novas_error(-1, EINVAL, fn, "invalid time zone specification");
 
       M = 10 * (next[0] - '0') + (next[1] - '0');
       if(M >= 60)
@@ -979,7 +979,7 @@ int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char
     return novas_error(-1, EINVAL, fn, "output buffer is NULL");
 
   if(maxlen < 1)
-      return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
+    return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
 
   *dst = '\0';
 
@@ -1036,22 +1036,22 @@ enum novas_timescale novas_timescale_for_string(const char *str) {
     return NOVAS_UT1;
 
   if(strcasecmp("TAI", str) == 0)
-      return NOVAS_TAI;
+    return NOVAS_TAI;
 
   if(strcasecmp("GPS", str) == 0)
     return NOVAS_GPS;
 
   if(strcasecmp("TT", str) == 0 || strcasecmp("ET", str) == 0)
-      return NOVAS_TT;
+    return NOVAS_TT;
 
   if(strcasecmp("TCG", str) == 0)
-      return NOVAS_TCG;
+    return NOVAS_TCG;
 
   if(strcasecmp("TCB", str) == 0)
-      return NOVAS_TCB;
+    return NOVAS_TCB;
 
   if(strcasecmp("TDB", str) == 0)
-      return NOVAS_TDB;
+    return NOVAS_TDB;
 
   return novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
 }
