@@ -3097,6 +3097,11 @@ static int test_iso_timestamp() {
   novas_timespec time = {};
   char str[30] = {};
 
+  if(!is_ok("iso_timestamp:set_time", novas_set_time(NOVAS_UTC, NOVAS_JD_J2000, 32, 0.0, &time))) n++;
+  if(!is_ok("iso_timestamp:J2000", novas_iso_timestamp(&time, str, sizeof(str) - 1) <= 0)) n++;
+  if(!is_ok("iso_timestamp:J2000:check", strcmp(str, "2000-01-01T12:00:00.000Z"))) n++;
+  if(!is_equal("iso_timestamp:truncate", novas_iso_timestamp(&time, str, 10), 9, 1e-6)) n++;
+
   for(i = 0; i < 100.0; i++) {
     double jd = NOVAS_JD_J2000 + M_PI * i;
     char label[40];
@@ -3113,9 +3118,6 @@ static int test_iso_timestamp() {
       n++;
     }
   }
-
-  if(!is_ok("iso_timestamp:set_time", novas_set_time(NOVAS_UTC, NOVAS_JD_J2000, 32, 0.0, &time))) n++;
-  if(!is_equal("iso_timestamp:truncate", novas_iso_timestamp(&time, str, 10), 9, 1e-6)) n++;
 
   return n;
 }

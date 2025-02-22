@@ -877,6 +877,10 @@ int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
   fjd = novas_get_split_time(time, NOVAS_UTC, &ijd);
   l = timestamp(ijd, fjd, buf);
 
+  // Add 'Z' to indicate UTC time zone.
+  buf[l++] = 'Z';
+  buf[l] = '\0';
+
   if(l >= maxlen)
     l = maxlen - 1;
 
@@ -884,6 +888,74 @@ int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
   dst[l] = '\0';
 
   return l;
+}
+
+/**
+ * Prints a timestamp to millisecond precision in the specified timescale to the specified
+ * string buffer. E.g.:
+ *
+ * <pre>
+ *  2025-01-26T21:32:49.701 TAI
+ * </pre>
+ *
+ * NOTES:
+ * <ol>
+ * <li>The timestamp uses the astronomical date. That is Gregorian dates after the
+ * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ *
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
+ * </ol>
+ *
+ * @param time      Pointer to the astronomical time specification data structure.
+ * @param scale     The timescale to use.
+ * @param[out] dst  Output string buffer. At least 28 bytes are required for a complete
+ *                  timestamp with termination.
+ * @param maxlen    The maximum number of characters that can be printed into the output
+ *                  buffer, including the string termination. If the full ISO timestamp
+ *                  is longer than `maxlen`, then it will be truncated to fit in the allotted
+ *                  space, including a termination character.
+ * @return          the number of characters printed into the string buffer, not including
+ *                  the termination. As such it is at most `maxlen - 1`.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_iso_timestamp()
+ */
+int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen) {
+  static const char *fn = "novas_timestamp_scale";
+
+  char buf[40];
+  long ijd;
+  double fjd;
+  int n;
+
+  if(!dst)
+    return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  if(maxlen < 1)
+    return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
+
+  *dst = '\0';
+
+  if(!time)
+    return novas_error(-1, EINVAL, fn, "input time is NULL");
+
+  fjd = novas_get_split_time(time, scale, &ijd);
+  n = timestamp(ijd, fjd, buf);
+
+  buf[n++] = ' ';
+
+  n += novas_print_timescale(scale, &buf[n]);
+
+  if(n >= maxlen)
+    n = maxlen - 1;
+
+  memcpy(dst, buf, n);
+  dst[n] = '\0';
+
+  return n;
 }
 
 /**
@@ -931,75 +1003,6 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
   *buf = '\0';
 
   return novas_error(-1, EINVAL, fn, "invalid timescale: %d", scale);
-}
-
-
-/**
- * Prints a timestamp to millisecond precision in the specified timescale to the specified
- * string buffer. E.g.:
- *
- * <pre>
- *  2025-01-26T21:32:49.701 TAI
- * </pre>
- *
- * NOTES:
- * <ol>
- * <li>The timestamp uses the astronomical date. That is Gregorian dates after the
- * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
- *
- * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
- * </ol>
- *
- * @param time      Pointer to the astronomical time specification data structure.
- * @param scale     The timescale to use.
- * @param[out] dst  Output string buffer. At least 29 bytes are required for a complete
- *                  timestamp with termination.
- * @param maxlen    The maximum number of characters that can be printed into the output
- *                  buffer, including the string termination. If the full ISO timestamp
- *                  is longer than `maxlen`, then it will be truncated to fit in the allotted
- *                  space, including a termination character.
- * @return          the number of characters printed into the string buffer, not including
- *                  the termination. As such it is at most `maxlen - 1`.
- *
- * @since 1.3
- * @author Attila Kovacs
- *
- * @sa novas_iso_timestamp()
- */
-int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen) {
-  static const char *fn = "novas_timestamp_scale";
-
-  char buf[40];
-  long ijd;
-  double fjd;
-  int n;
-
-  if(!dst)
-    return novas_error(-1, EINVAL, fn, "output buffer is NULL");
-
-  if(maxlen < 1)
-    return novas_error(-1, EINVAL, fn, "invalid maxlen: %d", maxlen);
-
-  *dst = '\0';
-
-  if(!time)
-    return novas_error(-1, EINVAL, fn, "input time is NULL");
-
-  fjd = novas_get_split_time(time, scale, &ijd);
-  n = timestamp(ijd, fjd, buf);
-
-  buf[n++] = ' ';
-
-  n += novas_print_timescale(scale, &buf[n]);
-
-  if(n >= maxlen)
-    n = maxlen - 1;
-
-  memcpy(dst, buf, n);
-  dst[n] = '\0';
-
-  return n;
 }
 
 /**
