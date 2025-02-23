@@ -46,7 +46,11 @@
 #ifndef _SOLSYS_
 #define _SOLSYS_
 
-#include <novas.h>
+/// \cond PRIVATE
+#if __STDC_VERSION__ < 199901L
+#  define restrict                        ///< No 'restrict' keyword prior to C99
+#endif
+/// \endcond
 
 /**
  * Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types. JPL ephemerides
@@ -110,7 +114,8 @@ enum novas_id_type {
  * @since 1.0
  * @author Attila Kovacs
  */
-typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
 
 
 /**
@@ -148,7 +153,8 @@ typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, en
  * @since 1.0
  * @author Attila Kovacs
  */
-typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
 
 
 
@@ -196,7 +202,8 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  * @since 1.0
  * @author Attila Kovacs
  */
-typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel);
+typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_high, double jd_tdb_low,
+        enum novas_origin *restrict origin, double *restrict pos, double *restrict vel);
 
 
 
@@ -240,7 +247,7 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  * @since 1.0
  * @author Attila Kovacs
  */
-double *readeph(int mp, const char *name, double jd_tdb, int *error);
+double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error);
 
 
 int set_planet_provider(novas_planet_provider func);
@@ -287,7 +294,7 @@ novas_ephem_provider get_ephem_provider();
  * @sa place()
  * @sa ephemeris()
  */
-short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity);
+short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity);
 
 
 /**
@@ -326,26 +333,34 @@ short solarsystem(double jd_tdb, short body, short origin, double *position, dou
  * @sa place()
  * @sa ephemeris()
  */
-short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity);
+short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity);
 
 
-short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity);
 
-short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short earth_sun_calc_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
 
 void enable_earth_sun_hp(int value);
 
-short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity);
 
-short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
 
-short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity);
 
-short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
 
-short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity);
 
-short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position, double *velocity);
+short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity);
 
 
 // Added in v1.2 --------------------------------->
@@ -364,11 +379,11 @@ long novas_to_dexxx_planet(enum novas_planet id);
 
 // Added in v1.3 --------------------------------->
 
-double novas_helio_dist(double jd_tdb, const object *source, double *rate);
+double novas_helio_dist(double jd_tdb, const object *restrict source, double *restrict rate);
 
-double novas_solar_power(double jd_tdb, const object *source);
+double novas_solar_power(double jd_tdb, const object *restrict source);
 
-double novas_solar_illum(const object *source, const novas_frame *frame);
+double novas_solar_illum(const object *restrict source, const novas_frame *restrict frame);
 
 
 /// \cond PRIVATE

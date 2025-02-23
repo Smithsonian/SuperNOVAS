@@ -77,8 +77,8 @@
  *
  * @since 1.0
  */
-short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   static const char *fn = "planet_eph_manager_hp";
   short target, center = 0;
 
@@ -168,8 +168,8 @@ short planet_eph_manager_hp(const double jd_tdb[2], enum novas_planet body, enum
  *
  * @since 1.0
  */
-short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity) {
   const double tjd[2] = { jd_tdb, 0.0 };
   prop_error("planet_eph_manager", planet_eph_manager_hp(tjd, body, origin, position, velocity), 0);
   return 0;
@@ -181,12 +181,12 @@ novas_planet_provider planet_call = planet_eph_manager;
 novas_planet_provider_hp planet_call_hp = planet_eph_manager_hp;
 /// \endcond
 #elif !BUILTIN_SOLSYS1
-short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
+short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem", planet_eph_manager(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }
 
-short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
   if(!jd_tdb)
     return novas_error(-1, EINVAL, "solarsystem_hp", "NULL jd_tdb 2-component input array");
 

@@ -19,6 +19,12 @@
 #ifndef _NUTATION_
 #define _NUTATION_
 
+/// \cond PRIVATE
+#if __STDC_VERSION__ < 199901L
+#  define restrict                        ///< No 'restrict' keyword prior to C99
+#endif
+/// \endcond
+
 /**
  * Function type definition for the IAU 2000 nutation series calculation.
  *
@@ -40,16 +46,16 @@
  * @author Attila Kovacs
  * @since 1.0
  */
-typedef int (*novas_nutation_provider)(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+typedef int (*novas_nutation_provider)(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
 
 
-int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
 
 
-int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
 
 
-int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps);
+int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps);
 
 
 

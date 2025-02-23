@@ -20,9 +20,10 @@
 #include <stdint.h>
 #include <errno.h>
 
+/// \cond PRIVATE
+#define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
-/// \cond PRIVATE
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
@@ -57,7 +58,7 @@
  * @sa novas_nutation_provider
  *
  */
-int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
+int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
   // @formatter:off
 
   // Luni-Solar argument multipliers:
@@ -2961,7 +2962,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  * @sa nutation_angles()
  *
  */
-int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
+int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
   int16_t i;
 
   // @formatter:off
@@ -3221,7 +3222,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
  * @sa novas_nutation_provider
  *
  */
-int nu2000k(double jd_tt_high, double jd_tt_low, double *dpsi, double *deps) {
+int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
 
   // @formatter:off
 

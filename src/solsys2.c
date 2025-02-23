@@ -84,7 +84,8 @@ extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel
  *
  * @since 1.0
  */
-short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position, double *velocity) {
+short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
+        double *restrict velocity) {
   static const char *fn = "planet_jplint";
 
   long targ, cent, err_flg = 0;
@@ -175,8 +176,8 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  *
  * @since 1.0
  */
-short planet_jplint_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   static const char *fn = "planet_jplint_hp";
 
   long targ, cent, err_flg = 0;
@@ -230,12 +231,12 @@ novas_planet_provider planet_call = planet_jplint;
 novas_planet_provider_hp planet_call_hp = planet_jplint;
 /// \endcond
 #elif !BUILTIN_SOLSYS2
-short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
+short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem", planet_jplint(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }
 
-short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem_hp", planet_jplint_hp(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }

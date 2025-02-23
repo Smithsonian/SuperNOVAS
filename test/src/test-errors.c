@@ -275,7 +275,6 @@ static int test_ephemeris() {
   if(check("ephemeris:pos", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, NULL, v))) n++;
   if(check("ephemeris:vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, NULL))) n++;
   if(check("ephemeris:pos+vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, NULL, NULL))) n++;
-  if(check("ephemeris:pos=vel", -1, ephemeris(tdb, &ceres, NOVAS_BARYCENTER, NOVAS_FULL_ACCURACY, p, p))) n++;
   if(check("ephemeris:origin", 1, ephemeris(tdb, &ceres, -1, NOVAS_FULL_ACCURACY, p, v))) n++;
 
 #ifndef DEFAULT_READEPH
@@ -621,7 +620,7 @@ static int test_terra() {
   int n = 0;
 
   if(check("terra:loc", -1, terra(NULL, 0.0, p, v))) n++;
-  if(check("terra:same", -1, terra(&loc, 0.0, p, p))) n++;
+  if(check("terra:pos+vel", -1, terra(&loc, 0.0, NULL, NULL))) n++;
 
   return n;
 }
@@ -684,7 +683,7 @@ static int test_geo_posvel() {
 
   o.where = NOVAS_OBSERVER_ON_EARTH;
   if(check("geo_posvel:loc", -1, geo_posvel(0.0, 0.0, NOVAS_FULL_ACCURACY, NULL, p, v))) n++;
-  if(check("geo_posvel:same", -1, geo_posvel(0.0, 0.0, NOVAS_FULL_ACCURACY, &o, p, p))) n++;
+  if(check("geo_posvel:pos+vel", -1, geo_posvel(0.0, 0.0, NOVAS_FULL_ACCURACY, &o, NULL, NULL))) n++;
   if(check("geo_posvel:accuracy", 1, geo_posvel(0.0, 0.0, -1, &o, p, v))) n++;
 
   o.where = -1;
@@ -704,9 +703,6 @@ static int test_light_time2() {
   if(check("light_time2:tout", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, NULL))) n++;
   if(check("light_time2:object", -1, light_time2(0.0, NULL, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
   if(check("light_time2:pos", -1, light_time2(0.0, &o, NULL, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
-  if(check("light_time2:same1", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, pos, v, &t))) n++;
-  if(check("light_time2:same2", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, pos, &t))) n++;
-  if(check("light_time2:same3", -1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, p, &t))) n++;
 
   novas_inv_max_iter = 0;
   if(check("light_time2:converge", 1, light_time2(0.0, &o, pos, 0.0, NOVAS_FULL_ACCURACY, p, v, &t))) n++;
@@ -816,8 +812,7 @@ static int test_starvectors() {
   int n = 0;
 
   if(check("starvectors:star", -1, starvectors(NULL, p, v))) n++;
-  if(check("starvectors:pos+vel", -1, starvectors(NULL, NULL, NULL))) n++;
-  if(check("starvectors:pos=vel", -1, starvectors(&star, p, p))) n++;
+  if(check("starvectors:pos+vel", -1, starvectors(&star, NULL, NULL))) n++;
 
   return n;
 }
@@ -1068,8 +1063,6 @@ static int test_obs_posvel() {
 
   if(check("obs_posvel:obs", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, NULL, NULL, NULL, &x, NULL))) n++;
   if(check("obs_posvel:obs:pos+vel", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, NULL, NULL))) n++;
-  if(check("obs_posvel:obs:pos=vel", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, &x, &x))) n++;
-
   obs.where = -1;
   if(check("obs_posvel:obs:where:-1", -1, obs_posvel(NOVAS_JD_J2000, 0.0, NOVAS_REDUCED_ACCURACY, &obs, NULL, NULL, &x, NULL))) n++;
 
@@ -1248,7 +1241,6 @@ static int test_geom_posvel() {
 
   if(check("geom_posvel:object", -1, novas_geom_posvel(NULL, &frame, NOVAS_ICRS, pos, vel))) n++;
   if(check("geom_posvel:pos+vel", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, NULL, NULL))) n++;
-  if(check("geom_posvel:pos=vel", -1, novas_geom_posvel(&o, &frame, NOVAS_ICRS, pos, pos))) n++;
   if(check("geom_posvel:sys:-1", -1, novas_geom_posvel(&o, &frame, -1, pos, vel))) n++;
   if(check("geom_posvel:sys:hi", -1, novas_geom_posvel(&o, &frame, NOVAS_REFERENCE_SYSTEMS, pos, vel))) n++;
 
@@ -1566,7 +1558,6 @@ static int test_orbit_posvel() {
   orbit.a = 1.0;
 
   if(check("set_obsys_pole:orbit", -1, novas_orbit_posvel(0.0, NULL, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
-  if(check("set_obsys_pole:pos=vel", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, pos))) n++;
   if(check("set_obsys_pole:pos=vel:NULL", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, NULL, NULL))) n++;
   if(check("set_obsys_pole:accuracy:-1", -1, novas_orbit_posvel(0.0, &orbit, -1, pos, vel))) n++;
   if(check("set_obsys_pole:accuracy:2", -1, novas_orbit_posvel(0.0, &orbit, 2, pos, vel))) n++;

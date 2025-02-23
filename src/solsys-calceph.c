@@ -161,8 +161,8 @@ int novas_calceph_use_ids(enum novas_id_type idtype) {
  * @author Attila Kovacs
  * @since 1.2
  */
-static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   static const char *fn = "planet_calceph_hp";
 
   sem_t *sem = (planets == bodies) ? &sem_bodies : &sem_planets;
@@ -260,8 +260,8 @@ static short planet_calceph_hp(const double jd_tdb[2], enum novas_planet body, e
  * @author Attila Kovacs
  * @since 1.2
  */
-static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   const double tjd[2] = { jd_tdb, 0.0 };
 
   prop_error("planet_calceph", planet_calceph_hp(tjd, body, origin, position, velocity), 0);

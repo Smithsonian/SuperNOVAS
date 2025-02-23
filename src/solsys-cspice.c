@@ -239,8 +239,8 @@ int cspice_remove_kernel(const char *filename) {
  * @author Attila Kovacs
  * @since 1.2
  */
-static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   static const char *fn = "planet_cspice_hp";
 
   char msg[100];
@@ -345,8 +345,8 @@ static short planet_cspice_hp(const double jd_tdb[2], enum novas_planet body, en
  * @author Attila Kovacs
  * @since 1.2
  */
-static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   const double tjd[2] = { jd_tdb, 0.0 };
 
   prop_error("planet_cspice", planet_cspice_hp(tjd, body, origin, position, velocity), 0);
