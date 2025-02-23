@@ -23,6 +23,7 @@
 #include <string.h>
 #include <errno.h>
 #include <math.h>
+
 #include "novas.h"
 
 #define XI0       (-0.0166170 * ARCSEC)         ///< Frame bias term &xi;<sub>0</sub>
@@ -501,7 +502,8 @@ static int icrs_to_sys(const novas_frame *frame, double *pos, enum novas_referen
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel) {
+int novas_geom_posvel(const object *restrict source, const novas_frame *restrict frame, enum novas_reference_system sys,
+        double *restrict pos, double *restrict vel) {
   static const char *fn = "novas_geom_posvel";
 
   double jd_tdb, t_light;
@@ -625,7 +627,8 @@ int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *out) {
+int novas_sky_pos(const object *restrict object, const novas_frame *restrict frame, enum novas_reference_system sys,
+        sky_pos *restrict out) {
   static const char *fn = "novas_sky_pos";
 
   double d_sb, pos[3], vel[3], vpos[3];
@@ -720,7 +723,8 @@ int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_ref
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_reference_system sys, sky_pos *out) {
+int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict pos, enum novas_reference_system sys,
+        sky_pos *restrict out) {
   const char *fn = "novas_geom_to_app";
   double pos1[3];
   int i;
@@ -784,8 +788,8 @@ int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_re
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model,
-        double *az, double *el) {
+int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec,
+        RefractionModel ref_model, double *restrict az, double *restrict el) {
   static const char *fn = "novas_app_to_hor";
   const novas_timespec *time;
   double pos[3];
@@ -875,8 +879,8 @@ int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, 
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys,
-        double *ra, double *dec) {
+int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, RefractionModel ref_model,
+        enum novas_reference_system sys, double *restrict ra, double *restrict dec) {
   static const char *fn = "novas_hor_to_app";
   const novas_timespec *time;
   double pos[3];
@@ -958,7 +962,8 @@ int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionM
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs) {
+int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec,
+        double dist, double *restrict geom_icrs) {
   static const char *fn = "novas_apparent_to_nominal";
   double app_pos[3];
 
@@ -1188,7 +1193,7 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_transform_vector(const double *in, const novas_transform *transform, double *out) {
+int novas_transform_vector(const double *in, const novas_transform *restrict transform, double *out) {
   static const char *fn = "novas_matrix_transform";
 
   if(!transform || !in  || !out)
@@ -1215,7 +1220,7 @@ int novas_transform_vector(const double *in, const novas_transform *transform, d
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform, sky_pos *out) {
+int novas_transform_sky_pos(const sky_pos *in, const novas_transform *restrict transform, sky_pos *out) {
   static const char *fn = "novas_matrix_transform";
 
   if(!transform || !in  || !out)
@@ -1237,7 +1242,7 @@ int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform,
  * @since 1.3
  * @author Attila Kovacs
  */
-double novas_frame_lst(const novas_frame *frame) {
+double novas_frame_lst(const novas_frame *restrict frame) {
   static const char *fn = "novas_frame_lst";
   double lst;
 
@@ -1400,7 +1405,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
  * @sa novas_rises_above()
  * @sa novas_sets_below()
  */
-double novas_transit_time(const object *source, const novas_frame *frame) {
+double novas_transit_time(const object *restrict source, const novas_frame *restrict frame) {
   double utc = novas_cross_el_date(NAN, 0, source, frame, NULL);
   if(isnan(utc))
     return novas_trace_nan("novas_rises_above");
@@ -1433,7 +1438,7 @@ double novas_transit_time(const object *source, const novas_frame *frame) {
  * @sa novas_sets_below()
  * @sa novas_transit_time()
  */
-double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
+double novas_rises_above(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model) {
   double utc;
 
   errno = 0;
@@ -1471,7 +1476,7 @@ double novas_rises_above(double el, const object *source, const novas_frame *fra
  * @sa novas_rises_above()
  * @sa novas_transit_time()
  */
-double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model) {
+double novas_sets_below(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model) {
   double utc;
 
   errno = 0;
@@ -1497,7 +1502,7 @@ double novas_sets_below(double el, const object *source, const novas_frame *fram
  * @since 1.3
  * @author Attila Kovacs
  */
-double novas_solar_illum(const object *source, const novas_frame *frame) {
+double novas_solar_illum(const object *restrict source, const novas_frame *restrict frame) {
   static const char *fn = "novas_solar_illum";
 
   double pos[3], dSrc, dObs, dSun;
@@ -1555,7 +1560,7 @@ double novas_solar_illum(const object *source, const novas_frame *frame) {
  * @sa novas_moon_angle()
  * @sa novas_sep()
  */
-double novas_object_sep(const object *source1, const object *source2, const novas_frame *frame) {
+double novas_object_sep(const object *source1, const object *source2, const novas_frame *restrict frame) {
   static const char *fn = "novas_object_sep";
 
   sky_pos p1 = {}, p2 = {};
@@ -1599,7 +1604,7 @@ double novas_object_sep(const object *source1, const object *source2, const nova
  *
  * @sa novas_moon_angle()
  */
-double novas_sun_angle(const object *source, const novas_frame *frame) {
+double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame) {
   object sun = NOVAS_SUN_INIT;
   double d = novas_object_sep(source, &sun, frame);
   if(isnan(d))
@@ -1622,7 +1627,7 @@ double novas_sun_angle(const object *source, const novas_frame *frame) {
  *
  * @sa novas_sun_angle()
  */
-double novas_moon_angle(const object *source, const novas_frame *frame) {
+double novas_moon_angle(const object *restrict source, const novas_frame *restrict frame) {
   object moon = NOVAS_MOON_INIT;
   double d = novas_object_sep(source, &moon, frame);
   if(isnan(d))
@@ -1664,7 +1669,7 @@ double novas_unwrap_angles(double *a, double *b, double *c) {
  * @sa novas_hor_track()
  * @sa novas_track_pos()
  */
-int novas_equ_track(const object *source, const novas_frame *frame, double dt, novas_track *track) {
+int novas_equ_track(const object *restrict source, const novas_frame *restrict frame, double dt, novas_track *restrict track) {
   static const char *fn = "novas_equ_track";
 
   novas_timespec time1;
@@ -1755,7 +1760,8 @@ int novas_equ_track(const object *source, const novas_frame *frame, double dt, n
  * @sa novas_equ_track()
  * @sa novas_track_pos()
  */
-int novas_hor_track(const object *source, const novas_frame *frame, RefractionModel ref_model, novas_track *track) {
+int novas_hor_track(const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model,
+        novas_track *restrict track) {
   static const char *fn = "novas_equ_track";
 
   novas_timespec time1;
@@ -1847,7 +1853,8 @@ int novas_hor_track(const object *source, const novas_frame *frame, RefractionMo
  * @sa novas_hor_track()
  * @sa novas_z2v()
  */
-int novas_track_pos(const novas_track *track, const novas_timespec *time, double *lon, double *lat, double *dist, double *z) {
+int novas_track_pos(const novas_track *track, const novas_timespec *time, double *restrict lon, double *restrict lat,
+        double *restrict dist, double *restrict z) {
   static const char *fn = "novas_track_pos";
 
   double dt, dt2;

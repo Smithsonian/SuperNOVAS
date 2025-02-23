@@ -67,7 +67,7 @@
  * @sa NOVAS_EPHEM_OBJECT
  *
  */
-double *readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
+double *readeph_dummy(int mp, const char *restrict name, double jd_tdb, int *restrict error) {
   static const char *fn = "readeph_dummy";
   double *pv;
 
@@ -106,7 +106,7 @@ double *readeph_dummy(int mp, const char *name, double jd_tdb, int *error) {
 }
 
 #ifdef DEFAULT_READEPH
-double *readeph(int mp, const char *name, double jd_tdb, int *error) {
+double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error) {
   return readeph_dummy(mp, name, jd_tdb, error);
 }
 #endif

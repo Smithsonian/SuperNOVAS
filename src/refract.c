@@ -61,7 +61,7 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el0) {
+double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *restrict loc, enum novas_refraction_type type, double el0) {
   double refr = 0.0;
   const int dir = (type == NOVAS_REFRACT_OBSERVED ? 1 : -1);
   int i;

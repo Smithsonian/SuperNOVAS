@@ -43,8 +43,8 @@
  * @since 1.0
  * @author Attila Kovacs
  */
-short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
-        double *position, double *velocity) {
+short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   static const char *fn = "planet_ephem_provider_hp";
   static const char *names[] = NOVAS_PLANET_NAMES_INIT;
 
@@ -102,20 +102,20 @@ short planet_ephem_provider_hp(const double jd_tdb[2], enum novas_planet body, e
  * @since 1.0
  * @author Attila Kovacs
  */
-short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   const double jd_tdb2[2] = { jd_tdb };
   prop_error("planet_ephem_provider", planet_ephem_provider_hp(jd_tdb2, body, origin, position, velocity), 0);
   return 0;
 }
 
 #if !BUILTIN_SOLSYS_EPHEM_READER
-short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
+short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem", planet_ephem_provider(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }
 
-short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem_hp", planet_ephem_provider_hp(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }

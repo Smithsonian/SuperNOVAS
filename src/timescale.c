@@ -89,7 +89,7 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time) {
+int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *restrict time) {
   prop_error("novas_set_time", novas_set_split_time(timescale, 0, jd, leap, dut1, time), 0);
   return 0;
 }
@@ -136,7 +136,7 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @author Attila Kovacs
  */
 int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, int leap, double dut1,
-        novas_timespec *time) {
+        novas_timespec *restrict time) {
   static const char *fn = "novas_set_split_time";
 
   long ifjd;
@@ -242,7 +242,7 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_get_time(const novas_timespec *time, enum novas_timescale timescale) {
+double novas_get_time(const novas_timespec *restrict time, enum novas_timescale timescale) {
   long ijd;
   double fjd = novas_get_split_time(time, timescale, &ijd);
   if(isnan(fjd))
@@ -286,7 +286,7 @@ double novas_get_time(const novas_timespec *time, enum novas_timescale timescale
  * @since 1.1
  * @author Attila Kovacs
  */
-double novas_get_split_time(const novas_timespec *time, enum novas_timescale timescale, long *ijd) {
+double novas_get_split_time(const novas_timespec *restrict time, enum novas_timescale timescale, long *restrict ijd) {
   static const char *fn = "novas_get_split_time";
   double f;
 
@@ -447,7 +447,7 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *time) {
+int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *restrict time) {
   long jd, sojd;
 
   // UTC based integer JD
@@ -478,7 +478,7 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
  * @since 1.1
  * @author Attila Kovacs
  */
-time_t novas_get_unix_time(const novas_timespec *time, long *nanos) {
+time_t novas_get_unix_time(const novas_timespec *restrict time, long *restrict nanos) {
   long ijd, isod;
   double sod;
   time_t seconds;
@@ -626,7 +626,8 @@ static int parse_zone(const char *str, char **tail) {
  * @sa novas_iso_timestamp()
  * @sa julian_date()
  */
-double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *date, char **tail) {
+double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
+       char **restrict tail) {
   static const char *fn = "novas_parse_date";
   static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
@@ -790,7 +791,7 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * @sa novas_iso_timestamp()
  * @sa novas_timestamp()
  */
-double novas_parse_date(const char *date, char **tail) {
+double novas_parse_date(const char *restrict date, char **restrict tail) {
   double jd = novas_parse_date_format(NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_YMD, date, tail);
   if(isnan(jd))
     return novas_trace_nan("novas_parse_date");
@@ -855,7 +856,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
  * @sa novas_timestamp()
  * @sa novas_parse_time()
  */
-int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
+int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen) {
   static const char *fn = "novas_iso_timestamp";
 
   char buf[40];
@@ -923,7 +924,7 @@ int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen) {
  *
  * @sa novas_iso_timestamp()
  */
-int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen) {
+int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale scale, char *restrict dst, int maxlen) {
   static const char *fn = "novas_timestamp_scale";
 
   char buf[40];
@@ -975,7 +976,7 @@ int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char
  * @sa novas_timestamp()
  * @sa novas_timescale_for_string()
  */
-int novas_print_timescale(enum novas_timescale scale, char *buf) {
+int novas_print_timescale(enum novas_timescale scale, char *restrict buf) {
   static const char *fn = "novas_print_timescale";
 
   if(!buf)
@@ -1023,7 +1024,7 @@ int novas_print_timescale(enum novas_timescale scale, char *buf) {
  * @sa novas_set_split_time()
  * @sa novas_print_timescale()
  */
-enum novas_timescale novas_timescale_for_string(const char *str) {
+enum novas_timescale novas_timescale_for_string(const char *restrict str) {
   static const char *fn = "novas_str_timescale";
 
   if(!str)

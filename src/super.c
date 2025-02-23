@@ -98,7 +98,7 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @since 1.0
  * @author Attila Kovacs
  */
-int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+int place_icrs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_icrs", place(jd_tt, source, NULL, 0.0, NOVAS_ICRS, accuracy, pos), 0);
   return 0;
 }
@@ -125,7 +125,7 @@ int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  * @since 1.0
  * @author Attila Kovacs
  */
-int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+int place_gcrs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_gcrs", place(jd_tt, source, NULL, 0.0, NOVAS_GCRS, accuracy, pos), 0);
   return 0;
 }
@@ -149,7 +149,7 @@ int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  * @author Attila Kovacs
  *
  */
-int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+int place_cirs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_cirs", place(jd_tt, source, NULL, 0.0, NOVAS_CIRS, accuracy, pos), 0);
   return 0;
 }
@@ -174,7 +174,7 @@ int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy,
  * @author Attila Kovacs
  *
  */
-int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+int place_tod(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_tod", place(jd_tt, source, NULL, 0.0, NOVAS_TOD, accuracy, pos), 0);
   return 0;
 }
@@ -199,7 +199,7 @@ int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
  * @author Attila Kovacs
  *
  */
-int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+int place_mod(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_mod", place(jd_tt, source, NULL, 0.0, NOVAS_MOD, accuracy, pos), 0);
   return 0;
 }
@@ -224,7 +224,7 @@ int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, 
  * @author Attila Kovacs
  *
  */
-int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos) {
+int place_j2000(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_j2000", place(jd_tt, source, NULL, 0.0, NOVAS_J2000, accuracy, pos), 0);
   return 0;
 }
@@ -258,8 +258,8 @@ int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy
  * @since 1.0
  * @author Attila Kovacs
  */
-int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat, double *ra,
-        double *dec) {
+int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
+        double *restrict ra, double *restrict dec) {
   static const char *fn = "ecl2equ";
   double coslat, pos[3], xyproj;
 
@@ -311,7 +311,7 @@ int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy
  * @since 1.0
  * @author Attila Kovacs
  */
-int gal2equ(double glon, double glat, double *ra, double *dec) {
+int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec) {
   double pos1[3], pos2[3], xyproj, coslat;
 
   // Rotation matrix A_g from Hipparcos documentation eq. 1.5.11.
@@ -474,7 +474,7 @@ int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @since 1.0
  * @author Attila Kovacs
  */
-int itrs_to_hor(const on_surface *location, const double *itrs, double *az, double *za) {
+int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za) {
   double uze[3], une[3], uwe[3];
   double lat, lon, coslat, sinlat, coslon, sinlon;
   double pn, pw, pz, proj;
@@ -556,7 +556,7 @@ int itrs_to_hor(const on_surface *location, const double *itrs, double *az, doub
  * @since 1.0
  * @author Attila Kovacs
  */
-int hor_to_itrs(const on_surface *location, double az, double za, double *itrs) {
+int hor_to_itrs(const on_surface *restrict location, double az, double za, double *restrict itrs) {
   double in[3], uze[3], une[3], uwe[3];
   double sinza;
   double lat, lon, coslat, sinlat, coslon, sinlon;
@@ -893,7 +893,7 @@ int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  * @since 1.1
  * @author Attila Kovacs
  */
-int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *planets, double *out) {
+int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out) {
   static const char *fn = "grav_undo_planets";
 
   const double tol = 1e-13;
@@ -1377,7 +1377,7 @@ double novas_z_inv(double z) {
  *
  * @sa make_planet()
  */
-enum novas_planet novas_planet_for_name(const char *name) {
+enum novas_planet novas_planet_for_name(const char *restrict name) {
   static const char *fn = "novas_planet_for_name()";
   static const char *names[] = NOVAS_PLANET_NAMES_INIT;
 
@@ -1438,7 +1438,7 @@ enum novas_planet novas_planet_for_name(const char *name) {
  *
  * @sa make_orbital_object()
  */
-int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys) {
+int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys) {
   if (!sys)
     return novas_error(-1, EINVAL, "novas_set_orbsys_pole", "input system is NULL");
 
@@ -1479,7 +1479,7 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
  * @sa novas_hms_hours()
  * @sa novas_parse_dms()
  */
-double novas_parse_hms(const char *hms, char **tail) {
+double novas_parse_hms(const char *restrict hms, char **restrict tail) {
   static const char *fn = "novas_hms_hours";
 
   int h = 0, m = 0, n = 0;
@@ -1545,7 +1545,7 @@ double novas_parse_hms(const char *hms, char **tail) {
  *
  * @sa novas_dms_degrees()
  */
-double novas_hms_hours(const char *hms) {
+double novas_hms_hours(const char *restrict hms) {
   return novas_parse_hms(hms, NULL);
 }
 
@@ -1578,7 +1578,7 @@ double novas_hms_hours(const char *hms) {
  * @sa novas_dms_degrees()
  * @sa novas_parse_hms()
  */
-double novas_parse_dms(const char *dms, char **tail) {
+double novas_parse_dms(const char *restrict dms, char **restrict tail) {
   static const char *fn = "novas_dms_degrees";
 
   int d = 0, m = 0, n = 0;
@@ -1645,7 +1645,7 @@ double novas_parse_dms(const char *dms, char **tail) {
  *
  * @sa novas_hms_hours()
  */
-double novas_dms_degrees(const char *dms) {
+double novas_dms_degrees(const char *restrict dms) {
   return novas_parse_dms(dms, NULL);
 }
 
@@ -1747,7 +1747,7 @@ double novas_epa(double ha, double dec, double lat) {
  * @sa novas_e2h_offset()
  * @sa novas_hpa()
  */
-int novas_h2e_offset(double daz, double del, double pa, double *dra, double *ddec) {
+int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, double *restrict ddec) {
   double dx = daz, dy = del, c, s;
 
   pa *= DEGREE;
@@ -1791,7 +1791,7 @@ int novas_h2e_offset(double daz, double del, double pa, double *dra, double *dde
  * @sa novas_h2e_offset()
  * @sa novas_epa()
  */
-int novas_e2h_offset(double dra, double ddec, double pa, double *daz, double *del) {
+int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, double *restrict del) {
   return novas_h2e_offset(dra, ddec, pa, daz, del);
 }
 
@@ -1812,7 +1812,7 @@ int novas_e2h_offset(double dra, double ddec, double pa, double *daz, double *de
  * @sa novas_solar_power()
  * @sa novas_solar_illum()
  */
-double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
+double novas_helio_dist(double jd_tdb, const object *restrict source, double *restrict rate) {
   static const char *fn = "novas_helio_dist";
 
   const double jd2[2] = { jd_tdb, 0.0 };
@@ -1863,7 +1863,7 @@ double novas_helio_dist(double jd_tdb, const object *source, double *rate) {
  *
  * @sa novas_solar_illum()
  */
-double novas_solar_power(double jd_tdb, const object *source) {
+double novas_solar_power(double jd_tdb, const object *restrict source) {
   double d = novas_helio_dist(jd_tdb, source, NULL);
   return NOVAS_SOLAR_CONSTANT / (d * d);
 }

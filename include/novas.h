@@ -29,6 +29,12 @@
 #    define M_PI 3.14159265358979323846
 #endif
 
+/// \cond PRIVATE
+#if __STDC_VERSION__ < 199901L
+#  define restrict                        ///< No 'restrict' keyword prior to C99
+#endif
+/// \endcond
+
 // The upstream NOVAS library had a set of include statements that really were not necessary
 // First, including standard libraries here meant that those libraries were included in the
 // source code of any application that included 'novas.h', even if that source code did not
@@ -1112,7 +1118,6 @@ typedef struct {
   double M[3][3];     ///< matrix elements
 } novas_matrix;
 
-
 /**
  * Position and velocity data for a set of major planets (which may include the Sun and the Moon also).
  *
@@ -1197,7 +1202,6 @@ typedef struct {
   novas_matrix matrix;                      ///< Transformation matrix elements
 } novas_transform;
 
-
 /**
  * The type of elevation value for which to calculate a refraction.
  *
@@ -1263,7 +1267,6 @@ extern int grav_bodies_reduced_accuracy;
  */
 extern int grav_bodies_full_accuracy;
 
-
 /**
  * A function that returns a refraction correction for a given date/time of observation at the
  * given site on earth, and for a given astrometric source elevation
@@ -1325,7 +1328,6 @@ enum novas_date_format {
   NOVAS_MDY               ///< month, then day, then year
 };
 
-
 /**
  * Constants to disambiguate which type of calendar yo use for interpreting calendar dates. Roman/Julian or Gregorian/
  *
@@ -1343,58 +1345,62 @@ enum novas_calendar_type {
                                 ///< 1582 in the Roman (a.k.a. Julian) calendar.
 };
 
-short app_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
+short app_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
+        double *restrict ra, double *restrict dec);
 
-short virtual_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
+short virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
+        double *restrict ra, double *restrict dec);
 
-short astro_star(double jd_tt, const cat_entry *star, enum novas_accuracy accuracy, double *ra, double *dec);
+short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
+        double *restrict ra, double *restrict dec);
 
-short app_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec,
-        double *dis);
+short app_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy,
+        double *restrict ra, double *restrict dec, double *restrict dis);
 
-short virtual_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec,
-        double *dis);
+short virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy,
+        double *restrict ra, double *restrict dec, double *restrict dis);
 
-short astro_planet(double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec,
-        double *dis);
+short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy,
+        double *restrict ra, double *restrict dec, double *restrict dis);
 
-short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position,
-        enum novas_accuracy accuracy, double *ra, double *dec);
+short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
+        enum novas_accuracy accuracy, double *restrict ra, double *restrict dec);
 
-short local_star(double jd_tt, double ut1_to_tt, const cat_entry *star, const on_surface *position,
-        enum novas_accuracy accuracy, double *ra, double *dec);
+short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
+        enum novas_accuracy accuracy, double *restrict ra, double *restrict dec);
 
-short topo_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position,
-        enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
+short topo_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
+        enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis);
 
-short local_planet(double jd_tt, const object *ss_body, double ut1_to_tt, const on_surface *position,
-        enum novas_accuracy accuracy, double *ra, double *dec, double *dis);
+short local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
+        enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis);
 
-short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *ira, double *idec);
+short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy,
+        double *restrict ira, double *restrict idec);
 
-short place(double jd_tt, const object *source, const observer *location, double ut1_to_tt,
-        enum novas_reference_system coord_sys, enum novas_accuracy accuracy, sky_pos *output);
+short place(double jd_tt, const object *restrict source, const observer *restrict location, double ut1_to_tt,
+        enum novas_reference_system coord_sys, enum novas_accuracy accuracy, sky_pos *restrict output);
 
-int equ2gal(double ra, double dec, double *glon, double *glat);
+int equ2gal(double ra, double dec, double *restrict glon, double *restrict glat);
 
 short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec,
-        double *elon, double *elat);
+        double *restrict elon, double *restrict elat);
 
-short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *in,
-        double *out);
+short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy,
+        const double *in, double *out);
 
-short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *in,
-        double *out);
+short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy,
+        const double *in, double *out);
 
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
-        const on_surface *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd, double *az,
-        double *rar, double *decr);
+        const on_surface *restrict location, double ra, double dec, enum novas_refraction_model ref_option,
+        double *restrict zd, double *restrict az, double *restrict rar, double *restrict decr);
 
 short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg,
-        double *ra, double *dec);
+        double *restrict ra, double *restrict dec);
 
 short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type,
-        enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *gst);
+        enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst);
 
 double era(double jd_ut1_high, double jd_ut1_low);
 
@@ -1410,10 +1416,10 @@ int spin(double angle, const double *in, double *out);
 
 int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out);
 
-int terra(const on_surface *location, double lst, double *pos, double *vel);
+int terra(const on_surface *restrict location, double lst, double *restrict pos, double *restrict vel);
 
-int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *mobl, double *tobl, double *ee, double *dpsi,
-        double *deps);
+int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
+        double *restrict ee, double *restrict dpsi, double *restrict deps);
 
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2);
 
@@ -1421,15 +1427,15 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy);
 
 int frame_tie(const double *in, enum novas_frametie_direction direction, double *out);
 
-int proper_motion(double jd_tdb_in, const double *pos, const double *vel, double jd_tdb_out, double *out);
+int proper_motion(double jd_tdb_in, const double *pos, const double *restrict vel, double jd_tdb_out, double *out);
 
-int bary2obs(const double *pos, const double *pos_obs, double *out, double *lighttime);
+int bary2obs(const double *pos, const double *pos_obs, double *out, double *restrict lighttime);
 
-short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs, double *pos,
-        double *vel);
+short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
+        double *restrict pos, double *restrict vel);
 
-short light_time(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
-        double *pos_src_obs, double *tlight);
+short light_time(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
+        double *pos_src_obs, double *restrict tlight);
 
 double d_light(const double *pos_src, const double *pos_body);
 
@@ -1440,17 +1446,17 @@ int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_bod
 
 int aberration(const double *pos, const double *vobs, double lighttime, double *out);
 
-int rad_vel(const object *source, const double *pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo,
-        double d_obs_sun, double d_src_sun, double *rv);
+int rad_vel(const object *restrict source, const double *restrict pos_src, const double *vel_src, const double *vel_obs,
+        double d_obs_geo, double d_obs_sun, double d_src_sun, double *restrict rv);
 
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out);
 
 int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in,
         double *out);
 
-int nutation_angles(double t, enum novas_accuracy accuracy, double *dpsi, double *deps);
+int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps);
 
-int fund_args(double t, novas_delaunay_args *a);
+int fund_args(double t, novas_delaunay_args *restrict a);
 
 double planet_lon(double t, enum novas_planet planet);
 
@@ -1458,61 +1464,62 @@ double accum_prec(double t);
 
 double mean_obliq(double jd_tdb);
 
-short vector2radec(const double *pos, double *ra, double *dec);
+short vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec);
 
-int radec2vector(double ra, double dec, double dist, double *pos);
+int radec2vector(double ra, double dec, double dist, double *restrict pos);
 
-int starvectors(const cat_entry *star, double *pos, double *motion);
+int starvectors(const cat_entry *restrict star, double *restrict pos, double *restrict motion);
 
 double get_ut1_to_tt(int leap_seconds, double dut1);
 
-int tdb2tt(double jd_tdb, double *jd_tt, double *secdiff);
+int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff);
 
-short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *ra_cio);
+short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio);
 
-short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *ra_cio, short *loc_type);
+short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type);
 
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
-        double *x, double *y, double *z);
+        double *restrict x, double *restrict y, double *restrict z);
 
-short cio_array(double jd_tdb, long n_pts, ra_of_cio *cio);
+short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio);
 
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy);
 
-short ephemeris(const double *jd_tdb, const object *body, enum novas_origin origin, enum novas_accuracy accuracy,
-        double *pos, double *vel);
+short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
+        enum novas_accuracy accuracy, double *restrict pos, double *restrict vel);
 
 int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);
 
 short transform_cat(enum novas_transform_type, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id,
         cat_entry *out);
 
-int limb_angle(const double *pos_src, const double *pos_obs, double *limb_ang, double *nadir_ang);
+int limb_angle(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang);
 
-double refract(const on_surface *location, enum novas_refraction_model option, double zd_obs);
+double refract(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs);
 
 double julian_date(short year, short month, short day, double hour);
 
-int cal_date(double tjd, short *year, short *month, short *day, double *hour);
+int cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour);
 
 double norm_ang(double angle);
 
-short make_cat_entry(const char *star_name, const char *catalog, long cat_num, double ra, double dec, double pm_ra,
-        double pm_dec, double parallax, double rad_vel, cat_entry *star);
+short make_cat_entry(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec,
+        double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star);
 
 short make_object(enum novas_object_type, long number, const char *name, const cat_entry *star, object *source);
 
-short make_observer(enum novas_observer_place, const on_surface *loc_surface, const in_space *loc_space, observer *obs);
+short make_observer(enum novas_observer_place, const on_surface *loc_surface, const in_space *loc_space,
+        observer *obs);
 
-int make_observer_at_geocenter(observer *obs);
+int make_observer_at_geocenter(observer *restrict obs);
 
 int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
-        observer *obs);
+        observer *restrict obs);
 
 int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer *obs);
 
 int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
-        on_surface *loc);
+        on_surface *restrict loc);
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
@@ -1527,35 +1534,37 @@ enum novas_debug_mode novas_get_debug_mode();
 
 void novas_case_sensitive(int value);
 
-int make_planet(enum novas_planet num, object *planet);
+int make_planet(enum novas_planet num, object *restrict planet);
 
 int make_ephem_object(const char *name, long num, object *body);
 
-int set_cio_locator_file(const char *filename);
+int set_cio_locator_file(const char *restrict filename);
 
 int set_nutation_lp_provider(novas_nutation_provider func);
 
-int place_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
-        enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *pos);
+int place_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt,
+        enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
-int place_icrs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+int place_icrs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
-int place_gcrs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+int place_gcrs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
-int place_cirs(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+int place_cirs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
-int place_tod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+int place_tod(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
-int radec_star(double jd_tt, const cat_entry *star, const observer *obs, double ut1_to_tt,
-        enum novas_reference_system sys, enum novas_accuracy accuracy, double *ra, double *dec, double *rv);
+int radec_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt,
+        enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec,
+        double *restrict rv);
 
-int radec_planet(double jd_tt, const object *ss_body, const observer *obs, double ut1_to_tt,
-        enum novas_reference_system sys, enum novas_accuracy accuracy, double *ra, double *dec, double *dis, double *rv);
+int radec_planet(double jd_tt, const object *restrict ss_body, const observer *restrict obs, double ut1_to_tt,
+        enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec,
+        double *restrict dis, double *restrict rv);
 
-double refract_astro(const on_surface *location, enum novas_refraction_model option, double zd_astro);
+double refract_astro(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro);
 
-int light_time2(double jd_tdb, const object *body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
-        double *p_src_obs, double *v_ssb, double *tlight);
+int light_time2(double jd_tdb, const object *restrict body, const double *restrict pos_obs, double tlight0,
+        enum novas_accuracy accuracy, double *p_src_obs, double *restrict v_ssb, double *restrict tlight);
 
 double tt2tdb(double jd_tt);
 
@@ -1564,18 +1573,18 @@ double get_ut1_to_tt(int leap_seconds, double dut1);
 double get_utc_to_tt(int leap_seconds);
 
 int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
-        double *ra, double *dec);
+        double *restrict ra, double *restrict dec);
 
-int gal2equ(double glon, double glat, double *ra, double *dec);
+int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec);
 
 // GCRS - CIRS - ITRS conversions
 int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
-int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
-        double *out);
+int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *in, double * out);
 
-int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
-        double *out);
+int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *in, double *out);
 
 int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
@@ -1584,20 +1593,20 @@ int gcrs_to_j2000(const double *in, double *out);
 
 int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
-int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
-        double *out);
+int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *in, double *out);
 
-int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
-        double *out);
+int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
+        double yp, const double *in, double *out);
 
 int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
 int j2000_to_gcrs(const double *in, double *out);
 
 // ITRS - horizontal conversions
-int itrs_to_hor(const on_surface *location, const double *itrs, double *az, double *za);
+int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za);
 
-int hor_to_itrs(const on_surface *location, double az, double za, double *itrs);
+int hor_to_itrs(const on_surface *restrict location, double az, double za, double *restrict itrs);
 
 
 
@@ -1609,16 +1618,17 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 
 // ---------------------- Added in 1.1.0 -------------------------
-int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *obs,
-        const double *geo_pos, const double *geo_vel, double *pos, double *vel);
+int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
+        const double *restrict geo_pos, const double *restrict geo_vel, double *restrict pos, double *restrict vel);
 
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *pos_obs, int pl_mask, novas_planet_bundle *planets);
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restrict pos_obs, int pl_mask,
+        novas_planet_bundle *restrict planets);
 
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
-int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_bundle *planets, double *out);
+int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out);
 
-int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *planets, double *out);
+int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out);
 
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 
@@ -1626,29 +1636,30 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
 
 int make_cat_object(const cat_entry *star, object *source);
 
-int place_mod(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+int place_mod(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
-int place_j2000(double jd_tt, const object *source, enum novas_accuracy accuracy, sky_pos *pos);
+int place_j2000(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
 int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
 int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
-double rad_vel2(const object *source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
-        double d_obs_geo, double d_obs_sun, double d_src_sun);
+double rad_vel2(const object *restrict source, const double *pos_emit, const double *vel_src, const double *pos_det,
+        const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun);
 
 // in timescale.c
-int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *time);
+int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *restrict time);
 
-int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, int leap, double dut1, novas_timespec *time);
+int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, int leap, double dut1,
+        novas_timespec *restrict time);
 
-double novas_get_time(const novas_timespec *time, enum novas_timescale timescale);
+double novas_get_time(const novas_timespec *restrict time, enum novas_timescale timescale);
 
-double novas_get_split_time(const novas_timespec *time, enum novas_timescale timescale, long *ijd);
+double novas_get_split_time(const novas_timespec *restrict time, enum novas_timescale timescale, long *restrict ijd);
 
-int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *time);
+int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *restrict time);
 
-time_t novas_get_unix_time(const novas_timespec *time, long *nanos);
+time_t novas_get_unix_time(const novas_timespec *restrict time, long *restrict nanos);
 
 double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2);
 
@@ -1665,28 +1676,32 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
 
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out);
 
-int novas_geom_posvel(const object *source, const novas_frame *frame, enum novas_reference_system sys, double *pos, double *vel);
+int novas_geom_posvel(const object *restrict source, const novas_frame *restrict frame, enum novas_reference_system sys,
+        double *restrict pos, double *restrict vel);
 
-int novas_geom_to_app(const novas_frame *frame, const double *pos, enum novas_reference_system sys, sky_pos *out);
+int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict pos, enum novas_reference_system sys,
+        sky_pos *restrict out);
 
-int novas_sky_pos(const object *object, const novas_frame *frame, enum novas_reference_system sys, sky_pos *out);
+int novas_sky_pos(const object *restrict object, const novas_frame *restrict frame, enum novas_reference_system sys,
+        sky_pos *restrict out);
 
-int novas_app_to_hor(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, RefractionModel ref_model,
-        double *az, double *el);
+int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec,
+        RefractionModel ref_model, double *restrict az, double *restrict el);
 
-int novas_app_to_geom(const novas_frame *frame, enum novas_reference_system sys, double ra, double dec, double dist, double *geom_icrs);
+int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec,
+        double dist, double *restrict geom_icrs);
 
-int novas_hor_to_app(const novas_frame *frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys,
-        double *ra, double *dec);
+int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, RefractionModel ref_model,
+        enum novas_reference_system sys, double *restrict ra, double *restrict dec);
 
-int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system,
-        novas_transform *transform);
+int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system,
+        enum novas_reference_system to_system, novas_transform *transform);
 
 int novas_invert_transform(const novas_transform *transform, novas_transform *inverse);
 
-int novas_transform_vector(const double *in, const novas_transform *transform, double *out);
+int novas_transform_vector(const double *in, const novas_transform *restrict transform, double *out);
 
-int novas_transform_sky_pos(const sky_pos *in, const novas_transform *transform, sky_pos *out);
+int novas_transform_sky_pos(const sky_pos *in, const novas_transform *restrict transform, sky_pos *out);
 
 
 // in refract.c
@@ -1696,7 +1711,7 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
 
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
-double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el0);
+double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *restrict loc, enum novas_refraction_type type, double el0);
 
 
 // ---------------------- Added in 1.2.0 -------------------------
@@ -1718,13 +1733,14 @@ double novas_z_add(double z1, double z2);
 
 double novas_z_inv(double z);
 
-enum novas_planet novas_planet_for_name(const char *name);
+enum novas_planet novas_planet_for_name(const char *restrict name);
 
-int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *sys);
+int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
 
 int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
 
-int novas_orbit_posvel(double jd_tdb, const novas_orbital *orbit, enum novas_accuracy accuracy, double *pos, double *vel);
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
+        double *restrict pos, double *restrict vel);
 
 int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
@@ -1737,7 +1753,8 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 // ---------------------- Added in 1.3.0 -------------------------
 
-int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *year, int *month, int *day, double *hour);
+int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restrict year, int *restrict month,
+        int *restrict day, double *restrict hour);
 
 double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month, int day, double hour);
 
@@ -1746,21 +1763,21 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
 
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR);
 
-double novas_hms_hours(const char *hms);
+double novas_hms_hours(const char *restrict hms);
 
-double novas_dms_degrees(const char *dms);
+double novas_dms_degrees(const char *restrict dms);
 
-double novas_parse_hms(const char *str, char **tail);
+double novas_parse_hms(const char *restrict str, char **restrict tail);
 
-double novas_parse_dms(const char *str, char **tail);
+double novas_parse_dms(const char *restrict str, char **restrict tail);
 
 double novas_hpa(double az, double el, double lat);
 
 double novas_epa(double ha, double dec, double lat);
 
-int novas_h2e_offset(double daz, double del, double pa, double *dra, double *ddec);
+int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, double *restrict ddec);
 
-int novas_e2h_offset(double dra, double ddec, double pa, double *daz, double *del);
+int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, double *restrict del);
 
 double novas_sep(double lon1, double lat1, double lon2, double lat2);
 
@@ -1773,38 +1790,41 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los);
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 
 // in frames.c
-double novas_frame_lst(const novas_frame *frame);
+double novas_frame_lst(const novas_frame *restrict frame);
 
-double novas_transit_time(const object *source, const novas_frame *frame);
+double novas_transit_time(const object *restrict source, const novas_frame *restrict frame);
 
-double novas_rises_above(double el, const object *source, const novas_frame *frame, RefractionModel ref_model);
+double novas_rises_above(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model);
 
-double novas_sets_below(double el, const object *source, const novas_frame *frame, RefractionModel ref_model);
+double novas_sets_below(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model);
 
-double novas_object_sep(const object *source1, const object *source2, const novas_frame *frame);
+double novas_object_sep(const object *source1, const object *source2, const novas_frame *restrict frame);
 
-double novas_sun_angle(const object *source, const novas_frame *frame);
+double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame);
 
-double novas_moon_angle(const object *source, const novas_frame *frame);
+double novas_moon_angle(const object *restrict source, const novas_frame *restrict frame);
 
-int novas_equ_track(const object *source, const novas_frame *frame, double dt, novas_track *track);
+int novas_equ_track(const object *restrict source, const novas_frame *restrict frame, double dt, novas_track *restrict track);
 
-int novas_hor_track(const object *source, const novas_frame *frame, RefractionModel ref_model, novas_track *track);
+int novas_hor_track(const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model,
+        novas_track *restrict track);
 
-int novas_track_pos(const novas_track *track, const novas_timespec *time, double *lon, double *lat, double *dist, double *z);
+int novas_track_pos(const novas_track *track, const novas_timespec *time, double *restrict lon, double *restrict lat,
+        double *restrict dist, double *restrict z);
 
 // in timescale.c
-double novas_parse_date(const char *date, char **tail);
+double novas_parse_date(const char *restrict date, char **restrict tail);
 
-double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *date, char **tail);
+double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
+        char **restrict tail);
 
-int novas_iso_timestamp(const novas_timespec *time, char *dst, int maxlen);
+int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen);
 
-int novas_timestamp(const novas_timespec *time, enum novas_timescale scale, char *dst, int maxlen);
+int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale scale, char *restrict dst, int maxlen);
 
-int novas_print_timescale(enum novas_timescale scale, char *buf);
+int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 
-enum novas_timescale novas_timescale_for_string(const char *str);
+enum novas_timescale novas_timescale_for_string(const char *restrict str);
 
 
 // <================= END of SuperNOVAS API =====================>
@@ -1857,9 +1877,10 @@ enum novas_timescale novas_timescale_for_string(const char *str);
 #endif /* _CONSTS_ */
 
 // On some older platform NAN may not be defined, so define it here if need be
-#ifndef NAN
-#  define NAN               (0.0/0.0)
-#endif
+#  ifndef NAN
+#    define NAN               (0.0/0.0)
+#  endif
+
 
 #  ifndef THREAD_LOCAL
 #    if __STDC_VERSION__ >= 201112L
@@ -1872,10 +1893,10 @@ enum novas_timescale novas_timescale_for_string(const char *str);
 #  endif
 
 
-int novas_trace(const char *loc, int n, int offset);
-double novas_trace_nan(const char *loc);
-void novas_set_errno(int en, const char *from, const char *desc, ...);
-int novas_error(int ret, int en, const char *from, const char *desc, ...);
+int novas_trace(const char *restrict loc, int n, int offset);
+double novas_trace_nan(const char *restrict loc);
+void novas_set_errno(int en, const char *restrict from, const char *restrict desc, ...);
+int novas_error(int ret, int en, const char *restrict from, const char *restrict desc, ...);
 
 /**
  * Propagates an error (if any) with an offset. If the error is non-zero, it returns with the offset
@@ -1894,11 +1915,11 @@ int novas_error(int ret, int en, const char *from, const char *desc, ...);
 
 double novas_add_beta(double beta1, double beta2);
 
-double novas_vlen(const double *v);
+double novas_vlen(const double *restrict v);
 double novas_vdist(const double *v1, const double *v2);
 double novas_vdot(const double *v1, const double *v2);
 
-int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *dpsi, double *deps);
+int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
 
 extern int novas_inv_max_iter;
 

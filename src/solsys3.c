@@ -32,7 +32,7 @@
 /// \endcond
 
 // Additional local function prototypes
-int sun_eph(double jd, double *ra, double *dec, double *dis);
+int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restrict dis);
 
 /**
  * Whether the high-precision call is allowed to return a low-precision result. If set to 0
@@ -99,8 +99,8 @@ void enable_earth_sun_hp(int value) {
  * @sa novas_planet_provider
  *
  */
-short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   static const char *fn = "earth_sun_calc";
 
   // The arrays below contain masses and orbital elements for the four
@@ -293,8 +293,8 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
  * @sa novas_planet_provider_hp
  *
  */
-short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin, double *position,
-        double *velocity) {
+short earth_sun_calc_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
   static const char *fn = "earth_sun_calc_hp";
 
   if(!jd_tdb)
@@ -335,7 +335,7 @@ short earth_sun_calc_hp(const double jd_tdb[2], enum novas_planet body, enum nov
  *
  * @sa earth_sun_calc()
  */
-int sun_eph(double jd, double *ra, double *dec, double *dis) {
+int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restrict dis) {
   struct sun_con {
     int l;
     int r;
@@ -448,12 +448,12 @@ novas_planet_provider planet_call = earth_sun_calc;
 novas_planet_provider_hp planet_call_hp = earth_sun_calc_hp;
 /// \endcond
 #elif !BUILTIN_SOLSYS3
-short solarsystem(double jd_tdb, short body, short origin, double *position, double *velocity) {
+short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem", earth_sun_calc(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }
 
-short solarsystem_hp(const double jd_tdb[2], short body, short origin, double *position, double *velocity) {
+short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity) {
   prop_error("solarsystem_hp", earth_sun_calc_hp(jd_tdb, body, origin, position, velocity), 0);
   return 0;
 }
