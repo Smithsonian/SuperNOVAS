@@ -1883,7 +1883,9 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str);
 
 
 #  ifndef THREAD_LOCAL
-#    if __STDC_VERSION__ >= 201112L
+#    if __STDC_VERSION__ >= 202311L
+#      define THREAD_LOCAL thread_local           ///< C23 standard for thread-local variables
+#    elif __STDC_VERSION__ >= 201112L
 #      define THREAD_LOCAL _Thread_local          ///< C11 standard for thread-local variables
 #    elif __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)
 #      define THREAD_LOCAL __thread               ///< pre C11 gcc >= 3.3 standard for thread-local variables
