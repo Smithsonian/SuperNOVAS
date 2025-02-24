@@ -87,7 +87,7 @@ such as for handling times and angles as strings, rise and set times, and other 
 
 ### Changed
  
- - [#130] Use `restrict` keyword to prevent pointer argument aliasing.
+ - [#130] Use C99 `restrict` keyword to prevent pointer argument aliasing.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
@@ -103,6 +103,8 @@ such as for handling times and angles as strings, rise and set times, and other 
    internally for improved portability.
 
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
+ 
+ - Default `THREAD_LOCAL` definition extended to C23 `thread_local` keyword also.
 
 
 
