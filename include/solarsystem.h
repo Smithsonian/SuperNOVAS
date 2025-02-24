@@ -46,12 +46,6 @@
 #ifndef _SOLSYS_
 #define _SOLSYS_
 
-/// \cond PRIVATE
-#if __STDC_VERSION__ < 199901L
-#  define restrict                        ///< No 'restrict' keyword prior to C99
-#endif
-/// \endcond
-
 /**
  * Solar-system body IDs to use as object.number with NOVAS_EPHEM_OBJECT types. JPL ephemerides
  * use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a>

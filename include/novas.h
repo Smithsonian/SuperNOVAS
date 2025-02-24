@@ -29,12 +29,6 @@
 #    define M_PI 3.14159265358979323846
 #endif
 
-/// \cond PRIVATE
-#if __STDC_VERSION__ < 199901L
-#  define restrict                        ///< No 'restrict' keyword prior to C99
-#endif
-/// \endcond
-
 // The upstream NOVAS library had a set of include statements that really were not necessary
 // First, including standard libraries here meant that those libraries were included in the
 // source code of any application that included 'novas.h', even if that source code did not
