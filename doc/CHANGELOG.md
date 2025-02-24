@@ -82,9 +82,12 @@ such as for handling times and angles as strings, rise and set times, and other 
  - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
- - Added `example-time.c` under `examples/`, for demonstrating date/time handling functions.
+ - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
+   and rise, set, and transit time calculations.
 
 ### Changed
+ 
+ - [#130] Use C99 `restrict` keyword to prevent pointer argument aliasing.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
@@ -100,6 +103,8 @@ such as for handling times and angles as strings, rise and set times, and other 
    internally for improved portability.
 
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
+ 
+ - Default `THREAD_LOCAL` definition extended to C23 `thread_local` keyword also.
 
 
 
