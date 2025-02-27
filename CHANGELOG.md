@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.3.0-rc3] - 2025-02-27
 
 Release candidate for upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, 
 such as for handling times and angles as strings, rise and set times, and other common astrometric calculations.
