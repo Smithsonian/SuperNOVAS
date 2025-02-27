@@ -17,13 +17,13 @@ include/solarsystem.h
 
 .in +1c
 .ti -1c
-.RI "typedef int(* \fBnovas_ephem_provider\fP) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *origin, double *pos, double *vel)"
+.RI "typedef int(* \fBnovas_ephem_provider\fP) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *restrict origin, double *restrict pos, double *restrict vel)"
 .br
 .ti -1c
-.RI "typedef short(* \fBnovas_planet_provider\fP) (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "typedef short(* \fBnovas_planet_provider\fP) (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "typedef short(* \fBnovas_planet_provider_hp\fP) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "typedef short(* \fBnovas_planet_provider_hp\fP) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .in -1c
 .SS "Enumerations"
@@ -37,10 +37,10 @@ include/solarsystem.h
 
 .in +1c
 .ti -1c
-.RI "short \fBearth_sun_calc\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBearth_sun_calc\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBearth_sun_calc_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBearth_sun_calc_hp\fP (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
 .RI "void \fBenable_earth_sun_hp\fP (int value)"
@@ -58,13 +58,13 @@ include/solarsystem.h
 .RI "enum \fBnovas_planet\fP \fBnaif_to_novas_planet\fP (long id)"
 .br
 .ti -1c
-.RI "double \fBnovas_helio_dist\fP (double jd_tdb, const \fBobject\fP *source, double *rate)"
+.RI "double \fBnovas_helio_dist\fP (double jd_tdb, const \fBobject\fP *restrict source, double *restrict rate)"
 .br
 .ti -1c
-.RI "double \fBnovas_solar_illum\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.RI "double \fBnovas_solar_illum\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 .br
 .ti -1c
-.RI "double \fBnovas_solar_power\fP (double jd_tdb, const \fBobject\fP *source)"
+.RI "double \fBnovas_solar_power\fP (double jd_tdb, const \fBobject\fP *restrict source)"
 .br
 .ti -1c
 .RI "long \fBnovas_to_dexxx_planet\fP (enum \fBnovas_planet\fP id)"
@@ -73,25 +73,25 @@ include/solarsystem.h
 .RI "long \fBnovas_to_naif_planet\fP (enum \fBnovas_planet\fP id)"
 .br
 .ti -1c
-.RI "short \fBplanet_eph_manager\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_eph_manager\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBplanet_eph_manager_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_eph_manager_hp\fP (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBplanet_ephem_provider\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_ephem_provider\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBplanet_ephem_provider_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_ephem_provider_hp\fP (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBplanet_jplint\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_jplint\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBplanet_jplint_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_jplint_hp\fP (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "double * \fBreadeph\fP (int mp, const char *name, double jd_tdb, int *error)"
+.RI "double * \fBreadeph\fP (int mp, const char *restrict name, double jd_tdb, int *restrict error)"
 .br
 .ti -1c
 .RI "int \fBset_ephem_provider\fP (\fBnovas_ephem_provider\fP func)"
@@ -103,10 +103,10 @@ include/solarsystem.h
 .RI "int \fBset_planet_provider_hp\fP (\fBnovas_planet_provider_hp\fP func)"
 .br
 .ti -1c
-.RI "short \fBsolarsystem\fP (double jd_tdb, short body, short origin, double *position, double *velocity)"
+.RI "short \fBsolarsystem\fP (double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBsolarsystem_hp\fP (const double jd_tdb[2], short body, short origin, double *position, double *velocity)"
+.RI "short \fBsolarsystem_hp\fP (const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -177,7 +177,7 @@ Attila Kovacs
 
 .SH "Typedef Documentation"
 .PP 
-.SS "typedef int(* novas_ephem_provider) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *origin, double *pos, double *vel)"
+.SS "typedef int(* novas_ephem_provider) (const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum \fBnovas_origin\fP *restrict origin, double *restrict pos, double *restrict vel)"
 Function to obtain ephemeris data for minor planets, which are not handled by the \fBsolarsystem()\fP type calls\&. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled \fBreadeph()\fP implementation, or else a dynamically defined one via ephemeris_set_reader()\&.
 .PP
 Note, that implementations would typically use either the name or the ID argument to identify the object for which ephemeris data is requested\&. As such you only need to specify the one that is going to be used\&.
@@ -226,7 +226,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "typedef short(* novas_planet_provider) (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.SS "typedef short(* novas_planet_provider) (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters)\&. This version provides positions and velocities at regular precision (see NOVAS_REDUCED_PRECISION)\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
@@ -269,7 +269,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "typedef short(* novas_planet_provider_hp) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.SS "typedef short(* novas_planet_provider_hp) (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Provides the position and velocity of major planets (as well as the Sun, Moon, Solar-system Barycenter, and other barycenters)\&. This version provides positions and velocities at high precision (see NOVAS_FULL_PRECISION)\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
@@ -348,7 +348,7 @@ If the ephemeris provider should use NAIF IDs\&.
 If the ephemeris provider should use CALCEPH IDs\&. 
 .SH "Function Documentation"
 .PP 
-.SS "short earth_sun_calc (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short earth_sun_calc (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Provides the position and velocity of the Earth and Sun only at epoch 'jd_tdb' by evaluating a closed-form theory without reference to an external file\&. This function can also provide the position and velocity of the Sun\&.
 .PP
 REFERENCES: 
@@ -392,7 +392,7 @@ Explanatory Supplement to The Astronomical Almanac (1992)\&.
 
 .PP
 References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBprecession()\fP, \fBradec2vector()\fP, \fBsun_eph()\fP, \fBT0\fP, and \fBTWOPI\fP\&.
-.SS "short earth_sun_calc_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short earth_sun_calc_hp (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(), if \fBenable_earth_sun_hp()\fP is set to true (non-zero)\&. Otherwise, it will return with an error code of 3, indicating that high-precision calculations are not provided by this implementation\&.
 .PP
 NOTES: 
@@ -568,7 +568,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_EMB\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_PLUTO_BARYCENTER\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
-.SS "double novas_helio_dist (double jd_tdb, const \fBobject\fP * source, double * rate)"
+.SS "double novas_helio_dist (double jd_tdb, const \fBobject\fP *restrict source, double *restrict rate)"
 Returns a Solar-system body's distance from the Sun, and optionally also the rate of recession\&. It may be useful, e\&.g\&. to calculate the body's heating from the Sun\&.
 .PP
 \fBParameters\fP
@@ -604,8 +604,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBephemeris()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBobject::type\fP\&.
-.SS "double novas_solar_illum (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+References \fBephemeris()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_HELIOCENTER\fP, and \fBNOVAS_REDUCED_ACCURACY\fP\&.
+.SS "double novas_solar_illum (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body\&.
 .PP
 \fBParameters\fP
@@ -632,8 +632,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, \fBNOVAS_ICRS\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
-.SS "double novas_solar_power (double jd_tdb, const \fBobject\fP * source)"
+References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, and \fBNOVAS_ICRS\fP\&.
+.SS "double novas_solar_power (double jd_tdb, const \fBobject\fP *restrict source)"
 Returns the typical incident Solar power on a Solar-system body at the time of observation\&.
 .PP
 \fBParameters\fP
@@ -730,7 +730,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_EMB\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLUTO\fP, \fBNOVAS_PLUTO_BARYCENTER\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
-.SS "short planet_eph_manager (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_eph_manager (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for regular (reduced) precision applications\&.
 .PP
 This function and \fBplanet_eph_manager_hp()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
@@ -785,7 +785,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 
 .PP
 References \fBplanet_eph_manager_hp()\fP\&.
-.SS "short planet_eph_manager_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_eph_manager_hp (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Provides an interface between the JPL direct-access solar system ephemerides and NOVAS-C for highest precision applications\&.
 .PP
 This function and \fBplanet_eph_manager()\fP were designed to work with the 1997 version of the JPL ephemerides, as noted in the references\&.
@@ -838,7 +838,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 
 .PP
 References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MOON\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SUN\fP, and \fBplanet_ephemeris()\fP\&.
-.SS "short planet_ephem_provider (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_ephem_provider (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the regular (reduced) precision version\&.
 .PP
 \fBParameters\fP
@@ -881,7 +881,7 @@ Attila Kovacs
 
 .PP
 References \fBplanet_ephem_provider_hp()\fP\&.
-.SS "short planet_ephem_provider_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_ephem_provider_hp (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the highest precision version\&.
 .PP
 \fBParameters\fP
@@ -924,7 +924,7 @@ Attila Kovacs
 
 .PP
 References \fBget_ephem_provider()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
-.SS "short planet_jplint (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_jplint (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Obtains planet positions via the JPL direct-access solar system ephemerides, wtih normal (reduced) precision -- typically good to the milliarcsecond level\&.
 .PP
 It generalizes access to the JPL software by calling a Fortran interface subroutine, 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments have changed several times throughout the years\&. This way, any future change to the arguments can be accommodated in 'jplint' rather than in this function\&.
@@ -977,7 +977,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 
 .PP
 References \fBjplint_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
-.SS "short planet_jplint_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_jplint_hp (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Obtains planet positions via the JPL direct-access solar system ephemerides, wtih high precision -- typically good to below the microarcsecond level\&.
 .PP
 It generalizes access to the JPL software by calling a Fortran interface subroutine, 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments have changed several times throughout the years\&. This way, any future change to the arguments can be accommodated in 'jplint' rather than in this function\&.
@@ -1030,7 +1030,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 
 .PP
 References \fBjplihp_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
-.SS "double * readeph (int mp, const char * name, double jd_tdb, int * error)"
+.SS "double * readeph (int mp, const char *restrict name, double jd_tdb, int *restrict error)"
 Provides a default ephemeris implementation to handle position and velocity calculations for minor planets, which are not handled by the \fBsolarsystem()\fP type calls\&. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled \fBreadeph()\fP implementation, or else a dynamically defined one via ephemeris_set_reader()\&.
 .PP
 You can set the built-in implementation for the library at build time by setting the DEFAULT_READEPH variable in the \fCconfig\&.mk\fP\&.
@@ -1176,7 +1176,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "short solarsystem (double jd_tdb, short body, short origin, double * position, double * velocity)"
+.SS "short solarsystem (double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)"
 A default implementation for regular (reduced) precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into with the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider()\fP\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
@@ -1215,7 +1215,7 @@ Since this is a function that may be provided by existing custom user implementa
 
 .PP
 References \fBearth_sun_calc()\fP, \fBplanet_eph_manager()\fP, \fBplanet_ephem_provider()\fP, and \fBplanet_jplint()\fP\&.
-.SS "short solarsystem_hp (const double jd_tdb[2], short body, short origin, double * position, double * velocity)"
+.SS "short solarsystem_hp (const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)"
 A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter (and other barycenters)\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.

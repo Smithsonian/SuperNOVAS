@@ -10,16 +10,16 @@ src/solsys-ephem.c
 
 .in +1c
 .ti -1c
-.RI "short \fBplanet_ephem_provider\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_ephem_provider\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBplanet_ephem_provider_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_ephem_provider_hp\fP (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBsolarsystem\fP (double jd_tdb, short body, short origin, double *position, double *velocity)"
+.RI "short \fBsolarsystem\fP (double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBsolarsystem_hp\fP (const double jd_tdb[2], short body, short origin, double *position, double *velocity)"
+.RI "short \fBsolarsystem_hp\fP (const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -48,7 +48,7 @@ Attila Kovacs
 
 .SH "Function Documentation"
 .PP 
-.SS "short planet_ephem_provider (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_ephem_provider (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the regular (reduced) precision version\&.
 .PP
 \fBParameters\fP
@@ -91,7 +91,7 @@ Attila Kovacs
 
 .PP
 References \fBplanet_ephem_provider_hp()\fP\&.
-.SS "short planet_ephem_provider_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_ephem_provider_hp (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Major planet ephemeris data via the same generic ephemeris provider that is configured by \fBset_ephem_provider()\fP prior to calling this routine\&. This is the highest precision version\&.
 .PP
 \fBParameters\fP
@@ -134,7 +134,7 @@ Attila Kovacs
 
 .PP
 References \fBget_ephem_provider()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_PLANET_NAMES_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, and \fBNOVAS_SUN\fP\&.
-.SS "short solarsystem (double jd_tdb, short body, short origin, double * position, double * velocity)"
+.SS "short solarsystem (double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)"
 A default implementation for regular (reduced) precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into with the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider()\fP\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
@@ -173,7 +173,7 @@ Since this is a function that may be provided by existing custom user implementa
 
 .PP
 References \fBplanet_ephem_provider()\fP\&.
-.SS "short solarsystem_hp (const double jd_tdb[2], short body, short origin, double * position, double * velocity)"
+.SS "short solarsystem_hp (const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)"
 A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter (and other barycenters)\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.

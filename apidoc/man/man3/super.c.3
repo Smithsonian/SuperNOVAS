@@ -30,10 +30,10 @@ src/super.c
 .RI "int \fBcirs_to_tod\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
 .br
 .ti -1c
-.RI "int \fBecl2equ\fP (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double elon, double elat, double *ra, double *dec)"
+.RI "int \fBecl2equ\fP (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double elon, double elat, double *restrict ra, double *restrict dec)"
 .br
 .ti -1c
-.RI "int \fBgal2equ\fP (double glon, double glat, double *ra, double *dec)"
+.RI "int \fBgal2equ\fP (double glon, double glat, double *restrict ra, double *restrict dec)"
 .br
 .ti -1c
 .RI "double \fBget_ut1_to_tt\fP (int leap_seconds, double dut1)"
@@ -48,16 +48,16 @@ src/super.c
 .RI "int \fBgrav_undef\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *pos_app, const double *pos_obs, double *out)"
 .br
 .ti -1c
-.RI "int \fBgrav_undo_planets\fP (const double *pos_app, const double *pos_obs, const \fBnovas_planet_bundle\fP *planets, double *out)"
+.RI "int \fBgrav_undo_planets\fP (const double *pos_app, const double *pos_obs, const \fBnovas_planet_bundle\fP *restrict planets, double *out)"
 .br
 .ti -1c
-.RI "int \fBhor_to_itrs\fP (const \fBon_surface\fP *location, double az, double za, double *itrs)"
+.RI "int \fBhor_to_itrs\fP (const \fBon_surface\fP *restrict location, double az, double za, double *restrict itrs)"
 .br
 .ti -1c
 .RI "int \fBitrs_to_cirs\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
 .br
 .ti -1c
-.RI "int \fBitrs_to_hor\fP (const \fBon_surface\fP *location, const double *itrs, double *az, double *za)"
+.RI "int \fBitrs_to_hor\fP (const \fBon_surface\fP *restrict location, const double *restrict itrs, double *restrict az, double *restrict za)"
 .br
 .ti -1c
 .RI "int \fBitrs_to_tod\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
@@ -87,10 +87,10 @@ src/super.c
 .RI "int \fBmake_solar_system_observer\fP (const double *sc_pos, const double *sc_vel, \fBobserver\fP *obs)"
 .br
 .ti -1c
-.RI "double \fBnovas_dms_degrees\fP (const char *dms)"
+.RI "double \fBnovas_dms_degrees\fP (const char *restrict dms)"
 .br
 .ti -1c
-.RI "int \fBnovas_e2h_offset\fP (double dra, double ddec, double pa, double *daz, double *del)"
+.RI "int \fBnovas_e2h_offset\fP (double dra, double ddec, double pa, double *restrict daz, double *restrict del)"
 .br
 .ti -1c
 .RI "double \fBnovas_epa\fP (double ha, double dec, double lat)"
@@ -99,13 +99,13 @@ src/super.c
 .RI "double \fBnovas_equ_sep\fP (double ra1, double dec1, double ra2, double dec2)"
 .br
 .ti -1c
-.RI "int \fBnovas_h2e_offset\fP (double daz, double del, double pa, double *dra, double *ddec)"
+.RI "int \fBnovas_h2e_offset\fP (double daz, double del, double pa, double *restrict dra, double *restrict ddec)"
 .br
 .ti -1c
-.RI "double \fBnovas_helio_dist\fP (double jd_tdb, const \fBobject\fP *source, double *rate)"
+.RI "double \fBnovas_helio_dist\fP (double jd_tdb, const \fBobject\fP *restrict source, double *restrict rate)"
 .br
 .ti -1c
-.RI "double \fBnovas_hms_hours\fP (const char *hms)"
+.RI "double \fBnovas_hms_hours\fP (const char *restrict hms)"
 .br
 .ti -1c
 .RI "double \fBnovas_hpa\fP (double az, double el, double lat)"
@@ -114,22 +114,22 @@ src/super.c
 .RI "double \fBnovas_lsr_to_ssb_vel\fP (double epoch, double ra, double dec, double vLSR)"
 .br
 .ti -1c
-.RI "double \fBnovas_parse_dms\fP (const char *dms, char **tail)"
+.RI "double \fBnovas_parse_dms\fP (const char *restrict dms, char **restrict tail)"
 .br
 .ti -1c
-.RI "double \fBnovas_parse_hms\fP (const char *hms, char **tail)"
+.RI "double \fBnovas_parse_hms\fP (const char *restrict hms, char **restrict tail)"
 .br
 .ti -1c
-.RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *name)"
+.RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *restrict name)"
 .br
 .ti -1c
 .RI "double \fBnovas_sep\fP (double lon1, double lat1, double lon2, double lat2)"
 .br
 .ti -1c
-.RI "int \fBnovas_set_orbsys_pole\fP (enum \fBnovas_reference_system\fP type, double ra, double dec, \fBnovas_orbital_system\fP *sys)"
+.RI "int \fBnovas_set_orbsys_pole\fP (enum \fBnovas_reference_system\fP type, double ra, double dec, \fBnovas_orbital_system\fP *restrict sys)"
 .br
 .ti -1c
-.RI "double \fBnovas_solar_power\fP (double jd_tdb, const \fBobject\fP *source)"
+.RI "double \fBnovas_solar_power\fP (double jd_tdb, const \fBobject\fP *restrict source)"
 .br
 .ti -1c
 .RI "double \fBnovas_ssb_to_lsr_vel\fP (double epoch, double ra, double dec, double vLSR)"
@@ -147,22 +147,22 @@ src/super.c
 .RI "double \fBnovas_z_inv\fP (double z)"
 .br
 .ti -1c
-.RI "int \fBplace_cirs\fP (double jd_tt, const \fBobject\fP *source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *pos)"
+.RI "int \fBplace_cirs\fP (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 .br
 .ti -1c
-.RI "int \fBplace_gcrs\fP (double jd_tt, const \fBobject\fP *source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *pos)"
+.RI "int \fBplace_gcrs\fP (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 .br
 .ti -1c
-.RI "int \fBplace_icrs\fP (double jd_tt, const \fBobject\fP *source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *pos)"
+.RI "int \fBplace_icrs\fP (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 .br
 .ti -1c
-.RI "int \fBplace_j2000\fP (double jd_tt, const \fBobject\fP *source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *pos)"
+.RI "int \fBplace_j2000\fP (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 .br
 .ti -1c
-.RI "int \fBplace_mod\fP (double jd_tt, const \fBobject\fP *source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *pos)"
+.RI "int \fBplace_mod\fP (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 .br
 .ti -1c
-.RI "int \fBplace_tod\fP (double jd_tt, const \fBobject\fP *source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *pos)"
+.RI "int \fBplace_tod\fP (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 .br
 .ti -1c
 .RI "double \fBredshift_vrad\fP (double vrad, double z)"
@@ -376,7 +376,7 @@ Attila Kovacs
 
 .PP
 References \fBcio_ra()\fP, and \fBspin()\fP\&.
-.SS "int ecl2equ (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double elon, double elat, double * ra, double * dec)"
+.SS "int ecl2equ (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double elon, double elat, double *restrict ra, double *restrict dec)"
 Convert ecliptic longitude and latitude to right ascension and declination\&. To convert GCRS ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at'jd_tt'\&.
 .PP
 \fBParameters\fP
@@ -421,7 +421,7 @@ Attila Kovacs
 
 .PP
 References \fBecl2equ_vec()\fP\&.
-.SS "int gal2equ (double glon, double glat, double * ra, double * dec)"
+.SS "int gal2equ (double glon, double glat, double *restrict ra, double *restrict dec)"
 Converts galactic longitude and latitude to ICRS right ascension and declination\&.
 .PP
 REFERENCES: 
@@ -634,7 +634,7 @@ Attila Kovacs
 
 .PP
 References \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_undo_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBobs_planets()\fP\&.
-.SS "int grav_undo_planets (const double * pos_app, const double * pos_obs, const \fBnovas_planet_bundle\fP * planets, double * out)"
+.SS "int grav_undo_planets (const double * pos_app, const double * pos_obs, const \fBnovas_planet_bundle\fP *restrict planets, double * out)"
 Computes the gravitationally undeflected position of an observed source position due to the specified Solar-system bodies\&.
 .PP
 REFERENCES: 
@@ -681,7 +681,7 @@ Attila Kovacs
 
 .PP
 References \fBgrav_planets()\fP, and \fBnovas_inv_max_iter\fP\&.
-.SS "int hor_to_itrs (const \fBon_surface\fP * location, double az, double za, double * itrs)"
+.SS "int hor_to_itrs (const \fBon_surface\fP *restrict location, double az, double za, double *restrict itrs)"
 Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location to a unit position vector in the Earth-fixed ITRS frame\&.
 .PP
 \fBParameters\fP
@@ -722,8 +722,6 @@ Attila Kovacs
 .RE
 .PP
 
-.PP
-References \fBon_surface::latitude\fP, and \fBon_surface::longitude\fP\&.
 .SS "int itrs_to_cirs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 2000 standard method)\&.
 .PP
@@ -785,7 +783,7 @@ Attila Kovacs
 
 .PP
 References \fBEROT_ERA\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, and \fBter2cel()\fP\&.
-.SS "int itrs_to_hor (const \fBon_surface\fP * location, const double * itrs, double * az, double * za)"
+.SS "int itrs_to_hor (const \fBon_surface\fP *restrict location, const double *restrict itrs, double *restrict az, double *restrict za)"
 Converts a position vector in the Earth-fixed ITRS frame to astrometric (unrefracted) azimuth and zenith angles at the specified observer location\&.
 .PP
 \fBParameters\fP
@@ -826,8 +824,6 @@ Attila Kovacs
 .RE
 .PP
 
-.PP
-References \fBon_surface::latitude\fP, and \fBon_surface::longitude\fP\&.
 .SS "int itrs_to_tod (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
 Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame of date (pre IAU 2000 method)\&.
 .PP
@@ -1225,7 +1221,7 @@ Attila Kovacs
 
 .PP
 References \fBmake_in_space()\fP, \fBmake_observer()\fP, and \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP\&.
-.SS "double novas_dms_degrees (const char * dms)"
+.SS "double novas_dms_degrees (const char *restrict dms)"
 Returns the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same angle:
 .PP
 .PP
@@ -1266,7 +1262,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_parse_dms()\fP\&.
-.SS "int novas_e2h_offset (double dra, double ddec, double pa, double * daz, double * del)"
+.SS "int novas_e2h_offset (double dra, double ddec, double pa, double *restrict daz, double *restrict del)"
 Converts coordinate offsets, from the local equatorial system to local horizontal offsets\&. Converting between local flat projections and spherical coordinates usually requires a WCS projection\&.
 .PP
 REFERENCES: 
@@ -1393,7 +1389,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_sep()\fP\&.
-.SS "int novas_h2e_offset (double daz, double del, double pa, double * dra, double * ddec)"
+.SS "int novas_h2e_offset (double daz, double del, double pa, double *restrict dra, double *restrict ddec)"
 Converts coordinate offsets, from the local horizontal system to local equatorial offsets\&. Converting between local flat projections and spherical coordinates usually requires a WCS projection\&.
 .PP
 REFERENCES: 
@@ -1438,7 +1434,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "double novas_helio_dist (double jd_tdb, const \fBobject\fP * source, double * rate)"
+.SS "double novas_helio_dist (double jd_tdb, const \fBobject\fP *restrict source, double *restrict rate)"
 Returns a Solar-system body's distance from the Sun, and optionally also the rate of recession\&. It may be useful, e\&.g\&. to calculate the body's heating from the Sun\&.
 .PP
 \fBParameters\fP
@@ -1474,8 +1470,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBephemeris()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBobject::type\fP\&.
-.SS "double novas_hms_hours (const char * hms)"
+References \fBephemeris()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_HELIOCENTER\fP, and \fBNOVAS_REDUCED_ACCURACY\fP\&.
+.SS "double novas_hms_hours (const char *restrict hms)"
 Returns the decimal hours for a HMS string specification\&. The hour, minute, and second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the hour and minutes may be semarated by the letter \fCh\fP or \fCH\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same time:
 .PP
 .PP
@@ -1600,7 +1596,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_JD_J2000\fP, \fBprecession()\fP, and \fBradec2vector()\fP\&.
-.SS "double novas_parse_dms (const char * dms, char ** tail)"
+.SS "double novas_parse_dms (const char *restrict dms, char **restrict tail)"
 Parses the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same angle:
 .PP
 .PP
@@ -1643,7 +1639,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "double novas_parse_hms (const char * hms, char ** tail)"
+.SS "double novas_parse_hms (const char *restrict hms, char **restrict tail)"
 Parses the decimal hours for a HMS string specification\&. The hour, minute, and second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the hour and minutes may be semarated by the letter \fCh\fP or \fCH\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same time:
 .PP
 .PP
@@ -1686,7 +1682,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "enum \fBnovas_planet\fP novas_planet_for_name (const char * name)"
+.SS "enum \fBnovas_planet\fP novas_planet_for_name (const char *restrict name)"
 Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found\&.
 .PP
 \fBParameters\fP
@@ -1756,7 +1752,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "int novas_set_orbsys_pole (enum \fBnovas_reference_system\fP type, double ra, double dec, \fBnovas_orbital_system\fP * sys)"
+.SS "int novas_set_orbsys_pole (enum \fBnovas_reference_system\fP type, double ra, double dec, \fBnovas_orbital_system\fP *restrict sys)"
 Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace (or else equatorial) plane relative to which the orbital elements are defined\&. Orbital parameters of planetary satellites normally include the R\&.A\&. and declination of the pole of the local Laplace plane in which the Keplerian orbital elements are referenced\&.
 .PP
 The system will become referenced to the equatorial plane, the relative obliquity is set to (90 - \fCdec\fP), while the argument of the ascending node ('Omega') is set to (90 + \fCra\fP)\&.
@@ -1800,8 +1796,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_EQUATORIAL_PLANE\fP, \fBnovas_orbital_system::obl\fP, \fBnovas_orbital_system::Omega\fP, \fBnovas_orbital_system::plane\fP, and \fBnovas_orbital_system::type\fP\&.
-.SS "double novas_solar_power (double jd_tdb, const \fBobject\fP * source)"
+References \fBNOVAS_EQUATORIAL_PLANE\fP\&.
+.SS "double novas_solar_power (double jd_tdb, const \fBobject\fP *restrict source)"
 Returns the typical incident Solar power on a Solar-system body at the time of observation\&.
 .PP
 \fBParameters\fP
@@ -2021,7 +2017,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "int place_cirs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
+.SS "int place_cirs (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 Computes the Celestial Intermediate Reference System (CIRS) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
 \fBParameters\fP
@@ -2060,7 +2056,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_CIRS\fP, and \fBplace()\fP\&.
-.SS "int place_gcrs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
+.SS "int place_gcrs (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 Computes the Geocentric Celestial Reference System (GCRS) position of a source (as 'seen' from the geocenter) at the given time of observation\&. Unlike \fC\fBplace_icrs()\fP\fP, this includes aberration for the moving frame of the geocenter as well as gravitational deflections calculated for a virtual observer located at the geocenter\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
 \fBParameters\fP
@@ -2105,7 +2101,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_GCRS\fP, and \fBplace()\fP\&.
-.SS "int place_icrs (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
+.SS "int place_icrs (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 Computes the International Celestial Reference System (ICRS) position of a source\&. (from the geocenter)\&. Unlike \fC\fBplace_gcrs()\fP\fP, this version does not include aberration or gravitational deflection corrections\&.
 .PP
 \fBParameters\fP
@@ -2148,7 +2144,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_ICRS\fP, and \fBplace()\fP\&.
-.SS "int place_j2000 (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
+.SS "int place_j2000 (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 Computes the J2000 dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
 \fBParameters\fP
@@ -2191,7 +2187,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_J2000\fP, and \fBplace()\fP\&.
-.SS "int place_mod (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
+.SS "int place_mod (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 Computes the Mean of Date (MOD) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
 \fBParameters\fP
@@ -2234,7 +2230,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_MOD\fP, and \fBplace()\fP\&.
-.SS "int place_tod (double jd_tt, const \fBobject\fP * source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP * pos)"
+.SS "int place_tod (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 Computes the True of Date (TOD) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
 \fBParameters\fP

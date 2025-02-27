@@ -45,8 +45,7 @@ This document has been updated for the `v1.3` and later releases.
 ## Introduction
 
 SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)). (Note, that despite the name resemblence, it is in no way 
-related to the NOVA / libnova library.)
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)). (It is not related to the separate NOVA / libnova library.)
 
 The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 
@@ -1178,10 +1177,10 @@ one minute.
 ### Refinements to the NOVAS C API
 
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
-   This works using the C11 standard `_Thread_local` or else the earlier GNU C &gt;= 3.3 standard `__thread` modifier.
-   You can also set the preferred thread-local keyword for your compiler by passing it via `-DTHREAD_LOCAL=...` in 
-   `config.mk` to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for
-   thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
+   This works using the C11 standard `_Thread_local`, or the C23 `thread_local`, or else the earlier GNU C &gt;= 3.3 
+   standard `__thread` modifier. You can also set the preferred thread-local keyword for your compiler by passing it 
+   via `-DTHREAD_LOCAL=...` in `config.mk` to ensure that your build is thread-safe. And, if your compiler has no 
+   support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
 
  - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. The enums allow for some 
    compiler checking (e.g. using the wrong enum), and make for more readable code that is easier to debug. They also 
@@ -1260,8 +1259,10 @@ one minute.
    corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
    accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
 
- - [__v1.3__] - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian 
+ - [__v1.3__] `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian 
    dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
+
+ - [__v1.3__] Use C99 `restrict` keyword to prevent pointer argument aliasing as appropriate.
 
 -----------------------------------------------------------------------------
 

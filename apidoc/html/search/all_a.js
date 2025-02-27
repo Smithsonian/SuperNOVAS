@@ -17,5 +17,5 @@ var searchData=
   ['from_5fsystem_14',['from_system',['../structnovas__transform.html#a5fe73fdfdc0f8933168a1c50df2db4ed',1,'novas_transform']]],
   ['functionality_20highlights_15',['New functionality highlights',['../index.html#autotoc_md76',1,'']]],
   ['functions_16',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md90',1,'']]],
-  ['fund_5fargs_17',['fund_args',['../novas_8h.html#aaac686274606e79ba666f94306eece8b',1,'fund_args(double t, novas_delaunay_args *a):&#160;novas.c'],['../novas_8c.html#aaac686274606e79ba666f94306eece8b',1,'fund_args(double t, novas_delaunay_args *a):&#160;novas.c']]]
+  ['fund_5fargs_17',['fund_args',['../novas_8h.html#a312b5ab1a004b179d80463a07ca7da8f',1,'fund_args(double t, novas_delaunay_args *restrict a):&#160;novas.c'],['../novas_8c.html#a312b5ab1a004b179d80463a07ca7da8f',1,'fund_args(double t, novas_delaunay_args *restrict a):&#160;novas.c']]]
 ];

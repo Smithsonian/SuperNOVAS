@@ -26,31 +26,31 @@ src/frames.c
 
 .in +1c
 .ti -1c
-.RI "int \fBnovas_app_to_geom\fP (const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double *geom_icrs)"
+.RI "int \fBnovas_app_to_geom\fP (const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double *restrict geom_icrs)"
 .br
 .ti -1c
-.RI "int \fBnovas_app_to_hor\fP (const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double *az, double *el)"
+.RI "int \fBnovas_app_to_hor\fP (const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double *restrict az, double *restrict el)"
 .br
 .ti -1c
 .RI "int \fBnovas_change_observer\fP (const \fBnovas_frame\fP *orig, const \fBobserver\fP *obs, \fBnovas_frame\fP *out)"
 .br
 .ti -1c
-.RI "int \fBnovas_equ_track\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame, double dt, \fBnovas_track\fP *track)"
+.RI "int \fBnovas_equ_track\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, double dt, \fBnovas_track\fP *restrict track)"
 .br
 .ti -1c
-.RI "double \fBnovas_frame_lst\fP (const \fBnovas_frame\fP *frame)"
+.RI "double \fBnovas_frame_lst\fP (const \fBnovas_frame\fP *restrict frame)"
 .br
 .ti -1c
-.RI "int \fBnovas_geom_posvel\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, double *pos, double *vel)"
+.RI "int \fBnovas_geom_posvel\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double *restrict pos, double *restrict vel)"
 .br
 .ti -1c
-.RI "int \fBnovas_geom_to_app\fP (const \fBnovas_frame\fP *frame, const double *pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *out)"
+.RI "int \fBnovas_geom_to_app\fP (const \fBnovas_frame\fP *restrict frame, const double *restrict pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *restrict out)"
 .br
 .ti -1c
-.RI "int \fBnovas_hor_to_app\fP (const \fBnovas_frame\fP *frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double *ra, double *dec)"
+.RI "int \fBnovas_hor_to_app\fP (const \fBnovas_frame\fP *restrict frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double *restrict ra, double *restrict dec)"
 .br
 .ti -1c
-.RI "int \fBnovas_hor_track\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame, \fBRefractionModel\fP ref_model, \fBnovas_track\fP *track)"
+.RI "int \fBnovas_hor_track\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, \fBRefractionModel\fP ref_model, \fBnovas_track\fP *restrict track)"
 .br
 .ti -1c
 .RI "int \fBnovas_invert_transform\fP (const \fBnovas_transform\fP *transform, \fBnovas_transform\fP *inverse)"
@@ -62,37 +62,37 @@ src/frames.c
 .RI "int \fBnovas_make_transform\fP (const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP from_system, enum \fBnovas_reference_system\fP to_system, \fBnovas_transform\fP *transform)"
 .br
 .ti -1c
-.RI "double \fBnovas_moon_angle\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.RI "double \fBnovas_moon_angle\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 .br
 .ti -1c
-.RI "double \fBnovas_object_sep\fP (const \fBobject\fP *source1, const \fBobject\fP *source2, const \fBnovas_frame\fP *frame)"
+.RI "double \fBnovas_object_sep\fP (const \fBobject\fP *source1, const \fBobject\fP *source2, const \fBnovas_frame\fP *restrict frame)"
 .br
 .ti -1c
-.RI "double \fBnovas_rises_above\fP (double el, const \fBobject\fP *source, const \fBnovas_frame\fP *frame, \fBRefractionModel\fP ref_model)"
+.RI "double \fBnovas_rises_above\fP (double el, const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, \fBRefractionModel\fP ref_model)"
 .br
 .ti -1c
-.RI "double \fBnovas_sets_below\fP (double el, const \fBobject\fP *source, const \fBnovas_frame\fP *frame, \fBRefractionModel\fP ref_model)"
+.RI "double \fBnovas_sets_below\fP (double el, const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, \fBRefractionModel\fP ref_model)"
 .br
 .ti -1c
-.RI "int \fBnovas_sky_pos\fP (const \fBobject\fP *\fBobject\fP, const \fBnovas_frame\fP *frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *out)"
+.RI "int \fBnovas_sky_pos\fP (const \fBobject\fP *restrict \fBobject\fP, const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *restrict out)"
 .br
 .ti -1c
-.RI "double \fBnovas_solar_illum\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.RI "double \fBnovas_solar_illum\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 .br
 .ti -1c
-.RI "double \fBnovas_sun_angle\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.RI "double \fBnovas_sun_angle\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 .br
 .ti -1c
-.RI "int \fBnovas_track_pos\fP (const \fBnovas_track\fP *track, const \fBnovas_timespec\fP *time, double *lon, double *lat, double *dist, double *z)"
+.RI "int \fBnovas_track_pos\fP (const \fBnovas_track\fP *track, const \fBnovas_timespec\fP *time, double *restrict lon, double *restrict lat, double *restrict dist, double *restrict z)"
 .br
 .ti -1c
-.RI "int \fBnovas_transform_sky_pos\fP (const \fBsky_pos\fP *in, const \fBnovas_transform\fP *transform, \fBsky_pos\fP *out)"
+.RI "int \fBnovas_transform_sky_pos\fP (const \fBsky_pos\fP *in, const \fBnovas_transform\fP *restrict transform, \fBsky_pos\fP *out)"
 .br
 .ti -1c
-.RI "int \fBnovas_transform_vector\fP (const double *in, const \fBnovas_transform\fP *transform, double *out)"
+.RI "int \fBnovas_transform_vector\fP (const double *in, const \fBnovas_transform\fP *restrict transform, double *out)"
 .br
 .ti -1c
-.RI "double \fBnovas_transit_time\fP (const \fBobject\fP *source, const \fBnovas_frame\fP *frame)"
+.RI "double \fBnovas_transit_time\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -124,7 +124,7 @@ SuperNOVAS routines for higher-level and efficient repeat coordinate transformat
 
 .SH "Function Documentation"
 .PP 
-.SS "int novas_app_to_geom (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double * geom_icrs)"
+.SS "int novas_app_to_geom (const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double *restrict geom_icrs)"
 Converts an observed apparent sky position of a source to an ICRS geometric position, by undoing the gravitational deflection and aberration corrections\&.
 .PP
 \fBParameters\fP
@@ -170,8 +170,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::gcrs_to_cirs\fP, \fBgrav_undo_planets()\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBnovas_frame::precession\fP, and \fBradec2vector()\fP\&.
-.SS "int novas_app_to_hor (const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double * az, double * el)"
+References \fBgrav_undo_planets()\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, and \fBradec2vector()\fP\&.
+.SS "int novas_app_to_hor (const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, \fBRefractionModel\fP ref_model, double *restrict az, double *restrict el)"
 Converts an observed apparent position vector in the specified coordinate system to local horizontal coordinates in the specified observer frame\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided the calculated elevation will be the astrometric elevation without a refraction correction\&.
 .PP
 \fBParameters\fP
@@ -221,7 +221,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::era\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::gst\fP, \fBnovas_timespec::ijd_tt\fP, \fBitrs_to_hor()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REFRACT_ASTROMETRIC\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::observer\fP, \fBobserver::on_surf\fP, \fBnovas_frame::precession\fP, \fBradec2vector()\fP, \fBspin()\fP, \fBnovas_frame::time\fP, and \fBobserver::where\fP\&.
+References \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBitrs_to_hor()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REFRACT_ASTROMETRIC\fP, \fBNOVAS_TOD\fP, \fBradec2vector()\fP, and \fBspin()\fP\&.
 .SS "int novas_change_observer (const \fBnovas_frame\fP * orig, const \fBobserver\fP * obs, \fBnovas_frame\fP * out)"
 Change the observer location for an observing frame\&.
 .PP
@@ -257,7 +257,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_frame::accuracy\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_TDB\fP, \fBobs_planets()\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBnovas_frame::planets\fP, \fBnovas_frame::state\fP, and \fBnovas_frame::time\fP\&.
-.SS "int novas_equ_track (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, double dt, \fBnovas_track\fP * track)"
+.SS "int novas_equ_track (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, double dt, \fBnovas_track\fP *restrict track)"
 Calculates equatorial tracking position and motion (first and second time derivatives) for the specified source in the given observing frame\&. The position and its derivatives are calculated via the more precise IAU2006 method, and CIRS\&.
 .PP
 \fBParameters\fP
@@ -295,8 +295,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_track::accel\fP, \fBnovas_frame::accuracy\fP, \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_observable::dist\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_observable::lat\fP, \fBnovas_observable::lon\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBnovas_sky_pos()\fP, \fBnovas_v2z()\fP, \fBnovas_frame::observer\fP, \fBnovas_track::pos\fP, \fBsky_pos::ra\fP, \fBnovas_track::rate\fP, \fBsky_pos::rv\fP, \fBnovas_frame::time\fP, \fBnovas_track::time\fP, and \fBnovas_observable::z\fP\&.
-.SS "double novas_frame_lst (const \fBnovas_frame\fP * frame)"
+References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBnovas_sky_pos()\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+.SS "double novas_frame_lst (const \fBnovas_frame\fP *restrict frame)"
 Returns the Local (apparent) Sidereal Time for an observing frame of an Earth-bound observer\&.
 .PP
 \fBParameters\fP
@@ -321,8 +321,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::gst\fP, \fBon_surface::longitude\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_frame::observer\fP, \fBobserver::on_surf\fP, and \fBobserver::where\fP\&.
-.SS "int novas_geom_posvel (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, double * pos, double * vel)"
+References \fBNOVAS_AIRBORNE_OBSERVER\fP, and \fBNOVAS_OBSERVER_ON_EARTH\fP\&.
+.SS "int novas_geom_posvel (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double *restrict pos, double *restrict vel)"
 Calculates the geometric position and velocity vectors, relative to the observer, for a source in the given observing frame, in the specified coordinate system of choice\&. The geometric position includes proper motion, and for solar-system bodies it is antedated for light travel time, so it effectively represents the geometric position as seen by the observer\&. However, the geometric does not include aberration correction, nor gravitational deflection\&.
 .PP
 If you want apparent positions, which account for aberration and gravitational deflection, use novas_skypos() instead\&.
@@ -382,8 +382,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBbary2obs()\fP, \fBd_light()\fP, \fBlight_time2()\fP, \fBnovas_planet_bundle::mask\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBobject::number\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBnovas_planet_bundle::pos\fP, \fBproper_motion()\fP, \fBobject::star\fP, \fBstarvectors()\fP, \fBnovas_frame::time\fP, \fBobject::type\fP, and \fBnovas_planet_bundle::vel\fP\&.
-.SS "int novas_geom_to_app (const \fBnovas_frame\fP * frame, const double * pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP * out)"
+References \fBbary2obs()\fP, \fBd_light()\fP, \fBlight_time2()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TDB\fP, \fBproper_motion()\fP, and \fBstarvectors()\fP\&.
+.SS "int novas_geom_to_app (const \fBnovas_frame\fP *restrict frame, const double *restrict pos, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *restrict out)"
 Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate corrections for aberration and gravitational deflection for the observer's frame\&. Unlike \fC\fBplace()\fP\fP the output reports the distance calculated from the parallax for sidereal sources\&. The radial velocity of the output is set to NAN (if needed use \fBnovas_sky_pos()\fP instead)\&.
 .PP
 \fBParameters\fP
@@ -425,8 +425,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::planets\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBvector2radec()\fP\&.
-.SS "int novas_hor_to_app (const \fBnovas_frame\fP * frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double * ra, double * dec)"
+References \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBvector2radec()\fP\&.
+.SS "int novas_hor_to_app (const \fBnovas_frame\fP *restrict frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double *restrict ra, double *restrict dec)"
 Converts an observed azimuth and elevation coordinate to right ascension (R\&.A\&.) and declination coordinates expressed in the coordinate system of choice\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided, the provided elevation value will be assumed to be an astrometric elevation without a refraction correction\&.
 .PP
 \fBParameters\fP
@@ -476,8 +476,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::era\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::gst\fP, \fBhor_to_itrs()\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REFRACT_OBSERVED\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::observer\fP, \fBobserver::on_surf\fP, \fBnovas_frame::precession\fP, \fBspin()\fP, \fBnovas_frame::time\fP, \fBvector2radec()\fP, and \fBobserver::where\fP\&.
-.SS "int novas_hor_track (const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model, \fBnovas_track\fP * track)"
+References \fBnovas_timespec::fjd_tt\fP, \fBhor_to_itrs()\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REFRACT_OBSERVED\fP, \fBNOVAS_TOD\fP, \fBspin()\fP, and \fBvector2radec()\fP\&.
+.SS "int novas_hor_track (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, \fBRefractionModel\fP ref_model, \fBnovas_track\fP *restrict track)"
 Calculates horizontal tracking position and motion (first and second time derivatives) for the specified source in the given observing frame\&. The position and its derivatives are calculated via the more precise IAU2006 method, and CIRS, and then converted to local horizontal coordinates using the specified refraction model (if any)\&.
 .PP
 \fBParameters\fP
@@ -515,7 +515,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_track::accel\fP, \fBnovas_frame::accuracy\fP, \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_observable::dist\fP, \fBnovas_frame::dx\fP, \fBnovas_frame::dy\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBnovas_observable::lat\fP, \fBnovas_observable::lon\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBnovas_app_to_hor()\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_sky_pos()\fP, \fBNOVAS_TOD\fP, \fBnovas_v2z()\fP, \fBnovas_frame::observer\fP, \fBnovas_track::pos\fP, \fBsky_pos::ra\fP, \fBnovas_track::rate\fP, \fBsky_pos::rv\fP, \fBnovas_frame::time\fP, \fBnovas_track::time\fP, \fBobserver::where\fP, and \fBnovas_observable::z\fP\&.
+References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBnovas_app_to_hor()\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_sky_pos()\fP, \fBNOVAS_TOD\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
 .SS "int novas_invert_transform (const \fBnovas_transform\fP * transform, \fBnovas_transform\fP * inverse)"
 Inverts a novas coordinate transformation matrix\&.
 .PP
@@ -649,7 +649,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_transform::frame\fP, \fBnovas_transform::from_system\fP, \fBnovas_frame::gcrs_to_cirs\fP, \fBnovas_frame::icrs_to_j2000\fP, \fBnovas_matrix::M\fP, \fBnovas_transform::matrix\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_GCRS\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_TOD\fP, \fBnovas_frame::nutation\fP, \fBnovas_frame::precession\fP, and \fBnovas_transform::to_system\fP\&.
-.SS "double novas_moon_angle (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+.SS "double novas_moon_angle (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the apparent angular distance of a source from the Moon from the observer's point of view\&.
 .PP
 \fBParameters\fP
@@ -682,7 +682,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_MOON_INIT\fP, and \fBnovas_object_sep()\fP\&.
-.SS "double novas_object_sep (const \fBobject\fP * source1, const \fBobject\fP * source2, const \fBnovas_frame\fP * frame)"
+.SS "double novas_object_sep (const \fBobject\fP * source1, const \fBobject\fP * source2, const \fBnovas_frame\fP *restrict frame)"
 Returns the angular separation of two objects from the observer's point of view\&. The calculated separation includes light-time corrections, aberration and gravitational deflection for both sources, and thus represents a precise observed separation between the two sources\&.
 .PP
 \fBParameters\fP
@@ -721,7 +721,7 @@ Attila Kovacs
 
 .PP
 References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, and \fBsky_pos::ra\fP\&.
-.SS "double novas_rises_above (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
+.SS "double novas_rises_above (double el, const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, \fBRefractionModel\fP ref_model)"
 Returns the UTC date at which a distant source appears to rise above the specified elevation angle\&. The calculated time will account for the (slow) motion for Solar-system bodies, and optionally for atmospheric refraction also\&.
 .PP
 NOTES: 
@@ -764,7 +764,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "double novas_sets_below (double el, const \fBobject\fP * source, const \fBnovas_frame\fP * frame, \fBRefractionModel\fP ref_model)"
+.SS "double novas_sets_below (double el, const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, \fBRefractionModel\fP ref_model)"
 Returns the UTC date at which a distant source appears to set below the specified elevation angle\&. The calculated time will account for the (slow) motion of Solar-system bodies, and optionally for atmopsheric refraction also\&.
 .PP
 NOTES: 
@@ -807,7 +807,7 @@ Attila Kovacs
 .RE
 .PP
 
-.SS "int novas_sky_pos (const \fBobject\fP * object, const \fBnovas_frame\fP * frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP * out)"
+.SS "int novas_sky_pos (const \fBobject\fP *restrict object, const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, \fBsky_pos\fP *restrict out)"
 Calculates an apparent location on sky for the source\&. The position takes into account the proper motion (for sidereal soure), or is antedated for light-travel time (for Solar-System bodies)\&. It also applies an appropriate aberration correction and gravitational deflection of the light\&.
 .PP
 To calculate corresponding local horizontal coordinates, you can pass the output RA/Dec coordinates to \fBnovas_app_to_hor()\fP\&. Or to calculate apparent coordinates in other systems, you may pass the result to novas_transform_sy_pos() after\&.
@@ -867,8 +867,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_frame::accuracy\fP, \fBsky_pos::dis\fP, \fBnovas_frame::earth_pos\fP, \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::obs_vel\fP, \fBnovas_frame::planets\fP, \fBrad_vel2()\fP, \fBsky_pos::rv\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
-.SS "double novas_solar_illum (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+References \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBrad_vel2()\fP, and \fBobject::type\fP\&.
+.SS "double novas_solar_illum (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body\&.
 .PP
 \fBParameters\fP
@@ -895,8 +895,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, \fBNOVAS_ICRS\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::sun_pos\fP, and \fBobject::type\fP\&.
-.SS "double novas_sun_angle (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, and \fBNOVAS_ICRS\fP\&.
+.SS "double novas_sun_angle (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the apparent angular distance of a source from the Sun from the observer's point of view\&.
 .PP
 \fBParameters\fP
@@ -929,7 +929,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_object_sep()\fP, and \fBNOVAS_SUN_INIT\fP\&.
-.SS "int novas_track_pos (const \fBnovas_track\fP * track, const \fBnovas_timespec\fP * time, double * lon, double * lat, double * dist, double * z)"
+.SS "int novas_track_pos (const \fBnovas_track\fP * track, const \fBnovas_timespec\fP * time, double *restrict lon, double *restrict lat, double *restrict dist, double *restrict z)"
 Calculates a projected position and redshift for a source, given the available tracking position and derivatives\&. Using 'tracks' to project positions can be much faster than the repeated full recalculation of the source position over some short period\&.
 .PP
 In SuperNOVAS terminology a 'track' is a 2nd order Taylor series expansion of the observed position and redshift in time\&. For most but the fastest moving sources, horizontal (Az/El) tracks are sufficiently precise on minute timescales, whereas depending on the type of source equatorial tracks can be precise for up to days\&.
@@ -976,7 +976,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_track::accel\fP, \fBnovas_observable::dist\fP, \fBnovas_observable::lat\fP, \fBnovas_observable::lon\fP, \fBnovas_diff_time()\fP, \fBnovas_track::pos\fP, \fBnovas_track::rate\fP, \fBnovas_track::time\fP, and \fBnovas_observable::z\fP\&.
-.SS "int novas_transform_sky_pos (const \fBsky_pos\fP * in, const \fBnovas_transform\fP * transform, \fBsky_pos\fP * out)"
+.SS "int novas_transform_sky_pos (const \fBsky_pos\fP * in, const \fBnovas_transform\fP *restrict transform, \fBsky_pos\fP * out)"
 Transforms a position or velocity 3-vector from one coordinate reference system to another\&.
 .PP
 \fBParameters\fP
@@ -1012,8 +1012,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBnovas_transform::matrix\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, and \fBvector2radec()\fP\&.
-.SS "int novas_transform_vector (const double * in, const \fBnovas_transform\fP * transform, double * out)"
+References \fBsky_pos::dec\fP, \fBsky_pos::r_hat\fP, \fBsky_pos::ra\fP, and \fBvector2radec()\fP\&.
+.SS "int novas_transform_vector (const double * in, const \fBnovas_transform\fP *restrict transform, double * out)"
 Transforms a position or velocity 3-vector from one coordinate reference system to another\&.
 .PP
 \fBParameters\fP
@@ -1048,9 +1048,7 @@ Attila Kovacs
 .RE
 .PP
 
-.PP
-References \fBnovas_transform::matrix\fP\&.
-.SS "double novas_transit_time (const \fBobject\fP * source, const \fBnovas_frame\fP * frame)"
+.SS "double novas_transit_time (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the UTC date at which a source transits the local meridian\&. The calculated time will account for the (slow) motion of Solar-system bodies\&.
 .PP
 NOTES: 

@@ -27,43 +27,43 @@ src/timescale.c
 .RI "double \fBnovas_diff_time\fP (const \fBnovas_timespec\fP *t1, const \fBnovas_timespec\fP *t2)"
 .br
 .ti -1c
-.RI "double \fBnovas_get_split_time\fP (const \fBnovas_timespec\fP *time, enum \fBnovas_timescale\fP timescale, long *ijd)"
+.RI "double \fBnovas_get_split_time\fP (const \fBnovas_timespec\fP *restrict time, enum \fBnovas_timescale\fP timescale, long *restrict ijd)"
 .br
 .ti -1c
-.RI "double \fBnovas_get_time\fP (const \fBnovas_timespec\fP *time, enum \fBnovas_timescale\fP timescale)"
+.RI "double \fBnovas_get_time\fP (const \fBnovas_timespec\fP *restrict time, enum \fBnovas_timescale\fP timescale)"
 .br
 .ti -1c
-.RI "time_t \fBnovas_get_unix_time\fP (const \fBnovas_timespec\fP *time, long *nanos)"
+.RI "time_t \fBnovas_get_unix_time\fP (const \fBnovas_timespec\fP *restrict time, long *restrict nanos)"
 .br
 .ti -1c
-.RI "int \fBnovas_iso_timestamp\fP (const \fBnovas_timespec\fP *time, char *dst, int maxlen)"
+.RI "int \fBnovas_iso_timestamp\fP (const \fBnovas_timespec\fP *restrict time, char *restrict dst, int maxlen)"
 .br
 .ti -1c
 .RI "int \fBnovas_offset_time\fP (const \fBnovas_timespec\fP *time, double seconds, \fBnovas_timespec\fP *out)"
 .br
 .ti -1c
-.RI "double \fBnovas_parse_date\fP (const char *date, char **tail)"
+.RI "double \fBnovas_parse_date\fP (const char *restrict date, char **restrict tail)"
 .br
 .ti -1c
-.RI "double \fBnovas_parse_date_format\fP (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char *date, char **tail)"
+.RI "double \fBnovas_parse_date_format\fP (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char *restrict date, char **restrict tail)"
 .br
 .ti -1c
-.RI "int \fBnovas_print_timescale\fP (enum \fBnovas_timescale\fP scale, char *buf)"
+.RI "int \fBnovas_print_timescale\fP (enum \fBnovas_timescale\fP scale, char *restrict buf)"
 .br
 .ti -1c
-.RI "int \fBnovas_set_split_time\fP (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP *time)"
+.RI "int \fBnovas_set_split_time\fP (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP *restrict time)"
 .br
 .ti -1c
-.RI "int \fBnovas_set_time\fP (enum \fBnovas_timescale\fP timescale, double jd, int leap, double dut1, \fBnovas_timespec\fP *time)"
+.RI "int \fBnovas_set_time\fP (enum \fBnovas_timescale\fP timescale, double jd, int leap, double dut1, \fBnovas_timespec\fP *restrict time)"
 .br
 .ti -1c
-.RI "int \fBnovas_set_unix_time\fP (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP *time)"
+.RI "int \fBnovas_set_unix_time\fP (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP *restrict time)"
 .br
 .ti -1c
-.RI "enum \fBnovas_timescale\fP \fBnovas_timescale_for_string\fP (const char *str)"
+.RI "enum \fBnovas_timescale\fP \fBnovas_timescale_for_string\fP (const char *restrict str)"
 .br
 .ti -1c
-.RI "int \fBnovas_timestamp\fP (const \fBnovas_timespec\fP *time, enum \fBnovas_timescale\fP scale, char *dst, int maxlen)"
+.RI "int \fBnovas_timestamp\fP (const \fBnovas_timespec\fP *restrict time, enum \fBnovas_timescale\fP scale, char *restrict dst, int maxlen)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -204,7 +204,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_timespec::fjd_tt\fP, and \fBnovas_timespec::ijd_tt\fP\&.
-.SS "double novas_get_split_time (const \fBnovas_timespec\fP * time, enum \fBnovas_timescale\fP timescale, long * ijd)"
+.SS "double novas_get_split_time (const \fBnovas_timespec\fP *restrict time, enum \fBnovas_timescale\fP timescale, long *restrict ijd)"
 Returns the fractional Julian date of an astronomical time in the specified timescale, as an integer and fractional part\&. The two-component split of the time allows for absolute precisions at the picosecond level, as opposed to \fC\fBnovas_set_time()\fP\fP, whose precision is limited to a few microseconds typically\&.
 .PP
 The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is limited by the precision of the \fCtbd2tt()\fP implemenation, to around 10 s\&.
@@ -258,8 +258,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_timespec::dut1\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, \fBNOVAS_UTC\fP, \fBnovas_timespec::tt2tdb\fP, and \fBnovas_timespec::ut1_to_tt\fP\&.
-.SS "double novas_get_time (const \fBnovas_timespec\fP * time, enum \fBnovas_timescale\fP timescale)"
+References \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, and \fBNOVAS_UTC\fP\&.
+.SS "double novas_get_time (const \fBnovas_timespec\fP *restrict time, enum \fBnovas_timescale\fP timescale)"
 Returns the fractional Julian date of an astronomical time in the specified timescale\&. The returned time is accurate to a few s (microsecond) due to the inherent precision of the double-precision result\&. For higher precision applications you may use \fC\fBnovas_get_split_time()\fP\fP instead, which has an inherent accuracy at the picosecond level\&.
 .PP
 \fBParameters\fP
@@ -294,7 +294,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_get_split_time()\fP\&.
-.SS "time_t novas_get_unix_time (const \fBnovas_timespec\fP * time, long * nanos)"
+.SS "time_t novas_get_unix_time (const \fBnovas_timespec\fP *restrict time, long *restrict nanos)"
 Returns the UNIX time for an astronomical time instant\&.
 .PP
 \fBParameters\fP
@@ -329,7 +329,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_get_split_time()\fP, and \fBNOVAS_UTC\fP\&.
-.SS "int novas_iso_timestamp (const \fBnovas_timespec\fP * time, char * dst, int maxlen)"
+.SS "int novas_iso_timestamp (const \fBnovas_timespec\fP *restrict time, char *restrict dst, int maxlen)"
 Prints a UTC-based ISO timestamp to millisecond precision to the specified string buffer\&. E\&.g\&.:
 .PP
 .PP
@@ -418,7 +418,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_timespec::fjd_tt\fP, and \fBnovas_timespec::ijd_tt\fP\&.
-.SS "double novas_parse_date (const char * date, char ** tail)"
+.SS "double novas_parse_date (const char *restrict date, char **restrict tail)"
 Parses a date/time string into a Julian date specification\&. Typically the date may be an ISO date specification, but with some added flexibility\&. The date must be YMD-type with full year, followed the month (numerical or name or 3-letter abbreviation), and the day\&. The components may be separated by dash \fC-\fP, underscore \fC_\fP, dot \fC\&.\fP, slash '/', or spaces/tabs, or any combination thereof\&. The date may be followed by a time specification in HMS format, separated from the date by the letter \fCT\fP or \fCt\fP, or spaces, comma \fC,\fP, or semicolon \fC;\fP, or underscore \fC_\fP or a combination thereof\&. Finally, the time may be followed by the letter \fCZ\fP, or \fCz\fP (for UTC) or else {+/-}HH[:[MM]] time zone specification\&.
 .PP
 For example:
@@ -486,7 +486,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, \fBnovas_parse_date_format()\fP, and \fBNOVAS_YMD\fP\&.
-.SS "double novas_parse_date_format (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char * date, char ** tail)"
+.SS "double novas_parse_date_format (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char *restrict date, char **restrict tail)"
 Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian day (JD)\&. The date must be composed of a full year (e\&.g\&. 2025), a month (numerical or name or 3-letter abbreviation, e\&.g\&. '01', '1', 'January', or 'Jan'), and a day (e\&.g\&. '08' or '8')\&. The components may be separated by dash \fC-\fP, underscore \fC_\fP, dot \fC\&.\fP, slash '/', or spaces/tabs, or any combination thereof\&. The components will be parsed in the specified order\&.
 .PP
 The date may be followed by a time specification in HMS format, separated from the date by the letter \fCT\fP or \fCt\fP, or spaces, comma \fC,\fP, or semicolon \fC;\fP or underscore '_', or a combination thereof\&. Finally, the time may be followed by the letter \fCZ\fP, or \fCz\fP (for UTC) or else by a {+/-}HH[:[MM]] time zone specification\&.
@@ -558,7 +558,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DMY\fP, \fBnovas_get_debug_mode()\fP, \fBnovas_jd_from_date()\fP, \fBNOVAS_MDY\fP, \fBnovas_parse_hms()\fP, and \fBNOVAS_YMD\fP\&.
-.SS "int novas_print_timescale (enum \fBnovas_timescale\fP scale, char * buf)"
+.SS "int novas_print_timescale (enum \fBnovas_timescale\fP scale, char *restrict buf)"
 Prints the standard string representation of the timescale to the specified buffer\&. The string is terminated after\&. E\&.g\&. 'UTC', or 'TAI'\&. It will print dates in the Gregorian calendar, which was introduced in was introduced on 15 October 1582 only\&. Thus the
 .PP
 \fBParameters\fP
@@ -593,7 +593,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, and \fBNOVAS_UTC\fP\&.
-.SS "int novas_set_split_time (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP * time)"
+.SS "int novas_set_split_time (enum \fBnovas_timescale\fP timescale, long ijd, double fjd, int leap, double dut1, \fBnovas_timespec\fP *restrict time)"
 Sets an astronomical time to the split Julian Date value, defined in the specified timescale\&. The split into the integer and fractional parts can be done in any convenient way\&. The highest precision is reached if the fractional part is  1 day\&. In that case, the time may be specified to picosecond accuracy, if needed\&.
 .PP
 The accuracy of Barycentric Time measures (TDB and TCB) relative to other time measures is limited by the precision of \fCtbd2tt()\fP implementation, to around 10 s\&.
@@ -657,8 +657,8 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_timespec::dut1\fP, \fBnovas_timespec::fjd_tt\fP, \fBnovas_timespec::ijd_tt\fP, \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, \fBNOVAS_UTC\fP, \fBnovas_timespec::tt2tdb\fP, \fBtt2tdb()\fP, and \fBnovas_timespec::ut1_to_tt\fP\&.
-.SS "int novas_set_time (enum \fBnovas_timescale\fP timescale, double jd, int leap, double dut1, \fBnovas_timespec\fP * time)"
+References \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, \fBNOVAS_UTC\fP, and \fBtt2tdb()\fP\&.
+.SS "int novas_set_time (enum \fBnovas_timescale\fP timescale, double jd, int leap, double dut1, \fBnovas_timespec\fP *restrict time)"
 Sets an astronomical time to the fractional Julian Date value, defined in the specified timescale\&. The time set this way is accurate to a few s (microseconds) due to the inherent precision of the double-precision argument\&. For higher precision applications you may use \fC\fBnovas_set_split_time()\fP\fP instead, which has an inherent accuracy at the picosecond level\&.
 .PP
 \fBParameters\fP
@@ -703,7 +703,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_set_split_time()\fP\&.
-.SS "int novas_set_unix_time (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP * time)"
+.SS "int novas_set_unix_time (time_t unix_time, long nanos, int leap, double dut1, \fBnovas_timespec\fP *restrict time)"
 Sets an astronomical time to a UNIX time value\&. UNIX time is defined as UTC seconds measured since 0 UTC, 1 Jan 1970 (the start of the UNIX era)\&. Specifying time this way supports precisions to the nanoseconds level by construct\&. Specifying UNIX time in split seconds and nanoseconds is a common way CLIB handles precision time, e\&.g\&. with \fCstruct timespec\fP and functions like \fCclock_gettime()\fP (see \fCtime\&.h\fP)\&.
 .PP
 \fBParameters\fP
@@ -748,7 +748,7 @@ Attila Kovacs
 
 .PP
 References \fBnovas_set_split_time()\fP, and \fBNOVAS_UTC\fP\&.
-.SS "enum \fBnovas_timescale\fP novas_timescale_for_string (const char * str)"
+.SS "enum \fBnovas_timescale\fP novas_timescale_for_string (const char *restrict str)"
 Returns the timescale constant for a string that denotes the timescale in with a standard abbreviation (case insensitive)\&. The following values are recognised: 'UTC', 'UT', 'UT0', 'UT1', 'GMT', 'TAI', 'GPS', 'TT', 'ET', 'TCG', 'TCB', 'TDB'\&.
 .PP
 \fBParameters\fP
@@ -783,7 +783,7 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_GPS\fP, \fBNOVAS_TAI\fP, \fBNOVAS_TCB\fP, \fBNOVAS_TCG\fP, \fBNOVAS_TDB\fP, \fBNOVAS_TT\fP, \fBNOVAS_UT1\fP, and \fBNOVAS_UTC\fP\&.
-.SS "int novas_timestamp (const \fBnovas_timespec\fP * time, enum \fBnovas_timescale\fP scale, char * dst, int maxlen)"
+.SS "int novas_timestamp (const \fBnovas_timespec\fP *restrict time, enum \fBnovas_timescale\fP scale, char *restrict dst, int maxlen)"
 Prints a timestamp to millisecond precision in the specified timescale to the specified string buffer\&. E\&.g\&.:
 .PP
 .PP
@@ -809,7 +809,7 @@ B\&.C\&. dates are indicated with years <=0 according to the astronomical and IS
 .br
 \fIscale\fP The timescale to use\&. 
 .br
-\fIdst\fP Output string buffer\&. At least 29 bytes are required for a complete timestamp with termination\&. 
+\fIdst\fP Output string buffer\&. At least 28 bytes are required for a complete timestamp with termination\&. 
 .br
 \fImaxlen\fP The maximum number of characters that can be printed into the output buffer, including the string termination\&. If the full ISO timestamp is longer than \fCmaxlen\fP, then it will be truncated to fit in the allotted space, including a termination character\&. 
 .RE

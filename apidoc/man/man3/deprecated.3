@@ -7,9 +7,9 @@ deprecated \- Deprecated List
 
 .IP "\fBGlobal \fBANGVEL\fP \fP" 1c
 Rotational angular velocity of Earth in radians/sec from IERS Conventions (2003)\&. Use NOVAS_EARTH_ANGVEL instead  
-.IP "\fBGlobal \fBapp_planet\fP (double jd_tt, const object *ss_body, enum novas_accuracy accuracy, double *ra, double *dec, double *dis)\fP" 1c
+.IP "\fBGlobal \fBapp_planet\fP (double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)\fP" 1c
 Use \fBplace_cirs()\fP is now preferred, especially for high accuracy calculations\&. 
-.IP "\fBGlobal \fBapp_star\fP (double jd_tt, const \fBcat_entry\fP *star, enum novas_accuracy accuracy, double *ra, double *dec)\fP" 1c
+.IP "\fBGlobal \fBapp_star\fP (double jd_tt, const \fBcat_entry\fP *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)\fP" 1c
 Use \fBplace_cirs()\fP is now preferred, especially for high accuracy calculations\&. 
 .IP "\fBGlobal \fBAU\fP \fP" 1c
 Astronomical unit in meters\&. Use NOVAS_AU instead\&.  
@@ -25,7 +25,7 @@ Speed of light in meters/second is a defining physical constant\&. Use NOVAS_C i
 Speed of light in AU/day\&. Use NOVAS_AUDAY instead\&.  
 .IP "\fBGlobal \fBcel2ter\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)\fP" 1c
 This function can be confusing to use due to the input coordinate system being specified by a combination of two options\&. Use \fBitrs_to_cirs()\fP or \fBitrs_to_tod()\fP instead\&. You can then follow these with other conversions to GCRS (or whatever else) as appropriate\&. 
-.IP "\fBGlobal \fBequ2hor\fP (double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const \fBon_surface\fP *location, double ra, double dec, enum novas_refraction_model ref_option, double *zd, double *az, double *rar, double *decr)\fP" 1c
+.IP "\fBGlobal \fBequ2hor\fP (double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const \fBon_surface\fP *restrict location, double ra, double dec, enum novas_refraction_model ref_option, double *restrict zd, double *restrict az, double *restrict rar, double *restrict decr)\fP" 1c
 The name of this function does not reveal what type of equatorial coordinates it requires\&. To make it less ambiguous, you should use \fBtod_to_itrs()\fP followed by \fBitrs_to_hor()\fP instead, possibly following it with \fBrefract_astro()\fP if you also want to apply optical refraction\&. 
 .IP "\fBGlobal \fBERAD\fP \fP" 1c
 Radius of Earth in kilometers from IERS Conventions (2003)\&. Use NOVAS_EARTH_RADIUS instead  
@@ -45,19 +45,19 @@ Old definition of the Center of Sun as the origin\&. NOVAS_HELIOCENTER is prefer
 Use your own version for the selection of the constant you need, expressed in whatever units your application desires\&. We should not force you to adopt the internally used convention of NOVAS, not to mention the high chance of namespace conflicts with the super-simplistic naming scheme here\&. You are better off without this\&. 
 .IP "\fBFile \fBnovascon\&.h\fP \fP" 1c
 Use your own version for the selection of the constant you need, expressed in whatever units your application desires\&. We should not force you to adopt the internally used convention of NOVAS, not to mention the high chance of namespace conflicts with the super-simplistic naming scheme here\&. You are better off without this\&. 
-.IP "\fBGlobal \fBreadeph\fP (int mp, const char *name, double jd_tdb, int *error)\fP" 1c
+.IP "\fBGlobal \fBreadeph\fP (int mp, const char *restrict name, double jd_tdb, int *restrict error)\fP" 1c
 This old ephemeris reader is prone to memory leaks, and lacks some useful functionality\&. Users are strongly encouraged to use the new \fCnovas_ephem_provider\fP instead, which can provide dynamically configured implementations at runtime\&. 
 .IP "\fBGlobal \fBRMASS\fP [12]\fP" 1c
 Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass)\&. MASS[0] = Earth/Moon barycenter, MASS[1] = Mercury, \&.\&.\&., MASS[9] = Pluto, MASS[10] = Sun, MASS[11] = Moon\&. Use NOVAS_RMASS_INIT instead\&.  
 .IP "\fBGlobal \fBT0\fP \fP" 1c
 TDB Julian date of epoch J2000\&.0\&. Use NOVAS_JD_J2000 instead\&.  
-.IP "\fBGlobal \fBtdb2tt\fP (double jd_tdb, double *jd_tt, double *secdiff)\fP" 1c
+.IP "\fBGlobal \fBtdb2tt\fP (double jd_tdb, double *restrict jd_tt, double *restrict secdiff)\fP" 1c
 Use the less computationally intensive an more accurate \fBtt2tdb()\fP routine instead\&. 
 .IP "\fBGlobal \fBter2cel\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)\fP" 1c
 This function can be confusing to use due to the output coordinate system being specified by a combination of two options\&. Use \fBitrs_to_cirs()\fP or \fBitrs_to_tod()\fP instead\&. You can then follow these with other conversions to GCRS (or whatever else) as appropriate\&. 
-.IP "\fBGlobal \fBtopo_planet\fP (double jd_tt, const object *ss_body, double ut1_to_tt, const \fBon_surface\fP *position, enum novas_accuracy accuracy, double *ra, double *dec, double *dis)\fP" 1c
+.IP "\fBGlobal \fBtopo_planet\fP (double jd_tt, const object *restrict ss_body, double ut1_to_tt, const \fBon_surface\fP *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)\fP" 1c
 Using \fBplace()\fP with system NOVAS_CIRS is now preferred for topocentric calculations, especially when high precision is required\&. However, you will have to follow the IAU 2000 method consistently to produce equivalent calculations throughout\&. 
-.IP "\fBGlobal \fBtopo_star\fP (double jd_tt, double ut1_to_tt, const \fBcat_entry\fP *star, const \fBon_surface\fP *position, enum novas_accuracy accuracy, double *ra, double *dec)\fP" 1c
+.IP "\fBGlobal \fBtopo_star\fP (double jd_tt, double ut1_to_tt, const \fBcat_entry\fP *restrict star, const \fBon_surface\fP *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)\fP" 1c
 Using \fBplace()\fP with system NOVAS_CIRS is now preferred for topocentric calculations, especially when high precision is required\&. However, you will have to follow the IAU 2000 method consistently to produce equivalent calculations throughout\&.
 .PP
 

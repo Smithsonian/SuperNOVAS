@@ -10,7 +10,7 @@ src/refract.c
 
 .in +1c
 .ti -1c
-.RI "double \fBnovas_inv_refract\fP (\fBRefractionModel\fP model, double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el0)"
+.RI "double \fBnovas_inv_refract\fP (\fBRefractionModel\fP model, double jd_tt, const \fBon_surface\fP *restrict loc, enum \fBnovas_refraction_type\fP type, double el0)"
 .br
 .ti -1c
 .RI "double \fBnovas_optical_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
@@ -48,7 +48,7 @@ A collection of refraction models and utilities to use with \fBnovas_app_to_hor(
 
 .SH "Function Documentation"
 .PP 
-.SS "double novas_inv_refract (\fBRefractionModel\fP model, double jd_tt, const \fBon_surface\fP * loc, enum \fBnovas_refraction_type\fP type, double el0)"
+.SS "double novas_inv_refract (\fBRefractionModel\fP model, double jd_tt, const \fBon_surface\fP *restrict loc, enum \fBnovas_refraction_type\fP type, double el0)"
 Computes the reverse atmospheric refraction for a given refraction model\&. Thus if a refraction model takes observed elevation as an input, the reverse refraction takes astrometric elevation as its input, and vice versa\&.
 .PP
 \fBParameters\fP

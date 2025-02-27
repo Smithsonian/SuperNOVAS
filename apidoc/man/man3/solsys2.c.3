@@ -18,16 +18,16 @@ src/solsys2.c
 .br
 .RI "Function prototype for the FORTRAN subroutine \fCjplint\fP in jplint\&.f\&. "
 .ti -1c
-.RI "short \fBplanet_jplint\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_jplint\fP (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBplanet_jplint_hp\fP (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *position, double *velocity)"
+.RI "short \fBplanet_jplint_hp\fP (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBsolarsystem\fP (double jd_tdb, short body, short origin, double *position, double *velocity)"
+.RI "short \fBsolarsystem\fP (double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)"
 .br
 .ti -1c
-.RI "short \fBsolarsystem_hp\fP (const double jd_tdb[2], short body, short origin, double *position, double *velocity)"
+.RI "short \fBsolarsystem_hp\fP (const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -65,7 +65,7 @@ U\&. S\&. Naval Observatory
 
 .SH "Function Documentation"
 .PP 
-.SS "short planet_jplint (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_jplint (double jd_tdb, enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Obtains planet positions via the JPL direct-access solar system ephemerides, wtih normal (reduced) precision -- typically good to the milliarcsecond level\&.
 .PP
 It generalizes access to the JPL software by calling a Fortran interface subroutine, 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments have changed several times throughout the years\&. This way, any future change to the arguments can be accommodated in 'jplint' rather than in this function\&.
@@ -118,7 +118,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 
 .PP
 References \fBjplint_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
-.SS "short planet_jplint_hp (const double jd_tdb[2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double * position, double * velocity)"
+.SS "short planet_jplint_hp (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 Obtains planet positions via the JPL direct-access solar system ephemerides, wtih high precision -- typically good to below the microarcsecond level\&.
 .PP
 It generalizes access to the JPL software by calling a Fortran interface subroutine, 'jplint', instead of making a direct call to the JPL subroutine 'pleph', whose arguments have changed several times throughout the years\&. This way, any future change to the arguments can be accommodated in 'jplint' rather than in this function\&.
@@ -171,7 +171,7 @@ Kaplan, G\&. H\&. 'NOVAS: Naval Observatory Vector Astrometry
 
 .PP
 References \fBjplihp_()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_MOON\fP, and \fBNOVAS_SUN\fP\&.
-.SS "short solarsystem (double jd_tdb, short body, short origin, double * position, double * velocity)"
+.SS "short solarsystem (double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)"
 A default implementation for regular (reduced) precision handling of major planets, Sun, Moon and the Solar-system barycenter\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into with the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider()\fP\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
@@ -210,7 +210,7 @@ Since this is a function that may be provided by existing custom user implementa
 
 .PP
 References \fBplanet_jplint()\fP\&.
-.SS "short solarsystem_hp (const double jd_tdb[2], short body, short origin, double * position, double * velocity)"
+.SS "short solarsystem_hp (const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)"
 A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter (and other barycenters)\&. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default\&. Applications can define their own preferred implementations at runtime via \fBset_planet_provider_hp()\fP\&.
 .PP
 Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums)\&.
