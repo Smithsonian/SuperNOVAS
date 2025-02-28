@@ -1807,10 +1807,16 @@ int novas_track_pos(const novas_track *track, const novas_timespec *time, double
         double *restrict dist, double *restrict z);
 
 // in timescale.c
+double novas_date(const char *restrict date);
+
+double novas_date_scale(const char *restrict date, enum novas_timescale *restrict scale);
+
 double novas_parse_date(const char *restrict date, char **restrict tail);
 
 double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
         char **restrict tail);
+
+enum novas_timescale novas_timescale_for_string(const char *restrict str);
 
 int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen);
 
@@ -1818,7 +1824,6 @@ int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale sc
 
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 
-enum novas_timescale novas_timescale_for_string(const char *restrict str);
 
 
 // <================= END of SuperNOVAS API =====================>

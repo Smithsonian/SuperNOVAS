@@ -77,7 +77,8 @@ such as for handling times and angles as strings, rise and set times, and other 
    "TAI", and `novas_print_timescale()` to convert to string representation.
  
  - #118: New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision, and
-   `novas_timestamp()` to print timestamps in specific timescales.
+   `novas_timestamp()` to print timestamps in specific timescales, and `novas_date()` to convert timestamps back
+   to JD dates.
 
  - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.

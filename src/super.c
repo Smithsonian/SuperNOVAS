@@ -1554,6 +1554,9 @@ double novas_hms_hours(const char *restrict hms) {
  * (arc)second components may be separated by spaces, tabs, colons `:`, underscore `_`, or a
  * combination thereof. Additionally, the degree and minutes may be semarated by the letter `d`
  * or `D`, and the minutes and seconds may be separated by `m` or `M`, or a single quote `'`.
+ * The last component may also be followed by a letter 'N', 'E', 'S', or 'W' signifying a
+ * compass direction.
+ *
  * For example, all of the lines below specify the same angle:
  *
  * <pre>
@@ -1561,6 +1564,8 @@ double novas_hms_hours(const char *restrict hms) {
  *  -179 59m 59.999
  *  -179d 59' 59.999
  *  -179D59'59.999
+ *  179:59:59.999W
+ *  179:59:59.999S
  * </pre>
  *
  *
@@ -1611,12 +1616,19 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
     return NAN;
   }
 
+  s = abs(d) + (m / 60.0) + (s / 3600.0);
+  if (d < 0) s = -s;
+
+  if(dms[n] == 'N' || dms[n] == 'E') n++;
+  else if (dms[n] == 'S' || dms[n] == 'W') {
+    s = -s;
+    n++;
+  }
+
   if(tail)
     *tail += n;
 
-  s = abs(d) + (m / 60.0) + (s / 3600.0);
-
-  return d < 0 ? -s : s;
+  return s;
 }
 
 /**
