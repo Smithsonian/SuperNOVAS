@@ -871,7 +871,7 @@ __SuperNOVAS__ provides a set of functions to convert broken-down string values 
  ra_h = novas_hms_hours("09:18:49.068");
 
  // ... or with extended ASCII symbols
- dec_d = novas_dms_degrees("09 18’49.068”");
+ dec_d = novas_hms_hours("09 18’49.068”");
   
   
  // Declination as space separated degrees, arc-minutes, and arc-seconds
