@@ -883,8 +883,8 @@ SuperNOVAS provides functions to convert between ISO dates/times and their strin
 E.g.,
 
 ```c
- novas_timespec time;		// Astronomical time specification
- char timestamp[40];		// A string to contain an ISO representation
+ novas_timespec time;           // Astronomical time specification
+ char timestamp[40];            // A string to contain an ISO representation
 
  // Parse an ISO timestamp into a Julian day
  double jd = novas_date("2025-02-16T19:35:21Z");
@@ -905,9 +905,9 @@ E.g.,
 You can also parse a string date/time which includes a timescale specification also:
 
 ```c
- novas_timespec time;		// Astronomical time specification
- enum novas_timescale scale;	// Timescale to be parsed
- char timestamp[40];		// A string to contain an ISO representation
+ enum novas_timescale scale;    // Timescale to be parsed
+ novas_timespec time;           // Astronomical time specification
+ char timestamp[40];            // A string to contain an ISO representation
 
  // Parse a timestamp into a Julian day and corresponding timescale
  double jd = novas_date_scale("2025-02-16T19:35:21 TAI", &scale);

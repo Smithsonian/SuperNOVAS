@@ -625,8 +625,8 @@ String dates</h3>
 <div class="line">2025-02-16T14:35:21+0500   # date in time-zone (e.g. EST)</div>
 <div class="line">2025-02-16T14:35:21.832+05:00  # alternative time-zone specification</div>
 </div><!-- fragment --><p>SuperNOVAS provides functions to convert between ISO dates/times and their string representation for convenience. E.g.,</p>
-<div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;       <span class="comment">// Astronomical time specification</span></div>
-<div class="line"><span class="keywordtype">char</span> timestamp[40];        <span class="comment">// A string to contain an ISO representation</span></div>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;           <span class="comment">// Astronomical time specification</span></div>
+<div class="line"><span class="keywordtype">char</span> timestamp[40];            <span class="comment">// A string to contain an ISO representation</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Parse an ISO timestamp into a Julian day</span></div>
 <div class="line"><span class="keywordtype">double</span> jd = <a class="code hl_function" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date</a>(<span class="stringliteral">&quot;2025-02-16T19:35:21Z&quot;</span>);</div>
@@ -645,9 +645,9 @@ String dates</h3>
 <div class="ttc" id="atimescale_8c_html_a4d6da26d0a7d7d904f25d2be00030b25"><div class="ttname"><a href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp</a></div><div class="ttdeci">int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen)</div><div class="ttdef"><b>Definition</b> timescale.c:934</div></div>
 <div class="ttc" id="atimescale_8c_html_abaac8a4ea28bc8b811277051e3168468"><div class="ttname"><a href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date</a></div><div class="ttdeci">double novas_date(const char *restrict date)</div><div class="ttdef"><b>Definition</b> timescale.c:823</div></div>
 </div><!-- fragment --><p>You can also parse a string date/time which includes a timescale specification also:</p>
-<div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;       <span class="comment">// Astronomical time specification</span></div>
-<div class="line"><span class="keyword">enum</span> <a class="code hl_enumeration" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale;    <span class="comment">// Timescale to be parsed</span></div>
-<div class="line"><span class="keywordtype">char</span> timestamp[40];        <span class="comment">// A string to contain an ISO representation</span></div>
+<div class="fragment"><div class="line"><span class="keyword">enum</span> <a class="code hl_enumeration" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale;    <span class="comment">// Timescale to be parsed</span></div>
+<div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;           <span class="comment">// Astronomical time specification</span></div>
+<div class="line"><span class="keywordtype">char</span> timestamp[40];            <span class="comment">// A string to contain an ISO representation</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Parse a timestamp into a Julian day and corresponding timescale</span></div>
 <div class="line"><span class="keywordtype">double</span> jd = <a class="code hl_function" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale</a>(<span class="stringliteral">&quot;2025-02-16T19:35:21 TAI&quot;</span>, &amp;scale);</div>
