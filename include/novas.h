@@ -1816,11 +1816,11 @@ double novas_parse_date(const char *restrict date, char **restrict tail);
 double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
         char **restrict tail);
 
-enum novas_timescale novas_timescale_for_string(const char *restrict str);
-
 int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen);
 
 int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale scale, char *restrict dst, int maxlen);
+
+enum novas_timescale novas_timescale_for_string(const char *restrict str);
 
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 

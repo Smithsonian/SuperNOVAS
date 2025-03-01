@@ -786,6 +786,7 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * @author Attila Kovacs
  *
  * @sa novas_date()
+ * @sa novas_date_scale()
  * @sa novas_parse_date_format()
  * @sa novas_timescale_for_string()
  * @sa novas_iso_timestamp()
@@ -820,14 +821,17 @@ double novas_parse_date(const char *restrict date, char **restrict tail) {
  * @sa novas_iso_timestamp()
  */
 double novas_date(const char *restrict date) {
-  return novas_parse_date(date, NULL);
+  double jd = novas_parse_date(date, NULL);
+  if(isnan(jd))
+    return novas_trace_nan("novas_date");
+  return jd;
 }
 
 /**
- * Returns a Julian date and the timescale corresponding the specified input
- * string date/time and timescale marker. E.g. for "2025-02-28T09:41:12.041+0200 TAI", with
- * some flexibility on how the date is represented as long as it's YMD date followed by HMS
- * time. For other date formats (MDY or DMY) you can use `novas_parse_date_format()` instead.
+ * Returns a Julian date and the timescale corresponding the specified input string date/time
+ * and timescale marker. E.g. for "2025-02-28T09:41:12.041+0200 TAI", with some flexibility on
+ * how the date is represented as long as it's YMD date followed by HMS time. For other date
+ * formats (MDY or DMY) you can use `novas_parse_date_format()` instead.
  *
  * @param date          The date specification, possibly including time and timezone, in a
  *                      standard format. See novas_parse_date() on more information on
@@ -851,18 +855,20 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
   char *tail = (char *) date, s[4] = {};
   double jd = novas_parse_date(date, &tail);
 
-  if(!scale) return novas_error(-1, EINVAL, fn, "output scale is NULL");
+  if(!scale) {
+    novas_error(0, EINVAL, fn, "output scale is NULL");
+    return NAN;
+  }
+
+  *scale = -1;
 
   if(isnan(jd))
     return novas_trace_nan(fn);
 
-  if(sscanf(tail, "%3s", s) == 1) {
+  if(sscanf(tail, "%3s", s) == 1)
     *scale = novas_timescale_for_string(s);
-    return novas_trace_nan(fn);
-  }
-  else {
+  else
     *scale = NOVAS_UTC;
-  }
 
   return jd;
 }

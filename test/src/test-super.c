@@ -2499,12 +2499,22 @@ static int test_dms_degrees() {
   if(!is_equal("dms_degrees:signed", novas_dms_degrees("+179 59 59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:parse", novas_parse_dms("179 59 59.999", &tail), degs, 1e-9)) n++;
 
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999N"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999S"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999E"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999W"), degs, 1e-9)) n++;
+
   if(!is_equal("dms_degrees:neg:colons", novas_dms_degrees("-179:59:59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:spaces", novas_dms_degrees("-179 59 59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dsm_degrees:neg:dm", novas_dms_degrees("-179d59m59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:DM", novas_dms_degrees("-179D59M59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:dprime", novas_dms_degrees("-179d59'59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999"), -degs, 1e-9)) n++;
+
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999N"), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999S"), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999E"), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999W"), -degs, 1e-9)) n++;
 
   return n;
 }
@@ -3091,6 +3101,31 @@ static int test_parse_date_format() {
   return n;
 }
 
+static int test_date() {
+  int n = 0;
+
+  double jd = julian_date(2025, 3, 01, 0.0);
+
+  if(!is_equal("parse_date_format:YMD", novas_date("2025-03-01"), jd, 1e-6)) n++;
+
+  return n;
+}
+
+static int test_date_scale() {
+  int n = 0;
+
+  enum novas_timescale scale;
+  double jd = julian_date(2025, 3, 01, 0.0);
+
+  if(!is_equal("date_scale:check:jd", novas_date_scale("2025-03-01", &scale), jd, 1e-6)) n++;
+  if(!is_equal("date_scale:check:scale:default", scale, NOVAS_UTC, 1e-6)) n++;
+
+  if(!is_equal("date_scale:tai:check:jd", novas_date_scale("2025-03-01 TAI", &scale), jd, 1e-6)) n++;
+  if(!is_equal("date_scale:tai:check:scale:default", scale, NOVAS_TAI, 1e-6)) n++;
+
+  return n;
+}
+
 static int test_iso_timestamp() {
   int n = 0;
   int i;
@@ -3273,6 +3308,8 @@ int main(int argc, char *argv[]) {
   if(test_lsr_vel()) n++;
   if(test_parse_date()) n++;
   if(test_parse_date_format()) n++;
+  if(test_date()) n++;
+  if(test_date_scale()) n++;
   if(test_iso_timestamp()) n++;
   if(test_timestamp()) n++;
   if(test_timescale_for_string()) n++;
