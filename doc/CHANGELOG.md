@@ -7,9 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.3.0-rc3] - 2025-02-27
+## [Unreleased]
 
-Release candidate for upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, 
+Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, 
 such as for handling times and angles as strings, rise and set times, and other common astrometric calculations.
    
 ### Fixed
@@ -82,12 +82,16 @@ such as for handling times and angles as strings, rise and set times, and other 
  - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
+ - #131: New `novas_date()` and `novas_date_scale()` for the simplest conversion of string times to Julian days, and 
+   in case of the latter also to a corresponding timescale.
+
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations.
 
 ### Changed
  
- - [#130] Use C99 `restrict` keyword to prevent pointer argument aliasing.
+ - [#130] Use C99 `restrict` keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted 
+   pointer arguments are aliased.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
