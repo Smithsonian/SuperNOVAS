@@ -1461,7 +1461,7 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
  *  23:59:59.999
  *  23h 59m 59.999
  *  23h 59' 59.999
- *  23H59'59.999
+ *  23H59’59.999”
  * </pre>
  *
  *
@@ -1482,7 +1482,7 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
 double novas_parse_hms(const char *restrict hms, char **restrict tail) {
   static const char *fn = "novas_hms_hours";
 
-  int h = 0, m = 0, n = 0;
+  int h = 0, m = 0, n = 0, k = 0;
   double s = NAN;
 
   if(tail)
@@ -1497,10 +1497,14 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
     return NAN;
   }
 
-  if(sscanf(hms, "%d%*[:hH _\t]%d%*[:mM' _\t]%lf%n", &h, &m, &s, &n) < 3) {
+  if(sscanf(hms, "%d%*[:hH _\t]%d%*[:mM'’ _\t]%lf%n", &h, &m, &s, &n) < 3) {
     novas_error(0, EINVAL, fn, "not in HMS format: '%s'", hms);
     return NAN;
   }
+
+  // Trailing seconds marker (if any)
+  sscanf(&hms[n], "%*[s\"”]%n", &k);
+  n += k;
 
   if(m < 0 || m >= 60) {
     novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
@@ -1523,14 +1527,16 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
  * Returns the decimal hours for a HMS string specification. The hour, minute, and second
  * components may be separated by spaces, tabs, colons `:`, or a combination thereof.
  * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the
- * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all
+ * minutes and seconds may be separated by `m` or `M`, or a single quote `'`, or a right
+ * quote (`0x92`). The seconds may be followed by 's' or double quote `"` or double
+ * right quote (`0x94`). For example, all
  * of the lines below specify the same time:
  *
  * <pre>
  *  23:59:59.999
  *  23h 59m 59.999
  *  23h 59' 59.999
- *  23H59'59.999
+ *  23H59’59.999”
  * </pre>
  *
  *
@@ -1552,18 +1558,20 @@ double novas_hms_hours(const char *restrict hms) {
 /**
  * Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and
  * (arc)second components may be separated by spaces, tabs, colons `:`, underscore `_`, or a
- * combination thereof. Additionally, the degree and minutes may be semarated by the letter `d`
- * or `D`, and the minutes and seconds may be separated by `m` or `M`, or a single quote `'`.
- * The last component may also be followed by a standalone upper-case letter 'N', 'E', 'S',
- * or 'W' signifying a compass direction.
+ * combination thereof. Additionally, the degree and minutes may be separated by the letter `d`
+ * or the degree symbol (`0xB0`), and the minutes and seconds may be separated by `m` or a
+ * single quote `'`, or a right quote (`0x92`). The seconds may be followed by 's' or
+ * double quote `"` or double right quote (`0x94`). Finally, the last component may additionally
+ * be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass
+ * direction.
  *
  * For example, all of the lines below specify the same angle:
  *
  * <pre>
  *  -179:59:59.999
- *  -179 59m 59.999
- *  -179d 59' 59.999
- *  -179D59'59.999
+ *  -179d 59m 59.999s
+ *  -179 59' 59.999
+ *  -179°59’59.999”
  *  179:59:59.999W
  *  179 59 59.999 S
  * </pre>
@@ -1602,10 +1610,14 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
     return NAN;
   }
 
-  if(sscanf(dms, "%d%*[:dD _\t]%d%*[:mM' _\t]%lf%n", &d, &m, &s, &n) < 3) {
+  if(sscanf(dms, "%d%*[:d° _\t]%d%*[:m'’ _\t\x92]%lf%n", &d, &m, &s, &n) < 3) {
     novas_error(0, EINVAL, fn, "not in DMS format: '%s'", dms);
     return NAN;
   }
+
+  // Trailing seconds marker (if any).
+  sscanf(&dms[n], "%*[s\"”]%n", &k);
+  n += k;
 
   if(m < 0 || m >= 60) {
     novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
@@ -1645,18 +1657,19 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
 /**
  * Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and
  * (arc)second components may be separated by spaces, tabs, colons `:`, or a combination thereof.
- * Additionally, the degree and minutes may be semarated by the letter `d` or `D`, and the
- * minutes and seconds may be separated by `m` or `M`, or a single quote `'`. The last component
- * may also be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a
- * compass direction.
+ * Additionally, the degree and minutes may be separated by the letter `d` or the degree symbol
+ * (`0xB0`), and the minutes and seconds may be separated by `m` or a single quote `'`, or a
+ * right quote (`0x92`). The seconds may be followed by 's' or double quote `"` or double
+ * right quote (`0x94`). Finally, the last component may additionally be followed by a standalone
+ * upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction.
  *
  * For example, all of the lines below specify the same angle:
  *
  * <pre>
  *  -179:59:59.999
- *  -179 59m 59.999
- *  -179d 59' 59.999
- *  -179D59'59.999
+ *  -179d 59m 59.999s
+ *  -179 59' 59.999
+ *  -179°59’59.999”
  *  179:59:59.999S
  *  179 59 59.999 W
  * </pre>
