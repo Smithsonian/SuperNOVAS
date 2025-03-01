@@ -3201,6 +3201,19 @@ static int test_timescale_for_string() {
   return n;
 }
 
+static int test_parse_timescale() {
+  int n = 0;
+  char *str = "UTC";
+  char *tail = NULL;
+
+  if(!is_equal("parse_timescale:UTC", novas_parse_timescale(str, &tail), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("parse_timescale:UTC:tail", (double) (tail - str), 3, 1e-6)) n++;
+  if(!is_equal("parse_timescale:UTC:notail", novas_parse_timescale("UTC", NULL), NOVAS_UTC, 1e-6)) n++;
+  if(!is_equal("parse_timescale:UTC:leading", novas_parse_timescale(" UTC", &tail), NOVAS_UTC, 1e-6)) n++;
+
+  return n;
+}
+
 static int test_timestamp() {
   int n = 0;
   int i;
@@ -3325,6 +3338,7 @@ int main(int argc, char *argv[]) {
   if(test_iso_timestamp()) n++;
   if(test_timestamp()) n++;
   if(test_timescale_for_string()) n++;
+  if(test_parse_timescale()) n++;
   if(test_julian_date()) n++;
   if(test_jd_to_calendar()) n++;
   if(test_calendar_to_jd()) n++;

@@ -1921,6 +1921,16 @@ static int test_timescale_for_string() {
   return n;
 }
 
+static int test_parse_timescale() {
+  int n = 0;
+  char *tail = NULL;
+
+  if(check("parse_timescale:null", -1, novas_parse_timescale(NULL, &tail))) n++;
+  if(check("parse_timescale:invalid", -1, novas_parse_timescale("blah", &tail))) n++;
+
+  return n;
+}
+
 int test_print_timescale() {
   int n = 0;
   char buf[4] = {};
@@ -2089,6 +2099,7 @@ int main() {
   if(test_iso_timestamp()) n++;
   if(test_timestamp()) n++;
   if(test_timescale_for_string()) n++;
+  if(test_parse_timescale()) n++;
   if(test_print_timescale()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
