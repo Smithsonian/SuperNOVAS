@@ -566,7 +566,6 @@ static int parse_zone(const char *str, char **tail) {
 }
 
 
-
 /**
  * Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian
  * day (JD). The date must be composed of a full year (e.g. 2025), a month (numerical or name or
@@ -614,9 +613,9 @@ static int parse_zone(const char *str, char **tail) {
  *                    after the parsed time. The parsing will consume empty space characters after
  *                    the time specification also, returning a pointer to the next token after.
  *
- * @return            The Julian Day corresponding to the string date/time specification or NAN
- *                    if the string is NULL or if it does not specify a date/time in the expected
- *                    format.
+ * @return            [day] The Julian Day corresponding to the string date/time specification or
+ *                    NAN if the string is NULL or if it does not specify a date/time in the
+ *                    expected format.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -779,13 +778,15 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  *                    after the parsed time. The parsing will consume empty space characters after
  *                    the time specification also, returning a pointer to the next token after.
  *
- * @return            The Julian Day corresponding to the string date/time specification or NAN
- *                    if the string is NULL or if it does not specify a date/time in the expected
- *                    format.
+ * @return            [day] The Julian Day corresponding to the string date/time specification or
+ *                    NAN if the string is NULL or if it does not specify a date/time in the
+ *                    expected format.
  *
  * @since 1.3
  * @author Attila Kovacs
  *
+ * @sa novas_date()
+ * @sa novas_date_scale()
  * @sa novas_parse_date_format()
  * @sa novas_timescale_for_string()
  * @sa novas_iso_timestamp()
@@ -795,6 +796,80 @@ double novas_parse_date(const char *restrict date, char **restrict tail) {
   double jd = novas_parse_date_format(NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_YMD, date, tail);
   if(isnan(jd))
     return novas_trace_nan("novas_parse_date");
+  return jd;
+}
+
+/**
+ * Returns a Julian date (in non-specific timescale) corresponding the specified input
+ * string date/time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility
+ * on how the date is represented as long as it's YMD date followed by HMS time. For
+ * other date formats (MDY or DMY) you can use `novas_parse_date_format()` instead.
+ *
+ * @param date  The date specification, possibly including time and timezone, in a standard
+ *              format. See novas_parse_date() on more information on acceptable date/time
+ *              formats.
+ * @return      [day] The Julian Day corresponding to the string date/time specification or
+ *              NAN if the string is NULL or if it does not specify a date/time in the
+ *              expected format.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_date_scale()
+ * @sa novas_parse_date()
+ * @sa novas_parse_date_format()
+ * @sa novas_iso_timestamp()
+ */
+double novas_date(const char *restrict date) {
+  double jd = novas_parse_date(date, NULL);
+  if(isnan(jd))
+    return novas_trace_nan("novas_date");
+  return jd;
+}
+
+/**
+ * Returns a Julian date and the timescale corresponding the specified input string date/time
+ * and timescale marker. E.g. for "2025-02-28T09:41:12.041+0200 TAI", with some flexibility on
+ * how the date is represented as long as it's YMD date followed by HMS time. For other date
+ * formats (MDY or DMY) you can use `novas_parse_date_format()` instead.
+ *
+ * @param date          The date specification, possibly including time and timezone, in a
+ *                      standard format. See novas_parse_date() on more information on
+ *                      acceptable date/time formats.
+ * @param[out] scale    The timescale constant, or else -1 if the string could not be parsed
+ *                      into a date and timescale. If the string is a bare timestamp without
+ *                      an hint of a timescale marker, then NOVAS_UTC will be assumed.
+ * @return      [day] The Julian Day corresponding to the string date/time specification or
+ *              NAN if the string is NULL or if it does not specify a date/time in the
+ *              expected format.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_date()
+ * @sa novas_timestamp()
+ */
+double novas_date_scale(const char *restrict date, enum novas_timescale *restrict scale) {
+  const char *fn = "novas_date_scale";
+
+  char *tail = (char *) date, s[4] = {};
+  double jd = novas_parse_date(date, &tail);
+
+  if(!scale) {
+    novas_error(0, EINVAL, fn, "output scale is NULL");
+    return NAN;
+  }
+
+  *scale = -1;
+
+  if(isnan(jd))
+    return novas_trace_nan(fn);
+
+  if(sscanf(tail, "%3s", s) == 1)
+    *scale = novas_timescale_for_string(s);
+  else
+    *scale = NOVAS_UTC;
+
   return jd;
 }
 

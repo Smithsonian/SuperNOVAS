@@ -201,7 +201,7 @@ dox: README.md Doxyfile apidoc $(SRC) $(INC) README-orig.md
 	@echo "   [doxygen]"
 	@$(DOXYGEN)
 	@rm -f apidoc/html/resources
-	@( cd apidoc/html; ln -s ../../resources )
+	@( cd apidoc/html; rm -f resources; ln -s ../../resources )
 
 .INTERMEDIATE: Doxyfile.local
 Doxyfile.local: Doxyfile Makefile
@@ -212,7 +212,7 @@ Doxyfile.local: Doxyfile Makefile
 .PHONY: local-dox
 local-dox: README-orig.md Doxyfile.local
 	$(DOXYGEN) Doxyfile.local
-	( cd apidoc/html; ln -s ../../resources )
+	( cd apidoc/html; rm -f resources; ln -s ../../resources )
 
 # Default values for install locations
 # See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 

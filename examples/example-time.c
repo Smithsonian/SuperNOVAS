@@ -44,7 +44,6 @@ int main() {
   int year, month, day;         // broken-down date components
   double hours;                 // broken-down time-of-day component
   char timestamp[40];           // String timestamp, at leat 29 characters.
-  char *tail;                   // Parse position after
 
   // Intermediate variables we'll use -------------------------------------->
   struct timespec ts;           // precision UNIX time
@@ -56,7 +55,7 @@ int main() {
   //   flexibility on how the components are separated, but they must be year,
   //   month, day, then optionally time and possibly time zone also. For
   //   example:
-  jd = novas_parse_date("2025-01-29 18:09:29.333+0200", &tail);
+  jd = novas_date("2025-01-29T18:09:29.333+0200");
 
   // - Next, convert that date to an astronomical time of a specific time
   //   scale. Let's say the above date was on the TAI... (It could be UTC, or

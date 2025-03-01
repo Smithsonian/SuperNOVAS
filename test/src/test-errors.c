@@ -1866,6 +1866,25 @@ static int test_parse_date() {
   return n;
 }
 
+static int test_date() {
+  int n = 0;
+
+  if(check_nan("date:null", novas_date(NULL))) n++;
+
+  return n;
+}
+
+static int test_date_scale() {
+  int n = 0;
+  enum novas_timescale scale;
+
+  if(check_nan("date_scale:date:null", novas_date_scale(NULL, &scale))) n++;
+  if(check("date_scale:date:null:scale", -1, scale)) n++;
+  if(check_nan("date_scale:scale:null", novas_date_scale("2025-03-01T11:08:38.338+0200", NULL))) n++;
+
+  return n;
+}
+
 static int test_iso_timestamp() {
   int n = 0;
   char buf[30] = {};
@@ -2065,6 +2084,8 @@ int main() {
   if(test_xyz_to_los()) n++;
   if(test_julian_date()) n++;
   if(test_parse_date()) n++;
+  if(test_date()) n++;
+  if(test_date_scale()) n++;
   if(test_iso_timestamp()) n++;
   if(test_timestamp()) n++;
   if(test_timescale_for_string()) n++;
