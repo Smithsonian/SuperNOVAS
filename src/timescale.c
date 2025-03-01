@@ -1139,13 +1139,14 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str) {
  * timescale values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET",
  * "TCG", "TCB", "TDB".
  *
- * @param str     String specifying an astronomical timescale. Leading white spaces will be
-                  skipped over.
+ * @param str         String specifying an astronomical timescale. Leading white spaces will be
+                      skipped over.
  * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
  *                    after the parsed timescale specification.
- * @return        The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL,
- *                empty, or could not be matched to a timescale value (errno will be set to EINVAL
- *                also).
+ *
+ * @return            The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was
+ *                    NULL, empty, or could not be matched to a timescale value (errno will be set
+ *                    to EINVAL also).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1162,11 +1163,11 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
   char s[4] = {};
   int n = 0;
 
-  if(!str)
-    return novas_error(-1, EINVAL, fn, "input string is NULL");
-
   if(tail)
     *tail = (char *) str;
+
+  if(!str)
+    return novas_error(-1, EINVAL, fn, "input string is NULL");
 
   if(sscanf(str, "%3s%n", s, &n) == 1) {
     scale = novas_timescale_for_string(s);
@@ -1175,7 +1176,7 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
   }
 
   if(tail)
-    *tail = (char *) &str[n];
+    *tail += n;
 
   return scale;
 }
