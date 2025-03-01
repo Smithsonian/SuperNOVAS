@@ -342,7 +342,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc3'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1', or empty string '' for releases\&. "
 .ti -1c
@@ -690,6 +690,12 @@ include/novas.h
 .br
 .ti -1c
 .RI "int \fBnovas_change_observer\fP (const \fBnovas_frame\fP *orig, const \fBobserver\fP *obs, \fBnovas_frame\fP *out)"
+.br
+.ti -1c
+.RI "double \fBnovas_date\fP (const char *restrict date)"
+.br
+.ti -1c
+.RI "double \fBnovas_date_scale\fP (const char *restrict date, enum \fBnovas_timescale\fP *restrict scale)"
 .br
 .ti -1c
 .RI "void \fBnovas_debug\fP (enum \fBnovas_debug_mode\fP mode)"
@@ -5927,6 +5933,78 @@ Attila Kovacs
 
 .PP
 References \fBnovas_frame::accuracy\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_time()\fP, \fBNOVAS_TDB\fP, \fBobs_planets()\fP, \fBnovas_frame::obs_pos\fP, \fBnovas_frame::observer\fP, \fBnovas_frame::planets\fP, \fBnovas_frame::state\fP, and \fBnovas_frame::time\fP\&.
+.SS "double novas_date (const char *restrict date)"
+Returns a Julian date (in non-specific timescale) corresponding the specified input string date/time\&. E\&.g\&. for '2025-02-28T09:41:12\&.041+0200', with some flexibility on how the date is represented as long as it's YMD date followed by HMS time\&. For other date formats (MDY or DMY) you can use \fC\fBnovas_parse_date_format()\fP\fP instead\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdate\fP The date specification, possibly including time and timezone, in a standard format\&. See \fBnovas_parse_date()\fP on more information on acceptable date/time formats\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_date_scale()\fP 
+.PP
+\fBnovas_parse_date()\fP 
+.PP
+\fBnovas_parse_date_format()\fP 
+.PP
+\fBnovas_iso_timestamp()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_parse_date()\fP\&.
+.SS "double novas_date_scale (const char *restrict date, enum \fBnovas_timescale\fP *restrict scale)"
+Returns a Julian date and the timescale corresponding the specified input string date/time and timescale marker\&. E\&.g\&. for '2025-02-28T09:41:12\&.041+0200 TAI', with some flexibility on how the date is represented as long as it's YMD date followed by HMS time\&. For other date formats (MDY or DMY) you can use \fC\fBnovas_parse_date_format()\fP\fP instead\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdate\fP The date specification, possibly including time and timezone, in a standard format\&. See \fBnovas_parse_date()\fP on more information on acceptable date/time formats\&. 
+.br
+\fIscale\fP The timescale constant, or else -1 if the string could not be parsed into a date and timescale\&. If the string is a bare timestamp without an hint of a timescale marker, then NOVAS_UTC will be assumed\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_date()\fP 
+.PP
+\fBnovas_timestamp()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_parse_date()\fP, \fBnovas_timescale_for_string()\fP, and \fBNOVAS_UTC\fP\&.
 .SS "void novas_debug (enum \fBnovas_debug_mode\fP mode)"
 Enables or disables reporting errors and traces to the standard error stream\&.
 .PP
@@ -6063,7 +6141,9 @@ Attila Kovacs
 .PP
 References \fBnovas_timespec::fjd_tt\fP, and \fBnovas_timespec::ijd_tt\fP\&.
 .SS "double novas_dms_degrees (const char *restrict dms)"
-Returns the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same angle:
+Returns the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. The last component may also be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction\&.
+.PP
+For example, all of the lines below specify the same angle:
 .PP
 .PP
 .nf
@@ -6072,6 +6152,8 @@ Returns the decimal degrees for a DMS string specification\&. The degree, (arc)m
  -179 59m 59\&.999
  -179d 59' 59\&.999
  -179D59'59\&.999
+ 179:59:59\&.999S
+ 179 59 59\&.999 W
 .fi
 .PP
 .PP
@@ -7433,7 +7515,7 @@ B\&.C\&. dates are indicated with years <=0 according to the astronomical and IS
 .PP
 \fBReturns\fP
 .RS 4
-The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
 .RE
 .PP
 \fBSince\fP
@@ -7448,6 +7530,10 @@ Attila Kovacs
 .PP
 \fBSee also\fP
 .RS 4
+\fBnovas_date()\fP 
+.PP
+\fBnovas_date_scale()\fP 
+.PP
 \fBnovas_parse_date_format()\fP 
 .PP
 \fBnovas_timescale_for_string()\fP 
@@ -7505,7 +7591,7 @@ B\&.C\&. dates are indicated with years <=0 according to the astronomical and IS
 .PP
 \fBReturns\fP
 .RS 4
-The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
+[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format\&.
 .RE
 .PP
 \fBSince\fP
@@ -7533,7 +7619,9 @@ Attila Kovacs
 .PP
 References \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DMY\fP, \fBnovas_get_debug_mode()\fP, \fBnovas_jd_from_date()\fP, \fBNOVAS_MDY\fP, \fBnovas_parse_hms()\fP, and \fBNOVAS_YMD\fP\&.
 .SS "double novas_parse_dms (const char *restrict dms, char **restrict tail)"
-Parses the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same angle:
+Parses the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. The last component may also be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction\&.
+.PP
+For example, all of the lines below specify the same angle:
 .PP
 .PP
 .nf
@@ -7542,6 +7630,8 @@ Parses the decimal degrees for a DMS string specification\&. The degree, (arc)mi
  -179 59m 59\&.999
  -179d 59' 59\&.999
  -179D59'59\&.999
+ 179:59:59\&.999W
+ 179 59 59\&.999 S
 .fi
 .PP
 .PP

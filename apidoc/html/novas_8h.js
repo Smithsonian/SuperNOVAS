@@ -317,6 +317,8 @@ var novas_8h =
     [ "novas_app_to_hor", "novas_8h.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca", null ],
     [ "novas_case_sensitive", "novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2", null ],
     [ "novas_change_observer", "novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d", null ],
+    [ "novas_date", "novas_8h.html#abaac8a4ea28bc8b811277051e3168468", null ],
+    [ "novas_date_scale", "novas_8h.html#a66656c3f5a1256f4bfc3ed2e168c70c2", null ],
     [ "novas_debug", "novas_8h.html#a5f35633b872751df4dacd2fb2cbe4ac3", null ],
     [ "novas_diff_tcb", "novas_8h.html#a4818ab9be2f0891091c719db01bcfa98", null ],
     [ "novas_diff_tcg", "novas_8h.html#ab904df0f504d07bbf73f84e2a1c43e07", null ],

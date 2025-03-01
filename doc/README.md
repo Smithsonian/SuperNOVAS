@@ -545,7 +545,7 @@ or, for the best precision we may do the same with an integer / fractional split
 or, you can use a string date, such as an ISO timestamp:
 
 ```c
- novas_set_string_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", 37, 0.042, &obs_time);
+ novas_set_time(NOVAS_UTC, novas_parse_date("2025-01-26T22:05:14.234+0200", NULL), 37, 0.042, &obs_time);
 ```
 
 <a name="observing-frame"></a>
@@ -887,8 +887,12 @@ E.g.,
  char timestamp[40];		// A string to contain an ISO representation
 
  // Parse an ISO timestamp into a Julian day
- double jd = novas_parse_date("2025-02-16T19:35:21Z", NULL);
-  
+ double jd = novas_date("2025-02-16T19:35:21Z");
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
+   
  // Use the parsed JD date in any timescale, e.g. in TAI
  // with the appropriate leap seconds and UT1-UTC time difference
  novas_set_time(NOVAS_TAI, jd, leap_seconds, dut1, &time);
@@ -899,10 +903,35 @@ E.g.,
 ```
  
 Above, `novas_parse_date()` will always interpret dates in the astronomical calendar of date, that is in the Gregorian 
-calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. And, SuperNOVAS
-string timestamps are also always in the (conventional) astronomical calendar of date also. And while 
-`novas_iso_timestamp()` will always express dates as UTC dates, you can use the somewhat more generic 
-`novas_timestamp()` function instead to timestamp in other timescales, e.g.:
+calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. SuperNOVAS string 
+timestamps are also always in the (conventional) astronomical calendar of date also. And while `novas_iso_timestamp()` 
+will always express dates as UTC dates, you can use the somewhat more generic `novas_timestamp()` function instead to 
+timestamp in other timescales, e.g.:
+
+Alternatively, you can parse a string date/time which includes a timescale specification also:
+
+```c
+ novas_timespec time;		// Astronomical time specification
+ enum novas_timescale scale;	// Timescale to be parsed
+ char timestamp[40];		// A string to contain an ISO representation
+
+ // Parse a timestamp into a Julian day and corresponding timescale
+ double jd = novas_date_scale("2025-02-16T19:35:21 TAI", &scale);
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
+  
+ // Use the parsed JD date in any timescale, e.g. in TAI
+ // with the appropriate leap seconds and UT1-UTC time difference
+ novas_set_time(scale, jd, leap_seconds, dut1, &time);
+```
+
+
+
+
+
+
 
 ```c
  // Print a TDB timestamp instead
@@ -1060,6 +1089,7 @@ expect that performance shall scale with the number of concurrent CPUs used. So,
 core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
 perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
 one minute.
+
 
 
 -----------------------------------------------------------------------------

@@ -1222,7 +1222,9 @@ Attila Kovacs
 .PP
 References \fBmake_in_space()\fP, \fBmake_observer()\fP, and \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP\&.
 .SS "double novas_dms_degrees (const char *restrict dms)"
-Returns the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same angle:
+Returns the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. The last component may also be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction\&.
+.PP
+For example, all of the lines below specify the same angle:
 .PP
 .PP
 .nf
@@ -1231,6 +1233,8 @@ Returns the decimal degrees for a DMS string specification\&. The degree, (arc)m
  -179 59m 59\&.999
  -179d 59' 59\&.999
  -179D59'59\&.999
+ 179:59:59\&.999S
+ 179 59 59\&.999 W
 .fi
 .PP
 .PP
@@ -1597,7 +1601,9 @@ Attila Kovacs
 .PP
 References \fBNOVAS_JD_J2000\fP, \fBprecession()\fP, and \fBradec2vector()\fP\&.
 .SS "double novas_parse_dms (const char *restrict dms, char **restrict tail)"
-Parses the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. For example, all of the lines below specify the same angle:
+Parses the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the degree and minutes may be semarated by the letter \fCd\fP or \fCD\fP, and the minutes and seconds may be separated by \fCm\fP or \fCM\fP, or a single quote `'`\&. The last component may also be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction\&.
+.PP
+For example, all of the lines below specify the same angle:
 .PP
 .PP
 .nf
@@ -1606,6 +1612,8 @@ Parses the decimal degrees for a DMS string specification\&. The degree, (arc)mi
  -179 59m 59\&.999
  -179d 59' 59\&.999
  -179D59'59\&.999
+ 179:59:59\&.999W
+ 179 59 59\&.999 S
 .fi
 .PP
 .PP

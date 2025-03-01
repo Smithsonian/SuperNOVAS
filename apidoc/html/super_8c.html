@@ -1702,12 +1702,15 @@ novas_calc_geometric_position() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same angle:</p>
+<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;&lsquo;. The last component may also be followed by a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>For example, all of the lines below specify the same angle:</p>
 <pre>
  -179:59:59.999
  -179 59m 59.999
  -179d 59' 59.999
  -179D59'59.999
+ 179:59:59.999S
+ 179 59 59.999 W
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dms</td><td>String specifying degrees, minutes, and seconds, which correspond to an angle. Angles in any range are permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
@@ -2196,12 +2199,15 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same angle:</p>
+<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;&lsquo;. The last component may also be followed by a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>For example, all of the lines below specify the same angle:</p>
 <pre>
  -179:59:59.999
  -179 59m 59.999
  -179d 59' 59.999
  -179D59'59.999
+ 179:59:59.999W
+ 179 59 59.999 S
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">dms</td><td>String specifying degrees, minutes, and seconds, which correspond to an angle. Angles in any range are permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>

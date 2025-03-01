@@ -127,6 +127,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:abaac8a4ea28bc8b811277051e3168468" id="r_abaac8a4ea28bc8b811277051e3168468"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date</a> (const char *restrict date)</td></tr>
+<tr class="separator:abaac8a4ea28bc8b811277051e3168468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66656c3f5a1256f4bfc3ed2e168c70c2" id="r_a66656c3f5a1256f4bfc3ed2e168c70c2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale</a> (const char *restrict date, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> *restrict scale)</td></tr>
+<tr class="separator:a66656c3f5a1256f4bfc3ed2e168c70c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4818ab9be2f0891091c719db01bcfa98" id="r_a4818ab9be2f0891091c719db01bcfa98"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a4818ab9be2f0891091c719db01bcfa98">novas_diff_tcb</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t1, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t2)</td></tr>
 <tr class="separator:a4818ab9be2f0891091c719db01bcfa98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab904df0f504d07bbf73f84e2a1c43e07" id="r_ab904df0f504d07bbf73f84e2a1c43e07"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ab904df0f504d07bbf73f84e2a1c43e07">novas_diff_tcg</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t1, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t2)</td></tr>
@@ -167,6 +171,87 @@ Functions</h2></td></tr>
 <p>A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them easier.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html">frames.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="abaac8a4ea28bc8b811277051e3168468" name="abaac8a4ea28bc8b811277051e3168468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaac8a4ea28bc8b811277051e3168468">&#9670;&#160;</a></span>novas_date()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_date </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>date</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a Julian date (in non-specific timescale) corresponding the specified input string date/time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a>.</p>
+
+</div>
+</div>
+<a id="a66656c3f5a1256f4bfc3ed2e168c70c2" name="a66656c3f5a1256f4bfc3ed2e168c70c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66656c3f5a1256f4bfc3ed2e168c70c2">&#9670;&#160;</a></span>novas_date_scale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_date_scale </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>date</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> *restrict&#160;</td>
+          <td class="paramname"><em>scale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a Julian date and the timescale corresponding the specified input string date/time and timescale marker. E.g. for "2025-02-28T09:41:12.041+0200 TAI", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>The timescale constant, or else -1 if the string could not be parsed into a date and timescale. If the string is a bare timestamp without an hint of a timescale marker, then NOVAS_UTC will be assumed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a>, <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+
+</div>
+</div>
 <a id="a4818ab9be2f0891091c719db01bcfa98" name="a4818ab9be2f0891091c719db01bcfa98"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4818ab9be2f0891091c719db01bcfa98">&#9670;&#160;</a></span>novas_diff_tcb()</h2>
 
@@ -620,10 +705,14 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a> </dd>
 <dd>
@@ -700,7 +789,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd>

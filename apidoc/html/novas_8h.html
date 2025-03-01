@@ -389,7 +389,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release. <br /></td></tr>
 <tr class="separator:a9b926427954233b94ebd6925d86f9f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft" align="right" valign="top"><a id="aadef42ba39811e058ee9efe2c6f7d151" name="aadef42ba39811e058ee9efe2c6f7d151"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc3&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-devel&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases. <br /></td></tr>
 <tr class="separator:aadef42ba39811e058ee9efe2c6f7d151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a44de9d1672290d153a1dfb0685886208">SUPERNOVAS_VERSION_STRING</a></td></tr>
@@ -726,6 +726,10 @@ Functions</h2></td></tr>
 <tr class="separator:a8f832afe92680a11c3489aaa224ac2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2972b3eafa2d7f6c29cff34bad9fcf0d" id="r_a2972b3eafa2d7f6c29cff34bad9fcf0d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d">novas_change_observer</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *orig, const <a class="el" href="structobserver.html">observer</a> *obs, <a class="el" href="structnovas__frame.html">novas_frame</a> *out)</td></tr>
 <tr class="separator:a2972b3eafa2d7f6c29cff34bad9fcf0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaac8a4ea28bc8b811277051e3168468" id="r_abaac8a4ea28bc8b811277051e3168468"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#abaac8a4ea28bc8b811277051e3168468">novas_date</a> (const char *restrict date)</td></tr>
+<tr class="separator:abaac8a4ea28bc8b811277051e3168468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66656c3f5a1256f4bfc3ed2e168c70c2" id="r_a66656c3f5a1256f4bfc3ed2e168c70c2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale</a> (const char *restrict date, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> *restrict scale)</td></tr>
+<tr class="separator:a66656c3f5a1256f4bfc3ed2e168c70c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f35633b872751df4dacd2fb2cbe4ac3" id="r_a5f35633b872751df4dacd2fb2cbe4ac3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug</a> (enum <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3ba">novas_debug_mode</a> mode)</td></tr>
 <tr class="separator:a5f35633b872751df4dacd2fb2cbe4ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4818ab9be2f0891091c719db01bcfa98" id="r_a4818ab9be2f0891091c719db01bcfa98"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a4818ab9be2f0891091c719db01bcfa98">novas_diff_tcb</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t1, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t2)</td></tr>
@@ -8078,6 +8082,87 @@ novas_geom_to_hor() </dd>
 
 </div>
 </div>
+<a id="abaac8a4ea28bc8b811277051e3168468" name="abaac8a4ea28bc8b811277051e3168468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaac8a4ea28bc8b811277051e3168468">&#9670;&#160;</a></span>novas_date()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_date </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>date</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a Julian date (in non-specific timescale) corresponding the specified input string date/time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a>.</p>
+
+</div>
+</div>
+<a id="a66656c3f5a1256f4bfc3ed2e168c70c2" name="a66656c3f5a1256f4bfc3ed2e168c70c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66656c3f5a1256f4bfc3ed2e168c70c2">&#9670;&#160;</a></span>novas_date_scale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_date_scale </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>date</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> *restrict&#160;</td>
+          <td class="paramname"><em>scale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a Julian date and the timescale corresponding the specified input string date/time and timescale marker. E.g. for "2025-02-28T09:41:12.041+0200 TAI", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>The timescale constant, or else -1 if the string could not be parsed into a date and timescale. If the string is a bare timestamp without an hint of a timescale marker, then NOVAS_UTC will be assumed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a>, <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+
+</div>
+</div>
 <a id="a5f35633b872751df4dacd2fb2cbe4ac3" name="a5f35633b872751df4dacd2fb2cbe4ac3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f35633b872751df4dacd2fb2cbe4ac3">&#9670;&#160;</a></span>novas_debug()</h2>
 
@@ -8259,12 +8344,15 @@ novas_geom_to_hor() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same angle:</p>
+<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;&lsquo;. The last component may also be followed by a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>For example, all of the lines below specify the same angle:</p>
 <pre>
  -179:59:59.999
  -179 59m 59.999
  -179d 59' 59.999
  -179D59'59.999
+ 179:59:59.999S
+ 179 59 59.999 W
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dms</td><td>String specifying degrees, minutes, and seconds, which correspond to an angle. Angles in any range are permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
@@ -10099,10 +10187,14 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a> </dd>
 <dd>
@@ -10179,7 +10271,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd>
@@ -10219,12 +10311,15 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same angle:</p>
+<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;&lsquo;. The last component may also be followed by a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>For example, all of the lines below specify the same angle:</p>
 <pre>
  -179:59:59.999
  -179 59m 59.999
  -179d 59' 59.999
  -179D59'59.999
+ 179:59:59.999W
+ 179 59 59.999 S
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">dms</td><td>String specifying degrees, minutes, and seconds, which correspond to an angle. Angles in any range are permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>

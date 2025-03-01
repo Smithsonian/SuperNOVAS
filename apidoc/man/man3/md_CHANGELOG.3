@@ -7,9 +7,9 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.3\&.0-rc3] - 2025-02-27"
+.SH "[Unreleased]"
 .PP
-Release candidate for upcoming feature release, expected around 1 May 2025\&. It brings many new convenience functions, such as for handling times and angles as strings, rise and set times, and other common astrometric calculations\&.
+Changes for the upcoming feature release, expected around 1 May 2025\&. It brings many new convenience functions, such as for handling times and angles as strings, rise and set times, and other common astrometric calculations\&.
 .SS "Fixed"
 .IP "\(bu" 2
 #116: \fC\fBtransform_cat()\fP\fP to update parallax to the recalculated value when precessing or changing epochs\&.
@@ -48,11 +48,13 @@ Release candidate for upcoming feature release, expected around 1 May 2025\&. It
 .IP "\(bu" 2
 #122: New \fC\fBnovas_jd_to_date()\fP\fP, and \fC\fBnovas_jd_from_date()\fP\fP which convert between JD day and calendar dates using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date\&.
 .IP "\(bu" 2
+#131: New \fC\fBnovas_date()\fP\fP and \fC\fBnovas_date_scale()\fP\fP for the simplest conversion of string times to Julian days, and in case of the latter also to a corresponding timescale\&.
+.IP "\(bu" 2
 Added \fCexample-time\&.c\fP and \fCexample-rise-set\&.c\fP under \fCexamples/\fP, for demonstrating date/time handling functions and rise, set, and transit time calculations\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-[#130] Use C99 \fCrestrict\fP keyword to prevent pointer argument aliasing\&.
+[#130] Use C99 \fCrestrict\fP keyword to prevent pointer argument aliasing\&. Modern compilers will warn if restricted pointer arguments are aliased\&.
 .IP "\(bu" 2
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
 .IP "\(bu" 2

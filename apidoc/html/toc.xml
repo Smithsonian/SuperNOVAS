@@ -56,7 +56,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md94"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.3.0-rc3] - 2025-02-27" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -697,6 +697,8 @@
           <topic label="novas_app_to_hor" href="novas_8h.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca"/>
           <topic label="novas_case_sensitive" href="novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2"/>
           <topic label="novas_change_observer" href="novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d"/>
+          <topic label="novas_date" href="novas_8h.html#abaac8a4ea28bc8b811277051e3168468"/>
+          <topic label="novas_date_scale" href="novas_8h.html#a66656c3f5a1256f4bfc3ed2e168c70c2"/>
           <topic label="novas_debug" href="novas_8h.html#a5f35633b872751df4dacd2fb2cbe4ac3"/>
           <topic label="novas_diff_tcb" href="novas_8h.html#a4818ab9be2f0891091c719db01bcfa98"/>
           <topic label="novas_diff_tcg" href="novas_8h.html#ab904df0f504d07bbf73f84e2a1c43e07"/>
@@ -1162,6 +1164,8 @@
         </topic>
         <topic label="timescale.c" href="timescale_8c.html">
           <topic label="_DEFAULT_SOURCE" href="timescale_8c.html#a8fb447618db946a9e2a596d9ea18763f"/>
+          <topic label="novas_date" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468"/>
+          <topic label="novas_date_scale" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2"/>
           <topic label="novas_diff_tcb" href="timescale_8c.html#a4818ab9be2f0891091c719db01bcfa98"/>
           <topic label="novas_diff_tcg" href="timescale_8c.html#ab904df0f504d07bbf73f84e2a1c43e07"/>
           <topic label="novas_diff_time" href="timescale_8c.html#abdcc8e194d79787838d1ffc064449932"/>

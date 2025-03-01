@@ -1932,6 +1932,20 @@
       <arglist>(const novas_frame *orig, const observer *obs, novas_frame *out)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_date</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>abaac8a4ea28bc8b811277051e3168468</anchor>
+      <arglist>(const char *restrict date)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_date_scale</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a66656c3f5a1256f4bfc3ed2e168c70c2</anchor>
+      <arglist>(const char *restrict date, enum novas_timescale *restrict scale)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>novas_debug</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -5008,6 +5022,20 @@
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_date</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>abaac8a4ea28bc8b811277051e3168468</anchor>
+      <arglist>(const char *restrict date)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_date_scale</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a66656c3f5a1256f4bfc3ed2e168c70c2</anchor>
+      <arglist>(const char *restrict date, enum novas_timescale *restrict scale)</arglist>
     </member>
     <member kind="function">
       <type>double</type>

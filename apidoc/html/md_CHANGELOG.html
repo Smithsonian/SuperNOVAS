@@ -117,8 +117,8 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[1.3.0-rc3] - 2025-02-27</h1>
-<p>Release candidate for upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such as for handling times and angles as strings, rise and set times, and other common astrometric calculations.</p>
+[Unreleased]</h1>
+<p>Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such as for handling times and angles as strings, rise and set times, and other common astrometric calculations.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
@@ -143,12 +143,13 @@ Added</h2>
 <li>#118: New <code><a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a></code> to match timescale constants to string representations, such as "UTC", or "TAI", and <code><a class="el" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale()</a></code> to convert to string representation.</li>
 <li>#118: New <code><a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a></code> to print UTC timestamps in ISO date format with millisecond precision, and <code><a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp()</a></code> to print timestamps in specific timescales.</li>
 <li>#122: New <code><a class="el" href="novas_8c.html#a8ed2fb55bcf86d9f1f434a2f832356a2">novas_jd_to_date()</a></code>, and <code><a class="el" href="novas_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a></code> which convert between JD day and calendar dates using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.</li>
+<li>#131: New <code><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date()</a></code> and <code><a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale()</a></code> for the simplest conversion of string times to Julian days, and in case of the latter also to a corresponding timescale.</li>
 <li>Added <code>example-time.c</code> and <code>example-rise-set.c</code> under <code>examples/</code>, for demonstrating date/time handling functions and rise, set, and transit time calculations.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
 <ul>
-<li>[#130] Use C99 <code>restrict</code> keyword to prevent pointer argument aliasing.</li>
+<li>[#130] Use C99 <code>restrict</code> keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted pointer arguments are aliased.</li>
 <li>In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for <code><a class="el" href="novas_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> are significantly faster.</li>
 <li>Modified <code><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> to add range checking for month and day arguments, and return NAN (with errno set to <code>EINVAL</code>) if the input values are invalid.</li>
 <li><code><a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> and <code><a class="el" href="novas_8c.html#a044f1359abcf0a039ac6452a95729b5a">cal_date()</a></code> now use astronomical calendar dates instead of the fixed Gregorian dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.</li>
