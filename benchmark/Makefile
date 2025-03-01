@@ -15,8 +15,8 @@ benchmark-%: benchmark-%.c
 
 .PHONY: clean
 clean:
-	rm -f *.o
+	@rm -f *.o
 
 .PHONY: distclean
 distclean: clean
-	rm -f $(BENCHMARKS)
+	@rm -f $(BENCHMARKS)

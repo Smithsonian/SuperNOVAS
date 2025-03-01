@@ -116,7 +116,7 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -f $(LIB)/libsupernovas.so* $(LIB)/libsupernovas.a $(LIB)/libnovas.so* $(LIB)/libnovas.a $(LIB)/libsolsys*.so* cio_ra.bin
-
+	$(MAKE) -C benchmark distclean
 
 .PHONY:
 check-cio-locator:
