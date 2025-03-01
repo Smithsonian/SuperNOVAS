@@ -20,6 +20,7 @@
 #include <errno.h>
 #include <string.h>
 #include <strings.h>              // strcasecmp() / strncasecmp()
+#include <ctype.h>
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
@@ -1453,8 +1454,12 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
 /**
  * Parses the decimal hours for a HMS string specification. The hour, minute, and second components
  * may be separated by spaces, tabs, colons `:`, underscore `_`, or a combination thereof.
- * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the minutes
- * and seconds may be separated by `m` or `M`, or a single quote `'`. For example, all of the lines
+ * Additionally, the hours and minutes may be separated by the letter `h`, and the minutes and seconds
+ * may be separated by `m` or a single quote `'`, or a right quote (`0x92`). The seconds may be
+ * followed by 's' or double quote `"` or double right quote (`0x94`).
+ *
+ * Additionally, the hour and minutes may be separated by the letter `h`, and the minutes
+ * and seconds may be separated by `m`, or a single quote `'`. For example, all of the lines
  * below specify the same time:
  *
  * <pre>
@@ -1484,6 +1489,7 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
 
   int h = 0, m = 0, n = 0, k = 0;
   double s = NAN;
+  char next;
 
   if(tail)
     *tail = (char *) hms;
@@ -1502,10 +1508,6 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
     return NAN;
   }
 
-  // Trailing seconds marker (if any)
-  sscanf(&hms[n], "%*[s\"”]%n", &k);
-  n += k;
-
   if(m < 0 || m >= 60) {
     novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
     return NAN;
@@ -1515,6 +1517,14 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
     novas_error(0, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
     return NAN;
   }
+
+  // Trailing seconds marker (if any)
+  sscanf(&hms[n], "%*[ _\t]%*[s\"”]%n", &k);
+
+  // The trailing markers must be standalone (end of string or followed by white space)
+  next = hms[n + k];
+  if(next == '\0' || next == '_' || isspace(next))
+    n += k;
 
   if(tail)
     *tail += n;
@@ -1526,11 +1536,11 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
 /**
  * Returns the decimal hours for a HMS string specification. The hour, minute, and second
  * components may be separated by spaces, tabs, colons `:`, or a combination thereof.
- * Additionally, the hour and minutes may be semarated by the letter `h` or `H`, and the
- * minutes and seconds may be separated by `m` or `M`, or a single quote `'`, or a right
- * quote (`0x92`). The seconds may be followed by 's' or double quote `"` or double
- * right quote (`0x94`). For example, all
- * of the lines below specify the same time:
+ * Additionally, the hours and minutes may be separated by the letter `h`, and the minutes
+ * and seconds may be separated by `m` or a single quote `'`, or a right quote (`0x92`).
+ * The seconds may be followed by 's' or double quote `"` or double right quote (`0x94`).
+ *
+ * For example, all of the lines below specify the same time:
  *
  * <pre>
  *  23:59:59.999
@@ -1572,8 +1582,9 @@ double novas_hms_hours(const char *restrict hms) {
  *  -179d 59m 59.999s
  *  -179 59' 59.999
  *  -179°59’59.999”
- *  179:59:59.999W
- *  179 59 59.999 S
+ *  179:59:59.999S
+ *  179:59:59.999 W
+ *  179_59_59.999__S
  * </pre>
  *
  *
@@ -1594,9 +1605,9 @@ double novas_hms_hours(const char *restrict hms) {
 double novas_parse_dms(const char *restrict dms, char **restrict tail) {
   static const char *fn = "novas_dms_degrees";
 
-  int d = 0, m = 0, n = 0, k = 0;
+  int d = 0, m = 0, n = 0, k = 0, l = 0;
   double s = NAN;
-  char compass[3] = {};
+  char next, compass[3] = {};
 
   if(tail)
     *tail = (char *) dms;
@@ -1610,14 +1621,10 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
     return NAN;
   }
 
-  if(sscanf(dms, "%d%*[:d° _\t]%d%*[:m'’ _\t\x92]%lf%n", &d, &m, &s, &n) < 3) {
+  if(sscanf(dms, "%d%*[:d° _\t]%d%*[:m'’ _\t]%lf%n", &d, &m, &s, &n) < 3) {
     novas_error(0, EINVAL, fn, "not in DMS format: '%s'", dms);
     return NAN;
   }
-
-  // Trailing seconds marker (if any).
-  sscanf(&dms[n], "%*[s\"”]%n", &k);
-  n += k;
 
   if(m < 0 || m >= 60) {
     novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
@@ -1635,18 +1642,31 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
 
   if(dms[n-1] == 'E') {
     // An 'E' immediately after the last numerical value, is parsed as part of the number
-    // but we should interpret it as a compass direction.
-    n++;
+    // but we should interpret it as a compass direction below.
+    n--;
   }
-  else if(sscanf(&dms[n], "%2s%n", compass, &k) > 0) {
+
+  // Trailing seconds marker (if any)
+  sscanf(&dms[n], "%*[ _\t]%*[s\"”]%n", &k);
+
+  // Compass direction (if any)
+  if(sscanf(&dms[n + k], "%2s%n", compass, &l) > 0) {
+    if(compass[1] == '_')
+      compass[1] = '\0';
+
     if(strcmp(compass, "N") == 0 || strcmp(compass, "E") == 0) {
-      n += k;
+      k += l;
     }
     else if (strcmp(compass, "S") == 0 || strcmp(compass, "W") == 0) {
       s = -s;
-      n += k;
+      k += l;
     }
   }
+
+  // The trailing markers must be standalone (end of string or followed by white space)
+  next = dms[n + k];
+  if(next == '\0' || next == '_' || isspace(next))
+    n += k;
 
   if(tail)
     *tail += n;
@@ -1672,6 +1692,7 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  *  -179°59’59.999”
  *  179:59:59.999S
  *  179 59 59.999 W
+ *  179_59_59.999__S
  * </pre>
  *
  *

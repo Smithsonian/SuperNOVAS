@@ -2488,7 +2488,7 @@ static int test_hms_hours() {
 
 static int test_dms_degrees() {
   int n = 0;
-  double degs = 179.0 + 59.0/60.0 + 59.999/3600.0;
+  double degs = 179.0 + 59.0 / 60.0 + 59.999 / 3600.0;
   char *tail = NULL;
 
   if(!is_equal("dms_degrees:colons", novas_dms_degrees("179:59:59.999"), degs, 1e-9)) n++;
@@ -2500,15 +2500,15 @@ static int test_dms_degrees() {
   if(!is_equal("dms_degrees:signed", novas_dms_degrees("+179 59 59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:parse", novas_parse_dms("179 59 59.999", &tail), degs, 1e-9)) n++;
 
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999N"), degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999S"), degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999E"), degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999W"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:N", novas_dms_degrees("179d 59' 59.999N"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:S", novas_dms_degrees("-179d 59' 59.999S"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:E", novas_dms_degrees("179d 59' 59.999E"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:W", novas_dms_degrees("-179d 59' 59.999W"), degs, 1e-9)) n++;
 
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999 N"), degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999 S"), degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999 E"), degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999 W"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:+N", novas_dms_degrees("179d 59' 59.999 N"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:+S", novas_dms_degrees("-179d 59' 59.999 S"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:+E", novas_dms_degrees("179d 59' 59.999 E"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:combo:+W", novas_dms_degrees("-179d 59' 59.999 W"), degs, 1e-9)) n++;
 
   if(!is_equal("dms_degrees:neg:colons", novas_dms_degrees("-179:59:59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:spaces", novas_dms_degrees("-179 59 59.999"), -degs, 1e-9)) n++;
@@ -2517,11 +2517,17 @@ static int test_dms_degrees() {
   if(!is_equal("dms_degrees:neg:dprime", novas_dms_degrees("-179d59'59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999"), -degs, 1e-9)) n++;
 
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999N"), -degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999S"), -degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999E"), -degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999W"), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo:N", novas_dms_degrees("-179d 59' 59.999N"), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo:S", novas_dms_degrees("179d 59' 59.999S"), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo:E", novas_dms_degrees("-179d 59' 59.999E"), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo:W", novas_dms_degrees("179d 59' 59.999W"), -degs, 1e-9)) n++;
 
+
+  if(!is_equal("dms_degrees:neg:combo:W+", novas_parse_dms("179d 59' 59.999W ", NULL), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo:_W_", novas_parse_dms("179_59_59.999W_", NULL), -degs, 1e-9)) n++;
+
+  if(!is_equal("dms_degrees:neg:combo:Whatever", novas_dms_degrees("179d 59' 59.999 Whatever"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo:_Whatever", novas_dms_degrees("179_59_59.999_Whatever"), degs, 1e-9)) n++;
   return n;
 }
 
