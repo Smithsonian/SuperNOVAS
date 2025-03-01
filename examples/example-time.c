@@ -37,6 +37,7 @@ int main() {
   novas_timespec time1 = {}, time2 = {}, time3 = {};     // Astronomical time data for SuperNOVAS
 
   // Calculated quantities ------------------------------------------------->
+  enum novas_timescale scale;   // astronomical timescale
   double jd;                    // [day] Julian days
   long ijd;                     // [day] integer part of Julian Day
   double fjd;                   // [day] fractional part of Julian Day.
@@ -61,6 +62,12 @@ int main() {
   //   scale. Let's say the above date was on the TAI... (It could be UTC, or
   //   GPS, or TDB...)
   novas_set_time(NOVAS_TAI, jd, LEAP_SECONDS, DUT1, &time1);
+
+  // Alternatively, you could use a string time that also contains a timescale
+  // specification:
+  jd = novas_date_scale("2025-01-29 18:09:29.333+0200 TAI", &scale);
+  novas_set_time(scale, jd, LEAP_SECONDS, DUT1, &time1);
+
 
   // -------------------------------------------------------------------------
   // 1.b. Dates from broken-down time
