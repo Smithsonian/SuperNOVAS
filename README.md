@@ -900,12 +900,16 @@ SuperNOVAS provides functions to convert between ISO dates/times and their strin
 E.g.,
 
 ```c
- novas_timespec time;		// Astronomical time specification
- char timestamp[40];		// A string to contain an ISO representation
+ novas_timespec time;           // Astronomical time specification
+ char timestamp[40];            // A string to contain an ISO representation
 
  // Parse an ISO timestamp into a Julian day
- double jd = novas_parse_date("2025-02-16T19:35:21Z", NULL);
-  
+ double jd = novas_date("2025-02-16T19:35:21Z");
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
+   
  // Use the parsed JD date in any timescale, e.g. in TAI
  // with the appropriate leap seconds and UT1-UTC time difference
  novas_set_time(NOVAS_TAI, jd, leap_seconds, dut1, &time);
@@ -914,10 +918,29 @@ E.g.,
  // designated string buffer.
  novas_iso_timestamp(&time, timestamp, sizeof(timestamp));
 ```
- 
-Above, `novas_parse_date()` will always interpret dates in the astronomical calendar of date, that is in the Gregorian 
-calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. And, SuperNOVAS
-string timestamps are also always in the (conventional) astronomical calendar of date also. And while 
+
+You can also parse a string date/time which includes a timescale specification also:
+
+```c
+ enum novas_timescale scale;    // Timescale to be parsed
+ novas_timespec time;           // Astronomical time specification
+ char timestamp[40];            // A string to contain an ISO representation
+
+ // Parse a timestamp into a Julian day and corresponding timescale
+ double jd = novas_date_scale("2025-02-16T19:35:21 TAI", &scale);
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
+  
+ // Use the parsed JD date and timescale, rogether with the appropriate 
+ // leap seconds and UT1-UTC time difference
+ novas_set_time(scale, jd, leap_seconds, dut1, &time);
+```
+
+The SuperNOVAS string date funtions always interpret dates in the astronomical calendar of date by default, that is in 
+the Gregorian calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. As
+such, SuperNOVAS string timestamps are also always in the (conventional) astronomical calendar of date also. And while
 `novas_iso_timestamp()` will always express dates as UTC dates, you can use the somewhat more generic 
 `novas_timestamp()` function instead to timestamp in other timescales, e.g.:
 
