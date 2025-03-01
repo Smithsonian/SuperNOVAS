@@ -901,14 +901,8 @@ E.g.,
  // designated string buffer.
  novas_iso_timestamp(&time, timestamp, sizeof(timestamp));
 ```
- 
-Above, `novas_parse_date()` will always interpret dates in the astronomical calendar of date, that is in the Gregorian 
-calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. SuperNOVAS string 
-timestamps are also always in the (conventional) astronomical calendar of date also. And while `novas_iso_timestamp()` 
-will always express dates as UTC dates, you can use the somewhat more generic `novas_timestamp()` function instead to 
-timestamp in other timescales, e.g.:
 
-Alternatively, you can parse a string date/time which includes a timescale specification also:
+You can also parse a string date/time which includes a timescale specification also:
 
 ```c
  novas_timespec time;		// Astronomical time specification
@@ -925,6 +919,17 @@ Alternatively, you can parse a string date/time which includes a timescale speci
  // Use the parsed JD date and timescale, rogether with the appropriate 
  // leap seconds and UT1-UTC time difference
  novas_set_time(scale, jd, leap_seconds, dut1, &time);
+```
+
+The SuperNOVAS string date funtions always interpret dates in the astronomical calendar of date by default, that is in 
+the Gregorian calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. As
+such, SuperNOVAS string timestamps are also always in the (conventional) astronomical calendar of date also. And while
+`novas_iso_timestamp()` will always express dates as UTC dates, you can use the somewhat more generic 
+`novas_timestamp()` function instead to timestamp in other timescales, e.g.:
+
+```c
+ // Print a TDB timestamp instead
+ novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
 ```
 
 ISO timestamps are best, but sometimes your input dates are represented in other formats. You can have additional 
