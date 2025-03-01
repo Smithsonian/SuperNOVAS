@@ -339,8 +339,8 @@ Specify the object of interest</h4>
 <div class="line">  <a class="code hl_function" href="super_8c.html#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours</a>(<span class="stringliteral">&quot;16h 26m 20.1918s&quot;</span>),   <span class="comment">// e.g. using h,m,s and spaces as separators </span></div>
 <div class="line">  <a class="code hl_function" href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a>(<span class="stringliteral">&quot;-26:19:23.138&quot;</span>),    <span class="comment">// e.g. using colons to separate components</span></div>
 <div class="line">  -12.11, -23.30, 5.89, -3.4, &amp;star);</div>
-<div class="ttc" id="asuper_8c_html_a696e44a2d1c788f9f335611efd7ed958"><div class="ttname"><a href="super_8c.html#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours</a></div><div class="ttdeci">double novas_hms_hours(const char *restrict hms)</div><div class="ttdef"><b>Definition</b> super.c:1548</div></div>
-<div class="ttc" id="asuper_8c_html_aca89d2a0f49afad45dbddffc09c3adae"><div class="ttname"><a href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a></div><div class="ttdeci">double novas_dms_degrees(const char *restrict dms)</div><div class="ttdef"><b>Definition</b> super.c:1676</div></div>
+<div class="ttc" id="asuper_8c_html_a696e44a2d1c788f9f335611efd7ed958"><div class="ttname"><a href="super_8c.html#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours</a></div><div class="ttdeci">double novas_hms_hours(const char *restrict hms)</div><div class="ttdef"><b>Definition</b> super.c:1562</div></div>
+<div class="ttc" id="asuper_8c_html_aca89d2a0f49afad45dbddffc09c3adae"><div class="ttname"><a href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a></div><div class="ttdeci">double novas_dms_degrees(const char *restrict dms)</div><div class="ttdef"><b>Definition</b> super.c:1706</div></div>
 </div><!-- fragment --><p>And, if you have LSR-based radial velocities instead of Solar-system Barycentric radial velocities, you may convert these to SSB-based velocities for use in <code><a class="el" href="novas_8c.html#a39b2e39d29f1b57c5f785284ba7ca43f">make_cat_entry()</a></code> with <code><a class="el" href="super_8c.html#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel()</a></code>.</p>
 <p>We must convert the older catalog coordinates to the now standard ICRS system for calculations in SuperNOVAS, first by calculating equivalent J2000 coordinates, by applying the proper motion and the appropriate precession. Then, we apply a small adjustment to convert from J2000 to ICRS coordinates.</p>
 <div class="fragment"><div class="line"><span class="comment">// First change the catalog coordinates (in place) to the J2000 (FK5) system... </span></div>
@@ -358,13 +358,13 @@ Specify the object of interest</h4>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Wrap it in a generic source data structure</span></div>
 <div class="line"><a class="code hl_function" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object</a>(&amp;star, &amp;source);</div>
-<div class="ttc" id="asuper_8c_html_ab9b7a622486f2904615ceed1ba94cd8f"><div class="ttname"><a href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object</a></div><div class="ttdeci">int make_cat_object(const cat_entry *star, object *source)</div><div class="ttdef"><b>Definition</b> super.c:1017</div></div>
+<div class="ttc" id="asuper_8c_html_ab9b7a622486f2904615ceed1ba94cd8f"><div class="ttname"><a href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object</a></div><div class="ttdeci">int make_cat_object(const cat_entry *star, object *source)</div><div class="ttdef"><b>Definition</b> super.c:1018</div></div>
 </div><!-- fragment --><p>Alternatively, for high-_z_ sources you might use <code><a class="el" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3">make_redshifted_cat_entry()</a></code> or <code><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a></code> e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">object</span> quasar;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339</span></div>
 <div class="line"><a class="code hl_function" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a>(<span class="stringliteral">&quot;3c273&quot;</span>, 12.4851944, 2.0523883, 0.158339, &amp;quasar);</div>
-<div class="ttc" id="asuper_8c_html_ae579a49d84696a913fd0d9f348bb5b11"><div class="ttname"><a href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a></div><div class="ttdeci">int make_redshifted_object(const char *name, double ra, double dec, double z, object *source)</div><div class="ttdef"><b>Definition</b> super.c:1143</div></div>
+<div class="ttc" id="asuper_8c_html_ae579a49d84696a913fd0d9f348bb5b11"><div class="ttname"><a href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a></div><div class="ttdeci">int make_redshifted_object(const char *name, double ra, double dec, double z, object *source)</div><div class="ttdef"><b>Definition</b> super.c:1144</div></div>
 </div><!-- fragment --><p><a class="anchor" id="specify-observer"></a> </p>
 <h4><a class="anchor" id="autotoc_md55"></a>
 Specify the observer location</h4>
@@ -506,7 +506,7 @@ Calculating positions for a Solar-system source</h3>
 <div class="line"><a class="code hl_function" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a>(<span class="stringliteral">&quot;Ceres&quot;</span>, 2000001, &amp;ceres);</div>
 <div class="ttc" id="anovas_8c_html_a4c7846be95299769f4d0377bf127bcf5"><div class="ttname"><a href="novas_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet</a></div><div class="ttdeci">int make_planet(enum novas_planet num, object *restrict planet)</div><div class="ttdef"><b>Definition</b> novas.c:7121</div></div>
 <div class="ttc" id="anovas_8h_html_a219df36b21dc4476656e708d14d08045a479f3eb097c0aeb4ac7dc3ae2e6c376e"><div class="ttname"><a href="novas_8h.html#a219df36b21dc4476656e708d14d08045a479f3eb097c0aeb4ac7dc3ae2e6c376e">NOVAS_MARS</a></div><div class="ttdeci">@ NOVAS_MARS</div><div class="ttdoc">Major planet number for the Mars in NOVAS.</div><div class="ttdef"><b>Definition</b> novas.h:287</div></div>
-<div class="ttc" id="asuper_8c_html_aa22303f98df2d63edf6d8452ff3a43b2"><div class="ttname"><a href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a></div><div class="ttdeci">int make_ephem_object(const char *name, long num, object *body)</div><div class="ttdef"><b>Definition</b> super.c:1049</div></div>
+<div class="ttc" id="asuper_8c_html_aa22303f98df2d63edf6d8452ff3a43b2"><div class="ttname"><a href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a></div><div class="ttdeci">int make_ephem_object(const char *name, long num, object *body)</div><div class="ttdef"><b>Definition</b> super.c:1050</div></div>
 </div><!-- fragment --><p>As of version 1.2 you can also define solar system sources with orbital elements (such as the most up-to-date ones provided by the <a href="https://minorplanetcenter.net/data">Minor Planet Center</a> for asteroids, comets, etc.):</p>
 <div class="fragment"><div class="line"><span class="keywordtype">object</span> NEA;        <span class="comment">// e.g. a Near-Earth Asteroid</span></div>
 <div class="line"> </div>
@@ -520,7 +520,7 @@ Calculating positions for a Solar-system source</h3>
 <div class="ttc" id="anovas_8h_html_a85243a6b9eee259d3fb84ee1a587e065"><div class="ttname"><a href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a></div><div class="ttdeci">#define NOVAS_ORBIT_INIT</div><div class="ttdef"><b>Definition</b> novas.h:820</div></div>
 <div class="ttc" id="astructnovas__orbital_html"><div class="ttname"><a href="structnovas__orbital.html">novas_orbital</a></div><div class="ttdef"><b>Definition</b> novas.h:799</div></div>
 <div class="ttc" id="astructnovas__orbital_html_a1031d0e0a97a340abfe0a6ab9e831045"><div class="ttname"><a href="structnovas__orbital.html#a1031d0e0a97a340abfe0a6ab9e831045">novas_orbital::a</a></div><div class="ttdeci">double a</div><div class="ttdoc">[AU] semi-major axis</div><div class="ttdef"><b>Definition</b> novas.h:802</div></div>
-<div class="ttc" id="asuper_8c_html_a3c5e215babeeba078ca7b3e9be42e555"><div class="ttname"><a href="super_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a></div><div class="ttdeci">int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body)</div><div class="ttdef"><b>Definition</b> super.c:1076</div></div>
+<div class="ttc" id="asuper_8c_html_a3c5e215babeeba078ca7b3e9be42e555"><div class="ttname"><a href="super_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a></div><div class="ttdeci">int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body)</div><div class="ttdef"><b>Definition</b> super.c:1077</div></div>
 </div><!-- fragment --><p>Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise positions for the Sun or planet, around which the orbit is defined.</p>
 <p>Other than that, it's the same spiel as before, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos</a>(&amp;mars, &amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, &amp;apparent);</div>
@@ -607,14 +607,21 @@ String times and angles</h3>
 <div class="line"><span class="comment">// ... or with colons</span></div>
 <div class="line">ra_h = <a class="code hl_function" href="super_8c.html#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours</a>(<span class="stringliteral">&quot;09:18:49.068&quot;</span>);</div>
 <div class="line"> </div>
+<div class="line"><span class="comment">// ... or with extended ASCII symbols</span></div>
+<div class="line">dec_d = <a class="code hl_function" href="super_8c.html#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours</a>(<span class="stringliteral">&quot;09 18’49.068”&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"> </div>
 <div class="line"><span class="comment">// Declination as space separated degrees, arc-minutes, and arc-seconds</span></div>
 <div class="line"><span class="keywordtype">double</span> dec_d = <a class="code hl_function" href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a>(<span class="stringliteral">&quot;-53 10 07.33&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// .. or separated by colons</span></div>
+<div class="line"><span class="comment">// ... or separated by colons</span></div>
 <div class="line">dec_d = <a class="code hl_function" href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a>(<span class="stringliteral">&quot;-53:10:07.33&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// .. or with &#39;d&#39;, &#39;m&#39;...</span></div>
+<div class="line"><span class="comment">// ... or with &#39;d&#39;, &#39;m&#39;...</span></div>
 <div class="line">dec_d = <a class="code hl_function" href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a>(<span class="stringliteral">&quot;-53d10m07.33s&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ... or with extended ASCII symbols</span></div>
+<div class="line">dec_d = <a class="code hl_function" href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a>(<span class="stringliteral">&quot;-52°10’07.22”&quot;</span>);</div>
 </div><!-- fragment --><p><a class="anchor" id="string-dates"></a> </p>
 <h3><a class="anchor" id="autotoc_md68"></a>
 String dates</h3>

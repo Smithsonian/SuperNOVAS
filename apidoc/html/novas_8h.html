@@ -8344,15 +8344,16 @@ novas_geom_to_hor() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;&lsquo;. The last component may also be followed by a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code> or the degree symbol (<code>0xB0</code>), and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;<code>, or a right quote (</code>0x92&lsquo;). The seconds may be followed by 's&rsquo; or double quote <code>"</code> or double right quote (<code>0x94</code>). Finally, the last component may additionally be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction.</p>
 <p>For example, all of the lines below specify the same angle:</p>
 <pre>
  -179:59:59.999
- -179 59m 59.999
- -179d 59' 59.999
- -179D59'59.999
+ -179d 59m 59.999s
+ -179 59' 59.999
+ -179°59’59.999”
  179:59:59.999S
  179 59 59.999 W
+ 179_59_59.999__S
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dms</td><td>String specifying degrees, minutes, and seconds, which correspond to an angle. Angles in any range are permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
@@ -9037,12 +9038,13 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the hour and minutes may be semarated by the letter <code>h</code> or <code>H</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same time:</p>
+<p>Returns the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;<code>, or a right quote (</code>0x92&lsquo;). The seconds may be followed by 's&rsquo; or double quote <code>"</code> or double right quote (<code>0x94</code>).</p>
+<p>For example, all of the lines below specify the same time:</p>
 <pre>
  23:59:59.999
  23h 59m 59.999
  23h 59' 59.999
- 23H59'59.999
+ 23H59’59.999”
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hms</td><td>String specifying hours, minutes, and seconds, which correspond to a time between 0 and 24 h. Time in any range is permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
@@ -10311,15 +10313,16 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be semarated by the letter <code>d</code> or <code>D</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;&lsquo;. The last component may also be followed by a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code> or the degree symbol (<code>0xB0</code>), and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;<code>, or a right quote (</code>0x92&lsquo;). The seconds may be followed by 's&rsquo; or double quote <code>"</code> or double right quote (<code>0x94</code>). Finally, the last component may additionally be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction.</p>
 <p>For example, all of the lines below specify the same angle:</p>
 <pre>
  -179:59:59.999
- -179 59m 59.999
- -179d 59' 59.999
- -179D59'59.999
- 179:59:59.999W
- 179 59 59.999 S
+ -179d 59m 59.999s
+ -179 59' 59.999
+ -179°59’59.999”
+ 179:59:59.999S
+ 179:59:59.999 W
+ 179_59_59.999__S
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">dms</td><td>String specifying degrees, minutes, and seconds, which correspond to an angle. Angles in any range are permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
@@ -10361,12 +10364,13 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the hour and minutes may be semarated by the letter <code>h</code> or <code>H</code>, and the minutes and seconds may be separated by <code>m</code> or <code>M</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same time:</p>
+<p>Parses the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;<code>, or a right quote (</code>0x92&lsquo;). The seconds may be followed by 's&rsquo; or double quote <code>"</code> or double right quote (<code>0x94</code>).</p>
+<p>Additionally, the hour and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code>, or a single quote &lsquo;&rsquo;`. For example, all of the lines below specify the same time:</p>
 <pre>
  23:59:59.999
  23h 59m 59.999
  23h 59' 59.999
- 23H59'59.999
+ 23H59’59.999”
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">hms</td><td>String specifying hours, minutes, and seconds, which correspond to a time between 0 and 24 h. Time in any range is permitted, but the minutes and seconds must be &gt;=0 and &lt;60. </td></tr>
