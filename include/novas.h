@@ -1822,6 +1822,8 @@ int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale sc
 
 enum novas_timescale novas_timescale_for_string(const char *restrict str);
 
+enum novas_timescale novas_parse_timescale(const char *restrict str, char **restrict tail);
+
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 
 

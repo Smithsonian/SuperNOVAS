@@ -852,7 +852,7 @@ double novas_date(const char *restrict date) {
 double novas_date_scale(const char *restrict date, enum novas_timescale *restrict scale) {
   const char *fn = "novas_date_scale";
 
-  char *tail = (char *) date, s[4] = {};
+  char *tail = (char *) date;
   double jd = novas_parse_date(date, &tail);
 
   if(!scale) {
@@ -865,10 +865,7 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
   if(isnan(jd))
     return novas_trace_nan(fn);
 
-  if(sscanf(tail, "%3s", s) == 1)
-    *scale = novas_timescale_for_string(s);
-  else
-    *scale = NOVAS_UTC;
+  *scale = novas_parse_timescale(tail, &tail);
 
   return jd;
 }
@@ -1095,6 +1092,7 @@ int novas_print_timescale(enum novas_timescale scale, char *restrict buf) {
  * @since 1.3
  * @author Attila Kovacs
  *
+ * @sa novas_parse_timescale()
  * @sa novas_set_time()
  * @sa novas_set_split_time()
  * @sa novas_print_timescale()
@@ -1133,5 +1131,52 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str) {
     return NOVAS_TDB;
 
   return novas_error(-1, EINVAL, fn, "unknown timescale: %s", str);
+}
+
+/**
+ * Parses the timescale from a string containing a standard abbreviation (case insensitive), and
+ * returns the updated parse position after the timescale specification (if any). The following
+ * timescale values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET",
+ * "TCG", "TCB", "TDB".
+ *
+ * @param str     String specifying an astronomical timescale. Leading white spaces will be
+                  skipped over.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
+ *                    after the parsed timescale specification.
+ * @return        The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL,
+ *                empty, or could not be matched to a timescale value (errno will be set to EINVAL
+ *                also).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_timescale_for_string()
+ * @sa novas_set_time()
+ * @sa novas_set_split_time()
+ * @sa novas_print_timescale()
+ */
+enum novas_timescale novas_parse_timescale(const char *restrict str, char **restrict tail) {
+  static const char *fn = "novas_parse_timescale";
+
+  enum novas_timescale scale = NOVAS_UTC;
+  char s[4] = {};
+  int n = 0;
+
+  if(!str)
+    return novas_error(-1, EINVAL, fn, "input string is NULL");
+
+  if(tail)
+    *tail = (char *) str;
+
+  if(sscanf(str, "%3s%n", s, &n) == 1) {
+    scale = novas_timescale_for_string(s);
+    if(scale < 0)
+      return novas_trace(fn, scale, 0);
+  }
+
+  if(tail)
+    *tail = (char *) &str[n];
+
+  return scale;
 }
 

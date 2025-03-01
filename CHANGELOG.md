@@ -84,7 +84,10 @@ calculations.
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
  - #131: New `novas_date()` and `novas_date_scale()` for the simplest conversion of string times to Julian days, and 
-   in case of the latter also to a corresponding timescale.
+   in case of the latter also to a corresponding timescale.'
+   
+ - #133: New `novas_parse_timescale()` to parse a timescale from a string specification, and return the updated parse
+   position after also.
 
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations.
