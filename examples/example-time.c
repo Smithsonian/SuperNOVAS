@@ -58,15 +58,14 @@ int main() {
   //   example:
   jd = novas_date("2025-01-29T18:09:29.333+0200");
 
+  // Alternatively, you could use a string time that also contains a timescale
+  // specification:
+  jd = novas_date_scale("2025-01-29 18:09:29.333+0200 TAI", &scale);
+
   // - Next, convert that date to an astronomical time of a specific time
   //   scale. Let's say the above date was on the TAI... (It could be UTC, or
   //   GPS, or TDB...)
   novas_set_time(NOVAS_TAI, jd, LEAP_SECONDS, DUT1, &time1);
-
-  // Alternatively, you could use a string time that also contains a timescale
-  // specification:
-  jd = novas_date_scale("2025-01-29 18:09:29.333+0200 TAI", &scale);
-  novas_set_time(scale, jd, LEAP_SECONDS, DUT1, &time1);
 
 
   // -------------------------------------------------------------------------
