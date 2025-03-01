@@ -2504,6 +2504,11 @@ static int test_dms_degrees() {
   if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999E"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999W"), degs, 1e-9)) n++;
 
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999 N"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999 S"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("179d 59' 59.999 E"), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo", novas_dms_degrees("-179d 59' 59.999 W"), degs, 1e-9)) n++;
+
   if(!is_equal("dms_degrees:neg:colons", novas_dms_degrees("-179:59:59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:spaces", novas_dms_degrees("-179 59 59.999"), -degs, 1e-9)) n++;
   if(!is_equal("dsm_degrees:neg:dm", novas_dms_degrees("-179d59m59.999"), -degs, 1e-9)) n++;
