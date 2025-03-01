@@ -922,8 +922,8 @@ Alternatively, you can parse a string date/time which includes a timescale speci
    ...
  }
   
- // Use the parsed JD date in any timescale, e.g. in TAI
- // with the appropriate leap seconds and UT1-UTC time difference
+ // Use the parsed JD date and timescale, rogether with the appropriate 
+ // leap seconds and UT1-UTC time difference
  novas_set_time(scale, jd, leap_seconds, dut1, &time);
 ```
 
