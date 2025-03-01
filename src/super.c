@@ -1469,7 +1469,6 @@ int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double de
  *  23H59’59.999”
  * </pre>
  *
- *
  * @param hms         String specifying hours, minutes, and seconds, which correspond to
  *                    a time between 0 and 24 h. Time in any range is permitted, but the minutes and
  *                    seconds must be &gt;=0 and &lt;60.
@@ -1549,7 +1548,6 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
  *  23H59’59.999”
  * </pre>
  *
- *
  * @param hms         String specifying hours, minutes, and seconds, which correspond to
  *                    a time between 0 and 24 h. Time in any range is permitted, but the minutes and
  *                    seconds must be &gt;=0 and &lt;60.
@@ -1586,7 +1584,6 @@ double novas_hms_hours(const char *restrict hms) {
  *  179:59:59.999 W
  *  179_59_59.999__S
  * </pre>
- *
  *
  * @param dms         String specifying degrees, minutes, and seconds, which correspond to
  *                    an angle. Angles in any range are permitted, but the minutes and
@@ -1694,7 +1691,6 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  *  179 59 59.999 W
  *  179_59_59.999__S
  * </pre>
- *
  *
  * @param dms         String specifying degrees, minutes, and seconds, which correspond to
  *                    an angle. Angles in any range are permitted, but the minutes and
