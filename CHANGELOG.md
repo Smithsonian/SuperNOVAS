@@ -88,6 +88,9 @@ calculations.
    
  - #133: New `novas_parse_timescale()` to parse a timescale from a string specification, and return the updated parse
    position after also.
+   
+ - #134: New `novas_parse_hours()` and `novas_parse_degrees()` to convert strings in decimal or HMS/DMS formats to 
+   floating point values for SuperNOVAS, and return the parse position after the time/angle specification.
 
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations.
