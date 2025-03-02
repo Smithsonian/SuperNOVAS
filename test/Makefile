@@ -18,9 +18,12 @@ CHECKOPTS = --enable=performance,warning,portability --language=c \
             --error-exitcode=1 --std=c99 --inline-suppr $(CHECKEXTRA)
 
 #OBJECTS := $(subst obj/,,$(OBJECTS))
-OBJECTS := novas.o nutation.o solsys3.o super.o frames.o timescale.o refract.o naif.o
+OBJECTS := novas.o nutation.o solsys3.o super.o frames.o timescale.o \
+           refract.o naif.o parse.o
 TESTS := test-compat test-cio_file test-super test-errors
-COVFILES := novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov timescale.c.gcov refract.c.gcov frames.c.gcov naif.c.gcov
+COVFILES := novas.c.gcov nutation.c.gcov solsys3.c.gcov super.c.gcov \
+            timescale.c.gcov refract.c.gcov frames.c.gcov naif.c.gcov \
+            parse.c.gcov
 
 ifeq ($(CALCEPH_SUPPORT), 1)
   LDFLAGS += -lcalceph

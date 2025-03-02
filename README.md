@@ -869,11 +869,10 @@ __SuperNOVAS__ provides a set of functions to convert broken-down string values 
   
  // ... or with colons
  ra_h = novas_hms_hours("09:18:49.068");
-
- // ... or with extended ASCII symbols
- dec_d = novas_hms_hours("09 18’49.068”");
-  
-  
+ 
+ // ... or with single/double quotes for minutes/seconds
+ ra_h = novas_hms_hours("09h18'49.068\""); 
+ 
  // Declination as space separated degrees, arc-minutes, and arc-seconds
  double dec_d = novas_dms_degrees("-53 10 07.33");
   
@@ -883,8 +882,8 @@ __SuperNOVAS__ provides a set of functions to convert broken-down string values 
  // ... or with 'd', 'm'...
  dec_d = novas_dms_degrees("-53d10m07.33s");
  
- // ... or with extended ASCII symbols
- dec_d = novas_dms_degrees("-52°10’07.22”");
+ // ... or with single/double quotes for minutes/seconds
+ dec_d = novas_dms_degrees("-53d10'07.33s\"");
 ```
 
 <a name="string-dates"></a>

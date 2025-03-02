@@ -1765,6 +1765,10 @@ double novas_parse_hms(const char *restrict str, char **restrict tail);
 
 double novas_parse_dms(const char *restrict str, char **restrict tail);
 
+double novas_parse_degrees(const char *restrict str, char **restrict tail);
+
+double novas_parse_hours(const char *restrict str, char **restrict tail);
+
 double novas_hpa(double az, double el, double lat);
 
 double novas_epa(double ha, double dec, double lat);
