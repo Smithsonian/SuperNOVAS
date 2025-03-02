@@ -1628,6 +1628,26 @@ static int test_dms_degrees() {
   return n;
 }
 
+static int test_parse_hours() {
+  int n = 0;
+  char *tail;
+
+  if(check_nan("parse_hours:null", novas_parse_hours(NULL, &tail))) n++;
+  if(check_nan("parse_hours:blah", novas_parse_hours("blah", &tail))) n++;
+
+  return n;
+}
+
+static int test_parse_degrees() {
+  int n = 0;
+  char *tail;
+
+  if(check_nan("parse_degrees:null", novas_parse_degrees(NULL, &tail))) n++;
+  if(check_nan("parse_degrees:blah", novas_parse_degrees("blah", &tail))) n++;
+
+  return n;
+}
+
 static int test_helio_dist() {
   int n = 0;
   double rate = 0.0;
@@ -2082,6 +2102,8 @@ int main() {
 
   if(test_hms_hours()) n++;
   if(test_dms_degrees()) n++;
+  if(test_parse_hours()) n++;
+  if(test_parse_degrees()) n++;
   if(test_helio_dist()) n++;
   if(test_xyz_to_uvw()) n++;
 
