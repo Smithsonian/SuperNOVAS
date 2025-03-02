@@ -1600,7 +1600,7 @@ static int test_hms_hours() {
   if(check_nan("hms_hours:null", novas_hms_hours(NULL))) n++;
   if(check_nan("hms_hours:empty", novas_hms_hours(""))) n++;
   if(check_nan("hms_hours:empty", novas_hms_hours(""))) n++;
-  if(check_nan("hms_hours:few", novas_hms_hours("12 39"))) n++;
+  if(check_nan("hms_hours:few", novas_hms_hours("12"))) n++;
   if(check_nan("hms_hours:dms", novas_hms_hours("12d 39m 33.0"))) n++;
   if(check_nan("hms_hours:sep", novas_hms_hours("12,39,33.0"))) n++;
   if(check_nan("hms_hours:min:neg", novas_hms_hours("12 -1 33.0"))) n++;
@@ -1617,7 +1617,7 @@ static int test_dms_degrees() {
   if(check_nan("dms_degrees:null", novas_dms_degrees(NULL))) n++;
   if(check_nan("dms_degrees:empty", novas_dms_degrees(""))) n++;
   if(check_nan("dms_degrees:empty", novas_dms_degrees(""))) n++;
-  if(check_nan("dms_degrees:few", novas_dms_degrees("122 39"))) n++;
+  if(check_nan("dms_degrees:few", novas_dms_degrees("122"))) n++;
   if(check_nan("dms_degrees:hms", novas_dms_degrees("122h 39m 33.0"))) n++;
   if(check_nan("dms_degrees:sep", novas_dms_degrees("122,39,33.0"))) n++;
   if(check_nan("dms_degrees:min:neg", novas_dms_degrees("122 -1 33.0"))) n++;
@@ -1647,6 +1647,25 @@ static int test_parse_degrees() {
 
   return n;
 }
+
+static int test_str_hours() {
+  int n = 0;
+
+  if(check_nan("str_hours:null", novas_str_hours(NULL))) n++;
+  if(check_nan("str_hours:blah", novas_str_hours("blah"))) n++;
+
+  return n;
+}
+
+static int test_str_degrees() {
+  int n = 0;
+
+  if(check_nan("str_degrees:null", novas_str_degrees(NULL))) n++;
+  if(check_nan("str_degrees:blah", novas_str_degrees("blah"))) n++;
+
+  return n;
+}
+
 
 static int test_helio_dist() {
   int n = 0;
@@ -2104,6 +2123,9 @@ int main() {
   if(test_dms_degrees()) n++;
   if(test_parse_hours()) n++;
   if(test_parse_degrees()) n++;
+  if(test_str_hours()) n++;
+  if(test_str_degrees()) n++;
+
   if(test_helio_dist()) n++;
   if(test_xyz_to_uvw()) n++;
 

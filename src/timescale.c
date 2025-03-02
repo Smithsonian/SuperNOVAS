@@ -507,7 +507,7 @@ time_t novas_get_unix_time(const novas_timespec *restrict time, long *restrict n
 static int skip_white(const char *str, char **tail) {
   char *next = (char *) str;
 
-  // Consume trailing 'white' spaces
+  // Consume trailing 'white' spaces / punctuation
   for(; *next; next++)
     if(!isspace(*next) && *next != '_')
       break;

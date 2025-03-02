@@ -858,33 +858,34 @@ __SuperNOVAS__ functions typically input and output time and angles as decimal v
 days and hour-angles), but that is not how these are represented in many cases. Time and right-ascention are often 
 given as string values indicating hours, minutes, and seconds (e.g. "11:32:31.595", or "11h 32m 31.595s"). Similarly 
 angles, are commonly represented as degrees, arc-minutes, and arc-seconds (e.g. "+53 60 19.9"). For that reason, 
-__SuperNOVAS__ provides a set of functions to convert broken-down string values to decimal representations. E.g.,
+__SuperNOVAS__ provides a set of functions to convert string values expressed in decimal or broken-down format to floating
+point representation. E.g.,
 
 ```c
- // Right ascention as space-separated values
- double ra_h = novas_hms_hours("9 18 49.068");
+ // Right ascention from string
+ double ra_h = novas_str_hours("9 18 49.068");
 
- // ... or separated by 'h', 'm'...
- ra_h = novas_hms_hours("09h18m49.068s");
-  
- // ... or with colons
- ra_h = novas_hms_hours("09:18:49.068");
- 
- // ... or with single/double quotes for minutes/seconds
- ra_h = novas_hms_hours("09h18'49.068\""); 
- 
- // Declination as space separated degrees, arc-minutes, and arc-seconds
- double dec_d = novas_dms_degrees("-53 10 07.33");
-  
- // ... or separated by colons
- dec_d = novas_dms_degrees("-53:10:07.33");
-  
- // ... or with 'd', 'm'...
- dec_d = novas_dms_degrees("-53d10m07.33s");
- 
- // ... or with single/double quotes for minutes/seconds
- dec_d = novas_dms_degrees("-53d10'07.33s\"");
+ // Declination from string
+ double dec_d = novas_str_degrees("-53 10 07.33");
 ```
+
+The conversions have a lot of flexibility. Components can be separated by spaces (as above), by colons, commas, or
+underscores, by the letters 'h'/'d', 'm', and 's', by single (minutes) and double quotes (seconds), or any combination 
+thereof. Decimal values may be followed by 'h' or 'd' unit markers. Additionally angles can end with a compass 
+direction, such as 'N', 'E', 'S' or 'W'. So the above could also have been:
+
+```c
+ double ra_h = novas_str_hours("9h_18:49.068\"");
+ double dec_d = novas_str_degrees("53d 10'_07.33W");
+```
+
+or as decimals:
+
+```c
+ double ra_h = novas_str_hours("19.31363");
+ double dec_d = novas_str_degrees("53.16870278d S");
+```
+
 
 <a name="string-dates"></a>
 ### String dates
