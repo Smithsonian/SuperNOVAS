@@ -63,11 +63,15 @@ int main() {
   // NOTE, that make_cat_entry() expects radial velocities defined relative to the
   // Solar-System Barycenter (SSB). But you can convert LSR-basec velocities to
   // the required SSB-based radial velocities using novas_lsr_to_ssb_vel() if needed.
-  if(make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
+
+  // Convert string coordinates to hours/degrees...
+  double ra0 = novas_str_hours("16h26m20.1918s");
+  double dec0 =  novas_str_degrees("-26d19m23.138s");
+
+  if(make_cat_entry("Antares", "FK4", 1, ra0, dec0, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;
   }
-
   // First change the catalog coordinates (in place) to the J2000 (FK5) system...
   if(transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star) != 0) {
     fprintf(stderr, "ERROR! converting B1950 catalog coordinates to J2000.\n");
