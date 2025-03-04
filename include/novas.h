@@ -68,7 +68,7 @@
 #define SUPERNOVAS_PATCHLEVEL     0
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING "-rc4"
 
 /// \cond PRIVATE
 
@@ -1757,22 +1757,6 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
 
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR);
 
-double novas_hms_hours(const char *restrict hms);
-
-double novas_dms_degrees(const char *restrict dms);
-
-double novas_str_hours(const char *restrict hms);
-
-double novas_str_degrees(const char *restrict dms);
-
-double novas_parse_hms(const char *restrict str, char **restrict tail);
-
-double novas_parse_dms(const char *restrict str, char **restrict tail);
-
-double novas_parse_degrees(const char *restrict str, char **restrict tail);
-
-double novas_parse_hours(const char *restrict str, char **restrict tail);
-
 double novas_hpa(double az, double el, double lat);
 
 double novas_epa(double ha, double dec, double lat);
@@ -1790,6 +1774,23 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz);
 int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los);
 
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
+
+// in parse.c
+double novas_hms_hours(const char *restrict hms);
+
+double novas_dms_degrees(const char *restrict dms);
+
+double novas_str_hours(const char *restrict hms);
+
+double novas_str_degrees(const char *restrict dms);
+
+double novas_parse_hms(const char *restrict str, char **restrict tail);
+
+double novas_parse_dms(const char *restrict str, char **restrict tail);
+
+double novas_parse_degrees(const char *restrict str, char **restrict tail);
+
+double novas_parse_hours(const char *restrict str, char **restrict tail);
 
 // in frames.c
 double novas_frame_lst(const novas_frame *restrict frame);
