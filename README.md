@@ -475,17 +475,18 @@ these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_s
 ```c
  object source;   // Common structure for a sidereal or an Solar-system source
   
- // Wrap it in a generic source data structure
- make_cat_object_at_epoch(&star, "B1950", &source);
+ // Wrap it in a generic source data structure, with ICRS coordinates...
+ make_cat_object_sys(&star, "B1950", &source);
 ```
 
-Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object()` e.g.:
+Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object_sys()` 
+e.g.:
 
 ```c
  object quasar;
   
  // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
- make_redshifted_object_at_epoch("3c273", 12.4851944, 2.0523883, "ICRS", 0.158339, &quasar);
+ make_redshifted_object_sys("3c273", 12.4851944, 2.0523883, "ICRS", 0.158339, &quasar);
 ```
 
 <a name="specify-observer"></a>
