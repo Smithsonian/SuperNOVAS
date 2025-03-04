@@ -61,7 +61,7 @@ int main() {
   // parallax 5.89 mas, radial velocity -3.4 km/s.
   //
   // NOTE, that make_cat_entry() expects radial velocities defined relative to the
-  // Solar-System Barycenter (SSB). But you can convert LSR-basec velocities to
+  // Solar-System Barycenter (SSB). But you can convert LSR-based velocities to
   // the required SSB-based radial velocities using novas_lsr_to_ssb_vel() if needed.
 
   // Convert string coordinates to hours/degrees...

@@ -76,7 +76,7 @@ int main(int argc, const char *argv[]) {
   // parallax 5.89 mas, radial velocity -3.4 km/s.
   //
   // NOTE, that make_cat_entry() expects radial velocities defined relative to the
-  // Solar-System Barycenter (SSB). But you can convert LSR-basec velocities to
+  // Solar-System Barycenter (SSB). But you can convert LSR-based velocities to
   // the required SSB-based radial velocities using novas_lsr_to_ssb_vel() if needed.
   if(make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
