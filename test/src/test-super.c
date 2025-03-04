@@ -786,6 +786,42 @@ static int test_gcrs_to_mod() {
   return n;
 }
 
+static int test_make_cat_object_sys() {
+  int n = 0;
+
+  cat_entry icrs = {};
+  object obj;
+
+  if(!is_ok("make_cat_object_sys:icrs", make_cat_object_sys(&source.star, "ICRS", &obj))) n++;
+  if(!is_equal("make_cat_object_sys:icrs:check:ra", obj.star.ra, source.star.ra, 1e-9)) n++;
+  if(!is_equal("make_cat_object_sys:icrs:check:dec", obj.star.dec, source.star.dec, 1e-9)) n++;
+
+  if(!is_ok("make_cat_object_sys:j2000", make_cat_object_sys(&source.star, "J2000", &obj))) n++;
+  transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source.star, 0.0, NOVAS_SYSTEM_ICRS, &icrs);
+  if(!is_equal("make_cat_object_sys:j2000:check:ra", obj.star.ra, icrs.ra, 1e-9)) n++;
+  if(!is_equal("make_cat_object_sys:j2000:check:dec", obj.star.dec, icrs.dec, 1e-9)) n++;
+
+  if(!is_ok("make_cat_object_sys:b1950", make_cat_object_sys(&source.star, "B1950", &obj))) n++;
+  transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &source.star, NOVAS_JD_J2000, NOVAS_SYSTEM_FK5, &icrs);
+  transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &icrs, 0.0, NOVAS_SYSTEM_ICRS, &icrs);
+  if(!is_equal("make_cat_object_sys:b19500:check:ra", obj.star.ra, icrs.ra, 1e-9)) n++;
+  if(!is_equal("make_cat_object_sys:b19500:check:dec", obj.star.dec, icrs.dec, 1e-9)) n++;
+
+  return n;
+}
+
+static int test_make_redshifted_object_sys() {
+  int n = 0;
+
+  object obj;
+
+  if(!is_ok("make_redshifted_object_sys:icrs", make_redshifted_object_sys("test", source.star.ra, source.star.dec, "ICRS", 0.0, &obj))) n++;
+  if(!is_equal("make_redshifted_object_sys:icrs:check:ra", obj.star.ra, source.star.ra, 1e-9)) n++;
+  if(!is_equal("make_redshifted_object_sys:icrs:check:dec", obj.star.dec, source.star.dec, 1e-9)) n++;
+
+  return n;
+}
+
 static int test_source() {
   int k, n = 0;
 
@@ -824,6 +860,9 @@ static int test_source() {
 
   if(test_gcrs_to_tod()) n++;
   if(test_gcrs_to_mod()) n++;
+
+  if(test_make_cat_object_sys()) n++;
+  if(test_make_redshifted_object_sys()) n++;
 
   for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_hor(k)) n++;
   for(k = 0; k < NOVAS_REFERENCE_SYSTEMS; k++)  if(test_app_geom(k)) n++;
@@ -3339,6 +3378,25 @@ static int test_timestamp() {
   return n;
 }
 
+static int test_epoch() {
+  int n = 0;
+
+  if(!is_equal("epoch:icrs", novas_epoch("ICRS"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("FK5"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("FK4"), NOVAS_JD_B1950, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("HIP"), NOVAS_JD_HIP, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("J2000"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("J2000.0"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("2000"), NOVAS_JD_J2000, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("B1950"), NOVAS_JD_B1950, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("B1950.0"), NOVAS_JD_B1950, 1e-8)) n++;
+  if(!is_equal("epoch:icrs", novas_epoch("1950"), NOVAS_JD_B1950, 1e-8)) n++;
+
+  return n;
+}
+
+
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -3444,6 +3502,8 @@ int main(int argc, char *argv[]) {
   if(test_julian_date()) n++;
   if(test_jd_to_calendar()) n++;
   if(test_calendar_to_jd()) n++;
+
+  if(test_epoch()) n++;
 
   n += test_dates();
 

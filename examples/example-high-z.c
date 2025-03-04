@@ -64,24 +64,10 @@ int main() {
   double ra0 = novas_str_hours("12h29m6.6997s");
   double dec0 = novas_str_degrees("+2d3m8.598s");
 
-  if(make_redshifted_object("3c273", ra0, dec0, 0.158339, &source) != 0) {
+  if(make_redshifted_object_sys("3c273", ra0, dec0, "ICRS", 0.158339, &source) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;
   }
-
-  // If we did not use ICRS catalog coordinates, we would have to convert them to ICRS...
-
-  /* E.g. change B1950 to the J2000 (FK5) system...
-  if(transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &source.star, NOVAS_JD_J2000, "FK5", &source.star) != 0) {
-    fprintf(stderr, "ERROR! converting B1950 catalog coordinates to J2000.\n");
-    return 1;
-  } */
-
-  /* Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
-  if(transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &source.star, 0.0, "ICRS", &source.star) != 0) {
-    fprintf(stderr, "ERROR! converting J2000 catalog coordinates to ICRS.\n");
-    return 1;
-  } */
 
 
   // -------------------------------------------------------------------------

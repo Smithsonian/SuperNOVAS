@@ -4544,6 +4544,7 @@ double rad_vel2(const object *restrict source, const double *pos_emit, const dou
  *
  * @sa nutation()
  * @sa frame_tie()
+ * @sa novas_epoch()
  * @sa tt2tdb()
  * @sa cio_basis()
  * @sa NOVAS_TOD
@@ -6318,6 +6319,7 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
  *
  * @sa transform_hip()
  * @sa make_cat_entry()
+ * @sa novas_epoch()
  * @sa NOVAS_JD_J2000
  * @sa NOVAS_JD_B1950
  * @sa NOVAS_JD_HIP
@@ -6967,7 +6969,7 @@ double norm_ang(double angle) {
  *
  * @sa novas_lsr_to_ssb_vel()
  * @sa make_redshifted_cat_entry()
- * @sa make_object()
+ * @sa make_cat_object_sys()
  * @sa transform_cat()
  */
 short make_cat_entry(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec,

@@ -1970,13 +1970,47 @@ static int test_parse_timescale() {
   return n;
 }
 
-int test_print_timescale() {
+static int test_print_timescale() {
   int n = 0;
   char buf[4] = {};
 
   if(check("print_timescale:buf:null", -1, novas_print_timescale(NOVAS_UTC, NULL))) n++;
   if(check("print_timescale:buf:-1", -1, novas_print_timescale(-1, buf))) n++;
   if(check("print_timescale:buf:hi", -1, novas_print_timescale(NOVAS_TIMESCALES, buf))) n++;
+
+  return n;
+}
+
+static int test_epoch() {
+  int n = 0;
+
+  if(check_nan("epoch:null", novas_epoch(NULL))) n++;
+  if(check_nan("epoch:empty", novas_epoch(""))) n++;
+  if(check_nan("epoch:blah", novas_epoch("blah"))) n++;
+
+  return n;
+}
+
+static int test_make_cat_object_sys() {
+  int n = 0;
+  cat_entry star = {};
+  object source = {};
+
+  if(check("make_cat_object_sys:star:null", -1, make_cat_object_sys(NULL, "ICRS", &source))) n++;
+  if(check("make_cat_object_sys:sys:null", -1, make_cat_object_sys(&star, NULL, &source))) n++;
+  if(check("make_cat_object_sys:source:null", -1, make_cat_object_sys(&star, "ICRS", NULL))) n++;
+  if(check("make_cat_object_sys:sys:bad", -1, make_cat_object_sys(&star, "blah", &source))) n++;
+
+  return n;
+}
+
+static int test_make_redshifted_object_sys() {
+  int n = 0;
+  object source = {};
+
+  if(check("make_redshifted_object_sys:sys:null", -1, make_redshifted_object_sys("test", 0.0, 0.0, NULL, 0.0, &source))) n++;
+  if(check("make_redshifted_object_sys:source:null", -1, make_redshifted_object_sys("test", 0.0, 0.0, "ICRS", 0.0, NULL))) n++;
+  if(check("make_redshifted_object_sys:sys:bad", -1, make_redshifted_object_sys("test", 0.0, 0.0, "blah", 0.0, &source))) n++;
 
   return n;
 }
@@ -2145,6 +2179,10 @@ int main() {
   if(test_timescale_for_string()) n++;
   if(test_parse_timescale()) n++;
   if(test_print_timescale()) n++;
+
+  if(test_epoch()) n++;
+  if(test_make_cat_object_sys()) n++;
+  if(test_make_redshifted_object_sys()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
