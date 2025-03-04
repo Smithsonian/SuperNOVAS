@@ -871,7 +871,7 @@ point representation. E.g.,
 
 The conversions have a lot of flexibility. Components can be separated by spaces (as above), by colons, commas, or
 underscores, by the letters 'h'/'d', 'm', and 's', by single (minutes) and double quotes (seconds), or any combination 
-thereof. Decimal values may be followed by 'h' or 'd' unit markers. Additionally angles can end with a compass 
+thereof. Decimal values may be followed by 'h' or 'd' unit markers. Additionally, angles can end with a compass 
 direction, such as 'N', 'E', 'S' or 'W'. So the above could also have been:
 
 ```c

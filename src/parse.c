@@ -130,9 +130,9 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
  * string, or else `EINVAL` if the parsed value used only the leading part of the string.</li>
  * </ol>
  *
- * @param hms         String specifying hours, minutes, and seconds, which correspond to
- *                    a time between 0 and 24 h. Time in any range is permitted, but the minutes and
- *                    seconds must be &gt;=0 and &lt;60.
+ * @param hms     String specifying hours, minutes, and seconds, which correspond to
+ *                a time between 0 and 24 h. Time in any range is permitted, but the minutes and
+ *                seconds must be &gt;=0 and &lt;60.
  * @return        [hours] Corresponding decimal time value, or else NAN if there was an
  *                error parsing the string (errno will be set to EINVAL).
  *
@@ -300,11 +300,11 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  * string, or else `EINVAL` if the parsed value used only the leading part of the string.</li>
  * </ol>
  *
- * @param dms         String specifying degrees, minutes, and seconds, which correspond to
- *                    an angle. Angles in any range are permitted, but the minutes and
- *                    seconds must be &gt;=0 and &lt;60.
- * @return            [deg] Corresponding decimal angle value, or else NAN if there was
- *                    an error parsing the string (errno will be set to EINVAL).
+ * @param dms     String specifying degrees, minutes, and seconds, which correspond to
+ *                an angle. Angles in any range are permitted, but the minutes and
+ *                seconds must be &gt;=0 and &lt;60.
+ * @return        [deg] Corresponding decimal angle value, or else NAN if there was
+ *                an error parsing the string (errno will be set to EINVAL).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -501,13 +501,13 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
  * string.
  *
  *
- * @param str         The input string that specified an angle either as decimal degrees
- *                    or as a broken down DMS speficication. The decimal value may be immediately
- *                    followed by a letter 'd'. See more in `novas_parse_degrees()` on acceptable
- *                    input specifications.
- * @return            [deg] The angle represented by the string, or else NAN if the
- *                    string could not be parsed into an angle  value (errno will indicate
- *                    the type of error).
+ * @param str     The input string that specified an angle either as decimal degrees
+ *                or as a broken down DMS speficication. The decimal value may be immediately
+ *                followed by a letter 'd'. See more in `novas_parse_degrees()` on acceptable
+ *                input specifications.
+ * @return        [deg] The angle represented by the string, or else NAN if the
+ *                string could not be parsed into an angle value (errno will indicate
+ *                the type of error).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -543,13 +543,13 @@ double novas_str_degrees(const char *restrict str) {
  * string.
  *
  *
- * @param str         The input string that specified an angle either as decimal hours
- *                    or as a broken down HMS speficication. The decimal value may be
- *                    immediately followed by a letter 'h'. See more in `novas_parse_hours()`
- *                    on acceptable input specifications.
- * @return            [h] The time-like value represented by the string, or else NAN if the
- *                    string could not be parsed into a time-like value (errno will indicate
- *                    the type of error).
+ * @param str     The input string that specified an angle either as decimal hours
+ *                or as a broken down HMS speficication. The decimal value may be
+ *                immediately followed by a letter 'h'. See more in `novas_parse_hours()`
+ *                on acceptable input specifications.
+ * @return        [h] The time-like value represented by the string, or else NAN if the
+ *                string could not be parsed into a time-like value (errno will indicate
+ *                the type of error).
  *
  * @since 1.3
  * @author Attila Kovacs
