@@ -441,14 +441,14 @@ for which we have B1950 (i.e. FK4) coordinates:
  make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
-When you have coordinates as strings in HMS / DMS format, you might use `novas_hms_hours()` and `novas_dms_degrees()` 
-to convert them to hours/degrees for `make_cat_entry()`, with a fair bit of flexibility on the separators used between 
-the components, e.g.:
+When you have coordinates as strings in decimals or HMS / DMS format, you might use `novas_str_hours()` and/or 
+`novas_str_degrees()` to convert them to hours/degrees for `make_cat_entry()`, with a fair bit of flexibility on the 
+separators used between the components, e.g.:
 
 ```c
  make_cat_entry("Antares", "FK4", 1, 
-   novas_hms_hours("16h 26m 20.1918s"),   // e.g. using h,m,s and spaces as separators 
-   novas_dms_degrees("-26:19:23.138"),    // e.g. using colons to separate components
+   novas_str_hours("16h 26m 20.1918s"),   // e.g. using h,m,s and spaces as separators 
+   novas_str_degrees("-26:19:23.138"),    // e.g. using colons to separate components
    -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
