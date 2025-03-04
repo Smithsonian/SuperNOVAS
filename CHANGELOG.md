@@ -95,6 +95,10 @@ calculations.
  - #135: New `novas_str_hours()` and `novas_str_degrees()` for the simplest conversion of strings in decimal or 
    HMS/DMS formats to floating point values for SuperNOVAS (without parse position).
 
+ - #137: New `novas_epoch()` to convert string coordinate system specifications to the Julian date of the corresponding
+   epoch, and new `make_cat_object_sys()` and `make_redshifted_object_sys()` to make it simpler to define ICRS catalog 
+   sources in the coordinate system of choice.
+
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations. 
 

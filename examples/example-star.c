@@ -66,28 +66,16 @@ int main() {
 
   // Convert string coordinates to hours/degrees...
   double ra0 = novas_str_hours("16h26m20.1918s");
-  double dec0 =  novas_str_degrees("-26d19m23.138s");
+  double dec0 = novas_str_degrees("-26d19m23.138s");
 
   if(make_cat_entry("Antares", "FK4", 1, ra0, dec0, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;
   }
-  // First change the catalog coordinates (in place) to the J2000 (FK5) system...
-  if(transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star) != 0) {
-    fprintf(stderr, "ERROR! converting B1950 catalog coordinates to J2000.\n");
-    return 1;
-  }
-
-  // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
-  if(transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &star, 0.0, "ICRS", &star) != 0) {
-    fprintf(stderr, "ERROR! converting J2000 catalog coordinates to ICRS.\n");
-    return 1;
-  }
-
 
   // -------------------------------------------------------------------------
-  // Wrap the sidereal souce into an object structure...
-  if(make_cat_object(&star, &source) != 0) {
+  // Wrap the sidereal source into an object structure with ICRS coordinates.
+  if(make_cat_object_sys(&star, "B1950", &source) != 0) {
     fprintf(stderr, "ERROR! configuring observed object\n");
     return 1;
   }

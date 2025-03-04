@@ -194,6 +194,30 @@
 /// The day prior to that was 4 October 1582 in the Julian Calendar.
 #define NOVAS_JD_START_GREGORIAN  2299160.5
 
+/// The ICRS system as a string
+/// @since 1.3
+#define NOVAS_SYSTEM_ICRS          "ICRS"
+
+/// The B1950 coordiante system as a string
+/// @since 1.3
+#define NOVAS_SYSTEM_B1950         "B1950"
+
+/// The J2000 coordinate syste, as a string
+/// @since 1.3
+#define NOVAS_SYSTEM_J2000         "J2000"
+
+/// The 4th catalog (FK4) coordinate system as a string
+/// @since 1.3
+#define NOVAS_SYSTEM_FK4           "FK4"
+
+/// The 5th catalog (FK5) coordinate system as a string
+/// @since 1.3
+#define NOVAS_SYSTEM_FK5           "FK5"
+
+/// The Hipparcos dataset coordinate system as a string
+/// @since 1.3
+#define NOVAS_SYSTEM_HIP           "HIP"
+
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
 // as variables in novascon.h (with implementation in novascon.c), then define
@@ -1775,6 +1799,13 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los);
 
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 
+int make_cat_object_sys(const cat_entry *star, const char *restrict system, object *source);
+
+int make_redshifted_object_sys(const char *name, double ra, double dec, const char *restrict system, double z, object *source);
+
+double novas_epoch(const char *restrict system);
+
+
 // in parse.c
 double novas_hms_hours(const char *restrict hms);
 
@@ -1836,7 +1867,6 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 
 
-
 // <================= END of SuperNOVAS API =====================>
 
 
@@ -1878,6 +1908,7 @@ int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 #  define DEG360              360.0
 #  define JULIAN_YEAR_DAYS    365.25
 #  define JULIAN_CENTURY_DAYS 36525.0
+#  define BESSELIAN_YEAR_DAYS 365.2568983
 #  define ARCSEC              NOVAS_ARCSEC
 #  define DEGREE              NOVAS_DEGREE
 #  define HOURANGLE           NOVAS_HOURANGLE

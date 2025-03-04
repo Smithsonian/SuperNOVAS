@@ -20,6 +20,7 @@
 #include <errno.h>
 #include <string.h>
 #include <strings.h>              // strcasecmp() / strncasecmp()
+#include <ctype.h>                // toupper()
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
@@ -995,15 +996,17 @@ int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_ap
 }
 
 /**
- * Populates and object data structure with the data for a catalog source.
+ * Populates and object data structure with the data for a catalog source. The input source
+ * must be defined with ICRS coordinates. To create objects with other types of coordiantes
+ * use `make_cat_object_epoch()` instead.
  *
  * @param star          Pointer to structure to populate with the catalog data for a celestial
- *                      object located outside the solar system.
+ *                      object located outside the solar system, specified with ICRS coordinates.
  * @param[out] source   Pointer to the celestial object data structure to be populated.
- * @return              0 if successful, or -1 if 'cel_obj' is NULL or when type is
- *                      NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is
- *                      invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.
+ * @return              0 if successful, or -1 if either argument is NULL, or else 5 if
+ *                      'name' is too long.
  *
+ * @sa make_cat_object_sys()
  * @sa make_cat_entry()
  * @sa make_planet()
  * @sa make_ephem_object()
@@ -1018,6 +1021,63 @@ int make_cat_object(const cat_entry *star, object *source) {
   if(!star || !source)
     return novas_error(-1, EINVAL, "make_cat_object", "NULL parameter: star=%p, source=%p", star, source);
   make_object(NOVAS_CATALOG_OBJECT, star->starnumber, star->starname, star, source);
+  return 0;
+}
+
+static int cat_to_icrs(cat_entry *restrict star, const char *restrict system) {
+  if(strcasecmp(system, "ICRS") != 0) {
+    double jd = novas_epoch(system);
+    if(isnan(jd))
+      return novas_trace("cat_to_icrs", -1, 0);
+
+    if(jd != NOVAS_JD_J2000)
+      transform_cat(CHANGE_EPOCH, jd, star, NOVAS_JD_J2000, NOVAS_SYSTEM_FK5, star);
+
+    // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
+    transform_cat(CHANGE_J2000_TO_ICRS, 0.0, star, 0.0, NOVAS_SYSTEM_ICRS, star);
+  }
+  return 0;
+}
+
+/**
+ * Populates and object data structure with the data for a catalog source for a given system of
+ * catalog coordinates.
+ *
+ * @param star          Pointer to structure to populate with the catalog data for a celestial
+ *                      object located outside the solar system.
+ * @param system         Input catalog coordinate system epoch, e.g. "ICRS", "B1950.0", "J2000.0",
+ *                      "FK4", "FK5", or "HIP". In general, any Besselian or Julian year epoch can
+ *                      be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed value
+ *                      listed. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian
+ *                      epochs are assumed prior to 1984.0.
+ * @param[out] source   Pointer to the celestial object data structure to be populated with
+ *                      the corresponding ICRS catalog coordinates, after appying proper-motion
+ *                      and precession corrections as appropriate.
+ * @return              0 if successful, or -1 if any argument is NULL or if the input 'system' is
+ *                      invalid, or else 5 if 'name' is too long.
+ *
+ * @sa make_cat_object()
+ * @sa make_redshifted_object_sys()
+ * @sa novas_jd_for_epoch()
+ * @sa make_cat_entry()
+ * @sa place()
+ * @sa NOVAS_SYSTEM_ICRS
+ * @sa NOVAS_SYSTEM_HIP
+ * @sa NOVAS_SYSTEM_J2000
+ * @sa NOVAS_SYSTEM_B1950
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ */
+int make_cat_object_sys(const cat_entry *star, const char *restrict system, object *source) {
+  static const char *fn = "make_cat_object_epoch";
+
+  if(!system)
+    return novas_error(-1, EINVAL, fn, "coordinate system is NULL");
+
+  prop_error(fn, make_cat_object(star, source), 0);
+  prop_error(fn, cat_to_icrs(&source->star, system), 0);
+
   return 0;
 }
 
@@ -1099,7 +1159,7 @@ int make_orbital_object(const char *name, long num, const novas_orbital *orbit, 
  * @return            0 if successful, or 5 if 'name' is too long, else -1 if the 'source'
  *                    pointer is NULL.
  *
- * @sa make_redshifted_object()
+ * @sa make_redshifted_object_sys()
  * @sa novas_v2z()
  *
  * @since 1.2
@@ -1126,15 +1186,16 @@ int make_redshifted_cat_entry(const char *name, double ra, double dec, double z,
  * The user may change these default field values as appropriate afterwards, if necessary.
  *
  * @param name        Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL.
- * @param ra          [h] Right ascension of the object (hours).
- * @param dec         [deg] Declination of the object (degrees).
+ * @param ra          [h] ICRS Right ascension of the object (hours).
+ * @param dec         [deg] ICRS Declination of the object (degrees).
  * @param z           Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 =
  *                    f<sub>rest</sub> / f<sub>obs</sub> - 1).
  * @param[out] source Pointer to structure to populate.
  * @return            0 if successful, or 5 if 'name' is too long, else -1 if the 'source'
  *                    pointer is NULL.
  *
- * @sa make_redshifted_cat_object()
+ * @sa make_redshifted_object_sys()
+ * @sa make_cat_object()
  * @sa novas_v2z()
  *
  * @since 1.2
@@ -1147,6 +1208,51 @@ int make_redshifted_object(const char *name, double ra, double dec, double z, ob
 
   prop_error(fn, make_redshifted_cat_entry(name, ra, dec, z, &c), 0);
   prop_error(fn, make_cat_object(&c, source), 0);
+  return 0;
+}
+
+/**
+ * Populates a celestial object data structure with the parameters for a redhifted catalog
+ * source, such as a distant quasar or galaxy, for a given system of catalog coordinates.
+ *
+ * @param name          Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL.
+ * @param ra            [h] ICRS Right ascension of the object (hours).
+ * @param dec           [deg] ICRS Declination of the object (degrees).
+ * @param system        Input catalog coordinate system epoch, e.g. "ICRS", "B1950.0", "J2000.0",
+ *                      "FK4", "FK5", or "HIP". In general, any Besselian or Julian year epoch
+ *                      can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed
+ *                      value listed. If 'B' or 'J' is ommitted in front of the epoch year, then
+ *                      Besselian epochs are assumed prior to 1984.0.
+ * @param z             Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 =
+ *                      f<sub>rest</sub> / f<sub>obs</sub> - 1).
+ * @param[out] source   Pointer to the celestial object data structure to be populated with
+ *                      the corresponding ICRS catalog coordinates.
+ * @return              0 if successful, or -1 if any of the pointer arguments is NULL or the
+ *                      'system' is invalid, or else 1 if 'type' is invalid, 2 if 'number' is
+ *                      out of legal range or 5 if 'name' is too long.
+ *
+ *
+ * @sa make_redshifted_object()
+ * @sa make_cat_object_sys()
+ * @sa novas_jd_for_epoch()
+ * @sa place()
+ * @sa NOVAS_SYSTEM_ICRS
+ * @sa NOVAS_SYSTEM_HIP
+ * @sa NOVAS_SYSTEM_J2000
+ * @sa NOVAS_SYSTEM_B1950
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ */
+int make_redshifted_object_sys(const char *name, double ra, double dec, const char *restrict system, double z, object *source) {
+  static const char *fn = "make_redshifted_object_epoch";
+
+  if(!system)
+    return novas_error(-1, EINVAL, fn, "coordinate system is NULL");
+
+  prop_error(fn, make_redshifted_object(name, ra, dec, z, source), 0);
+  prop_error(fn, cat_to_icrs(&source->star, system), 0);
+
   return 0;
 }
 
@@ -1832,4 +1938,81 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
   precession(NOVAS_JD_J2000, v, jd, v);
 
   return novas_vdot(u, v);
+}
+
+/**
+ * Returns the Julian day corresponding to an astronomical coordinate epoch.
+ *
+ * @param system        Coordinate system, e.g. "ICRS", "B1950.0", "J2000.0", "FK4", "FK5",
+ *                      "1950", "2000", or "HIP". In general, any Besselian or Julian year epoch
+ *                      can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed
+ *                      values listed. If 'B' or 'J' is ommitted in front of the epoch year, then
+ *                      Besselian epochs are assumed prior to 1984.0.
+ * @return              [day] The Julian day corresponding to the given coordinate epoch, or else
+ *                      NAN if the input string is NULL or the input is not recognised as a
+ *                      coordinate epoch specification (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa make_cat_object_sys()
+ * @sa make_redshifted_object_sys()
+ * @sa transform_cat()
+ * @sa precession()
+ * @sa NOVAS_SYSTEM_ICRS
+ * @sa NOVAS_SYSTEM_B1950
+ * @sa NOVAS_SYSTEM_J2000
+ * @sa NOVAS_SYSTEM_HIP
+ */
+double novas_epoch(const char *restrict system) {
+  static const char *fn = "novas_epoch";
+
+  double year;
+  char type = 0;
+
+  if(!system) {
+    novas_error(0, EINVAL, fn, "epoch is NULL");
+    return NAN;
+  }
+
+  if(!system[0]) {
+    novas_error(0, EINVAL, fn, "epoch is empty");
+    return NAN;
+  }
+
+  if(strcasecmp(system, NOVAS_SYSTEM_ICRS) == 0)
+    return NOVAS_JD_J2000;
+
+  if(strcasecmp(system, NOVAS_SYSTEM_FK5) == 0)
+    return NOVAS_JD_J2000;
+
+  if(strcasecmp(system, NOVAS_SYSTEM_FK4) == 0)
+    return NOVAS_JD_B1950;
+
+  if(strcasecmp(system, NOVAS_SYSTEM_HIP) == 0)
+    return NOVAS_JD_HIP;
+
+  if(toupper(system[0]) == 'B') {
+    type = 'B';
+    system++;
+  }
+  else if(toupper(system[0]) == 'J') {
+    type = 'J';
+    system++;
+  }
+
+  errno = 0;
+
+  if(sscanf(system, "%lf", &year) < 1) {
+    novas_error(0, EINVAL, fn, "Invalid epoch: %s", system);
+    return NAN;
+  }
+
+  if(!type)
+    type = year < 1984.0 ? 'B' : 'J';
+
+  if(type == 'J')
+    return NOVAS_JD_J2000 + (year - 2000.0) * JULIAN_YEAR_DAYS;
+
+  return NOVAS_JD_B1950 + (year - 1950.0) * BESSELIAN_YEAR_DAYS;
 }

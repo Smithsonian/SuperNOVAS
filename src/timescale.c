@@ -1181,3 +1181,4 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
   return scale;
 }
 
+
