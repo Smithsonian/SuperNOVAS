@@ -87,9 +87,6 @@ src/super.c
 .RI "int \fBmake_solar_system_observer\fP (const double *sc_pos, const double *sc_vel, \fBobserver\fP *obs)"
 .br
 .ti -1c
-.RI "double \fBnovas_dms_degrees\fP (const char *restrict dms)"
-.br
-.ti -1c
 .RI "int \fBnovas_e2h_offset\fP (double dra, double ddec, double pa, double *restrict daz, double *restrict del)"
 .br
 .ti -1c
@@ -105,19 +102,10 @@ src/super.c
 .RI "double \fBnovas_helio_dist\fP (double jd_tdb, const \fBobject\fP *restrict source, double *restrict rate)"
 .br
 .ti -1c
-.RI "double \fBnovas_hms_hours\fP (const char *restrict hms)"
-.br
-.ti -1c
 .RI "double \fBnovas_hpa\fP (double az, double el, double lat)"
 .br
 .ti -1c
 .RI "double \fBnovas_lsr_to_ssb_vel\fP (double epoch, double ra, double dec, double vLSR)"
-.br
-.ti -1c
-.RI "double \fBnovas_parse_dms\fP (const char *restrict dms, char **restrict tail)"
-.br
-.ti -1c
-.RI "double \fBnovas_parse_hms\fP (const char *restrict hms, char **restrict tail)"
 .br
 .ti -1c
 .RI "enum \fBnovas_planet\fP \fBnovas_planet_for_name\fP (const char *restrict name)"
@@ -1221,52 +1209,6 @@ Attila Kovacs
 
 .PP
 References \fBmake_in_space()\fP, \fBmake_observer()\fP, and \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP\&.
-.SS "double novas_dms_degrees (const char *restrict dms)"
-Returns the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the degree and minutes may be separated by the letter \fCd\fP or the degree symbol (\fC0xB0\fP), and the minutes and seconds may be separated by \fCm\fP or a single quote `'\fC, or a right quote (\fP0x92`)\&. The seconds may be followed by 's' or double quote \fC"\fP or double right quote (\fC0x94\fP)\&. Finally, the last component may additionally be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction\&.
-.PP
-For example, all of the lines below specify the same angle:
-.PP
-.PP
-.nf
-
- -179:59:59\&.999
- -179d 59m 59\&.999s
- -179 59' 59\&.999
- -179°59’59\&.999”
- 179:59:59\&.999S
- 179 59 59\&.999 W
- 179_59_59\&.999__S
-.fi
-.PP
-.PP
-\fBParameters\fP
-.RS 4
-\fIdms\fP String specifying degrees, minutes, and seconds, which correspond to an angle\&. Angles in any range are permitted, but the minutes and seconds must be >=0 and <60\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-[deg] Corresponding decimal angle value, or else NAN if there was an error parsing the string (errno will be set to EINVAL)\&.
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.3 
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_hms_hours()\fP 
-.RE
-.PP
-
-.PP
-References \fBnovas_parse_dms()\fP\&.
 .SS "int novas_e2h_offset (double dra, double ddec, double pa, double *restrict daz, double *restrict del)"
 Converts coordinate offsets, from the local equatorial system to local horizontal offsets\&. Converting between local flat projections and spherical coordinates usually requires a WCS projection\&.
 .PP
@@ -1476,49 +1418,6 @@ Attila Kovacs
 
 .PP
 References \fBephemeris()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_HELIOCENTER\fP, and \fBNOVAS_REDUCED_ACCURACY\fP\&.
-.SS "double novas_hms_hours (const char *restrict hms)"
-Returns the decimal hours for a HMS string specification\&. The hour, minute, and second components may be separated by spaces, tabs, colons \fC:\fP, or a combination thereof\&. Additionally, the hours and minutes may be separated by the letter \fCh\fP, and the minutes and seconds may be separated by \fCm\fP or a single quote `'\fC, or a right quote (\fP0x92`)\&. The seconds may be followed by 's' or double quote \fC"\fP or double right quote (\fC0x94\fP)\&.
-.PP
-For example, all of the lines below specify the same time:
-.PP
-.PP
-.nf
-
- 23:59:59\&.999
- 23h 59m 59\&.999
- 23h 59' 59\&.999
- 23H59’59\&.999”
-.fi
-.PP
-.PP
-\fBParameters\fP
-.RS 4
-\fIhms\fP String specifying hours, minutes, and seconds, which correspond to a time between 0 and 24 h\&. Time in any range is permitted, but the minutes and seconds must be >=0 and <60\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-[hours] Corresponding decimal time value, or else NAN if there was an error parsing the string (errno will be set to EINVAL)\&.
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.3 
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_dms_degrees()\fP 
-.RE
-.PP
-
-.PP
-References \fBnovas_parse_hms()\fP\&.
 .SS "double novas_hpa (double az, double el, double lat)"
 Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky\&. The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions at the given location\&. The polar wobble is not included in the calculation\&.
 .PP
@@ -1603,99 +1502,6 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_JD_J2000\fP, \fBprecession()\fP, and \fBradec2vector()\fP\&.
-.SS "double novas_parse_dms (const char *restrict dms, char **restrict tail)"
-Parses the decimal degrees for a DMS string specification\&. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the degree and minutes may be separated by the letter \fCd\fP or the degree symbol (\fC0xB0\fP), and the minutes and seconds may be separated by \fCm\fP or a single quote `'\fC, or a right quote (\fP0x92`)\&. The seconds may be followed by 's' or double quote \fC"\fP or double right quote (\fC0x94\fP)\&. Finally, the last component may additionally be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction\&.
-.PP
-For example, all of the lines below specify the same angle:
-.PP
-.PP
-.nf
-
- -179:59:59\&.999
- -179d 59m 59\&.999s
- -179 59' 59\&.999
- -179°59’59\&.999”
- 179:59:59\&.999S
- 179:59:59\&.999 W
- 179_59_59\&.999__S
-.fi
-.PP
-.PP
-\fBParameters\fP
-.RS 4
-\fIdms\fP String specifying degrees, minutes, and seconds, which correspond to an angle\&. Angles in any range are permitted, but the minutes and seconds must be >=0 and <60\&. 
-.br
-\fItail\fP (optional) If not NULL it will be set to the next character in the string after the parsed time\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-[deg] Corresponding decimal angle value, or else NAN if there was an error parsing the string (errno will be set to EINVAL)\&.
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.3 
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_dms_degrees()\fP 
-.PP
-\fBnovas_parse_hms()\fP 
-.RE
-.PP
-
-.SS "double novas_parse_hms (const char *restrict hms, char **restrict tail)"
-Parses the decimal hours for a HMS string specification\&. The hour, minute, and second components may be separated by spaces, tabs, colons \fC:\fP, underscore \fC_\fP, or a combination thereof\&. Additionally, the hours and minutes may be separated by the letter \fCh\fP, and the minutes and seconds may be separated by \fCm\fP or a single quote `'\fC, or a right quote (\fP0x92`)\&. The seconds may be followed by 's' or double quote \fC"\fP or double right quote (\fC0x94\fP)\&.
-.PP
-Additionally, the hour and minutes may be separated by the letter \fCh\fP, and the minutes and seconds may be separated by \fCm\fP, or a single quote `'`\&. For example, all of the lines below specify the same time:
-.PP
-.PP
-.nf
-
- 23:59:59\&.999
- 23h 59m 59\&.999
- 23h 59' 59\&.999
- 23H59’59\&.999”
-.fi
-.PP
-.PP
-\fBParameters\fP
-.RS 4
-\fIhms\fP String specifying hours, minutes, and seconds, which correspond to a time between 0 and 24 h\&. Time in any range is permitted, but the minutes and seconds must be >=0 and <60\&. 
-.br
-\fItail\fP (optional) If not NULL it will be set to the next character in the string after the parsed time\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-[hours] Corresponding decimal time value, or else NAN if there was an error parsing the string (errno will be set to EINVAL)\&.
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.3 
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBnovas_hms_hours()\fP 
-.PP
-\fBnovas_parse_dms()\fP 
-.RE
-.PP
-
 .SS "enum \fBnovas_planet\fP novas_planet_for_name (const char *restrict name)"
 Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found\&.
 .PP

@@ -151,6 +151,8 @@ Functions</h2></td></tr>
 <tr class="separator:a4934da85b9722ef43a5b238f3e1971e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ec9d054b7d363b3db1d065507a1ba41" id="r_a5ec9d054b7d363b3db1d065507a1ba41"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format</a> (enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> calendar, enum <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">novas_date_format</a> format, const char *restrict date, char **restrict tail)</td></tr>
 <tr class="separator:a5ec9d054b7d363b3db1d065507a1ba41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72245b3ea6099c573278f721a4bfd3d9" id="r_a72245b3ea6099c573278f721a4bfd3d9"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a72245b3ea6099c573278f721a4bfd3d9">novas_parse_timescale</a> (const char *restrict str, char **restrict tail)</td></tr>
+<tr class="separator:a72245b3ea6099c573278f721a4bfd3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a084e5a2dcd20860af7176754d3a32202" id="r_a084e5a2dcd20860af7176754d3a32202"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale, char *restrict buf)</td></tr>
 <tr class="separator:a084e5a2dcd20860af7176754d3a32202"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47bcb1e3c5df56a0ffdf1a127e52598" id="r_ad47bcb1e3c5df56a0ffdf1a127e52598"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale, long ijd, double fjd, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time)</td></tr>
@@ -248,7 +250,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a>, <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+<p class="reference">References <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a>, and <a class="el" href="timescale_8c.html#a72245b3ea6099c573278f721a4bfd3d9">novas_parse_timescale()</a>.</p>
 
 </div>
 </div>
@@ -800,7 +802,55 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dd>
 <a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="super_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+<p class="reference">References <a class="el" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+
+</div>
+</div>
+<a id="a72245b3ea6099c573278f721a4bfd3d9" name="a72245b3ea6099c573278f721a4bfd3d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72245b3ea6099c573278f721a4bfd3d9">&#9670;&#160;</a></span>novas_parse_timescale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> novas_parse_timescale </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **restrict&#160;</td>
+          <td class="paramname"><em>tail</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses the timescale from a string containing a standard abbreviation (case insensitive), and returns the updated parse position after the timescale specification (if any). The following timescale values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", "TDB".</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">str</td><td>String specifying an astronomical timescale. Leading white spaces will be skipped over. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed timescale specification.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL, empty, or could not be matched to a timescale value (errno will be set to EINVAL also).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#ad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
 
 </div>
 </div>
@@ -1102,7 +1152,9 @@ struct timespec</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL, empty, or could not be matched to a timescale value (errno will be set to EINVAL also).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a72245b3ea6099c573278f721a4bfd3d9">novas_parse_timescale()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#ad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time()</a> </dd>
 <dd>

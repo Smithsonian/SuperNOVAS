@@ -2206,6 +2206,13 @@
     </member>
     <member kind="function">
       <type>double</type>
+      <name>novas_parse_degrees</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad3d04d065e76a5921995e96f67c24c41</anchor>
+      <arglist>(const char *restrict str, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
       <name>novas_parse_dms</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aa8d11652c5deb9e2ad78fd70ccac3378</anchor>
@@ -2216,6 +2223,20 @@
       <name>novas_parse_hms</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a22e1bcf36379e0244b665c3e22d5fcba</anchor>
+      <arglist>(const char *restrict str, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_hours</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aff8c2c3fae3be867d3fc73972a158514</anchor>
+      <arglist>(const char *restrict str, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_timescale</type>
+      <name>novas_parse_timescale</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a72245b3ea6099c573278f721a4bfd3d9</anchor>
       <arglist>(const char *restrict str, char **restrict tail)</arglist>
     </member>
     <member kind="function">
@@ -2308,6 +2329,20 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ab04bff3b97c132e358e11c3a5b7a3081</anchor>
       <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_str_degrees</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a6d6ada07aab7ce09fb8ea7b12660ebcd</anchor>
+      <arglist>(const char *restrict dms)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_str_hours</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a3ed26b6af870f6dbc353f651563afd4a</anchor>
+      <arglist>(const char *restrict hms)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4368,6 +4403,67 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>parse.c</name>
+    <path>src/</path>
+    <filename>parse_8c.html</filename>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_dms_degrees</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>aca89d2a0f49afad45dbddffc09c3adae</anchor>
+      <arglist>(const char *restrict dms)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_hms_hours</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>a696e44a2d1c788f9f335611efd7ed958</anchor>
+      <arglist>(const char *restrict hms)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_degrees</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>ad3d04d065e76a5921995e96f67c24c41</anchor>
+      <arglist>(const char *restrict str, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_dms</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>ac651a7737d1f10e5267572f5c54fae92</anchor>
+      <arglist>(const char *restrict dms, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_hms</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>a1aad2a903328080626db399450a7e297</anchor>
+      <arglist>(const char *restrict hms, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_hours</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>aff8c2c3fae3be867d3fc73972a158514</anchor>
+      <arglist>(const char *restrict str, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_str_degrees</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>a10a24fc28fa74efa75abf566bb61af5b</anchor>
+      <arglist>(const char *restrict str)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_str_hours</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>ac69c17c646ddf3a5447557338a8490b4</anchor>
+      <arglist>(const char *restrict str)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>refract.c</name>
     <path>src/</path>
     <filename>refract_8c.html</filename>
@@ -4801,13 +4897,6 @@
       <arglist>(const double *sc_pos, const double *sc_vel, observer *obs)</arglist>
     </member>
     <member kind="function">
-      <type>double</type>
-      <name>novas_dms_degrees</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aca89d2a0f49afad45dbddffc09c3adae</anchor>
-      <arglist>(const char *restrict dms)</arglist>
-    </member>
-    <member kind="function">
       <type>int</type>
       <name>novas_e2h_offset</name>
       <anchorfile>super_8c.html</anchorfile>
@@ -4844,13 +4933,6 @@
     </member>
     <member kind="function">
       <type>double</type>
-      <name>novas_hms_hours</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a696e44a2d1c788f9f335611efd7ed958</anchor>
-      <arglist>(const char *restrict hms)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
       <name>novas_hpa</name>
       <anchorfile>super_8c.html</anchorfile>
       <anchor>a73fcb54e47b2be0aa92810b5f55f7a3c</anchor>
@@ -4862,20 +4944,6 @@
       <anchorfile>super_8c.html</anchorfile>
       <anchor>aad80bf94be2efc36c340994829df8207</anchor>
       <arglist>(double epoch, double ra, double dec, double vLSR)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_parse_dms</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>ac651a7737d1f10e5267572f5c54fae92</anchor>
-      <arglist>(const char *restrict dms, char **restrict tail)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_parse_hms</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a1aad2a903328080626db399450a7e297</anchor>
-      <arglist>(const char *restrict hms, char **restrict tail)</arglist>
     </member>
     <member kind="function">
       <type>enum novas_planet</type>
@@ -5106,6 +5174,13 @@
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>a5ec9d054b7d363b3db1d065507a1ba41</anchor>
       <arglist>(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_timescale</type>
+      <name>novas_parse_timescale</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a72245b3ea6099c573278f721a4bfd3d9</anchor>
+      <arglist>(const char *restrict str, char **restrict tail)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

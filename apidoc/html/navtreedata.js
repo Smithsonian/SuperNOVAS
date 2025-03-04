@@ -82,7 +82,7 @@ var NAVTREE =
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md92", null ],
       [ "Release schedule", "index.html#autotoc_md94", null ],
-      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[1.3.0-rc4] - 2025-03-04", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ]
@@ -155,9 +155,9 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1",
-"novas_8h.html#a7822b81ad3f75b448f446ed4da774e75",
-"refract_8c.html#a6b49f92f8f818f2272613e3432185a39",
-"timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41"
+"novas_8h.html#a73fcb54e47b2be0aa92810b5f55f7a3c",
+"nutation_8h.html#a280cbf02b13ca57b3d77451be06e7dbc",
+"super_8c.html#af4fa5359b8b0167a2780baff17b164a5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -54,6 +54,9 @@ src/timescale.c
 .RI "double \fBnovas_parse_date_format\fP (enum \fBnovas_calendar_type\fP calendar, enum \fBnovas_date_format\fP format, const char *restrict date, char **restrict tail)"
 .br
 .ti -1c
+.RI "enum \fBnovas_timescale\fP \fBnovas_parse_timescale\fP (const char *restrict str, char **restrict tail)"
+.br
+.ti -1c
 .RI "int \fBnovas_print_timescale\fP (enum \fBnovas_timescale\fP scale, char *restrict buf)"
 .br
 .ti -1c
@@ -172,7 +175,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBnovas_parse_date()\fP, \fBnovas_timescale_for_string()\fP, and \fBNOVAS_UTC\fP\&.
+References \fBnovas_parse_date()\fP, and \fBnovas_parse_timescale()\fP\&.
 .SS "double novas_diff_tcb (const \fBnovas_timespec\fP * t1, const \fBnovas_timespec\fP * t2)"
 Returns the Barycentric Coordinate Time (TCB) based time difference (t1 - t2) in days between two astronomical time specifications\&. TCB progresses slightly faster than time on Earth, at a rate about 1\&.6&times10\*{-8\*}  higher, due to the lack of gravitational time dilation by the Earth or Sun\&.
 .PP
@@ -640,6 +643,45 @@ Attila Kovacs
 
 .PP
 References \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DMY\fP, \fBnovas_get_debug_mode()\fP, \fBnovas_jd_from_date()\fP, \fBNOVAS_MDY\fP, \fBnovas_parse_hms()\fP, and \fBNOVAS_YMD\fP\&.
+.SS "enum \fBnovas_timescale\fP novas_parse_timescale (const char *restrict str, char **restrict tail)"
+Parses the timescale from a string containing a standard abbreviation (case insensitive), and returns the updated parse position after the timescale specification (if any)\&. The following timescale values are recognised: 'UTC', 'UT', 'UT0', 'UT1', 'GMT', 'TAI', 'GPS', 'TT', 'ET', 'TCG', 'TCB', 'TDB'\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIstr\fP String specifying an astronomical timescale\&. Leading white spaces will be skipped over\&. 
+.br
+\fItail\fP (optional) If not NULL it will be set to the next character in the string after the parsed timescale specification\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The SuperNOVAS timescale constant (<=0), or else -1 if the string was NULL, empty, or could not be matched to a timescale value (errno will be set to EINVAL also)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_timescale_for_string()\fP 
+.PP
+\fBnovas_set_time()\fP 
+.PP
+\fBnovas_set_split_time()\fP 
+.PP
+\fBnovas_print_timescale()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_timescale_for_string()\fP, and \fBNOVAS_UTC\fP\&.
 .SS "int novas_print_timescale (enum \fBnovas_timescale\fP scale, char *restrict buf)"
 Prints the standard string representation of the timescale to the specified buffer\&. The string is terminated after\&. E\&.g\&. 'UTC', or 'TAI'\&. It will print dates in the Gregorian calendar, which was introduced in was introduced on 15 October 1582 only\&. Thus the
 .PP
@@ -855,6 +897,8 @@ Attila Kovacs
 .PP
 \fBSee also\fP
 .RS 4
+\fBnovas_parse_timescale()\fP 
+.PP
 \fBnovas_set_time()\fP 
 .PP
 \fBnovas_set_split_time()\fP 

@@ -56,7 +56,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md94"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.3.0-rc4] - 2025-03-04" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -736,8 +736,11 @@
           <topic label="novas_orbit_posvel" href="novas_8h.html#a4510a3235a693f122899983901211c30"/>
           <topic label="novas_parse_date" href="novas_8h.html#a4934da85b9722ef43a5b238f3e1971e4"/>
           <topic label="novas_parse_date_format" href="novas_8h.html#a5ec9d054b7d363b3db1d065507a1ba41"/>
+          <topic label="novas_parse_degrees" href="novas_8h.html#ad3d04d065e76a5921995e96f67c24c41"/>
           <topic label="novas_parse_dms" href="novas_8h.html#aa8d11652c5deb9e2ad78fd70ccac3378"/>
           <topic label="novas_parse_hms" href="novas_8h.html#a22e1bcf36379e0244b665c3e22d5fcba"/>
+          <topic label="novas_parse_hours" href="novas_8h.html#aff8c2c3fae3be867d3fc73972a158514"/>
+          <topic label="novas_parse_timescale" href="novas_8h.html#a72245b3ea6099c573278f721a4bfd3d9"/>
           <topic label="novas_planet_for_name" href="novas_8h.html#a2cf7410aa68b980112734227b40890d6"/>
           <topic label="novas_print_timescale" href="novas_8h.html#a084e5a2dcd20860af7176754d3a32202"/>
           <topic label="novas_radio_refraction" href="novas_8h.html#a6b49f92f8f818f2272613e3432185a39"/>
@@ -751,6 +754,8 @@
           <topic label="novas_sky_pos" href="novas_8h.html#ac365a1e015ae1f875dc5a66fd5435b2f"/>
           <topic label="novas_ssb_to_lsr_vel" href="novas_8h.html#a99ed25baa029f3980924da8c8af54d1a"/>
           <topic label="novas_standard_refraction" href="novas_8h.html#ab04bff3b97c132e358e11c3a5b7a3081"/>
+          <topic label="novas_str_degrees" href="novas_8h.html#a6d6ada07aab7ce09fb8ea7b12660ebcd"/>
+          <topic label="novas_str_hours" href="novas_8h.html#a3ed26b6af870f6dbc353f651563afd4a"/>
           <topic label="novas_sun_angle" href="novas_8h.html#a2d1ef3bc6d99aa473511e45c6e0481e9"/>
           <topic label="novas_timescale_for_string" href="novas_8h.html#ab344242721ca00709d4dc482a7934e2a"/>
           <topic label="novas_timestamp" href="novas_8h.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81"/>
@@ -1060,6 +1065,16 @@
           <topic label="iau2000b" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c"/>
           <topic label="nu2000k" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841"/>
         </topic>
+        <topic label="parse.c" href="parse_8c.html">
+          <topic label="novas_dms_degrees" href="parse_8c.html#aca89d2a0f49afad45dbddffc09c3adae"/>
+          <topic label="novas_hms_hours" href="parse_8c.html#a696e44a2d1c788f9f335611efd7ed958"/>
+          <topic label="novas_parse_degrees" href="parse_8c.html#ad3d04d065e76a5921995e96f67c24c41"/>
+          <topic label="novas_parse_dms" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92"/>
+          <topic label="novas_parse_hms" href="parse_8c.html#a1aad2a903328080626db399450a7e297"/>
+          <topic label="novas_parse_hours" href="parse_8c.html#aff8c2c3fae3be867d3fc73972a158514"/>
+          <topic label="novas_str_degrees" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b"/>
+          <topic label="novas_str_hours" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4"/>
+        </topic>
         <topic label="refract.c" href="refract_8c.html">
           <topic label="novas_inv_refract" href="refract_8c.html#a81da80ae3ab1d0a444f39bde2af3a732"/>
           <topic label="novas_optical_refraction" href="refract_8c.html#ae4511a80a1defbb1e1fdc29c289e7de4"/>
@@ -1131,17 +1146,13 @@
           <topic label="make_redshifted_cat_entry" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3"/>
           <topic label="make_redshifted_object" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11"/>
           <topic label="make_solar_system_observer" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
-          <topic label="novas_dms_degrees" href="super_8c.html#aca89d2a0f49afad45dbddffc09c3adae"/>
           <topic label="novas_e2h_offset" href="super_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f"/>
           <topic label="novas_epa" href="super_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0"/>
           <topic label="novas_equ_sep" href="super_8c.html#a4f7e06b2fa5b3145b37aec4f9c2d1602"/>
           <topic label="novas_h2e_offset" href="super_8c.html#a7977de3e3edf8120b50cbd026c155f47"/>
           <topic label="novas_helio_dist" href="super_8c.html#af4fa5359b8b0167a2780baff17b164a5"/>
-          <topic label="novas_hms_hours" href="super_8c.html#a696e44a2d1c788f9f335611efd7ed958"/>
           <topic label="novas_hpa" href="super_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c"/>
           <topic label="novas_lsr_to_ssb_vel" href="super_8c.html#aad80bf94be2efc36c340994829df8207"/>
-          <topic label="novas_parse_dms" href="super_8c.html#ac651a7737d1f10e5267572f5c54fae92"/>
-          <topic label="novas_parse_hms" href="super_8c.html#a1aad2a903328080626db399450a7e297"/>
           <topic label="novas_planet_for_name" href="super_8c.html#a2cf7410aa68b980112734227b40890d6"/>
           <topic label="novas_sep" href="super_8c.html#a9f33de2b26a19a5e20827e9e918b3375"/>
           <topic label="novas_set_orbsys_pole" href="super_8c.html#a706ecf8998b78e48051d2876efc6e01c"/>
@@ -1176,6 +1187,7 @@
           <topic label="novas_offset_time" href="timescale_8c.html#a01f98b2b8033c8dbacaeab37e9198e91"/>
           <topic label="novas_parse_date" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4"/>
           <topic label="novas_parse_date_format" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41"/>
+          <topic label="novas_parse_timescale" href="timescale_8c.html#a72245b3ea6099c573278f721a4bfd3d9"/>
           <topic label="novas_print_timescale" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202"/>
           <topic label="novas_set_split_time" href="timescale_8c.html#ad47bcb1e3c5df56a0ffdf1a127e52598"/>
           <topic label="novas_set_time" href="timescale_8c.html#af4a1a5180905a7d8f76aeafe3f9a8ebb"/>
