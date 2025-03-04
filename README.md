@@ -464,8 +464,8 @@ the components, e.g.:
 
 ```c
  make_cat_entry("Antares", "FK4", 1, 
-   novas_hms_hours("16h 26m 20.1918s"),   // e.g. using h,m,s and spaces as separators 
-   novas_dms_degrees("-26:19:23.138"),    // e.g. using colons to separate components
+   novas_str_hours("16h 26m 20.1918s"),   // e.g. using h,m,s and spaces as separators 
+   novas_str_degrees("-26:19:23.138"),    // e.g. using colons to separate components
    -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
