@@ -163,6 +163,8 @@ Functions</h2></td></tr>
 <tr class="separator:aa423a88cd3f434642fc89d47390184f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9b7a622486f2904615ceed1ba94cd8f" id="r_ab9b7a622486f2904615ceed1ba94cd8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object</a> (const <a class="el" href="structcat__entry.html">cat_entry</a> *star, <a class="el" href="structobject.html">object</a> *source)</td></tr>
 <tr class="separator:ab9b7a622486f2904615ceed1ba94cd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5104d7db66ce2d8c61c7ad21599fb45e" id="r_a5104d7db66ce2d8c61c7ad21599fb45e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys</a> (const <a class="el" href="structcat__entry.html">cat_entry</a> *star, const char *restrict system, <a class="el" href="structobject.html">object</a> *source)</td></tr>
+<tr class="separator:a5104d7db66ce2d8c61c7ad21599fb45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22303f98df2d63edf6d8452ff3a43b2" id="r_aa22303f98df2d63edf6d8452ff3a43b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object</a> (const char *name, long num, <a class="el" href="structobject.html">object</a> *body)</td></tr>
 <tr class="separator:aa22303f98df2d63edf6d8452ff3a43b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c5e215babeeba078ca7b3e9be42e555" id="r_a3c5e215babeeba078ca7b3e9be42e555"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a> (const char *name, long num, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *orbit, <a class="el" href="structobject.html">object</a> *body)</td></tr>
@@ -171,12 +173,16 @@ Functions</h2></td></tr>
 <tr class="separator:a11aa3ce6bcdda5b7065b38d6cfaf63d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae579a49d84696a913fd0d9f348bb5b11" id="r_ae579a49d84696a913fd0d9f348bb5b11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object</a> (const char *name, double ra, double dec, double z, <a class="el" href="structobject.html">object</a> *source)</td></tr>
 <tr class="separator:ae579a49d84696a913fd0d9f348bb5b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257abae9391aec835dc2b94d9788b9f9" id="r_a257abae9391aec835dc2b94d9788b9f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys</a> (const char *name, double ra, double dec, const char *restrict system, double z, <a class="el" href="structobject.html">object</a> *source)</td></tr>
+<tr class="separator:a257abae9391aec835dc2b94d9788b9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c3f1a1bc3fd9ac6d211806913d2d529" id="r_a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer</a> (const double *sc_pos, const double *sc_vel, <a class="el" href="structobserver.html">observer</a> *obs)</td></tr>
 <tr class="separator:a9c3f1a1bc3fd9ac6d211806913d2d529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13cd0b80eaa7bc682013f7e8ffbdbd6f" id="r_a13cd0b80eaa7bc682013f7e8ffbdbd6f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f">novas_e2h_offset</a> (double dra, double ddec, double pa, double *restrict daz, double *restrict del)</td></tr>
 <tr class="separator:a13cd0b80eaa7bc682013f7e8ffbdbd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a095ba0ee644dc00c11dcdc5616bc96b0" id="r_a095ba0ee644dc00c11dcdc5616bc96b0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0">novas_epa</a> (double ha, double dec, double lat)</td></tr>
 <tr class="separator:a095ba0ee644dc00c11dcdc5616bc96b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4e18885b7d173eb3fe5f18b06f0b4d4" id="r_af4e18885b7d173eb3fe5f18b06f0b4d4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#af4e18885b7d173eb3fe5f18b06f0b4d4">novas_epoch</a> (const char *restrict system)</td></tr>
+<tr class="separator:af4e18885b7d173eb3fe5f18b06f0b4d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f7e06b2fa5b3145b37aec4f9c2d1602" id="r_a4f7e06b2fa5b3145b37aec4f9c2d1602"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a4f7e06b2fa5b3145b37aec4f9c2d1602">novas_equ_sep</a> (double ra1, double dec1, double ra2, double dec2)</td></tr>
 <tr class="separator:a4f7e06b2fa5b3145b37aec4f9c2d1602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7977de3e3edf8120b50cbd026c155f47" id="r_a7977de3e3edf8120b50cbd026c155f47"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="super_8c.html#a7977de3e3edf8120b50cbd026c155f47">novas_h2e_offset</a> (double daz, double del, double pa, double *restrict dra, double *restrict ddec)</td></tr>
@@ -1344,16 +1350,18 @@ novas_calc_geometric_position() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Populates and object data structure with the data for a catalog source.</p>
+<p>Populates and object data structure with the data for a catalog source. The input source must be defined with ICRS coordinates. To create objects with other types of coordiantes use <code>make_cat_object_epoch()</code> instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to structure to populate with the catalog data for a celestial object located outside the solar system. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to structure to populate with the catalog data for a celestial object located outside the solar system, specified with ICRS coordinates. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to the celestial object data structure to be populated. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if 'cel_obj' is NULL or when type is NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#a39b2e39d29f1b57c5f785284ba7ca43f">make_cat_entry()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either argument is NULL, or else 5 if 'name' is too long.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a39b2e39d29f1b57c5f785284ba7ca43f">make_cat_entry()</a> </dd>
 <dd>
 <a class="el" href="novas_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a> </dd>
 <dd>
@@ -1366,6 +1374,71 @@ novas_calc_geometric_position() </dd>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="structcat__entry.html#ad26c9b08b1028d2a7f35c447841022b1">cat_entry::starname</a>, and <a class="el" href="structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8">cat_entry::starnumber</a>.</p>
+
+</div>
+</div>
+<a id="a5104d7db66ce2d8c61c7ad21599fb45e" name="a5104d7db66ce2d8c61c7ad21599fb45e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5104d7db66ce2d8c61c7ad21599fb45e">&#9670;&#160;</a></span>make_cat_object_sys()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_cat_object_sys </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structcat__entry.html">cat_entry</a> *&#160;</td>
+          <td class="paramname"><em>star</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>system</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Populates and object data structure with the data for a catalog source for a given system of catalog coordinates.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to structure to populate with the catalog data for a celestial object located outside the solar system. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">system</td><td>Input catalog coordinate system epoch, e.g. "ICRS", "B1950.0", "J2000.0", "FK4", "FK5", or "HIP". In general, any Besselian or Julian year epoch can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed value listed. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian epochs are assumed prior to 1984.0. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to the celestial object data structure to be populated with the corresponding ICRS catalog coordinates, after appying proper-motion and precession corrections as appropriate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any argument is NULL or if the input 'system' is invalid, or else 5 if 'name' is too long.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys()</a> </dd>
+<dd>
+novas_jd_for_epoch() </dd>
+<dd>
+<a class="el" href="novas_8c.html#a39b2e39d29f1b57c5f785284ba7ca43f">make_cat_entry()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a9d170036a074eff7634bdb23e54871b0">NOVAS_SYSTEM_ICRS</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f">NOVAS_SYSTEM_HIP</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#ae67fecc99f46afc9b4f12fc27b4fbe6c">NOVAS_SYSTEM_J2000</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#aaf00ed93616e93d09df832d485a0e115">NOVAS_SYSTEM_B1950</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a>, and <a class="el" href="structobject.html#a0ead8b30742e9c76887f5ff76cabae7c">object::star</a>.</p>
 
 </div>
 </div>
@@ -1545,7 +1618,7 @@ novas_calc_geometric_position() </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or 5 if 'name' is too long, else -1 if the 'source' pointer is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
@@ -1602,21 +1675,107 @@ novas_calc_geometric_position() </dd>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">name</td><td>Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Right ascension of the object (hours). </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Declination of the object (degrees). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] ICRS Right ascension of the object (hours). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] ICRS Declination of the object (degrees). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">z</td><td>Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 = f<sub>rest</sub> / f<sub>obs</sub> - 1). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to structure to populate. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or 5 if 'name' is too long, else -1 if the 'source' pointer is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>make_redshifted_cat_object() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a> </dd>
 <dd>
 <a class="el" href="super_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
 <p class="reference">References <a class="el" href="super_8c.html#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a>, and <a class="el" href="super_8c.html#a11aa3ce6bcdda5b7065b38d6cfaf63d3">make_redshifted_cat_entry()</a>.</p>
+
+</div>
+</div>
+<a id="a257abae9391aec835dc2b94d9788b9f9" name="a257abae9391aec835dc2b94d9788b9f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a257abae9391aec835dc2b94d9788b9f9">&#9670;&#160;</a></span>make_redshifted_object_sys()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_redshifted_object_sys </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ra</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>system</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy, for a given system of catalog coordinates.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">name</td><td>Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] ICRS Right ascension of the object (hours). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] ICRS Declination of the object (degrees). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">system</td><td>Input catalog coordinate system epoch, e.g. "ICRS", "B1950.0", "J2000.0", "FK4", "FK5", or "HIP". In general, any Besselian or Julian year epoch can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed value listed. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian epochs are assumed prior to 1984.0. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">z</td><td>Redhift value (&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> - 1 = f<sub>rest</sub> / f<sub>obs</sub> - 1). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to the celestial object data structure to be populated with the corresponding ICRS catalog coordinates. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the pointer arguments is NULL or the 'system' is invalid, or else 1 if 'type' is invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys()</a> </dd>
+<dd>
+novas_jd_for_epoch() </dd>
+<dd>
+<a class="el" href="novas_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a9d170036a074eff7634bdb23e54871b0">NOVAS_SYSTEM_ICRS</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f">NOVAS_SYSTEM_HIP</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#ae67fecc99f46afc9b4f12fc27b4fbe6c">NOVAS_SYSTEM_J2000</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#aaf00ed93616e93d09df832d485a0e115">NOVAS_SYSTEM_B1950</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="super_8c.html#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a>, and <a class="el" href="structobject.html#a0ead8b30742e9c76887f5ff76cabae7c">object::star</a>.</p>
 
 </div>
 </div>
@@ -1797,6 +1956,51 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 novas_lst() </dd>
 <dd>
 <a class="el" href="super_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f">novas_e2h_offset()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af4e18885b7d173eb3fe5f18b06f0b4d4" name="af4e18885b7d173eb3fe5f18b06f0b4d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4e18885b7d173eb3fe5f18b06f0b4d4">&#9670;&#160;</a></span>novas_epoch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_epoch </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>system</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the Julian day corresponding to an astronomical coordinate epoch.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">system</td><td>Coordinate system, e.g. "ICRS", "B1950.0", "J2000.0", "FK4", "FK5", "1950", "2000", or "HIP". In general, any Besselian or Julian year epoch can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed values listed. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian epochs are assumed prior to 1984.0. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian day corresponding to the given coordinate epoch, or else NAN if the input string is NULL or the input is not recognised as a coordinate epoch specification (errno will be set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="super_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys()</a> </dd>
+<dd>
+<a class="el" href="super_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a> </dd>
+<dd>
+<a class="el" href="novas_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a9d170036a074eff7634bdb23e54871b0">NOVAS_SYSTEM_ICRS</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#aaf00ed93616e93d09df832d485a0e115">NOVAS_SYSTEM_B1950</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#ae67fecc99f46afc9b4f12fc27b4fbe6c">NOVAS_SYSTEM_J2000</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f">NOVAS_SYSTEM_HIP</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a3785083ae52bbbc1e749dbedd7e5d85e">NOVAS_JD_B1950</a>, <a class="el" href="novas_8h.html#a4100ecc5d9badfa07301024baffe9ded">NOVAS_JD_HIP</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#ae7ab88078608cf4f4499cedcf4c0ca75">NOVAS_SYSTEM_FK4</a>, <a class="el" href="novas_8h.html#abf795b4cd3cc6205b88508bcc77586c1">NOVAS_SYSTEM_FK5</a>, <a class="el" href="novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f">NOVAS_SYSTEM_HIP</a>, and <a class="el" href="novas_8h.html#a9d170036a074eff7634bdb23e54871b0">NOVAS_SYSTEM_ICRS</a>.</p>
 
 </div>
 </div>

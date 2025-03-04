@@ -72,6 +72,9 @@ src/super.c
 .RI "int \fBmake_cat_object\fP (const \fBcat_entry\fP *star, \fBobject\fP *source)"
 .br
 .ti -1c
+.RI "int \fBmake_cat_object_sys\fP (const \fBcat_entry\fP *star, const char *restrict system, \fBobject\fP *source)"
+.br
+.ti -1c
 .RI "int \fBmake_ephem_object\fP (const char *name, long num, \fBobject\fP *body)"
 .br
 .ti -1c
@@ -84,6 +87,9 @@ src/super.c
 .RI "int \fBmake_redshifted_object\fP (const char *name, double ra, double dec, double z, \fBobject\fP *source)"
 .br
 .ti -1c
+.RI "int \fBmake_redshifted_object_sys\fP (const char *name, double ra, double dec, const char *restrict system, double z, \fBobject\fP *source)"
+.br
+.ti -1c
 .RI "int \fBmake_solar_system_observer\fP (const double *sc_pos, const double *sc_vel, \fBobserver\fP *obs)"
 .br
 .ti -1c
@@ -91,6 +97,9 @@ src/super.c
 .br
 .ti -1c
 .RI "double \fBnovas_epa\fP (double ha, double dec, double lat)"
+.br
+.ti -1c
+.RI "double \fBnovas_epoch\fP (const char *restrict system)"
 .br
 .ti -1c
 .RI "double \fBnovas_equ_sep\fP (double ra1, double dec1, double ra2, double dec2)"
@@ -954,22 +963,24 @@ Attila Kovacs
 .PP
 References \fBIN_SPACE_INIT\fP, \fBmake_observer()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, and \fBin_space::sc_vel\fP\&.
 .SS "int make_cat_object (const \fBcat_entry\fP * star, \fBobject\fP * source)"
-Populates and object data structure with the data for a catalog source\&.
+Populates and object data structure with the data for a catalog source\&. The input source must be defined with ICRS coordinates\&. To create objects with other types of coordiantes use \fCmake_cat_object_epoch()\fP instead\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIstar\fP Pointer to structure to populate with the catalog data for a celestial object located outside the solar system\&. 
+\fIstar\fP Pointer to structure to populate with the catalog data for a celestial object located outside the solar system, specified with ICRS coordinates\&. 
 .br
 \fIsource\fP Pointer to the celestial object data structure to be populated\&. 
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-0 if successful, or -1 if 'cel_obj' is NULL or when type is NOVAS_CATALOG_OBJECT and 'star' is NULL, or else 1 if 'type' is invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long\&.
+0 if successful, or -1 if either argument is NULL, or else 5 if 'name' is too long\&.
 .RE
 .PP
 \fBSee also\fP
 .RS 4
+\fBmake_cat_object_sys()\fP 
+.PP
 \fBmake_cat_entry()\fP 
 .PP
 \fBmake_planet()\fP 
@@ -994,6 +1005,57 @@ Attila Kovacs
 
 .PP
 References \fBmake_object()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
+.SS "int make_cat_object_sys (const \fBcat_entry\fP * star, const char *restrict system, \fBobject\fP * source)"
+Populates and object data structure with the data for a catalog source for a given system of catalog coordinates\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIstar\fP Pointer to structure to populate with the catalog data for a celestial object located outside the solar system\&. 
+.br
+\fIsystem\fP Input catalog coordinate system epoch, e\&.g\&. 'ICRS', 'B1950\&.0', 'J2000\&.0', 'FK4', 'FK5', or 'HIP'\&. In general, any Besselian or Julian year epoch can be used by year (e\&.g\&. 'B1933\&.193' or 'J2022\&.033'), or else the fixed value listed\&. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian epochs are assumed prior to 1984\&.0\&. 
+.br
+\fIsource\fP Pointer to the celestial object data structure to be populated with the corresponding ICRS catalog coordinates, after appying proper-motion and precession corrections as appropriate\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if any argument is NULL or if the input 'system' is invalid, or else 5 if 'name' is too long\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_cat_object()\fP 
+.PP
+\fBmake_redshifted_object_sys()\fP 
+.PP
+novas_jd_for_epoch() 
+.PP
+\fBmake_cat_entry()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBNOVAS_SYSTEM_ICRS\fP 
+.PP
+\fBNOVAS_SYSTEM_HIP\fP 
+.PP
+\fBNOVAS_SYSTEM_J2000\fP 
+.PP
+\fBNOVAS_SYSTEM_B1950\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBmake_cat_object()\fP, and \fBobject::star\fP\&.
 .SS "int make_ephem_object (const char * name, long num, \fBobject\fP * body)"
 Sets a celestial object to be a Solar-system ephemeris body\&. Typically this would be used to define minor planets, asteroids, comets and planetary satellites\&.
 .PP
@@ -1105,7 +1167,7 @@ Populates a celestial object data structure with the parameters for a redhifted 
 .PP
 \fBSee also\fP
 .RS 4
-\fBmake_redshifted_object()\fP 
+\fBmake_redshifted_object_sys()\fP 
 .PP
 \fBnovas_v2z()\fP
 .RE
@@ -1130,9 +1192,9 @@ Populates a celestial object data structure with the parameters for a redhifted 
 .RS 4
 \fIname\fP Object name (less than SIZE_OF_OBJ_NAME in length)\&. It may be NULL\&. 
 .br
-\fIra\fP [h] Right ascension of the object (hours)\&. 
+\fIra\fP [h] ICRS Right ascension of the object (hours)\&. 
 .br
-\fIdec\fP [deg] Declination of the object (degrees)\&. 
+\fIdec\fP [deg] ICRS Declination of the object (degrees)\&. 
 .br
 \fIz\fP Redhift value (\*<obs\*>  / \*<rest\*>  - 1 = f\*<rest\*>  / f\*<obs\*>  - 1)\&. 
 .br
@@ -1146,7 +1208,9 @@ Populates a celestial object data structure with the parameters for a redhifted 
 .PP
 \fBSee also\fP
 .RS 4
-make_redshifted_cat_object() 
+\fBmake_redshifted_object_sys()\fP 
+.PP
+\fBmake_cat_object()\fP 
 .PP
 \fBnovas_v2z()\fP
 .RE
@@ -1164,6 +1228,61 @@ Attila Kovacs
 
 .PP
 References \fBmake_cat_object()\fP, and \fBmake_redshifted_cat_entry()\fP\&.
+.SS "int make_redshifted_object_sys (const char * name, double ra, double dec, const char *restrict system, double z, \fBobject\fP * source)"
+Populates a celestial object data structure with the parameters for a redhifted catalog source, such as a distant quasar or galaxy, for a given system of catalog coordinates\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Object name (less than SIZE_OF_OBJ_NAME in length)\&. It may be NULL\&. 
+.br
+\fIra\fP [h] ICRS Right ascension of the object (hours)\&. 
+.br
+\fIdec\fP [deg] ICRS Declination of the object (degrees)\&. 
+.br
+\fIsystem\fP Input catalog coordinate system epoch, e\&.g\&. 'ICRS', 'B1950\&.0', 'J2000\&.0', 'FK4', 'FK5', or 'HIP'\&. In general, any Besselian or Julian year epoch can be used by year (e\&.g\&. 'B1933\&.193' or 'J2022\&.033'), or else the fixed value listed\&. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian epochs are assumed prior to 1984\&.0\&. 
+.br
+\fIz\fP Redhift value (\*<obs\*>  / \*<rest\*>  - 1 = f\*<rest\*>  / f\*<obs\*>  - 1)\&. 
+.br
+\fIsource\fP Pointer to the celestial object data structure to be populated with the corresponding ICRS catalog coordinates\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if any of the pointer arguments is NULL or the 'system' is invalid, or else 1 if 'type' is invalid, 2 if 'number' is out of legal range or 5 if 'name' is too long\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_redshifted_object()\fP 
+.PP
+\fBmake_cat_object_sys()\fP 
+.PP
+novas_jd_for_epoch() 
+.PP
+\fBplace()\fP 
+.PP
+\fBNOVAS_SYSTEM_ICRS\fP 
+.PP
+\fBNOVAS_SYSTEM_HIP\fP 
+.PP
+\fBNOVAS_SYSTEM_J2000\fP 
+.PP
+\fBNOVAS_SYSTEM_B1950\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBmake_redshifted_object()\fP, and \fBobject::star\fP\&.
 .SS "int make_solar_system_observer (const double * sc_pos, const double * sc_vel, \fBobserver\fP * obs)"
 Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft, with the specified geocentric position and velocity vectors\&. Solar-system observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative to the Solar System Barycenter, instead of the geocenter\&.
 .PP
@@ -1295,6 +1414,51 @@ novas_lst()
 .RE
 .PP
 
+.SS "double novas_epoch (const char *restrict system)"
+Returns the Julian day corresponding to an astronomical coordinate epoch\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIsystem\fP Coordinate system, e\&.g\&. 'ICRS', 'B1950\&.0', 'J2000\&.0', 'FK4', 'FK5', '1950', '2000', or 'HIP'\&. In general, any Besselian or Julian year epoch can be used by year (e\&.g\&. 'B1933\&.193' or 'J2022\&.033'), or else the fixed values listed\&. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian epochs are assumed prior to 1984\&.0\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] The Julian day corresponding to the given coordinate epoch, or else NAN if the input string is NULL or the input is not recognised as a coordinate epoch specification (errno will be set to EINVAL)\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_cat_object_sys()\fP 
+.PP
+\fBmake_redshifted_object_sys()\fP 
+.PP
+\fBtransform_cat()\fP 
+.PP
+\fBprecession()\fP 
+.PP
+\fBNOVAS_SYSTEM_ICRS\fP 
+.PP
+\fBNOVAS_SYSTEM_B1950\fP 
+.PP
+\fBNOVAS_SYSTEM_J2000\fP 
+.PP
+\fBNOVAS_SYSTEM_HIP\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_JD_B1950\fP, \fBNOVAS_JD_HIP\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_SYSTEM_FK4\fP, \fBNOVAS_SYSTEM_FK5\fP, \fBNOVAS_SYSTEM_HIP\fP, and \fBNOVAS_SYSTEM_ICRS\fP\&.
 .SS "double novas_equ_sep (double ra1, double dec1, double ra2, double dec2)"
 Returns the angular separation of two equatorial locations on a sphere\&.
 .PP

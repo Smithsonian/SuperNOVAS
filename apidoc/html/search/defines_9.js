@@ -54,10 +54,16 @@ var searchData=
   ['novas_5fsolar_5fradius_51',['NOVAS_SOLAR_RADIUS',['../novas_8h.html#ae548ecdfc646914084936acb32e9c993',1,'novas.h']]],
   ['novas_5fssb_5finit_52',['NOVAS_SSB_INIT',['../novas_8h.html#aebdfbe27bf764b69018291054ad9130d',1,'novas.h']]],
   ['novas_5fsun_5finit_53',['NOVAS_SUN_INIT',['../novas_8h.html#a6afeda74c9df859ae6504eebfee01092',1,'novas.h']]],
-  ['novas_5ftai_5fto_5ftt_54',['NOVAS_TAI_TO_TT',['../novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda',1,'novas.h']]],
-  ['novas_5ftimescales_55',['NOVAS_TIMESCALES',['../novas_8h.html#a7505fe27b163e97b60bcf4406eadffa7',1,'novas.h']]],
-  ['novas_5ftransform_5ftypes_56',['NOVAS_TRANSFORM_TYPES',['../novas_8h.html#ab5988d52596448e8248d94a4f59d69a1',1,'novas.h']]],
-  ['novas_5furanus_5finit_57',['NOVAS_URANUS_INIT',['../novas_8h.html#ad873085559e1141614264d15c4885a87',1,'novas.h']]],
-  ['novas_5fvenus_5finit_58',['NOVAS_VENUS_INIT',['../novas_8h.html#af126344dc5cbee61df9e55bd92322839',1,'novas.h']]],
-  ['novas_5fversion_5fstring_59',['NOVAS_VERSION_STRING',['../novas_8h.html#afc8e7b02d26a13c380dcff4ec2d6530e',1,'novas.h']]]
+  ['novas_5fsystem_5fb1950_54',['NOVAS_SYSTEM_B1950',['../novas_8h.html#aaf00ed93616e93d09df832d485a0e115',1,'novas.h']]],
+  ['novas_5fsystem_5ffk4_55',['NOVAS_SYSTEM_FK4',['../novas_8h.html#ae7ab88078608cf4f4499cedcf4c0ca75',1,'novas.h']]],
+  ['novas_5fsystem_5ffk5_56',['NOVAS_SYSTEM_FK5',['../novas_8h.html#abf795b4cd3cc6205b88508bcc77586c1',1,'novas.h']]],
+  ['novas_5fsystem_5fhip_57',['NOVAS_SYSTEM_HIP',['../novas_8h.html#a773bb459e1ec420cd7d93d064e70eb7f',1,'novas.h']]],
+  ['novas_5fsystem_5ficrs_58',['NOVAS_SYSTEM_ICRS',['../novas_8h.html#a9d170036a074eff7634bdb23e54871b0',1,'novas.h']]],
+  ['novas_5fsystem_5fj2000_59',['NOVAS_SYSTEM_J2000',['../novas_8h.html#ae67fecc99f46afc9b4f12fc27b4fbe6c',1,'novas.h']]],
+  ['novas_5ftai_5fto_5ftt_60',['NOVAS_TAI_TO_TT',['../novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda',1,'novas.h']]],
+  ['novas_5ftimescales_61',['NOVAS_TIMESCALES',['../novas_8h.html#a7505fe27b163e97b60bcf4406eadffa7',1,'novas.h']]],
+  ['novas_5ftransform_5ftypes_62',['NOVAS_TRANSFORM_TYPES',['../novas_8h.html#ab5988d52596448e8248d94a4f59d69a1',1,'novas.h']]],
+  ['novas_5furanus_5finit_63',['NOVAS_URANUS_INIT',['../novas_8h.html#ad873085559e1141614264d15c4885a87',1,'novas.h']]],
+  ['novas_5fvenus_5finit_64',['NOVAS_VENUS_INIT',['../novas_8h.html#af126344dc5cbee61df9e55bd92322839',1,'novas.h']]],
+  ['novas_5fversion_5fstring_65',['NOVAS_VERSION_STRING',['../novas_8h.html#afc8e7b02d26a13c380dcff4ec2d6530e',1,'novas.h']]]
 ];

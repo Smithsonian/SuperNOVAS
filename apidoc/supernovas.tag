@@ -546,6 +546,48 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_SYSTEM_B1950</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aaf00ed93616e93d09df832d485a0e115</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_SYSTEM_FK4</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae7ab88078608cf4f4499cedcf4c0ca75</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_SYSTEM_FK5</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>abf795b4cd3cc6205b88508bcc77586c1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_SYSTEM_HIP</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a773bb459e1ec420cd7d93d064e70eb7f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_SYSTEM_ICRS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9d170036a074eff7634bdb23e54871b0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_SYSTEM_J2000</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae67fecc99f46afc9b4f12fc27b4fbe6c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_TAI_TO_TT</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a68aa01f6e3e0f40bbe1b5ccab3144fda</anchor>
@@ -1786,6 +1828,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>make_cat_object_sys</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5104d7db66ce2d8c61c7ad21599fb45e</anchor>
+      <arglist>(const cat_entry *star, const char *restrict system, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>make_ephem_object</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aa22303f98df2d63edf6d8452ff3a43b2</anchor>
@@ -1867,6 +1916,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ae579a49d84696a913fd0d9f348bb5b11</anchor>
       <arglist>(const char *name, double ra, double dec, double z, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_redshifted_object_sys</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a257abae9391aec835dc2b94d9788b9f9</anchor>
+      <arglist>(const char *name, double ra, double dec, const char *restrict system, double z, object *source)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1993,6 +2049,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a095ba0ee644dc00c11dcdc5616bc96b0</anchor>
       <arglist>(double ha, double dec, double lat)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_epoch</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>af4e18885b7d173eb3fe5f18b06f0b4d4</anchor>
+      <arglist>(const char *restrict system)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4863,6 +4926,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>make_cat_object_sys</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>a5104d7db66ce2d8c61c7ad21599fb45e</anchor>
+      <arglist>(const cat_entry *star, const char *restrict system, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>make_ephem_object</name>
       <anchorfile>super_8c.html</anchorfile>
       <anchor>aa22303f98df2d63edf6d8452ff3a43b2</anchor>
@@ -4891,6 +4961,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>make_redshifted_object_sys</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>a257abae9391aec835dc2b94d9788b9f9</anchor>
+      <arglist>(const char *name, double ra, double dec, const char *restrict system, double z, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>make_solar_system_observer</name>
       <anchorfile>super_8c.html</anchorfile>
       <anchor>a9c3f1a1bc3fd9ac6d211806913d2d529</anchor>
@@ -4909,6 +4986,13 @@
       <anchorfile>super_8c.html</anchorfile>
       <anchor>a095ba0ee644dc00c11dcdc5616bc96b0</anchor>
       <arglist>(double ha, double dec, double lat)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_epoch</name>
+      <anchorfile>super_8c.html</anchorfile>
+      <anchor>af4e18885b7d173eb3fe5f18b06f0b4d4</anchor>
+      <arglist>(const char *restrict system)</arglist>
     </member>
     <member kind="function">
       <type>double</type>

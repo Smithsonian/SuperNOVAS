@@ -455,36 +455,21 @@ separators used between the components, e.g.:
 And, if you have LSR-based radial velocities instead of Solar-system Barycentric radial velocities, you may convert 
 these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_ssb_vel()`.
 
-We must convert the older catalog coordinates to the now standard ICRS system for calculations in SuperNOVAS, first by 
-calculating equivalent J2000 coordinates, by applying the proper motion and the appropriate precession. Then, we apply 
-a small adjustment to convert from J2000 to ICRS coordinates.
-
-```c
- // First change the catalog coordinates (in place) to the J2000 (FK5) system... 
- transform_cat(CHANGE_EPOCH, NOVAS_JD_B1950, &star, NOVAS_JD_J2000, "FK5", &star);
-  
- // Then convert J2000 coordinates to ICRS (also in place). Here the dates don't matter...
- transform_cat(CHANGE_J2000_TO_ICRS, 0.0, &star, 0.0, "ICRS", &star);
-```
-
-(Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
-start.) Once the catalog entry is defined in ICRS, you can proceed wrapping it in a generic source structure (which
-handles both catalog and Solar-system sources).
-
 ```c
  object source;   // Common structure for a sidereal or an Solar-system source
   
- // Wrap it in a generic source data structure
- make_cat_object(&star, &source);
+ // Wrap it in a generic source data structure, with ICRS coordinates...
+ make_cat_object_sys(&star, "B1950", &source);
 ```
 
-Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object()` e.g.:
+Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object_sys()` 
+e.g.:
 
 ```c
  object quasar;
   
  // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
- make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &quasar);
+ make_redshifted_object_sys("3c273", 12.4851944, 2.0523883, "ICRS", 0.158339, &quasar);
 ```
 
 <a name="specify-observer"></a>
@@ -501,7 +486,7 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-Again you might use `novas_dms_degrees()` for string representations of the longitude and latitude coordinates here.
+Again you might use `novas_str_degrees()` for string representations of the longitude and latitude coordinates here.
 You can also specify airborne observers, or observers in Earth orbit, in Sun orbit, at the geocenter, or at the 
 Solar-system barycenter.
 
