@@ -503,7 +503,7 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-Again you might use `novas_dms_degrees()` for string representations of the longitude and latitude coordinates here.
+Again you might use `novas_str_degrees()` for string representations of the longitude and latitude coordinates here.
 You can also specify airborne observers, or observers in Earth orbit, in Sun orbit, at the geocenter, or at the 
 Solar-system barycenter.
 
