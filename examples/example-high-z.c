@@ -58,8 +58,13 @@ int main() {
   // -------------------------------------------------------------------------
   // Define a high-z source.
 
-  // 12h29m6.6997s +2d3m8.598s (ICRS) z=0.158339
-  if(make_redshifted_object("3c273", 12.4851944, 2.0523883, 0.158339, &source) != 0) {
+  // 3c273: 12h29m6.6997s +2d3m8.598s (ICRS), z=0.158339
+
+  // Convert string coordinates to hours/degrees...
+  double ra0 = novas_str_hours("12h29m6.6997s");
+  double dec0 = novas_str_degrees("+2d3m8.598s");
+
+  if(make_redshifted_object("3c273", ra0, dec0, 0.158339, &source) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;
   }

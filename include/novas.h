@@ -1761,6 +1761,10 @@ double novas_hms_hours(const char *restrict hms);
 
 double novas_dms_degrees(const char *restrict dms);
 
+double novas_str_hours(const char *restrict hms);
+
+double novas_str_degrees(const char *restrict dms);
+
 double novas_parse_hms(const char *restrict str, char **restrict tail);
 
 double novas_parse_dms(const char *restrict str, char **restrict tail);

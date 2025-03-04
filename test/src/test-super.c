@@ -2472,7 +2472,6 @@ static int test_orbit_posvel_callisto() {
 static int test_hms_hours() {
   int n = 0;
   double hours = 23.0 + 59.0/60.0 + 59.999/3600.0;
-  char *tail = NULL;
 
   if(!is_equal("hms_hours:colons", novas_hms_hours("23:59:59.999"), hours, 1e-10)) n++;
   if(!is_equal("hms_hours:spaces", novas_hms_hours("23 59 59.999"), hours, 1e-10)) n++;
@@ -2481,7 +2480,13 @@ static int test_hms_hours() {
   if(!is_equal("hms_hours:HM", novas_hms_hours("23 59’59.999”"), hours, 1e-10)) n++;
   if(!is_equal("hms_hours:hprime", novas_hms_hours("23h59'59.999"), hours, 1e-10)) n++;
   if(!is_equal("hms_hours:combo", novas_hms_hours("23h 59' 59.999"), hours, 1e-10)) n++;
-  if(!is_equal("hms_hours:parse", novas_parse_hms("23 59 59.999", &tail), hours, 1e-10)) n++;
+  if(!is_equal("hms_hours:combo:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("hms_hours:few", novas_hms_hours("23 59"), hours, 0.02)) n++;
+  if(!is_equal("hms_hours:few:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("hms_hours:extra", novas_hms_hours("23 59 blah"), hours, 0.02)) n++;
+  if(!is_equal("hms_hours:extra:errno=EINVAL", errno, EINVAL, 1e-6)) n++;
 
   return n;
 }
@@ -2489,7 +2494,6 @@ static int test_hms_hours() {
 static int test_dms_degrees() {
   int n = 0;
   double degs = 179.0 + 59.0 / 60.0 + 59.999 / 3600.0;
-  char *tail = NULL;
 
   if(!is_equal("dms_degrees:colons", novas_dms_degrees("179:59:59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:spaces", novas_dms_degrees("179 59 59.999"), degs, 1e-9)) n++;
@@ -2497,7 +2501,13 @@ static int test_dms_degrees() {
   if(!is_equal("dms_degrees:dprime", novas_dms_degrees("179d59'59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:combo", novas_dms_degrees("179d 59' 59.999"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:signed", novas_dms_degrees("+179 59 59.999"), degs, 1e-9)) n++;
-  if(!is_equal("dms_degrees:parse", novas_parse_dms("179 59 59.999", &tail), degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:signed:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("dms_degrees:few", novas_dms_degrees("179 59"), degs, 0.02)) n++;
+  if(!is_equal("dms_degrees:few:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("dms_degrees:extra", novas_dms_degrees("179 59 blah"), degs, 0.02)) n++;
+  if(!is_equal("dms_degrees:extra:errno=EINVAL", errno, EINVAL, 1e-6)) n++;
 
   if(!is_equal("dms_degrees:combo:N", novas_dms_degrees("179d 59' 59.999N"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:combo:S", novas_dms_degrees("-179d 59' 59.999S"), degs, 1e-9)) n++;
@@ -2520,9 +2530,9 @@ static int test_dms_degrees() {
   if(!is_equal("dms_degrees:neg:combo:E", novas_dms_degrees("-179d 59' 59.999E"), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:combo:W", novas_dms_degrees("179d 59' 59.999W"), -degs, 1e-9)) n++;
 
-
   if(!is_equal("dms_degrees:neg:combo:W+", novas_parse_dms("179d 59' 59.999W ", NULL), -degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:combo:_W_", novas_parse_dms("179_59_59.999W_", NULL), -degs, 1e-9)) n++;
+  if(!is_equal("dms_degrees:neg:combo:_W!", novas_parse_dms("179_59_59.999W!", NULL), -degs, 1e-9)) n++;
 
   if(!is_equal("dms_degrees:neg:combo:Whatever", novas_dms_degrees("179d 59' 59.999 Whatever"), degs, 1e-9)) n++;
   if(!is_equal("dms_degrees:neg:combo:_Whatever", novas_dms_degrees("179_59_59.999_Whatever"), degs, 1e-9)) n++;
@@ -2539,12 +2549,17 @@ static int test_parse_degrees() {
   if(!is_equal("parse_degrees:decimal", novas_parse_degrees("-179.9999999", &tail), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:decimal:notail", novas_parse_degrees("-179.9999999", NULL), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:decimal:d", novas_parse_degrees("-179.9999999d", &tail), -degs, 1e-6)) n++;
+
   if(!is_equal("parse_degrees:N", novas_parse_degrees("179.9999999N", &tail), degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:E", novas_parse_degrees("179.9999999E", &tail), degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:W", novas_parse_degrees("179.9999999W", &tail), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:+S", novas_parse_degrees("179.9999999 S", &tail), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:+Whatever", novas_parse_degrees("179.9999999 Whatever", &tail), degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:d+S", novas_parse_degrees("179.9999999d S", &tail), -degs, 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:W+", novas_parse_degrees("179.9999999W ", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:W_", novas_parse_degrees("179.9999999W_", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:W,", novas_parse_degrees("179.9999999W,", &tail), -degs, 1e-6)) n++;
 
   return n;
 }
@@ -2559,6 +2574,56 @@ static int test_parse_hours() {
   if(!is_equal("parse_hours:decimal", novas_parse_hours("23.9999999", &tail), h, 1e-6)) n++;
   if(!is_equal("parse_hours:decimal:h", novas_parse_hours("23.9999999h", &tail), h, 1e-6)) n++;
   if(!is_equal("parse_hours:decimal:notail", novas_parse_hours("23.9999999", NULL), h, 1e-6)) n++;
+  if(!is_equal("parse_hours:decimal:h_", novas_parse_hours("23.9999999h_", &tail), h, 1e-6)) n++;
+  if(!is_equal("parse_hours:decimal:h!", novas_parse_hours("23.9999999h!", &tail), h, 1e-6)) n++;
+
+  return n;
+}
+
+static int test_str_hours() {
+  int n = 0;
+  double h = 23.0 + 59.0 / 60.0 + 59.999 / 3600.0;
+
+  if(!is_equal("str_hours:hms", novas_str_hours("23:59:59.999"), h, 1e-9)) n++;
+  if(!is_equal("str_hours:decimal", novas_str_hours("23.9999999"), h, 1e-6)) n++;
+  if(!is_equal("str_hours:decimal:h", novas_str_hours("23.9999999h"), h, 1e-6)) n++;
+  if(!is_equal("str_hours:decimal:h:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_hours:decimal:space", novas_str_hours("23.9999999 "), h, 1e-6)) n++;
+  if(!is_equal("str_hours:decimal:space:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_hours:decimal:punct", novas_str_hours("23.9999999,"), h, 1e-6)) n++;
+  if(!is_equal("str_hours:decimal:punct:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_hours:decimal:+z", novas_str_hours("23.9999999z"), h, 1e-6)) n++;
+  if(!is_equal("str_hours:decimal:+z:errno=EINVAL", errno, EINVAL, 1e-6)) n++;
+
+  return n;
+}
+
+static int test_str_degrees() {
+  int n = 0;
+  double d = 179.0 + 59.0 / 60.0 + 59.999 / 3600.0;
+
+  if(!is_equal("str_degrees:hms", novas_str_degrees("179:59:59.999"), d, 1e-9)) n++;
+  if(!is_equal("str_degrees:decimal", novas_str_degrees("179.9999999"), d, 1e-6)) n++;
+  if(!is_equal("str_degrees:decimal:d", novas_str_degrees("179.9999999d"), d, 1e-6)) n++;
+  if(!is_equal("str_degrees:decimal:d:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_degrees:decimal:W", novas_str_degrees("179.9999999W"), -d, 1e-6)) n++;
+  if(!is_equal("str_degrees:decimal:W:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_degrees:decimal:d+W", novas_str_degrees("179.9999999d W"), -d, 1e-6)) n++;
+  if(!is_equal("str_degrees:decimal:d+W:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_degrees:decimal:space", novas_str_degrees("179.9999999 "), d, 1e-6)) n++;
+  if(!is_equal("str_degrees:decimal:space:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_degrees:decimal:punct", novas_str_degrees("179.9999999,"), d, 1e-6)) n++;
+  if(!is_equal("str_degrees:decimal:punct:errno=0", errno, 0, 1e-6)) n++;
+
+  if(!is_equal("str_degrees:decimal:+z", novas_str_degrees("179.9999999z"), d, 1e-6)) n++;
+  if(!is_equal("str_degrees:decimal:+z:errno=EINVAL", errno, EINVAL, 1e-6)) n++;
 
   return n;
 }
@@ -3347,6 +3412,9 @@ int main(int argc, char *argv[]) {
   if(test_dms_degrees()) n++;
   if(test_parse_degrees()) n++;
   if(test_parse_hours()) n++;
+  if(test_str_degrees()) n++;
+  if(test_str_hours()) n++;
+
   if(test_hpa()) n++;
   if(test_epa()) n++;
   if(test_helio_dist()) n++;
