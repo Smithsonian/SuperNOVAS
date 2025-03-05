@@ -530,7 +530,9 @@ or, for the best precision we may do the same with an integer / fractional split
 or, you can use a string date, such as an ISO timestamp:
 
 ```c
- novas_set_time(NOVAS_UTC, novas_parse_date("2025-01-26T22:05:14.234+0200", NULL), 37, 0.042, &obs_time);
+ novas_set_time(NOVAS_UTC, 
+   novas_parse_date("2025-01-26T22:05:14.234+0200", NULL), 
+   37, 0.042, &obs_time);
 ```
 
 <a name="observing-frame"></a>
