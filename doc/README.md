@@ -458,7 +458,7 @@ these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_s
 ```c
  object source;   // Common structure for a sidereal or an Solar-system source
   
- // Covert B1950 to ICRS and wrap in a generic source data structure...
+ // Convert B1950 to ICRS and wrap in a generic source data structure...
  make_cat_object_sys(&star, "B1950", &source);
 ```
 
