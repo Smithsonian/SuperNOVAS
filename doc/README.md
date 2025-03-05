@@ -441,9 +441,9 @@ for which we have B1950 (i.e. FK4) coordinates:
  make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
-When you have coordinates as strings in decimals or HMS / DMS format, you might use `novas_str_hours()` and/or 
+Or, you have coordinates as strings either in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
 `novas_str_degrees()` to convert them to hours/degrees for `make_cat_entry()`, with a fair bit of flexibility on the 
-separators used between the components, e.g.:
+separators used between the components and more, e.g.:
 
 ```c
  make_cat_entry("Antares", "FK4", 1, 
@@ -458,7 +458,7 @@ these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_s
 ```c
  object source;   // Common structure for a sidereal or an Solar-system source
   
- // Wrap it in a generic source data structure, with ICRS coordinates...
+ // Covert B1950 to ICRS and wrap in a generic source data structure...
  make_cat_object_sys(&star, "B1950", &source);
 ```
 

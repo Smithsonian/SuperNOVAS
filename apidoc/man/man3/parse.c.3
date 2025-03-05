@@ -166,7 +166,11 @@ Attila Kovacs
 .PP
 References \fBnovas_parse_hms()\fP\&.
 .SS "double novas_parse_degrees (const char *restrict str, char **restrict tail)"
-Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation\&. Like in the case of \fC\fBnovas_parse_dms()\fP\fP, the decimal value may also be followed by a compass direction: \fCN\fP, \fCE\fP, \fCS\fP, or \fCW\fP\&.
+Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation\&.
+.PP
+The decimal representation may be followed by a unit designator: 'd', 'dg', 'deg', 'degree', or 'degrees', which will be parsed case-insensitively also, if present\&.
+.PP
+Both DMS and decimal values may end with a compass direction: \fCN\fP, \fCE\fP, \fCS\fP, or \fCW\fP\&.
 .PP
 A few examples of angles that may be parsed:
 .PP
@@ -180,7 +184,7 @@ A few examples of angles that may be parsed:
  -179\&.99999d
  -179\&.99999
  179\&.99999W
- 179\&.99999d S
+ 179\&.99999 deg S
 .fi
 .PP
 .PP
@@ -216,8 +220,6 @@ Attila Kovacs
 .RE
 .PP
 trailing E compass, handled below
-.PP
-Skip single 'd' immediately after decimal
 .PP
 Punctuation after first character
 .PP
@@ -327,6 +329,8 @@ Attila Kovacs
 .SS "double novas_parse_hours (const char *restrict str, char **restrict tail)"
 Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-down HMS representation\&.
 .PP
+The decimal representation may be followed by a unit designator: 'h', 'hr', 'hrs', 'hour', or 'hours', which will be parsed case-insensitively also, if present\&.
+.PP
 A few examples of angles that may be parsed:
 .PP
 .PP
@@ -337,6 +341,7 @@ A few examples of angles that may be parsed:
  23h59'59\&.999
  23 59 59\&.999
  23\&.999999h
+ 23\&.999999 hours
  23\&.999999
 .fi
 .PP

@@ -262,7 +262,9 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation. Like in the case of <code><a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a></code>, the decimal value may also be followed by a compass direction: <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>.</p>
+<p>Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation.</p>
+<p>The decimal representation may be followed by a unit designator: "d", "dg", "deg", "degree", or "degrees", which will be parsed case-insensitively also, if present.</p>
+<p>Both DMS and decimal values may end with a compass direction: <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>.</p>
 <p>A few examples of angles that may be parsed:</p>
 <pre>
  -179:59:59.999
@@ -272,7 +274,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
  -179.99999d
  -179.99999
  179.99999W
- 179.99999d S
+ 179.99999 deg S
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">str</td><td>The input string that specified an angle either as decimal degrees or as a broken down DMS speficication. The decimal value may be followed by the letter <code>d</code> immediately. And both the decimal and DMS representation may be ended with a compass direction marker, <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>. See more in <code><a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a></code> on acceptable DMS specifications. </td></tr>
@@ -289,7 +291,6 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dd>
 <a class="el" href="parse_8c.html#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a> </dd></dl>
 <p>trailing E compass, handled below</p>
-<p>Skip single 'd' immediately after decimal</p>
 <p>Punctuation after first character</p>
 
 <p class="reference">References <a class="el" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, and <a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>.</p>
@@ -428,6 +429,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
       </table>
 </div><div class="memdoc">
 <p>Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-down HMS representation.</p>
+<p>The decimal representation may be followed by a unit designator: "h", "hr", "hrs", "hour", or "hours", which will be parsed case-insensitively also, if present.</p>
 <p>A few examples of angles that may be parsed:</p>
 <pre>
  23:59:59.999
@@ -435,6 +437,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
  23h59'59.999
  23 59 59.999
  23.999999h
+ 23.999999 hours
  23.999999
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
