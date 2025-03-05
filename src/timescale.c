@@ -64,6 +64,49 @@ int strcasecmp(const char *s1, const char *s2);
 int strncasecmp(const char *s1, const char *s2, size_t n);
 #endif
 
+/**
+ * Returns the difference between Terrestrial Time (TT) and Universal Coordinated Time (UTC)
+ *
+ * @param leap_seconds  [s] The current leap seconds (see IERS Bulletins)
+ * @return              [s] The TT - UTC time difference
+ *
+ * @sa get_ut1_to_tt()
+ * @sa julian_date()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double get_utc_to_tt(int leap_seconds) {
+  return leap_seconds + NOVAS_TAI_TO_TT;
+}
+
+/**
+ * Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time
+ * difference as measured and published by IERS.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
+ * projections are published in the
+ <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ * </li>
+ * </ol>
+ *
+ * @param leap_seconds  [s] Leap seconds at the time of observations
+ * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5]
+ * @return              [s] The TT - UT1 time difference that is suitable for used with all
+ *                      calls in this library that require a <code>ut1_to_tt</code> argument.
+ *
+ * @sa get_utc_to_tt()
+ * @sa place()
+ * @sa cel_pole()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double get_ut1_to_tt(int leap_seconds, double dut1) {
+  return get_utc_to_tt(leap_seconds) + dut1;
+}
 
 
 /**

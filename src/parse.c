@@ -19,6 +19,84 @@
 /// \endcond
 
 /**
+ * Returns the Julian day corresponding to an astronomical coordinate epoch.
+ *
+ * @param system        Coordinate system, e.g. "ICRS", "B1950.0", "J2000.0", "FK4", "FK5",
+ *                      "1950", "2000", or "HIP". In general, any Besselian or Julian year epoch
+ *                      can be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed
+ *                      values listed. If 'B' or 'J' is ommitted in front of the epoch year, then
+ *                      Besselian epochs are assumed prior to 1984.0.
+ * @return              [day] The Julian day corresponding to the given coordinate epoch, or else
+ *                      NAN if the input string is NULL or the input is not recognised as a
+ *                      coordinate epoch specification (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa make_cat_object_sys()
+ * @sa make_redshifted_object_sys()
+ * @sa transform_cat()
+ * @sa precession()
+ * @sa NOVAS_SYSTEM_ICRS
+ * @sa NOVAS_SYSTEM_B1950
+ * @sa NOVAS_SYSTEM_J2000
+ * @sa NOVAS_SYSTEM_HIP
+ */
+double novas_epoch(const char *restrict system) {
+  static const char *fn = "novas_epoch";
+
+  double year;
+  char type = 0, *tail = NULL;
+
+  if(!system) {
+    novas_error(0, EINVAL, fn, "epoch is NULL");
+    return NAN;
+  }
+
+  if(!system[0]) {
+    novas_error(0, EINVAL, fn, "epoch is empty");
+    return NAN;
+  }
+
+  if(strcasecmp(system, NOVAS_SYSTEM_ICRS) == 0)
+    return NOVAS_JD_J2000;
+
+  if(strcasecmp(system, NOVAS_SYSTEM_FK5) == 0)
+    return NOVAS_JD_J2000;
+
+  if(strcasecmp(system, NOVAS_SYSTEM_FK4) == 0)
+    return NOVAS_JD_B1950;
+
+  if(strcasecmp(system, NOVAS_SYSTEM_HIP) == 0)
+    return NOVAS_JD_HIP;
+
+  if(toupper(system[0]) == 'B') {
+    type = 'B';
+    system++;
+  }
+  else if(toupper(system[0]) == 'J') {
+    type = 'J';
+    system++;
+  }
+
+  errno = 0;
+
+  year = strtod(system, &tail);
+  if(tail <= system) {
+    novas_error(0, EINVAL, fn, "Invalid epoch: %s", system);
+    return NAN;
+  }
+
+  if(!type)
+    type = year < 1984.0 ? 'B' : 'J';
+
+  if(type == 'J')
+    return NOVAS_JD_J2000 + (year - 2000.0) * JULIAN_YEAR_DAYS;
+
+  return NOVAS_JD_B1950 + (year - 1950.0) * BESSELIAN_YEAR_DAYS;
+}
+
+/**
  * Parses the decimal hours for a HMS string specification. The hour, minute, and second
  * components may be separated by spaces, tabs, colons `:`, underscore `_`, or a combination
  * thereof. Additionally, the hours and minutes may be separated by the letter `h`, and the

@@ -167,7 +167,8 @@ ifeq ($(DEFAULT_SOLSYS), 3)
 endif
 
 SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/super.c $(SRC)/timescale.c \
-          $(SRC)/frames.c $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c 
+          $(SRC)/place.c $(SRC)/transform.c $(SRC)/spectral.c $(SRC)/frames.c \
+          $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c 
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
   SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 
