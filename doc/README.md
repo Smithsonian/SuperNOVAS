@@ -441,7 +441,7 @@ for which we have B1950 (i.e. FK4) coordinates:
  make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
-Or, you have coordinates as strings either in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
+Or, if you have coordinates as strings in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
 `novas_str_degrees()` to convert them to hours/degrees for `make_cat_entry()`, with a fair bit of flexibility on the 
 separators used between the components and more, e.g.:
 
