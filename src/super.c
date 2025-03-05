@@ -1968,7 +1968,7 @@ double novas_epoch(const char *restrict system) {
   static const char *fn = "novas_epoch";
 
   double year;
-  char type = 0;
+  char type = 0, *tail = NULL;
 
   if(!system) {
     novas_error(0, EINVAL, fn, "epoch is NULL");
@@ -2003,7 +2003,8 @@ double novas_epoch(const char *restrict system) {
 
   errno = 0;
 
-  if(sscanf(system, "%lf", &year) < 1) {
+  year = strtod(system, &tail);
+  if(tail <= system) {
     novas_error(0, EINVAL, fn, "Invalid epoch: %s", system);
     return NAN;
   }
