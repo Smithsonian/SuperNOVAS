@@ -331,8 +331,12 @@ double novas_dms_degrees(const char *restrict dms) {
 
 /**
  * Parses an angle in degrees from a string that contains either a decimal degrees or else a
- * broken-down DMS representation. Like in the case of `novas_parse_dms()`, the decimal value
- * may also be followed by a compass direction: `N`, `E`, `S`, or `W`.
+ * broken-down DMS representation.
+ *
+ * The decimal representation may be followed by a unit designator: "d", "dg", "deg", "degree",
+ * or "degrees", which will be parsed case-insensitively also, if present.
+ *
+ * Both DMS and decimal values may end with a compass direction: `N`, `E`, `S`, or `W`.
  *
  * A few examples of angles that may be parsed:
  *
@@ -344,7 +348,7 @@ double novas_dms_degrees(const char *restrict dms) {
  *  -179.99999d
  *  -179.99999
  *  179.99999W
- *  179.99999d S
+ *  179.99999 deg S
  * </pre>
  *
  *
@@ -372,6 +376,7 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
 
   double deg;
   enum novas_debug_mode debug = novas_get_debug_mode();
+  int n = 0;
 
   if(tail)
     *tail = (char *) str;
@@ -385,38 +390,60 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
   deg = novas_parse_dms(str, tail);
   novas_debug(debug);
 
-  if(isnan(deg)) {
-    int n = 0;
+  if(!isnan(deg))
+    return deg;
 
-    if(sscanf(str, "%lf%n", &deg, &n) > 0) {
-      char compass[3] = {};
-      int n2 = 0;
+  if(sscanf(str, "%lf%n", &deg, &n) > 0) {
+    char compass[3] = {}, unit[9] = {};
+    int n1, n2 = 0;
 
-      if(str[n-1] == 'E')       /// trailing E compass, handled below
-        n--;
-      else if(str[n] == 'd')    /// Skip single 'd' immediately after decimal
-        n++;
+    if(str[n-1] == 'E')       /// trailing E compass, handled below
+      n--;
 
-      if(sscanf(&str[n], "%2s%n", compass, &n2) > 0) {
-        if(compass[1] == '_' || ispunct(compass[1])) /// Punctuation after first character
-          compass[1] = '\0';
+    // Skip underscores and white spaces
+    for(n1 = n; str[n1] && (str[n1] == '_' || isspace(str[n1])); n1++);
 
-        if(strcmp(compass, "N") == 0 || strcmp(compass, "E") == 0) {
-          n += n2;
-        }
-        else if (strcmp(compass, "S") == 0 || strcmp(compass, "W") == 0) {
-          deg = -deg;
-          n += n2;
-        }
+    // Skip over unit specification
+    if(sscanf(&str[n1], "%8s%n", unit, &n2) > 0) {
+      static const char *units[] = { "d", "dg", "deg", "degree", "degrees" , NULL};
+      int i;
+
+      // Terminate unit at punctuation
+      for(i = 0; unit[i]; i++) if(unit[i] == '_' || ispunct(unit[i])) {
+        unit[i] = '\0';
+        n2 = i;
+        break;
       }
 
-      if(tail)
-        *tail += n;
+      // Check for match against recognised units.
+      for(i = 0; units[i]; i++) if(strcasecmp(units[i], unit) == 0) {
+        n = n1 + n2;
+        break;
+      }
     }
-    else {
-      novas_error(0, EINVAL, fn, "invalid angle specification: '%s'", str);
-      return NAN;
+
+    // Skip underscores and white spaces
+    for(n1 = n; str[n1] && (str[n1] == '_' || isspace(str[n1])); n1++);
+
+    if(sscanf(&str[n1], "%2s%n", compass, &n2) > 0) {
+      if(compass[1] == '_' || ispunct(compass[1])) /// Punctuation after first character
+        compass[1] = '\0';
+
+      if(strcmp(compass, "N") == 0 || strcmp(compass, "E") == 0) {
+        n = n1 + n2;
+      }
+      else if (strcmp(compass, "S") == 0 || strcmp(compass, "W") == 0) {
+        deg = -deg;
+        n = n1 + n2;
+      }
     }
+
+    if(tail)
+      *tail += n;
+  }
+  else {
+    novas_error(0, EINVAL, fn, "invalid angle specification: '%s'", str);
+    return NAN;
   }
 
   return deg;
@@ -426,6 +453,9 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
  * Parses a time or time-like angle from a string that contains either a decimal hours or else a
  * broken-down HMS representation.
  *
+ * The decimal representation may be followed by a unit designator: "h", "hr", "hrs", "hour", or
+ * "hours", which will be parsed case-insensitively also, if present.
+ *
  * A few examples of angles that may be parsed:
  *
  * <pre>
@@ -434,6 +464,7 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
  *  23h59'59.999
  *  23 59 59.999
  *  23.999999h
+ *  23.999999 hours
  *  23.999999
  * </pre>
  *
@@ -460,6 +491,7 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
 
   double h;
   enum novas_debug_mode debug = novas_get_debug_mode();
+  int n = 0;
 
   if(tail)
     *tail = (char *) str;
@@ -473,20 +505,43 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
   h = novas_parse_hms(str, tail);
   novas_debug(debug);
 
-  if(isnan(h)) {
-    int n = 0;
-    if(sscanf(str, "%lf%n", &h, &n) > 0) {
-      if(str[n] == 'h')
-        n++;
+  if(!isnan(h))
+    return h;
 
-      if(tail)
-        *tail += n;
+  if(sscanf(str, "%lf%n", &h, &n) > 0) {
+    char unit[7] = {};
+    int n1, n2 = 0;
+
+    // Skip underscores and white spaces
+    for(n1 = n; str[n1] && (str[n1] == '_' || isspace(str[n1])); n1++);
+
+    // Skip over unit specification
+    if(sscanf(&str[n1], "%6s%n", unit, &n2) > 0) {
+      static const char *units[] = { "h", "hr", "hrs", "hour", "hours" , NULL};
+      int i;
+
+      // Terminate unit at punctuation
+      for(i = 0; unit[i]; i++) if(unit[i] == '_' || ispunct(unit[i])) {
+        unit[i] = '\0';
+        n2 = i;
+        break;
+      }
+
+      // Check for match against recognised units.
+      for(i = 0; units[i]; i++) if(strcasecmp(units[i], unit) == 0) {
+        n = n1 + n2;
+        break;
+      }
     }
-    else {
-      novas_error(0, EINVAL, fn, "invalid time specification: '%s'", str);
-      return NAN;
-    }
+
+    if(tail)
+      *tail += n;
   }
+  else {
+    novas_error(0, EINVAL, fn, "invalid time specification: '%s'", str);
+    return NAN;
+  }
+
 
   return h;
 }
@@ -499,7 +554,6 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
  * `errno`: it should be zero (0) if all non-whitespace and punctuation characters have been parsed
  * from the input string, or else `EINVAL` if the parsed value used only the leading part of the
  * string.
- *
  *
  * @param str     The input string that specified an angle either as decimal degrees
  *                or as a broken down DMS speficication. The decimal value may be immediately
@@ -541,7 +595,6 @@ double novas_str_degrees(const char *restrict str) {
  * `errno`: it should be zero (0) if all non-whitespace and punctuation characters have been parsed
  * from the input string, or else `EINVAL` if the parsed value used only the leading part of the
  * string.
- *
  *
  * @param str     The input string that specified an angle either as decimal hours
  *                or as a broken down HMS speficication. The decimal value may be

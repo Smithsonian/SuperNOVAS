@@ -610,8 +610,7 @@ static int parse_zone(const char *str, char **tail) {
  * @param date        The date specification, possibly including time and timezone, in the
  *                    specified standard format.
  * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
- *                    after the parsed time. The parsing will consume empty space characters after
- *                    the time specification also, returning a pointer to the next token after.
+ *                    after the parsed time.
  *
  * @return            [day] The Julian Day corresponding to the string date/time specification or
  *                    NAN if the string is NULL or if it does not specify a date/time in the
@@ -696,6 +695,9 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
     return NAN;
   }
 
+  if(tail)
+    *tail += n;
+
   skip_white(&date[n], &next);
 
   if(*next) {
@@ -727,11 +729,9 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
       next = from; // Time parsing unsuccessful, no extra characters consumed.
     }
 
-    skip_white(next, &next);
+    if(tail)
+      *tail = next;
   }
-
-  if(tail)
-    *tail = next;
 
   return novas_jd_from_date(calendar, y, m, d, h);
 }
@@ -775,8 +775,7 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * @param date        The date specification, possibly including time and timezone, in a standard
  *                    format.
  * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
- *                    after the parsed time. The parsing will consume empty space characters after
- *                    the time specification also, returning a pointer to the next token after.
+ *                    after the parsed time.
  *
  * @return            [day] The Julian Day corresponding to the string date/time specification or
  *                    NAN if the string is NULL or if it does not specify a date/time in the

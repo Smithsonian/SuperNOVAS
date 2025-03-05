@@ -2588,13 +2588,27 @@ static int test_parse_degrees() {
   if(!is_equal("parse_degrees:decimal", novas_parse_degrees("-179.9999999", &tail), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:decimal:notail", novas_parse_degrees("-179.9999999", NULL), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:decimal:d", novas_parse_degrees("-179.9999999d", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:decimal:d", *tail, 0, 1e-6)) n++;
 
   if(!is_equal("parse_degrees:N", novas_parse_degrees("179.9999999N", &tail), degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:E", novas_parse_degrees("179.9999999E", &tail), degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:W", novas_parse_degrees("179.9999999W", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:W", *tail, 0, 1e-6)) n++;
+
   if(!is_equal("parse_degrees:+S", novas_parse_degrees("179.9999999 S", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:+S:tail", *tail, 0, 1e-6)) n++;
+
   if(!is_equal("parse_degrees:+Whatever", novas_parse_degrees("179.9999999 Whatever", &tail), degs, 1e-6)) n++;
-  if(!is_equal("parse_degrees:d+S", novas_parse_degrees("179.9999999d S", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:+Whatever:tail", *tail, ' ', 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:d+S", novas_parse_degrees("179.9999999d_S", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:d+S:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:deg+S", novas_parse_degrees("179.9999999_deg S", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:deg+S:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:degree+S", novas_parse_degrees("179.9999999 degree S", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:degree+S:tail", *tail, 0, 1e-6)) n++;
 
   if(!is_equal("parse_degrees:W+", novas_parse_degrees("179.9999999W ", &tail), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:W_", novas_parse_degrees("179.9999999W_", &tail), -degs, 1e-6)) n++;
@@ -2614,7 +2628,13 @@ static int test_parse_hours() {
   if(!is_equal("parse_hours:decimal:h", novas_parse_hours("23.9999999h", &tail), h, 1e-6)) n++;
   if(!is_equal("parse_hours:decimal:notail", novas_parse_hours("23.9999999", NULL), h, 1e-6)) n++;
   if(!is_equal("parse_hours:decimal:h_", novas_parse_hours("23.9999999h_", &tail), h, 1e-6)) n++;
-  if(!is_equal("parse_hours:decimal:h!", novas_parse_hours("23.9999999h!", &tail), h, 1e-6)) n++;
+  if(!is_equal("parse_hours:decimal:h_:tail", *tail, '_', 1e-6)) n++;
+
+  if(!is_equal("parse_hours:decimal:_h!", novas_parse_hours("23.9999999_h!", &tail), h, 1e-6)) n++;
+  if(!is_equal("parse_hours:decimal:_h!:tail", *tail, '!', 1e-6)) n++;
+
+  if(!is_equal("parse_hours:decimal:hours!", novas_parse_hours("23.9999999 hour!", &tail), h, 1e-6)) n++;
+  if(!is_equal("parse_hours:decimal:hours!:tail", *tail, '!', 1e-6)) n++;
 
   return n;
 }
@@ -3179,7 +3199,7 @@ static int test_parse_date() {
 
   if(!is_equal("parse_date:5", novas_parse_date("2025/1/26 _", &tail), jd, 1e-6)) n++;
   if(!is_ok("parse_date:5:tail", tail == NULL)) n++;
-  if(!is_equal("parse_date:5:tail", *tail, 0, 1e-6)) n++;
+  if(!is_equal("parse_date:5:tail", *tail, ' ', 1e-6)) n++;
 
   if(!is_equal("parse_date:6", novas_parse_date("2025 1 26 blah", &tail), jd, 1e-6)) n++;
   if(!is_equal("parse_date:6:tail", *tail, 'b', 1e-6)) n++;
@@ -3216,10 +3236,10 @@ static int test_parse_date() {
   if(!is_equal("parse_date:13:tail", *tail, 0, 1e-6)) n++;
 
   if(!is_equal("parse_date:14", novas_parse_date("2025 1 26 19h33m08.113 _", &tail), jd, 1e-6)) n++;
-  if(!is_equal("parse_date:14:tail", *tail, 0, 1e-6)) n++;
+  if(!is_equal("parse_date:14:tail", *tail, ' ', 1e-6)) n++;
 
-  if(!is_equal("parse_date:15", novas_parse_date("2025 1 26 19h33m08.113z _", &tail), jd, 1e-6)) n++;
-  if(!is_equal("parse_date:15:tail", *tail, 0, 1e-6)) n++;
+  if(!is_equal("parse_date:15", novas_parse_date("2025 1 26 19h33m08.113z_ ", &tail), jd, 1e-6)) n++;
+  if(!is_equal("parse_date:15:tail", *tail, '_', 1e-6)) n++;
 
   return n;
 }
