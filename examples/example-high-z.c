@@ -64,6 +64,7 @@ int main() {
   double ra0 = novas_str_hours("12h29m6.6997s");
   double dec0 = novas_str_degrees("+2d3m8.598s");
 
+  // Wrap in a generic object structure defined by ICRS coordinates.
   if(make_redshifted_object_sys("3c273", ra0, dec0, "ICRS", 0.158339, &source) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;

@@ -84,7 +84,7 @@ int main(int argc, const char *argv[]) {
   }
 
   // -------------------------------------------------------------------------
-  // Wrap the sidereal source into an object structure...
+  // Convert to ICRS coordinates and wrap in a generic object structure.
   if(make_cat_object_sys(&star, "B1950", &source) != 0) {
     fprintf(stderr, "ERROR! configuring observed object\n");
     return 1;
