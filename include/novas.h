@@ -1866,6 +1866,9 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
 
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 
+// in plugin.c
+novas_nutation_provider get_nutation_lp_provider();
+
 
 // <================= END of SuperNOVAS API =====================>
 
@@ -1886,6 +1889,9 @@ int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
 
 #  define HALF_PI             (0.5 * M_PI)
 #  define ERAD_AU             (ERAD/AU)
+#  define C2                  (C * C)   ///< [m<sup>2</sup>/s<sup>2</sup>] Speed of light squared
+#  define EPREC               1e-12     ///< Required precision for eccentric anomaly in orbital calculation
+
 
 #  define XYZ_VECTOR_SIZE     (3 * sizeof(double))
 
@@ -1956,10 +1962,16 @@ int novas_error(int ret, int en, const char *restrict from, const char *restrict
     return __ret; \
 }
 
+double norm_ang(double angle);
+int time_equals(double jd1, double jd2);
+void tiny_rotate(const double *in, double ax, double ay, double az, double *out);
+
 double novas_add_beta(double beta1, double beta2);
+double novas_add_vel(double v1, double v2);
 
 double novas_vlen(const double *restrict v);
 double novas_vdist(const double *v1, const double *v2);
+double novas_vdist2(const double *v1, const double *v2);
 double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
