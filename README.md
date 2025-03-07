@@ -170,9 +170,9 @@ compatibility.
 If you have code that was written for NOVAS C 3.1, it should work with SuperNOVAS as is, without modifications. Simply 
 (re)build your application against SuperNOVAS, and you are good to go. 
 
-The lack of binary compatibility just means that you cannot drop-in replace your compiled objects (e.g. `novas.o`, or 
-the static `libnovas.a`, or the shared `libnovas.so`) libraries, from NOVAS C 3.1 with those from SuperNOVAS. Instead, 
-you will have to build (compile) your application referencing the SuperNOVAS headers and/or libraries from the start.
+The lack of binary compatibility just means that you cannot drop-in replace the libraries (e.g. the static 
+`libnovas.a`, or the shared `libnovas.so`), from NOVAS C 3.1 with those from SuperNOVAS. Instead, you will have to 
+build (compile) your application referencing the SuperNOVAS headers and/or libraries from the start.
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
 `short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 

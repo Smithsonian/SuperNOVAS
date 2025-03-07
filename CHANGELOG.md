@@ -110,8 +110,8 @@ calculations.
  - #130 Use C99 `restrict` keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted 
    pointer arguments are aliased.
    
- - #139 Reorganized code into more managably sized modules. It also makes apidoc by source file more logically 
-   organized.
+ - #139 Reorganized code into more managably sized modules. It also makes the API documentation by source file more 
+   logically organized.
    
  - #139: Legacy source code moved to `legacy/` folder, and installed into `$(DESTDIR)$(docdir)/legacy/`.
  
