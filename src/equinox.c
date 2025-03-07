@@ -94,8 +94,8 @@ double mean_obliq(double jd_tdb) {
  */
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy) {
   static THREAD_LOCAL enum novas_equinox_type last_type = -999;
-  static THREAD_LOCAL enum novas_accuracy acc_last = NOVAS_FULL_ACCURACY;
-  static THREAD_LOCAL double t_last = 0.0, last_ra;
+  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+  static THREAD_LOCAL double t_last = NAN, last_ra;
 
   double t, eqeq = 0.0, prec_ra;
 

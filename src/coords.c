@@ -438,11 +438,11 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
     case NOVAS_MEAN_EQUATOR:      // Input: mean equator and equinox of date
     case NOVAS_TRUE_EQUATOR: {    // Input: true equator and equinox of date
       static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-      static THREAD_LOCAL double t_last = 0.0, oblm, oblt;
+      static THREAD_LOCAL double t_last = NAN, oblm, oblt;
 
       memcpy(pos0, in, sizeof(pos0));
 
-      if(!oblm || !time_equals(jd_tt, t_last) || accuracy != acc_last) {
+      if(!time_equals(jd_tt, t_last) || accuracy != acc_last) {
         const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY; // TDB date
         e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
         t_last = jd_tt;
@@ -520,9 +520,9 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
     case NOVAS_MEAN_EQUATOR:        // Output: mean equator and equinox of date
     case NOVAS_TRUE_EQUATOR: {      // Output: true equator and equinox of date
       static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-      static THREAD_LOCAL double t_last = 0.0, oblm, oblt;
+      static THREAD_LOCAL double t_last = NAN, oblm, oblt;
 
-      if(!oblm || !time_equals(jd_tt, t_last) || accuracy != acc_last) {
+      if(!time_equals(jd_tt, t_last) || accuracy != acc_last) {
         const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;    // TDB date
         e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
         t_last = jd_tt;

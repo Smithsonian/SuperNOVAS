@@ -771,7 +771,7 @@ int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @sa NOVAS_JD_B1900
  */
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
-  static THREAD_LOCAL double t_last;
+  static THREAD_LOCAL double t_last = NAN;
   static THREAD_LOCAL double xx, yx, zx, xy, yy, zy, xz, yz, zz;
   double t;
 

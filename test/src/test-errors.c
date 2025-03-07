@@ -13,6 +13,23 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
+static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
+  (void) name;
+  (void) jd_tdb_high;
+  (void) jd_tdb_low;
+  *origin = NOVAS_BARYCENTER;
+
+  if(pos) {
+    memset(pos, 0, 3 * sizeof(double));
+    pos[0] = id % 100;
+  }
+  if(vel) {
+    memset(vel, 0, 3 * sizeof(double));
+    vel[1] = 0.01 * (id % 100);
+  }
+  return 0;
+}
+
 static int check(const char *func, int exp, int error) {
   if(error != exp) {
     fprintf(stderr, "ERROR! %s: expected %d, got %d\n", func, exp, error);
@@ -908,11 +925,16 @@ static int test_rad_vel() {
   if(check("rad_vel:vobs", -1, rad_vel(&o, p, v, NULL, 1.0, 1.0, 1.0, &rv))) n++;
   if(check("rad_vel:out", -1, rad_vel(&o, p, v, vo, 1.0, 1.0, 1.0, NULL))) n++;
 
+  if(check_nan("rad_vel2:emit", rad_vel2(&o, NULL, v, p, vo, 1.0, 1.0, 1.0))) n++;
+  if(check_nan("rad_vel2:det", rad_vel2(&o, p, v, NULL, vo, 1.0, 1.0, 1.0))) n++;
+
   o.type = -1;
   if(check("rad_vel", -1, rad_vel(&o, p, v, vo, 1.0, 1.0, 1.0, &rv))) n++;
 
   return n;
 }
+
+
 
 static int test_aberration() {
   double p[3] = {1.0}, v[3] = {};
@@ -2015,6 +2037,22 @@ static int test_make_redshifted_object_sys() {
   return n;
 }
 
+static int test_planet_ephem_provider() {
+  int n = 0;
+  double pos[3] = {}, vel[3] = {};
+
+  if(check("planet_ephem_provider:none", 1, planet_ephem_provider(NOVAS_JD_J2000, NOVAS_SUN, NOVAS_BARYCENTER, pos, vel))) n++;
+  set_ephem_provider(dummy_ephem);
+
+  if(check("planet_ephem_provider:set", 0, planet_ephem_provider(NOVAS_JD_J2000, NOVAS_SUN, NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("planet_ephem_provider:planet:-1", -1, planet_ephem_provider(NOVAS_JD_J2000, -1, NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("planet_ephem_provider:planet:hi", -1, planet_ephem_provider(NOVAS_JD_J2000, NOVAS_PLANETS, NOVAS_BARYCENTER, pos, vel))) n++;
+  if(check("planet_ephem_provider:origin:-1", 1, planet_ephem_provider(NOVAS_JD_J2000, NOVAS_SUN, -1, pos, vel))) n++;
+  if(check("planet_ephem_provider:origin:2", 1, planet_ephem_provider(NOVAS_JD_J2000, NOVAS_SUN, 2, pos, vel))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2183,6 +2221,8 @@ int main() {
   if(test_epoch()) n++;
   if(test_make_cat_object_sys()) n++;
   if(test_make_redshifted_object_sys()) n++;
+
+  if(test_planet_ephem_provider()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

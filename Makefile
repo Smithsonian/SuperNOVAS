@@ -277,6 +277,8 @@ install-examples:
 	@echo "installing examples to $(DESTDIR)$(docdir)"
 	install -d $(DESTDIR)$(docdir)
 	$(INSTALL_DATA) -D examples/* $(DESTDIR)$(docdir)/
+	install -d $(DESTDIR)$(docdir)/legacy
+	$(INSTALL_DATA) -D legacy/* $(DESTDIR)$(docdir)/legacy/
 
 
 # Some standard GNU targets, that should always exist...

@@ -188,6 +188,7 @@ endif
 
 ifeq ($(BUILTIN_SOLSYS_EPHEM), 1) 
   SOURCES += $(SRC)/solsys-ephem.c
+  CPPFLAGS += -DBUILTIN_SOLSYS_EPHEM_READER=1
 endif
 
 ifdef DEFAULT_READEPH

@@ -52,9 +52,6 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
   if(!pos || !vel)
     return novas_error(-1, EINVAL, fn, "NULL output pointer: pos=%p, vel=%p", pos, vel);
 
-  if(pos == vel)
-    return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p.", pos);
-
   // Check the value of 'origin'.
   if(origin < 0 || origin >= NOVAS_ORIGIN_TYPES)
     return novas_error(1, EINVAL, fn, "invalid origin type: %d", origin);
@@ -231,7 +228,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
   static const char *fn = "place";
 
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-  static THREAD_LOCAL double tlast1 = 0.0;
+  static THREAD_LOCAL double tlast = NAN;
   static THREAD_LOCAL double peb[3], veb[3], psb[3];
 
   observer obs;
@@ -261,7 +258,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
   // ---------------------------------------------------------------------
   // Get position and velocity of Earth (geocenter) and Sun.
   // ---------------------------------------------------------------------
-  if(!time_equals(jd_tt, tlast1) || accuracy != acc_last) {
+  if(!time_equals(jd_tt, tlast) || accuracy != acc_last) {
     static object earth = NOVAS_EARTH_INIT, sun = NOVAS_SUN_INIT;
     double vsb[3];
     const double jd[2] = { jd_tdb };
@@ -272,7 +269,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
     // Get position and velocity of Sun wrt barycenter of solar system, in ICRS.
     prop_error("place:ephemeris:sun", ephemeris(jd, &sun, NOVAS_BARYCENTER, accuracy, psb, vsb), 10);
 
-    tlast1 = jd_tt;
+    tlast = jd_tt;
     acc_last = accuracy;
   }
 

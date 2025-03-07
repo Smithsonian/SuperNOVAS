@@ -214,7 +214,7 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
         double *restrict ee, double *restrict dpsi, double *restrict deps) {
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-  static THREAD_LOCAL double jd_last = 0;
+  static THREAD_LOCAL double jd_last = NAN;
   static THREAD_LOCAL double d_psi, d_eps, mean_ob, true_ob, c_terms;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
@@ -327,7 +327,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   if(((gst_type == NOVAS_MEAN_EQUINOX) && (erot == EROT_ERA))       // GMST; CIO-TIO
           || ((gst_type == NOVAS_TRUE_EQUINOX) && (erot == EROT_GST))) {    // GAST; equinox
     static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-    static THREAD_LOCAL double jd_last;
+    static THREAD_LOCAL double jd_last = NAN;
     static THREAD_LOCAL double ee;
 
     if(!time_equals(jd_tdb, jd_last) || accuracy != acc_last) {
@@ -595,7 +595,7 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
 short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
         double *restrict pos, double *restrict vel) {
   static const char *fn = "geo_posvel";
-  static THREAD_LOCAL double t_last = 0;
+  static THREAD_LOCAL double t_last = NAN;
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double gast;
 
