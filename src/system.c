@@ -62,9 +62,9 @@ int frame_tie(const double *in, enum novas_frametie_direction direction, double 
     return novas_error(-1, EINVAL, "frame_tie", "NULL input or output 3-vector: in=%p, out=%p", in, out);
 
   if(direction < 0)
-    tiny_rotate(in, -eta0, xi0, da0, out);
+    novas_tiny_rotate(in, -eta0, xi0, da0, out);
   else
-    tiny_rotate(in, eta0, -xi0, -da0, out);
+    novas_tiny_rotate(in, eta0, -xi0, -da0, out);
 
   return 0;
 }
@@ -785,7 +785,7 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
   }
 
   // Check to be sure that either 'jd_tdb1' or 'jd_tdb2' is equal to JD_J2000.
-  if(!time_equals(jd_tdb_in, JD_J2000) && !time_equals(jd_tdb_out, JD_J2000)) {
+  if(!novas_time_equals(jd_tdb_in, JD_J2000) && !novas_time_equals(jd_tdb_out, JD_J2000)) {
     // Do the precession in two steps...
     precession(jd_tdb_in, in, JD_J2000, out);
     precession(JD_J2000, out, jd_tdb_out, out);
@@ -797,7 +797,7 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
   if(jd_tdb_out == JD_J2000)
     t = -t;
 
-  if(!time_equals(t, t_last)) {
+  if(!novas_time_equals(t, t_last)) {
     double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd;
     double eps0 = 84381.406;
 

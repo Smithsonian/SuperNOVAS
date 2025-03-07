@@ -197,7 +197,7 @@ double novas_vdot(const double *v1, const double *v2) {
  *                comparison, or else FALSE (0) if they differ by more than the allowed
  *                tolerance.
  */
-int time_equals(double jd1, double jd2) {
+int novas_time_equals(double jd1, double jd2) {
   return fabs(jd1 - jd2) <= 1.0e-8;
 }
 
@@ -211,7 +211,7 @@ int time_equals(double jd1, double jd2) {
  * @param[out] out      Rotated vector. It can be the same as the input.
  *
  */
-void tiny_rotate(const double *in, double ax, double ay, double az, double *out) {
+void novas_tiny_rotate(const double *in, double ax, double ay, double az, double *out) {
   const double x = in[0], y = in[1], z = in[2];
   const double A[3] = { ax * ax, ay * ay, az * az };
 
@@ -264,7 +264,7 @@ enum novas_debug_mode novas_get_debug_mode() {
  * @since 1.0
  * @author Attila Kovacs
  */
-double norm_ang(double angle) {
+double novas_norm_ang(double angle) {
   double a;
 
   a = remainder(angle, TWOPI);

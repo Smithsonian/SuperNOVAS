@@ -1519,7 +1519,7 @@ double julian_date(short year, short month, short day, double hour);
 
 int cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour);
 
-double norm_ang(double angle);
+double novas_norm_ang(double angle);
 
 short make_cat_entry(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec,
         double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star);
@@ -1962,9 +1962,9 @@ int novas_error(int ret, int en, const char *restrict from, const char *restrict
     return __ret; \
 }
 
-double norm_ang(double angle);
-int time_equals(double jd1, double jd2);
-void tiny_rotate(const double *in, double ax, double ay, double az, double *out);
+double novas_norm_ang(double angle);
+int novas_time_equals(double jd1, double jd2);
+void novas_tiny_rotate(const double *in, double ax, double ay, double az, double *out);
 
 double novas_add_beta(double beta1, double beta2);
 double novas_add_vel(double v1, double v2);

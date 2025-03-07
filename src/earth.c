@@ -223,7 +223,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
   // Compute the nutation angles (arcseconds) if the input Julian date
   // is significantly different from the last Julian date, or the
   // accuracy mode has changed from the last call.
-  if(!time_equals(jd_tdb, jd_last) || (accuracy != acc_last)) {
+  if(!novas_time_equals(jd_tdb, jd_last) || (accuracy != acc_last)) {
     // Compute time in Julian centuries from epoch J2000.0.
     const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
@@ -330,7 +330,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
     static THREAD_LOCAL double jd_last = NAN;
     static THREAD_LOCAL double ee;
 
-    if(!time_equals(jd_tdb, jd_last) || accuracy != acc_last) {
+    if(!novas_time_equals(jd_tdb, jd_last) || accuracy != acc_last) {
       e_tilt(jd_tdb, accuracy, NULL, NULL, &ee, NULL, NULL);
       jd_last = jd_tdb;
       acc_last = accuracy;
@@ -561,9 +561,9 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
   // Compute elements of rotation matrix.
   // Equivalent to R3(-s')R2(x)R1(y) as per IERS Conventions (2003).
   if(direction == WOBBLE_ITRS_TO_PEF)
-    tiny_rotate(in, -ypole, -xpole, s1, out);
+    novas_tiny_rotate(in, -ypole, -xpole, s1, out);
   else
-    tiny_rotate(in, ypole, xpole, -s1, out);
+    novas_tiny_rotate(in, ypole, xpole, -s1, out);
 
   // Second-order correction for the non-negligible xp, yp product...
   out[0] += xpole * ypole * y1;
@@ -629,7 +629,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
     case NOVAS_OBSERVER_ON_EARTH:                       // Observer on surface of Earth.
       // Compute UT1 and sidereal time.
       jd_ut1 = jd_tt - (ut1_to_tt / DAY);
-      if(!time_equals(jd_ut1, t_last) || accuracy != acc_last) {
+      if(!novas_time_equals(jd_ut1, t_last) || accuracy != acc_last) {
         sidereal_time(jd_ut1, 0.0, ut1_to_tt, NOVAS_MEAN_EQUINOX, EROT_ERA, accuracy, &gmst);
         e_tilt(jd_tdb, accuracy, NULL, NULL, &eqeq, NULL, NULL);
         gast = gmst + eqeq / 3600.0;

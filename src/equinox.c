@@ -103,7 +103,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
   if(accuracy != NOVAS_REDUCED_ACCURACY)
     accuracy = NOVAS_FULL_ACCURACY;
 
-  if(time_equals(jd_tdb, t_last) && (accuracy == acc_last) && (last_type == equinox)) {
+  if(novas_time_equals(jd_tdb, t_last) && (accuracy == acc_last) && (last_type == equinox)) {
     // Same parameters as last time. Return last calculated value.
     return last_ra;
   }
@@ -347,11 +347,11 @@ int fund_args(double t, novas_delaunay_args *restrict a) {
   a->D += 1072260.703692 + t * 1602961601.2090;
   a->Omega += 450160.398036 - t * 6962890.5431;
 
-  a->l = norm_ang(a->l * ARCSEC);
-  a->l1 = norm_ang(a->l1 * ARCSEC);
-  a->F = norm_ang(a->F * ARCSEC);
-  a->D = norm_ang(a->D * ARCSEC);
-  a->Omega = norm_ang(a->Omega * ARCSEC);
+  a->l = novas_norm_ang(a->l * ARCSEC);
+  a->l1 = novas_norm_ang(a->l1 * ARCSEC);
+  a->F = novas_norm_ang(a->F * ARCSEC);
+  a->D = novas_norm_ang(a->D * ARCSEC);
+  a->Omega = novas_norm_ang(a->Omega * ARCSEC);
 
   return 0;
 }
