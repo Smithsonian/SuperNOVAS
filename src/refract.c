@@ -2,7 +2,7 @@
  * @file
  *
  * @date Created  on Jun 27, 2024
- * @author Attila Kovacs
+ * @author Attila Kovacs and G. Kaplan
  *
  *  A collection of refraction models and utilities to use with novas_app_to_hor() or
  *  novas_hor_to_app().
@@ -20,8 +20,136 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
-#include <math.h>
+
 #include "novas.h"
+
+
+/**
+ * Computes atmospheric optical refraction for a source at an astrometric zenith distance
+ * (e.g. calculated without accounting for an atmosphere). This is suitable for converting
+ * astrometric (unrefracted) zenith angles to observed (refracted) zenith angles. See
+ * refract() for the reverse correction.
+ *
+ * The returned value is the approximate refraction for optical wavelengths. This function
+ * can be used for planning observations or telescope pointing, but should not be used for
+ * precise positioning.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Explanatory Supplement to the Astronomical Almanac, p. 144.</li>
+ * <li>Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259.</li>
+ * </ol>
+ *
+ * @param location      Pointer to structure containing observer's location. It may also
+ *                      contains weather data (optional) for the observer's location.
+ * @param option        NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if
+ *                      to use the weather values contained in the 'location' data structure.
+ * @param zd_astro      [deg] Astrometric (unrefracted) zenith distance angle of the source.
+ * @return              [deg] the calculated optical refraction. (to ~0.1 arcsec accuracy),
+ *                      or 0.0 if the location is NULL or the option is invalid.
+ *
+ * @sa refract()
+ * @sa itrs_to_hor()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double refract_astro(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro) {
+  double refr = 0.0;
+  int i;
+
+  for(i = 0; i < novas_inv_max_iter; i++) {
+    double zd_obs = zd_astro - refr;
+    refr = refract(location, option, zd_obs);
+    if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5)
+      return refr;
+  }
+
+  novas_set_errno(ECANCELED, "refract_astro", "failed to converge");
+  return NAN;
+}
+
+/**
+ * Computes atmospheric optical refraction for an observed (already refracted!) zenith
+ * distance through the atmosphere. In other words this is suitable to convert refracted
+ * zenith angles to astrometric (unrefracted) zenith angles. For the reverse, see
+ * refract_astro().
+ *
+ * The returned value is the approximate refraction for optical wavelengths. This function
+ * can be used for planning observations or telescope pointing, but should not be used for
+ * precise positioning.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The standard temeperature model includes a very rough estimate of the mean annual
+ * temeprature for the ovserver's latitude and elevation, rather than the 10 C everywhere
+ * assumption in NOVAS C 3.1.<.li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Explanatory Supplement to the Astronomical Almanac, p. 144.</li>
+ * <li>Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259.</li>
+ * </ol>
+ *
+ * @param location      Pointer to structure containing observer's location. It may also
+ *                      contains weather data (optional) for the observer's location.
+ * @param option        NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if
+ *                      to use the weather values contained in the 'location' data structure.
+ * @param zd_obs        [deg] Observed (already refracted!) zenith distance through the
+ *                      atmosphere.
+ * @return              [deg] the calculated optical refraction or 0.0 if the location is
+ *                      NULL or the option is invalid or the 'zd_obs' is invalid (&lt;90&deg;).
+ *
+ * @sa refract_astro()
+ * @sa hor_to_itrs()
+ *
+ */
+double refract(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs) {
+  static const char *fn = "refract";
+
+  // 's' is the approximate scale height of atmosphere in meters.
+  const double s = 9.1e3;
+  const double ct = 0.065;  // [C/m] averate temperature drop with altitude
+  double p, t, h, r;
+
+  if(option == NOVAS_NO_ATMOSPHERE)
+    return 0.0;
+
+  if(!location) {
+    novas_set_errno(EINVAL, fn, "NULL observer location");
+    return 0.0;
+  }
+
+  if(option != NOVAS_STANDARD_ATMOSPHERE && option != NOVAS_WEATHER_AT_LOCATION) {
+    novas_set_errno(EINVAL, fn, "invalid refraction model option: %d", option);
+    return 0.0;
+  }
+
+  zd_obs = fabs(zd_obs);
+
+  // Compute refraction up to zenith distance 91 degrees.
+  if(zd_obs > 91.0)
+    return 0.0;
+
+  // If observed weather data are available, use them.  Otherwise, use
+  // crude estimates of average conditions.
+  if(option == NOVAS_WEATHER_AT_LOCATION) {
+    p = location->pressure;
+    t = location->temperature;
+  }
+  else {
+    p = 1010.0 * exp(-location->height / s);
+    // AK: A very rough model of mean annual temperatures vs latitude
+    t = 30.0 - 30.0 * sin(location->latitude * DEGREE);
+    // AK: Estimated temperature drop due to elevation.
+    t -= location->height * ct;
+  }
+
+  h = 90.0 - zd_obs;
+  r = 0.016667 / tan((h + 7.31 / (h + 4.4)) * DEGREE);
+  return r * (0.28 * p / (t + 273.0));
+}
 
 static double novas_refraction(enum novas_refraction_model model, const on_surface *loc, enum novas_refraction_type type, double el) {
   static const char *fn = "novas_refraction";

@@ -65,6 +65,131 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
 #endif
 
 
+/**
+ * Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date
+ * corresponding to a Barycentric Dynamical Time (TDB) Julian date.
+ *
+ * Expression used in this function is a truncated form of a longer and more precise
+ * series given in the first reference.  The result is good to about 10 microseconds.
+ *
+ * @deprecated Use the less computationally intensive an more accurate tt2tdb()
+ *            routine instead.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
+ * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
+ * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
+ * </ol>
+ *
+ * @param jd_tdb         [day] Barycentric Dynamic Time (TDB) based Julian date
+ * @param[out] jd_tt     [day] Terrestrial Time (TT) based Julian date. (It may be NULL
+ *                       if not required)
+ * @param[out] secdiff   [s] Difference 'tdb_jd'-'tt_jd', in seconds. (It may be NULL if
+ *                       not required)
+ * @return               0 if successful, or -1 if the tt_jd pointer argument is NULL.
+ *
+ * @sa tt2tdb()
+ */
+int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
+  const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
+
+  // Expression given in USNO Circular 179, eq. 2.6.
+  const double d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
+  + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+  + 0.000010 * t * sin(628.3076 * t + 4.2490);
+
+  // The simpler formula with a precision of ~30 us.
+  //  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
+  //  const double g = 6.239996 + 630.0221385924 * t;
+  //  const double d = 0.001657 * sin(g + 0.01671 * sin(g));
+
+  if(jd_tt)
+    *jd_tt = jd_tdb - d / DAY;
+  if(secdiff)
+    *secdiff = d;
+
+  return 0;
+}
+
+/**
+ * Returns the TDB - TT time difference in seconds for a given TT date.
+ *
+ * Note, as of version 1.1, it uses the same calculation as the more precise original tdb2tt(). It thus has an acuracy of
+ * about 10 &mu;s vs around 30 &mu;s with the simpler formula from the references below.
+ *
+ *
+ * REFERENCES
+ * <ol>
+ * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
+ * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
+ * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
+ * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
+ * </ol>
+ *
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date
+ * @return          [s] TDB - TT time difference.
+ *
+ * @sa tdb2tt()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double tt2tdb(double jd_tt) {
+  double dt;
+
+  tdb2tt(jd_tt, NULL, &dt);
+  return dt;
+}
+
+/**
+ * Returns the difference between Terrestrial Time (TT) and Universal Coordinated Time (UTC)
+ *
+ * @param leap_seconds  [s] The current leap seconds (see IERS Bulletins)
+ * @return              [s] The TT - UTC time difference
+ *
+ * @sa get_ut1_to_tt()
+ * @sa julian_date()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double get_utc_to_tt(int leap_seconds) {
+  return leap_seconds + NOVAS_TAI_TO_TT;
+}
+
+/**
+ * Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time
+ * difference as measured and published by IERS.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
+ * projections are published in the
+ <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ * </li>
+ * </ol>
+ *
+ * @param leap_seconds  [s] Leap seconds at the time of observations
+ * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5]
+ * @return              [s] The TT - UT1 time difference that is suitable for used with all
+ *                      calls in this library that require a <code>ut1_to_tt</code> argument.
+ *
+ * @sa get_utc_to_tt()
+ * @sa place()
+ * @sa cel_pole()
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double get_ut1_to_tt(int leap_seconds, double dut1) {
+  return get_utc_to_tt(leap_seconds) + dut1;
+}
 
 /**
  * Sets an astronomical time to the fractional Julian Date value, defined in the specified
@@ -396,7 +521,6 @@ double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
   return dt;
 }
 
-
 /**
  * Returns the Geocentric Coordinate Time (TCG) based time difference (t1 - t2) in days between
  * two astronomical time specifications. TCG progresses slightly faster than time on Earth, at a
@@ -564,7 +688,6 @@ static int parse_zone(const char *str, char **tail) {
 
   return 0;
 }
-
 
 /**
  * Parses a calndar date/time string, expressed in the specified type of calendar, into a Julian

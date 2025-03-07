@@ -166,8 +166,10 @@ ifeq ($(DEFAULT_SOLSYS), 3)
   CPPFLAGS += -DDEFAULT_SOLSYS=3
 endif
 
-SOURCES = $(SRC)/novas.c $(SRC)/nutation.c $(SRC)/super.c $(SRC)/timescale.c \
-          $(SRC)/frames.c $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c 
+SOURCES = $(SRC)/target.c $(SRC)/observer.c $(SRC)/earth.c $(SRC)/equinox.c $(SRC)/coords.c \
+		  $(SRC)/system.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
+		  $(SRC)/nutation.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/place.c $(SRC)/calendar.c  \
+          $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c $(SRC)/plugin.c $(SRC)/util.c
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
   SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 
@@ -186,6 +188,7 @@ endif
 
 ifeq ($(BUILTIN_SOLSYS_EPHEM), 1) 
   SOURCES += $(SRC)/solsys-ephem.c
+  CPPFLAGS += -DBUILTIN_SOLSYS_EPHEM_READER=1
 endif
 
 ifdef DEFAULT_READEPH

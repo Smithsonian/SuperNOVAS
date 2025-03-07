@@ -63,7 +63,7 @@ short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_plane
   prop_error(fn, ephem_call(names[body], body, jd_tdb[0], jd_tdb[1], &o, position, velocity), 0);
 
   if(o != origin) {
-    double pos0[3], vel0[3];
+    double pos0[3] = {}, vel0[3] = {};
     int i;
     int ref = (o == NOVAS_BARYCENTER) ? NOVAS_SUN : NOVAS_SSB;
 

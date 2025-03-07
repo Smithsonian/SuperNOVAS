@@ -22,6 +22,9 @@ calculations.
    were left uncaught, only the appropriatre number of characters were used -- hence it broke nothing, only failed to 
    remind the caller (with an error) that the supplied name was not quite right.
   
+ - #139: Legacy linking of external `solarsystem()` / `solarsystem_hp()` provider modules was blocked by 
+   `solsys-ephem.c` inadvertently definining these functions even though it was not supposed to.
+  
 ### Added
 
  - #113: New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
@@ -104,8 +107,13 @@ calculations.
 
 ### Changed
  
- - [#130] Use C99 `restrict` keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted 
+ - #130 Use C99 `restrict` keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted 
    pointer arguments are aliased.
+   
+ - #139 Reorganized code into more managably sized modules. It also makes the API documentation by source file more 
+   logically organized.
+   
+ - #139: Legacy source code moved to `legacy/` folder, and installed into `$(DESTDIR)$(docdir)/legacy/`.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
