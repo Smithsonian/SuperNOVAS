@@ -1321,7 +1321,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   const novas_timespec *t0;
   novas_timespec t = {};
   novas_frame frame1;
-  double lst, lastRA = NAN;
+  double jd0_tt, lastRA = NAN;
   int i;
 
   if(!source) {
@@ -1329,43 +1329,43 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     return NAN;
   }
 
-  lst = novas_frame_lst(frame);
-  if(isnan(lst))
+  if(isnan(novas_frame_lst(frame)))
     return novas_trace_nan(fn);
-
-  if(ref_model) {
-    // Apply refraction correction
-    el -= ref_model(novas_get_time(&frame->time, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
-  }
 
   el *= DEGREE;                     // convert to degrees.
   frame1 = *frame;                  // Time shifted frame
   t0 = &frame->time;
+  jd0_tt = t0->ijd_tt + t0->fjd_tt;
   loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
 
   for(i = 0; i < novas_inv_max_iter; i++) {
     sky_pos pos = {};
-    double lha;
+    double ref = 0.0, lha;
 
     prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
 
+    if(ref_model) {
+      // Apply refraction correction
+      ref = ref_model(novas_get_time(&frame->time, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el) * DEGREE;
+    }
+
     // Hourangle when source crosses nominal elevation
-    lha = sign ? calc_lha(el, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE) : 0.0;
+    lha = sign ? calc_lha(el - ref, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE) : 0.0;
     if(isnan(lha)) {
       errno = 0;      // It's to be expected for some sources.
       return NAN;
     }
 
     // Adjusted frame time for last crossing time estimate
-    t = *t0;
-    t.fjd_tt += remainder((pos.ra + sign * lha - lst) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
+    t = frame1.time;
+    t.fjd_tt += remainder((pos.ra + sign * lha - novas_frame_lst(&frame1)) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
 
-    if(t.fjd_tt < t0->fjd_tt)
+    if((t.ijd_tt + t.fjd_tt) < jd0_tt)
       t.ijd_tt++;        // Make sure to check rise/set time after input frame time.
 
     if(source->type == NOVAS_CATALOG_OBJECT)
       break;              // That's it for catalog sources
-    if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-8)
+    if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-2)
       break;              // Check if converged (ms precision)
 
     lastRA = pos.ra;
@@ -1378,6 +1378,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     novas_error(0, ECANCELED, fn, "failed to converge");
     return NAN;
   }
+
 
   return novas_get_time(&t, NOVAS_UTC);
 }
