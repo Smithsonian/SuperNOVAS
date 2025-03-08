@@ -1359,7 +1359,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
     // Adjusted frame time for last crossing time estimate
     t = *t0;
-    t.fjd_tt += remainder(pos.ra + (sign * lha - lst) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
+    t.fjd_tt += remainder((pos.ra + sign * lha - lst) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
 
     if(t.fjd_tt < t0->fjd_tt)
       t.ijd_tt++;        // Make sure to check rise/set time after input frame time.
