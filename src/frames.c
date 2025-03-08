@@ -1335,8 +1335,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
   if(ref_model) {
     // Apply refraction correction
-    double ref = ref_model(novas_get_time(&frame->time, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
-    el -= ref / 3600.0;
+    el -= ref_model(novas_get_time(&frame->time, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el);
   }
 
   el *= DEGREE;                     // convert to degrees.
