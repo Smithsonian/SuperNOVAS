@@ -2986,6 +2986,16 @@ static int test_rise_set() {
   if(!is_equal("rise_set:rise:ra=gst", novas_rises_above(0.0, &cat, &frame, NULL), NOVAS_JD_J2000 + 0.75, 0.01)) n++;
   if(!is_equal("rise_set:set:ra=gst", novas_sets_below(0.0, &cat, &frame, NULL), NOVAS_JD_J2000 + 0.25, 0.01)) n++;
 
+  if(!is_ok("rise_set:fixed_time", novas_set_time(NOVAS_UTC, novas_date("2025-08-20"), 37, 0.0, &time))) n++;
+  make_observer_on_surface(40.73, -73.92, 0.0, 0.0, 0.0, &obs);
+  if(!is_ok("rise_set:fixed_time:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+
+  // 10:11 UTC from USNO
+  if(!is_equal("rise_set:fixed_time:rise", novas_rises_above(-0.26, &sun, &frame, novas_standard_refraction), 2460907.5 + 0.4243, 1e-3)) n++;
+
+  // 23:46 UTC from USNO
+  if(!is_equal("rise_set:fixed_time:set", novas_sets_below(-0.26, &sun, &frame, novas_standard_refraction), 2460907.5 + 0.9903, 1e-3)) n++;
+
   return n;
 }
 
