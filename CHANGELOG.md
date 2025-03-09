@@ -71,7 +71,7 @@ calculations.
  - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
- - #117: Added benchmarks under the `benchmark/` forlder, for SuperNOVAS as well as equivalent benchmarks for 
+ - #117: Added benchmarks under the `benchmark/` folder, for SuperNOVAS as well as equivalent benchmarks for 
    __astropy__. To run the SuperNOVAS benchmarks, simply `make benchmark` in the distribution directory.
    
  - #118: New `novas_parse_date()` / `novas_parse_date_format()` to parse date/time specifications, `novas_parse_dms()` 
