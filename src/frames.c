@@ -1420,6 +1420,8 @@ double novas_transit_time(const object *restrict source, const novas_frame *rest
  * <ol>
  * <li>The current implementation is not suitable for calculating the nearest successive rise times
  * for near-Earth objects, at or within the geostationary orbit.</li>
+ * <li>This function calculates the time when the center (not the limb!) of the source rises above the
+ * specified elevation threshold. Something to keep in mind for calculating Sun/Moon rise times.</li>
  * </ol>
  *
  * @param el          [deg] Elevation angle.
@@ -1458,6 +1460,8 @@ double novas_rises_above(double el, const object *restrict source, const novas_f
  * <ol>
  * <li>The current implementation is not suitable for calculating the nearest successive set times
  * for near-Earth objects, at or within the geostationary orbit.</li>
+ * <li>This function calculates the time when the center (not the limb!) of the source sets below the
+ * specified elevation threshold. Something to keep in mind for calculating Sun/Moon rise times.</li>
  * </ol>
  *
  * @param el          [deg] Elevation angle.
