@@ -90,6 +90,10 @@ int main(int argc, const char *argv[]) {
     return 1;
   }
 
+  // Or, e.g. the Sun...
+  /*
+  make_planet(NOVAS_SUN, &source);
+  */
 
   // -------------------------------------------------------------------------
   // Define observer somewhere on Earth (we can also define observers in Earth
@@ -123,6 +127,13 @@ int main(int argc, const char *argv[]) {
     fprintf(stderr, "ERROR! failed to set time of observation.\n");
     return 1;
   }
+  */
+
+  /*
+  // Or using a string date, e.g:
+  if(novas_set_time(NOVAS_UTC,
+    novas_date("2025-03-09T11:03:28+0200"),
+    37, 0.044, &obs_time);
   */
 
 

@@ -1365,7 +1365,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
     if(source->type == NOVAS_CATALOG_OBJECT)
       break;              // That's it for catalog sources
-    if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-2)
+    if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-8)
       break;              // Check if converged (ms precision)
 
     lastRA = pos.ra;
