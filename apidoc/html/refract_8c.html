@@ -127,10 +127,14 @@ Functions</h2></td></tr>
 <tr class="separator:a6b49f92f8f818f2272613e3432185a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab04bff3b97c132e358e11c3a5b7a3081" id="r_ab04bff3b97c132e358e11c3a5b7a3081"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a> (double jd_tt, const <a class="el" href="structon__surface.html">on_surface</a> *loc, enum <a class="el" href="novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468">novas_refraction_type</a> type, double el)</td></tr>
 <tr class="separator:ab04bff3b97c132e358e11c3a5b7a3081"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f0ad82690613afaa2325f430ac29743" id="r_a9f0ad82690613afaa2325f430ac29743"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="refract_8c.html#a9f0ad82690613afaa2325f430ac29743">refract</a> (const <a class="el" href="structon__surface.html">on_surface</a> *restrict location, enum <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81">novas_refraction_model</a> option, double zd_obs)</td></tr>
+<tr class="separator:a9f0ad82690613afaa2325f430ac29743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad875289016bb6c3e6ff9e00a9fc2dfd4" id="r_ad875289016bb6c3e6ff9e00a9fc2dfd4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro</a> (const <a class="el" href="structon__surface.html">on_surface</a> *restrict location, enum <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81">novas_refraction_model</a> option, double zd_astro)</td></tr>
+<tr class="separator:ad875289016bb6c3e6ff9e00a9fc2dfd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Jun 27, 2024 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan</dd></dl>
 <p>A collection of refraction models and utilities to use with <a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a> or <a class="el" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app()</a>.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a> </dd>
 <dd>
@@ -191,13 +195,13 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[deg] Estimated refraction, or NAN if there was an error (it should also set errno to indicate the type of error).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> </dd>
 <dd>
-<a class="el" href="super_8c.html#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a></dd></dl>
+<a class="el" href="coords_8c.html#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, and <a class="el" href="novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468a29a320ab3459dafa0d18e7ebef3ae8fe">NOVAS_REFRACT_OBSERVED</a>.</p>
+<p class="reference">References <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, and <a class="el" href="novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468a29a320ab3459dafa0d18e7ebef3ae8fe">NOVAS_REFRACT_OBSERVED</a>.</p>
 
 </div>
 </div>
@@ -255,9 +259,9 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81a7ed64c314f06fdf9acfa72beb531e73d">NOVAS_STANDARD_ATMOSPHERE()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a> </dd>
+<a class="el" href="refract_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> </dd></dl>
+<a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81aaf3bef1a45c5d59df8e779da09cecb68">NOVAS_WEATHER_AT_LOCATION</a>.</p>
 
@@ -300,7 +304,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Atmospheric refraction model for radio wavelengths (Berman &amp; Rockwell 1976). It uses the weather parameters defined for the location, including humidity. As such make sure the weather data is fully defined, and that the humidity was explicitly set after calling <code><a class="el" href="novas_8c.html#a42c084465aedee75965f74e23e6571fe">make_on_surface()</a></code>.</p>
+<p>Atmospheric refraction model for radio wavelengths (Berman &amp; Rockwell 1976). It uses the weather parameters defined for the location, including humidity. As such make sure the weather data is fully defined, and that the humidity was explicitly set after calling <code><a class="el" href="observer_8c.html#a42c084465aedee75965f74e23e6571fe">make_on_surface()</a></code>.</p>
 <p>Adapted from FORTAN code provided by Berman &amp; Rockwell 1976.</p>
 <p>REFERENCES: </p><ol>
 <li>
@@ -318,7 +322,7 @@ Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-
 <dl class="section return"><dt>Returns</dt><dd>[deg] Estimated refraction, or NAN if there was an error (it should also set errno to indicate the type of error).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="refract_8c.html#ae4511a80a1defbb1e1fdc29c289e7de4">novas_optical_refraction()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a42c084465aedee75965f74e23e6571fe">make_on_surface()</a> </dd>
+<a class="el" href="observer_8c.html#a42c084465aedee75965f74e23e6571fe">make_on_surface()</a> </dd>
 <dd>
 <a class="el" href="structon__surface.html">on_surface</a> </dd></dl>
 
@@ -380,11 +384,129 @@ Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-
 <dd>
 <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81a7ed64c314f06fdf9acfa72beb531e73d">NOVAS_STANDARD_ATMOSPHERE()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a> </dd>
+<a class="el" href="refract_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> </dd></dl>
+<a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81a7ed64c314f06fdf9acfa72beb531e73d">NOVAS_STANDARD_ATMOSPHERE</a>.</p>
+
+</div>
+</div>
+<a id="a9f0ad82690613afaa2325f430ac29743" name="a9f0ad82690613afaa2325f430ac29743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f0ad82690613afaa2325f430ac29743">&#9670;&#160;</a></span>refract()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double refract </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structon__surface.html">on_surface</a> *restrict&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81">novas_refraction_model</a>&#160;</td>
+          <td class="paramname"><em>option</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zd_obs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computes atmospheric optical refraction for an observed (already refracted!) zenith distance through the atmosphere. In other words this is suitable to convert refracted zenith angles to astrometric (unrefracted) zenith angles. For the reverse, see <a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a>.</p>
+<p>The returned value is the approximate refraction for optical wavelengths. This function can be used for planning observations or telescope pointing, but should not be used for precise positioning.</p>
+<p>NOTES: </p><ol>
+<li>
+The standard temeperature model includes a very rough estimate of the mean annual temeprature for the ovserver's latitude and elevation, rather than the 10 C everywhere assumption in NOVAS C 3.1.&lt;.li&gt; </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+Explanatory Supplement to the Astronomical Almanac, p. 144. </li>
+<li>
+Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>Pointer to structure containing observer's location. It may also contains weather data (optional) for the observer's location. </td></tr>
+    <tr><td class="paramname">option</td><td>NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather values contained in the 'location' data structure. </td></tr>
+    <tr><td class="paramname">zd_obs</td><td>[deg] Observed (already refracted!) zenith distance through the atmosphere. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] the calculated optical refraction or 0.0 if the location is NULL or the option is invalid or the 'zd_obs' is invalid (&lt;90&deg;).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> </dd>
+<dd>
+<a class="el" href="coords_8c.html#a19f4f6c7d942dcba5ad2a4d2a60affad">hor_to_itrs()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81ace535f58f84fa374a973aa9d4e6a52e8">NOVAS_NO_ATMOSPHERE</a>, <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81a7ed64c314f06fdf9acfa72beb531e73d">NOVAS_STANDARD_ATMOSPHERE</a>, and <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81aaf3bef1a45c5d59df8e779da09cecb68">NOVAS_WEATHER_AT_LOCATION</a>.</p>
+
+</div>
+</div>
+<a id="ad875289016bb6c3e6ff9e00a9fc2dfd4" name="ad875289016bb6c3e6ff9e00a9fc2dfd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad875289016bb6c3e6ff9e00a9fc2dfd4">&#9670;&#160;</a></span>refract_astro()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double refract_astro </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structon__surface.html">on_surface</a> *restrict&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81">novas_refraction_model</a>&#160;</td>
+          <td class="paramname"><em>option</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>zd_astro</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computes atmospheric optical refraction for a source at an astrometric zenith distance (e.g. calculated without accounting for an atmosphere). This is suitable for converting astrometric (unrefracted) zenith angles to observed (refracted) zenith angles. See <a class="el" href="refract_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a> for the reverse correction.</p>
+<p>The returned value is the approximate refraction for optical wavelengths. This function can be used for planning observations or telescope pointing, but should not be used for precise positioning.</p>
+<p>REFERENCES: </p><ol>
+<li>
+Explanatory Supplement to the Astronomical Almanac, p. 144. </li>
+<li>
+Bennett, G. (1982), Journal of Navigation (Royal Institute) 35, pp. 255-259. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>Pointer to structure containing observer's location. It may also contains weather data (optional) for the observer's location. </td></tr>
+    <tr><td class="paramname">option</td><td>NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather values contained in the 'location' data structure. </td></tr>
+    <tr><td class="paramname">zd_astro</td><td>[deg] Astrometric (unrefracted) zenith distance angle of the source. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] the calculated optical refraction. (to ~0.1 arcsec accuracy), or 0.0 if the location is NULL or the option is invalid.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="refract_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a> </dd>
+<dd>
+<a class="el" href="coords_8c.html#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, and <a class="el" href="refract_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a>.</p>
 
 </div>
 </div>

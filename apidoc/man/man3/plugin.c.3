@@ -1,0 +1,296 @@
+.TH "src/plugin.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/plugin.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBnovas_ephem_provider\fP \fBget_ephem_provider\fP ()"
+.br
+.ti -1c
+.RI "\fBnovas_nutation_provider\fP \fBget_nutation_lp_provider\fP ()"
+.br
+.ti -1c
+.RI "\fBnovas_planet_provider\fP \fBget_planet_provider\fP ()"
+.br
+.ti -1c
+.RI "\fBnovas_planet_provider_hp\fP \fBget_planet_provider_hp\fP ()"
+.br
+.ti -1c
+.RI "int \fBset_ephem_provider\fP (\fBnovas_ephem_provider\fP func)"
+.br
+.ti -1c
+.RI "int \fBset_nutation_lp_provider\fP (\fBnovas_nutation_provider\fP func)"
+.br
+.ti -1c
+.RI "int \fBset_planet_provider\fP (\fBnovas_planet_provider\fP func)"
+.br
+.ti -1c
+.RI "int \fBset_planet_provider_hp\fP (\fBnovas_planet_provider_hp\fP func)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 6, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+Functions that allow to define or access user-defined plugin routines\&. 
+.SH "Function Documentation"
+.PP 
+.SS "\fBnovas_ephem_provider\fP get_ephem_provider ()"
+Returns the user-defined ephemeris accessor function\&.
+.PP
+\fBReturns\fP
+.RS 4
+the currently defined function for accessing ephemeris data for minor planets or satellites, ot NULL if no function was set via \fBset_ephem_provider()\fP previously\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_ephem_provider()\fP 
+.PP
+\fBget_planet_provider()\fP 
+.PP
+\fBget_planet_provider_hp()\fP 
+.PP
+\fBephemeris()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "\fBnovas_nutation_provider\fP get_nutation_lp_provider ()"
+Returns the function configured for low-precision IAU 2000 nutation calculations instead of the default \fBnu2000k()\fP\&.
+.PP
+\fBReturns\fP
+.RS 4
+the function to use for low-precision IAU 2000 nutation calculations
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_nutation_lp_provider()\fP 
+.PP
+\fBnutation_angles()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "\fBnovas_planet_provider\fP get_planet_provider ()"
+Returns the custom (low-precision) ephemeris provider function for major planets (and Sun, Moon, SSB\&.\&.\&.), if any\&.
+.PP
+\fBReturns\fP
+.RS 4
+the custom (low-precision) planet ephemeris provider function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider()\fP 
+.PP
+\fBget_planet_provider_hp()\fP 
+.PP
+\fBget_ephem_provider()\fP 
+.RE
+.PP
+
+.SS "\fBnovas_planet_provider_hp\fP get_planet_provider_hp ()"
+Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon, SSB\&.\&.\&.), if any\&.
+.PP
+\fBReturns\fP
+.RS 4
+the custom high-precision planet ephemeris provider function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBget_planet_provider()\fP 
+.PP
+\fBget_ephem_provider()\fP 
+.RE
+.PP
+
+.SS "int set_ephem_provider (\fBnovas_ephem_provider\fP func)"
+Sets the function to use for obtaining position / velocity information for minor planets, or sattelites\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP new function to use for accessing ephemeris data for minor planets or satellites\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the function argument is NULL\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBget_ephem_provider()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBephemeris()\fP 
+.PP
+\fBsolsys-ephem\&.c\fP 
+.RE
+.PP
+
+.SS "int set_nutation_lp_provider (\fBnovas_nutation_provider\fP func)"
+Set the function to use for low-precision IAU 2000 nutation calculations instead of the default \fBnu2000k()\fP\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP the new function to use for low-precision IAU 2000 nutation calculations 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if the input argument is NULL
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBget_nutation_lp_provider()\fP 
+.PP
+\fBnutation_angles()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "int set_planet_provider (\fBnovas_planet_provider\fP func)"
+Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris calculations instead of the default \fBsolarsystem()\fP routine\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP The function to use for solar system position/velocity calculations\&. See \fBsolarsystem()\fP for further details on what is required of this function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBget_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBsolarsystem()\fP 
+.PP
+\fBNOVAS_REDUCED_ACCURACY\fP 
+.RE
+.PP
+
+.SS "int set_planet_provider_hp (\fBnovas_planet_provider_hp\fP func)"
+Set a custom function to use for high precision (see NOVAS_FULL_ACCURACY) ephemeris calculations instead of the default \fBsolarsystem_hp()\fP routine\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfunc\fP The function to use for solar system position/velocity calculations\&. See \fBsolarsystem_hp()\fP for further details on what is required of this function\&.
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBget_planet_provider_hp()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBsolarsystem_hp()\fP 
+.PP
+\fBNOVAS_FULL_ACCURACY\fP 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

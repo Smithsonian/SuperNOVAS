@@ -18,6 +18,12 @@ src/timescale.c
 
 .in +1c
 .ti -1c
+.RI "double \fBget_ut1_to_tt\fP (int leap_seconds, double dut1)"
+.br
+.ti -1c
+.RI "double \fBget_utc_to_tt\fP (int leap_seconds)"
+.br
+.ti -1c
 .RI "double \fBnovas_date\fP (const char *restrict date)"
 .br
 .ti -1c
@@ -74,6 +80,12 @@ src/timescale.c
 .ti -1c
 .RI "int \fBnovas_timestamp\fP (const \fBnovas_timespec\fP *restrict time, enum \fBnovas_timescale\fP scale, char *restrict dst, int maxlen)"
 .br
+.ti -1c
+.RI "int \fBtdb2tt\fP (double jd_tdb, double *restrict jd_tt, double *restrict secdiff)"
+.br
+.ti -1c
+.RI "double \fBtt2tdb\fP (double jd_tt)"
+.br
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -104,6 +116,82 @@ A set of SuperNOVAS routines to make handling of astronomical timescales and con
 
 .SH "Function Documentation"
 .PP 
+.SS "double get_ut1_to_tt (int leap_seconds, double dut1)"
+Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time difference as measured and published by IERS\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The current UT1 - UTC time difference, and polar offsets, historical data and near-term projections are published in the <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins  
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIleap_seconds\fP [s] Leap seconds at the time of observations 
+.br
+\fIdut1\fP [s] UT1 - UTC time difference [-0\&.5:0\&.5] 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[s] The TT - UT1 time difference that is suitable for used with all calls in this library that require a \fCut1_to_tt\fP argument\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBget_utc_to_tt()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBcel_pole()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBget_utc_to_tt()\fP\&.
+.SS "double get_utc_to_tt (int leap_seconds)"
+Returns the difference between Terrestrial Time (TT) and Universal Coordinated Time (UTC)
+.PP
+\fBParameters\fP
+.RS 4
+\fIleap_seconds\fP [s] The current leap seconds (see IERS Bulletins) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[s] The TT - UTC time difference
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBget_ut1_to_tt()\fP 
+.PP
+\fBjulian_date()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_TAI_TO_TT\fP\&.
 .SS "double novas_date (const char *restrict date)"
 Returns a Julian date (in non-specific timescale) corresponding the specified input string date/time\&. E\&.g\&. for '2025-02-28T09:41:12\&.041+0200', with some flexibility on how the date is represented as long as it's YMD date followed by HMS time\&. For other date formats (MDY or DMY) you can use \fC\fBnovas_parse_date_format()\fP\fP instead\&.
 .PP
@@ -963,6 +1051,94 @@ Attila Kovacs
 
 .PP
 References \fBnovas_get_split_time()\fP, and \fBnovas_print_timescale()\fP\&.
+.SS "int tdb2tt (double jd_tdb, double *restrict jd_tt, double *restrict secdiff)"
+Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date corresponding to a Barycentric Dynamical Time (TDB) Julian date\&.
+.PP
+Expression used in this function is a truncated form of a longer and more precise series given in the first reference\&. The result is good to about 10 microseconds\&.
+.PP
+\fBDeprecated\fP
+.RS 4
+Use the less computationally intensive an more accurate \fBtt2tdb()\fP routine instead\&.
+.RE
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Fairhead, L\&. & Bretagnon, P\&. (1990) Astron\&. & Astrophys\&. 229, 240\&. 
+.IP "2." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.IP "3." 4
+\fChttps://naif\&.jpl\&.nasa\&.gov/pub/naif/toolkit_docs/FORTRAN/req/time\&.html\fP 
+.IP "4." 4
+\fChttps://gssc\&.esa\&.int/navipedia/index\&.php/Transformations_between_Time_Systems\fP 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.br
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date\&. (It may be NULL if not required) 
+.br
+\fIsecdiff\fP [s] Difference 'tdb_jd'-'tt_jd', in seconds\&. (It may be NULL if not required) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if the tt_jd pointer argument is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBtt2tdb()\fP 
+.RE
+.PP
+
+.SS "double tt2tdb (double jd_tt)"
+Returns the TDB - TT time difference in seconds for a given TT date\&.
+.PP
+Note, as of version 1\&.1, it uses the same calculation as the more precise original \fBtdb2tt()\fP\&. It thus has an acuracy of about 10 s vs around 30 s with the simpler formula from the references below\&.
+.PP
+REFERENCES 
+.PD 0
+.IP "1." 4
+Fairhead, L\&. & Bretagnon, P\&. (1990) Astron\&. & Astrophys\&. 229, 240\&. 
+.IP "2." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.IP "3." 4
+\fChttps://naif\&.jpl\&.nasa\&.gov/pub/naif/toolkit_docs/FORTRAN/req/time\&.html\fP 
+.IP "4." 4
+\fChttps://gssc\&.esa\&.int/navipedia/index\&.php/Transformations_between_Time_Systems\fP 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[s] TDB - TT time difference\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBtdb2tt()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBtdb2tt()\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.

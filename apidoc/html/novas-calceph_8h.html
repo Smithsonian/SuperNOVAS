@@ -178,7 +178,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Sets a ephemeris provider for Solar-system objects using the CALCEPH C library and the specified set of ephemeris files. If the supplied ephemeris files contain data for major planets also, they can be used by planet_calceph() / planet_calceph_hp() also, unless a separate CALCEPH ephemeris data is set via <a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a>.</p>
-<p>The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects. If you want to use another provider for major planets, you need to call <a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> / <a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> afterwards to specify a different provider for major planets (and Sun, Moon, SSB...).</p>
+<p>The call also make CALCEPH the default ephemeris provider for all types of Solar-system objects. If you want to use another provider for major planets, you need to call <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> / <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> afterwards to specify a different provider for major planets (and Sun, Moon, SSB...).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">eph</td><td>Pointer to the CALCEPH ephemeris data that have been opened. </td></tr>
@@ -190,11 +190,11 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></dd></dl>
+<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
-<p class="reference">References <a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a>, and <a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>.</p>
+<p class="reference">References <a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a>, and <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>.</p>
 
 </div>
 </div>
@@ -223,13 +223,13 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (errno will indicate the type of error).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></dd></dl>
+<a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, and <a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, and <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
 
 </div>
 </div>

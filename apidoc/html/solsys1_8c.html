@@ -131,7 +131,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs</dd></dl>
 <p>SuperNOVAS major planet ephemeris lookup implementation using JPL 1997 ephemeris data, to be used together with <a class="el" href="eph__manager_8c.html">eph_manager.c</a>. This is a legacy API, maiunly for supporting older code written for NOVAS C.</p>
-<p>A more generic solution is to implement a novas_ephem_provider (e.g. relying on the current version of the CSPICE library) and set it as the default ephemeris handler via <a class="el" href="novas_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>, and then use <a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> instead to use the same implementation for major planets.</p>
+<p>A more generic solution is to implement a novas_ephem_provider (e.g. relying on the current version of the CSPICE library) and set it as the default ephemeris handler via <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>, and then use <a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> instead to use the same implementation for major planets.</p>
 <p>Based on the NOVAS C Edition, Version 3.1:</p>
 <p>U. S. Naval Observatory<br  />
  Astronomical Applications Dept.<br  />
@@ -213,7 +213,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dd>
 <a class="el" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>
 <a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
@@ -292,7 +292,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dd>
 <a class="el" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></dd></dl>
+<a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, and <a class="el" href="eph__manager_8c.html#ad36bc85b6f1cfb01ffc638b54552e15b">planet_ephemeris()</a>.</p>
@@ -361,9 +361,9 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dd>
 <a class="el" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
+<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="solsys1_8c.html#a841f04bf04e6dd8a5ae96f8ea729090d">planet_eph_manager()</a>.</p>
 
@@ -429,9 +429,9 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 <dd>
 <a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
+<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="solsys1_8c.html#a8b471fd187aebc33b1f9fd4c2ff60c90">planet_eph_manager_hp()</a>.</p>
 

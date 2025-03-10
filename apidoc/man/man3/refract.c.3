@@ -21,6 +21,12 @@ src/refract.c
 .ti -1c
 .RI "double \fBnovas_standard_refraction\fP (double jd_tt, const \fBon_surface\fP *loc, enum \fBnovas_refraction_type\fP type, double el)"
 .br
+.ti -1c
+.RI "double \fBrefract\fP (const \fBon_surface\fP *restrict location, enum \fBnovas_refraction_model\fP option, double zd_obs)"
+.br
+.ti -1c
+.RI "double \fBrefract_astro\fP (const \fBon_surface\fP *restrict location, enum \fBnovas_refraction_model\fP option, double zd_astro)"
+.br
 .in -1c
 .SH "Detailed Description"
 .PP 
@@ -33,7 +39,7 @@ Created on Jun 27, 2024
 .PP
 \fBAuthor\fP
 .RS 4
-Attila Kovacs
+Attila Kovacs and G\&. Kaplan
 .RE
 .PP
 A collection of refraction models and utilities to use with \fBnovas_app_to_hor()\fP or \fBnovas_hor_to_app()\fP\&.
@@ -198,6 +204,96 @@ Returns an optical refraction correction for a standard atmosphere\&.
 
 .PP
 References \fBNOVAS_STANDARD_ATMOSPHERE\fP\&.
+.SS "double refract (const \fBon_surface\fP *restrict location, enum \fBnovas_refraction_model\fP option, double zd_obs)"
+Computes atmospheric optical refraction for an observed (already refracted!) zenith distance through the atmosphere\&. In other words this is suitable to convert refracted zenith angles to astrometric (unrefracted) zenith angles\&. For the reverse, see \fBrefract_astro()\fP\&.
+.PP
+The returned value is the approximate refraction for optical wavelengths\&. This function can be used for planning observations or telescope pointing, but should not be used for precise positioning\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The standard temeperature model includes a very rough estimate of the mean annual temeprature for the ovserver's latitude and elevation, rather than the 10 C everywhere assumption in NOVAS C 3\&.1\&.<\&.li> 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Explanatory Supplement to the Astronomical Almanac, p\&. 144\&. 
+.IP "2." 4
+Bennett, G\&. (1982), Journal of Navigation (Royal Institute) 35, pp\&. 255-259\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIlocation\fP Pointer to structure containing observer's location\&. It may also contains weather data (optional) for the observer's location\&. 
+.br
+\fIoption\fP NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather values contained in the 'location' data structure\&. 
+.br
+\fIzd_obs\fP [deg] Observed (already refracted!) zenith distance through the atmosphere\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] the calculated optical refraction or 0\&.0 if the location is NULL or the option is invalid or the 'zd_obs' is invalid (<90)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBrefract_astro()\fP 
+.PP
+\fBhor_to_itrs()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_NO_ATMOSPHERE\fP, \fBNOVAS_STANDARD_ATMOSPHERE\fP, and \fBNOVAS_WEATHER_AT_LOCATION\fP\&.
+.SS "double refract_astro (const \fBon_surface\fP *restrict location, enum \fBnovas_refraction_model\fP option, double zd_astro)"
+Computes atmospheric optical refraction for a source at an astrometric zenith distance (e\&.g\&. calculated without accounting for an atmosphere)\&. This is suitable for converting astrometric (unrefracted) zenith angles to observed (refracted) zenith angles\&. See \fBrefract()\fP for the reverse correction\&.
+.PP
+The returned value is the approximate refraction for optical wavelengths\&. This function can be used for planning observations or telescope pointing, but should not be used for precise positioning\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Explanatory Supplement to the Astronomical Almanac, p\&. 144\&. 
+.IP "2." 4
+Bennett, G\&. (1982), Journal of Navigation (Royal Institute) 35, pp\&. 255-259\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIlocation\fP Pointer to structure containing observer's location\&. It may also contains weather data (optional) for the observer's location\&. 
+.br
+\fIoption\fP NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather values contained in the 'location' data structure\&. 
+.br
+\fIzd_astro\fP [deg] Astrometric (unrefracted) zenith distance angle of the source\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] the calculated optical refraction\&. (to ~0\&.1 arcsec accuracy), or 0\&.0 if the location is NULL or the option is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBrefract()\fP 
+.PP
+\fBitrs_to_hor()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBnovas_inv_max_iter\fP, and \fBrefract()\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for SuperNOVAS from the source code\&.

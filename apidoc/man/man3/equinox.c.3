@@ -1,0 +1,274 @@
+.TH "src/equinox.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/equinox.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBaccum_prec\fP (double t)"
+.br
+.ti -1c
+.RI "double \fBee_ct\fP (double jd_tt_high, double jd_tt_low, enum \fBnovas_accuracy\fP accuracy)"
+.br
+.ti -1c
+.RI "int \fBfund_args\fP (double t, \fBnovas_delaunay_args\fP *restrict a)"
+.br
+.ti -1c
+.RI "double \fBira_equinox\fP (double jd_tdb, enum \fBnovas_equinox_type\fP equinox, enum \fBnovas_accuracy\fP accuracy)"
+.br
+.ti -1c
+.RI "double \fBmean_obliq\fP (double jd_tdb)"
+.br
+.ti -1c
+.RI "double \fBplanet_lon\fP (double t, enum \fBnovas_planet\fP planet)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 6, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+G\&. Kaplan and Attila Kovacs
+.RE
+.PP
+Various function for calculating the equator and equinox of date, and related quatities\&. 
+.SH "Function Documentation"
+.PP 
+.SS "double accum_prec (double t)"
+Returns the general precession in longitude (Simon et al\&. 1994), equivalent to 5028\&.8200 arcsec/cy at J2000\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIt\fP [cy] Julian centuries since J2000 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[rad] the approximate precession angle [-:]\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplanet_lon()\fP 
+.PP
+\fBnutation_angles()\fP 
+.PP
+\fBee_ct()\fP 
+.PP
+\fBNOVAS_JD_J2000\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBTWOPI\fP\&.
+.SS "double ee_ct (double jd_tt_high, double jd_tt_low, enum \fBnovas_accuracy\fP accuracy)"
+Computes the 'complementary terms' of the equation of the equinoxes\&. The input Julian date can be split into high and low order parts for improved accuracy\&. Typically, the split is into integer and fractiona parts\&. If the precision of a single part is sufficient, you may set the low order part to 0\&.
+.PP
+The series used in this function was derived from the first reference\&. This same series was also adopted for use in the IAU's Standards of Fundamental Astronomy (SOFA) software (i\&.e\&., subroutine eect00\&.for and function \fCeect00\&.c\fP)\&.
+.PP
+The low-accuracy series used in this function is a simple implementation derived from the first reference, in which terms smaller than 2 microarcseconds have been omitted\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Capitaine, N\&., Wallace, P\&.T\&., and McCarthy, D\&.D\&. (2003)\&. Astron\&. & Astrophys\&. 406, p\&. 1135-1149\&. Table 3\&. 
+.IP "2." 4
+IERS Conventions (2010), Chapter 5, p\&. 60, Table 5\&.2e\&.
+.br
+ (Table 5\&.2e presented in the printed publication is a truncated series\&. The full series, which is used in NOVAS, is available on the IERS Conventions Center website: \fCftp://tai\&.bipm\&.org/iers/conv2010/chapter5/tab5\&.2e\&.txt\fP)  
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt_high\fP [day] High-order part of TT based Julian date\&. 
+.br
+\fIjd_tt_low\fP [day] Low-order part of TT based Julian date\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[rad] Complementary terms, in radians\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBe_tilt()\fP 
+.PP
+\fBcel_pole()\fP 
+.PP
+\fBnutation()\fP 
+.PP
+\fBsidereal_time()\fP 
+.RE
+.PP
+
+.PP
+References \fBaccum_prec()\fP, \fBnovas_delaunay_args::D\fP, \fBnovas_delaunay_args::F\fP, \fBfund_args()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_NEPTUNE\fP, \fBnovas_delaunay_args::Omega\fP, and \fBplanet_lon()\fP\&.
+.SS "int fund_args (double t, \fBnovas_delaunay_args\fP *restrict a)"
+Compute the fundamental arguments (mean elements) of the Sun and Moon\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Simon et al\&. (1994) Astronomy and Astrophysics 282, 663-683, esp\&. Sections 3\&.4-3\&.5\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIt\fP [cy] TDB time in Julian centuries since J2000\&.0 
+.br
+\fIa\fP [rad] Fundamental arguments data to populate (5 doubles) [0:2]
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if the output pointer argument is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnutation_angles()\fP 
+.PP
+\fBee_ct()\fP 
+.PP
+\fBNOVAS_JD_J2000\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_norm_ang()\fP\&.
+.SS "double ira_equinox (double jd_tdb, enum \fBnovas_equinox_type\fP equinox, enum \fBnovas_accuracy\fP accuracy)"
+Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical expression for the accumulated precession in right ascension\&. For the true equinox, the result is the equation of the origins\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+Fixes bug in NOVAS C 3\&.1, which returned the value for the wrong 'equinox' if 'equinox = 1' was requested for the same 'jd_tbd' and 'accuracy' as a the preceding call with 'equinox = 0'\&. As a result, the caller ended up with the mean instead of the expected true equinox R\&.A\&. value\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Capitaine, N\&. et al\&. (2003), Astronomy and Astrophysics 412, 567-586, eq\&. (42)\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.br
+\fIequinox\fP NOVAS_MEAN_EQUINOX (0) or NOVAS_TRUE_EQUINOX (1; or non-zero) 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[h] Intermediate right ascension of the equinox, in hours (+ or -)\&. If 'equinox' = 1 (i\&.e true equinox), then the returned value is the equation of the origins\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcio_location()\fP 
+.PP
+\fBgcrs_to_cirs()\fP 
+.RE
+.PP
+
+.PP
+References \fBe_tilt()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBNOVAS_TRUE_EQUINOX\fP\&.
+.SS "double mean_obliq (double jd_tdb)"
+Computes the mean obliquity of the ecliptic\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Capitaine et al\&. (2003), Astronomy and Astrophysics 412, 567-586\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[arcsec] Mean obliquity of the ecliptic in arcseconds\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBe_tilt()\fP 
+.PP
+\fBequ2ecl()\fP 
+.PP
+\fBecl2equ()\fP 
+.PP
+\fBtt2tdb()\fP 
+.RE
+.PP
+
+.SS "double planet_lon (double t, enum \fBnovas_planet\fP planet)"
+Returns the planetary longitude, for Mercury through Neptune, w\&.r\&.t\&. mean dynamical ecliptic and equinox of J2000, with high order terms omitted (Simon et al\&. 1994, 5\&.8\&.1-5\&.8\&.8)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIt\fP [cy] Julian centuries since J2000 
+.br
+\fIplanet\fP Novas planet id, e\&.g\&. NOVAS_MARS\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[rad] The approximate longitude of the planet in radians [-:], or NAN if the \fCplanet\fP id is out of range\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBaccum_prec()\fP 
+.PP
+\fBnutation_angles()\fP 
+.PP
+\fBee_ct()\fP 
+.PP
+\fBNOVAS_JD_J2000\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_EARTH\fP, \fBNOVAS_JUPITER\fP, \fBNOVAS_MARS\fP, \fBNOVAS_MERCURY\fP, \fBNOVAS_NEPTUNE\fP, \fBNOVAS_SATURN\fP, \fBNOVAS_URANUS\fP, \fBNOVAS_VENUS\fP, and \fBTWOPI\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

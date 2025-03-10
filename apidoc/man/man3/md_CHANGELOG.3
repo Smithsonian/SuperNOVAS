@@ -7,7 +7,7 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[Unreleased]"
+.SH "[1\&.0\&.0-rc5] - 2025-03-10"
 .PP
 Changes for the upcoming feature release, expected around 1 May 2025\&. It brings many new convenience functions, such as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric calculations\&.
 .SS "Fixed"
@@ -15,6 +15,8 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 #116: \fC\fBtransform_cat()\fP\fP to update parallax to the recalculated value when precessing or changing epochs\&.
 .IP "\(bu" 2
 #128: \fC\fBtransform_cat()\fP\fP had insufficient string length checking of \fCout_id\fP parameter\&. Prior to the fix it checked for the longer object name size instead of the catalog name size\&. However, even if longer than expected input names were left uncaught, only the appropriatre number of characters were used -- hence it broke nothing, only failed to remind the caller (with an error) that the supplied name was not quite right\&.
+.IP "\(bu" 2
+#139: Legacy linking of external \fC\fBsolarsystem()\fP\fP / \fC\fBsolarsystem_hp()\fP\fP provider modules was blocked by \fC\fBsolsys-ephem\&.c\fP\fP inadvertently definining these functions even though it was not supposed to\&.
 .PP
 .SS "Added"
 .IP "\(bu" 2
@@ -22,7 +24,7 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 .IP "\(bu" 2
 #113: New \fC\fBnovas_hms_hours()\fP\fP and \fC\fBnovas_dms_degrees()\fP\fP convenience functions to make it easier to parse HMS or DMS based time or angle values, returning the result in units of hours or degrees, appropriately for use in SuperNOVAS\&.
 .IP "\(bu" 2
-#113: New \fC\fBnovas_rises_above()\fP\fP and \fC\fBnovas_sets_below()\fP\fP functions to return the date/time a source rises above or sets below a specific elevation on a given date, and \fC\fBnovas_transit_time()\fP\fP to calculate the time a source transits over the local meridian\&. (For Earth-based observers only)\&.
+#113: New \fC\fBnovas_rises_above()\fP\fP and \fC\fBnovas_sets_below()\fP\fP functions to return the date/time a source rises above or sets below a specific elevation on a given date, and \fC\fBnovas_transit_time()\fP\fP to calculate the time a source transits over the local meridian\&. (For Earth-based observers only)\&. #140: Further fixes to these calculations after the v1\&.3\&.0-rc4 release candidate [thanks to valeriy-sokoloff]\&.
 .IP "\(bu" 2
 #113: New \fC\fBnovas_helio_dist()\fP\fP function to calculate the heliocentric distance of a Solar-system body on a given date\&. The \fC\fBnovas_solar_power()\fP\fP function can be used to estimate the incident Solar power on a Solar-system body, while \fC\fBnovas_solar_illum()\fP\fP can be used to calculate the fraction of a spherical body that is illuminated by the Sun seen from the observer location\&.
 .IP "\(bu" 2
@@ -38,7 +40,7 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 .IP "\(bu" 2
 #114: New \fC\fBnovas_lsr_to_ssb_vel()\fP\fP can be used to convert velocity vectors referenced to the LSR to Solar-System Barycentric velocities\&. And, \fC\fBnovas_ssb_to_lsr_vel()\fP\fP to provide the inverse conversion\&.
 .IP "\(bu" 2
-#117: Added benchmarks under the \fCbenchmark/\fP forlder, for SuperNOVAS as well as equivalent benchmarks for \fBastropy\fP\&. To run the SuperNOVAS benchmarks, simply \fCmake benchmark\fP in the distribution directory\&.
+#117: Added benchmarks under the \fCbenchmark/\fP folder, for SuperNOVAS as well as equivalent benchmarks for \fBastropy\fP\&. To run the SuperNOVAS benchmarks, simply \fCmake benchmark\fP in the distribution directory\&.
 .IP "\(bu" 2
 #118: New \fC\fBnovas_parse_date()\fP\fP / \fC\fBnovas_parse_date_format()\fP\fP to parse date/time specifications, \fC\fBnovas_parse_dms()\fP\fP and \fC\fBnovas_parse_hms()\fP\fP to return hours and degrees for HMS and DMS specifications, as well as the updated parse position\&.
 .IP "\(bu" 2
@@ -48,7 +50,7 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 .IP "\(bu" 2
 #122: New \fC\fBnovas_jd_to_date()\fP\fP, and \fC\fBnovas_jd_from_date()\fP\fP which convert between JD day and calendar dates using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date\&.
 .IP "\(bu" 2
-#131: New \fC\fBnovas_date()\fP\fP and \fC\fBnovas_date_scale()\fP\fP for the simplest conversion of string times to Julian days, and in case of the latter also to a corresponding timescale\&.'
+#131: New \fC\fBnovas_date()\fP\fP and \fC\fBnovas_date_scale()\fP\fP for the simplest conversion of string times to Julian days, and in case of the latter also to a corresponding timescale\&.
 .IP "\(bu" 2
 #133: New \fC\fBnovas_parse_timescale()\fP\fP to parse a timescale from a string specification, and return the updated parse position after also\&.
 .IP "\(bu" 2
@@ -62,7 +64,11 @@ Added \fCexample-time\&.c\fP and \fCexample-rise-set\&.c\fP under \fCexamples/\f
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-[#130] Use C99 \fCrestrict\fP keyword to prevent pointer argument aliasing\&. Modern compilers will warn if restricted pointer arguments are aliased\&.
+#130 Use C99 \fCrestrict\fP keyword to prevent pointer argument aliasing\&. Modern compilers will warn if restricted pointer arguments are aliased\&.
+.IP "\(bu" 2
+#139 Reorganized code into more managably sized modules\&. It also makes the API documentation by source file more logically organized\&.
+.IP "\(bu" 2
+#139: Legacy source code moved to \fClegacy/\fP folder, and installed into \fC$(DESTDIR)$(docdir)/legacy/\fP\&.
 .IP "\(bu" 2
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
 .IP "\(bu" 2
@@ -168,7 +174,7 @@ Bug fix release\&. Nothing too scary, mainly just a collection of smaller fixes 
 .IP "\(bu" 2
 #55: Use relativistic formulae to add/difference velocities (i\&.e\&. change velocity reference frame)\&.
 .IP "\(bu" 2
-#60: Moved SuperNOVAS-only functions to a separate \fC\fBsuper\&.c\fP\fP module to alleviate the bloating of \fC\fBnovas\&.c\fP\fP, which can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be\&.
+#60: Moved SuperNOVAS-only functions to a separate \fCsuper\&.c\fP module to alleviate the bloating of \fCnovas\&.c\fP, which can still be used as a self-contained, standalone, NOVAS C replacement for legacy applications if need be\&.
 .IP "\(bu" 2
 #62: Improve debug mode error tracing when NAN values are returned, so the trace indicates NAN rather than a bogus integer return value before\&.
 .IP "\(bu" 2
@@ -273,7 +279,7 @@ Improved precision of some calculations, like \fC\fBera()\fP\fP, \fC\fBfund_args
 .IP "\(bu" 2
 \fCPSI_COR\fP and \fCEPS_COR\fP made globally visible again, thus improving NOVAS C 3\&.1 compatibility\&.
 .IP "\(bu" 2
-Convergent inverse calculations now use the \fCnovas_inv_max_iter\fP variable declared in \fC\fBnovas\&.c\fP\fP to specify the maximum number of iterations before inverse functions return with an error (with errno set to \fCECANCELED\fP)\&. Users may adjust this limit, if they prefer some other maximum value\&.
+Convergent inverse calculations now use the \fCnovas_inv_max_iter\fP variable declared in \fCnovas\&.c\fP to specify the maximum number of iterations before inverse functions return with an error (with errno set to \fCECANCELED\fP)\&. Users may adjust this limit, if they prefer some other maximum value\&.
 .IP "\(bu" 2
 Adjusted regression testing to treat \fCnan\fP and \fC-nan\fP effectively the same\&. They both represent an equally invalid result regardless of the sign\&.
 .IP "\(bu" 2
@@ -441,7 +447,7 @@ Changed the standard atmospheric model for (optical) refraction calculation to i
 .PP
 .SS "Deprecated"
 .IP "\(bu" 2
-\fC\fBnovascon\&.h\fP\fP / \fC\fBnovascon\&.c\fP\fP: These definitions of constants in NOVAS C 3\&.1 was troublesome for two reasons: (1) They were primarily meant for use internally within the library itself\&. As the library clearly defines in what units input and output quantities are expressed, the user code can apply its own appropriate conversions that need not match the internal system used by the library\&. Hence exposing these constants to users was half baked\&. (2) The naming of constants was too simplistic (with names such as \fCC\fP or \fCF\fP) that it was rather prone to naming conflicts in user code\&. As a result, the constants have been moved to \fC\fBnovas\&.h\fP\fP with more unique names (such as \fCNOVAS_C\fP and \fCNOVAS_EARTH_FLATTENING\fP\&. New code should rely on these definitions instead of the troubled constants of \fC\fBnovascon\&.c\fP\fP / \fC\&.h\fP if at all necessary\&.
+\fCnovascon\&.h\fP / \fCnovascon\&.c\fP: These definitions of constants in NOVAS C 3\&.1 was troublesome for two reasons: (1) They were primarily meant for use internally within the library itself\&. As the library clearly defines in what units input and output quantities are expressed, the user code can apply its own appropriate conversions that need not match the internal system used by the library\&. Hence exposing these constants to users was half baked\&. (2) The naming of constants was too simplistic (with names such as \fCC\fP or \fCF\fP) that it was rather prone to naming conflicts in user code\&. As a result, the constants have been moved to \fC\fBnovas\&.h\fP\fP with more unique names (such as \fCNOVAS_C\fP and \fCNOVAS_EARTH_FLATTENING\fP\&. New code should rely on these definitions instead of the troubled constants of \fCnovascon\&.c\fP / \fC\&.h\fP if at all necessary\&.
 .IP "\(bu" 2
 \fC\fBequ2hor()\fP\fP: It's name does not make it clear that this function is suitable only for converting TOD (old methodology) to horizontal but not CIRS to horizontal (IAU 2000 standard)\&. You should use the equivalent but more specific \fC\fBtod_to_itrs()\fP\fP or the newly added \fC\fBcirs_to_itrs()\fP\fP, followed by \fC\fBitrs_to_hor()\fP\fP instead\&.
 .IP "\(bu" 2

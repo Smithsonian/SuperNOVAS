@@ -1,0 +1,274 @@
+.TH "src/calendar.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/calendar.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBcal_date\fP (double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour)"
+.br
+.ti -1c
+.RI "double \fBjulian_date\fP (short year, short month, short day, double hour)"
+.br
+.ti -1c
+.RI "double \fBnovas_jd_from_date\fP (enum \fBnovas_calendar_type\fP calendar, int year, int month, int day, double hour)"
+.br
+.ti -1c
+.RI "int \fBnovas_jd_to_date\fP (double tjd, enum \fBnovas_calendar_type\fP calendar, int *restrict year, int *restrict month, int *restrict day, double *restrict hour)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 6, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs and G\&. Kaplan
+.RE
+.PP
+Various functions to convert between calendar date and Julian days\&. 
+.SH "Function Documentation"
+.PP 
+.SS "int cal_date (double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour)"
+This function will compute a broken down date on the astronomical calendar for given the Julian day input\&. Input Julian day can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output time value will have same basis\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar)\&. Prior to it this function returns Julian/Roman calendar dates, e\&.g\&. the day before the reform is 1582 October 4\&. You can use \fCnovas_id_to_calendar()\fP instead to convert JD days to dates in specific calendars\&.
+.PP
+
+.IP "2." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, October 1968, p\&. 657\&.15 October 1582 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fItjd\fP [day] Julian date 
+.br
+\fIyear\fP [yr] Astronomical calendar year\&. It may be NULL if not required\&. B\&.C\&. years are represented as <=0, i\&.e\&. 1 B\&.C\&. as 0 and \fIX\fP B\&.C\&. as (1 - \fIX\fP) 
+.br
+\fImonth\fP [month] Astronomical calendar month [1:12]\&. It may be NULL if not required\&. 
+.br
+\fIday\fP [day] Day of the month [1:31]\&. It may be NULL if not required\&. 
+.br
+\fIhour\fP [h] Hour of day [0:24]\&. It may be NULL if not required\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_jd_to_date()\fP 
+.PP
+\fBnovas_jd_from_date()\fP 
+.PP
+\fBget_utc_to_tt()\fP 
+.PP
+\fBget_ut1_to_tt()\fP 
+.PP
+\fBtt2tdb()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, and \fBnovas_jd_to_date()\fP\&.
+.SS "double julian_date (short year, short month, short day, double hour)"
+Returns the Julian day for a given astronomical calendar date\&. Input time value can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output Julian day will have the same basis\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The Gregorian calendar was introduced on 1582 October 15 only\&. Prior to that, astronomical dates are Julian/Roman dates, so the day before the reform was 1582 October 4\&. You can also use \fC\fBnovas_jd_from_date()\fP\fP to convert dates with more flexibility\&.
+.PP
+
+.IP "2." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&.
+.PP
+
+.IP "3." 4
+Added argument range checking in v1\&.3\&.0, returning NAN if the month or day are out of the normal range (for a leap year)\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, October 1968, p\&. 657\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIyear\fP [yr] Astronomical calendar year\&. B\&.C\&. years can be simply represented as <=0, e\&.g\&. 1 B\&.C\&. as 0, and \fIX\fP B\&.C\&. as (1 - \fIX\fP)\&. 
+.br
+\fImonth\fP [month] Astronomical calendar month [1:12] 
+.br
+\fIday\fP [day] Astronomical day of month [1:31] 
+.br
+\fIhour\fP [hr] Hour of day [0:24] 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] the fractional Julian date for the input calendar date, ot NAN if month or day components are out of range\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_jd_from_date()\fP 
+.PP
+\fBnovas_jd_to_date()\fP 
+.PP
+\fBget_utc_to_tt()\fP 
+.PP
+\fBget_ut1_to_tt()\fP 
+.PP
+\fBtt2tdb()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, and \fBnovas_jd_from_date()\fP\&.
+.SS "double novas_jd_from_date (enum \fBnovas_calendar_type\fP calendar, int year, int month, int day, double hour)"
+Returns the Julian day for a given calendar date\&. Input time value can be based on any astronomical time scale (UTC, UT1, TT, etc\&.) - output Julian date will have the same basis\&.
+.PP
+The input date is the conventional calendar date, affected by the Gregorian calendar reform of 1582\&. Thus, the input date is for the Gregorian calendar for dates starting 15 October 1582, and for the Julian (Roman) calendar (introduced in 45 B\&.C\&.) for dates prior to that\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&.
+.PP
+
+.IP "2." 4
+Added argument range checking in v1\&.3\&.0, returning NAN if the month or day are out of the normal range (for a leap year)\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, October 1968, p\&. 657\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIcalendar\fP The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
+.br
+\fIyear\fP [yr] Calendar year\&. B\&.C\&. years can be simply represented as negative years, e\&.g\&. 1 B\&.C\&. as -1\&. 
+.br
+\fImonth\fP [month] Calendar month [1:12] 
+.br
+\fIday\fP [day] Day of month [1:31] 
+.br
+\fIhour\fP [hr] Hour of day [0:24] 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[day] the fractional Julian day for the input calendar date, ot NAN if month or day components are out of range\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_jd_to_date()\fP 
+.PP
+\fBget_utc_to_tt()\fP 
+.PP
+\fBget_ut1_to_tt()\fP 
+.PP
+\fBtt2tdb()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, \fBNOVAS_GREGORIAN_CALENDAR\fP, \fBNOVAS_JD_START_GREGORIAN\fP, and \fBNOVAS_ROMAN_CALENDAR\fP\&.
+.SS "int novas_jd_to_date (double tjd, enum \fBnovas_calendar_type\fP calendar, int *restrict year, int *restrict month, int *restrict day, double *restrict hour)"
+This function will compute a broken down date on the specified calendar for given the Julian day input\&. Input Julian day can be based on any astronomical time scale (UTC, UT1, TT, etc\&.) - output time value will have same basis\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+B\&.C\&. dates are indicated with years <=0 according to the astronomical and ISO 8601 convention, i\&.e\&., X B\&.C\&. as (1-X), so 45 B\&.C\&. as -44\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, October 1968, p\&. 657\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fItjd\fP [day] Julian day\&. 
+.br
+\fIcalendar\fP The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR\&. 
+.br
+\fIyear\fP [yr] Calendar year\&. B\&.C\&. years are represented as negative values, e\&.g\&. -1 corresponds to 1 B\&.C\&. It may be NULL if not required\&. 
+.br
+\fImonth\fP [month] Calendar month [1:12]\&. It may be NULL if not required\&. 
+.br
+\fIday\fP [day] Day of the month [1:31]\&. It may be NULL if not required\&. 
+.br
+\fIhour\fP [h] Hour of day [0:24]\&. It may be NULL if not required\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_jd_from_date()\fP 
+.PP
+\fBget_utc_to_tt()\fP 
+.PP
+\fBget_ut1_to_tt()\fP 
+.PP
+\fBtt2tdb()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, \fBNOVAS_GREGORIAN_CALENDAR\fP, \fBNOVAS_JD_START_GREGORIAN\fP, and \fBNOVAS_ROMAN_CALENDAR\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

@@ -9,5 +9,5 @@ var searchData=
   ['pressure_6',['pressure',['../structon__surface.html#aee1c5d07ac79c5c036195858afe33405',1,'on_surface']]],
   ['promodec_7',['promodec',['../structcat__entry.html#acf4bdbac6c1d059a4db3ed879f32f21c',1,'cat_entry']]],
   ['promora_8',['promora',['../structcat__entry.html#ab9301cf1c67c13114b22950650b17789',1,'cat_entry']]],
-  ['psi_5fcor_9',['PSI_COR',['../novas_8c.html#a103c28cd84e81dde365238ee3599f5b0',1,'novas.c']]]
+  ['psi_5fcor_9',['PSI_COR',['../earth_8c.html#a103c28cd84e81dde365238ee3599f5b0',1,'earth.c']]]
 ];

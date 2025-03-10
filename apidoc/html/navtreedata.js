@@ -82,7 +82,7 @@ var NAVTREE =
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md92", null ],
       [ "Release schedule", "index.html#autotoc_md94", null ],
-      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[1.0.0-rc5] - 2025-03-10", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ]
@@ -154,10 +154,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"novas_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1",
-"novas_8h.html#a713982e1f2bae0a72b39d03007f00d23",
-"novascon_8h.html#aa7bbeb0cb618d36be058e8fd92133b4d",
-"super_8c.html#ab6908b0eee06b4a44242fba1fd9d506c"
+"novas-cspice_8h.html#a38e3b3155cad3b3822fbc3e553060ab1",
+"novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab",
+"solarsystem_8h.html#a279bca0519117cee9a3bd4382f38e7ad",
+"timescale_8c.html#a9d54ea7c6cdbc75ee78cf552a7e1858d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

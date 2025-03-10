@@ -391,7 +391,7 @@ Explanatory Supplement to The Astronomical Almanac (1992)\&.
 .PP
 
 .PP
-References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBprecession()\fP, \fBradec2vector()\fP, \fBsun_eph()\fP, \fBT0\fP, and \fBTWOPI\fP\&.
+References \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, \fBprecession()\fP, \fBradec2vector()\fP, \fBsun_eph()\fP, and \fBTWOPI\fP\&.
 .SS "short earth_sun_calc_hp (const double jd_tdb[restrict 2], enum \fBnovas_planet\fP body, enum \fBnovas_origin\fP origin, double *restrict position, double *restrict velocity)"
 It may provide the position and velocity of the Earth and Sun, the same as solarsystem_earth_sun(), if \fBenable_earth_sun_hp()\fP is set to true (non-zero)\&. Otherwise, it will return with an error code of 3, indicating that high-precision calculations are not provided by this implementation\&.
 .PP
@@ -604,7 +604,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBephemeris()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_HELIOCENTER\fP, and \fBNOVAS_REDUCED_ACCURACY\fP\&.
+References \fBephemeris()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_HELIOCENTER\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBnovas_vlen()\fP\&.
 .SS "double novas_solar_illum (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body\&.
 .PP
@@ -632,7 +632,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, and \fBNOVAS_ICRS\fP\&.
+References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, \fBNOVAS_ICRS\fP, and \fBnovas_vlen()\fP\&.
 .SS "double novas_solar_power (double jd_tdb, const \fBobject\fP *restrict source)"
 Returns the typical incident Solar power on a Solar-system body at the time of observation\&.
 .PP

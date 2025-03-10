@@ -1,0 +1,439 @@
+.TH "src/earth.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/earth.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "short \fBcel_pole\fP (double jd_tt, enum \fBnovas_pole_offset_type\fP type, double dpole1, double dpole2)"
+.br
+.ti -1c
+.RI "int \fBe_tilt\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)"
+.br
+.ti -1c
+.RI "double \fBera\fP (double jd_ut1_high, double jd_ut1_low)"
+.br
+.ti -1c
+.RI "short \fBgeo_posvel\fP (double jd_tt, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP *restrict obs, double *restrict pos, double *restrict vel)"
+.br
+.ti -1c
+.RI "int \fBlimb_angle\fP (const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang)"
+.br
+.ti -1c
+.RI "short \fBsidereal_time\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_equinox_type\fP gst_type, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, double *restrict gst)"
+.br
+.ti -1c
+.RI "int \fBterra\fP (const \fBon_surface\fP *restrict location, double lst, double *restrict pos, double *restrict vel)"
+.br
+.RI "========================================================================== "
+.ti -1c
+.RI "int \fBwobble\fP (double jd_tt, enum \fBnovas_wobble_direction\fP direction, double xp, double yp, const double *in, double *out)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBEPS_COR\fP = 0\&.0"
+.br
+.ti -1c
+.RI "double \fBPSI_COR\fP = 0\&.0"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 6, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+G\&. Kaplan and Attila Kovacs
+.RE
+.PP
+Various finctions relating to Earth position and orientation 
+.SH "Function Documentation"
+.PP 
+.SS "short cel_pole (double jd_tt, enum \fBnovas_pole_offset_type\fP type, double dpole1, double dpole2)"
+specifies the celestial pole offsets for high-precision applications\&. Each set of offsets is a correction to the modeled position of the pole for a specific date, derived from observations and published by the IERS\&.
+.PP
+The variables 'PSI_COR' and 'EPS_COR' are used only in NOVAS function \fBe_tilt()\fP\&.
+.PP
+This function, if used, should be called before any other NOVAS functions for a given date\&. Values of the pole offsets specified via a call to this function will be used until explicitly changed\&.
+.PP
+'tjd' is used only if 'type' is POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent  and  values\&.
+.PP
+If 'type' is POLE_OFFSETS_X_Y (2), dx and dy are unit vector component corrections, but are expressed in milliarcseconds simply by multiplying by 206264806, the number of milliarcseconds in one radian\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The current UT1 - UTC time difference, and polar offsets, historical data and near-term projections are published in the <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins  
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.IP "2." 4
+Kaplan, G\&. (2003), USNO/AA Technical Note 2003-03\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date\&. 
+.br
+\fItype\fP POLE_OFFSETS_DPSI_DEPS (1) or POLE_OFFSETS_X_Y (2) 
+.br
+\fIdpole1\fP [mas] Value of celestial pole offset in first coordinate, ( or dx) in milliarcseconds\&. 
+.br
+\fIdpole2\fP [mas] Value of celestial pole offset in second coordinate, ( or dy) in milliarcseconds\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else 1 if 'type' is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcirs_to_itrs()\fP 
+.PP
+\fBtod_to_itrs()\fP 
+.PP
+\fBe_tilt()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBget_ut1_to_tt()\fP 
+.PP
+\fBsidereal_time()\fP 
+.PP
+\fBNOVAS_FULL_ACCURACY\fP 
+.RE
+.PP
+
+.PP
+References \fBEPS_COR\fP, \fBPOLE_OFFSETS_DPSI_DEPS\fP, \fBPOLE_OFFSETS_X_Y\fP, and \fBPSI_COR\fP\&.
+.SS "int e_tilt (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)"
+Computes quantities related to the orientation of the Earth's rotation axis at Julian date 'jd_tdb'\&.
+.PP
+Values of the celestial pole offsets 'PSI_COR' and 'EPS_COR' are set using function 'cel_pole', if desired\&. See the prolog of \fBcel_pole()\fP for details\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fImobl\fP [deg] Mean obliquity of the ecliptic in degrees\&. It may be NULL if not required\&. 
+.br
+\fItobl\fP [deg] True obliquity of the ecliptic in degrees\&. It may be NULL if not required\&. 
+.br
+\fIee\fP [deg] Equation of the equinoxes in seconds of time\&. It may be NULL if not required\&. 
+.br
+\fIdpsi\fP [arcsec] Nutation in longitude in arcseconds\&. It may be NULL if not required\&. 
+.br
+\fIdeps\fP [arcsec] Nutation in obliquity in arcseconds\&. It may be NULL if not required\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if the accuracy argument is invalid
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcel_pole()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBequ2ecl()\fP 
+.PP
+\fBecl2equ()\fP 
+.RE
+.PP
+
+.PP
+References \fBee_ct()\fP, \fBEPS_COR\fP, \fBmean_obliq()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnutation_angles()\fP, and \fBPSI_COR\fP\&.
+.SS "double era (double jd_ut1_high, double jd_ut1_low)"
+Returns the value of the Earth Rotation Angle (theta) for a given UT1 Julian date\&. The expression used is taken from the note to IAU Resolution B1\&.8 of 2000\&. The input Julian date cane be split into an into high and low order parts (e\&.g\&. integer and fractional parts) for improved accuracy, or else one of the components (e\&.g\&. the low part) can be set to zero if no split is desired\&.
+.PP
+The algorithm used here is equivalent to the canonical theta = 0\&.7790572732640 + 1\&.00273781191135448 * t, where t is the time in days from J2000 (t = jd_high + jd_low - JD_J2000), but it avoids many two-PI 'wraps' that decrease precision (adopted from SOFA Fortran routine iau_era00; see also expression at top of page 35 of IERS Conventions (1996))\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+IAU Resolution B1\&.8, adopted at the 2000 IAU General Assembly, Manchester, UK\&. 
+.IP "2." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_ut1_high\fP [day] High-order part of UT1 Julian date\&. 
+.br
+\fIjd_ut1_low\fP [day] Low-order part of UT1 Julian date\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[deg] The Earth Rotation Angle (theta) in degrees [0:360]\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsidereal_time()\fP 
+.PP
+\fBcirs_to_itrs()\fP 
+.PP
+\fBitrs_to_cirs()\fP 
+.RE
+.PP
+
+.SS "short geo_posvel (double jd_tt, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP *restrict obs, double *restrict pos, double *restrict vel)"
+Computes the geocentric position and velocity of an observer\&. The final vectors are expressed in the GCRS\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 time difference in seconds 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIobs\fP Observer location 
+.br
+\fIpos\fP [AU] Position 3-vector of observer, with respect to origin at geocenter, referred to GCRS axes, components in AU\&. (It may be NULL if not required\&.) 
+.br
+\fIvel\fP [AU/day] Velocity 3-vector of observer, with respect to origin at geocenter, referred to GCRS axes, components in AU/day\&. (It must be distinct from the pos output vector, and may be NULL if not required) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if the 'obs' is NULL or the two output vectors are the same, or else 1 if 'accuracy' is invalid, or 2 if 'obserrver->where' is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplace()\fP 
+.PP
+\fBmake_observer()\fP 
+.PP
+\fBget_ut1_to_tt()\fP 
+.PP
+\fBcel_pole()\fP 
+.RE
+.PP
+
+.PP
+References \fBe_tilt()\fP, \fBephemeris()\fP, \fBEROT_ERA\fP, \fBgeo_posvel()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH_INIT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtod_to_gcrs()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
+.SS "int limb_angle (const double * pos_src, const double * pos_obs, double *restrict limb_ang, double *restrict nadir_ang)"
+Determines the angle of an object above or below the Earth's limb (horizon)\&. The geometric limb is computed, assuming the Earth to be an airless sphere (no refraction or oblateness is included)\&. The observer can be on or above the Earth\&. For an observer on the surface of the Earth, this function returns the approximate unrefracted elevation\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos_src\fP [AU] Position 3-vector of observed object, with respect to origin at geocenter, components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer, with respect to origin at geocenter, components in AU\&. 
+.br
+\fIlimb_ang\fP [deg] Angle of observed object above (+) or below (-) limb in degrees, or NAN if reurning with an error\&. It may be NULL if not required\&. 
+.br
+\fInadir_ang\fP Nadir angle of observed object as a fraction of apparent radius of limb: lt;1\&.0 if below the limb; 1\&.0 on the limb; or >1\&.0 if above the limb\&. Returns NAN in case of an error return\&. It may be NULL if not required\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the input vectors is NULL or if either input position is a null vector (at the geocenter)\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplace()\fP 
+.RE
+.PP
+
+.PP
+References \fBM_PI\fP, and \fBnovas_vlen()\fP\&.
+.SS "short sidereal_time (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_equinox_type\fP gst_type, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, double *restrict gst)"
+Computes the Greenwich sidereal time, either mean or apparent, at the specified Julian date\&. The Julian date can be broken into two parts if convenient, but for the highest precision, set 'jd_high' to be the integral part of the Julian date, and set 'jd_low' to be the fractional part\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+Contains fix for known \fCsidereal time units bug\&.\fP 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_ut1_high\fP [day] High-order part of UT1 Julian date\&. 
+.br
+\fIjd_ut1_low\fP [day] Low-order part of UT1 Julian date\&. (You can leave it at zero if 'jd_high' specified the date with sufficient precision) 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 Time difference in seconds 
+.br
+\fIgst_type\fP NOVAS_MEAN_EQUINOX (0) or NOVAS_TRUE_EQUINOX (1), depending on whether wanting mean or apparent GST, respectively\&. 
+.br
+\fIerot\fP EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard)\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIgst\fP [h] Greenwich (mean or apparent) sidereal time, in hours [0:24]\&. (In case the returned error code is >1 the gst value will be set to NAN\&.) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if the 'gst' argument is NULL, 1 if 'accuracy' is invalid 2 if 'method' is invalid, or else 10--30 with 10 + the error from \fBcio_location()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBera()\fP 
+.PP
+\fBtod_to_itrs()\fP 
+.PP
+\fBitrs_to_tod()\fP 
+.PP
+\fBcel_pole()\fP 
+.PP
+\fBget_ut1_to_tt()\fP 
+.RE
+.PP
+
+.PP
+References \fBcio_basis()\fP, \fBcio_location()\fP, \fBe_tilt()\fP, \fBera()\fP, \fBEROT_ERA\fP, \fBEROT_GST\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBtod_to_gcrs()\fP, and \fBtt2tdb()\fP\&.
+.SS "int terra (const \fBon_surface\fP *restrict location, double lst, double *restrict pos, double *restrict vel)"
+
+.PP
+========================================================================== Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth\&.
+.PP
+This function ignores polar motion, unless the observer's longitude and latitude have been corrected for it, and variation in the length of day (angular velocity of earth)\&.
+.PP
+The true equator and equinox of date do not form an inertial system\&. Therefore, with respect to an inertial system, the very small velocity component (several meters/day) due to the precession and nutation of the Earth's axis is not accounted for here\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIlocation\fP Location of observer in Earth's rotating frame 
+.br
+\fIlst\fP [h] Local apparent sidereal time at reference meridian in hours\&. 
+.br
+\fIpos\fP [AU] Position vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU\&. If reference meridian is Greenwich and 'lst' = 0, 'pos' is effectively referred to equator and Greenwich\&. (It may be NULL if no position data is required)\&. 
+.br
+\fIvel\fP [AU/day] Velocity vector of observer with respect to center of Earth, equatorial rectangular coordinates, referred to true equator and equinox of date, components in AU/day\&. (It must be distinct from the pos output vector, and may be NULL if no velocity data is required)\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if location is NULL or if the pos and vel output arguments are identical pointers\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmake_on_surface()\fP 
+.PP
+\fBgeo_posvel()\fP 
+.PP
+\fBsidereal_time()\fP 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_KM\fP\&.
+.SS "int wobble (double jd_tt, enum \fBnovas_wobble_direction\fP direction, double xp, double yp, const double * in, double * out)"
+Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin (TIO)\&. The ITRS vector is thereby transformed to the terrestrial intermediate reference system (TIRS) or Pseudo Earth Fixed (PEF), based on the true (rotational) equator and TIO; or vice versa\&. Because the true equator is the plane orthogonal to the direction of the Celestial Intermediate Pole (CIP), the components of the output vector are referred to z and x axes toward the CIP and TIO, respectively\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.IP "2." 4
+Lambert & Bizouard (2002), Astronomy and Astrophysics 394, 317-321\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIdirection\fP WOBBLE_ITRS_TO_PEF (0) or WOBBLE_PEF_TO_ITRS (nonzero) 
+.br
+\fIxp\fP [arcsec] Conventionally-defined X coordinate of Celestial Intermediate Pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIyp\fP [arcsec] Conventionally-defined Y coordinate of Celestial Intermediate Pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIin\fP Input position vector, geocentric equatorial rectangular coordinates, in the original system defined by 'direction' 
+.br
+\fIout\fP Output Position vector, geocentric equatorial rectangular coordinates, in the final system defined by 'direction'\&. It can be the same vector as the input\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if the output vector argument is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcel_pole()\fP 
+.PP
+\fBcirs_to_itrs()\fP 
+.PP
+\fBtod_to_itrs()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBsidereal_time()\fP 
+.PP
+\fBe_tilt()\fP 
+.PP
+\fBNOVAS_FULL_ACCURACY\fP 
+.RE
+.PP
+
+.PP
+References \fBWOBBLE_ITRS_TO_PEF\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "double EPS_COR = 0\&.0"
+Celestial pole offset  for high-precision applications\&. It was visible to users in NOVAS C 3\&.1, hence we continue to expose it also for back compatibility\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBPSI_COR\fP 
+.PP
+\fBcel_pole()\fP 
+.RE
+.PP
+
+.SS "double PSI_COR = 0\&.0"
+Celestial pole offset  for high-precision applications\&. It was visible to users in NOVAS C 3\&.1, hence we continue to expose it also for back compatibility\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBEPS_COR\fP 
+.PP
+\fBcel_pole()\fP 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

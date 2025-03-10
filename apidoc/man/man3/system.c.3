@@ -1,0 +1,1285 @@
+.TH "src/system.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/system.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBapp_to_cirs_ra\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
+.br
+.ti -1c
+.RI "short \fBcel2ter\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double *in, double *out)"
+.br
+.ti -1c
+.RI "double \fBcirs_to_app_ra\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
+.br
+.ti -1c
+.RI "int \fBcirs_to_gcrs\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBcirs_to_itrs\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBcirs_to_tod\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBframe_tie\fP (const double *in, enum \fBnovas_frametie_direction\fP direction, double *out)"
+.br
+.ti -1c
+.RI "short \fBgcrs2equ\fP (double jd_tt, enum \fBnovas_dynamical_type\fP sys, enum \fBnovas_accuracy\fP accuracy, double rag, double decg, double *restrict ra, double *restrict dec)"
+.br
+.ti -1c
+.RI "int \fBgcrs_to_cirs\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBgcrs_to_j2000\fP (const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBgcrs_to_mod\fP (double jd_tdb, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBgcrs_to_tod\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBitrs_to_cirs\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBitrs_to_tod\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBj2000_to_gcrs\fP (const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBj2000_to_tod\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBmod_to_gcrs\fP (double jd_tdb, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBnutation\fP (double jd_tdb, enum \fBnovas_nutation_direction\fP direction, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBnutation_angles\fP (double t, enum \fBnovas_accuracy\fP accuracy, double *restrict dpsi, double *restrict deps)"
+.br
+.ti -1c
+.RI "short \fBprecession\fP (double jd_tdb_in, const double *in, double jd_tdb_out, double *out)"
+.br
+.ti -1c
+.RI "short \fBter2cel\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBtod_to_cirs\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBtod_to_gcrs\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBtod_to_itrs\fP (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double *in, double *out)"
+.br
+.ti -1c
+.RI "int \fBtod_to_j2000\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 6, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+G\&. Kaplan and Attila Kovacs
+.RE
+.PP
+Various functions to transform between different equatorial coordinate systems\&. 
+.SH "Function Documentation"
+.PP 
+.SS "double app_to_cirs_ra (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
+Converts an apparent right ascension coordinate (measured from the true equinox of date) to a CIRS R\&.A\&., measured from the CIO\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIra\fP [h] the apparent R\&.A\&. coordinate measured from the true equinox of date\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[h] The CIRS right ascension coordinate, measured from the CIO [0:24], or NAN if the accuracy is invalid, or if there wan an error from \fBcio_ra()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcirs_to_app_ra()\fP 
+.PP
+\fBtod_to_cirs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_ra()\fP\&.
+.SS "short cel2ter (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double * in, double * out)"
+Rotates a vector from the celestial to the terrestrial system\&. Specifically, it transforms a vector in the GCRS, or the dynamcal CIRS or TOD frames to the ITRS (a rotating earth-fixed system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth rotation, and polar motion\&.
+.PP
+If 'system' is NOVAS_CIRS then method EROT_ERA must be used\&. Similarly, if 'system' is NOVAS_TOD then method must be EROT_ERA\&. Otherwise an error 3 is returned\&.
+.PP
+If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation\&.
+.PP
+\fBDeprecated\fP
+.RS 4
+This function can be confusing to use due to the input coordinate system being specified by a combination of two options\&. Use \fBitrs_to_cirs()\fP or \fBitrs_to_tod()\fP instead\&. You can then follow these with other conversions to GCRS (or whatever else) as appropriate\&.
+.RE
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV J oint Discussion 16\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_ut1_high\fP [day] High-order part of UT1 Julian date\&. 
+.br
+\fIjd_ut1_low\fP [day] Low-order part of UT1 Julian date\&. 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 Time difference in seconds 
+.br
+\fIerot\fP EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard) as the Earth rotation measure\&. The main effect of this option is that it specifies the input coordinate system as CIRS or TOD when the input coordinate class is NOVAS_DYNAMICAL_CLASS\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIclass\fP Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1)\&. Use the former if the input coordinates are in the GCRS, and the latter if they are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is specified in\&.) 
+.br
+\fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIyp\fP [arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIin\fP Input position vector, geocentric equatorial rectangular coordinates in the specified input coordinate system (GCRS if 'class' is NOVAS_REFERENCE_CLASS; or else either CIRS if 'erot' is EROT_ERA, or TOD if 'erot' is EROT_GST)\&. 
+.br
+\fIout\fP ITRS position vector, geocentric equatorial rectangular coordinates (terrestrial system)\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid, or else 10 + the error from \fBcio_location()\fP, or 20 + error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgcrs_to_cirs()\fP 
+.PP
+\fBcirs_to_itrs()\fP 
+.PP
+\fBframe_tie()\fP 
+.PP
+\fBj2000_to_tod()\fP 
+.PP
+\fBtod_to_itrs()\fP 
+.PP
+\fBter2cel()\fP 
+.RE
+.PP
+
+.PP
+References \fBera()\fP, \fBEROT_ERA\fP, \fBEROT_GST\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_tod()\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBsidereal_time()\fP, \fBspin()\fP, \fBtt2tdb()\fP, \fBwobble()\fP, and \fBWOBBLE_PEF_TO_ITRS\fP\&.
+.SS "double cirs_to_app_ra (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double ra)"
+Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R\&.A\&. measured from the true equinox of date\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIra\fP [h] The CIRS right ascension coordinate, measured from the CIO\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[h] the apparent R\&.A\&. coordinate measured from the true equinox of date [0:24], or NAN if the accuracy is invalid, or if there wan an error from \fBcio_ra()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBapp_to_cirs_ra()\fP 
+.PP
+\fBcirs_to_tod()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_ra()\fP\&.
+.SS "int cirs_to_gcrs (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the Geocentric Celestial Reference System (GCRS)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP CIRS Input (x, y, z) position or velocity vector 
+.br
+\fIout\fP Output position or velocity 3-vector in the GCRS coordinate frame\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or an error from \fBcio_location()\fP, or else 10 + the error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBtod_to_gcrs()\fP 
+.PP
+\fBgcrs_to_cirs()\fP 
+.PP
+\fBcirs_to_itrs()\fP 
+.PP
+\fBcirs_to_tod()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_basis()\fP, and \fBcio_location()\fP\&.
+.SS "int cirs_to_itrs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
+Rotates a position vector from the dynamical CIRS frame of date to the Earth-fixed ITRS frame (IAU 2000 standard method)\&.
+.PP
+If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation\&.
+.PP
+If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0\&.0\&. and you can use UTC-based Julian date the same way\&.for arcsec-level precision also\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt_high\fP [day] High-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIjd_tt_low\fP [day] Low-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 Time difference in seconds 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIyp\fP [arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIin\fP Position vector, geocentric equatorial rectangular coordinates, referred to CIRS axes (celestial system)\&. 
+.br
+\fIout\fP Position vector, geocentric equatorial rectangular coordinates, referred to ITRS axes (terrestrial system)\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid 10--20, 3 if the method and option are mutually incompatible, or else 10 + the error from \fBcio_location()\fP, or 20 + error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBtod_to_itrs()\fP 
+.PP
+\fBitrs_to_cirs()\fP 
+.PP
+\fBgcrs_to_cirs()\fP 
+.PP
+\fBcirs_to_gcrs()\fP 
+.PP
+\fBcirs_to_tod()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcel2ter()\fP, \fBEROT_ERA\fP, and \fBNOVAS_DYNAMICAL_CLASS\fP\&.
+.SS "int cirs_to_tod (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) at the given epoch to the True of Date (TOD) reference system\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP CIRS Input (x, y, z) position or velocity vector 
+.br
+\fIout\fP Output position or velocity 3-vector in the True of Date (TOD) frame\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or 10 + the error from \fBcio_location()\fP, or else 20 + the error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBtod_to_cirs()\fP 
+.PP
+\fBcirs_to_app_ra()\fP 
+.PP
+\fBcirs_to_gcrs()\fP 
+.PP
+\fBcirs_to_itrs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_ra()\fP, and \fBspin()\fP\&.
+.SS "int frame_tie (const double * in, enum \fBnovas_frametie_direction\fP direction, double * out)"
+Transforms a vector from the dynamical reference system to the International Celestial Reference System (ICRS), or vice versa\&. The dynamical reference system is based on the dynamical mean equator and equinox of J2000\&.0\&. The ICRS is based on the space-fixed ICRS axes defined by the radio catalog positions of several hundred extragalactic objects\&.
+.PP
+For geocentric coordinates, the same transformation is used between the dynamical reference system and the GCRS\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+More efficient 3D rotation implementation for small angles by A\&. Kovacs 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Hilton, J\&. and Hohenkerk, C\&. (2004), Astronomy and Astrophysics 413, 765-770, eq\&. (6) and (8)\&. 
+.IP "2." 4
+IERS (2003) Conventions, Chapter 5\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIin\fP Position vector, equatorial rectangular coordinates\&. 
+.br
+\fIdirection\fP <0 for for dynamical to ICRS transformation, or else >=0 for ICRS to dynamical transformation\&. Alternatively you may use the constants J2000_TO_ICRS (-1; or negative) or ICRS_TO_J2000 (0; or positive)\&. 
+.br
+\fIout\fP Position vector, equatorial rectangular coordinates\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successfor or -1 if either of the vector arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBj2000_to_gcrs()\fP 
+.PP
+\fBgcrs_to_j2000()\fP 
+.PP
+\fBtod_to_j2000()\fP 
+.PP
+\fBj2000_to_tod()\fP 
+.PP
+\fBj2000_to_gcrs()\fP 
+.RE
+.PP
+
+.SS "short gcrs2equ (double jd_tt, enum \fBnovas_dynamical_type\fP sys, enum \fBnovas_accuracy\fP accuracy, double rag, double decg, double *restrict ra, double *restrict dec)"
+Converts GCRS right ascension and declination to coordinates with respect to the equator of date (mean or true)\&. For coordinates with respect to the true equator of date, the origin of right ascension can be either the true equinox or the celestial intermediate origin (CIO)\&. This function only supports the CIO-based method\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date\&. (Unused if 'coord_sys' is NOVAS_ICRS_EQUATOR) 
+.br
+\fIsys\fP Dynamical equatorial system type 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) (unused if 'coord_sys' is not NOVAS_ICRS [3]) 
+.br
+\fIrag\fP [h] GCRS right ascension in hours\&. 
+.br
+\fIdecg\fP [deg] GCRS declination in degrees\&. 
+.br
+\fIra\fP [h] Right ascension in hours, referred to specified equator and right ascension origin of date\&. 
+.br
+\fIdec\fP [deg] Declination in degrees, referred to specified equator of date\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 with errno set to EINVAL if the output pointers are NULL or the coord_sys is invalid, otherwise <0 if an error from \fBvector2radec()\fP, 10--20 error is 10 + error \fBcio_location()\fP; or else 20 + error from \fBcio_basis()\fP 
+.RE
+.PP
+
+.PP
+References \fBDEG2RAD\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_mod()\fP, \fBgcrs_to_tod()\fP, \fBNOVAS_DYNAMICAL_CIRS\fP, \fBNOVAS_DYNAMICAL_MOD\fP, \fBNOVAS_DYNAMICAL_TOD\fP, \fBtt2tdb()\fP, and \fBvector2radec()\fP\&.
+.SS "int gcrs_to_cirs (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the Celestial Intermediate Reference System (CIRS) frame at the given epoch
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP GCRS Input (x, y, z) position or velocity vector 
+.br
+\fIout\fP Output position or velocity 3-vector in the True equinox of Date coordinate frame\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or an error from \fBcio_location()\fP, or else 10 + the error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgcrs_to_j2000()\fP 
+.PP
+\fBcirs_to_gcrs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_basis()\fP, and \fBcio_location()\fP\&.
+.SS "int gcrs_to_j2000 (const double * in, double * out)"
+Change GCRS coordinates to J2000 coordinates\&. Same as \fBframe_tie()\fP called with ICRS_TO_J2000
+.PP
+\fBParameters\fP
+.RS 4
+\fIin\fP GCRS input 3-vector 
+.br
+\fIout\fP J2000 output 3-vector 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error from \fBframe_tie()\fP
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBj2000_to_gcrs()\fP 
+.PP
+\fBtod_to_j2000()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBframe_tie()\fP, and \fBICRS_TO_J2000\fP\&.
+.SS "int gcrs_to_mod (double jd_tdb, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the Mean of Date (MOD) reference frame at the given epoch
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIin\fP GCRS Input (x, y, z) position or velocity vector 
+.br
+\fIout\fP Output position or velocity 3-vector in the Mean wquinox of Date coordinate frame\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBmod_to_gcrs()\fP 
+.PP
+\fBgcrs_to_tod()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBNOVAS_JD_J2000\fP, and \fBprecession()\fP\&.
+.SS "int gcrs_to_tod (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the True of Date (TOD) reference frame at the given epoch
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP GCRS Input (x, y, z) position or velocity vector 
+.br
+\fIout\fP Output position or velocity 3-vector in the True equinox of Date coordinate frame\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgcrs_to_cirs()\fP 
+.PP
+\fBtod_to_gcrs()\fP 
+.PP
+\fBj2000_to_tod()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, and \fBj2000_to_tod()\fP\&.
+.SS "int itrs_to_cirs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
+Rotates a position vector from the Earth-fixed ITRS frame to the dynamical CIRS frame of date (IAU 2000 standard method)\&.
+.PP
+If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation\&.
+.PP
+If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0\&.0\&. and you can use UTC-based Julian date the same way\&.for arcsec-level precision also\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt_high\fP [day] High-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIjd_tt_low\fP [day] Low-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 Time difference in seconds 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIyp\fP [arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIin\fP Position vector, geocentric equatorial rectangular coordinates, referred to ITRS axes (terrestrial system) 
+.br
+\fIout\fP Position vector, geocentric equatorial rectangular coordinates, referred to CIRS axes (celestial system)\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, or else 10 + the error from \fBcio_location()\fP, or 20 + error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBitrs_to_tod()\fP 
+.PP
+\fBcirs_to_itrs()\fP 
+.PP
+\fBcirs_to_gcrs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBEROT_ERA\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, and \fBter2cel()\fP\&.
+.SS "int itrs_to_tod (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
+Rotates a position vector from the Earth-fixed ITRS frame to the dynamical True of Date (TOD) frame of date (pre IAU 2000 method)\&.
+.PP
+If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation\&.
+.PP
+If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0\&.0\&. and you can use UTC-based Julian date the same way\&.for arcsec-level precision also\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt_high\fP [day] High-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIjd_tt_low\fP [day] Low-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 Time difference in seconds 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIyp\fP [arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIin\fP Position vector, geocentric equatorial rectangular coordinates, referred to ITRS axes (terrestrial system) 
+.br
+\fIout\fP Position vector, geocentric equatorial rectangular coordinates, referred to True of Date (TOD) axes (celestial system) 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, or else 10 + the error from \fBcio_location()\fP, or 20 + error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBitrs_to_cirs()\fP 
+.PP
+\fBtod_to_itrs()\fP 
+.PP
+\fBtod_to_j2000()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBEROT_GST\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, and \fBter2cel()\fP\&.
+.SS "int j2000_to_gcrs (const double * in, double * out)"
+Change J2000 coordinates to GCRS coordinates\&. Same as \fBframe_tie()\fP called with J2000_TO_ICRS
+.PP
+\fBParameters\fP
+.RS 4
+\fIin\fP J2000 input 3-vector 
+.br
+\fIout\fP GCRS output 3-vector 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else an error from \fBframe_tie()\fP
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBj2000_to_tod()\fP 
+.PP
+\fBgcrs_to_j2000()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBframe_tie()\fP, and \fBJ2000_TO_ICRS\fP\&.
+.SS "int j2000_to_tod (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date (TOD) reference frame at the given epoch
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP Input (x, y, z) position or velocity vector in rectangular equatorial coordinates at J2000 
+.br
+\fIout\fP Output position or velocity 3-vector in the True equinox of Date coordinate frame\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBj2000_to_gcrs()\fP 
+.PP
+\fBtod_to_j2000()\fP 
+.PP
+\fBgcrs_to_j2000()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNUTATE_MEAN_TO_TRUE\fP, \fBnutation()\fP, and \fBprecession()\fP\&.
+.SS "int mod_to_gcrs (double jd_tdb, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the Geocentric Celestial Reference System(GCRS)
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIin\fP Input (x, y, z) position or velocity 3-vector in the Mean equinox of Date coordinate frame\&. 
+.br
+\fIout\fP Output GCRS position or velocity vector\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgcrs_to_mod()\fP 
+.PP
+\fBtod_to_gcrs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBframe_tie()\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, and \fBprecession()\fP\&.
+.SS "int nutation (double jd_tdb, enum \fBnovas_nutation_direction\fP direction, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and equinox of epoch\&. Inverse transformation may be applied by setting flag 'direction'\&.
+.PP
+This is the old (pre IAU 2006) method of nutation calculation\&. If you follow the now standard IAU 2000/2006 methodology you will want to use \fBnutation_angles()\fP instead\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Explanatory Supplement To The Astronomical Almanac, pp\&. 114-115\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.br
+\fIdirection\fP NUTATE_MEAN_TO_TRUE (0) or NUTATE_TRUE_TO_MEAN (-1; or non-zero) 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP Position 3-vector, geocentric equatorial rectangular coordinates, referred to mean equator and equinox of epoch\&. 
+.br
+\fIout\fP Position vector, geocentric equatorial rectangular coordinates, referred to true equator and equinox of epoch\&. It can be the same as the input position\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if one of the vector arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnutation_angles()\fP 
+.PP
+\fBtt2tdb()\fP 
+.PP
+\fBNOVAS_TOD\fP 
+.RE
+.PP
+
+.PP
+References \fBe_tilt()\fP, and \fBNUTATE_MEAN_TO_TRUE\fP\&.
+.SS "int nutation_angles (double t, enum \fBnovas_accuracy\fP accuracy, double *restrict dpsi, double *restrict deps)"
+Returns the values for nutation in longitude and nutation in obliquity for a given TDB Julian date\&. The nutation model selected depends upon the input value of 'accuracy'\&. See notes below for important details\&.
+.PP
+This function selects the nutation model depending first upon the input value of 'accuracy'\&. If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used\&. Otherwise the model set by \fBset_nutation_lp_provider()\fP is used, or else the default \fBnu2000k()\fP\&.
+.PP
+See the prologs of the nutation functions in file '\fBnutation\&.c\fP' for details concerning the models\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIt\fP [cy] TDB time in Julian centuries since J2000\&.0 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIdpsi\fP [arcsec] Nutation in longitude in arcseconds\&. 
+.br
+\fIdeps\fP [arcsec] Nutation in obliquity in arcseconds\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if the output pointer arguments are NULL
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_nutation_lp_provider()\fP 
+.PP
+\fBnutation()\fP 
+.PP
+\fBiau2000b()\fP 
+.PP
+\fBnu2000k()\fP 
+.PP
+\fBcio_basis()\fP 
+.PP
+\fBNOVAS_CIRS\fP 
+.PP
+\fBNOVAS_JD_J2000\fP 
+.RE
+.PP
+
+.PP
+References \fBget_nutation_lp_provider()\fP, \fBiau2000a()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
+.SS "short precession (double jd_tdb_in, const double * in, double jd_tdb_out, double * out)"
+Precesses equatorial rectangular coordinates from one epoch to another\&. Unlike the original NOVAS routine, this routine works for any pairing of the time arguments\&.
+.PP
+This function calculates precession for the old (pre IAU 2000) methodology\&. Its main use for NOVAS users is to allow converting older catalog coordinates e\&.g\&. to J2000 coordinates, which then can be converted to the now standard ICRS system via \fBframe_tie()\fP\&.
+.PP
+NOTE: 
+.PD 0
+.IP "1." 4
+Unlike the original NOVAS C 3\&.1 version, this one does not require that one of the time arguments must be J2000\&. You can precess from any date to any other date, and the intermediate epoch of J2000 will be handled internally as needed\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Explanatory Supplement To The Astronomical Almanac, pp\&. 103-104\&. 
+.IP "2." 4
+Capitaine, N\&. et al\&. (2003), Astronomy And Astrophysics 412, pp\&. 567-586\&. 
+.IP "3." 4
+Hilton, J\&. L\&. et al\&. (2006), IAU WG report, Celest\&. Mech\&., 94, pp\&. 351-367\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb_in\fP [day] Barycentric Dynamic Time (TDB) based Julian date of the input epoch 
+.br
+\fIin\fP Position 3-vector, geocentric equatorial rectangular coordinates, referred to mean dynamical equator and equinox of the initial epoch\&. 
+.br
+\fIjd_tdb_out\fP [day] Barycentric Dynamic Time (TDB) based Julian date of the output epoch 
+.br
+\fIout\fP Position 3-vector, geocentric equatorial rectangular coordinates, referred to mean dynamical equator and equinox of the final epoch\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the position vectors is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnutation()\fP 
+.PP
+\fBframe_tie()\fP 
+.PP
+\fBnovas_epoch()\fP 
+.PP
+\fBtt2tdb()\fP 
+.PP
+\fBcio_basis()\fP 
+.PP
+\fBNOVAS_TOD\fP 
+.PP
+\fBNOVAS_JD_J2000\fP 
+.PP
+\fBNOVAS_JD_B1950\fP 
+.PP
+\fBNOVAS_JD_B1900\fP 
+.RE
+.PP
+
+.PP
+References \fBprecession()\fP\&.
+.SS "short ter2cel (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double * in, double * out)"
+Rotates a vector from the terrestrial to the celestial system\&. Specifically, it transforms a vector in the ITRS (rotating earth-fixed system) to the True of Date (TOD), CIRS, or GCRS (a local space-fixed system) by applying rotations for polar motion, Earth rotation (for TOD); and nutation, precession, and the dynamical-to-GCRS frame tie (for GCRS)\&.
+.PP
+If 'system' is NOVAS_CIRS then method EROT_ERA must be used\&. Similarly, if 'system' is NOVAS_TOD then method must be EROT_ERA\&. Otherwise an error 3 is returned\&.
+.PP
+If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation\&.
+.PP
+\fBDeprecated\fP
+.RS 4
+This function can be confusing to use due to the output coordinate system being specified by a combination of two options\&. Use \fBitrs_to_cirs()\fP or \fBitrs_to_tod()\fP instead\&. You can then follow these with other conversions to GCRS (or whatever else) as appropriate\&.
+.RE
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_ut1_high\fP [day] High-order part of UT1 Julian date\&. 
+.br
+\fIjd_ut1_low\fP [day] Low-order part of UT1 Julian date\&. 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 Time difference in seconds 
+.br
+\fIerot\fP EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard) as the Earth rotation measure\&. The main effect of this option is that it selects the output coordinate system as CIRS or TOD if the output coordinate class is NOVAS_DYNAMICAL_CLASS\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIclass\fP Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1) or NOVAS_DYNAMICAL_CLASS (1)\&. Use the former if the output coordinates are to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot' parameter selects which dynamical system to use for the output\&.) 
+.br
+\fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIyp\fP [arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIin\fP Position vector, geocentric equatorial rectangular coordinates, referred to ITRS axes (terrestrial system) in the normal case where 'option' is NOVAS_GCRS (0)\&. 
+.br
+\fIout\fP Position vector, equatorial rectangular coordinates in the specified output system (GCRS if 'class' is NOVAS_REFERENCE_CLASS; or else either CIRS if 'erot' is EROT_ERA, or TOD if 'erot' is EROT_GST)\&. It may be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid 10--20, or else 10 + the error from \fBcio_location()\fP, or 20 + error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBitrs_to_cirs()\fP 
+.PP
+\fBcirs_to_gcrs()\fP 
+.PP
+\fBitrs_to_tod()\fP 
+.PP
+\fBtod_to_j2000()\fP 
+.PP
+\fBframe_tie()\fP 
+.PP
+\fBcel2ter()\fP 
+.RE
+.PP
+
+.PP
+References \fBcirs_to_gcrs()\fP, \fBera()\fP, \fBEROT_ERA\fP, \fBEROT_GST\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBsidereal_time()\fP, \fBspin()\fP, \fBtod_to_gcrs()\fP, \fBtt2tdb()\fP, \fBwobble()\fP, and \fBWOBBLE_ITRS_TO_PEF\fP\&.
+.SS "int tod_to_cirs (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the \&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The accuracy of the output CIRS coordinates depends on how the input TOD coordinates were obtained\&. If TOD was calculated via the old (pre IAU 2006) method, using the Lieske et al\&. 1997 nutation model, then the limited accuracy of that model will affect the resulting coordinates\&. This is the case for the SuperNOVAS functions \fBnovas_geom_posvel()\fP and \fBnovas_sky_pos()\fP also, when called with \fCNOVAS_TOD\fP as the system, as well as all legacy NOVAS C functions that produce TOD coordinates\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date that defines the output epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP CIRS Input (x, y, z) position or velocity vector 
+.br
+\fIout\fP Output position or velocity 3-vector in the True of Date (TOD) frame\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL or the accuracy is invalid, or 10 + the error from \fBcio_location()\fP, or else 20 + the error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcirs_to_tod()\fP 
+.PP
+\fBapp_to_cirs_ra()\fP 
+.PP
+\fBtod_to_gcrs()\fP 
+.PP
+\fBtod_to_j2000()\fP 
+.PP
+\fBtod_to_itrs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcio_ra()\fP, and \fBspin()\fP\&.
+.SS "int tod_to_gcrs (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the Geocentric Celestial Reference System(GCRS)
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP Input (x, y, z) position or velocity 3-vector in the True equinox of Date coordinate frame\&. 
+.br
+\fIout\fP Output GCRS position or velocity vector\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBj2000_to_tod()\fP 
+.PP
+\fBtod_to_cirs()\fP 
+.PP
+\fBtod_to_j2000()\fP 
+.PP
+\fBtod_to_itrs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBframe_tie()\fP, \fBJ2000_TO_ICRS\fP, and \fBtod_to_j2000()\fP\&.
+.SS "int tod_to_itrs (double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, double xp, double yp, const double * in, double * out)"
+Rotates a position vector from the dynamical True of Date (TOD) frame of date the Earth-fixed ITRS frame (pre IAU 2000 method)\&.
+.PP
+If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation\&.
+.PP
+If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0\&.0\&. and you can use UTC-based Julian date the same way\&.for arcsec-level precision also\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&. 
+.IP "2." 4
+Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU XXV Joint Discussion 16\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt_high\fP [day] High-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIjd_tt_low\fP [day] Low-order part of Terrestrial Time (TT) based Julian date\&. 
+.br
+\fIut1_to_tt\fP [s] TT - UT1 Time difference in seconds\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIyp\fP [arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
+.br
+\fIin\fP Position vector, geocentric equatorial rectangular coordinates, referred to True of Date (TOD) axes (celestial system)\&. 
+.br
+\fIout\fP Position vector, geocentric equatorial rectangular coordinates, referred to ITRS axes (terrestrial system)\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy' is invalid, 2 if 'method' is invalid 10--20, 3 if the method and option are mutually incompatible, or else 10 + the error from \fBcio_location()\fP, or 20 + error from \fBcio_basis()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcirs_to_itrs()\fP 
+.PP
+\fBitrs_to_tod()\fP 
+.PP
+\fBj2000_to_tod()\fP 
+.PP
+\fBtod_to_gcrs()\fP 
+.PP
+\fBtod_to_j2000()\fP 
+.PP
+\fBtod_to_cirs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBcel2ter()\fP, \fBEROT_GST\fP, and \fBNOVAS_DYNAMICAL_CLASS\fP\&.
+.SS "int tod_to_j2000 (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
+Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the J2000 coordinates\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch\&. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIin\fP Input (x, y, z) position or velocity 3-vector in the True equinox of Date coordinate frame\&. 
+.br
+\fIout\fP Output position or velocity vector in rectangular equatorial coordinates at J2000\&. It can be the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if either of the vector arguments is NULL or the 'accuracy' is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBj2000_to_tod()\fP 
+.PP
+\fBj2000_to_gcrs()\fP 
+.PP
+\fBtod_to_gcrs()\fP 
+.PP
+\fBtod_to_cirs()\fP 
+.PP
+\fBtod_to_itrs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNUTATE_TRUE_TO_MEAN\fP, \fBnutation()\fP, and \fBprecession()\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.0.0-rc5] - 2025-03-10
 
 Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such 
 as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric 
@@ -22,6 +22,9 @@ calculations.
    were left uncaught, only the appropriatre number of characters were used -- hence it broke nothing, only failed to 
    remind the caller (with an error) that the supplied name was not quite right.
   
+ - #139: Legacy linking of external `solarsystem()` / `solarsystem_hp()` provider modules was blocked by 
+   `solsys-ephem.c` inadvertently definining these functions even though it was not supposed to.
+  
 ### Added
 
  - #113: New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
@@ -32,7 +35,8 @@ calculations.
    
  - #113: New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or 
    sets below a specific elevation on a given date, and `novas_transit_time()` to calculate the time a source transits 
-   over the local meridian. (For Earth-based observers only).
+   over the local meridian. (For Earth-based observers only). #140: Further fixes to these calculations after the 
+   v1.3.0-rc4 release candidate [thanks to valeriy-sokoloff].
 
  - #113: New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given 
    date. The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, 
@@ -67,7 +71,7 @@ calculations.
  - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.
 
- - #117: Added benchmarks under the `benchmark/` forlder, for SuperNOVAS as well as equivalent benchmarks for 
+ - #117: Added benchmarks under the `benchmark/` folder, for SuperNOVAS as well as equivalent benchmarks for 
    __astropy__. To run the SuperNOVAS benchmarks, simply `make benchmark` in the distribution directory.
    
  - #118: New `novas_parse_date()` / `novas_parse_date_format()` to parse date/time specifications, `novas_parse_dms()` 
@@ -84,7 +88,7 @@ calculations.
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
  - #131: New `novas_date()` and `novas_date_scale()` for the simplest conversion of string times to Julian days, and 
-   in case of the latter also to a corresponding timescale.'
+   in case of the latter also to a corresponding timescale.
    
  - #133: New `novas_parse_timescale()` to parse a timescale from a string specification, and return the updated parse
    position after also.
@@ -104,8 +108,13 @@ calculations.
 
 ### Changed
  
- - [#130] Use C99 `restrict` keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted 
+ - #130 Use C99 `restrict` keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted 
    pointer arguments are aliased.
+   
+ - #139 Reorganized code into more managably sized modules. It also makes the API documentation by source file more 
+   logically organized.
+   
+ - #139: Legacy source code moved to `legacy/` folder, and installed into `$(DESTDIR)$(docdir)/legacy/`.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 

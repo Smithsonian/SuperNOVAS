@@ -127,6 +127,10 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a4d7470ca705efa1953e8b4beab77c6b6" id="r_a4d7470ca705efa1953e8b4beab77c6b6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt</a> (int leap_seconds, double dut1)</td></tr>
+<tr class="separator:a4d7470ca705efa1953e8b4beab77c6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7611704bab9ce717744a8b5575c5378" id="r_ab7611704bab9ce717744a8b5575c5378"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt</a> (int leap_seconds)</td></tr>
+<tr class="separator:ab7611704bab9ce717744a8b5575c5378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abaac8a4ea28bc8b811277051e3168468" id="r_abaac8a4ea28bc8b811277051e3168468"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date</a> (const char *restrict date)</td></tr>
 <tr class="separator:abaac8a4ea28bc8b811277051e3168468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66656c3f5a1256f4bfc3ed2e168c70c2" id="r_a66656c3f5a1256f4bfc3ed2e168c70c2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale</a> (const char *restrict date, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> *restrict scale)</td></tr>
@@ -165,6 +169,10 @@ Functions</h2></td></tr>
 <tr class="separator:ab344242721ca00709d4dc482a7934e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8e83c48005d5aabb3e7bbf8d9f8ed81" id="r_ac8e83c48005d5aabb3e7bbf8d9f8ed81"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale, char *restrict dst, int maxlen)</td></tr>
 <tr class="separator:ac8e83c48005d5aabb3e7bbf8d9f8ed81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90d5fae30728b51151c3daf355ca585b" id="r_a90d5fae30728b51151c3daf355ca585b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt</a> (double jd_tdb, double *restrict jd_tt, double *restrict secdiff)</td></tr>
+<tr class="separator:a90d5fae30728b51151c3daf355ca585b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a129acca41760da486e1179c93cb9e86d" id="r_a129acca41760da486e1179c93cb9e86d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb</a> (double jd_tt)</td></tr>
+<tr class="separator:a129acca41760da486e1179c93cb9e86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Jun 24, 2024 </dd></dl>
@@ -173,6 +181,89 @@ Functions</h2></td></tr>
 <p>A set of SuperNOVAS routines to make handling of astronomical timescales and conversions among them easier.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html">frames.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a4d7470ca705efa1953e8b4beab77c6b6" name="a4d7470ca705efa1953e8b4beab77c6b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d7470ca705efa1953e8b4beab77c6b6">&#9670;&#160;</a></span>get_ut1_to_tt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double get_ut1_to_tt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>leap_seconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dut1</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time difference as measured and published by IERS.</p>
+<p>NOTES: </p><ol>
+<li>
+The current UT1 - UTC time difference, and polar offsets, historical data and near-term projections are published in the &lt;a href="<a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html">https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html</a>&gt;IERS Bulletins  </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leap_seconds</td><td>[s] Leap seconds at the time of observations </td></tr>
+    <tr><td class="paramname">dut1</td><td>[s] UT1 - UTC time difference [-0.5:0.5] </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] The TT - UT1 time difference that is suitable for used with all calls in this library that require a <code>ut1_to_tt</code> argument.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
+<dd>
+<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<dd>
+<a class="el" href="earth_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a>.</p>
+
+</div>
+</div>
+<a id="ab7611704bab9ce717744a8b5575c5378" name="ab7611704bab9ce717744a8b5575c5378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7611704bab9ce717744a8b5575c5378">&#9670;&#160;</a></span>get_utc_to_tt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double get_utc_to_tt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>leap_seconds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the difference between Terrestrial Time (TT) and Universal Coordinated Time (UTC)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leap_seconds</td><td>[s] The current leap seconds (see IERS Bulletins) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] The TT - UTC time difference</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
+<dd>
+<a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda">NOVAS_TAI_TO_TT</a>.</p>
+
+</div>
+</div>
 <a id="abaac8a4ea28bc8b811277051e3168468" name="abaac8a4ea28bc8b811277051e3168468"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abaac8a4ea28bc8b811277051e3168468">&#9670;&#160;</a></span>novas_date()</h2>
 
@@ -777,7 +868,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
  2025-01-26T19:33:28-0600
  2025 Jan 26 19:33:28+05:30
 </pre><p>are all valid dates that can be parsed.</p>
-<p>If your date format cannot be parsed with this function, you may parse it with your own function into year, month, day, and decimal hour-of-day components, and use <a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> with those.</p>
+<p>If your date format cannot be parsed with this function, you may parse it with your own function into year, month, day, and decimal hour-of-day components, and use <a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> with those.</p>
 <p>NOTES: </p><ol>
 <li>
 B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
@@ -800,9 +891,9 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dd>
 <a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd>
 <dd>
-<a class="el" href="novas_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd></dl>
+<a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="novas_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="novas_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+<p class="reference">References <a class="el" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="util_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="calendar_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
 
 </div>
 </div>
@@ -985,7 +1076,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0bac29f535fdae4e29e1baeccacf8f0b98d">NOVAS_GPS</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba328f2523f4f064c5252f4ac858bddc4b">NOVAS_TAI</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4">NOVAS_TCB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba5935a299729a67971b12a78ee682f89a">NOVAS_TCG</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d">NOVAS_TDB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baadb0d1437b46022bca75d4e7ab0542c7">NOVAS_TT</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baa6fc4520426c4c9cbe497ab87f2ad583">NOVAS_UT1</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>, and <a class="el" href="novas_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0bac29f535fdae4e29e1baeccacf8f0b98d">NOVAS_GPS</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba328f2523f4f064c5252f4ac858bddc4b">NOVAS_TAI</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4">NOVAS_TCB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba5935a299729a67971b12a78ee682f89a">NOVAS_TCG</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d">NOVAS_TDB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baadb0d1437b46022bca75d4e7ab0542c7">NOVAS_TT</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baa6fc4520426c4c9cbe497ab87f2ad583">NOVAS_UT1</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>, and <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>.</p>
 
 </div>
 </div>
@@ -1227,6 +1318,105 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a>, and <a class="el" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale()</a>.</p>
+
+</div>
+</div>
+<a id="a90d5fae30728b51151c3daf355ca585b" name="a90d5fae30728b51151c3daf355ca585b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90d5fae30728b51151c3daf355ca585b">&#9670;&#160;</a></span>tdb2tt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tdb2tt </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>jd_tt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>secdiff</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date corresponding to a Barycentric Dynamical Time (TDB) Julian date.</p>
+<p>Expression used in this function is a truncated form of a longer and more precise series given in the first reference. The result is good to about 10 microseconds.</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated:</a></b></dt><dd>Use the less computationally intensive an more accurate <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> routine instead.</dd></dl>
+<p>REFERENCES: </p><ol>
+<li>
+Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240. </li>
+<li>
+Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
+<li>
+<a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a> </li>
+<li>
+<a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamic Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">secdiff</td><td>[s] Difference 'tdb_jd'-'tt_jd', in seconds. (It may be NULL if not required) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the tt_jd pointer argument is NULL.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a129acca41760da486e1179c93cb9e86d" name="a129acca41760da486e1179c93cb9e86d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a129acca41760da486e1179c93cb9e86d">&#9670;&#160;</a></span>tt2tdb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double tt2tdb </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the TDB - TT time difference in seconds for a given TT date.</p>
+<p>Note, as of version 1.1, it uses the same calculation as the more precise original <a class="el" href="timescale_8c.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt()</a>. It thus has an acuracy of about 10 &mu;s vs around 30 &mu;s with the simpler formula from the references below.</p>
+<p>REFERENCES </p><ol>
+<li>
+Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240. </li>
+<li>
+Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
+<li>
+<a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a> </li>
+<li>
+<a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[s] TDB - TT time difference.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt()</a>.</p>
 
 </div>
 </div>

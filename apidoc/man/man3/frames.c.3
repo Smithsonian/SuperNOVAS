@@ -425,7 +425,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBvector2radec()\fP\&.
+References \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_vlen()\fP, and \fBvector2radec()\fP\&.
 .SS "int novas_hor_to_app (const \fBnovas_frame\fP *restrict frame, double az, double el, \fBRefractionModel\fP ref_model, enum \fBnovas_reference_system\fP sys, double *restrict ra, double *restrict dec)"
 Converts an observed azimuth and elevation coordinate to right ascension (R\&.A\&.) and declination coordinates expressed in the coordinate system of choice\&. The observer must be located on the surface of Earth, or else the call will return with an error\&. The caller may optionally supply a refraction model of choice to calculate an appropriate elevation angle that includes a refraction correction for Earth's atmosphere\&. If no such model is provided, the provided elevation value will be assumed to be an astrometric elevation without a refraction correction\&.
 .PP
@@ -728,6 +728,8 @@ NOTES:
 .PD 0
 .IP "1." 4
 The current implementation is not suitable for calculating the nearest successive rise times for near-Earth objects, at or within the geostationary orbit\&. 
+.IP "2." 4
+This function calculates the time when the center (not the limb!) of the source rises above the specified elevation threshold\&. Something to keep in mind for calculating Sun/Moon rise times\&. 
 .PP
 .PP
 \fBParameters\fP
@@ -771,6 +773,8 @@ NOTES:
 .PD 0
 .IP "1." 4
 The current implementation is not suitable for calculating the nearest successive set times for near-Earth objects, at or within the geostationary orbit\&. 
+.IP "2." 4
+This function calculates the time when the center (not the limb!) of the source sets below the specified elevation threshold\&. Something to keep in mind for calculating Sun/Moon rise times\&. 
 .PP
 .PP
 \fBParameters\fP
@@ -867,7 +871,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBrad_vel2()\fP, and \fBobject::type\fP\&.
+References \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_vlen()\fP, \fBrad_vel2()\fP, and \fBobject::type\fP\&.
 .SS "double novas_solar_illum (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body\&.
 .PP
@@ -895,7 +899,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, and \fBNOVAS_ICRS\fP\&.
+References \fBNOVAS_CATALOG_OBJECT\fP, \fBnovas_geom_posvel()\fP, \fBNOVAS_ICRS\fP, and \fBnovas_vlen()\fP\&.
 .SS "double novas_sun_angle (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
 Returns the apparent angular distance of a source from the Sun from the observer's point of view\&.
 .PP

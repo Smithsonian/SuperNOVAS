@@ -128,7 +128,7 @@ include/novas.h
 .br
 .RI "[m/s] Speed of light in meters/second is a defining physical constant\&. "
 .ti -1c
-.RI "#define \fBNOVAS_C_AU_PER_DAY\fP   ( \fBNOVAS_DAY\fP / \fBAU_SEC\fP )"
+.RI "#define \fBNOVAS_C_AU_PER_DAY\fP   ( \fBNOVAS_DAY\fP / AU_SEC )"
 .br
 .RI "[AU/day] Speed of light in units of AU/day\&. "
 .ti -1c
@@ -360,7 +360,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc5'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1', or empty string '' for releases\&. "
 .ti -1c
@@ -575,6 +575,9 @@ include/novas.h
 .RI "short \fBgeo_posvel\fP (double jd_tt, double ut1_to_tt, enum \fBnovas_accuracy\fP accuracy, const \fBobserver\fP *restrict obs, double *restrict pos, double *restrict vel)"
 .br
 .ti -1c
+.RI "\fBnovas_nutation_provider\fP \fBget_nutation_lp_provider\fP ()"
+.br
+.ti -1c
 .RI "double \fBget_ut1_to_tt\fP (int leap_seconds, double dut1)"
 .br
 .ti -1c
@@ -701,9 +704,6 @@ include/novas.h
 .RI "int \fBmod_to_gcrs\fP (double jd_tdb, const double *in, double *out)"
 .br
 .ti -1c
-.RI "double \fBnorm_ang\fP (double angle)"
-.br
-.ti -1c
 .RI "int \fBnovas_app_to_geom\fP (const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double *restrict geom_icrs)"
 .br
 .ti -1c
@@ -724,6 +724,7 @@ include/novas.h
 .ti -1c
 .RI "void \fBnovas_debug\fP (enum \fBnovas_debug_mode\fP mode)"
 .br
+.RI "========================================================================== "
 .ti -1c
 .RI "double \fBnovas_diff_tcb\fP (const \fBnovas_timespec\fP *t1, const \fBnovas_timespec\fP *t2)"
 .br
@@ -816,6 +817,9 @@ include/novas.h
 .br
 .ti -1c
 .RI "double \fBnovas_moon_angle\fP (const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame)"
+.br
+.ti -1c
+.RI "double \fBnovas_norm_ang\fP (double angle)"
 .br
 .ti -1c
 .RI "double \fBnovas_object_sep\fP (const \fBobject\fP *source1, const \fBobject\fP *source2, const \fBnovas_frame\fP *restrict frame)"
@@ -928,6 +932,7 @@ include/novas.h
 .ti -1c
 .RI "double \fBnovas_z2v\fP (double z)"
 .br
+.RI "========================================================================== "
 .ti -1c
 .RI "double \fBnovas_z_add\fP (double z1, double z2)"
 .br
@@ -1027,6 +1032,7 @@ include/novas.h
 .ti -1c
 .RI "int \fBterra\fP (const \fBon_surface\fP *restrict location, double lst, double *restrict pos, double *restrict vel)"
 .br
+.RI "========================================================================== "
 .ti -1c
 .RI "int \fBtod_to_cirs\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double *in, double *out)"
 .br
@@ -2507,7 +2513,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBC_AUDAY\fP\&.
+References \fBnovas_vlen()\fP\&.
 .SS "double accum_prec (double t)"
 Returns the general precession in longitude (Simon et al\&. 1994), equivalent to 5028\&.8200 arcsec/cy at J2000\&.
 .PP
@@ -2840,7 +2846,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBC_AUDAY\fP\&.
+References \fBnovas_vlen()\fP\&.
 .SS "int cal_date (double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour)"
 This function will compute a broken down date on the astronomical calendar for given the Julian day input\&. Input Julian day can be based on any UT-like time scale (UTC, UT1, TT, etc\&.) - output time value will have same basis\&.
 .PP
@@ -3099,7 +3105,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 
 .PP
-References \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBtod_to_gcrs()\fP\&.
+References \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_vlen()\fP, and \fBtod_to_gcrs()\fP\&.
 .SS "short cio_location (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double *restrict ra_cio, short *restrict loc_type)"
 Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of date\&. The CIO is always located on the true equator (= intermediate equator) of date\&.
 .PP
@@ -3138,7 +3144,7 @@ Unlike the NOVAS C version of this function, this version will always return a C
 .PP
 
 .PP
-References \fBcio_array()\fP, \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBira_equinox()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DEBUG_ON\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBNOVAS_TRUE_EQUINOX\fP\&.
+References \fBcio_array()\fP, \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBira_equinox()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DEBUG_ON\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBNOVAS_TRUE_EQUINOX\fP\&.
 .SS "short cio_ra (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double *restrict ra_cio)"
 Computes the true right ascension of the celestial intermediate origin (CIO) at a given TT Julian date\&. This is the negative value for the equation of the origins\&.
 .PP
@@ -3383,7 +3389,7 @@ This function is called by \fBplace()\fP
 .PP
 
 .PP
-References \fBC_AUDAY\fP\&.
+References \fBnovas_vlen()\fP\&.
 .SS "int e_tilt (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)"
 Computes quantities related to the orientation of the Earth's rotation axis at Julian date 'jd_tdb'\&.
 .PP
@@ -3588,7 +3594,7 @@ It is recommended that the input structure 'cel_obj' be created using \fBmake_ob
 .PP
 
 .PP
-References \fBephemeris()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_HELIOCENTER\fP, \fBnovas_orbit_posvel()\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_ORIGIN_TYPES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, and \fBreadeph()\fP\&.
+References \fBephemeris()\fP, \fBget_ephem_provider()\fP, \fBmake_planet()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_HELIOCENTER\fP, \fBnovas_orbit_posvel()\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_ORIGIN_TYPES\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_SSB\fP, \fBNOVAS_SUN\fP, and \fBreadeph()\fP\&.
 .SS "short equ2ecl (double jd_tt, enum \fBnovas_equator_type\fP coord_sys, enum \fBnovas_accuracy\fP accuracy, double ra, double dec, double *restrict elon, double *restrict elat)"
 Convert right ascension and declination to ecliptic longitude and latitude\&. To convert GCRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000\&.0), set 'coord_sys' to \fBNOVAS_GCRS_EQUATOR(2)\fP; in this case the value of 'jd_tt' can be set to anything, since J2000\&.0 is assumed\&. Otherwise, all input coordinates are dynamical at 'jd_tt'\&.
 .PP
@@ -3873,7 +3879,7 @@ Simon et al\&. (1994) Astronomy and Astrophysics 282, 663-683, esp\&. Sections 3
 .PP
 
 .PP
-References \fBnorm_ang()\fP\&.
+References \fBnovas_norm_ang()\fP\&.
 .SS "int gal2equ (double glon, double glat, double *restrict ra, double *restrict dec)"
 Converts galactic longitude and latitude to ICRS right ascension and declination\&.
 .PP
@@ -4131,7 +4137,33 @@ Computes the geocentric position and velocity of an observer\&. The final vector
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBe_tilt()\fP, \fBephemeris()\fP, \fBEROT_ERA\fP, \fBgeo_posvel()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH_INIT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtod_to_gcrs()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
+References \fBe_tilt()\fP, \fBephemeris()\fP, \fBEROT_ERA\fP, \fBgeo_posvel()\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_EARTH_INIT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBNOVAS_OBSERVER_IN_EARTH_ORBIT\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP, \fBsidereal_time()\fP, \fBterra()\fP, \fBtod_to_gcrs()\fP, \fBtt2tdb()\fP, and \fBobserver::where\fP\&.
+.SS "\fBnovas_nutation_provider\fP get_nutation_lp_provider ()"
+Returns the function configured for low-precision IAU 2000 nutation calculations instead of the default \fBnu2000k()\fP\&.
+.PP
+\fBReturns\fP
+.RS 4
+the function to use for low-precision IAU 2000 nutation calculations
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_nutation_lp_provider()\fP 
+.PP
+\fBnutation_angles()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
 .SS "double get_ut1_to_tt (int leap_seconds, double dut1)"
 Returns the TT - UT1 time difference given the leap seconds and the actual UT1 - UTC time difference as measured and published by IERS\&.
 .PP
@@ -4323,7 +4355,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBC_AUDAY\fP, \fBd_light()\fP, \fBgrav_vec()\fP, \fBNOVAS_PLANETS\fP, and \fBNOVAS_RMASS_INIT\fP\&.
+References \fBd_light()\fP, \fBgrav_vec()\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_RMASS_INIT\fP, and \fBnovas_vlen()\fP\&.
 .SS "double grav_redshift (double M_kg, double r_m)"
 Returns the gravitational redshift (\fIz\fP) for light emitted near a massive spherical body at some distance from its center, and observed at some very large (infinite) distance away\&.
 .PP
@@ -4359,8 +4391,6 @@ Attila Kovacs
 .RE
 .PP
 
-.PP
-References \fBC\fP\&.
 .SS "int grav_undef (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * pos_app, const double * pos_obs, double * out)"
 Computes the gravitationally undeflected position of an observed source position due to the major gravitating bodies in the solar system\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
@@ -4466,7 +4496,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBgrav_planets()\fP, and \fBnovas_inv_max_iter\fP\&.
+References \fBgrav_planets()\fP, \fBnovas_inv_max_iter\fP, and \fBnovas_vlen()\fP\&.
 .SS "int grav_vec (const double * pos_src, const double * pos_obs, const double * pos_body, double rmass, double * out)"
 Corrects position vector for the deflection of light in the gravitational field of an arbitrary body\&. This function valid for an observed body within the solar system as well as for a star\&.
 .PP
@@ -4513,7 +4543,7 @@ Kaplan, G\&. et al\&. (1989) Astronomical Journal 97, 1197-1210, section iii f\&
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, and \fBGS\fP\&.
+References \fBnovas_vlen()\fP\&.
 .SS "int hor_to_itrs (const \fBon_surface\fP *restrict location, double az, double za, double *restrict itrs)"
 Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location to a unit position vector in the Earth-fixed ITRS frame\&.
 .PP
@@ -5002,7 +5032,7 @@ Determines the angle of an object above or below the Earth's limb (horizon)\&. T
 .PP
 
 .PP
-References \fBM_PI\fP\&.
+References \fBM_PI\fP, and \fBnovas_vlen()\fP\&.
 .SS "short local_planet (double jd_tt, const \fBobject\fP *restrict ss_body, double ut1_to_tt, const \fBon_surface\fP *restrict position, enum \fBnovas_accuracy\fP accuracy, double *restrict ra, double *restrict dec, double *restrict dis)"
 Computes the local apparent place of a solar system body, in the GCRS\&. This is the same as calling \fBplace()\fP for the body for the same observer location and NOVAS_GCRS as the reference system, except the different set of return values used\&.
 .PP
@@ -5956,32 +5986,6 @@ Attila Kovacs
 
 .PP
 References \fBframe_tie()\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, and \fBprecession()\fP\&.
-.SS "double norm_ang (double angle)"
-Returns the normalized angle in the [0:2) range\&.
-.PP
-\fBParameters\fP
-.RS 4
-\fIangle\fP [rad] an angle in radians\&. 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-[rad] the normalized angle in the [0:2) range\&.
-.RE
-.PP
-\fBSince\fP
-.RS 4
-1\&.0 
-.RE
-.PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
-
-.PP
-References \fBTWOPI\fP\&.
 .SS "int novas_app_to_geom (const \fBnovas_frame\fP *restrict frame, enum \fBnovas_reference_system\fP sys, double ra, double dec, double dist, double *restrict geom_icrs)"
 Converts an observed apparent sky position of a source to an ICRS geometric position, by undoing the gravitational deflection and aberration corrections\&.
 .PP
@@ -6212,7 +6216,9 @@ Attila Kovacs
 .PP
 References \fBnovas_parse_date()\fP, and \fBnovas_parse_timescale()\fP\&.
 .SS "void novas_debug (enum \fBnovas_debug_mode\fP mode)"
-Enables or disables reporting errors and traces to the standard error stream\&.
+
+.PP
+========================================================================== Enables or disables reporting errors and traces to the standard error stream\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -6743,7 +6749,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBvector2radec()\fP\&.
+References \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_vlen()\fP, and \fBvector2radec()\fP\&.
 .SS "enum \fBnovas_debug_mode\fP novas_get_debug_mode ()"
 Returns the current, thread-local, mode for reporting errors encountered (and traces)\&.
 .PP
@@ -7585,6 +7591,32 @@ Attila Kovacs
 
 .PP
 References \fBNOVAS_MOON_INIT\fP, and \fBnovas_object_sep()\fP\&.
+.SS "double novas_norm_ang (double angle)"
+Returns the normalized angle in the [0:2) range\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIangle\fP [rad] an angle in radians\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+[rad] the normalized angle in the [0:2) range\&.
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBTWOPI\fP\&.
 .SS "double novas_object_sep (const \fBobject\fP * source1, const \fBobject\fP * source2, const \fBnovas_frame\fP *restrict frame)"
 Returns the angular separation of two objects from the observer's point of view\&. The calculated separation includes light-time corrections, aberration and gravitational deflection for both sources, and thus represents a precise observed separation between the two sources\&.
 .PP
@@ -8263,6 +8295,8 @@ NOTES:
 .PD 0
 .IP "1." 4
 The current implementation is not suitable for calculating the nearest successive rise times for near-Earth objects, at or within the geostationary orbit\&. 
+.IP "2." 4
+This function calculates the time when the center (not the limb!) of the source rises above the specified elevation threshold\&. Something to keep in mind for calculating Sun/Moon rise times\&. 
 .PP
 .PP
 \fBParameters\fP
@@ -8545,6 +8579,8 @@ NOTES:
 .PD 0
 .IP "1." 4
 The current implementation is not suitable for calculating the nearest successive set times for near-Earth objects, at or within the geostationary orbit\&. 
+.IP "2." 4
+This function calculates the time when the center (not the limb!) of the source sets below the specified elevation threshold\&. Something to keep in mind for calculating Sun/Moon rise times\&. 
 .PP
 .PP
 \fBParameters\fP
@@ -8641,7 +8677,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBrad_vel2()\fP, and \fBobject::type\fP\&.
+References \fBgrav_planets()\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_geom_posvel()\fP, \fBnovas_geom_to_app()\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_vlen()\fP, \fBrad_vel2()\fP, and \fBobject::type\fP\&.
 .SS "double novas_ssb_to_lsr_vel (double epoch, double ra, double dec, double vLSR)"
 Returns a radial-velocity referenced to the Local Standard of Rest (LSR) for a given Solar-System Barycentric (SSB) radial velocity\&. Internally, NOVAS always uses barycentric radial velocities, but it is just as common to have catalogs define radial velocities referenced to the LSR\&.
 .PP
@@ -9119,7 +9155,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBC\fP, and \fBNOVAS_KMS\fP\&.
+References \fBNOVAS_KMS\fP\&.
 .SS "int novas_xyz_to_los (const double * xyz, double lon, double lat, double * los)"
 Converts a 3D rectangular equatorial (x, y, z) vector to a polar (,  r) vector along a line-of-sight\&.
 .PP
@@ -9192,7 +9228,9 @@ Attila Kovacs
 .PP
 References \fBnovas_xyz_to_los()\fP\&.
 .SS "double novas_z2v (double z)"
-Converts a redshift value (z = f / f\*<rest\*> ) to a radial velocity (i\&.e\&. rate) of recession\&. It is based on the relativistic formula: 
+
+.PP
+========================================================================== Converts a redshift value (z = f / f\*<rest\*> ) to a radial velocity (i\&.e\&. rate) of recession\&. It is based on the relativistic formula: 
 .PP
 .nf
 
@@ -9230,7 +9268,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBC\fP, and \fBNOVAS_KMS\fP\&.
+References \fBNOVAS_KMS\fP\&.
 .SS "double novas_z_add (double z1, double z2)"
 Compounds two redshift corrections, e\&.g\&. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer\&. It's effectively using (1 + z) = (1 + z1) * (1 + z2)\&.
 .PP
@@ -9384,7 +9422,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .PP
 
 .PP
-References \fBiau2000a()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
+References \fBget_nutation_lp_provider()\fP, \fBiau2000a()\fP, and \fBNOVAS_FULL_ACCURACY\fP\&.
 .SS "int obs_planets (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *restrict pos_obs, int pl_mask, \fBnovas_planet_bundle\fP *restrict planets)"
 Calculates the positions and velocities for the Solar-system bodies, e\&.g\&. for use for graviational deflection calculations\&. The planet positions are calculated relative to the observer location, while velocities are w\&.r\&.t\&. the SSB\&. Both positions and velocities are antedated for light travel time, so they accurately reflect the apparent position (and barycentric motion) of the bodies from the observer's perspective\&.
 .PP
@@ -9571,7 +9609,7 @@ Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597\&.
 .PP
 
 .PP
-References \fBaberration()\fP, \fBbary2obs()\fP, \fBC_AUDAY\fP, \fBd_light()\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_j2000()\fP, \fBgcrs_to_mod()\fP, \fBgcrs_to_tod()\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBlight_time2()\fP, \fBmake_observer_at_geocenter()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH_INIT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN_INIT\fP, \fBNOVAS_TOD\fP, \fBobs_planets()\fP, \fBobs_posvel()\fP, \fBproper_motion()\fP, \fBrad_vel2()\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, and \fBvector2radec()\fP\&.
+References \fBaberration()\fP, \fBbary2obs()\fP, \fBd_light()\fP, \fBephemeris()\fP, \fBgcrs_to_cirs()\fP, \fBgcrs_to_j2000()\fP, \fBgcrs_to_mod()\fP, \fBgcrs_to_tod()\fP, \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBlight_time2()\fP, \fBmake_observer_at_geocenter()\fP, \fBNOVAS_BARYCENTER\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_CIRS\fP, \fBNOVAS_EARTH_INIT\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_ICRS\fP, \fBNOVAS_J2000\fP, \fBNOVAS_MOD\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_REFERENCE_SYSTEMS\fP, \fBNOVAS_SUN_INIT\fP, \fBNOVAS_TOD\fP, \fBnovas_vlen()\fP, \fBobs_planets()\fP, \fBobs_posvel()\fP, \fBproper_motion()\fP, \fBrad_vel2()\fP, \fBstarvectors()\fP, \fBtt2tdb()\fP, and \fBvector2radec()\fP\&.
 .SS "int place_cirs (double jd_tt, const \fBobject\fP *restrict source, enum \fBnovas_accuracy\fP accuracy, \fBsky_pos\fP *restrict pos)"
 Computes the Celestial Intermediate Reference System (CIRS) dynamical position position of a source as 'seen' from the geocenter at the given time of observation\&. See \fC\fBplace()\fP\fP for more information\&.
 .PP
@@ -10147,7 +10185,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBC_AUDAY\fP, \fBcat_entry::dec\fP, \fBGE\fP, \fBGS\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_KMS\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBnovas_z2v()\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, and \fBcat_entry::radialvelocity\fP\&.
+References \fBcat_entry::dec\fP, \fBNOVAS_CATALOG_OBJECT\fP, \fBNOVAS_EARTH_RADIUS\fP, \fBNOVAS_EPHEM_OBJECT\fP, \fBNOVAS_KMS\fP, \fBNOVAS_ORBITAL_OBJECT\fP, \fBNOVAS_PLANET\fP, \fBNOVAS_PLANET_GRAV_Z_INIT\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_SOLAR_RADIUS\fP, \fBnovas_vlen()\fP, \fBnovas_z2v()\fP, \fBcat_entry::parallax\fP, \fBcat_entry::ra\fP, and \fBcat_entry::radialvelocity\fP\&.
 .SS "int radec2vector (double ra, double dec, double dist, double *restrict pos)"
 Converts equatorial spherical coordinates to a vector (equatorial rectangular coordinates)\&.
 .PP
@@ -10462,6 +10500,8 @@ Set the function to use for low-precision IAU 2000 nutation calculations instead
 .PP
 \fBSee also\fP
 .RS 4
+\fBget_nutation_lp_provider()\fP 
+.PP
 \fBnutation_angles()\fP
 .RE
 .PP
@@ -10591,7 +10631,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBAU\fP, \fBC\fP, \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, and \fBradec2vector()\fP\&.
+References \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, and \fBradec2vector()\fP\&.
 .SS "int tdb2tt (double jd_tdb, double *restrict jd_tt, double *restrict secdiff)"
 Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date corresponding to a Barycentric Dynamical Time (TDB) Julian date\&.
 .PP
@@ -10703,7 +10743,9 @@ Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of
 .PP
 References \fBcirs_to_gcrs()\fP, \fBera()\fP, \fBEROT_ERA\fP, \fBEROT_GST\fP, \fBNOVAS_DYNAMICAL_CLASS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBNOVAS_TRUE_EQUINOX\fP, \fBsidereal_time()\fP, \fBspin()\fP, \fBtod_to_gcrs()\fP, \fBtt2tdb()\fP, \fBwobble()\fP, and \fBWOBBLE_ITRS_TO_PEF\fP\&.
 .SS "int terra (const \fBon_surface\fP *restrict location, double lst, double *restrict pos, double *restrict vel)"
-Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth\&.
+
+.PP
+========================================================================== Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth\&.
 .PP
 This function ignores polar motion, unless the observer's longitude and latitude have been corrected for it, and variation in the length of day (angular velocity of earth)\&.
 .PP
@@ -10742,7 +10784,7 @@ Kaplan, G\&. H\&. et\&. al\&. (1989)\&. Astron\&. Journ\&. 97, 1197-1210\&.
 .PP
 
 .PP
-References \fBANGVEL\fP, \fBAU_KM\fP, \fBERAD\fP, and \fBNOVAS_KM\fP\&.
+References \fBNOVAS_KM\fP\&.
 .SS "int tod_to_cirs (double jd_tt, enum \fBnovas_accuracy\fP accuracy, const double * in, double * out)"
 Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the \&.
 .PP
@@ -11127,7 +11169,7 @@ This function cannot be properly used to bring data from old star catalogs into 
 .PP
 
 .PP
-References \fBAU_KM\fP, \fBC\fP, \fBcat_entry::catalog\fP, \fBCHANGE_EPOCH\fP, \fBCHANGE_ICRS_TO_J2000\fP, \fBCHANGE_J2000_TO_ICRS\fP, \fBcat_entry::dec\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, \fBnovas_xyz_to_los()\fP, \fBcat_entry::parallax\fP, \fBPRECESSION\fP, \fBprecession()\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBPROPER_MOTION\fP, \fBcat_entry::ra\fP, \fBradec2vector()\fP, \fBcat_entry::radialvelocity\fP, \fBSIZE_OF_CAT_NAME\fP, \fBSIZE_OF_OBJ_NAME\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
+References \fBcat_entry::catalog\fP, \fBCHANGE_EPOCH\fP, \fBCHANGE_ICRS_TO_J2000\fP, \fBCHANGE_J2000_TO_ICRS\fP, \fBcat_entry::dec\fP, \fBframe_tie()\fP, \fBICRS_TO_J2000\fP, \fBJ2000_TO_ICRS\fP, \fBNOVAS_JD_J2000\fP, \fBNOVAS_KMS\fP, \fBnovas_los_to_xyz()\fP, \fBnovas_vlen()\fP, \fBnovas_xyz_to_los()\fP, \fBcat_entry::parallax\fP, \fBPRECESSION\fP, \fBprecession()\fP, \fBcat_entry::promodec\fP, \fBcat_entry::promora\fP, \fBPROPER_MOTION\fP, \fBcat_entry::ra\fP, \fBradec2vector()\fP, \fBcat_entry::radialvelocity\fP, \fBSIZE_OF_CAT_NAME\fP, \fBSIZE_OF_OBJ_NAME\fP, \fBcat_entry::starname\fP, and \fBcat_entry::starnumber\fP\&.
 .SS "int transform_hip (const \fBcat_entry\fP * hipparcos, \fBcat_entry\fP * hip_2000)"
 Convert Hipparcos catalog data at epoch J1991\&.25 to epoch J2000\&.0, for use within NOVAS\&. To be used only for Hipparcos or Tycho stars with linear space motion\&. Both input and output data is in the ICRS\&.
 .PP

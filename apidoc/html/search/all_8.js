@@ -1,7 +1,7 @@
 var searchData=
 [
   ['d_0',['D',['../structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9',1,'novas_delaunay_args']]],
-  ['d_5flight_1',['d_light',['../novas_8h.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;novas.c'],['../novas_8c.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;novas.c']]],
+  ['d_5flight_1',['d_light',['../novas_8h.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;util.c'],['../util_8c.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;util.c']]],
   ['da0_2',['DA0',['../frames_8c.html#a850d4988b6e1ee4e16274b2c723f93c4',1,'frames.c']]],
   ['data_20or_20services_3',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md83',1,'']]],
   ['data_20service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md86',1,'']]],

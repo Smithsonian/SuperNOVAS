@@ -1659,6 +1659,13 @@
       <arglist>(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs, double *restrict pos, double *restrict vel)</arglist>
     </member>
     <member kind="function">
+      <type>novas_nutation_provider</type>
+      <name>get_nutation_lp_provider</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a416a96426a0b3c52c1d5fc6452357366</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>get_ut1_to_tt</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -1953,13 +1960,6 @@
       <arglist>(double jd_tdb, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
-      <type>double</type>
-      <name>norm_ang</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a416fd587496210c45028352f409fd73f</anchor>
-      <arglist>(double angle)</arglist>
-    </member>
-    <member kind="function">
       <type>int</type>
       <name>novas_app_to_geom</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -2224,6 +2224,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a121940d7f0ef41297d28fab8e6df5998</anchor>
       <arglist>(const object *restrict source, const novas_frame *restrict frame)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_norm_ang</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a85334614a0f399e0d3cbde68075d0766</anchor>
+      <arglist>(double angle)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -2829,109 +2836,6 @@
     </member>
   </compound>
   <compound kind="file">
-    <name>novascon.h</name>
-    <path>include/</path>
-    <filename>novascon_8h.html</filename>
-    <member kind="variable">
-      <type>const double</type>
-      <name>ANGVEL</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a088f463ef64dea2727d8ade9b1cd7192</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>AU</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a2b9e1ccc1a034cb26b9c794767315346</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>AU_KM</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a95419ca41731064148e6fcfb0e919171</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>AU_SEC</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>abcfdf85edc41c59ae55c3c45dc9c506a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>C</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a9e8a46a0e00368ad98642587ca4ebdbe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>C_AUDAY</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a55379c7fece80070614c09bb218275b6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>ERAD</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>aa7bbeb0cb618d36be058e8fd92133b4d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>F</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a480d6423b1e9ca40c69c5a83458b49b0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const short</type>
-      <name>FN0</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a2d8f405dc66e829e1869bea6ffb86a44</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const short</type>
-      <name>FN1</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>af275414414fd105a1702ca74374d1f70</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>GE</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a0ee5d7a271610d60ec10f180747886eb</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>GS</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a5060445c439eb63c5fb506fa625ca343</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>RMASS</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a19a7c107c3918c90c90cdad5ab310b1a</anchor>
-      <arglist>[12]</arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>T0</name>
-      <anchorfile>novascon_8h.html</anchorfile>
-      <anchor>a179a958e126d46c9b952672120986924</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>nutation.h</name>
     <path>include/</path>
     <filename>nutation_8h.html</filename>
@@ -3185,6 +3089,222 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>calendar.c</name>
+    <path>src/</path>
+    <filename>calendar_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>cal_date</name>
+      <anchorfile>calendar_8c.html</anchorfile>
+      <anchor>a044f1359abcf0a039ac6452a95729b5a</anchor>
+      <arglist>(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>julian_date</name>
+      <anchorfile>calendar_8c.html</anchorfile>
+      <anchor>a7cd85bc0a0248f84d399cbbce9fe9546</anchor>
+      <arglist>(short year, short month, short day, double hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_jd_from_date</name>
+      <anchorfile>calendar_8c.html</anchorfile>
+      <anchor>a54eee84c46900c80ca9966857c217cc8</anchor>
+      <arglist>(enum novas_calendar_type calendar, int year, int month, int day, double hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_jd_to_date</name>
+      <anchorfile>calendar_8c.html</anchorfile>
+      <anchor>a8ed2fb55bcf86d9f1f434a2f832356a2</anchor>
+      <arglist>(double tjd, enum novas_calendar_type calendar, int *restrict year, int *restrict month, int *restrict day, double *restrict hour)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>cio.c</name>
+    <path>src/</path>
+    <filename>cio_8c.html</filename>
+    <member kind="function">
+      <type>short</type>
+      <name>cio_array</name>
+      <anchorfile>cio_8c.html</anchorfile>
+      <anchor>afc894b55420495a727a90d3d85188ef4</anchor>
+      <arglist>(double jd_tdb, long n_pts, ra_of_cio *restrict cio)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>cio_basis</name>
+      <anchorfile>cio_8c.html</anchorfile>
+      <anchor>a51bfbe9b491f50851326b2522dc2a29f</anchor>
+      <arglist>(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy, double *restrict x, double *restrict y, double *restrict z)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>cio_location</name>
+      <anchorfile>cio_8c.html</anchorfile>
+      <anchor>a65ffaaa2b527ed03149eadc7568f3714</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>cio_ra</name>
+      <anchorfile>cio_8c.html</anchorfile>
+      <anchor>acc331c69187b3077b98280bfb57f6670</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>set_cio_locator_file</name>
+      <anchorfile>cio_8c.html</anchorfile>
+      <anchor>ade20b8035266dfe5b082b12248f5affa</anchor>
+      <arglist>(const char *restrict filename)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coords.c</name>
+    <path>src/</path>
+    <filename>coords_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>ecl2equ</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>a41ca0cfd79ad07c9e857ba02fa94928e</anchor>
+      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>ecl2equ_vec</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>a6fa1eada41005ac70290d0bb5df1ec26</anchor>
+      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>equ2ecl</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>a035047336b16951b8b850066e74210a9</anchor>
+      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec, double *restrict elon, double *restrict elat)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>equ2ecl_vec</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>aa05ecc76c1ccc0c3445f8b642d6c5311</anchor>
+      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>equ2gal</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>a288b49c03bc29704c8dd5acf8baca80e</anchor>
+      <arglist>(double ra, double dec, double *restrict glon, double *restrict glat)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>equ2hor</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>ad932a8617973ef06e4a5c955b7897bb0</anchor>
+      <arglist>(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *restrict location, double ra, double dec, enum novas_refraction_model ref_option, double *restrict zd, double *restrict az, double *restrict rar, double *restrict decr)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>gal2equ</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>adcce501bd3f8f70974e7f55527162f83</anchor>
+      <arglist>(double glon, double glat, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>hor_to_itrs</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>a19f4f6c7d942dcba5ad2a4d2a60affad</anchor>
+      <arglist>(const on_surface *restrict location, double az, double za, double *restrict itrs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>itrs_to_hor</name>
+      <anchorfile>coords_8c.html</anchorfile>
+      <anchor>aef3c1f8e4c443e51e65003018449768a</anchor>
+      <arglist>(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>earth.c</name>
+    <path>src/</path>
+    <filename>earth_8c.html</filename>
+    <member kind="function">
+      <type>short</type>
+      <name>cel_pole</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>a8937180de2ee1545d19b8fc840f35fe2</anchor>
+      <arglist>(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>e_tilt</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>ab75165e2d69231da10c67de025ee05d8</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>era</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>aef1f8daaad470353648de90576aefc66</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>geo_posvel</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>ada5ca37110e66c8b65f623c9e26ae52e</anchor>
+      <arglist>(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>limb_angle</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>a022957936bc7c5a3e9651776689c9380</anchor>
+      <arglist>(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>sidereal_time</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>a6eacba14d3c382d67307856a2ea290e3</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>terra</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>a8471f990ad6e3051a0aa584d9cb2d355</anchor>
+      <arglist>(const on_surface *restrict location, double lst, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>wobble</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>aead87744eeb3029ce7d5ffb1801ee652</anchor>
+      <arglist>(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="variable">
+      <type>double</type>
+      <name>EPS_COR</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>ac063b61c63e78a4864f2baa4606bab36</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>double</type>
+      <name>PSI_COR</name>
+      <anchorfile>earth_8c.html</anchorfile>
+      <anchor>a103c28cd84e81dde365238ee3599f5b0</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>eph_manager.c</name>
     <path>src/</path>
     <filename>eph__manager_8c.html</filename>
@@ -3335,6 +3455,53 @@
       <anchorfile>eph__manager_8c.html</anchorfile>
       <anchor>afe4ec6caa67baf8fb5b184cc183a07e8</anchor>
       <arglist>[18]</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>equinox.c</name>
+    <path>src/</path>
+    <filename>equinox_8c.html</filename>
+    <member kind="function">
+      <type>double</type>
+      <name>accum_prec</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>ad1de5b481e41cf193c199bd0dc5084bd</anchor>
+      <arglist>(double t)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>ee_ct</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>add7a260017fad0d59c943a0a8d935fcf</anchor>
+      <arglist>(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>fund_args</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>a312b5ab1a004b179d80463a07ca7da8f</anchor>
+      <arglist>(double t, novas_delaunay_args *restrict a)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>ira_equinox</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>aea0e1028baf14d16d9de800e36a17086</anchor>
+      <arglist>(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>mean_obliq</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>af182ee8cc4239f581f746aa974827d61</anchor>
+      <arglist>(double jd_tdb)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>planet_lon</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>aacc6a0daf29b8bdc18f46647a94694d3</anchor>
+      <arglist>(double t, enum novas_planet planet)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -3526,6 +3693,67 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>grav.c</name>
+    <path>src/</path>
+    <filename>grav_8c.html</filename>
+    <member kind="function">
+      <type>short</type>
+      <name>grav_def</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>a48f90ac20950507fad9b880a7f7f2383</anchor>
+      <arglist>(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>grav_planets</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>ae36bc31e1dad8a68f94f7a6414f0519f</anchor>
+      <arglist>(const double *pos_src, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>grav_redshift</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>a3ce6b306bc183387d0aaac97abbd82e8</anchor>
+      <arglist>(double M_kg, double r_m)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>grav_undef</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>aaae33249717912663bbb00be4fa4e6c3</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>grav_undo_planets</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>a1b107a24b9fadc79cc5df8c6f5505d16</anchor>
+      <arglist>(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>grav_vec</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>a08a008572e2746a70bec19739b5fb7e6</anchor>
+      <arglist>(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out)</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>grav_bodies_full_accuracy</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>a18647d39520d1a15a137661f698cb12a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>grav_bodies_reduced_accuracy</name>
+      <anchorfile>grav_8c.html</anchorfile>
+      <anchor>a03a4df8961a0cd05f89aca478d2dcd24</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>naif.c</name>
     <path>src/</path>
     <filename>naif_8c.html</filename>
@@ -3560,886 +3788,6 @@
     </member>
   </compound>
   <compound kind="file">
-    <name>novas.c</name>
-    <path>src/</path>
-    <filename>novas_8c.html</filename>
-    <member kind="function">
-      <type>int</type>
-      <name>aberration</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a033f1bf4b01e0e21a0e05e13c19c02f6</anchor>
-      <arglist>(const double *pos, const double *vobs, double lighttime, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>accum_prec</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ad1de5b481e41cf193c199bd0dc5084bd</anchor>
-      <arglist>(double t)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>app_planet</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ac28dd9a362982cfce150751001a96a8a</anchor>
-      <arglist>(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>app_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a906b17f06b42e31a29cafad4856f565f</anchor>
-      <arglist>(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>astro_planet</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a9ea79f60493a3a21a9228d048fa5a9a2</anchor>
-      <arglist>(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>astro_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a9530c770e83db2cbc5a31d8d1f8c36f4</anchor>
-      <arglist>(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>bary2obs</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a1d58fd371e7604f75df315365672941e</anchor>
-      <arglist>(const double *pos, const double *pos_obs, double *out, double *restrict lighttime)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>cal_date</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a044f1359abcf0a039ac6452a95729b5a</anchor>
-      <arglist>(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>cel2ter</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a95f02377ce41d4e251654449dda82986</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>cel_pole</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a8937180de2ee1545d19b8fc840f35fe2</anchor>
-      <arglist>(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>cio_array</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>afc894b55420495a727a90d3d85188ef4</anchor>
-      <arglist>(double jd_tdb, long n_pts, ra_of_cio *restrict cio)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>cio_basis</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a51bfbe9b491f50851326b2522dc2a29f</anchor>
-      <arglist>(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy, double *restrict x, double *restrict y, double *restrict z)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>cio_location</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a65ffaaa2b527ed03149eadc7568f3714</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>cio_ra</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>acc331c69187b3077b98280bfb57f6670</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>cirs_to_gcrs</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ac0ba048cd1732d0d0398397396d158bc</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>d_light</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ad799864f637c483fb49491bde5a93e25</anchor>
-      <arglist>(const double *pos_src, const double *pos_body)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>e_tilt</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ab75165e2d69231da10c67de025ee05d8</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>ecl2equ_vec</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6fa1eada41005ac70290d0bb5df1ec26</anchor>
-      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>ee_ct</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>add7a260017fad0d59c943a0a8d935fcf</anchor>
-      <arglist>(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>ephemeris</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a713982e1f2bae0a72b39d03007f00d23</anchor>
-      <arglist>(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin, enum novas_accuracy accuracy, double *restrict pos, double *restrict vel)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>equ2ecl</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a035047336b16951b8b850066e74210a9</anchor>
-      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec, double *restrict elon, double *restrict elat)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>equ2ecl_vec</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aa05ecc76c1ccc0c3445f8b642d6c5311</anchor>
-      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>equ2gal</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a288b49c03bc29704c8dd5acf8baca80e</anchor>
-      <arglist>(double ra, double dec, double *restrict glon, double *restrict glat)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>equ2hor</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ad932a8617973ef06e4a5c955b7897bb0</anchor>
-      <arglist>(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const on_surface *restrict location, double ra, double dec, enum novas_refraction_model ref_option, double *restrict zd, double *restrict az, double *restrict rar, double *restrict decr)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>era</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aef1f8daaad470353648de90576aefc66</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>frame_tie</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aa11d2253a44261370af8d0c32f0715e9</anchor>
-      <arglist>(const double *in, enum novas_frametie_direction direction, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>fund_args</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a312b5ab1a004b179d80463a07ca7da8f</anchor>
-      <arglist>(double t, novas_delaunay_args *restrict a)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>gcrs2equ</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>abd38071a8d4bdc342feaecfac2fc7856</anchor>
-      <arglist>(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>gcrs_to_cirs</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a51ea4a016336dd3cf7783061c14d165c</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>gcrs_to_j2000</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aeea4b5085c7267714492fae6108fb975</anchor>
-      <arglist>(const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>gcrs_to_mod</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a75de6cca190c5fbc3056db726f317c7f</anchor>
-      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>gcrs_to_tod</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a9c900b81a718a184281a8a0b733b4db7</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>geo_posvel</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ada5ca37110e66c8b65f623c9e26ae52e</anchor>
-      <arglist>(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs, double *restrict pos, double *restrict vel)</arglist>
-    </member>
-    <member kind="function">
-      <type>novas_ephem_provider</type>
-      <name>get_ephem_provider</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aa6fad38297a49ba78a6bd49cedf889b1</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>novas_planet_provider</type>
-      <name>get_planet_provider</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a0f0a786b5614a788c02b37a462eae2d2</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>novas_planet_provider_hp</type>
-      <name>get_planet_provider_hp</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ae45badb450c1ca73920d982e12346c5b</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>grav_def</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a48f90ac20950507fad9b880a7f7f2383</anchor>
-      <arglist>(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src, const double *pos_obs, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>grav_planets</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ae36bc31e1dad8a68f94f7a6414f0519f</anchor>
-      <arglist>(const double *pos_src, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>grav_vec</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a08a008572e2746a70bec19739b5fb7e6</anchor>
-      <arglist>(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>ira_equinox</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aea0e1028baf14d16d9de800e36a17086</anchor>
-      <arglist>(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>j2000_to_tod</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a02fa1ee652c20160055cbd2c7bd9ca63</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>julian_date</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a7cd85bc0a0248f84d399cbbce9fe9546</anchor>
-      <arglist>(short year, short month, short day, double hour)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>light_time</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>afb2cc37c7bdcd34c5c167afe092aed68</anchor>
-      <arglist>(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos_src_obs, double *restrict tlight)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>light_time2</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a5c940b62732d74e6c6b1c844931aaa76</anchor>
-      <arglist>(double jd_tdb, const object *restrict body, const double *restrict pos_obs, double tlight0, enum novas_accuracy accuracy, double *p_src_obs, double *restrict v_ssb, double *restrict tlight)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>limb_angle</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a022957936bc7c5a3e9651776689c9380</anchor>
-      <arglist>(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>local_planet</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>adcb9b273dfda5d97a1c01379a16997f9</anchor>
-      <arglist>(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>local_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>acd56c41e811a002d6280b3b315730fbd</anchor>
-      <arglist>(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>make_cat_entry</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a39b2e39d29f1b57c5f785284ba7ca43f</anchor>
-      <arglist>(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_in_space</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ac0ca6f330e1795ce811df95986400632</anchor>
-      <arglist>(const double *sc_pos, const double *sc_vel, in_space *loc)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>make_object</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a411f70fb77582d750c5269fcd64b0ce2</anchor>
-      <arglist>(enum novas_object_type type, long number, const char *name, const cat_entry *star, object *source)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>make_observer</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a0f2096c7954b583fe749553b956ff9d2</anchor>
-      <arglist>(enum novas_observer_place where, const on_surface *loc_surface, const in_space *loc_space, observer *obs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_observer_at_geocenter</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aabb3ab0d99aa6e487cdcf6b454949b75</anchor>
-      <arglist>(observer *restrict obs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_observer_in_space</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6c146e4d10152d5e1ffb978f2fc962be</anchor>
-      <arglist>(const double *sc_pos, const double *sc_vel, observer *obs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_observer_on_surface</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a5eb76fc6e7be571e228d23aee3823cb9</anchor>
-      <arglist>(double latitude, double longitude, double height, double temperature, double pressure, observer *restrict obs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_on_surface</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a42c084465aedee75965f74e23e6571fe</anchor>
-      <arglist>(double latitude, double longitude, double height, double temperature, double pressure, on_surface *restrict loc)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_planet</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a4c7846be95299769f4d0377bf127bcf5</anchor>
-      <arglist>(enum novas_planet num, object *restrict planet)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>mean_obliq</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>af182ee8cc4239f581f746aa974827d61</anchor>
-      <arglist>(double jd_tdb)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>mean_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aaf51bf000e993807101a34adf423d36b</anchor>
-      <arglist>(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>mod_to_gcrs</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ad9cc07f0e6af9339096e15a440b113e5</anchor>
-      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>norm_ang</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a416fd587496210c45028352f409fd73f</anchor>
-      <arglist>(double angle)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>novas_case_sensitive</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a8f832afe92680a11c3489aaa224ac2e2</anchor>
-      <arglist>(int value)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>novas_debug</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a5f35633b872751df4dacd2fb2cbe4ac3</anchor>
-      <arglist>(enum novas_debug_mode mode)</arglist>
-    </member>
-    <member kind="function">
-      <type>enum novas_debug_mode</type>
-      <name>novas_get_debug_mode</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a29cad12337acfce5f1e370320dcefb79</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_jd_from_date</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a54eee84c46900c80ca9966857c217cc8</anchor>
-      <arglist>(enum novas_calendar_type calendar, int year, int month, int day, double hour)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_jd_to_date</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a8ed2fb55bcf86d9f1f434a2f832356a2</anchor>
-      <arglist>(double tjd, enum novas_calendar_type calendar, int *restrict year, int *restrict month, int *restrict day, double *restrict hour)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_los_to_xyz</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a601d246673742cf72a5dbe1449c97560</anchor>
-      <arglist>(const double *los, double lon, double lat, double *xyz)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_orbit_posvel</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a4510a3235a693f122899983901211c30</anchor>
-      <arglist>(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy, double *restrict pos, double *restrict vel)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_xyz_to_los</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a14deb6fdce80ba213e1f1d5238306e17</anchor>
-      <arglist>(const double *xyz, double lon, double lat, double *los)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_z2v</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a63621cea3b4985c1bfcc4514a7aa3fb1</anchor>
-      <arglist>(double z)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>nutation</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a69df5671751c09a7575963b94ad1151e</anchor>
-      <arglist>(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>nutation_angles</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6e9ced7b0aec544ad7b057b58f777ec4</anchor>
-      <arglist>(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>obs_planets</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a07490a134a685fe0842b2b4816559292</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *restrict pos_obs, int pl_mask, novas_planet_bundle *restrict planets)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>obs_posvel</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a0e4e5ff7c37e6521ca75ae62aaf4050e</anchor>
-      <arglist>(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs, const double *restrict geo_pos, const double *restrict geo_vel, double *restrict pos, double *restrict vel)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>place</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aca09ed0d2379ac4a4841c9e3edeeee4c</anchor>
-      <arglist>(double jd_tt, const object *restrict source, const observer *restrict location, double ut1_to_tt, enum novas_reference_system coord_sys, enum novas_accuracy accuracy, sky_pos *restrict output)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>place_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a1504058672e6e3cf24ce6b7189ede005</anchor>
-      <arglist>(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>planet_lon</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aacc6a0daf29b8bdc18f46647a94694d3</anchor>
-      <arglist>(double t, enum novas_planet planet)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>precession</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a9178358732325399f3a5e3582080ced3</anchor>
-      <arglist>(double jd_tdb_in, const double *in, double jd_tdb_out, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>proper_motion</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a24b69e1809a33113d4a041dd3e4082ad</anchor>
-      <arglist>(double jd_tdb_in, const double *pos, const double *restrict vel, double jd_tdb_out, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>rad_vel</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>afca24d914664bb60d20fb428177f329a</anchor>
-      <arglist>(const object *restrict source, const double *restrict pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *restrict rv)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>rad_vel2</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a37f22e463cc06b4e381aa18659e6319d</anchor>
-      <arglist>(const object *restrict source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>radec2vector</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ae104afd1bc638def9bdbce1801e5054a</anchor>
-      <arglist>(double ra, double dec, double dist, double *restrict pos)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>radec_planet</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a918c8244e44c69f1589d9f4bf5355d16</anchor>
-      <arglist>(double jd_tt, const object *restrict ss_body, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis, double *restrict rv)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>radec_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a0f307c2a37d594a68e99c5c8af6d50c9</anchor>
-      <arglist>(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict rv)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>refract</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a9f0ad82690613afaa2325f430ac29743</anchor>
-      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>refract_astro</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ad875289016bb6c3e6ff9e00a9fc2dfd4</anchor>
-      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>set_cio_locator_file</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ade20b8035266dfe5b082b12248f5affa</anchor>
-      <arglist>(const char *restrict filename)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>set_ephem_provider</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6097083c438a8d1872c2e00a66360030</anchor>
-      <arglist>(novas_ephem_provider func)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>set_nutation_lp_provider</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a694288eb631d6a69ecf313b7b5b4a677</anchor>
-      <arglist>(novas_nutation_provider func)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>set_planet_provider</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a9904c454bc7148b42d0f927b82ea3973</anchor>
-      <arglist>(novas_planet_provider func)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>set_planet_provider_hp</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a418f45a11ce7f92ba0ef817558415640</anchor>
-      <arglist>(novas_planet_provider_hp func)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>sidereal_time</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6eacba14d3c382d67307856a2ea290e3</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>spin</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>af4090e519d7ce7ab1fcdb24b10126eb4</anchor>
-      <arglist>(double angle, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>starvectors</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a27bae6c9efdab763dba9f1ae36a04669</anchor>
-      <arglist>(const cat_entry *restrict star, double *restrict pos, double *restrict motion)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>tdb2tt</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a90d5fae30728b51151c3daf355ca585b</anchor>
-      <arglist>(double jd_tdb, double *restrict jd_tt, double *restrict secdiff)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>ter2cel</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6b662ff99b35db19c9b6b24a1ae9264f</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>terra</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a8471f990ad6e3051a0aa584d9cb2d355</anchor>
-      <arglist>(const on_surface *restrict location, double lst, double *restrict pos, double *restrict vel)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>tod_to_gcrs</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6871e7fecde44084c7b4e1b8dda5ac70</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>tod_to_j2000</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a6205edb1361e56cc0c7aed0f088f7437</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>topo_planet</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aaf3d450c87f545acfa7ab7e2b6c229d9</anchor>
-      <arglist>(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>topo_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a86e4f52e832879a33aefc28803e2690f</anchor>
-      <arglist>(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>transform_cat</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>abe0c6e6fc60a49efa88c365aef8cdc50</anchor>
-      <arglist>(enum novas_transform_type option, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id, cat_entry *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>transform_hip</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>af2c03d540de7a8bfafaed27eb9a753c1</anchor>
-      <arglist>(const cat_entry *hipparcos, cat_entry *hip_2000)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>tt2tdb</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a129acca41760da486e1179c93cb9e86d</anchor>
-      <arglist>(double jd_tt)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>vector2radec</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a84f672dc1c37e3af374198f29cbcfba9</anchor>
-      <arglist>(const double *restrict pos, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>virtual_planet</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a0dc172d82eec79f78c2d218c1a7b9cbe</anchor>
-      <arglist>(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>virtual_star</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aaf187624a93349391518f9d6bb3051e5</anchor>
-      <arglist>(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>wobble</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>aead87744eeb3029ce7d5ffb1801ee652</anchor>
-      <arglist>(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out)</arglist>
-    </member>
-    <member kind="variable">
-      <type>double</type>
-      <name>EPS_COR</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ac063b61c63e78a4864f2baa4606bab36</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>int</type>
-      <name>grav_bodies_full_accuracy</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a18647d39520d1a15a137661f698cb12a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>int</type>
-      <name>grav_bodies_reduced_accuracy</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a03a4df8961a0cd05f89aca478d2dcd24</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>int</type>
-      <name>novas_inv_max_iter</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>ad2b933ce2f58e8b04bbe76ffbff99eb0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>double</type>
-      <name>PSI_COR</name>
-      <anchorfile>novas_8c.html</anchorfile>
-      <anchor>a103c28cd84e81dde365238ee3599f5b0</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>novascon.c</name>
-    <path>src/</path>
-    <filename>novascon_8c.html</filename>
-    <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
-    <includes id="novascon_8h" name="novascon.h" local="yes" import="no" module="no" objc="no">novascon.h</includes>
-    <member kind="variable">
-      <type>const double</type>
-      <name>ANGVEL</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a088f463ef64dea2727d8ade9b1cd7192</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>AU</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a2b9e1ccc1a034cb26b9c794767315346</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>AU_KM</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a95419ca41731064148e6fcfb0e919171</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>AU_SEC</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>abcfdf85edc41c59ae55c3c45dc9c506a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>C</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a9e8a46a0e00368ad98642587ca4ebdbe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>C_AUDAY</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a55379c7fece80070614c09bb218275b6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>ERAD</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>aa7bbeb0cb618d36be058e8fd92133b4d</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>F</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a480d6423b1e9ca40c69c5a83458b49b0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>GE</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a0ee5d7a271610d60ec10f180747886eb</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>GS</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a5060445c439eb63c5fb506fa625ca343</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>RMASS</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a19a7c107c3918c90c90cdad5ab310b1a</anchor>
-      <arglist>[12]</arglist>
-    </member>
-    <member kind="variable">
-      <type>const double</type>
-      <name>T0</name>
-      <anchorfile>novascon_8c.html</anchorfile>
-      <anchor>a179a958e126d46c9b952672120986924</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>nutation.c</name>
     <path>src/</path>
     <filename>nutation_8c.html</filename>
@@ -4466,6 +3814,177 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>observer.c</name>
+    <path>src/</path>
+    <filename>observer_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>aberration</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a033f1bf4b01e0e21a0e05e13c19c02f6</anchor>
+      <arglist>(const double *pos, const double *vobs, double lighttime, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>bary2obs</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a1d58fd371e7604f75df315365672941e</anchor>
+      <arglist>(const double *pos, const double *pos_obs, double *out, double *restrict lighttime)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>light_time</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>afb2cc37c7bdcd34c5c167afe092aed68</anchor>
+      <arglist>(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy, double *pos_src_obs, double *restrict tlight)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>light_time2</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a5c940b62732d74e6c6b1c844931aaa76</anchor>
+      <arglist>(double jd_tdb, const object *restrict body, const double *restrict pos_obs, double tlight0, enum novas_accuracy accuracy, double *p_src_obs, double *restrict v_ssb, double *restrict tlight)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_airborne_observer</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>aa423a88cd3f434642fc89d47390184f4</anchor>
+      <arglist>(const on_surface *location, const double *vel, observer *obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_in_space</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>ac0ca6f330e1795ce811df95986400632</anchor>
+      <arglist>(const double *sc_pos, const double *sc_vel, in_space *loc)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>make_observer</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a0f2096c7954b583fe749553b956ff9d2</anchor>
+      <arglist>(enum novas_observer_place where, const on_surface *loc_surface, const in_space *loc_space, observer *obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_observer_at_geocenter</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>aabb3ab0d99aa6e487cdcf6b454949b75</anchor>
+      <arglist>(observer *restrict obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_observer_in_space</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a6c146e4d10152d5e1ffb978f2fc962be</anchor>
+      <arglist>(const double *sc_pos, const double *sc_vel, observer *obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_observer_on_surface</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a5eb76fc6e7be571e228d23aee3823cb9</anchor>
+      <arglist>(double latitude, double longitude, double height, double temperature, double pressure, observer *restrict obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_on_surface</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a42c084465aedee75965f74e23e6571fe</anchor>
+      <arglist>(double latitude, double longitude, double height, double temperature, double pressure, on_surface *restrict loc)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_solar_system_observer</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a9c3f1a1bc3fd9ac6d211806913d2d529</anchor>
+      <arglist>(const double *sc_pos, const double *sc_vel, observer *obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_e2h_offset</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a13cd0b80eaa7bc682013f7e8ffbdbd6f</anchor>
+      <arglist>(double dra, double ddec, double pa, double *restrict daz, double *restrict del)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_epa</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a095ba0ee644dc00c11dcdc5616bc96b0</anchor>
+      <arglist>(double ha, double dec, double lat)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_h2e_offset</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a7977de3e3edf8120b50cbd026c155f47</anchor>
+      <arglist>(double daz, double del, double pa, double *restrict dra, double *restrict ddec)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_hpa</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a73fcb54e47b2be0aa92810b5f55f7a3c</anchor>
+      <arglist>(double az, double el, double lat)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_los_to_xyz</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a601d246673742cf72a5dbe1449c97560</anchor>
+      <arglist>(const double *los, double lon, double lat, double *xyz)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_xyz_to_los</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a14deb6fdce80ba213e1f1d5238306e17</anchor>
+      <arglist>(const double *xyz, double lon, double lat, double *los)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_xyz_to_uvw</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a87867e8e7fc7decaa44777a696465353</anchor>
+      <arglist>(const double *xyz, double ha, double dec, double *uvw)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>obs_planets</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a07490a134a685fe0842b2b4816559292</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *restrict pos_obs, int pl_mask, novas_planet_bundle *restrict planets)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>obs_posvel</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a0e4e5ff7c37e6521ca75ae62aaf4050e</anchor>
+      <arglist>(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs, const double *restrict geo_pos, const double *restrict geo_vel, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>orbital.c</name>
+    <path>src/</path>
+    <filename>orbital_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_orbit_posvel</name>
+      <anchorfile>orbital_8c.html</anchorfile>
+      <anchor>a4510a3235a693f122899983901211c30</anchor>
+      <arglist>(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_set_orbsys_pole</name>
+      <anchorfile>orbital_8c.html</anchorfile>
+      <anchor>a706ecf8998b78e48051d2876efc6e01c</anchor>
+      <arglist>(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>parse.c</name>
     <path>src/</path>
     <filename>parse_8c.html</filename>
@@ -4475,6 +3994,13 @@
       <anchorfile>parse_8c.html</anchorfile>
       <anchor>aca89d2a0f49afad45dbddffc09c3adae</anchor>
       <arglist>(const char *restrict dms)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_epoch</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>af4e18885b7d173eb3fe5f18b06f0b4d4</anchor>
+      <arglist>(const char *restrict system)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4527,6 +4053,226 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>place.c</name>
+    <path>src/</path>
+    <filename>place_8c.html</filename>
+    <member kind="function">
+      <type>short</type>
+      <name>app_planet</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>ac28dd9a362982cfce150751001a96a8a</anchor>
+      <arglist>(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>app_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a906b17f06b42e31a29cafad4856f565f</anchor>
+      <arglist>(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>astro_planet</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a9ea79f60493a3a21a9228d048fa5a9a2</anchor>
+      <arglist>(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>astro_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a9530c770e83db2cbc5a31d8d1f8c36f4</anchor>
+      <arglist>(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>ephemeris</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a713982e1f2bae0a72b39d03007f00d23</anchor>
+      <arglist>(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin, enum novas_accuracy accuracy, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>local_planet</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>adcb9b273dfda5d97a1c01379a16997f9</anchor>
+      <arglist>(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>local_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>acd56c41e811a002d6280b3b315730fbd</anchor>
+      <arglist>(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>mean_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>aaf51bf000e993807101a34adf423d36b</anchor>
+      <arglist>(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>place</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>aca09ed0d2379ac4a4841c9e3edeeee4c</anchor>
+      <arglist>(double jd_tt, const object *restrict source, const observer *restrict location, double ut1_to_tt, enum novas_reference_system coord_sys, enum novas_accuracy accuracy, sky_pos *restrict output)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>place_cirs</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a49bd2b398f7eab3e98823cb1a7403ed5</anchor>
+      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>place_gcrs</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>aea583f6f785fa42f46710288e8a4e083</anchor>
+      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>place_icrs</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>ad465eafe65e3d701fc4bd57efa793a12</anchor>
+      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>place_j2000</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a1ea9b377426b1800535e85fab47bfc1b</anchor>
+      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>place_mod</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>ac53d150d1f6b96c83d1516a66c699e63</anchor>
+      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>place_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a1504058672e6e3cf24ce6b7189ede005</anchor>
+      <arglist>(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>place_tod</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>ab6908b0eee06b4a44242fba1fd9d506c</anchor>
+      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>radec_planet</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a918c8244e44c69f1589d9f4bf5355d16</anchor>
+      <arglist>(double jd_tt, const object *restrict ss_body, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis, double *restrict rv)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>radec_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a0f307c2a37d594a68e99c5c8af6d50c9</anchor>
+      <arglist>(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict rv)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>topo_planet</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>aaf3d450c87f545acfa7ab7e2b6c229d9</anchor>
+      <arglist>(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>topo_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a86e4f52e832879a33aefc28803e2690f</anchor>
+      <arglist>(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>virtual_planet</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>a0dc172d82eec79f78c2d218c1a7b9cbe</anchor>
+      <arglist>(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>virtual_star</name>
+      <anchorfile>place_8c.html</anchorfile>
+      <anchor>aaf187624a93349391518f9d6bb3051e5</anchor>
+      <arglist>(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>plugin.c</name>
+    <path>src/</path>
+    <filename>plugin_8c.html</filename>
+    <member kind="function">
+      <type>novas_ephem_provider</type>
+      <name>get_ephem_provider</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>aa6fad38297a49ba78a6bd49cedf889b1</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>novas_nutation_provider</type>
+      <name>get_nutation_lp_provider</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>a416a96426a0b3c52c1d5fc6452357366</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>novas_planet_provider</type>
+      <name>get_planet_provider</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>a0f0a786b5614a788c02b37a462eae2d2</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>novas_planet_provider_hp</type>
+      <name>get_planet_provider_hp</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>ae45badb450c1ca73920d982e12346c5b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>set_ephem_provider</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>a6097083c438a8d1872c2e00a66360030</anchor>
+      <arglist>(novas_ephem_provider func)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>set_nutation_lp_provider</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>a694288eb631d6a69ecf313b7b5b4a677</anchor>
+      <arglist>(novas_nutation_provider func)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>set_planet_provider</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>a9904c454bc7148b42d0f927b82ea3973</anchor>
+      <arglist>(novas_planet_provider func)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>set_planet_provider_hp</name>
+      <anchorfile>plugin_8c.html</anchorfile>
+      <anchor>a418f45a11ce7f92ba0ef817558415640</anchor>
+      <arglist>(novas_planet_provider_hp func)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>refract.c</name>
     <path>src/</path>
     <filename>refract_8c.html</filename>
@@ -4558,6 +4304,20 @@
       <anchorfile>refract_8c.html</anchorfile>
       <anchor>ab04bff3b97c132e358e11c3a5b7a3081</anchor>
       <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>refract</name>
+      <anchorfile>refract_8c.html</anchorfile>
+      <anchor>a9f0ad82690613afaa2325f430ac29743</anchor>
+      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>refract_astro</name>
+      <anchorfile>refract_8c.html</anchorfile>
+      <anchor>ad875289016bb6c3e6ff9e00a9fc2dfd4</anchor>
+      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -4788,379 +4548,396 @@
     </member>
   </compound>
   <compound kind="file">
-    <name>super.c</name>
+    <name>spectral.c</name>
     <path>src/</path>
-    <filename>super_8c.html</filename>
-    <member kind="define">
-      <type>#define</type>
-      <name>_DEFAULT_SOURCE</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>app_to_cirs_ra</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a3fa57a154f2f423612736e5e3a5addbf</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>cirs_to_app_ra</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>af90d52a6527d9b62b8ac35d8c1ac7c6b</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>cirs_to_itrs</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aa2768d89d499a7155f90a6fd8c176d8d</anchor>
-      <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>cirs_to_tod</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a9cac4f3a18d4c14939519e7123b4d504</anchor>
-      <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>ecl2equ</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a41ca0cfd79ad07c9e857ba02fa94928e</anchor>
-      <arglist>(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>gal2equ</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>adcce501bd3f8f70974e7f55527162f83</anchor>
-      <arglist>(double glon, double glat, double *restrict ra, double *restrict dec)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>get_ut1_to_tt</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a4d7470ca705efa1953e8b4beab77c6b6</anchor>
-      <arglist>(int leap_seconds, double dut1)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>get_utc_to_tt</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>ab7611704bab9ce717744a8b5575c5378</anchor>
-      <arglist>(int leap_seconds)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>grav_redshift</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a3ce6b306bc183387d0aaac97abbd82e8</anchor>
-      <arglist>(double M_kg, double r_m)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>grav_undef</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aaae33249717912663bbb00be4fa4e6c3</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>grav_undo_planets</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a1b107a24b9fadc79cc5df8c6f5505d16</anchor>
-      <arglist>(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>hor_to_itrs</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a19f4f6c7d942dcba5ad2a4d2a60affad</anchor>
-      <arglist>(const on_surface *restrict location, double az, double za, double *restrict itrs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>itrs_to_cirs</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a12953f66c0f774284f0700ae785784d0</anchor>
-      <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>itrs_to_hor</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aef3c1f8e4c443e51e65003018449768a</anchor>
-      <arglist>(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>itrs_to_tod</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a3f6ae564cfac3766a21e0754905e5f7c</anchor>
-      <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>j2000_to_gcrs</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a9d51ca5c972013024755c644c96d0586</anchor>
-      <arglist>(const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_airborne_observer</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aa423a88cd3f434642fc89d47390184f4</anchor>
-      <arglist>(const on_surface *location, const double *vel, observer *obs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_cat_object</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>ab9b7a622486f2904615ceed1ba94cd8f</anchor>
-      <arglist>(const cat_entry *star, object *source)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_cat_object_sys</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a5104d7db66ce2d8c61c7ad21599fb45e</anchor>
-      <arglist>(const cat_entry *star, const char *restrict system, object *source)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_ephem_object</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aa22303f98df2d63edf6d8452ff3a43b2</anchor>
-      <arglist>(const char *name, long num, object *body)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_orbital_object</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a3c5e215babeeba078ca7b3e9be42e555</anchor>
-      <arglist>(const char *name, long num, const novas_orbital *orbit, object *body)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_redshifted_cat_entry</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a11aa3ce6bcdda5b7065b38d6cfaf63d3</anchor>
-      <arglist>(const char *name, double ra, double dec, double z, cat_entry *source)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_redshifted_object</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>ae579a49d84696a913fd0d9f348bb5b11</anchor>
-      <arglist>(const char *name, double ra, double dec, double z, object *source)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_redshifted_object_sys</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a257abae9391aec835dc2b94d9788b9f9</anchor>
-      <arglist>(const char *name, double ra, double dec, const char *restrict system, double z, object *source)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>make_solar_system_observer</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a9c3f1a1bc3fd9ac6d211806913d2d529</anchor>
-      <arglist>(const double *sc_pos, const double *sc_vel, observer *obs)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_e2h_offset</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a13cd0b80eaa7bc682013f7e8ffbdbd6f</anchor>
-      <arglist>(double dra, double ddec, double pa, double *restrict daz, double *restrict del)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_epa</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a095ba0ee644dc00c11dcdc5616bc96b0</anchor>
-      <arglist>(double ha, double dec, double lat)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_epoch</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>af4e18885b7d173eb3fe5f18b06f0b4d4</anchor>
-      <arglist>(const char *restrict system)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_equ_sep</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a4f7e06b2fa5b3145b37aec4f9c2d1602</anchor>
-      <arglist>(double ra1, double dec1, double ra2, double dec2)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_h2e_offset</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a7977de3e3edf8120b50cbd026c155f47</anchor>
-      <arglist>(double daz, double del, double pa, double *restrict dra, double *restrict ddec)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_helio_dist</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>af4fa5359b8b0167a2780baff17b164a5</anchor>
-      <arglist>(double jd_tdb, const object *restrict source, double *restrict rate)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_hpa</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a73fcb54e47b2be0aa92810b5f55f7a3c</anchor>
-      <arglist>(double az, double el, double lat)</arglist>
-    </member>
+    <filename>spectral_8c.html</filename>
     <member kind="function">
       <type>double</type>
       <name>novas_lsr_to_ssb_vel</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>spectral_8c.html</anchorfile>
       <anchor>aad80bf94be2efc36c340994829df8207</anchor>
       <arglist>(double epoch, double ra, double dec, double vLSR)</arglist>
     </member>
     <member kind="function">
-      <type>enum novas_planet</type>
-      <name>novas_planet_for_name</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a2cf7410aa68b980112734227b40890d6</anchor>
-      <arglist>(const char *restrict name)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_sep</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a9f33de2b26a19a5e20827e9e918b3375</anchor>
-      <arglist>(double lon1, double lat1, double lon2, double lat2)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_set_orbsys_pole</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a706ecf8998b78e48051d2876efc6e01c</anchor>
-      <arglist>(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_solar_power</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a763f9a9dd2edb4645a5db05184ca7495</anchor>
-      <arglist>(double jd_tdb, const object *restrict source)</arglist>
-    </member>
-    <member kind="function">
       <type>double</type>
       <name>novas_ssb_to_lsr_vel</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>spectral_8c.html</anchorfile>
       <anchor>a99ed25baa029f3980924da8c8af54d1a</anchor>
       <arglist>(double epoch, double ra, double dec, double vLSR)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
       <name>novas_v2z</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>spectral_8c.html</anchorfile>
       <anchor>aa54cd00024b294d38fa29433c017c65f</anchor>
       <arglist>(double vel)</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>novas_xyz_to_uvw</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a87867e8e7fc7decaa44777a696465353</anchor>
-      <arglist>(const double *xyz, double ha, double dec, double *uvw)</arglist>
+      <type>double</type>
+      <name>novas_z2v</name>
+      <anchorfile>spectral_8c.html</anchorfile>
+      <anchor>a63621cea3b4985c1bfcc4514a7aa3fb1</anchor>
+      <arglist>(double z)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
       <name>novas_z_add</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>spectral_8c.html</anchorfile>
       <anchor>a493ab751eee5804db77157c37e94e5c3</anchor>
       <arglist>(double z1, double z2)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
       <name>novas_z_inv</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>spectral_8c.html</anchorfile>
       <anchor>a1130ad2ce520e948c71f03a25a713075</anchor>
       <arglist>(double z)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
-      <name>place_cirs</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a49bd2b398f7eab3e98823cb1a7403ed5</anchor>
-      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+      <name>rad_vel</name>
+      <anchorfile>spectral_8c.html</anchorfile>
+      <anchor>afca24d914664bb60d20fb428177f329a</anchor>
+      <arglist>(const object *restrict source, const double *restrict pos_src, const double *vel_src, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun, double *restrict rv)</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>place_gcrs</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aea583f6f785fa42f46710288e8a4e083</anchor>
-      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>place_icrs</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>ad465eafe65e3d701fc4bd57efa793a12</anchor>
-      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>place_j2000</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>a1ea9b377426b1800535e85fab47bfc1b</anchor>
-      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>place_mod</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>ac53d150d1f6b96c83d1516a66c699e63</anchor>
-      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>place_tod</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>ab6908b0eee06b4a44242fba1fd9d506c</anchor>
-      <arglist>(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos)</arglist>
+      <type>double</type>
+      <name>rad_vel2</name>
+      <anchorfile>spectral_8c.html</anchorfile>
+      <anchor>a37f22e463cc06b4e381aa18659e6319d</anchor>
+      <arglist>(const object *restrict source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
       <name>redshift_vrad</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>spectral_8c.html</anchorfile>
       <anchor>af56088995d42a0673e03bca1f3891544</anchor>
       <arglist>(double vrad, double z)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>unredshift_vrad</name>
+      <anchorfile>spectral_8c.html</anchorfile>
+      <anchor>aea89203030ca831260dec18f83081d23</anchor>
+      <arglist>(double vrad, double z)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>system.c</name>
+    <path>src/</path>
+    <filename>system_8c.html</filename>
+    <member kind="function">
+      <type>double</type>
+      <name>app_to_cirs_ra</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a3fa57a154f2f423612736e5e3a5addbf</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>cel2ter</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a95f02377ce41d4e251654449dda82986</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>cirs_to_app_ra</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>af90d52a6527d9b62b8ac35d8c1ac7c6b</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, double ra)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cirs_to_gcrs</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>ac0ba048cd1732d0d0398397396d158bc</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cirs_to_itrs</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>aa2768d89d499a7155f90a6fd8c176d8d</anchor>
+      <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>cirs_to_tod</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a9cac4f3a18d4c14939519e7123b4d504</anchor>
+      <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>frame_tie</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>aa11d2253a44261370af8d0c32f0715e9</anchor>
+      <arglist>(const double *in, enum novas_frametie_direction direction, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>gcrs2equ</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>abd38071a8d4bdc342feaecfac2fc7856</anchor>
+      <arglist>(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_cirs</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a51ea4a016336dd3cf7783061c14d165c</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_j2000</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>aeea4b5085c7267714492fae6108fb975</anchor>
+      <arglist>(const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_mod</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a75de6cca190c5fbc3056db726f317c7f</anchor>
+      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>gcrs_to_tod</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a9c900b81a718a184281a8a0b733b4db7</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>itrs_to_cirs</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a12953f66c0f774284f0700ae785784d0</anchor>
+      <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>itrs_to_tod</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a3f6ae564cfac3766a21e0754905e5f7c</anchor>
+      <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>j2000_to_gcrs</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a9d51ca5c972013024755c644c96d0586</anchor>
+      <arglist>(const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>j2000_to_tod</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a02fa1ee652c20160055cbd2c7bd9ca63</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>mod_to_gcrs</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>ad9cc07f0e6af9339096e15a440b113e5</anchor>
+      <arglist>(double jd_tdb, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>nutation</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a69df5671751c09a7575963b94ad1151e</anchor>
+      <arglist>(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>nutation_angles</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a6e9ced7b0aec544ad7b057b58f777ec4</anchor>
+      <arglist>(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>precession</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a9178358732325399f3a5e3582080ced3</anchor>
+      <arglist>(double jd_tdb_in, const double *in, double jd_tdb_out, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>ter2cel</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a6b662ff99b35db19c9b6b24a1ae9264f</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>tod_to_cirs</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>system_8c.html</anchorfile>
       <anchor>adb48b2acaf76cc3a1e3a1412cc42c232</anchor>
       <arglist>(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
+      <name>tod_to_gcrs</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a6871e7fecde44084c7b4e1b8dda5ac70</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>tod_to_itrs</name>
-      <anchorfile>super_8c.html</anchorfile>
+      <anchorfile>system_8c.html</anchorfile>
       <anchor>a4551e2ac083e34c1b2b61b3805efb9a3</anchor>
       <arglist>(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>tod_to_j2000</name>
+      <anchorfile>system_8c.html</anchorfile>
+      <anchor>a6205edb1361e56cc0c7aed0f088f7437</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>target.c</name>
+    <path>src/</path>
+    <filename>target_8c.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>_DEFAULT_SOURCE</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>make_cat_entry</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a39b2e39d29f1b57c5f785284ba7ca43f</anchor>
+      <arglist>(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_cat_object</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>ab9b7a622486f2904615ceed1ba94cd8f</anchor>
+      <arglist>(const cat_entry *star, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_cat_object_sys</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a5104d7db66ce2d8c61c7ad21599fb45e</anchor>
+      <arglist>(const cat_entry *star, const char *restrict system, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_ephem_object</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>aa22303f98df2d63edf6d8452ff3a43b2</anchor>
+      <arglist>(const char *name, long num, object *body)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>make_object</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a411f70fb77582d750c5269fcd64b0ce2</anchor>
+      <arglist>(enum novas_object_type type, long number, const char *name, const cat_entry *star, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_orbital_object</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a3c5e215babeeba078ca7b3e9be42e555</anchor>
+      <arglist>(const char *name, long num, const novas_orbital *orbit, object *body)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_planet</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a4c7846be95299769f4d0377bf127bcf5</anchor>
+      <arglist>(enum novas_planet num, object *restrict planet)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_redshifted_cat_entry</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a11aa3ce6bcdda5b7065b38d6cfaf63d3</anchor>
+      <arglist>(const char *name, double ra, double dec, double z, cat_entry *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_redshifted_object</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>ae579a49d84696a913fd0d9f348bb5b11</anchor>
+      <arglist>(const char *name, double ra, double dec, double z, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>make_redshifted_object_sys</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a257abae9391aec835dc2b94d9788b9f9</anchor>
+      <arglist>(const char *name, double ra, double dec, const char *restrict system, double z, object *source)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>novas_case_sensitive</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a8f832afe92680a11c3489aaa224ac2e2</anchor>
+      <arglist>(int value)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
-      <name>unredshift_vrad</name>
-      <anchorfile>super_8c.html</anchorfile>
-      <anchor>aea89203030ca831260dec18f83081d23</anchor>
-      <arglist>(double vrad, double z)</arglist>
+      <name>novas_helio_dist</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>af4fa5359b8b0167a2780baff17b164a5</anchor>
+      <arglist>(double jd_tdb, const object *restrict source, double *restrict rate)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_planet</type>
+      <name>novas_planet_for_name</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a2cf7410aa68b980112734227b40890d6</anchor>
+      <arglist>(const char *restrict name)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_solar_power</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a763f9a9dd2edb4645a5db05184ca7495</anchor>
+      <arglist>(double jd_tdb, const object *restrict source)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>proper_motion</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a24b69e1809a33113d4a041dd3e4082ad</anchor>
+      <arglist>(double jd_tdb_in, const double *pos, const double *restrict vel, double jd_tdb_out, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>starvectors</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>a27bae6c9efdab763dba9f1ae36a04669</anchor>
+      <arglist>(const cat_entry *restrict star, double *restrict pos, double *restrict motion)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>transform_cat</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>abe0c6e6fc60a49efa88c365aef8cdc50</anchor>
+      <arglist>(enum novas_transform_type option, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id, cat_entry *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>transform_hip</name>
+      <anchorfile>target_8c.html</anchorfile>
+      <anchor>af2c03d540de7a8bfafaed27eb9a753c1</anchor>
+      <arglist>(const cat_entry *hipparcos, cat_entry *hip_2000)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -5174,6 +4951,20 @@
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>get_ut1_to_tt</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a4d7470ca705efa1953e8b4beab77c6b6</anchor>
+      <arglist>(int leap_seconds, double dut1)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>get_utc_to_tt</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>ab7611704bab9ce717744a8b5575c5378</anchor>
+      <arglist>(int leap_seconds)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -5307,6 +5098,102 @@
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>ac8e83c48005d5aabb3e7bbf8d9f8ed81</anchor>
       <arglist>(const novas_timespec *restrict time, enum novas_timescale scale, char *restrict dst, int maxlen)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>tdb2tt</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a90d5fae30728b51151c3daf355ca585b</anchor>
+      <arglist>(double jd_tdb, double *restrict jd_tt, double *restrict secdiff)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>tt2tdb</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a129acca41760da486e1179c93cb9e86d</anchor>
+      <arglist>(double jd_tt)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>util.c</name>
+    <path>src/</path>
+    <filename>util_8c.html</filename>
+    <member kind="function">
+      <type>double</type>
+      <name>d_light</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>ad799864f637c483fb49491bde5a93e25</anchor>
+      <arglist>(const double *pos_src, const double *pos_body)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>novas_debug</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>a5f35633b872751df4dacd2fb2cbe4ac3</anchor>
+      <arglist>(enum novas_debug_mode mode)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_equ_sep</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>a4f7e06b2fa5b3145b37aec4f9c2d1602</anchor>
+      <arglist>(double ra1, double dec1, double ra2, double dec2)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_debug_mode</type>
+      <name>novas_get_debug_mode</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>a29cad12337acfce5f1e370320dcefb79</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_norm_ang</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>a85334614a0f399e0d3cbde68075d0766</anchor>
+      <arglist>(double angle)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_sep</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>a9f33de2b26a19a5e20827e9e918b3375</anchor>
+      <arglist>(double lon1, double lat1, double lon2, double lat2)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_vlen</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>a0f41cefb8c872973b07e936b5026d143</anchor>
+      <arglist>(const double *restrict v)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>radec2vector</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>ae104afd1bc638def9bdbce1801e5054a</anchor>
+      <arglist>(double ra, double dec, double dist, double *restrict pos)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>spin</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>af4090e519d7ce7ab1fcdb24b10126eb4</anchor>
+      <arglist>(double angle, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>vector2radec</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>a84f672dc1c37e3af374198f29cbcfba9</anchor>
+      <arglist>(const double *restrict pos, double *restrict ra, double *restrict dec)</arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>novas_inv_max_iter</name>
+      <anchorfile>util_8c.html</anchorfile>
+      <anchor>ad2b933ce2f58e8b04bbe76ffbff99eb0</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="struct">

@@ -1,0 +1,406 @@
+.TH "src/grav.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/grav.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "short \fBgrav_def\fP (double jd_tdb, enum \fBnovas_observer_place\fP unused, enum \fBnovas_accuracy\fP accuracy, const double *pos_src, const double *pos_obs, double *out)"
+.br
+.ti -1c
+.RI "int \fBgrav_planets\fP (const double *pos_src, const double *pos_obs, const \fBnovas_planet_bundle\fP *restrict planets, double *out)"
+.br
+.ti -1c
+.RI "double \fBgrav_redshift\fP (double M_kg, double r_m)"
+.br
+.ti -1c
+.RI "int \fBgrav_undef\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double *pos_app, const double *pos_obs, double *out)"
+.br
+.ti -1c
+.RI "int \fBgrav_undo_planets\fP (const double *pos_app, const double *pos_obs, const \fBnovas_planet_bundle\fP *restrict planets, double *out)"
+.br
+.ti -1c
+.RI "int \fBgrav_vec\fP (const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBgrav_bodies_full_accuracy\fP = \fBDEFAULT_GRAV_BODIES_FULL_ACCURACY\fP"
+.br
+.ti -1c
+.RI "int \fBgrav_bodies_reduced_accuracy\fP = \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 6, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs and G\&. Kaplan
+.RE
+.PP
+Various functions to deal with gravitational effects of the major Solar-system bodies on the astrometry\&. 
+.SH "Function Documentation"
+.PP 
+.SS "short grav_def (double jd_tdb, enum \fBnovas_observer_place\fP unused, enum \fBnovas_accuracy\fP accuracy, const double * pos_src, const double * pos_obs, double * out)"
+Computes the total gravitational deflection of light for the observed object due to the major gravitating bodies in the solar system\&. This function valid for an observed body within the solar system as well as for a star\&.
+.PP
+If 'accuracy' is NOVAS_FULL_ACCURACY (0), the deflections due to the Sun, Jupiter, Saturn, and Earth are calculated\&. Otherwise, only the deflection due to the Sun is calculated\&. In either case, deflection for a given body is ignored if the observer is within ~1500 km of the center of the gravitating body\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+This function is called by \fBplace()\fP to calculate gravitational deflections as appropriate for positioning sources precisely\&. The gravitational deflection due to planets requires a planet calculator function to be configured, e\&.g\&. via \fBset_planet_provider()\fP\&.  
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
+.br
+\fIunused\fP The type of observer frame (no longer used) 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)\&. In full accuracy mode, it will calculate the deflection due to the Sun, Jupiter, Saturn and Earth\&. In reduced accuracy mode, only the deflection due to the Sun is calculated\&. 
+.br
+\fIpos_src\fP [AU] Position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU\&. 
+.br
+\fIout\fP [AU] Position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, corrected for gravitational deflection, components in AU\&. It can be the same vector as the input, but not the same as pos_obs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs, or the error from \fBobs_planets()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_undef()\fP 
+.PP
+\fBplace()\fP 
+.PP
+\fBnovas_geom_to_app()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBgrav_bodies_full_accuracy\fP 
+.PP
+\fBgrav_bodies_reduced_accuracy\fP 
+.RE
+.PP
+
+.PP
+References \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBobs_planets()\fP\&.
+.SS "int grav_planets (const double * pos_src, const double * pos_obs, const \fBnovas_planet_bundle\fP *restrict planets, double * out)"
+Computes the total gravitational deflection of light for the observed object due to the specified gravitating bodies in the solar system\&. This function is valid for an observed body within the solar system as well as for a star\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+The gravitational deflection due to planets requires a planet calculator function to be configured, e\&.g\&. via \fBset_planet_provider()\fP\&. 
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos_src\fP [AU] Position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU\&. 
+.br
+\fIplanets\fP Apparent planet data containing positions and velocities for the major gravitating bodies in the solar-system\&. 
+.br
+\fIout\fP [AU] Position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, corrected for gravitational deflection, components in AU\&. It can be the same vector as the input, but not the same as pos_obs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments is NULL or if the output vector is the same as pos_obs\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobs_planets()\fP 
+.PP
+\fBgrav_undo_planets()\fP 
+.PP
+\fBgrav_def()\fP 
+.PP
+\fBnovas_geom_to_app()\fP 
+.PP
+\fBgrav_bodies_full_accuracy\fP 
+.PP
+\fBgrav_bodies_reduced_accuracy\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBd_light()\fP, \fBgrav_vec()\fP, \fBNOVAS_PLANETS\fP, \fBNOVAS_RMASS_INIT\fP, and \fBnovas_vlen()\fP\&.
+.SS "double grav_redshift (double M_kg, double r_m)"
+Returns the gravitational redshift (\fIz\fP) for light emitted near a massive spherical body at some distance from its center, and observed at some very large (infinite) distance away\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIM_kg\fP [kg] Mass of gravitating body that is contained inside the emitting radius\&. 
+.br
+\fIr_m\fP [m] Radius at which light is emitted\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The gravitational redshift (\fIz\fP) for an observer at very large (infinite) distance from the gravitating body\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBredshift_vrad()\fP 
+.PP
+\fBunredshift_vrad()\fP 
+.PP
+\fBnovas_z_add()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SS "int grav_undef (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, const double * pos_app, const double * pos_obs, double * out)"
+Computes the gravitationally undeflected position of an observed source position due to the major gravitating bodies in the solar system\&. This function valid for an observed body within the solar system as well as for a star\&.
+.PP
+If 'accuracy' is set to zero (full accuracy), three bodies (Sun, Jupiter, and Saturn) are used in the calculation\&. If the reduced-accuracy option is set, only the Sun is used in the calculation\&. In both cases, if the observer is not at the geocenter, the deflection due to the Earth is included\&.
+.PP
+The number of bodies used at full and reduced accuracy can be set by making a change to the code in this function as indicated in the comments\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamical Time (TDB) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIpos_app\fP [AU] Apparent position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU\&. 
+.br
+\fIout\fP [AU] Nominal position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, without gravitational deflection, components in AU\&. It can be the same vector as the input, but not the same as pos_obs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments is NULL (errno = EINVAL) or if the result did not converge (errno = ECANCELED), or else an error from \fBobs_planets()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_def()\fP 
+.PP
+\fBnovas_app_to_geom()\fP 
+.PP
+\fBset_planet_provider()\fP 
+.PP
+\fBset_planet_provider_hp()\fP 
+.PP
+\fBgrav_bodies_full_accuracy\fP 
+.PP
+\fBgrav_bodies_reduced_accuracy\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBgrav_bodies_full_accuracy\fP, \fBgrav_bodies_reduced_accuracy\fP, \fBgrav_undo_planets()\fP, \fBNOVAS_FULL_ACCURACY\fP, and \fBobs_planets()\fP\&.
+.SS "int grav_undo_planets (const double * pos_app, const double * pos_obs, const \fBnovas_planet_bundle\fP *restrict planets, double * out)"
+Computes the gravitationally undeflected position of an observed source position due to the specified Solar-system bodies\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Klioner, S\&. (2003), Astronomical Journal 125, 1580-1597, Section 6\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos_app\fP [AU] Apparent position 3-vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU\&. 
+.br
+\fIplanets\fP Apparent planet data containing positions and velocities for the major gravitating bodies in the solar-system\&. 
+.br
+\fIout\fP [AU] Nominal position vector of observed object, with respect to origin at observer (or the geocenter), referred to ICRS axes, without gravitational deflection, components in AU\&. It can be the same vector as the input, but not the same as pos_obs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if any of the pointer arguments is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobs_planets()\fP 
+.PP
+\fBgrav_planets()\fP 
+.PP
+\fBnovas_app_to_geom()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.PP
+References \fBgrav_planets()\fP, \fBnovas_inv_max_iter\fP, and \fBnovas_vlen()\fP\&.
+.SS "int grav_vec (const double * pos_src, const double * pos_obs, const double * pos_body, double rmass, double * out)"
+Corrects position vector for the deflection of light in the gravitational field of an arbitrary body\&. This function valid for an observed body within the solar system as well as for a star\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+This function is called by \fBgrav_def()\fP to calculate appropriate gravitational deflections for sources\&.  
+.PP
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Murray, C\&.A\&. (1981) Mon\&. Notices Royal Ast\&. Society 195, 639-648\&. 
+.IP "2." 4
+See also formulae in Section B of the Astronomical Almanac, or 
+.IP "3." 4
+Kaplan, G\&. et al\&. (1989) Astronomical Journal 97, 1197-1210, section iii f\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIpos_src\fP [AU] Position 3-vector of observed object, with respect to origin at observer (or the geocenter), components in AU\&. 
+.br
+\fIpos_obs\fP [AU] Position vector of gravitating body, with respect to origin at solar system barycenter, components in AU\&. 
+.br
+\fIpos_body\fP [AU] Position 3-vector of gravitating body, with respect to origin at solar system barycenter, components in AU\&. 
+.br
+\fIrmass\fP [1/Msun] Reciprocal mass of gravitating body in solar mass units, that is, Sun mass / body mass\&. 
+.br
+\fIout\fP [AU] Position 3-vector of observed object, with respect to origin at observer (or the geocenter), corrected for gravitational deflection, components in AU\&. It can the same vector as the input\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if any of the input vectors is NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBplace()\fP 
+.PP
+\fBgrav_def()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_vlen()\fP\&.
+.SH "Variable Documentation"
+.PP 
+.SS "int grav_bodies_full_accuracy = \fBDEFAULT_GRAV_BODIES_FULL_ACCURACY\fP"
+Current set of gravitating bodies to use for deflection calculations in full accuracy mode\&. Each bit signifies whether a given body is to be accounted for as a gravitating body that bends light, such as the bit \fC(1 << NOVAS_JUPITER)\fP indicates whether or not Jupiter is considered as a deflecting body\&. You should also be sure that you provide ephemeris data for bodies that are designated for the deflection calculation\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_def()\fP 
+.PP
+\fBgrav_planets()\fP 
+.PP
+\fBDEFAULT_GRAV_BODIES_FULL_ACCURACY\fP 
+.PP
+set_ephem_provider_hp()
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+
+.SS "int grav_bodies_reduced_accuracy = \fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP"
+Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode\&. Each bit signifies whether a given body is to be accounted for as a gravitating body that bends light, such as the bit \fC(1 << NOVAS_JUPITER)\fP indicates whether or not Jupiter is considered as a deflecting body\&. You should also be sure that you provide ephemeris data for bodies that are designated for the deflection calculation\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBgrav_def()\fP 
+.PP
+\fBgrav_planets()\fP 
+.PP
+\fBDEFAULT_GRAV_BODIES_REDUCED_ACCURACY\fP 
+.PP
+\fBset_ephem_provider()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.1 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

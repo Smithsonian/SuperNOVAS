@@ -1,6 +1,8 @@
 var timescale_8c =
 [
     [ "_DEFAULT_SOURCE", "timescale_8c.html#a8fb447618db946a9e2a596d9ea18763f", null ],
+    [ "get_ut1_to_tt", "timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6", null ],
+    [ "get_utc_to_tt", "timescale_8c.html#ab7611704bab9ce717744a8b5575c5378", null ],
     [ "novas_date", "timescale_8c.html#abaac8a4ea28bc8b811277051e3168468", null ],
     [ "novas_date_scale", "timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2", null ],
     [ "novas_diff_tcb", "timescale_8c.html#a4818ab9be2f0891091c719db01bcfa98", null ],
@@ -19,5 +21,7 @@ var timescale_8c =
     [ "novas_set_time", "timescale_8c.html#af4a1a5180905a7d8f76aeafe3f9a8ebb", null ],
     [ "novas_set_unix_time", "timescale_8c.html#a9d54ea7c6cdbc75ee78cf552a7e1858d", null ],
     [ "novas_timescale_for_string", "timescale_8c.html#ab344242721ca00709d4dc482a7934e2a", null ],
-    [ "novas_timestamp", "timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81", null ]
+    [ "novas_timestamp", "timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81", null ],
+    [ "tdb2tt", "timescale_8c.html#a90d5fae30728b51151c3daf355ca585b", null ],
+    [ "tt2tdb", "timescale_8c.html#a129acca41760da486e1179c93cb9e86d", null ]
 ];

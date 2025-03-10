@@ -1,0 +1,221 @@
+.TH "src/cio.c" 3 "Version v1.3" "SuperNOVAS" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/cio.c
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "short \fBcio_array\fP (double jd_tdb, long n_pts, \fBra_of_cio\fP *restrict cio)"
+.br
+.ti -1c
+.RI "short \fBcio_basis\fP (double jd_tdb, double ra_cio, enum \fBnovas_cio_location_type\fP loc_type, enum \fBnovas_accuracy\fP accuracy, double *restrict x, double *restrict y, double *restrict z)"
+.br
+.ti -1c
+.RI "short \fBcio_location\fP (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double *restrict ra_cio, short *restrict loc_type)"
+.br
+.ti -1c
+.RI "short \fBcio_ra\fP (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double *restrict ra_cio)"
+.br
+.ti -1c
+.RI "int \fBset_cio_locator_file\fP (const char *restrict filename)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Mar 6, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+G\&. Kaplan and Attila Kovacs
+.RE
+.PP
+Functions to handle the CIO location and basis\&. 
+.SH "Function Documentation"
+.PP 
+.SS "short cio_array (double jd_tdb, long n_pts, \fBra_of_cio\fP *restrict cio)"
+Given an input TDB Julian date and the number of data points desired, this function returns a set of Julian dates and corresponding values of the GCRS right ascension of the celestial intermediate origin (CIO)\&. The range of dates is centered (at least approximately) on the requested date\&. The function obtains the data from an external data file\&.
+.PP
+This function assumes that a CIO locator file (\fCCIO_RA\&.TXT\fP or \fCcio_ra\&.bin\fP) exists in the default location (configured at build time), or else was specified via \fC\fBset_cio_locator_file()\fP\fP prior to calling this function\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+This function has been completely re-written by A\&. Kovacs to provide much more efficient caching and I/O\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.br
+\fIn_pts\fP Number of Julian dates and right ascension values requested (not less than 2 or more than NOVAS_CIO_CACHE_SIZE)\&. 
+.br
+\fIcio\fP A time series (array) of the right ascension of the Celestial Intermediate Origin (CIO) with respect to the GCRS\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if the output array is NULL or there was an I/O error accessing the CIO location data file\&. Or else 1 if no locator data file is available, 2 if 'jd_tdb' not in the range of the CIO file, 3 if 'n_pts' out of range, or 6 if 'jd_tdb' is too close to either end of the CIO file do we are unable to put 'n_pts' data points into the output
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_cio_locator_file()\fP 
+.PP
+\fBcio_location()\fP 
+.RE
+.PP
+
+.PP
+References \fBDEFAULT_CIO_LOCATOR_FILE\fP, \fBNOVAS_CIO_CACHE_SIZE\fP, and \fBset_cio_locator_file()\fP\&.
+.SS "short cio_basis (double jd_tdb, double ra_cio, enum \fBnovas_cio_location_type\fP loc_type, enum \fBnovas_accuracy\fP accuracy, double *restrict x, double *restrict y, double *restrict z)"
+Computes the orthonormal basis vectors, with respect to the GCRS (geocentric ICRS), of the celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z direction) and the celestial intermediate origin (CIO) (in the x direction)\&. A TDB Julian date and the right ascension of the CIO at that date is required as input\&. The right ascension of the CIO can be with respect to either the GCRS origin or the true equinox of date -- different algorithms are used in the two cases\&.
+.PP
+This function effectively constructs the matrix C in eq\&. (3) of the reference\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.br
+\fIra_cio\fP [h] Right ascension of the CIO at epoch (hours)\&. 
+.br
+\fIloc_type\fP CIO_VS_GCRS (1) if the cio location is relative to the GCRS or else CIO_VS_EQUINOX (2) if relative to the true equinox of date\&. 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIx\fP Unit 3-vector toward the CIO, equatorial rectangular coordinates, referred to the GCRS\&. 
+.br
+\fIy\fP Unit 3-vector toward the y-direction, equatorial rectangular coordinates, referred to the GCRS\&. 
+.br
+\fIz\fP Unit 3-vector toward north celestial pole (CIP), equatorial rectangular coordinates, referred to the GCRS\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or -1 if any of the output vector arguments are NULL or if the accuracy is invalid, or else 1 if 'ref-sys' is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcio_location()\fP 
+.PP
+\fBgcrs_to_cirs()\fP 
+.RE
+.PP
+
+.PP
+References \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBnovas_vlen()\fP, and \fBtod_to_gcrs()\fP\&.
+.SS "short cio_location (double jd_tdb, enum \fBnovas_accuracy\fP accuracy, double *restrict ra_cio, short *restrict loc_type)"
+Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of date\&. The CIO is always located on the true equator (= intermediate equator) of date\&.
+.PP
+The user may specify an interpolation file to use via \fBset_cio_locator_file()\fP prior to calling this function\&. In that case the call will return CIO location relative to GCRS\&. In the absence of the table, it will calculate the CIO location relative to the true equinox\&. In either case the type of the location is returned alongside the corresponding CIO location value\&.
+.PP
+NOTES: 
+.PD 0
+.IP "1." 4
+Unlike the NOVAS C version of this function, this version will always return a CIO location as long as the pointer arguments are not NULL\&. The returned values will be interpolated from the locator file if possible, otherwise it falls back to calculating an equinox-based location per default\&.  
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tdb\fP [day] Barycentric Dynamic Time (TDB) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIra_cio\fP [h] Right ascension of the CIO, in hours, or NAN if returning with an error\&. 
+.br
+\fIloc_type\fP Pointer in which to return the reference system in which right ascension is given, which is either CIO_VS_GCRS (1) if the location was obtained via interpolation of the available data file, or else CIO_VS_EQUINOX (2) if it was calculated locally\&. It is set to -1 if returning with an error\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if one of the pointer arguments is NULL or the accuracy is invalid\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBset_cio_locator_file()\fP 
+.PP
+\fBcio_ra()\fP 
+.PP
+\fBgcrs_to_cirs()\fP 
+.RE
+.PP
+
+.PP
+References \fBcio_array()\fP, \fBCIO_VS_EQUINOX\fP, \fBCIO_VS_GCRS\fP, \fBira_equinox()\fP, \fBnovas_debug()\fP, \fBNOVAS_DEBUG_OFF\fP, \fBNOVAS_DEBUG_ON\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBnovas_get_debug_mode()\fP, \fBNOVAS_REDUCED_ACCURACY\fP, and \fBNOVAS_TRUE_EQUINOX\fP\&.
+.SS "short cio_ra (double jd_tt, enum \fBnovas_accuracy\fP accuracy, double *restrict ra_cio)"
+Computes the true right ascension of the celestial intermediate origin (CIO) at a given TT Julian date\&. This is the negative value for the equation of the origins\&.
+.PP
+REFERENCES: 
+.PD 0
+.IP "1." 4
+Kaplan, G\&. (2005), US Naval Observatory Circular 179\&. 
+.PP
+.PP
+\fBParameters\fP
+.RS 4
+\fIjd_tt\fP [day] Terrestrial Time (TT) based Julian date 
+.br
+\fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
+.br
+\fIra_cio\fP [h] Right ascension of the CIO, with respect to the true equinox of date, in hours (+ or -), or NAN when returning with an error code\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, -1 if the output pointer argument is NULL, 1 if 'accuracy' is invalid, 10--20: 10 + error code from \fBcio_location()\fP, or else 20 + error from \fBcio_basis()\fP 
+.RE
+.PP
+
+.PP
+References \fBcio_basis()\fP, \fBcio_location()\fP, \fBNOVAS_FULL_ACCURACY\fP, \fBNOVAS_REDUCED_ACCURACY\fP, \fBtod_to_gcrs()\fP, and \fBtt2tdb()\fP\&.
+.SS "int set_cio_locator_file (const char *restrict filename)"
+Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS\&. You can specify either the original \fCCIO_RA\&.TXT\fP file included in the distribution (preferred since v1\&.1), or else a platform-specific binary data file compiled from it via the \fCcio_file\fP utility (the old way)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilename\fP Path (preferably absolute path) \fCCIO_RA\&.TXT\fP or else to the binary \fCcio_ra\&.bin\fP data\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if the specified file does not exists or we have no permission to read it\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBcio_location()\fP 
+.PP
+\fBgcrs_to_cirs()\fP
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.0 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for SuperNOVAS from the source code\&.

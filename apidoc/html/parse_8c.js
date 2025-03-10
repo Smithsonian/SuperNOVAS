@@ -1,6 +1,7 @@
 var parse_8c =
 [
     [ "novas_dms_degrees", "parse_8c.html#aca89d2a0f49afad45dbddffc09c3adae", null ],
+    [ "novas_epoch", "parse_8c.html#af4e18885b7d173eb3fe5f18b06f0b4d4", null ],
     [ "novas_hms_hours", "parse_8c.html#a696e44a2d1c788f9f335611efd7ed958", null ],
     [ "novas_parse_degrees", "parse_8c.html#ad3d04d065e76a5921995e96f67c24c41", null ],
     [ "novas_parse_dms", "parse_8c.html#ac651a7737d1f10e5267572f5c54fae92", null ],
