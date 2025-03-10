@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.0.0-rc5] - 2025-03-10
 
 Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such 
 as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric 
@@ -88,7 +88,7 @@ calculations.
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
  - #131: New `novas_date()` and `novas_date_scale()` for the simplest conversion of string times to Julian days, and 
-   in case of the latter also to a corresponding timescale.'
+   in case of the latter also to a corresponding timescale.
    
  - #133: New `novas_parse_timescale()` to parse a timescale from a string specification, and return the updated parse
    position after also.
