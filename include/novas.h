@@ -1363,6 +1363,7 @@ enum novas_calendar_type {
                                 ///< 1582 in the Roman (a.k.a. Julian) calendar.
 };
 
+// in place.c
 short app_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec);
 
@@ -1399,6 +1400,10 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
 short place(double jd_tt, const object *restrict source, const observer *restrict location, double ut1_to_tt,
         enum novas_reference_system coord_sys, enum novas_accuracy accuracy, sky_pos *restrict output);
 
+short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
+        enum novas_accuracy accuracy, double *restrict pos, double *restrict vel);
+
+// in coords.c
 int equ2gal(double ra, double dec, double *restrict glon, double *restrict glat);
 
 short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec,
@@ -1414,13 +1419,21 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
         const on_surface *restrict location, double ra, double dec, enum novas_refraction_model ref_option,
         double *restrict zd, double *restrict az, double *restrict rar, double *restrict decr);
 
+// in system.c
+int frame_tie(const double *in, enum novas_frametie_direction direction, double *out);
+
+short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out);
+
+int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in,
+        double *out);
+
+int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps);
+
 short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg,
         double *restrict ra, double *restrict dec);
 
 short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type,
         enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst);
-
-double era(double jd_ut1_high, double jd_ut1_low);
 
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
         enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in,
@@ -1430,7 +1443,19 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
         enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in,
         double *out);
 
+// in util.c
 int spin(double angle, const double *in, double *out);
+
+double d_light(const double *pos_src, const double *pos_body);
+
+short vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec);
+
+int radec2vector(double ra, double dec, double dist, double *restrict pos);
+
+double novas_norm_ang(double angle);
+
+// in earth.c
+double era(double jd_ut1_high, double jd_ut1_low);
 
 int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out);
 
@@ -1441,38 +1466,8 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
 
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2);
 
+// in equinox.c
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy);
-
-int frame_tie(const double *in, enum novas_frametie_direction direction, double *out);
-
-int proper_motion(double jd_tdb_in, const double *pos, const double *restrict vel, double jd_tdb_out, double *out);
-
-int bary2obs(const double *pos, const double *pos_obs, double *out, double *restrict lighttime);
-
-short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
-        double *restrict pos, double *restrict vel);
-
-short light_time(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
-        double *pos_src_obs, double *restrict tlight);
-
-double d_light(const double *pos_src, const double *pos_body);
-
-short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src,
-        const double *pos_obs, double *out);
-
-int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out);
-
-int aberration(const double *pos, const double *vobs, double lighttime, double *out);
-
-int rad_vel(const object *restrict source, const double *restrict pos_src, const double *vel_src, const double *vel_obs,
-        double d_obs_geo, double d_obs_sun, double d_src_sun, double *restrict rv);
-
-short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out);
-
-int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in,
-        double *out);
-
-int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps);
 
 int fund_args(double t, novas_delaunay_args *restrict a);
 
@@ -1482,16 +1477,30 @@ double accum_prec(double t);
 
 double mean_obliq(double jd_tdb);
 
-short vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec);
+double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy);
 
-int radec2vector(double ra, double dec, double dist, double *restrict pos);
+// in earth.c
+short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
+        double *restrict pos, double *restrict vel);
 
-int starvectors(const cat_entry *restrict star, double *restrict pos, double *restrict motion);
+int limb_angle(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang);
 
+// in grav.c
+short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accuracy accuracy, const double *pos_src,
+        const double *pos_obs, double *out);
+
+int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out);
+
+// in spectral.c
+int rad_vel(const object *restrict source, const double *restrict pos_src, const double *vel_src, const double *vel_obs,
+        double d_obs_geo, double d_obs_sun, double d_src_sun, double *restrict rv);
+
+// in timescale.c
 double get_ut1_to_tt(int leap_seconds, double dut1);
 
 int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff);
 
+// in  cio.c
 short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio);
 
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type);
@@ -1501,31 +1510,30 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
 
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio);
 
-double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy);
-
-short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
-        enum novas_accuracy accuracy, double *restrict pos, double *restrict vel);
-
-int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);
-
-short transform_cat(enum novas_transform_type, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id,
-        cat_entry *out);
-
-int limb_angle(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang);
-
+// in refract.c
 double refract(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs);
 
+// in calendar.c
 double julian_date(short year, short month, short day, double hour);
 
 int cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour);
 
-double novas_norm_ang(double angle);
-
+// in target.c
 short make_cat_entry(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec,
         double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star);
 
+short transform_cat(enum novas_transform_type, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id,
+        cat_entry *out);
+
+int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);
+
+int starvectors(const cat_entry *restrict star, double *restrict pos, double *restrict motion);
+
 short make_object(enum novas_object_type, long number, const char *name, const cat_entry *star, object *source);
 
+int proper_motion(double jd_tdb_in, const double *pos, const double *restrict vel, double jd_tdb_out, double *out);
+
+// in observer.c
 short make_observer(enum novas_observer_place, const on_surface *loc_surface, const in_space *loc_space,
         observer *obs);
 
@@ -1541,25 +1549,36 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
+int bary2obs(const double *pos, const double *pos_obs, double *out, double *restrict lighttime);
+
+int aberration(const double *pos, const double *vobs, double lighttime, double *out);
+
+short light_time(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
+        double *pos_src_obs, double *restrict tlight);
 
 
 // -------------------------------------------------------------------------------------------------------------------
 // SuperNOVAS API:
 
+// in util.c
 void novas_debug(enum novas_debug_mode mode);
 
 enum novas_debug_mode novas_get_debug_mode();
 
+// in target.c
 void novas_case_sensitive(int value);
 
 int make_planet(enum novas_planet num, object *restrict planet);
 
 int make_ephem_object(const char *name, long num, object *body);
 
+// in cio.c
 int set_cio_locator_file(const char *restrict filename);
 
+// in plugin.c
 int set_nutation_lp_provider(novas_nutation_provider func);
 
+// in place.c
 int place_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt,
         enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
@@ -1579,23 +1598,21 @@ int radec_planet(double jd_tt, const object *restrict ss_body, const observer *r
         enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec,
         double *restrict dis, double *restrict rv);
 
+// in refract.c
 double refract_astro(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro);
 
+// in observer.c
 int light_time2(double jd_tdb, const object *restrict body, const double *restrict pos_obs, double tlight0,
         enum novas_accuracy accuracy, double *p_src_obs, double *restrict v_ssb, double *restrict tlight);
 
+// in timescale.c
 double tt2tdb(double jd_tt);
 
 double get_ut1_to_tt(int leap_seconds, double dut1);
 
 double get_utc_to_tt(int leap_seconds);
 
-int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
-        double *restrict ra, double *restrict dec);
-
-int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec);
-
-// GCRS - CIRS - ITRS conversions
+// in system.c
 int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
 int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp,
@@ -1606,7 +1623,6 @@ int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
 
 int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
-// GCRS - J2000 - TOD - ITRS conversions
 int gcrs_to_j2000(const double *in, double *out);
 
 int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
@@ -1621,14 +1637,21 @@ int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
 
 int j2000_to_gcrs(const double *in, double *out);
 
-// ITRS - horizontal conversions
+// in coords.c
 int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za);
 
 int hor_to_itrs(const on_surface *restrict location, double az, double za, double *restrict itrs);
 
+int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
+        double *restrict ra, double *restrict dec);
+
+int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec);
+
 
 
 // ---------------------- Added in 1.0.1 -------------------------
+
+// in system.c
 double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
@@ -1636,32 +1659,39 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra);
 
 
 // ---------------------- Added in 1.1.0 -------------------------
-int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
-        const double *restrict geo_pos, const double *restrict geo_vel, double *restrict pos, double *restrict vel);
 
-int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restrict pos_obs, int pl_mask,
-        novas_planet_bundle *restrict planets);
-
+// in grav.c
 int grav_undef(double jd_tdb, enum novas_accuracy accuracy, const double *pos_app, const double *pos_obs, double *out);
 
 int grav_planets(const double *pos_src, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out);
 
 int grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out);
 
+// in observer.c
 int make_airborne_observer(const on_surface *location, const double *vel, observer *obs);
 
 int make_solar_system_observer(const double *sc_pos, const double *sc_vel, observer *obs);
 
+int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
+        const double *restrict geo_pos, const double *restrict geo_vel, double *restrict pos, double *restrict vel);
+
+int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restrict pos_obs, int pl_mask,
+        novas_planet_bundle *restrict planets);
+
+// in target.c
 int make_cat_object(const cat_entry *star, object *source);
 
+// in place.c
 int place_mod(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
 int place_j2000(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos);
 
+// in system.c
 int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
 int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out);
 
+// in spectral.c
 double rad_vel2(const object *restrict source, const double *pos_emit, const double *vel_src, const double *pos_det,
         const double *vel_obs, double d_obs_geo, double d_obs_sun, double d_src_sun);
 
@@ -1733,15 +1763,21 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 
 
 // ---------------------- Added in 1.2.0 -------------------------
+
+// in target.c
 int make_redshifted_cat_entry(const char *name, double ra, double dec, double z, cat_entry *source);
 
 int make_redshifted_object(const char *name, double ra, double dec, double z, object *source);
 
+enum novas_planet novas_planet_for_name(const char *restrict name);
+
+// in grav.c
+double grav_redshift(double M_kg, double r_m);
+
+// in spectral.c
 double novas_z2v(double z);
 
 double novas_v2z(double vel);
-
-double grav_redshift(double M_kg, double r_m);
 
 double redshift_vrad(double vrad, double z);
 
@@ -1751,15 +1787,7 @@ double novas_z_add(double z1, double z2);
 
 double novas_z_inv(double z);
 
-enum novas_planet novas_planet_for_name(const char *restrict name);
-
-int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
-
-int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
-
-int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
-        double *restrict pos, double *restrict vel);
-
+// in system.c
 int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
 
 int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out);
@@ -1768,19 +1796,30 @@ int gcrs_to_mod(double jd_tdb, const double *in, double *out);
 
 int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
+// in orbital.c
+int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
+
+int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
+
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
+        double *restrict pos, double *restrict vel);
+
+
 
 // ---------------------- Added in 1.3.0 -------------------------
 
+// in calendar.c
 int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restrict year, int *restrict month,
         int *restrict day, double *restrict hour);
 
 double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month, int day, double hour);
 
-// in super.c
+// in spectral.c
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR);
 
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR);
 
+// in observer.c
 double novas_hpa(double az, double el, double lat);
 
 double novas_epa(double ha, double dec, double lat);
@@ -1789,24 +1828,25 @@ int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, do
 
 int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, double *restrict del);
 
-double novas_sep(double lon1, double lat1, double lon2, double lat2);
-
-double novas_equ_sep(double ra1, double dec1, double ra2, double dec2);
-
 int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz);
 
 int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los);
 
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 
+// in util.c
+double novas_sep(double lon1, double lat1, double lon2, double lat2);
+
+double novas_equ_sep(double ra1, double dec1, double ra2, double dec2);
+
+// in target.c
 int make_cat_object_sys(const cat_entry *star, const char *restrict system, object *source);
 
 int make_redshifted_object_sys(const char *name, double ra, double dec, const char *restrict system, double z, object *source);
 
+// in parse.c
 double novas_epoch(const char *restrict system);
 
-
-// in parse.c
 double novas_hms_hours(const char *restrict hms);
 
 double novas_dms_degrees(const char *restrict dms);
