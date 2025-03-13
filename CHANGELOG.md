@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.0.0-rc5] - 2025-03-10
+## [Unreleased]
 
 Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such 
 as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric 
@@ -15,15 +15,17 @@ calculations.
    
 ### Fixed
 
- - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
+ - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs. (This was 
+   a NOVAS C 3.1 bug.)
  
  - #128: `transform_cat()` had insufficient string length checking of `out_id` parameter. Prior to the fix it checked 
    for the longer object name size instead of the catalog name size. However, even if longer than expected input names 
    were left uncaught, only the appropriatre number of characters were used -- hence it broke nothing, only failed to 
-   remind the caller (with an error) that the supplied name was not quite right.
+   remind the caller (with an error) when the supplied name was too long.
   
  - #139: Legacy linking of external `solarsystem()` / `solarsystem_hp()` provider modules was blocked by 
-   `solsys-ephem.c` inadvertently definining these functions even though it was not supposed to.
+   `solsys-ephem.c` inadvertently definining these functions when `BUILTIN_SOLSYS_EPHEM` was set to 1 (default) during
+   the build, even though it was not supposed to.
   
 ### Added
 
@@ -56,9 +58,9 @@ calculations.
    the Sun and Moon, respectively.
 
  - #113: New `novas_observable` and `novas_track` data structures to provide second order Taylor series expansion of 
-   the apparent horizontal or equatorial positions, distances and redshifts for sources. They can be calculated with 
+   the apparent horizontal or equatorial positions, distances, and redshifts for sources. They can be calculated with 
    the newly added `novas_hor_track()` or `novas_equ_track()` functions. Such tracking values, including rates and 
-   accelerations can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track 
+   accelerations, can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track 
    sources (hence the name). You can also obtain instantaneous projected (extrapolated) positions from the tracking 
    parameters via `novas_track_pos()` at low computational cost.
  
@@ -88,7 +90,7 @@ calculations.
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
 
  - #131: New `novas_date()` and `novas_date_scale()` for the simplest conversion of string times to Julian days, and 
-   in case of the latter also to a corresponding timescale.
+   in case of the latter also to a corresponding timescale (without returning a parse position).
    
  - #133: New `novas_parse_timescale()` to parse a timescale from a string specification, and return the updated parse
    position after also.
@@ -97,7 +99,7 @@ calculations.
    floating point values for SuperNOVAS, and return the parse position after the time/angle specification.
 
  - #135: New `novas_str_hours()` and `novas_str_degrees()` for the simplest conversion of strings in decimal or 
-   HMS/DMS formats to floating point values for SuperNOVAS (without parse position).
+   HMS/DMS formats to floating point values for SuperNOVAS (without retruning a parse position).
 
  - #137: New `novas_epoch()` to convert string coordinate system specifications to the Julian date of the corresponding
    epoch, and new `make_cat_object_sys()` and `make_redshifted_object_sys()` to make it simpler to define ICRS catalog 
@@ -109,7 +111,8 @@ calculations.
 ### Changed
  
  - #130 Use C99 `restrict` keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted 
-   pointer arguments are aliased.
+   pointer arguments are aliased. At the least, it is a hint to users that pointer arguments marked as such should be
+   distinct from (not overlapping with) the other pointer arguments.
    
  - #139 Reorganized code into more managably sized modules. It also makes the API documentation by source file more 
    logically organized.
@@ -120,7 +123,7 @@ calculations.
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
    without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
    
- - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with errno set to 
+ - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with `errno` set to 
    `EINVAL`) if the input values are invalid.
    
  - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates of 
