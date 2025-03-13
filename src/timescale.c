@@ -11,13 +11,7 @@
  * @sa frames.c
  */
 
-// We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
-// gcc 5.1 was released 2015-04-22...
-#if defined(__GNUC__) && (__GNUC__ < 5)
-#  define _BSD_SOURCE             ///< strcasecmp() feature macro for glibc <= 2.19
-#else
-#  define _DEFAULT_SOURCE         ///< strcasecmp() feature macro starting glibc 2.20 (2014-09-08)
-#endif
+#define _GNU_SOURCE                 ///< for strcasecmp()
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
