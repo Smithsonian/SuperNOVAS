@@ -750,19 +750,18 @@ short transform_cat(enum novas_transform_type option, double jd_tt_in, const cat
 
   // Set the catalog identification code for the transformed catalog entry.
   if(out_id)
-    strncpy(out->catalog, out_id, SIZE_OF_CAT_NAME);
+    strncpy(out->catalog, out_id, SIZE_OF_CAT_NAME - 1);
   else if(out != in)
-    strncpy(out->catalog, in->catalog, SIZE_OF_CAT_NAME);
+    strncpy(out->catalog, in->catalog, SIZE_OF_CAT_NAME - 1);
+  // Make sure catalog name is terminated.
+  out->catalog[SIZE_OF_CAT_NAME - 1] = '\0';
 
   if(out != in) {
     // Copy unchanged quantities from the input catalog entry to the transformed catalog entry.
-    strncpy(out->starname, in->starname, SIZE_OF_OBJ_NAME);
+    strncpy(out->starname, in->starname, SIZE_OF_OBJ_NAME - 1);
     out->starname[SIZE_OF_OBJ_NAME - 1] = '\0';
     out->starnumber = in->starnumber;
   }
-
-  // Make sure catalog name is terminated.
-  out->catalog[SIZE_OF_CAT_NAME - 1] = '\0';
 
   return 0;
 }
