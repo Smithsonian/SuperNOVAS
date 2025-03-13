@@ -3200,7 +3200,7 @@ static int test_sun_moon_angle() {
 }
 
 static int test_unwrap_angles() {
-  extern int novas_unwrap_angles(double *a, double *b, double *c);
+  extern double novas_unwrap_angles(double *a, double *b, double *c);
 
   int n = 0;
   double a, b, c;
