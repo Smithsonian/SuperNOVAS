@@ -465,7 +465,7 @@ epoch / catalog system, the `object` structure shall contain ICRS coordinates al
 ```c
  object source;   // Common structure for a sidereal or an Solar-system source
   
- // Convert B1950 to ICRS and in a generic source data structure...
+ // Use the B1950 coodinates for generic source data structure in ICRS...
  make_cat_object_sys(&star, "B1950", &source);
 ```
 
