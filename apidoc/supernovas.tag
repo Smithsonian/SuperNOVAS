@@ -4808,9 +4808,9 @@
     <filename>target_8c.html</filename>
     <member kind="define">
       <type>#define</type>
-      <name>_DEFAULT_SOURCE</name>
+      <name>_GNU_SOURCE</name>
       <anchorfile>target_8c.html</anchorfile>
-      <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
+      <anchor>a369266c24eacffb87046522897a570d5</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">
@@ -4947,9 +4947,9 @@
     <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
     <member kind="define">
       <type>#define</type>
-      <name>_DEFAULT_SOURCE</name>
+      <name>_GNU_SOURCE</name>
       <anchorfile>timescale_8c.html</anchorfile>
-      <anchor>a8fb447618db946a9e2a596d9ea18763f</anchor>
+      <anchor>a369266c24eacffb87046522897a570d5</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">

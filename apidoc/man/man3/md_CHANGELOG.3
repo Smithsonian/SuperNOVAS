@@ -7,16 +7,16 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.0\&.0-rc5] - 2025-03-10"
+.SH "[Unreleased]"
 .PP
 Changes for the upcoming feature release, expected around 1 May 2025\&. It brings many new convenience functions, such as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric calculations\&.
 .SS "Fixed"
 .IP "\(bu" 2
-#116: \fC\fBtransform_cat()\fP\fP to update parallax to the recalculated value when precessing or changing epochs\&.
+#116: \fC\fBtransform_cat()\fP\fP to update parallax to the recalculated value when precessing or changing epochs\&. (This was a NOVAS C 3\&.1 bug\&.)
 .IP "\(bu" 2
-#128: \fC\fBtransform_cat()\fP\fP had insufficient string length checking of \fCout_id\fP parameter\&. Prior to the fix it checked for the longer object name size instead of the catalog name size\&. However, even if longer than expected input names were left uncaught, only the appropriatre number of characters were used -- hence it broke nothing, only failed to remind the caller (with an error) that the supplied name was not quite right\&.
+#128: \fC\fBtransform_cat()\fP\fP had insufficient string length checking of \fCout_id\fP parameter\&. Prior to the fix it checked for the longer object name size instead of the catalog name size\&. However, even if longer than expected input names were left uncaught, only the appropriatre number of characters were used -- hence it broke nothing, only failed to remind the caller (with an error) when the supplied name was too long\&.
 .IP "\(bu" 2
-#139: Legacy linking of external \fC\fBsolarsystem()\fP\fP / \fC\fBsolarsystem_hp()\fP\fP provider modules was blocked by \fC\fBsolsys-ephem\&.c\fP\fP inadvertently definining these functions even though it was not supposed to\&.
+#139: Legacy linking of external \fC\fBsolarsystem()\fP\fP / \fC\fBsolarsystem_hp()\fP\fP provider modules was blocked by \fC\fBsolsys-ephem\&.c\fP\fP inadvertently definining these functions when \fCBUILTIN_SOLSYS_EPHEM\fP was set to 1 (default) during the build, even though it was not supposed to\&.
 .PP
 .SS "Added"
 .IP "\(bu" 2
@@ -32,7 +32,7 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 .IP "\(bu" 2
 #113: New \fC\fBnovas_sep()\fP\fP, \fC\fBnovas_equ_sep()\fP\fP, and \fC\fBnovas_object_sep()\fP\fP functions can be used to calculate the precise apparent distance between to spherical or equatorial locations, or between two sources, respectively\&. \fC\fBnovas_sun_angle()\fP\fP and \fC\fBnovas_moon_angle()\fP\fP can be used to calculate the apparent angular distance of sources from the Sun and Moon, respectively\&.
 .IP "\(bu" 2
-#113: New \fC\fBnovas_observable\fP\fP and \fC\fBnovas_track\fP\fP data structures to provide second order Taylor series expansion of the apparent horizontal or equatorial positions, distances and redshifts for sources\&. They can be calculated with the newly added \fC\fBnovas_hor_track()\fP\fP or \fC\fBnovas_equ_track()\fP\fP functions\&. Such tracking values, including rates and accelerations can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources (hence the name)\&. You can also obtain instantaneous projected (extrapolated) positions from the tracking parameters via \fC\fBnovas_track_pos()\fP\fP at low computational cost\&.
+#113: New \fC\fBnovas_observable\fP\fP and \fC\fBnovas_track\fP\fP data structures to provide second order Taylor series expansion of the apparent horizontal or equatorial positions, distances, and redshifts for sources\&. They can be calculated with the newly added \fC\fBnovas_hor_track()\fP\fP or \fC\fBnovas_equ_track()\fP\fP functions\&. Such tracking values, including rates and accelerations, can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources (hence the name)\&. You can also obtain instantaneous projected (extrapolated) positions from the tracking parameters via \fC\fBnovas_track_pos()\fP\fP at low computational cost\&.
 .IP "\(bu" 2
 #113: New \fC\fBnovas_los_to_xyz()\fP\fP and \fC\fBnovas_xyz_to_los()\fP\fP functions to convert between line-of-sight (, , r) vectors and rectangular equatorial (x, y, z) vectors\&.
 .IP "\(bu" 2
@@ -50,21 +50,23 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 .IP "\(bu" 2
 #122: New \fC\fBnovas_jd_to_date()\fP\fP, and \fC\fBnovas_jd_from_date()\fP\fP which convert between JD day and calendar dates using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date\&.
 .IP "\(bu" 2
-#131: New \fC\fBnovas_date()\fP\fP and \fC\fBnovas_date_scale()\fP\fP for the simplest conversion of string times to Julian days, and in case of the latter also to a corresponding timescale\&.
+#131: New \fC\fBnovas_date()\fP\fP and \fC\fBnovas_date_scale()\fP\fP for the simplest conversion of string times to Julian days, and in case of the latter also to a corresponding timescale (without returning a parse position)\&.
 .IP "\(bu" 2
 #133: New \fC\fBnovas_parse_timescale()\fP\fP to parse a timescale from a string specification, and return the updated parse position after also\&.
 .IP "\(bu" 2
 #134: New \fC\fBnovas_parse_hours()\fP\fP and \fC\fBnovas_parse_degrees()\fP\fP to convert strings in decimal or HMS/DMS formats to floating point values for SuperNOVAS, and return the parse position after the time/angle specification\&.
 .IP "\(bu" 2
-#135: New \fC\fBnovas_str_hours()\fP\fP and \fC\fBnovas_str_degrees()\fP\fP for the simplest conversion of strings in decimal or HMS/DMS formats to floating point values for SuperNOVAS (without parse position)\&.
+#135: New \fC\fBnovas_str_hours()\fP\fP and \fC\fBnovas_str_degrees()\fP\fP for the simplest conversion of strings in decimal or HMS/DMS formats to floating point values for SuperNOVAS (without retruning a parse position)\&.
 .IP "\(bu" 2
 #137: New \fC\fBnovas_epoch()\fP\fP to convert string coordinate system specifications to the Julian date of the corresponding epoch, and new \fC\fBmake_cat_object_sys()\fP\fP and \fC\fBmake_redshifted_object_sys()\fP\fP to make it simpler to define ICRS catalog sources in the coordinate system of choice\&.
+.IP "\(bu" 2
+#143: Added \fCFORTIFY\fP build configuration setting to enable gcc source code fortification checking by setting the \fC_FORTIFY_SOURCE\fP macro to the specified value\&. It is now used with a value of 3 in the build and test CIs\&.
 .IP "\(bu" 2
 Added \fCexample-time\&.c\fP and \fCexample-rise-set\&.c\fP under \fCexamples/\fP, for demonstrating date/time handling functions and rise, set, and transit time calculations\&.
 .PP
 .SS "Changed"
 .IP "\(bu" 2
-#130 Use C99 \fCrestrict\fP keyword to prevent pointer argument aliasing\&. Modern compilers will warn if restricted pointer arguments are aliased\&.
+#130 Use C99 \fCrestrict\fP keyword to prevent pointer argument aliasing\&. Modern compilers will warn if restricted pointer arguments are aliased\&. At the least, it is a hint to users that pointer arguments marked as such should be distinct from (not overlapping with) the other pointer arguments\&.
 .IP "\(bu" 2
 #139 Reorganized code into more managably sized modules\&. It also makes the API documentation by source file more logically organized\&.
 .IP "\(bu" 2
@@ -72,7 +74,7 @@ Added \fCexample-time\&.c\fP and \fCexample-rise-set\&.c\fP under \fCexamples/\f
 .IP "\(bu" 2
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
 .IP "\(bu" 2
-Modified \fC\fBjulian_date()\fP\fP to add range checking for month and day arguments, and return NAN (with errno set to \fCEINVAL\fP) if the input values are invalid\&.
+Modified \fC\fBjulian_date()\fP\fP to add range checking for month and day arguments, and return NAN (with \fCerrno\fP set to \fCEINVAL\fP) if the input values are invalid\&.
 .IP "\(bu" 2
 \fC\fBjulian_date()\fP\fP and \fC\fBcal_date()\fP\fP now use astronomical calendar dates instead of the fixed Gregorian dates of before\&. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582\&.
 .IP "\(bu" 2

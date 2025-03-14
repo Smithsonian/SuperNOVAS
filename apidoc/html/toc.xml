@@ -56,7 +56,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md94"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.0.0-rc5] - 2025-03-10" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -1145,7 +1145,7 @@
           <topic label="tod_to_j2000" href="system_8c.html#a6205edb1361e56cc0c7aed0f088f7437"/>
         </topic>
         <topic label="target.c" href="target_8c.html">
-          <topic label="_DEFAULT_SOURCE" href="target_8c.html#a8fb447618db946a9e2a596d9ea18763f"/>
+          <topic label="_GNU_SOURCE" href="target_8c.html#a369266c24eacffb87046522897a570d5"/>
           <topic label="make_cat_entry" href="target_8c.html#a39b2e39d29f1b57c5f785284ba7ca43f"/>
           <topic label="make_cat_object" href="target_8c.html#ab9b7a622486f2904615ceed1ba94cd8f"/>
           <topic label="make_cat_object_sys" href="target_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e"/>
@@ -1166,7 +1166,7 @@
           <topic label="transform_hip" href="target_8c.html#af2c03d540de7a8bfafaed27eb9a753c1"/>
         </topic>
         <topic label="timescale.c" href="timescale_8c.html">
-          <topic label="_DEFAULT_SOURCE" href="timescale_8c.html#a8fb447618db946a9e2a596d9ea18763f"/>
+          <topic label="_GNU_SOURCE" href="timescale_8c.html#a369266c24eacffb87046522897a570d5"/>
           <topic label="get_ut1_to_tt" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6"/>
           <topic label="get_utc_to_tt" href="timescale_8c.html#ab7611704bab9ce717744a8b5575c5378"/>
           <topic label="novas_date" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468"/>
