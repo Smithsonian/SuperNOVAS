@@ -459,7 +459,7 @@ And, if you have LSR-based radial velocities instead of Solar-system Barycentric
 these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_ssb_vel()`.
 
 Next, we create a generic celestial `object` from the catalog source. (The `object` structure handles various 
-Solar-system sources also, as you'll see further below). Whereas out catalog source may have been defined in any 
+Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any 
 epoch / catalog system, the `object` structure shall contain ICRS coordinates always:
 
 ```c
