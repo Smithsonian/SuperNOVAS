@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CC: gcc
+      FORTIFY: 3
     steps:
 
     - uses: actions/checkout@v4
