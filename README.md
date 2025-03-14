@@ -475,10 +475,14 @@ separators used between the components and more, e.g.:
 And, if you have LSR-based radial velocities instead of Solar-system Barycentric radial velocities, you may convert 
 these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_ssb_vel()`.
 
+Next, we create a generic celestial `object` from the catalog source. (The `object` structure handles various 
+Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any 
+epoch / catalog system, the `object` structure shall contain ICRS coordinates always:
+
 ```c
  object source;   // Common structure for a sidereal or an Solar-system source
   
- // Convert B1950 to ICRS and wrap in a generic source data structure...
+ // Use the B1950 coodinates for generic source data structure in ICRS...
  make_cat_object_sys(&star, "B1950", &source);
 ```
 
@@ -506,9 +510,18 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-Again you might use `novas_str_degrees()` for string representations of the longitude and latitude coordinates here.
-You can also specify airborne observers, or observers in Earth orbit, in Sun orbit, at the geocenter, or at the 
-Solar-system barycenter.
+Again you might use `novas_str_degrees()` for typical string representations of the longitude and latitude coordinates 
+here, such as:
+
+```c
+ make_observer_on_surface(
+   novas_str_degrees("50.7374N"),
+   novas_str_degrees("7.0982 deg E"),
+   60.0, 0.0, 0.0, &obs);
+```
+
+Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the 
+geocenter, or at the Solar-system barycenter.
 
 
 <a name="specify-time"></a>
@@ -581,10 +594,10 @@ create derivative frames for different observer locations, if need be, via `nova
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
 sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
-low-precision Earth and Sun calculator included by default), to account for gravitational bending around massive 
-planets. Without it, &mu;as accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy 
-frames without an appropriate high-precision ephemeris provider will result in an error from the requisite 
-`ephemeris()` call. 
+low-precision Earth and Sun calculator included by default), both for precise Earth-based observer locations and to 
+account for gravitational bending around the Sun and massive planets. Without them, &mu;as accuracy cannot be ensured, 
+in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision ephemeris 
+provider will result in an error from the requisite `ephemeris()` calls. 
 
 <a name="apparent-place"></a>
 #### Calculate an apparent place on sky
@@ -624,11 +637,11 @@ location, you can proceed from the `sky_pos` data you obtained above (in whichev
    &az, &el);
 ```
 
-Above we converted the apparent coordinates, assuming they were calculated in CIRS, to refracted azimuth and 
-elevation coordinates at the observing location, using the `novas_standard_refraction()` function to provide a 
-suitable refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data 
-embedded in the frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate 
-unrefracted elevation angles.
+Above we converted the apparent coordinates, that were calculated in CIRS, to refracted azimuth and elevation 
+coordinates at the observing location, using the `novas_standard_refraction()` function to provide a suitable 
+refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data embedded in the 
+frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate unrefracted elevation 
+angles.
 
 <a name="rise-set-transit"></a>
 #### Calculate rise, set, and transit times
@@ -656,9 +669,10 @@ observer frame.
 
 Note, that in the current implementation these calls are not well-suited sources that are at or within the 
 geostationary orbit, such as such as low-Earth orbit satellites (LEOs), geostationary satellites (which never really 
-rise, set, or transit), or some Near Earth Objects (NEOs). For these, the above calls may still return a valid time, 
-only without the guarantee that it is the time of the first such event after the specified frame instant. A future 
-implementation may address near-Earth orbits better, so stay tuned for updates.
+rise, set, or transit), or some Near Earth Objects (NEOs), which will rise set multiple times per day. For the latter, 
+the above calls may still return a valid time, only without the guarantee that it is the time of the first such event 
+after the specified frame instant. A future implementation may address near-Earth orbits better, so stay tuned for 
+updates.
 
 
 <a name="solsys-example"></a>
@@ -774,9 +788,9 @@ set of input parameters while, at the same time, another thread is saving cached
 parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, 
 or more precisely they may not correspond to the requested input parameters.
  
-While you should never call NOVAS C from  multiple threads simultaneously, SuperNOVAS caches the results in thread
-local variables (provided your compiler supports it), and is therefore generally safe to use in multi-threaded 
-applications. Just make sure that you:
+While you should never call the original NOVAS C library from multiple threads simultaneously, SuperNOVAS caches the 
+results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in 
+multi-threaded applications. Just make sure that you:
 
  - use a compiler which supports the C11 language standard;
  - or, compile with GCC &gt;= 3.3;
@@ -842,7 +856,7 @@ Finally, you can combine them to convert between two different conventional unit
 <a name="string-times-and-angles"></a>
 ### String times and angles
 
-__SuperNOVAS__ functions typically input and output time and angles as decimal values (hours and degrees, but also as 
+__SuperNOVAS__ functions typically input and output times and angles as decimal values (hours and degrees, but also as 
 days and hour-angles), but that is not how these are represented in many cases. Time and right-ascention are often 
 given as string values indicating hours, minutes, and seconds (e.g. "11:32:31.595", or "11h 32m 31.595s"). Similarly 
 angles, are commonly represented as degrees, arc-minutes, and arc-seconds (e.g. "+53 60 19.9"). For that reason, 
@@ -1000,14 +1014,14 @@ before that level of accuracy is reached.
     gravitational bending around massive Solar-system bodies, and hence will require you to provide a high-precision 
     ephemeris provider for the major planets. Without it, there is no guarantee of achieving the desired &mu;as-level 
     precision in general, especially when observing near massive planets (e.g. observing Jupiter's or Saturn's moons, 
-    near transit). Therefore some functions will return with an error, if used with `NOVAS_FULL_ACCURACY` in the 
-    absense of a suitable high-precision planetary ephemeris provider.
+    near conjuction with the host planet). Therefore some functions will return with an error, if used with 
+    `NOVAS_FULL_ACCURACY` in the absense of a suitable high-precision planetary ephemeris provider.
 
  3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun. For the highest precision calculations you also need 
     positions for all major planets to calculate gravitational deflection precisely. By default SuperNOVAS can only 
     provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly not at 
-    the sub-microarcsecond level, and not for other solar-system sources. You will need to provide a way to interface 
+    the sub-microarcsecond level, and not for other Solar-system sources. You will need to provide a way to interface 
     SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from JPL or CALCEPH) if you want to use it 
     to obtain precise positions for Solar-system bodies. See the [section further below](#solarsystem) for more 
     information how you can do that.
@@ -1017,17 +1031,17 @@ before that level of accuracy is reached.
     nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
-    (DUT1) time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` 
-    functions to apply / use the published values from these to improve the astrometric precision of Earth-orientation
-    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
-    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
+    time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` functions 
+    to apply / use the published values from these to improve the astrometric precision of Earth-orientation based 
+    coordinate calculations. Without setting and using the actual polar offset values for the time of observation, 
+    positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
    
   5. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
     using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
     Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
-    radio refraction model is included as of version 1.1. In any case you may want to skip the refraction corrections 
-    offered in this library, and instead implement your own as appropriate (or not at all).
+    radio refraction model is included as of version 1.1 also. In any case you may want to skip the refraction 
+    corrections offered in this library, and instead implement your own as appropriate (or not at all).
   
 
 
@@ -1044,7 +1058,6 @@ so new, run-of-the-mill PC might perform.
 | ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
 |:--:| 
 | __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
-
 
 The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either 
 the __SuperNOVAS__ `novas_sky_pos()` or the legacy NOVAS C `place()`, both in full accuracy and reduced accuracy 
@@ -1110,8 +1123,8 @@ one minute.
 <a name="added-functionality"></a>
 ### New functionality highlights
 
- Below is a non-exhaustive enumeration of some of the new features added by SuperNOVAS on top of the existing NOVAS C
- API. See `CHANGELOG.md` for more details.
+ Below is a non-exhaustive overview new features added by SuperNOVAS on top of the existing NOVAS C API. See 
+ `CHANGELOG.md` for more details.
  
  
 #### New in v1.0
@@ -1160,7 +1173,7 @@ one minute.
  - New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model
    based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and 
    may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in the reverse 
-   direction (observer vs astrometric elevations) as needed.
+   direction (observed vs astrometric elevations as the input) as needed.
 
 
 #### New in v1.2
@@ -1364,7 +1377,8 @@ code:
 ```
 
 All modern JPL (SPK) ephemeris files should work with the `solsys-calceph` plugin. When linking your application, 
-add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`). That's all there is to it.
+add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`), and of course the CSPICE library
+too. That's all there is to it.
 
 
 <a name="cspice-integration"></a>
@@ -1411,18 +1425,20 @@ Here is an example on how you might use CSPICE with SuperNOVAS in your applicati
 ```
 
 All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking your application, add `-lsolsys-cspice` 
-to your link flags (or else link with `solsys-cspice.o`). That's all there is to it.
+to your link flags (or else link with `solsys-cspice.o`), and link against te calceph library also (`-lcalceph`). 
+That's all there is to it.
 
 
 <a name="universal-ephemerides"></a>
 ### Universal ephemeris data / service integration 
 
 Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
-`novas_ephem_provider`, e.g.:
+`novas_ephem_provider` function, e.g.:
 
 ```c
  int my_ephem_reader(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
-                     enum novas_origin *origin, double *pos, double *vel) {
+                     enum novas_origin *restrict origin, 
+                     double *restric pos, double *restrict vel) {
    // Your custom ephemeris reader implementation here
    ...
  }
@@ -1482,8 +1498,8 @@ way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, 
 Either way, before you can use the ephemeris, you must also open the relevant ephemeris data file with `ephem_open()`:
 
 ```c
- int de_number;	         // The DE number, e.g. 405 for DE405
  double from_jd, to_jd;  // [day] Julian date range of the ephemeris data
+ int de_number;	         // Will be set to the DE number, e.g. 405 for DE405
   
  ephem_open("path/to/de405.bsp", &from_jd, &to_jd, &de_number);
 ```
@@ -1503,11 +1519,11 @@ That's all, except the warning that this method will not work with newer JPL eph
 
 #### Planets via JPL's `pleph` FORTRAN interface
 
-To interface eith the JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS with 
-`BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your appropriately modified 
-`jplint.f` (from the `examples` sub-directory) explicitly, together with the JPL PLEPH library. If you want this to 
-be your default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in `config.mk`. 
-Otherwise, your application should set your planetary ephemeris provider at runtime via:
+To interface eith the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS 
+with `BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your appropriately 
+modified `jplint.f` (from the `examples` sub-directory) explicitly, together with the JPL PLEPH library. If you want 
+this to be your default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in 
+`config.mk`. Otherwise, your application should set your planetary ephemeris provider at runtime via:
 
 ```c
  set_planet_provider(planet_jplint);
