@@ -27,7 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CC: gcc
-      CFLAGS: -Os -Wall -Wextra -Werror -std=c99
+      CFLAGS: -Os -Wall -Werror
+      CSTANDARD: c99
+      WEXTRA: 1
+      FORTIFY: 3
     steps:
     - uses: actions/checkout@v4
 

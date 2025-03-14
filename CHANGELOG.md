@@ -105,6 +105,9 @@ calculations.
    epoch, and new `make_cat_object_sys()` and `make_redshifted_object_sys()` to make it simpler to define ICRS catalog 
    sources in the coordinate system of choice.
 
+ - #143: Added `FORTIFY` build configuration setting to enable gcc source code fortification checking by setting the
+   `_FORTIFY_SOURCE` macro to the specified value. It is now used with a value of 3 in the build and test CIs. 
+
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations. 
 

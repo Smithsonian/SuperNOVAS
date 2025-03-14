@@ -34,6 +34,11 @@ ifeq ($(WEXTRA), 1)
   CFLAGS += -Wextra
 endif
 
+# Add source code fortification checks
+ifdef FORTIFY 
+  CFLAGS += -D_FORTIFY_SOURCE=$(FORTIFY)
+endif
+
 # Specific Doxygen to use if not the default one
 #DOXYGEN ?= /opt/bin/doxygen
 

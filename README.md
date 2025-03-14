@@ -249,6 +249,9 @@ Additionally, you may set number of environment variables to futher customize th
    
  - `WEXTRA`: If set to 1, `-Wextra` is added to `CFLAGS` automatically.
    
+ - `FORTIFY`: If set it will set the `_FORTIFY_SOURCE` macro to the specified value (`gcc` supports values 1 
+   through 3). It affords varying levels of extra compile time / runtime checks.
+   
  - `LDFLAGS`: Extra linker flags (default is _not set_). Note, `-lm -lxchange` will be added automatically.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
