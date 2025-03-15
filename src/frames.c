@@ -1318,9 +1318,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   static const char *fn = "novas_cross_el_time";
 
   const on_surface *loc;
-  const novas_timespec *t0;
   novas_frame frame1;
-  novas_timespec t = {};
   double jd0_tt;
   int i;
 
@@ -1334,21 +1332,19 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
   el *= DEGREE;                     // convert to degrees.
   frame1 = *frame;                  // Time shifted frame
-  t0 = &frame->time;
-  jd0_tt = t0->ijd_tt + t0->fjd_tt;
+  jd0_tt = novas_get_time(&frame->time, NOVAS_TT);
   loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
 
   for(i = 0; i < novas_inv_max_iter; i++) {
     sky_pos pos = {};
-    double ref = 0.0, lha;
-    double dhr;
+    novas_timespec t = frame1.time;
+    double ref = 0.0, lha, dhr;
 
     prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
 
-    if(ref_model) {
+    if(ref_model)
       // Apply (possibly time-specific) refraction correction
       ref = ref_model(novas_get_time(&t, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el) * DEGREE;
-    }
 
     // Hourangle when source crosses nominal elevation
     lha = sign ? calc_lha(el - ref, pos.dec * NOVAS_DEGREE, loc->latitude * NOVAS_DEGREE) : 0.0;
@@ -1358,7 +1354,6 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     }
 
     // Adjusted frame time for last crossing time estimate
-    t = frame1.time;
     dhr = remainder((pos.ra + sign * lha - novas_frame_lst(&frame1)), DAY_HOURS);
     t.fjd_tt += dhr / DAY_HOURS / SIDEREAL_RATE;
 
@@ -1367,22 +1362,16 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
       dhr += DAY_HOURS;
     }
 
-    if(source->type == NOVAS_CATALOG_OBJECT)
-      break;              // That's it for catalog sources
-
-    if(fabs(dhr) < 1e-7)
-      break;              // Check if converged (ms precision)
+    // Done if catalog source or if time converged to ms accuracy
+    if(source->type == NOVAS_CATALOG_OBJECT || fabs(dhr) < 1e-8)
+      return novas_get_time(&t, NOVAS_UTC);
 
     // Make a new observer frame for the shifted time for the next iteration
     novas_make_frame(frame->accuracy, &frame->observer, &t, frame->dx, frame->dy, &frame1);
   }
 
-  if(i >= novas_inv_max_iter) {
-    novas_error(0, ECANCELED, fn, "failed to converge");
-    return NAN;
-  }
-
-  return novas_get_time(&t, NOVAS_UTC);
+  novas_error(0, ECANCELED, fn, "failed to converge");
+  return NAN;
 }
 
 /**
