@@ -1304,11 +1304,11 @@ static double calc_lha(double el, double dec, double lat) {
  * @param sign        1 for rise time, or -1 for setting time, or 0 for transit.
  * @param source      Observed source
  * @param frame       Observing frame, defining the observer location and astronomical time
- *                    of observation.
- * @param ref_model   Refraction model, or NULL to calculate unrefracted rise time.
+ *                    of observation, which defines a lower-bound for the returned time.
+ * @param ref_model   Refraction model, or NULL to calculate unrefracted rise/set times.
  * @return            [day] UTC-based Julian date at which the object crosses the specified elevation
- *                    in the 24 hour period after the specified date, or else NAN if the source stays
- *                    above or below the given elevation for the entire 24-hour period.
+ *                    (or transits) in the 24 hour period after the specified date, or else NAN if the
+ *                    source stays above or below the given elevation for the entire 24-hour period.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1357,8 +1357,9 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     dhr = remainder((pos.ra + sign * lha - novas_frame_lst(&frame1)), DAY_HOURS);
     t.fjd_tt += dhr / DAY_HOURS / SIDEREAL_RATE;
 
+    // Make sure that calculated time is after input frame time.
     if((t.ijd_tt + t.fjd_tt) < jd0_tt) {
-      t.ijd_tt++;        // Make sure that rise/set time is after input frame time.
+      t.ijd_tt++;
       dhr += DAY_HOURS;
     }
 
