@@ -1346,7 +1346,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
     if(ref_model) {
       // Apply (possibly time-specific) refraction correction
-      ref = ref_model(novas_get_time(&frame->time, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el) * DEGREE;
+      ref = ref_model(novas_get_time(&t, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el) * DEGREE;
     }
 
     // Hourangle when source crosses nominal elevation
@@ -1361,7 +1361,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     t.fjd_tt += remainder((pos.ra + sign * lha - novas_frame_lst(&frame1)) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
 
     if((t.ijd_tt + t.fjd_tt) < jd0_tt)
-      t.ijd_tt++;        // Make sure that rise/set time is after input frame time.
+      t.fjd_tt += 0.5;        // Make sure that rise/set time is after input frame time.
 
     if(source->type == NOVAS_CATALOG_OBJECT)
       break;              // That's it for catalog sources
