@@ -1360,7 +1360,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     // Make sure that calculated time is after input frame time.
     if((t.ijd_tt + t.fjd_tt) < jd0_tt) {
       t.ijd_tt++;
-      dhr += DAY_HOURS;
+      dhr += DAY_HOURS / SIDEREAL_RATE;
     }
 
     // Done if catalog source or if time converged to ms accuracy
