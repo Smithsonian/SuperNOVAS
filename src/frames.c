@@ -1319,9 +1319,9 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
   const on_surface *loc;
   const novas_timespec *t0;
-  novas_timespec t = {};
   novas_frame frame1;
-  double jd0_tt, lastRA = NAN;
+  novas_timespec t = {};
+  double jd0_tt;
   int i;
 
   if(!source) {
@@ -1341,12 +1341,13 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   for(i = 0; i < novas_inv_max_iter; i++) {
     sky_pos pos = {};
     double ref = 0.0, lha;
+    double dhr;
 
     prop_error(fn, novas_sky_pos(source, &frame1, NOVAS_TOD, &pos), 0);
 
     if(ref_model) {
       // Apply (possibly time-specific) refraction correction
-      ref = ref_model(novas_get_time(&frame->time, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el) * DEGREE;
+      ref = ref_model(novas_get_time(&t, NOVAS_TT), &frame->observer.on_surf, NOVAS_REFRACT_OBSERVED, el) * DEGREE;
     }
 
     // Hourangle when source crosses nominal elevation
@@ -1358,17 +1359,19 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
 
     // Adjusted frame time for last crossing time estimate
     t = frame1.time;
-    t.fjd_tt += remainder((pos.ra + sign * lha - novas_frame_lst(&frame1)) / SIDEREAL_RATE, DAY_HOURS) / DAY_HOURS;
+    dhr = remainder((pos.ra + sign * lha - novas_frame_lst(&frame1)), DAY_HOURS);
+    t.fjd_tt += dhr / DAY_HOURS / SIDEREAL_RATE;
 
-    if((t.ijd_tt + t.fjd_tt) < jd0_tt)
+    if((t.ijd_tt + t.fjd_tt) < jd0_tt) {
       t.ijd_tt++;        // Make sure that rise/set time is after input frame time.
+      dhr += DAY_HOURS;
+    }
 
     if(source->type == NOVAS_CATALOG_OBJECT)
       break;              // That's it for catalog sources
-    if(fabs(remainder(pos.ra - lastRA, DAY_HOURS)) < 1e-8)
-      break;              // Check if converged (ms precision)
 
-    lastRA = pos.ra;
+    if(fabs(dhr) < 1e-7)
+      break;              // Check if converged (ms precision)
 
     // Make a new observer frame for the shifted time for the next iteration
     novas_make_frame(frame->accuracy, &frame->observer, &t, frame->dx, frame->dy, &frame1);
