@@ -37,13 +37,13 @@ calculations.
    
  - #113: New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or 
    sets below a specific elevation on a given date, and `novas_transit_time()` to calculate the time a source transits 
-   over the local meridian. (For Earth-based observers only). #140: Further fixes to these calculations after the 
-   v1.3.0-rc4 release candidate [thanks to valeriy-sokoloff].
+   over the local meridian. (For Earth-based observers only). #140, #146: Further fixes to these calculations after 
+   the v1.3.0-rc4 release candidate [thanks to valeriy-sokoloff].
 
  - #113: New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given 
    date. The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, 
-   while `novas_solar_illum()` can be used to calculate the fraction of a spherical body that is illuminated by the Sun 
-   seen from the observer location.
+   while `novas_solar_illum()` can be used to calculate the fraction of a spherical body that is illuminated by the 
+   Sun seen from the observer location.
 
  - #113: New `novas_hpa()` and `novas_epa()` functions to calculate the parallactic angle (a.k.a. vertical position 
    angle) for a given location on sky, using the local horizontal coordinates, or else the equatorial position, 
