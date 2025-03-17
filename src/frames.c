@@ -1309,6 +1309,7 @@ static double calc_lha(double el, double dec, double lat) {
  * @return            [day] UTC-based Julian date at which the object crosses the specified elevation
  *                    (or transits) in the 24 hour period after the specified date, or else NAN if the
  *                    source stays above or below the given elevation for the entire 24-hour period.
+ *                    Valid times have a typical accuracy at the millisecond level.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1364,6 +1365,8 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     }
 
     // Done if catalog source or if time converged to ms accuracy
+    // We run into the numerical precision limit for the Moon at around 1e-8 hours, so
+    // the convergence criterion should be significantly higher than that.
     if(source->type == NOVAS_CATALOG_OBJECT || fabs(dhr) < 1e-7)
       return novas_get_time(&t, NOVAS_UTC);
 
