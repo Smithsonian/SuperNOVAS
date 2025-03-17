@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.3.0-rc6] - 2025-03-17
 
 Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such 
 as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric 
@@ -38,7 +38,7 @@ calculations.
  - #113: New `novas_rises_above()` and `novas_sets_below()` functions to return the date/time a source rises above or 
    sets below a specific elevation on a given date, and `novas_transit_time()` to calculate the time a source transits 
    over the local meridian. (For Earth-based observers only). #140, #146: Further fixes to these calculations after 
-   the v1.3.0-rc4 release candidate [thanks to valeriy-sokoloff].
+   the v1.3.0-rc5 release candidate [thanks to valeriy-sokoloff].
 
  - #113: New `novas_helio_dist()` function to calculate the heliocentric distance of a Solar-system body on a given 
    date. The `novas_solar_power()` function can be used to estimate the incident Solar power on a Solar-system body, 
