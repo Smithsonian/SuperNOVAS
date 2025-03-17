@@ -1315,7 +1315,7 @@ static double calc_lha(double el, double dec, double lat) {
  *
  */
 static double novas_cross_el_date(double el, int sign, const object *source, const novas_frame *frame, RefractionModel ref_model) {
-  static const char *fn = "novas_cross_el_time";
+  static const char *fn = "novas_cross_el_date";
 
   const on_surface *loc;
   novas_frame frame1;
@@ -1364,7 +1364,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     }
 
     // Done if catalog source or if time converged to ms accuracy
-    if(source->type == NOVAS_CATALOG_OBJECT || fabs(dhr) < 1e-8)
+    if(source->type == NOVAS_CATALOG_OBJECT || fabs(dhr) < 1e-7)
       return novas_get_time(&t, NOVAS_UTC);
 
     // Make a new observer frame for the shifted time for the next iteration
