@@ -131,9 +131,10 @@ int main(int argc, const char *argv[]) {
 
   /*
   // Or using a string date, e.g:
-  if(novas_set_time(NOVAS_UTC,
-    novas_date("2025-03-09T11:03:28+0200"),
-    37, 0.044, &obs_time);
+  if(novas_set_time(NOVAS_UTC, novas_date("2025-03-09T11:03:28+0200"), 37, 0.044, &obs_time)) {
+    fprintf(stderr, "ERROR! failed to set time of observation.\n");
+    return 1;
+  }
   */
 
 
