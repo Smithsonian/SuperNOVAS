@@ -103,6 +103,9 @@ double novas_epoch(const char *restrict system) {
  * minutes and seconds may be separated by `m` or a single quote `'`. The seconds may be followed
  * by 's' or double quote `"`.
  *
+ * There is no enforcement on the range of hours that can be represented in this way. Any
+ * finite angle is parseable, even if it is outside its conventional range of 0-24h.
+ *
  * For example, all of the lines below are valid specifications:
  *
  * <pre>
@@ -187,6 +190,9 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
  * and seconds may be separated by `m` or a single quote `'`. The seconds may be followed by 's'
  * or double quote `"`.
  *
+ * There is no enforcement on the range of hours that can be represented in this way. Any
+ * finite angle is parseable, even if it is outside its conventional range of 0-24h.
+ *
  * For example, all of the lines below specify the same time:
  *
  * <pre>
@@ -237,14 +243,53 @@ double novas_hms_hours(const char *restrict hms) {
   return h;
 }
 
+static int parse_compass(const char *restrict str, int *n) {
+  char compass[7] = {};
+  int from = 0;
+
+  *n = 0;
+
+  // Skip underscores and white spaces
+  while(str[from] && (str[from] == '_' || isspace(str[from]) || ispunct(str[from]))) from++;
+
+  // Compass direction (if any)
+  if(sscanf(&str[from], "%6s", compass) > 0) {
+    int i;
+
+    for(i = 0; compass[i]; i++)
+      if(compass[i] == '_' || ispunct(compass[i])) {
+        compass[i] = '\0';
+        break;
+      }
+
+    if(strcmp(compass, "N") == 0 || strcmp(compass, "E") == 0 ||
+            strcasecmp(compass, "north") == 0 || strcasecmp(compass, "east") == 0) {
+      *n = from + i;
+      return 1;
+    }
+    else if (strcmp(compass, "S") == 0 || strcmp(compass, "W") == 0 ||
+            strcasecmp(compass, "south") == 0 || strcasecmp(compass, "west") == 0) {
+      *n = from + i;
+      return -1;
+    }
+  }
+
+  return 0;
+}
+
 /**
  * Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and
  * (arc)second components may be separated by spaces, tabs, colons `:`, underscore `_`, or a
  * combination thereof. Additionally, the degree and minutes may be separated by the letter `d`,
  * and the minutes and seconds may be separated by `m` or a single quote `'`. The seconds may be
- * followed by 's' or a double quote `"`. Finally, the last component may additionally
- * be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass
+ * followed by `s` or a double quote `"`. Finally, the leading or trailing component may
+ * additionally be a standalone upper-case letter 'N', 'E', 'S', or 'W' or the
+ * words 'North', 'East', 'South', or 'West' (case insensitive), signifying a compass
  * direction.
+ *
+ * There is no enforcement on the range of angles that can be represented in this way. Any
+ * finite angle is parseable, even if it is outside its conventional range, such as +- 90
+ * degrees N/S.
  *
  * For example, all of the lines below are valid specifications:
  *
@@ -254,8 +299,11 @@ double novas_hms_hours(const char *restrict hms) {
  *  -179 59' 59.999
  *  179:59:59.999S
  *  179:59:59.999 W
+ *  179:59:59.999 West
  *  179_59_59.999__S
  *  179 59 S
+ *  W 179 59 59
+ *  North 179 59
  * </pre>
  *
  * At least the leading two components (degrees and arcminutes) are required. If the arcseconds
@@ -280,9 +328,9 @@ double novas_hms_hours(const char *restrict hms) {
 double novas_parse_dms(const char *restrict dms, char **restrict tail) {
   static const char *fn = "novas_dms_degrees";
 
-  int d = 0, m = 0, n = 0, k = 0, l = 0;
+  int sign = 0, d = 0, m = 0, nv = 0, nu = 0, nc = 0;
   double s = 0.0;
-  char next, compass[3] = {};
+  char *str;
 
   if(tail)
     *tail = (char *) dms;
@@ -296,7 +344,10 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
     return NAN;
   }
 
-  if(sscanf(dms, "%d%*[:d _\t]%d%n%*[:m' _\t]%lf%n", &d, &m, &n, &s, &n) < 2) {
+  sign = parse_compass(dms, &nc);
+  str = (char *) dms + nc;
+
+  if(sscanf(str, "%d%*[:d _\t]%d%n%*[:m' _\t]%lf%n", &d, &m, &nv, &s, &nv) < 2) {
     novas_error(0, EINVAL, fn, "not in DMS format: '%s'", dms);
     return NAN;
   }
@@ -311,40 +362,27 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
     return NAN;
   }
 
+  if(toupper(str[nv-1]) == 'E')
+    nv--; /// don't treat trailing 'E' as part of the number
+
   s = abs(d) + (m / 60.0) + (s / 3600.0);
+
   if (d < 0)
     s = -s;
 
-  if(dms[n-1] == 'E') {
-    // An 'E' immediately after the last numerical value, is parsed as part of the number
-    // but we should interpret it as a compass direction below.
-    n--;
+  if(sign < 0) {
+    s = -s;
   }
 
   // Trailing seconds marker (if any)
-  sscanf(&dms[n], "%*[ _\t]%*[s\"]%n", &k);
+  sscanf(&str[nv], "%*[ _\t]%*[s\"]%n", &nu);
 
   // Compass direction (if any)
-  if(sscanf(&dms[n + k], "%2s%n", compass, &l) > 0) {
-    if(compass[1] == '_' || ispunct(compass[1]))
-      compass[1] = '\0';
-
-    if(strcmp(compass, "N") == 0 || strcmp(compass, "E") == 0) {
-      k += l;
-    }
-    else if (strcmp(compass, "S") == 0 || strcmp(compass, "W") == 0) {
-      s = -s;
-      k += l;
-    }
-  }
-
-  // The trailing markers must be standalone (end of string or followed by white space)
-  next = dms[n + k];
-  if(next == '\0' || next == '_' || isspace(next) || ispunct(next))
-    n += k;
+  if(nc == 0 && parse_compass(&str[nv + nu], &nc) < 0)
+    s = -s;
 
   if(tail)
-    *tail += n;
+    *tail = (char *) dms + nv + nu + nc;
 
   return s;
 }
@@ -354,8 +392,13 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  * (arc)second components may be separated by spaces, tabs, colons `:`, or a combination thereof.
  * Additionally, the degree and minutes may be separated by the letter `d`, and the minutes and
  * seconds may be separated by `m` or a single quote `'`. The seconds may be followed by 's' or
- * double quote `"`. Finally, the last component may additionally be followed by a standalone
- * upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction.
+ * double quote `"`. Finally, the leading or trailing component may additionally be a
+ * standalone upper-case letter 'N', 'E', 'S', or 'W' or the words 'North', 'East', 'South', or
+ * 'West' (case insensitive), signifying a compass direction.
+ *
+ * There is no enforcement on the range of angles that can be represented in this way. Any
+ * finite angle is parseable, even if it is outside its conventional range, such as +- 90
+ * degrees N/S.
  *
  * For example, all of the lines below are valid specifications:
  *
@@ -365,7 +408,10 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  *  -179 59' 59.999
  *  179:59:59.999S
  *  179 59 59.999 W
+ *  179 59 59.999 west
  *  179_59_59.999__S
+ *  W 179 59 59
+ *  North 179 59
  * </pre>
  *
  * At least the leading two components (degrees and arcminutes) are required. If the arcseconds
@@ -414,19 +460,29 @@ double novas_dms_degrees(const char *restrict dms) {
  * The decimal representation may be followed by a unit designator: "d", "dg", "deg", "degree",
  * or "degrees", which will be parsed case-insensitively also, if present.
  *
- * Both DMS and decimal values may end with a compass direction: `N`, `E`, `S`, or `W`.
+ * Both DMS and decimal values may start or end with a compass direction: such as an upper-case
+ * letter `N`, `E`, `S`, or `W`, or else the case-insensitive words 'North', 'East', 'South' or
+ * 'West'.
+ *
+ * There is no enforcement on the range of angles that can be represented in this way. Any
+ * finite angle is parseable, even if it is outside its conventional range, such as +- 90
+ * degrees N/S.
  *
  * A few examples of angles that may be parsed:
  *
  * <pre>
  *  -179:59:59.999
  *  -179d 59m 59.999s
- *  179 59 59.999 S
+ *  179 59' 59.999" S
  *  179 59 S
  *  -179.99999d
  *  -179.99999
  *  179.99999W
+ *  179.99999 West
  *  179.99999 deg S
+ *  W 179.99999d
+ *  North 179 59
+ *  east 179.99 degrees
  * </pre>
  *
  *
@@ -454,7 +510,8 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
 
   double deg;
   enum novas_debug_mode debug = novas_get_debug_mode();
-  int n = 0;
+  int sign, n = 0, nc = 0;
+  char *next;
 
   if(tail)
     *tail = (char *) str;
@@ -471,53 +528,48 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
   if(!isnan(deg))
     return deg;
 
-  if(sscanf(str, "%lf%n", &deg, &n) > 0) {
-    char compass[3] = {}, unit[9] = {};
-    int n1, n2 = 0;
+  sign = parse_compass(str, &nc);
+  next = (char *) str + nc;
 
-    if(str[n-1] == 'E')       /// trailing E compass, handled below
+  if(sscanf(next, "%lf%n", &deg, &n) > 0) {
+    char unit[9] = {};
+    int n1, nu = 0;
+
+    if(toupper(next[n-1]) == 'E')       /// don't treat trailing 'E' as part of the number
       n--;
 
     // Skip underscores and white spaces
-    for(n1 = n; str[n1] && (str[n1] == '_' || isspace(str[n1])); n1++);
+    for(n1 = n; next[n1] && (next[n1] == '_' || isspace(next[n1]));) n1++;
 
     // Skip over unit specification
-    if(sscanf(&str[n1], "%8s%n", unit, &n2) > 0) {
+    if(sscanf(&next[n1], "%8s%n", unit, &nu) > 0) {
       static const char *units[] = { "d", "dg", "deg", "degree", "degrees" , NULL};
       int i;
 
       // Terminate unit at punctuation
       for(i = 0; unit[i]; i++) if(unit[i] == '_' || ispunct(unit[i])) {
         unit[i] = '\0';
-        n2 = i;
+        nu = i;
         break;
       }
 
       // Check for match against recognised units.
       for(i = 0; units[i]; i++) if(strcasecmp(units[i], unit) == 0) {
-        n = n1 + n2;
+        n = n1 + nu;
         break;
       }
     }
 
-    // Skip underscores and white spaces
-    for(n1 = n; str[n1] && (str[n1] == '_' || isspace(str[n1])); n1++);
-
-    if(sscanf(&str[n1], "%2s%n", compass, &n2) > 0) {
-      if(compass[1] == '_' || ispunct(compass[1])) /// Punctuation after first character
-        compass[1] = '\0';
-
-      if(strcmp(compass, "N") == 0 || strcmp(compass, "E") == 0) {
-        n = n1 + n2;
-      }
-      else if (strcmp(compass, "S") == 0 || strcmp(compass, "W") == 0) {
-        deg = -deg;
-        n = n1 + n2;
-      }
+    if(nc == 0) {
+      sign = parse_compass(&next[n], &nc);
+      n += nc;
     }
 
+    if(sign < 0)
+      deg = -deg;
+
     if(tail)
-      *tail += n;
+      *tail = next + n;
   }
   else {
     novas_error(0, EINVAL, fn, "invalid angle specification: '%s'", str);
@@ -533,6 +585,9 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
  *
  * The decimal representation may be followed by a unit designator: "h", "hr", "hrs", "hour", or
  * "hours", which will be parsed case-insensitively also, if present.
+ *
+ * There is no enforcement on the range of hours that can be represented in this way. Any
+ * finite angle is parseable, even if it is outside its conventional range of 0-24h.
  *
  * A few examples of angles that may be parsed:
  *
