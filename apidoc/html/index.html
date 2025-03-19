@@ -224,6 +224,7 @@ Building and installation</h2>
 <li><code>FORTIFY</code>: If set it will set the <code>_FORTIFY_SOURCE</code> macro to the specified value (<code>gcc</code> supports values 1 through 3). It affords varying levels of extra compile time / runtime checks.</li>
 <li><code>LDFLAGS</code>: Extra linker flags (default is <em>not set</em>). Note, <code>-lm -lxchange</code> will be added automatically.</li>
 <li><code>CHECKEXTRA</code>: Extra options to pass to <code>cppcheck</code> for the <code>make check</code> target</li>
+<li><code>DOXYGEN</code>: Specify the <code>doxygen</code> executable to use for generating documentation. If not set (default), <code>make</code> will use <code>doxygen</code> in your <code>PATH</code> (if any). You can also set it to <code>none</code> to disable document generation and the checking for a usable <code>doxygen</code> version entirely.</li>
 </ul>
 <p>Now you are ready to build the library:</p>
 <div class="fragment"><div class="line">$ make</div>

@@ -238,6 +238,10 @@ Additionally, you may set number of environment variables to futher customize th
  - `LDFLAGS`: Extra linker flags (default is _not set_). Note, `-lm -lxchange` will be added automatically.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
+ 
+ - `DOXYGEN`: Specify the `doxygen` executable to use for generating documentation. If not set (default), `make` will
+   use `doxygen` in your `PATH` (if any). You can also set it to `none` to disable document generation and the
+   checking for a usable `doxygen` version entirely.
 
 Now you are ready to build the library:
 
