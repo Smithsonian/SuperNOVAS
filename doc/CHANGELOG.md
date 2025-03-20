@@ -120,7 +120,7 @@ calculations.
  - #139 Reorganized code into more managably sized modules. It also makes the API documentation by source file more 
    logically organized.
    
- - #139: Legacy source code moved to `legacy/` folder, and installed into `$(DESTDIR)$(docdir)/legacy/`.
+ - #139: Legacy source code moved to `legacy/` folder.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
