@@ -233,7 +233,7 @@ INSTALL_PROGRAM ?= install
 INSTALL_DATA ?= install -m 644
 
 .PHONY: install
-install: install-libs install-cio-data install-headers install-html install-examples
+install: install-libs install-cio-data install-headers install-html
 
 .PHONY: install-libs
 install-libs:
@@ -273,15 +273,6 @@ ifneq ($(wildcard apidoc/html/search/*),)
 else
 	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
 endif
-
-.PHONY: install-examples
-install-examples:
-	@echo "installing examples to $(DESTDIR)$(docdir)"
-	install -d $(DESTDIR)$(docdir)
-	$(INSTALL_DATA) -D examples/* $(DESTDIR)$(docdir)/
-	install -d $(DESTDIR)$(docdir)/legacy
-	$(INSTALL_DATA) -D legacy/* $(DESTDIR)$(docdir)/legacy/
-
 
 # Some standard GNU targets, that should always exist...
 .PHONY: html
