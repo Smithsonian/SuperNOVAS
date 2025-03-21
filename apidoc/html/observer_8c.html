@@ -153,6 +153,8 @@ Functions</h2></td></tr>
 <tr class="separator:a73fcb54e47b2be0aa92810b5f55f7a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a601d246673742cf72a5dbe1449c97560" id="r_a601d246673742cf72a5dbe1449c97560"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz</a> (const double *los, double lon, double lat, double *xyz)</td></tr>
 <tr class="separator:a601d246673742cf72a5dbe1449c97560"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16c920eee105431247e9a1d9bf1c3021" id="r_a16c920eee105431247e9a1d9bf1c3021"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021">novas_uvw_to_xyz</a> (const double *uvw, double ha, double dec, double *xyz)</td></tr>
+<tr class="separator:a16c920eee105431247e9a1d9bf1c3021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14deb6fdce80ba213e1f1d5238306e17" id="r_a14deb6fdce80ba213e1f1d5238306e17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los</a> (const double *xyz, double lon, double lat, double *los)</td></tr>
 <tr class="separator:a14deb6fdce80ba213e1f1d5238306e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87867e8e7fc7decaa44777a696465353" id="r_a87867e8e7fc7decaa44777a696465353"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353">novas_xyz_to_uvw</a> (const double *xyz, double ha, double dec, double *uvw)</td></tr>
@@ -1208,7 +1210,67 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a> </dd>
+<dd>
+<a class="el" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021">novas_uvw_to_xyz()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a16c920eee105431247e9a1d9bf1c3021" name="a16c920eee105431247e9a1d9bf1c3021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c920eee105431247e9a1d9bf1c3021">&#9670;&#160;</a></span>novas_uvw_to_xyz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_uvw_to_xyz </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>uvw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>xyz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,y,z coordinates (in ITRS) to for a specified line of sight.</p>
+<p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w).</p>
+<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">xyz</td><td>[arb.u.] Absolute or relative u,v,w coordinates (double[3]). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ha</td><td>[h] Hourangle (LST - RA) i.e., the difference between the Local (apparent) Sidereal Time and the apparent (true-of-date) Right Ascension of observed source. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Apparent (true-of-date) declination of source </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">uvw</td><td>[arb.u.] Converted x,y,z coordinates (double[3]) in the same unit as uvw. It may be the same vector as the input.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353">novas_xyz_to_uvw()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a>.</p>
 
 </div>
 </div>
@@ -1262,7 +1324,9 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560">novas_los_to_xyz()</a> </dd>
+<dd>
+<a class="el" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353">novas_xyz_to_uvw()</a> </dd></dl>
 
 </div>
 </div>
@@ -1317,7 +1381,8 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021">novas_uvw_to_xyz()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17">novas_xyz_to_los()</a>.</p>
 

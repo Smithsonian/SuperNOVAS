@@ -67,8 +67,9 @@ calculations.
  - #113: New `novas_los_to_xyz()` and `novas_xyz_to_los()` functions to convert between line-of-sight (&delta;&phi;, 
    &delta;&theta;, &delta;r) vectors and rectangular equatorial (&delta;x, &delta;y, &delta;z) vectors.
    
- - #113: New `novas_xyz_to_uvw()` function to convert ITRS Earth locations (absolute or differential) to equatorial 
-   projections along a line of sight in the direction of a source. Such projections are oft used in interferometry.
+ - #113: New `novas_xyz_to_uvw()` and `novas_uvw_to_xzy()` functions to convert between ITRS Earth locations (absolute 
+   or differential) to equatorial projections along a line of sight in the direction of a source. Such projections are 
+   oft used in interferometry.
 
  - #114: New `novas_lsr_to_ssb_vel()` can be used to convert velocity vectors referenced to the LSR to Solar-System 
    Barycentric velocities. And, `novas_ssb_to_lsr_vel()` to provide the inverse conversion.

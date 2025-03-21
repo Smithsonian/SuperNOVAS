@@ -61,6 +61,9 @@ src/observer.c
 .RI "int \fBnovas_los_to_xyz\fP (const double *los, double lon, double lat, double *xyz)"
 .br
 .ti -1c
+.RI "int \fBnovas_uvw_to_xyz\fP (const double *uvw, double ha, double dec, double *xyz)"
+.br
+.ti -1c
 .RI "int \fBnovas_xyz_to_los\fP (const double *xyz, double lon, double lat, double *los)"
 .br
 .ti -1c
@@ -738,9 +741,52 @@ Attila Kovacs
 \fBSee also\fP
 .RS 4
 \fBnovas_xyz_to_los()\fP 
+.PP
+\fBnovas_uvw_to_xyz()\fP 
 .RE
 .PP
 
+.SS "int novas_uvw_to_xyz (const double * uvw, double ha, double dec, double * xyz)"
+Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,y,z coordinates (in ITRS) to for a specified line of sight\&.
+.PP
+u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&.
+.PP
+x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIxyz\fP [arb\&.u\&.] Absolute or relative u,v,w coordinates (double[3])\&. 
+.br
+\fIha\fP [h] Hourangle (LST - RA) i\&.e\&., the difference between the Local (apparent) Sidereal Time and the apparent (true-of-date) Right Ascension of observed source\&. 
+.br
+\fIdec\fP [deg] Apparent (true-of-date) declination of source 
+.br
+\fIuvw\fP [arb\&.u\&.] Converted x,y,z coordinates (double[3]) in the same unit as uvw\&. It may be the same vector as the input\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+0 if successful, or else -1 if either vector argument is NULL (errno will be set to EINVAL)
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_xyz_to_uvw()\fP 
+.RE
+.PP
+
+.PP
+References \fBnovas_los_to_xyz()\fP\&.
 .SS "int novas_xyz_to_los (const double * xyz, double lon, double lat, double * los)"
 Converts a 3D rectangular equatorial (x, y, z) vector to a polar (,  r) vector along a line-of-sight\&.
 .PP
@@ -773,6 +819,8 @@ Attila Kovacs
 \fBSee also\fP
 .RS 4
 \fBnovas_los_to_xyz()\fP 
+.PP
+\fBnovas_xyz_to_uvw()\fP 
 .RE
 .PP
 
@@ -806,7 +854,12 @@ u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and de
 .PP
 \fBAuthor\fP
 .RS 4
-Attila Kovacs 
+Attila Kovacs
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_uvw_to_xyz()\fP 
 .RE
 .PP
 

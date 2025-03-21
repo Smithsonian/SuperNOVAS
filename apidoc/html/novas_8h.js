@@ -393,6 +393,7 @@ var novas_8h =
     [ "novas_transform_sky_pos", "novas_8h.html#acfcfb90637cd1fdb25ef9afd1bda8e30", null ],
     [ "novas_transform_vector", "novas_8h.html#aa77895c891e9eeb4b1541f03acfd154e", null ],
     [ "novas_transit_time", "novas_8h.html#ad04f1ebd7b2d39e5258b152fec231001", null ],
+    [ "novas_uvw_to_xyz", "novas_8h.html#a16c920eee105431247e9a1d9bf1c3021", null ],
     [ "novas_v2z", "novas_8h.html#aa54cd00024b294d38fa29433c017c65f", null ],
     [ "novas_xyz_to_los", "novas_8h.html#a14deb6fdce80ba213e1f1d5238306e17", null ],
     [ "novas_xyz_to_uvw", "novas_8h.html#a87867e8e7fc7decaa44777a696465353", null ],

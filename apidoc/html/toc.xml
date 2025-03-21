@@ -773,6 +773,7 @@
           <topic label="novas_transform_sky_pos" href="novas_8h.html#acfcfb90637cd1fdb25ef9afd1bda8e30"/>
           <topic label="novas_transform_vector" href="novas_8h.html#aa77895c891e9eeb4b1541f03acfd154e"/>
           <topic label="novas_transit_time" href="novas_8h.html#ad04f1ebd7b2d39e5258b152fec231001"/>
+          <topic label="novas_uvw_to_xyz" href="novas_8h.html#a16c920eee105431247e9a1d9bf1c3021"/>
           <topic label="novas_v2z" href="novas_8h.html#aa54cd00024b294d38fa29433c017c65f"/>
           <topic label="novas_xyz_to_los" href="novas_8h.html#a14deb6fdce80ba213e1f1d5238306e17"/>
           <topic label="novas_xyz_to_uvw" href="novas_8h.html#a87867e8e7fc7decaa44777a696465353"/>
@@ -1003,6 +1004,7 @@
           <topic label="novas_h2e_offset" href="observer_8c.html#a7977de3e3edf8120b50cbd026c155f47"/>
           <topic label="novas_hpa" href="observer_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c"/>
           <topic label="novas_los_to_xyz" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560"/>
+          <topic label="novas_uvw_to_xyz" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021"/>
           <topic label="novas_xyz_to_los" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17"/>
           <topic label="novas_xyz_to_uvw" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353"/>
           <topic label="obs_planets" href="observer_8c.html#a07490a134a685fe0842b2b4816559292"/>

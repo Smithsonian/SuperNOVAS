@@ -36,7 +36,7 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 .IP "\(bu" 2
 #113: New \fC\fBnovas_los_to_xyz()\fP\fP and \fC\fBnovas_xyz_to_los()\fP\fP functions to convert between line-of-sight (, , r) vectors and rectangular equatorial (x, y, z) vectors\&.
 .IP "\(bu" 2
-#113: New \fC\fBnovas_xyz_to_uvw()\fP\fP function to convert ITRS Earth locations (absolute or differential) to equatorial projections along a line of sight in the direction of a source\&. Such projections are oft used in interferometry\&.
+#113: New \fC\fBnovas_xyz_to_uvw()\fP\fP and \fCnovas_uvw_to_xzy()\fP functions to convert between ITRS Earth locations (absolute or differential) to equatorial projections along a line of sight in the direction of a source\&. Such projections are oft used in interferometry\&.
 .IP "\(bu" 2
 #114: New \fC\fBnovas_lsr_to_ssb_vel()\fP\fP can be used to convert velocity vectors referenced to the LSR to Solar-System Barycentric velocities\&. And, \fC\fBnovas_ssb_to_lsr_vel()\fP\fP to provide the inverse conversion\&.
 .IP "\(bu" 2
@@ -70,7 +70,7 @@ Added \fCexample-time\&.c\fP and \fCexample-rise-set\&.c\fP under \fCexamples/\f
 .IP "\(bu" 2
 #139 Reorganized code into more managably sized modules\&. It also makes the API documentation by source file more logically organized\&.
 .IP "\(bu" 2
-#139: Legacy source code moved to \fClegacy/\fP folder, and installed into \fC$(DESTDIR)$(docdir)/legacy/\fP\&.
+#139: Legacy source code moved to \fClegacy/\fP folder\&.
 .IP "\(bu" 2
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
 .IP "\(bu" 2

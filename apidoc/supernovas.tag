@@ -2464,6 +2464,13 @@
       <arglist>(const object *restrict source, const novas_frame *restrict frame)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>novas_uvw_to_xyz</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a16c920eee105431247e9a1d9bf1c3021</anchor>
+      <arglist>(const double *uvw, double ha, double dec, double *xyz)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>novas_v2z</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -3935,6 +3942,13 @@
       <anchorfile>observer_8c.html</anchorfile>
       <anchor>a601d246673742cf72a5dbe1449c97560</anchor>
       <arglist>(const double *los, double lon, double lat, double *xyz)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_uvw_to_xyz</name>
+      <anchorfile>observer_8c.html</anchorfile>
+      <anchor>a16c920eee105431247e9a1d9bf1c3021</anchor>
+      <arglist>(const double *uvw, double ha, double dec, double *xyz)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

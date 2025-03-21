@@ -158,7 +158,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>. Finally, the last component may additionally be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>Returns the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>. Finally, the leading or trailing component may additionally be a standalone upper-case letter 'N', 'E', 'S', or 'W' or the words 'North', 'East', 'South', or 'West' (case insensitive), signifying a compass direction.</p>
+<p>There is no enforcement on the range of angles that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range, such as +- 90 degrees N/S.</p>
 <p>For example, all of the lines below are valid specifications:</p>
 <pre>
  -179:59:59.999
@@ -166,7 +167,10 @@ Functions</h2></td></tr>
  -179 59' 59.999
  179:59:59.999S
  179 59 59.999 W
+ 179 59 59.999 west
  179_59_59.999__S
+ W 179 59 59
+ North 179d 59m
 </pre><p>At least the leading two components (degrees and arcminutes) are required. If the arcseconds are ommitted, they will be assumed zero, i.e. <code>179:59</code> is the same as <code>179:59:00.000</code>.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -252,6 +256,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
       </table>
 </div><div class="memdoc">
 <p>Returns the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>.</p>
+<p>There is no enforcement on the range of hours that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range of 0-24h.</p>
 <p>For example, all of the lines below specify the same time:</p>
 <pre>
  23:59:59.999
@@ -311,17 +316,22 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 </div><div class="memdoc">
 <p>Parses an angle in degrees from a string that contains either a decimal degrees or else a broken-down DMS representation.</p>
 <p>The decimal representation may be followed by a unit designator: "d", "dg", "deg", "degree", or "degrees", which will be parsed case-insensitively also, if present.</p>
-<p>Both DMS and decimal values may end with a compass direction: <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>.</p>
+<p>Both DMS and decimal values may start or end with a compass direction: such as an upper-case letter <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>, or else the case-insensitive words 'North', 'East', 'South' or 'West'.</p>
+<p>There is no enforcement on the range of angles that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range, such as +- 90 degrees N/S.</p>
 <p>A few examples of angles that may be parsed:</p>
 <pre>
  -179:59:59.999
  -179d 59m 59.999s
- 179 59 59.999 S
+ 179 59' 59.999" S
  179 59 S
  -179.99999d
  -179.99999
  179.99999W
+ 179.99999 West
  179.99999 deg S
+ W 179.99999d
+ North 179d 59m
+ east 179.99 degrees
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">str</td><td>The input string that specified an angle either as decimal degrees or as a broken down DMS speficication. The decimal value may be followed by the letter <code>d</code> immediately. And both the decimal and DMS representation may be ended with a compass direction marker, <code>N</code>, <code>E</code>, <code>S</code>, or <code>W</code>. See more in <code><a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a></code> on acceptable DMS specifications. </td></tr>
@@ -337,8 +347,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a> </dd></dl>
-<p>trailing E compass, handled below</p>
-<p>Punctuation after first character</p>
+<p>don't treat trailing 'E' as part of the number</p>
 
 <p class="reference">References <a class="el" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="util_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, and <a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a>.</p>
 
@@ -369,7 +378,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or a double quote <code>"</code>. Finally, the last component may additionally be followed by a standalone upper-case letter 'N', 'E', 'S', or 'W' signifying a compass direction.</p>
+<p>Parses the decimal degrees for a DMS string specification. The degree, (arc)minute, and (arc)second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the degree and minutes may be separated by the letter <code>d</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;<code>. The seconds may be followed by</code>s<code>or a double quote</code>"&lsquo;. Finally, the leading or trailing component may additionally be a standalone upper-case letter 'N&rsquo;, 'E', 'S', or 'W' or the words 'North', 'East', 'South', or 'West' (case insensitive), signifying a compass direction.</p>
+<p>There is no enforcement on the range of angles that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range, such as +- 90 degrees N/S.</p>
 <p>For example, all of the lines below are valid specifications:</p>
 <pre>
  -179:59:59.999
@@ -377,8 +387,11 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
  -179 59' 59.999
  179:59:59.999S
  179:59:59.999 W
+ 179:59:59.999 West
  179_59_59.999__S
  179 59 S
+ W 179 59 59
+ North 179d 59m
 </pre><p>At least the leading two components (degrees and arcminutes) are required. If the arcseconds are ommitted, they will be assumed zero, i.e. <code>179:59</code> is the same as <code>179:59:00.000</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -395,6 +408,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <a class="el" href="parse_8c.html#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a> </dd></dl>
+<p>don't treat trailing 'E' as part of the number</p>
 
 </div>
 </div>
@@ -424,6 +438,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
       </table>
 </div><div class="memdoc">
 <p>Parses the decimal hours for a HMS string specification. The hour, minute, and second components may be separated by spaces, tabs, colons <code>:</code>, underscore <code>_</code>, or a combination thereof. Additionally, the hours and minutes may be separated by the letter <code>h</code>, and the minutes and seconds may be separated by <code>m</code> or a single quote &lsquo;&rsquo;&lsquo;. The seconds may be followed by 's&rsquo; or double quote <code>"</code>.</p>
+<p>There is no enforcement on the range of hours that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range of 0-24h.</p>
 <p>For example, all of the lines below are valid specifications:</p>
 <pre>
  23:59:59.999
@@ -477,6 +492,7 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 </div><div class="memdoc">
 <p>Parses a time or time-like angle from a string that contains either a decimal hours or else a broken-down HMS representation.</p>
 <p>The decimal representation may be followed by a unit designator: "h", "hr", "hrs", "hour", or "hours", which will be parsed case-insensitively also, if present.</p>
+<p>There is no enforcement on the range of hours that can be represented in this way. Any finite angle is parseable, even if it is outside its conventional range of 0-24h.</p>
 <p>A few examples of angles that may be parsed:</p>
 <pre>
  23:59:59.999
