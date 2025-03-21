@@ -821,11 +821,12 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
  * Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial
  * u,v,w projected coordinates for a specified line of sight.
  *
- * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0;
- * y: long=90, lat=0; z: lat=90.
+ * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian, in the ITRS frame. The directions
+ * are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.
  *
  * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as
- * seen from a direction on the sky (w).
+ * seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS)
+ * coordinates.
  *
  * @param xyz           [arb.u.] Absolute or relative x,y,z coordinates (double[3]).
  * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local
@@ -853,10 +854,11 @@ int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw) {
  * x,y,z coordinates (in ITRS) to for a specified line of sight.
  *
  * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as
- * seen from a direction on the sky (w).
+ * seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS)
+ * coordinates.
  *
- * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0;
- * y: long=90, lat=0; z: lat=90.
+ * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian in the ITRS frame. The directions are
+ * x: long=0, lat=0; y: long=90, lat=0; z: lat=90.
  *
  * @param xyz           [arb.u.] Absolute or relative u,v,w coordinates (double[3]).
  * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local
