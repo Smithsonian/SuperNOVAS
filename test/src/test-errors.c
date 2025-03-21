@@ -1708,16 +1708,6 @@ static int test_helio_dist() {
   return n;
 }
 
-static int test_xyz_to_uvw() {
-  int n = 0;
-  double p[3] = {};
-
-  if(check("xyz_to_uvw:xyz", -1, novas_xyz_to_uvw(NULL, 0.0, 0.0, p))) n++;
-  if(check("xyz_to_uvw:uvw", -1, novas_xyz_to_uvw(p, 0.0, 0.0, NULL))) n++;
-
-  return n;
-}
-
 static int test_frame_lst() {
   int n = 0;
   novas_timespec time = {};
@@ -1866,22 +1856,22 @@ static int test_object_sep() {
   return n;
 }
 
-static int test_los_to_xyz() {
+static int test_uvw_to_xyz() {
   int n = 0;
   double v[3] = {};
 
-  if(check("los_to_xyz:los:null", -1, novas_los_to_xyz(NULL, 0.0, 0.0, v))) n++;
-  if(check("xyz_to_los:xyz:null", -1, novas_los_to_xyz(v, 0.0, 0.0, NULL))) n++;
+  if(check("uvw_to_xyz:uvw:null", -1, novas_uvw_to_xyz(NULL, 0.0, 0.0, v))) n++;
+  if(check("xyz_to_uvw:xyz:null", -1, novas_uvw_to_xyz(v, 0.0, 0.0, NULL))) n++;
 
   return n;
 }
 
-static int test_xyz_to_los() {
+static int test_xyz_to_uvw() {
   int n = 0;
   double v[3] = {};
 
-  if(check("xyz_to_los:xyz:null", -1, novas_xyz_to_los(NULL, 0.0, 0.0, v))) n++;
-  if(check("xyz_to_los:los:null", -1, novas_xyz_to_los(v, 0.0, 0.0, NULL))) n++;
+  if(check("xyz_to_uvw:xyz:null", -1, novas_xyz_to_uvw(NULL, 0.0, 0.0, v))) n++;
+  if(check("xyz_to_uvw:uvw:null", -1, novas_xyz_to_uvw(v, 0.0, 0.0, NULL))) n++;
 
   return n;
 }
@@ -2199,15 +2189,14 @@ int main() {
   if(test_str_degrees()) n++;
 
   if(test_helio_dist()) n++;
-  if(test_xyz_to_uvw()) n++;
 
   if(test_frame_lst()) n++;
   if(test_rise_set()) n++;
   if(test_tracks()) n++;
   if(test_solar_illum()) n++;
   if(test_object_sep()) n++;
-  if(test_los_to_xyz()) n++;
-  if(test_xyz_to_los()) n++;
+  if(test_uvw_to_xyz()) n++;
+  if(test_xyz_to_uvw()) n++;
   if(test_julian_date()) n++;
   if(test_parse_date()) n++;
   if(test_date()) n++;

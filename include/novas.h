@@ -1834,6 +1834,8 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los);
 
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw);
 
+int novas_uvw_to_xyz(const double *uvw, double ha, double dec, double *xyz);
+
 // in util.c
 double novas_sep(double lon1, double lat1, double lon2, double lat2);
 

@@ -727,6 +727,7 @@ short light_time(double jd_tdb, const object *restrict body, const double *pos_o
  * @author Attila Kovacs
  *
  * @sa novas_xyz_to_los()
+ * @sa novas_uvw_to_xyz()
  */
 int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
   static const char *fn = "novas_polar_to_xyz";
@@ -779,6 +780,7 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
  * @author Attila Kovacs
  *
  * @sa novas_los_to_xyz()
+ * @sa novas_xyz_to_uvw()
  */
 int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
   static const char *fn = "novas_xyz_to_polar";
@@ -838,9 +840,42 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
  *
  * @since 1.3
  * @author Attila Kovacs
+ *
+ * @sa novas_uvw_to_xyz()
  */
 int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw) {
   prop_error("novas_xyz_to_uvw", novas_xyz_to_los(xyz, -15.0 * ha, dec, uvw), 0);
+  return 0;
+}
+
+/**
+ * Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope
+ * x,y,z coordinates (in ITRS) to for a specified line of sight.
+ *
+ * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as
+ * seen from a direction on the sky (w).
+ *
+ * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0;
+ * y: long=90, lat=0; z: lat=90.
+ *
+ * @param xyz           [arb.u.] Absolute or relative u,v,w coordinates (double[3]).
+ * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local
+ *                      (apparent) Sidereal Time and the apparent (true-of-date) Right
+ *                      Ascension of observed source.
+ * @param dec           [deg] Apparent (true-of-date) declination of source
+ * @param[out] uvw      [arb.u.] Converted x,y,z coordinates (double[3]) in the same unit as uvw.
+ *                      It may be the same vector as the input.
+ *
+ * @return              0 if successful, or else -1 if either vector argument is NULL
+ *                      (errno will be set to EINVAL)
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_xyz_to_uvw()
+ */
+int novas_uvw_to_xyz(const double *uvw, double ha, double dec, double *xyz) {
+  prop_error("novas_uvw_to_xyz", novas_los_to_xyz(uvw, -15.0 * ha, dec, xyz), 0);
   return 0;
 }
 
