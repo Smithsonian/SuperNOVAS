@@ -3167,25 +3167,42 @@ static int test_xyz_to_uvw() {
   int n = 0;
   double xyz[3] = {}, uvw[3] = {};
 
-  xyz[0] = 1;
-  novas_xyz_to_uvw(xyz, 0, 0, uvw);
+  xyz[0] = 1.0;
+  novas_xyz_to_uvw(xyz, 0.0, 0.0, uvw);
   if(!is_equal("xyz_to_uvw:x:u", uvw[0], 0.0, 1e-12)) n++;
   if(!is_equal("xyz_to_uvw:x:v", uvw[1], 0.0, 1e-12)) n++;
   if(!is_equal("xyz_to_uvw:x:w", uvw[2], 1.0, 1e-12)) n++;
 
-  xyz[0] = 0;
-  xyz[1] = 1;
-  novas_xyz_to_uvw(xyz, 0, 0, uvw);
+  novas_uvw_to_xyz(uvw, 0.0, 0.0, xyz);
+  if(!is_equal("xyz_to_uvw:x:x", xyz[0], 1.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:x:y", xyz[1], 0.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:x:z", xyz[2], 0.0, 1e-12)) n++;
+
+  xyz[0] = 0.0;
+  xyz[1] = 1.0;
+  xyz[2] = 0.0;
+  novas_xyz_to_uvw(xyz, 0.0, 0.0, uvw);
   if(!is_equal("xyz_to_uvw:y:u", uvw[0], 1.0, 1e-12)) n++;
   if(!is_equal("xyz_to_uvw:y:v", uvw[1], 0.0, 1e-12)) n++;
   if(!is_equal("xyz_to_uvw:y:w", uvw[2], 0.0, 1e-12)) n++;
 
-  xyz[1] = 0;
-  xyz[2] = 1;
-  novas_xyz_to_uvw(xyz, 0, 0, uvw);
-  if(!is_equal("xyz_to_uvw:y:u", uvw[0], 0.0, 1e-12)) n++;
-  if(!is_equal("xyz_to_uvw:y:v", uvw[1], 1.0, 1e-12)) n++;
-  if(!is_equal("xyz_to_uvw:y:w", uvw[2], 0.0, 1e-12)) n++;
+  novas_uvw_to_xyz(uvw, 0.0, 0.0, xyz);
+  if(!is_equal("xyz_to_uvw:y:x", xyz[0], 0.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:y:y", xyz[1], 1.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:y:z", xyz[2], 0.0, 1e-12)) n++;
+
+  xyz[0] = 0.0;
+  xyz[1] = 0.0;
+  xyz[2] = 1.0;
+  novas_xyz_to_uvw(xyz, 0.0, 0.0, uvw);
+  if(!is_equal("xyz_to_uvw:z:u", uvw[0], 0.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:z:v", uvw[1], 1.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:z:w", uvw[2], 0.0, 1e-12)) n++;
+
+  novas_uvw_to_xyz(uvw, 0.0, 0.0, xyz);
+  if(!is_equal("xyz_to_uvw:z:x", xyz[0], 0.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:z:y", xyz[1], 0.0, 1e-12)) n++;
+  if(!is_equal("xyz_to_uvw:z:z", xyz[2], 1.0, 1e-12)) n++;
 
   return n;
 }

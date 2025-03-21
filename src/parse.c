@@ -303,7 +303,7 @@ static int parse_compass(const char *restrict str, int *n) {
  *  179_59_59.999__S
  *  179 59 S
  *  W 179 59 59
- *  North 179 59
+ *  North 179d 59m
  * </pre>
  *
  * At least the leading two components (degrees and arcminutes) are required. If the arcseconds
@@ -411,7 +411,7 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  *  179 59 59.999 west
  *  179_59_59.999__S
  *  W 179 59 59
- *  North 179 59
+ *  North 179d 59m
  * </pre>
  *
  * At least the leading two components (degrees and arcminutes) are required. If the arcseconds
@@ -481,7 +481,7 @@ double novas_dms_degrees(const char *restrict dms) {
  *  179.99999 West
  *  179.99999 deg S
  *  W 179.99999d
- *  North 179 59
+ *  North 179d 59m
  *  east 179.99 degrees
  * </pre>
  *
