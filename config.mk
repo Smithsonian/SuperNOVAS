@@ -215,7 +215,7 @@ ifneq ($(shell which ldconfig), )
   endif
 
   # Detect CSPICE automatically, and enable support if present
-  ifndef CPSICE_SUPPORT
+  ifndef CSPICE_SUPPORT
     ifneq ($(shell ldconfig -p | grep libcspice), )
       $(info INFO: CSPICE support is enabled automatically.)
       CSPICE_SUPPORT = 1
