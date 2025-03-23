@@ -21,8 +21,8 @@
 #define  POLAR_DY         -62.0     ///< [mas] Earth polar offset y, e.g. from IERS Bulletin A.
 
 static void calc_pos(const cat_entry *star, const novas_frame *frame) {
-  object source = {};
-  sky_pos apparent = {};
+  object source = NOVAS_OBJECT_INIT;
+  sky_pos apparent = SKY_POS_INIT;
 
   make_cat_object(star, &source);
 
@@ -35,7 +35,7 @@ static void calc_pos(const cat_entry *star, const novas_frame *frame) {
 
 static void calc_place(const cat_entry *star, const novas_frame *frame) {
   const novas_timespec *time = &frame->time;
-  sky_pos apparent = {};
+  sky_pos apparent = SKY_POS_INIT;
 
   if(place_star(time->ijd_tt + time->fjd_tt, star, &frame->observer, time->ut1_to_tt, NOVAS_CIRS, frame->accuracy, &apparent) != 0) {
     fprintf(stderr, "ERROR! failed to calculate apparent position.\n");

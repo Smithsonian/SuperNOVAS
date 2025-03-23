@@ -244,7 +244,7 @@ double novas_hms_hours(const char *restrict hms) {
 }
 
 static int parse_compass(const char *restrict str, int *n) {
-  char compass[7] = {};
+  char compass[7] = {'\0'};
   int from = 0;
 
   *n = 0;
@@ -532,7 +532,7 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
   next = (char *) str + nc;
 
   if(sscanf(next, "%lf%n", &deg, &n) > 0) {
-    char unit[9] = {};
+    char unit[9] = {'\0'};
     int n1, nu = 0;
 
     if(toupper(next[n-1]) == 'E')       /// don't treat trailing 'E' as part of the number
@@ -642,7 +642,7 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
     return h;
 
   if(sscanf(str, "%lf%n", &h, &n) > 0) {
-    char unit[7] = {};
+    char unit[7] = {'\0'};
     int n1, n2 = 0;
 
     // Skip underscores and white spaces

@@ -109,6 +109,8 @@ calculations.
  - #143: Added `FORTIFY` build configuration setting to enable gcc source code fortification checking by setting the
    `_FORTIFY_SOURCE` macro to the specified value. It is now used with a value of 3 in the build and test CIs. 
 
+ - #150: Further initializers for SuperNOVAS structures that can be used to empty initialize data.
+
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations. 
 
@@ -122,6 +124,9 @@ calculations.
    logically organized.
    
  - #139: Legacy source code moved to `legacy/` folder.
+ 
+ - #150: Use standard C initializers instead of the non-standard empty backets `{}`. While the empty brackets have
+   been OK with `gcc` for quite a while, they only became standard in C23. Other compilers might barf at their use.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 

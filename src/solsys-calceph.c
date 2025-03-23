@@ -167,7 +167,7 @@ static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_plane
 
   sem_t *sem = (planets == bodies) ? &sem_bodies : &sem_planets;
   const int lock = !is_thread_safe_planets || serialized_calceph_queries;
-  double pv[6] = {};
+  double pv[6] = {0.0};
   int i, target, center, success;
 
   if(!jd_tdb)
@@ -308,7 +308,7 @@ static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_or
 static int novas_calceph(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
   static const char *fn = "novas_calceph";
 
-  double pv[6] = {};
+  double pv[6] = {0.0};
   const int lock = !is_thread_safe_bodies || serialized_calceph_queries;
   int i, success, center;
 

@@ -335,6 +335,8 @@ enum novas_planet {
  * \endcode
  *
  * @sa novas_majot_planet
+ * @since 1.2
+ * @author Attila Kovacs
  */
 #define NOVAS_PLANET_NAMES_INIT { \
   "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
@@ -348,6 +350,8 @@ enum novas_planet {
  *
  * @sa enum novas_planet
  * @sa NOVAS_PLANETS
+ * @since 1.2
+ * @author Attila Kovacs
  */
 #define NOVAS_RMASS_INIT  { \
       328900.561400, 6023600.0, 408523.71, 332946.050895, 3098708.0, 1047.3486, 3497.898, \
@@ -362,6 +366,7 @@ enum novas_planet {
  * @sa NOVAS_PLANETS
  *
  * @since 1.1.1
+ * @author Attila Kovacs
  */
 #define NOVAS_PLANET_GRAV_Z_INIT { \
   0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
@@ -462,7 +467,6 @@ enum novas_equator_type {
  * The number of equator types defined in `enum novas_equator_type`.
  *
  * @sa enum novas_equator_type
- * @author Attila Kovacs
  * @since 1.2
  */
 #define NOVAS_EQUATOR_TYPES (NOVAS_GCRS_EQUATOR + 1)
@@ -703,6 +707,7 @@ enum novas_reference_plane {
  *
  * @since 1.0
  * @author Attila Kovacs
+ * @sa NOVAS_DELAUNAY_ARGS_INIT
  */
 typedef struct {
   double l;           ///< [rad] mean anomaly of the Moon
@@ -712,6 +717,14 @@ typedef struct {
   double Omega;       ///< [rad] mean longitude of the Moon's ascending node.
 } novas_delaunay_args;
 
+/**
+ * Empty initializer for novas_delaunay_args
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ * @sa novas_delaunay_args
+ */
+#define NOVAS_DELAUNAY_ARGS_INIT { 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 #define SIZE_OF_OBJ_NAME 50     ///< Maximum bytes in object names including string termination.
 #define SIZE_OF_CAT_NAME 6      ///< Maximum bytes in catalog IDs including string termination.
@@ -849,6 +862,22 @@ typedef struct {
  * Note, the memory footprint is different from NOVAS C due to the use of the enum vs short 'type'
  * and the long vs. short 'number' values -- hence it is not cross-compatible for binary data
  * exchange with NOVAS C 3.1.
+ *
+ * @sa NOVAS_OBJECT_INIT
+ * @sa NOVAS_MERCURY_INIT
+ * @sa NOVAS_VENUS_INIT
+ * @sa NOVAS_EARTH_INIT
+ * @sa NOVAS_MARS_INIT
+ * @sa NOVAS_JUPITER_INIT
+ * @sa NOVAS_SATURN_INIT
+ * @sa NOVAS_URANUS_INIT
+ * @sa NOVAS_NEPTUNE_INIT
+ * @sa NOVAS_PLUTO_INIT
+ * @sa NOVAS_PLUTO_BARYCENTER_INIT
+ * @sa NOVAS_SUN_INIT
+ * @sa NOVAS_SSB_INIT
+ * @sa NOVAS_MOON_INIT
+ * @sa NOVAS_EMB_INIT
  */
 typedef struct {
   enum novas_object_type type;    ///< NOVAS object type
@@ -857,6 +886,15 @@ typedef struct {
   cat_entry star;                 ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
   novas_orbital orbit;            ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
 } object;
+
+/**
+ * Empty object initializer.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ * @sa object
+ */
+#define NOVAS_OBJECT_INIT { -1, 0L, {'\0'}, CAT_ENTRY_INIT, NOVAS_ORBIT_INIT }
 
 /**
  * `object` initializer macro for major planets, the Sun, Moon, and barycenters.
@@ -988,8 +1026,9 @@ typedef struct {
  * Initializer for a NOVAS on_surface data structure.
  *
  * @sa on_surface
- * @sa ON_SURFACE_INIT_LOC
+ * @sa ON_SURFACE_LOC
  * @since 1.2
+ * @author Attila Kovacs
  */
 #define ON_SURFACE_INIT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
@@ -1003,6 +1042,7 @@ typedef struct {
  * @sa on_surface
  * @sa ON_SURFACE_INIT
  * @since 1.2
+ * @author Attila Kovacs
  */
 #define ON_SURFACE_LOC(lon, lat, alt) { lon, lat, alt, 0.0, 0.0, 0.0 }
 
@@ -1022,6 +1062,7 @@ typedef struct {
  * Initializer for a NOVAS in_space structure.
  * @sa in_space
  * @since 1.1.1
+ * @author Attila Kovacs
  */
 #define IN_SPACE_INIT   {{0.0}, {0.0}}
 
@@ -1033,6 +1074,7 @@ typedef struct {
  * @sa make_observer_on_earth()
  * @sa make_observer_in_space()
  * @sa make_solar_system_observer()
+ * @sa OBSERVER_INIT
  */
 typedef struct {
   enum novas_observer_place where;    ///< observer location type
@@ -1047,6 +1089,14 @@ typedef struct {
   in_space near_earth;
 } observer;
 
+/**
+ * Empty initializer for observer
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ * @sa observer
+ */
+#define OBSERVER_INIT   { NOVAS_OBSERVER_AT_GEOCENTER, ON_SURFACE_INIT, IN_SPACE_INIT }
 
 /**
  * Celestial object's place on the sky; contains the output from place()
@@ -1069,6 +1119,7 @@ typedef struct {
  * Initializer for a NOVAS sky_pos structure.
  * @sa sky_pos
  * @since 1.1.1
+ * @author Attila Kovacs
  */
 #define SKY_POS_INIT { {0.0}, 0.0, 0.0, 0.0, 0.0 }
 
@@ -1117,6 +1168,7 @@ enum novas_timescale {
  * @sa timescale.c
  *
  * @since 1.1
+ * @sa NOVAS_TIMESPEC_INIT
  */
 typedef struct {
   long ijd_tt;        ///< [day] Integer part of the Terrestrial Time (TT) based Julian Date
@@ -1128,13 +1180,41 @@ typedef struct {
 } novas_timespec;
 
 /**
+ * Empty initializer for novas_timespec
+ *
+ * @since 1.3
+ * @sa novas_timespec
+ */
+#define NOVAS_TIMESPEC_INIT { 0, 0.0, 0.0, 0.0, 0.0 }
+
+/**
  * A 3x3 matrix for coordinate transformations
  *
  * @since 1.1
+ * @sa NOVAS_MATRIX_INIT
+ * @sa NOVAS_MATRIX_IDENTITY
  */
 typedef struct {
   double M[3][3];     ///< matrix elements
 } novas_matrix;
+
+/**
+ * Empty initializer for novas_matrix
+ *
+ * @since 1.3
+ * @sa novas_matrix
+ * @sa NOVAS_MATRIX_IDENTITY
+ */
+#define NOVAS_MATRIX_INIT {{{0.0}}}
+
+/**
+ * novas_matric initializer for an indentity matrix
+ *
+ * @since 1.3
+ * @sa novas_matrix
+ * @sa NOVAS_MATRIX_INIT
+ */
+#define NOVAS_MATRIX_IDENTITY {{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}}}
 
 /**
  * Position and velocity data for a set of major planets (which may include the Sun and the Moon also).
@@ -1142,12 +1222,21 @@ typedef struct {
  * @since 1.1
  *
  * @sa enum novas_planet
+ * @sa NOVAS_PLANET_BUNDLE_INIT
  */
 typedef struct {
   int mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
   double pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
   double vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
 } novas_planet_bundle;
+
+/**
+ * Empty initializer for novas_planet_bundle
+ *
+ * @since 1.3
+ * @sa novas_planet_bundle
+ */
+#define NOVAS_PLANET_BUNDLE_INIT { 0, {{0.0}}, {{0.0}} }
 
 /**
  * A set of parameters that uniquely define the place and time of observation. The user may
@@ -1166,8 +1255,9 @@ typedef struct {
  *
  * @since 1.1
  *
- * @see novas_make_frame()
- * @see novas_change_observer()
+ * @sa novas_make_frame()
+ * @sa novas_change_observer()
+ * @sa NOVAS_FRAME_INIT
  */
 typedef struct {
   uint64_t state;                 ///< An internal state for checking validity.
@@ -1201,6 +1291,16 @@ typedef struct {
 } novas_frame;
 
 /**
+ * Empty initializer for novas_frame
+ *
+ * @since 1.3
+ * @sa novas_frame
+ */
+#define NOVAS_FRAME_INIT { 0, NOVAS_FULL_ACCURACY, NOVAS_TIMESPEC_INIT, OBSERVER_INIT, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, \
+  0.0, 0.0, {0.0}, {0.0}, 0.0, 0.0, 0.0, {0.0}, {0.0}, {0.0}, {0.0}, NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, \
+  NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, NOVAS_PLANET_BUNDLE_INIT }
+
+/**
  * A transformation between two astronomical coordinate systems for the same observer
  * location and time. This allows for more elegant, generic, and efficient coordinate
  * transformations than the low-level NOVAS functions.
@@ -1212,6 +1312,7 @@ typedef struct {
  *
  * @sa novas_make_transform()
  * @sa novas_invert_transform()
+ * @sa NOVAS_TRANSFORM_INIT
  */
 typedef struct {
   enum novas_reference_system from_system;  ///< The original coordinate system
@@ -1219,6 +1320,14 @@ typedef struct {
   novas_frame frame;                        ///< The observer place and time for which the transform is valid
   novas_matrix matrix;                      ///< Transformation matrix elements
 } novas_transform;
+
+/**
+ * Empty initializer for NOVAS_TRANSFORM
+ *
+ * @since 1.3
+ * @sa novas_transform
+ */
+#define NOVAS_TRANSFORM_INIT { -1, -1, NOVAS_FRAME_INIT, NOVAS_MATRIX_INIT }
 
 /**
  * The type of elevation value for which to calculate a refraction.
@@ -1308,6 +1417,7 @@ typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum nova
  * @author Attila Kovacs
  *
  * @sa novas_track
+ * @sa NOVAS_OBSERVABLE_INIT
  */
 typedef struct {
   double lon;           ///< [deg] apparent longitude coordinate in coordinate system
@@ -1317,6 +1427,14 @@ typedef struct {
 } novas_observable;
 
 /**
+ * Empty initializer for novas_observable
+ *
+ * @since 1.3
+ * @sa novas_observable
+ */
+#define NOVAS_OBSERVABLE_INIT { 0.0, 0.0, 0.0, 0.0 }
+
+/**
  * The spherical and spectral tracking position of a source, and its first and second time derivatives. As such,
  * it may be useful for telescope drive control (position, velocity, and acceleration), or else for fast
  * extrapolation of momentary positions without a full, and costly, recalculation of the positions at high
@@ -1324,6 +1442,8 @@ typedef struct {
  *
  * @since 1.3
  * @author Attila Kovacs
+ *
+ * @sa NOVAS_TRACK_INIT
  */
 typedef struct {
   novas_timespec time;     ///< The astronomical time for which the track is calculated.
@@ -1331,6 +1451,14 @@ typedef struct {
   novas_observable rate;   ///< [deg/s,AU/s,1/s] Apparent position rate of change
   novas_observable accel;  ///< [deg/s<sup>2</sup>,AU/s<sup>2</sup>,1/s<sup>2</sup>] Apparent position acceleration.
 } novas_track;
+
+/**
+ * Empty initializer for novas_track
+ *
+ * @since 1.3
+ * @sa novas_track
+ */
+#define NOVAS_TRACK_INIT { NOVAS_TIMESPEC_INIT, NOVAS_OBSERVABLE_INIT, NOVAS_OBSERVABLE_INIT, NOVAS_OBSERVABLE_INIT }
 
 /**
  * The general order of date components for parsing.

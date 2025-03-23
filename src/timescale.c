@@ -748,7 +748,7 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
 
   int y = 0, m = 0, d = 0, n = 0, N = 0;
   double h = 0.0;
-  char month[10] = {}, *next = (char *) date;
+  char month[10] = {'\0'}, *next = (char *) date;
 
   if(tail)
     *tail = (char *) date;
@@ -1276,7 +1276,7 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
   static const char *fn = "novas_parse_timescale";
 
   enum novas_timescale scale = NOVAS_UTC;
-  char s[4] = {};
+  char s[4] = {'\0'};
   int n = 0;
 
   if(tail)

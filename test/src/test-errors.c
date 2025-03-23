@@ -52,7 +52,7 @@ static int test_make_on_surface() {
 }
 
 static int test_make_in_space() {
-  double p[3] = {1.0}, v[3] = {};
+  double p[3] = {1.0}, v[3] = {0.0};
   in_space sp;
   int n = 0;
 
@@ -64,9 +64,9 @@ static int test_make_in_space() {
 }
 
 static int test_make_observer() {
-  in_space sp = {};
-  on_surface on = {};
-  observer obs = {};
+  in_space sp = IN_SPACE_INIT;
+  on_surface on = ON_SURFACE_INIT;
+  observer obs = OBSERVER_INIT;
   int n = 0;
 
   if(check("make_observer:where", 1, make_observer(-1, &on, &sp, &obs))) n++;
@@ -80,8 +80,8 @@ static int test_make_observer() {
 }
 
 static int test_make_airborne_observer() {
-  on_surface on = {};
-  observer obs = {};
+  on_surface on = ON_SURFACE_INIT;
+  observer obs = OBSERVER_INIT;
   int n = 0;
 
   if(check("make_airborne_observer:vel", -1, make_airborne_observer(&on, NULL, &obs))) n++;
@@ -130,8 +130,8 @@ static int test_make_cat_entry() {
 }
 
 static int test_make_object() {
-  cat_entry s = {};
-  object o = {};
+  cat_entry s = CAT_ENTRY_INIT;
+  object o = NOVAS_OBJECT_INIT;
   int n = 0;
 
   char longname[SIZE_OF_OBJ_NAME + 1];
@@ -185,7 +185,7 @@ static int test_z2v() {
 }
 
 static int test_refract() {
-  on_surface o = {};
+  on_surface o = ON_SURFACE_INIT;
   int n = 0;
 
   novas_debug(NOVAS_DEBUG_ON);
@@ -208,7 +208,7 @@ static int test_refract() {
 
 static int test_refract_astro() {
   extern int novas_inv_max_iter;
-  on_surface surf = {};
+  on_surface surf = ON_SURFACE_INIT;
   int n = 0;
 
   novas_inv_max_iter = 0;
@@ -222,7 +222,7 @@ static int test_refract_astro() {
 
 static int test_inv_refract() {
   extern int novas_inv_max_iter;
-  on_surface surf = {};
+  on_surface surf = ON_SURFACE_INIT;
   int n = 0;
 
   novas_inv_max_iter = 0;
@@ -234,7 +234,7 @@ static int test_inv_refract() {
 }
 
 static int test_limb_angle() {
-  double pos[3] = { 0.01 }, pn[3] = { -0.01 }, pz[3] = {}, a, b;
+  double pos[3] = { 0.01 }, pn[3] = { -0.01 }, pz[3] = {0.0}, a, b;
   int n = 0;
 
   if(check("limb_angle:pos_obj", -1, limb_angle(NULL, pos, &a, &b))) n++;
@@ -254,10 +254,10 @@ static int test_limb_angle() {
 
 
 static int test_transform_cat() {
-  cat_entry c = {}, c1;
+  cat_entry c = CAT_ENTRY_INIT, c1;
   int n = 0;
 
-  char longname[SIZE_OF_CAT_NAME + 1] = {};
+  char longname[SIZE_OF_CAT_NAME + 1] = {'\0'};
   memset(longname, 'A', SIZE_OF_CAT_NAME);
 
   if(check("transform_cat:in", -1, transform_cat(PRECESSION, NOVAS_JD_B1950, NULL, NOVAS_JD_J2000, "FK5", &c))) n++;
@@ -270,7 +270,7 @@ static int test_transform_cat() {
 }
 
 static int test_transform_hip() {
-  cat_entry c = {};
+  cat_entry c = CAT_ENTRY_INIT;
   int n = 0;
 
   if(check("transform_hip:in", -1, transform_hip(NULL, &c))) n++;
@@ -412,8 +412,8 @@ static int test_set_planet_provider_hp() {
 }
 
 static int test_place_star() {
-  cat_entry c = {};
-  observer loc = {};
+  cat_entry c = CAT_ENTRY_INIT;
+  observer loc = OBSERVER_INIT;
   sky_pos pos;
   int n = 0;
 
@@ -424,8 +424,8 @@ static int test_place_star() {
 }
 
 static int test_place() {
-  object o = {};
-  observer loc = {};
+  object o = NOVAS_OBJECT_INIT;
+  observer loc = OBSERVER_INIT;
   sky_pos pos;
   int n = 0;
 
@@ -438,8 +438,8 @@ static int test_place() {
 }
 
 static int test_radec_planet() {
-  object o = {};
-  observer loc = {};
+  object o = NOVAS_OBJECT_INIT;
+  observer loc = OBSERVER_INIT;
   double ra, dec, dis, rv;
 
   o.type = NOVAS_CATALOG_OBJECT;
@@ -531,8 +531,8 @@ static int test_ecl2equ_vec() {
 
 
 static int test_itrs_to_hor() {
-  on_surface loc = {};
-  double p[3] = {}, az, za;
+  on_surface loc = ON_SURFACE_INIT;
+  double p[3] = {0.0}, az, za;
   int n = 0;
 
   if(check("itrs_to_hor:loc", -1, itrs_to_hor(NULL, p, &az, &za))) n++;
@@ -542,7 +542,7 @@ static int test_itrs_to_hor() {
 }
 
 static int test_hor_to_itrs() {
-  on_surface loc = {};
+  on_surface loc = ON_SURFACE_INIT;
   double p[3];
   int n = 0;
 
@@ -553,7 +553,7 @@ static int test_hor_to_itrs() {
 }
 
 static int test_equ2hor() {
-  on_surface loc;
+  on_surface loc = ON_SURFACE_INIT;
   double az, za, rar, decr;
   int n = 0;
 
@@ -632,7 +632,7 @@ static int test_wobble() {
 }
 
 static int test_terra() {
-  on_surface loc = {};
+  on_surface loc = ON_SURFACE_INIT;
   double p[3], v[3];
   int n = 0;
 
@@ -683,7 +683,7 @@ static int test_proper_motion() {
 }
 
 static int test_bary2obs() {
-  double p[3] = {}, po[3] = {}, out[3], lt;
+  double p[3] = {0.0}, po[3] = {0.0}, out[3], lt;
   int n = 0;
 
   if(check("bary2obs:pos", -1, bary2obs(NULL, po, out, &lt))) n++;
@@ -695,7 +695,7 @@ static int test_bary2obs() {
 
 static int test_geo_posvel() {
   observer o;
-  double p[3], v[3];
+  double p[3] = {0.0}, v[3] = {0.0};
   int n = 0;
 
   o.where = NOVAS_OBSERVER_ON_EARTH;
@@ -843,7 +843,7 @@ static int test_radec2vector() {
 }
 
 static int test_vector2radec() {
-  double p[3] = {}, ra, dec;
+  double p[3] = {0.0}, ra, dec;
   int n = 0;
 
   if(check("vector2radec:vec", -1, vector2radec(NULL, &ra, &dec))) n++;
@@ -914,7 +914,7 @@ static int test_precession() {
 
 static int test_rad_vel() {
   object o;
-  double p[3] = {}, v[3] = {}, vo[3] = {}, rv;
+  double p[3] = {0.0}, v[3] = {0.0}, vo[3] = {0.0}, rv;
   int n = 0;
 
   o.type = NOVAS_PLANET;
@@ -937,7 +937,7 @@ static int test_rad_vel() {
 
 
 static int test_aberration() {
-  double p[3] = {1.0}, v[3] = {};
+  double p[3] = {1.0}, v[3] = {0.0};
   int n = 0;
 
   if(check("aberration:pos", -1, aberration(NULL, v, 0.0, p))) n++;
@@ -948,7 +948,7 @@ static int test_aberration() {
 }
 
 static int test_grav_vec() {
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {};
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, pb[3] = {0.0};
   int n = 0;
 
   if(check("grav_vec:pos", -1, grav_vec(NULL, po, pb, 1.0, p))) n++;
@@ -991,7 +991,7 @@ static int test_grav_undef() {
 }
 
 static int test_grav_init_planets() {
-  novas_planet_bundle planets = {};
+  novas_planet_bundle planets = NOVAS_PLANET_BUNDLE_INIT;
   double p[3] = {2.0};
   int n = 0;
 
@@ -1002,8 +1002,8 @@ static int test_grav_init_planets() {
 }
 
 static int test_grav_planets() {
-  novas_planet_bundle planets = {};
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
+  novas_planet_bundle planets = NOVAS_PLANET_BUNDLE_INIT;
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {0.0};
   int n = 0;
 
   if(check("grav_planets:pos_src", -1, grav_planets(NULL, po, &planets, out))) n++;
@@ -1016,8 +1016,8 @@ static int test_grav_planets() {
 
 static int test_grav_undo_planets() {
   extern int novas_inv_max_iter;
-  novas_planet_bundle planets = {};
-  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {};
+  novas_planet_bundle planets = NOVAS_PLANET_BUNDLE_INIT;
+  double p[3] = {2.0}, po[3] = {0.0, 1.0}, out[3] = {0.0};
   int n = 0;
 
   if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, &planets, out))) n++;
@@ -1095,7 +1095,7 @@ static int test_obs_posvel() {
 }
 
 static int test_time() {
-  novas_timespec time = {};
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
   int n = 0;
   long ijd = 0;
 
@@ -1143,7 +1143,7 @@ static double switching_refraction(double jd_tt, const on_surface *loc, enum nov
 
 static int test_refraction() {
   int n = 0;
-  on_surface obs = {};
+  on_surface obs = ON_SURFACE_INIT;
 
   if(check_nan("stardard_refraction:loc", novas_standard_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 10.0))) n++;
   if(check_nan("stardard_refraction:type:-2", novas_standard_refraction(NOVAS_JD_J2000, &obs, -2, 10.0))) n++;
@@ -1179,9 +1179,9 @@ static int test_refraction() {
 
 static int test_make_frame() {
   int n = 0;
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
 
   if(check("make_frame:obs", -1, novas_make_frame(NOVAS_REDUCED_ACCURACY, NULL, &ts, 0.0, 0.0, &frame))) n++;
   if(check("make_frame:time", -1, novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, NULL, 0.0, 0.0, &frame))) n++;
@@ -1200,9 +1200,9 @@ static int test_make_frame() {
 
 static int test_change_observer() {
   int n = 0;
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {}, out = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT, out = NOVAS_FRAME_INIT;
 
   make_observer_at_geocenter(&obs);
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
@@ -1221,10 +1221,10 @@ static int test_change_observer() {
 
 static int test_make_transform() {
   int n = 0;
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
-  novas_transform T = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  novas_transform T = NOVAS_TRANSFORM_INIT;
 
   make_observer_at_geocenter(&obs);
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
@@ -1246,11 +1246,11 @@ static int test_make_transform() {
 
 static int test_geom_posvel() {
   int n = 0;
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
-  object o = {};
-  double pos[3] = {}, vel[3] = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  object o = NOVAS_SUN_INIT;
+  double pos[3] = {0.0}, vel[3] = {0.0};
 
   make_observer_at_geocenter(&obs);
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
@@ -1283,11 +1283,11 @@ static int test_geom_posvel() {
 
 static int test_sky_pos() {
   int n = 0;
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
-  object o = {};
-  sky_pos out = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  object o = NOVAS_SSB_INIT;
+  sky_pos out = SKY_POS_INIT;
 
   make_observer_at_geocenter(&obs);
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
@@ -1317,10 +1317,10 @@ static int test_sky_pos() {
 
 static int test_app_to_geom() {
   extern int novas_inv_max_iter;
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
-  double pos[3] = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  double pos[3] = {0.0};
   int n = 0;
 
   make_observer_at_geocenter(&obs);
@@ -1343,11 +1343,11 @@ static int test_app_to_geom() {
 }
 
 static int test_geom_to_app() {
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
-  sky_pos out = {};
-  double pos[3] = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  sky_pos out = SKY_POS_INIT;
+  double pos[3] = {0.0};
   int n = 0;
 
   make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs);
@@ -1373,9 +1373,9 @@ static int test_geom_to_app() {
 }
 
 static int test_app_to_hor() {
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
   double az, el;
   int n = 0;
 
@@ -1399,9 +1399,9 @@ static int test_app_to_hor() {
 }
 
 static int test_hor_to_app() {
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
   double ra, dec;
   int n = 0;
 
@@ -1426,11 +1426,11 @@ static int test_hor_to_app() {
 
 
 static int test_transform_vector() {
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
-  novas_transform T = {};
-  double pos[3] = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  novas_transform T = NOVAS_TRANSFORM_INIT;
+  double pos[3] = {0.0};
   int n = 0;
 
   make_observer_at_geocenter(&obs);
@@ -1448,11 +1448,11 @@ static int test_transform_vector() {
 }
 
 static int test_transform_sky_pos() {
-  novas_timespec ts = {};
-  observer obs = {};
-  novas_frame frame = {};
-  novas_transform T = {};
-  sky_pos pos = {};
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  novas_transform T = NOVAS_TRANSFORM_INIT;
+  sky_pos pos = SKY_POS_INIT;
   int n = 0;
 
 
@@ -1471,7 +1471,7 @@ static int test_transform_sky_pos() {
 }
 
 static int test_inv_transform() {
-  novas_transform T = {};
+  novas_transform T = NOVAS_TRANSFORM_INIT;
   int n = 0;
 
   if(check("invert_transform:in", -1, novas_invert_transform(NULL, &T))) n++;
@@ -1561,8 +1561,8 @@ static int test_planet_for_name() {
 
 static int test_make_orbital_object() {
   int n = 0;
-  novas_orbital orbit = {};
-  object body = {};
+  novas_orbital orbit = NOVAS_ORBIT_INIT;
+  object body = NOVAS_OBJECT_INIT;
 
   if(check("make_orbital_object:orbit", -1, make_orbital_object("blah", -1, NULL, &body))) n++;
   if(check("make_orbital_object:body", -1, make_orbital_object("blah", -1, &orbit, NULL))) n++;
@@ -1573,7 +1573,7 @@ static int test_make_orbital_object() {
 
 static int test_orbit_posvel() {
   int n = 0;
-  double pos[3] = {}, vel[3] = {};
+  double pos[3] = {0.0}, vel[3] = {0.0};
   int saved = novas_inv_max_iter;
   novas_orbital orbit = NOVAS_ORBIT_INIT;
 
@@ -1692,7 +1692,7 @@ static int test_str_degrees() {
 static int test_helio_dist() {
   int n = 0;
   double rate = 0.0;
-  object star = {};
+  object star = NOVAS_OBJECT_INIT;
   object jupiter = NOVAS_JUPITER_INIT;
 
   star.type = NOVAS_CATALOG_OBJECT;
@@ -1710,9 +1710,9 @@ static int test_helio_dist() {
 
 static int test_frame_lst() {
   int n = 0;
-  novas_timespec time = {};
-  observer obs = {};
-  novas_frame frame = {};
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
 
   if(check_nan("frame_lst:frame:null", novas_frame_lst(NULL))) n++;
   if(check_nan("frame_lst:frame:init", novas_frame_lst(&frame))) n++;
@@ -1729,9 +1729,9 @@ static int test_frame_lst() {
 static int test_rise_set() {
   int n = 0;
   object sun = NOVAS_SUN_INIT;
-  novas_timespec time = {};
-  observer obs = {};
-  novas_frame frame = {};
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
   int save = novas_inv_max_iter;
 
   if(check_nan("rise_set:rises_above:frame:null", novas_rises_above(0.0, &sun, NULL, NULL))) n++;
@@ -1766,11 +1766,11 @@ static int test_rise_set() {
 static int test_tracks() {
   int n = 0;
   object sun = NOVAS_SUN_INIT;
-  novas_timespec time = {};
-  observer obs = {};
-  novas_frame frame = {};
-  novas_track track = {};
-  double vel[3] = {}, x;
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  novas_track track = NOVAS_TRACK_INIT;
+  double vel[3] = {0.0}, x;
 
   if(check("equ_track:frame:null", -1, novas_equ_track(&sun, NULL, 1000.0, &track))) n++;
   if(check("equ_track:frame:init", -1, novas_equ_track(&sun, &frame, 1000.0, &track))) n++;
@@ -1805,10 +1805,10 @@ static int test_solar_illum() {
   int n = 0;
   object earth = NOVAS_EARTH_INIT;
   object jupiter = NOVAS_JUPITER_INIT;
-  novas_timespec time = {};
-  observer obs;
-  novas_frame frame = {};
-  double pos[3] = {1.0, 1.0, 0.0}, vel[3] = {};
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  double pos[3] = {1.0, 1.0, 0.0}, vel[3] = {0.0};
 
   make_solar_system_observer(pos, vel, &obs);
   novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
@@ -1828,9 +1828,9 @@ static int test_object_sep() {
   object sun = NOVAS_SUN_INIT;
   object earth = NOVAS_EARTH_INIT;
   object jupiter = NOVAS_JUPITER_INIT;
-  novas_timespec time = {};
-  observer obs;
-  novas_frame frame = {};
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
 
   make_observer_at_geocenter(&obs);
   novas_set_time(NOVAS_TDB, NOVAS_JD_J2000, 32.0, 0.0, &time);
@@ -1858,7 +1858,7 @@ static int test_object_sep() {
 
 static int test_uvw_to_xyz() {
   int n = 0;
-  double v[3] = {};
+  double v[3] = {0.0};
 
   if(check("uvw_to_xyz:uvw:null", -1, novas_uvw_to_xyz(NULL, 0.0, 0.0, v))) n++;
   if(check("xyz_to_uvw:xyz:null", -1, novas_uvw_to_xyz(v, 0.0, 0.0, NULL))) n++;
@@ -1868,7 +1868,7 @@ static int test_uvw_to_xyz() {
 
 static int test_xyz_to_uvw() {
   int n = 0;
-  double v[3] = {};
+  double v[3] = {0.0};
 
   if(check("xyz_to_uvw:xyz:null", -1, novas_xyz_to_uvw(NULL, 0.0, 0.0, v))) n++;
   if(check("xyz_to_uvw:uvw:null", -1, novas_xyz_to_uvw(v, 0.0, 0.0, NULL))) n++;
@@ -1938,8 +1938,8 @@ static int test_date_scale() {
 
 static int test_iso_timestamp() {
   int n = 0;
-  char buf[30] = {};
-  novas_timespec time = {};
+  char buf[30] = {'\0'};
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
 
   if(check("iso_timestamp:time:null", -1, novas_iso_timestamp(NULL, buf, sizeof(buf)))) n++;
   if(check("iso_timestamp:buf:null", -1, novas_iso_timestamp(&time, NULL, sizeof(buf)))) n++;
@@ -1950,8 +1950,8 @@ static int test_iso_timestamp() {
 
 static int test_timestamp() {
   int n = 0;
-  char buf[30] = {};
-  novas_timespec time = {};
+  char buf[30] = {'\0'};
+  novas_timespec time = NOVAS_TIMESPEC_INIT;
 
   if(check("timestamp:time:null", -1, novas_timestamp(NULL, NOVAS_UTC, buf, sizeof(buf)))) n++;
   if(check("timestamp:time:scale:-1", -1, novas_timestamp(NULL, -1, buf, sizeof(buf)))) n++;
@@ -1984,7 +1984,7 @@ static int test_parse_timescale() {
 
 static int test_print_timescale() {
   int n = 0;
-  char buf[4] = {};
+  char buf[4] = {'\0'};
 
   if(check("print_timescale:buf:null", -1, novas_print_timescale(NOVAS_UTC, NULL))) n++;
   if(check("print_timescale:buf:-1", -1, novas_print_timescale(-1, buf))) n++;
@@ -2005,8 +2005,8 @@ static int test_epoch() {
 
 static int test_make_cat_object_sys() {
   int n = 0;
-  cat_entry star = {};
-  object source = {};
+  cat_entry star = CAT_ENTRY_INIT;
+  object source = NOVAS_OBJECT_INIT;
 
   if(check("make_cat_object_sys:star:null", -1, make_cat_object_sys(NULL, "ICRS", &source))) n++;
   if(check("make_cat_object_sys:sys:null", -1, make_cat_object_sys(&star, NULL, &source))) n++;
@@ -2018,7 +2018,7 @@ static int test_make_cat_object_sys() {
 
 static int test_make_redshifted_object_sys() {
   int n = 0;
-  object source = {};
+  object source = NOVAS_OBJECT_INIT;
 
   if(check("make_redshifted_object_sys:sys:null", -1, make_redshifted_object_sys("test", 0.0, 0.0, NULL, 0.0, &source))) n++;
   if(check("make_redshifted_object_sys:source:null", -1, make_redshifted_object_sys("test", 0.0, 0.0, "ICRS", 0.0, NULL))) n++;
@@ -2029,7 +2029,7 @@ static int test_make_redshifted_object_sys() {
 
 static int test_planet_ephem_provider() {
   int n = 0;
-  double pos[3] = {}, vel[3] = {};
+  double pos[3] = {0.0}, vel[3] = {0.0};
 
   if(check("planet_ephem_provider:none", 1, planet_ephem_provider(NOVAS_JD_J2000, NOVAS_SUN, NOVAS_BARYCENTER, pos, vel))) n++;
   set_ephem_provider(dummy_ephem);
