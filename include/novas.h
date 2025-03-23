@@ -335,6 +335,8 @@ enum novas_planet {
  * \endcode
  *
  * @sa novas_majot_planet
+ * @since 1.2
+ * @author Attila Kovacs
  */
 #define NOVAS_PLANET_NAMES_INIT { \
   "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
@@ -348,6 +350,8 @@ enum novas_planet {
  *
  * @sa enum novas_planet
  * @sa NOVAS_PLANETS
+ * @since 1.2
+ * @author Attila Kovacs
  */
 #define NOVAS_RMASS_INIT  { \
       328900.561400, 6023600.0, 408523.71, 332946.050895, 3098708.0, 1047.3486, 3497.898, \
@@ -362,6 +366,7 @@ enum novas_planet {
  * @sa NOVAS_PLANETS
  *
  * @since 1.1.1
+ * @author Attila Kovacs
  */
 #define NOVAS_PLANET_GRAV_Z_INIT { \
   0.0, 1.0047e-10, 5.9724e-10, 7.3050e-10, 1.4058e-10, 2.0166e-8, 7.2491e-9, 2.5420e-9, \
@@ -462,7 +467,6 @@ enum novas_equator_type {
  * The number of equator types defined in `enum novas_equator_type`.
  *
  * @sa enum novas_equator_type
- * @author Attila Kovacs
  * @since 1.2
  */
 #define NOVAS_EQUATOR_TYPES (NOVAS_GCRS_EQUATOR + 1)
@@ -717,6 +721,7 @@ typedef struct {
  * Empty initializer for novas_delaunay_args
  *
  * @since 1.3
+ * @author Attila Kovacs
  * @sa novas_delaunay_args
  */
 #define NOVAS_DELAUNAY_ARGS_INIT { 0.0, 0.0, 0.0, 0.0, 0.0 }
@@ -886,6 +891,7 @@ typedef struct {
  * Empty object initializer.
  *
  * @since 1.3
+ * @author Attila Kovacs
  * @sa object
  */
 #define NOVAS_OBJECT_INIT { -1, 0L, {'\0'}, CAT_ENTRY_INIT, NOVAS_ORBIT_INIT }
@@ -1022,6 +1028,7 @@ typedef struct {
  * @sa on_surface
  * @sa ON_SURFACE_LOC
  * @since 1.2
+ * @author Attila Kovacs
  */
 #define ON_SURFACE_INIT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
@@ -1035,6 +1042,7 @@ typedef struct {
  * @sa on_surface
  * @sa ON_SURFACE_INIT
  * @since 1.2
+ * @author Attila Kovacs
  */
 #define ON_SURFACE_LOC(lon, lat, alt) { lon, lat, alt, 0.0, 0.0, 0.0 }
 
@@ -1054,6 +1062,7 @@ typedef struct {
  * Initializer for a NOVAS in_space structure.
  * @sa in_space
  * @since 1.1.1
+ * @author Attila Kovacs
  */
 #define IN_SPACE_INIT   {{0.0}, {0.0}}
 
@@ -1084,6 +1093,7 @@ typedef struct {
  * Empty initializer for observer
  *
  * @since 1.3
+ * @author Attila Kovacs
  * @sa observer
  */
 #define OBSERVER_INIT   { NOVAS_OBSERVER_AT_GEOCENTER, ON_SURFACE_INIT, IN_SPACE_INIT }
@@ -1109,6 +1119,7 @@ typedef struct {
  * Initializer for a NOVAS sky_pos structure.
  * @sa sky_pos
  * @since 1.1.1
+ * @author Attila Kovacs
  */
 #define SKY_POS_INIT { {0.0}, 0.0, 0.0, 0.0, 0.0 }
 
