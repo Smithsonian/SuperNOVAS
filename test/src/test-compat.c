@@ -51,7 +51,7 @@ static void newline() {
 }
 
 static void openfile(const char *name) {
-  char filename[100] = {};
+  char filename[100] = {'\0'};
 
   //if(idx >= 0) sprintf(filename, "data/%02d-%s.out", idx++, name);
   sprintf(filename, "data/%s.out", name);
@@ -691,7 +691,7 @@ static void test_grav_def() {
 }
 
 static void test_aberration() {
-  double vo[3] = {}, v0[3] = {}, pos1[3];
+  double vo[3] = {0.0}, v0[3] = {0.0}, pos1[3];
   int i;
 
   // Calculate for sidereal sources only.

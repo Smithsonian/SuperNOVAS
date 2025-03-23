@@ -18,7 +18,7 @@ static double tdb = J2000;
 static FILE *fp;
 
 static void openfile(const char *name) {
-  char filename[100] = {};
+  char filename[100] = {'\0'};
 
   //if(idx >= 0) sprintf(filename, "data/%02d-%s.out", idx++, name);
   sprintf(filename, "data/%s.out", name);

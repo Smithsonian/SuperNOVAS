@@ -85,7 +85,7 @@ static int test_calceph() {
 }
 
 static int test_calceph_planet() {
-  double pos[3], vel[3], pos0[3] = {}, vel0[3] = {};
+  double pos[3], vel[3], pos0[3] = {0.0}, vel0[3] = {0.0};
   double jd = NOVAS_JD_J2000;
   double jd2[2] = { jd, 0.0 };
 

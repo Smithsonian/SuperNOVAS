@@ -233,7 +233,7 @@ static int convert_lsr_ssb_vel(const double *vLSR, int sign, double *vSSB) {
  * @sa novas_ssb_to_lsr_vel()
  */
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
-  double u[3] = {}, v[3];
+  double u[3] = {0.0}, v[3];
   double jd = NOVAS_JD_J2000 + 365.25 * (epoch - 2000.0);
   int i;
 
@@ -276,7 +276,7 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
  * @sa novas_lsr_to_ssb_vel()
  */
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
-  double u[3] = {}, v[3];
+  double u[3] = {0.0}, v[3];
   double jd = NOVAS_JD_J2000 + 365.25 * (epoch - 2000.0);
   int i;
 

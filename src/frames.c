@@ -1337,7 +1337,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   loc = (on_surface *) &frame->observer.on_surf;   // Earth-bound location
 
   for(i = 0; i < novas_inv_max_iter; i++) {
-    sky_pos pos = {};
+    sky_pos pos = SKY_POS_INIT;
     novas_timespec t = frame1.time;
     double ref = 0.0, lha, dhr;
 
@@ -1562,7 +1562,7 @@ double novas_solar_illum(const object *restrict source, const novas_frame *restr
 double novas_object_sep(const object *source1, const object *source2, const novas_frame *restrict frame) {
   static const char *fn = "novas_object_sep";
 
-  sky_pos p1 = {}, p2 = {};
+  sky_pos p1 = SKY_POS_INIT, p2 = SKY_POS_INIT;
 
   if(!source1) {
     novas_error(0, EINVAL, fn, "input source1 is NULL");
@@ -1673,7 +1673,7 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
 
   novas_timespec time1;
   novas_frame frame1;
-  sky_pos pos0 = {}, posm = {}, posp = {};
+  sky_pos pos0 = SKY_POS_INIT, posm = SKY_POS_INIT, posp = SKY_POS_INIT;
   double ra_cio;
   double idt2;
 
@@ -1765,7 +1765,7 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
 
   novas_timespec time1;
   novas_frame frame1;
-  sky_pos pos = {};
+  sky_pos pos = SKY_POS_INIT;
   double ra_cio;
   double az0, el0, azm, elm, dm, zm, azp, elp, dp, zp;
   const double idt2 = 1.0 / (NOVAS_TRACK_DELTA * NOVAS_TRACK_DELTA);

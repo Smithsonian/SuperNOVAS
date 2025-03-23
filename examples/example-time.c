@@ -34,7 +34,8 @@
 
 int main() {
   // SuperNOVAS variables -------------------------------------------------->
-  novas_timespec time1 = {}, time2 = {}, time3 = {};     // Astronomical time data for SuperNOVAS
+  // Astronomical time data for SuperNOVAS
+  novas_timespec time1 = NOVAS_TIMESPEC_INIT, time2 = NOVAS_TIMESPEC_INIT, time3 = NOVAS_TIMESPEC_INIT;
 
   // Calculated quantities ------------------------------------------------->
   enum novas_timescale scale;   // astronomical timescale
