@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
+[1.3.0-rc7] - 2025-03-24</h1>
 <p>Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric calculations.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
@@ -150,6 +150,7 @@ Added</h2>
 <li>#135: New <code><a class="el" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours()</a></code> and <code><a class="el" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees()</a></code> for the simplest conversion of strings in decimal or HMS/DMS formats to floating point values for SuperNOVAS (without retruning a parse position).</li>
 <li>#137: New <code><a class="el" href="parse_8c.html#af4e18885b7d173eb3fe5f18b06f0b4d4">novas_epoch()</a></code> to convert string coordinate system specifications to the Julian date of the corresponding epoch, and new <code><a class="el" href="target_8c.html#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys()</a></code> and <code><a class="el" href="target_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys()</a></code> to make it simpler to define ICRS catalog sources in the coordinate system of choice.</li>
 <li>#143: Added <code>FORTIFY</code> build configuration setting to enable gcc source code fortification checking by setting the <code>_FORTIFY_SOURCE</code> macro to the specified value. It is now used with a value of 3 in the build and test CIs.</li>
+<li>#150: Further initializers for SuperNOVAS structures that can be used to empty initialize data.</li>
 <li>Added <code>example-time.c</code> and <code>example-rise-set.c</code> under <code>examples/</code>, for demonstrating date/time handling functions and rise, set, and transit time calculations.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
@@ -158,6 +159,7 @@ Changed</h2>
 <li>#130 Use C99 <code>restrict</code> keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted pointer arguments are aliased. At the least, it is a hint to users that pointer arguments marked as such should be distinct from (not overlapping with) the other pointer arguments.</li>
 <li>#139 Reorganized code into more managably sized modules. It also makes the API documentation by source file more logically organized.</li>
 <li>#139: Legacy source code moved to <code>legacy/</code> folder.</li>
+<li>#150: Use standard C initializers instead of the non-standard empty backets <code>{}</code>. While the empty brackets have been OK with <code>gcc</code> for quite a while, they only became standard in C23. Other compilers might barf at their use.</li>
 <li>In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> are significantly faster.</li>
 <li>Modified <code><a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> to add range checking for month and day arguments, and return NAN (with <code>errno</code> set to <code>EINVAL</code>) if the input values are invalid.</li>
 <li><code><a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> and <code><a class="el" href="calendar_8c.html#a044f1359abcf0a039ac6452a95729b5a">cal_date()</a></code> now use astronomical calendar dates instead of the fixed Gregorian dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.</li>

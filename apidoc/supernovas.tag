@@ -245,6 +245,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_DELAUNAY_ARGS_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>abf34092276df6f7e9ddaab92a197179b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_EARTH_ANGVEL</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ac50f27bc66238525124427551a956ec3</anchor>
@@ -283,6 +290,13 @@
       <name>NOVAS_EQUATOR_TYPES</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ade30c5c72c918b2428e803e3f4430ceb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_FRAME_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ab1c90a8754103ec1bfcf241c75fe9371</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -392,6 +406,20 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_MATRIX_IDENTITY</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a26fdd758cdef560688d38b20aacae68f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_MATRIX_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad10fc7f05b49bc1ac1110817dc25834e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_MERCURY_INIT</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ab40e33a03ee368c2496b54f9b222fc89</anchor>
@@ -420,9 +448,23 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_OBJECT_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9980b82723819fa345030b9ddad48061</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_OBJECT_TYPES</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a60037f5a7c8fe2b7cf8893cf461598d1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_OBSERVABLE_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>affe559df5bc0f5de1e091037fabfda92</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -451,6 +493,13 @@
       <name>NOVAS_ORIGIN_TYPES</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aab57b6b4c8c96ed32414fe3964813e5f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_PLANET_BUNDLE_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a4cc558a8e366bfea3be40777ea0fcbc3</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -602,6 +651,27 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_TIMESPEC_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>addf3ffbfe4ed05288b689e861600194f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_TRACK_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>abd9e6922d311d47ee2a7a4faf6b67971</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_TRANSFORM_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a6a255712d5e1dcc8c58e16d453501766</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_TRANSFORM_TYPES</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ab5988d52596448e8248d94a4f59d69a1</anchor>
@@ -626,6 +696,13 @@
       <name>NOVAS_VERSION_STRING</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>afc8e7b02d26a13c380dcff4ec2d6530e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>OBSERVER_INIT</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a8b1485a1563288c8d060d935c21e3a63</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">

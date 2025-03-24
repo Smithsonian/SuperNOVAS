@@ -1254,8 +1254,8 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
       </table>
 </div><div class="memdoc">
 <p>Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,y,z coordinates (in ITRS) to for a specified line of sight.</p>
-<p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w).</p>
-<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
+<p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS) coordinates.</p>
+<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian in the ITRS frame. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">xyz</td><td>[arb.u.] Absolute or relative u,v,w coordinates (double[3]). </td></tr>
@@ -1368,8 +1368,8 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
       </table>
 </div><div class="memdoc">
 <p>Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,v,w projected coordinates for a specified line of sight.</p>
-<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
-<p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w).</p>
+<p>x,y,z are Cartesian coordinates w.r.t the Greenwich meridian, in the ITRS frame. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.</p>
+<p>u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS) coordinates.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">xyz</td><td>[arb.u.] Absolute or relative x,y,z coordinates (double[3]). </td></tr>

@@ -144,6 +144,9 @@ include/novas.h
 .br
 .RI "[rad] A degree expressed in radians\&. "
 .ti -1c
+.RI "#define \fBNOVAS_DELAUNAY_ARGS_INIT\fP   { 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+.br
+.ti -1c
 .RI "#define \fBNOVAS_EARTH_ANGVEL\fP   7\&.2921150e\-5"
 .br
 .RI "[rad/s] Rotational angular velocity of Earth from IERS Conventions (2003)\&. "
@@ -163,6 +166,9 @@ include/novas.h
 .br
 .ti -1c
 .RI "#define \fBNOVAS_EQUATOR_TYPES\fP   (\fBNOVAS_GCRS_EQUATOR\fP + 1)"
+.br
+.ti -1c
+.RI "#define \fBNOVAS_FRAME_INIT\fP"
 .br
 .ti -1c
 .RI "#define \fBNOVAS_G_EARTH\fP   3\&.98600433e+14"
@@ -222,6 +228,12 @@ include/novas.h
 .RI "#define \fBNOVAS_MARS_INIT\fP   \fBNOVAS_PLANET_INIT\fP(\fBNOVAS_MERCURY\fP, 'Mars')"
 .br
 .ti -1c
+.RI "#define \fBNOVAS_MATRIX_IDENTITY\fP   {{{1\&.0, 0\&.0, 0\&.0}, {0\&.0, 1\&.0, 0\&.0}, {0\&.0, 0\&.0, 1\&.0}}}"
+.br
+.ti -1c
+.RI "#define \fBNOVAS_MATRIX_INIT\fP   {{{0\&.0}}}"
+.br
+.ti -1c
 .RI "#define \fBNOVAS_MERCURY_INIT\fP   \fBNOVAS_PLANET_INIT\fP(\fBNOVAS_MERCURY\fP, 'Mercury')"
 .br
 .ti -1c
@@ -235,7 +247,13 @@ include/novas.h
 .RI "#define \fBNOVAS_NEPTUNE_INIT\fP   \fBNOVAS_PLANET_INIT\fP(\fBNOVAS_NEPTUNE\fP, 'Neptune')"
 .br
 .ti -1c
+.RI "#define \fBNOVAS_OBJECT_INIT\fP   { \-1, 0L, {'\\0'}, \fBCAT_ENTRY_INIT\fP, \fBNOVAS_ORBIT_INIT\fP }"
+.br
+.ti -1c
 .RI "#define \fBNOVAS_OBJECT_TYPES\fP   (\fBNOVAS_ORBITAL_OBJECT\fP + 1)"
+.br
+.ti -1c
+.RI "#define \fBNOVAS_OBSERVABLE_INIT\fP   { 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
 .br
 .ti -1c
 .RI "#define \fBNOVAS_OBSERVER_PLACES\fP   (\fBNOVAS_SOLAR_SYSTEM_OBSERVER\fP + 1)"
@@ -248,6 +266,9 @@ include/novas.h
 .br
 .ti -1c
 .RI "#define \fBNOVAS_ORIGIN_TYPES\fP   (\fBNOVAS_HELIOCENTER\fP + 1)"
+.br
+.ti -1c
+.RI "#define \fBNOVAS_PLANET_BUNDLE_INIT\fP   { 0, {{0\&.0}}, {{0\&.0}} }"
 .br
 .ti -1c
 .RI "#define \fBNOVAS_PLANET_GRAV_Z_INIT\fP"
@@ -314,6 +335,15 @@ include/novas.h
 .RI "#define \fBNOVAS_TIMESCALES\fP   (\fBNOVAS_UT1\fP + 1)"
 .br
 .ti -1c
+.RI "#define \fBNOVAS_TIMESPEC_INIT\fP   { 0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+.br
+.ti -1c
+.RI "#define \fBNOVAS_TRACK_INIT\fP   { \fBNOVAS_TIMESPEC_INIT\fP, \fBNOVAS_OBSERVABLE_INIT\fP, \fBNOVAS_OBSERVABLE_INIT\fP, \fBNOVAS_OBSERVABLE_INIT\fP }"
+.br
+.ti -1c
+.RI "#define \fBNOVAS_TRANSFORM_INIT\fP   { \-1, \-1, \fBNOVAS_FRAME_INIT\fP, \fBNOVAS_MATRIX_INIT\fP }"
+.br
+.ti -1c
 .RI "#define \fBNOVAS_TRANSFORM_TYPES\fP   (\fBICRS_TO_J2000\fP + 1)"
 .br
 .ti -1c
@@ -326,6 +356,9 @@ include/novas.h
 .RI "#define \fBNOVAS_VERSION_STRING\fP   #\fBNOVAS_MAJOR_VERSION\fP '\&.' \fBNOVAS_MINOR_VERSION\fP"
 .br
 .RI "The version string of the upstream NOVAS library on which this library is based\&. "
+.ti -1c
+.RI "#define \fBOBSERVER_INIT\fP   { \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBON_SURFACE_INIT\fP, \fBIN_SPACE_INIT\fP }"
+.br
 .ti -1c
 .RI "#define \fBON_SURFACE_INIT\fP   { 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
 .br
@@ -360,7 +393,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-devel'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc7'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1', or empty string '' for releases\&. "
 .ti -1c
@@ -1215,6 +1248,11 @@ Initializer for a NOVAS \fBin_space\fP structure\&.
 1\&.1\&.1 
 .RE
 .PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
 
 .SS "#define NOVAS_ARCMIN   (\fBNOVAS_DEGREE\fP / 60\&.0)"
 
@@ -1269,6 +1307,25 @@ Initializer for a NOVAS \fBin_space\fP structure\&.
 .RE
 .PP
 
+.SS "#define NOVAS_DELAUNAY_ARGS_INIT   { 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+Empty initializer for \fBnovas_delaunay_args\fP
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_delaunay_args\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_EARTH_INIT   \fBNOVAS_PLANET_INIT\fP(\fBNOVAS_EARTH\fP, 'Earth')"
 \fCobject\fP initializer for the planet Earth 
 .PP
@@ -1305,14 +1362,29 @@ The number of equator types defined in \fCenum novas_equator_type\fP\&.
 enum \fBnovas_equator_type\fP 
 .RE
 .PP
-\fBAuthor\fP
-.RS 4
-Attila Kovacs 
-.RE
-.PP
 \fBSince\fP
 .RS 4
 1\&.2 
+.RE
+.PP
+
+.SS "#define NOVAS_FRAME_INIT"
+\fBValue:\fP.PP
+.nf
+  { 0, NOVAS_FULL_ACCURACY, NOVAS_TIMESPEC_INIT, OBSERVER_INIT, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, \\
+  0\&.0, 0\&.0, {0\&.0}, {0\&.0}, 0\&.0, 0\&.0, 0\&.0, {0\&.0}, {0\&.0}, {0\&.0}, {0\&.0}, NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, \\
+  NOVAS_MATRIX_INIT, NOVAS_MATRIX_INIT, NOVAS_PLANET_BUNDLE_INIT }
+.fi
+Empty initializer for \fBnovas_frame\fP
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_frame\fP 
 .RE
 .PP
 
@@ -1379,6 +1451,38 @@ Attila Kovacs
 .RE
 .PP
 
+.SS "#define NOVAS_MATRIX_IDENTITY   {{{1\&.0, 0\&.0, 0\&.0}, {0\&.0, 1\&.0, 0\&.0}, {0\&.0, 0\&.0, 1\&.0}}}"
+novas_matric initializer for an indentity matrix
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_matrix\fP 
+.PP
+\fBNOVAS_MATRIX_INIT\fP 
+.RE
+.PP
+
+.SS "#define NOVAS_MATRIX_INIT   {{{0\&.0}}}"
+Empty initializer for \fBnovas_matrix\fP
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_matrix\fP 
+.PP
+\fBNOVAS_MATRIX_IDENTITY\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_MERCURY_INIT   \fBNOVAS_PLANET_INIT\fP(\fBNOVAS_MERCURY\fP, 'Mercury')"
 \fCobject\fP initializer for the planet Venus 
 .PP
@@ -1421,12 +1525,45 @@ Attila Kovacs
 .RE
 .PP
 
+.SS "#define NOVAS_OBJECT_INIT   { \-1, 0L, {'\\0'}, \fBCAT_ENTRY_INIT\fP, \fBNOVAS_ORBIT_INIT\fP }"
+Empty object initializer\&.
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobject\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_OBJECT_TYPES   (\fBNOVAS_ORBITAL_OBJECT\fP + 1)"
 The number of object types distinguished by NOVAS\&.
 .PP
 \fBSee also\fP
 .RS 4
 enum \fBnovas_object_type\fP 
+.RE
+.PP
+
+.SS "#define NOVAS_OBSERVABLE_INIT   { 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+Empty initializer for \fBnovas_observable\fP
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_observable\fP 
 .RE
 .PP
 
@@ -1486,6 +1623,20 @@ enum \fBnovas_origin\fP
 .RE
 .PP
 
+.SS "#define NOVAS_PLANET_BUNDLE_INIT   { 0, {{0\&.0}}, {{0\&.0}} }"
+Empty initializer for \fBnovas_planet_bundle\fP
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_planet_bundle\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_PLANET_GRAV_Z_INIT"
 \fBValue:\fP.PP
 .nf
@@ -1505,6 +1656,11 @@ enum \fBnovas_planet\fP
 \fBSince\fP
 .RS 4
 1\&.1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 
@@ -1542,6 +1698,16 @@ const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
 \fBSee also\fP
 .RS 4
 novas_majot_planet 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 
@@ -1607,6 +1773,16 @@ Barycentric reciprocal masses (index 12, 13) are not set\&.
 enum \fBnovas_planet\fP 
 .PP
 \fBNOVAS_PLANETS\fP 
+.RE
+.PP
+\fBSince\fP
+.RS 4
+1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 
@@ -1738,6 +1914,48 @@ The number of asronomical time scales supported\&.
 .RE
 .PP
 
+.SS "#define NOVAS_TIMESPEC_INIT   { 0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
+Empty initializer for \fBnovas_timespec\fP
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_timespec\fP 
+.RE
+.PP
+
+.SS "#define NOVAS_TRACK_INIT   { \fBNOVAS_TIMESPEC_INIT\fP, \fBNOVAS_OBSERVABLE_INIT\fP, \fBNOVAS_OBSERVABLE_INIT\fP, \fBNOVAS_OBSERVABLE_INIT\fP }"
+Empty initializer for \fBnovas_track\fP
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_track\fP 
+.RE
+.PP
+
+.SS "#define NOVAS_TRANSFORM_INIT   { \-1, \-1, \fBNOVAS_FRAME_INIT\fP, \fBNOVAS_MATRIX_INIT\fP }"
+Empty initializer for NOVAS_TRANSFORM
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBnovas_transform\fP 
+.RE
+.PP
+
 .SS "#define NOVAS_TRANSFORM_TYPES   (\fBICRS_TO_J2000\fP + 1)"
 The number of coordinate transfor types in NOVAS\&.
 .PP
@@ -1775,6 +1993,25 @@ enum \fBnovas_transform_type\fP
 .RE
 .PP
 
+.SS "#define OBSERVER_INIT   { \fBNOVAS_OBSERVER_AT_GEOCENTER\fP, \fBON_SURFACE_INIT\fP, \fBIN_SPACE_INIT\fP }"
+Empty initializer for observer
+.PP
+\fBSince\fP
+.RS 4
+1\&.3 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBobserver\fP 
+.RE
+.PP
+
 .SS "#define ON_SURFACE_INIT   { 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
 Initializer for a NOVAS \fBon_surface\fP data structure\&.
 .PP
@@ -1782,12 +2019,17 @@ Initializer for a NOVAS \fBon_surface\fP data structure\&.
 .RS 4
 \fBon_surface\fP 
 .PP
-ON_SURFACE_INIT_LOC 
+\fBON_SURFACE_LOC\fP 
 .RE
 .PP
 \fBSince\fP
 .RS 4
 1\&.2 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 
@@ -1815,6 +2057,11 @@ Initializer for a NOVAS \fBon_surface\fP data structure, for a specified geodeti
 1\&.2 
 .RE
 .PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
 
 .SS "#define SKY_POS_INIT   { {0\&.0}, 0\&.0, 0\&.0, 0\&.0, 0\&.0 }"
 Initializer for a NOVAS \fBsky_pos\fP structure\&. 
@@ -1827,6 +2074,11 @@ Initializer for a NOVAS \fBsky_pos\fP structure\&.
 \fBSince\fP
 .RS 4
 1\&.1\&.1 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
 .RE
 .PP
 
@@ -6627,7 +6879,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBnovas_sky_pos()\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBnovas_sky_pos()\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBSKY_POS_INIT\fP\&.
 .SS "double novas_frame_lst (const \fBnovas_frame\fP *restrict frame)"
 Returns the Local (apparent) Sidereal Time for an observing frame of an Earth-bound observer\&.
 .PP
@@ -7100,7 +7352,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBnovas_app_to_hor()\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_sky_pos()\fP, \fBNOVAS_TOD\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBnovas_app_to_hor()\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_sky_pos()\fP, \fBNOVAS_TOD\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBSKY_POS_INIT\fP\&.
 .SS "double novas_hpa (double az, double el, double lat)"
 Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky\&. The PA is the angle between the local horizontal coordinate directions and the local true-of-date equatorial coordinate directions at the given location\&. The polar wobble is not included in the calculation\&.
 .PP
@@ -7667,7 +7919,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, and \fBsky_pos::ra\fP\&.
+References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, \fBsky_pos::ra\fP, and \fBSKY_POS_INIT\fP\&.
 .SS "int novas_offset_time (const \fBnovas_timespec\fP * time, double seconds, \fBnovas_timespec\fP * out)"
 Increments the astrometric time by a given amount\&.
 .PP
@@ -9144,9 +9396,9 @@ Attila Kovacs
 .SS "int novas_uvw_to_xyz (const double * uvw, double ha, double dec, double * xyz)"
 Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,y,z coordinates (in ITRS) to for a specified line of sight\&.
 .PP
-u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&.
+u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&. As such, they are effectively ITRS-based line-of-sight (LOS) coordinates\&.
 .PP
-x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
+x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian in the ITRS frame\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -9262,9 +9514,9 @@ Attila Kovacs
 .SS "int novas_xyz_to_uvw (const double * xyz, double ha, double dec, double * uvw)"
 Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,v,w projected coordinates for a specified line of sight\&.
 .PP
-x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
+x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian, in the ITRS frame\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
 .PP
-u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&.
+u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&. As such, they are effectively ITRS-based line-of-sight (LOS) coordinates\&.
 .PP
 \fBParameters\fP
 .RS 4

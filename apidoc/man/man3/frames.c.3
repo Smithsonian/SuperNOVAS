@@ -295,7 +295,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBnovas_sky_pos()\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBnovas_sky_pos()\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBSKY_POS_INIT\fP\&.
 .SS "double novas_frame_lst (const \fBnovas_frame\fP *restrict frame)"
 Returns the Local (apparent) Sidereal Time for an observing frame of an Earth-bound observer\&.
 .PP
@@ -515,7 +515,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBnovas_app_to_hor()\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_sky_pos()\fP, \fBNOVAS_TOD\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, and \fBsky_pos::rv\fP\&.
+References \fBcio_ra()\fP, \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_timespec::fjd_tt\fP, \fBNOVAS_AIRBORNE_OBSERVER\fP, \fBnovas_app_to_hor()\fP, \fBNOVAS_CIRS\fP, \fBnovas_make_frame()\fP, \fBNOVAS_OBSERVER_ON_EARTH\fP, \fBnovas_sky_pos()\fP, \fBNOVAS_TOD\fP, \fBnovas_v2z()\fP, \fBsky_pos::ra\fP, \fBsky_pos::rv\fP, and \fBSKY_POS_INIT\fP\&.
 .SS "int novas_invert_transform (const \fBnovas_transform\fP * transform, \fBnovas_transform\fP * inverse)"
 Inverts a novas coordinate transformation matrix\&.
 .PP
@@ -720,7 +720,7 @@ Attila Kovacs
 .PP
 
 .PP
-References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, and \fBsky_pos::ra\fP\&.
+References \fBsky_pos::dec\fP, \fBsky_pos::dis\fP, \fBnovas_equ_sep()\fP, \fBNOVAS_GCRS\fP, \fBnovas_sky_pos()\fP, \fBsky_pos::ra\fP, and \fBSKY_POS_INIT\fP\&.
 .SS "double novas_rises_above (double el, const \fBobject\fP *restrict source, const \fBnovas_frame\fP *restrict frame, \fBRefractionModel\fP ref_model)"
 Returns the UTC date at which a distant source appears to rise above the specified elevation angle\&. The calculated time will account for the (slow) motion for Solar-system bodies, and optionally for atmospheric refraction also\&.
 .PP

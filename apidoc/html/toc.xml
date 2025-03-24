@@ -56,7 +56,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md94"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.3.0-rc7] - 2025-03-24" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -419,12 +419,14 @@
           <topic label="NOVAS_CIO_CACHE_SIZE" href="novas_8h.html#ab7f2aaab5b9fe0be5d77d4cccc3745a9"/>
           <topic label="NOVAS_DAY" href="novas_8h.html#a0b0c2c5ccc61c8740de2e2ac277cd836"/>
           <topic label="NOVAS_DEGREE" href="novas_8h.html#a6d9698dbaf6260d7fe8a531a0e96d2a8"/>
+          <topic label="NOVAS_DELAUNAY_ARGS_INIT" href="novas_8h.html#abf34092276df6f7e9ddaab92a197179b"/>
           <topic label="NOVAS_EARTH_ANGVEL" href="novas_8h.html#ac50f27bc66238525124427551a956ec3"/>
           <topic label="NOVAS_EARTH_FLATTENING" href="novas_8h.html#a1830a25e886366263653167369213d8b"/>
           <topic label="NOVAS_EARTH_INIT" href="novas_8h.html#abad802a863342aebe9a40587b4e47bab"/>
           <topic label="NOVAS_EARTH_RADIUS" href="novas_8h.html#a139f16e134bf6119b6e04c8272c85668"/>
           <topic label="NOVAS_EMB_INIT" href="novas_8h.html#a209cb6db7acbde105772520150f238de"/>
           <topic label="NOVAS_EQUATOR_TYPES" href="novas_8h.html#ade30c5c72c918b2428e803e3f4430ceb"/>
+          <topic label="NOVAS_FRAME_INIT" href="novas_8h.html#ab1c90a8754103ec1bfcf241c75fe9371"/>
           <topic label="NOVAS_G_EARTH" href="novas_8h.html#af125f22b69933024d6a8513b205dca8b"/>
           <topic label="NOVAS_G_SUN" href="novas_8h.html#a6d955f313593b4a56fef202708d5722b"/>
           <topic label="NOVAS_GPS_TO_TAI" href="novas_8h.html#a6355388ff4a44836eda6eb1e97da60cd"/>
@@ -440,15 +442,20 @@
           <topic label="NOVAS_KMS" href="novas_8h.html#a7822b81ad3f75b448f446ed4da774e75"/>
           <topic label="NOVAS_MAJOR_VERSION" href="novas_8h.html#ac73482ee628f676b44bb1476688f223e"/>
           <topic label="NOVAS_MARS_INIT" href="novas_8h.html#a26aff9425f7df9a4559da8daac284cc5"/>
+          <topic label="NOVAS_MATRIX_IDENTITY" href="novas_8h.html#a26fdd758cdef560688d38b20aacae68f"/>
+          <topic label="NOVAS_MATRIX_INIT" href="novas_8h.html#ad10fc7f05b49bc1ac1110817dc25834e"/>
           <topic label="NOVAS_MERCURY_INIT" href="novas_8h.html#ab40e33a03ee368c2496b54f9b222fc89"/>
           <topic label="NOVAS_MINOR_VERSION" href="novas_8h.html#af7a746fdca818e9d4c4aa27bf65a62be"/>
           <topic label="NOVAS_MOON_INIT" href="novas_8h.html#a4cbd3c168b9357e3af2274252a6d1a5b"/>
           <topic label="NOVAS_NEPTUNE_INIT" href="novas_8h.html#a341603d54c8cfc1ae9bb23034ba3ef5a"/>
+          <topic label="NOVAS_OBJECT_INIT" href="novas_8h.html#a9980b82723819fa345030b9ddad48061"/>
           <topic label="NOVAS_OBJECT_TYPES" href="novas_8h.html#a60037f5a7c8fe2b7cf8893cf461598d1"/>
+          <topic label="NOVAS_OBSERVABLE_INIT" href="novas_8h.html#affe559df5bc0f5de1e091037fabfda92"/>
           <topic label="NOVAS_OBSERVER_PLACES" href="novas_8h.html#a7af86c48f77394688f4ad43eb20760f4"/>
           <topic label="NOVAS_ORBIT_INIT" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065"/>
           <topic label="NOVAS_ORBITAL_SYSTEM_INIT" href="novas_8h.html#a61b4f45764a44517b867442de7749cd4"/>
           <topic label="NOVAS_ORIGIN_TYPES" href="novas_8h.html#aab57b6b4c8c96ed32414fe3964813e5f"/>
+          <topic label="NOVAS_PLANET_BUNDLE_INIT" href="novas_8h.html#a4cc558a8e366bfea3be40777ea0fcbc3"/>
           <topic label="NOVAS_PLANET_GRAV_Z_INIT" href="novas_8h.html#a0ae90838b446c7d4c1d3386ec8857410"/>
           <topic label="NOVAS_PLANET_INIT" href="novas_8h.html#ad34a88c2c04b624f8f85fc86e7935967"/>
           <topic label="NOVAS_PLANET_NAMES_INIT" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390"/>
@@ -470,10 +477,14 @@
           <topic label="NOVAS_SYSTEM_J2000" href="novas_8h.html#ae67fecc99f46afc9b4f12fc27b4fbe6c"/>
           <topic label="NOVAS_TAI_TO_TT" href="novas_8h.html#a68aa01f6e3e0f40bbe1b5ccab3144fda"/>
           <topic label="NOVAS_TIMESCALES" href="novas_8h.html#a7505fe27b163e97b60bcf4406eadffa7"/>
+          <topic label="NOVAS_TIMESPEC_INIT" href="novas_8h.html#addf3ffbfe4ed05288b689e861600194f"/>
+          <topic label="NOVAS_TRACK_INIT" href="novas_8h.html#abd9e6922d311d47ee2a7a4faf6b67971"/>
+          <topic label="NOVAS_TRANSFORM_INIT" href="novas_8h.html#a6a255712d5e1dcc8c58e16d453501766"/>
           <topic label="NOVAS_TRANSFORM_TYPES" href="novas_8h.html#ab5988d52596448e8248d94a4f59d69a1"/>
           <topic label="NOVAS_URANUS_INIT" href="novas_8h.html#ad873085559e1141614264d15c4885a87"/>
           <topic label="NOVAS_VENUS_INIT" href="novas_8h.html#af126344dc5cbee61df9e55bd92322839"/>
           <topic label="NOVAS_VERSION_STRING" href="novas_8h.html#afc8e7b02d26a13c380dcff4ec2d6530e"/>
+          <topic label="OBSERVER_INIT" href="novas_8h.html#a8b1485a1563288c8d060d935c21e3a63"/>
           <topic label="ON_SURFACE_INIT" href="novas_8h.html#ad8e67e1b12b3699a361f87e95d333334"/>
           <topic label="ON_SURFACE_LOC" href="novas_8h.html#a4fe5e792ca262b3f45fe992b4c49e9b4"/>
           <topic label="RAD2DEG" href="novas_8h.html#ac5a945020d3528355cda82d383676736"/>

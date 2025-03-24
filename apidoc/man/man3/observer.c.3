@@ -749,9 +749,9 @@ Attila Kovacs
 .SS "int novas_uvw_to_xyz (const double * uvw, double ha, double dec, double * xyz)"
 Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope x,y,z coordinates (in ITRS) to for a specified line of sight\&.
 .PP
-u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&.
+u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&. As such, they are effectively ITRS-based line-of-sight (LOS) coordinates\&.
 .PP
-x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
+x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian in the ITRS frame\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -827,9 +827,9 @@ Attila Kovacs
 .SS "int novas_xyz_to_uvw (const double * xyz, double ha, double dec, double * uvw)"
 Converts rectangular telescope x,y,z (absolute or relative) coordinates (in ITRS) to equatorial u,v,w projected coordinates for a specified line of sight\&.
 .PP
-x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
+x,y,z are Cartesian coordinates w\&.r\&.t the Greenwich meridian, in the ITRS frame\&. The directions are x: long=0, lat=0; y: long=90, lat=0; z: lat=90\&.
 .PP
-u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&.
+u,v,w are Cartesian coordinates (u,v) along the local equatorial R\&.A\&. and declination directions as seen from a direction on the sky (w)\&. As such, they are effectively ITRS-based line-of-sight (LOS) coordinates\&.
 .PP
 \fBParameters\fP
 .RS 4
