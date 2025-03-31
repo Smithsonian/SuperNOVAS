@@ -1,6 +1,6 @@
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
-[![DOI](https://zenodo.org/badge/748170057.svg)](https://doi.org/10.5281/zenodo.14584983)
+[![DOI](resources/748170057.svg)](https://doi.org/10.5281/zenodo.14584983)
 
 The NOVAS C astrometry library, made better.
 
