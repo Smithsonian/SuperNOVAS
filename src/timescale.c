@@ -993,13 +993,13 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
 }
 
 static int timestamp(long ijd, double fjd, char *buf) {
-  long ms;
+  long dd, ms;
   int y, M, d, h, m, s;
 
   // fjd -> [-0.5:0.5) range
-  d = (short) floor(fjd + 0.5);
-  ijd += d;
-  fjd -= d;
+  dd = (long) floor(fjd + 0.5);
+  ijd += dd;
+  fjd -= dd;
 
   // Day start 12TT -> 0TT i.e., fjd -> [0.0:1.0) range
   fjd += 0.5;
