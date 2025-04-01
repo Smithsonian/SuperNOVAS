@@ -1022,7 +1022,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
   ms -= MIN_MILLIS * m;
 
   s = ms / 1000;
-  ms -= 1000 * s;
+  ms -= 1000L * s;
 
   return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%03d", y, M, d, h, m, s, (int) ms);
 }
