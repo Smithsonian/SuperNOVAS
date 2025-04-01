@@ -994,15 +994,15 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
 
 static int timestamp(long ijd, double fjd, char *buf) {
   long ms;
-  int y, M, d, h, m;
+  int y, M, d, h, m, s;
 
-  // Day start 12TT -> 0TT
-  fjd += 0.5;
-
-  // fjd -> [0.0:1.0) range
-  d = (short) floor(fjd - 0.5);
+  // fjd -> [-0.5:0.5) range
+  d = (short) floor(fjd + 0.5);
   ijd += d;
   fjd -= d;
+
+  // Day start 12TT -> 0TT i.e., fjd -> [0.0:1.0) range
+  fjd += 0.5;
 
   // Round to nearest ms.
   ms = (long) floor(fjd * DAY_MILLIS + 0.5);
@@ -1011,15 +1011,20 @@ static int timestamp(long ijd, double fjd, char *buf) {
     ijd++;
   }
 
+  // Date at 12pm of the same day
   novas_jd_to_date(ijd, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
 
-  h = (short) (ms / HOUR_MILLIS);
+  // Time breakdown
+  h = ms / HOUR_MILLIS;
   ms -= HOUR_MILLIS * h;
 
-  m = (short) (ms / MIN_MILLIS);
+  m = ms / MIN_MILLIS;
   ms -= MIN_MILLIS * m;
 
-  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%03d", y, M, d, h, m, (int) (ms/1000L), (int) (ms%1000L));
+  s = ms / 1000;
+  ms -= 1000 * s;
+
+  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%03d", y, M, d, h, m, s, (int) ms);
 }
 
 /**
