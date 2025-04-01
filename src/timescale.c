@@ -1000,6 +1000,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
   ijd += d;
   fjd -= d;
 
+  // Round to nearest ms.
   ms = (long) floor((fjd - 0.5) * DAY_MILLIS + 0.5);
   if(ms >= DAY_MILLIS) {
     ms -= DAY_MILLIS;     // rounding to 0h next day...
