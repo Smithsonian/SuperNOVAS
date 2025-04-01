@@ -996,18 +996,22 @@ static int timestamp(long ijd, double fjd, char *buf) {
   long ms;
   int y, M, d, h, m;
 
+  // Day start 12TT -> 0TT
+  fjd += 0.5;
+
+  // fjd -> [0.0:1.0) range
   d = (short) floor(fjd - 0.5);
   ijd += d;
   fjd -= d;
 
   // Round to nearest ms.
-  ms = (long) floor((fjd - 0.5) * DAY_MILLIS + 0.5);
+  ms = (long) floor(fjd * DAY_MILLIS + 0.5);
   if(ms >= DAY_MILLIS) {
     ms -= DAY_MILLIS;     // rounding to 0h next day...
     ijd++;
   }
 
-  novas_jd_to_date(ijd + 0.5, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
+  novas_jd_to_date(ijd, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
 
   h = (short) (ms / HOUR_MILLIS);
   ms -= HOUR_MILLIS * h;
