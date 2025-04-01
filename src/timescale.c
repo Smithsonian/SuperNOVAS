@@ -48,8 +48,14 @@
 
 #define DATE_SEP_CHARS  "-_./ \t\r\n\f"             ///< characters that may separate date components
 #define DATE_SEP        "%*[" DATE_SEP_CHARS "]"    ///< Parse pattern for ignored date separators
-#define MONTH_SPEC      "%9[^" DATE_SEP_CHARS "]"   ///< Parse pattern for month specification, either as a 1-2 digit integer or as a
-///< month name or abbreviation.
+
+/// Parse pattern for month specification, either as a 1-2 digit integer or as a month name or abbreviation.
+#define MONTH_SPEC      "%9[^" DATE_SEP_CHARS "]"
+
+#define DAY_MILLIS    86400000L         ///< milliseconds in a day
+#define HOUR_MILLIS   3600000L          ///< milliseconds in an hour
+#define MIN_MILLIS    60000L            ///< milliseconds in a minute
+
 /// \endcond
 
 #if __Lynx__ && __powerpc__
@@ -987,29 +993,28 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
 }
 
 static int timestamp(long ijd, double fjd, char *buf) {
-  int y, M, d, h, m, ds;
-  double s;
-
-  fjd -= remainder(fjd, 1e-3 / DAY); // round to ms.
+  long ms;
+  int y, M, d, h, m;
 
   d = (short) floor(fjd - 0.5);
   ijd += d;
   fjd -= d;
 
+  ms = (long) floor((fjd - 0.5) * DAY_MILLIS + 0.5);
+  if(ms >= DAY_MILLIS) {
+    ms -= DAY_MILLIS;     // rounding to 0h next day...
+    ijd++;
+  }
+
   novas_jd_to_date(ijd + 0.5, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
 
-  s = 24.0 * (fjd - 0.5);
+  h = (short) (ms / HOUR_MILLIS);
+  ms -= HOUR_MILLIS * h;
 
-  h = (short) s;
-  s = 60.0 * (s - h);
+  m = (short) (ms / MIN_MILLIS);
+  ms -= MIN_MILLIS * m;
 
-  m = (short) s;
-  s = 60.0 * (s - m);
-
-  ds = s / 10;
-  s -= 10 * ds;
-
-  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%d%5.3f", y, M, d, h, m, ds, s);
+  return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%03d", y, M, d, h, m, (int) (ms/1000L), (int) (ms%1000L));
 }
 
 /**
