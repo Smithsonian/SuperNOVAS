@@ -3516,15 +3516,18 @@ static int test_parse_timescale() {
 
 static int test_timestamp() {
   int n = 0;
+
   int i;
   novas_timespec time = NOVAS_TIMESPEC_INIT;
+  char ts[40] = {'\0'};
 
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &time);
 
   for(i = 0; i < NOVAS_TIMESCALES; i++) {
-    char label[40], ts[40] = {'\0'};
-    double jd;
     novas_timespec time1 = NOVAS_TIMESPEC_INIT;
+    char label[40];
+    double jd;
+
 
     sprintf(label, "timestamp:%d", i);
     if(!is_ok(label, novas_timestamp(&time, i, ts, sizeof(ts)) < 0)) n++;
@@ -3537,6 +3540,15 @@ static int test_timestamp() {
 
     sprintf(label, "timestamp:%d:truncate", i);
     if(!is_equal(label, novas_timestamp(&time, i, ts, 10), 9, 1e-6)) n++;
+  }
+
+  // Rounding a fraction of a ms before midnight....
+  novas_set_split_time(NOVAS_TT, NOVAS_JD_J2000, 0.5 - 1e-4 / DAY, 32, 0.0, &time);
+  if(!is_ok("timestamp:round", novas_timestamp(&time, NOVAS_TT, ts, sizeof(ts)) < 0)) n++;
+
+  if(!is_ok("timestamp:round:check", strncmp("2000-01-02T", ts, 11))) {
+    printf(" >>> got: %s', expected '2000-01-02'\n", ts);
+    n++;
   }
 
   return n;

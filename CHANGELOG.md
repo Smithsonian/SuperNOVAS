@@ -85,7 +85,8 @@ calculations.
    "TAI", and `novas_print_timescale()` to convert to string representation.
  
  - #118: New `novas_iso_timestamp()` to print UTC timestamps in ISO date format with millisecond precision, and
-   `novas_timestamp()` to print timestamps in specific timescales.
+   `novas_timestamp()` to print timestamps in specific timescales. #151: Various fixes to new timestamping after 
+   `rc7`. [thanks to valeriy-sokoloff]
 
  - #122: New `novas_jd_to_date()`, and `novas_jd_from_date()` which convert between JD day and calendar dates 
    using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date.
@@ -112,7 +113,7 @@ calculations.
  - #150: Further initializers for SuperNOVAS structures that can be used to empty initialize data.
 
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
-   and rise, set, and transit time calculations. 
+   and rise, set, and transit time calculations.
 
 ### Changed
  
@@ -127,6 +128,8 @@ calculations.
  
  - #150: Use standard C initializers instead of the non-standard empty backets `{}`. While the empty brackets have
    been OK with `gcc` for quite a while, they only became standard in C23. Other compilers might barf at their use.
+ 
+ - #152: For C++ compatibility do not use `class` as a parameter name. [thanks to valeriy-sokoloff]
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
