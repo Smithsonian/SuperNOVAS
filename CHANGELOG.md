@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.3.0-rc8] - 2025-04-02
+## [Unreleased]
 
 Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such 
 as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric 
@@ -121,7 +121,7 @@ calculations.
    pointer arguments are aliased. At the least, it is a hint to users that pointer arguments marked as such should be
    distinct from (not overlapping with) the other pointer arguments.
    
- - #139 Reorganized code into more managably sized modules. It also makes the API documentation by source file more 
+ - #139 Reorganized code into more manageably sized modules. It also makes the API documentation by source file more 
    logically organized.
    
  - #139: Legacy source code moved to `legacy/` folder.
