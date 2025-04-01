@@ -13,7 +13,7 @@ var searchData=
   ['radec_5fstar_10',['radec_star',['../place_8c.html#a0f307c2a37d594a68e99c5c8af6d50c9',1,'radec_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict rv):&#160;place.c'],['../novas_8h.html#a0f307c2a37d594a68e99c5c8af6d50c9',1,'radec_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt, enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict rv):&#160;place.c']]],
   ['radialvelocity_11',['radialvelocity',['../structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a',1,'cat_entry']]],
   ['rate_12',['rate',['../structnovas__track.html#ab5aa5e48c9fcb9f6bd1031fe9feb80b3',1,'novas_track']]],
-  ['rc7_202025_2003_2024_13',['[1.3.0-rc7] - 2025-03-24',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
+  ['rc8_202025_2004_2002_13',['[1.3.0-rc8] - 2025-04-02',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
   ['readeph_14',['readeph',['../solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736',1,'solarsystem.h']]],
   ['readeph_20tt_20modules_15',['Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules',['../index.html#autotoc_md48',1,'']]],
   ['record_5flength_16',['RECORD_LENGTH',['../eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300',1,'eph_manager.c']]],

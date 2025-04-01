@@ -56,7 +56,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md94"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.3.0-rc7] - 2025-03-24" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.3.0-rc8] - 2025-04-02" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -639,7 +639,7 @@
           <topic label="astro_star" href="novas_8h.html#a9530c770e83db2cbc5a31d8d1f8c36f4"/>
           <topic label="bary2obs" href="novas_8h.html#a1d58fd371e7604f75df315365672941e"/>
           <topic label="cal_date" href="novas_8h.html#a044f1359abcf0a039ac6452a95729b5a"/>
-          <topic label="cel2ter" href="novas_8h.html#a95f02377ce41d4e251654449dda82986"/>
+          <topic label="cel2ter" href="novas_8h.html#a65b70aa33e4e73a877411ceb6e1cef31"/>
           <topic label="cel_pole" href="novas_8h.html#a8937180de2ee1545d19b8fc840f35fe2"/>
           <topic label="cio_array" href="novas_8h.html#afc894b55420495a727a90d3d85188ef4"/>
           <topic label="cio_basis" href="novas_8h.html#a51bfbe9b491f50851326b2522dc2a29f"/>
@@ -820,7 +820,7 @@
           <topic label="spin" href="novas_8h.html#af4090e519d7ce7ab1fcdb24b10126eb4"/>
           <topic label="starvectors" href="novas_8h.html#a27bae6c9efdab763dba9f1ae36a04669"/>
           <topic label="tdb2tt" href="novas_8h.html#a90d5fae30728b51151c3daf355ca585b"/>
-          <topic label="ter2cel" href="novas_8h.html#a6b662ff99b35db19c9b6b24a1ae9264f"/>
+          <topic label="ter2cel" href="novas_8h.html#af9bc82e32fb3d7580d7ac99978011279"/>
           <topic label="terra" href="novas_8h.html#a8471f990ad6e3051a0aa584d9cb2d355"/>
           <topic label="tod_to_cirs" href="novas_8h.html#adb48b2acaf76cc3a1e3a1412cc42c232"/>
           <topic label="tod_to_gcrs" href="novas_8h.html#a6871e7fecde44084c7b4e1b8dda5ac70"/>
@@ -1132,7 +1132,7 @@
         </topic>
         <topic label="system.c" href="system_8c.html">
           <topic label="app_to_cirs_ra" href="system_8c.html#a3fa57a154f2f423612736e5e3a5addbf"/>
-          <topic label="cel2ter" href="system_8c.html#a95f02377ce41d4e251654449dda82986"/>
+          <topic label="cel2ter" href="system_8c.html#a65b70aa33e4e73a877411ceb6e1cef31"/>
           <topic label="cirs_to_app_ra" href="system_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b"/>
           <topic label="cirs_to_gcrs" href="system_8c.html#ac0ba048cd1732d0d0398397396d158bc"/>
           <topic label="cirs_to_itrs" href="system_8c.html#aa2768d89d499a7155f90a6fd8c176d8d"/>
@@ -1151,7 +1151,7 @@
           <topic label="nutation" href="system_8c.html#a69df5671751c09a7575963b94ad1151e"/>
           <topic label="nutation_angles" href="system_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4"/>
           <topic label="precession" href="system_8c.html#a9178358732325399f3a5e3582080ced3"/>
-          <topic label="ter2cel" href="system_8c.html#a6b662ff99b35db19c9b6b24a1ae9264f"/>
+          <topic label="ter2cel" href="system_8c.html#af9bc82e32fb3d7580d7ac99978011279"/>
           <topic label="tod_to_cirs" href="system_8c.html#adb48b2acaf76cc3a1e3a1412cc42c232"/>
           <topic label="tod_to_gcrs" href="system_8c.html#a6871e7fecde44084c7b4e1b8dda5ac70"/>
           <topic label="tod_to_itrs" href="system_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3"/>

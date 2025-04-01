@@ -423,7 +423,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release. <br /></td></tr>
 <tr class="separator:a9b926427954233b94ebd6925d86f9f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft" align="right" valign="top"><a id="aadef42ba39811e058ee9efe2c6f7d151" name="aadef42ba39811e058ee9efe2c6f7d151"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc7&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc8&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases. <br /></td></tr>
 <tr class="separator:aadef42ba39811e058ee9efe2c6f7d151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a44de9d1672290d153a1dfb0685886208">SUPERNOVAS_VERSION_STRING</a></td></tr>
@@ -610,8 +610,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1d58fd371e7604f75df315365672941e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a044f1359abcf0a039ac6452a95729b5a" id="r_a044f1359abcf0a039ac6452a95729b5a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a044f1359abcf0a039ac6452a95729b5a">cal_date</a> (double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour)</td></tr>
 <tr class="separator:a044f1359abcf0a039ac6452a95729b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95f02377ce41d4e251654449dda82986" id="r_a95f02377ce41d4e251654449dda82986"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a95f02377ce41d4e251654449dda82986">cel2ter</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> class, double xp, double yp, const double *in, double *out)</td></tr>
-<tr class="separator:a95f02377ce41d4e251654449dda82986"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65b70aa33e4e73a877411ceb6e1cef31" id="r_a65b70aa33e4e73a877411ceb6e1cef31"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a65b70aa33e4e73a877411ceb6e1cef31">cel2ter</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> cl, double xp, double yp, const double *in, double *out)</td></tr>
+<tr class="separator:a65b70aa33e4e73a877411ceb6e1cef31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8937180de2ee1545d19b8fc840f35fe2" id="r_a8937180de2ee1545d19b8fc840f35fe2"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole</a> (double jd_tt, enum <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543">novas_pole_offset_type</a> type, double dpole1, double dpole2)</td></tr>
 <tr class="separator:a8937180de2ee1545d19b8fc840f35fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc894b55420495a727a90d3d85188ef4" id="r_afc894b55420495a727a90d3d85188ef4"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#afc894b55420495a727a90d3d85188ef4">cio_array</a> (double jd_tdb, long n_pts, <a class="el" href="structra__of__cio.html">ra_of_cio</a> *restrict cio)</td></tr>
@@ -974,8 +974,8 @@ Functions</h2></td></tr>
 <tr class="separator:a27bae6c9efdab763dba9f1ae36a04669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90d5fae30728b51151c3daf355ca585b" id="r_a90d5fae30728b51151c3daf355ca585b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt</a> (double jd_tdb, double *restrict jd_tt, double *restrict secdiff)</td></tr>
 <tr class="separator:a90d5fae30728b51151c3daf355ca585b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b662ff99b35db19c9b6b24a1ae9264f" id="r_a6b662ff99b35db19c9b6b24a1ae9264f"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a6b662ff99b35db19c9b6b24a1ae9264f">ter2cel</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> class, double xp, double yp, const double *in, double *out)</td></tr>
-<tr class="separator:a6b662ff99b35db19c9b6b24a1ae9264f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9bc82e32fb3d7580d7ac99978011279" id="r_af9bc82e32fb3d7580d7ac99978011279"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#af9bc82e32fb3d7580d7ac99978011279">ter2cel</a> (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609">novas_earth_rotation_measure</a> erot, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a> cl, double xp, double yp, const double *in, double *out)</td></tr>
+<tr class="separator:af9bc82e32fb3d7580d7ac99978011279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8471f990ad6e3051a0aa584d9cb2d355" id="r_a8471f990ad6e3051a0aa584d9cb2d355"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a8471f990ad6e3051a0aa584d9cb2d355">terra</a> (const <a class="el" href="structon__surface.html">on_surface</a> *restrict location, double lst, double *restrict pos, double *restrict vel)</td></tr>
 <tr class="memdesc:a8471f990ad6e3051a0aa584d9cb2d355"><td class="mdescLeft">&#160;</td><td class="mdescRight">==========================================================================  <br /></td></tr>
 <tr class="separator:a8471f990ad6e3051a0aa584d9cb2d355"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2448,7 +2448,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The class of celestial coordinates used as parameters for <a class="el" href="novas_8h.html#a6b662ff99b35db19c9b6b24a1ae9264f">ter2cel()</a> and <a class="el" href="novas_8h.html#a95f02377ce41d4e251654449dda82986">cel2ter()</a>. </p>
+<p>The class of celestial coordinates used as parameters for <a class="el" href="novas_8h.html#af9bc82e32fb3d7580d7ac99978011279">ter2cel()</a> and <a class="el" href="novas_8h.html#a65b70aa33e4e73a877411ceb6e1cef31">cel2ter()</a>. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3789b2c39c26f01bb1bffe8ebc953467ab580d06bb093ef496695125e2bef1798" name="a3789b2c39c26f01bb1bffe8ebc953467ab580d06bb093ef496695125e2bef1798"></a>NOVAS_REFERENCE_CLASS&#160;</td><td class="fielddoc"><p>Celestial coordinates are in GCRS. </p>
 </td></tr>
@@ -3503,8 +3503,8 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 
 </div>
 </div>
-<a id="a95f02377ce41d4e251654449dda82986" name="a95f02377ce41d4e251654449dda82986"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95f02377ce41d4e251654449dda82986">&#9670;&#160;</a></span>cel2ter()</h2>
+<a id="a65b70aa33e4e73a877411ceb6e1cef31" name="a65b70aa33e4e73a877411ceb6e1cef31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65b70aa33e4e73a877411ceb6e1cef31">&#9670;&#160;</a></span>cel2ter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3543,7 +3543,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a>&#160;</td>
-          <td class="paramname"><em>class</em>, </td>
+          <td class="paramname"><em>cl</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3593,7 +3593,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
     <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] TT - UT1 Time difference in seconds </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">erot</td><td>EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard) as the Earth rotation measure. The main effect of this option is that it specifies the input coordinate system as CIRS or TOD when the input coordinate class is NOVAS_DYNAMICAL_CLASS. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">class</td><td>Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1). Use the former if the input coordinates are in the GCRS, and the latter if they are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is specified in.) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">cl</td><td>Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1). Use the former if the input coordinates are in the GCRS, and the latter if they are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is specified in.) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">yp</td><td>[arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Input position vector, geocentric equatorial rectangular coordinates in the specified input coordinate system (GCRS if 'class' is NOVAS_REFERENCE_CLASS; or else either CIRS if 'erot' is EROT_ERA, or TOD if 'erot' is EROT_GST). </td></tr>
@@ -3612,7 +3612,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dd>
 <a class="el" href="system_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> </dd>
 <dd>
-<a class="el" href="system_8c.html#a6b662ff99b35db19c9b6b24a1ae9264f">ter2cel()</a> </dd></dl>
+<a class="el" href="system_8c.html#af9bc82e32fb3d7580d7ac99978011279">ter2cel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="earth_8c.html#aef1f8daaad470353648de90576aefc66">era()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="system_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="system_8c.html#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod()</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, <a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a>, <a class="el" href="util_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>, <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a>, and <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10">WOBBLE_PEF_TO_ITRS</a>.</p>
 
@@ -4156,7 +4156,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="system_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
+<p class="reference">References <a class="el" href="system_8c.html#a65b70aa33e4e73a877411ceb6e1cef31">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
 
 </div>
 </div>
@@ -4959,7 +4959,7 @@ Kaplan, G. (2008). USNO/AA Technical Note of 28 Apr 2008, "Refraction as a Vecto
 <dd>
 <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a>, and <a class="el" href="system_8c.html#a6b662ff99b35db19c9b6b24a1ae9264f">ter2cel()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a>, and <a class="el" href="system_8c.html#af9bc82e32fb3d7580d7ac99978011279">ter2cel()</a>.</p>
 
 </div>
 </div>
@@ -6284,7 +6284,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, and <a class="el" href="system_8c.html#a6b662ff99b35db19c9b6b24a1ae9264f">ter2cel()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, and <a class="el" href="system_8c.html#af9bc82e32fb3d7580d7ac99978011279">ter2cel()</a>.</p>
 
 </div>
 </div>
@@ -6440,7 +6440,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, and <a class="el" href="system_8c.html#a6b662ff99b35db19c9b6b24a1ae9264f">ter2cel()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, and <a class="el" href="system_8c.html#af9bc82e32fb3d7580d7ac99978011279">ter2cel()</a>.</p>
 
 </div>
 </div>
@@ -14743,8 +14743,8 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 
 </div>
 </div>
-<a id="a6b662ff99b35db19c9b6b24a1ae9264f" name="a6b662ff99b35db19c9b6b24a1ae9264f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b662ff99b35db19c9b6b24a1ae9264f">&#9670;&#160;</a></span>ter2cel()</h2>
+<a id="af9bc82e32fb3d7580d7ac99978011279" name="af9bc82e32fb3d7580d7ac99978011279"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9bc82e32fb3d7580d7ac99978011279">&#9670;&#160;</a></span>ter2cel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -14783,7 +14783,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">enum <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467">novas_equatorial_class</a>&#160;</td>
-          <td class="paramname"><em>class</em>, </td>
+          <td class="paramname"><em>cl</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -14833,7 +14833,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
     <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] TT - UT1 Time difference in seconds </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">erot</td><td>EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard) as the Earth rotation measure. The main effect of this option is that it selects the output coordinate system as CIRS or TOD if the output coordinate class is NOVAS_DYNAMICAL_CLASS. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">class</td><td>Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1) or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates are to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot' parameter selects which dynamical system to use for the output.) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">cl</td><td>Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1) or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates are to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot' parameter selects which dynamical system to use for the output.) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">yp</td><td>[arcsec] Conventionally-defined Y coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Position vector, geocentric equatorial rectangular coordinates, referred to ITRS axes (terrestrial system) in the normal case where 'option' is NOVAS_GCRS (0). </td></tr>
@@ -14852,7 +14852,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dd>
 <a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> </dd>
 <dd>
-<a class="el" href="system_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter()</a> </dd></dl>
+<a class="el" href="system_8c.html#a65b70aa33e4e73a877411ceb6e1cef31">cel2ter()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="system_8c.html#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a>, <a class="el" href="earth_8c.html#aef1f8daaad470353648de90576aefc66">era()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, <a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a>, <a class="el" href="util_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>, <a class="el" href="system_8c.html#a6871e7fecde44084c7b4e1b8dda5ac70">tod_to_gcrs()</a>, <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a>, and <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9">WOBBLE_ITRS_TO_PEF</a>.</p>
 
@@ -15152,7 +15152,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
-<p class="reference">References <a class="el" href="system_8c.html#a95f02377ce41d4e251654449dda82986">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
+<p class="reference">References <a class="el" href="system_8c.html#a65b70aa33e4e73a877411ceb6e1cef31">cel2ter()</a>, <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, and <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>.</p>
 
 </div>
 </div>

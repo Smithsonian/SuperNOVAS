@@ -7,7 +7,7 @@ md_CHANGELOG \- Changelog
  All notable changes to the \fCSuperNOVAS\fP library will be documented in this file\&.
 .PP
 The format is based on \fCKeep a Changelog\fP, and this project adheres to \fCSemantic Versioning\fP\&.
-.SH "[1\&.3\&.0-rc7] - 2025-03-24"
+.SH "[1\&.3\&.0-rc8] - 2025-04-02"
 .PP
 Changes for the upcoming feature release, expected around 1 May 2025\&. It brings many new convenience functions, such as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric calculations\&.
 .SS "Fixed"
@@ -46,7 +46,7 @@ Changes for the upcoming feature release, expected around 1 May 2025\&. It bring
 .IP "\(bu" 2
 #118: New \fC\fBnovas_timescale_for_string()\fP\fP to match timescale constants to string representations, such as 'UTC', or 'TAI', and \fC\fBnovas_print_timescale()\fP\fP to convert to string representation\&.
 .IP "\(bu" 2
-#118: New \fC\fBnovas_iso_timestamp()\fP\fP to print UTC timestamps in ISO date format with millisecond precision, and \fC\fBnovas_timestamp()\fP\fP to print timestamps in specific timescales\&.
+#118: New \fC\fBnovas_iso_timestamp()\fP\fP to print UTC timestamps in ISO date format with millisecond precision, and \fC\fBnovas_timestamp()\fP\fP to print timestamps in specific timescales\&. #151: Various fixes to new timestamping after \fCrc7\fP\&. [thanks to valeriy-sokoloff]
 .IP "\(bu" 2
 #122: New \fC\fBnovas_jd_to_date()\fP\fP, and \fC\fBnovas_jd_from_date()\fP\fP which convert between JD day and calendar dates using the specific type of calendar: Gregorian, Roman/Julian, or the conventional calendar of date\&.
 .IP "\(bu" 2
@@ -75,6 +75,8 @@ Added \fCexample-time\&.c\fP and \fCexample-rise-set\&.c\fP under \fCexamples/\f
 #139: Legacy source code moved to \fClegacy/\fP folder\&.
 .IP "\(bu" 2
 #150: Use standard C initializers instead of the non-standard empty backets \fC{}\fP\&. While the empty brackets have been OK with \fCgcc\fP for quite a while, they only became standard in C23\&. Other compilers might barf at their use\&.
+.IP "\(bu" 2
+#152: For C++ compatibility do not use \fCclass\fP as a parameter name\&. [thanks to valeriy-sokoloff]
 .IP "\(bu" 2
 In reduced accuracy mode apply gravitational deflection for the Sun only\&. In prior versions, deflection corrections were applied for Earth too\&. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for \fC\fBplace()\fP\fP and \fC\fBnovas_sky_pos()\fP\fP are significantly faster\&.
 .IP "\(bu" 2

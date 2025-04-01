@@ -1529,8 +1529,8 @@
       <type>short</type>
       <name>cel2ter</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a95f02377ce41d4e251654449dda82986</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>a65b70aa33e4e73a877411ceb6e1cef31</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -2796,8 +2796,8 @@
       <type>short</type>
       <name>ter2cel</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a6b662ff99b35db19c9b6b24a1ae9264f</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>af9bc82e32fb3d7580d7ac99978011279</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -4728,8 +4728,8 @@
       <type>short</type>
       <name>cel2ter</name>
       <anchorfile>system_8c.html</anchorfile>
-      <anchor>a95f02377ce41d4e251654449dda82986</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>a65b70aa33e4e73a877411ceb6e1cef31</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4861,8 +4861,8 @@
       <type>short</type>
       <name>ter2cel</name>
       <anchorfile>system_8c.html</anchorfile>
-      <anchor>a6b662ff99b35db19c9b6b24a1ae9264f</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>af9bc82e32fb3d7580d7ac99978011279</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

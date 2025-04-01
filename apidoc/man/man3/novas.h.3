@@ -393,7 +393,7 @@ include/novas.h
 .br
 .RI "Integer sub version of the release\&. "
 .ti -1c
-.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc7'"
+.RI "#define \fBSUPERNOVAS_RELEASE_STRING\fP   '\-rc8'"
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1', or empty string '' for releases\&. "
 .ti -1c
@@ -518,7 +518,7 @@ include/novas.h
 .RI "int \fBcal_date\fP (double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour)"
 .br
 .ti -1c
-.RI "short \fBcel2ter\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double *in, double *out)"
+.RI "short \fBcel2ter\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP cl, double xp, double yp, const double *in, double *out)"
 .br
 .ti -1c
 .RI "short \fBcel_pole\fP (double jd_tt, enum \fBnovas_pole_offset_type\fP type, double dpole1, double dpole2)"
@@ -1063,7 +1063,7 @@ include/novas.h
 .RI "int \fBtdb2tt\fP (double jd_tdb, double *restrict jd_tt, double *restrict secdiff)"
 .br
 .ti -1c
-.RI "short \fBter2cel\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double *in, double *out)"
+.RI "short \fBter2cel\fP (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP cl, double xp, double yp, const double *in, double *out)"
 .br
 .ti -1c
 .RI "int \fBterra\fP (const \fBon_surface\fP *restrict location, double lst, double *restrict pos, double *restrict vel)"
@@ -3155,7 +3155,7 @@ Fliegel, H\&. & Van Flandern, T\&. Comm\&. of the ACM, Vol\&. 11, No\&. 10, Octo
 
 .PP
 References \fBNOVAS_ASTRONOMICAL_CALENDAR\fP, and \fBnovas_jd_to_date()\fP\&.
-.SS "short cel2ter (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double * in, double * out)"
+.SS "short cel2ter (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP cl, double xp, double yp, const double * in, double * out)"
 Rotates a vector from the celestial to the terrestrial system\&. Specifically, it transforms a vector in the GCRS, or the dynamcal CIRS or TOD frames to the ITRS (a rotating earth-fixed system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth rotation, and polar motion\&.
 .PP
 If 'system' is NOVAS_CIRS then method EROT_ERA must be used\&. Similarly, if 'system' is NOVAS_TOD then method must be EROT_ERA\&. Otherwise an error 3 is returned\&.
@@ -3188,7 +3188,7 @@ Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of
 .br
 \fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
 .br
-\fIclass\fP Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1)\&. Use the former if the input coordinates are in the GCRS, and the latter if they are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is specified in\&.) 
+\fIcl\fP Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1)\&. Use the former if the input coordinates are in the GCRS, and the latter if they are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is specified in\&.) 
 .br
 \fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
 .br
@@ -11000,7 +11000,7 @@ Kaplan, G\&. (2005), US Naval Observatory Circular 179\&.
 .RE
 .PP
 
-.SS "short ter2cel (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP class, double xp, double yp, const double * in, double * out)"
+.SS "short ter2cel (double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum \fBnovas_earth_rotation_measure\fP erot, enum \fBnovas_accuracy\fP accuracy, enum \fBnovas_equatorial_class\fP cl, double xp, double yp, const double * in, double * out)"
 Rotates a vector from the terrestrial to the celestial system\&. Specifically, it transforms a vector in the ITRS (rotating earth-fixed system) to the True of Date (TOD), CIRS, or GCRS (a local space-fixed system) by applying rotations for polar motion, Earth rotation (for TOD); and nutation, precession, and the dynamical-to-GCRS frame tie (for GCRS)\&.
 .PP
 If 'system' is NOVAS_CIRS then method EROT_ERA must be used\&. Similarly, if 'system' is NOVAS_TOD then method must be EROT_ERA\&. Otherwise an error 3 is returned\&.
@@ -11033,7 +11033,7 @@ Kaplan, G\&. H\&. (2003), 'Another Look at Non-Rotating Origins', Proceedings of
 .br
 \fIaccuracy\fP NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) 
 .br
-\fIclass\fP Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1) or NOVAS_DYNAMICAL_CLASS (1)\&. Use the former if the output coordinates are to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot' parameter selects which dynamical system to use for the output\&.) 
+\fIcl\fP Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1) or NOVAS_DYNAMICAL_CLASS (1)\&. Use the former if the output coordinates are to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot' parameter selects which dynamical system to use for the output\&.) 
 .br
 \fIxp\fP [arcsec] Conventionally-defined X coordinate of celestial intermediate pole with respect to ITRS pole, in arcseconds\&. 
 .br
