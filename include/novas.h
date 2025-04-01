@@ -1564,11 +1564,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
         enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst);
 
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
-        enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in,
+        enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in,
         double *out);
 
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
-        enum novas_accuracy accuracy, enum novas_equatorial_class class, double xp, double yp, const double *in,
+        enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in,
         double *out);
 
 // in util.c
