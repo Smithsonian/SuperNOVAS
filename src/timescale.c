@@ -1001,11 +1001,8 @@ static int timestamp(long ijd, double fjd, char *buf) {
   ijd += dd;
   fjd -= dd;
 
-  // Day start 12TT -> 0TT i.e., fjd -> [0.0:1.0) range
-  fjd += 0.5;
-
   // Round to nearest ms.
-  ms = (long) floor(fjd * DAY_MILLIS + 0.5);
+  ms = (long) floor((fjd + 0.5) * DAY_MILLIS + 0.5);
   if(ms >= DAY_MILLIS) {
     ms -= DAY_MILLIS;     // rounding to 0h next day...
     ijd++;
@@ -1015,13 +1012,13 @@ static int timestamp(long ijd, double fjd, char *buf) {
   novas_jd_to_date(ijd, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
 
   // Time breakdown
-  h = ms / HOUR_MILLIS;
+  h = (int) (ms / HOUR_MILLIS);
   ms -= HOUR_MILLIS * h;
 
-  m = ms / MIN_MILLIS;
+  m = (int) (ms / MIN_MILLIS);
   ms -= MIN_MILLIS * m;
 
-  s = ms / 1000;
+  s = (int) (ms / 1000L);
   ms -= 1000L * s;
 
   return sprintf(buf, "%04d-%02d-%02dT%02d:%02d:%02d.%03d", y, M, d, h, m, s, (int) ms);
