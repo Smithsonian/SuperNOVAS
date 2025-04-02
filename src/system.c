@@ -116,7 +116,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  *                      is that it selects the output coordinate system as CIRS or TOD if
  *                      the output coordinate class is NOVAS_DYNAMICAL_CLASS.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param cl            Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1)
+ * @param coordType     Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1)
  *                      or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates are
  *                      to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot'
  *                      parameter selects which dynamical system to use for the output.)
@@ -143,7 +143,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  * @sa cel2ter()
  */
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy,
-        enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out) {
+        enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out) {
   static const char *fn = "ter2cel";
   double jd_ut1, jd_tt, jd_tdb;
 
@@ -176,7 +176,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       // vector to the celestial intermediate system.
       spin(-era(jd_ut1_high, jd_ut1_low), out, out);
 
-      if(cl != NOVAS_DYNAMICAL_CLASS)
+      if(coordType != NOVAS_DYNAMICAL_CLASS)
         prop_error(fn, cirs_to_gcrs(jd_tdb, accuracy, out, out), 10);
 
       break;
@@ -187,7 +187,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(-15.0 * gast, out, out);
 
-      if(cl != NOVAS_DYNAMICAL_CLASS) {
+      if(coordType != NOVAS_DYNAMICAL_CLASS) {
         tod_to_gcrs(jd_tdb, accuracy, out, out);
       }
       break;
@@ -232,7 +232,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *                      is that it specifies the input coordinate system as CIRS or TOD when
  *                      the input coordinate class is NOVAS_DYNAMICAL_CLASS.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param cl            Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1).
+ * @param coordType     Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1).
  *                      Use the former if the input coordinates are in the GCRS, and the latter if they
  *                      are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is
  *                      specified in.)
@@ -257,7 +257,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @sa ter2cel()
  */
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy,
-        enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out) {
+        enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out) {
   static const char *fn = "cel2ter";
   double jd_ut1, jd_tt, jd_tdb;
 
@@ -277,7 +277,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   switch(erot) {
     case EROT_ERA:
       // IAU 2006 standard method
-      if(cl != NOVAS_DYNAMICAL_CLASS) {
+      if(coordType != NOVAS_DYNAMICAL_CLASS) {
         // See second reference, eq. (3) and (4).
         prop_error(fn, gcrs_to_cirs(jd_tt, accuracy, in, out), 10);
       }
@@ -294,7 +294,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       double gast;
 
       // Pre IAU 2006 method
-      if(cl != NOVAS_DYNAMICAL_CLASS) {
+      if(coordType != NOVAS_DYNAMICAL_CLASS) {
         gcrs_to_tod(jd_tdb, accuracy, in, out);
       }
       else if (out != in) {
