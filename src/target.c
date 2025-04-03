@@ -20,6 +20,11 @@
 #include "novas.h"
 /// \endcond
 
+#if __Lynx__ && __powerpc__
+// strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
+int strcasecmp(const char *s1, const char *s2);
+#endif
+
 static int is_case_sensitive = 0; ///< (boolean) whether object names are case-sensitive.
 
 /**

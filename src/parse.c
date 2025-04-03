@@ -18,6 +18,11 @@
 #include "novas.h"
 /// \endcond
 
+#if __Lynx__ && __powerpc__
+// strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
+int strcasecmp(const char *s1, const char *s2);
+#endif
+
 /**
  * Returns the Julian day corresponding to an astronomical coordinate epoch.
  *
