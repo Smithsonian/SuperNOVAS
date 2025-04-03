@@ -305,15 +305,15 @@ enum novas_object_type {
  */
 enum novas_planet {
   NOVAS_SSB = 0,          ///< Solar-system barycenter position ID
-  NOVAS_MERCURY,          ///< Major planet number for the Mercury in NOVAS.
-  NOVAS_VENUS,            ///< Major planet number for the Venus in NOVAS.
-  NOVAS_EARTH,            ///< Major planet number for the Earth in NOVAS.
-  NOVAS_MARS,             ///< Major planet number for the Mars in NOVAS.
-  NOVAS_JUPITER,          ///< Major planet number for the Jupiter in NOVAS.
-  NOVAS_SATURN,           ///< Major planet number for the Saturn in NOVAS.
-  NOVAS_URANUS,           ///< Major planet number for the Uranus in NOVAS.
-  NOVAS_NEPTUNE,          ///< Major planet number for the Neptune in NOVAS.
-  NOVAS_PLUTO,            ///< Major planet number for the Pluto in NOVAS.
+  NOVAS_MERCURY,          ///< Major planet number for Mercury in NOVAS.
+  NOVAS_VENUS,            ///< Major planet number for Venus in NOVAS.
+  NOVAS_EARTH,            ///< Major planet number for Earth in NOVAS.
+  NOVAS_MARS,             ///< Major planet number for Mars in NOVAS.
+  NOVAS_JUPITER,          ///< Major planet number for Jupiter in NOVAS.
+  NOVAS_SATURN,           ///< Major planet number for Saturn in NOVAS.
+  NOVAS_URANUS,           ///< Major planet number for Uranus in NOVAS.
+  NOVAS_NEPTUNE,          ///< Major planet number for Neptune in NOVAS.
+  NOVAS_PLUTO,            ///< Major planet number for Pluto in NOVAS.
   NOVAS_SUN,              ///< Numerical ID for the Sun in NOVAS.
   NOVAS_MOON,             ///< Numerical ID for the Moon in NOVAS.
   NOVAS_EMB,              ///< NOVAS ID for the Earth-Moon Barycenter (EMB). @since 1.2
