@@ -2053,6 +2053,26 @@ static int test_planet_ephem_provider() {
   return n;
 }
 
+static int test_print_hms() {
+  int n = 0;
+  char buf[20] = {'\0'};
+
+  if(check("print_hms:buf:null", -1, novas_print_hms(12.0, NOVAS_SEP_COLONS, 3, NULL, sizeof(buf)))) n++;
+  if(check("print_hms:len:0", -1, novas_print_hms(12.0, NOVAS_SEP_COLONS, 3, buf, 0))) n++;
+
+  return n;
+}
+
+static int test_print_dms() {
+  int n = 0;
+  char buf[20] = {'\0'};
+
+  if(check("print_dms:buf:null", -1, novas_print_dms(90.0, NOVAS_SEP_COLONS, 3, NULL, sizeof(buf)))) n++;
+  if(check("print_dms:len:0", -1, novas_print_dms(90.0, NOVAS_SEP_COLONS, 3, buf, 0))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2223,6 +2243,9 @@ int main() {
   if(test_make_redshifted_object_sys()) n++;
 
   if(test_planet_ephem_provider()) n++;
+
+  if(test_print_hms()) n++;
+  if(test_print_dms()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
