@@ -21,7 +21,7 @@
 
 The NOVAS C astrometry library, made better.
 
- - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
+ - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)
  - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
@@ -882,14 +882,14 @@ direction, such as 'N', 'E', 'S' or 'W'. So the above could also have been:
 
 ```c
  double ra_h = novas_str_hours("9h_18:49.068\"");
- double dec_d = novas_str_degrees("53d 10'_07.33W");
+ double dec_d = novas_str_degrees("53d 10'_07.33S");
 ```
 
 or as decimals:
 
 ```c
- double ra_h = novas_str_hours("19.31363");
- double dec_d = novas_str_degrees("53.16870278d S");
+ double ra_h = novas_str_hours("9.31363");
+ double dec_d = novas_str_degrees("53.16870278d South");
 ```
 
 
