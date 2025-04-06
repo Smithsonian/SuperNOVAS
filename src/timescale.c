@@ -743,6 +743,7 @@ static int parse_zone(const char *str, char **tail) {
  * @author Attila Kovacs
  *
  * @sa novas_parse_date()
+ * @sa novas_parse_iso_date()
  * @sa novas_timescale_for_string()
  * @sa novas_iso_timestamp()
  * @sa julian_date()
@@ -860,14 +861,13 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
 }
 
 /**
- * Parses a date/time string into a Julian date specification. Typically the date may be an ISO
- * date specification, but with some added flexibility. The date must be YMD-type with full year,
- * followed the month (numerical or name or 3-letter abbreviation), and the day. The components
- * may be separated by dash `-`, underscore `_`, dot `.`,  slash '/', or spaces/tabs, or any
- * combination thereof. The date may be followed by a time specification in HMS format, separated
- * from the date by the letter `T` or `t`, or spaces, comma `,`, or semicolon `;`, or underscore
- * `_` or a combination thereof. Finally, the time may be followed by the letter `Z`, or `z` (for
- * UTC) or else {+/-}HH[:[MM]] time zone specification.
+ * Parses an astronomical date/time string into a Julian date specification. The date must be
+ * YMD-type with full year, followed the month (numerical or name or 3-letter abbreviation), and
+ * the day. The components may be separated by dash `-`, underscore `_`, dot `.`,  slash '/', or
+ * spaces/tabs, or any combination thereof. The date may be followed by a time specification in
+ * HMS format, separated from the date by the letter `T` or `t`, or spaces, comma `,`, or
+ * semicolon `;`, or underscore `_` or a combination thereof. Finally, the time may be followed by
+ * the letter `Z`, or `z` (for UTC) or else {+/-}HH[:[MM]] time zone specification.
  *
  * For example:
  *
@@ -887,16 +887,16 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  *
  * NOTES:
  * <ol>
- * <li>This function uses Gregorian dates since their introduction on 1582 October 15, and
- * Julian/Roman datew before that, as was the convention of the time. I.e., the day before of the
+ * <li>This function assumes Gregorian dates after their introduction on 1582 October 15, and
+ * Julian/Roman dates before that, as was the convention of the time. I.e., the day before of the
  * introduction of the Gregorian calendar reform is 1582 October 4.</li>
  *
  * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
  * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </oL>
  *
- * @param date        The date specification, possibly including time and timezone, in a standard
- *                    format.
+ * @param date        The astronomical date specification, possibly including time and timezone,
+ *                    in a standard format.
  * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
  *                    after the parsed time.
  *
@@ -907,9 +907,10 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * @since 1.3
  * @author Attila Kovacs
  *
+ * @sa novas_parse_iso_date()
+ * @sa novas_parse_date_format()
  * @sa novas_date()
  * @sa novas_date_scale()
- * @sa novas_parse_date_format()
  * @sa novas_timescale_for_string()
  * @sa novas_iso_timestamp()
  * @sa novas_timestamp()
@@ -918,6 +919,41 @@ double novas_parse_date(const char *restrict date, char **restrict tail) {
   double jd = novas_parse_date_format(NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_YMD, date, tail);
   if(isnan(jd))
     return novas_trace_nan("novas_parse_date");
+  return jd;
+}
+
+/**
+ * Parses an ISO 8601 timestamp, converting it to a Julian day. It is equivalent to
+ * `novas_parse_date()` for dates after the Gregorian calendar reform of 1582. For earlier dates,
+ * ISO timestamps continue to assume the Gregorian calendar (i.e. proleptic Gregorian dates),
+ * whereas `novas_parse_timestamp()` will assume Roman/Julian dates, which were conventionally
+ * used before the calendar reform.
+ *
+ * NOTES:
+ * <ol>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
+ * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
+ * </oL>
+ *
+ * @param date        The ISO 8601 date specification, possibly including time and timezone, in a
+ *                    standard format.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
+ *                    after the parsed time.
+ *
+ * @return            [day] The Julian Day corresponding to the string date/time specification or
+ *                    NAN if the string is NULL or if it does not specify a date/time in the
+ *                    expected format.
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_iso_timestamp()
+ * @sa novas_parse_date()
+ */
+double novas_parse_iso_date(const char *restrict date, char **restrict tail) {
+  double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_YMD, date, tail);
+  if(isnan(jd))
+    return novas_trace_nan("novas_parse_iso_date");
   return jd;
 }
 
@@ -992,7 +1028,7 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
   return jd;
 }
 
-static int timestamp(long ijd, double fjd, char *buf) {
+static int timestamp(long ijd, double fjd, enum novas_calendar_type cal, char *buf) {
   long dd, ms;
   int y, M, d, h, m, s;
 
@@ -1009,7 +1045,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
   }
 
   // Date at 12pm of the same day
-  novas_jd_to_date(ijd, NOVAS_ASTRONOMICAL_CALENDAR, &y, &M, &d, NULL);
+  novas_jd_to_date(ijd, cal, &y, &M, &d, NULL);
 
   // Time breakdown
   h = (int) (ms / HOUR_MILLIS);
@@ -1034,8 +1070,9 @@ static int timestamp(long ijd, double fjd, char *buf) {
  *
  * NOTES:
  * <ol>
- * <li>The timestamp uses the conventional date of the time. That is Gregorian dates after the
- * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ * <li>As per the ISO 8601 specification, the timestamp uses the Gregorian date, even for dates
+ * prior to the Gregorian calendar reform of 15 October 1582 (i.e. proleptic Gregorian dates).</li>
+ *
  * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
  * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </ol>
@@ -1054,7 +1091,7 @@ static int timestamp(long ijd, double fjd, char *buf) {
  * @author Attila Kovacs
  *
  * @sa novas_timestamp()
- * @sa novas_parse_time()
+ * @sa novas_parse_iso_date()
  */
 int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen) {
   static const char *fn = "novas_iso_timestamp";
@@ -1076,7 +1113,7 @@ int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst,
     return novas_error(-1, EINVAL, fn, "input time is NULL");
 
   fjd = novas_get_split_time(time, NOVAS_UTC, &ijd);
-  l = timestamp(ijd, fjd, buf);
+  l = timestamp(ijd, fjd, NOVAS_GREGORIAN_CALENDAR, buf);
 
   // Add 'Z' to indicate UTC time zone.
   buf[l++] = 'Z';
@@ -1123,6 +1160,7 @@ int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst,
  * @author Attila Kovacs
  *
  * @sa novas_iso_timestamp()
+ * @sa novas_parse_date()
  */
 int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale scale, char *restrict dst, int maxlen) {
   static const char *fn = "novas_timestamp_scale";
@@ -1144,7 +1182,7 @@ int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale sc
     return novas_error(-1, EINVAL, fn, "input time is NULL");
 
   fjd = novas_get_split_time(time, scale, &ijd);
-  n = timestamp(ijd, fjd, buf);
+  n = timestamp(ijd, fjd, NOVAS_ASTRONOMICAL_CALENDAR, buf);
 
   buf[n++] = ' ';
 

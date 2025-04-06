@@ -2023,6 +2023,8 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
 
 double novas_parse_date(const char *restrict date, char **restrict tail);
 
+double novas_parse_iso_date(const char *restrict date, char **restrict tail);
+
 double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
         char **restrict tail);
 
