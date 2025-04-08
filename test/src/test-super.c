@@ -3388,6 +3388,26 @@ static int test_parse_date() {
   return n;
 }
 
+static int test_parse_iso_date() {
+  int n = 0;
+
+  char *date = "2000-01-01T12:00:00.000Z";
+  char *tail = NULL;
+  double jd = novas_parse_iso_date(date, &tail);
+
+  if(!is_equal("parse_iso_date:J2000:jd", jd, NOVAS_JD_J2000, 1e-6)) n++;
+  if(!is_equal("parse_iso_date:J2000:astro", jd, novas_parse_date(date, NULL), 1e-6)) n++;
+
+  // The Roman/Julian date the day before the Gregorian calendar reform, or 10 days
+  // before it in the proleptic Gregorian calendar used by the ISO timestamps.
+  date = "1582-10-04";
+  jd = novas_parse_iso_date(date, &tail);
+  if(!is_equal("parse_iso_date:pre-reform:jd", jd, NOVAS_JD_START_GREGORIAN - 11, 1e-6)) n++;
+  if(!is_equal("parse_iso_date:pre-reform:astro", jd, novas_parse_date(date, NULL) - 10, 1e-6)) n++;
+
+  return n;
+}
+
 static int test_parse_date_format() {
   int n = 0;
   double jd;
@@ -3669,6 +3689,7 @@ int main(int argc, char *argv[]) {
   if(test_unwrap_angles()) n++;
   if(test_lsr_vel()) n++;
   if(test_parse_date()) n++;
+  if(test_parse_iso_date()) n++;
   if(test_parse_date_format()) n++;
   if(test_date()) n++;
   if(test_date_scale()) n++;
