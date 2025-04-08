@@ -1917,6 +1917,16 @@ static int test_parse_date() {
   return n;
 }
 
+static int test_parse_iso_date() {
+  int n = 0;
+  char *tail = NULL;
+
+  if(check_nan("parse_iso_date:null", novas_parse_iso_date(NULL, &tail))) n++;
+  if(check_nan("parse_iso_date:empty", novas_parse_iso_date("", &tail))) n++;
+
+  return n;
+}
+
 static int test_date() {
   int n = 0;
 
@@ -2199,6 +2209,7 @@ int main() {
   if(test_xyz_to_uvw()) n++;
   if(test_julian_date()) n++;
   if(test_parse_date()) n++;
+  if(test_parse_iso_date()) n++;
   if(test_date()) n++;
   if(test_date_scale()) n++;
   if(test_iso_timestamp()) n++;
