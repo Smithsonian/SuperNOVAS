@@ -3591,7 +3591,91 @@ static int test_epoch() {
   return n;
 }
 
+static int test_print_hms() {
+  int n = 0;
+  char snan[40] = {'\0'};
+  char buf[40] = {'\0'};
 
+  double h = novas_parse_hms("12:34:56.999999", NULL);
+
+  sprintf(snan, "%f", (0.0 / 0.0));
+
+  if(!is_ok("print_hms:nan", novas_print_hms(0.0 / 0.0, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:nan:check", strcmp(buf, snan))) n++;
+
+
+  if(!is_ok("print_hms:colons", novas_print_hms(h, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:colons:check", strcmp(buf, "12:34:57.000"))) n++;
+
+  if(!is_ok("print_hms:spaces", novas_print_hms(h, NOVAS_SEP_SPACES, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:spaces:check", strcmp(buf, "12 34 57.000"))) n++;
+
+  if(!is_ok("print_hms:units", novas_print_hms(h, NOVAS_SEP_UNITS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:units:check", strcmp(buf, "12h34m57.000s"))) n++;
+
+  if(!is_ok("print_hms:units+spaces", novas_print_hms(h, NOVAS_SEP_UNITS_AND_SPACES, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:units+spaces:check", strcmp(buf, "12h 34m 57.000s"))) n++;
+
+  if(!is_ok("print_hms:sep:-1", novas_print_hms(h, -1, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:sep:-1:check", strcmp(buf, "12:34:57.000"))) n++;
+
+  if(!is_ok("print_hms:decimals:6", novas_print_hms(h, NOVAS_SEP_COLONS, 6, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:decimals:6:check", strcmp(buf, "12:34:56.999999"))) n++;
+
+  if(!is_ok("print_hms:decimals:10", novas_print_hms(h, NOVAS_SEP_COLONS, 10, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:decimals:10:check", strcmp(buf, "12:34:56.999999000"))) n++;
+
+  if(!is_ok("print_hms:decimals:0", novas_print_hms(h, NOVAS_SEP_COLONS, 0, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:decimals:0:check", strcmp(buf, "12:34:57"))) n++;
+
+  if(!is_ok("print_hms:decimals:-1", novas_print_hms(h, NOVAS_SEP_COLONS, -1, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_hms:decimals:-1:check", strcmp(buf, "12:34:57"))) n++;
+
+  return n;
+}
+
+
+static int test_print_dms() {
+  int n = 0;
+  char snan[40] = {'\0'};
+  char buf[40] = {'\0'};
+
+  double deg = novas_parse_dms("120:34:56.999999", NULL);
+
+  sprintf(snan, "%f", (0.0 / 0.0));
+
+  if(!is_ok("print_dms:nan", novas_print_dms(0.0 / 0.0, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:nan:check", strcmp(buf, snan))) n++;
+
+  if(!is_ok("print_dms:colons", novas_print_dms(deg, NOVAS_SEP_COLONS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:colons:check", strcmp(buf, " 120:34:57.000"))) n++;
+
+  if(!is_ok("print_dms:spaces", novas_print_dms(deg, NOVAS_SEP_SPACES, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:spaces:check", strcmp(buf, " 120 34 57.000"))) n++;
+
+  if(!is_ok("print_dms:units", novas_print_dms(deg, NOVAS_SEP_UNITS, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:units:check", strcmp(buf, " 120d34m57.000s"))) n++;
+
+  if(!is_ok("print_dms:units+spaces", novas_print_dms(deg, NOVAS_SEP_UNITS_AND_SPACES, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:units+spaces:check", strcmp(buf, " 120d 34m 57.000s"))) n++;
+
+  if(!is_ok("print_dms:sep:-1", novas_print_dms(deg, -1, 3, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:sep:-1:check", strcmp(buf, " 120:34:57.000"))) n++;
+
+  if(!is_ok("print_dms:decimals:6", novas_print_dms(deg, NOVAS_SEP_COLONS, 6, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:decimals:6:check", strcmp(buf, " 120:34:56.999999"))) n++;
+
+  if(!is_ok("print_dms:decimals:10", novas_print_dms(deg, NOVAS_SEP_COLONS, 10, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:decimals:10:check", strcmp(buf, " 120:34:56.999999000"))) n++;
+
+  if(!is_ok("print_dms:decimals:0", novas_print_dms(deg, NOVAS_SEP_COLONS, 0, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:decimals:0:check", strcmp(buf, " 120:34:57"))) n++;
+
+  if(!is_ok("print_dms:decimals:-1", novas_print_dms(deg, NOVAS_SEP_COLONS, -1, buf, sizeof(buf)) < 0)) n++;
+  if(!is_ok("print_dms:decimals:-1:check", strcmp(buf, " 120:34:57"))) n++;
+
+  return n;
+}
 
 int main(int argc, char *argv[]) {
   int n = 0;
@@ -3702,6 +3786,9 @@ int main(int argc, char *argv[]) {
   if(test_jd_from_date()) n++;
 
   if(test_epoch()) n++;
+
+  if(test_print_hms()) n++;
+  if(test_print_dms()) n++;
 
   n += test_dates();
 

@@ -1033,7 +1033,7 @@ typedef struct {
 #define ON_SURFACE_INIT { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 
 /**
- * Initializer for a NOVAS on_surface data structure, for a specified geodetic location
+ * Initializer for a NOVAS `on_surface` data structure at a specified geodetic location
  *
  * @param lon     [deg] Geodetic longitude of observer (East is positive)
  * @param lat     [deg] Geodetic latitude of observer (North is positive)
@@ -1490,6 +1490,22 @@ enum novas_calendar_type {
   NOVAS_GREGORIAN_CALENDAR      ///< The Gregorian calendar introduced on 15 October 1582, the day after 4 October
                                 ///< 1582 in the Roman (a.k.a. Julian) calendar.
 };
+
+/**
+ * Separator type to use for broken-down time/angle string representations in HMS/DMS formats.
+ *
+ * @since 1.3
+ *
+ * @sa novas_print_hms()
+ * @sa novas_print_dms()
+ */
+enum novas_separator_type {
+  NOVAS_SEP_COLONS = 0,       ///< Use colons between components, e.g. '12:34:56'
+  NOVAS_SEP_SPACES,           ///< Use spaces between components, e.g. '12 34 56'
+  NOVAS_SEP_UNITS,            ///< Use unit markers after each component, e.g. '12h34m56s'
+  NOVAS_SEP_UNITS_AND_SPACES  ///< Useunit markers after each compoent, plus spaces between components, e.g. '12h 34m 56s'
+};
+
 
 // in place.c
 short app_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
@@ -2037,6 +2053,10 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str);
 enum novas_timescale novas_parse_timescale(const char *restrict str, char **restrict tail);
 
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf);
+
+int novas_print_hms(double hours, enum novas_separator_type sep, int decimals, char *restrict buf, int len);
+
+int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals, char *restrict buf, int len);
 
 // in plugin.c
 novas_nutation_provider get_nutation_lp_provider();

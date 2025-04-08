@@ -16,12 +16,19 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+
 /// \endcond
+
+#define MAX_DECIMALS      9       ///< Maximum decimal places for seconds in HMS/DMS formats
 
 #if __Lynx__ && __powerpc__
 // strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1
 int strcasecmp(const char *s1, const char *s2);
 #endif
+
+
+
+
 
 /**
  * Returns the Julian day corresponding to an astronomical coordinate epoch.
@@ -137,6 +144,7 @@ double novas_epoch(const char *restrict system) {
  *
  * @sa novas_hms_hours()
  * @sa novas_parse_hours()
+ * @sa novas_print_hms()
  * @sa novas_parse_dms()
  */
 double novas_parse_hms(const char *restrict hms, char **restrict tail) {
@@ -328,6 +336,7 @@ static int parse_compass(const char *restrict str, int *n) {
  *
  * @sa novas_dms_degrees()
  * @sa novas_parse_degrees()
+ * @sa novas_print_dms()
  * @sa novas_parse_hms()
  */
 double novas_parse_dms(const char *restrict dms, char **restrict tail) {
@@ -706,6 +715,7 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
  *
  * @sa novas_parse_degrees()
  * @sa novas_parse_dms()
+ * @sa novas_print_dms()
  * @sa novas_str_hours()
  */
 double novas_str_degrees(const char *restrict str) {
@@ -747,6 +757,7 @@ double novas_str_degrees(const char *restrict str) {
  *
  * @sa novas_parse_hours()
  * @sa novas_parse_hms()
+ * @sa novas_print_hms()
  * @sa novas_str_degrees()
  */
 double novas_str_hours(const char *restrict str) {
@@ -765,4 +776,223 @@ double novas_str_hours(const char *restrict str) {
   return h;
 }
 
+/**
+ * Breaks down a value into hours/degrees, minutes, seconds, and a subsecond part given the
+ * number of decimals requested. The last sigit is rounded as appropriate.
+ *
+ * @param value     The input hours or degrees
+ * @param decimals  Number of requested decimals for the sub-second component
+ * @param[out] h    The hours or degrees part
+ * @param[out] m    the minutes components
+ * @param[out] s    the seconds component
+ * @param[out] ss   the subseconds component for the given number of decimals.
+ */
+static void breakdown(double value, int decimals, int *h, int *m, int *s, long long *ss) {
+  long long mult = (long long) pow(10.0, decimals > 0 ? decimals : 0);
+  long long u;
+
+  *ss = (long long) floor(value * 3600L * mult + 0.5);
+
+  u = 3600L * mult;
+  *h = (int) (*ss / u);
+  *ss -= (*h) * u;
+
+  u = 60L * mult;
+  *m = (int) (*ss / u);
+  *ss -= (*m) * u;
+
+  *s = (int) (*ss / mult);
+  *ss -= (*s) * mult;
+}
+
+/**
+ * Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond
+ * precision.
+ *
+ * NaN and infinite values, are printed as their standard floating-point representations.
+ *
+ * @param hours       [h] time value
+ * @param sep         Type of separators to use between or after components. If the separator
+ *                    value is outside of the enum range, it will default to using colons.
+ * @param decimals    Requested number of decimal places to print for the seconds [0:9].
+ * @param[out] buf    String buffer in which to print HMS string, represented in the [0:24)
+ *                    hour range.
+ * @param len         Maximum number of bytes that may be written into the output buffer,
+ *                    including termination.
+ * @return            The number of characters actually printed in the buffer, excluding
+ *                    termination, or else -1 if the input buffer is NULL or the length
+ *                    is less than 1 (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_parse_hms()
+ * @sa novas_print_dms()
+ * @sa novas_timestamp()
+ */
+int novas_print_hms(double hours, enum novas_separator_type sep, int decimals, char *restrict buf, int len) {
+  static const char *fn = "novas_print_hms";
+
+  char tmp[100] = {'\0'};
+
+  if(!buf)
+    return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  if(len < 1)
+    return novas_error(-1, EINVAL, fn, "invalid output buffer len: %d", len);
+
+  if(hours != hours)
+    sprintf(tmp, "%f", hours);      // nan, inf
+  else {
+    int h, m, s;
+    long long ss;
+    char fmt[40];
+    const char *seph, *sepm, *seps;
+
+    if(decimals > MAX_DECIMALS)
+      decimals = MAX_DECIMALS;
+
+    if(decimals > 0)
+      sprintf(fmt, "%%02d%%s%%02d%%s%%02d.%%0%dlld%%s", decimals);
+    else
+      sprintf(fmt, "%%02d%%s%%02d%%s%%02d%%s");
+
+    switch(sep) {
+      case NOVAS_SEP_UNITS:
+        seph = "h";
+        sepm = "m";
+        seps = "s";
+        break;
+
+      case NOVAS_SEP_UNITS_AND_SPACES:
+        seph = "h ";
+        sepm = "m ";
+        seps = "s";
+        break;
+
+      case NOVAS_SEP_SPACES:
+        seph = " ";
+        sepm = " ";
+        seps = "";
+        break;
+
+      case NOVAS_SEP_COLONS:
+      default:
+        seph = ":";
+        sepm = ":";
+        seps = "";
+    }
+
+    // in [0:24h] range
+    hours -= 24.0 * floor(hours / 24.0);
+    breakdown(hours, decimals, &h, &m, &s, &ss);
+
+    if(decimals > 0)
+      sprintf(tmp, fmt, h, seph, m, sepm, s, ss, seps);
+    else
+      sprintf(tmp, fmt, h, seph, m, sepm, s, seps);
+  }
+
+  strncpy(buf, tmp, len - 1);
+  buf[len-1] = '\0';
+
+  return strlen(buf);
+}
+
+/**
+ * Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to
+ * nanosecond precision.
+ *
+ * The degrees component is always printed as 4 characters (up to 3 digits
+ * plus optional negative sign), so the output is always aligned. If positive values are
+ * expected to be explicitly signed also, the caller may simply put the '+' sign into the
+ * leading byte.
+ *
+ * NaN and infinite values, are printed as their standard floating-point representations.
+ *
+ * @param degrees     [deg] angle value
+ * @param sep         Type of separators to use between or after components. If the separator
+ *                    value is outside of the enum range, it will default to using colons.
+ * @param decimals    Requested number of decimal places to print for the seconds [0:9].
+ * @param[out] buf    String buffer in which to print DMS string, represented in the [-180:180)
+ *                    degree range.
+ * @param len         Maximum number of bytes that may be written into the output buffer,
+ *                    including termination.
+ * @return            The number of characters actually printed in the buffer, excluding
+ *                    termination, or else -1 if the input buffer is NULL or the length
+ *                    is less than 1 (errno will be set to EINVAL).
+ *
+ * @since 1.3
+ * @author Attila Kovacs
+ *
+ * @sa novas_parse_dms()
+ * @sa novas_print_hms()
+ */
+int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals, char *restrict buf, int len) {
+  static const char *fn = "novas_print_dms";
+
+  char tmp[40] = {'\0'};
+
+  if(!buf)
+    return novas_error(-1, EINVAL, fn, "output buffer is NULL");
+
+  if(len < 1)
+    return novas_error(-1, EINVAL, fn, "invalid output buffer len: %d", len);
+
+  if(degrees != degrees)
+    sprintf(tmp, "%f", degrees);      // nan, inf
+  else {
+    int d, m, s;
+    long long ss;
+    char fmt[40];
+    const char *sepd, *sepm, *seps;
+
+    if(decimals > MAX_DECIMALS)
+      decimals = MAX_DECIMALS;
+
+    if(decimals > 0)
+      sprintf(fmt, "%%4d%%s%%02d%%s%%02d.%%0%dlld%%s", decimals);
+    else
+      sprintf(fmt, "%%4d%%s%%02d%%s%%02d%%s");
+
+    degrees = remainder(degrees, DEG360);
+    breakdown(degrees, decimals, &d, &m, &s, &ss);
+
+    switch(sep) {
+      case NOVAS_SEP_UNITS:
+        sepd = "d";
+        sepm = "m";
+        seps = "s";
+        break;
+
+      case NOVAS_SEP_UNITS_AND_SPACES:
+        sepd = "d ";
+        sepm = "m ";
+        seps = "s";
+        break;
+
+      case NOVAS_SEP_SPACES:
+        sepd = " ";
+        sepm = " ";
+        seps = "";
+        break;
+
+      case NOVAS_SEP_COLONS:
+      default:
+        sepd = ":";
+        sepm = ":";
+        seps = "";
+    }
+
+    if(decimals > 0)
+      sprintf(tmp, fmt, d, sepd, m, sepm, s, ss, seps);
+    else
+      sprintf(tmp, fmt, d, sepd, m, sepm, s, seps);
+  }
+
+  strncpy(buf, tmp, len - 1);
+  buf[len-1] = '\0';
+
+  return strlen(buf);
+}
 
