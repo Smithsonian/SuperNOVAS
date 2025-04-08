@@ -861,13 +861,15 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
 }
 
 /**
- * Parses an astronomical date/time string into a Julian date specification. The date must be
- * YMD-type with full year, followed the month (numerical or name or 3-letter abbreviation), and
- * the day. The components may be separated by dash `-`, underscore `_`, dot `.`,  slash '/', or
- * spaces/tabs, or any combination thereof. The date may be followed by a time specification in
- * HMS format, separated from the date by the letter `T` or `t`, or spaces, comma `,`, or
- * semicolon `;`, or underscore `_` or a combination thereof. Finally, the time may be followed by
- * the letter `Z`, or `z` (for UTC) or else {+/-}HH[:[MM]] time zone specification.
+ * Parses an astronomical date/time string into a Julian date specification.
+ *
+ *
+ * The date must be YMD-type with full year, followed the month (numerical or name or 3-letter
+ * abbreviation), and the day. The components may be separated by dash `-`, underscore `_`, dot
+ * `.`,  slash '/', or spaces/tabs, or any combination thereof. The date may be followed by a time
+ * specification in HMS format, separated from the date by the letter `T` or `t`, or spaces, comma
+ * `,`, or semicolon `;`, or underscore `_` or a combination thereof. Finally, the time may be
+ * followed by the letter `Z`, or `z` (for UTC) or else {+/-}HH[:[MM]] time zone specification.
  *
  * For example:
  *
@@ -889,14 +891,18 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * <ol>
  * <li>This function assumes Gregorian dates after their introduction on 1582 October 15, and
  * Julian/Roman dates before that, as was the convention of the time. I.e., the day before of the
- * introduction of the Gregorian calendar reform is 1582 October 4.</li>
+ * introduction of the Gregorian calendar reform is 1582 October 4. I.e., you should not use
+ * this function with ISO 8601 timestamps containing dates prior to 1582 October 15 (for such
+ * date you may use `novas_parse_iso_date()` instead).</li>
  *
  * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
  * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </oL>
  *
  * @param date        The astronomical date specification, possibly including time and timezone,
- *                    in a standard format.
+ *                    in a standard format. The date is assumed to be in the astronomical calendar of
+ *                    date, which differs from ISO 8601 timestamps for dates prior to the
+ *                    Gregorian calendar reform of 1582 October 15 (otherwise, the two are identical).
  * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
  *                    after the parsed time.
  *
@@ -1129,8 +1135,9 @@ int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst,
 }
 
 /**
- * Prints a timestamp to millisecond precision in the specified timescale to the specified
- * string buffer. E.g.:
+ * Prints an astronomical timestamp to millisecond precision in the specified timescale to the
+ * specified string buffer. It differs from ISO 8601 timestamps for dates prior to the
+ * Gregorian calendar reform of 1582 October 15 (otherwise two are identical). E.g.:
  *
  * <pre>
  *  2025-01-26T21:32:49.701 TAI
@@ -1139,7 +1146,9 @@ int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst,
  * NOTES:
  * <ol>
  * <li>The timestamp uses the astronomical date. That is Gregorian dates after the
- * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</li>
+ * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.
+ * This is in contrast to ISO 8601 timestamps, which use Gregorian dates even for dates
+ * the precede the calendar reform that introduced them.</li>
  *
  * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
  * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
