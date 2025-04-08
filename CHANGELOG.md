@@ -112,6 +112,10 @@ calculations.
 
  - #150: Further initializers for SuperNOVAS structures that can be used to empty initialize data.
 
+ - #155: Added `novas_parse_iso_date()` for pasing ISO 8601 timestamps, including those expressed in the proleptic
+   Gregorian calendar prior to the Gregorian calendar reform of 1582, for which the ISO 8601 timestamp differs from
+   the astronomical calendar date assumed by `novas_parse_timestamp()`.
+
  - Added `example-time.c` and `example-rise-set.c` under `examples/`, for demonstrating date/time handling functions
    and rise, set, and transit time calculations.
 
