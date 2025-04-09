@@ -170,17 +170,23 @@ static int set_precession(novas_frame *frame) {
   const double sd = sin(chia);
   const double cd = cos(chia);
 
+  double t1, t2;
+
   novas_matrix *T = &frame->precession;
 
   // Compute elements of precession rotation matrix equivalent to
   // R3(chi_a) R1(-omega_a) R3(-psi_a) R1(epsilon_0).
+  t1 = cd * sb + sd * cc * cb;
+  t2 = sd * sc;
   T->M[0][0] = cd * cb - sb * sd * cc;
-  T->M[0][1] = cd * sb * ca + sd * cc * cb * ca - sa * sd * sc;
-  T->M[0][2] = cd * sb * sa + sd * cc * cb * sa + ca * sd * sc;
+  T->M[0][1] = ca * t1 - sa * t2;
+  T->M[0][2] = sa * t1 + ca * t2;
 
+  t1 = cd * cc * cb - sd * sb;
+  t2 = cd * sc;
   T->M[1][0] = -sd * cb - sb * cd * cc;
-  T->M[1][1] = -sd * sb * ca + cd * cc * cb * ca - sa * cd * sc;
-  T->M[1][2] = -sd * sb * sa + cd * cc * cb * sa + ca * cd * sc;
+  T->M[1][1] = ca * t1 - sa * t2;
+  T->M[1][2] = sa * t1 + ca * t2;
 
   T->M[2][0] = sb * sc;
   T->M[2][1] = -sc * cb * ca - sa * cc;

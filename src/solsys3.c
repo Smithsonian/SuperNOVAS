@@ -148,12 +148,17 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
 
       // Compute p and q vectors (see Brouwer & Clemence (1961), Methods of
       // Celestial Mechanics, pp. 35-36.)
+      const double t1 = cw * sn + sw * cn * ci;
+      const double t2 = sw * si;
       const double p1 = cw * cn - sw * sn * ci;
-      const double p2 = (cw * sn + sw * cn * ci) * ce - sw * si * se;
-      const double p3 = (cw * sn + sw * cn * ci) * se + sw * si * ce;
+      const double p2 = t1 * ce - t2 * se;
+      const double p3 = t1 * se + t2 * ce;
+
+      const double ta = cw * cn * ci - sw * sn;
+      const double tb = cw * si;
       const double q1 = -sw * cn - cw * sn * ci;
-      const double q2 = (-sw * sn + cw * cn * ci) * ce - cw * si * se;
-      const double q3 = (-sw * sn + cw * cn * ci) * se + cw * si * ce;
+      const double q2 = ta * ce - tb * se;
+      const double q3 = ta * se + tb * ce;
       const double roote = sqrt(1.0 - pe[i] * pe[i]);
 
       a[0][i] = pa[i] * p1;

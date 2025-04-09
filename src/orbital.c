@@ -41,8 +41,8 @@ static int change_pole(const double *in, double theta, double phi, double *out) 
   cb = cos(theta);
   sb = sin(theta);
 
-  out[0] = ca * x - sa * cb * y + sa * sb * z;
-  out[1] = sa * x + ca * cb * y - ca * sb * z;
+  out[0] = ca * x - sa * (cb * y + sb * z);
+  out[1] = sa * x + ca * (cb * y - sb * z);
   out[2] = sb * y + cb * z;
 
   return 0;

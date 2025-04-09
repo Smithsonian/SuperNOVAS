@@ -1102,7 +1102,7 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
     t = -t;
 
   if(!novas_time_equals(t, t_last)) {
-    double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd;
+    double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd, t1, t2;
     double eps0 = 84381.406;
 
     // Numerical coefficients of psi_a, omega_a, and chi_a, along with
@@ -1128,12 +1128,18 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
 
     // Compute elements of precession rotation matrix equivalent to
     // R3(chi_a) R1(-omega_a) R3(-psi_a) R1(epsilon_0).
+    t1 = cd * sb + sd * cc * cb;
+    t2 = sd * sc;
     xx = cd * cb - sb * sd * cc;
-    yx = cd * sb * ca + sd * cc * cb * ca - sa * sd * sc;
-    zx = cd * sb * sa + sd * cc * cb * sa + ca * sd * sc;
+    yx = ca * t1 - sa * t2;
+    zx = sa * t1 + ca * t2;
+
+    t1 = cd * cc * cb - sd * sb;
+    t2 = cd * sc;
     xy = -sd * cb - sb * cd * cc;
-    yy = -sd * sb * ca + cd * cc * cb * ca - sa * cd * sc;
-    zy = -sd * sb * sa + cd * cc * cb * sa + ca * cd * sc;
+    yy = ca * t1 - sa * t2;
+    zy = sa * t1 + ca * t2;
+
     xz = sb * sc;
     yz = -sc * cb * ca - sa * cc;
     zz = -sc * cb * sa + cc * ca;
