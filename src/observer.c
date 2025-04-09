@@ -351,6 +351,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
   return 0;
 }
 
+
 /**
  * Calculates the ICRS position and velocity of the observer relative to the Solar System Barycenter (SSB).
  *
@@ -375,7 +376,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  *                      indicating the type of error).
  *
  * @author Attila Kovacs
- * @since 1.1
+ * @since 1.3
  *
  * @see place()
  */
@@ -427,9 +428,10 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
       double pog[3] = {0}, vog[3] = {0};
       int i;
 
-      // For topocentric place, get geocentric position and velocity vectors
-      // of observer
-      prop_error(fn, geo_posvel(jd_tdb, ut1_to_tt, accuracy, obs, pog, vog), 0);
+      double jd_tt = jd_tdb - tt2tdb(jd_tdb) / DAY;
+
+      prop_error(fn, geo_posvel(jd_tt, ut1_to_tt, accuracy, obs, pog, vog), 0);
+
       for(i = 3; --i >= 0;) {
         if(pos)
           pos[i] += pog[i];
@@ -755,7 +757,7 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
   dlon = los[0];
   dlat = los[1];
   dr = los[2];
-  
+
   clatdr_m_slatdlat = clat * dr - slat * dlat;
 
   // Transform motion vector to equatorial system.

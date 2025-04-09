@@ -44,8 +44,8 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
   if(!ra || !dec)
     return novas_error(-1, EINVAL, fn, "NULL output pointer: ra=%p, dec=%p", ra, dec);
 
-  // 'jd_tdb' is the TDB Julian date.
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   // Form position vector in equatorial system from input coordinates.
   r = rag * 15.0 * DEG2RAD;
@@ -158,9 +158,8 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   jd_ut1 = jd_ut1_high + jd_ut1_low;
   jd_tt = jd_ut1 + (ut1_to_tt / DAY);
 
-  // Compute the TDB Julian date corresponding to the input UT1 Julian
-  // date.
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   // Apply polar motion
   if(xp || yp)
@@ -187,9 +186,9 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(-15.0 * gast, out, out);
 
-      if(coordType != NOVAS_DYNAMICAL_CLASS) {
+      if(coordType != NOVAS_DYNAMICAL_CLASS)
         tod_to_gcrs(jd_tdb, accuracy, out, out);
-      }
+
       break;
     }
 
@@ -271,8 +270,8 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   jd_ut1 = jd_ut1_high + jd_ut1_low;
   jd_tt = jd_ut1 + (ut1_to_tt / DAY);
 
-  // Compute the TDB Julian date corresponding to the input UT1 Julian date
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   switch(erot) {
     case EROT_ERA:
@@ -313,7 +312,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
   // Apply polar motion, transforming the vector to the ITRS.
   if(xp || yp)
-    wobble(jd_tdb, WOBBLE_PEF_TO_ITRS, xp, yp, out, out);
+    wobble(jd_tt, WOBBLE_PEF_TO_ITRS, xp, yp, out, out);
 
   return 0;
 }
@@ -1089,7 +1088,8 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
   }
 
   // Check to be sure that either 'jd_tdb1' or 'jd_tdb2' is equal to JD_J2000.
-  if(!novas_time_equals(jd_tdb_in, JD_J2000) && !novas_time_equals(jd_tdb_out, JD_J2000)) {
+  if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb_in, JD_J2000) &&
+          !novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb_out, JD_J2000)) {
     // Do the precession in two steps...
     precession(jd_tdb_in, in, JD_J2000, out);
     precession(JD_J2000, out, jd_tdb_out, out);
@@ -1101,7 +1101,7 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
   if(jd_tdb_out == JD_J2000)
     t = -t;
 
-  if(!novas_time_equals(t, t_last)) {
+  if(!novas_time_equals(NOVAS_FULL_ACCURACY, t, t_last)) {
     double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd, t1, t2;
     double eps0 = 84381.406;
 

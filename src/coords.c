@@ -442,9 +442,12 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 
       memcpy(pos0, in, sizeof(pos0));
 
-      if(!novas_time_equals(jd_tt, t_last) || accuracy != acc_last) {
-        const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY; // TDB date
+      if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tt, t_last) || accuracy != acc_last) {
+        // For these calculations we can assume TDB = TT (< 2 ms difference)
+        const double jd_tdb = jd_tt;
+
         e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
+
         t_last = jd_tt;
         acc_last = accuracy;
       }
@@ -522,9 +525,11 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
       static THREAD_LOCAL enum novas_accuracy acc_last = -1;
       static THREAD_LOCAL double t_last = NAN, oblm, oblt;
 
-      if(!novas_time_equals(jd_tt, t_last) || accuracy != acc_last) {
-        const double jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;    // TDB date
+      if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tt, t_last) || accuracy != acc_last) {
+        // For these calculations we can assume TDB = TT (< 2 ms difference)
+        const double jd_tdb = jd_tt;
         e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
+
         t_last = jd_tt;
         acc_last = accuracy;
       }

@@ -61,8 +61,8 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  // 'jd_tdb' is the TDB Julian date.
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   // Obtain the basis vectors, in the GCRS, for the celestial intermediate
   // system defined by the CIP (in the z direction) and the CIO (in the
@@ -176,7 +176,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   // Check if previously computed RA value can be used.
-  if(novas_time_equals(jd_tdb, t_last) && (accuracy == acc_last)) {
+  if(novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb, t_last) && (accuracy == acc_last)) {
     *ra_cio = ra_last;
     *loc_type = ref_sys_last;
     return 0;
@@ -271,7 +271,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   // Compute unit vector z toward celestial pole.
-  if(!zz[2] || !novas_time_equals(jd_tdb, t_last) || (accuracy != acc_last)) {
+  if(!zz[2] || !novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb, t_last) || (accuracy != acc_last)) {
     const double z0[3] = { 0.0, 0.0, 1.0 };
     tod_to_gcrs(jd_tdb, accuracy, z0, zz);
     t_last = jd_tdb;

@@ -2155,7 +2155,7 @@ int novas_error(int ret, int en, const char *restrict from, const char *restrict
 }
 
 double novas_norm_ang(double angle);
-int novas_time_equals(double jd1, double jd2);
+int novas_time_equals(enum novas_accuracy accuracy, double jd1, double jd2);
 void novas_tiny_rotate(const double *in, double ax, double ay, double az, double *out);
 
 double novas_add_beta(double beta1, double beta2);
@@ -2167,6 +2167,9 @@ double novas_vdist2(const double *v1, const double *v2);
 double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
+
+int obs_posvel2(double jd_tt, double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
+        const double *restrict geo_pos, const double *restrict geo_vel, double *restrict pos, double *restrict vel);
 
 extern int novas_inv_max_iter;
 

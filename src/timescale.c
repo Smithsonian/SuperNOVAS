@@ -95,20 +95,28 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
  * @sa tt2tdb()
  */
 int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
-  const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
+  static THREAD_LOCAL double last_tdb = NAN;
+  static THREAD_LOCAL double d;
 
-  // Expression given in USNO Circular 179, eq. 2.6.
-  const double d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
-  + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-  + 0.000010 * t * sin(628.3076 * t + 4.2490);
+  if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb, last_tdb)) {
+    const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
-  // The simpler formula with a precision of ~30 us.
-  //  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-  //  const double g = 6.239996 + 630.0221385924 * t;
-  //  const double d = 0.001657 * sin(g + 0.01671 * sin(g));
+    // Expression given in USNO Circular 179, eq. 2.6.
+    // AK: This agrees poorly with the canonical expression further below...
+    //d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
+    //+ 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+    //+ 0.000010 * t * sin(628.3076 * t + 4.2490);
+
+    // The simpler formula with a precision of ~30 us.
+    const double g = 6.239996 + 630.0221385924 * t;
+    d = 0.001657 * sin(g + 0.01671 * sin(g));
+
+    last_tdb = jd_tdb;
+  }
 
   if(jd_tt)
     *jd_tt = jd_tdb - d / DAY;
+
   if(secdiff)
     *secdiff = d;
 
@@ -749,7 +757,7 @@ static int parse_zone(const char *str, char **tail) {
  * @sa julian_date()
  */
 double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
-       char **restrict tail) {
+        char **restrict tail) {
   static const char *fn = "novas_parse_date";
   static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 

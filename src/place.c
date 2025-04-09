@@ -258,16 +258,16 @@ short place(double jd_tt, const object *restrict source, const observer *restric
   // ---------------------------------------------------------------------
   // Get position and velocity of Earth (geocenter) and Sun.
   // ---------------------------------------------------------------------
-  if(!novas_time_equals(jd_tt, tlast) || accuracy != acc_last) {
+  if(!novas_time_equals(NOVAS_FULL_ACCURACY, jd_tt, tlast) || accuracy != acc_last) {
     static object earth = NOVAS_EARTH_INIT, sun = NOVAS_SUN_INIT;
     double vsb[3];
-    const double jd[2] = { jd_tdb };
+    const double tdb[2] = { jd_tdb };
 
     // Get position and velocity of Earth wrt barycenter of solar system, in ICRS.
-    prop_error("place:ephemeris:earth", ephemeris(jd, &earth, NOVAS_BARYCENTER, accuracy, peb, veb), 10);
+    prop_error("place:ephemeris:earth", ephemeris(tdb, &earth, NOVAS_BARYCENTER, accuracy, peb, veb), 10);
 
     // Get position and velocity of Sun wrt barycenter of solar system, in ICRS.
-    prop_error("place:ephemeris:sun", ephemeris(jd, &sun, NOVAS_BARYCENTER, accuracy, psb, vsb), 10);
+    prop_error("place:ephemeris:sun", ephemeris(tdb, &sun, NOVAS_BARYCENTER, accuracy, psb, vsb), 10);
 
     tlast = jd_tt;
     acc_last = accuracy;

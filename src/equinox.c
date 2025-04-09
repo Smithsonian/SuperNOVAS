@@ -103,7 +103,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
   if(accuracy != NOVAS_REDUCED_ACCURACY)
     accuracy = NOVAS_FULL_ACCURACY;
 
-  if(novas_time_equals(jd_tdb, t_last) && (accuracy == acc_last) && (last_type == equinox)) {
+  if(novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb, t_last) && (accuracy == acc_last) && (last_type == equinox)) {
     // Same parameters as last time. Return last calculated value.
     return last_ra;
   }

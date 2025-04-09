@@ -215,7 +215,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
         double *restrict ee, double *restrict dpsi, double *restrict deps) {
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double jd_last = NAN;
-  static THREAD_LOCAL double d_psi, d_eps, mean_ob, true_ob, c_terms;
+  static THREAD_LOCAL double d_psi, d_eps, mean_ob, cos_mob, true_ob, c_terms;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
@@ -223,7 +223,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
   // Compute the nutation angles (arcseconds) if the input Julian date
   // is significantly different from the last Julian date, or the
   // accuracy mode has changed from the last call.
-  if(!novas_time_equals(jd_tdb, jd_last) || (accuracy != acc_last)) {
+  if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb, jd_last) || (accuracy != acc_last)) {
     // Compute time in Julian centuries from epoch J2000.0.
     const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
@@ -234,6 +234,8 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
 
     // Compute mean obliquity of the ecliptic in degrees.
     mean_ob = mean_obliq(jd_tdb) / 3600.0;
+
+    cos_mob = cos(mean_ob * DEGREE);
 
     // Compute true obliquity of the ecliptic in degrees.
     true_ob = mean_ob + d_eps / 3600.0;
@@ -249,7 +251,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
   if(deps)
     *deps = d_eps + EPS_COR;
   if(ee)
-    *ee = (d_psi * cos(mean_ob * DEGREE) + c_terms) / 15.0;
+    *ee = (d_psi * cos_mob + c_terms) / 15.0;
   if(mobl)
     *mobl = mean_ob;
   if(tobl)
@@ -315,7 +317,9 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   // time is TDB.  First approximation is TDB = TT, then refine.
   jd_ut = jd_ut1_high + jd_ut1_low;
   jd_tt = jd_ut + (ut1_to_tt / DAY);
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
@@ -330,12 +334,13 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
     static THREAD_LOCAL double jd_last = NAN;
     static THREAD_LOCAL double ee;
 
-    if(!novas_time_equals(jd_tdb, jd_last) || accuracy != acc_last) {
+    if(!novas_time_equals(accuracy, jd_tdb, jd_last) || accuracy != acc_last) {
       e_tilt(jd_tdb, accuracy, NULL, NULL, &ee, NULL, NULL);
       jd_last = jd_tdb;
       acc_last = accuracy;
     }
-    eqeq = ee * 15.0;
+
+    eqeq = 15.0 * ee;
   }
   else {
     eqeq = 0.0;
@@ -595,11 +600,8 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
 short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
         double *restrict pos, double *restrict vel) {
   static const char *fn = "geo_posvel";
-  static THREAD_LOCAL double t_last = NAN;
-  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-  static THREAD_LOCAL double gast;
 
-  double gmst, eqeq, pos1[3], vel1[3], jd_tdb, jd_ut1;
+  double pos1[3], vel1[3];
 
   if(!obs)
     return novas_error(-1, EINVAL, fn, "NULL observer location pointer");
@@ -610,9 +612,6 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   // Invalid value of 'accuracy'.
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
-
-  // Compute 'jd_tdb', the TDB Julian date corresponding to 'jd_tt'.
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
 
   switch(obs->where) {
 
@@ -626,13 +625,15 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       // Other two cases: Get geocentric position and velocity vectors of
       // observer wrt equator and equinox of date.
 
-    case NOVAS_OBSERVER_ON_EARTH:                       // Observer on surface of Earth.
+    case NOVAS_OBSERVER_ON_EARTH: {                     // Observer on surface of Earth.
+      static THREAD_LOCAL double t_last = NAN;
+      static THREAD_LOCAL enum novas_accuracy acc_last = -1;
+      static THREAD_LOCAL double gast;
+
       // Compute UT1 and sidereal time.
-      jd_ut1 = jd_tt - (ut1_to_tt / DAY);
-      if(!novas_time_equals(jd_ut1, t_last) || accuracy != acc_last) {
-        sidereal_time(jd_ut1, 0.0, ut1_to_tt, NOVAS_MEAN_EQUINOX, EROT_ERA, accuracy, &gmst);
-        e_tilt(jd_tdb, accuracy, NULL, NULL, &eqeq, NULL, NULL);
-        gast = gmst + eqeq / 3600.0;
+      double jd_ut1 = jd_tt - (ut1_to_tt / DAY);
+      if(!novas_time_equals(NOVAS_FULL_ACCURACY, jd_ut1, t_last) || accuracy != acc_last) {
+        sidereal_time(jd_ut1, 0.0, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
         t_last = jd_ut1;
         acc_last = accuracy;
       }
@@ -640,6 +641,7 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       // Function 'terra' does the hard work, given sidereal time.
       terra(&obs->on_surf, gast, pos1, vel1);
       break;
+    }
 
     case NOVAS_OBSERVER_IN_EARTH_ORBIT: {               // Observer on near-earth spacecraft.
       const double kms = DAY / AU_KM;
@@ -673,8 +675,9 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
 
     case NOVAS_SOLAR_SYSTEM_OBSERVER: {               // Observer in Solar orbit
       const object earth = NOVAS_EARTH_INIT;
-      const double tdb[2] = { jd_tdb, 0.0 };
+      const double tdb[2] = { jd_tt, tt2tdb(jd_tt) / DAY };
       int i;
+
 
       // Get the position and velocity of the geocenter rel. to SSB
       prop_error(fn, ephemeris(tdb, &earth, NOVAS_BARYCENTER, accuracy, pos1, vel1), 0);
@@ -695,13 +698,15 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       return novas_error(2, EINVAL, fn, "invalid observer type (where): %d", obs->where);
   }
 
+  // For these calculations we can assume TDB = TT (< 2 ms difference)...
+
   // Transform geocentric position vector of observer to GCRS.
   if(pos)
-    tod_to_gcrs(jd_tdb, accuracy, pos1, pos);
+    tod_to_gcrs(jd_tt, accuracy, pos1, pos); // Use TT for TDB
 
   // Transform geocentric velocity vector of observer to GCRS.
   if(vel)
-    tod_to_gcrs(jd_tdb, accuracy, vel1, vel);
+    tod_to_gcrs(jd_tt, accuracy, vel1, vel); // Use TT for TDB
 
 
   return 0;
