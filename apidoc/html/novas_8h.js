@@ -229,6 +229,12 @@ var novas_8h =
       [ "NOVAS_REFRACT_OBSERVED", "novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468a29a320ab3459dafa0d18e7ebef3ae8fe", null ],
       [ "NOVAS_REFRACT_ASTROMETRIC", "novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468a4255a64975ec93df2f228c63c38096a0", null ]
     ] ],
+    [ "novas_separator_type", "novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e", [
+      [ "NOVAS_SEP_COLONS", "novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ead0a359b222721a18e8c7c0260ffd7e50", null ],
+      [ "NOVAS_SEP_SPACES", "novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0164600609e97493df66ed70ca926c2f", null ],
+      [ "NOVAS_SEP_UNITS", "novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0def47a09a4c410ccb20b64cf204c76e", null ],
+      [ "NOVAS_SEP_UNITS_AND_SPACES", "novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea9bf01302bc64e585197728c074d0bbee", null ]
+    ] ],
     [ "novas_timescale", "novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b", [
       [ "NOVAS_TCB", "novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4", null ],
       [ "NOVAS_TDB", "novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d", null ],
@@ -259,7 +265,7 @@ var novas_8h =
     [ "astro_star", "novas_8h.html#a9530c770e83db2cbc5a31d8d1f8c36f4", null ],
     [ "bary2obs", "novas_8h.html#a1d58fd371e7604f75df315365672941e", null ],
     [ "cal_date", "novas_8h.html#a044f1359abcf0a039ac6452a95729b5a", null ],
-    [ "cel2ter", "novas_8h.html#a65b70aa33e4e73a877411ceb6e1cef31", null ],
+    [ "cel2ter", "novas_8h.html#a6217852bfd7d3a58d3266d0daadfc6bc", null ],
     [ "cel_pole", "novas_8h.html#a8937180de2ee1545d19b8fc840f35fe2", null ],
     [ "cio_array", "novas_8h.html#afc894b55420495a727a90d3d85188ef4", null ],
     [ "cio_basis", "novas_8h.html#a51bfbe9b491f50851326b2522dc2a29f", null ],
@@ -381,8 +387,11 @@ var novas_8h =
     [ "novas_parse_dms", "novas_8h.html#aa8d11652c5deb9e2ad78fd70ccac3378", null ],
     [ "novas_parse_hms", "novas_8h.html#a22e1bcf36379e0244b665c3e22d5fcba", null ],
     [ "novas_parse_hours", "novas_8h.html#aff8c2c3fae3be867d3fc73972a158514", null ],
+    [ "novas_parse_iso_date", "novas_8h.html#ad53b3be5b92ea244cfb0347feb3bec9f", null ],
     [ "novas_parse_timescale", "novas_8h.html#a72245b3ea6099c573278f721a4bfd3d9", null ],
     [ "novas_planet_for_name", "novas_8h.html#a2cf7410aa68b980112734227b40890d6", null ],
+    [ "novas_print_dms", "novas_8h.html#ad778a440540ed687572b78b675bebd60", null ],
+    [ "novas_print_hms", "novas_8h.html#a713869893ad7e58c53e44b37a3bcf768", null ],
     [ "novas_print_timescale", "novas_8h.html#a084e5a2dcd20860af7176754d3a32202", null ],
     [ "novas_radio_refraction", "novas_8h.html#a6b49f92f8f818f2272613e3432185a39", null ],
     [ "novas_rises_above", "novas_8h.html#aaf38f64304fa0b00c9c56cead62043f3", null ],
@@ -440,7 +449,7 @@ var novas_8h =
     [ "spin", "novas_8h.html#af4090e519d7ce7ab1fcdb24b10126eb4", null ],
     [ "starvectors", "novas_8h.html#a27bae6c9efdab763dba9f1ae36a04669", null ],
     [ "tdb2tt", "novas_8h.html#a90d5fae30728b51151c3daf355ca585b", null ],
-    [ "ter2cel", "novas_8h.html#af9bc82e32fb3d7580d7ac99978011279", null ],
+    [ "ter2cel", "novas_8h.html#ac8c5ff3cc13126aba2ec5a6cbe187a31", null ],
     [ "terra", "novas_8h.html#a8471f990ad6e3051a0aa584d9cb2d355", null ],
     [ "tod_to_cirs", "novas_8h.html#adb48b2acaf76cc3a1e3a1412cc42c232", null ],
     [ "tod_to_gcrs", "novas_8h.html#a6871e7fecde44084c7b4e1b8dda5ac70", null ],

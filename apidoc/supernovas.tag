@@ -1353,6 +1353,37 @@
     </member>
     <member kind="enumeration">
       <type></type>
+      <name>novas_separator_type</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>acb27ba6ec7f4ed7486f4419f8803f40e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_SEP_COLONS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>acb27ba6ec7f4ed7486f4419f8803f40ead0a359b222721a18e8c7c0260ffd7e50</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_SEP_SPACES</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>acb27ba6ec7f4ed7486f4419f8803f40ea0164600609e97493df66ed70ca926c2f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_SEP_UNITS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>acb27ba6ec7f4ed7486f4419f8803f40ea0def47a09a4c410ccb20b64cf204c76e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_SEP_UNITS_AND_SPACES</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>acb27ba6ec7f4ed7486f4419f8803f40ea9bf01302bc64e585197728c074d0bbee</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
       <name>novas_timescale</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aa642c4ccc7195dc62fd0dc56567ebd0b</anchor>
@@ -1529,8 +1560,8 @@
       <type>short</type>
       <name>cel2ter</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a65b70aa33e4e73a877411ceb6e1cef31</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>a6217852bfd7d3a58d3266d0daadfc6bc</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>short</type>
@@ -2380,6 +2411,13 @@
       <arglist>(const char *restrict str, char **restrict tail)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_parse_iso_date</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad53b3be5b92ea244cfb0347feb3bec9f</anchor>
+      <arglist>(const char *restrict date, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
       <type>enum novas_timescale</type>
       <name>novas_parse_timescale</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -2392,6 +2430,20 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a2cf7410aa68b980112734227b40890d6</anchor>
       <arglist>(const char *restrict name)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_print_dms</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad778a440540ed687572b78b675bebd60</anchor>
+      <arglist>(double degrees, enum novas_separator_type sep, int decimals, char *restrict buf, int len)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_print_hms</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a713869893ad7e58c53e44b37a3bcf768</anchor>
+      <arglist>(double hours, enum novas_separator_type sep, int decimals, char *restrict buf, int len)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2796,8 +2848,8 @@
       <type>short</type>
       <name>ter2cel</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>af9bc82e32fb3d7580d7ac99978011279</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>ac8c5ff3cc13126aba2ec5a6cbe187a31</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -4079,6 +4131,13 @@
     <name>parse.c</name>
     <path>src/</path>
     <filename>parse_8c.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>MAX_DECIMALS</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>a93d0a993c2c1e6458c1e93fbd446b417</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>double</type>
       <name>novas_dms_degrees</name>
@@ -4127,6 +4186,20 @@
       <anchorfile>parse_8c.html</anchorfile>
       <anchor>aff8c2c3fae3be867d3fc73972a158514</anchor>
       <arglist>(const char *restrict str, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_print_dms</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>ad778a440540ed687572b78b675bebd60</anchor>
+      <arglist>(double degrees, enum novas_separator_type sep, int decimals, char *restrict buf, int len)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_print_hms</name>
+      <anchorfile>parse_8c.html</anchorfile>
+      <anchor>a713869893ad7e58c53e44b37a3bcf768</anchor>
+      <arglist>(double hours, enum novas_separator_type sep, int decimals, char *restrict buf, int len)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4496,20 +4569,6 @@
       <anchor>a93d0f96d81f3c52e05163643bd23eb7d</anchor>
       <arglist>(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</arglist>
     </member>
-    <member kind="function">
-      <type>short</type>
-      <name>solarsystem</name>
-      <anchorfile>solsys-ephem_8c.html</anchorfile>
-      <anchor>a37c25dbc2683dc9e3b1d187e13f68330</anchor>
-      <arglist>(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>solarsystem_hp</name>
-      <anchorfile>solsys-ephem_8c.html</anchorfile>
-      <anchor>a17846f3fafcce208dbbca1384e3a7fb0</anchor>
-      <arglist>(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)</arglist>
-    </member>
   </compound>
   <compound kind="file">
     <name>solsys1.c</name>
@@ -4617,20 +4676,6 @@
       <arglist>(int value)</arglist>
     </member>
     <member kind="function">
-      <type>short</type>
-      <name>solarsystem</name>
-      <anchorfile>solsys3_8c.html</anchorfile>
-      <anchor>a37c25dbc2683dc9e3b1d187e13f68330</anchor>
-      <arglist>(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>solarsystem_hp</name>
-      <anchorfile>solsys3_8c.html</anchorfile>
-      <anchor>a17846f3fafcce208dbbca1384e3a7fb0</anchor>
-      <arglist>(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity)</arglist>
-    </member>
-    <member kind="function">
       <type>int</type>
       <name>sun_eph</name>
       <anchorfile>solsys3_8c.html</anchorfile>
@@ -4728,8 +4773,8 @@
       <type>short</type>
       <name>cel2ter</name>
       <anchorfile>system_8c.html</anchorfile>
-      <anchor>a65b70aa33e4e73a877411ceb6e1cef31</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>a6217852bfd7d3a58d3266d0daadfc6bc</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -4861,8 +4906,8 @@
       <type>short</type>
       <name>ter2cel</name>
       <anchorfile>system_8c.html</anchorfile>
-      <anchor>af9bc82e32fb3d7580d7ac99978011279</anchor>
-      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class cl, double xp, double yp, const double *in, double *out)</arglist>
+      <anchor>ac8c5ff3cc13126aba2ec5a6cbe187a31</anchor>
+      <arglist>(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -5140,6 +5185,13 @@
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>a5ec9d054b7d363b3db1d065507a1ba41</anchor>
       <arglist>(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date, char **restrict tail)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_parse_iso_date</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>ad53b3be5b92ea244cfb0347feb3bec9f</anchor>
+      <arglist>(const char *restrict date, char **restrict tail)</arglist>
     </member>
     <member kind="function">
       <type>enum novas_timescale</type>

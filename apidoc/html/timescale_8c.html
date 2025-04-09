@@ -155,6 +155,8 @@ Functions</h2></td></tr>
 <tr class="separator:a4934da85b9722ef43a5b238f3e1971e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ec9d054b7d363b3db1d065507a1ba41" id="r_a5ec9d054b7d363b3db1d065507a1ba41"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format</a> (enum <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> calendar, enum <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4">novas_date_format</a> format, const char *restrict date, char **restrict tail)</td></tr>
 <tr class="separator:a5ec9d054b7d363b3db1d065507a1ba41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad53b3be5b92ea244cfb0347feb3bec9f" id="r_ad53b3be5b92ea244cfb0347feb3bec9f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f">novas_parse_iso_date</a> (const char *restrict date, char **restrict tail)</td></tr>
+<tr class="separator:ad53b3be5b92ea244cfb0347feb3bec9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72245b3ea6099c573278f721a4bfd3d9" id="r_a72245b3ea6099c573278f721a4bfd3d9"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a72245b3ea6099c573278f721a4bfd3d9">novas_parse_timescale</a> (const char *restrict str, char **restrict tail)</td></tr>
 <tr class="separator:a72245b3ea6099c573278f721a4bfd3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a084e5a2dcd20860af7176754d3a32202" id="r_a084e5a2dcd20860af7176754d3a32202"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale, char *restrict buf)</td></tr>
@@ -671,7 +673,9 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
  2025-01-26T21:32:49.701Z
 </pre><p>NOTES: </p><ol>
 <li>
-The timestamp uses the conventional date of the time. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that. </li>
+<p class="startli">As per the ISO 8601 specification, the timestamp uses the Gregorian date, even for dates prior to the Gregorian calendar reform of 15 October 1582 (i.e. proleptic Gregorian dates).</p>
+<p class="endli"></p>
+</li>
 <li>
 B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
 </ol>
@@ -688,9 +692,9 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp()</a> </dd>
 <dd>
-novas_parse_time() </dd></dl>
+<a class="el" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f">novas_parse_iso_date()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+<p class="reference">References <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
 
 </div>
 </div>
@@ -770,7 +774,8 @@ novas_parse_time() </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses a date/time string into a Julian date specification. Typically the date may be an ISO date specification, but with some added flexibility. The date must be YMD-type with full year, followed the month (numerical or name or 3-letter abbreviation), and the day. The components may be separated by dash <code>-</code>, underscore <code>_</code>, dot <code>.</code>, slash '/', or spaces/tabs, or any combination thereof. The date may be followed by a time specification in HMS format, separated from the date by the letter <code>T</code> or <code>t</code>, or spaces, comma <code>,</code>, or semicolon <code>;</code>, or underscore <code>_</code> or a combination thereof. Finally, the time may be followed by the letter <code>Z</code>, or <code>z</code> (for UTC) or else {+/-}HH[:[MM]] time zone specification.</p>
+<p>Parses an astronomical date/time string into a Julian date specification.</p>
+<p>The date must be YMD-type with full year, followed the month (numerical or name or 3-letter abbreviation), and the day. The components may be separated by dash <code>-</code>, underscore <code>_</code>, dot <code>.</code>, slash '/', or spaces/tabs, or any combination thereof. The date may be followed by a time specification in HMS format, separated from the date by the letter <code>T</code> or <code>t</code>, or spaces, comma <code>,</code>, or semicolon <code>;</code>, or underscore <code>_</code> or a combination thereof. Finally, the time may be followed by the letter <code>Z</code>, or <code>z</code> (for UTC) or else {+/-}HH[:[MM]] time zone specification.</p>
 <p>For example:</p>
 <pre>
  2025-01-26
@@ -785,7 +790,7 @@ novas_parse_time() </dd></dl>
 </pre><p>are all valid dates that can be parsed.</p>
 <p>NOTES: </p><ol>
 <li>
-<p class="startli">This function uses Gregorian dates since their introduction on 1582 October 15, and Julian/Roman datew before that, as was the convention of the time. I.e., the day before of the introduction of the Gregorian calendar reform is 1582 October 4.</p>
+<p class="startli">This function assumes Gregorian dates after their introduction on 1582 October 15, and Julian/Roman dates before that, as was the convention of the time. I.e., the day before of the introduction of the Gregorian calendar reform is 1582 October 4. I.e., you should not use this function with ISO 8601 timestamps containing dates prior to 1582 October 15 (for such date you may use <code><a class="el" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f">novas_parse_iso_date()</a></code> instead).</p>
 <p class="endli"></p>
 </li>
 <li>
@@ -793,7 +798,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">date</td><td>The astronomical date specification, possibly including time and timezone, in a standard format. The date is assumed to be in the astronomical calendar of date, which differs from ISO 8601 timestamps for dates prior to the Gregorian calendar reform of 1582 October 15 (otherwise, the two are identical). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time.</td></tr>
   </table>
   </dd>
@@ -801,11 +806,13 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f">novas_parse_iso_date()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a> </dd>
 <dd>
@@ -887,6 +894,8 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd>
 <dd>
+<a class="el" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f">novas_parse_iso_date()</a> </dd>
+<dd>
 <a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd>
@@ -894,6 +903,54 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>, <a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf">NOVAS_DEBUG_OFF</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4a3f31b27c8e879d17b89c34395e278203">NOVAS_DMY</a>, <a class="el" href="util_8c.html#a29cad12337acfce5f1e370320dcefb79">novas_get_debug_mode()</a>, <a class="el" href="calendar_8c.html#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a>, <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab13cba930f91e5e907bfc72489ffbc61">NOVAS_MDY</a>, <a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
+
+</div>
+</div>
+<a id="ad53b3be5b92ea244cfb0347feb3bec9f" name="ad53b3be5b92ea244cfb0347feb3bec9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad53b3be5b92ea244cfb0347feb3bec9f">&#9670;&#160;</a></span>novas_parse_iso_date()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_parse_iso_date </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>date</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **restrict&#160;</td>
+          <td class="paramname"><em>tail</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses an ISO 8601 timestamp, converting it to a Julian day. It is equivalent to <code><a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a></code> for dates after the Gregorian calendar reform of 1582. For earlier dates, ISO timestamps continue to assume the Gregorian calendar (i.e. proleptic Gregorian dates), whereas <code>novas_parse_timestamp()</code> will assume Roman/Julian dates, which were conventionally used before the calendar reform.</p>
+<p>NOTES: </p><ol>
+<li>
+B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">date</td><td>The ISO 8601 date specification, possibly including time and timezone, in a standard format. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tail</td><td>(optional) If not NULL it will be set to the next character in the string after the parsed time.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Julian Day corresponding to the string date/time specification or NAN if the string is NULL or if it does not specify a date/time in the expected format.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, <a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a>, and <a class="el" href="novas_8h.html#a9f2b43ae4b048783dc09c2a3d9b46ca4ab4320d2be90ff55e278e6171f6516bab">NOVAS_YMD</a>.</p>
 
 </div>
 </div>
@@ -1292,12 +1349,12 @@ struct timespec</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Prints a timestamp to millisecond precision in the specified timescale to the specified string buffer. E.g.:</p>
+<p>Prints an astronomical timestamp to millisecond precision in the specified timescale to the specified string buffer. It differs from ISO 8601 timestamps for dates prior to the Gregorian calendar reform of 1582 October 15 (otherwise two are identical). E.g.:</p>
 <pre>
  2025-01-26T21:32:49.701 TAI
 </pre><p>NOTES: </p><ol>
 <li>
-<p class="startli">The timestamp uses the astronomical date. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.</p>
+<p class="startli">The timestamp uses the astronomical date. That is Gregorian dates after the Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that. This is in contrast to ISO 8601 timestamps, which use Gregorian dates even for dates the precede the calendar reform that introduced them.</p>
 <p class="endli"></p>
 </li>
 <li>
@@ -1315,9 +1372,11 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <dl class="section return"><dt>Returns</dt><dd>the number of characters printed into the string buffer, not including the termination. As such it is at most <code>maxlen - 1</code>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a>, and <a class="el" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa1b6339c57b7baba0957b935fd37cc8ed">NOVAS_ASTRONOMICAL_CALENDAR</a>, <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a>, and <a class="el" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale()</a>.</p>
 
 </div>
 </div>

@@ -112,11 +112,19 @@ $(document).ready(function(){initNavTree('parse_8c.html',''); initResizable(); }
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">parse.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a93d0a993c2c1e6458c1e93fbd446b417" id="r_a93d0a993c2c1e6458c1e93fbd446b417"><td class="memItemLeft" align="right" valign="top"><a id="a93d0a993c2c1e6458c1e93fbd446b417" name="a93d0a993c2c1e6458c1e93fbd446b417"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_DECIMALS</b>&#160;&#160;&#160;9</td></tr>
+<tr class="memdesc:a93d0a993c2c1e6458c1e93fbd446b417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum decimal places for seconds in HMS/DMS formats. <br /></td></tr>
+<tr class="separator:a93d0a993c2c1e6458c1e93fbd446b417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aca89d2a0f49afad45dbddffc09c3adae" id="r_aca89d2a0f49afad45dbddffc09c3adae"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8c.html#aca89d2a0f49afad45dbddffc09c3adae">novas_dms_degrees</a> (const char *restrict dms)</td></tr>
@@ -133,6 +141,10 @@ Functions</h2></td></tr>
 <tr class="separator:a1aad2a903328080626db399450a7e297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff8c2c3fae3be867d3fc73972a158514" id="r_aff8c2c3fae3be867d3fc73972a158514"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8c.html#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours</a> (const char *restrict str, char **restrict tail)</td></tr>
 <tr class="separator:aff8c2c3fae3be867d3fc73972a158514"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad778a440540ed687572b78b675bebd60" id="r_ad778a440540ed687572b78b675bebd60"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8c.html#ad778a440540ed687572b78b675bebd60">novas_print_dms</a> (double degrees, enum <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e">novas_separator_type</a> sep, int decimals, char *restrict buf, int len)</td></tr>
+<tr class="separator:ad778a440540ed687572b78b675bebd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a713869893ad7e58c53e44b37a3bcf768" id="r_a713869893ad7e58c53e44b37a3bcf768"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8c.html#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms</a> (double hours, enum <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e">novas_separator_type</a> sep, int decimals, char *restrict buf, int len)</td></tr>
+<tr class="separator:a713869893ad7e58c53e44b37a3bcf768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10a24fc28fa74efa75abf566bb61af5b" id="r_a10a24fc28fa74efa75abf566bb61af5b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees</a> (const char *restrict str)</td></tr>
 <tr class="separator:a10a24fc28fa74efa75abf566bb61af5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac69c17c646ddf3a5447557338a8490b4" id="r_ac69c17c646ddf3a5447557338a8490b4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours</a> (const char *restrict str)</td></tr>
@@ -407,6 +419,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dd>
 <a class="el" href="parse_8c.html#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a> </dd>
 <dd>
+<a class="el" href="parse_8c.html#ad778a440540ed687572b78b675bebd60">novas_print_dms()</a> </dd>
+<dd>
 <a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a> </dd></dl>
 <p>don't treat trailing 'E' as part of the number</p>
 
@@ -460,6 +474,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="parse_8c.html#a696e44a2d1c788f9f335611efd7ed958">novas_hms_hours()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a> </dd>
+<dd>
+<a class="el" href="parse_8c.html#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a> </dd></dl>
 
@@ -522,6 +538,141 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 
 </div>
 </div>
+<a id="ad778a440540ed687572b78b675bebd60" name="ad778a440540ed687572b78b675bebd60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad778a440540ed687572b78b675bebd60">&#9670;&#160;</a></span>novas_print_dms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_print_dms </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>degrees</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e">novas_separator_type</a>&#160;</td>
+          <td class="paramname"><em>sep</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>decimals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *restrict&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Prints an angle in degrees as [-]ddd:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.</p>
+<p>The degrees component is always printed as 4 characters (up to 3 digits plus optional negative sign), so the output is always aligned. If positive values are expected to be explicitly signed also, the caller may simply put the '+' sign into the leading byte.</p>
+<p>NaN and infinite values, are printed as their standard floating-point representations.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">degrees</td><td>[deg] angle value </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">sep</td><td>Type of separators to use between or after components. If the separator value is outside of the enum range, it will default to using colons. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">decimals</td><td>Requested number of decimal places to print for the seconds [0:9]. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">buf</td><td>String buffer in which to print DMS string, represented in the [-180:180) degree range. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">len</td><td>Maximum number of bytes that may be written into the output buffer, including termination. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of characters actually printed in the buffer, excluding termination, or else -1 if the input buffer is NULL or the length is less than 1 (errno will be set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a> </dd>
+<dd>
+<a class="el" href="parse_8c.html#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="parse_8c.html#a93d0a993c2c1e6458c1e93fbd446b417">MAX_DECIMALS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ead0a359b222721a18e8c7c0260ffd7e50">NOVAS_SEP_COLONS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0164600609e97493df66ed70ca926c2f">NOVAS_SEP_SPACES</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0def47a09a4c410ccb20b64cf204c76e">NOVAS_SEP_UNITS</a>, and <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea9bf01302bc64e585197728c074d0bbee">NOVAS_SEP_UNITS_AND_SPACES</a>.</p>
+
+</div>
+</div>
+<a id="a713869893ad7e58c53e44b37a3bcf768" name="a713869893ad7e58c53e44b37a3bcf768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a713869893ad7e58c53e44b37a3bcf768">&#9670;&#160;</a></span>novas_print_hms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_print_hms </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>hours</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e">novas_separator_type</a>&#160;</td>
+          <td class="paramname"><em>sep</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>decimals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *restrict&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Prints a time in hours as hh:mm:ss[.S...] into the specified buffer, with up to nanosecond precision.</p>
+<p>NaN and infinite values, are printed as their standard floating-point representations.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">hours</td><td>[h] time value </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">sep</td><td>Type of separators to use between or after components. If the separator value is outside of the enum range, it will default to using colons. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">decimals</td><td>Requested number of decimal places to print for the seconds [0:9]. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">buf</td><td>String buffer in which to print HMS string, represented in the [0:24) hour range. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">len</td><td>Maximum number of bytes that may be written into the output buffer, including termination. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of characters actually printed in the buffer, excluding termination, or else -1 if the input buffer is NULL or the length is less than 1 (errno will be set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a> </dd>
+<dd>
+<a class="el" href="parse_8c.html#ad778a440540ed687572b78b675bebd60">novas_print_dms()</a> </dd>
+<dd>
+<a class="el" href="timescale_8c.html#ac8e83c48005d5aabb3e7bbf8d9f8ed81">novas_timestamp()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="parse_8c.html#a93d0a993c2c1e6458c1e93fbd446b417">MAX_DECIMALS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ead0a359b222721a18e8c7c0260ffd7e50">NOVAS_SEP_COLONS</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0164600609e97493df66ed70ca926c2f">NOVAS_SEP_SPACES</a>, <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea0def47a09a4c410ccb20b64cf204c76e">NOVAS_SEP_UNITS</a>, and <a class="el" href="novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40ea9bf01302bc64e585197728c074d0bbee">NOVAS_SEP_UNITS_AND_SPACES</a>.</p>
+
+</div>
+</div>
 <a id="a10a24fc28fa74efa75abf566bb61af5b" name="a10a24fc28fa74efa75abf566bb61af5b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a10a24fc28fa74efa75abf566bb61af5b">&#9670;&#160;</a></span>novas_str_degrees()</h2>
 
@@ -551,6 +702,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="parse_8c.html#ad3d04d065e76a5921995e96f67c24c41">novas_parse_degrees()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#ac651a7737d1f10e5267572f5c54fae92">novas_parse_dms()</a> </dd>
+<dd>
+<a class="el" href="parse_8c.html#ad778a440540ed687572b78b675bebd60">novas_print_dms()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours()</a> </dd></dl>
 
@@ -587,6 +740,8 @@ To see if the string was fully parsed when returning a valid (non-NAN) value, yo
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="parse_8c.html#aff8c2c3fae3be867d3fc73972a158514">novas_parse_hours()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#a1aad2a903328080626db399450a7e297">novas_parse_hms()</a> </dd>
+<dd>
+<a class="el" href="parse_8c.html#a713869893ad7e58c53e44b37a3bcf768">novas_print_hms()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees()</a> </dd></dl>
 

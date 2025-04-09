@@ -22,7 +22,8 @@ var searchData=
   ['novas_5freference_5fsystem_19',['novas_reference_system',['../novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e',1,'novas.h']]],
   ['novas_5frefraction_5fmodel_20',['novas_refraction_model',['../novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81',1,'novas.h']]],
   ['novas_5frefraction_5ftype_21',['novas_refraction_type',['../novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468',1,'novas.h']]],
-  ['novas_5ftimescale_22',['novas_timescale',['../novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b',1,'novas.h']]],
-  ['novas_5ftransform_5ftype_23',['novas_transform_type',['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367',1,'novas.h']]],
-  ['novas_5fwobble_5fdirection_24',['novas_wobble_direction',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5',1,'novas.h']]]
+  ['novas_5fseparator_5ftype_22',['novas_separator_type',['../novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e',1,'novas.h']]],
+  ['novas_5ftimescale_23',['novas_timescale',['../novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b',1,'novas.h']]],
+  ['novas_5ftransform_5ftype_24',['novas_transform_type',['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367',1,'novas.h']]],
+  ['novas_5fwobble_5fdirection_25',['novas_wobble_direction',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5',1,'novas.h']]]
 ];

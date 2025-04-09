@@ -24,12 +24,13 @@ var searchData=
   ['make_5fsolar_5fsystem_5fobserver_21',['make_solar_system_observer',['../observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529',1,'make_solar_system_observer(const double *sc_pos, const double *sc_vel, observer *obs):&#160;observer.c'],['../novas_8h.html#a9c3f1a1bc3fd9ac6d211806913d2d529',1,'make_solar_system_observer(const double *sc_pos, const double *sc_vel, observer *obs):&#160;observer.c']]],
   ['mask_22',['mask',['../structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd',1,'novas_planet_bundle']]],
   ['matrix_23',['matrix',['../structnovas__transform.html#a7a4a2e27593c1af2ae14cfb323ba4aba',1,'novas_transform']]],
-  ['mean_5fobliq_24',['mean_obliq',['../equinox_8c.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equinox.c'],['../novas_8h.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equinox.c']]],
-  ['mean_5fstar_25',['mean_star',['../place_8c.html#aaf51bf000e993807101a34adf423d36b',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec):&#160;place.c'],['../novas_8h.html#aaf51bf000e993807101a34adf423d36b',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec):&#160;place.c']]],
-  ['methodologies_26',['Note on alternative methodologies',['../index.html#autotoc_md52',1,'']]],
-  ['mobl_27',['mobl',['../structnovas__frame.html#adcbb032bae5aa01bff2501f40527943e',1,'novas_frame']]],
-  ['mod_5fto_5fgcrs_28',['mod_to_gcrs',['../system_8c.html#ad9cc07f0e6af9339096e15a440b113e5',1,'mod_to_gcrs(double jd_tdb, const double *in, double *out):&#160;system.c'],['../novas_8h.html#ad9cc07f0e6af9339096e15a440b113e5',1,'mod_to_gcrs(double jd_tdb, const double *in, double *out):&#160;system.c']]],
-  ['modules_29',['Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules',['../index.html#autotoc_md48',1,'']]],
-  ['modules_3a_20a_20better_20way_30',['Legacy modules: a better way...',['../index.html#autotoc_md49',1,'']]],
-  ['multi_20threaded_20calculations_31',['Multi-threaded calculations',['../index.html#autotoc_md65',1,'']]]
+  ['max_5fdecimals_24',['MAX_DECIMALS',['../parse_8c.html#a93d0a993c2c1e6458c1e93fbd446b417',1,'parse.c']]],
+  ['mean_5fobliq_25',['mean_obliq',['../equinox_8c.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equinox.c'],['../novas_8h.html#af182ee8cc4239f581f746aa974827d61',1,'mean_obliq(double jd_tdb):&#160;equinox.c']]],
+  ['mean_5fstar_26',['mean_star',['../place_8c.html#aaf51bf000e993807101a34adf423d36b',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec):&#160;place.c'],['../novas_8h.html#aaf51bf000e993807101a34adf423d36b',1,'mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec):&#160;place.c']]],
+  ['methodologies_27',['Note on alternative methodologies',['../index.html#autotoc_md52',1,'']]],
+  ['mobl_28',['mobl',['../structnovas__frame.html#adcbb032bae5aa01bff2501f40527943e',1,'novas_frame']]],
+  ['mod_5fto_5fgcrs_29',['mod_to_gcrs',['../system_8c.html#ad9cc07f0e6af9339096e15a440b113e5',1,'mod_to_gcrs(double jd_tdb, const double *in, double *out):&#160;system.c'],['../novas_8h.html#ad9cc07f0e6af9339096e15a440b113e5',1,'mod_to_gcrs(double jd_tdb, const double *in, double *out):&#160;system.c']]],
+  ['modules_30',['Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules',['../index.html#autotoc_md48',1,'']]],
+  ['modules_3a_20a_20better_20way_31',['Legacy modules: a better way...',['../index.html#autotoc_md49',1,'']]],
+  ['multi_20threaded_20calculations_32',['Multi-threaded calculations',['../index.html#autotoc_md65',1,'']]]
 ];

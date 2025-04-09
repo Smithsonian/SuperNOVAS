@@ -4,7 +4,7 @@
 
 The NOVAS C astrometry library, made better.
 
- - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
+ - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)
  - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
@@ -865,14 +865,14 @@ direction, such as 'N', 'E', 'S' or 'W'. So the above could also have been:
 
 ```c
  double ra_h = novas_str_hours("9h_18:49.068\"");
- double dec_d = novas_str_degrees("53d 10'_07.33W");
+ double dec_d = novas_str_degrees("53d 10'_07.33S");
 ```
 
 or as decimals:
 
 ```c
- double ra_h = novas_str_hours("19.31363");
- double dec_d = novas_str_degrees("53.16870278d S");
+ double ra_h = novas_str_hours("9.31363");
+ double dec_d = novas_str_degrees("53.16870278d South");
 ```
 
 
@@ -1054,21 +1054,21 @@ aberration and gravitational deflection corrections from the observer's point of
 
  | Description                         | accuracy  | positions / sec |
  |-------------------------------------|:---------:|----------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         2310331 |
- |                                     |   full    |         2325610 |
- | `place()`, same time, same observer | reduced   |          723561 |
- |                                     |   full    |          656688 |
- | `novas_sky_pos()`, individual       | reduced   |           78094 |
- |                                     |   full    |           33577 |
- | `place()`, individual               | reduced   |           67956 |
- |                                     |   full    |           24018 |
+ | `novas_sky_pos()`, same frame       | reduced   |         2603879 |
+ |                                     |   full    |         2595014 |
+ | `place()`, same time, same observer | reduced   |          895609 |
+ |                                     |   full    |          809300 |
+ | `novas_sky_pos()`, individual       | reduced   |           89670 |
+ |                                     |   full    |           38074 |
+ | `place()`, individual               | reduced   |           77876 |
+ |                                     |   full    |           26307 |
 
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
 
  | Description                         | accuracy  | positions / sec |
  |-------------------------------------|:---------:|----------------:|
- | NOVAS C 3.1 `place()`, same         | reduced   |          318539 |
- | NOVAS C 3.1 `place()`, individual   | reduced   |           49729 |
+ | NOVAS C 3.1 `place()`, same         | reduced   |          479643 |
+ | NOVAS C 3.1 `place()`, individual   | reduced   |           63343 |
  
 For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
 same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, 
