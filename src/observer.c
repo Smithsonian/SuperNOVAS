@@ -730,19 +730,19 @@ short light_time(double jd_tdb, const object *restrict body, const double *pos_o
  * @sa novas_uvw_to_xyz()
  */
 int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
-  static const char *fn = "novas_polar_to_xyz";
+  static const char *fn = "novas_los_to_xyz";
 
   double slon, clon, slat, clat;
-  double dlon, dlat, dr;
+  double dlon, dlat, dr, clatdr_m_slatdlat;
 
   if(!xyz)
-    return novas_error(-1, EINVAL, fn, "output polar-orineted vector is NULL");
+    return novas_error(-1, EINVAL, fn, "output xyz vector is NULL");
 
   if(xyz != los)
     memset(xyz, 0, XYZ_VECTOR_SIZE);
 
   if(!los)
-    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
+    return novas_error(-1, EINVAL, fn, "input los vector is NULL");
 
   lon *= DEGREE;
   lat *= DEGREE;
@@ -755,10 +755,12 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
   dlon = los[0];
   dlat = los[1];
   dr = los[2];
+  
+  clatdr_m_slatdlat = clat * dr - slat * dlat;
 
   // Transform motion vector to equatorial system.
-  xyz[0] = -slon * dlon - clon * slat * dlat + clon * clat * dr;
-  xyz[1] = clon * dlon - slon * slat * dlat + slon * clat * dr;
+  xyz[0] = clon * clatdr_m_slatdlat - slon * dlon;
+  xyz[1] = clon * dlon + slon * clatdr_m_slatdlat;
   xyz[2] = clat * dlat + slat * dr;
 
   return 0;
@@ -783,19 +785,19 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
  * @sa novas_xyz_to_uvw()
  */
 int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
-  static const char *fn = "novas_xyz_to_polar";
+  static const char *fn = "novas_xyz_to_los";
 
   double slon, clon, slat, clat;
-  double x, y, z;
+  double x, y, z, clonx_slony;
 
   if(!los)
-    return novas_error(-1, EINVAL, fn, "output polar-orineted vector is NULL");
+    return novas_error(-1, EINVAL, fn, "output los vector is NULL");
 
   if(los != xyz)
     memset(los, 0, XYZ_VECTOR_SIZE);
 
   if(!xyz)
-    return novas_error(-1, EINVAL, fn, "input polar-orineted vector is NULL");
+    return novas_error(-1, EINVAL, fn, "input xyz vector is NULL");
 
   lon *= DEGREE;
   lat *= DEGREE;
@@ -809,10 +811,12 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
   y = xyz[1];
   z = xyz[2];
 
+  clonx_slony = clon * x + slon * y;
+
   // Transform motion vector to equatorial system.
-  los[0] = -slon * x + clon * y;
-  los[1] = -clon * slat * x - slon * slat * y + clat * z;
-  los[2] = clon * clat * x + slon * clat * y + slat * z;
+  los[0] = clon * y - slon * x;
+  los[1] = clat * z - slat * clonx_slony;
+  los[2] = clat * clonx_slony + slat * z;
 
   return 0;
 }
