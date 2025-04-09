@@ -148,6 +148,8 @@ calculations.
  
  - #156: `tt2tdb()` now caches last calculation also.
  
+ - #156: Eliminate redundant caching of calculations.
+ 
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
    without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
