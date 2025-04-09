@@ -26,6 +26,9 @@ calculations.
  - #139: Legacy linking of external `solarsystem()` / `solarsystem_hp()` provider modules was blocked by 
    `solsys-ephem.c` inadvertently definining these functions when `BUILTIN_SOLSYS_EPHEM` was set to 1 (default) during
    the build, even though it was not supposed to.
+   
+ - #156: `obs_posvel()` called `geo_posvel()` with TDB instead of TT. It less than a 2 ms difference, so quite 
+   inconsequential.
   
 ### Added
 
@@ -137,6 +140,15 @@ calculations.
    been OK with `gcc` for quite a while, they only became standard in C23. Other compilers might barf at their use.
  
  - #152: For C++ compatibility do not use `class` as a parameter name. [thanks to valeriy-sokoloff]
+   
+ - #156: Omit TDB-TT time difference, a maximum of 2 ms, in Earth tilt calculations, where it really does not make
+   any difference. As a result some calculations are now faster than before.
+    
+ - #156: Check time match for cached values depending on required accuracy.
+ 
+ - #156: `tt2tdb()` now caches last calculation also.
+ 
+ - #156: Eliminate redundant caching of calculations.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
