@@ -144,11 +144,13 @@ calculations.
  - #156: Omit TDB-TT time difference, a maximum of 2 ms, in Earth tilt calculations, where it really does not make
    any difference. As a result some calculations are now faster than before.
     
- - #156: Check time match for cached values depending on required accuracy.
+ - #156: Higher precision time match requirement for re-using cached orbital / rotational calculations.
  
  - #156: `tt2tdb()` now caches last calculation also.
  
  - #156: Eliminate redundant caching of calculations.
+ 
+ - #156: Tighten `precession()` time checking.
  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
