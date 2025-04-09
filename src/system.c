@@ -1074,7 +1074,7 @@ int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @sa NOVAS_JD_B1900
  */
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
-  static THREAD_LOCAL double t_last = NAN;
+  static THREAD_LOCAL double djd_last = NAN;
   static THREAD_LOCAL double xx, yx, zx, xy, yy, zy, xz, yz, zz;
   double t;
 
@@ -1088,7 +1088,7 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
   }
 
   // Check to be sure that either 'jd_tdb1' or 'jd_tdb2' is equal to JD_J2000.
-  if(!novas_time_equals_hp(jd_tdb_in, JD_J2000) && !novas_time_equals_hp(jd_tdb_out, JD_J2000)) {
+  if(!novas_time_equals(jd_tdb_in, JD_J2000) && !novas_time_equals(jd_tdb_out, JD_J2000)) {
     // Do the precession in two steps...
     precession(jd_tdb_in, in, JD_J2000, out);
     precession(JD_J2000, out, jd_tdb_out, out);
@@ -1096,13 +1096,18 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
   }
 
   // 't' is time in TDB centuries between the two epochs.
-  t = (jd_tdb_out - jd_tdb_in) / JULIAN_CENTURY_DAYS;
+  t = (jd_tdb_out - jd_tdb_in);
   if(jd_tdb_out == JD_J2000)
     t = -t;
 
-  if(!novas_time_equals_hp(t, t_last)) {
+  if(!novas_time_equals(t, djd_last)) {
     double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd, t1, t2;
     double eps0 = 84381.406;
+
+    djd_last = t;
+
+    // Now change t to Julian centuries
+    t /= JULIAN_CENTURY_DAYS;
 
     // Numerical coefficients of psi_a, omega_a, and chi_a, along with
     // epsilon_0, the obliquity at J2000.0, are 4-angle formulation from
@@ -1142,8 +1147,6 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
     xz = sb * sc;
     yz = -sc * cb * ca - sa * cc;
     zz = -sc * cb * sa + cc * ca;
-
-    t_last = t;
   }
 
   if(jd_tdb_out == JD_J2000) {
