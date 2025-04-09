@@ -189,6 +189,27 @@ double novas_vdot(const double *v1, const double *v2) {
 /**
  * (<i>for internal use only</i>) Checks if two Julian dates are equal with regard to the
  * dynamic equator. The two dates are considered equal if they agree within 10<sup>-7</sup>
+ * days (or about 10 ms).
+ *
+ * For reference, woth a precession rate of ~50"/year, the precession in in 10 ms is
+ * on the order of 0.015 uas, which is well below the promised sub-uas precision even in
+ * for the highest accuracy calculations. As such it is safe to use the reduced accuracy time
+ * check for cached precession-related quantities.
+ *
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param jd1       [day] a Julian date (in any time measure)
+ * @param jd2       [day] a Julian date in the same time measure as the first argument
+ * @return          TRUE (1) if the two dates are effectively the same at the precision of
+ *                  comparison, or else FALSE (0) if they differ by more than the allowed
+ *                  tolerance.
+ */
+int novas_time_equals(double jd1, double jd2) {
+  return fabs(jd1 - jd2) < 1e-7;
+}
+
+/**
+ * (<i>for internal use only</i>) Checks if two Julian dates are precisely equal with regard to the
+ * dynamic equator. The two dates are considered equal if they agree within 10<sup>-7</sup>
  * days (or about 10 ms) of each other in reduced accuracy or if they agree within 10<sup>-9</sup>
  * days (or about 100 us), corresponding to double-precision limits, in full accuracy mode.
  *
@@ -204,8 +225,8 @@ double novas_vdot(const double *v1, const double *v2) {
  *                  comparison, or else FALSE (0) if they differ by more than the allowed
  *                  tolerance.
  */
-int novas_time_equals(enum novas_accuracy accuracy, double jd1, double jd2) {
-  return fabs(jd1 - jd2) < (accuracy == NOVAS_FULL_ACCURACY ? 1e-9 : 1e-7);
+int novas_time_equals_hp(double jd1, double jd2) {
+  return fabs(jd1 - jd2) < 1e-9;
 }
 
 /**

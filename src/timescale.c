@@ -98,7 +98,7 @@ int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
   static THREAD_LOCAL double last_tdb = NAN;
   static THREAD_LOCAL double d;
 
-  if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb, last_tdb)) {
+  if(!novas_time_equals(jd_tdb, last_tdb)) {
     const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
     // Expression given in USNO Circular 179, eq. 2.6.

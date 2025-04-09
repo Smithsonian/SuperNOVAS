@@ -437,20 +437,14 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
   switch(coord_sys) {
     case NOVAS_MEAN_EQUATOR:      // Input: mean equator and equinox of date
     case NOVAS_TRUE_EQUATOR: {    // Input: true equator and equinox of date
-      static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-      static THREAD_LOCAL double t_last = NAN, oblm, oblt;
+      double oblm = NAN, oblt = NAN;
+
+      // For these calculations we can assume TDB = TT (< 2 ms difference)
+      const double jd_tdb = jd_tt;
 
       memcpy(pos0, in, sizeof(pos0));
 
-      if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tt, t_last) || accuracy != acc_last) {
-        // For these calculations we can assume TDB = TT (< 2 ms difference)
-        const double jd_tdb = jd_tt;
-
-        e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
-
-        t_last = jd_tt;
-        acc_last = accuracy;
-      }
+      e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
 
       obl = (coord_sys == NOVAS_MEAN_EQUATOR ? oblm : oblt) * DEGREE;
       break;
@@ -522,18 +516,12 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 
     case NOVAS_MEAN_EQUATOR:        // Output: mean equator and equinox of date
     case NOVAS_TRUE_EQUATOR: {      // Output: true equator and equinox of date
-      static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-      static THREAD_LOCAL double t_last = NAN, oblm, oblt;
+      double oblm = NAN, oblt = NAN;
 
-      if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tt, t_last) || accuracy != acc_last) {
-        // For these calculations we can assume TDB = TT (< 2 ms difference)
-        const double jd_tdb = jd_tt;
-        e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
+      // For these calculations we can assume TDB = TT (< 2 ms difference)
+      const double jd_tdb = jd_tt;
 
-        t_last = jd_tt;
-        acc_last = accuracy;
-      }
-
+      e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, NULL, NULL);
       obl = (coord_sys == NOVAS_MEAN_EQUATOR ? oblm : oblt) * DEGREE;
       break;
     }

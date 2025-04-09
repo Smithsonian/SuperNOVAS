@@ -31,7 +31,7 @@ C version 3.1, providing bug fixes, tons of extra features, while making it easi
 
 SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
-scales with the number of CPUs when parallelized.
+will scales further with the number of CPUs when calculations are performed in parallel threads.
 
 SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
@@ -1089,8 +1089,8 @@ For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
  
 For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
 same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, 
-__SuperNOVAS__ is a whopping ~35000 times faster than __astropy__ for calculations in the same observing frame, and 
-~500 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
+__SuperNOVAS__ is a whopping ~40000 times faster than __astropy__ for calculations in the same observing frame, and 
+~450 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
 the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  
  | Description                                     | positions / sec |

@@ -258,7 +258,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
   // ---------------------------------------------------------------------
   // Get position and velocity of Earth (geocenter) and Sun.
   // ---------------------------------------------------------------------
-  if(!novas_time_equals(NOVAS_FULL_ACCURACY, jd_tt, tlast) || accuracy != acc_last) {
+  if(!novas_time_equals_hp(jd_tt, tlast) || accuracy != acc_last) {
     static object earth = NOVAS_EARTH_INIT, sun = NOVAS_SUN_INIT;
     double vsb[3];
     const double tdb[2] = { jd_tdb };

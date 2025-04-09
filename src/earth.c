@@ -215,7 +215,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
         double *restrict ee, double *restrict dpsi, double *restrict deps) {
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double jd_last = NAN;
-  static THREAD_LOCAL double d_psi, d_eps, mean_ob, cos_mob, true_ob, c_terms;
+  static THREAD_LOCAL double d_psi, d_eps, mean_ob, true_ob, eqeq;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
@@ -223,19 +223,17 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
   // Compute the nutation angles (arcseconds) if the input Julian date
   // is significantly different from the last Julian date, or the
   // accuracy mode has changed from the last call.
-  if(!novas_time_equals(NOVAS_REDUCED_ACCURACY, jd_tdb, jd_last) || (accuracy != acc_last)) {
+  if(!novas_time_equals(jd_tdb, jd_last) || (accuracy != acc_last)) {
     // Compute time in Julian centuries from epoch J2000.0.
     const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
     nutation_angles(t, accuracy, &d_psi, &d_eps);
 
-    // Obtain complementary terms for equation of the equinoxes in arcseconds.
-    c_terms = ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC;
-
     // Compute mean obliquity of the ecliptic in degrees.
     mean_ob = mean_obliq(jd_tdb) / 3600.0;
 
-    cos_mob = cos(mean_ob * DEGREE);
+    // Obtain complementary terms for equation of the equinoxes in arcseconds.
+    eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
 
     // Compute true obliquity of the ecliptic in degrees.
     true_ob = mean_ob + d_eps / 3600.0;
@@ -251,7 +249,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
   if(deps)
     *deps = d_eps + EPS_COR;
   if(ee)
-    *ee = (d_psi * cos_mob + c_terms) / 15.0;
+    *ee = eqeq;
   if(mobl)
     *mobl = mean_ob;
   if(tobl)
@@ -330,16 +328,8 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   // input values of 'gst_type' and 'method'.  If not needed, set to zero.
   if(((gst_type == NOVAS_MEAN_EQUINOX) && (erot == EROT_ERA))       // GMST; CIO-TIO
           || ((gst_type == NOVAS_TRUE_EQUINOX) && (erot == EROT_GST))) {    // GAST; equinox
-    static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-    static THREAD_LOCAL double jd_last = NAN;
-    static THREAD_LOCAL double ee;
-
-    if(!novas_time_equals(accuracy, jd_tdb, jd_last) || accuracy != acc_last) {
-      e_tilt(jd_tdb, accuracy, NULL, NULL, &ee, NULL, NULL);
-      jd_last = jd_tdb;
-      acc_last = accuracy;
-    }
-
+    double ee = NAN;
+    e_tilt(jd_tdb, accuracy, NULL, NULL, &ee, NULL, NULL);
     eqeq = 15.0 * ee;
   }
   else {
@@ -626,17 +616,11 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
       // observer wrt equator and equinox of date.
 
     case NOVAS_OBSERVER_ON_EARTH: {                     // Observer on surface of Earth.
-      static THREAD_LOCAL double t_last = NAN;
-      static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-      static THREAD_LOCAL double gast;
-
       // Compute UT1 and sidereal time.
       double jd_ut1 = jd_tt - (ut1_to_tt / DAY);
-      if(!novas_time_equals(NOVAS_FULL_ACCURACY, jd_ut1, t_last) || accuracy != acc_last) {
-        sidereal_time(jd_ut1, 0.0, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
-        t_last = jd_ut1;
-        acc_last = accuracy;
-      }
+      double gast = NAN;
+
+      sidereal_time(jd_ut1, 0.0, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
 
       // Function 'terra' does the hard work, given sidereal time.
       terra(&obs->on_surf, gast, pos1, vel1);
