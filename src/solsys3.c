@@ -439,7 +439,7 @@ int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restri
   sin_lon = sin(lon);
   *ra = atan2((cos(emean) * sin_lon), cos(lon)) * RAD2DEG;
   if(*ra < 0.0)
-    *ra += 360.0;
+    *ra += DEG360;
   *ra = *ra / 15.0;
 
   *dec = asin(sin(emean) * sin_lon) * RAD2DEG;

@@ -57,7 +57,7 @@ int main(int argc, const char *argv[]) {
 
 
   // Other variables we need ----------------------------------------------->
-  int i, N = 100000;
+  int i, N = 300000;
 
 
   if(argc > 1) N = (int) strtol(argv[1], NULL, 10);
@@ -137,6 +137,7 @@ int main(int argc, const char *argv[]) {
   // Start benchmarks...
   fprintf(stderr, "Starting single-thread benchmarks...\n");
 
+
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy, same frame
   clock_gettime(CLOCK_REALTIME, &unix_time);
@@ -172,6 +173,8 @@ int main(int argc, const char *argv[]) {
   printf(" - full accuracy place() same frame:     %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
+
+  N /= 10;
 
   // -------------------------------------------------------------------------
   // Benchmark reduced accuracy different frames

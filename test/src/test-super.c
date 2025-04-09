@@ -1346,7 +1346,7 @@ static int test_sky_pos(enum novas_reference_system sys) {
     if(!is_equal(label, p.dec, pc.dec, 1e-9)) return 1;
 
     sprintf(label, "sky_pos:sys=%d:source=%d:check:rv", sys, i);
-    if(!is_equal(label, p.rv, pc.rv, 1e-9)) return 1;
+    if(!is_equal(label, p.rv, pc.rv, 1e-6)) return 1;
 
     sprintf(label, "sky_pos:sys=%d:source=%d:check:r_hat", sys, i);
     if(!is_ok(label, check_equal_pos(p.r_hat, pc.r_hat, 1e-12))) return 1;
@@ -3123,8 +3123,8 @@ static int test_hor_track() {
   if(!is_ok("hor_track:app_to_hor", novas_app_to_hor(&frame, NOVAS_TOD, pos.ra, pos.dec, NULL, &az0, &el0))) n++;
   if(!is_ok("hor_track", novas_hor_track(&source, &frame, NULL, &track))) n++;
 
-  if(!is_equal("hor_track:ra", track.pos.lon, az0, 1e-9)) n++;
-  if(!is_equal("hor_track:dec", track.pos.lat, el0, 1e-9)) n++;
+  if(!is_equal("hor_track:az", track.pos.lon, az0, 1e-9)) n++;
+  if(!is_equal("hor_track:el", track.pos.lat, el0, 1e-9)) n++;
   if(!is_equal("hor_track:dis", track.pos.dist, pos.dis, 1e-12 * pos.dis)) n++;
   if(!is_equal("hor_track:z", track.pos.z, novas_v2z(pos.rv), 1e-9)) n++;
 
@@ -3140,8 +3140,8 @@ static int test_hor_track() {
   if(!is_ok("hor_track:app_to_hor:ref", novas_app_to_hor(&frame, NOVAS_TOD, pos.ra, pos.dec, novas_standard_refraction, &az0, &el0))) n++;
   if(!is_ok("hor_track:ref", novas_hor_track(&source, &frame, novas_standard_refraction, &track))) n++;
 
-  if(!is_equal("hor_track:ra:ref", track.pos.lon, az0, 1e-8)) n++;
-  if(!is_equal("hor_track:dec:ref", track.pos.lat, el0, 1e-9)) n++;
+  if(!is_equal("hor_track:az:ref", track.pos.lon, az0, 1e-9)) n++;
+  if(!is_equal("hor_track:el:ref", track.pos.lat, el0, 1e-9)) n++;
   if(!is_equal("hor_track:dis:ref", track.pos.dist, pos.dis, 1e-12 * pos.dis)) n++;
   if(!is_equal("hor_track:z:ref", track.pos.z, novas_v2z(pos.rv), 1e-9)) n++;
 

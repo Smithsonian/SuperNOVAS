@@ -61,8 +61,8 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  // 'jd_tdb' is the TDB Julian date.
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   // Obtain the basis vectors, in the GCRS, for the celestial intermediate
   // system defined by the CIP (in the z direction) and the CIO (in the

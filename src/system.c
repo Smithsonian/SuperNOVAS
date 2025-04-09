@@ -44,8 +44,8 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
   if(!ra || !dec)
     return novas_error(-1, EINVAL, fn, "NULL output pointer: ra=%p, dec=%p", ra, dec);
 
-  // 'jd_tdb' is the TDB Julian date.
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   // Form position vector in equatorial system from input coordinates.
   r = rag * 15.0 * DEG2RAD;
@@ -158,9 +158,8 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   jd_ut1 = jd_ut1_high + jd_ut1_low;
   jd_tt = jd_ut1 + (ut1_to_tt / DAY);
 
-  // Compute the TDB Julian date corresponding to the input UT1 Julian
-  // date.
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   // Apply polar motion
   if(xp || yp)
@@ -187,9 +186,9 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(-15.0 * gast, out, out);
 
-      if(coordType != NOVAS_DYNAMICAL_CLASS) {
+      if(coordType != NOVAS_DYNAMICAL_CLASS)
         tod_to_gcrs(jd_tdb, accuracy, out, out);
-      }
+
       break;
     }
 
@@ -271,8 +270,8 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   jd_ut1 = jd_ut1_high + jd_ut1_low;
   jd_tt = jd_ut1 + (ut1_to_tt / DAY);
 
-  // Compute the TDB Julian date corresponding to the input UT1 Julian date
-  jd_tdb = jd_tt + tt2tdb(jd_tt) / DAY;
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  jd_tdb = jd_tt;
 
   switch(erot) {
     case EROT_ERA:
@@ -313,7 +312,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
   // Apply polar motion, transforming the vector to the ITRS.
   if(xp || yp)
-    wobble(jd_tdb, WOBBLE_PEF_TO_ITRS, xp, yp, out, out);
+    wobble(jd_tt, WOBBLE_PEF_TO_ITRS, xp, yp, out, out);
 
   return 0;
 }
@@ -1075,7 +1074,7 @@ int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @sa NOVAS_JD_B1900
  */
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
-  static THREAD_LOCAL double t_last = NAN;
+  static THREAD_LOCAL double djd_last = NAN;
   static THREAD_LOCAL double xx, yx, zx, xy, yy, zy, xz, yz, zz;
   double t;
 
@@ -1097,13 +1096,18 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
   }
 
   // 't' is time in TDB centuries between the two epochs.
-  t = (jd_tdb_out - jd_tdb_in) / JULIAN_CENTURY_DAYS;
+  t = (jd_tdb_out - jd_tdb_in);
   if(jd_tdb_out == JD_J2000)
     t = -t;
 
-  if(!novas_time_equals(t, t_last)) {
+  if(!novas_time_equals(t, djd_last)) {
     double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd, t1, t2;
     double eps0 = 84381.406;
+
+    djd_last = t;
+
+    // Now change t to Julian centuries
+    t /= JULIAN_CENTURY_DAYS;
 
     // Numerical coefficients of psi_a, omega_a, and chi_a, along with
     // epsilon_0, the obliquity at J2000.0, are 4-angle formulation from
@@ -1143,8 +1147,6 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
     xz = sb * sc;
     yz = -sc * cb * ca - sa * cc;
     zz = -sc * cb * sa + cc * ca;
-
-    t_last = t;
   }
 
   if(jd_tdb_out == JD_J2000) {
