@@ -132,7 +132,7 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
  
- - Nutation series used truncated expressions for the fundamental arguments, resulting in uas-level errors in just 
+ - Nutation series used truncated expressions for the fundamental arguments, resulting in &mu;as-level errors in just 
    if dizens or more years away from the reference epoch of J2000.
  
  - [__v1.1__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
