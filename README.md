@@ -149,6 +149,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
  
+ - Nutation series used truncated expressions for the fundamental arguments, resulting in mas-level errors in just 
+   20--30 years away from the reference epoch of J2000.
+ 
  - [__v1.1__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
    the gravitational deflection due to the Sun being skipped.
@@ -1075,10 +1078,10 @@ aberration and gravitational deflection corrections from the observer's point of
  |                                     |   full    |         2708014 |
  | `place()`, same time, same observer | reduced   |          898609 |
  |                                     |   full    |          833300 |
- | `novas_sky_pos()`, individual       | reduced   |           69568 |
- |                                     |   full    |           30728 |
- | `place()`, individual               | reduced   |           61844 |
- |                                     |   full    |           28586 |
+ | `novas_sky_pos()`, individual       | reduced   |          173211 |
+ |                                     |   full    |           35509 |
+ | `place()`, individual               | reduced   |          135618 |
+ |                                     |   full    |           32293 |
 
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
 

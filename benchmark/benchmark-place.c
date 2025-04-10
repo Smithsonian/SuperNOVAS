@@ -143,17 +143,8 @@ int main(int argc, const char *argv[]) {
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) calc_pos(&stars[i], &obs_frame);
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - reduced accuracy, same frame:         %12.1f positions/sec\n",
+  printf(" - novas_sky_pos(), same frame, red. acc.:        %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
-
-  // -------------------------------------------------------------------------
-  // Benchmark reduced accuracy, place(), same time
-  clock_gettime(CLOCK_REALTIME, &unix_time);
-  for(i = 0; i < N; i++) calc_place(&stars[i], &obs_frame);
-  clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - reduced accuracy place(), same time:  %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
-
 
   // -------------------------------------------------------------------------
   // Benchmark full accuracy, same frame
@@ -161,23 +152,35 @@ int main(int argc, const char *argv[]) {
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) calc_pos(&stars[i], &obs_frame);
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - full accuracy, same frame:            %12.1f positions/sec\n",
+  printf(" - novas_sky_pos, same frame, full acc.:          %12.1f positions/sec\n",
+          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+
+
+
+  // -------------------------------------------------------------------------
+  // Benchmark place() reduced accuracy, same frame
+  clock_gettime(CLOCK_REALTIME, &unix_time);
+  for(i = 0; i < N; i++) calc_place(&stars[i], &obs_frame);
+  clock_gettime(CLOCK_REALTIME, &end);
+  printf(" - place(), same frame, red. acc.:                %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
   // -------------------------------------------------------------------------
-  // Benchmark full accuracy, place(), same time
+  // Benchmark place() full accuracy, same frame
   obs_frame.accuracy = NOVAS_FULL_ACCURACY;
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) calc_place(&stars[i], &obs_frame);
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - full accuracy place() same frame:     %12.1f positions/sec\n",
+  printf(" - place(), same frame, full acc.:                %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
 
+  // individual frames are expected to be significantly slower, so
+  // benchmark over fewer iterations
   N /= 10;
 
   // -------------------------------------------------------------------------
-  // Benchmark reduced accuracy different frames
+  // Benchmark reduced accuracy, individual fames
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) {
     novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
@@ -185,25 +188,11 @@ int main(int argc, const char *argv[]) {
     calc_pos(&stars[i], &obs_frame);
   }
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - reduced accuracy, own frames:         %12.1f positions/sec\n",
+  printf(" - novas_sky_pos, individual, red. acc.:          %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
-
   // -------------------------------------------------------------------------
-  // Benchmark reduced accuracy, place(), different times()
-  obs_frame.accuracy = NOVAS_REDUCED_ACCURACY;
-  clock_gettime(CLOCK_REALTIME, &unix_time);
-  for(i = 0; i < N; i++) {
-    obs_frame.time.ijd_tt += (i % 2) ? 1 : -1;  // alternate dates.
-    calc_place(&stars[i], &obs_frame);
-  }
-  clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - reduced accuracy, place() own frames: %12.1f positions/sec\n",
-          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
-
-
-  // -------------------------------------------------------------------------
-  // Benchmark full accuracy different frames
+  // Benchmark full accuracy, individual frames
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) {
     novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
@@ -211,12 +200,25 @@ int main(int argc, const char *argv[]) {
     calc_pos(&stars[i], &obs_frame);
   }
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - full accuracy, own frames:            %12.1f positions/sec\n",
+  printf(" - novas_sky_pos, individual, full acc.:          %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
 
+
   // -------------------------------------------------------------------------
-  // Benchmark full accuracy, place(), different times
+  // Benchmark place() reduced accuracy, individual frames
+  obs_frame.accuracy = NOVAS_REDUCED_ACCURACY;
+  clock_gettime(CLOCK_REALTIME, &unix_time);
+  for(i = 0; i < N; i++) {
+    obs_frame.time.ijd_tt += (i % 2) ? 1 : -1;  // alternate dates.
+    calc_place(&stars[i], &obs_frame);
+  }
+  clock_gettime(CLOCK_REALTIME, &end);
+  printf(" - place(), individual, red. acc.:                %12.1f positions/sec\n",
+          N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
+
+  // -------------------------------------------------------------------------
+  // Benchmark place full accuracy, individual frames
   obs_frame.accuracy = NOVAS_FULL_ACCURACY;
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) {
@@ -224,7 +226,7 @@ int main(int argc, const char *argv[]) {
     calc_place(&stars[i], &obs_frame);
   }
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - full accuracy, place() own time:      %12.1f positions/sec\n",
+  printf(" - place(), individual, full acc.:                %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
 

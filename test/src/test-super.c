@@ -2465,7 +2465,7 @@ static int test_orbit_place() {
   if(!is_ok("orbit_place:icrs", novas_orbit_posvel(tjd, &orbit, NOVAS_FULL_ACCURACY, p1, NULL))) n++;
   else {
     equ2ecl_vec(tjd, NOVAS_GCRS_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
-    if(!is_ok("orbit_place:icrs:check", check_equal_pos(p1, p0, 1e-9))) n++;
+    if(!is_ok("orbit_place:icrs:check", check_equal_pos(p1, p0, 1e-8))) n++;
   }
 
   orbit.system.type = NOVAS_CIRS;
@@ -2473,7 +2473,7 @@ static int test_orbit_place() {
   else {
     gcrs_to_cirs(tjd, NOVAS_REDUCED_ACCURACY, p1, p1);
     equ2ecl_vec(tjd, NOVAS_TRUE_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
-    if(!is_ok("orbit_place:cirs:check", check_equal_pos(p1, p0, 1e-9))) n++;
+    if(!is_ok("orbit_place:cirs:check", check_equal_pos(p1, p0, 1e-8))) n++;
   }
 
   orbit.system.type = NOVAS_J2000;
@@ -2481,7 +2481,7 @@ static int test_orbit_place() {
   else {
     gcrs_to_j2000(p1, p1);
     equ2ecl_vec(NOVAS_JD_J2000, NOVAS_TRUE_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
-    if(!is_ok("orbit_place:j2000:check", check_equal_pos(p1, p0, 1e-9))) n++;
+    if(!is_ok("orbit_place:j2000:check", check_equal_pos(p1, p0, 1e-8))) n++;
   }
 
   orbit.system.type = NOVAS_MOD;
@@ -2489,7 +2489,7 @@ static int test_orbit_place() {
   else {
     gcrs_to_mod(tjd, p1, p1);
     equ2ecl_vec(tjd, NOVAS_MEAN_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
-    if(!is_ok("orbit_place:mod:check", check_equal_pos(p1, p0, 1e-9))) n++;
+    if(!is_ok("orbit_place:mod:check", check_equal_pos(p1, p0, 1e-8))) n++;
   }
 
   orbit.system.type = NOVAS_TOD;
@@ -2497,7 +2497,7 @@ static int test_orbit_place() {
   else {
     gcrs_to_tod(tjd, NOVAS_FULL_ACCURACY, p1, p1);
     equ2ecl_vec(tjd, NOVAS_TRUE_EQUATOR, NOVAS_FULL_ACCURACY, p1, p1);
-    if(!is_ok("orbit_place:tod:check", check_equal_pos(p1, p0, 1e-9))) n++;
+    if(!is_ok("orbit_place:tod:check", check_equal_pos(p1, p0, 1e-8))) n++;
   }
 
   return n;

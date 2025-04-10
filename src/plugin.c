@@ -34,7 +34,7 @@ static novas_ephem_provider readeph2_call = NULL;
 
 /// Function to use for reduced-precision calculations. (The full IAU 2000A model is used
 /// always for high-precision calculations)
-static novas_nutation_provider nutate_lp = nu2000k;
+static novas_nutation_provider nutate_lp = iau2000b;
 
 /**
  * Sets the function to use for obtaining position / velocity information for minor planets,

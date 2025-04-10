@@ -73,13 +73,13 @@ static void openfile(const char *name) {
 static void printvector(double *v) {
   if(!v) fprintf(fp, "null ");
   if(accuracy == 0) fprintf(fp, "%17.11g %17.11g %17.11g ", v[0], v[1], v[2]);
-  else fprintf(fp, "%14.8g %14.8g %14.8g ", v[0], v[1], v[2]);
+  else fprintf(fp, "%14.7g %14.7g %14.7g ", v[0], v[1], v[2]);
 }
 
 static void printvel(double *v) {
   double norm = (AU / 86400.0) / 1000.0;
 
-  // rto mm/s or m/s accuracy...
+  // to mm/s or m/s accuracy...
   if(accuracy == 0) fprintf(fp, "%12.6f %12.6f %12.6f ", v[0] * norm, v[1] * norm, v[2] * norm);
   else fprintf(fp, "%9.3f %9.3f %9.3f ", v[0] * norm, v[1] * norm, v[2] * norm);
 }
@@ -89,7 +89,7 @@ static void printunitvector(double *v) {
   else {
     double l = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
     if(accuracy == 0) fprintf(fp, "%14.11f %14.11f %14.11f ", v[0] / l, v[1] / l, v[2] / l);
-    else fprintf(fp, "%11.8f %11.8f %11.8f ", v[0] / l, v[1] / l, v[2] / l);
+    else fprintf(fp, "%11.7f %11.7f %11.7f ", v[0] / l, v[1] / l, v[2] / l);
   }
 }
 
@@ -210,7 +210,7 @@ static void test_refract() {
   openfile("refract");
 
   make_on_surface(15.0, 20.0, 1200.0, -10.0, 1010.0, &surf);
-  fprintf(fp, "%12.6f %12.6f ", refract(&surf, 1, 89.0), refract(&surf, 2, 89.0));
+  fprintf(fp, accuracy == 0 ? "%12.6f %12.6f " : "%9.3f    %9.3f    ", refract(&surf, 1, 89.0), refract(&surf, 2, 89.0));
 }
 
 static void test_mean_star() {
@@ -218,15 +218,15 @@ static void test_mean_star() {
 
   openfile("mean_star");
   if(is_ok(mean_star(2433282.42345905, 10.0, -40.0, 1, &ra, &dec)))
-    fprintf(fp, "1 %12.9f %12.8f ", ra, dec);
+    fprintf(fp, accuracy == 0 ? "1 %12.9f %12.8f " : "1 %9.6f    %9.6f   ", ra, dec);
 
   openfile("mean_star");
   if(is_ok(mean_star(2433282.42345905, 19.0, 30.0, 1, &ra, &dec)))
-    fprintf(fp, "2 %12.9f %12.8f ", ra, dec);
+    fprintf(fp, accuracy == 0 ? "1 %12.9f %12.8f " : "1 %9.6f    %9.6f   ", ra, dec);
 
   openfile("mean_star");
   if(is_ok(mean_star(2433282.42345905, 2.7, 68.3, 1, &ra, &dec)))
-    fprintf(fp, "3 %12.9f %12.8f ", ra, dec);
+    fprintf(fp, accuracy == 0 ? "1 %12.9f %12.8f " : "1 %9.6f    %9.6f   ", ra, dec);
 }
 
 
@@ -283,7 +283,7 @@ static void test_tdb2tt() {
   double tt, dt;
   openfile("tbd2tt");
   tdb2tt(tdb, &tt, &dt);
-  fprintf(fp, "%12.6f ", dt);
+  fprintf(fp, accuracy == 0 ? "%12.6f " : "%9.3f    ", dt);
 }
 
 static void test_ephemeris() {
@@ -366,11 +366,11 @@ static void test_nutation_angles() {
 
   openfile("nutation_angles");
   nutation_angles(t, accuracy, &dpsi, &deps);
-  fprintf(fp, "current %12.6f %12.6f", dpsi, deps);
+  fprintf(fp, accuracy == 0 ? "current %12.6f %12.6f" : "current %9.3f    %9.3f", dpsi, deps);
 
   openfile("nutation_angles");
   nutation_angles(t + 1.0, accuracy, &dpsi, &deps);
-  fprintf(fp, "future  %12.6f %12.6f", dpsi, deps);
+  fprintf(fp, accuracy == 0 ? "future  %12.6f %12.6f" : "future  %9.3f    %9.3f", dpsi, deps);
 }
 
 
@@ -378,7 +378,8 @@ static void test_e_tilt() {
   double r1=0.0, r2=0.0, r3=0.0, r4=0.0, r5=0.0;
   openfile("e_tilt");
   e_tilt(tdb, accuracy, &r1, &r2, &r3, &r4, &r5);
-  fprintf(fp, "%12.6f %12.6f %12.6f %12.6f %12.6f", r1, r2, r3, r4, r5);
+  fprintf(fp, accuracy == 0 ? "%12.6f %12.6f %12.6f %12.6f %12.6f" :  "%9.3f    %9.3f    %9.3f    %9.3f    %9.3f",
+          r1, r2, r3, r4, r5);
 }
 
 static void test_cel_pole() {
@@ -414,7 +415,7 @@ static void test_nutation() {
 
 static void test_ira_equinox() {
   openfile("ira_equinox");
-  fprintf(fp, "%12.9f %12.9f", ira_equinox(tdb, 0, accuracy), ira_equinox(tdb, 1, accuracy));
+  fprintf(fp, accuracy == 0 ? "%12.9f %12.9f" : "%9.6f    %9.6f   ", ira_equinox(tdb, 0, accuracy), ira_equinox(tdb, 1, accuracy));
 }
 
 static void test_cio_location() {
@@ -423,11 +424,11 @@ static void test_cio_location() {
   openfile("cio_location");
 
   if(is_ok(cio_location(tdb, accuracy, &h, &sys)))
-    fprintf(fp, "%d %12.9f ", sys, h);
+    fprintf(fp, accuracy == 0 ? "%d %12.9f " : "%d %9.6f    ", sys, h);
 
   // repeat.
   if(is_ok(cio_location(tdb, accuracy, &h, &sys)))
-    fprintf(fp, "%d %12.9f ", sys, h);
+    fprintf(fp, accuracy == 0 ? "%d %12.9f " : "%d %9.6f    ", sys, h);
 
 }
 
@@ -452,7 +453,7 @@ static void test_cio_ra() {
   openfile("cio_ra");
 
   if(is_ok(cio_ra(tdb, accuracy, &h)))
-    fprintf(fp, "%d %12.9f ", sys, h);
+    fprintf(fp, accuracy == 0 ? "%d %12.9f " : "%d %9.6f    ", sys, h);
 
 }
 
@@ -460,11 +461,11 @@ static void test_sidereal_time() {
   double h = 0.0;
   openfile("sidereal_time");
   if(!is_ok(sidereal_time(tdb, 0.0, ut12tt, 0, 0, accuracy, &h))) return;
-  fprintf(fp, "ERA %12.6f ", h);
+  fprintf(fp, accuracy == 0 ? "ERA %12.6f " : "ERA %9.3f    ", h);
 
   openfile("sidereal_time");
   if(!is_ok(sidereal_time(tdb, 0.0, ut12tt, 0, 1, accuracy, &h))) return;
-  fprintf(fp, "GST %12.6f", h);
+  fprintf(fp, accuracy == 0 ? "GST %12.6f" : "GST %9.3f   ", h);
 }
 
 static void test_geo_posvel() {
@@ -667,22 +668,25 @@ static void test_light_time() {
 }
 
 static void test_grav_def() {
-  double pos1[3], pos2[3], ps[3], vs[3];
+  double pos1[3] = {}, pos2[3] = {}, ps[3] = {}, vs[3] = {};
   double d, jd2[2] = { tdb };
-  object sun = NOVAS_SUN_INIT;
+  object sun = {};
   int k;
 
-  if(source.type != 2) return;
+  make_object(0, 10, "Sun", NULL, &sun);
 
   openfile("grav_def");
   if(is_ok(grav_def(tdb, obs.where, accuracy, pos0, pobs, pos1))) {
     printunitvector(pos1);
   }
 
+  // Anything but the Sun itself...
+  if(source.type == 0 && source.number == 10) return;
+
+  // Now test a position near the Sun in the direction of the source
   ephemeris(jd2, &sun, 0, accuracy, ps, vs);
   d = vlen(pos0);
 
-  // Now test a position near the Sun in the direction of the source
   for(k = 3; --k >= 0;) pos1[k] = ps[k] + 0.01 * pos0[k] / d;
 
   if(is_ok(grav_def(tdb, obs.where, accuracy, pos1, pobs, pos2))) {
@@ -691,7 +695,7 @@ static void test_grav_def() {
 }
 
 static void test_aberration() {
-  double vo[3] = {0.0}, v0[3] = {0.0}, pos1[3];
+  double vo[3] = {}, v0[3] = {}, pos1[3];
   int i;
 
   // Calculate for sidereal sources only.
@@ -716,7 +720,7 @@ static void test_place() {
     if(is_ok(place(tdb, &source, &obs, ut12tt, i, accuracy, &out))) {
       // Velocities to 0.1 m/s accuracy
       if(accuracy == 0) fprintf(fp, "%d %12.8f %12.8f %12.8f %12.5f ", i, out.ra, out.dec, out.dis, out.rv);
-      else fprintf(fp, "%d %8.4f %8.3f %8.3f %12.1f ", i, out.ra, out.dec, out.dis, out.rv);
+      else fprintf(fp, "%d %8.4f     %8.4f     %10.6f   %11.4f  ", i, out.ra, out.dec, out.dis, out.rv);
     }
   }
 }
@@ -729,13 +733,11 @@ static void test_astro_place() {
 
   if(source.type == 2) {
     if(is_ok(astro_star(tdb, &source.star, accuracy, &ra, &dec))) {
-      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
-      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+      fprintf(fp, accuracy == 0 ? "%12.8f %12.8f " : "%8.4f     %8.4f    ", ra, dec);
     }
   }
   else if(is_ok(astro_planet(tdb, &source, accuracy, &ra, &dec, &d))) {
-    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
-    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+    fprintf(fp, accuracy == 0 ? "%12.8f %12.8f %12.8f " : "%8.4f     %8.4f     %10.6f   ", ra, dec, d);
   }
 }
 
@@ -746,13 +748,11 @@ static void test_virtual_place() {
 
   if(source.type == 2) {
     if(is_ok(virtual_star(tdb, &source.star, accuracy, &ra, &dec))) {
-      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
-      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+      fprintf(fp, accuracy == 0 ? "%12.8f %12.8f " : "%8.4f     %8.4f     ", ra, dec);
     }
   }
   else if(is_ok(virtual_planet(tdb, &source, accuracy, &ra, &dec, &d))) {
-    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
-    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+    fprintf(fp, accuracy == 0 ? "%12.8f %12.8f %12.8f " : "%8.4f     %8.4f     %10.6f   ", ra, dec, d);
   }
 }
 
@@ -762,14 +762,12 @@ static void test_app_place() {
   openfile("local_place");
 
   if(source.type == 2) {
-    if(is_ok(app_star(tdb, &source.star, accuracy, &ra, &dec))) {
-      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
-      else fprintf(fp, "%12.4f %12.4f", ra, dec);
-    }
+    if(is_ok(app_star(tdb, &source.star, accuracy, &ra, &dec)))
+      fprintf(fp, accuracy == 0 ? "%12.8f %12.8f " : "%8.4f     %8.4f     ", ra, dec);
+
   }
   else if(is_ok(app_planet(tdb, &source, accuracy, &ra, &dec, &d))) {
-    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
-    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+    fprintf(fp, accuracy == 0 ? "%12.8f %12.8f %12.8f " : "%8.4f     %8.4f     %10.6f   ", ra, dec, d);
   }
 
 }
@@ -782,13 +780,11 @@ static void test_local_place() {
 
   if(source.type == 2) {
     if(is_ok(local_star(tdb, ut12tt, &source.star, &obs.on_surf, accuracy, &ra, &dec))) {
-      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
-      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+      fprintf(fp, accuracy == 0 ? "%12.8f %12.8f " : "8.4f     %8.4f     ", ra, dec);
     }
   }
   else if(is_ok(local_planet(tdb, &source, ut12tt, &obs.on_surf, accuracy, &ra, &dec, &d))) {
-    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
-    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+    fprintf(fp, accuracy == 0 ? "%12.8f %12.8f %12.8f " : "%8.4f     %8.4f     %10.6f   ", ra, dec, d);
   }
 }
 
@@ -799,13 +795,11 @@ static void test_topo_place() {
 
   if(source.type == 2) {
     if(is_ok(topo_star(tdb, ut12tt, &source.star, &obs.on_surf, accuracy, &ra, &dec))){
-      if(accuracy == 0) fprintf(fp, "%12.8f %12.8f ", ra, dec);
-      else fprintf(fp, "%12.4f %12.4f", ra, dec);
+      fprintf(fp, accuracy == 0 ? "%12.8f %12.8f " : "%8.4f     %8.4f     ", ra, dec);
     }
   }
   else if(is_ok(topo_planet(tdb, &source, ut12tt, &obs.on_surf, accuracy, &ra, &dec, &d))) {
-    if(accuracy == 0) fprintf(fp, "%12.8f %12.8f %12.8f ", ra, dec, d);
-    else fprintf(fp, "%12.4f %12.4f %12.4f ", ra, dec, d);
+    fprintf(fp, accuracy == 0 ? "%12.8f %12.8f %12.8f " : "%8.4f     %8.4f     %10.6f  ", ra, dec, d);
   }
 }
 
@@ -866,11 +860,11 @@ static void test_equ2hor() {
 
   openfile("equ2hor");
   equ2hor(tdb, ut12tt, accuracy, 0.1, -0.2, &obs.on_surf, source.star.ra, source.star.dec, 0, &zd, &az, &rar, &decr);
-  fprintf(fp, "%12.6f %12.6f %12.6f %12.6f ", zd, az, rar, decr);
+  fprintf(fp, accuracy == 0 ? "%12.6f %12.6f %12.6f %12.6f " : "%9.3f    %9.3f    %12.6f %12.6f ", zd, az, rar, decr);
 
   openfile("equ2hor-refract");
   equ2hor(tdb, ut12tt, accuracy, 0.1, -0.2, &obs.on_surf, source.star.ra, source.star.dec, 1, &zd, &az, &rar, &decr);
-  fprintf(fp, "%12.6f %12.6f %12.6f %12.6f ", zd, az, rar, decr);
+  fprintf(fp, accuracy == 0 ? "%12.6f %12.6f %12.6f %12.6f " : "%9.3f    %9.3f    %12.6f %12.6f ", zd, az, rar, decr);
 }
 
 
@@ -954,10 +948,10 @@ static void test_rad_vel() {
   openfile("rad_vel");
 
   rad_vel(&source, pos0, vel0, vobs, 0.0, 0.0, 0.0, &rv);
-  fprintf(fp, "%12.6f ", rv);
+  fprintf(fp, accuracy == 0 ? "%12.6f " : "%9.3f    ", rv);
 
   rad_vel(&source, pos0, vel0, vobs, vdist(pobs, epos), vdist(pobs, spos), vdist(pos0, spos), &rv);
-  fprintf(fp, "%12.6f ", rv);
+  fprintf(fp, accuracy == 0 ? "%12.6f " : "%9.3f    ", rv);
 }
 
 static void test_limb_angle() {
