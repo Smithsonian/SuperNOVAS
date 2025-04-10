@@ -149,8 +149,8 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
    
  - Fixes potential string overflows and eliminates associated compiler warnings.
  
- - Nutation series used truncated expressions for the fundamental arguments, resulting in mas-level errors in just 
-   20--30 years away from the reference epoch of J2000.
+ - Nutation series used truncated expressions for the fundamental arguments, resulting in &mu;as-level errors in when 
+   dozens or more years away from the reference epoch of J2000.
  
  - [__v1.1__] Fixes division by zero bug in `d_light()` if the first position argument is the ephemeris reference
    position (e.g. the Sun for `solsys3.c`). The bug affects for example `grav_def()`, where it effectively results in
