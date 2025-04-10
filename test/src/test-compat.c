@@ -370,7 +370,7 @@ static void test_nutation_angles() {
 
   openfile("nutation_angles");
   nutation_angles(t + 1.0, accuracy, &dpsi, &deps);
-  fprintf(fp, accuracy == 0 ? "current %12.6f %12.6f" : "current %9.3f    %9.3f", dpsi, deps);
+  fprintf(fp, accuracy == 0 ? "future  %12.6f %12.6f" : "future  %9.3f    %9.3f", dpsi, deps);
 }
 
 
