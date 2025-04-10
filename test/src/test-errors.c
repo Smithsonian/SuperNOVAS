@@ -824,7 +824,7 @@ static int test_cio_ra() {
 }
 
 static int test_starvectors() {
-  cat_entry star;
+  cat_entry star = CAT_ENTRY_INIT;
   double p[3], v[3];
   int n = 0;
 

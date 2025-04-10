@@ -29,7 +29,7 @@ calculations.
    
  - #156: `obs_posvel()` called `geo_posvel()` with TDB instead of TT. It less than a 2 ms difference, so quite 
    inconsequential.
-  
+   
 ### Added
 
  - #113: New `novas_frame_lst()` convenience function to readily return the Local (apparent) Sidereal Time for a given 
@@ -152,6 +152,10 @@ calculations.
  
  - #156: Tighten `precession()` time checking.
  
+ - Switch to `iau2000b()` as the low-precision nutation series. It is good to about 1 arcsec, which is the promised 
+   precision in reduced accuracy, but a lot faster than the `nu2000k()` series, which in turn is barely faster than 
+   the full `iau2000a()` nutation series.
+  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
    without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
@@ -164,6 +168,8 @@ calculations.
 
  - Use `SIZE_OF_OBJ_NAME` and `SIZE_OF_CAT_NAME` instead of `sizeof(obj->starname)` and `sizeof(obj->catalog)` 
    internally for improved portability.
+
+ - Various arithmetic simplifications to give a minor performance boost.
 
  - Updated `README.md` for v1.3 and benchmarks, including comparisons to __astropy__.
  

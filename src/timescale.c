@@ -69,20 +69,21 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
  * Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date
  * corresponding to a Barycentric Dynamical Time (TDB) Julian date.
  *
- * Expression used in this function is a truncated form of a longer and more precise
- * series given in the first reference.  The result is good to about 10 microseconds.
+ * The simple analytical expression containing just the leading orbital term from Moyer
+ * 1981 is fast to calculate and goot to about 30 us. This is sufficient toobtain
+ * meter-level absolute positional accuracy for Solar-system sources. (Relative
+ * positional accuracy is
  *
  * @deprecated Use the less computationally intensive an more accurate tt2tdb()
  *            routine instead.
  *
  * REFERENCES:
  * <ol>
- * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
- * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
- * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
- * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
+ * <li>Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68<.li>
  * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
  * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
+ * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * </ol>
  *
  * @param jd_tdb         [day] Barycentric Dynamic Time (TDB) based Julian date
@@ -99,17 +100,11 @@ int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
   static THREAD_LOCAL double d;
 
   if(!novas_time_equals(jd_tdb, last_tdb)) {
-    const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
-
     // Expression given in USNO Circular 179, eq. 2.6.
-    // AK: This agrees poorly with the canonical expression further below...
-    //d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
-    //+ 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-    //+ 0.000010 * t * sin(628.3076 * t + 4.2490);
-
-    // The simpler formula with a precision of ~30 us.
-    const double g = 6.239996 + 630.0221385924 * t;
-    d = 0.001657 * sin(g + 0.01671 * sin(g));
+    const double t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
+    d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
+      + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+      + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
     last_tdb = jd_tdb;
   }

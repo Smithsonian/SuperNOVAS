@@ -329,7 +329,7 @@ int fund_args(double t, novas_delaunay_args *restrict a) {
   if(!a)
     return novas_error(-1, EINVAL, "fund_args", "NULL output pointer");
 
-  // higher order terms (for 0.1 uas precision) only if |t| > 0.0001
+  // higher order terms only if |t| > 0.0001
   if(fabs(t) > 1e-4) {
     const double t2 = t * t;
     a->l = t2 * (31.8792 + t * (0.051635 + t * (-0.00024470)));
