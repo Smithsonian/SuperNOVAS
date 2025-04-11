@@ -133,7 +133,11 @@ int set_cio_locator_file(const char *restrict filename) {
  *   location as long as the pointer arguments are not NULL. The returned values will be
  *   interpolated from the locator file if possible, otherwise it falls back to calculating
  *   an equinox-based location per default.
- *  </li>
+ * </li>
+ * <li>
+ *  This function caches the results of the last calculation in case it may be re-used at
+ *  no extra computational cost for the next call.
+ * </li>
  * </ol>
  *
  * @param jd_tdb           [day] Barycentric Dynamic Time (TDB) based Julian date
@@ -234,6 +238,12 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
  * date -- different algorithms are used in the two cases.
  *
  * This function effectively constructs the matrix C in eq. (3) of the reference.
+ *
+ * NOTES:
+ * <ol>
+ * <li>This function caches the results of the last calculation in case it may be re-used at
+ * no extra computational cost for the next call.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>

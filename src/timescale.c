@@ -86,6 +86,11 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
  *   double TDB = TT + dt / 86400.0;
  * ```
  *
+ * NOTES:
+ * <ol>
+ * <li>This function caches the results of the last calculation in case it may be re-used at
+ * no extra computational cost for the next call.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>

@@ -195,6 +195,11 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  *  Values of the celestial pole offsets 'PSI_COR' and 'EPS_COR' are set using function 'cel_pole', if
  *  desired.  See the prolog of cel_pole() for details.
  *
+ * NOTES:
+ * <ol>
+ * <li>This function caches the results of the last calculation in case it may be re-used at
+ * no extra computational cost for the next call.</li>
+ * </ol>
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)

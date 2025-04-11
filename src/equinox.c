@@ -125,6 +125,12 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * The low-accuracy series used in this function is a simple implementation derived from the first
  * reference, in which terms smaller than 2 microarcseconds have been omitted.
  *
+ * NOTES:
+ * <ol>
+ * <li>This function caches the results of the last calculation in case it may be re-used at
+ * no extra computational cost for the next call.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  * <li>Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. & Astrophys. 406, p.

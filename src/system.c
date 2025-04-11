@@ -1043,6 +1043,9 @@ int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  *     of the time arguments must be J2000. You can precess from any date to
  *     any other date, and the intermediate epoch of J2000 will be handled internally
  *     as needed.</li>
+ *
+ * <li>This function caches the results of the last calculation in case it may be re-used at
+ *     no extra computational cost for the next call.</li>
  * </ol>
  *
  * REFERENCES:
