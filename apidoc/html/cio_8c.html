@@ -246,6 +246,10 @@ This function has been completely re-written by A. Kovacs to provide much more e
 </div><div class="memdoc">
 <p>Computes the orthonormal basis vectors, with respect to the GCRS (geocentric ICRS), of the celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z direction) and the celestial intermediate origin (CIO) (in the x direction). A TDB Julian date and the right ascension of the CIO at that date is required as input. The right ascension of the CIO can be with respect to either the GCRS origin or the true equinox of date &ndash; different algorithms are used in the two cases.</p>
 <p>This function effectively constructs the matrix C in eq. (3) of the reference.</p>
+<p>NOTES: </p><ol>
+<li>
+This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
@@ -313,6 +317,8 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <p>NOTES: </p><ol>
 <li>
 Unlike the NOVAS C version of this function, this version will always return a CIO location as long as the pointer arguments are not NULL. The returned values will be interpolated from the locator file if possible, otherwise it falls back to calculating an equinox-based location per default.  </li>
+<li>
+This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call.  </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

@@ -287,6 +287,10 @@ Kaplan, G. (2003), USNO/AA Technical Note 2003-03. </li>
 </div><div class="memdoc">
 <p>Computes quantities related to the orientation of the Earth's rotation axis at Julian date 'jd_tdb'.</p>
 <p>Values of the celestial pole offsets 'PSI_COR' and 'EPS_COR' are set using function 'cel_pole', if desired. See the prolog of <a class="el" href="earth_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> for details.</p>
+<p>NOTES: </p><ol>
+<li>
+This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. </td></tr>

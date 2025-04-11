@@ -1497,7 +1497,11 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <p>This function calculates precession for the old (pre IAU 2000) methodology. Its main use for NOVAS users is to allow converting older catalog coordinates e.g. to J2000 coordinates, which then can be converted to the now standard ICRS system via <a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>.</p>
 <p>NOTE: </p><ol>
 <li>
-Unlike the original NOVAS C 3.1 version, this one does not require that one of the time arguments must be J2000. You can precess from any date to any other date, and the intermediate epoch of J2000 will be handled internally as needed. </li>
+<p class="startli">Unlike the original NOVAS C 3.1 version, this one does not require that one of the time arguments must be J2000. You can precess from any date to any other date, and the intermediate epoch of J2000 will be handled internally as needed.</p>
+<p class="endli"></p>
+</li>
+<li>
+This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call. </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>

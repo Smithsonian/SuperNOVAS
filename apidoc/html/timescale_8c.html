@@ -1411,14 +1411,20 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date corresponding to a Barycentric Dynamical Time (TDB) Julian date.</p>
-<p>The simple analytical expression containing just the leading orbital term from Moyer 1981 is fast to calculate and goot to about 30 us. This is sufficient toobtain meter-level absolute positional accuracy for Solar-system sources. (Relative positional accuracy is</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated:</a></b></dt><dd>Use the less computationally intensive an more accurate <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> routine instead.</dd></dl>
+<p>Computes the Terrestrial Time (TT) based Julian date corresponding to a Barycentric Dynamical Time (TDB) Julian date, and retuns th TDB-TT time difference also. It has a maximum error of 10 &mu;s between for dates 1600 and 2200.</p>
+<p>This function is wrapped by <code><a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a></code>, which is typically a lot easier to use as it returns the time difference directly, which can then be used to convert time in both directions with greater ease. For exable to convert a TT-based date to a TDB-based date:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">double</span> TDB = TT + <a class="code hl_function" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb</a>(TT) / 86400.0;</div>
+<div class="ttc" id="atimescale_8c_html_a129acca41760da486e1179c93cb9e86d"><div class="ttname"><a href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb</a></div><div class="ttdeci">double tt2tdb(double jd_tt)</div><div class="ttdef"><b>Definition</b> timescale.c:153</div></div>
+</div><!-- fragment --><p>is equivalent to:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">double</span> dt;</div>
+<div class="line"><a class="code hl_function" href="timescale_8c.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt</a>(TT, NULL, &amp;dt);   <span class="comment">// Uses TT input so don&#39;t attempt to calculate TT here...</span></div>
+<div class="line"><span class="keywordtype">double</span> TDB = TT + dt / 86400.0;</div>
+<div class="ttc" id="atimescale_8c_html_a90d5fae30728b51151c3daf355ca585b"><div class="ttname"><a href="timescale_8c.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt</a></div><div class="ttdeci">int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff)</div><div class="ttdef"><b>Definition</b> timescale.c:110</div></div>
+</div><!-- fragment --><p>NOTES: </p><ol>
+<li>
+This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call. </li>
+</ol>
 <p>REFERENCES: </p><ol>
-<li>
-Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68&lt;.li&gt; </li>
-<li>
-<a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a> </li>
 <li>
 Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240. </li>
 <li>
@@ -1426,13 +1432,13 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamic Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamic Time (TDB) based Julian date. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (It may be NULL if not required) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">secdiff</td><td>[s] Difference 'tdb_jd'-'tt_jd', in seconds. (It may be NULL if not required) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the tt_jd pointer argument is NULL.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>.</p>
@@ -1454,21 +1460,18 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the TDB - TT time difference in seconds for a given TT date.</p>
-<p>Note, as of version 1.1, it uses the same calculation as the more precise original <a class="el" href="timescale_8c.html#a90d5fae30728b51151c3daf355ca585b">tdb2tt()</a>. It thus has an acuracy of about 10 &mu;s vs around 30 &mu;s with the simpler formula from the references below.</p>
+<p>Returns the TDB - TT time difference in seconds for a given TT or TDB date, with a maximum error of 10 &mu;s for dates between 1600 and 2200.</p>
 <p>REFERENCES </p><ol>
 <li>
 Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240. </li>
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <li>
-<a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a> </li>
-<li>
-<a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a> </li>
+Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68&lt;.li&gt; </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date </td></tr>
+    <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date, but Barycentri Dynamical Time (TDB) can also be used here without any loss of precision on the result. </td></tr>
   </table>
   </dd>
 </dl>

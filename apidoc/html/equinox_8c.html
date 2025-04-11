@@ -206,8 +206,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Computes the "complementary terms" of the equation of the equinoxes. The input Julian date can be split into high and low order parts for improved accuracy. Typically, the split is into integer and fractiona parts. If the precision of a single part is sufficient, you may set the low order part to 0.</p>
-<p>The series used in this function was derived from the first reference. This same series was also adopted for use in the IAU's Standards of Fundamental Astronomy (SOFA) software (i.e., subroutine eect00.for and function <code>eect00.c</code>).</p>
+<p>The series used in this function was derived from the first reference. This same series was also adopted for use in the IAU's Standards of Fundamental Astronomy (SOFA) software (i.e., subroutine <code>eect00.for</code> and function <code>eect00.c</code>).</p>
 <p>The low-accuracy series used in this function is a simple implementation derived from the first reference, in which terms smaller than 2 microarcseconds have been omitted.</p>
+<p>NOTES: </p><ol>
+<li>
+This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call. </li>
+</ol>
 <p>REFERENCES: </p><ol>
 <li>
 Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. &amp; Astrophys. 406, p. 1135-1149. Table 3. </li>
@@ -232,7 +236,7 @@ IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.<br  />
 <dd>
 <a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045af12d26e56aa375fd2aa0c0edfd1c9ae3">NOVAS_NEPTUNE</a>, <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>, and <a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
+<p class="reference">References <a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045af12d26e56aa375fd2aa0c0edfd1c9ae3">NOVAS_NEPTUNE</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>, and <a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
 
 </div>
 </div>

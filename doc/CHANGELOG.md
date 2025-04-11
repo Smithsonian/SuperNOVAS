@@ -148,7 +148,7 @@ calculations.
  
  - #156: `tt2tdb()` now caches last calculation also.
  
- - #156: Eliminate redundant caching of calculations.
+ - #156: Eliminate redundant caching of calculations. (Also in #158).
  
  - #156: Tighten `precession()` time checking.
  
@@ -159,6 +159,9 @@ calculations.
  - #157: `fund_args()` to always calculate full series. There is little performance to gain from the truncation we 
    used in the vicinity of J2000. No real change in the results.
   
+ - #159: Add caching to `ee_ct()`. Just in case someone wants to call it repeatedly with the same parameters, it will
+   be much much faster.
+  
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
    without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
@@ -168,6 +171,8 @@ calculations.
    
  - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates of 
    before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
+
+ - `precession()` to cache matrices to/from J2000 separately.
 
  - Use `SIZE_OF_OBJ_NAME` and `SIZE_OF_CAT_NAME` instead of `sizeof(obj->starname)` and `sizeof(obj->catalog)` 
    internally for improved portability.
