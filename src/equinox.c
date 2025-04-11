@@ -120,7 +120,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  *
  * The series used in this function was derived from the first reference.  This same series was
  * also adopted for use in the IAU's Standards of Fundamental Astronomy (SOFA) software (i.e.,
- * subroutine eect00.for and function <code>eect00.c</code>).
+ * subroutine `eect00.for` and function `eect00.c`).
  *
  * The low-accuracy series used in this function is a simple implementation derived from the first
  * reference, in which terms smaller than 2 microarcseconds have been omitted.
@@ -149,6 +149,10 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @sa sidereal_time()
  */
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) {
+  static THREAD_LOCAL double last_tt = NAN, last_ee;
+  static THREAD_LOCAL enum novas_accuracy last_acc = -1;
+
+
 
   // Argument coefficients for t^0.
   const int8_t ke0_t[33][14] = { //
@@ -232,7 +236,18 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
   double fa[14];
 
   // Interval between fundamental epoch J2000.0 and current date.
-  const double t = ((jd_tt_high - JD_J2000) + jd_tt_low) / JULIAN_CENTURY_DAYS;
+  double t;
+
+  if(accuracy != NOVAS_FULL_ACCURACY)
+    accuracy = NOVAS_REDUCED_ACCURACY;
+
+  if(novas_time_equals(jd_tt_high + jd_tt_low, last_tt) && accuracy == last_acc)
+    return last_ee;
+
+  last_tt = jd_tt_high + jd_tt_low;
+  last_acc = accuracy;
+
+  t = ((jd_tt_high - JD_J2000) + jd_tt_low) / JULIAN_CENTURY_DAYS;
 
   // High accuracy mode.
   if(accuracy == NOVAS_FULL_ACCURACY) {
@@ -274,22 +289,25 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
     // for(j = 0; j < 14; j++) a += (double) (ke1[j]) * fa[j];
     s1 += se1[0] * sin(fa[4]);
 
-    return (s0 + s1 * t) * ARCSEC;
+    last_ee = (s0 + s1 * t) * ARCSEC;
+  }
+  else {
+    // Low accuracy mode: Terms smaller than 2 microarcseconds omitted
+    fund_args(t, &fa2);
+
+    last_ee = (2640.96e-6 * sin(fa2.Omega) //
+    + 63.52e-6 * sin(2.0 * fa2.Omega) //
+    + 11.75e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + 3.0 * fa2.Omega) //
+    + 11.21e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + fa2.Omega) //
+    - 4.55e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + 2.0 * fa2.Omega) //
+    + 2.02e-6 * sin(2.0 * fa2.F + 3.0 * fa2.Omega) //
+    + 1.98e-6 * sin(2.0 * fa2.F + fa2.Omega) //
+    - 1.72e-6 * sin(3.0 * fa2.Omega) //
+    - 0.87e-6 * t * sin(fa2.Omega) //
+    ) * ARCSEC;
   }
 
-  // Low accuracy mode: Terms smaller than 2 microarcseconds omitted
-  fund_args(t, &fa2);
-
-  return (2640.96e-6 * sin(fa2.Omega) //
-  + 63.52e-6 * sin(2.0 * fa2.Omega) //
-  + 11.75e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + 3.0 * fa2.Omega) //
-  + 11.21e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + fa2.Omega) //
-  - 4.55e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + 2.0 * fa2.Omega) //
-  + 2.02e-6 * sin(2.0 * fa2.F + 3.0 * fa2.Omega) //
-  + 1.98e-6 * sin(2.0 * fa2.F + fa2.Omega) //
-  - 1.72e-6 * sin(3.0 * fa2.Omega) //
-  - 0.87e-6 * t * sin(fa2.Omega) //
-  ) * ARCSEC;
+  return last_ee;
 }
 
 /**
