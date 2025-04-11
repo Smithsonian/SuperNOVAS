@@ -1074,9 +1074,11 @@ int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @sa NOVAS_JD_B1900
  */
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
-  static THREAD_LOCAL double djd_last = NAN;
-  static THREAD_LOCAL double xx, yx, zx, xy, yy, zy, xz, yz, zz;
+  static THREAD_LOCAL double djd_last[2] = { NAN, NAN };
+  static THREAD_LOCAL double xx[2], yx[2], zx[2], xy[2], yy[2], zy[2], xz[2], yz[2], zz[2];
+
   double t;
+  int i = 0;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, "precession", "NULL input or output 3-vector: in=%p, out=%p", in, out);
@@ -1097,14 +1099,16 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
 
   // 't' is time in TDB centuries between the two epochs.
   t = (jd_tdb_out - jd_tdb_in);
-  if(jd_tdb_out == JD_J2000)
+  if(jd_tdb_out == JD_J2000) {
     t = -t;
+    i = 1;
+  }
 
-  if(!novas_time_equals(t, djd_last)) {
+  if(!novas_time_equals(t, djd_last[i])) {
     double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd, t1, t2;
     double eps0 = 84381.406;
 
-    djd_last = t;
+    djd_last[i] = t;
 
     // Now change t to Julian centuries
     t /= JULIAN_CENTURY_DAYS;
@@ -1134,34 +1138,34 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
     // R3(chi_a) R1(-omega_a) R3(-psi_a) R1(epsilon_0).
     t1 = cd * sb + sd * cc * cb;
     t2 = sd * sc;
-    xx = cd * cb - sb * sd * cc;
-    yx = ca * t1 - sa * t2;
-    zx = sa * t1 + ca * t2;
+    xx[i] = cd * cb - sb * sd * cc;
+    yx[i] = ca * t1 - sa * t2;
+    zx[i] = sa * t1 + ca * t2;
 
     t1 = cd * cc * cb - sd * sb;
     t2 = cd * sc;
-    xy = -sd * cb - sb * cd * cc;
-    yy = ca * t1 - sa * t2;
-    zy = sa * t1 + ca * t2;
+    xy[i] = -sd * cb - sb * cd * cc;
+    yy[i] = ca * t1 - sa * t2;
+    zy[i] = sa * t1 + ca * t2;
 
-    xz = sb * sc;
-    yz = -sc * cb * ca - sa * cc;
-    zz = -sc * cb * sa + cc * ca;
+    xz[i] = sb * sc;
+    yz[i] = -sc * cb * ca - sa * cc;
+    zz[i] = -sc * cb * sa + cc * ca;
   }
 
   if(jd_tdb_out == JD_J2000) {
     const double x = in[0], y = in[1], z = in[2];
     // Perform rotation from epoch to J2000.0.
-    out[0] = xx * x + xy * y + xz * z;
-    out[1] = yx * x + yy * y + yz * z;
-    out[2] = zx * x + zy * y + zz * z;
+    out[0] = xx[1] * x + xy[1] * y + xz[1] * z;
+    out[1] = yx[1] * x + yy[1] * y + yz[1] * z;
+    out[2] = zx[1] * x + zy[1] * y + zz[1] * z;
   }
   else {
     const double x = in[0], y = in[1], z = in[2];
     // Perform rotation from J2000.0 to epoch.
-    out[0] = xx * x + yx * y + zx * z;
-    out[1] = xy * x + yy * y + zy * z;
-    out[2] = xz * x + yz * y + zz * z;
+    out[0] = xx[0] * x + yx[0] * y + zx[0] * z;
+    out[1] = xy[0] * x + yy[0] * y + zy[0] * z;
+    out[2] = xz[0] * x + yz[0] * y + zz[0] * z;
   }
 
   return 0;
