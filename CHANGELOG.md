@@ -144,7 +144,7 @@ calculations.
  - #156: Omit TDB-TT time difference, a maximum of 2 ms, in Earth tilt calculations, where it really does not make
    any difference. As a result some calculations are now faster than before.
     
- - #156: Higher precision time match requirement for re-using cached orbital / rotational calculations.
+ - #156: Higher precision time match requirement for re-using cached ephemeris calculations.
  
  - #156: `tt2tdb()` now caches last calculation also.
  
@@ -156,11 +156,11 @@ calculations.
    promised precision in reduced accuracy, but a lot faster than the `nu2000k()` series, which in turn is barely 
    faster than the full `iau2000a()` nutation series.
   
- - #157: `fund_args()` to always calculate full series. There is little performance to gain from the truncation we 
-   used in the vicinity of J2000. No real change in the results.
+ - #157: `fund_args()` to always calculate full polynomial expansion. There is little performance to gain from the 
+   truncation we used in the vicinity of J2000. No real change in the results.
   
  - #159: Add caching to `ee_ct()`. Just in case someone wants to call it repeatedly with the same parameters, it will
-   be much much faster.
+   be much much faster now.
   
  - In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections 
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
