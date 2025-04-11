@@ -66,32 +66,39 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
 
 
 /**
- * Computes the Terrestrial Time (TT) or Terrestrial Dynamical Time (TDT) Julian date
- * corresponding to a Barycentric Dynamical Time (TDB) Julian date.
+ * Computes the Terrestrial Time (TT) based Julian date corresponding to a Barycentric
+ * Dynamical Time (TDB) Julian date, and retuns th TDB-TT time difference also. It has a
+ * maximum error of 10 &mu;s between for dates 1600 and 2200.
  *
- * The simple analytical expression containing just the leading orbital term from Moyer
- * 1981 is fast to calculate and goot to about 30 us. This is sufficient toobtain
- * meter-level absolute positional accuracy for Solar-system sources. (Relative
- * positional accuracy is
+ * This function is wrapped by `tt2tdb()`, which is typically a lot easier to use as it
+ * returns the time difference directly, which can then be used to convert time in both
+ * directions with greater ease. For exable to convert a TT-based date to a TDB-based date:
  *
- * @deprecated Use the less computationally intensive an more accurate tt2tdb()
- *            routine instead.
+ * ```c
+ *   double TDB = TT + tt2tdb(TT) / 86400.0;
+ * ```
+ *
+ * is equivalent to:
+ *
+ * ```c
+ *   double dt;
+ *   tdb2tt(TT, NULL, &dt);   // Uses TT input so don't attempt to calculate TT here...
+ *   double TDB = TT + dt / 86400.0;
+ * ```
+ *
  *
  * REFERENCES:
  * <ol>
- * <li>Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68<.li>
- * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
- * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
  * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * </ol>
  *
- * @param jd_tdb         [day] Barycentric Dynamic Time (TDB) based Julian date
+ * @param jd_tdb         [day] Barycentric Dynamic Time (TDB) based Julian date.
  * @param[out] jd_tt     [day] Terrestrial Time (TT) based Julian date. (It may be NULL
  *                       if not required)
  * @param[out] secdiff   [s] Difference 'tdb_jd'-'tt_jd', in seconds. (It may be NULL if
  *                       not required)
- * @return               0 if successful, or -1 if the tt_jd pointer argument is NULL.
+ * @return               0
  *
  * @sa tt2tdb()
  */
@@ -119,23 +126,18 @@ int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
 }
 
 /**
- * Returns the TDB - TT time difference in seconds for a given TT date.
- *
- * Note, as of version 1.1, it uses the same calculation as the more precise original tdb2tt(). It thus has an acuracy of
- * about 10 &mu;s vs around 30 &mu;s with the simpler formula from the references below.
- *
+ * Returns the TDB - TT time difference in seconds for a given TT or TDB date, with a maximum
+ * error of 10 &mu;s for dates between 1600 and 2200.
  *
  * REFERENCES
  * <ol>
  * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
- * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
- * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
- * <li><a href="https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems">
- * https://gssc.esa.int/navipedia/index.php/Transformations_between_Time_Systems</a></li>
+ * <li>Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68<.li>
  * </ol>
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian date
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date, but Barycentri Dynamical Time (TDB)
+ *                  can also be used here without any loss of precision on the result.
  * @return          [s] TDB - TT time difference.
  *
  * @sa tdb2tt()
