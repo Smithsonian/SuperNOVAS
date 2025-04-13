@@ -50,10 +50,10 @@ This document has been updated for the `v1.3` and later releases.
  - [Example usage](#examples)
  - [Tips and tricks](#tips)
  - [Notes on precision](#precision)
- - [Representative benchmarks](#benchmarks)
- - [SuperNOVAS specific features](#supernovas-features)
  - [Incorporating Solar-system ephemeris data or services](#solarsystem)
  - [Runtime debug support](#debug-support)
+ - [Representative benchmarks](#benchmarks)
+ - [SuperNOVAS added features](#supernovas-features)
  - [Release schedule](#release-schedule)
 
 -----------------------------------------------------------------------------
@@ -1051,275 +1051,6 @@ before that level of accuracy is reached.
     corrections offered in this library, and instead implement your own as appropriate (or not at all).
   
 
-
------------------------------------------------------------------------------
-
-<a name="benchmarks"></a>
-## Representative benchmarks
-
-To get an idea of the speed of __SuperNOVAS__, you can use the `make benchmark` on your machine. The table below 
-summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the 
-state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not 
-so new, run-of-the-mill PC might perform.
-
-| ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
-|:--:| 
-| __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
-
-The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either 
-the __SuperNOVAS__ `novas_sky_pos()` or the legacy NOVAS C `place()`, both in full accuracy and reduced accuracy 
-modes. The two methods are equivalent, and both include calculating a precise geometric position, as well as 
-aberration and gravitational deflection corrections from the observer's point of view.
-
-
- | Description                         | accuracy  | positions / sec |
- |-------------------------------------|:---------:|----------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         2713879 |
- |                                     |   full    |         2708014 |
- | `place()`, same time, same observer | reduced   |          898609 |
- |                                     |   full    |          833300 |
- | `novas_sky_pos()`, individual       | reduced   |          173211 |
- |                                     |   full    |           35509 |
- | `place()`, individual               | reduced   |          135618 |
- |                                     |   full    |           32293 |
-
-For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
-
- | Description                         | accuracy  | positions / sec |
- |-------------------------------------|:---------:|----------------:|
- | NOVAS C 3.1 `place()`, same         | reduced   |          371164 |
- | NOVAS C 3.1 `place()`, individual   | reduced   |           55484 |
- 
-For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
-same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, 
-__SuperNOVAS__ is a whopping ~40000 times faster than __astropy__ for calculations in the same observing frame, and 
-~450 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
-the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
- 
- | Description                                     | positions / sec |
- |-------------------------------------------------|----------------:|
- | __astropy__ 7.0.0 (python 3.13.1), same frame   |              71 |
- | __astropy__ 7.0.0 (python 3.13.1), individual   |              70 |
- 
-
-Figure 2 offers a visual comparison for the above mentioned performance measures.
- 
-As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
-repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
-2 orders of magnitude faster performance than for individual observing times and/or observer locations. Also, when 
-observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
-individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
-
-The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
-expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
-core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
-perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
-one minute.
-
-
-
------------------------------------------------------------------------------
-
-<a name="supernovas-features"></a>
-## SuperNOVAS specific features
-
-- [Newly functionality highlights](#added-functionality)
-- [Refinements to the NOVAS C API](#api-changes)
-
-
-<a name="added-functionality"></a>
-### New functionality highlights
-
- Below is a non-exhaustive overview new features added by SuperNOVAS on top of the existing NOVAS C API. See 
- `CHANGELOG.md` for more details.
- 
- 
-#### New in v1.0
-    
- - New runtime configuration:
-
-   * The planet position, and generic Solar-system position calculator functions can be set at runtime, and users
-     can provide their own custom implementations, e.g. to read ephemeris data, such as from a JPL `.bsp` file.
- 
-   * If CIO locations vs GCRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
-     specify the location of the binary CIO interpolation table (e.g. `CIO_RA.TXT` or `cio_ra.bin`) to use, even if 
-     the library was compiled with the different default CIO locator path. 
- 
-   * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
-     approximation. For example, the user may want to use the `iau2000b()` model or some custom algorithm instead.
- 
- - New constants, and enums -- adding more specificity and transparency to option switches and physical units.
- 
- - Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.
- 
-
-#### New in v1.1
-
- - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
-   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
-   defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum 
-   additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C 
-   approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
-   their internal state is never modified during the calculations.
-   
- - New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). You 
-   can set the time to a JD date in the timescale of choice (UTC, UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX 
-   time. Once set, you can obtain an expression of that time in any timescale of choice. And, you can create a new 
-   time specification by incrementing an existing one, or measure precise time differences.
-   
- - New coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
-   `NOVAS_J2000` for the J2000 dynamical reference system.
-
- - New observer locations `NOVAS_AIRBORNE_OBSERVER` and `NOVAS_SOLAR_SYSTEM_OBSERVER`, and corresponding
-   `make_airborne_observer()` and `make_solar_system_observer()` functions. Airborne observers have an Earth-fixed
-   momentary location, defined by longitude, latitude, and altitude, the same way as for a stationary observer on
-   Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system
-   observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative
-   to the Solar System Barycenter (SSB), instead of the geocenter.
-   
- - New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model
-   based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and 
-   may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in the reverse 
-   direction (observed vs astrometric elevations as the input) as needed.
-
-
-#### New in v1.2
-
- - New functions to calculate and apply additional gravitational redshift corrections for light that originates
-   near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive
-   gravitating bodies (other than the Sun and Earth).
-   
- - [CALCEPH integration](#calceph-integration) to specify and use ephemeris data via the CALCEPH library for 
-   Solar-system sources in general, and for major planets specifically.
-   
- - [NAIF CSPICE integration](#cspice-integration) to use the NAIF CSPICE library for all Solar-system sources, or for
-   major planets or other bodies only. 
-   
- - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit can 
-   be defined by `novas_orbital`, relative to a `novas_orbital_system`. While orbital elements do not always yield 
-   precise positions, they can for shorter periods, provided that the orbital elements are up-to-date. For example, 
-   the [Minor Planer Center](https://www.minorplanetcenter.net/iau/mpc.html) (MPC) publishes accurate orbital elements 
-   for all known asteroids and comets regularly. For newly discovered objects, this may be the only and/or most 
-   accurate information available anywhere.
-
- - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
-   from the corresponding planet centers in calculations.
-
- - Added more physical unit constants to `novas.h`.
- 
- 
-#### New in v1.3
-
- - New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always 
-   defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.
-
- - New functions to convert dates/times and angles to/from their string representations.
- 
- - New functions to convert between Julian Days and calendar dates in the calendar of choice (astronomical, Gregorian, 
-   or Roman/Julian).
-
- - New convenience functions for oft-used astronomical calculations, such as rise/set times, LST, parallactic angle 
-   (a.k.a. Vertical Position Angle), heliocentric distance, illumination fraction, or incident solar power, Sun and 
-   Moon angles, and much more. 
- 
- - New functions and data structures provide second order Taylor series expansion of the apparent horizontal or 
-   equatorial positions, distances, and redshifts for sources. These values, including rates and accelerations, can be 
-   directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also 
-   use them to obtain instantaneous projected (extrapolated) positions at low computational cost.
-
-
-
-<a name="api-changes"></a>
-### Refinements to the NOVAS C API
-
- - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
-   This works using the C11 standard `_Thread_local`, or the C23 `thread_local`, or else the earlier GNU C &gt;= 3.3 
-   standard `__thread` modifier. You can also set the preferred thread-local keyword for your compiler by passing it 
-   via `-DTHREAD_LOCAL=...` in `config.mk` to ensure that your build is thread-safe. And, if your compiler has no 
-   support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
-
- - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. The enums allow for some 
-   compiler checking (e.g. using the wrong enum), and make for more readable code that is easier to debug. They also 
-   make it easy to see what choices are available for each function argument, without having to consult the 
-   documentation each and every time.
-
- - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal 
-   duplicate arguments) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are
-   invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C
-   error code is returned for compatibility).
-   
- - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
-   use functions such as `perror()` and `strerror()` to print human-readable error messages.
-
- - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
-   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
-   data modifications.
-
- - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
-   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/) for specifics).
-   This eliminates the need to declare dummy variables in your application code.
-  
- - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
-   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
-   should not be used as if they were valid. (No more sneaky silent failures.)
-
- - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
-   be the same as the input vector argument. For example, `frame_tie(pos, J2000_TO_ICRS, pos)` using the same 
-   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
-   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
-
- - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
-   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchange of `cat_entry` records
-   with NOVAS C 3.1.
-
- - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` 
-   value in the supplied `cat_entry` structure).
-   
- - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL. (NOVAS C
-   3.1 would return an error if a CIO locator file was previously opened but cannot provide the data for whatever
-   reason). 
-
- - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
-   methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
-   
- - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
- 
- - IAU 2000A nutation model uses higher-order Delaunay arguments provided by `fund_args()`, instead of the linear
-   model in NOVAS C 3.1.
-   
- - IAU 2000 nutation made a bit faster, reducing the the number of floating-point multiplications necessary by 
-   skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, resulting in a
-   smaller footprint.
-   
- - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
-   annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
-   guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
-   observing location.
-   
- - [__v1.1__] Improved precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being more 
-   careful about the order in which terms are accumulated and combined, resulting in a small improvement on the few 
-   uas (micro-arcsecond) level.
-   
- - [__v1.1__] `place()` now returns an error 3 if and only if the observer is at (or very close, within ~1.5m) of the 
-   observed Solar-system object.
-
- - [__v1.1__] `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip 
-   deflections due to a body if the observer is within ~1500 km of its center (which is below the surface for all
-   major Solar system bodies).
-
- - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
-   to radial velocity for light originating at the surface, and observed near Earth or at a large distance away from 
-   the source.
-   
- - [__v1.3__] In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection 
-   corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
-   accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
-
- - [__v1.3__] `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian 
-   dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
-
- - [__v1.3__] Use C99 `restrict` keyword to prevent pointer argument aliasing as appropriate.
-
 -----------------------------------------------------------------------------
 
 <a name="solarsystem"></a>
@@ -1599,6 +1330,276 @@ better idea of what exactly did not go to plan (and where). The debug messages c
        @ ephemeris:planet [=> 12]
        @ grav_def:Jupiter [=> 12]
 ```
+
+
+-----------------------------------------------------------------------------
+
+<a name="benchmarks"></a>
+## Representative benchmarks
+
+To get an idea of the speed of __SuperNOVAS__, you can use `make benchmark` on your machine. The table below 
+summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the 
+state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not 
+so new, run-of-the-mill PC might perform.
+
+| ![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png) |
+|:--:| 
+| __Figure 2.__ SuperNOVAS apparent position calculation benchmarks, including proper motion, the IAU 2000 precession-nutation model, polar wobble, aberration, and gravitational deflection corrections, and precise spectroscopic redhift calculations. |
+
+The tests calculate apparent positions (in CIRS) for a set of sidereal sources with random parameters, using either 
+the __SuperNOVAS__ `novas_sky_pos()` or the legacy NOVAS C `place()`, both in full accuracy and reduced accuracy 
+modes. The two methods are equivalent, and both include calculating a precise geometric position, as well as 
+aberration and gravitational deflection corrections from the observer's point of view.
+
+
+ | Description                         | accuracy  | positions / sec |
+ |-------------------------------------|:---------:|----------------:|
+ | `novas_sky_pos()`, same frame       | reduced   |         2713879 |
+ |                                     |   full    |         2708014 |
+ | `place()`, same time, same observer | reduced   |          898609 |
+ |                                     |   full    |          833300 |
+ | `novas_sky_pos()`, individual       | reduced   |          173211 |
+ |                                     |   full    |           35509 |
+ | `place()`, individual               | reduced   |          135618 |
+ |                                     |   full    |           32293 |
+
+For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
+
+ | Description                         | accuracy  | positions / sec |
+ |-------------------------------------|:---------:|----------------:|
+ | NOVAS C 3.1 `place()`, same         | reduced   |          371164 |
+ | NOVAS C 3.1 `place()`, individual   | reduced   |           55484 |
+ 
+For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
+same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, 
+__SuperNOVAS__ is a whopping ~40000 times faster than __astropy__ for calculations in the same observing frame, and 
+~450 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
+the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
+ 
+ | Description                                     | positions / sec |
+ |-------------------------------------------------|----------------:|
+ | __astropy__ 7.0.0 (python 3.13.1), same frame   |              71 |
+ | __astropy__ 7.0.0 (python 3.13.1), individual   |              70 |
+ 
+
+Figure 2 offers a visual comparison for the above mentioned performance measures.
+ 
+As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
+repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
+2 orders of magnitude faster performance than for individual observing times and/or observer locations. Also, when 
+observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
+individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
+
+The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
+expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
+core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into 
+perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under 
+one minute.
+
+
+
+-----------------------------------------------------------------------------
+
+<a name="supernovas-features"></a>
+## SuperNOVAS added features
+
+- [Newly functionality highlights](#added-functionality)
+- [Refinements to the NOVAS C API](#api-changes)
+
+
+<a name="added-functionality"></a>
+### New functionality highlights
+
+ Below is a non-exhaustive overview new features added by SuperNOVAS on top of the existing NOVAS C API. See 
+ `CHANGELOG.md` for more details.
+ 
+ 
+#### New in v1.0
+    
+ - New runtime configuration:
+
+   * The planet position, and generic Solar-system position calculator functions can be set at runtime, and users
+     can provide their own custom implementations, e.g. to read ephemeris data, such as from a JPL `.bsp` file.
+ 
+   * If CIO locations vs GCRS are important to the user, the user may call `set_cio_locator_file()` at runtime to
+     specify the location of the binary CIO interpolation table (e.g. `CIO_RA.TXT` or `cio_ra.bin`) to use, even if 
+     the library was compiled with the different default CIO locator path. 
+ 
+   * The default low-precision nutation calculator `nu2000k()` can be replaced by another suitable IAU 2006 nutation
+     approximation. For example, the user may want to use the `iau2000b()` model or some custom algorithm instead.
+ 
+ - New constants, and enums -- adding more specificity and transparency to option switches and physical units.
+ 
+ - Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.
+ 
+
+#### New in v1.1
+
+ - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
+   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
+   defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum 
+   additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C 
+   approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
+   their internal state is never modified during the calculations.
+   
+ - New `novas_timespec` structure for the self-contained definition of precise astronomical time (`timescale.c`). You 
+   can set the time to a JD date in the timescale of choice (UTC, UT1, GPS, TAI, TT, TCG, TDB, or TCB), or to a UNIX 
+   time. Once set, you can obtain an expression of that time in any timescale of choice. And, you can create a new 
+   time specification by incrementing an existing one, or measure precise time differences.
+   
+ - New coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
+   `NOVAS_J2000` for the J2000 dynamical reference system.
+
+ - New observer locations `NOVAS_AIRBORNE_OBSERVER` and `NOVAS_SOLAR_SYSTEM_OBSERVER`, and corresponding
+   `make_airborne_observer()` and `make_solar_system_observer()` functions. Airborne observers have an Earth-fixed
+   momentary location, defined by longitude, latitude, and altitude, the same way as for a stationary observer on
+   Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system
+   observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative
+   to the Solar System Barycenter (SSB), instead of the geocenter.
+   
+ - New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model
+   based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and 
+   may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in the reverse 
+   direction (observed vs astrometric elevations as the input) as needed.
+
+
+#### New in v1.2
+
+ - New functions to calculate and apply additional gravitational redshift corrections for light that originates
+   near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive
+   gravitating bodies (other than the Sun and Earth).
+   
+ - [CALCEPH integration](#calceph-integration) to specify and use ephemeris data via the CALCEPH library for 
+   Solar-system sources in general, and for major planets specifically.
+   
+ - [NAIF CSPICE integration](#cspice-integration) to use the NAIF CSPICE library for all Solar-system sources, or for
+   major planets or other bodies only. 
+   
+ - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit can 
+   be defined by `novas_orbital`, relative to a `novas_orbital_system`. While orbital elements do not always yield 
+   precise positions, they can for shorter periods, provided that the orbital elements are up-to-date. For example, 
+   the [Minor Planer Center](https://www.minorplanetcenter.net/iau/mpc.html) (MPC) publishes accurate orbital elements 
+   for all known asteroids and comets regularly. For newly discovered objects, this may be the only and/or most 
+   accurate information available anywhere.
+
+ - Added `NOVAS_EMB` (Earth-Moon Barycenter) and `NOVAS_PLUTO_BARYCENTER` to `enum novas_planets` to distinguish
+   from the corresponding planet centers in calculations.
+
+ - Added more physical unit constants to `novas.h`.
+ 
+ 
+#### New in v1.3
+
+ - New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always 
+   defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.
+
+ - New functions to convert dates/times and angles to/from their string representations.
+ 
+ - New functions to convert between Julian Days and calendar dates in the calendar of choice (astronomical, Gregorian, 
+   or Roman/Julian).
+
+ - New convenience functions for oft-used astronomical calculations, such as rise/set times, LST, parallactic angle 
+   (a.k.a. Vertical Position Angle), heliocentric distance, illumination fraction, or incident solar power, Sun and 
+   Moon angles, and much more. 
+ 
+ - New functions and data structures provide second order Taylor series expansion of the apparent horizontal or 
+   equatorial positions, distances, and redshifts for sources. These values, including rates and accelerations, can be 
+   directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also 
+   use them to obtain instantaneous projected (extrapolated) positions at low computational cost.
+
+
+
+<a name="api-changes"></a>
+### Refinements to the NOVAS C API
+
+ - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
+   This works using the C11 standard `_Thread_local`, or the C23 `thread_local`, or else the earlier GNU C &gt;= 3.3 
+   standard `__thread` modifier. You can also set the preferred thread-local keyword for your compiler by passing it 
+   via `-DTHREAD_LOCAL=...` in `config.mk` to ensure that your build is thread-safe. And, if your compiler has no 
+   support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.
+
+ - SuperNOVAS functions take `enum`s as their option arguments instead of raw integers. The enums allow for some 
+   compiler checking (e.g. using the wrong enum), and make for more readable code that is easier to debug. They also 
+   make it easy to see what choices are available for each function argument, without having to consult the 
+   documentation each and every time.
+
+ - All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers, or empty 
+   strings) and will return -1 (with `errno` set, usually to `EINVAL`) if the arguments supplied are invalid (unless 
+   the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C error code is 
+   returned for compatibility).
+   
+ - All erroneous returns now set `errno` so that users can track the source of the error in the standard C way and
+   use functions such as `perror()` and `strerror()` to print human-readable error messages.
+
+ - SuperNOVAS prototypes declare function pointer arguments as `const` whenever the function does not modify the
+   data content being pointed at. This supports better programming practices that generally aim to avoid unintended 
+   data modifications.
+
+ - Many SuperNOVAS functions allow `NULL` arguments, both for optional input values as well as outputs that are not 
+   required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/) for specifics).
+   This eliminates the need to declare dummy variables in your application code.
+  
+ - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
+   `NAN` so that even if the caller forgets to check the error code, it becomes obvious that the values returned
+   should not be used as if they were valid. (No more sneaky silent failures.)
+
+ - All SuperNOVAS functions that take an input vector to produce an output vector allow the output vector argument
+   be the same as the input vector argument. For example, `frame_tie(pos, J2000_TO_ICRS, pos)` using the same 
+   `pos` vector both as the input and the output. In this case the `pos` vector is modified in place by the call. 
+   This can greatly simplify usage, and eliminate extraneous declarations, when intermediates are not required.
+
+ - Catalog names can be up to 6 bytes (including termination), up from 4 in NOVAS C, while keeping `struct` layouts 
+   the same as NOVAS C thanks to alignment, thus allowing cross-compatible binary exchange of `cat_entry` records
+   with NOVAS C 3.1.
+
+ - Changed `make_object()` to retain the specified number argument (which can be different from the `starnumber` 
+   value in the supplied `cat_entry` structure).
+   
+ - `cio_location()` will always return a valid value as long as neither output pointer argument is NULL. (NOVAS C
+   3.1 would return an error if a CIO locator file was previously opened but cannot provide the data for whatever
+   reason). 
+
+ - `cel2ter()` and `ter2cel()` can now process 'option'/'class' = 1 (`NOVAS_REFERENCE_CLASS`) regardless of the
+   methodology (`EROT_ERA` or `EROT_GST`) used to input or output coordinates in GCRS.
+   
+ - More efficient paging (cache management) for `cio_array()`, including I/O error checking.
+ 
+ - IAU 2000A nutation model uses higher-order Delaunay arguments provided by `fund_args()`, instead of the linear
+   model in NOVAS C 3.1.
+   
+ - IAU 2000 nutation made a bit faster, reducing the the number of floating-point multiplications necessary by 
+   skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, resulting in a
+   smaller footprint.
+   
+ - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
+   annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
+   guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
+   observing location.
+   
+ - [__v1.1__] Improved the precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being 
+   more careful about the order in which terms are accumulated and combined, resulting in a small improvement on the 
+   few uas (micro-arcsecond) level.
+   
+ - [__v1.1__] `place()` now returns an error 3 if and only if the observer is at (or very close, within ~1.5m) of the 
+   observed Solar-system object.
+
+ - [__v1.1__] `grav_def()` is simplified. It no longer uses the location type argument. Instead it will skip 
+   deflections due to a body if the observer is within ~1500 km of its center (which is below the surface for all
+   major Solar system bodies).
+
+ - [__v1.1.1__] For major planets (and Sun and Moon) `rad_vel()` and `place()` will include gravitational corrections 
+   to radial velocity for light originating at the surface, and observed near Earth or at a large distance away from 
+   the source.
+   
+ - [__v1.3__] In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection 
+   corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced 
+   accuracy mode, and without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
+
+ - [__v1.3__] `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian 
+   dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
+
+ - [__v1.3__] Use C99 `restrict` keyword to prevent pointer argument aliasing as appropriate.
+
 
 -----------------------------------------------------------------------------
 
