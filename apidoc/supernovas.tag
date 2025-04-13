@@ -6159,16 +6159,16 @@
     <docanchor file="index.html">string-times-and-angles</docanchor>
     <docanchor file="index.html">string-dates</docanchor>
     <docanchor file="index.html">precision</docanchor>
-    <docanchor file="index.html">benchmarks</docanchor>
-    <docanchor file="index.html">supernovas-features</docanchor>
-    <docanchor file="index.html">added-functionality</docanchor>
-    <docanchor file="index.html">api-changes</docanchor>
     <docanchor file="index.html">solarsystem</docanchor>
     <docanchor file="index.html">calceph-integration</docanchor>
     <docanchor file="index.html">cspice-integration</docanchor>
     <docanchor file="index.html">universal-ephemerides</docanchor>
     <docanchor file="index.html">builtin-ephem-readers</docanchor>
     <docanchor file="index.html">explicit-ephem-linking</docanchor>
+    <docanchor file="index.html">benchmarks</docanchor>
+    <docanchor file="index.html">supernovas-features</docanchor>
+    <docanchor file="index.html">added-functionality</docanchor>
+    <docanchor file="index.html">api-changes</docanchor>
     <docanchor file="index.html">debug-support</docanchor>
     <docanchor file="index.html">release-schedule</docanchor>
   </compound>

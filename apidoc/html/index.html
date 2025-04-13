@@ -135,9 +135,9 @@ Table of Contents</h2>
 <li><a class="el" href="index.html#examples">Example usage</a></li>
 <li><a class="el" href="index.html#tips">Tips and tricks</a></li>
 <li><a class="el" href="index.html#precision">Notes on precision</a></li>
+<li><a class="el" href="index.html#solarsystem">Incorporating Solar-system ephemeris data or services</a></li>
 <li><a class="el" href="index.html#benchmarks">Representative benchmarks</a></li>
 <li><a class="el" href="index.html#supernovas-features">SuperNOVAS specific features</a></li>
-<li><a class="el" href="index.html#solarsystem">Incorporating Solar-system ephemeris data or services</a></li>
 <li><a class="el" href="index.html#debug-support">Runtime debug support</a></li>
 <li><a class="el" href="index.html#release-schedule">Release schedule</a></li>
 </ul>
@@ -705,10 +705,138 @@ Prerequisites to precise results</h3>
 </li>
 </ol>
 <hr  />
-<p><a class="anchor" id="benchmarks"></a> </p>
+<p><a class="anchor" id="solarsystem"></a> </p>
 <h2><a class="anchor" id="autotoc_md73"></a>
+Incorporating Solar-system ephemeris data or services</h2>
+<p>If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with precision, you will have to interface it to a suitable provider of ephemeris data. Given the NOVAS C heritage, and some added SuperNOVAS flexibility in this area, you have several options for going about it. These are listed from the most practical (and preferred) to the least so (the old ways).</p>
+<p>NASA/JPL provides <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/">generic ephemerides</a> for the major planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For example, <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp">DE440</a> covers the major planets, and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the <a href="https://ssd.jpl.nasa.gov/horizons/">JPL HORIZONS</a> system (via the commnad-line / telnet or API interfaces) to generate custom ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.</p>
+<ul>
+<li><a class="el" href="index.html#calceph-integration">Optional CALCEPH integration</a></li>
+<li><a class="el" href="index.html#cspice-integration">Optional NAIF CSPICE toolkit integration</a></li>
+<li><a class="el" href="index.html#universal-ephemerides">Universal ephemeris data / service integration</a></li>
+<li><a class="el" href="index.html#builtin-ephem-readers">Legacy support for (older) JPL major planet ephemerides</a></li>
+<li><a class="el" href="index.html#explicit-ephem-linking">Legacy linking of custom ephemeris functions</a></li>
+</ul>
+<p><a class="anchor" id="calceph-integration"></a> </p>
+<h3><a class="anchor" id="autotoc_md74"></a>
+Optional CALCEPH integration</h3>
+<p>The <a href="https://www.imcce.fr/recherche/equipes/asd/calceph/">CALCEPH</a> library provides easy-to-use access to JPL and INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with the the CALCEPH C library for handling Solar-system objects.</p>
+<p>Prior to building SuperNOVAS simply set <code>CALCEPH_SUPPORT</code> to 1 in <code>config.mk</code> or in your environment. Depending on the build target, it will build <code>libsolsys-calceph.so[.1]</code> (target <code>shared</code>) or <code>libsolsys-calceph.a</code> (target <code>static</code>) libraries or <code>solsys-calceph.o</code> (target <code>solsys</code>), which provide the <code><a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a></code> and <code><a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a></code>, and <code><a class="el" href="solsys-calceph_8c.html#a5531b937a5bb5491cb475d2536346ad8">novas_calceph_use_ids()</a></code> functions.</p>
+<p>Of course, you will need access to the CALCEPH C development files (C headers and unversioned <code>libcalceph.so</code> or <code>.a</code> library) for the build to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application code:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas_8h.html">novas.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas-calceph_8h.html">novas-calceph.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// You can open a set of JPL/INPOP ephemeris files with CALCEPH...</span></div>
+<div class="line">t_calcephbin *eph = calceph_open_array(...);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Then use them as your generic SuperNOVAS ephemeris provider</span></div>
+<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph</a>(eph);</div>
+<div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
+<div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// -----------------------------------------------------------------------</span></div>
+<div class="line"><span class="comment">// Optionally you may use a separate ephemeris dataset for major planets</span></div>
+<div class="line"><span class="comment">// (or if planet ephemeris was included in &#39;eph&#39; above, you don&#39;t have to) </span></div>
+<div class="line">t_calcephbin *pleph = calceph_open(...);</div>
+<div class="line">status = <a class="code hl_function" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a>(pleph);</div>
+<div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
+<div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
+<div class="line">}</div>
+<div class="ttc" id="anovas_8h_html"><div class="ttname"><a href="novas_8h.html">novas.h</a></div></div>
+<div class="ttc" id="asolsys-calceph_8c_html_ab86ec03898e658c86c671a8b6399e331"><div class="ttname"><a href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a></div><div class="ttdeci">int novas_use_calceph_planets(t_calcephbin *eph)</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:420</div></div>
+</div><!-- fragment --><p>All modern JPL (SPK) ephemeris files should work with the <code>solsys-calceph</code> plugin. When linking your application, add <code>-lsolsys-calceph</code> to your link flags (or else link with <code>solsys-calceph.o</code>), and of course the CSPICE library too. That's all there is to it.</p>
+<p><a class="anchor" id="cspice-integration"></a> </p>
+<h3><a class="anchor" id="autotoc_md75"></a>
+Optional NAIF CSPICE toolkit integration</h3>
+<p>The <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">NAIF CSPICE Toolkit</a> is the canonical standard library for JPL ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with CSPICE for handling Solar-system objects.</p>
+<p>Prior to building SuperNOVAS simply set <code>CSPICE_SUPPORT</code> to 1 in <code>config.mk</code> or in your environment. Depending on the build target, it will build <code>libsolsys-cspice.so[.1]</code> (target <code>shared</code>) or <code>libsolsys-cspice.a</code> (target <code>static</code>) libraries or <code>solsys-cspice.o</code> (target <code>solsys</code>), which provide the <code><a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a></code>, <code><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a></code>, and <code><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a></code> functions to enable CSPICE for providing data for all Solar-system sources, or for major planets only, or for other bodies only, respectively. You can also manage the active kernels with the <code><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></code> and <code><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a></code> functions.</p>
+<p>Of course, you will need access to the CSPICE development files (C headers, installed under a <code>cspice/</code> directory of an header search location, and the unversioned <code>libcspice.so</code> or <code>.a</code> library) for the build to succeed. You may want to check out the <a href="https://github.com/Smithsonian/cspice-sharedlib">Smithsonian/cspice-sharedlib</a> GitHub repository to help you build CSPICE with shared libraries and dynamically linked tools.</p>
+<p>Here is an example on how you might use CSPICE with SuperNOVAS in your application code:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas_8h.html">novas.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas-cspice_8h.html">novas-cspice.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// You can load the desired kernels for CSPICE</span></div>
+<div class="line"><span class="comment">// E.g. load DE440s and the Mars satellites:</span></div>
+<div class="line"><span class="keywordtype">int</span> status;</div>
+<div class="line"> </div>
+<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/path/to/de440s.bsp&quot;</span>);</div>
+<div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
+<div class="line">  <span class="comment">// oops, the kernels must not have loaded...</span></div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Load additional kernels as needed...</span></div>
+<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/path/to/mar097.bsp&quot;</span>);</div>
+<div class="line">...</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Then use CSPICE as your SuperNOVAS ephemeris provider</span></div>
+<div class="line"><a class="code hl_function" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice</a>();</div>
+<div class="ttc" id="anovas-cspice_8h_html"><div class="ttname"><a href="novas-cspice_8h.html">novas-cspice.h</a></div></div>
+<div class="ttc" id="asolsys-cspice_8c_html_a9b44218bca5fce1e9e5103494c15dde4"><div class="ttname"><a href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice</a></div><div class="ttdeci">int novas_use_cspice()</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:535</div></div>
+<div class="ttc" id="asolsys-cspice_8c_html_ae02d26964099f56c375dc78172ad135b"><div class="ttname"><a href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a></div><div class="ttdeci">int cspice_add_kernel(const char *filename)</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:127</div></div>
+</div><!-- fragment --><p>All JPL ephemeris data will work with the <code>solsys-cspice</code> plugin. When linking your application, add <code>-lsolsys-cspice</code> to your link flags (or else link with <code>solsys-cspice.o</code>), and link against te calceph library also (<code>-lcalceph</code>). That's all there is to it.</p>
+<p><a class="anchor" id="universal-ephemerides"></a> </p>
+<h3><a class="anchor" id="autotoc_md76"></a>
+Universal ephemeris data / service integration</h3>
+<p>Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own <code>novas_ephem_provider</code> function, e.g.:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> my_ephem_reader(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keywordtype">double</span> jd_tdb_high, <span class="keywordtype">double</span> jd_tdb_low, </div>
+<div class="line">                    <span class="keyword">enum</span> <a class="code hl_enumeration" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> *restrict origin, </div>
+<div class="line">                    <span class="keywordtype">double</span> *restric pos, <span class="keywordtype">double</span> *restrict vel) {</div>
+<div class="line">  <span class="comment">// Your custom ephemeris reader implementation here</span></div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer locations. The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate for the implementation and for the supplied parameters). The positions and velocities may be returned either relative to the SSB or relative to the heliocenter, and accordingly, your function should set the value pointed at by origin to <code>NOVAS_BARYCENTER</code> or <code>NOVAS_HELIOCENTER</code> accordingly. Positions and velocities are rectangular ICRS <em>x,y,z</em> vectors in units of AU and AU/day respectively.</p>
+<p>This way you can easily integrate current ephemeris data, e.g. for the Minor Planet Center (MPC), or whatever other ephemeris service you prefer.</p>
+<p>Once you have your adapter function, you can set it as your ephemeris service via <code><a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></code>:</p>
+<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider</a>(my_ephem_reader);</div>
+</div><!-- fragment --><p>By default, your custom <code>my_ephem_reader</code> function will be used for 'minor planets' only (i.e. anything other than the major planets, the Sun, Moon, Solar-system Barycenter...). But, you can use the same function for the mentioned 'major planets' also via:</p>
+<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider</a>);</div>
+<div class="line"><a class="code hl_function" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys-ephem_8c.html#a93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp</a>);</div>
+<div class="ttc" id="asolsys-ephem_8c_html_a93d0f96d81f3c52e05163643bd23eb7d"><div class="ttname"><a href="solsys-ephem_8c.html#a93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp</a></div><div class="ttdeci">short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys-ephem.c:46</div></div>
+<div class="ttc" id="asolsys-ephem_8c_html_a9d0f54c0ab00827768e61a353488b0ee"><div class="ttname"><a href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider</a></div><div class="ttdeci">short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys-ephem.c:105</div></div>
+</div><!-- fragment --><p>provided you compiled SuperNOVAS with <code>BUILTIN_SOLSYS_EPHEM = 1</code> (in <code>config.mk</code>), or else you link your code against <code><a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a></code> explicitly. Easy-peasy.</p>
+<p><a class="anchor" id="builtin-ephem-readers"></a> </p>
+<h3><a class="anchor" id="autotoc_md77"></a>
+Legacy support for (older) JPL major planet ephemerides</h3>
+<p>If you only need support for major planets, you may be able to use one of the modules included with the distribution. The legacy NOVAS modules <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> provide built-in support to older JPL ephemerides (DE200 to DE421), either via the <code>eph_manager</code> interface of <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> or via the FORTRAN <code>pleph</code> interface with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code>.</p>
+<h4><a class="anchor" id="autotoc_md78"></a>
+Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
+<p>To use the <code>eph_manager</code> interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build SuperNOVAS with <code>BUILTIN_SOLSYS1 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="eph__manager_8c.html">eph_manager.c</a></code> from SuperNOVAS explicitly. If you want <code>eph_manager</code> to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 1</code> in <code>config.mk</code>. Otherwise, your application should set <code>eph_manager</code> as your planetary ephemeris provider at runtime via:</p>
+<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys1_8c.html#a841f04bf04e6dd8a5ae96f8ea729090d">planet_eph_manager</a>);</div>
+<div class="line"><a class="code hl_function" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys1_8c.html#a8b471fd187aebc33b1f9fd4c2ff60c90">planet_eph_manager_hp</a>);</div>
+<div class="ttc" id="asolsys1_8c_html_a841f04bf04e6dd8a5ae96f8ea729090d"><div class="ttname"><a href="solsys1_8c.html#a841f04bf04e6dd8a5ae96f8ea729090d">planet_eph_manager</a></div><div class="ttdeci">short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys1.c:171</div></div>
+<div class="ttc" id="asolsys1_8c_html_a8b471fd187aebc33b1f9fd4c2ff60c90"><div class="ttname"><a href="solsys1_8c.html#a8b471fd187aebc33b1f9fd4c2ff60c90">planet_eph_manager_hp</a></div><div class="ttdeci">short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys1.c:80</div></div>
+</div><!-- fragment --><p>Either way, before you can use the ephemeris, you must also open the relevant ephemeris data file with <code><a class="el" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open()</a></code>:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">double</span> from_jd, to_jd;  <span class="comment">// [day] Julian date range of the ephemeris data</span></div>
+<div class="line"><span class="keywordtype">int</span> de_number;          <span class="comment">// Will be set to the DE number, e.g. 405 for DE405</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_function" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open</a>(<span class="stringliteral">&quot;path/to/de405.bsp&quot;</span>, &amp;from_jd, &amp;to_jd, &amp;de_number);</div>
+<div class="ttc" id="aeph__manager_8c_html_aabd581657809499fb433e4f9f56ace80"><div class="ttname"><a href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open</a></div><div class="ttdeci">short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number)</div><div class="ttdef"><b>Definition</b> eph_manager.c:85</div></div>
+</div><!-- fragment --><p>And, when you are done using the ephemeris file, you should close it with</p>
+<div class="fragment"><div class="line"><a class="code hl_function" href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a>();</div>
+<div class="ttc" id="aeph__manager_8c_html_a333da81ba7453316e26f32f628fefc0e"><div class="ttname"><a href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a></div><div class="ttdeci">short ephem_close(void)</div><div class="ttdef"><b>Definition</b> eph_manager.c:224</div></div>
+</div><!-- fragment --><p>Note, that at any given time <code>eph_manager</code> can have only one ephemeris data file opened. You cannot use it to retrieve data from multiple ephemeris input files at the same time. (But you can with CALCEPH or the CSPICE toolkit, either of which you can interface as discussed further above!)</p>
+<p>That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.</p>
+<h4><a class="anchor" id="autotoc_md79"></a>
+Planets via JPL's &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface</h4>
+<p>To interface eith the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS with <code>BUILTIN_SOLSYS2 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> and your appropriately modified <code>jplint.f</code> (from the <code>examples</code> sub-directory) explicitly, together with the JPL PLEPH library. If you want this to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 2</code> in <code>config.mk</code>. Otherwise, your application should set your planetary ephemeris provider at runtime via:</p>
+<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys2_8c.html#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint</a>);</div>
+<div class="line"><a class="code hl_function" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys2_8c.html#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp</a>);</div>
+<div class="ttc" id="asolsys2_8c_html_a1300b6559a08ef90ae9b9d8d33a22220"><div class="ttname"><a href="solsys2_8c.html#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint</a></div><div class="ttdeci">short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys2.c:87</div></div>
+<div class="ttc" id="asolsys2_8c_html_a2fe8cd1a87f96611f78edc36b4960d63"><div class="ttname"><a href="solsys2_8c.html#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp</a></div><div class="ttdeci">short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys2.c:179</div></div>
+</div><!-- fragment --><p>Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end of the world), but you may also have to modify <code>jplint.f</code> (providing the intermediate FORTRAN <code><a class="el" href="solsys2_8c.html#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a></code> / <code><a class="el" href="solsys2_8c.html#a14752a69e14c399d5ee82e83f22acf68" title="Function prototype for the FORTRAN subroutine jplihp in jplint.f.">jplihp_()</a></code> interfaces to <code>pleph_()</code>) to work with the version of <code>pleph.f</code> that you will be using. Unless you already have code that relies on this method, you are probably better off choosing one of the other ways for integrating planetary ephemeris data with SuperNOVAS.</p>
+<p><a class="anchor" id="explicit-ephem-linking"></a> </p>
+<h3><a class="anchor" id="autotoc_md80"></a>
+Legacy linking of custom ephemeris functions</h3>
+<p>Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the <code>DEFAULT_SOLSYS</code> option disabled (commented, removed, or else set to 0), and then link your own implementation of <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> and <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> calls with your application.</p>
+<p>For Solar-system objects other than the major planets, you may also provide your own <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation. (In this case you will want to set <code>DEFAULT_READEPH</code> in <code>config.mk</code> to specify your source code for that function before building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link your application explicitly with your <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation.</p>
+<p>The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing a <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and/or <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementations for <em>every</em> application that you will want to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and most generic way to add your preferred implementations while also providing some minimum default implementations for <em>other users</em> of the library, who may not need <em>your</em> ephemeris service, or have no need for planet data beyond the approximate positions for the Earth and Sun.</p>
+<hr  />
+<p><a class="anchor" id="benchmarks"></a> </p>
+<h2><a class="anchor" id="autotoc_md82"></a>
 Representative benchmarks</h2>
-<p>To get an idea of the speed of <b>SuperNOVAS</b>, you can use the <code>make benchmark</code> on your machine. The table below summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not so new, run-of-the-mill PC might perform.</p>
+<p>To get an idea of the speed of <b>SuperNOVAS</b>, you can use <code>make benchmark</code> on your machine. The table below summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not so new, run-of-the-mill PC might perform.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadCenter"><img src="resources/SuperNOVAS-benchmark.png" alt="SuperNOVAS benchmarks" class="inline"/>    </th></tr>
@@ -759,17 +887,17 @@ Representative benchmarks</h2>
 <p>The above benchmarks are all for single-threaded performance. Since <b>SuperNOVAS</b> is generally thread-safe, you can expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under one minute.</p>
 <hr  />
 <p><a class="anchor" id="supernovas-features"></a> </p>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md84"></a>
 SuperNOVAS specific features</h2>
 <ul>
 <li><a class="el" href="index.html#added-functionality">Newly functionality highlights</a></li>
 <li><a class="el" href="index.html#api-changes">Refinements to the NOVAS C API</a></li>
 </ul>
 <p><a class="anchor" id="added-functionality"></a> </p>
-<h3><a class="anchor" id="autotoc_md76"></a>
+<h3><a class="anchor" id="autotoc_md85"></a>
 New functionality highlights</h3>
 <p>Below is a non-exhaustive overview new features added by SuperNOVAS on top of the existing NOVAS C API. See <code>CHANGELOG.md</code> for more details.</p>
-<h4><a class="anchor" id="autotoc_md77"></a>
+<h4><a class="anchor" id="autotoc_md86"></a>
 New in v1.0</h4>
 <ul>
 <li>New runtime configuration:<ul>
@@ -781,7 +909,7 @@ New in v1.0</h4>
 <li>New constants, and enums &ndash; adding more specificity and transparency to option switches and physical units.</li>
 <li>Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md78"></a>
+<h4><a class="anchor" id="autotoc_md87"></a>
 New in v1.1</h4>
 <ul>
 <li>New observing-frame based approach for calculations (<code><a class="el" href="frames_8c.html">frames.c</a></code>). A <code><a class="el" href="structnovas__frame.html">novas_frame</a></code> object uniquely defines both the place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their internal state is never modified during the calculations.</li>
@@ -790,7 +918,7 @@ New in v1.1</h4>
 <li>New observer locations <code>NOVAS_AIRBORNE_OBSERVER</code> and <code>NOVAS_SOLAR_SYSTEM_OBSERVER</code>, and corresponding <code><a class="el" href="observer_8c.html#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a></code> and <code><a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a></code> functions. Airborne observers have an Earth-fixed momentary location, defined by longitude, latitude, and altitude, the same way as for a stationary observer on Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative to the Solar System Barycenter (SSB), instead of the geocenter.</li>
 <li>New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and may make use of the generic reversal function <code><a class="el" href="refract_8c.html#a81da80ae3ab1d0a444f39bde2af3a732">novas_inv_refract()</a></code> to calculate refraction in the reverse direction (observed vs astrometric elevations as the input) as needed.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md79"></a>
+<h4><a class="anchor" id="autotoc_md88"></a>
 New in v1.2</h4>
 <ul>
 <li>New functions to calculate and apply additional gravitational redshift corrections for light that originates near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive gravitating bodies (other than the Sun and Earth).</li>
@@ -800,7 +928,7 @@ New in v1.2</h4>
 <li>Added <code>NOVAS_EMB</code> (Earth-Moon Barycenter) and <code>NOVAS_PLUTO_BARYCENTER</code> to <code>enum novas_planets</code> to distinguish from the corresponding planet centers in calculations.</li>
 <li>Added more physical unit constants to <code><a class="el" href="novas_8h.html">novas.h</a></code>.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md80"></a>
+<h4><a class="anchor" id="autotoc_md89"></a>
 New in v1.3</h4>
 <ul>
 <li>New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.</li>
@@ -810,12 +938,12 @@ New in v1.3</h4>
 <li>New functions and data structures provide second order Taylor series expansion of the apparent horizontal or equatorial positions, distances, and redshifts for sources. These values, including rates and accelerations, can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also use them to obtain instantaneous projected (extrapolated) positions at low computational cost.</li>
 </ul>
 <p><a class="anchor" id="api-changes"></a> </p>
-<h3><a class="anchor" id="autotoc_md81"></a>
+<h3><a class="anchor" id="autotoc_md90"></a>
 Refinements to the NOVAS C API</h3>
 <ul>
 <li>Changed to <a class="el" href="index.html#multi-threading">support for calculations in parallel threads</a> by making cached results thread-local. This works using the C11 standard <code>_Thread_local</code>, or the C23 <code>thread_local</code>, or else the earlier GNU C &gt;= 3.3 standard <code>__thread</code> modifier. You can also set the preferred thread-local keyword for your compiler by passing it via <code>-DTHREAD_LOCAL=...</code> in <code>config.mk</code> to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.</li>
 <li>SuperNOVAS functions take <code>enum</code>s as their option arguments instead of raw integers. The enums allow for some compiler checking (e.g. using the wrong enum), and make for more readable code that is easier to debug. They also make it easy to see what choices are available for each function argument, without having to consult the documentation each and every time.</li>
-<li>All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers or illegal duplicate arguments) and will return -1 (with <code>errno</code> set, usually to <code>EINVAL</code>) if the arguments supplied are invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C error code is returned for compatibility).</li>
+<li>All SuperNOVAS functions check for the basic validity of the supplied arguments (Such as NULL pointers, or empty strings) and will return -1 (with <code>errno</code> set, usually to <code>EINVAL</code>) if the arguments supplied are invalid (unless the NOVAS C API already defined a different return value for specific cases. If so, the NOVAS C error code is returned for compatibility).</li>
 <li>All erroneous returns now set <code>errno</code> so that users can track the source of the error in the standard C way and use functions such as <code>perror()</code> and <code>strerror()</code> to print human-readable error messages.</li>
 <li>SuperNOVAS prototypes declare function pointer arguments as <code>const</code> whenever the function does not modify the data content being pointed at. This supports better programming practices that generally aim to avoid unintended data modifications.</li>
 <li>Many SuperNOVAS functions allow <code>NULL</code> arguments, both for optional input values as well as outputs that are not required (see the <a href="https://smithsonian.github.io/SuperNOVAS/apidoc/html/">API Documentation</a> for specifics). This eliminates the need to declare dummy variables in your application code.</li>
@@ -829,7 +957,7 @@ Refinements to the NOVAS C API</h3>
 <li>IAU 2000A nutation model uses higher-order Delaunay arguments provided by <code><a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a></code>, instead of the linear model in NOVAS C 3.1.</li>
 <li>IAU 2000 nutation made a bit faster, reducing the the number of floating-point multiplications necessary by skipping terms that do not contribute. Its coefficients are also packed more frugally in memory, resulting in a smaller footprint.</li>
 <li>Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of observing location.</li>
-<li>[<b>v1.1</b>] Improved precision of some calculations, like <code><a class="el" href="earth_8c.html#aef1f8daaad470353648de90576aefc66">era()</a></code>, <code><a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a></code>, and <code><a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a></code> by being more careful about the order in which terms are accumulated and combined, resulting in a small improvement on the few uas (micro-arcsecond) level.</li>
+<li>[<b>v1.1</b>] Improved the precision of some calculations, like <code><a class="el" href="earth_8c.html#aef1f8daaad470353648de90576aefc66">era()</a></code>, <code><a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a></code>, and <code><a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a></code> by being more careful about the order in which terms are accumulated and combined, resulting in a small improvement on the few uas (micro-arcsecond) level.</li>
 <li>[<b>v1.1</b>] <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> now returns an error 3 if and only if the observer is at (or very close, within ~1.5m) of the observed Solar-system object.</li>
 <li>[<b>v1.1</b>] <code><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a></code> is simplified. It no longer uses the location type argument. Instead it will skip deflections due to a body if the observer is within ~1500 km of its center (which is below the surface for all major Solar system bodies).</li>
 <li>[<b>v1.1.1</b>] For major planets (and Sun and Moon) <code><a class="el" href="spectral_8c.html#afca24d914664bb60d20fb428177f329a">rad_vel()</a></code> and <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> will include gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or at a large distance away from the source.</li>
@@ -837,134 +965,6 @@ Refinements to the NOVAS C API</h3>
 <li>[<b>v1.3</b>] <code><a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> and <code><a class="el" href="calendar_8c.html#a044f1359abcf0a039ac6452a95729b5a">cal_date()</a></code> now use astronomical calendar dates instead of the fixed Gregorian dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.</li>
 <li>[<b>v1.3</b>] Use C99 <code>restrict</code> keyword to prevent pointer argument aliasing as appropriate.</li>
 </ul>
-<hr  />
-<p><a class="anchor" id="solarsystem"></a> </p>
-<h2><a class="anchor" id="autotoc_md83"></a>
-Incorporating Solar-system ephemeris data or services</h2>
-<p>If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with precision, you will have to interface it to a suitable provider of ephemeris data. Given the NOVAS C heritage, and some added SuperNOVAS flexibility in this area, you have several options for going about it. These are listed from the most practical (and preferred) to the least so (the old ways).</p>
-<p>NASA/JPL provides <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/">generic ephemerides</a> for the major planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For example, <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp">DE440</a> covers the major planets, and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the <a href="https://ssd.jpl.nasa.gov/horizons/">JPL HORIZONS</a> system (via the commnad-line / telnet or API interfaces) to generate custom ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.</p>
-<ul>
-<li><a class="el" href="index.html#calceph-integration">Optional CALCEPH integration</a></li>
-<li><a class="el" href="index.html#cspice-integration">Optional NAIF CSPICE toolkit integration</a></li>
-<li><a class="el" href="index.html#universal-ephemerides">Universal ephemeris data / service integration</a></li>
-<li><a class="el" href="index.html#builtin-ephem-readers">Legacy support for (older) JPL major planet ephemerides</a></li>
-<li><a class="el" href="index.html#explicit-ephem-linking">Legacy linking of custom ephemeris functions</a></li>
-</ul>
-<p><a class="anchor" id="calceph-integration"></a> </p>
-<h3><a class="anchor" id="autotoc_md84"></a>
-Optional CALCEPH integration</h3>
-<p>The <a href="https://www.imcce.fr/recherche/equipes/asd/calceph/">CALCEPH</a> library provides easy-to-use access to JPL and INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with the the CALCEPH C library for handling Solar-system objects.</p>
-<p>Prior to building SuperNOVAS simply set <code>CALCEPH_SUPPORT</code> to 1 in <code>config.mk</code> or in your environment. Depending on the build target, it will build <code>libsolsys-calceph.so[.1]</code> (target <code>shared</code>) or <code>libsolsys-calceph.a</code> (target <code>static</code>) libraries or <code>solsys-calceph.o</code> (target <code>solsys</code>), which provide the <code><a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a></code> and <code><a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a></code>, and <code><a class="el" href="solsys-calceph_8c.html#a5531b937a5bb5491cb475d2536346ad8">novas_calceph_use_ids()</a></code> functions.</p>
-<p>Of course, you will need access to the CALCEPH C development files (C headers and unversioned <code>libcalceph.so</code> or <code>.a</code> library) for the build to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application code:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas_8h.html">novas.h</a>&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas-calceph_8h.html">novas-calceph.h</a>&gt;</span></div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// You can open a set of JPL/INPOP ephemeris files with CALCEPH...</span></div>
-<div class="line">t_calcephbin *eph = calceph_open_array(...);</div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// Then use them as your generic SuperNOVAS ephemeris provider</span></div>
-<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph</a>(eph);</div>
-<div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
-<div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// -----------------------------------------------------------------------</span></div>
-<div class="line"><span class="comment">// Optionally you may use a separate ephemeris dataset for major planets</span></div>
-<div class="line"><span class="comment">// (or if planet ephemeris was included in &#39;eph&#39; above, you don&#39;t have to) </span></div>
-<div class="line">t_calcephbin *pleph = calceph_open(...);</div>
-<div class="line">status = <a class="code hl_function" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a>(pleph);</div>
-<div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
-<div class="line">  <span class="comment">// Ooops something went wrong...</span></div>
-<div class="line">}</div>
-<div class="ttc" id="anovas_8h_html"><div class="ttname"><a href="novas_8h.html">novas.h</a></div></div>
-<div class="ttc" id="asolsys-calceph_8c_html_ab86ec03898e658c86c671a8b6399e331"><div class="ttname"><a href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a></div><div class="ttdeci">int novas_use_calceph_planets(t_calcephbin *eph)</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:420</div></div>
-</div><!-- fragment --><p>All modern JPL (SPK) ephemeris files should work with the <code>solsys-calceph</code> plugin. When linking your application, add <code>-lsolsys-calceph</code> to your link flags (or else link with <code>solsys-calceph.o</code>), and of course the CSPICE library too. That's all there is to it.</p>
-<p><a class="anchor" id="cspice-integration"></a> </p>
-<h3><a class="anchor" id="autotoc_md85"></a>
-Optional NAIF CSPICE toolkit integration</h3>
-<p>The <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">NAIF CSPICE Toolkit</a> is the canonical standard library for JPL ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with CSPICE for handling Solar-system objects.</p>
-<p>Prior to building SuperNOVAS simply set <code>CSPICE_SUPPORT</code> to 1 in <code>config.mk</code> or in your environment. Depending on the build target, it will build <code>libsolsys-cspice.so[.1]</code> (target <code>shared</code>) or <code>libsolsys-cspice.a</code> (target <code>static</code>) libraries or <code>solsys-cspice.o</code> (target <code>solsys</code>), which provide the <code><a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a></code>, <code><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a></code>, and <code><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a></code> functions to enable CSPICE for providing data for all Solar-system sources, or for major planets only, or for other bodies only, respectively. You can also manage the active kernels with the <code><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></code> and <code><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a></code> functions.</p>
-<p>Of course, you will need access to the CSPICE development files (C headers, installed under a <code>cspice/</code> directory of an header search location, and the unversioned <code>libcspice.so</code> or <code>.a</code> library) for the build to succeed. You may want to check out the <a href="https://github.com/Smithsonian/cspice-sharedlib">Smithsonian/cspice-sharedlib</a> GitHub repository to help you build CSPICE with shared libraries and dynamically linked tools.</p>
-<p>Here is an example on how you might use CSPICE with SuperNOVAS in your application code:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas_8h.html">novas.h</a>&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="novas-cspice_8h.html">novas-cspice.h</a>&gt;</span></div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// You can load the desired kernels for CSPICE</span></div>
-<div class="line"><span class="comment">// E.g. load DE440s and the Mars satellites:</span></div>
-<div class="line"><span class="keywordtype">int</span> status;</div>
-<div class="line"> </div>
-<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/path/to/de440s.bsp&quot;</span>);</div>
-<div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
-<div class="line">  <span class="comment">// oops, the kernels must not have loaded...</span></div>
-<div class="line">  ...</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// Load additional kernels as needed...</span></div>
-<div class="line">status = <a class="code hl_function" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a>(<span class="stringliteral">&quot;/path/to/mar097.bsp&quot;</span>);</div>
-<div class="line">...</div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// Then use CSPICE as your SuperNOVAS ephemeris provider</span></div>
-<div class="line"><a class="code hl_function" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice</a>();</div>
-<div class="ttc" id="anovas-cspice_8h_html"><div class="ttname"><a href="novas-cspice_8h.html">novas-cspice.h</a></div></div>
-<div class="ttc" id="asolsys-cspice_8c_html_a9b44218bca5fce1e9e5103494c15dde4"><div class="ttname"><a href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice</a></div><div class="ttdeci">int novas_use_cspice()</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:535</div></div>
-<div class="ttc" id="asolsys-cspice_8c_html_ae02d26964099f56c375dc78172ad135b"><div class="ttname"><a href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a></div><div class="ttdeci">int cspice_add_kernel(const char *filename)</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:127</div></div>
-</div><!-- fragment --><p>All JPL ephemeris data will work with the <code>solsys-cspice</code> plugin. When linking your application, add <code>-lsolsys-cspice</code> to your link flags (or else link with <code>solsys-cspice.o</code>), and link against te calceph library also (<code>-lcalceph</code>). That's all there is to it.</p>
-<p><a class="anchor" id="universal-ephemerides"></a> </p>
-<h3><a class="anchor" id="autotoc_md86"></a>
-Universal ephemeris data / service integration</h3>
-<p>Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own <code>novas_ephem_provider</code> function, e.g.:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">int</span> my_ephem_reader(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keywordtype">double</span> jd_tdb_high, <span class="keywordtype">double</span> jd_tdb_low, </div>
-<div class="line">                    <span class="keyword">enum</span> <a class="code hl_enumeration" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> *restrict origin, </div>
-<div class="line">                    <span class="keywordtype">double</span> *restric pos, <span class="keywordtype">double</span> *restrict vel) {</div>
-<div class="line">  <span class="comment">// Your custom ephemeris reader implementation here</span></div>
-<div class="line">  ...</div>
-<div class="line">}</div>
-</div><!-- fragment --><p>which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer locations. The function can use either the ID number or the name to identify the object or file (whatever is the most appropriate for the implementation and for the supplied parameters). The positions and velocities may be returned either relative to the SSB or relative to the heliocenter, and accordingly, your function should set the value pointed at by origin to <code>NOVAS_BARYCENTER</code> or <code>NOVAS_HELIOCENTER</code> accordingly. Positions and velocities are rectangular ICRS <em>x,y,z</em> vectors in units of AU and AU/day respectively.</p>
-<p>This way you can easily integrate current ephemeris data, e.g. for the Minor Planet Center (MPC), or whatever other ephemeris service you prefer.</p>
-<p>Once you have your adapter function, you can set it as your ephemeris service via <code><a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></code>:</p>
-<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider</a>(my_ephem_reader);</div>
-</div><!-- fragment --><p>By default, your custom <code>my_ephem_reader</code> function will be used for 'minor planets' only (i.e. anything other than the major planets, the Sun, Moon, Solar-system Barycenter...). But, you can use the same function for the mentioned 'major planets' also via:</p>
-<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider</a>);</div>
-<div class="line"><a class="code hl_function" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys-ephem_8c.html#a93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp</a>);</div>
-<div class="ttc" id="asolsys-ephem_8c_html_a93d0f96d81f3c52e05163643bd23eb7d"><div class="ttname"><a href="solsys-ephem_8c.html#a93d0f96d81f3c52e05163643bd23eb7d">planet_ephem_provider_hp</a></div><div class="ttdeci">short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys-ephem.c:46</div></div>
-<div class="ttc" id="asolsys-ephem_8c_html_a9d0f54c0ab00827768e61a353488b0ee"><div class="ttname"><a href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider</a></div><div class="ttdeci">short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys-ephem.c:105</div></div>
-</div><!-- fragment --><p>provided you compiled SuperNOVAS with <code>BUILTIN_SOLSYS_EPHEM = 1</code> (in <code>config.mk</code>), or else you link your code against <code><a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a></code> explicitly. Easy-peasy.</p>
-<p><a class="anchor" id="builtin-ephem-readers"></a> </p>
-<h3><a class="anchor" id="autotoc_md87"></a>
-Legacy support for (older) JPL major planet ephemerides</h3>
-<p>If you only need support for major planets, you may be able to use one of the modules included with the distribution. The legacy NOVAS modules <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> provide built-in support to older JPL ephemerides (DE200 to DE421), either via the <code>eph_manager</code> interface of <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> or via the FORTRAN <code>pleph</code> interface with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code>.</p>
-<h4><a class="anchor" id="autotoc_md88"></a>
-Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
-<p>To use the <code>eph_manager</code> interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build SuperNOVAS with <code>BUILTIN_SOLSYS1 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="eph__manager_8c.html">eph_manager.c</a></code> from SuperNOVAS explicitly. If you want <code>eph_manager</code> to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 1</code> in <code>config.mk</code>. Otherwise, your application should set <code>eph_manager</code> as your planetary ephemeris provider at runtime via:</p>
-<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys1_8c.html#a841f04bf04e6dd8a5ae96f8ea729090d">planet_eph_manager</a>);</div>
-<div class="line"><a class="code hl_function" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys1_8c.html#a8b471fd187aebc33b1f9fd4c2ff60c90">planet_eph_manager_hp</a>);</div>
-<div class="ttc" id="asolsys1_8c_html_a841f04bf04e6dd8a5ae96f8ea729090d"><div class="ttname"><a href="solsys1_8c.html#a841f04bf04e6dd8a5ae96f8ea729090d">planet_eph_manager</a></div><div class="ttdeci">short planet_eph_manager(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys1.c:171</div></div>
-<div class="ttc" id="asolsys1_8c_html_a8b471fd187aebc33b1f9fd4c2ff60c90"><div class="ttname"><a href="solsys1_8c.html#a8b471fd187aebc33b1f9fd4c2ff60c90">planet_eph_manager_hp</a></div><div class="ttdeci">short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys1.c:80</div></div>
-</div><!-- fragment --><p>Either way, before you can use the ephemeris, you must also open the relevant ephemeris data file with <code><a class="el" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open()</a></code>:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">double</span> from_jd, to_jd;  <span class="comment">// [day] Julian date range of the ephemeris data</span></div>
-<div class="line"><span class="keywordtype">int</span> de_number;          <span class="comment">// Will be set to the DE number, e.g. 405 for DE405</span></div>
-<div class="line"> </div>
-<div class="line"><a class="code hl_function" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open</a>(<span class="stringliteral">&quot;path/to/de405.bsp&quot;</span>, &amp;from_jd, &amp;to_jd, &amp;de_number);</div>
-<div class="ttc" id="aeph__manager_8c_html_aabd581657809499fb433e4f9f56ace80"><div class="ttname"><a href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open</a></div><div class="ttdeci">short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number)</div><div class="ttdef"><b>Definition</b> eph_manager.c:85</div></div>
-</div><!-- fragment --><p>And, when you are done using the ephemeris file, you should close it with</p>
-<div class="fragment"><div class="line"><a class="code hl_function" href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a>();</div>
-<div class="ttc" id="aeph__manager_8c_html_a333da81ba7453316e26f32f628fefc0e"><div class="ttname"><a href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a></div><div class="ttdeci">short ephem_close(void)</div><div class="ttdef"><b>Definition</b> eph_manager.c:224</div></div>
-</div><!-- fragment --><p>Note, that at any given time <code>eph_manager</code> can have only one ephemeris data file opened. You cannot use it to retrieve data from multiple ephemeris input files at the same time. (But you can with CALCEPH or the CSPICE toolkit, either of which you can interface as discussed further above!)</p>
-<p>That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.</p>
-<h4><a class="anchor" id="autotoc_md89"></a>
-Planets via JPL's &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface</h4>
-<p>To interface eith the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS with <code>BUILTIN_SOLSYS2 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> and your appropriately modified <code>jplint.f</code> (from the <code>examples</code> sub-directory) explicitly, together with the JPL PLEPH library. If you want this to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 2</code> in <code>config.mk</code>. Otherwise, your application should set your planetary ephemeris provider at runtime via:</p>
-<div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys2_8c.html#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint</a>);</div>
-<div class="line"><a class="code hl_function" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp</a>(<a class="code hl_function" href="solsys2_8c.html#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp</a>);</div>
-<div class="ttc" id="asolsys2_8c_html_a1300b6559a08ef90ae9b9d8d33a22220"><div class="ttname"><a href="solsys2_8c.html#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint</a></div><div class="ttdeci">short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys2.c:87</div></div>
-<div class="ttc" id="asolsys2_8c_html_a2fe8cd1a87f96611f78edc36b4960d63"><div class="ttname"><a href="solsys2_8c.html#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp</a></div><div class="ttdeci">short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys2.c:179</div></div>
-</div><!-- fragment --><p>Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end of the world), but you may also have to modify <code>jplint.f</code> (providing the intermediate FORTRAN <code><a class="el" href="solsys2_8c.html#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a></code> / <code><a class="el" href="solsys2_8c.html#a14752a69e14c399d5ee82e83f22acf68" title="Function prototype for the FORTRAN subroutine jplihp in jplint.f.">jplihp_()</a></code> interfaces to <code>pleph_()</code>) to work with the version of <code>pleph.f</code> that you will be using. Unless you already have code that relies on this method, you are probably better off choosing one of the other ways for integrating planetary ephemeris data with SuperNOVAS.</p>
-<p><a class="anchor" id="explicit-ephem-linking"></a> </p>
-<h3><a class="anchor" id="autotoc_md90"></a>
-Legacy linking of custom ephemeris functions</h3>
-<p>Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the <code>DEFAULT_SOLSYS</code> option disabled (commented, removed, or else set to 0), and then link your own implementation of <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> and <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> calls with your application.</p>
-<p>For Solar-system objects other than the major planets, you may also provide your own <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation. (In this case you will want to set <code>DEFAULT_READEPH</code> in <code>config.mk</code> to specify your source code for that function before building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link your application explicitly with your <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation.</p>
-<p>The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing a <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and/or <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementations for <em>every</em> application that you will want to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and most generic way to add your preferred implementations while also providing some minimum default implementations for <em>other users</em> of the library, who may not need <em>your</em> ephemeris service, or have no need for planet data beyond the approximate positions for the Earth and Sun.</p>
 <hr  />
 <p><a class="anchor" id="debug-support"></a> </p>
 <h2><a class="anchor" id="autotoc_md92"></a>

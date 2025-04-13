@@ -60,25 +60,25 @@ var NAVTREE =
       [ "Notes on precision", "index.html#autotoc_md70", [
         [ "Prerequisites to precise results", "index.html#autotoc_md71", null ]
       ] ],
-      [ "Representative benchmarks", "index.html#autotoc_md73", null ],
-      [ "SuperNOVAS specific features", "index.html#autotoc_md75", [
-        [ "New functionality highlights", "index.html#autotoc_md76", [
-          [ "New in v1.0", "index.html#autotoc_md77", null ],
-          [ "New in v1.1", "index.html#autotoc_md78", null ],
-          [ "New in v1.2", "index.html#autotoc_md79", null ],
-          [ "New in v1.3", "index.html#autotoc_md80", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md73", [
+        [ "Optional CALCEPH integration", "index.html#autotoc_md74", null ],
+        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md75", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md76", null ],
+        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md77", [
+          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md78", null ],
+          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md79", null ]
         ] ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md81", null ]
+        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md80", null ]
       ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md83", [
-        [ "Optional CALCEPH integration", "index.html#autotoc_md84", null ],
-        [ "Optional NAIF CSPICE toolkit integration", "index.html#autotoc_md85", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md86", null ],
-        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md87", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md88", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md89", null ]
+      [ "Representative benchmarks", "index.html#autotoc_md82", null ],
+      [ "SuperNOVAS specific features", "index.html#autotoc_md84", [
+        [ "New functionality highlights", "index.html#autotoc_md85", [
+          [ "New in v1.0", "index.html#autotoc_md86", null ],
+          [ "New in v1.1", "index.html#autotoc_md87", null ],
+          [ "New in v1.2", "index.html#autotoc_md88", null ],
+          [ "New in v1.3", "index.html#autotoc_md89", null ]
         ] ],
-        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md90", null ]
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md90", null ]
       ] ],
       [ "Runtime debug support", "index.html#autotoc_md92", null ],
       [ "Release schedule", "index.html#autotoc_md94", null ],
