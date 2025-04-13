@@ -7,7 +7,7 @@ var searchData=
   ['data_20service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md76',1,'']]],
   ['dates_5',['String dates',['../index.html#autotoc_md68',1,'']]],
   ['de405_5fau_6',['DE405_AU',['../novas_8h.html#af303bf91582509624aa40c6a87eb95ac',1,'novas.h']]],
-  ['debug_20support_7',['Runtime debug support',['../index.html#autotoc_md92',1,'']]],
+  ['debug_20support_7',['Runtime debug support',['../index.html#autotoc_md82',1,'']]],
   ['dec_8',['dec',['../structsky__pos.html#ac4ae7989694321b540abb75c30eec690',1,'sky_pos::dec'],['../structcat__entry.html#ac4ae7989694321b540abb75c30eec690',1,'cat_entry::dec']]],
   ['declination_9',['A. True apparent R.A. and declination',['../md_LEGACY.html#autotoc_md33',1,'']]],
   ['default_5fcio_5flocator_5ffile_10',['DEFAULT_CIO_LOCATOR_FILE',['../novas_8h.html#a4caf1f6e33a208827eb99df7e387d6d1',1,'novas.h']]],

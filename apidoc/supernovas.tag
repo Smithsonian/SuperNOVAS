@@ -6165,11 +6165,11 @@
     <docanchor file="index.html">universal-ephemerides</docanchor>
     <docanchor file="index.html">builtin-ephem-readers</docanchor>
     <docanchor file="index.html">explicit-ephem-linking</docanchor>
+    <docanchor file="index.html">debug-support</docanchor>
     <docanchor file="index.html">benchmarks</docanchor>
     <docanchor file="index.html">supernovas-features</docanchor>
     <docanchor file="index.html">added-functionality</docanchor>
     <docanchor file="index.html">api-changes</docanchor>
-    <docanchor file="index.html">debug-support</docanchor>
     <docanchor file="index.html">release-schedule</docanchor>
   </compound>
 </tagfile>

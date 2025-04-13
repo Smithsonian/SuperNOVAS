@@ -70,17 +70,17 @@ var NAVTREE =
         ] ],
         [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md80", null ]
       ] ],
-      [ "Representative benchmarks", "index.html#autotoc_md82", null ],
-      [ "SuperNOVAS specific features", "index.html#autotoc_md84", [
-        [ "New functionality highlights", "index.html#autotoc_md85", [
-          [ "New in v1.0", "index.html#autotoc_md86", null ],
-          [ "New in v1.1", "index.html#autotoc_md87", null ],
-          [ "New in v1.2", "index.html#autotoc_md88", null ],
-          [ "New in v1.3", "index.html#autotoc_md89", null ]
+      [ "Runtime debug support", "index.html#autotoc_md82", null ],
+      [ "Representative benchmarks", "index.html#autotoc_md84", null ],
+      [ "SuperNOVAS added features", "index.html#autotoc_md86", [
+        [ "New functionality highlights", "index.html#autotoc_md87", [
+          [ "New in v1.0", "index.html#autotoc_md88", null ],
+          [ "New in v1.1", "index.html#autotoc_md89", null ],
+          [ "New in v1.2", "index.html#autotoc_md90", null ],
+          [ "New in v1.3", "index.html#autotoc_md91", null ]
         ] ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md90", null ]
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md92", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md92", null ],
       [ "Release schedule", "index.html#autotoc_md94", null ],
       [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],

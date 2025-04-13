@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['v1_200_0',['New in v1.0',['../index.html#autotoc_md86',1,'']]],
-  ['v1_201_1',['New in v1.1',['../index.html#autotoc_md87',1,'']]],
-  ['v1_202_2',['New in v1.2',['../index.html#autotoc_md88',1,'']]],
-  ['v1_203_3',['New in v1.3',['../index.html#autotoc_md89',1,'']]],
+  ['v1_200_0',['New in v1.0',['../index.html#autotoc_md88',1,'']]],
+  ['v1_201_1',['New in v1.1',['../index.html#autotoc_md89',1,'']]],
+  ['v1_202_2',['New in v1.2',['../index.html#autotoc_md90',1,'']]],
+  ['v1_203_3',['New in v1.3',['../index.html#autotoc_md91',1,'']]],
   ['v_5fobs_4',['v_obs',['../structnovas__frame.html#a52e812c05f108858a4459d937a2115a4',1,'novas_frame']]],
   ['vc_5',['VC',['../eph__manager_8c.html#afe4ec6caa67baf8fb5b184cc183a07e8',1,'eph_manager.c']]],
   ['vector2radec_6',['vector2radec',['../util_8c.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c'],['../novas_8h.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c']]],

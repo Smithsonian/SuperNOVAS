@@ -42,17 +42,17 @@
       </topic>
       <topic label="Legacy linking of custom ephemeris functions" href="index.html#autotoc_md80"/>
     </topic>
-    <topic label="Representative benchmarks" href="index.html#autotoc_md82"/>
-    <topic label="SuperNOVAS specific features" href="index.html#autotoc_md84">
-      <topic label="New functionality highlights" href="index.html#autotoc_md85">
-        <topic label="New in v1.0" href="index.html#autotoc_md86"/>
-        <topic label="New in v1.1" href="index.html#autotoc_md87"/>
-        <topic label="New in v1.2" href="index.html#autotoc_md88"/>
-        <topic label="New in v1.3" href="index.html#autotoc_md89"/>
+    <topic label="Runtime debug support" href="index.html#autotoc_md82"/>
+    <topic label="Representative benchmarks" href="index.html#autotoc_md84"/>
+    <topic label="SuperNOVAS added features" href="index.html#autotoc_md86">
+      <topic label="New functionality highlights" href="index.html#autotoc_md87">
+        <topic label="New in v1.0" href="index.html#autotoc_md88"/>
+        <topic label="New in v1.1" href="index.html#autotoc_md89"/>
+        <topic label="New in v1.2" href="index.html#autotoc_md90"/>
+        <topic label="New in v1.3" href="index.html#autotoc_md91"/>
       </topic>
-      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md90"/>
+      <topic label="Refinements to the NOVAS C API" href="index.html#autotoc_md92"/>
     </topic>
-    <topic label="Runtime debug support" href="index.html#autotoc_md92"/>
     <topic label="Release schedule" href="index.html#autotoc_md94"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">

@@ -34,9 +34,9 @@ This document has been updated for the `v1.3` and later releases.
  - [Tips and tricks](#tips)
  - [Notes on precision](#precision)
  - [Incorporating Solar-system ephemeris data or services](#solarsystem)
- - [Representative benchmarks](#benchmarks)
- - [SuperNOVAS specific features](#supernovas-features)
  - [Runtime debug support](#debug-support)
+ - [Representative benchmarks](#benchmarks)
+ - [SuperNOVAS added features](#supernovas-features)
  - [Release schedule](#release-schedule)
 
 -----------------------------------------------------------------------------
@@ -1279,6 +1279,44 @@ approximate positions for the Earth and Sun.
 
 -----------------------------------------------------------------------------
 
+<a name="debug-support"></a>
+## Runtime debug support
+
+You can enable or disable debugging output to `stderr` with `novas_debug(enum novas_debug_mode)`, where the argument 
+is one of the defined constants from `novas.h`:
+
+ | `novas_debug_mode` value   | Description                                        |
+ | -------------------------- | -------------------------------------------------- |
+ | `NOVAS_DEBUG_OFF`          | No debugging output (_default_)                    |
+ | `NOVAS_DEBUG_ON`           | Prints error messages and traces to `stderr`       |
+ | `NOVAS_DEBUG_EXTRA`        | Same as above but with stricter error checking     |
+ 
+The main difference between `NOVAS_DEBUG_ON` and `NOVAS_DEBUG_EXTRA` is that the latter will treat minor issues as 
+errors also, while the former may ignore them. For example, `place()` will return normally by default if it cannot 
+calculate gravitational bending around massive planets in full accuracy mode. It is unlikely that this omission would 
+significantly alter the result in most cases, except for some very specific ones when observing in a direction close 
+to a major planet. Thus, with `NOVAS_DEBUG_ON`, `place()` go about as usual even if the Jupiter's position is not 
+known. However, `NOVAS_DEBUG_EXTRA` will not give it a free pass, and will make `place()` return an error (and print 
+the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.
+
+When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
+be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can havev a 
+better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing 
+`NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application calls 
+`grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug mode is 
+`NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):
+
+```
+  ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
+       @ earth_sun_calc_hp [=> 2]
+       @ solarsystem_hp [=> 2]
+       @ ephemeris:planet [=> 12]
+       @ grav_def:Jupiter [=> 12]
+```
+
+
+-----------------------------------------------------------------------------
+
 <a name="benchmarks"></a>
 ## Representative benchmarks
 
@@ -1346,7 +1384,7 @@ one minute.
 -----------------------------------------------------------------------------
 
 <a name="supernovas-features"></a>
-## SuperNOVAS specific features
+## SuperNOVAS added features
 
 - [Newly functionality highlights](#added-functionality)
 - [Refinements to the NOVAS C API](#api-changes)
@@ -1545,43 +1583,6 @@ one minute.
 
  - [__v1.3__] Use C99 `restrict` keyword to prevent pointer argument aliasing as appropriate.
 
-
------------------------------------------------------------------------------
-
-<a name="debug-support"></a>
-## Runtime debug support
-
-You can enable or disable debugging output to `stderr` with `novas_debug(enum novas_debug_mode)`, where the argument 
-is one of the defined constants from `novas.h`:
-
- | `novas_debug_mode` value   | Description                                        |
- | -------------------------- | -------------------------------------------------- |
- | `NOVAS_DEBUG_OFF`          | No debugging output (_default_)                    |
- | `NOVAS_DEBUG_ON`           | Prints error messages and traces to `stderr`       |
- | `NOVAS_DEBUG_EXTRA`        | Same as above but with stricter error checking     |
- 
-The main difference between `NOVAS_DEBUG_ON` and `NOVAS_DEBUG_EXTRA` is that the latter will treat minor issues as 
-errors also, while the former may ignore them. For example, `place()` will return normally by default if it cannot 
-calculate gravitational bending around massive planets in full accuracy mode. It is unlikely that this omission would 
-significantly alter the result in most cases, except for some very specific ones when observing in a direction close 
-to a major planet. Thus, with `NOVAS_DEBUG_ON`, `place()` go about as usual even if the Jupiter's position is not 
-known. However, `NOVAS_DEBUG_EXTRA` will not give it a free pass, and will make `place()` return an error (and print 
-the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.
-
-When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
-be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can havev a 
-better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing 
-`NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application calls 
-`grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug mode is 
-`NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):
-
-```
-  ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=> 2]
-       @ earth_sun_calc_hp [=> 2]
-       @ solarsystem_hp [=> 2]
-       @ ephemeris:planet [=> 12]
-       @ grav_def:Jupiter [=> 12]
-```
 
 -----------------------------------------------------------------------------
 

@@ -136,9 +136,9 @@ Table of Contents</h2>
 <li><a class="el" href="index.html#tips">Tips and tricks</a></li>
 <li><a class="el" href="index.html#precision">Notes on precision</a></li>
 <li><a class="el" href="index.html#solarsystem">Incorporating Solar-system ephemeris data or services</a></li>
-<li><a class="el" href="index.html#benchmarks">Representative benchmarks</a></li>
-<li><a class="el" href="index.html#supernovas-features">SuperNOVAS specific features</a></li>
 <li><a class="el" href="index.html#debug-support">Runtime debug support</a></li>
+<li><a class="el" href="index.html#benchmarks">Representative benchmarks</a></li>
+<li><a class="el" href="index.html#supernovas-features">SuperNOVAS added features</a></li>
 <li><a class="el" href="index.html#release-schedule">Release schedule</a></li>
 </ul>
 <hr  />
@@ -833,8 +833,30 @@ Legacy linking of custom ephemeris functions</h3>
 <p>For Solar-system objects other than the major planets, you may also provide your own <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation. (In this case you will want to set <code>DEFAULT_READEPH</code> in <code>config.mk</code> to specify your source code for that function before building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link your application explicitly with your <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation.</p>
 <p>The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing a <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and/or <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementations for <em>every</em> application that you will want to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and most generic way to add your preferred implementations while also providing some minimum default implementations for <em>other users</em> of the library, who may not need <em>your</em> ephemeris service, or have no need for planet data beyond the approximate positions for the Earth and Sun.</p>
 <hr  />
-<p><a class="anchor" id="benchmarks"></a> </p>
+<p><a class="anchor" id="debug-support"></a> </p>
 <h2><a class="anchor" id="autotoc_md82"></a>
+Runtime debug support</h2>
+<p>You can enable or disable debugging output to <code>stderr</code> with <code><a class="el" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3" title="==========================================================================">novas_debug(enum novas_debug_mode)</a></code>, where the argument is one of the defined constants from <code><a class="el" href="novas_8h.html">novas.h</a></code>:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><code>novas_debug_mode</code> value   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_OFF</code>   </td><td class="markdownTableBodyNone">No debugging output (<em>default</em>)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_ON</code>   </td><td class="markdownTableBodyNone">Prints error messages and traces to <code>stderr</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_EXTRA</code>   </td><td class="markdownTableBodyNone">Same as above but with stricter error checking   </td></tr>
+</table>
+<p>The main difference between <code>NOVAS_DEBUG_ON</code> and <code>NOVAS_DEBUG_EXTRA</code> is that the latter will treat minor issues as errors also, while the former may ignore them. For example, <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> will return normally by default if it cannot calculate gravitational bending around massive planets in full accuracy mode. It is unlikely that this omission would significantly alter the result in most cases, except for some very specific ones when observing in a direction close to a major planet. Thus, with <code>NOVAS_DEBUG_ON</code>, <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> go about as usual even if the Jupiter's position is not known. However, <code>NOVAS_DEBUG_EXTRA</code> will not give it a free pass, and will make <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> return an error (and print the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.</p>
+<p>When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can havev a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing <code>NOVAS_DEBUF_OFF</code> (0) as the argument to the same call. Here is an example error trace when your application calls <code><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a></code> with <code>NOVAS_FULL_ACCURACY</code> while <code>solsys3</code> provides Earth and Sun positions only and when debug mode is <code>NOVAS_DEBUG_EXTRA</code> (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):</p>
+<div class="fragment"><div class="line">ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=&gt; 2]</div>
+<div class="line">     @ earth_sun_calc_hp [=&gt; 2]</div>
+<div class="line">     @ solarsystem_hp [=&gt; 2]</div>
+<div class="line">     @ ephemeris:planet [=&gt; 12]</div>
+<div class="line">     @ grav_def:Jupiter [=&gt; 12]</div>
+</div><!-- fragment --><hr  />
+<p><a class="anchor" id="benchmarks"></a> </p>
+<h2><a class="anchor" id="autotoc_md84"></a>
 Representative benchmarks</h2>
 <p>To get an idea of the speed of <b>SuperNOVAS</b>, you can use <code>make benchmark</code> on your machine. The table below summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not so new, run-of-the-mill PC might perform.</p>
 <table class="markdownTable">
@@ -887,17 +909,17 @@ Representative benchmarks</h2>
 <p>The above benchmarks are all for single-threaded performance. Since <b>SuperNOVAS</b> is generally thread-safe, you can expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under one minute.</p>
 <hr  />
 <p><a class="anchor" id="supernovas-features"></a> </p>
-<h2><a class="anchor" id="autotoc_md84"></a>
-SuperNOVAS specific features</h2>
+<h2><a class="anchor" id="autotoc_md86"></a>
+SuperNOVAS added features</h2>
 <ul>
 <li><a class="el" href="index.html#added-functionality">Newly functionality highlights</a></li>
 <li><a class="el" href="index.html#api-changes">Refinements to the NOVAS C API</a></li>
 </ul>
 <p><a class="anchor" id="added-functionality"></a> </p>
-<h3><a class="anchor" id="autotoc_md85"></a>
+<h3><a class="anchor" id="autotoc_md87"></a>
 New functionality highlights</h3>
 <p>Below is a non-exhaustive overview new features added by SuperNOVAS on top of the existing NOVAS C API. See <code>CHANGELOG.md</code> for more details.</p>
-<h4><a class="anchor" id="autotoc_md86"></a>
+<h4><a class="anchor" id="autotoc_md88"></a>
 New in v1.0</h4>
 <ul>
 <li>New runtime configuration:<ul>
@@ -909,7 +931,7 @@ New in v1.0</h4>
 <li>New constants, and enums &ndash; adding more specificity and transparency to option switches and physical units.</li>
 <li>Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md87"></a>
+<h4><a class="anchor" id="autotoc_md89"></a>
 New in v1.1</h4>
 <ul>
 <li>New observing-frame based approach for calculations (<code><a class="el" href="frames_8c.html">frames.c</a></code>). A <code><a class="el" href="structnovas__frame.html">novas_frame</a></code> object uniquely defines both the place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their internal state is never modified during the calculations.</li>
@@ -918,7 +940,7 @@ New in v1.1</h4>
 <li>New observer locations <code>NOVAS_AIRBORNE_OBSERVER</code> and <code>NOVAS_SOLAR_SYSTEM_OBSERVER</code>, and corresponding <code><a class="el" href="observer_8c.html#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a></code> and <code><a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a></code> functions. Airborne observers have an Earth-fixed momentary location, defined by longitude, latitude, and altitude, the same way as for a stationary observer on Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative to the Solar System Barycenter (SSB), instead of the geocenter.</li>
 <li>New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and may make use of the generic reversal function <code><a class="el" href="refract_8c.html#a81da80ae3ab1d0a444f39bde2af3a732">novas_inv_refract()</a></code> to calculate refraction in the reverse direction (observed vs astrometric elevations as the input) as needed.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md88"></a>
+<h4><a class="anchor" id="autotoc_md90"></a>
 New in v1.2</h4>
 <ul>
 <li>New functions to calculate and apply additional gravitational redshift corrections for light that originates near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive gravitating bodies (other than the Sun and Earth).</li>
@@ -928,7 +950,7 @@ New in v1.2</h4>
 <li>Added <code>NOVAS_EMB</code> (Earth-Moon Barycenter) and <code>NOVAS_PLUTO_BARYCENTER</code> to <code>enum novas_planets</code> to distinguish from the corresponding planet centers in calculations.</li>
 <li>Added more physical unit constants to <code><a class="el" href="novas_8h.html">novas.h</a></code>.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md89"></a>
+<h4><a class="anchor" id="autotoc_md91"></a>
 New in v1.3</h4>
 <ul>
 <li>New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.</li>
@@ -938,7 +960,7 @@ New in v1.3</h4>
 <li>New functions and data structures provide second order Taylor series expansion of the apparent horizontal or equatorial positions, distances, and redshifts for sources. These values, including rates and accelerations, can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also use them to obtain instantaneous projected (extrapolated) positions at low computational cost.</li>
 </ul>
 <p><a class="anchor" id="api-changes"></a> </p>
-<h3><a class="anchor" id="autotoc_md90"></a>
+<h3><a class="anchor" id="autotoc_md92"></a>
 Refinements to the NOVAS C API</h3>
 <ul>
 <li>Changed to <a class="el" href="index.html#multi-threading">support for calculations in parallel threads</a> by making cached results thread-local. This works using the C11 standard <code>_Thread_local</code>, or the C23 <code>thread_local</code>, or else the earlier GNU C &gt;= 3.3 standard <code>__thread</code> modifier. You can also set the preferred thread-local keyword for your compiler by passing it via <code>-DTHREAD_LOCAL=...</code> in <code>config.mk</code> to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.</li>
@@ -966,28 +988,6 @@ Refinements to the NOVAS C API</h3>
 <li>[<b>v1.3</b>] Use C99 <code>restrict</code> keyword to prevent pointer argument aliasing as appropriate.</li>
 </ul>
 <hr  />
-<p><a class="anchor" id="debug-support"></a> </p>
-<h2><a class="anchor" id="autotoc_md92"></a>
-Runtime debug support</h2>
-<p>You can enable or disable debugging output to <code>stderr</code> with <code><a class="el" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3" title="==========================================================================">novas_debug(enum novas_debug_mode)</a></code>, where the argument is one of the defined constants from <code><a class="el" href="novas_8h.html">novas.h</a></code>:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone"><code>novas_debug_mode</code> value   </th><th class="markdownTableHeadNone">Description    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_OFF</code>   </td><td class="markdownTableBodyNone">No debugging output (<em>default</em>)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_ON</code>   </td><td class="markdownTableBodyNone">Prints error messages and traces to <code>stderr</code>    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_EXTRA</code>   </td><td class="markdownTableBodyNone">Same as above but with stricter error checking   </td></tr>
-</table>
-<p>The main difference between <code>NOVAS_DEBUG_ON</code> and <code>NOVAS_DEBUG_EXTRA</code> is that the latter will treat minor issues as errors also, while the former may ignore them. For example, <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> will return normally by default if it cannot calculate gravitational bending around massive planets in full accuracy mode. It is unlikely that this omission would significantly alter the result in most cases, except for some very specific ones when observing in a direction close to a major planet. Thus, with <code>NOVAS_DEBUG_ON</code>, <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> go about as usual even if the Jupiter's position is not known. However, <code>NOVAS_DEBUG_EXTRA</code> will not give it a free pass, and will make <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> return an error (and print the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.</p>
-<p>When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can havev a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing <code>NOVAS_DEBUF_OFF</code> (0) as the argument to the same call. Here is an example error trace when your application calls <code><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a></code> with <code>NOVAS_FULL_ACCURACY</code> while <code>solsys3</code> provides Earth and Sun positions only and when debug mode is <code>NOVAS_DEBUG_EXTRA</code> (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):</p>
-<div class="fragment"><div class="line">ERROR! earth_sun_calc: invalid or unsupported planet number: 5 [=&gt; 2]</div>
-<div class="line">     @ earth_sun_calc_hp [=&gt; 2]</div>
-<div class="line">     @ solarsystem_hp [=&gt; 2]</div>
-<div class="line">     @ ephemeris:planet [=&gt; 12]</div>
-<div class="line">     @ grav_def:Jupiter [=&gt; 12]</div>
-</div><!-- fragment --><hr  />
 <p><a class="anchor" id="release-schedule"></a> </p>
 <h2><a class="anchor" id="autotoc_md94"></a>
 Release schedule</h2>

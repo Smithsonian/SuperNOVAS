@@ -2,7 +2,7 @@ var searchData=
 [
   ['c_203_201_0',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md43',1,'']]],
   ['c_203_201_20issues_1',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md41',1,'']]],
-  ['c_20api_2',['Refinements to the NOVAS C API',['../index.html#autotoc_md90',1,'']]],
+  ['c_20api_2',['Refinements to the NOVAS C API',['../index.html#autotoc_md92',1,'']]],
   ['cal_5fdate_3',['cal_date',['../calendar_8c.html#a044f1359abcf0a039ac6452a95729b5a',1,'cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour):&#160;calendar.c'],['../novas_8h.html#a044f1359abcf0a039ac6452a95729b5a',1,'cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour):&#160;calendar.c']]],
   ['calceph_20integration_4',['Optional CALCEPH integration',['../index.html#autotoc_md74',1,'']]],
   ['calculate_20an_20apparent_20place_20on_20sky_5',['Calculate an apparent place on sky',['../index.html#autotoc_md58',1,'']]],
