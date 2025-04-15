@@ -9,9 +9,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+Upcoming bug fix release, expected around 1 August 2025.
+
+### Fixed
+
+ - #167: Fixes for Debian i386 cross builds.
+
 ### Changed
 
  - #166: Improved detection of invalid seconds in `parse_degrees()`.
+
  
 
 ## [1.3.0] - 2025-04-15
