@@ -1666,6 +1666,9 @@ static int test_parse_degrees() {
 
   if(check_nan("parse_degrees:null", novas_parse_degrees(NULL, &tail))) n++;
   if(check_nan("parse_degrees:blah", novas_parse_degrees("blah", &tail))) n++;
+  if(check_nan("parse_degrees:East+space", novas_parse_degrees("East ", &tail))) n++;
+  if(check_nan("parse_degrees:East+blah", novas_parse_degrees("East blah", &tail))) n++;
+  if(check_nan("parse_degrees:East..0", novas_parse_degrees("East ..0", &tail))) n++;
 
   return n;
 }

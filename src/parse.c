@@ -551,52 +551,54 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
   while(*next && isspace(*next)) next++;
 
   if(sscanf(next, "%79[-+0-9.]", num) > 0) {
-    char unit[9] = {'\0'};
-    int n, n1, nu = 0;
     char *end = num;
+    int n;
 
     deg = strtod(num, &end);
     n = end - num;
+    if(n > 0) {
+      char unit[9] = {'\0'};
+      int n1, nu = 0;
 
-    // Skip underscores and white spaces
-    for(n1 = n; next[n1] && (next[n1] == '_' || isspace(next[n1]));) n1++;
+      // Skip underscores and white spaces
+      for(n1 = n; next[n1] && (next[n1] == '_' || isspace(next[n1]));) n1++;
 
-    // Skip over unit specification
-    if(sscanf(&next[n1], "%8s%n", unit, &nu) > 0) {
-      static const char *units[] = { "d", "dg", "deg", "degree", "degrees" , NULL};
-      int i;
+      // Skip over unit specification
+      if(sscanf(&next[n1], "%8s%n", unit, &nu) > 0) {
+        static const char *units[] = { "d", "dg", "deg", "degree", "degrees" , NULL};
+        int i;
 
-      // Terminate unit at punctuation
-      for(i = 0; unit[i]; i++) if(unit[i] == '_' || ispunct(unit[i])) {
-        unit[i] = '\0';
-        nu = i;
-        break;
+        // Terminate unit at punctuation
+        for(i = 0; unit[i]; i++) if(unit[i] == '_' || ispunct(unit[i])) {
+          unit[i] = '\0';
+          nu = i;
+          break;
+        }
+
+        // Check for match against recognised units.
+        for(i = 0; units[i]; i++) if(strcasecmp(units[i], unit) == 0) {
+          n = n1 + nu;
+          break;
+        }
       }
 
-      // Check for match against recognised units.
-      for(i = 0; units[i]; i++) if(strcasecmp(units[i], unit) == 0) {
-        n = n1 + nu;
-        break;
+      if(nc == 0) {
+        sign = parse_compass(&next[n], &nc);
+        n += nc;
       }
+
+      if(sign < 0)
+        deg = -deg;
+
+      if(tail)
+        *tail = next + n;
+
+      return deg;
     }
-
-    if(nc == 0) {
-      sign = parse_compass(&next[n], &nc);
-      n += nc;
-    }
-
-    if(sign < 0)
-      deg = -deg;
-
-    if(tail)
-      *tail = next + n;
-  }
-  else {
-    novas_error(0, EINVAL, fn, "invalid angle specification: '%s'", str);
-    return NAN;
   }
 
-  return deg;
+  novas_error(0, EINVAL, fn, "invalid angle specification: '%s'", str);
+  return NAN;
 }
 
 /**
