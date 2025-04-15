@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+### Changed
+
+ - #166: Improved detection of invalid seconds in `parse_degrees()`.
+ 
+
 ## [1.3.0] - 2025-04-15
 
 Feature release with many new convenience functions, such as for handling times and angles as strings; calculating 
