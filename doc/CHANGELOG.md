@@ -7,11 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.3.0] - 2025-04-15
 
-Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such 
-as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric 
-calculations.
+Feature release with many new convenience functions, such as for handling times and angles as strings; calculating 
+rise, set, transit times; and other common astrometric calculations. In addition, the release brings various 
+changes to improve performance.
    
 ### Fixed
 
@@ -27,8 +27,8 @@ calculations.
    `solsys-ephem.c` inadvertently definining these functions when `BUILTIN_SOLSYS_EPHEM` was set to 1 (default) during
    the build, even though it was not supposed to.
    
- - #156: `obs_posvel()` called `geo_posvel()` with TDB instead of TT. It less than a 2 ms difference, so quite 
-   inconsequential.
+ - #156: `obs_posvel()` called `geo_posvel()` with TDB instead of TT. It less than a 2 ms difference, so not typically
+   signifficant, unless &lt;10-m level poitioning is required for Earth-orbiting satellites.
    
 ### Added
 
@@ -166,7 +166,7 @@ calculations.
    were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and 
    without it, the calculations for `place()` and `novas_sky_pos()` are significantly faster.
    
- - Modified `julian_date()` to add range checking for month and day arguments, and return NAN (with `errno` set to 
+ - Modified `julian_date()` to add range checking for month and day arguments, and return `NAN` (with `errno` set to 
    `EINVAL`) if the input values are invalid.
    
  - `julian_date()` and `cal_date()` now use astronomical calendar dates instead of the fixed Gregorian dates of 

@@ -117,15 +117,15 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
-<p>Changes for the upcoming feature release, expected around 1 May 2025. It brings many new convenience functions, such as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric calculations.</p>
+[1.3.0] - 2025-04-15</h1>
+<p>Feature release with many new convenience functions, such as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric calculations. In addition, the release brings various changes to improve performance.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
 <li>#116: <code><a class="el" href="target_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a></code> to update parallax to the recalculated value when precessing or changing epochs. (This was a NOVAS C 3.1 bug.)</li>
 <li>#128: <code><a class="el" href="target_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a></code> had insufficient string length checking of <code>out_id</code> parameter. Prior to the fix it checked for the longer object name size instead of the catalog name size. However, even if longer than expected input names were left uncaught, only the appropriatre number of characters were used &ndash; hence it broke nothing, only failed to remind the caller (with an error) when the supplied name was too long.</li>
 <li>#139: Legacy linking of external <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> provider modules was blocked by <code><a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a></code> inadvertently definining these functions when <code>BUILTIN_SOLSYS_EPHEM</code> was set to 1 (default) during the build, even though it was not supposed to.</li>
-<li>#156: <code><a class="el" href="observer_8c.html#a0e4e5ff7c37e6521ca75ae62aaf4050e">obs_posvel()</a></code> called <code><a class="el" href="earth_8c.html#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a></code> with TDB instead of TT. It less than a 2 ms difference, so quite inconsequential.</li>
+<li>#156: <code><a class="el" href="observer_8c.html#a0e4e5ff7c37e6521ca75ae62aaf4050e">obs_posvel()</a></code> called <code><a class="el" href="earth_8c.html#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a></code> with TDB instead of TT. It less than a 2 ms difference, so not typically signifficant, unless &lt;10-m level poitioning is required for Earth-orbiting satellites.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Added</h2>
@@ -173,7 +173,7 @@ Changed</h2>
 <li>#157: <code><a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a></code> to always calculate full polynomial expansion. There is little performance to gain from the truncation we used in the vicinity of J2000. No real change in the results.</li>
 <li>#159: Add caching to <code><a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a></code>. Just in case someone wants to call it repeatedly with the same parameters, it will be much much faster now.</li>
 <li>In reduced accuracy mode apply gravitational deflection for the Sun only. In prior versions, deflection corrections were applied for Earth too. However, these are below the mas-level accuracy promised in reduced accuracy mode, and without it, the calculations for <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> are significantly faster.</li>
-<li>Modified <code><a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> to add range checking for month and day arguments, and return NAN (with <code>errno</code> set to <code>EINVAL</code>) if the input values are invalid.</li>
+<li>Modified <code><a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> to add range checking for month and day arguments, and return <code>NAN</code> (with <code>errno</code> set to <code>EINVAL</code>) if the input values are invalid.</li>
 <li><code><a class="el" href="calendar_8c.html#a7cd85bc0a0248f84d399cbbce9fe9546">julian_date()</a></code> and <code><a class="el" href="calendar_8c.html#a044f1359abcf0a039ac6452a95729b5a">cal_date()</a></code> now use astronomical calendar dates instead of the fixed Gregorian dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.</li>
 <li><code><a class="el" href="system_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a></code> to cache matrices to/from J2000 separately.</li>
 <li>Use <code>SIZE_OF_OBJ_NAME</code> and <code>SIZE_OF_CAT_NAME</code> instead of <code>sizeof(obj-&gt;starname)</code> and <code>sizeof(obj-&gt;catalog)</code> internally for improved portability.</li>
