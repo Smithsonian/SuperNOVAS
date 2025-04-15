@@ -344,7 +344,7 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
 
   int sign = 0, d = 0, m = 0, nv = 0, nu = 0, nc = 0;
   double s = 0.0;
-  char *str;
+  char *str, ss[40] = {'\0'};
 
   if(tail)
     *tail = (char *) dms;
@@ -361,7 +361,7 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
   sign = parse_compass(dms, &nc);
   str = (char *) dms + nc;
 
-  if(sscanf(str, "%d%*[:d _\t]%d%n%*[:m' _\t]%lf%n", &d, &m, &nv, &s, &nv) < 2) {
+  if(sscanf(str, "%d%*[:d _\t]%d%n%*[:m' _\t]%n%39[-+0-9.]", &d, &m, &nv, &nv, ss) < 2) {
     novas_error(0, EINVAL, fn, "not in DMS format: '%s'", dms);
     return NAN;
   }
@@ -371,13 +371,16 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
     return NAN;
   }
 
+  if(ss[0]) {
+    char *end = ss;
+    s = strtod(ss, &end);
+    nv += (int) (end - ss);
+  }
+
   if(s < 0.0 || s >= 60.0) {
     novas_error(0, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
     return NAN;
   }
-
-  if(toupper(str[nv-1]) == 'E')
-    nv--; /// don't treat trailing 'E' as part of the number
 
   s = abs(d) + (m / 60.0) + (s / 3600.0);
 
@@ -524,8 +527,8 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
 
   double deg;
   enum novas_debug_mode debug = novas_get_debug_mode();
-  int sign, n = 0, nc = 0;
-  char *next;
+  int sign, nc = 0;
+  char *next, num[80] = {'\0'};
 
   if(tail)
     *tail = (char *) str;
@@ -545,12 +548,15 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
   sign = parse_compass(str, &nc);
   next = (char *) str + nc;
 
-  if(sscanf(next, "%lf%n", &deg, &n) > 0) {
-    char unit[9] = {'\0'};
-    int n1, nu = 0;
+  while(*next && isspace(*next)) next++;
 
-    if(toupper(next[n-1]) == 'E')       /// don't treat trailing 'E' as part of the number
-      n--;
+  if(sscanf(next, "%79[-+0-9.]", num) > 0) {
+    char unit[9] = {'\0'};
+    int n, n1, nu = 0;
+    char *end = num;
+
+    deg = strtod(num, &end);
+    n = end - num;
 
     // Skip underscores and white spaces
     for(n1 = n; next[n1] && (next[n1] == '_' || isspace(next[n1]));) n1++;
