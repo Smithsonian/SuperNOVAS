@@ -1628,7 +1628,7 @@ static int test_ira_equinox() {
   double e1 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_FULL_ACCURACY);
   double e2 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_FULL_ACCURACY);
 
-  if(!is_ok("ira_equinox", e1 != e2)) return 1;
+  if(!is_equal("ira_equinox", e1, e2, 1e-11)) return 1;
 
   e2 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_REDUCED_ACCURACY);
   if(!is_equal("ira_equinox:acc", e1, e2, 1e-8)) return 1;

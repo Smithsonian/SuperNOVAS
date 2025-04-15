@@ -523,7 +523,9 @@ double d_light(const double *pos_src, const double *pos_body) {
  */
 double novas_sep(double lon1, double lat1, double lon2, double lat2) {
   double c = sin(lat1 * DEGREE) * sin(lat2 * DEGREE) + cos(lat1 * DEGREE) * cos(lat2 * DEGREE) * cos((lon1 - lon2) * DEGREE);
-  return atan2(sqrt(1.0 - c * c), c) / DEGREE;
+  double c2 = c * c;
+  // Ensure that argument to sqrt() is not negative given rounding errors.
+  return atan2(c2 < 1.0 ? sqrt(1.0 - c2) : 0.0, c) / DEGREE;
 }
 
 /**
