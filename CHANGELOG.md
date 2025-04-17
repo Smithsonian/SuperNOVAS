@@ -18,6 +18,8 @@ Upcoming bug fix release, expected around 1 August 2025.
 ### Changed
 
  - #166: Improved detection of invalid seconds in `parse_degrees()`.
+ 
+ - Corrections and edits to API documentation.
 
  
 
