@@ -47,8 +47,16 @@ static int check_nan(const char *func, double value) {
 }
 
 static int test_make_on_surface() {
+  int n = 0;
+
+  on_surface loc = ON_SURFACE_INIT;
+
   if(check("make_on_surface", -1, make_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, NULL))) return 1;
-  return 0;
+  if(check("make_on_surface:temp:lo", -1, make_on_surface(0.0, 0.0, 0.0, -120.1, 0.0, &loc))) n++;
+  if(check("make_on_surface:temp:hi", -1, make_on_surface(0.0, 0.0, 0.0, 70.1, 0.0, &loc))) n++;
+  if(check("make_on_surface:pressure:lo", -1, make_on_surface(0.0, 0.0, 0.0, 0.0, -0.1, &loc))) n++;
+  if(check("make_on_surface:pressure:hi", -1, make_on_surface(0.0, 0.0, 0.0, 0.0, 1200.1, &loc))) n++;
+  return n;
 }
 
 static int test_make_in_space() {
