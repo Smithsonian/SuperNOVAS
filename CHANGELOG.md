@@ -19,6 +19,8 @@ Upcoming bug fix release, expected around 1 August 2025.
 
  - #166: Improved detection of invalid seconds in `parse_degrees()`.
  
+ - #169: `novas_parse_degrees()` to support parsing values in exponential notation also, e.g. `1.23E2`, `1.23E2W` etc.
+ 
  - Corrections and edits to API documentation.
 
  

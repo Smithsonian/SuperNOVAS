@@ -556,9 +556,19 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
 
     deg = strtod(num, &end);
     n = end - num;
+
     if(n > 0) {
       char unit[9] = {'\0'};
       int n1, nu = 0;
+
+      // Check if exponential notation.
+      if(toupper(next[n]) == 'E' && next[n+1] && !isspace(next[n+1]) && next[n+1] != '_') {
+        int exp = strtol(&next[n+1], &end, 10);
+        if(end > &next[n+1]) {
+          deg *= pow(10.0, exp);
+          n = end - next;
+        }
+      }
 
       // Skip underscores and white spaces
       for(n1 = n; next[n1] && (next[n1] == '_' || isspace(next[n1]));) n1++;
