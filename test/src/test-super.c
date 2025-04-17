@@ -1626,11 +1626,8 @@ static int test_enable_earth_sun_calc_hp() {
 
 static int test_ira_equinox() {
   double e1 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_FULL_ACCURACY);
-  double e2 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_FULL_ACCURACY);
+  double e2 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_REDUCED_ACCURACY);
 
-  if(!is_equal("ira_equinox", e1, e2, 1e-11)) return 1;
-
-  e2 = ira_equinox(tdb, NOVAS_MEAN_EQUINOX, NOVAS_REDUCED_ACCURACY);
   if(!is_equal("ira_equinox:acc", e1, e2, 1e-8)) return 1;
 
   e2 = ira_equinox(tdb, NOVAS_TRUE_EQUINOX, NOVAS_REDUCED_ACCURACY);
@@ -1719,7 +1716,6 @@ static int test_grav_undef() {
 
   if(!is_ok("grav_invdef:def", grav_def(tdb, NOVAS_OBSERVER_AT_GEOCENTER, NOVAS_REDUCED_ACCURACY, pos_src, pos_obs, pos_app))) return 1;
   if(!is_ok("grav_invdef:undef", grav_undef(tdb, NOVAS_REDUCED_ACCURACY, pos_app, pos_obs, pos0))) return 1;
-
   if(!is_ok("grav_invdef:check", check_equal_pos(pos_src, pos0, 1e-9))) return 1;
 
   memset(pos_app, 0, sizeof(pos_app));

@@ -83,8 +83,8 @@ double mean_obliq(double jd_tdb) {
  * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
- * @param equinox     NOVAS_MEAN_EQUINOX (0) or NOVAS_TRUE_EQUINOX (1; or non-zero)
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param equinox     NOVAS_MEAN_EQUINOX (0) or NOVAS_TRUE_EQUINOX (1, or non-zero)
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1, or non-zero)
  * @return            [h]  Intermediate right ascension of the equinox, in hours (+ or -).
  *                    If 'equinox' = 1 (i.e true equinox), then the returned value is
  *                    the equation of the origins.
@@ -93,23 +93,31 @@ double mean_obliq(double jd_tdb) {
  * @sa gcrs_to_cirs()
  */
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy) {
-  double t, eqeq = 0.0, prec_ra;
+  // Compute time in Julian centuries from J2000
+  double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
-  // Fail-safe accuracy
-  if(accuracy != NOVAS_REDUCED_ACCURACY)
-    accuracy = NOVAS_FULL_ACCURACY;
+  // Precession in RA in arcseconds taken from the reference.
+  double prec_ra = 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
+
+  // arcsec -> seconds of time
+  prec_ra /= 15.0;
 
   // For the true equinox, obtain the equation of the equinoxes in time
   // seconds, which includes the 'complementary terms'.
-  if(equinox == NOVAS_TRUE_EQUINOX)
+  if(equinox == NOVAS_TRUE_EQUINOX) {
+    double eqeq = 0.0;
+
+    // Fail-safe accuracy
+    if(accuracy != NOVAS_REDUCED_ACCURACY)
+      accuracy = NOVAS_FULL_ACCURACY;
+
+    // Add equation of equinoxes.
     e_tilt(jd_tdb, accuracy, NULL, NULL, &eqeq, NULL, NULL);
+    prec_ra += eqeq;
+  }
 
-  // Compute time in Julian centuries from J2000
-  t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
-
-  // Precession in RA in arcseconds taken from the reference.
-  prec_ra = 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
-  return -(prec_ra / 15.0 + eqeq) / 3600.0;
+  // seconds -> hours
+  return -prec_ra / 3600.0;
 }
 
 /**

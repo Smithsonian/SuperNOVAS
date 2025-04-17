@@ -203,11 +203,11 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] mobl      [deg] Mean obliquity of the ecliptic in degrees. It may be NULL if not required.
- * @param[out] tobl      [deg] True obliquity of the ecliptic in degrees. It may be NULL if not required.
- * @param[out] ee        [deg] Equation of the equinoxes in seconds of time. It may be NULL if not required.
- * @param[out] dpsi      [arcsec] Nutation in longitude in arcseconds. It may be NULL if not required.
- * @param[out] deps      [arcsec] Nutation in obliquity in arcseconds. It may be NULL if not required.
+ * @param[out] mobl      [deg] Mean obliquity of the ecliptic. It may be NULL if not required.
+ * @param[out] tobl      [deg] True obliquity of the ecliptic. It may be NULL if not required.
+ * @param[out] ee        [s] Equation of the equinoxes in seconds of time. It may be NULL if not required.
+ * @param[out] dpsi      [arcsec] Nutation in longitude. It may be NULL if not required.
+ * @param[out] deps      [arcsec] Nutation in obliquity. It may be NULL if not required.
  *
  * @return          0 if successful, or -1 if the accuracy argument is invalid
  *
