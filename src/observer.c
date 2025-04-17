@@ -166,12 +166,13 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  *
  * @param latitude      [deg] Geodetic (ITRS) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (ITRS) longitude in degrees; east positive.
- * @param height        [m] Altitude over se level of the observer (meters).
- * @param temperature   [C] Temperature (degrees Celsius).
- * @param pressure      [mbar] Atmospheric pressure (millibars).
+ * @param height        [m] Altitude over sea level of the observer (meters).
+ * @param temperature   [C] Temperature (degrees Celsius) [-120:70].
+ * @param pressure      [mbar] Atmospheric pressure (millibars) [0:1200].
  * @param[out] loc      Pointer to Earth location data structure to populate.
  *
- * @return          0 if successful, or -1 if the output argument is NULL.
+ * @return          0 if successful, or -1 if the output argument is NULL, or if the temperature
+ *                  or pressure values are impossible for an Earth based observer.
  *
  * @sa make_observer_on_surface()
  * @sa make_in_space()
@@ -180,8 +181,18 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  */
 int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
         on_surface *restrict loc) {
+  static const char *fn = "make_on_surface";
+
   if(!loc)
-    return novas_error(-1, EINVAL, "make_on_surface", "NULL output location pointer");
+    return novas_error(-1, EINVAL, fn, "NULL output location pointer");
+
+  // mesosphere can be -100C, highest recorded atmospheric temperature is 56.7C...
+  if(temperature < -120.0 || temperature > 70.0)
+    return novas_error(-1, EINVAL, fn, "impossible ambient temperature: %g celsius", temperature);
+
+  // highest on record is 1083.8 mbar...
+  if(pressure < 0.0 || pressure > 1200.0)
+    return novas_error(-1, EINVAL, fn, "impossible atmospheric pressure: %g mbar", pressure);
 
   loc->latitude = latitude;
   loc->longitude = longitude;

@@ -21,6 +21,9 @@ Upcoming bug fix release, expected around 1 August 2025.
  
  - #169: `novas_parse_degrees()` to support parsing values in exponential notation also, e.g. `1.23E2`, `1.23E2W` etc.
  
+ - #170: `make_on_surface()` to validate temperature and pressure values, and return -1 (with `errno` set to `EINVAL`) if
+   the supplied values are outside of the sensible range.
+ 
  - Corrections and edits to API documentation.
 
  
