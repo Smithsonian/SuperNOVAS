@@ -2727,6 +2727,21 @@ static int test_parse_degrees() {
   if(!is_equal("parse_degrees:W_", novas_parse_degrees("179.9999999W_", &tail), -degs, 1e-6)) n++;
   if(!is_equal("parse_degrees:W,", novas_parse_degrees("179.9999999W,", &tail), -degs, 1e-6)) n++;
 
+  if(!is_equal("parse_degrees:W,", novas_parse_degrees("179.9999999E0W", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:^W+degree+S:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:W,", novas_parse_degrees("179.9999999e0W", &tail), -degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:^W+degree+S:tail", *tail, 0, 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:W,", novas_parse_degrees("179.9999999E?W", &tail), degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:^W+degree+S:tail", *tail, '?', 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:W,", novas_parse_degrees("179.9999999E ", &tail), degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:^W+degree+S:tail", *tail, ' ', 1e-6)) n++;
+
+  if(!is_equal("parse_degrees:W,", novas_parse_degrees("179.9999999E_", &tail), degs, 1e-6)) n++;
+  if(!is_equal("parse_degrees:^W+degree+S:tail", *tail, '_', 1e-6)) n++;
+
   return n;
 }
 
