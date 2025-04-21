@@ -24,8 +24,17 @@ Upcoming bug fix release, expected around 1 August 2025.
  - #170: `make_on_surface()` to validate temperature and pressure values, and return -1 (with `errno` set to `EINVAL`) if
    the supplied values are outside of the sensible range.
  
+ - #171: Cache `nutation_angles()` instread of `e_tilt()` to improve performance in more usage scenarios. (See updated
+   benchmarks).
+   
+ - #171: Moved `precession()`, `nutation()`, and `nutation_angles()` to `equinox.c`.
+ 
  - Corrections and edits to API documentation.
 
+### Deprecated
+
+ - Deprecated `ee_ct()` and `ira_equinox()` functions. Both are meant for internal use only, and need not be exposed to
+   users in general.
  
 
 ## [1.3.0] - 2025-04-15

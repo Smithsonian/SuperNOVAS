@@ -218,35 +218,24 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  */
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
         double *restrict ee, double *restrict dpsi, double *restrict deps) {
-  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-  static THREAD_LOCAL double jd_last = NAN;
-  static THREAD_LOCAL double d_psi, d_eps, mean_ob, true_ob, eqeq;
+  double t, d_psi = NAN, d_eps = NAN, mean_ob, true_ob, eqeq;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
 
-  // Compute the nutation angles (arcseconds) if the input Julian date
-  // is significantly different from the last Julian date, or the
-  // accuracy mode has changed from the last call.
-  if(!novas_time_equals(jd_tdb, jd_last) || (accuracy != acc_last)) {
-    // Compute time in Julian centuries from epoch J2000.0.
-    const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
+  // Compute time in Julian centuries from epoch J2000.0.
+  t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
-    nutation_angles(t, accuracy, &d_psi, &d_eps);
+  nutation_angles(t, accuracy, &d_psi, &d_eps);
 
-    // Compute mean obliquity of the ecliptic in degrees.
-    mean_ob = mean_obliq(jd_tdb) / 3600.0;
+  // Compute mean obliquity of the ecliptic in degrees.
+  mean_ob = mean_obliq(jd_tdb) / 3600.0;
 
-    // Obtain complementary terms for equation of the equinoxes in arcseconds.
-    eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
+  // Obtain complementary terms for equation of the equinoxes in arcseconds.
+  eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
 
-    // Compute true obliquity of the ecliptic in degrees.
-    true_ob = mean_ob + d_eps / 3600.0;
-
-    // Reset the values of the last Julian date and last mode.
-    jd_last = jd_tdb;
-    acc_last = accuracy;
-  }
+  // Compute true obliquity of the ecliptic in degrees.
+  true_ob = mean_ob + d_eps / 3600.0;
 
   // Set output values.
   if(dpsi)
@@ -772,3 +761,6 @@ int limb_angle(const double *pos_src, const double *pos_obs, double *restrict li
 
   return 0;
 }
+
+
+

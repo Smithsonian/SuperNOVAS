@@ -1566,13 +1566,6 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
 // in system.c
 int frame_tie(const double *in, enum novas_frametie_direction direction, double *out);
 
-short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out);
-
-int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in,
-        double *out);
-
-int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps);
-
 short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg,
         double *restrict ra, double *restrict dec);
 
@@ -1611,6 +1604,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2);
 
 // in equinox.c
+
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy);
 
 int fund_args(double t, novas_delaunay_args *restrict a);
@@ -1622,6 +1616,13 @@ double accum_prec(double t);
 double mean_obliq(double jd_tdb);
 
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy);
+
+short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out);
+
+int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in,
+        double *out);
+
+int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps);
 
 // in earth.c
 short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
