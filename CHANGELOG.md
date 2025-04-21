@@ -26,6 +26,8 @@ Upcoming bug fix release, expected around 1 August 2025.
  
  - #171: Cache `nutation_angles()` instread of `e_tilt()` to improve performance in more usage scenarios. (See updated
    benchmarks).
+   
+ - #171: Moved `precession()`, `nutation()`, and `nutation_angles()` to `equinox.c`.
  
  - Corrections and edits to API documentation.
 
