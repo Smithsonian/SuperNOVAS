@@ -91,6 +91,9 @@ double mean_obliq(double jd_tdb) {
  *
  * @sa cio_location()
  * @sa gcrs_to_cirs()
+ *
+ * @deprecated      (<i>for internal use</i>) There is no good reason why this function should
+ *                  be exposed to users. It is intended only for `cio_location()` internally.
  */
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy) {
   // Compute time in Julian centuries from J2000
@@ -161,6 +164,10 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @sa cel_pole()
  * @sa nutation()
  * @sa sidereal_time()
+ *
+ * @deprecated (<i>for intrernal use</i>) There is no good reason why this function should
+ *             be exposed to users of the library. It is intended only for use by `e_tilt()`
+ *             internally.
  */
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) {
   static THREAD_LOCAL double last_tt = NAN, last_ee;

@@ -218,7 +218,7 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  */
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
         double *restrict ee, double *restrict dpsi, double *restrict deps) {
-  double t, d_psi, d_eps, mean_ob, true_ob, eqeq;
+  double t, d_psi = NAN, d_eps = NAN, mean_ob, true_ob, eqeq;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
