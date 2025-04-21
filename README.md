@@ -158,8 +158,6 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
     
  - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` has a number of issues that produce inaccurate results. 
    The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.
-   
- - [__v1.3__] `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs.
  
    
 -----------------------------------------------------------------------------
