@@ -790,6 +790,7 @@ int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict 
  * @sa novas_standard_refraction()
  * @sa novas_optical_refraction()
  * @sa novas_radio_refraction()
+ * @sa novas_wave_refraction()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -881,6 +882,7 @@ int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_sys
  * @sa novas_standard_refraction()
  * @sa novas_optical_refraction()
  * @sa novas_radio_refraction()
+ * @sa novas_wave_refraction()
  *
  * @since 1.1
  * @author Attila Kovacs

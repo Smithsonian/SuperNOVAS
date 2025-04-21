@@ -1045,8 +1045,10 @@ before that level of accuracy is reached.
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
     using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
     Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
-    radio refraction model is included as of version 1.1 also. In any case you may want to skip the refraction 
-    corrections offered in this library, and instead implement your own as appropriate (or not at all).
+    radio refraction model is included as of version 1.1 also. As of v1.4.0 we also offer our implementation of the 
+    wavelength-dependent IAU refraction model based on the SOFA `iauRefco()` function. In any case, you may want to 
+    skip the refraction corrections offered in this library, and instead implement your own as appropriate (or not at 
+    all).
   
 
 -----------------------------------------------------------------------------
