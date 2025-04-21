@@ -3688,6 +3688,21 @@ static int test_print_dms() {
   return n;
 }
 
+static int test_time_lst() {
+  novas_timespec t = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame f = NOVAS_FRAME_INIT;
+
+  if(!is_ok("time_lst:set_time", novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &t))) return 1;
+  if(!is_ok("time_lst:make_observer_on_surface", make_observer_on_surface(30.0, 55.0, 0.0, 0.0, 0.0, &obs))) return 1;
+  if(!is_ok("time_lst:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &t, 0.0, 0.0, &f))) return 1;
+
+  if(!is_equal("time_lst:check", novas_time_lst(&t, obs.on_surf.longitude, f.accuracy),
+          novas_frame_lst(&f), 1e-9)) return 1;
+
+  return 0;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -3800,6 +3815,8 @@ int main(int argc, char *argv[]) {
 
   if(test_print_hms()) n++;
   if(test_print_dms()) n++;
+
+  if(test_time_lst()) n++;
 
   n += test_dates();
 

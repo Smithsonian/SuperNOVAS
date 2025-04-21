@@ -285,6 +285,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
  *                    invalid 2 if 'method' is invalid, or else 10--30 with 10 + the error from
  *                    cio_location().
  *
+ * @sa novas_time_gst()
  * @sa era()
  * @sa tod_to_itrs()
  * @sa itrs_to_tod()

@@ -1366,4 +1366,58 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
   return scale;
 }
 
+/**
+ * Returns the Greenwich (apparent) Sidereal Time (GST/GaST) for a given astronomical time specification.
+ * If you need mean sidereal time (GMST), you should use sidereal_time() instead.
+ *
+ * @param time      The astronomoical time specification.
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
+ * @return          [h] The Greenwich apparent Sidereal Time (GST / GaST) in the [0:24) hour range, or else
+ *                  NAN if there was an error (`errno` will indicate the type of error).
+ *
+ * @since 1.4
+ * @author Attila Kovacs
+ *
+ * @sa novas_time_lst()
+ * @sa sidereal_time()
+ * @sa novas_set_time()
+ */
+double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy accuracy) {
+  const char *fn = "novas_time_gst";
 
+  double fjd_ut1, gst = NAN;
+  long ijd_ut1 = 0L;
+
+  fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
+  if(isnan(fjd_ut1))
+    return novas_trace_nan(fn);
+
+  if(sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gst) != 0)
+    return novas_trace_nan(fn);
+
+  return gst;
+}
+
+/**
+ * Returns the Local (apparent) Sidereal Time (LST/LaST) for a given astronomical time specification and
+ * observer location.
+ *
+ * @param time      The astronomoical time specification.
+ * @param lon       [deg] The geodetic longitude of the observer.
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
+ * @return          [h] The Local apparent Sidereal Time (LST / LaST) in the [0:24) hour range, or else
+ *                  NAN if there was an error (`errno` will indicate the type of error).
+ *
+ * @since 1.4
+ * @author Attila Kovacs
+ *
+ * @sa novas_frame_lst()
+ * @sa novas_set_time()
+ */
+double novas_time_lst(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy) {
+  double st = novas_time_gst(time, accuracy);
+  if(isnan(st))
+    return novas_trace_nan("novas_time_lst");
+  st = remainder(st + lon / 15.0, DAY_HOURS);
+  return st < 0.0 ? st + DAY_HOURS : st;
+}
