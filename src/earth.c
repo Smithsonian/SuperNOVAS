@@ -218,35 +218,24 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  */
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
         double *restrict ee, double *restrict dpsi, double *restrict deps) {
-  static THREAD_LOCAL enum novas_accuracy acc_last = -1;
-  static THREAD_LOCAL double jd_last = NAN;
-  static THREAD_LOCAL double d_psi, d_eps, mean_ob, true_ob, eqeq;
+  double t, d_psi, d_eps, mean_ob, true_ob, eqeq;
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
 
-  // Compute the nutation angles (arcseconds) if the input Julian date
-  // is significantly different from the last Julian date, or the
-  // accuracy mode has changed from the last call.
-  if(!novas_time_equals(jd_tdb, jd_last) || (accuracy != acc_last)) {
-    // Compute time in Julian centuries from epoch J2000.0.
-    const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
+  // Compute time in Julian centuries from epoch J2000.0.
+  t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
-    nutation_angles(t, accuracy, &d_psi, &d_eps);
+  nutation_angles(t, accuracy, &d_psi, &d_eps);
 
-    // Compute mean obliquity of the ecliptic in degrees.
-    mean_ob = mean_obliq(jd_tdb) / 3600.0;
+  // Compute mean obliquity of the ecliptic in degrees.
+  mean_ob = mean_obliq(jd_tdb) / 3600.0;
 
-    // Obtain complementary terms for equation of the equinoxes in arcseconds.
-    eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
+  // Obtain complementary terms for equation of the equinoxes in arcseconds.
+  eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
 
-    // Compute true obliquity of the ecliptic in degrees.
-    true_ob = mean_ob + d_eps / 3600.0;
-
-    // Reset the values of the last Julian date and last mode.
-    jd_last = jd_tdb;
-    acc_last = accuracy;
-  }
+  // Compute true obliquity of the ecliptic in degrees.
+  true_ob = mean_ob + d_eps / 3600.0;
 
   // Set output values.
   if(dpsi)
@@ -772,3 +761,154 @@ int limb_angle(const double *pos_src, const double *pos_obs, double *restrict li
 
   return 0;
 }
+
+/**
+ * Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true
+ * equator and equinox of epoch. Inverse transformation may be applied by setting flag
+ * 'direction'.
+ *
+ * This is the old (pre IAU 2006) method of nutation calculation. If you follow the now
+ * standard IAU 2000/2006 methodology you will want to use nutation_angles() instead.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Explanatory Supplement To The Astronomical Almanac, pp. 114-115.</li>
+ * </ol>
+ *
+ *
+ * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
+ * @param direction   NUTATE_MEAN_TO_TRUE (0) or NUTATE_TRUE_TO_MEAN (-1; or non-zero)
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param in          Position 3-vector, geocentric equatorial rectangular coordinates,
+ *                    referred to mean equator and equinox of epoch.
+ * @param[out] out    Position vector, geocentric equatorial rectangular coordinates,
+ *                    referred to true equator and equinox of epoch. It can be the same
+ *                    as the input position.
+ *
+ * @return            0 if successful, or -1 if one of the vector arguments is NULL.
+ *
+ * @sa nutation_angles()
+ * @sa tt2tdb()
+ * @sa NOVAS_TOD
+ */
+int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out) {
+  double oblm, oblt, psi;
+  double cm, sm, ct, st, cp, sp;
+  double xx, yx, zx, xy, yy, zy, xz, yz, zz;
+
+  if(!in || !out)
+    return novas_error(-1, EINVAL, "nutation", "NULL input or output 3-vector: in=%p, out=%p", in, out);
+
+  // Call 'e_tilt' to get the obliquity and nutation angles.
+  prop_error("nutation", e_tilt(jd_tdb, accuracy, &oblm, &oblt, NULL, &psi, NULL), 0);
+
+  oblm *= DEGREE;
+  oblt *= DEGREE;
+  psi *= ARCSEC;
+
+  cm = cos(oblm);
+  sm = sin(oblm);
+  ct = cos(oblt);
+  st = sin(oblt);
+  cp = cos(psi);
+  sp = sin(psi);
+
+  // Nutation rotation matrix follows.
+  xx = cp;
+  yx = -sp * cm;
+  zx = -sp * sm;
+  xy = sp * ct;
+  yy = cp * cm * ct + sm * st;
+  zy = cp * sm * ct - cm * st;
+  xz = sp * st;
+  yz = cp * cm * st - sm * ct;
+  zz = cp * sm * st + cm * ct;
+
+  if(direction == NUTATE_MEAN_TO_TRUE) {
+    const double x = in[0], y = in[1], z = in[2];
+    // Perform rotation.
+    out[0] = xx * x + yx * y + zx * z;
+    out[1] = xy * x + yy * y + zy * z;
+    out[2] = xz * x + yz * y + zz * z;
+  }
+  else {
+    const double x = in[0], y = in[1], z = in[2];
+    // Perform inverse rotation.
+    out[0] = xx * x + xy * y + xz * z;
+    out[1] = yx * x + yy * y + yz * z;
+    out[2] = zx * x + zy * y + zz * z;
+  }
+
+  return 0;
+}
+
+/**
+ * Returns the values for nutation in longitude and nutation in obliquity for a given TDB
+ * Julian date.  The nutation model selected depends upon the input value of 'accuracy'. See
+ * notes below for important details.
+ *
+ * This function selects the nutation model depending first upon the input value of 'accuracy'.
+ * If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used. Otherwise
+ * the model set by set_nutation_lp_provider() is used, or else the default nu2000k().
+ *
+ * See the prologs of the nutation functions in file 'nutation.c' for details concerning the
+ * models.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * </ol>
+ *
+ * @param t           [cy] TDB time in Julian centuries since J2000.0
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] dpsi   [arcsec] Nutation in longitude in arcseconds.
+ * @param[out] deps   [arcsec] Nutation in obliquity in arcseconds.
+ *
+ * @return            0 if successful, or -1 if the output pointer arguments are NULL
+ *
+ * @sa set_nutation_lp_provider()
+ * @sa nutation()
+ * @sa iau2000b()
+ * @sa nu2000k()
+ * @sa cio_basis()
+ * @sa NOVAS_CIRS
+ * @sa NOVAS_JD_J2000
+ */
+int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps) {
+  static THREAD_LOCAL double last_t = NAN, last_dpsi, last_deps;
+  static THREAD_LOCAL enum novas_accuracy last_acc = -1;
+
+  if(!dpsi || !deps) {
+    if(dpsi)
+      *dpsi = NAN;
+    if(deps)
+      *deps = NAN;
+
+    return novas_error(-1, EINVAL, "nutation_angles", "NULL output pointer: dspi=%p, deps=%p", dpsi, deps);
+  }
+
+  if(!(fabs(t - last_t) < 1e-12) || (accuracy != last_acc)) {
+    if(accuracy == NOVAS_FULL_ACCURACY) {
+      // High accuracy mode -- use IAU 2000A.
+      iau2000a(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
+    }
+    else {
+      // Low accuracy mode -- model depends upon value of 'low_acc_choice'.
+      novas_nutation_provider nutate_call = get_nutation_lp_provider();
+      nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
+    }
+
+    // Convert output to arcseconds.
+    last_dpsi /= ARCSEC;
+    last_deps /= ARCSEC;
+
+    last_acc = accuracy;
+    last_t = t;
+  }
+
+  *dpsi = last_dpsi;
+  *deps = last_deps;
+
+  return 0;
+}
+

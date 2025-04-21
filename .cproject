@@ -27,6 +27,7 @@
 									<listOptionValue builtIn="false" value="THREAD_LOCAL=__thread"/>
 									<listOptionValue builtIn="false" value="USE_CSPICE=1"/>
 									<listOptionValue builtIn="false" value="USE_CALCEPH=1"/>
+									<listOptionValue builtIn="false" value="BUILTIN_SOLSYS3=1"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="gnu.c.compiler.option.include.paths.1037731090" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1061272597" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>

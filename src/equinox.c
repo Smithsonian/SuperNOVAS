@@ -414,6 +414,150 @@ double planet_lon(double t, enum novas_planet planet) {
   return remainder(lon, TWOPI);
 }
 
+/**
+ * Precesses equatorial rectangular coordinates from one epoch to another. Unlike the original
+ * NOVAS routine, this routine works for any pairing of the time arguments.
+ *
+ * This function calculates precession for the old (pre IAU 2000) methodology. Its main use
+ * for NOVAS users is to allow converting older catalog coordinates e.g. to J2000 coordinates,
+ * which then can be converted to the now standard ICRS system via frame_tie().
+ *
+ * NOTE:
+ * <ol>
+ * <li>Unlike the original NOVAS C 3.1 version, this one does not require that one
+ *     of the time arguments must be J2000. You can precess from any date to
+ *     any other date, and the intermediate epoch of J2000 will be handled internally
+ *     as needed.</li>
+ *
+ * <li>This function caches the results of the last calculation in case it may be re-used at
+ *     no extra computational cost for the next call.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Explanatory Supplement To The Astronomical Almanac, pp. 103-104.</li>
+ * <li>Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586.</li>
+ * <li>Hilton, J. L. et al. (2006), IAU WG report, Celest. Mech., 94, pp. 351-367.</li>
+ * </ol>
+ *
+ * @param jd_tdb_in   [day] Barycentric Dynamic Time (TDB) based Julian date of the input
+ *                    epoch
+ * @param in          Position 3-vector, geocentric equatorial rectangular coordinates,
+ *                    referred to mean dynamical equator and equinox of the initial epoch.
+ * @param jd_tdb_out  [day] Barycentric Dynamic Time (TDB) based Julian date of the output
+ *                    epoch
+ * @param[out] out    Position 3-vector, geocentric equatorial rectangular coordinates,
+ *                    referred to mean dynamical equator and equinox of the final epoch.
+ *                    It can be the same vector as the input.
+ * @return            0 if successful, or -1 if either of the position vectors is NULL.
+ *
+ * @sa nutation()
+ * @sa frame_tie()
+ * @sa novas_epoch()
+ * @sa tt2tdb()
+ * @sa cio_basis()
+ * @sa NOVAS_TOD
+ * @sa NOVAS_JD_J2000
+ * @sa NOVAS_JD_B1950
+ * @sa NOVAS_JD_B1900
+ */
+short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
+  static THREAD_LOCAL double djd_last[2] = { NAN, NAN };
+  static THREAD_LOCAL double xx[2], yx[2], zx[2], xy[2], yy[2], zy[2], xz[2], yz[2], zz[2];
+
+  double t;
+  int i = 0;
+
+  if(!in || !out)
+    return novas_error(-1, EINVAL, "precession", "NULL input or output 3-vector: in=%p, out=%p", in, out);
+
+  if(jd_tdb_in == jd_tdb_out) {
+    if(out != in)
+      memcpy(out, in, XYZ_VECTOR_SIZE);
+    return 0;
+  }
+
+  // Check to be sure that either 'jd_tdb1' or 'jd_tdb2' is equal to JD_J2000.
+  if(!novas_time_equals(jd_tdb_in, JD_J2000) && !novas_time_equals(jd_tdb_out, JD_J2000)) {
+    // Do the precession in two steps...
+    precession(jd_tdb_in, in, JD_J2000, out);
+    precession(JD_J2000, out, jd_tdb_out, out);
+    return 0;
+  }
+
+  // 't' is time in TDB centuries between the two epochs.
+  t = (jd_tdb_out - jd_tdb_in);
+  if(jd_tdb_out == JD_J2000) {
+    t = -t;
+    i = 1;
+  }
+
+  if(!novas_time_equals(t, djd_last[i])) {
+    double psia, omegaa, chia, sa, ca, sb, cb, sc, cc, sd, cd, t1, t2;
+    double eps0 = 84381.406;
+
+    djd_last[i] = t;
+
+    // Now change t to Julian centuries
+    t /= JULIAN_CENTURY_DAYS;
+
+    // Numerical coefficients of psi_a, omega_a, and chi_a, along with
+    // epsilon_0, the obliquity at J2000.0, are 4-angle formulation from
+    // Capitaine et al. (2003), eqs. (4), (37), & (39).
+    psia = ((((-0.0000000951 * t + 0.000132851) * t - 0.00114045) * t - 1.0790069) * t + 5038.481507) * t;
+    omegaa = ((((+0.0000003337 * t - 0.000000467) * t - 0.00772503) * t + 0.0512623) * t - 0.025754) * t + eps0;
+    chia = ((((-0.0000000560 * t + 0.000170663) * t - 0.00121197) * t - 2.3814292) * t + 10.556403) * t;
+
+    eps0 *= ARCSEC;
+    psia *= ARCSEC;
+    omegaa *= ARCSEC;
+    chia *= ARCSEC;
+
+    sa = sin(eps0);
+    ca = cos(eps0);
+    sb = sin(-psia);
+    cb = cos(-psia);
+    sc = sin(-omegaa);
+    cc = cos(-omegaa);
+    sd = sin(chia);
+    cd = cos(chia);
+
+    // Compute elements of precession rotation matrix equivalent to
+    // R3(chi_a) R1(-omega_a) R3(-psi_a) R1(epsilon_0).
+    t1 = cd * sb + sd * cc * cb;
+    t2 = sd * sc;
+    xx[i] = cd * cb - sb * sd * cc;
+    yx[i] = ca * t1 - sa * t2;
+    zx[i] = sa * t1 + ca * t2;
+
+    t1 = cd * cc * cb - sd * sb;
+    t2 = cd * sc;
+    xy[i] = -sd * cb - sb * cd * cc;
+    yy[i] = ca * t1 - sa * t2;
+    zy[i] = sa * t1 + ca * t2;
+
+    xz[i] = sb * sc;
+    yz[i] = -sc * cb * ca - sa * cc;
+    zz[i] = -sc * cb * sa + cc * ca;
+  }
+
+  if(jd_tdb_out == JD_J2000) {
+    const double x = in[0], y = in[1], z = in[2];
+    // Perform rotation from epoch to J2000.0.
+    out[0] = xx[1] * x + xy[1] * y + xz[1] * z;
+    out[1] = yx[1] * x + yy[1] * y + yz[1] * z;
+    out[2] = zx[1] * x + zy[1] * y + zz[1] * z;
+  }
+  else {
+    const double x = in[0], y = in[1], z = in[2];
+    // Perform rotation from J2000.0 to epoch.
+    out[0] = xx[0] * x + yx[0] * y + zx[0] * z;
+    out[1] = xy[0] * x + yy[0] * y + zy[0] * z;
+    out[2] = xz[0] * x + yz[0] * y + zz[0] * z;
+  }
+
+  return 0;
+}
 
 
 
