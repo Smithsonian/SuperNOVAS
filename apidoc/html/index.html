@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <p>SuperNOVAS is fast, providing 3&ndash;5 orders of magnitude faster position calculations than <a href="https://www.astropy.org/">astropy</a> 7.0.0 in a single thread (see the <a class="el" href="index.html#benchmarks">benchmarks</a>), and its performance will scales further with the number of CPUs when calculations are performed in parallel threads.ewo</p>
 <p>SuperNOVAS is entirely free to use without licensing restrictions. Its source code is compatible with the C99 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.</p>
 <p>This document has been updated for the <code>v1.3</code> and later releases.</p>
-<h2><a class="anchor" id="autotoc_md36"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Table of Contents</h2>
 <ul>
 <li><a class="el" href="index.html#introduction">Introduction</a></li>
@@ -143,7 +143,7 @@ Table of Contents</h2>
 </ul>
 <hr  />
 <p><a class="anchor" id="introduction"></a> </p>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md42"></a>
 Introduction</h2>
 <p>SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software (<a href="https://aa.usno.navy.mil/software/novas_info">NOVAS</a>). (It is not related to the separate NOVA / libnova library.)</p>
 <p>The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:</p>
@@ -161,7 +161,7 @@ Introduction</h2>
 <p>SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of the NOVAS C library, if new releases become available.</p>
 <p>SuperNOVAS is maintained by <a href="https://github.com/attipaci">Attila Kovács</a> at the Center for Astrophysics | Harvard &amp; Smithsonian, and it is available through the <a href="https://github.com/Smithsonian/SuperNOVAS">Smithsonian/SuperNOVAS</a> repository on GitHub.</p>
 <p>Outside contributions are very welcome. See <a href="https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md">how you can contribute</a> to make SuperNOVAS even better.</p>
-<h3><a class="anchor" id="autotoc_md39"></a>
+<h3><a class="anchor" id="autotoc_md43"></a>
 Related links</h3>
 <ul>
 <li><a href="https://aa.usno.navy.mil/software/novas_info">NOVAS</a> home page at the US Naval Observatory.</li>
@@ -172,7 +172,7 @@ Related links</h3>
 </ul>
 <hr  />
 <p><a class="anchor" id="fixed-issues"></a> </p>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 Fixed NOVAS C 3.1 issues</h2>
 <p>The SuperNOVAS library fixes a number of outstanding issues with NOVAS C 3.1. Here is a list of issues and fixes provided by SuperNOVAS over the upstream NOVAS C 3.1 code:</p>
 <ul>
@@ -190,11 +190,10 @@ Fixed NOVAS C 3.1 issues</h2>
 <li>Nutation series used truncated expressions for the fundamental arguments, resulting in &mu;as-level errors in when dozens or more years away from the reference epoch of J2000.</li>
 <li>[<b>v1.1</b>] Fixes division by zero bug in <code><a class="el" href="util_8c.html#ad799864f637c483fb49491bde5a93e25">d_light()</a></code> if the first position argument is the ephemeris reference position (e.g. the Sun for <code><a class="el" href="solsys3_8c.html">solsys3.c</a></code>). The bug affects for example <code><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a></code>, where it effectively results in the gravitational deflection due to the Sun being skipped.</li>
 <li>[<b>v1.1</b>] The NOVAS C 3.1 implementation of <code><a class="el" href="spectral_8c.html#afca24d914664bb60d20fb428177f329a">rad_vel()</a></code> has a number of issues that produce inaccurate results. The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.</li>
-<li>[<b>v1.3</b>] <code><a class="el" href="target_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a></code> to update parallax to the recalculated value when precessing or changing epochs.</li>
 </ul>
 <hr  />
 <p><a class="anchor" id="compatibility"></a> </p>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Compatibility with NOVAS C 3.1</h2>
 <p>SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary (ABI) compatibility.</p>
 <p>If you have code that was written for NOVAS C 3.1, it should work with SuperNOVAS as is, without modifications. Simply (re)build your application against SuperNOVAS, and you are good to go.</p>
@@ -202,7 +201,7 @@ Compatibility with NOVAS C 3.1</h2>
 <p>This is because some function signatures have changed, e.g. to use an <code>enum</code> argument instead of the nondescript <code>short int</code> argument of NOVAS C 3.1, or because we added a return value to a function that was declared <code>void</code> in NOVAS C 3.1. We also changed the <code>object</code> structure to contain a <code>long</code> ID number instead of <code>short</code> to accommodate JPL NAIF codes, for which 16-bit storage is insufficient.</p>
 <hr  />
 <p><a class="anchor" id="installation"></a> </p>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Building and installation</h2>
 <p>The SuperNOVAS distribution contains a GNU <code>Makefile</code>, which is suitable for compiling the library (as well as local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point we do not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)</p>
 <p>Before compiling the library take a look a <code>config.mk</code> and edit it as necessary for your needs, or else define the necessary variables in the shell prior to invoking <code>make</code>. For example:</p>
@@ -238,7 +237,7 @@ Building and installation</h2>
 <div class="fragment"><div class="line">$ make DESTDIR=&quot;/tmp/stage&quot; install</div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="integration"></a> </p>
-<h2><a class="anchor" id="autotoc_md47"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 Building your application with SuperNOVAS</h2>
 <p>Provided you have installed the SuperNOVAS headers into a standard location, you can build your application against it easily. For example, to build <code>myastroapp.c</code> against SuperNOVAS, you might have a <code>Makefile</code> with contents like:</p>
 <div class="fragment"><div class="line">myastroapp: myastroapp.c </div>
@@ -249,14 +248,14 @@ Building your application with SuperNOVAS</h2>
 </div><!-- fragment --><p>If your application uses optional planet or ephemeris calculator modules, you may need to specify the appropriate optional shared library also:</p>
 <div class="fragment"><div class="line">myastroapp: myastroapp.c </div>
 <div class="line">  $(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys-calceph</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md48"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md52"></a>
 Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules</h3>
 <p>The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> functions. This approach is discouraged in SuperNOVAS, since we now allow selecting different implementations at runtime, but the old way is supported for legacy applications, nevertheless.</p>
 <p>To use your own existing default <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> implementation in this way, you must build the library with <code>DEFAULT_SOLSYS</code> unset (or else set to 0) in <code>config.mk</code> (see section above), and your applications <code>Makefile</code> may contain something like:</p>
 <div class="fragment"><div class="line">myastroapp: myastroapp.c my_solsys.c </div>
 <div class="line">  $(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas</div>
 </div><!-- fragment --><p>The same principle applies to using your specific <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation (only with <code>DEFAULT_READEPH</code> being unset in <code>config.mk</code>).</p>
-<h3><a class="anchor" id="autotoc_md49"></a>
+<h3><a class="anchor" id="autotoc_md53"></a>
 Legacy modules: a better way...</h3>
 <p>Note, a better way to recycle your old planet and ephemeris calculator modules may be to rename <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> functions therein to e.g. <code>my_planet_calculator()</code> / <code>my_planet_calculator_hp()</code> and then in your application can specify these functions as the provider at runtime:</p>
 <div class="fragment"><div class="line">set_planet_calculator(my_planet_calculator);</div>
@@ -271,7 +270,7 @@ Legacy modules: a better way...</h3>
 </div><!-- fragment --><p>While it requires some minimal changes to the old code, the advantage of this preferred approach is (a) that you do not need to re-build the library with the <code>DEFAULT_SOLSYS</code> and <code>DEFAULT_READEPH</code> options disabled, and (b) you can switch between different planet and ephemeris calculator functions at will, during runtime.</p>
 <hr  />
 <p><a class="anchor" id="examples"></a> </p>
-<h2><a class="anchor" id="autotoc_md51"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Example usage</h2>
 <ul>
 <li><a class="el" href="index.html#methodologies">Note on alternative methodologies</a></li>
@@ -280,7 +279,7 @@ Example usage</h2>
 </ul>
 <p>SuperNOVAS <b>v1.1</b> has introduced a new, more intuitive, more elegant, and more efficient approach for calculating astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage showcasing the original NOVAS method in <a href="LEGACY.html">LEGACY.md</a>.</p>
 <p><a class="anchor" id="methodologies"></a> </p>
-<h3><a class="anchor" id="autotoc_md52"></a>
+<h3><a class="anchor" id="autotoc_md56"></a>
 Note on alternative methodologies</h3>
 <p>The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) ways, and in the new IAU standard method. Here is an overview of how the old and new methods define some of the terms differently:</p>
 <table class="markdownTable">
@@ -313,7 +312,7 @@ Note on alternative methodologies</h3>
 <td class="markdownTableBodyCenter"><b>Figure 1.</b> SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. Dotted arrows indicate possible loss of precision due to the inadequacy of the old precession-nutation (Lieske et al. 1977) model.   </td></tr>
 </table>
 <p><a class="anchor" id="sidereal-example"></a> </p>
-<h3><a class="anchor" id="autotoc_md53"></a>
+<h3><a class="anchor" id="autotoc_md57"></a>
 Calculating positions for a sidereal source</h3>
 <p>A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a galactic molecular cloud, or a distant quasar.</p>
 <ul>
@@ -326,7 +325,7 @@ Calculating positions for a sidereal source</h3>
 <li><a class="el" href="index.html#rise-set-transit">Calculate rise, set, and transit times</a></li>
 </ul>
 <p><a class="anchor" id="specify-object"></a> </p>
-<h4><a class="anchor" id="autotoc_md54"></a>
+<h4><a class="anchor" id="autotoc_md58"></a>
 Specify the object of interest</h4>
 <p>First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star for which we have B1950 (i.e. FK4) coordinates:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structcat__entry.html">cat_entry</a> star; <span class="comment">// Structure to contain information on sidereal source </span></div>
@@ -342,8 +341,8 @@ Specify the object of interest</h4>
 <div class="line">  <a class="code hl_function" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours</a>(<span class="stringliteral">&quot;16h 26m 20.1918s&quot;</span>),   <span class="comment">// e.g. using h,m,s and spaces as separators </span></div>
 <div class="line">  <a class="code hl_function" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees</a>(<span class="stringliteral">&quot;-26:19:23.138&quot;</span>),    <span class="comment">// e.g. using colons to separate components</span></div>
 <div class="line">  -12.11, -23.30, 5.89, -3.4, &amp;star);</div>
-<div class="ttc" id="aparse_8c_html_a10a24fc28fa74efa75abf566bb61af5b"><div class="ttname"><a href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees</a></div><div class="ttdeci">double novas_str_degrees(const char *restrict str)</div><div class="ttdef"><b>Definition</b> parse.c:727</div></div>
-<div class="ttc" id="aparse_8c_html_ac69c17c646ddf3a5447557338a8490b4"><div class="ttname"><a href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours</a></div><div class="ttdeci">double novas_str_hours(const char *restrict str)</div><div class="ttdef"><b>Definition</b> parse.c:769</div></div>
+<div class="ttc" id="aparse_8c_html_a10a24fc28fa74efa75abf566bb61af5b"><div class="ttname"><a href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees</a></div><div class="ttdeci">double novas_str_degrees(const char *restrict str)</div><div class="ttdef"><b>Definition</b> parse.c:739</div></div>
+<div class="ttc" id="aparse_8c_html_ac69c17c646ddf3a5447557338a8490b4"><div class="ttname"><a href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours</a></div><div class="ttdeci">double novas_str_hours(const char *restrict str)</div><div class="ttdef"><b>Definition</b> parse.c:781</div></div>
 </div><!-- fragment --><p>And, if you have LSR-based radial velocities instead of Solar-system Barycentric radial velocities, you may convert these to SSB-based velocities for use in <code><a class="el" href="target_8c.html#a39b2e39d29f1b57c5f785284ba7ca43f">make_cat_entry()</a></code> with <code><a class="el" href="spectral_8c.html#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel()</a></code>.</p>
 <p>Next, we create a generic celestial <code>object</code> from the catalog source. (The <code>object</code> structure handles various Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any epoch / catalog system, the <code>object</code> structure shall contain ICRS coordinates always:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">object</span> source;   <span class="comment">// Common structure for a sidereal or an Solar-system source</span></div>
@@ -358,7 +357,7 @@ Specify the object of interest</h4>
 <div class="line"><a class="code hl_function" href="target_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys</a>(<span class="stringliteral">&quot;3c273&quot;</span>, 12.4851944, 2.0523883, <span class="stringliteral">&quot;ICRS&quot;</span>, 0.158339, &amp;quasar);</div>
 <div class="ttc" id="atarget_8c_html_a257abae9391aec835dc2b94d9788b9f9"><div class="ttname"><a href="target_8c.html#a257abae9391aec835dc2b94d9788b9f9">make_redshifted_object_sys</a></div><div class="ttdeci">int make_redshifted_object_sys(const char *name, double ra, double dec, const char *restrict system, double z, object *source)</div><div class="ttdef"><b>Definition</b> target.c:402</div></div>
 </div><!-- fragment --><p><a class="anchor" id="specify-observer"></a> </p>
-<h4><a class="anchor" id="autotoc_md55"></a>
+<h4><a class="anchor" id="autotoc_md59"></a>
 Specify the observer location</h4>
 <p>Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;    <span class="comment">// Structure to contain observer location </span></div>
@@ -375,7 +374,7 @@ Specify the observer location</h4>
 <div class="line">  60.0, 0.0, 0.0, &amp;obs);</div>
 </div><!-- fragment --><p>Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the geocenter, or at the Solar-system barycenter.</p>
 <p><a class="anchor" id="specify-time"></a> </p>
-<h4><a class="anchor" id="autotoc_md56"></a>
+<h4><a class="anchor" id="autotoc_md60"></a>
 Specify the time of observation</h4>
 <p>Next, we set the time of observation. For a ground-based observer, you will need to provide SuperNOVAS with the UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.042, then we can set the time of observation, for example, using the current UNIX time:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> obs_time;       <span class="comment">// Structure that will define astrometric time</span></div>
@@ -405,7 +404,7 @@ Specify the time of observation</h4>
 <div class="ttc" id="anovas_8h_html_aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d"><div class="ttname"><a href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a></div><div class="ttdeci">@ NOVAS_UTC</div><div class="ttdoc">Universal Coordinated Time (UTC)</div><div class="ttdef"><b>Definition</b> novas.h:1150</div></div>
 <div class="ttc" id="atimescale_8c_html_abaac8a4ea28bc8b811277051e3168468"><div class="ttname"><a href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date</a></div><div class="ttdeci">double novas_date(const char *restrict date)</div><div class="ttdef"><b>Definition</b> timescale.c:997</div></div>
 </div><!-- fragment --><p><a class="anchor" id="observing-frame"></a> </p>
-<h4><a class="anchor" id="autotoc_md57"></a>
+<h4><a class="anchor" id="autotoc_md61"></a>
 Set up the observing frame</h4>
 <p>Next, we set up an observing frame, which is defined for a unique combination of the observer location and the time of observation:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__frame.html">novas_frame</a> obs_frame;  <span class="comment">// Structure that will define the observing frame</span></div>
@@ -421,7 +420,7 @@ Set up the observing frame</h4>
 <p>The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects in that frame (see the <a class="el" href="index.html#benchmarks">benchmarks</a>). So, if you need to calculate positions for thousands of sources for the same observer and time, it will be significantly faster than using the low-level NOVAS C routines instead. You can create derivative frames for different observer locations, if need be, via <code><a class="el" href="frames_8c.html#a2972b3eafa2d7f6c29cff34bad9fcf0d">novas_change_observer()</a></code>.</p>
 <p>Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with <code>NOVAS_REDUCED_ACCURACY</code> frames, providing milliarcsecond precision only. To create <code>NOVAS_FULL_ACCURACY</code> frames, with sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the low-precision Earth and Sun calculator included by default), both for precise Earth-based observer locations and to account for gravitational bending around the Sun and massive planets. Without them, &mu;as accuracy cannot be ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision ephemeris provider will result in an error from the requisite <code><a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a></code> calls.</p>
 <p><a class="anchor" id="apparent-place"></a> </p>
-<h4><a class="anchor" id="autotoc_md58"></a>
+<h4><a class="anchor" id="autotoc_md62"></a>
 Calculate an apparent place on sky</h4>
 <p>Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal sources) or light-time correction (for Solar-system bodies), and also aberration corrections for the moving observer and gravitational deflection around the major Solar System bodies. You can calculate an apparent location in the coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, or TOD):</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structsky__pos.html">sky_pos</a> apparent;    <span class="comment">// Structure containing the precise observed position</span></div>
@@ -433,7 +432,7 @@ Calculate an apparent place on sky</h4>
 </div><!-- fragment --><p>Apart from providing precise apparent R.A. and declination coordinates, the <code><a class="el" href="structsky__pos.html">sky_pos</a></code> structure also provides the <em>x,y,z</em> unit vector pointing in the observed direction of the source (in the designated coordinate system). We also get radial velocity (for spectroscopy), and apparent distance for Solar-system bodies (e.g. for apparent-to-physical size conversion).</p>
 <p>Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational deflection, you might use <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code> instead. And regardless, which function you use you can always easily and efficiently change the coordinate system in which your results are expressed by creating an appropriate transform via <code><a class="el" href="frames_8c.html#a4d179c8573319fc25c775ce56ba055dc">novas_make_transform()</a></code> and then using <code><a class="el" href="frames_8c.html#aa77895c891e9eeb4b1541f03acfd154e">novas_transform_vector()</a></code> or <code>novas_transform_skypos()</code>.</p>
 <p><a class="anchor" id="horizontal-place"></a> </p>
-<h4><a class="anchor" id="autotoc_md59"></a>
+<h4><a class="anchor" id="autotoc_md63"></a>
 Calculate azimuth and elevation angles at the observing location</h4>
 <p>If your ultimate goal is to calculate the azimuth and elevation angles of the source at the specified observing location, you can proceed from the <code><a class="el" href="structsky__pos.html">sky_pos</a></code> data you obtained above (in whichever coordinate system!) as:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> az, el;   <span class="comment">// [deg] local azimuth and elevation angles to populate</span></div>
@@ -447,7 +446,7 @@ Calculate azimuth and elevation angles at the observing location</h4>
 <div class="ttc" id="astructsky__pos_html_ac4ae7989694321b540abb75c30eec690"><div class="ttname"><a href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a></div><div class="ttdeci">double dec</div><div class="ttdoc">[deg] apparent, topocentric, or astrometric declination (degrees)</div><div class="ttdef"><b>Definition</b> novas.h:1111</div></div>
 </div><!-- fragment --><p>Above we converted the apparent coordinates, that were calculated in CIRS, to refracted azimuth and elevation coordinates at the observing location, using the <code><a class="el" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction()</a></code> function to provide a suitable refraction correction. We could have used <code><a class="el" href="refract_8c.html#ae4511a80a1defbb1e1fdc29c289e7de4">novas_optical_refraction()</a></code> instead to use the weather data embedded in the frame's <code>observer</code> structure, or some user-defined refraction model, or else <code>NULL</code> to calculate unrefracted elevation angles.</p>
 <p><a class="anchor" id="rise-set-transit"></a> </p>
-<h4><a class="anchor" id="autotoc_md60"></a>
+<h4><a class="anchor" id="autotoc_md64"></a>
 Calculate rise, set, and transit times</h4>
 <p>You may be interested to know when sources rise above or set below some specific elevation angle, or at what time they appear to transit at the observer location. SuperNOVAS has routines to help you with that too. Given that rise, set, or transit times are dependent on the day of observation, and observer location, they are effectively tied to an observer frame.</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__frame.html">novas_frame</a> frame = ...;  <span class="comment">// Earth-based observer location and lower-bound time of interest.</span></div>
@@ -468,7 +467,7 @@ Calculate rise, set, and transit times</h4>
 <div class="ttc" id="aframes_8c_html_ad04f1ebd7b2d39e5258b152fec231001"><div class="ttname"><a href="frames_8c.html#ad04f1ebd7b2d39e5258b152fec231001">novas_transit_time</a></div><div class="ttdeci">double novas_transit_time(const object *restrict source, const novas_frame *restrict frame)</div><div class="ttdef"><b>Definition</b> frames.c:1409</div></div>
 </div><!-- fragment --><p>Note, that in the current implementation these calls are not well-suited sources that are at or within the geostationary orbit, such as such as low-Earth orbit satellites (LEOs), geostationary satellites (which never really rise, set, or transit), or some Near Earth Objects (NEOs), which will rise set multiple times per day. For the latter, the above calls may still return a valid time, only without the guarantee that it is the time of the first such event after the specified frame instant. A future implementation may address near-Earth orbits better, so stay tuned for updates.</p>
 <p><a class="anchor" id="solsys-example"></a> </p>
-<h3><a class="anchor" id="autotoc_md61"></a>
+<h3><a class="anchor" id="autotoc_md65"></a>
 Calculating positions for a Solar-system source</h3>
 <p>Solar-system sources work similarly to the above with a few important differences.</p>
 <p>First, you will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on integrating <a class="el" href="index.html#solarsystem">External Solar-system ephemeris data or services</a> with SuperNOVAS. You can specify the functions that will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:</p>
@@ -528,7 +527,7 @@ Calculating positions for a Solar-system source</h3>
 <div class="ttc" id="anovas_8h_html_a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3"><div class="ttname"><a href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a></div><div class="ttdeci">@ NOVAS_TOD</div><div class="ttdef"><b>Definition</b> novas.h:427</div></div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="tips"></a> </p>
-<h2><a class="anchor" id="autotoc_md63"></a>
+<h2><a class="anchor" id="autotoc_md67"></a>
 Tips and tricks</h2>
 <ul>
 <li><a class="el" href="index.html#accuracy-notes">Reduced accuracy shortcuts</a></li>
@@ -538,7 +537,7 @@ Tips and tricks</h2>
 <li><a class="el" href="index.html#string-dates">String dates</a></li>
 </ul>
 <p><a class="anchor" id="accuracy-notes"></a> </p>
-<h3><a class="anchor" id="autotoc_md64"></a>
+<h3><a class="anchor" id="autotoc_md68"></a>
 Reduced accuracy shortcuts</h3>
 <p>When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:</p>
 <ul>
@@ -546,7 +545,7 @@ Reduced accuracy shortcuts</h3>
 <li>You might skip the pole offsets <em>dx</em>, <em>dy</em>. These are tenths of arcsec, typically.</li>
 </ul>
 <p><a class="anchor" id="multi-threading"></a> </p>
-<h3><a class="anchor" id="autotoc_md65"></a>
+<h3><a class="anchor" id="autotoc_md69"></a>
 Multi-threaded calculations</h3>
 <p>Some of the calculations involved can be expensive from a computational perspective. For the most typical use case however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).</p>
 <p>A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input parameters while, at the same time, another thread is saving cached values for a different set of parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely they may not correspond to the requested input parameters.</p>
@@ -557,7 +556,7 @@ Multi-threaded calculations</h3>
 <li>or else, set the appropriate non-standard keyword to use for declaring thread-local variables for your compiler in <code>config.mk</code> or in your equivalent build setup.</li>
 </ul>
 <p><a class="anchor" id="physical-units"></a> </p>
-<h3><a class="anchor" id="autotoc_md66"></a>
+<h3><a class="anchor" id="autotoc_md70"></a>
 Physical units</h3>
 <p>The NOVAS API has been using conventional units (e.g. AU, km, day, deg, h) typically for its parameters and return values alike. Hence, SuperNOVAS follows the same conventions for its added functions and data structures also. However, when interfacing SuperNOVAS with other programs, libraries, or data files, it is often necessary to use quantities that are expressed in different units, such as SI or CGS. To facilitate such conversions, <code><a class="el" href="novas_8h.html">novas.h</a></code> provides a set of unit constants, which can be used for converting to/from SI units (and radians). For example, <code><a class="el" href="novas_8h.html">novas.h</a></code> contains the following definitions:</p>
 <div class="fragment"><div class="line"> </div>
@@ -592,7 +591,7 @@ Physical units</h3>
 <div class="ttc" id="anovas_8h_html_a7822b81ad3f75b448f446ed4da774e75"><div class="ttname"><a href="novas_8h.html#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a></div><div class="ttdeci">#define NOVAS_KMS</div><div class="ttdoc">[m] One km/s in m/s.</div><div class="ttdef"><b>Definition</b> novas.h:142</div></div>
 <div class="ttc" id="anovas_8h_html_abc8f275a2d431e59a1ec9e276abaca1a"><div class="ttname"><a href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a></div><div class="ttdeci">#define NOVAS_AU</div><div class="ttdef"><b>Definition</b> novas.h:147</div></div>
 </div><!-- fragment --><p><a class="anchor" id="string-times-and-angles"></a> </p>
-<h3><a class="anchor" id="autotoc_md67"></a>
+<h3><a class="anchor" id="autotoc_md71"></a>
 String times and angles</h3>
 <p><b>SuperNOVAS</b> functions typically input and output times and angles as decimal values (hours and degrees, but also as days and hour-angles), but that is not how these are represented in many cases. Time and right-ascention are often given as string values indicating hours, minutes, and seconds (e.g. "11:32:31.595", or "11h 32m 31.595s"). Similarly angles, are commonly represented as degrees, arc-minutes, and arc-seconds (e.g. "+53 60 19.9"). For that reason, <b>SuperNOVAS</b> provides a set of functions to convert string values expressed in decimal or broken-down format to floating point representation. E.g.,</p>
 <div class="fragment"><div class="line"><span class="comment">// Right ascention from string</span></div>
@@ -607,7 +606,7 @@ String times and angles</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> ra_h = <a class="code hl_function" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours</a>(<span class="stringliteral">&quot;9.31363&quot;</span>);</div>
 <div class="line"><span class="keywordtype">double</span> dec_d = <a class="code hl_function" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees</a>(<span class="stringliteral">&quot;53.16870278d South&quot;</span>);</div>
 </div><!-- fragment --><p><a class="anchor" id="string-dates"></a> </p>
-<h3><a class="anchor" id="autotoc_md68"></a>
+<h3><a class="anchor" id="autotoc_md72"></a>
 String dates</h3>
 <p>Dates are typically represented broken down into year, month, and day (e.g. "2025-02-16", or "16.02.2025", or "2/16/2025"), with or without a time marker, which itself may or may not include a time-zone specification. In astronomy, the most commonly used string representation of dates is with ISO 8601 timestamps. The following are all valid ISO date specifications:</p>
 <div class="fragment"><div class="line">2025-02-16         # Date only (0 UTC)</div>
@@ -680,7 +679,7 @@ String dates</h3>
 <div class="ttc" id="atimescale_8c_html_ab344242721ca00709d4dc482a7934e2a"><div class="ttname"><a href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string</a></div><div class="ttdeci">enum novas_timescale novas_timescale_for_string(const char *restrict str)</div><div class="ttdef"><b>Definition</b> timescale.c:1285</div></div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="precision"></a> </p>
-<h2><a class="anchor" id="autotoc_md70"></a>
+<h2><a class="anchor" id="autotoc_md74"></a>
 Notes on precision</h2>
 <p>Many of the (Super)NOVAS functions take an accuracy argument, which determines to what precision quantities are calculated. The argument can have one of two values, which correspond to typical precisions around:</p>
 <table class="markdownTable">
@@ -692,7 +691,7 @@ Notes on precision</h2>
 <td class="markdownTableBodyNone"><code>NOVAS_FULL_ACCURACY</code>   </td><td class="markdownTableBodyNone">below 1 micro-arcsecond (&mu;as)   </td></tr>
 </table>
 <p>Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision ephemeris provider for the major planets (and any Solar-system bodies of interest), which does not come with SuperNOVAS out of the box. In the absense of a suitable high-precision ephemeris provider, some functions might return an error if called with <code>NOVAS_FULL_ACCURACY</code>.</p>
-<h3><a class="anchor" id="autotoc_md71"></a>
+<h3><a class="anchor" id="autotoc_md75"></a>
 Prerequisites to precise results</h3>
 <p>The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s, precision for all types of celestial sources. However, there are certain prerequisites and practical considerations before that level of accuracy is reached.</p>
 <ol type="1">
@@ -706,7 +705,7 @@ Prerequisites to precise results</h3>
 </ol>
 <hr  />
 <p><a class="anchor" id="solarsystem"></a> </p>
-<h2><a class="anchor" id="autotoc_md73"></a>
+<h2><a class="anchor" id="autotoc_md77"></a>
 Incorporating Solar-system ephemeris data or services</h2>
 <p>If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with precision, you will have to interface it to a suitable provider of ephemeris data. Given the NOVAS C heritage, and some added SuperNOVAS flexibility in this area, you have several options for going about it. These are listed from the most practical (and preferred) to the least so (the old ways).</p>
 <p>NASA/JPL provides <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/">generic ephemerides</a> for the major planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For example, <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp">DE440</a> covers the major planets, and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the <a href="https://ssd.jpl.nasa.gov/horizons/">JPL HORIZONS</a> system (via the commnad-line / telnet or API interfaces) to generate custom ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.</p>
@@ -718,7 +717,7 @@ Incorporating Solar-system ephemeris data or services</h2>
 <li><a class="el" href="index.html#explicit-ephem-linking">Legacy linking of custom ephemeris functions</a></li>
 </ul>
 <p><a class="anchor" id="calceph-integration"></a> </p>
-<h3><a class="anchor" id="autotoc_md74"></a>
+<h3><a class="anchor" id="autotoc_md78"></a>
 Optional CALCEPH integration</h3>
 <p>The <a href="https://www.imcce.fr/recherche/equipes/asd/calceph/">CALCEPH</a> library provides easy-to-use access to JPL and INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with the the CALCEPH C library for handling Solar-system objects.</p>
 <p>Prior to building SuperNOVAS simply set <code>CALCEPH_SUPPORT</code> to 1 in <code>config.mk</code> or in your environment. Depending on the build target, it will build <code>libsolsys-calceph.so[.1]</code> (target <code>shared</code>) or <code>libsolsys-calceph.a</code> (target <code>static</code>) libraries or <code>solsys-calceph.o</code> (target <code>solsys</code>), which provide the <code><a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a></code> and <code><a class="el" href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets()</a></code>, and <code><a class="el" href="solsys-calceph_8c.html#a5531b937a5bb5491cb475d2536346ad8">novas_calceph_use_ids()</a></code> functions.</p>
@@ -747,7 +746,7 @@ Optional CALCEPH integration</h3>
 <div class="ttc" id="asolsys-calceph_8c_html_ab86ec03898e658c86c671a8b6399e331"><div class="ttname"><a href="solsys-calceph_8c.html#ab86ec03898e658c86c671a8b6399e331">novas_use_calceph_planets</a></div><div class="ttdeci">int novas_use_calceph_planets(t_calcephbin *eph)</div><div class="ttdef"><b>Definition</b> solsys-calceph.c:420</div></div>
 </div><!-- fragment --><p>All modern JPL (SPK) ephemeris files should work with the <code>solsys-calceph</code> plugin. When linking your application, add <code>-lsolsys-calceph</code> to your link flags (or else link with <code>solsys-calceph.o</code>), and of course the CSPICE library too. That's all there is to it.</p>
 <p><a class="anchor" id="cspice-integration"></a> </p>
-<h3><a class="anchor" id="autotoc_md75"></a>
+<h3><a class="anchor" id="autotoc_md79"></a>
 Optional NAIF CSPICE toolkit integration</h3>
 <p>The <a href="https://naif.jpl.nasa.gov/naif/toolkit.html">NAIF CSPICE Toolkit</a> is the canonical standard library for JPL ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with CSPICE for handling Solar-system objects.</p>
 <p>Prior to building SuperNOVAS simply set <code>CSPICE_SUPPORT</code> to 1 in <code>config.mk</code> or in your environment. Depending on the build target, it will build <code>libsolsys-cspice.so[.1]</code> (target <code>shared</code>) or <code>libsolsys-cspice.a</code> (target <code>static</code>) libraries or <code>solsys-cspice.o</code> (target <code>solsys</code>), which provide the <code><a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a></code>, <code><a class="el" href="solsys-cspice_8c.html#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a></code>, and <code><a class="el" href="solsys-cspice_8c.html#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a></code> functions to enable CSPICE for providing data for all Solar-system sources, or for major planets only, or for other bodies only, respectively. You can also manage the active kernels with the <code><a class="el" href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></code> and <code><a class="el" href="solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a></code> functions.</p>
@@ -777,7 +776,7 @@ Optional NAIF CSPICE toolkit integration</h3>
 <div class="ttc" id="asolsys-cspice_8c_html_ae02d26964099f56c375dc78172ad135b"><div class="ttname"><a href="solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel</a></div><div class="ttdeci">int cspice_add_kernel(const char *filename)</div><div class="ttdef"><b>Definition</b> solsys-cspice.c:127</div></div>
 </div><!-- fragment --><p>All JPL ephemeris data will work with the <code>solsys-cspice</code> plugin. When linking your application, add <code>-lsolsys-cspice</code> to your link flags (or else link with <code>solsys-cspice.o</code>), and link against te calceph library also (<code>-lcalceph</code>). That's all there is to it.</p>
 <p><a class="anchor" id="universal-ephemerides"></a> </p>
-<h3><a class="anchor" id="autotoc_md76"></a>
+<h3><a class="anchor" id="autotoc_md80"></a>
 Universal ephemeris data / service integration</h3>
 <p>Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own <code>novas_ephem_provider</code> function, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> my_ephem_reader(<span class="keyword">const</span> <span class="keywordtype">char</span> *name, <span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keywordtype">double</span> jd_tdb_high, <span class="keywordtype">double</span> jd_tdb_low, </div>
@@ -797,10 +796,10 @@ Universal ephemeris data / service integration</h3>
 <div class="ttc" id="asolsys-ephem_8c_html_a9d0f54c0ab00827768e61a353488b0ee"><div class="ttname"><a href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider</a></div><div class="ttdeci">short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys-ephem.c:105</div></div>
 </div><!-- fragment --><p>provided you compiled SuperNOVAS with <code>BUILTIN_SOLSYS_EPHEM = 1</code> (in <code>config.mk</code>), or else you link your code against <code><a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a></code> explicitly. Easy-peasy.</p>
 <p><a class="anchor" id="builtin-ephem-readers"></a> </p>
-<h3><a class="anchor" id="autotoc_md77"></a>
+<h3><a class="anchor" id="autotoc_md81"></a>
 Legacy support for (older) JPL major planet ephemerides</h3>
 <p>If you only need support for major planets, you may be able to use one of the modules included with the distribution. The legacy NOVAS modules <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> provide built-in support to older JPL ephemerides (DE200 to DE421), either via the <code>eph_manager</code> interface of <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> or via the FORTRAN <code>pleph</code> interface with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code>.</p>
-<h4><a class="anchor" id="autotoc_md78"></a>
+<h4><a class="anchor" id="autotoc_md82"></a>
 Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
 <p>To use the <code>eph_manager</code> interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build SuperNOVAS with <code>BUILTIN_SOLSYS1 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys1_8c.html">solsys1.c</a></code> and <code><a class="el" href="eph__manager_8c.html">eph_manager.c</a></code> from SuperNOVAS explicitly. If you want <code>eph_manager</code> to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 1</code> in <code>config.mk</code>. Otherwise, your application should set <code>eph_manager</code> as your planetary ephemeris provider at runtime via:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys1_8c.html#a841f04bf04e6dd8a5ae96f8ea729090d">planet_eph_manager</a>);</div>
@@ -818,7 +817,7 @@ Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;</h4>
 <div class="ttc" id="aeph__manager_8c_html_a333da81ba7453316e26f32f628fefc0e"><div class="ttname"><a href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close</a></div><div class="ttdeci">short ephem_close(void)</div><div class="ttdef"><b>Definition</b> eph_manager.c:224</div></div>
 </div><!-- fragment --><p>Note, that at any given time <code>eph_manager</code> can have only one ephemeris data file opened. You cannot use it to retrieve data from multiple ephemeris input files at the same time. (But you can with CALCEPH or the CSPICE toolkit, either of which you can interface as discussed further above!)</p>
 <p>That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.</p>
-<h4><a class="anchor" id="autotoc_md79"></a>
+<h4><a class="anchor" id="autotoc_md83"></a>
 Planets via JPL's &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface</h4>
 <p>To interface eith the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS with <code>BUILTIN_SOLSYS2 = 1</code> in <code>config.mk</code>, or else link your application with <code><a class="el" href="solsys2_8c.html">solsys2.c</a></code> and your appropriately modified <code>jplint.f</code> (from the <code>examples</code> sub-directory) explicitly, together with the JPL PLEPH library. If you want this to be your default ephemeris provider (the old way) you might also want to set <code>DEFAULT_SOLSYS = 2</code> in <code>config.mk</code>. Otherwise, your application should set your planetary ephemeris provider at runtime via:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider</a>(<a class="code hl_function" href="solsys2_8c.html#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint</a>);</div>
@@ -827,14 +826,14 @@ Planets via JPL's &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface</h4>
 <div class="ttc" id="asolsys2_8c_html_a2fe8cd1a87f96611f78edc36b4960d63"><div class="ttname"><a href="solsys2_8c.html#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp</a></div><div class="ttdeci">short planet_jplint_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin, double *restrict position, double *restrict velocity)</div><div class="ttdef"><b>Definition</b> solsys2.c:179</div></div>
 </div><!-- fragment --><p>Integrating JPL ephemeris data this way can be arduous. You will need to compile and link FORTRAN with C (not the end of the world), but you may also have to modify <code>jplint.f</code> (providing the intermediate FORTRAN <code><a class="el" href="solsys2_8c.html#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a></code> / <code><a class="el" href="solsys2_8c.html#a14752a69e14c399d5ee82e83f22acf68" title="Function prototype for the FORTRAN subroutine jplihp in jplint.f.">jplihp_()</a></code> interfaces to <code>pleph_()</code>) to work with the version of <code>pleph.f</code> that you will be using. Unless you already have code that relies on this method, you are probably better off choosing one of the other ways for integrating planetary ephemeris data with SuperNOVAS.</p>
 <p><a class="anchor" id="explicit-ephem-linking"></a> </p>
-<h3><a class="anchor" id="autotoc_md80"></a>
+<h3><a class="anchor" id="autotoc_md84"></a>
 Legacy linking of custom ephemeris functions</h3>
 <p>Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the <code>DEFAULT_SOLSYS</code> option disabled (commented, removed, or else set to 0), and then link your own implementation of <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> and <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> calls with your application.</p>
 <p>For Solar-system objects other than the major planets, you may also provide your own <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation. (In this case you will want to set <code>DEFAULT_READEPH</code> in <code>config.mk</code> to specify your source code for that function before building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link your application explicitly with your <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation.</p>
 <p>The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing a <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and/or <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementations for <em>every</em> application that you will want to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and most generic way to add your preferred implementations while also providing some minimum default implementations for <em>other users</em> of the library, who may not need <em>your</em> ephemeris service, or have no need for planet data beyond the approximate positions for the Earth and Sun.</p>
 <hr  />
 <p><a class="anchor" id="debug-support"></a> </p>
-<h2><a class="anchor" id="autotoc_md82"></a>
+<h2><a class="anchor" id="autotoc_md86"></a>
 Runtime debug support</h2>
 <p>You can enable or disable debugging output to <code>stderr</code> with <code><a class="el" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3" title="==========================================================================">novas_debug(enum novas_debug_mode)</a></code>, where the argument is one of the defined constants from <code><a class="el" href="novas_8h.html">novas.h</a></code>:</p>
 <table class="markdownTable">
@@ -856,7 +855,7 @@ Runtime debug support</h2>
 <div class="line">     @ grav_def:Jupiter [=&gt; 12]</div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="benchmarks"></a> </p>
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md88"></a>
 Representative benchmarks</h2>
 <p>To get an idea of the speed of <b>SuperNOVAS</b>, you can use <code>make benchmark</code> on your machine. The table below summarizes the single-threaded results obtained on an AMD Ryzen 5 PRO 6650U laptop. While this is clearly not the state of the art for today's server class machines, it nevertheless gives you a ballpark idea for how a typical, not so new, run-of-the-mill PC might perform.</p>
 <table class="markdownTable">
@@ -874,17 +873,17 @@ Representative benchmarks</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">2708014    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code>, same time, same observer   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">898609    </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code>, same time, same observer   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">631643    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">833300    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">630705    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code>, individual   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">173211    </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code>, individual   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">238445    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">35509    </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">232862    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code>, individual   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">135618    </td></tr>
+<td class="markdownTableBodyNone"><code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code>, individual   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">149049    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">32293   </td></tr>
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyCenter">full   </td><td class="markdownTableBodyRight">36619   </td></tr>
 </table>
 <p>For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.</p>
 <table class="markdownTable">
@@ -895,7 +894,7 @@ Representative benchmarks</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">NOVAS C 3.1 <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code>, individual   </td><td class="markdownTableBodyCenter">reduced   </td><td class="markdownTableBodyRight">55484   </td></tr>
 </table>
-<p>For comparison, a very similar benchmark with <a href="https://www.astropy.org/">astropy</a> (v7.0.0 on Python v3.13.1) on the same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, <b>SuperNOVAS</b> is a whopping ~40000 times faster than <b>astropy</b> for calculations in the same observing frame, and ~450 times faster than <b>astropy</b> for individual frames. (The <b>astropy</b> benchmarking code is also provided under the <code>benchmark/</code> folder in the <b>SuperNOVAS</b> GitHub repository).</p>
+<p>For comparison, a very similar benchmark with <a href="https://www.astropy.org/">astropy</a> (v7.0.0 on Python v3.13.1) on the same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, <b>SuperNOVAS</b> is a whopping ~40000 times faster than <b>astropy</b> for calculations in the same observing frame, and ~3000 times faster than <b>astropy</b> for individual frames. (The <b>astropy</b> benchmarking code is also provided under the <code>benchmark/</code> folder in the <b>SuperNOVAS</b> GitHub repository).</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Description   </th><th class="markdownTableHeadRight">positions / sec    </th></tr>
@@ -909,17 +908,17 @@ Representative benchmarks</h2>
 <p>The above benchmarks are all for single-threaded performance. Since <b>SuperNOVAS</b> is generally thread-safe, you can expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single core performance, you could calculate up to 32 million precise positions per second, if you wanted to. To put that into perspective, you could calculate precise apparent positions for the entire Gaia dataset (1.7 billion stars) in under one minute.</p>
 <hr  />
 <p><a class="anchor" id="supernovas-features"></a> </p>
-<h2><a class="anchor" id="autotoc_md86"></a>
+<h2><a class="anchor" id="autotoc_md90"></a>
 SuperNOVAS added features</h2>
 <ul>
 <li><a class="el" href="index.html#added-functionality">Newly functionality highlights</a></li>
 <li><a class="el" href="index.html#api-changes">Refinements to the NOVAS C API</a></li>
 </ul>
 <p><a class="anchor" id="added-functionality"></a> </p>
-<h3><a class="anchor" id="autotoc_md87"></a>
+<h3><a class="anchor" id="autotoc_md91"></a>
 New functionality highlights</h3>
 <p>Below is a non-exhaustive overview new features added by SuperNOVAS on top of the existing NOVAS C API. See <code>CHANGELOG.md</code> for more details.</p>
-<h4><a class="anchor" id="autotoc_md88"></a>
+<h4><a class="anchor" id="autotoc_md92"></a>
 New in v1.0</h4>
 <ul>
 <li>New runtime configuration:<ul>
@@ -931,7 +930,7 @@ New in v1.0</h4>
 <li>New constants, and enums &ndash; adding more specificity and transparency to option switches and physical units.</li>
 <li>Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md89"></a>
+<h4><a class="anchor" id="autotoc_md93"></a>
 New in v1.1</h4>
 <ul>
 <li>New observing-frame based approach for calculations (<code><a class="el" href="frames_8c.html">frames.c</a></code>). A <code><a class="el" href="structnovas__frame.html">novas_frame</a></code> object uniquely defines both the place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their internal state is never modified during the calculations.</li>
@@ -940,7 +939,7 @@ New in v1.1</h4>
 <li>New observer locations <code>NOVAS_AIRBORNE_OBSERVER</code> and <code>NOVAS_SOLAR_SYSTEM_OBSERVER</code>, and corresponding <code><a class="el" href="observer_8c.html#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a></code> and <code><a class="el" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a></code> functions. Airborne observers have an Earth-fixed momentary location, defined by longitude, latitude, and altitude, the same way as for a stationary observer on Earth, but are moving relative to the surface, such as in an aircraft or balloon based observatory. Solar-system observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative to the Solar System Barycenter (SSB), instead of the geocenter.</li>
 <li>New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and may make use of the generic reversal function <code><a class="el" href="refract_8c.html#a81da80ae3ab1d0a444f39bde2af3a732">novas_inv_refract()</a></code> to calculate refraction in the reverse direction (observed vs astrometric elevations as the input) as needed.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md90"></a>
+<h4><a class="anchor" id="autotoc_md94"></a>
 New in v1.2</h4>
 <ul>
 <li>New functions to calculate and apply additional gravitational redshift corrections for light that originates near massive gravitating bodies (other than major planets, or Sun or Moon), or for observers located near massive gravitating bodies (other than the Sun and Earth).</li>
@@ -950,7 +949,7 @@ New in v1.2</h4>
 <li>Added <code>NOVAS_EMB</code> (Earth-Moon Barycenter) and <code>NOVAS_PLUTO_BARYCENTER</code> to <code>enum novas_planets</code> to distinguish from the corresponding planet centers in calculations.</li>
 <li>Added more physical unit constants to <code><a class="el" href="novas_8h.html">novas.h</a></code>.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md91"></a>
+<h4><a class="anchor" id="autotoc_md95"></a>
 New in v1.3</h4>
 <ul>
 <li>New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always defines catalog sources with SSB-based radial velocities, but some catalogs provide LSR velocities.</li>
@@ -960,7 +959,7 @@ New in v1.3</h4>
 <li>New functions and data structures provide second order Taylor series expansion of the apparent horizontal or equatorial positions, distances, and redshifts for sources. These values, including rates and accelerations, can be directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also use them to obtain instantaneous projected (extrapolated) positions at low computational cost.</li>
 </ul>
 <p><a class="anchor" id="api-changes"></a> </p>
-<h3><a class="anchor" id="autotoc_md92"></a>
+<h3><a class="anchor" id="autotoc_md96"></a>
 Refinements to the NOVAS C API</h3>
 <ul>
 <li>Changed to <a class="el" href="index.html#multi-threading">support for calculations in parallel threads</a> by making cached results thread-local. This works using the C11 standard <code>_Thread_local</code>, or the C23 <code>thread_local</code>, or else the earlier GNU C &gt;= 3.3 standard <code>__thread</code> modifier. You can also set the preferred thread-local keyword for your compiler by passing it via <code>-DTHREAD_LOCAL=...</code> in <code>config.mk</code> to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.</li>
@@ -989,7 +988,7 @@ Refinements to the NOVAS C API</h3>
 </ul>
 <hr  />
 <p><a class="anchor" id="release-schedule"></a> </p>
-<h2><a class="anchor" id="autotoc_md94"></a>
+<h2><a class="anchor" id="autotoc_md98"></a>
 Release schedule</h2>
 <p>A predictable release schedule and process can help manage expectations and reduce stress on adopters and developers alike.</p>
 <p>Releases of the library shall follow a quarterly release schedule. You may expect upcoming releases to be published around <b>February 1</b>, <b>May 1</b>, <b>August 1</b>, and/or <b>November 1</b> each year, on an as-needed basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a new release will actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release being published.</p>

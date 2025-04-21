@@ -295,11 +295,11 @@ This function caches the results of the last calculation in case it may be re-us
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">mobl</td><td>[deg] Mean obliquity of the ecliptic in degrees. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">tobl</td><td>[deg] True obliquity of the ecliptic in degrees. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ee</td><td>[deg] Equation of the equinoxes in seconds of time. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dpsi</td><td>[arcsec] Nutation in longitude in arcseconds. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">deps</td><td>[arcsec] Nutation in obliquity in arcseconds. It may be NULL if not required.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mobl</td><td>[deg] Mean obliquity of the ecliptic. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">tobl</td><td>[deg] True obliquity of the ecliptic. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ee</td><td>[s] Equation of the equinoxes in seconds of time. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dpsi</td><td>[arcsec] Nutation in longitude. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">deps</td><td>[arcsec] Nutation in obliquity. It may be NULL if not required.</td></tr>
   </table>
   </dd>
 </dl>
@@ -312,7 +312,7 @@ This function caches the results of the last calculation in case it may be re-us
 <dd>
 <a class="el" href="coords_8c.html#a41ca0cfd79ad07c9e857ba02fa94928e">ecl2equ()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a>, <a class="el" href="earth_8c.html#ac063b61c63e78a4864f2baa4606bab36">EPS_COR</a>, <a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="system_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>, and <a class="el" href="earth_8c.html#a103c28cd84e81dde365238ee3599f5b0">PSI_COR</a>.</p>
+<p class="reference">References <a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a>, <a class="el" href="earth_8c.html#ac063b61c63e78a4864f2baa4606bab36">EPS_COR</a>, <a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="equinox_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>, and <a class="el" href="earth_8c.html#a103c28cd84e81dde365238ee3599f5b0">PSI_COR</a>.</p>
 
 </div>
 </div>

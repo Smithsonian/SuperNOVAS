@@ -3633,11 +3633,32 @@
       <arglist>(double jd_tdb)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>nutation</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>a69df5671751c09a7575963b94ad1151e</anchor>
+      <arglist>(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>nutation_angles</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>a6e9ced7b0aec544ad7b057b58f777ec4</anchor>
+      <arglist>(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>planet_lon</name>
       <anchorfile>equinox_8c.html</anchorfile>
       <anchor>aacc6a0daf29b8bdc18f46647a94694d3</anchor>
       <arglist>(double t, enum novas_planet planet)</arglist>
+    </member>
+    <member kind="function">
+      <type>short</type>
+      <name>precession</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>a9178358732325399f3a5e3582080ced3</anchor>
+      <arglist>(double jd_tdb_in, const double *in, double jd_tdb_out, double *out)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -4880,27 +4901,6 @@
       <anchorfile>system_8c.html</anchorfile>
       <anchor>ad9cc07f0e6af9339096e15a440b113e5</anchor>
       <arglist>(double jd_tdb, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>nutation</name>
-      <anchorfile>system_8c.html</anchorfile>
-      <anchor>a69df5671751c09a7575963b94ad1151e</anchor>
-      <arglist>(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>nutation_angles</name>
-      <anchorfile>system_8c.html</anchorfile>
-      <anchor>a6e9ced7b0aec544ad7b057b58f777ec4</anchor>
-      <arglist>(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps)</arglist>
-    </member>
-    <member kind="function">
-      <type>short</type>
-      <name>precession</name>
-      <anchorfile>system_8c.html</anchorfile>
-      <anchor>a9178358732325399f3a5e3582080ced3</anchor>
-      <arglist>(double jd_tdb_in, const double *in, double jd_tdb_out, double *out)</arglist>
     </member>
     <member kind="function">
       <type>short</type>

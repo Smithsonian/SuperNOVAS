@@ -845,14 +845,14 @@ This implementation breaks strict v1.0 ABI compatibility since it writes to (ini
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">latitude</td><td>[deg] Geodetic (ITRS) latitude in degrees; north positive. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">longitude</td><td>[deg] Geodetic (ITRS) longitude in degrees; east positive. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">height</td><td>[m] Altitude over se level of the observer (meters). </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">temperature</td><td>[C] Temperature (degrees Celsius). </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pressure</td><td>[mbar] Atmospheric pressure (millibars). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">height</td><td>[m] Altitude over sea level of the observer (meters). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">temperature</td><td>[C] Temperature (degrees Celsius) [-120:70]. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pressure</td><td>[mbar] Atmospheric pressure (millibars) [0:1200]. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">loc</td><td>Pointer to Earth location data structure to populate.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL, or if the temperature or pressure values are impossible for an Earth based observer.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a5eb76fc6e7be571e228d23aee3823cb9">make_observer_on_surface()</a> </dd>
 <dd>
 <a class="el" href="observer_8c.html#ac0ca6f330e1795ce811df95986400632">make_in_space()</a> </dd>
