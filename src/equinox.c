@@ -386,39 +386,24 @@ int fund_args(double t, novas_delaunay_args *restrict a) {
  * @author Attila Kovacs
  */
 double planet_lon(double t, enum novas_planet planet) {
-  double lon;
+  static const double c[9][2] = {
+          { 0.0, 0.0 }, //
+          { 4.402608842461, 2608.790314157421 },  // Mercury
+          { 3.176146696956, 1021.328554621099 },  // Venus
+          { 1.753470459496,  628.307584999142 },  // Earth
+          { 6.203476112911,  334.061242669982 },  // Mars
+          { 0.599547105074,   52.969096264064 },  // Jupiter
+          { 0.874016284019,   21.329910496032 },  // Saturn
+          { 5.481293871537,    7.478159856729 },  // Uranus
+          { 5.311886286677,    3.813303563778 }   // Neptune
+  };
 
-  switch(planet) {
-    case NOVAS_MERCURY:
-      lon = 4.402608842461 + 2608.790314157421 * t;
-      break;
-    case NOVAS_VENUS:
-      lon = 3.176146696956 + 1021.328554621099 * t;
-      break;
-    case NOVAS_EARTH:
-      lon = 1.753470459496 + 628.307584999142 * t;
-      break;
-    case NOVAS_MARS:
-      lon = 6.203476112911 + 334.061242669982 * t;
-      break;
-    case NOVAS_JUPITER:
-      lon = 0.599547105074 + 52.969096264064 * t;
-      break;
-    case NOVAS_SATURN:
-      lon = 0.874016284019 + 21.329910496032 * t;
-      break;
-    case NOVAS_URANUS:
-      lon = 5.481293871537 + 7.478159856729 * t;
-      break;
-    case NOVAS_NEPTUNE:
-      lon = 5.311886286677 + 3.813303563778 * t;
-      break;
-    default:
+  if(planet < NOVAS_MERCURY || planet > NOVAS_NEPTUNE) {
       novas_set_errno(EINVAL, "planet_lon", "invalid planet number: %d", planet);
       return NAN;
   }
 
-  return remainder(lon, TWOPI);
+  return remainder(c[planet][0] + c[planet][1] * t, TWOPI);
 }
 
 /**
