@@ -45,8 +45,8 @@ changes to improve performance.
    
 ### Fixed
 
- - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs. (This was 
-   a NOVAS C 3.1 bug.)
+ - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs. This was a
+   SuperNOVAS bug since v1.0.
  
  - #128: `transform_cat()` had insufficient string length checking of `out_id` parameter. Prior to the fix it checked 
    for the longer object name size instead of the catalog name size. However, even if longer than expected input names 

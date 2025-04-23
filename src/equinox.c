@@ -399,8 +399,8 @@ double planet_lon(double t, enum novas_planet planet) {
   };
 
   if(planet < NOVAS_MERCURY || planet > NOVAS_NEPTUNE) {
-      novas_set_errno(EINVAL, "planet_lon", "invalid planet number: %d", planet);
-      return NAN;
+    novas_set_errno(EINVAL, "planet_lon", "invalid planet number: %d", planet);
+    return NAN;
   }
 
   return remainder(c[planet][0] + c[planet][1] * t, TWOPI);
