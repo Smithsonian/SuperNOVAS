@@ -1,4 +1,7 @@
 name: Documentation
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   release:
