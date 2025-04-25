@@ -35,6 +35,10 @@ Upcoming bug fix release, expected around 1 August 2025.
 
  - Deprecated `ee_ct()` and `ira_equinox()` functions. Both are meant for internal use only, and need not be exposed to
    users in general.
+   
+ - Deprecated `solarsystem()`, `solarsystem_hp()`, and `readeph()` functions. These were prototypes for user-defined 
+   implementations that had to be linked together with NOVAS. In SuperNOVAS, the same functionality can be set 
+   dynamically, during runtime. Thus, these function exist only to support building legacy NOVAS applications. 
  
 
 ## [1.3.0] - 2025-04-15

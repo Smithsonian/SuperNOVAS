@@ -233,13 +233,16 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  *                      is responsible for calling free() on the returned value when it is no
  *                      longer needed.
  *
+ * @deprecated (<i>legacy function</i>) Use `set_ephem_provider()` instead to specify what
+ *             function should be used to calculate ephemeris positions for Solar-system
+ *             objects. This prototype is provided to extend support for legacy NOVAS C
+ *             applications only. In NOVAS, the function had to be user defined, as a custom
+ *             implementation.
+ *
  * @sa set_ephem_provider()
  * @sa novas_ephem_provider
  * @sa ephemeris()
  * @sa NOVAS_EPHEM_OBJECT
- *
- * @since 1.0
- * @author Attila Kovacs
  */
 double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error);
 
@@ -282,6 +285,12 @@ novas_ephem_provider get_ephem_provider();
  *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
  *                      produced for other reasons.
  *
+ * @deprecated (<i>legacy function</i>) Use `set_planet_provider()` instead to specify what
+ *             function should be used to calculate ephemeris positions for major planets. This
+ *             function is provided to extend support for legacy NOVAS C applications only. In
+ *             NOVAS, the function had to be user defined, either by linking against a
+ *             `solsys[1-3].c` module, or by providing a custom user implementation.
+ *
  * @sa novas_planet
  * @sa solarsystem_hp()
  * @sa set_planet_provider()
@@ -321,6 +330,12 @@ short solarsystem(double jd_tdb, short body, short origin, double *restrict posi
  * @return              0 if successful, -1 if there is a required function is not provided
  *                      (errno set to ENOSYS), or some other error code (NOVAS C was not very
  *                      consistent here...)
+ *
+ * @deprecated (<i>legacy function</i>) Use `set_planet_provider_hp()` instead to specify what
+ *             function should be used to calculate high-precision ephemeris positions for major
+ *             planets. This function is provided to extend support for legacy NOVAS C
+ *             applications only. In NOVAS, the function had to be user defined, either by linking
+ *             against a `solsys[1-3].c` module, or by providing a custom user implementation.
  *
  * @sa solarsystem()
  * @sa set_planet_provider_hp()
