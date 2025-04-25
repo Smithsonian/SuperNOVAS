@@ -190,10 +190,10 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
 }
 
 /**
- * Computes quantities related to the orientation of the Earth's rotation axis at Julian date 'jd_tdb'.
+ * Computes quantities related to the orientation of the Earth's rotation axis at the specified Julian
+ * date.
  *
- *  Values of the celestial pole offsets 'PSI_COR' and 'EPS_COR' are set using function 'cel_pole', if
- *  desired.  See the prolog of cel_pole() for details.
+ * Unmodelled corrections to earth orientation can be defined via `cel_pole()` prior to this call.
  *
  * NOTES:
  * <ol>
@@ -201,13 +201,13 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * no extra computational cost for the next call.</li>
  * </ol>
  *
- * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date.
- * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] mobl      [deg] Mean obliquity of the ecliptic. It may be NULL if not required.
- * @param[out] tobl      [deg] True obliquity of the ecliptic. It may be NULL if not required.
- * @param[out] ee        [s] Equation of the equinoxes in seconds of time. It may be NULL if not required.
- * @param[out] dpsi      [arcsec] Nutation in longitude. It may be NULL if not required.
- * @param[out] deps      [arcsec] Nutation in obliquity. It may be NULL if not required.
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] mobl     [deg] Mean obliquity of the ecliptic. It may be NULL if not required.
+ * @param[out] tobl     [deg] True obliquity of the ecliptic. It may be NULL if not required.
+ * @param[out] ee       [s] Equation of the equinoxes in seconds of time. It may be NULL if not required.
+ * @param[out] dpsi     [arcsec] Nutation in longitude. It may be NULL if not required.
+ * @param[out] deps     [arcsec] Nutation in obliquity. It may be NULL if not required.
  *
  * @return          0 if successful, or -1 if the accuracy argument is invalid
  *
@@ -397,11 +397,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
  * JD_J2000), but it avoids many two-PI 'wraps' that decrease precision (adopted from SOFA Fortran
  * routine iau_era00; see also expression at top of page 35 of IERS Conventions (1996)).
  *
- *  REFERENCES:
- *  <ol>
- *   <li>IAU Resolution B1.8, adopted at the 2000 IAU General Assembly, Manchester, UK.</li>
- *   <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
- *  </ol>
+ * REFERENCES:
+ * <ol>
+ *  <li>IAU Resolution B1.8, adopted at the 2000 IAU General Assembly, Manchester, UK.</li>
+ *  <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * </ol>
  *
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
@@ -426,22 +426,18 @@ double era(double jd_ut1_high, double jd_ut1_low) {
 }
 
 /**
- * specifies the celestial pole offsets for high-precision applications.  Each set of offsets is
- * a correction to the modeled position of the pole for a specific date, derived from observations
- * and published by the IERS.
+ * Specifies the unmodeled celestial pole offsets for high-precision applications.  These offsets
+ * provide a correction to the modeled (precessed and nutated) position of Earth's pole, and are
+ * derived from observations and published by IERS.
  *
- * The variables 'PSI_COR' and 'EPS_COR' are used only in NOVAS function e_tilt().
+ * The call sets the global variables `PSI_COR` and `EPS_COR`, for subsequent calls to `e_tilt()`.
+ * As such, it should be called to specify pole offsets prior to legacy NOVAS C equinox-specific
+ * calls.  There is no need to define pole offsets this way, when using the newer frame-based
+ * approach introduced in SuperNOVAS (there, the pole offsets are specified on a per-frame basis
+ * during the initialization of each observing frame).
  *
- * This function, if used, should be called before any other NOVAS functions for a given date.
- * Values of the pole offsets specified via a call to this function will be used until explicitly
- * changed.
- *
- * 'tjd' is used only if 'type' is POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent
- * &Delta;&delta;&psi; and &Delta;&delta;&epsilon; values.
- *
- * If 'type' is POLE_OFFSETS_X_Y (2), dx and dy are unit vector component corrections, but are
- * expressed in milliarcseconds simply by multiplying by 206264806, the number of milliarcseconds
- * in one radian.
+ * The global values of `PSI_COR` and `EPS_COR` specified via this function will be effective
+ * until explicitly changed again.
  *
  * NOTES:
  * <ol>
@@ -457,18 +453,22 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  *  <li>Kaplan, G. (2003), USNO/AA Technical Note 2003-03.</li>
  * </ol>
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
- * @param type      POLE_OFFSETS_DPSI_DEPS (1) or POLE_OFFSETS_X_Y (2)
- * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi;
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date. Used only if 'type' is
+ *                  POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent &Delta;&delta;&psi;
+ *                  and &Delta;&delta;&epsilon; values.
+ * @param type      POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;, &Delta;&delta;&epsilon;
+ *                  relative to the Lieske 1977 nutation model; or POLE_OFFSETS_X_Y (2) if they are
+ *                  dx, dy offsets relative to the IAU 2000 precession-nutation model.
+ * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; for
  *                  or dx) in milliarcseconds.
  * @param dpole2    [mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon;
  *                  or dy) in milliarcseconds.
  * @return          0 if successful, or else 1 if 'type' is invalid.
  *
- * @sa cirs_to_itrs()
- * @sa tod_to_itrs()
  * @sa e_tilt()
  * @sa place()
+ * @sa cirs_to_itrs()
+ * @sa tod_to_itrs()
  * @sa get_ut1_to_tt()
  * @sa sidereal_time()
  * @sa NOVAS_FULL_ACCURACY
@@ -498,8 +498,8 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
 /**
  * Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also
  * corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin
- * (TIO).  The ITRS vector is thereby transformed to the terrestrial intermediate reference
- * system (TIRS) or Pseudo Earth Fixed (PEF), based on the true (rotational) equator and TIO;
+ * (TIO).  The ITRS vector is thereby transformed to the Terrestrial Intermediate Reference
+ * System (TIRS) or Pseudo Earth Fixed (PEF), based on the true (rotational) equator and TIO;
  * or vice versa.  Because the true equator is the plane orthogonal to the direction of the
  * Celestial Intermediate Pole (CIP), the components of the output vector are referred to z
  * and x axes toward the CIP and TIO, respectively.
@@ -561,7 +561,7 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
 }
 
 /**
- * Computes the geocentric position and velocity of an observer. The final vectors are expressed in the GCRS.
+ * Computes the geocentric GCRS position and velocity of an observer.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] TT - UT1 time difference in seconds
