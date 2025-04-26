@@ -31,7 +31,7 @@ C version 3.1, providing bug fixes, tons of extra features, while making it easi
 
 SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
-will scales further with the number of CPUs when calculations are performed in parallel threads.ewo
+will scale with the number of CPUs when calculations are performed in parallel threads.
 
 SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
