@@ -3143,9 +3143,6 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
-  // Convert from 0.1 microarcsec units to radians.
-  const double factor = 1.0e-7 * ASEC2RAD;
-
   double dpsils = 0.0, depsls = 0.0;
   novas_delaunay_args a;
 
@@ -3181,9 +3178,9 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
 
   // Total: Add planetary and luni-solar components.
   if(dpsi)
-    *dpsi = dpsils * factor - 0.000135 * ASEC2RAD;
+    *dpsi = (1e-7 * dpsils - 0.000135) * ARCSEC;
   if(deps)
-    *deps = depsls * factor + 0.000388 * ASEC2RAD;
+    *deps = (1e-7 * depsls + 0.000388) * ARCSEC;
 
   return 0;
 }
@@ -4232,9 +4229,6 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
 
-  // Convert from 0.1 microarcsec units to radians.
-  const double factor = 1.0e-7 * ASEC2RAD;
-
   // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
   // ecliptic and equinox of J2000, with high order terms omitted
   // (Simon et al. 1994, 5.8.1-5.8.8).
@@ -4342,9 +4336,9 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *
 
   // Total: Add planetary and luni-solar components.
   if(dpsi)
-    *dpsi = (dpsipl + dpsils) * factor;
+    *dpsi = 1e-7 * (dpsipl + dpsils) * ARCSEC;
   if(deps)
-    *deps = (depspl + depsls) * factor;
+    *deps = 1e-7 * (depspl + depsls) * ARCSEC;
 
   return 0;
 }

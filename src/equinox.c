@@ -34,7 +34,7 @@
 double accum_prec(double t) {
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
-  return remainder(remainder(0.000005391235 * t, TWOPI) + remainder(0.024380407358 * t * t, TWOPI), TWOPI);
+  return remainder((0.024380407358 + 0.000005391235 * t) * t, TWOPI);
 }
 
 /**
