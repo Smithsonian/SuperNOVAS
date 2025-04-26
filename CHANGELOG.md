@@ -9,11 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Upcoming bug fix release, expected around 1 August 2025.
+Upcoming bug fix release, expected around 1 May 2025.
 
 ### Fixed
 
  - #167: Fixes for Debian i386 cross builds.
+
+ - #174: `accum_prec()` had linear and quadratic time evolutions coefficients swapped since v1.0. 
 
 ### Changed
 
