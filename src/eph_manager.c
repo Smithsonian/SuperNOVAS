@@ -31,6 +31,8 @@
 
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+
+#define EM1   (EM_RATIO + 1.0)      ///< for local use...
 /// \endcond
 
 #include "novas.h"
@@ -358,28 +360,28 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
   // Check for Earth as target, or as center.
   else if(target == DE_EARTH) {
     for(i = 0; i < 3; i++) {
-      target_pos[i] = target_pos[i] - (pos_moon[i] / (1.0 + EM_RATIO));
-      target_vel[i] = target_vel[i] - (vel_moon[i] / (1.0 + EM_RATIO));
+      target_pos[i] = target_pos[i] - (pos_moon[i] / EM1);
+      target_vel[i] = target_vel[i] - (vel_moon[i] / EM1);
     }
   }
   else if(origin == DE_EARTH) {
     for(i = 0; i < 3; i++) {
-      center_pos[i] = center_pos[i] - (pos_moon[i] / (1.0 + EM_RATIO));
-      center_vel[i] = center_vel[i] - (vel_moon[i] / (1.0 + EM_RATIO));
+      center_pos[i] = center_pos[i] - (pos_moon[i] / EM1);
+      center_vel[i] = center_vel[i] - (vel_moon[i] / EM1);
     }
   }
 
   // Check for Moon as target, or as center.
   else if(target == DE_MOON) {
     for(i = 0; i < 3; i++) {
-      target_pos[i] = (pos_earth[i] - (target_pos[i] / (1.0 + EM_RATIO))) + target_pos[i];
-      target_vel[i] = (vel_earth[i] - (target_vel[i] / (1.0 + EM_RATIO))) + target_vel[i];
+      target_pos[i] = (pos_earth[i] - (target_pos[i] / EM1)) + target_pos[i];
+      target_vel[i] = (vel_earth[i] - (target_vel[i] / EM1)) + target_vel[i];
     }
   }
   else if(origin == DE_MOON) {
     for(i = 0; i < 3; i++) {
-      center_pos[i] = (pos_earth[i] - (center_pos[i] / (1.0 + EM_RATIO))) + center_pos[i];
-      center_vel[i] = (vel_earth[i] - (center_vel[i] / (1.0 + EM_RATIO))) + center_vel[i];
+      center_pos[i] = (pos_earth[i] - (center_pos[i] / EM1)) + center_pos[i];
+      center_vel[i] = (vel_earth[i] - (center_vel[i] / EM1)) + center_vel[i];
     }
   }
 

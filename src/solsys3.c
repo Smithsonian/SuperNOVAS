@@ -131,7 +131,7 @@ short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin or
     return novas_error(-1, EINVAL, fn, "NULL output 3-vector: position=%p, velocity=%p", position, velocity);
 
   if(!tmass) {
-    const double oblr = obl * TWOPI / 360.0;
+    const double oblr = obl * DEGREE;
     const double se = sin(oblr);
     const double ce = cos(oblr);
 
@@ -348,13 +348,6 @@ int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restri
     double nu;
   };
 
-  double sum_lon = 0.0;
-  double sum_r = 0.0;
-  const double factor = 1.0e-07;
-  double u, lon, t, emean, sin_lon;
-
-  int i;
-
   static const struct sun_con con[50] = { { 403406, 0, 4.721964, 1.621043 }, //
           { 195207, -97597, 5.937458, 62830.348067 }, //
           { 119433, -59715, 1.115589, 62830.821524 }, //
@@ -405,6 +398,13 @@ int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restri
           { 10, 0, 1.50, 21463.25 }, //
           { 10, -9, 2.55, 157208.40 } };
 
+  double sum_lon = 0.0;
+  double sum_r = 0.0;
+  double u, lon, t, emean, sin_lon;
+
+  int i;
+
+
   if(!ra || !dec || !dis)
     return novas_error(-1, EINVAL, "sun_eph", "NULL output pointer: ra=%p, dec=%p, dis=%p", ra, dec, dis);
 
@@ -425,24 +425,24 @@ int sun_eph(double jd, double *restrict ra, double *restrict dec, double *restri
   // Compute longitude, latitude, and distance referred to mean equinox
   // and ecliptic of date.  Apply correction to longitude based on a
   // linear fit to DE405 in the interval 1900-2100.
-  lon = 4.9353929 + 62833.1961680 * u + factor * sum_lon;
-  lon += ((-0.1371679461 - 0.2918293271 * t) * ASEC2RAD);
+  lon = 4.9353929 + 62833.1961680 * u + 1e-7 * sum_lon;
+  lon += ((-0.1371679461 - 0.2918293271 * t) * ARCSEC);
 
   lon = remainder(lon, TWOPI);
-  *dis = 1.0001026 + factor * sum_r;
+  *dis = 1.0001026 + 1e-7 * sum_r;
 
   // Compute mean obliquity of the ecliptic.
-  emean = (84381.406 + (-46.836769 + (-0.0001831 + 0.00200340 * t) * t) * t) * ASEC2RAD;
+  emean = (84381.406 + (-46.836769 + (-0.0001831 + 0.00200340 * t) * t) * t) * ARCSEC;
 
   // Compute equatorial spherical coordinates referred to the mean equator
   // and equinox of date.
   sin_lon = sin(lon);
-  *ra = atan2((cos(emean) * sin_lon), cos(lon)) * RAD2DEG;
+  *ra = atan2((cos(emean) * sin_lon), cos(lon)) / DEGREE;
   if(*ra < 0.0)
     *ra += DEG360;
   *ra = *ra / 15.0;
 
-  *dec = asin(sin(emean) * sin_lon) * RAD2DEG;
+  *dec = asin(sin(emean) * sin_lon) / DEGREE;
 
   return 0;
 }

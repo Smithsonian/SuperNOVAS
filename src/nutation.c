@@ -2821,7 +2821,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
   const double factor = 1.0e-7 * ASEC2RAD;
 
   // Interval between fundamental epoch J2000.0 and given date.
-  const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
+  const double t = ((jd_tt_high - T0) + jd_tt_low) / JULIAN_CENTURY_DAYS;
 
   // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
   // ecliptic and equinox of J2000
@@ -3141,7 +3141,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
     // @formatter:on
 
   // Interval between fundamental epoch J2000.0 and given date.
-  const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
+  const double t = ((jd_tt_high - T0) + jd_tt_low) / JULIAN_CENTURY_DAYS;
 
   double dpsils = 0.0, depsls = 0.0;
   novas_delaunay_args a;
@@ -4227,7 +4227,7 @@ int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *
     // @formatter:on
 
   // Interval between fundamental epoch J2000.0 and given date.
-  const double t = ((jd_tt_high - T0) + jd_tt_low) / 36525.0;
+  const double t = ((jd_tt_high - T0) + jd_tt_low) / JULIAN_CENTURY_DAYS;
 
   // Planetary longitudes, Mercury through Neptune, wrt mean dynamical
   // ecliptic and equinox of J2000, with high order terms omitted
