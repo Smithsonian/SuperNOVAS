@@ -15,7 +15,9 @@ Upcoming bug fix release, expected around 1 May 2025.
 
  - #167: Fixes for Debian i386 cross builds.
 
- - #174: `accum_prec()` had linear and quadratic time evolutions coefficients swapped since v1.0. 
+ - #174: `accum_prec()` had linear and quadratic time evolutions coefficients swapped since v1.0. The bug affected
+   the IAU2000 precession-nutation calculations, and the calculation of the complementary terms in the equation of
+   equinoxes in `ee_ct()` / `e_tilt()`.
 
 ### Changed
 
@@ -40,7 +42,7 @@ Upcoming bug fix release, expected around 1 May 2025.
    
  - Deprecated `solarsystem()`, `solarsystem_hp()`, and `readeph()` functions. These were prototypes for user-defined 
    implementations that had to be linked together with NOVAS. In SuperNOVAS, the same functionality can be set 
-   dynamically, during runtime. Thus, these function exist only to support building legacy NOVAS applications. 
+   dynamically, during runtime. Thus, these functions are provided only to support building legacy NOVAS applications. 
  
 
 ## [1.3.0] - 2025-04-15
