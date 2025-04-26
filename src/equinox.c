@@ -677,15 +677,8 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
   }
 
   if(!(fabs(t - last_t) < 1e-12) || (accuracy != last_acc)) {
-    if(accuracy == NOVAS_FULL_ACCURACY) {
-      // High accuracy mode -- use IAU 2000A.
-      iau2000a(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
-    }
-    else {
-      // Low accuracy mode -- model depends upon value of 'low_acc_choice'.
-      novas_nutation_provider nutate_call = get_nutation_lp_provider();
-      nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
-    }
+    novas_nutation_provider nutate_call = (accuracy == NOVAS_FULL_ACCURACY) ? iau2000a : get_nutation_lp_provider();
+    nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
 
     // Convert output to arcseconds.
     last_dpsi /= ARCSEC;
