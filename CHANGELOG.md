@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.3.1-rc1] - 2025-04-26
+## [Unreleased]
 
 Upcoming bug fix release, expected around 1 May 2025.
 
@@ -26,7 +26,7 @@ Upcoming bug fix release, expected around 1 May 2025.
  - #170: `make_on_surface()` to validate temperature and pressure values, and return -1 (with `errno` set to `EINVAL`) if
    the supplied values are outside of the sensible range.
  
- - #171: Cache `nutation_angles()` instread of `e_tilt()` to improve performance in more usage scenarios. (See updated
+ - #171: Cache `nutation_angles()` instead of `e_tilt()` to improve performance in more usage scenarios. (See updated
    benchmarks).
    
  - #171: Moved `precession()`, `nutation()`, and `nutation_angles()` to `equinox.c`.
