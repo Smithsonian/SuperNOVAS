@@ -20,13 +20,14 @@ from astropy.coordinates import SkyCoord, EarthLocation, Longitude, Latitude, CI
 # main program entry point
 
 # Number of sources / iterations to test with
-N = 300			
+N = 300
+
 
 # ----------------------------------------------------------------------------
 # Set up a source 'catalog' with the desired number of sources and random 
 # properties
 sources = []
-	
+
 for i in range(0, N):
 	# Generate random source properties
 	ra = Longitude(360.0 * (random.random() - 0.5) * u.degree)

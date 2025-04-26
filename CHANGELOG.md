@@ -15,9 +15,10 @@ Upcoming bug fix release, expected around 1 May 2025.
 
  - #167: Fixes for Debian i386 cross builds.
 
- - #174: `accum_prec()` had linear and quadratic time evolutions coefficients swapped since v1.0. The bug affected
+ - #174: `accum_prec()` had linear and quadratic time evolution coefficients swapped since v1.0. The bug affected
    the IAU2000 precession-nutation calculations, and the calculation of the complementary terms in the equation of
-   equinoxes in `ee_ct()` / `e_tilt()`.
+   equinoxes in `ee_ct()` / `e_tilt()`. The effect however is small, typically just a few micro-arcseconds (&mu;as),
+   for dates within a century of J2000.
 
 ### Changed
 
@@ -32,6 +33,8 @@ Upcoming bug fix release, expected around 1 May 2025.
    benchmarks).
    
  - #171: Moved `precession()`, `nutation()`, and `nutation_angles()` to `equinox.c`.
+ 
+ - Corrected benchmarks for individual frames.
  
  - Corrections and edits to API documentation.
 

@@ -1352,27 +1352,27 @@ aberration and gravitational deflection corrections from the observer's point of
 
  | Description                         | accuracy  | positions / sec |
  |-------------------------------------|:---------:|----------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         2713879 |
- |                                     |   full    |         2708014 |
- | `place()`, same time, same observer | reduced   |          631643 |
- |                                     |   full    |          630705 |
- | `novas_sky_pos()`, individual       | reduced   |          238445 |
- |                                     |   full    |          232862 |
- | `place()`, individual               | reduced   |          149049 |
- |                                     |   full    |           36619 |
+ | `novas_sky_pos()`, same frame       | reduced   |         2884159 |
+ |                                     |   full    |         2881913 |
+ | `place()`, same time, same observer | reduced   |          656077 |
+ |                                     |   full    |          656112 |
+ | `novas_sky_pos()`, individual       | reduced   |          127370 |
+ |                                     |   full    |           29674 |
+ | `place()`, individual               | reduced   |          132218 |
+ |                                     |   full    |           29932 |
 
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
 
  | Description                         | accuracy  | positions / sec |
  |-------------------------------------|:---------:|----------------:|
- | NOVAS C 3.1 `place()`, same         | reduced   |          371164 |
+ | NOVAS C 3.1 `place()`, same frame   | reduced   |          371164 |
  | NOVAS C 3.1 `place()`, individual   | reduced   |           55484 |
  
 For comparison, a very similar benchmark with [astropy](https://www.astropy.org/) (v7.0.0 on Python v3.13.1) on the 
 same machine, provides ~70 positions / second both for a fixed frame and for individual frames. As such, 
 __SuperNOVAS__ is a whopping ~40000 times faster than __astropy__ for calculations in the same observing frame, and 
-~3000 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided under 
-the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
+400--2000 times faster than __astropy__ for individual frames. (The __astropy__ benchmarking code is also provided 
+under the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  
  | Description                                     | positions / sec |
  |-------------------------------------------------|----------------:|
@@ -1386,7 +1386,7 @@ As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperfor
 repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
 2 orders of magnitude faster performance than for individual observing times and/or observer locations. Also, when 
 observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
-individual observing times or observer locations are generally around 2x faster if reduced accuracy is sufficient.
+individual observing times or observer locations are generally around 4x faster if reduced accuracy is sufficient.
 
 The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
 expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
@@ -1445,7 +1445,7 @@ one minute.
    time. Once set, you can obtain an expression of that time in any timescale of choice. And, you can create a new 
    time specification by incrementing an existing one, or measure precise time differences.
    
- - New coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession by not nutation and
+ - New coordinate reference systems `NOVAS_MOD` (Mean of Date) which includes precession but not nutation and
    `NOVAS_J2000` for the J2000 dynamical reference system.
 
  - New observer locations `NOVAS_AIRBORNE_OBSERVER` and `NOVAS_SOLAR_SYSTEM_OBSERVER`, and corresponding

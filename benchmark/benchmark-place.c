@@ -183,7 +183,7 @@ int main(int argc, const char *argv[]) {
   // Benchmark reduced accuracy, individual fames
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) {
-    novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
+    novas_set_unix_time(unix_time.tv_sec + i, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
     novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &obs_time, POLAR_DX, POLAR_DY, &obs_frame);
     calc_pos(&stars[i], &obs_frame);
   }
@@ -195,7 +195,7 @@ int main(int argc, const char *argv[]) {
   // Benchmark full accuracy, individual frames
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) {
-    novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
+    novas_set_unix_time(unix_time.tv_sec + i, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time);
     novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &obs_time, POLAR_DX, POLAR_DY, &obs_frame);
     calc_pos(&stars[i], &obs_frame);
   }
