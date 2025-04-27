@@ -745,8 +745,8 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
  make_orbital_object("NEAxxx", -1, &orbit, &NEA);
 ```
 
-Note, that even with orbital elements, you will, in general, require a planet calculator, to provide precise
-positions for the Sun or planet, around which the orbit is defined.
+Note, that even with orbital elements, you will, in general, require a planet calculator (ephemeris provider) also, 
+to provide precisepositions for the Sun or the planet, around which the orbit is defined.
 
 Other than that, it's the same spiel as before, e.g.:
 
@@ -757,6 +757,25 @@ Other than that, it's the same spiel as before, e.g.:
    ...
  }
 ```
+
+Finally, as of version 1.4, you might generate approximate (arcmin-level) orbitals for the major planets (sans Earth), 
+the Moon, and the Earth-Moon Barycenter (EMB) also, e.g.:
+
+```
+ double jd_tdb = ... // Time (epoch) for which to calculate orbital parameters  
+  
+ // Planet orbitals, e.g. for Mars
+ novas_orbital mars_orbit = NOVAS_ORBIT_INIT;
+ make_planet_orbit(NOVAS_MARS, jd_tdb, &mars_orbit);
+  
+ // Moon's orbital around Earth
+ novas_orbital moon_orbit = NOVAS_ORBIT_INIT;
+ make_moon_orbit(jd_tdb, &moon-orbit);
+```
+
+While the planet and Moon orbitals are not typically suitable for precision applications, they can be useful for 
+determining approximate positions, and for rise/set time calculations.
+
 
 ------------------------------------------------------------------------------
 

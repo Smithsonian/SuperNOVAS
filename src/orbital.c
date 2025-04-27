@@ -135,11 +135,56 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
 }
 
 /**
+ * Calculates the eccentric anomaly, relative radius (w.r.t. the semi-major axis _a_), and true
+ * elongation of a Keplerian orbital in the plane of the orbit.
+ *
+ * @param M           [deg] The mean elongation (as if on a circular orbit).
+ * @param e           eccentricity.
+ * @param[out] E      [deg] The solved eccentric anomaly.
+ * @param[out] r_hat  Relative distance from orbital center, as a multiple of the semi-major axis
+ *                    _a_.
+ * @param[out] l      [deg] The true elongation along the orbit.
+ * @return            0 if successful, or else -1 if there was an error (errno will be set to
+ *                    ECANCELED if the iterative solution to the eccentric anomaly _E_ failed to
+ *                    converge).
+ *
+ * @since 1.4
+ * @author Attila Kovacs
+ *
+ * @sa novas_orbit_posvel()
+ */
+static int novas_orbital_plane_pos(double M, double e, double *restrict E, double *restrict r_hat, double *restrict l) {
+  double E1 = remainder(M * DEGREE, TWOPI);
+  int i = novas_inv_max_iter;
+
+  M = E1; // deg -> rad
+
+  // Iteratively determine E, using Newton-Raphson method...
+  while(--i >= 0) {
+    double dE = (E1 - e * sin(E1) - M) / (1.0 - e * cos(E1));
+    E1 -= dE;
+    if(fabs(dE) < EPREC)
+      break;
+  }
+
+  if(i < 0)
+    return novas_error(-1, ECANCELED, "novas_orbital_plane_pos", "Eccentric anomaly convergence failure.");
+
+  *E = remainder(E1, TWOPI) / DEGREE;
+  *l = 2.0 * atan2(sqrt(1.0 + e) * sin(0.5 * E1), sqrt(1.0 - e) * cos(0.5 * E1)) / DEGREE;
+  *r_hat = (1.0 - e * cos(E1));
+
+  return 0;
+}
+
+/**
  * Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the
- * specified time of observation.
+ * specified time of observation, in the native coordinate system in which the orbital is defined (e.g. ecliptic
+ * for heliocentric orbitals).
  *
  * REFERENCES:
  * <ol>
+ * <li>E.M. Standish and J.G. Williams 1992.</li>
  * <li>https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
  * <li>https://en.wikipedia.org/wiki/Orbital_elements</li>
  * <li>https://orbitalofficial.com/</li>
@@ -148,10 +193,9 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
  *
  * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
  * @param orbit     Orbital parameters
- * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
- * @param[out] pos  [AU] Output ICRS equatorial position vector, or NULL if not required
- * @param[out] vel  [AU/day] Output ICRS equatorial velocity vector, or NULL if not required
- * @return          0 if successful, or else -1 if the orbital parameters are NULL
+ * @param[out] pos  [AU] Output ICRS equatorial position vector around orbital center, or NULL if not required.
+ * @param[out] vel  [AU/day] Output ICRS velocity vector rel. to orbital center, in the native system of the orbital,
+ *                  or NULL if not required. 0 if successful, or else -1 if the orbital parameters are NULL,
  *                  or if the position and velocity output vectors are the same or the orbital
  *                  system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to
  *                  ECANCELED), or
@@ -162,16 +206,14 @@ static int orbit2gcrs(double jd_tdb, const novas_orbital_system *sys, enum novas
  * @sa make_orbital_object()
  *
  * @author Attila Kovacs
- * @since 1.2
+ * @since 1.4
  */
-int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
-        double *restrict pos, double *restrict vel) {
-  static const char *fn = "novas_orbit_posvel";
+int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel) {
+  static const char *fn = "novas_orbit_native_posvel";
 
-  double dt, M, E, nu, r, omega, Omega;
+  double dt, E = 0.0, nu = 0.0, r_hat = 0.0, omega, Omega;
   double cO, sO, ci, si, co, so;
   double xx, yx, zx, xy, yy, zy;
-  int i = novas_inv_max_iter;
 
   if(!orbit)
     return novas_error(-1, EINVAL, fn, "input orbital elements is NULL");
@@ -180,24 +222,11 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum 
     return novas_error(-1, EINVAL, fn, "output pos = vel (@ %p)", pos);
 
   dt = (jd_tdb - orbit->jd_tdb);
-  E = M = remainder(orbit->M0 + orbit->n * dt, DEG360) * DEGREE;
 
-  // Iteratively determine E, using Newton-Raphson method...
-  while(--i >= 0) {
-    double esE = orbit->e * sin(E);
-    double ecE = orbit->e * cos(E);
-    double dE = (E - esE - M) / (1.0 - ecE);
+  prop_error(fn, novas_orbital_plane_pos(orbit->M0 + orbit->n * dt, orbit->e, &E, &r_hat, &nu), 0)
 
-    E -= dE;
-    if(fabs(dE) < EPREC)
-      break;
-  }
-
-  if(i < 0)
-    return novas_error(-1, ECANCELED, fn, "Eccentric anomaly convergence failure");
-
-  nu = 2.0 * atan2(sqrt(1.0 + orbit->e) * sin(0.5 * E), sqrt(1.0 - orbit->e) * cos(0.5 * E));
-  r = orbit->a * (1.0 - orbit->e * cos(E));
+  E *= DEGREE;
+  nu *= DEGREE;
 
   omega = orbit->omega * DEGREE;
   if(orbit->apsis_period > 0.0)
@@ -215,31 +244,27 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum 
   co = cos(omega);
   so = sin(omega);
 
-  // Rotation matrix
-  // See https://en.wikipedia.org/wiki/Euler_angles
-  // (note the Wikipedia has opposite sign convention for angles...)
-  xx = cO * co - sO * ci * so;
-  yx = sO * co + cO * ci * so;
+  // Rotation matrix, see E.M. Standish and J.G. Williams 1992.
+  xx = cO * co - sO * so * ci;
+  yx = sO * co + cO * so * ci;
   zx = si * so;
 
-  xy = -cO * so - sO * ci * co;
-  yy = -sO * so + cO * ci * co;
+  xy = -cO * so - sO * co * ci;
+  yy = -sO * so + cO * co * ci;
   zy = si * co;
 
   if(pos) {
-    double x = r * cos(nu);
-    double y = r * sin(nu);
+    double x = orbit->a * r_hat * cos(nu);
+    double y = orbit->a * r_hat * sin(nu);
 
     // Perform rotation
     pos[0] = xx * x + xy * y;
     pos[1] = yx * x + yy * y;
     pos[2] = zx * x + zy * y;
-
-    prop_error(fn, orbit2gcrs(jd_tdb, &orbit->system, accuracy, pos), 0);
   }
 
   if(vel) {
-    double v = orbit->n * DEGREE * orbit->a * orbit->a / r;    // [AU/day]
+    double v = orbit->n * DEGREE * orbit->a / r_hat;    // [AU/day]
     double x = -v * sin(E);
     double y = v * sqrt(1.0 - orbit->e * orbit->e) * cos(E);
 
@@ -247,12 +272,57 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum 
     vel[0] = xx * x + xy * y;
     vel[1] = yx * x + yy * y;
     vel[2] = zx * x + zy * y;
-
-    prop_error(fn, orbit2gcrs(jd_tdb, &orbit->system, accuracy, vel), 0);
   }
 
   return 0;
 }
+
+/**
+ * Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the
+ * specified time of observation.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>E.M. Standish and J.G. Williams 1992.</li>
+ * <li>https://ssd.jpl.nasa.gov/planets/approx_pos.html</li>
+ * <li>https://en.wikipedia.org/wiki/Orbital_elements</li>
+ * <li>https://orbitalofficial.com/</li>
+ * <li>https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf</li>
+ * </ol>
+ *
+ * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
+ * @param orbit     Orbital parameters
+ * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
+ * @param[out] pos  [AU] Output ICRS equatorial position vector around orbital center, or NULL if not required.
+ * @param[out] vel  [AU/day] Output ICRS equatorial velocity vector rel. to orbital center, or NULL if not required.
+ * @return          0 if successful, or else -1 if the orbital parameters are NULL,
+ *                  or if the position and velocity output vectors are the same or the orbital
+ *                  system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to
+ *                  ECANCELED), or
+ *
+ * @sa ephemeris()
+ * @sa novas_geom_posvel()
+ * @sa place()
+ * @sa make_orbital_object()
+ *
+ * @author Attila Kovacs
+ * @since 1.2
+ */
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
+        double *restrict pos, double *restrict vel) {
+  static const char *fn = "novas_orbit_posvel";
+
+  prop_error(fn, novas_orbit_native_posvel(jd_tdb, orbit, pos, vel), 0);
+
+  if(pos)
+    prop_error(fn, orbit2gcrs(jd_tdb, &orbit->system, accuracy, pos), 0);
+
+  if(vel)
+    prop_error(fn, orbit2gcrs(jd_tdb, &orbit->system, accuracy, vel), 0);
+
+  return 0;
+}
+
 
 /**
  * Sets the orientation of an orbital system using the RA and DEC coordinates of the pole

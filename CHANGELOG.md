@@ -14,9 +14,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
    Sidereal Time (GST / GaST) and Local (apparent) Sidereal Time (LST / LaST) for a given astrometric time (and
    observer location) more easily. 
 
- - 173: Added our own implementation of the wavelength-dependent IAU refraction model as `novas_wave_refraction()`, which 
-   is based on the SOFA `iauRefco()` function. The wavelength for which the refraction is calculated can be set by
-   `novas_refract_wavelength()`. By default 550 nm (0.55 &mu;m) is assumed.
+ - 173: Added our own implementation of the wavelength-dependent IAU refraction model as `novas_wave_refraction()`, 
+   which is based on the SOFA `iauRefco()` function. The wavelength for which the refraction is calculated can be set 
+   by `novas_refract_wavelength()`. By default 550 nm (0.55 &mu;m) is assumed.
+   
+ - #176: `make_planet_orbit()`  to generate Keplerian orbital elements for the major planets (sans Earth), and the 
+   Earth-Moon Barycenter (EMB), based on Standish &amp; Williams 1992. In most cases such orbitals can provide 
+   arcmin-level precisions, especially for current dates.
+
+ - #176:`make_moon_orbit()` to generate geocentric Keplerian orbital elements for the Moon using the Chapront et al. 
+   2002 model.
+
+ - #176: `novas_approx_heliocentric()` and `novas_approx_sky_pos()` to calculate approximate heliocentric ICRS 
+   and observable apparent positions, respectively, for the major planets (including Earth), and Moon and the 
+   Earth-Moon Barycenter, using the orbital models mentioned above.
+
+ - #176: `novas_moon_phase()` and `novas_next_moon_phase()` to calculate the Moon's apparent phase or the date/time 
+   when it reaches a specific phse, respectively, suing the Keplerian orbitals for the E-M Barycenter by Standish 
+   &amp; Williams 1992, and the geocentric orbitals of the Moon by Chapront et al. 2002.
+ 
+ - #176: `novas_orbital_native_posvel()` to calculate orbital positions in the native system, in which the orbital 
+   is defined (e.g. ecliptic coordinates for planetary orbits).
    
 ### Changed
 
