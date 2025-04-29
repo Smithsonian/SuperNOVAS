@@ -2096,6 +2096,11 @@ double novas_moon_phase(double jd_tdb);
 
 double novas_next_moon_phase(double phase, double jd_tdb);
 
+// in calendar.c
+int novas_day_of_week(double tjd);
+
+int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restrict year);
+
 
 // <================= END of SuperNOVAS API =====================>
 

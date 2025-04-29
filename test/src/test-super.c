@@ -3937,6 +3937,73 @@ static int test_next_moon_phase() {
   return n;
 }
 
+static int test_day_of_week() {
+  int n = 0;
+
+  // J2000 -> Saturday
+  if(!is_equal("day_of_week:J2000", 6, novas_day_of_week(NOVAS_JD_J2000), 1e-6)) n++;
+
+  // 2025-05-01 is Thursday -> JD 2460796.5 -- 2460797.5
+  if(!is_equal("day_of_week:start", 4, novas_day_of_week(2460796.5), 1e-6)) n++;
+  if(!is_equal("day_of_week:mid", 4, novas_day_of_week(2460797.0), 1e-6)) n++;
+  if(!is_equal("day_of_week:end", 4, novas_day_of_week(2460797.499), 1e-6)) n++;
+
+  return n;
+}
+
+static int test_day_of_year() {
+  int n = 0;
+
+  int y;
+
+  if(!is_equal("day_of_year:J2000", 1, novas_day_of_year(NOVAS_JD_J2000, NOVAS_GREGORIAN_CALENDAR, &y), 1e-6)) n++;
+  if(!is_equal("day_of_year:J2000:gregorian:year", 2000, y, 1e-6)) n++;
+
+  if(!is_equal("day_of_year:J2000-1", 365, novas_day_of_year(NOVAS_JD_J2000 - 1.0, NOVAS_GREGORIAN_CALENDAR, &y), 1e-6)) n++;
+  if(!is_equal("day_of_year:J2000-1:gregorian:year", 1999, y, 1e-6)) n++;
+
+  if(!is_equal("day_of_year:reform:gregorian", 288, novas_day_of_year(NOVAS_JD_START_GREGORIAN + 0.5, NOVAS_GREGORIAN_CALENDAR, &y), 1e-6)) n++;
+  if(!is_equal("day_of_year:reform:gregorian:year", 1582, y, 1e-6)) n++;
+
+  if(!is_equal("day_of_year:reform:astronomical", 288, novas_day_of_year(NOVAS_JD_START_GREGORIAN + 0.5, NOVAS_ASTRONOMICAL_CALENDAR, NULL), 1e-6)) n++;
+  if(!is_equal("day_of_year:reform:roman", 278, novas_day_of_year(NOVAS_JD_START_GREGORIAN + 0.5, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+
+  if(!is_equal("day_of_year:reform-1:gregorian", 287, novas_day_of_year(NOVAS_JD_START_GREGORIAN - 0.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
+  if(!is_equal("day_of_year:reform-1:astronomical", 277, novas_day_of_year(NOVAS_JD_START_GREGORIAN - 0.5, NOVAS_ASTRONOMICAL_CALENDAR, NULL), 1e-6)) n++;
+  if(!is_equal("day_of_year:reform-1:roman", 277, novas_day_of_year(NOVAS_JD_START_GREGORIAN - 0.5, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+
+  // leaps
+  // 1900-03-01
+  if(!is_equal("day_of_year:1900-03-01", 60, novas_day_of_year(2415079.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
+
+  // leaps
+  // 1900-03-01
+  if(!is_equal("day_of_year:1900-03-01", 60, novas_day_of_year(2415079.5, NOVAS_ASTRONOMICAL_CALENDAR, NULL), 1e-6)) n++;
+
+  // 1900-03-01, astronomical
+  if(!is_equal("day_of_year:1900-03-01:astronomical", 60, novas_day_of_year(2415079.5, NOVAS_ASTRONOMICAL_CALENDAR, NULL), 1e-6)) n++;
+
+  // 1900-03-01, Roman/Julian
+  if(!is_equal("day_of_year:1900-03-01:roman", 61, novas_day_of_year(2415079.5 + 12, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+
+  // 2000-03-01
+  if(!is_equal("day_of_year:2000-03-01", 61, novas_day_of_year(2451604.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
+
+  // 2000-03-01, Roman/Julian
+   if(!is_equal("day_of_year:2000-03-01:roman", 61, novas_day_of_year(2451604.5 + 12, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+
+  // 2004-03-01
+  if(!is_equal("day_of_year:2004-03-01", 61, novas_day_of_year(2453065.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
+
+  // 1500-03-01, astronomical
+  if(!is_equal("day_of_year:1500-03-01:astronomical", 61, novas_day_of_year(2268992.5, NOVAS_ASTRONOMICAL_CALENDAR, NULL), 1e-6)) n++;
+
+  // 1500-03-01, Roman/Julian
+  if(!is_equal("day_of_year:1500-03-01:roman", 61, novas_day_of_year(2268992.5, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -4008,6 +4075,7 @@ int main(int argc, char *argv[]) {
   if(test_orbit_place()) n++;
   if(test_orbit_posvel_callisto()) n++;
 
+  // v1.3
   if(test_hms_hours()) n++;
   if(test_dms_degrees()) n++;
   if(test_parse_degrees()) n++;
@@ -4051,13 +4119,16 @@ int main(int argc, char *argv[]) {
   if(test_print_hms()) n++;
   if(test_print_dms()) n++;
 
-
+  // v1.4
   if(test_time_lst()) n++;
 
   if(test_approx_heliocentric()) n++;
   if(test_approx_sky_pos()) n++;
   if(test_moon_phase()) n++;
   if(test_next_moon_phase()) n++;
+
+  if(test_day_of_week()) n++;
+  if(test_day_of_year()) n++;
 
   n += test_dates();
 
