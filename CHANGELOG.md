@@ -26,13 +26,16 @@ Upcoming bug fix release, expected around 1 May 2025.
  
  - #169: `novas_parse_degrees()` to support parsing values in exponential notation also, e.g. `1.23E2`, `1.23E2W` etc.
  
- - #170: `make_on_surface()` to validate temperature and pressure values, and return -1 (with `errno` set to `EINVAL`) if
-   the supplied values are outside of the sensible range.
+ - #170: `make_on_surface()` to validate temperature and pressure values, and return -1 (with `errno` set to `EINVAL`) 
+   if the supplied values are outside of the sensible range.
  
  - #171: Cache `nutation_angles()` instead of `e_tilt()` to improve performance in more usage scenarios. (See updated
    benchmarks).
    
  - #171: Moved `precession()`, `nutation()`, and `nutation_angles()` to `equinox.c`.
+ 
+ - #178: `novas_jd_to_date()` to check if input calendar is valid and return -1 with `errno` set to `EINVAL` if it is
+   not.
  
  - Corrected benchmarks for individual frames.
  

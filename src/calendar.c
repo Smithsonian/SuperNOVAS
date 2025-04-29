@@ -115,7 +115,8 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
  * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
  *
- * @return              0
+ * @return             0 if successful, or else -1 if the calendar is invalid (errno will
+ *                     be set to EINVAL).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -130,6 +131,9 @@ int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restric
   long jd, k, m, n;
   int y, mo, d;
   double djd, h;
+
+  if(calendar < NOVAS_ROMAN_CALENDAR || calendar > NOVAS_GREGORIAN_CALENDAR)
+    return novas_error(-1, EINVAL, "novas_jd_to_date", "invalid calendar type: %d\n", calendar);
 
   // Default return values
   if(year)
