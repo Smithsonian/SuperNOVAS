@@ -1383,10 +1383,12 @@ under the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
 Figure 2 offers a visual comparison for the above mentioned performance measures.
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
-repeatedly calculating positions for sources for the same instant of time and same observer location, providing up to 
-2 orders of magnitude faster performance than for individual observing times and/or observer locations. Also, when 
-observing frames are reused, the performance is essentially independent of the accuracy. By contrast, calculations for 
-individual observing times or observer locations are generally around 4x faster if reduced accuracy is sufficient.
+repeatedly calculating positions for sources for the same instant of time and same observer location, providing 4--5 
+times faster performance than `place()` with the same observer and time. The same performance is maintained even when 
+cycling through different frames, a usage scenario in which the performance advantage over `place()` may be up to 2 
+orders of magnitude. When observing frames are reused, the performance is essentially independent of the accuracy. By 
+contrast, calculations for individual observing times or observer locations are generally around 4x faster if reduced 
+accuracy is sufficient.
 
 The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
 expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
