@@ -51,7 +51,8 @@ Upcoming bug fix release, expected around 1 May 2025.
    
  - Deprecated `solarsystem()`, `solarsystem_hp()`, and `readeph()` functions. These were prototypes for user-defined 
    implementations that had to be linked together with NOVAS. In SuperNOVAS, the same functionality can be set 
-   dynamically, during runtime. Thus, these functions are provided only to support building legacy NOVAS applications. 
+   dynamically, during runtime. Thus, these functions are provided only to support building legacy NOVAS applications,
+   and should not be used in new application code going forward. 
  
 
 ## [1.3.0] - 2025-04-15
