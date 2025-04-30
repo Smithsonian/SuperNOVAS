@@ -37,6 +37,9 @@ Upcoming bug fix release, expected around 1 May 2025.
  - #178: `novas_jd_to_date()` to check if input calendar is valid and return -1 with `errno` set to `EINVAL` if it is
    not.
  
+ - #179: `novas_jd_from_date()` to check if input calendar is valid and return NaN with `errno` set to `EINVAL` if it 
+   is not.
+ 
  - Corrected benchmarks for individual frames.
  
  - Corrections and edits to API documentation.

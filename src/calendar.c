@@ -47,7 +47,7 @@
  * @param day       [day] Day of month [1:31]
  * @param hour      [hr] Hour of day [0:24]
  * @return          [day] the fractional Julian day for the input calendar date, ot NAN if
- *                  month or day components are out of range.
+ *                  the calendar is invalid or the month or day components are out of range.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -63,6 +63,9 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
 
   long jd, m14 = month - 14L;
   double fjd;
+
+  if(calendar < NOVAS_ROMAN_CALENDAR || calendar > NOVAS_GREGORIAN_CALENDAR)
+    return novas_error(-1, EINVAL, "novas_jd_from_date", "invalid calendar type: %d\n", calendar);
 
   if(month < 1 || month > 12) {
     novas_error(0, EINVAL, fn, "invalid month: %d, expected 1-12", month);
@@ -83,7 +86,7 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
   if(calendar == NOVAS_GREGORIAN_CALENDAR)
     jd -= 3L * ((year + 4900L + m14 / 12L) / 100L) / 4L - 48L;  // Gregorian calendar reform
   else
-    jd += 10L;                                                            // Julian (Roman) calendar
+    jd += 10L;                                                  // Julian (Roman) calendar
 
   return jd + fjd;
 }

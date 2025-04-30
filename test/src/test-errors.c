@@ -1898,13 +1898,22 @@ static int test_julian_date() {
   return n;
 }
 
+static int test_jd_from_date() {
+  int n = 0;
+
+  if(check("jd_from_date:calendar:-2", -1, novas_jd_from_date(-2, 2000, 1, 1, 0.0))) n++;
+  if(check("jd_from_date:calendar:2", -1, novas_jd_from_date(2, 2000, 1, 1, 0.0))) n++;
+
+  return n;
+}
+
 static int test_jd_to_date() {
   int n = 0;
   int y, m, d;
   double h;
 
-  if(check("jd_to_date:-2", -1, novas_jd_to_date(NOVAS_JD_J2000, -2, &y, &m, &d, &h))) n++;
-  if(check("jd_to_date:2", -1, novas_jd_to_date(NOVAS_JD_J2000, 2, &y, &m, &d, &h))) n++;
+  if(check("jd_to_date:calendar:-2", -1, novas_jd_to_date(NOVAS_JD_J2000, -2, &y, &m, &d, &h))) n++;
+  if(check("jd_to_date:calendar:2", -1, novas_jd_to_date(NOVAS_JD_J2000, 2, &y, &m, &d, &h))) n++;
 
   return n;
 }
@@ -2250,6 +2259,7 @@ int main() {
   if(test_uvw_to_xyz()) n++;
   if(test_xyz_to_uvw()) n++;
   if(test_julian_date()) n++;
+  if(test_jd_from_date()) n++;
   if(test_jd_to_date()) n++;
   if(test_parse_date()) n++;
   if(test_parse_iso_date()) n++;
