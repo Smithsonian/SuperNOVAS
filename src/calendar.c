@@ -58,14 +58,14 @@
  * @sa tt2tdb()
  */
 double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month, int day, double hour) {
-  static const char *fn = "novas_cal_to_jd";
+  static const char *fn = "novas_jd_from_date";
   static const char md[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
   long jd, m14 = month - 14L;
   double fjd;
 
   if(calendar < NOVAS_ROMAN_CALENDAR || calendar > NOVAS_GREGORIAN_CALENDAR)
-    return novas_error(-1, EINVAL, "novas_jd_from_date", "invalid calendar type: %d\n", calendar);
+    return novas_error(-1, EINVAL, fn, "invalid calendar type: %d\n", calendar);
 
   if(month < 1 || month > 12) {
     novas_error(0, EINVAL, fn, "invalid month: %d, expected 1-12", month);
