@@ -161,6 +161,15 @@ static int set_precession(novas_frame *frame) {
   const double omegaa = ((((+0.0000003337 * t - 0.000000467) * t - 0.00772503) * t + 0.0512623) * t - 0.025754) * t * ARCSEC + eps0;
   const double chia = ((((-0.0000000560 * t + 0.000170663) * t - 0.00121197) * t - 2.3814292) * t + 10.556403) * ARCSEC * t;
 
+  // P03rev2 / Capitaine at al. (2005) eqs. (11)
+  //const double psia = t * (5038.482090 + t * (-1.0789921 + t * (-0.00114040 + t * (0.000132851 - t * 0.0000000951)))) * ARCSEC;
+  //const double omegaa = eps0 + t * (-0.025675 + t * (0.0512622 + t * (-0.00772501 + t * (-0.000000467 + t * 0.0000003337)))) * ARCSEC;
+
+  // Liu & Capitaine (2017)
+  //const double chia = t * (10.556240 + t * (-2.3813876 + t * (-0.00121311 + t * (0.000160286 + t * 0.000000086)))) * ARCSEC;
+  //const double psia = t * (5038.481270 + t * (-1.0732468 + t * (0.01573403 + t * (0.000127135 - t * 0.0000001020)))) * ARCSEC;
+  //const double omegaa = eps0 + t * (-0.024725 + t * (0.0512626 + t * (-0.0077249 + t * (-0.000000267 + t * 0.000000267)))) * ARCSEC;
+
   const double sa = sin(eps0);
   const double ca = cos(eps0);
   const double sb = sin(-psia);
