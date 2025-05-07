@@ -7,9 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.3.1] - 2025-05-07
 
-Upcoming bug fix release, expected around 1 May 2025.
+Bug fix release with minor enhancements.
 
 ### Fixed
 
@@ -51,8 +51,8 @@ Upcoming bug fix release, expected around 1 May 2025.
    
  - Deprecated `solarsystem()`, `solarsystem_hp()`, and `readeph()` functions. These were prototypes for user-defined 
    implementations that had to be linked together with NOVAS. In SuperNOVAS, the same functionality can be (should be) 
-   set dynamically, during runtime. Thus, these functions are provided only to support building legacy NOVAS 
-   applications, and should not be used in new application code going forward. 
+   set dynamically, during runtime. Thus, these functions are provided to support building legacy NOVAS applications 
+   only, and should be avoided in new application code going forward. 
  
 
 ## [1.3.0] - 2025-04-15
