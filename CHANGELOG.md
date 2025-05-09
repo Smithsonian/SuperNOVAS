@@ -6,6 +6,7 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
 
 ### Added
@@ -35,6 +36,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
  
  - #176: `novas_orbital_native_posvel()` to calculate orbital positions in the native system, in which the orbital 
    is defined (e.g. ecliptic coordinates for planetary orbits).
+   
+ - #177: Added `novas_fay_of_week()` and `novas_day_of_year()` functions to convert JD dates to a 1-based day of week
+   index, or to a day of the year in the calendar of choice.
    
 ### Changed
 

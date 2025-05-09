@@ -291,3 +291,68 @@ int cal_date(double tjd, short *restrict year, short *restrict month, short *res
 
   return 0;
 }
+
+/**
+ * Returns the one-based ISO 8601 day-of-week index of a given Julian Date. The ISO 8601
+ * week begins on Monday, thus index 1 corresponds to Monday, while index 7 is a Sunday.
+ *
+ * @param tjd   [day] Julian Date in the timescale of choice. (e.g. UTC-based if you want
+ *              a UTC-based return value).
+ * @return      [1:7] The day-of-week index in the same timescale as the input date.
+ *              1:Monday ... 7:Sunday.
+ *
+ * @since 1.4
+ * @author Attila Kovacs
+ *
+ * @sa novas_day_of_year()
+ * @sa novas_jd_to_date()
+ */
+int novas_day_of_week(double tjd) {
+  int rem = (int) ((long) floor(tjd - NOVAS_JD_J2000 - 1.5) % 7L);
+  if(rem < 0)
+    rem += 7;
+  return 1 + rem;
+}
+
+/**
+ * Returns the one-based day index in the calendar year for a given Julian Date.
+ *
+ * @param tjd       [day] Julian Date in the timescale of choice. (e.g. UTC-based if you want
+ *                  a UTC-based return value).
+ * @param calendar  The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR,
+ *                  NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
+ * @param[out] year [yr] Optional pointer to which to return the calendar year. It may be
+ *                  NULL if not required.
+ * @return          [1:366] The day-of-year index in the same timescale as the input date.
+ *
+ * @since 1.4
+ * @author Attila Kovacs
+ *
+ * @sa novas_day_of_week()
+ * @sa novas_jd_to_date()
+ */
+int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restrict year) {
+  static const int mstart[] = { 0, 31, 59, 9, 120, 151, 181, 212, 243, 273, 304, 334 }; // non-leap year month offsets
+
+  int y, m, d, yday;
+
+  prop_error("novas_day_of_year", novas_jd_to_date(tjd, calendar, &y, &m, &d, NULL), 0);
+  yday = mstart[m - 1] + d;
+
+  // Adjust for leap years
+  if(m > 2 && (y % 4) == 0) {
+    if((y % 100) != 0)
+      yday++;   // regular leap years (not 100s)...
+    else if((y % 400) == 0)
+      yday++;   // every 400 is always a leap too...
+    else if(calendar == NOVAS_ROMAN_CALENDAR)
+      yday++;   // in the Roman/Julian calendar every 100 years is a leap...
+    else if(calendar == NOVAS_ASTRONOMICAL_CALENDAR && tjd < NOVAS_JD_START_GREGORIAN)
+      yday++;   // in the astronomical calendar every 100 is a leap before the calendar reform of 1582.
+  }
+
+  if(year)
+    *year = y;
+
+  return yday;
+}
