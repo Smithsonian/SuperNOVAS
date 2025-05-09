@@ -14,6 +14,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
    Sidereal Time (GST / GaST) and Local (apparent) Sidereal Time (LST / LaST) for a given astrometric time (and
    observer location) more easily. 
 
+ - 173: Added our own implementation of the wavelength-dependent IAU refraction model as `novas_wave_refraction()`, which 
+   is based on the SOFA `iauRefco()` function. The wavelength for which the refraction is calculated can be set by
+   `novas_refract_wavelength()`. By default 550 nm (0.55 &mu;m) is assumed.
+   
+### Changed
+
+ - #173: Added parameter range checking to `refract()` function and `novas_radio_refraction()` model. If called with
+   weather parameters or an elevation angle outside of readonable values, NaN will be returned and `errno` will be set 
+   to `EINVAL`.
+
 
 ## [1.3.1] - 2025-05-07
 

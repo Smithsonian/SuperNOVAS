@@ -218,6 +218,11 @@
 /// @since 1.3
 #define NOVAS_SYSTEM_HIP           "HIP"
 
+/// [&mu;m] Default wavelength, e.g. for wavelength-dependent refraction models. It is set to the
+/// median wavelength of visible light.
+/// @since 1.4
+#define NOVAS_DEFAULT_WAVELENGTH      0.55
+
 #if !COMPAT
 // If we are not in the strict compatibility mode, where constants are defined
 // as variables in novascon.h (with implementation in novascon.c), then define
@@ -2069,6 +2074,11 @@ novas_nutation_provider get_nutation_lp_provider();
 double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy accuracy);
 
 double novas_time_lst(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy);
+
+// in refract.c
+int novas_refract_wavelength(double microns);
+
+double novas_wave_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
 // <================= END of SuperNOVAS API =====================>
 

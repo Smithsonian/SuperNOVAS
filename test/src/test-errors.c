@@ -193,7 +193,7 @@ static int test_z2v() {
 }
 
 static int test_refract() {
-  on_surface o = ON_SURFACE_INIT;
+  on_surface loc = ON_SURFACE_INIT, loc0 = ON_SURFACE_INIT;
   int n = 0;
 
   novas_debug(NOVAS_DEBUG_ON);
@@ -204,12 +204,26 @@ static int test_refract() {
   novas_debug(NOVAS_DEBUG_OFF);
 
   errno = 0;
-  r = refract(&o, -1, 30.0);
+  r = refract(&loc, -1, 30.0);
   if(check("refract:model", 1, r == 0.0 && errno == EINVAL)) n++;
 
   errno = 0;
-  r = refract(&o, NOVAS_STANDARD_ATMOSPHERE, 91.01);
+  r = refract(&loc, NOVAS_STANDARD_ATMOSPHERE, 91.01);
   if(check("refract:zd", 1, r == 0.0)) n++;
+
+  loc = loc0;
+  loc.temperature = -150.1;
+  if(check_nan("refract:loc:temperature:lo", refract(&loc, NOVAS_WEATHER_AT_LOCATION, 30.0))) n++;
+
+  loc.temperature = 100.1;
+  if(check_nan("refract:loc:temperature:hi", refract(&loc, NOVAS_WEATHER_AT_LOCATION, 30.0))) n++;
+
+  loc = loc0;
+  loc.pressure = -0.1;
+  if(check_nan("refract:loc:pressure:lo", refract(&loc, NOVAS_WEATHER_AT_LOCATION, 30.0))) n++;
+
+  loc.pressure = 2000.1;
+  if(check_nan("refract:loc:pressure:hi", refract(&loc, NOVAS_WEATHER_AT_LOCATION, 30.0))) n++;
 
   return n;
 }
@@ -240,6 +254,89 @@ static int test_inv_refract() {
 
   return n;
 }
+
+static int test_radio_refraction() {
+  int n = 0;
+
+  on_surface loc = ON_SURFACE_INIT, loc0 = ON_SURFACE_INIT;
+
+  if(check_nan("radio_refraction:loc:null", novas_radio_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+  if(check_nan("radio_refraction:loc:type:1", novas_radio_refraction(NOVAS_JD_J2000, &loc, 1, 30.0))) n++;
+  if(check_nan("radio_refraction:el:lo", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, -1.01))) n++;
+  if(check_nan("radio_refraction:el:hi", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 90.01))) n++;
+
+  loc.temperature = -150.1;
+  if(check_nan("radio_refraction:temperature:lo", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc.temperature = 100.1;
+  if(check_nan("radio_refraction:temperature:hi", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc = loc0;
+  loc.pressure = -0.1;
+  if(check_nan("radio_refraction:pressure:lo", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc.pressure = 2000.1;
+  if(check_nan("radio_refraction:pressure:hi", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc = loc0;
+  loc.humidity = -0.1;
+  if(check_nan("radio_refraction:humidity:lo", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc.humidity = 100.1;
+  if(check_nan("radio_refraction:humidity:hi", novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  return n;
+}
+
+static int test_wave_refraction() {
+  int n = 0;
+
+  on_surface loc = ON_SURFACE_INIT, loc0 = ON_SURFACE_INIT;
+
+  if(check_nan("wave_refraction:loc:null", novas_wave_refraction(NOVAS_JD_J2000, NULL, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+  if(check_nan("wave_refraction:loc:type:1", novas_wave_refraction(NOVAS_JD_J2000, &loc, 1, 30.0))) n++;
+  if(check_nan("wave_refraction:el:lo", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_OBSERVED, 0.0))) n++;
+  if(check_nan("wave_refraction:el:hi", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_OBSERVED, 90.01))) n++;
+
+  loc.temperature = -150.1;
+  if(check_nan("wave_refraction:temperature:lo", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc.temperature = 200.1;
+  if(check_nan("wave_refraction:temperature:hi", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc = loc0;
+  loc.pressure = -0.1;
+  if(check_nan("wave_refraction:pressure:lo", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc.pressure = 10000.1;
+  if(check_nan("wave_refraction:pressure:hi", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc = loc0;
+  loc.humidity = -0.1;
+  if(check_nan("wave_refraction:humidity:lo", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc.humidity = 100.1;
+  if(check_nan("wave_refraction:humidity:hi", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  loc = loc0;
+  novas_refract_wavelength(0.099);
+  if(check_nan("wave_refraction:wl:lo", novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 30.0))) n++;
+
+  novas_refract_wavelength(NOVAS_DEFAULT_WAVELENGTH);
+
+  return n;
+}
+
+static int test_refract_wavelength() {
+  int n = 0;
+
+  if(check("refract:wavelength:0", -1, novas_refract_wavelength(0.0))) n++;
+  if(check("refract:wavelength:neg", -1, novas_refract_wavelength(-0.1))) n++;
+  if(check("refract:wavelength:nan", -1, novas_refract_wavelength(NAN))) n++;
+
+  return n++;
+}
+
 
 static int test_limb_angle() {
   double pos[3] = { 0.01 }, pn[3] = { -0.01 }, pz[3] = {0.0}, a, b;
@@ -2137,6 +2234,9 @@ int main() {
   if(test_refract()) n++;
   if(test_refract_astro()) n++;
   if(test_inv_refract()) n++;
+  if(test_radio_refraction()) n++;
+  if(test_wave_refraction()) n++;
+  if(test_refract_wavelength()) n++;
   if(test_limb_angle()) n++;
 
   if(test_ephemeris()) n++;

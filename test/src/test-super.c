@@ -2107,9 +2107,50 @@ static int test_radio_refraction() {
     if(!is_equal(label, del, del1, 1e-4)) return 1;
   }
 
-  printf("\n");
-
   return 0;
+}
+
+static int test_wave_refraction() {
+  int n = 0;
+
+  on_surface loc = ON_SURFACE_INIT;
+
+  loc.temperature = 20.0;
+  loc.pressure = 1000.0;
+  loc.humidity = 40.0;
+
+  if(!is_ok("wave_refraction:set_wavelength:optical", novas_refract_wavelength(0.55))) n++;
+
+  if(!is_equal("wave_refraction:optical:obs",
+          novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_OBSERVED, 50.0),
+          novas_optical_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_OBSERVED, 50.0),
+          3e-3
+  )) n++;
+
+  if(!is_equal("wave_refraction:optical:astro",
+          novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 50.0),
+          novas_optical_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 50.0),
+          3e-3
+  )) n++;
+
+  if(!is_ok("wave_refraction:set_wavelength:radio", novas_refract_wavelength(10000.0))) n++;
+
+  if(!is_equal("wave_refraction:radio:obs",
+          novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_OBSERVED, 50.0),
+          novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_OBSERVED, 50.0),
+          3e-3
+  )) n++;
+
+  if(!is_equal("wave_refraction:radio:astro",
+          novas_wave_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 50.0),
+          novas_radio_refraction(NOVAS_JD_J2000, &loc, NOVAS_REFRACT_ASTROMETRIC, 50.0),
+          3e-3
+  )) n++;
+
+
+  novas_refract_wavelength(NOVAS_DEFAULT_WAVELENGTH);
+
+  return n;
 }
 
 static int test_inv_refract() {
@@ -2120,7 +2161,7 @@ static int test_inv_refract() {
   obs.pressure = 1000.0;
   obs.humidity = 40.0;
 
-  for(el = 1; el < 90.0; el += 5) {
+  for(el = 1; el < 90.0; el += 1) {
     char label[50];
 
     sprintf(label, "inv_refract:observed:%d", el);
@@ -3750,6 +3791,7 @@ int main(int argc, char *argv[]) {
   if(test_optical_refraction()) n++;
   if(test_inv_refract()) n++;
   if(test_radio_refraction()) n++;
+  if(test_wave_refraction()) n++;
   if(test_make_frame()) n++;
   if(test_change_observer()) n++;
   if(test_transform()) n++;

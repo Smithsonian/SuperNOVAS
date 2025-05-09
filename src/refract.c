@@ -23,6 +23,10 @@
 
 #include "novas.h"
 
+#define NOVAS_DEFAULT_WAVELENGTH      0.55            ///< [&mu;m] Median wavelength of visible light.
+
+static double lambda = NOVAS_DEFAULT_WAVELENGTH;      ///< [&mu;m] Observing wavelength
+
 
 /**
  * Computes atmospheric optical refraction for a source at an astrometric zenith distance
@@ -124,6 +128,16 @@ double refract(const on_surface *restrict location, enum novas_refraction_model 
   if(option != NOVAS_STANDARD_ATMOSPHERE && option != NOVAS_WEATHER_AT_LOCATION) {
     novas_set_errno(EINVAL, fn, "invalid refraction model option: %d", option);
     return 0.0;
+  }
+
+  if(location->temperature < -150.0 || location->temperature > 100.0) {
+    novas_set_errno(EINVAL, fn, "invalid temperature value: %g C", location->temperature);
+    return NAN;
+  }
+
+  if(location->pressure < 0.0 || location->pressure > 2000.0) {
+    novas_set_errno(EINVAL, fn, "invalid pressure value: %g mbar", location->pressure);
+    return NAN;
   }
 
   zd_obs = fabs(zd_obs);
@@ -228,7 +242,7 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
   (void) jd_tt;
 
   if(isnan(dz))
-    return novas_trace_nan("novas_optical_refraction");
+    return novas_trace_nan("novas_standard_refraction");
   return dz;
 }
 
@@ -260,7 +274,7 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
 
 /**
  * Atmospheric refraction model for radio wavelengths (Berman &amp; Rockwell 1976). It uses the
- * weather parameters defined for the location, including humidity. As such make sure the weather
+ * weather parameters defined for the location, including humidity. As such, make sure the weather
  * data is fully defined, and that the humidity was explicitly set after calling
  * `make_on_surface()`.
  *
@@ -279,7 +293,9 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  *                  NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] source elevation of the specified type.
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
- *                  set errno to indicate the type of error).
+ *                  set errno to indicate the type of error). An error is returned if the location is
+ *                  NULL, or if the weather parameters are way outside of their resonable ranges, or
+ *                  if the elevation is outside the supported [-1:90] range.
  *
  * @sa novas_optical_refraction()
  * @sa make_on_surface()
@@ -304,6 +320,16 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
     return NAN;
   }
 
+  if(loc->temperature < -150.0 || loc->temperature > 100.0) {
+    novas_set_errno(EINVAL, fn, "invalid temperature value: %g C", loc->temperature);
+    return NAN;
+  }
+
+  if(loc->pressure < 0.0 || loc->pressure > 2000.0) {
+    novas_set_errno(EINVAL, fn, "invalid pressure value: %g mbar", loc->pressure);
+    return NAN;
+  }
+
   if(loc->humidity < 0.0 || loc->humidity > 100.0) {
     novas_set_errno(EINVAL, fn, "invalid humidity value: %g", loc->humidity);
     return NAN;
@@ -314,6 +340,11 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
 
   if(type != NOVAS_REFRACT_ASTROMETRIC) {
     novas_set_errno(EINVAL, fn, "invalid refraction type: %d", type);
+    return NAN;
+  }
+
+  if(el < -1.0 || el > 90.0) {
+    novas_set_errno(EINVAL, fn, "invalid input elevation: %g deg", el);
     return NAN;
   }
 
@@ -329,11 +360,204 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
   for(j = 1; j <= 8; j++)
     poly = poly * E0 + E[11 - j];
 
-  if(poly <= -80.) poly = 0.;
+  // Not needed... (?)
+  //if(poly <= -80.)
+  //  poly = 0.0;
 
   poly = exp(poly) - E[12];
   refraction = poly * fptem / 3600.0;
   y = exp(((TK * 17.149) - 4684.1) / (TK - 38.45));
 
   return refraction * (1.0 + (y * loc->humidity * 71.) / (TK * loc->pressure * 0.760));
+}
+
+/**
+ * Sets the observing wavelength for which refraction is to be calculated when using a wavelength-depenendent
+ * model, such as novas_wave_refraction().
+ *
+ * @param microns     [&mu;m] Observed wavelength to assume in refraction calculations
+ * @return            0 if successful, or else -1 (errno set to `EINVAL`) if the wavelength invalid
+ *                    (zero, negative, or NaN).
+ *
+ * @since 1.4
+ * @author Attila Kovacs
+ *
+ * @sa novas_wave_refraction()
+ * @sa NOVAS_DEFAULT_WAVELENGTH
+ */
+int novas_refract_wavelength(double microns) {
+  if(microns <= 0.0 || microns != microns)
+    return novas_error(-1, EINVAL, "novas_refract_wavelength", "invalid wavelength: %f microns", microns);
+  lambda = microns;
+  return 0;
+}
+
+/**
+ * The wavelength-dependent IAU atmospheric refraction model, based on the SOFA `iauRefco()` function, in
+ * compliance to the 'SOFA Software License' terms of the original source. Our implementation is not
+ * provided nor it is endorsed by SOFA. The original function has been modified slightly, such as:
+ *
+ * <ol>
+ * <li>Out-of-range weather parameters will return with an error (`errno` set to `EINVAL`), unlike
+ * the SOFA implementation, which sets minimal or maximal allowed values for these.</li>
+ * <li>The algorithm has been simplified to use fewer variables and simpler logic.</li>
+ * <li>The SOFA function this implementation is based on returns A/B coefficients, whereas this
+ * implementation returns the refraction correction angle.</li>
+ * </ol>
+ *
+ * The refraction is calculated for the observing wavelenth previously set via `novas_refract_wavelength()`,
+ * or for visible light at 550 nm by default.
+ *
+ * The function uses the weather parameters defined for the location, including humidity. As such, make sure
+ * the weather data is fully defined, and that the humidity was explicitly set after calling
+ * `make_on_surface()`.
+ *
+ * According to the documentation of SOFA's `iauRefco()` function, the model has the following accuracy
+ * for elevation angles between 15 and 75 degrees, under a range of typical surface conditions:
+ *
+ *   |                  |    worst   |     RMS    |
+ *   |------------------|:----------:|:----------:|
+ *   | optical/IR       |   62 mas   |   8 mas    |
+ *   | radio            |  319 mas   |  49 mas    |
+ *
+ *
+ * NOTES:
+ * <ol>
+ * <li>
+ * From the SOFA documentation: "The model balances speed and accuracy to give good results in applications
+ * where performance at low altitudes is not paramount. Performance is maintained across a range of
+ * conditions, and applies to both optical/IR and radio."
+ * </li>
+ * <li>The model is divergent in the observed direction of the horizon. As such, it should not be used
+ * for calculating refraction at or below the horizon itself.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>
+ *     Crane, R.K., Meeks, M.L. (ed), "Refraction Effects in the Neutral
+ *     Atmosphere", Methods of Experimental Physics: Astrophysics 12B,
+ *     Academic Press, 1976.
+ * </li>
+ * <li>
+ *     Gill, Adrian E., "Atmosphere-Ocean Dynamics", Academic Press,
+ *     1982.
+ * </li>
+ * <li>
+ *     Green, R.M., "Spherical Astronomy", Cambridge University Press,
+ *     1987.
+ * </li>
+ * <li>
+ *     Hohenkerk, C.Y., & Sinclair, A.T., NAO Technical Note No. 63,
+ *     1985.
+ * </li>
+ * <li>
+ *     Rueger, J.M., "Refractive Index Formulae for Electronic Distance
+ *     Measurement with Radio and Millimetre Waves", in Unisurv Report
+ *     S-68, School of Surveying and Spatial Information Systems,
+ *     University of New South Wales, Sydney, Australia, 2002.
+ * </li>
+ * <li>
+ *     Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.
+ * </li>
+ * </ol>
+ *
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel)
+ * @param loc       Pointer to structure defining the observer's location on earth, and local weather.
+ *                  Make sure all weather values, including humidity (added in v1.1), are fully
+ *                  populated.
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
+ *                  NOVAS_REFRACT_ASTROMETRIC (0).
+ * @param el        [deg] source elevation of the specified type.
+ * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
+ *                  set errno to indicate the type of error), e.g. because the location is NULL, or
+ *                  because the weather parameters are outside of the supported (sensible) range, or
+ *                  because the elevation is outside of the supported (0:90] range, or because the
+ *                  wavelength set is below 100 nm (0.1 &mu;m);
+ *
+ * @since 1.4
+ * @author Attila Kovacs
+ *
+ * @sa novas_refract_wavelength()
+ * @sa novas_optical_refraction()
+ * @sa novas_radio_refraction()
+ * @sa make_on_surface()
+ * @sa on_surface
+ */
+double novas_wave_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
+  static const char *fn = "novas_wave_refration";
+
+  double p, t, r, ps = 0.0, pw = 0.0, gamma, beta, a, b, tanz;
+
+  if(!loc) {
+    novas_set_errno(EINVAL, fn, "NULL on surface observer location");
+    return NAN;
+  }
+
+  if(loc->temperature < -150.0 || loc->temperature > 200.0) {
+    novas_set_errno(EINVAL, fn, "invalid temperature value: %g C", loc->temperature);
+    return NAN;
+  }
+
+  if(loc->pressure < 0.0 || loc->pressure > 10000.0) {
+    novas_set_errno(EINVAL, fn, "invalid pressure value: %g mbar", loc->pressure);
+    return NAN;
+  }
+
+  if(loc->humidity < 0.0 || loc->humidity > 100.0) {
+    novas_set_errno(EINVAL, fn, "invalid humidity value: %g %%", loc->humidity);
+    return NAN;
+  }
+
+  if(lambda < 0.1) {
+    novas_set_errno(EINVAL, fn, "wavelength too low: %g mirons", lambda);
+    return NAN;
+  }
+
+  if(type == NOVAS_REFRACT_ASTROMETRIC)
+    return novas_inv_refract(novas_wave_refraction, jd_tt, loc, NOVAS_REFRACT_OBSERVED, el);
+
+  if(type != NOVAS_REFRACT_OBSERVED) {
+    novas_set_errno(EINVAL, fn, "invalid refraction type: %d", type);
+    return NAN;
+  }
+
+  if(el <= 0.0 || el > 90.0) {
+    novas_set_errno(EINVAL, fn, "invalid input elevation: %g deg", el);
+    return NAN;
+  }
+
+  (void) jd_tt; // unused
+
+  t = loc->temperature;
+  p = loc->pressure;
+  r = 0.01 * loc->humidity;
+
+  // Water vapour pressure at the observer.
+  ps = pow(10.0, (0.7859 + 0.03477 * t) / (1.0 + 0.00412 * t)) * (1.0 + p * (4.5e-6 + 6e-10 * t * t));
+  pw = r * ps / (1.0 - (1.0 - r) * ps / p);
+
+  t += 273.15;    // C -> K
+
+  // Formula for beta from Stone, with empirical adjustments.
+  beta = 4.4474e-6 * t;
+
+  if(lambda <= 100.0) {
+    // Optical/IR refraction
+    double w2 = lambda * lambda;
+    gamma = ((77.53484e-6 + (4.39108e-7 + 3.666e-9 / w2) / w2) * p - 11.2684e-6 * pw) / t;
+  }
+  else {
+    // Radio refraction
+    gamma = (77.6890e-6 * p - (6.3938e-6 - 0.375463 / t) * pw) / t;
+    beta -= 0.0074 * pw * beta;
+  }
+
+  // Refraction constants from Green.
+  a = gamma * (1.0 - beta);
+  b = -gamma * (beta - gamma / 2.0);
+
+  tanz = tan((90.0 - el) * DEGREE);
+
+  return tanz * (a + b * tanz * tanz) / DEGREE;
 }
