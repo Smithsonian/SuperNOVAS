@@ -2104,6 +2104,16 @@ static int test_print_dms() {
   return n;
 }
 
+static int test_time_lst() {
+  int n = 0;
+  novas_timespec t = NOVAS_TIMESPEC_INIT;
+
+  if(check_nan("time_lst:time:null", novas_time_lst(NULL, 0.0, NOVAS_FULL_ACCURACY))) n++;
+  if(check_nan("time_lst:acc:-1", novas_time_lst(&t, 0.0, -1))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2279,6 +2289,8 @@ int main() {
 
   if(test_print_hms()) n++;
   if(test_print_dms()) n++;
+
+  if(test_time_lst()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

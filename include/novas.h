@@ -2063,6 +2063,13 @@ int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals,
 novas_nutation_provider get_nutation_lp_provider();
 
 
+// ---------------------- Added in 1.4.0 -------------------------
+
+// in timescale.c
+double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy accuracy);
+
+double novas_time_lst(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy);
+
 // <================= END of SuperNOVAS API =====================>
 
 

@@ -6,6 +6,14 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+ - #172: Added `novas_time_gst()` and `novas_time_lst()` convenience functions to calculate the Greenwich (apparent)
+   Sidereal Time (GST / GaST) and Local (apparent) Sidereal Time (LST / LaST) for a given astrometric time (and
+   observer location) more easily. 
+
 
 ## [1.3.1] - 2025-05-07
 
