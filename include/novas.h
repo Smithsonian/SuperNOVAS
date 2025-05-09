@@ -2080,6 +2080,23 @@ int novas_refract_wavelength(double microns);
 
 double novas_wave_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
 
+// in orbit.c
+int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel);
+
+// in plorbit.c
+int make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
+
+int make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);
+
+int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel);
+
+int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out);
+
+double novas_moon_phase(double jd_tdb);
+
+double novas_next_moon_phase(double phase, double jd_tdb);
+
+
 // <================= END of SuperNOVAS API =====================>
 
 
@@ -2161,15 +2178,31 @@ int novas_error(int ret, int en, const char *restrict from, const char *restrict
  * Propagates an error (if any) with an offset. If the error is non-zero, it returns with the offset
  * error value. Otherwise it keeps going as if it weren't even there...
  *
+ * @param loc   {string} function / location from where it's called
  * @param n     {int} error code or the call that produces the error code
  * @param d     {int} offset with which the error is propagated
  *
- * @sa error_return
+ * @sa error_return()
  */
 #  define prop_error(loc, n, d) { \
   int __ret = novas_trace(loc, n, d); \
   if (__ret != 0) \
     return __ret; \
+}
+
+/**
+ * Returns NaN if there was an error
+ *
+ * @param loc   {string} function / location from where it's called
+ * @param n     {int} error code or the call that produces the error code
+ *
+ * @sa trace_nan()
+ */
+#  define prop_nan(loc, n) { \
+  if (n) { \
+    novas_trace_nan(loc); \
+    return NAN; \
+  } \
 }
 
 double novas_norm_ang(double angle);
@@ -2186,6 +2219,9 @@ double novas_vdist2(const double *v1, const double *v2);
 double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
+
+int novas_is_frame_initialized(const novas_frame *frame);
+
 extern int novas_inv_max_iter;
 
 #endif /* __NOVAS_INTERNAL_API__ */

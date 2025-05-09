@@ -2211,6 +2211,77 @@ static int test_time_lst() {
   return n;
 }
 
+static int test_make_planet_orbit() {
+  int n = 0;
+
+  novas_orbital orbit = NOVAS_ORBIT_INIT;
+
+  if(check("make_planet_orbit:sun", -1, make_planet_orbit(NOVAS_SUN, NOVAS_JD_J2000, &orbit))) n++;
+  if(check("make_planet_orbit:ssb", -1, make_planet_orbit(NOVAS_SSB, NOVAS_JD_J2000, &orbit))) n++;
+  if(check("make_planet_orbit:jd:lo", -1, make_planet_orbit(NOVAS_EARTH, 0.0, &orbit))) n++;
+  if(check("make_planet_orbit:jd:hi", -1, make_planet_orbit(NOVAS_EARTH, 2 * NOVAS_JD_J2000, &orbit))) n++;
+  if(check("make_planet_orbit:orbit:null", -1, make_planet_orbit(NOVAS_EARTH, NOVAS_JD_J2000, NULL))) n++;
+
+  return n;
+}
+
+static int test_make_moon_orbit() {
+  if(check("make_moon_orbit:orbit:null", -1, make_moon_orbit(NOVAS_JD_J2000, NULL))) return 1;
+  return 0;
+}
+
+static int test_approx_heliocentric() {
+  double p[3] = {0.0}, v[3] = {0.0};
+
+  if(check("approx_heliocentric:pos=vel", -1, novas_approx_heliocentric(NOVAS_EMB, NOVAS_JD_J2000, NULL, NULL))) return 1;
+  if(check("approx_heliocentric:time:lo", -1, novas_approx_heliocentric(NOVAS_EMB, NOVAS_JD_J2000 - 31.0 * JULIAN_CENTURY_DAYS, p, v))) return 1;
+  if(check("approx_heliocentric:time:hi", -1, novas_approx_heliocentric(NOVAS_EMB, NOVAS_JD_J2000 + 31.0 * JULIAN_CENTURY_DAYS, p, v))) return 1;
+
+  return 0;
+}
+
+static int test_approx_sky_pos() {
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  sky_pos out = SKY_POS_INIT;
+  int n = 0;
+
+  if(check("approx_sky_pos:frame:null", -1, novas_approx_sky_pos(NOVAS_EMB, NULL, NOVAS_ICRS, &out))) n++;
+  if(check("approx_sky_pos:frame:init", -1, novas_approx_sky_pos(NOVAS_EMB, &frame, NOVAS_ICRS, &out))) n++;
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32, 0.0, &ts);
+  make_observer_at_geocenter(&obs);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+
+  if(check("approx_sky_pos:out:null", -1, novas_approx_sky_pos(NOVAS_EMB, &frame, NOVAS_ICRS, NULL))) n++;
+
+  return n;
+}
+
+static int test_moon_phase() {
+  int n = 0;
+
+  int saved = novas_inv_max_iter;
+  novas_inv_max_iter = 0;
+  if(check_nan("moon_phase:conv", novas_moon_phase(NOVAS_JD_J2000))) n++;
+  novas_inv_max_iter = saved;
+  return n;
+}
+
+static int test_next_moon_phase() {
+  int n = 0;
+
+  if(check_nan("next_moon_phase:time:lo", novas_next_moon_phase(0.0, NOVAS_JD_J2000 - 31.0 * JULIAN_CENTURY_DAYS))) n++;
+  if(check_nan("next_moon_phase:time:hi", novas_next_moon_phase(0.0, NOVAS_JD_J2000 + 31.0 * JULIAN_CENTURY_DAYS))) n++;
+
+  int saved = novas_inv_max_iter;
+  novas_inv_max_iter = 0;
+  if(check_nan("next_moon_phase:conv", novas_next_moon_phase(0.0, NOVAS_JD_J2000))) n++;
+  novas_inv_max_iter = saved;
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2391,6 +2462,13 @@ int main() {
   if(test_print_dms()) n++;
 
   if(test_time_lst()) n++;
+
+  if(test_make_planet_orbit()) n++;
+  if(test_make_moon_orbit()) n++;
+  if(test_approx_heliocentric()) n++;
+  if(test_approx_sky_pos()) n++;
+  if(test_moon_phase()) n++;
+  if(test_next_moon_phase()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

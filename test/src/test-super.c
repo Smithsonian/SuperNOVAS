@@ -69,6 +69,7 @@ static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_
 
 static int check_equal_pos(const double *posa, const double *posb, double tol) {
   int i;
+  int n = 0;
 
   tol = fabs(tol);
   if(tol < 1e-30) tol = 1e-30;
@@ -78,10 +79,10 @@ static int check_equal_pos(const double *posa, const double *posb, double tol) {
     if(isnan(posa[i]) && isnan(posb[i])) continue;
 
     fprintf(stderr, "  A[%d] = %.9g vs B[%d] = %.9g (delta=%.1g)\n", i, posa[i], i, posb[i], posa[i] - posb[i]);
-    return i + 1;
+    n++;
   }
 
-  return 0;
+  return n;
 }
 
 static int is_ok(const char *func, int error) {
@@ -3744,6 +3745,198 @@ static int test_time_lst() {
   return 0;
 }
 
+static int test_approx_heliocentric() {
+  int n = 0;
+
+  double pos[3] = {0.0}, vel[3] = {0.0}, pos0[3] = {0.0}, vel0[3] = {0.0};
+  int i;
+
+  if(!is_ok("approx_heliocentric:sun", novas_approx_heliocentric(NOVAS_SUN, NOVAS_JD_J2000, pos, vel))) n++;
+  if(!is_ok("approx_heliocentric:sun:check:pos", check_equal_pos(pos, pos0, 1e-9))) n++;
+  if(!is_ok("approx_heliocentric:sun:check:pos", check_equal_pos(vel, vel0, 1e-9))) n++;
+
+  for(i = -1; i <= 2; i++) {
+    char label[100] = {'\0'};
+    double tjd = NOVAS_JD_J2000 + 90 * i;
+    double tol = 1e-4;
+
+    if(i == 2) {
+      tjd += JULIAN_CENTURY_DAYS;
+      tol *= 2.0;
+    }
+
+    sprintf(label, "approx_heliocentric:%d", i);
+    if(!is_ok(label, novas_approx_heliocentric(NOVAS_EARTH, tjd, pos, vel))) n++;
+
+    earth_sun_calc(tjd, NOVAS_EARTH, NOVAS_HELIOCENTER, pos0, vel0);
+
+    sprintf(label, "approx_heliocentric:%d:check:pos", i);
+    if(!is_ok(label, check_equal_pos(pos, pos0, tol))) n++;
+    sprintf(label, "approx_heliocentric:%d:check:vel", i);
+    if(!is_ok(label, check_equal_pos(vel, vel0, tol))) n++;
+
+    sprintf(label, "approx_heliocentric:%d:no_pos", i);
+    if(!is_ok(label, novas_approx_heliocentric(NOVAS_EARTH, tjd, NULL, vel))) n++;
+
+    sprintf(label, "approx_heliocentric:%d:no_vel", i);
+    if(!is_ok(label, novas_approx_heliocentric(NOVAS_EARTH, tjd, pos, NULL))) n++;
+  }
+
+  // Neptune from Horizons
+  // 2460805.000000000 = A.D. 2025-May-09 12:00:00.0000 TDB
+  // X = 2.988222343939086E+01 Y = 6.277583054929381E-02 Z =-7.182077350931051E-01
+  // VX=-3.437078236543212E-06 VY= 2.924993868125872E-03 VZ= 1.197306942052645E-03
+  pos0[0] =  2.988222343939086E+01;
+  pos0[1] =  6.277583054929381E-02;
+  pos0[2] = -7.182077350931051E-01;
+
+  vel0[0] = -3.437078236543212E-06;
+  vel0[1] =  2.924993868125872E-03;
+  vel0[2] =  1.197306942052645E-03;
+
+  if(!is_ok("approx_heliocentric:neptune", novas_approx_heliocentric(NOVAS_NEPTUNE, 2460805.0, pos, vel))) n++;
+  if(!is_ok("approx_heliocentric:neptune:pos", check_equal_pos(pos, pos0, 2e-2))) n++;
+  if(!is_ok("approx_heliocentric:neptune:vel", check_equal_pos(vel, vel0, 1e-2))) n++;
+
+  // 2469936.000000000 = A.D. 2050-May-09 12:00:00.0000 TDB
+  // X = 1.706607601779466E+01 Y = 2.277365011860640E+01 Z = 8.896511931568096E+00
+  // VX=-2.596585806110046E-03 VY= 1.655729835671874E-03 VZ= 7.422439121592111E-04
+  pos0[0] =  1.706607601779466E+01;
+  pos0[1] =  2.277365011860640E+01;
+  pos0[2] =  8.896511931568096E+00;
+
+  vel0[0] = -2.596585806110046E-03;
+  vel0[1] =  1.655729835671874E-03;
+  vel0[2] = -1.052081669359872E-07;
+
+  if(!is_ok("approx_heliocentric:neptune:2050", novas_approx_heliocentric(NOVAS_NEPTUNE, 2469936.0, pos, vel))) n++;
+  if(!is_ok("approx_heliocentric:neptune:2050:pos", check_equal_pos(pos, pos0, 2e-2))) n++;
+  if(!is_ok("approx_heliocentric:neptune:2050:vel", check_equal_pos(vel, vel0, 1e-2))) n++;
+
+  return n;
+}
+
+static int test_approx_sky_pos() {
+  int n = 0;
+  object sun = NOVAS_SUN_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  sky_pos pos = SKY_POS_INIT;
+  int i;
+
+  make_observer_at_geocenter(&obs);
+
+  for(i = -1; i <= 2; i++) {
+    char label[100] = {'\0'};
+    double tjd = NOVAS_JD_J2000 + 90 * i;
+
+    sky_pos ref = SKY_POS_INIT;
+
+    if(i == 2)
+      tjd += JULIAN_CENTURY_DAYS;
+
+    sprintf(label, "approx_sky_pos:%d:place", i);
+    if(!is_ok(label, place(tjd, &sun, &obs, 69.184, NOVAS_TOD, NOVAS_REDUCED_ACCURACY, &ref))) n++;
+
+    novas_set_time(NOVAS_TT, tjd, 37, 0.0, &ts);
+    novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+
+    sprintf(label, "approx_sky_pos:%d", i);
+    if(!is_ok(label, novas_approx_sky_pos(NOVAS_SUN, &frame, NOVAS_TOD, &pos))) n++;
+
+    sprintf(label, "approx_sky_pos:%d:check:rhat", i);
+    if(!is_ok(label, check_equal_pos(pos.r_hat, ref.r_hat, 1e-5))) n++;
+
+    sprintf(label, "approx_sky_pos:%d:check:dis", i);
+    if(!is_equal(label, pos.dis, ref.dis, 1e-5)) n++;
+
+    sprintf(label, "approx_sky_pos:%d:check:rv", i);
+    if(!is_equal(label, pos.rv, ref.rv, 0.01)) n++;
+  }
+
+  // Mercury from HORIZONS
+  //                                          RA         DEC      dis               rv
+  // 2025-May-09 12:00 2460805.000000000      27.20660   8.54264  1.12308556678825  26.0009547
+
+  novas_set_time(NOVAS_TDB, 2460805.0, 37, 0.0, &ts);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+
+  if(!is_ok("approx_sky_pos:mercury", novas_approx_sky_pos(NOVAS_MERCURY, &frame, NOVAS_TOD, &pos))) n++;
+  if(!is_equal("approx_sky_pos:mercury:ra", pos.ra, 27.20660 / 15.0, 1e-3)) n++;
+  if(!is_equal("approx_sky_pos:mercury:dec", pos.dec, 8.54264, 1e-2)) n++;
+  if(!is_equal("approx_sky_pos:mercury:dis", pos.dis, 1.12308556678825, 1e-3)) n++;
+  if(!is_equal("approx_sky_pos:mercury:rv", pos.rv, 26.0009547, 1e-3)) n++;
+
+  // 2050-May-09 12:00 2469936.000000000      23.80717   6.77730  0.72294869699078  24.4561514
+  novas_set_time(NOVAS_TDB, 2469936.0, 37, 0.0, &ts);
+  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame);
+
+  if(!is_ok("approx_sky_pos:mercury:2050", novas_approx_sky_pos(NOVAS_MERCURY, &frame, NOVAS_TOD, &pos))) n++;
+  if(!is_equal("approx_sky_pos:mercury:2050:ra", pos.ra, 23.80717 / 15.0, 1e-3)) n++;
+  if(!is_equal("approx_sky_pos:mercury:2050:dec", pos.dec, 6.77730, 1e-2)) n++;
+  if(!is_equal("approx_sky_pos:mercury:2050:dis", pos.dis, 0.72294869699078, 1e-3)) n++;
+  if(!is_equal("approx_sky_pos:mercury:2050:rv", pos.rv, 24.4561514, 1e-2)) n++;
+
+  return n;
+}
+
+static int test_moon_phase() {
+  int n = 0;
+
+  novas_timespec ts;
+
+  // New on 2025-05-27 03:02 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 27, 3.0 + 2.0 / 60.0), 37.0, 0.0, &ts);
+  if(!is_equal("moon_phase:new", 0.0, novas_moon_phase(novas_get_time(&ts, NOVAS_TDB)), 7.5)) n++;
+
+  // 1st on 2025-05-04 13:52 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 04, 13.0 + 52.0 / 60.0), 37.0, 0.0, &ts);
+  if(!is_equal("moon_phase:1st", 90.0, novas_moon_phase(novas_get_time(&ts, NOVAS_TDB)), 7.5)) n++;
+
+  // Full on 2025-05-12 16:56 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 12, 16.0 + 56.0 / 60.0), 37.0, 0.0, &ts);
+  if(!is_equal("moon_phase:full", 0.0, remainder(novas_moon_phase(novas_get_time(&ts, NOVAS_TDB)) + 180.0, 360.0), 7.5)) n++;
+
+  // 3rd on 2025-05-20 11:59 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 20, 11.0 + 59.0 / 60.0), 37.0, 0.0, &ts);
+  if(!is_equal("moon_phase:3rd", -90.0, novas_moon_phase(novas_get_time(&ts, NOVAS_TDB)), 7.5)) n++;
+
+  return n;
+}
+
+static int test_next_moon_phase() {
+  int n = 0;
+
+  novas_timespec ts;
+  double jd0, jd;
+
+  // A day+ before 1st quarter...
+  jd0 = novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 03, 0.0);
+
+  // New on 2025-05-27 03:02 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 27, 3.0 + 2.0 / 60.0), 37.0, 0.0, &ts);
+  jd = novas_get_time(&ts, NOVAS_TDB);
+  if(!is_equal("next_moon_phase:new", jd, novas_next_moon_phase(0.0, jd0), 0.25)) n++;
+
+  // 1st on 2025-05-04 13:52 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 04, 13.0 + 52.0 / 60.0), 37.0, 0.0, &ts);
+  jd = novas_get_time(&ts, NOVAS_TDB);
+  if(!is_equal("next_moon_phase:1st", jd, novas_next_moon_phase(90.0, jd0), 0.5)) n++;
+
+  // Full on 2025-05-12 16:56 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 12, 16.0 + 56.0 / 60.0), 37.0, 0.0, &ts);
+  jd = novas_get_time(&ts, NOVAS_TDB);
+  if(!is_equal("next_moon_phase:full", jd, novas_next_moon_phase(180.0, jd0), 0.25)) n++;
+
+  // 3rd on 2025-05-20 11:59 UTC
+  novas_set_time(NOVAS_UTC, novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, 2025, 5, 20, 11.0 + 59.0 / 60.0), 37.0, 0.0, &ts);
+  jd = novas_get_time(&ts, NOVAS_TDB);
+  if(!is_equal("next_moon_phase:3rd", jd, novas_next_moon_phase(-90.0, jd0), 0.5)) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -3858,7 +4051,13 @@ int main(int argc, char *argv[]) {
   if(test_print_hms()) n++;
   if(test_print_dms()) n++;
 
+
   if(test_time_lst()) n++;
+
+  if(test_approx_heliocentric()) n++;
+  if(test_approx_sky_pos()) n++;
+  if(test_moon_phase()) n++;
+  if(test_next_moon_phase()) n++;
 
   n += test_dates();
 
