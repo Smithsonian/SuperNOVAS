@@ -773,8 +773,9 @@ the Moon, and the Earth-Moon Barycenter (EMB) also, e.g.:
  make_moon_orbit(jd_tdb, &moon-orbit);
 ```
 
-While the planet and Moon orbitals are not typically suitable for precision applications, they can be useful for 
-determining approximate positions, and for rise/set time calculations.
+While the planet and Moon orbitals are not suitable for precision applications, they can be useful for determining 
+approximate positions (e.g. via the `novas_approx_heliocentric()` and `novas_approx_sky_pos()` functions), and for 
+approximate rise/set time calculations.
 
 
 ------------------------------------------------------------------------------
