@@ -1529,6 +1529,18 @@ one minute.
    use them to obtain instantaneous projected (extrapolated) positions at low computational cost.
 
 
+#### New in v1.4
+
+ - Updated nutation model from IAU2000 to IAU2006 (P03) model, by applying scaling factors (Capitaine et al. 2005) to 
+   match the IAU2006 precession model that was already implemented in NOVAS.
+
+ - Approximate Keplerian orbital models for the major planets (Standish &amp; Williams, 1992) and the Moon (Chapront
+   et al. 2002), for when arcmin-scale accuracy is sufficient (e.g. rise-set times, approximate sky positions).
+   
+ - Add Moon phase calculator functions, based on above orbital modeling.
+ 
+ - Added IAU/SOFA wavelength-dependent refraction model.
+
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API

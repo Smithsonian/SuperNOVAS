@@ -543,6 +543,7 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
  *
  * @sa novas_next_moon_phase()
  * @sa make_moon_orbit()
+ * @sa novas_solar_illum()
  */
 double novas_moon_phase(double jd_tdb) {
   static const char *fn = "novas_moon_phase";
