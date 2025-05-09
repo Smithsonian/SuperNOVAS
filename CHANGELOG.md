@@ -39,7 +39,7 @@ Changes for the upcoming feature release, expected around 1 August 2025.
  - #176: `novas_orbital_native_posvel()` to calculate orbital positions in the native system, in which the orbital 
    is defined (e.g. ecliptic coordinates for planetary orbits).
    
- - #177: Added `novas_fay_of_week()` and `novas_day_of_year()` functions to convert JD dates to a 1-based day of week
+ - #177: Added `novas_day_of_week()` and `novas_day_of_year()` functions to convert JD dates to a 1-based day of week
    index, or to a day of the year in the calendar of choice.
    
 ### Changed
