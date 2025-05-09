@@ -313,13 +313,22 @@ int novas_is_frame_initialized(const novas_frame *frame) {
  * provider for the major planets will result in an error in the 10--40 range from the required
  * ephemeris() call.
  *
+ * NOTES:
+ * <ol>
+ * <li>This function expects the Earth polar wobble parameters to be defined on a per-frame basis
+ * and will not use the legacy global (undated) orientation parameters set via cel_pole().</li>
+ * </ol>
  *
  * @param accuracy    Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or
  *                    NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient.
  * @param obs         Observer location
  * @param time        Time of observation
- * @param dx          [mas] Earth orientation parameter, polar offset in x.
- * @param dy          [mas] Earth orientation parameter, polar offset in y.
+ * @param dx          [mas] Earth orientation parameter, polar offset in x, e.g. from the IERS
+ *                    Bulletins. (The global, undated value set by cel_pole() is not not used
+ *                    here.) You can use 0.0 if sub-arcsecond accuracy is not required.
+ * @param dy          [mas] Earth orientation parameter, polar offset in y, e.g. from the IERS
+ *                    Bulletins. (The global, undated value set by cel_pole() is not not used
+ *                    here.) You can use 0.0 if sub-arcsecond accuracy is not required.
  * @param[out] frame  Pointer to the observing frame to configure.
  * @return            0 if successful,
  *                    10--40: error is 10 + the error from ephemeris(),
@@ -348,7 +357,7 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   static const object sun = NOVAS_SUN_INIT;
 
   double tdb2[2];
-  double mobl, tobl, ee, dpsi, deps;
+  double dpsi, deps;
   long ijd_ut1;
   double fjd_ut1;
 
@@ -370,19 +379,22 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   tdb2[0] = time->ijd_tt;
   tdb2[1] = time->fjd_tt + tt2tdb(time->ijd_tt + time->fjd_tt) / DAY;
 
-  // Various calculated quantities for frame transformations
-  e_tilt(tdb2[0] + tdb2[1], frame->accuracy, &mobl, &tobl, &ee, NULL, NULL);
-
-  frame->mobl = mobl * DEGREE;
-  frame->tobl = tobl * DEGREE;
-  frame->ee = ee * DEGREE;
-
   nutation_angles((tdb2[0] + tdb2[1] - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, accuracy, &dpsi, &deps);
 
+  // dpsi0 / dpes0 w/o the global pole offsets set via cel_pole()
   frame->dpsi0 = dpsi * ARCSEC;
   frame->deps0 = deps * ARCSEC;
   frame->dx = dx;
   frame->dy = dy;
+
+  // Compute mean obliquity of the ecliptic in degrees.
+  frame->mobl = mean_obliq(tdb2[0] + tdb2[1]) * ARCSEC;
+
+  // Obtain complementary terms for equation of the equinoxes in seconds of time.
+  frame->ee = dpsi * ARCSEC * cos(frame->mobl) + ee_ct(time->ijd_tt, time->fjd_tt, accuracy);
+
+  // Compute true obliquity of the ecliptic in degrees.
+  frame->tobl = frame->mobl + deps * ARCSEC;
 
   fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
   frame->era = era(ijd_ut1, fjd_ut1);
@@ -862,6 +874,9 @@ int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_sys
       return novas_error(-1, EINVAL, fn, "invalid coordinate system: %d", sys);
   }
 
+  // PEF -> ITRS
+  wobble(time->ijd_tt + time->fjd_tt, WOBBLE_PEF_TO_ITRS, frame->dx, frame->dy, pos, pos);
+
   itrs_to_hor(&frame->observer.on_surf, pos, &az0, &za0);
 
   if(ref_model)
@@ -933,6 +948,9 @@ int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, Re
 
   // az, el to ITRS pos
   hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
+
+  // ITRS -> PEF
+  wobble(time->ijd_tt + time->fjd_tt, WOBBLE_ITRS_TO_PEF, frame->dx, frame->dy, pos, pos);
 
   // ITRS to TOD or CIRS...
   spin(cmp_sys(sys, NOVAS_GCRS) < 0 ? -15.0 * frame->gst : -frame->era, pos, pos);
