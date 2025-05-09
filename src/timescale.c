@@ -1046,7 +1046,7 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
 
 static int timestamp(long ijd, double fjd, enum novas_calendar_type cal, char *buf) {
   long dd, ms;
-  int y, M, d, h, m, s;
+  int y = 0, M = 0, d = 0, h, m, s;
 
   // fjd -> [-0.5:0.5) range
   dd = (long) floor(fjd + 0.5);
