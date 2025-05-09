@@ -17,7 +17,7 @@ Changes for the upcoming feature release, expected around 1 August 2025.
    Sidereal Time (GST / GaST) and Local (apparent) Sidereal Time (LST / LaST) for a given astrometric time (and
    observer location) more easily. 
 
- - 173: Added our own implementation of the wavelength-dependent IAU refraction model as `novas_wave_refraction()`, 
+ - #173: Added our own implementation of the wavelength-dependent IAU refraction model as `novas_wave_refraction()`, 
    which is based on the SOFA `iauRefco()` function. The wavelength for which the refraction is calculated can be set 
    by `novas_refract_wavelength()`. By default 550 nm (0.55 &mu;m) is assumed.
    
