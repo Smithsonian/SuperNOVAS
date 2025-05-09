@@ -2211,22 +2211,22 @@ static int test_time_lst() {
   return n;
 }
 
-static int test_make_planet_orbit() {
+static int test_novas_make_planet_orbit() {
   int n = 0;
 
   novas_orbital orbit = NOVAS_ORBIT_INIT;
 
-  if(check("make_planet_orbit:sun", -1, make_planet_orbit(NOVAS_SUN, NOVAS_JD_J2000, &orbit))) n++;
-  if(check("make_planet_orbit:ssb", -1, make_planet_orbit(NOVAS_SSB, NOVAS_JD_J2000, &orbit))) n++;
-  if(check("make_planet_orbit:jd:lo", -1, make_planet_orbit(NOVAS_EARTH, 0.0, &orbit))) n++;
-  if(check("make_planet_orbit:jd:hi", -1, make_planet_orbit(NOVAS_EARTH, 2 * NOVAS_JD_J2000, &orbit))) n++;
-  if(check("make_planet_orbit:orbit:null", -1, make_planet_orbit(NOVAS_EARTH, NOVAS_JD_J2000, NULL))) n++;
+  if(check("novas_make_planet_orbit:sun", -1, novas_make_planet_orbit(NOVAS_SUN, NOVAS_JD_J2000, &orbit))) n++;
+  if(check("novas_make_planet_orbit:ssb", -1, novas_make_planet_orbit(NOVAS_SSB, NOVAS_JD_J2000, &orbit))) n++;
+  if(check("novas_make_planet_orbit:jd:lo", -1, novas_make_planet_orbit(NOVAS_EARTH, 0.0, &orbit))) n++;
+  if(check("novas_make_planet_orbit:jd:hi", -1, novas_make_planet_orbit(NOVAS_EARTH, 2 * NOVAS_JD_J2000, &orbit))) n++;
+  if(check("novas_make_planet_orbit:orbit:null", -1, novas_make_planet_orbit(NOVAS_EARTH, NOVAS_JD_J2000, NULL))) n++;
 
   return n;
 }
 
-static int test_make_moon_orbit() {
-  if(check("make_moon_orbit:orbit:null", -1, make_moon_orbit(NOVAS_JD_J2000, NULL))) return 1;
+static int test_novas_make_moon_orbit() {
+  if(check("novas_make_moon_orbit:orbit:null", -1, novas_make_moon_orbit(NOVAS_JD_J2000, NULL))) return 1;
   return 0;
 }
 
@@ -2463,8 +2463,8 @@ int main() {
 
   if(test_time_lst()) n++;
 
-  if(test_make_planet_orbit()) n++;
-  if(test_make_moon_orbit()) n++;
+  if(test_novas_make_planet_orbit()) n++;
+  if(test_novas_make_moon_orbit()) n++;
   if(test_approx_heliocentric()) n++;
   if(test_approx_sky_pos()) n++;
   if(test_moon_phase()) n++;

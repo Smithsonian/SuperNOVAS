@@ -766,11 +766,11 @@ the Moon, and the Earth-Moon Barycenter (EMB) also, e.g.:
   
  // Planet orbitals, e.g. for Mars
  novas_orbital mars_orbit = NOVAS_ORBIT_INIT;
- make_planet_orbit(NOVAS_MARS, jd_tdb, &mars_orbit);
+ novas_make_planet_orbit(NOVAS_MARS, jd_tdb, &mars_orbit);
   
  // Moon's orbital around Earth
  novas_orbital moon_orbit = NOVAS_ORBIT_INIT;
- make_moon_orbit(jd_tdb, &moon-orbit);
+ novas_make_moon_orbit(jd_tdb, &moon_orbit);
 ```
 
 While the planet and Moon orbitals are not suitable for precision applications, they can be useful for determining 

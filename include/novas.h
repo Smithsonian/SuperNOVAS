@@ -2084,9 +2084,9 @@ double novas_wave_refraction(double jd_tt, const on_surface *loc, enum novas_ref
 int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel);
 
 // in plorbit.c
-int make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
+int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
 
-int make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);
+int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);
 
 int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel);
 

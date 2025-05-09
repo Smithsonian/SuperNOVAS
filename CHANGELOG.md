@@ -29,11 +29,11 @@ Changes for the upcoming feature release, expected around 1 August 2025.
    which is based on the SOFA `iauRefco()` function. The wavelength for which the refraction is calculated can be set 
    by `novas_refract_wavelength()`. By default 550 nm (0.55 &mu;m) is assumed.
    
- - #176: `make_planet_orbit()`  to generate Keplerian orbital elements for the major planets (sans Earth), and the 
+ - #176: `novas_make_planet_orbit()`  to generate Keplerian orbital elements for the major planets (sans Earth), and the 
    Earth-Moon Barycenter (EMB), based on Standish &amp; Williams 1992. In most cases such orbitals can provide 
    arcmin-level precisions, especially for current dates.
 
- - #176:`make_moon_orbit()` to generate geocentric Keplerian orbital elements for the Moon using the Chapront et al. 
+ - #176:`novas_make_moon_orbit()` to generate geocentric Keplerian orbital elements for the Moon using the Chapront et al. 
    2002 model.
 
  - #176: `novas_approx_heliocentric()` and `novas_approx_sky_pos()` to calculate approximate heliocentric ICRS 

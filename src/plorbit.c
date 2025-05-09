@@ -53,13 +53,13 @@
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa make_moon_orbit()
+ * @sa novas_make_moon_orbit()
  * @sa novas_approx_sky_pos()
  * @sa novas_approx_heliocentric()
  * @sa make_orbital_object()
  */
-int make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit) {
-  static const char *fn = "make_planet_orbit";
+int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit) {
+  static const char *fn = "novas_make_planet_orbit";
 
   typedef struct {
     double a;         // [AU] Semi-major axis
@@ -241,15 +241,15 @@ int make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restri
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa make_planet_orbit()
+ * @sa novas_make_planet_orbit()
  * @sa make_orbital_object()
  */
-int make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
+int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   novas_orbital def = NOVAS_ORBIT_INIT;
   double t, dot;
 
   if(!orbit)
-    return novas_error(-1, EINVAL, "make_moon_orbit", "output orbital is NULL");
+    return novas_error(-1, EINVAL, "novas_make_moon_orbit", "output orbital is NULL");
 
   // Default ecliptic orbital...
   memcpy(orbit, &def, sizeof(novas_orbital));
@@ -312,7 +312,7 @@ int make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
  * the CALCEPH or CSPICE plugins) and `novas_geom_posvel()` instead.
  *
  * While this function is generally similar to creating an orbital object with an orbit
- * initialized with `make_planet_orbit()` or `make_moon_orbit()`, and then calling
+ * initialized with `novas_make_planet_orbit()` or `novas_make_moon_orbit()`, and then calling
  * `novas_geom_posvel()`, there are a few important differences:
  *
  * <ol>
@@ -320,7 +320,7 @@ int make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
  *  whereas `novas_geom_posvel()` references the calculated positions to the Solar-system
  *  Barycenter (SSB).</li>
  *  <li>This function calculates Earth and Moon positions about the Keplerian orbital position
- *  of the Earth-Moon Barycenter (EMB). In constrast, `make_planet_orbit()` does not provide
+ *  of the Earth-Moon Barycenter (EMB). In constrast, `novas_make_planet_orbit()` does not provide
  *  orbitals for the Earth directly, and `make_moot_orbit()` references the Moon's orbital to
  *  the Earth position returned by the currently configured planet calculator function (see
  *  `set_planet_provider()`).</li>
@@ -388,11 +388,11 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
       const double f = (id == NOVAS_MOON) ? (1.0 - r) : -r;   // E-M distance fraction from EMB
       int i;
 
-      prop_error(fn, make_planet_orbit(NOVAS_EMB, jd_tdb, &orbit), 0);
+      prop_error(fn, novas_make_planet_orbit(NOVAS_EMB, jd_tdb, &orbit), 0);
       prop_error(fn, novas_orbit_posvel(jd_tdb, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel), 0);
 
       // Geocentric orbital elements of the Moon.
-      prop_error(fn, make_moon_orbit(jd_tdb, &orbit), 0);
+      prop_error(fn, novas_make_moon_orbit(jd_tdb, &orbit), 0);
       prop_error(fn, novas_orbit_posvel(jd_tdb, &orbit, NOVAS_REDUCED_ACCURACY, pm, vm), 0);
 
       for(i = 3; --i >= 0; ) {
@@ -405,7 +405,7 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
     }
 
     default:
-      prop_error(fn, make_planet_orbit(id, jd_tdb, &orbit), 0);
+      prop_error(fn, novas_make_planet_orbit(id, jd_tdb, &orbit), 0);
       prop_error(fn, novas_orbit_posvel(jd_tdb, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel), 0);
   }
 
@@ -428,12 +428,12 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
  * the CALCEPH or CSPICE plugins) and `novas_sky_pos()` instead.
  *
  * While this function is generally similar to creating an orbital object with an orbit
- * initialized with `make_planet_orbit()` or `make_moon_orbit()`, and then calling `novas_sky_pos()`,
+ * initialized with `novas_make_planet_orbit()` or `novas_make_moon_orbit()`, and then calling `novas_sky_pos()`,
  * there are a few important differences to note:
  *
  * <ol>
  *  <li>This function calculates Earth and Moon positions about the Keplerian orbital position
- *  of the Earth-Moon Barycenter (EMB). In constrast, `make_planet_orbit()` does not provide
+ *  of the Earth-Moon Barycenter (EMB). In constrast, `novas_make_planet_orbit()` does not provide
  *  orbitals for the Earth directly, and `make_moot_orbit()` references the Moon's orbital to
  *  the Earth position returned by the currently configured planet calculator function (see
  *  `set_planet_provider()`).</li>
@@ -541,7 +541,7 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
  * @author Attila Kovacs
  *
  * @sa novas_next_moon_phase()
- * @sa make_moon_orbit()
+ * @sa novas_make_moon_orbit()
  * @sa novas_solar_illum()
  */
 double novas_moon_phase(double jd_tdb) {
@@ -552,12 +552,12 @@ double novas_moon_phase(double jd_tdb) {
   double he, hm;
 
   // EMB pos around Sun
-  prop_nan(fn, make_planet_orbit(NOVAS_EMB, jd_tdb, &orbit));
+  prop_nan(fn, novas_make_planet_orbit(NOVAS_EMB, jd_tdb, &orbit));
   prop_nan(fn, novas_orbit_native_posvel(jd_tdb, &orbit, pos, NULL));
   vector2radec(pos, &he, NULL);
 
   // Moon pos around Earth
-  make_moon_orbit(jd_tdb, &orbit);
+  novas_make_moon_orbit(jd_tdb, &orbit);
   prop_nan(fn, novas_orbit_native_posvel(jd_tdb, &orbit, pos, NULL));
   vector2radec(pos, &hm, NULL);
 
@@ -603,7 +603,7 @@ double novas_moon_phase(double jd_tdb) {
  * @author Attila Kovacs
  *
  * @sa novas_moon_phase()
- * @sa make_moon_orbit()
+ * @sa novas_make_moon_orbit()
  */
 double novas_next_moon_phase(double phase, double jd_tdb) {
   static const char *fn = "novas_next_moon_phase";
