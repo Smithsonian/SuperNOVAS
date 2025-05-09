@@ -1053,7 +1053,6 @@ static int test_nutation_lp_provider() {
 
   int status = 1;
 
-
   if(!is_ok("nutation_lp_provider:set_nutation_lp_provider", set_nutation_lp_provider(iau2000b))) goto cleanup; // @suppress("Goto statement used")
   if(!is_ok("nutation_lp_provider:nutation_angles", nutation_angles(t, NOVAS_REDUCED_ACCURACY, &de, &dp))) goto cleanup; // @suppress("Goto statement used")
   if(!is_ok("nutation_lp_provider:iau2000b", iau2000b(tdb, 0.0, &de0, &dp0))) goto cleanup; // @suppress("Goto statement used")
@@ -1061,8 +1060,8 @@ static int test_nutation_lp_provider() {
   de0 /= ASEC2RAD;
   dp0 /= ASEC2RAD;
 
-  if(!is_ok("nutation_lp_provider:check_de", fabs(de - de0) > 1e-7)) goto cleanup; // @suppress("Goto statement used")
-  if(!is_ok("nutation_lp_provider:check_dp", fabs(dp - dp0) > 1e-7)) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:check_de", fabs(de - de0) > 1e-4)) goto cleanup; // @suppress("Goto statement used")
+  if(!is_ok("nutation_lp_provider:check_dp", fabs(dp - dp0) > 1e-4)) goto cleanup; // @suppress("Goto statement used")
 
   status = 0;
 

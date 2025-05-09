@@ -439,6 +439,9 @@ double planet_lon(double t, enum novas_planet planet) {
  * <li>Explanatory Supplement To The Astronomical Almanac, pp. 103-104.</li>
  * <li>Capitaine, N. et al. (2003), Astronomy And Astrophysics 412, pp. 567-586.</li>
  * <li>Hilton, J. L. et al. (2006), IAU WG report, Celest. Mech., 94, pp. 351-367.</li>
+ * <li>Capitaine, N., P.T. Wallace and J. Chapront (2005), “Improvement of the IAU 2000 precession
+ *     model.” Astronomy &amp; Astrophysics, Vol. 432, pp. 355–67.</li>
+ * <li>Liu, J.-C., &amp Capitaine, N. (2017), A&A 597, A83</li>
  * </ol>
  *
  * @param jd_tdb_in   [day] Barycentric Dynamic Time (TDB) based Julian date of the input
@@ -508,6 +511,15 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
     psia = ((((-0.0000000951 * t + 0.000132851) * t - 0.00114045) * t - 1.0790069) * t + 5038.481507) * t;
     omegaa = ((((+0.0000003337 * t - 0.000000467) * t - 0.00772503) * t + 0.0512623) * t - 0.025754) * t + eps0;
     chia = ((((-0.0000000560 * t + 0.000170663) * t - 0.00121197) * t - 2.3814292) * t + 10.556403) * t;
+
+    // P03rev2 / Capitaine at al. (2005) eqs. (11)
+    //psia = t * (5038.482090 + t * (-1.0789921 + t * (-0.00114040 + t * (0.000132851 - t * 0.0000000951))));
+    //omegaa = eps0 + t * (-0.025675 + t * (0.0512622 + t * (-0.00772501 + t * (-0.000000467 + t * 0.0000003337))));
+
+    // Liu & Capitaine (2017)
+    //chia = t * (10.556240 + t * (-2.3813876 + t * (-0.00121311 + t * (0.000160286 + t * 0.000000086))));
+    //psia = t * (5038.481270 + t * (-1.0732468 + t * (0.01573403 + t * (0.000127135 - t * 0.0000001020))));
+    //omegaa = eps0 + t * (-0.024725 + t * (0.0512626 + t * (-0.0077249 + t * (-0.000000267 + t * 0.000000267))));
 
     eps0 *= ARCSEC;
     psia *= ARCSEC;
@@ -652,9 +664,19 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
  * See the prologs of the nutation functions in file 'nutation.c' for details concerning the
  * models.
  *
+ * NOTES:
+ * <ol>
+ * <li>As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation
+ * angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to
+ * match the model used by SOFA.</li>
+ * </ol>
+ *
  * REFERENCES:
  * <ol>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li>Capitaine, N., P.T. Wallace and J. Chapront (2005), “Improvement of the IAU 2000 precession
+ *     model.” Astronomy &amp; Astrophysics, Vol. 432, pp. 355–67.</li>
+ * <li>Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159</li>
  * </ol>
  *
  * @param t           [cy] TDB time in Julian centuries since J2000.0
@@ -676,6 +698,9 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
   static THREAD_LOCAL double last_t = NAN, last_dpsi, last_deps;
   static THREAD_LOCAL enum novas_accuracy last_acc = -1;
 
+  // P03 scaling factor.
+  static const double f = -2.7774e-6;
+
   if(!dpsi || !deps) {
     if(dpsi)
       *dpsi = NAN;
@@ -689,9 +714,10 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
     novas_nutation_provider nutate_call = (accuracy == NOVAS_FULL_ACCURACY) ? iau2000a : get_nutation_lp_provider();
     nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
 
+    // Apply P03 (Capitaine et al. 2005) rescaling to IAU 2006 model.
     // Convert output to arcseconds.
-    last_dpsi /= ARCSEC;
-    last_deps /= ARCSEC;
+    last_dpsi *= (1.0000004697 + f) / ARCSEC;
+    last_deps *= (1.0 + f) / ARCSEC;
 
     last_acc = accuracy;
     last_t = t;

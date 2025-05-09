@@ -46,6 +46,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
    weather parameters or an elevation angle outside of readonable values, NaN will be returned and `errno` will be set 
    to `EINVAL`.
 
+ - #181: Changed `nutation_angles()` to apply P03 model rescaling to IAU2000 nutation angles to provide 'IAU2006'
+   values (see Capitaine et al. 2005). The same rescaling has been adopted by SOFA also.
+  
 
 ## [1.3.1] - 2025-05-07
 
