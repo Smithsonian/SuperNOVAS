@@ -528,7 +528,6 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
  *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361),
  *      vol. 124, no. 1, July 1983, p. 50-62.</li>
- *  <li>https://en.wikipedia.org/wiki/Lunar_distance</li>
  * </ol>
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian Date.
@@ -589,7 +588,6 @@ double novas_moon_phase(double jd_tdb) {
  *  <li>Chapront, J. et al., 2002, A&A 387, 700–709</li>
  *  <li>Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361),
  *      vol. 124, no. 1, July 1983, p. 50-62.</li>
- *  <li>https://en.wikipedia.org/wiki/Lunar_distance</li>
  * </ol>
  *
  * @param phase   [deg] The Moon's phase, or more precisely the ecliptic longitude difference
