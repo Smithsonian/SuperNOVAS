@@ -11,6 +11,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Changes for the upcoming feature release, expected around 1 August 2025.
 
+### Fixed
+
+ - #183: wobble corrections set via `cel_pole()` were not taken into account for true obliquity and the equation of 
+   equinoxes in `e_tilt()`. This was a bug since v1.0.
+
+ - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections to transform 
+   between Pseudo Earth Fixed (PEF) and the International Terrestrial Reference System (ITRS) and vice versa.
+
 ### Added
 
  - #172: Added `novas_time_gst()` and `novas_time_lst()` convenience functions to calculate the Greenwich (apparent)
@@ -50,7 +58,13 @@ Changes for the upcoming feature release, expected around 1 August 2025.
 
  - #181: Changed `nutation_angles()` to apply P03 model rescaling to IAU2000 nutation angles to provide 'IAU2006'
    values (see Capitaine et al. 2005). The same rescaling has been adopted by SOFA also.
-  
+   
+### Deprecated
+
+ - Deprecate `cel_pole()` function and `EPS_COR` / `PSI_COR` global variables, which provided support for the old 
+   (now disfavored) way of incorporating Earth orientation parameters as corrections to the true equator and equinox. 
+   The new (preferred) way is to use dx,dy offsets to transform between Pseudo Earth Fixed (PEF) and the International
+   ?Terrestrial Reference System (ITRS).
 
 ## [1.3.1] - 2025-05-07
 

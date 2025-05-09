@@ -21,6 +21,10 @@
  *
  * @sa EPS_COR
  * @sa cel_pole()
+ *
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator and equinox
+ *             is now disfavored. Instead, wobble() should be used to convert between Pseudo Earth Fixed (PEF)
+ *             and the International Terrestrial Reference System (ITRS) going forward.
  */
 double PSI_COR = 0.0;
 
@@ -30,6 +34,10 @@ double PSI_COR = 0.0;
  *
  * @sa PSI_COR
  * @sa cel_pole()
+ *
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator and equinox
+ *             is now disfavored. Instead, wobble() should be used to convert between Pseudo Earth Fixed (PEF)
+ *             and the International Terrestrial Reference System (ITRS) going forward.
  */
 double EPS_COR = 0.0;
 
@@ -228,10 +236,13 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
 
   nutation_angles(t, accuracy, &d_psi, &d_eps);
 
+  d_psi += PSI_COR;
+  d_eps += EPS_COR;
+
   // Compute mean obliquity of the ecliptic in degrees.
   mean_ob = mean_obliq(jd_tdb) / 3600.0;
 
-  // Obtain complementary terms for equation of the equinoxes in arcseconds.
+  // Obtain complementary terms for equation of the equinoxes in seconds of time.
   eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
 
   // Compute true obliquity of the ecliptic in degrees.
@@ -239,9 +250,9 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
 
   // Set output values.
   if(dpsi)
-    *dpsi = d_psi + PSI_COR;
+    *dpsi = d_psi;
   if(deps)
-    *deps = d_eps + EPS_COR;
+    *deps = d_eps;
   if(ee)
     *ee = eqeq;
   if(mobl)
@@ -466,6 +477,7 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  *                  or dy) in milliarcseconds.
  * @return          0 if successful, or else 1 if 'type' is invalid.
  *
+ * @sa wobble()
  * @sa e_tilt()
  * @sa place()
  * @sa cirs_to_itrs()
@@ -473,6 +485,10 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  * @sa get_ut1_to_tt()
  * @sa sidereal_time()
  * @sa NOVAS_FULL_ACCURACY
+ *
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator and equinox
+ *             is now disfavored. Instead, wobble() should be used to convert between Pseudo Earth Fixed (PEF)
+ *             and the International Terrestrial Reference System (ITRS) going forward.
  */
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2) {
   switch(type) {
