@@ -64,8 +64,8 @@ Changes for the upcoming feature release, expected around 1 August 2025.
 
  - Deprecate `cel_pole()` function and `EPS_COR` / `PSI_COR` global variables, which provided support for the old 
    (now disfavored) way of incorporating Earth orientation parameters as corrections to the true equator and equinox. 
-   The new (preferred) way is to use dx,dy offsets to transform between Pseudo Earth Fixed (PEF) and the International
-   Terrestrial Reference System (ITRS).
+   The new (preferred) way is to use dx,dy offsets to transform between the Terrestrial Intermediate Reference System 
+   / Pseudo Earth Fixed (PEF) and the International Terrestrial Reference System (ITRS).
 
 
 ## [1.3.1] - 2025-05-07
