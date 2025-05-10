@@ -385,14 +385,47 @@ long novas_to_naif_planet(enum novas_planet id);
 
 long novas_to_dexxx_planet(enum novas_planet id);
 
+enum novas_planet novas_planet_for_name(const char *restrict name);
+
 
 // Added in v1.3 --------------------------------->
+
+// in orbital.c
+int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
+
+int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
+
+int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
+        double *restrict pos, double *restrict vel);
 
 double novas_helio_dist(double jd_tdb, const object *restrict source, double *restrict rate);
 
 double novas_solar_power(double jd_tdb, const object *restrict source);
 
 double novas_solar_illum(const object *restrict source, const novas_frame *restrict frame);
+
+double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame);
+
+double novas_moon_angle(const object *restrict source, const novas_frame *restrict frame);
+
+
+// Added in v1.4 --------------------------------->
+
+// in orbit.c
+int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel);
+
+// in plorbit.c
+int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
+
+int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);
+
+int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel);
+
+int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out);
+
+double novas_moon_phase(double jd_tdb);
+
+double novas_next_moon_phase(double phase, double jd_tdb);
 
 
 /// \cond PRIVATE

@@ -1919,8 +1919,6 @@ int make_redshifted_cat_entry(const char *name, double ra, double dec, double z,
 
 int make_redshifted_object(const char *name, double ra, double dec, double z, object *source);
 
-enum novas_planet novas_planet_for_name(const char *restrict name);
-
 // in grav.c
 double grav_redshift(double M_kg, double r_m);
 
@@ -1945,14 +1943,6 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
 int gcrs_to_mod(double jd_tdb, const double *in, double *out);
 
 int mod_to_gcrs(double jd_tdb, const double *in, double *out);
-
-// in orbital.c
-int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys);
-
-int make_orbital_object(const char *name, long num, const novas_orbital *orbit, object *body);
-
-int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
-        double *restrict pos, double *restrict vel);
 
 
 
@@ -2026,10 +2016,6 @@ double novas_sets_below(double el, const object *restrict source, const novas_fr
 
 double novas_object_sep(const object *source1, const object *source2, const novas_frame *restrict frame);
 
-double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame);
-
-double novas_moon_angle(const object *restrict source, const novas_frame *restrict frame);
-
 int novas_equ_track(const object *restrict source, const novas_frame *restrict frame, double dt, novas_track *restrict track);
 
 int novas_hor_track(const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model,
@@ -2079,22 +2065,6 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
 int novas_refract_wavelength(double microns);
 
 double novas_wave_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el);
-
-// in orbit.c
-int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel);
-
-// in plorbit.c
-int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
-
-int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);
-
-int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel);
-
-int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out);
-
-double novas_moon_phase(double jd_tdb);
-
-double novas_next_moon_phase(double phase, double jd_tdb);
 
 // in calendar.c
 int novas_day_of_week(double tjd);
