@@ -17,7 +17,8 @@ Changes for the upcoming feature release, expected around 1 August 2025.
    equinoxes in `e_tilt()`. This was a bug since v1.0.
 
  - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections to transform 
-   between Pseudo Earth Fixed (PEF) and the International Terrestrial Reference System (ITRS) and vice versa.
+   between the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF), and the International 
+   Terrestrial Reference System (ITRS) and vice versa.
 
 ### Added
 
@@ -64,7 +65,8 @@ Changes for the upcoming feature release, expected around 1 August 2025.
  - Deprecate `cel_pole()` function and `EPS_COR` / `PSI_COR` global variables, which provided support for the old 
    (now disfavored) way of incorporating Earth orientation parameters as corrections to the true equator and equinox. 
    The new (preferred) way is to use dx,dy offsets to transform between Pseudo Earth Fixed (PEF) and the International
-   ?Terrestrial Reference System (ITRS).
+   Terrestrial Reference System (ITRS).
+
 
 ## [1.3.1] - 2025-05-07
 
