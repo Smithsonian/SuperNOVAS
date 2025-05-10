@@ -292,7 +292,7 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
  *
  * @sa make_frame()
  */
-int novas_is_frame_initialized(const novas_frame *frame) {
+int novas_frame_is_initialized(const novas_frame *frame) {
   if(!frame) return 0;
   return frame->state == FRAME_INITIALIZED;
 }
@@ -441,7 +441,7 @@ int novas_change_observer(const novas_frame *orig, const observer *obs, novas_fr
   if(!orig || !obs || !out)
     return novas_error(-1, EINVAL, fn, "NULL parameter: orig=%p, obs=%p, out=%p", orig, obs, out);
 
-  if(!novas_is_frame_initialized(orig))
+  if(!novas_frame_is_initialized(orig))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", out);
 
   if(out != orig)
@@ -552,7 +552,7 @@ int novas_geom_posvel(const object *restrict source, const novas_frame *restrict
   if(pos == vel)
     return novas_error(-1, EINVAL, fn, "identical output pos and vel 3-vectors @ %p.", pos);
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
@@ -673,7 +673,7 @@ int novas_sky_pos(const object *restrict object, const novas_frame *restrict fra
   if(!object || !frame || !out)
     return novas_error(-1, EINVAL, "NULL argument: object=%p, frame=%p, out=%p", (void *) object, frame, out);
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
@@ -769,7 +769,7 @@ int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict 
   if(!pos || !frame || !out)
     return novas_error(-1, EINVAL, "NULL argument: pos=%p, frame=%p, out=%p", (void *) pos, frame, out);
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
@@ -840,7 +840,7 @@ int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_sys
     return novas_error(-1, EINVAL, fn, "Both output pointers (az, el) are NULL");
   }
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER) {
@@ -934,7 +934,7 @@ int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, Re
     return novas_error(-1, EINVAL, fn, "Both output pointers (ra, dec) are NULL");
   }
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER) {
@@ -1015,7 +1015,7 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
   if(!frame || !geom_icrs)
     return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, geom_icrs=%p", frame, geom_icrs);
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(sys < 0 || sys >= NOVAS_REFERENCE_SYSTEMS)
@@ -1103,7 +1103,7 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
   if(!frame || !transform)
     return novas_error(-1, EINVAL, fn, "NULL argument: frame=%p, transform=%p", frame, transform);
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   if(to_system < 0 || to_system >= NOVAS_REFERENCE_SYSTEMS)
@@ -1296,7 +1296,7 @@ double novas_frame_lst(const novas_frame *restrict frame) {
     return NAN;
   }
 
-  if(!novas_is_frame_initialized(frame)) {
+  if(!novas_frame_is_initialized(frame)) {
     novas_error(0, EINVAL, fn, "input frame is not initialized");
     return NAN;
   }
@@ -1562,7 +1562,7 @@ double novas_solar_illum(const object *restrict source, const novas_frame *restr
     return NAN;
   }
 
-  if(!novas_is_frame_initialized(frame)) {
+  if(!novas_frame_is_initialized(frame)) {
     novas_error(0, EINVAL, fn, "input frame is not initialized");
     return NAN;
   }
@@ -1731,7 +1731,7 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
   if(!frame)
     return novas_error(-1, EINVAL, fn, "input frame is NULL");
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "input frame is not initialized");
 
   if(!track)
@@ -1821,7 +1821,7 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
   if(!frame)
     return novas_error(-1, EINVAL, fn, "input frame is NULL");
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "input frame is not initialized");
 
   if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER)

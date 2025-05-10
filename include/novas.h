@@ -2225,7 +2225,7 @@ double novas_vdot(const double *v1, const double *v2);
 
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
 
-int novas_is_frame_initialized(const novas_frame *frame);
+int novas_frame_is_initialized(const novas_frame *frame);
 
 extern int novas_inv_max_iter;
 

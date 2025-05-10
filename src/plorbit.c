@@ -481,7 +481,7 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
   if(!out)
     return novas_error(-1, EINVAL, fn, "output sky_pos is NULL");
 
-  if(!novas_is_frame_initialized(frame))
+  if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
   prop_error(fn, make_planet(id, &pl), 0);
