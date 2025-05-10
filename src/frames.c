@@ -874,7 +874,7 @@ int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_sys
       return novas_error(-1, EINVAL, fn, "invalid coordinate system: %d", sys);
   }
 
-  // PEF -> ITRS
+  // TIRS -> ITRS
   wobble(time->ijd_tt + time->fjd_tt, WOBBLE_PEF_TO_ITRS, frame->dx, frame->dy, pos, pos);
 
   itrs_to_hor(&frame->observer.on_surf, pos, &az0, &za0);
@@ -949,10 +949,10 @@ int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, Re
   // az, el to ITRS pos
   hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
 
-  // ITRS -> PEF
+  // ITRS -> TIRS
   wobble(time->ijd_tt + time->fjd_tt, WOBBLE_ITRS_TO_PEF, frame->dx, frame->dy, pos, pos);
 
-  // ITRS to TOD or CIRS...
+  // TIRS -> TOD or CIRS...
   spin(cmp_sys(sys, NOVAS_GCRS) < 0 ? -15.0 * frame->gst : -frame->era, pos, pos);
 
   // Continue to convert TOD / CIRS to output system....
