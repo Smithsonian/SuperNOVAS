@@ -22,9 +22,10 @@
  * @sa EPS_COR
  * @sa cel_pole()
  *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator and equinox
- *             is now disfavored. Instead, wobble() should be used to convert between Pseudo Earth Fixed (PEF)
- *             and the International Terrestrial Reference System (ITRS) going forward.
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
  */
 double PSI_COR = 0.0;
 
@@ -35,9 +36,10 @@ double PSI_COR = 0.0;
  * @sa PSI_COR
  * @sa cel_pole()
  *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator and equinox
- *             is now disfavored. Instead, wobble() should be used to convert between Pseudo Earth Fixed (PEF)
- *             and the International Terrestrial Reference System (ITRS) going forward.
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
  */
 double EPS_COR = 0.0;
 
@@ -468,9 +470,10 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date. Used only if 'type' is
  *                  POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent &Delta;&delta;&psi;
  *                  and &Delta;&delta;&epsilon; values.
- * @param type      POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;, &Delta;&delta;&epsilon;
- *                  relative to the Lieske 1977 nutation model; or POLE_OFFSETS_X_Y (2) if they are
- *                  dx, dy offsets relative to the IAU 2000 precession-nutation model.
+ * @param type      POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;,
+ *                  &Delta;&delta;&epsilon; relative to the Lieske 1977 nutation model; or
+ *                  POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000/2006
+ *                  precession-nutation model.
  * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; for
  *                  or dx) in milliarcseconds.
  * @param dpole2    [mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon;
@@ -486,9 +489,10 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  * @sa sidereal_time()
  * @sa NOVAS_FULL_ACCURACY
  *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator and equinox
- *             is now disfavored. Instead, wobble() should be used to convert between Pseudo Earth Fixed (PEF)
- *             and the International Terrestrial Reference System (ITRS) going forward.
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
  */
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2) {
   switch(type) {
@@ -520,6 +524,16 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
  * or vice versa.  Because the true equator is the plane orthogonal to the direction of the
  * Celestial Intermediate Pole (CIP), the components of the output vector are referred to z
  * and x axes toward the CIP and TIO, respectively.
+ *
+ * NOTES:
+ * <ol>
+ * <li>Generally, this function should not be called if global pole offsets were set via
+ * cel_pole() and then used via place() or one of its variants to calculate Earth orientation
+ * corrected (TOD or CIRS) apparent coordinates. In such cases, calling wobble() would apply
+ * duplicate corrections. It is generally best to forgo using cel_pole() going forward, and
+ * instead apply Earth orinetation corrections with wobble() only when converting vectors to the
+ * Earth-fixed ITRS frame.</li>
+ * </ol>
  *
  * REFERENCES:
  * <ol>
