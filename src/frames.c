@@ -41,9 +41,9 @@
 /// \endcond
 
 static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b) {
-  // GCRS=0, TOD=1, CIRS=2, ICRS=3, J2000=4, MOD=5
-  // TOD->-3, MOD->-2, J2000->-1, GCRS/ICRS->0, CIRS->1
-  static const int index[] = { 0, -3, 1, 0, -1, -2 };
+  // GCRS=0, TOD=1, CIRS=2, ICRS=3, J2000=4, MOD=5, TIRS=6, ITRS=7
+  // TOD->-3, MOD->-2, J2000->-1, GCRS/ICRS->0, CIRS->1, TIRS->2, ITRS->3
+  static const int index[] = { 0, -3, 1, 0, -1, -2, 2, 3 };
 
   if(a < 0 || a >= NOVAS_REFERENCE_SYSTEMS)
     return novas_error(-2, EINVAL, "cmp_sys", "Invalid reference system (#1): %d", a);
@@ -229,6 +229,54 @@ static int set_nutation(novas_frame *frame) {
   return 0;
 }
 
+static int set_spin_matrix(double angle, novas_matrix *T) {
+  double c, s;
+
+  memset(T, 0, sizeof(novas_matrix));
+
+  angle *= DEGREE;
+  c = cos(angle);
+  s = sin(angle);
+
+  // Rotation matrix (non-zero elements only).
+  T->M[0][0] = c;
+  T->M[0][1] = s;
+  T->M[1][0] = -s;
+  T->M[1][1] = c;
+  T->M[2][2] = 1.0;
+
+  return 0;
+}
+
+static int set_wobble_matrix(const novas_frame *frame, novas_matrix *T) {
+  // TIRS / PEF -> ITRS
+
+  // Compute approximate longitude of TIO (s'), using eq. (10) of the second reference
+  const double t = (frame->time.ijd_tt + frame->time.fjd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
+
+  const double ax = frame->dy * MAS;
+  const double ay = frame->dx * MAS;
+  const double az = 47.0e-6 * ARCSEC * t;   // -s1
+
+  const double A[3] = { ax * ax, ay * ay, az * az };
+
+  //memset(T, 0, sizeof(novas_matrix));
+
+  T->M[0][0] = 1.0 - 0.5 * (A[1] + A[2]);
+  T->M[0][1] = -az;
+  T->M[0][2] = ay;
+
+  T->M[1][0] = az + (ax * ay);
+  T->M[1][1] = 1.0 - 0.5 * (A[0] + A[2]);
+  T->M[1][2] = -ax;
+
+  T->M[2][0] = -ay;
+  T->M[2][1] = ax;
+  T->M[2][2] = 1.0 - 0.5 * (A[0] + A[1]);
+
+  return 0;
+}
+
 static int set_obs_posvel(novas_frame *frame) {
   int res = obs_posvel(novas_get_time(&frame->time, NOVAS_TDB), frame->time.ut1_to_tt, frame->accuracy, &frame->observer,
           frame->earth_pos, frame->earth_vel, frame->obs_pos, frame->obs_vel);
@@ -287,12 +335,13 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
  * Checks if a frame has been initialized either via a call to `make_frame()`.
  *
  * @param frame   The observing frame, defining the time of observation and the observer location.
+ *                !!! It cannot be NULL !!!
  * @return        boolean TRUE (1) if the frame has been initialized, or else FALSE (0).
  *
  * @sa make_frame()
  */
 int novas_frame_is_initialized(const novas_frame *frame) {
-  if(!frame) return 0;
+  //if(!frame) return 0;
   return frame->state == FRAME_INITIALIZED;
 }
 /// \endcond
@@ -466,7 +515,15 @@ static int icrs_to_sys(const novas_frame *restrict frame, double *restrict pos, 
       return 0;
 
     case NOVAS_CIRS:
+    case NOVAS_TIRS:
+    case NOVAS_ITRS:
       matrix_transform(pos, &frame->gcrs_to_cirs, pos);
+      if(sys == NOVAS_CIRS) return 0;
+
+      spin(frame->era, pos, pos);
+      if(sys == NOVAS_TIRS) return 0;
+
+      wobble(frame->time.ijd_tt + frame->time.fjd_tt, WOBBLE_TIRS_TO_ITRS, frame->dx, frame->dy, pos, pos);
       return 0;
 
     case NOVAS_J2000:
@@ -855,6 +912,7 @@ int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_sys
       /* fallthrough */
     case NOVAS_TOD:
       spin(15.0 * frame->gst, pos, pos);
+      wobble(time->ijd_tt + time->fjd_tt, WOBBLE_PEF_TO_ITRS, 1e-3 * frame->dx, 1e-3 * frame->dy, pos, pos);
       break;
 
     case NOVAS_ICRS:
@@ -862,15 +920,17 @@ int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_sys
       matrix_transform(pos, &frame->gcrs_to_cirs, pos); // @suppress("No break at end of case")
       /* fallthrough */
     case NOVAS_CIRS:
-      spin(frame->era, pos, pos);
+      spin(frame->era, pos, pos); // @suppress("No break at end of case")
+      /* fallthrough */
+    case NOVAS_TIRS:
+      wobble(time->ijd_tt + time->fjd_tt, WOBBLE_TIRS_TO_ITRS, 1e-3 * frame->dx, 1e-3 * frame->dy, pos, pos); // @suppress("No break at end of case")
+      /* fallthrough */
+    case NOVAS_ITRS:
       break;
 
     default:
       return novas_error(-1, EINVAL, fn, "invalid coordinate system: %d", sys);
   }
-
-  // TIRS -> ITRS
-  wobble(time->ijd_tt + time->fjd_tt, WOBBLE_PEF_TO_ITRS, 1e-3 * frame->dx, 1e-3 * frame->dy, pos, pos);
 
   itrs_to_hor(&frame->observer.on_surf, pos, &az0, &za0);
 
@@ -944,36 +1004,42 @@ int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, Re
   // az, el to ITRS pos
   hor_to_itrs(&frame->observer.on_surf, az, 90.0 - el, pos);
 
-  // ITRS -> TIRS
-  wobble(time->ijd_tt + time->fjd_tt, WOBBLE_ITRS_TO_PEF, 1e-3 * frame->dx, 1e-3 * frame->dy, pos, pos);
+  if(sys != NOVAS_ITRS) {
+    // ITRS -> PEF / TIRS
+    enum novas_wobble_direction dir = cmp_sys(sys, NOVAS_GCRS) < 0 ? WOBBLE_ITRS_TO_PEF : WOBBLE_ITRS_TO_TIRS;
+    wobble(time->ijd_tt + time->fjd_tt, dir, 1e-3 * frame->dx, 1e-3 * frame->dy, pos, pos);
 
-  // TIRS -> TOD or CIRS...
-  spin(cmp_sys(sys, NOVAS_GCRS) < 0 ? -15.0 * frame->gst : -frame->era, pos, pos);
+    if(sys != NOVAS_TIRS) {
+      // TIRS -> TOD or CIRS...
+      spin(cmp_sys(sys, NOVAS_GCRS) < 0 ? -15.0 * frame->gst : -frame->era, pos, pos);
 
-  // Continue to convert TOD / CIRS to output system....
-  switch(sys) {
-    case NOVAS_TOD:
-      break;
+      // Continue to convert TOD / CIRS to output system....
+      switch(sys) {
 
-    case NOVAS_MOD:
-      matrix_inv_rotate(pos, &frame->nutation, pos);
-      break;
+        case NOVAS_TOD:
+          break;
 
-    case NOVAS_J2000:
-      matrix_inv_rotate(pos, &frame->nutation, pos);
-      matrix_inv_rotate(pos, &frame->precession, pos);
-      break;
+        case NOVAS_MOD:
+          matrix_inv_rotate(pos, &frame->nutation, pos);
+          break;
 
-    case NOVAS_CIRS:
-      break;
+        case NOVAS_J2000:
+          matrix_inv_rotate(pos, &frame->nutation, pos);
+          matrix_inv_rotate(pos, &frame->precession, pos);
+          break;
 
-    case NOVAS_ICRS:
-    case NOVAS_GCRS:
-      matrix_inv_rotate(pos, &frame->gcrs_to_cirs, pos);
-      break;
+        case NOVAS_CIRS:
+          break;
 
-    default:
-      return novas_error(-1, EINVAL, fn, "invalid coordinate system: %d", sys);
+        case NOVAS_ICRS:
+        case NOVAS_GCRS:
+          matrix_inv_rotate(pos, &frame->gcrs_to_cirs, pos);
+          break;
+
+        default:
+          return novas_error(-1, EINVAL, fn, "invalid coordinate system: %d", sys);
+      }
+    }
   }
 
   vector2radec(pos, ra, dec);
@@ -1023,6 +1089,14 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
 
   // Convert apparent position to ICRS...
   switch(sys) {
+    case NOVAS_ITRS:
+      // ITRS -> TIRS
+      wobble(frame->time.ijd_tt + frame->time.fjd_tt, WOBBLE_ITRS_TO_TIRS, frame->dx, frame->dy, app_pos, app_pos); // @suppress("No break at end of case")
+      /* fallthrough */
+    case NOVAS_TIRS:
+      // TIRS -> CIRS
+      spin(-frame->era, app_pos, app_pos); // @suppress("No break at end of case")
+      /* fallthrough */
     case NOVAS_CIRS:
       matrix_inv_rotate(app_pos, &frame->gcrs_to_cirs, app_pos);
       break;
@@ -1052,17 +1126,18 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
 
 static int add_transform(novas_transform *transform, const novas_matrix *component, int dir) {
   int i;
-  double T[3][3];
+  double M0[3][3];
 
-  memcpy(T, transform->matrix.M, sizeof(T));
-  memset(transform->matrix.M, 0, sizeof(transform->matrix.M));
+  memcpy(M0, transform->matrix.M, sizeof(M0));
 
   for(i = 3; --i >= 0;) {
     int j;
     for(j = 3; --j >= 0;) {
       int k;
+      double x = 0.0;
       for(k = 3; --k >= 0;)
-        transform->matrix.M[i][j] +=  (dir < 0 ? component->M[k][i] : component->M[i][k]) * T[k][j];
+        x += (dir < 0 ? component->M[k][i] : component->M[i][k]) * M0[k][j];
+      transform->matrix.M[i][j] = x;
     }
   }
 
@@ -1128,6 +1203,24 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
   if(dir < 0) {
     switch(from_system) {
+      case NOVAS_ITRS: {
+        novas_matrix W;
+        set_wobble_matrix(frame, &W);
+        add_transform(transform, &W, -1);
+        if(to_system == NOVAS_TIRS)
+          return 0;
+      } // @suppress("No break at end of case")
+      /* fallthrough */
+
+      case NOVAS_TIRS: {
+        novas_matrix R;
+        set_spin_matrix(frame->era, &R);
+        add_transform(transform, &R, -1);
+        if(to_system == NOVAS_CIRS)
+          return 0;
+      } // @suppress("No break at end of case")
+      /* fallthrough */
+
       case NOVAS_CIRS:
         add_transform(transform, &frame->gcrs_to_cirs, -1);
         if(to_system == NOVAS_GCRS)
@@ -1177,7 +1270,25 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
 
       case NOVAS_GCRS:
         add_transform(transform, &frame->gcrs_to_cirs, 1);
+        if(to_system == NOVAS_CIRS)
+          return 0; // @suppress("No break at end of case")
+        /* fallthrough */
+
+      case NOVAS_CIRS: {
+        novas_matrix R;
+        set_spin_matrix(frame->era, &R);
+        add_transform(transform, &R, 1);
+        if(to_system == NOVAS_TIRS)
+          return 0;
+        } // @suppress("No break at end of case")
+        /* fallthrough */
+
+      case NOVAS_TIRS: {
+        novas_matrix W;
+        set_wobble_matrix(frame, &W);
+        add_transform(transform, &W, 1);
         return 0;
+      }
 
       default:
         // nothing to do...

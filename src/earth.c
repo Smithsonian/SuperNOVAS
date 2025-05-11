@@ -561,7 +561,11 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
- * @param direction     WOBBLE_ITRS_TO_PEF (0) or WOBBLE_PEF_TO_ITRS (nonzero)
+ * @param direction     WOBBLE_ITRS_TO_TIRS (0) or WOBBLE_TIRS_TO_ITRS (1) to include corrections
+ *                      for the TIO's longitude (IAU 2006 method); or else
+ *                      WOBBLE_ITRS_TO_PEF (2) or WOBBLE_PEF_TO_ITRS (3) to correct for dx, dy but
+ *                      not for the TIO's longitude (old, pre IAU 2006 method). Negative values
+ *                      default to WOBBLE_TIRS_TO_ITRS.
  * @param xp            [arcsec] Conventionally-defined X coordinate of Celestial Intermediate
  *                      Pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of Celestial Intermediate
@@ -572,7 +576,7 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
  *                      in the final system defined by 'direction'. It can be the same vector
  *                      as the input.
  *
- * @return              0 if successful, or -1 if the output vector argument is NULL.
+ * @return              0 if successful, or -1 if the direction is invalid output vector argument is NULL.
  *
  * @sa cel_pole()
  * @sa cirs_to_itrs()
@@ -583,29 +587,40 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
  * @sa NOVAS_FULL_ACCURACY
  */
 int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out) {
-  double xpole, ypole, t, s1, y1;
+  static const char *fn = "wobble";
+
+  double s1 = 0.0;
+
+  if((short) direction < 0)
+    direction = 1;
+  else if(direction >= NOVAS_WOBBLE_DIRECTIONS)
+    return novas_error(-1, EINVAL, fn, "invalid direction: %d", direction);
 
   if(!in || !out)
-    return novas_error(-1, EINVAL, "wobble", "NULL input or output 3-vector: in=%p, out=%p", in, out);
+    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
 
-  xpole = xp * ARCSEC;
-  ypole = yp * ARCSEC;
+  xp *= ARCSEC;
+  yp *= ARCSEC;
 
   // Compute approximate longitude of TIO (s'), using eq. (10) of the second reference
-  t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-  s1 = -47.0e-6 * ARCSEC * t;
-
-  y1 = in[1];
+  if(direction < 2) {
+    double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
+    s1 = -47.0e-6 * ARCSEC * t;
+  }
 
   // Compute elements of rotation matrix.
   // Equivalent to R3(-s')R2(x)R1(y) as per IERS Conventions (2003).
-  if(direction == WOBBLE_ITRS_TO_PEF)
-    novas_tiny_rotate(in, -ypole, -xpole, s1, out);
-  else
-    novas_tiny_rotate(in, ypole, xpole, -s1, out);
-
-  // Second-order correction for the non-negligible xp, yp product...
-  out[0] += xpole * ypole * y1;
+  if(direction % 2 == WOBBLE_ITRS_TO_TIRS) {
+    double y = in[1];
+    novas_tiny_rotate(in, -yp, -xp, s1, out);
+    // Second-order correction for the non-negligible xp, yp product...
+    out[0] += xp * yp * y;
+  }
+  else {
+    double x = in[0];
+    novas_tiny_rotate(in, yp, xp, -s1, out);
+    out[1] += xp * yp * x;
+  }
 
   return 0;
 }

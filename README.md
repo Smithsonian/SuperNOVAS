@@ -159,6 +159,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` has a number of issues that produce inaccurate results. 
    The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.
  
+ - [__v1.4__] The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` 
+   parameters were zero, then no wobble correction was applied, not even for the TIO longitude (s'). The error from 
+   this omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
    
 -----------------------------------------------------------------------------
 
@@ -1541,6 +1544,9 @@ one minute.
  - Add Moon phase calculator functions, based on above orbital modeling.
  
  - Added IAU/SOFA wavelength-dependent refraction model.
+ 
+ - Improved support for expressing and using coordinates in TIRS (Terrestrial Intermediate Reference System) and ITRS 
+   (International Terrestrial Reference System).
 
 
 <a name="api-changes"></a>

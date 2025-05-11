@@ -426,9 +426,7 @@ enum novas_reference_system {
   NOVAS_GCRS = 0,
 
   /// True equinox Of Date: dynamical system of the 'true' equator, with its origin at the
-  /// 'true' equinox (pre IAU 2006 system). It is inherently less precise than the new standard
-  /// CIRS because mainly because it is based on separate, and less-precise, precession
-  /// and nutation models (Lieske et. al. 1977).
+  /// 'true' equinox (pre IAU 2006 system).
   NOVAS_TOD,
 
   /// Celestial Intermediate Reference System: dynamical system of the true equator, with its
@@ -445,9 +443,21 @@ enum novas_reference_system {
 
   /// Mean equinox of date:  dynamical system of the 'mean' equator, with its origin at the
   /// 'mean' equinox (pre IAU 2006 system). It includes precession (Lieske et. al. 1977),
-  /// but no nutation.
+  /// but no nutation. For example, FK4 / B1950 is a MOD coordinate system.
   /// @since 1.1
   NOVAS_MOD,
+
+  /// Terrestrial Intermediate Reference System. It is the IAU 2006 standard pseudo Earth-fixed
+  /// (PEF) coordinate system, which co-rotates with Earth, but does not include Earth polar
+  /// wobble corrections.
+  /// @since 1.4
+  NOVAS_TIRS,
+
+  /// International Terrestrial Reference System. This is the IAU 2006 Earth-fixed reference
+  /// system, and includes small measured corrections for the unmodelled polar motion, as
+  /// published by the IERS Bulletins.
+  /// @since 1.4
+  NOVAS_ITRS
 };
 
 /**
@@ -455,7 +465,7 @@ enum novas_reference_system {
  *
  * @sa enum novas_reference_system
  */
-#define NOVAS_REFERENCE_SYSTEMS   (NOVAS_MOD + 1)
+#define NOVAS_REFERENCE_SYSTEMS   (NOVAS_ITRS + 1)
 
 /**
  * Constants that determine the type of equator to be used for the coordinate system.
@@ -463,9 +473,9 @@ enum novas_reference_system {
  * @sa NOVAS_EQUATOR_TYPES
  */
 enum novas_equator_type {
-  NOVAS_MEAN_EQUATOR = 0, ///< Mean equator of date without nutation (pre IAU 2006 system).
-  NOVAS_TRUE_EQUATOR,     ///< True equator of date (pre IAU 2006 system).
-  NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference System (GCRS).
+  NOVAS_MEAN_EQUATOR = 0, ///< Mean celestial equator of date without nutation (pre IAU 2006 system).
+  NOVAS_TRUE_EQUATOR,     ///< True celestial equator of date (pre IAU 2006 system).
+  NOVAS_GCRS_EQUATOR      ///< Geocentric Celestial Reference System (GCRS) equator.
 };
 
 /**
@@ -654,17 +664,35 @@ enum novas_cio_location_type {
  * Direction constants for polar wobble corrections via the wobble() function.
  *
  * @sa wobble()
- * @sa WOBBLE_ITRS_TO_TIRS
+ * @sa NOVAS_WOBBLE_DIRECTIONS
  */
 enum novas_wobble_direction {
-  /// use for wobble() to change from ITRS (actual rotating Earth) to Pseudo Earth Fixed (PEF) /
-  /// TIRS.
-  WOBBLE_ITRS_TO_PEF = 0,
+  /// use for wobble() to change from ITRS (Earth-fixed) to TIRS (pseudo Earth-fixed). It includes TIO
+  /// longitude correction.
+  /// @since 1.4
+  WOBBLE_ITRS_TO_TIRS = 0,
 
-  /// use for wobble() to change from Pseudo Earth Fixed (PEF) / TIRS to ITRS (actual rotating
-  /// Earth).
+  /// use for wobble() to change from TIRS (pseudo Earth-fixed) to ITRS (Earth-fixed). It includes TIO
+  /// longitude correction.
+  /// @since 1.4
+  WOBBLE_TIRS_TO_ITRS,
+
+  /// use for wobble() to change from ITRS (Earth-fixed) Pseudo Earth Fixed (PEF). It does not include
+  /// TIO longitude correction. Otherwise, it's the same as WOBBLE_ITRS_TO_TIRS
+  WOBBLE_ITRS_TO_PEF,
+
+  /// use for wobble() to change from Pseudo Earth Fixed (PEF) to ITRS (Earth-fixed). It does not
+  /// include TIO longitude correction. Otherwise, it's the same as WOBBLE_TIRS_TO_ITRS
   WOBBLE_PEF_TO_ITRS
 };
+
+/**
+ * Number of values in enum novas_wobble_direction
+ *
+ * @since 1.4
+ * @sa novas_wobble_direction
+ */
+#define NOVAS_WOBBLE_DIRECTIONS     (WOBBLE_PEF_TO_ITRS + 1)
 
 /**
  * Direction constant to use for frame_tie(), to determine the direction of transformation
@@ -793,6 +821,8 @@ typedef struct {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
   enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE
   enum novas_reference_system type;  ///< the coordinate reference system used for the reference plane and orbitals.
+                                     ///< It must be a system, which does not co-rotate with Earth (i.e. not ITRS or
+                                     ///< TIRS).
   double obl;                        ///< [rad] relative obliquity of orbital reference plane
                                      ///<       (e.g. 90&deg; - &delta;<sub>pole</sub>)
   double Omega;                      ///< [rad] relative argument of ascending node of the orbital reference plane
@@ -1293,6 +1323,8 @@ typedef struct {
   novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
   novas_planet_bundle planets;    ///< Planet positions and velocities (ICRS)
   // TODO [v2] add ra_cio
+  // TODO [v2] add cirs_to_tirs
+  // TODI [v2] add tirs_to_itrs
 } novas_frame;
 
 /**

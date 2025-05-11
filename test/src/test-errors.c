@@ -535,9 +535,11 @@ static int test_place() {
   int n = 0;
 
   if(check("place:object", -1, place(0.0, NULL, &loc, 0.0, NOVAS_GCRS, NOVAS_FULL_ACCURACY, &pos))) n++;
-  if(check("place:sys:lo", 1, place(0.0, &o, &loc, 0.0, -1, NOVAS_FULL_ACCURACY, &pos))) n++;
+  if(check("place:sys:-1", 1, place(0.0, &o, &loc, 0.0, -1, NOVAS_FULL_ACCURACY, &pos))) n++;
+  if(check("place:sys:itrs", 1, place(0.0, &o, &loc, 0.0, NOVAS_ITRS, NOVAS_FULL_ACCURACY, &pos))) n++;
   if(check("place:sys:hi", 1, place(0.0, &o, &loc, 0.0, NOVAS_REFERENCE_SYSTEMS, NOVAS_FULL_ACCURACY, &pos))) n++;
   if(check("place:accuracy", 2, place(0.0, &o, &loc, 0.0, NOVAS_GCRS, -1, &pos))) n++;
+
 
   return n;
 }
@@ -730,6 +732,8 @@ static int test_wobble() {
   double p[3] = {1.0};
   int n = 0;
 
+  if(check("wobble:dir:-1", 0, wobble(NOVAS_JD_J2000, -1, 0.0, 0.0, p, p))) n++;
+  if(check("wobble:dir:hi", -1, wobble(NOVAS_JD_J2000, NOVAS_WOBBLE_DIRECTIONS, 0.0, 0.0, p, p))) n++;
   if(check("wobble:in", -1, wobble(0.0, WOBBLE_ITRS_TO_PEF, 0.0, 0.0, NULL, p))) n++;
   if(check("wobble:out", -1, wobble(0.0, WOBBLE_ITRS_TO_PEF, 0.0, 0.0, p, NULL))) n++;
 
@@ -1699,11 +1703,17 @@ static int test_orbit_posvel() {
   orbit.system.type = -1;
   if(check("set_obsys_pole:orbit:type:-1", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
+  orbit.system.type = NOVAS_TIRS;
+  if(check("set_obsys_pole:orbit:type:tirs", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+
+  orbit.system.type = NOVAS_ITRS;
+  if(check("set_obsys_pole:orbit:type:itrs", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
+
   orbit.system.type = NOVAS_REFERENCE_SYSTEMS;
   if(check("set_obsys_pole:orbit:type:hi", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
   orbit.system.plane = NOVAS_EQUATORIAL_PLANE;
-  orbit.system.type = NOVAS_REFERENCE_SYSTEMS;
+  orbit.system.type = -1;
   if(check("set_obsys_pole:orbit:type:-1:eq", -1, novas_orbit_posvel(0.0, &orbit, NOVAS_REDUCED_ACCURACY, pos, vel))) n++;
 
   orbit.system.type = NOVAS_GCRS;
@@ -1716,7 +1726,12 @@ static int test_orbit_posvel() {
 static int test_set_obsys_pole() {
   int n = 0;
 
-  if(check("set_obsys_pole:orbit", -1, novas_set_orbsys_pole(NOVAS_GCRS, 0.0, 0.0, NULL))) n++;
+  if(check("set_obsys_pole:orbit:null", -1, novas_set_orbsys_pole(NOVAS_GCRS, 0.0, 0.0, NULL))) n++;
+
+  if(check("set_obsys_pole:orbit:-1", -1, novas_set_orbsys_pole(-1, 0.0, 0.0, NULL))) n++;
+  if(check("set_obsys_pole:orbit:tirs", -1, novas_set_orbsys_pole(NOVAS_TIRS, 0.0, 0.0, NULL))) n++;
+  if(check("set_obsys_pole:orbit:itrs", -1, novas_set_orbsys_pole(NOVAS_ITRS, 0.0, 0.0, NULL))) n++;
+  if(check("set_obsys_pole:orbit:hi", -1, novas_set_orbsys_pole(NOVAS_REFERENCE_SYSTEMS, 0.0, 0.0, NULL))) n++;
 
   return n;
 }

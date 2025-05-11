@@ -219,11 +219,10 @@ static int test_equ2hor() {
 
   for(a = 0; a < 24.0; a += 2) {
     int d;
-    for(d = -90; d <= 90; d += 30) {
-      double ra = a, dec = d, az, za, rar, decr;
-
-      if(!is_ok("equ2hor:rar:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, ra, dec, NOVAS_STANDARD_ATMOSPHERE, &az, &za, NULL, &decr))) return 1;
-      if(!is_ok("equ2hor:decr:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, ra, dec, NOVAS_STANDARD_ATMOSPHERE, &az, &za, &rar, NULL))) return 1;
+    for(d = -90; d <= 90; d += 15.0) {
+      double az, za, rar, decr;
+      if(!is_ok("equ2hor:rar:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, a, d, NOVAS_STANDARD_ATMOSPHERE, &za, &az, NULL, &decr))) return 1;
+      if(!is_ok("equ2hor:decr:null", equ2hor(tdb, 0.0, NOVAS_REDUCED_ACCURACY, 0.0, 0.0, &obs.on_surf, a, d, NOVAS_STANDARD_ATMOSPHERE, &za, &az, &rar, NULL))) return 1;
     }
   }
 
@@ -674,6 +673,73 @@ static int test_transform_icrs_cirs() {
   return 0;
 }
 
+static int test_transform_cirs_itrs() {
+  novas_transform T = NOVAS_TRANSFORM_INIT;
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  double pos1[3] = {1.0}, pos2[3] = {2.0};
+
+  // TODO wobble x,y
+  if(!is_ok("transform:cirs_itrs:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform:cirs_itrs:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform:cirs_itrs:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 20.0, 30.0, &frame))) return 1;
+
+  if(!is_ok("transform:cirs_itrs", novas_make_transform(&frame, NOVAS_CIRS, NOVAS_ITRS, &T))) return 1;
+
+  novas_transform_vector(pos0, &T, pos1);
+  cirs_to_itrs(ts.ijd_tt, ts.fjd_tt, ts.ut1_to_tt, NOVAS_REDUCED_ACCURACY, 0.020, 0.030, pos0, pos2);
+
+  if(!is_ok("transform:cirs_itrs:check", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
+static int test_transform_tirs_itrs() {
+  novas_transform T = NOVAS_TRANSFORM_INIT;
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  double pos1[3] = {1.0}, pos2[3] = {2.0};
+
+  // TODO wobble x,y
+  if(!is_ok("transform:tirs_itrs:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform:tirs_itrs:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform:tirs_itrs:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 200.0, 300.0, &frame))) return 1;
+
+  if(!is_ok("transform:tirs_itrs", novas_make_transform(&frame, NOVAS_TIRS, NOVAS_ITRS, &T))) return 1;
+
+  novas_transform_vector(pos0, &T, pos1);
+  wobble(ts.ijd_tt + ts.fjd_tt, WOBBLE_TIRS_TO_ITRS, 0.2, 0.3, pos0, pos2);
+
+  if(!is_ok("transform:tirs_itrs:check", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
+static int test_transform_mod_cirs() {
+  novas_transform T = NOVAS_TRANSFORM_INIT;
+  novas_timespec ts = NOVAS_TIMESPEC_INIT;
+  observer obs = OBSERVER_INIT;
+  novas_frame frame = NOVAS_FRAME_INIT;
+  double pos1[3] = {1.0}, pos2[3] = {2.0};
+
+  if(!is_ok("transform:mod_cirs:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform:mod_cirs:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform:mod_cirs:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 200.0, 300.0, &frame))) return 1;
+
+  if(!is_ok("transform:mod_cirs", novas_make_transform(&frame, NOVAS_MOD, NOVAS_CIRS, &T))) return 1;
+
+  novas_transform_vector(pos0, &T, pos1);
+
+  mod_to_gcrs(tdb, pos0, pos2);
+  gcrs_to_cirs(tdb, NOVAS_REDUCED_ACCURACY, pos2, pos2);
+
+  if(!is_ok("transform:mod_cirs:check", check_equal_pos(pos1, pos2, 1e-12 * vlen(pos0)))) return 1;
+
+  return 0;
+}
+
 static int test_transform_icrs_j2000() {
   novas_transform T = NOVAS_TRANSFORM_INIT;
   novas_timespec ts = NOVAS_TIMESPEC_INIT;
@@ -740,14 +806,16 @@ static int test_transform_mod_tod() {
 }
 
 static int test_transform_inv() {
+  int n = 0;
+
   novas_timespec ts = NOVAS_TIMESPEC_INIT;
   observer obs = OBSERVER_INIT;
   novas_frame frame = NOVAS_FRAME_INIT;
   enum novas_reference_system from;
 
-  if(!is_ok("transform_rev:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
-  if(!is_ok("transform_rev:make_observer", make_observer_at_geocenter(&obs))) return 1;
-  if(!is_ok("transform_rev:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+  if(!is_ok("transform_inv:set_time", novas_set_time(NOVAS_TDB, tdb, 32, 0.0, &ts))) return 1;
+  if(!is_ok("transform_inv:make_observer", make_observer_at_geocenter(&obs))) return 1;
+  if(!is_ok("transform_inv:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
 
   for(from = 0; from < NOVAS_REFERENCE_SYSTEMS; from++) {
     char label[50];
@@ -763,12 +831,12 @@ static int test_transform_inv() {
       novas_transform_vector(pos0, &T, pos1);
       novas_transform_vector(pos1, &I, pos2);
 
-      sprintf(label, "transform_rev:from=%d:to=%d", from, to);
-      if(!is_ok(label, check_equal_pos(pos0, pos2, 1e-12 * vlen(pos0)))) return 1;
+      sprintf(label, "transform_inv:from=%d:to=%d", from, to);
+      if(!is_ok(label, check_equal_pos(pos0, pos2, 1e-12 * vlen(pos0)))) n++;
     }
   }
 
-  return 0;
+  return n;
 }
 
 static int test_gcrs_to_tod() {
@@ -874,8 +942,10 @@ static int test_source() {
   if(test_starvectors()) n++;
 
   if(test_geo_posvel()) n++;
-
   if(test_transform_icrs_cirs()) n++;
+  if(test_transform_cirs_itrs()) n++;
+  if(test_transform_tirs_itrs()) n++;
+  if(test_transform_mod_cirs()) n++;
   if(test_transform_icrs_j2000()) n++;
   if(test_transform_j2000_mod()) n++;
   if(test_transform_mod_tod()) n++;
@@ -1328,16 +1398,21 @@ static int test_sky_pos(enum novas_reference_system sys) {
 
   cel_pole(tdb, POLE_OFFSETS_X_Y, 0.0, 0.0);
 
-
   for(i = 0; i < 2; i++) {
     char label[50];
     sky_pos p = SKY_POS_INIT, pc = SKY_POS_INIT;
 
-    // place does not apply deflection / aberration for ICRS
-    place(tdb, &source[i], &obs, ts.ut1_to_tt, (sys == NOVAS_ICRS ? NOVAS_GCRS : sys), NOVAS_REDUCED_ACCURACY, &pc);
-
     sprintf(label, "sky_pos:sys=%d:source=%d", sys, i);
     if(!is_ok(label, novas_sky_pos(&source[i], &frame, sys, &p))) return 1;
+
+    // place does not apply deflection / aberration for ICRS
+    if(sys == NOVAS_ITRS) {
+      // For place use TIRS + wobble()...
+      place(tdb, &source[i], &obs, ts.ut1_to_tt, NOVAS_TIRS, NOVAS_REDUCED_ACCURACY, &pc);
+      wobble(tdb, WOBBLE_TIRS_TO_ITRS, 0.0, 0.0, pc.r_hat, pc.r_hat);
+      vector2radec(pc.r_hat, &pc.ra, &pc.dec);
+    }
+    else place(tdb, &source[i], &obs, ts.ut1_to_tt, (sys == NOVAS_ICRS ? NOVAS_GCRS : sys), NOVAS_REDUCED_ACCURACY, &pc);
 
     sprintf(label, "sky_pos:sys=%d:source=%d:check:ra", sys, i);
     if(!is_equal(label, p.ra, pc.ra, 1e-10)) return 1;

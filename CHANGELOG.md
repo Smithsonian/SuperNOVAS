@@ -20,10 +20,14 @@ Changes for the upcoming feature release, expected around 1 August 2025.
    between the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF), and the International 
    Terrestrial Reference System (ITRS) and vice versa.
    
+ - #187: The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` parameters 
+   were zero, then no wobble correction was applied, not even the time corrections term s'. The error from this 
+   omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
+
  - #188: Critical bug in `novas_make_transform()` since inception in v1.1. Compound transforms were calculated using
    matrix products in the wrong commutation order (successive transforms were multiplied from the right instead of
-   from the left). Very embarrasing indeed, and has somehow went unnoticed with the testing suite also.
-
+   from the left). Very embarrasing indeed, and somehow it went unnoticed with the testing suite also.
+   
 ### Added
 
  - #172: Added `novas_time_gst()` and `novas_time_lst()` convenience functions to calculate the Greenwich (apparent)
@@ -54,6 +58,11 @@ Changes for the upcoming feature release, expected around 1 August 2025.
    
  - #177: Added `novas_day_of_week()` and `novas_day_of_year()` functions to convert JD dates to a 1-based day of week
    index, or to a day of the year in the calendar of choice.
+   
+ - #185: Added `NOVAS_TIRS` and `NOVAS_ITRS` to `enum novas_reference_systems`. All frame-based functions now support
+   these. Legacy `place()` and its variants support TIRS but not ITRS (because of the lack of information available
+   to the legacy calls), while Keplerian orbitals may not be be defined in either TIRS or ITRS since these Earth 
+   co-rotating systems are not inertial systems.
    
 ### Changed
 

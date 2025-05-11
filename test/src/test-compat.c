@@ -629,7 +629,6 @@ static void test_frame_tie() {
 }
 
 
-
 static void test_wobble() {
   double pos1[3];
 
