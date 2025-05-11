@@ -69,7 +69,6 @@ static int matrix_transform(const double *in, const novas_matrix *matrix, double
   return 0;
 }
 
-
 static int matrix_inv_rotate(const double *in, const novas_matrix *matrix, double *out) {
   // IMPORTANT! use only with unitary matrices.
   double v[3];
@@ -297,7 +296,6 @@ int novas_frame_is_initialized(const novas_frame *frame) {
   return frame->state == FRAME_INITIALIZED;
 }
 /// \endcond
-
 
 /**
  * Sets up a observing frame for a specific observer location, time of observation, and accuracy
@@ -606,7 +604,6 @@ int novas_geom_posvel(const object *restrict source, const novas_frame *restrict
   return 0;
 }
 
-
 /**
  * Calculates an apparent location on sky for the source. The position takes into account the
  * proper motion (for sidereal source), or is antedated for light-travel time (for Solar-System
@@ -734,8 +731,6 @@ int novas_sky_pos(const object *restrict object, const novas_frame *restrict fra
 
   return 0;
 }
-
-
 
 /**
  * Converts an geometric position in ICRS to an apparent position on sky, by applying appropriate
@@ -1055,7 +1050,6 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
   return 0;
 }
 
-
 static int cat_transform(novas_transform *transform, const novas_matrix *component, int dir) {
   int i;
   double T[3][3];
@@ -1220,7 +1214,6 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
 
   return 0;
 }
-
 
 /**
  * Transforms a position or velocity 3-vector from one coordinate reference system to another.
