@@ -587,7 +587,7 @@ static int test_app_to_hor_compat() {
   if(!is_ok("app_to_hor_comat:app_to_hor:cirs",
           novas_app_to_hor(&frame, NOVAS_CIRS, ra, dec, NULL, &az, &el))) return 1;
   if(!is_ok("app_to_hor_compat:cirs_to_itrs",
-          cirs_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 200.0, 300.0, pos0, pos1))) return 1;
+          cirs_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
   if(!is_ok("app_to_hor_compat:itrs_to_hor:cirs", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
   if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
   if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
@@ -595,7 +595,7 @@ static int test_app_to_hor_compat() {
   if(!is_ok("app_to_hor_comat:app_to_hor:tod",
           novas_app_to_hor(&frame, NOVAS_TOD, ra, dec, NULL, &az, &el))) return 1;
   if(!is_ok("app_to_hor_compat:tod_to_itrs",
-          tod_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 200.0, 300.0, pos0, pos1))) return 1;
+          tod_to_itrs(tdb, 0.0, 69.184, NOVAS_REDUCED_ACCURACY, 0.200, 0.300, pos0, pos1))) return 1;
   if(!is_ok("app_to_hor_compat:itrs_to_hor:tod", itrs_to_hor(&obs.on_surf, pos1, &az1, &za1))) return 1;
   if(!is_equal("app_to_hor_compat:check:az", az, az1, 1e-6)) return 1;
   if(!is_equal("app_to_hor_compat:check:el", el, 90.0 - za1, 1e-6)) return 1;
@@ -2259,7 +2259,7 @@ static int test_app_hor2() {
 
   if(!is_ok("app_hor2:sys=%d:set_time", novas_set_time(NOVAS_TT, tdb, 32, 0.0, &ts))) return 1;
   if(!is_ok("app_hor2:sys=%d:make_observer", make_observer_on_surface(1.0, 2.0, 3.0, 4.0, 1001.0, &obs))) return 1;
-  if(!is_ok("app_hor2:sys=%d:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 0.0, 0.0, &frame))) return 1;
+  if(!is_ok("app_hor2:sys=%d:make_frame", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &ts, 20.0, 30.0, &frame))) return 1;
 
   for(i = -85; i <= 85; i += 10) {
     int j;
@@ -2268,12 +2268,16 @@ static int test_app_hor2() {
       char label[50];
       double x, y;
 
-      sprintf(label, "app_hor2:ra=%d:dec=%d", j, i);
-
+      sprintf(label, "app_hor2:ra=%d:dec=%d:a2h", j, i);
       if(!is_ok(label, novas_app_to_hor(&frame, NOVAS_ICRS, j, i, NULL, &x, &y))) return 1;
+
+      sprintf(label, "app_hor2:ra=%d:dec=%d:h2a", j, i);
       if(!is_ok(label, novas_hor_to_app(&frame, x, y, NULL, NOVAS_ICRS, &x, &y))) return 1;
 
-      if(!is_equal(label, remainder(x - j, 24.0), 0.0, 1e-8)) return 1;
+      sprintf(label, "app_hor2:ra=%d:dec=%d:check:ra", j, i);
+      if(!is_equal(label, remainder(x - j, 24.0) * cos(i * DEGREE), 0.0, 1e-10)) return 1;
+
+      sprintf(label, "app_hor2:ra=%d:dec=%d:check:dec", j, i);
       if(!is_equal(label, y, i, 1e-9)) return 1;
     }
   }

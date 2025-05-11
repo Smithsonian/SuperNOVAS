@@ -234,8 +234,8 @@ int novas_time_equals_hp(double jd1, double jd2) {
  *
  * @param in            3D vector to rotate
  * @param ax            (rad) rotation angle around x
- * @param ay            (rad) rotation angle around x
- * @param az            (rad) rotation angle around x
+ * @param ay            (rad) rotation angle around y
+ * @param az            (rad) rotation angle around z
  * @param[out] out      Rotated vector. It can be the same as the input.
  *
  */
