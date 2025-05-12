@@ -58,11 +58,14 @@ Changes for the upcoming feature release, expected around 1 August 2025.
    
  - #177: Added `novas_day_of_week()` and `novas_day_of_year()` functions to convert JD dates to a 1-based day of week
    index, or to a day of the year in the calendar of choice.
-   
+
  - #185: Added `NOVAS_TIRS` and `NOVAS_ITRS` to `enum novas_reference_systems`. All frame-based functions now support
    these. Legacy `place()` and its variants support TIRS but not ITRS (because of the lack of information available
    to the legacy calls), while Keplerian orbitals may not be be defined in either TIRS or ITRS since these Earth 
    co-rotating systems are not inertial systems.
+
+ - #186: Added `NOVAS_RADIO_REFRACTION` and `NOVAS_WAVE_REFRACTION` to `enum novas_refraction_model`, for referencing 
+   the Berman &amp; Rockwell 1976 radio-wave model, or the IAU / SOFA wavelength-dependent model, respectively.
    
 ### Changed
 
@@ -72,6 +75,8 @@ Changes for the upcoming feature release, expected around 1 August 2025.
 
  - #181: Changed `nutation_angles()` to apply P03 model rescaling to IAU2000 nutation angles to provide 'IAU2006'
    values (see Capitaine et al. 2005). The same rescaling has been adopted by SOFA also.
+   
+ - #186: Tweaked error handling in atmopsheric refraction functions (in `refract.c`).
    
 ### Deprecated
 

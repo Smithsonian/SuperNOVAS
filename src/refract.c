@@ -46,8 +46,11 @@ static double lambda = NOVAS_DEFAULT_WAVELENGTH;      ///< [&mu;m] Observing wav
  *
  * @param location      Pointer to structure containing observer's location. It may also
  *                      contains weather data (optional) for the observer's location.
- * @param option        NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if
- *                      to use the weather values contained in the 'location' data structure.
+ *                      Some, but not all, refraction models will use location-based
+ *                      (e.g. weather) information. For models that do not need it, it
+ *                      may be NULL.
+ * @param model         The built in refraction model to use. E.g. NOVAS_STANDARD_ATMOSPHERE (1),
+ *                      or NOVAS_WEATHER_AT_LOCATION (2)...
  * @param zd_astro      [deg] Astrometric (unrefracted) zenith distance angle of the source.
  * @return              [deg] the calculated optical refraction. (to ~0.1 arcsec accuracy),
  *                      or 0.0 if the location is NULL or the option is invalid.
@@ -58,18 +61,27 @@ static double lambda = NOVAS_DEFAULT_WAVELENGTH;      ///< [&mu;m] Observing wav
  * @since 1.0
  * @author Attila Kovacs
  */
-double refract_astro(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro) {
+double refract_astro(const on_surface *restrict location, enum novas_refraction_model model, double zd_astro) {
+  static const char *fn = "refract_astro";
+
   double refr = 0.0;
   int i;
 
+  if(model == NOVAS_RADIO_REFRACTION)
+    return novas_radio_refraction(0.0, location, NOVAS_REFRACT_ASTROMETRIC, 90.0 - zd_astro);
+
+  errno = 0;
+
   for(i = 0; i < novas_inv_max_iter; i++) {
     double zd_obs = zd_astro - refr;
-    refr = refract(location, option, zd_obs);
+    refr = refract(location, model, zd_obs);
+    if(errno)
+      return novas_trace_nan(fn);
     if(fabs(refr - (zd_astro - zd_obs)) < 3.0e-5)
       return refr;
   }
 
-  novas_set_errno(ECANCELED, "refract_astro", "failed to converge");
+  novas_set_errno(ECANCELED, fn, "failed to converge");
   return NAN;
 }
 
@@ -98,8 +110,11 @@ double refract_astro(const on_surface *restrict location, enum novas_refraction_
  *
  * @param location      Pointer to structure containing observer's location. It may also
  *                      contains weather data (optional) for the observer's location.
- * @param option        NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if
- *                      to use the weather values contained in the 'location' data structure.
+ *                      Some, but not all, refraction models will use location-based
+ *                      (e.g. weather) information. For models that do not need it, it
+ *                      may be NULL.
+ * @param model         The built in refraction model to use. E.g. NOVAS_STANDARD_ATMOSPHERE (1),
+ *                      or NOVAS_WEATHER_AT_LOCATION (2)...
  * @param zd_obs        [deg] Observed (already refracted!) zenith distance through the
  *                      atmosphere.
  * @return              [deg] the calculated optical refraction or 0.0 if the location is
@@ -109,7 +124,7 @@ double refract_astro(const on_surface *restrict location, enum novas_refraction_
  * @sa hor_to_itrs()
  *
  */
-double refract(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs) {
+double refract(const on_surface *restrict location, enum novas_refraction_model model, double zd_obs) {
   static const char *fn = "refract";
 
   // 's' is the approximate scale height of atmosphere in meters.
@@ -117,16 +132,16 @@ double refract(const on_surface *restrict location, enum novas_refraction_model 
   const double ct = 0.065;  // [C/m] averate temperature drop with altitude
   double p, t, h, r;
 
-  if(option == NOVAS_NO_ATMOSPHERE)
+  if(model < 0 || model >= NOVAS_REFRACTION_MODELS) {
+    novas_set_errno(EINVAL, fn, "invalid refraction model option: %d", model);
+    return 0.0;
+  }
+
+  if(model == NOVAS_NO_ATMOSPHERE)
     return 0.0;
 
   if(!location) {
     novas_set_errno(EINVAL, fn, "NULL observer location");
-    return 0.0;
-  }
-
-  if(option != NOVAS_STANDARD_ATMOSPHERE && option != NOVAS_WEATHER_AT_LOCATION) {
-    novas_set_errno(EINVAL, fn, "invalid refraction model option: %d", option);
     return 0.0;
   }
 
@@ -146,9 +161,15 @@ double refract(const on_surface *restrict location, enum novas_refraction_model 
   if(zd_obs > 91.0)
     return 0.0;
 
+  if(model == NOVAS_RADIO_REFRACTION)
+    return novas_radio_refraction(0.0, location, NOVAS_REFRACT_OBSERVED, 90.0 - zd_obs);
+
+  if(model == NOVAS_WAVE_REFRACTION)
+    return novas_wave_refraction(0.0, location, NOVAS_REFRACT_OBSERVED, 90.0 - zd_obs);
+
   // If observed weather data are available, use them.  Otherwise, use
   // crude estimates of average conditions.
-  if(option == NOVAS_WEATHER_AT_LOCATION) {
+  if(model == NOVAS_WEATHER_AT_LOCATION) {
     p = location->pressure;
     t = location->temperature;
   }
@@ -204,19 +225,25 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
  * @author Attila Kovacs
  */
 double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *restrict loc, enum novas_refraction_type type, double el0) {
+  static const char *fn = "novas_inv_refract";
+
   double refr = 0.0;
   const int dir = (type == NOVAS_REFRACT_OBSERVED ? 1 : -1);
   int i;
 
+  errno = 0;
+
   for(i = 0; i < novas_inv_max_iter; i++) {
     double el1 = el0 + dir * refr;
     refr = model(jd_tt, loc, type, el1);
+    if(errno)
+      return novas_trace_nan(fn);
 
     if(fabs(refr - dir * (el1 - el0)) < 1e-7)
       return refr;
   }
 
-  novas_set_errno(ECANCELED, "refract_astro", "failed to converge");
+  novas_set_errno(ECANCELED, fn, "failed to converge");
   return NAN;
 }
 
@@ -468,7 +495,7 @@ int novas_refract_wavelength(double microns) {
  *                  populated.
  * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
  *                  NOVAS_REFRACT_ASTROMETRIC (0).
- * @param el        [deg] source elevation of the specified type.
+ * @param el        [deg] observed source elevation of the specified type.
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error), e.g. because the location is NULL, or
  *                  because the weather parameters are outside of the supported (sensible) range, or

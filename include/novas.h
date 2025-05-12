@@ -518,11 +518,11 @@ enum novas_accuracy {
 };
 
 /**
- * Constants that determine whether refraction calculations should use a standard atmospheric
- * model, or whatever weather parameters have been been specified for the observing location.
+ * Constants that determine whether what model (if any) to use for implicit refraction calculations.
  *
  * @sa on_surface
  * @sa refract()
+ * @sa refract_astro()
  */
 enum novas_refraction_model {
   /// Do not apply atmospheric refraction correction
@@ -533,8 +533,27 @@ enum novas_refraction_model {
   NOVAS_STANDARD_ATMOSPHERE,
 
   /// Uses the weather parameters that are specified together with the observing location.
-  NOVAS_WEATHER_AT_LOCATION
+  NOVAS_WEATHER_AT_LOCATION,
+
+  /// Uses the Berman &amp; Rockwell 1976 refraction model for Radio wavelengths with the
+  /// weather parameters specified together with the observing location.
+  /// @since 1.4
+  NOVAS_RADIO_REFRACTION,
+
+  /// Uses the IAU / SOFA wavelength-depended refraction model with the weather parameters
+  /// specified together with the observing location. The wavelength can be  specified
+  /// via `novas_refract_wavelength()` or else it is assumed to be 550 nm (visible light).
+  /// @sa novas_refract_wavelength()
+  /// @since 1.4
+  NOVAS_WAVE_REFRACTION
 };
+
+/**
+ * The number of built-in refraction models available in SuperNOVAS.
+ *
+ * @sa enum novas_refraction_model
+ */
+#define NOVAS_REFRACTION_MODELS   (NOVAS_WAVE_REFRACTION + 1)
 
 /**
  * Constants that determine the type of rotation measure to use.
@@ -1693,7 +1712,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio);
 
 // in refract.c
-double refract(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs);
+double refract(const on_surface *restrict location, enum novas_refraction_model model, double zd_obs);
 
 // in calendar.c
 double julian_date(short year, short month, short day, double hour);
@@ -1781,7 +1800,7 @@ int radec_planet(double jd_tt, const object *restrict ss_body, const observer *r
         double *restrict dis, double *restrict rv);
 
 // in refract.c
-double refract_astro(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro);
+double refract_astro(const on_surface *restrict location, enum novas_refraction_model model, double zd_astro);
 
 // in observer.c
 int light_time2(double jd_tdb, const object *restrict body, const double *restrict pos_obs, double tlight0,

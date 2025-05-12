@@ -198,6 +198,7 @@ static int test_refract() {
 
   novas_debug(NOVAS_DEBUG_ON);
   fprintf(stderr, ">>> Expecting error message...\n");
+
   errno = 0;
   double r = refract(NULL, NOVAS_STANDARD_ATMOSPHERE, 30.0);
   if(check("refract:loc", 1, r == 0.0 && errno == EINVAL)) n++;
@@ -205,7 +206,13 @@ static int test_refract() {
 
   errno = 0;
   r = refract(&loc, -1, 30.0);
-  if(check("refract:model", 1, r == 0.0 && errno == EINVAL)) n++;
+  if(check("refract:model:-1:ret", 1, r == 0.0)) n++;
+  if(check("refract:model:-1:errno", EINVAL, errno)) n++;
+
+  errno = 0;
+  r = refract(&loc, NOVAS_REFRACTION_MODELS, 30.0);
+  if(check("refract:model:hi:ret", 1, r == 0.0)) n++;
+  if(check("refract:model:hi:errno", EINVAL, errno)) n++;
 
   errno = 0;
   r = refract(&loc, NOVAS_STANDARD_ATMOSPHERE, 91.01);
@@ -233,6 +240,10 @@ static int test_refract_astro() {
   on_surface surf = ON_SURFACE_INIT;
   int n = 0;
 
+  if(check_nan("refract_astro:loc", refract_astro(NULL, NOVAS_STANDARD_ATMOSPHERE, 30.0))) n++;
+  if(check_nan("refract_astro:model:-1", refract_astro(&surf, -1, 30.0))) n++;
+  if(check_nan("refract_astro:model:hi", refract_astro(&surf, NOVAS_REFRACTION_MODELS, 30.0))) n++;
+
   novas_inv_max_iter = 0;
   if(check_nan("refract_astro:converge", refract_astro(&surf, NOVAS_STANDARD_ATMOSPHERE, 85.0))) n++;
   else if(check("refract_astro:converge:errno", ECANCELED, errno)) n++;
@@ -246,6 +257,8 @@ static int test_inv_refract() {
   extern int novas_inv_max_iter;
   on_surface surf = ON_SURFACE_INIT;
   int n = 0;
+
+  if(check_nan("inv_refract:loc", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, NULL, NOVAS_REFRACT_OBSERVED, 5.0))) n++;;
 
   novas_inv_max_iter = 0;
   if(check_nan("inv_refract:converge", novas_inv_refract(novas_optical_refraction, NOVAS_JD_J2000, &surf, NOVAS_REFRACT_OBSERVED, 5.0))) n++;
@@ -1132,7 +1145,7 @@ static int test_grav_undo_planets() {
   if(check("grav_undo_planets:pos_app", -1, grav_undo_planets(NULL, po, &planets, out))) n++;
   if(check("grav_undo_planets:pos_obs", -1, grav_undo_planets(p, NULL, &planets, out))) n++;
   if(check("grav_undo_planets:planets", -1, grav_undo_planets(p, po, NULL, out))) n++;
-    if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, &planets, NULL))) n++;
+  if(check("grav_undo_planets:pos_src", -1, grav_undo_planets(p, po, &planets, NULL))) n++;
 
   planets.mask = 1 << NOVAS_SUN;
   novas_inv_max_iter = 0;
