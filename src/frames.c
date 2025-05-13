@@ -1050,7 +1050,7 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
   return 0;
 }
 
-static int cat_transform(novas_transform *transform, const novas_matrix *component, int dir) {
+static int add_transform(novas_transform *transform, const novas_matrix *component, int dir) {
   int i;
   double T[3][3];
 
@@ -1062,7 +1062,7 @@ static int cat_transform(novas_transform *transform, const novas_matrix *compone
     for(j = 3; --j >= 0;) {
       int k;
       for(k = 3; --k >= 0;)
-        transform->matrix.M[i][j] += T[i][k] * (dir < 0 ? component->M[j][k] : component->M[k][j]);
+        transform->matrix.M[i][j] +=  (dir < 0 ? component->M[k][i] : component->M[i][k]) * T[k][j];
     }
   }
 
@@ -1129,25 +1129,25 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
   if(dir < 0) {
     switch(from_system) {
       case NOVAS_CIRS:
-        cat_transform(transform, &frame->gcrs_to_cirs, -1);
+        add_transform(transform, &frame->gcrs_to_cirs, -1);
         if(to_system == NOVAS_GCRS)
           return 0; // @suppress("No break at end of case")
         /* fallthrough */
 
       case NOVAS_GCRS:
-        cat_transform(transform, &frame->icrs_to_j2000, 1);
+        add_transform(transform, &frame->icrs_to_j2000, 1);
         if(to_system == NOVAS_J2000)
           return 0; // @suppress("No break at end of case")
         /* fallthrough */
 
       case NOVAS_J2000:
-        cat_transform(transform, &frame->precession, 1);
+        add_transform(transform, &frame->precession, 1);
         if(to_system == NOVAS_MOD)
           return 0; // @suppress("No break at end of case")
         /* fallthrough */
 
       case NOVAS_MOD:
-        cat_transform(transform, &frame->nutation, 1);
+        add_transform(transform, &frame->nutation, 1);
         return 0;
 
       default:
@@ -1158,25 +1158,25 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
   else {
     switch(from_system) {
       case NOVAS_TOD:
-        cat_transform(transform, &frame->nutation, -1);
+        add_transform(transform, &frame->nutation, -1);
         if(to_system == NOVAS_MOD)
           return 0; // @suppress("No break at end of case")
         /* fallthrough */
 
       case NOVAS_MOD:
-        cat_transform(transform, &frame->precession, -1);
+        add_transform(transform, &frame->precession, -1);
         if(to_system == NOVAS_J2000)
           return 0; // @suppress("No break at end of case")
         /* fallthrough */
 
       case NOVAS_J2000:
-        cat_transform(transform, &frame->icrs_to_j2000, -1);
+        add_transform(transform, &frame->icrs_to_j2000, -1);
         if(to_system == NOVAS_GCRS)
           return 0; // @suppress("No break at end of case")
         /* fallthrough */
 
       case NOVAS_GCRS:
-        cat_transform(transform, &frame->gcrs_to_cirs, 1);
+        add_transform(transform, &frame->gcrs_to_cirs, 1);
         return 0;
 
       default:
