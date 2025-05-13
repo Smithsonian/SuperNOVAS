@@ -19,6 +19,10 @@ Changes for the upcoming feature release, expected around 1 August 2025.
  - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections to transform 
    between the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF), and the International 
    Terrestrial Reference System (ITRS) and vice versa.
+   
+ - #188: Critical bug in `novas_make_transform()` since inception in v1.1. Compound transforms were calculated using
+   matrix products in the wrong commutation order (successive transforms were multiplied from the right instead of
+   from the left). Very embarrasing indeed, and has somehow went unnoticed with the testing suite also.
 
 ### Added
 
