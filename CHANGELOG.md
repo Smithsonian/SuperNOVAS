@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.4.0-rc1] - 2025-05-15
 
 Changes for the upcoming feature release, expected early, probably around 1 June 2025.
 
@@ -34,7 +34,6 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    
  - #190: Reverse `wobble()` corrections had wrong 2nd order corrections, resulting in negligible typical errors below 
    0.01 &mu;as (micro-arcseconds).
-   
    
 ### Added
 
