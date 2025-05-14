@@ -9,24 +9,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Changes for the upcoming feature release, expected around 1 August 2025.
+Changes for the upcoming feature release, expected early, probably around 1 June 2025.
 
 ### Fixed
 
- - #183: wobble corrections set via `cel_pole()` were not taken into account for true obliquity and the equation of 
-   equinoxes in `e_tilt()`. This was a bug since v1.0.
-
- - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections to transform 
-   between the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF), and the International 
-   Terrestrial Reference System (ITRS) and vice versa.
-   
- - #187: The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` parameters 
-   were zero, then no wobble correction was applied, not even the time corrections term s'. The error from this 
-   omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
-
  - #188: Critical bug in `novas_make_transform()` since inception in v1.1. Compound transforms were calculated using
    matrix products in the wrong commutation order (successive transforms were multiplied from the right instead of
-   from the left). Very embarrasing indeed, and somehow it went unnoticed with the testing suite also.
+   from the left). Very embarrasing indeed, and somehow it went unnoticed with the testing suite also (even more 
+   embarrassing...).
+
+ - #183: IERS Earth orientation corrections set via `cel_pole()` were not taken into account for true obliquity and 
+   the equation of equinoxes in `e_tilt()`. This was a bug since v1.0. The bug only affected the old (pre IAU 2006) 
+   ways of incorporating polar offsets into TOD coordinates, at the tens of mas level. Note, than even with the old 
+   method, it is now preferrable to apply such offsets with `wobble()` instead for the PEF / TIRS to ITRS (and 
+   reverse) conversions.
+
+ - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections for transforming 
+   between the TIRS) / PEF, and ITRS and vice versa. This resulted in an error at the tens of mas level for celestial 
+   to ITRS / horizontal (or reverse) calculations, when IERS Earth orientation parameters were explicitly set.
+   
+ - #187: The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` parameters 
+   were zero, then no wobble correction was applied, not even for the TIO location (s'). The error from this 
+   omission is very small, at just a few &mu;as (micro-acrseconds) within a couple of centuries of J2000.
+   
+ - #190: Reverse `wobble()` corrections had wrong 2nd order corrections, resulting in negligible typical errors below 
+   0.01 &mu;as (micro-arcseconds).
+   
    
 ### Added
 
