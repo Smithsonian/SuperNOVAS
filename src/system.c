@@ -161,15 +161,11 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
   // For these calculations we can assume TDB = TT (< 2 ms difference)
   jd_tdb = jd_tt;
 
-  // Apply polar motion
-  if(xp || yp)
-    wobble(jd_tt, WOBBLE_ITRS_TO_PEF, xp, yp, in, out);
-  else if(out != in)
-    memcpy(out, in, XYZ_VECTOR_SIZE);
 
   switch(erot) {
     case (EROT_ERA): {
       // 'CIO-TIO-THETA' method. See second reference, eq. (3) and (4).
+      wobble(jd_tt, WOBBLE_ITRS_TO_TIRS, xp, yp, in, out);
 
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the celestial intermediate system.
@@ -182,6 +178,9 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
     }
     case (EROT_GST): {
       double gast;
+
+      if(xp || yp)
+        wobble(jd_tt, WOBBLE_ITRS_TO_PEF, xp, yp, in, out);
 
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(-15.0 * gast, out, out);
@@ -287,7 +286,10 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       // Compute and apply the Earth rotation angle, 'theta', transforming the
       // vector to the terrestrial intermediate system.
       spin(era(jd_ut1_high, jd_ut1_low), out, out);
-      break;
+
+      // Apply polar motion, transforming the vector to the ITRS.
+      wobble(jd_tt, WOBBLE_TIRS_TO_ITRS, xp, yp, out, out);
+      return 0;
 
     case EROT_GST: {
       double gast;
@@ -303,18 +305,15 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       // Apply Earth rotation.
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(15.0 * gast, out, out);
-      break;
-    }
 
-    default:
-      return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
+      // Apply polar motion, transforming the vector to the ITRS.
+      if(xp || yp)
+        wobble(jd_tt, WOBBLE_PEF_TO_ITRS, xp, yp, out, out);
+      return 0;
+    }
   }
 
-  // Apply polar motion, transforming the vector to the ITRS.
-  if(xp || yp)
-    wobble(jd_tt, WOBBLE_PEF_TO_ITRS, xp, yp, out, out);
-
-  return 0;
+  return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
 }
 
 

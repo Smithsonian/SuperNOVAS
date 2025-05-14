@@ -707,7 +707,7 @@ int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, doubl
     const double refr = refract_astro(location, ref_option, zd0);
 
     // Apply refraction to celestial coordinates of object.
-    if(refr > 0.0) {
+    if(refr) {
       // Shift position vector of object in celestial system to account
       // for refraction (see USNO/AA Technical Note 1998-09).
       const double sinzd = sin(*zd * DEGREE);

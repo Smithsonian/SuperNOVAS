@@ -52,15 +52,19 @@ static int change_pole(const double *in, double theta, double phi, double *out) 
  * Converts equatorial coordinates of a given type to GCRS equatorial coordinates
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian Date
- * @param sys       the type of equator assumed for the input (mean, true, or GCRS).
+ * @param sys       The type of equatorial system assumed for the input (ICRS / GCRS, J2000, TOD,
+ *                  MOD, or CIRS). It must be an inertial celestial system, i.e. it cannot be a
+ *                  reference system which co-rotates with Earth (like ITRS to TIRS).
  * @param[in, out] vec  vector to change to GCRS.
  * @return          0 if successful, or else -1 (errno set to EINVAL) if the 'sys'
- *                  argument is invalid.
+ *                  argument is invalid or unsupported.
  *
  * @author Attila Kovacs
  * @since 1.2
  */
 static int equ2gcrs(double jd_tdb, enum novas_reference_system sys, double *vec) {
+  static const char *fn = "equ2gcrs";
+
   switch(sys) {
     case NOVAS_GCRS:
     case NOVAS_ICRS:
@@ -74,7 +78,7 @@ static int equ2gcrs(double jd_tdb, enum novas_reference_system sys, double *vec)
     case NOVAS_MOD:
       return mod_to_gcrs(jd_tdb, vec, vec);
     default:
-      return novas_error(-1, EINVAL, "equ2gcrs", "invalid reference system: %d", sys);
+      return novas_error(-1, EINVAL, fn, "invalid orbital system type: %d", sys);
   }
 }
 
@@ -323,7 +327,6 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum 
   return 0;
 }
 
-
 /**
  * Sets the orientation of an orbital system using the RA and DEC coordinates of the pole
  * of the Laplace (or else equatorial) plane relative to which the orbital elements are
@@ -355,8 +358,13 @@ int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum 
  * @sa make_orbital_object()
  */
 int novas_set_orbsys_pole(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys) {
-  if (!sys)
-    return novas_error(-1, EINVAL, "novas_set_orbsys_pole", "input system is NULL");
+  static const char *fn = "novas_set_orbsys_pole";
+
+  if(type < 0 || type >= NOVAS_TIRS)
+    return novas_error(-1, EINVAL, fn, "invalid orbital system type: %d", type);
+
+  if(!sys)
+    return novas_error(-1, EINVAL, fn, "input system is NULL");
 
   sys->plane = NOVAS_EQUATORIAL_PLANE;
   sys->type = type;

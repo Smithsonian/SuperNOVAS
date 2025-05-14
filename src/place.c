@@ -241,7 +241,7 @@ short place(double jd_tt, const object *restrict source, const observer *restric
     return novas_error(-1, EINVAL, fn, "NULL input 'source' pointer");
 
   // Check for invalid value of 'coord_sys' or 'accuracy'.
-  if(coord_sys < 0 || coord_sys >= NOVAS_REFERENCE_SYSTEMS)
+  if(coord_sys < 0 || coord_sys >= NOVAS_ITRS)
     return novas_error(1, EINVAL, fn, "invalid reference system: %d", coord_sys);
 
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
@@ -385,9 +385,12 @@ short place(double jd_tt, const object *restrict source, const observer *restric
       break;
     }
 
-    case NOVAS_CIRS: {
+    case NOVAS_CIRS:
+    case NOVAS_TIRS: {
       // Transform to equator and CIO of date.
       prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos, pos), 80);
+      if(coord_sys == NOVAS_TIRS)
+        spin(era(jd_tt, -ut1_to_tt / DAY), pos, pos);
       break;
     }
 

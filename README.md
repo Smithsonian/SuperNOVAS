@@ -159,6 +159,9 @@ provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
  - [__v1.1__] The NOVAS C 3.1 implementation of `rad_vel()` has a number of issues that produce inaccurate results. 
    The errors are typically at or below the tens of m/s level for objects not moving at relativistic speeds.
  
+ - [__v1.4__] The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` 
+   parameters were zero, then no wobble correction was applied, not even for the TIO longitude (s'). The error from 
+   this omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
    
 -----------------------------------------------------------------------------
 
@@ -405,10 +408,12 @@ terms differently:
  | Catalog coordinate system  | FK4, FK5, HIP...              | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
- | Precession, nutation, bias | separate, no tidal terms      | IAU 2000 precession/nutation model                |
- | Celestial Pole offsets     | d&psi;, d&epsilon;            | _dx_, _dy_                                        |
+ | Precession, nutation, bias | no tidal terms                | IAU 2000 precession/nutation model                |
+ | Celestial Pole offsets     | d&psi;, d&epsilon; (for TOD)  | _dx_, _dy_ (for ITRS)                             |
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
- | Fixed Earth System         | WGS84                         | International Terrestrial Reference System (ITRS) |
+ | Pseudo Earth-fixed system  | PEF                           | Terrestrial Intermediate Reference System (TIRS)  |
+ | Earth rotation origin      | Greenwich Meridian            | Terrestrial Intermediate Origin (TIO)             |
+ | Earth-fixed System         | WGS84                         | International Terrestrial Reference System (ITRS) |
  
  
 See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
@@ -418,14 +423,19 @@ them.
 
 In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin 
 for positions and for velocities, in any reference system, is determined by the `observer` location, while aberration
-and gravitational deflection is included for apparent places only (as seen from the observer location). 
+and gravitational deflection is included for apparent places only (as seen from the observer location, regardless of
+the observer location). 
 
-Older catalogs, such as B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) coordinates for the B1950
-and B1900 epochs, respectively.
+Older catalogs, such as J2000 (FK5), HIP, B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) 
+coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.
 
-TIRS (Terrestrial Intermediate Reference System) and its older equivalent PEF (Pseudo-Earth-Fixed) are not explicitly 
-referenced in SuperNOVAS. But they can be thought of as a special case of ITRS (International Terrestrial Reference 
-System) with zero polar offsets (_dx_, _dy_).
+The old method typically relied on the Lieske et al. 1977 precession and nutation models, which did not include tidal
+terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. SuperNOVAS and NOVAS C rely 
+on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal terms. 
+Hence, the old d&psi;,d&epsilon; corrections should never be used in SuperNOVAS, and applying the residual _dx_,_dy_ 
+polar offsets to the TOD equator (via `cel_pole()`) is also actively discouraged. Instead, the tens of mas level 
+corrections to Earth orientation should be used only for converting between the pseudo Earth-fixed (PEF or TIRS) and 
+ITRS.
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
@@ -1541,6 +1551,9 @@ one minute.
  - Add Moon phase calculator functions, based on above orbital modeling.
  
  - Added IAU/SOFA wavelength-dependent refraction model.
+ 
+ - Improved support for expressing and using coordinates in TIRS (Terrestrial Intermediate Reference System) and ITRS 
+   (International Terrestrial Reference System).
 
 
 <a name="api-changes"></a>
