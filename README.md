@@ -1545,15 +1545,16 @@ one minute.
  - Updated nutation model from IAU2000 to IAU2006 (P03) model, by applying scaling factors (Capitaine et al. 2005) to 
    match the IAU2006 precession model that was already implemented in NOVAS.
 
- - Approximate Keplerian orbital models for the major planets (Standish &amp; Williams, 1992) and the Moon (Chapront
-   et al. 2002), for when arcmin-scale accuracy is sufficient (e.g. rise-set times, approximate sky positions).
+ - Approximate Keplerian orbital models for the major planets (Standish &amp; Williams, 1992), EMB, and the Moon 
+   (Chapront et al. 2002), for when arcmin-scale accuracy is sufficient (e.g. rise-set times, approximate sky 
+   positions).
    
- - Add Moon phase calculator functions, based on above orbital modeling.
- 
- - Added IAU/SOFA wavelength-dependent refraction model.
+ - Moon phase calculator functions, based on above orbital modeling.
  
  - Improved support for expressing and using coordinates in TIRS (Terrestrial Intermediate Reference System) and ITRS 
    (International Terrestrial Reference System).
+   
+ - Improvemements to atmopsheric refraction modeling.
 
 
 <a name="api-changes"></a>

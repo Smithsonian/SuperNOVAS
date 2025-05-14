@@ -1501,7 +1501,7 @@ static int test_refract_astro() {
     double za = i;
     int j;
 
-    for(j = 0; j < 3; j++) {
+    for(j = 0; j < NOVAS_REFRACTION_MODELS; j++) {
       double r = refract_astro(&o.on_surf, j, za);
       double r1 = refract(&o.on_surf, j, za - r);
 
