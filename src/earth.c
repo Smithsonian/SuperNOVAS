@@ -440,24 +440,43 @@ double era(double jd_ut1_high, double jd_ut1_low) {
 }
 
 /**
- * Specifies the unmodeled celestial pole offsets for high-precision applications.  These offsets
- * provide a correction to the modeled (precessed and nutated) position of Earth's pole, and are
- * derived from observations and published by IERS.
+ * Specifies the unmodeled celestial pole offsets for high-precision applications to be applied to
+ * the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. These offsets must not
+ * include tidal terms, and should be specified relative to the IAU2006 precession/nutation model
+ * to provide a correction to the modeled (precessed and nutated) position of Earth's pole, such
+ * those derived from observations and published by IERS.
  *
  * The call sets the global variables `PSI_COR` and `EPS_COR`, for subsequent calls to `e_tilt()`.
  * As such, it should be called to specify pole offsets prior to legacy NOVAS C equinox-specific
- * calls.  There is no need to define pole offsets this way, when using the newer frame-based
- * approach introduced in SuperNOVAS (there, the pole offsets are specified on a per-frame basis
- * during the initialization of each observing frame).
- *
- * The global values of `PSI_COR` and `EPS_COR` specified via this function will be effective
- * until explicitly changed again.
+ * calls. The global values of `PSI_COR` and `EPS_COR` specified via this function will be
+ * effective until explicitly changed again.
  *
  * NOTES:
  * <ol>
- * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
- * projections are published in the
- * <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ * <li>
+ *  The pole offsets et this way will affect all future TOD-based calculations, until the pole
+ *  is changed or reset again. Hence, you should be extremely careful using it (if at all), as it
+ *  may become an unpredictable source of inaccuracy if implicitly applied without intent to do so.
+ * </li>
+ * <li>
+ *  The current UT1 - UTC time difference, and polar offsets, historical data and near-term
+ *  projections are published in the
+ *  <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ * </li>
+ * <li>
+ *  If &Delta;&delta;&psi;, &Delta;&delta;d&epsilon; offsets are specified, these must be the residual
+ *  corrections relative to the IAU 2006 precession/nutation model (not the Lieske et al. 1977 model!).
+ *  As such, they are just a rotated version of the newer dx, dy offsets published by IERS.
+ * </li>
+ * <li>
+ *  The equivalent IAU 2006 standard is to apply dx, dy pole offsets only for converting
+ *  between TIRS and ITRS, e.g. via `wobble()`).
+ * </li>
+ * <li>
+ *  There is no need to define pole offsets this way when using the newer frame-based
+ *  approach introduced in SuperNOVAS. If the pole offsets are specified on a per-frame basis
+ *  during the initialization of each observing frame, the offsets will be applied for the
+ *  TIRS / ITRS conversion only, and not to the TOD equator per se.
  * </li>
  * </ol>
  *
@@ -471,13 +490,13 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  *                  POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent &Delta;&delta;&psi;
  *                  and &Delta;&delta;&epsilon; values.
  * @param type      POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;,
- *                  &Delta;&delta;&epsilon; relative to the Lieske 1977 nutation model; or
+ *                  &Delta;&delta;&epsilon; relative to the IAU 20006 precession/nutation model; or
  *                  POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000/2006
  *                  precession-nutation model.
  * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; for
- *                  or dx) in milliarcseconds.
+ *                  or dx) in milliarcseconds, relative to the IAU2006 precession/nutation model.
  * @param dpole2    [mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon;
- *                  or dy) in milliarcseconds.
+ *                  or dy) in milliarcseconds, relative to the IAU2006 precession/nutation model.
  * @return          0 if successful, or else 1 if 'type' is invalid.
  *
  * @sa wobble()
@@ -500,8 +519,8 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
 
       // Angular coordinates of modeled pole referred to mean ecliptic of
       // date, that is,delta-delta-psi and delta-delta-epsilon.
-      PSI_COR = dpole1 * 1.0e-3;
-      EPS_COR = dpole2 * 1.0e-3;
+      PSI_COR = 1e-3 * dpole1;
+      EPS_COR = 1e-3 * dpole2;
       break;
 
     case POLE_OFFSETS_X_Y: {
