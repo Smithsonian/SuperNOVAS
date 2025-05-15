@@ -28,6 +28,84 @@
 /// \endcond
 
 
+/**
+ * Returns the values for nutation in longitude and nutation in obliquity for a given TDB
+ * Julian date.  The nutation model selected depends upon the input value of 'accuracy'. See
+ * notes below for important details.
+ *
+ * This function selects the nutation model depending first upon the input value of 'accuracy'.
+ * If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used. Otherwise
+ * the model set by set_nutation_lp_provider() is used, or else the default nu2000k().
+ *
+ * See the prologs of the nutation functions in file 'nutation.c' for details concerning the
+ * models.
+ *
+ * NOTES:
+ * <ol>
+ * <li>As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation
+ * angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to
+ * match the model used by SOFA.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li>Capitaine, N., P.T. Wallace and J. Chapront (2005), “Improvement of the IAU 2000 precession
+ *     model.” Astronomy &amp; Astrophysics, Vol. 432, pp. 355–67.</li>
+ * <li>Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159</li>
+ * </ol>
+ *
+ * @param t           [cy] TDB time in Julian centuries since J2000.0
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] dpsi   [arcsec] Nutation in longitude in arcseconds.
+ * @param[out] deps   [arcsec] Nutation in obliquity in arcseconds.
+ *
+ * @return            0 if successful, or -1 if the output pointer arguments are NULL
+ *
+ * @sa set_nutation_lp_provider()
+ * @sa nutation()
+ * @sa iau2000b()
+ * @sa nu2000k()
+ * @sa cio_basis()
+ * @sa NOVAS_CIRS
+ * @sa NOVAS_JD_J2000
+ */
+int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps) {
+  static THREAD_LOCAL double last_t = NAN, last_dpsi, last_deps;
+  static THREAD_LOCAL enum novas_accuracy last_acc = -1;
+
+  // P03 scaling factor.
+  static const double f = -2.7774e-6;
+
+  if(!dpsi || !deps) {
+    if(dpsi)
+      *dpsi = NAN;
+    if(deps)
+      *deps = NAN;
+
+    return novas_error(-1, EINVAL, "nutation_angles", "NULL output pointer: dspi=%p, deps=%p", dpsi, deps);
+  }
+
+  if(!(fabs(t - last_t) < 1e-12) || (accuracy != last_acc)) {
+    novas_nutation_provider nutate_call = (accuracy == NOVAS_FULL_ACCURACY) ? iau2000a : get_nutation_lp_provider();
+    nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
+
+    // Apply P03 (Capitaine et al. 2005) rescaling to IAU 2006 model.
+    // Convert output to arcseconds.
+    last_dpsi *= (1.0000004697 + f) / ARCSEC;
+    last_deps *= (1.0 + f) / ARCSEC;
+
+    last_acc = accuracy;
+    last_t = t;
+  }
+
+  *dpsi = last_dpsi;
+  *deps = last_deps;
+
+  return 0;
+}
+
+
 
 
 /**

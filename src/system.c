@@ -163,7 +163,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
 
   switch(erot) {
-    case (EROT_ERA): {
+    case EROT_ERA:
       // 'CIO-TIO-THETA' method. See second reference, eq. (3) and (4).
       wobble(jd_tt, WOBBLE_ITRS_TO_TIRS, xp, yp, in, out);
 
@@ -175,12 +175,14 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
         prop_error(fn, cirs_to_gcrs(jd_tdb, accuracy, out, out), 10);
 
       break;
-    }
-    case (EROT_GST): {
+
+    case EROT_GST: {
       double gast;
 
       if(xp || yp)
         wobble(jd_tt, WOBBLE_ITRS_TO_PEF, xp, yp, in, out);
+      else
+        memcpy(out, in, XYZ_VECTOR_SIZE);
 
       sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
       spin(-15.0 * gast, out, out);

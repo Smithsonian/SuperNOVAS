@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.4.0-rc1] - 2025-05-15
+## [Unreleased]
 
 Changes for the upcoming feature release, expected early, probably around 1 June 2025.
 
@@ -84,6 +84,8 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    values (see Capitaine et al. 2005). The same rescaling has been adopted by SOFA also.
    
  - #186: Tweaked error handling in atmopsheric refraction functions (in `refract.c`).
+ 
+ - Moved some functions around between source files.
    
 ### Deprecated
 

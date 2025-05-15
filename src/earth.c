@@ -15,98 +15,6 @@
 #include "novas.h"
 /// \endcond
 
-/**
- * Celestial pole offset &psi; for high-precision applications. It was visible to users in NOVAS C 3.1,
- * hence we continue to expose it also for back compatibility.
- *
- * @sa EPS_COR
- * @sa cel_pole()
- *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, wobble() should be used to convert between
- *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
- *             the International Terrestrial Reference System (ITRS) going forward.
- */
-double PSI_COR = 0.0;
-
-/**
- * Celestial pole offset &epsilon; for high-precision applications. It was visible to users in NOVAS C 3.1,
- * hence we continue to expose it also for back compatibility.
- *
- * @sa PSI_COR
- * @sa cel_pole()
- *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, wobble() should be used to convert between
- *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
- *             the International Terrestrial Reference System (ITRS) going forward.
- */
-double EPS_COR = 0.0;
-
-/// \cond PRIVATE
-
-/**
- * Converts <i>dx,dy</i> pole offsets to d&psi; d&epsilon;. The former is in GCRS, vs the latter in
- * True of Date (TOD) -- and note the different units!
- *
- * NOTES:
- * <ol>
- * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
- * projections are published in the
- * <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
- * </li>
- * </ol>
- *
- * REFERENCES:
- * <ol>
- *  <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
- *  <li>Kaplan, G. (2003), USNO/AA Technical Note 2003-03.</li>
- * </ol>
- *
- * @param jd_tt       [day] Terrestrial Time (TT) based Julian Date.
- * @param dx          [mas] Earth orientation: GCRS pole offset dx, e.g. as published by IERS Bulletin A.
- * @param dy          [mas] Earth orientation: GCRS pole offset dy, e.g. as published by IERS Bulletin A.
- * @param[out] dpsi   [arcsec] Calculated TOD orientation d&psi;.
- * @param[out] deps   [arcsec] Calculated TOD orientation d&epsilon;.
- * @return            0
- *
- * @sa cel_pole()
- *
- * @since 1.1
- * @author Attila Kovacs
- */
-int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps) {
-  // Components of modeled pole unit vector referred to GCRS axes, that is, dx and dy.
-  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
-
-  // The following algorithm, to transform dx and dy to
-  // delta-delta-psi and delta-delta-epsilon, is from eqs. (7)-(9) of the
-  // second reference.
-  //
-  // Trivial model of pole trajectory in GCRS allows computation of dz.
-  const double x = (2004.190 * t) * ARCSEC;
-  const double dz = -(x + 0.5 * x * x * x) * dx;
-
-  // Form pole offset vector (observed - modeled) in GCRS.
-  double dp[3] = { dx * MAS, dy * MAS, dz * MAS };
-
-  // Precess pole offset vector to mean equator and equinox of date.
-  gcrs_to_mod(jd_tt, dp, dp);
-
-  // Compute delta-delta-psi and delta-delta-epsilon in arcseconds.
-  if(dpsi) {
-    // Compute sin_e of mean obliquity of date.
-    const double sin_e = sin(mean_obliq(jd_tt) * ARCSEC);
-    *dpsi = (dp[0] / sin_e) / ARCSEC;
-  }
-  if(deps)
-    *deps = dp[1] / ARCSEC;
-
-  return 0;
-}
-/// \endcond
-
-/// ==========================================================================
 
 /**
  * Computes the position and velocity vectors of a terrestrial observer with respect to the
@@ -199,71 +107,7 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
   return 0;
 }
 
-/**
- * Computes quantities related to the orientation of the Earth's rotation axis at the specified Julian
- * date.
- *
- * Unmodelled corrections to earth orientation can be defined via `cel_pole()` prior to this call.
- *
- * NOTES:
- * <ol>
- * <li>This function caches the results of the last calculation in case it may be re-used at
- * no extra computational cost for the next call.</li>
- * </ol>
- *
- * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
- * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] mobl     [deg] Mean obliquity of the ecliptic. It may be NULL if not required.
- * @param[out] tobl     [deg] True obliquity of the ecliptic. It may be NULL if not required.
- * @param[out] ee       [s] Equation of the equinoxes in seconds of time. It may be NULL if not required.
- * @param[out] dpsi     [arcsec] Nutation in longitude. It may be NULL if not required.
- * @param[out] deps     [arcsec] Nutation in obliquity. It may be NULL if not required.
- *
- * @return          0 if successful, or -1 if the accuracy argument is invalid
- *
- * @sa cel_pole()
- * @sa place()
- * @sa equ2ecl()
- * @sa ecl2equ()
- */
-int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
-        double *restrict ee, double *restrict dpsi, double *restrict deps) {
-  double t, d_psi = NAN, d_eps = NAN, mean_ob, true_ob, eqeq;
 
-  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
-    return novas_error(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
-
-  // Compute time in Julian centuries from epoch J2000.0.
-  t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
-
-  nutation_angles(t, accuracy, &d_psi, &d_eps);
-
-  d_psi += PSI_COR;
-  d_eps += EPS_COR;
-
-  // Compute mean obliquity of the ecliptic in degrees.
-  mean_ob = mean_obliq(jd_tdb) / 3600.0;
-
-  // Obtain complementary terms for equation of the equinoxes in seconds of time.
-  eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
-
-  // Compute true obliquity of the ecliptic in degrees.
-  true_ob = mean_ob + d_eps / 3600.0;
-
-  // Set output values.
-  if(dpsi)
-    *dpsi = d_psi;
-  if(deps)
-    *deps = d_eps;
-  if(ee)
-    *ee = eqeq;
-  if(mobl)
-    *mobl = mean_ob;
-  if(tobl)
-    *tobl = true_ob;
-
-  return 0;
-}
 
 /**
  * Computes the Greenwich sidereal time, either mean or apparent, at the specified Julian date.
@@ -439,101 +283,6 @@ double era(double jd_ut1_high, double jd_ut1_low) {
   return theta;
 }
 
-/**
- * Specifies the unmodeled celestial pole offsets for high-precision applications to be applied to
- * the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. These offsets must not
- * include tidal terms, and should be specified relative to the IAU2006 precession/nutation model
- * to provide a correction to the modeled (precessed and nutated) position of Earth's pole, such
- * those derived from observations and published by IERS.
- *
- * The call sets the global variables `PSI_COR` and `EPS_COR`, for subsequent calls to `e_tilt()`.
- * As such, it should be called to specify pole offsets prior to legacy NOVAS C equinox-specific
- * calls. The global values of `PSI_COR` and `EPS_COR` specified via this function will be
- * effective until explicitly changed again.
- *
- * NOTES:
- * <ol>
- * <li>
- *  The pole offsets et this way will affect all future TOD-based calculations, until the pole
- *  is changed or reset again. Hence, you should be extremely careful using it (if at all), as it
- *  may become an unpredictable source of inaccuracy if implicitly applied without intent to do so.
- * </li>
- * <li>
- *  The current UT1 - UTC time difference, and polar offsets, historical data and near-term
- *  projections are published in the
- *  <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
- * </li>
- * <li>
- *  If &Delta;&delta;&psi;, &Delta;&delta;d&epsilon; offsets are specified, these must be the residual
- *  corrections relative to the IAU 2006 precession/nutation model (not the Lieske et al. 1977 model!).
- *  As such, they are just a rotated version of the newer dx, dy offsets published by IERS.
- * </li>
- * <li>
- *  The equivalent IAU 2006 standard is to apply dx, dy pole offsets only for converting
- *  between TIRS and ITRS, e.g. via `wobble()`).
- * </li>
- * <li>
- *  There is no need to define pole offsets this way when using the newer frame-based
- *  approach introduced in SuperNOVAS. If the pole offsets are specified on a per-frame basis
- *  during the initialization of each observing frame, the offsets will be applied for the
- *  TIRS / ITRS conversion only, and not to the TOD equator per se.
- * </li>
- * </ol>
- *
- * REFERENCES:
- * <ol>
- *  <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
- *  <li>Kaplan, G. (2003), USNO/AA Technical Note 2003-03.</li>
- * </ol>
- *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian date. Used only if 'type' is
- *                  POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent &Delta;&delta;&psi;
- *                  and &Delta;&delta;&epsilon; values.
- * @param type      POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;,
- *                  &Delta;&delta;&epsilon; relative to the IAU 20006 precession/nutation model; or
- *                  POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000/2006
- *                  precession-nutation model.
- * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; for
- *                  or dx) in milliarcseconds, relative to the IAU2006 precession/nutation model.
- * @param dpole2    [mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon;
- *                  or dy) in milliarcseconds, relative to the IAU2006 precession/nutation model.
- * @return          0 if successful, or else 1 if 'type' is invalid.
- *
- * @sa wobble()
- * @sa e_tilt()
- * @sa place()
- * @sa cirs_to_itrs()
- * @sa tod_to_itrs()
- * @sa get_ut1_to_tt()
- * @sa sidereal_time()
- * @sa NOVAS_FULL_ACCURACY
- *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, wobble() should be used to convert between
- *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
- *             the International Terrestrial Reference System (ITRS) going forward.
- */
-short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2) {
-  switch(type) {
-    case POLE_OFFSETS_DPSI_DEPS:
-
-      // Angular coordinates of modeled pole referred to mean ecliptic of
-      // date, that is,delta-delta-psi and delta-delta-epsilon.
-      PSI_COR = 1e-3 * dpole1;
-      EPS_COR = 1e-3 * dpole2;
-      break;
-
-    case POLE_OFFSETS_X_Y: {
-      polar_dxdy_to_dpsideps(jd_tt, dpole1, dpole2, &PSI_COR, &EPS_COR);
-      break;
-    }
-
-    default:
-      return novas_error(1, EINVAL, "cel_pole", "invalid polar offset type: %d", type);
-  }
-
-  return 0;
-}
 
 /**
  * Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also
@@ -603,14 +352,14 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
   yp *= ARCSEC;
 
   // Compute approximate longitude of TIO (s'), using eq. (10) of the second reference
-  if(direction < 2) {
+  if(direction == WOBBLE_ITRS_TO_TIRS || direction == WOBBLE_TIRS_TO_ITRS) {
     double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
     s1 = -47.0e-6 * ARCSEC * t;
   }
 
   // Compute elements of rotation matrix.
   // Equivalent to R3(-s')R2(x)R1(y) as per IERS Conventions (2003).
-  if(direction % 2 == WOBBLE_ITRS_TO_TIRS) {
+  if(direction == WOBBLE_ITRS_TO_TIRS || direction == WOBBLE_ITRS_TO_PEF) {
     double y = in[1];
     novas_tiny_rotate(in, -yp, -xp, s1, out);
     // Second-order correction for the non-negligible xp, yp product...
@@ -826,6 +575,4 @@ int limb_angle(const double *pos_src, const double *pos_obs, double *restrict li
 
   return 0;
 }
-
-
 

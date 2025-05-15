@@ -15,6 +15,262 @@
 #include "novas.h"
 /// \endcond
 
+/// \cond PRIVATE
+
+/**
+ * Celestial pole offset &psi; for high-precision applications. It was visible to users in NOVAS C 3.1,
+ * hence we continue to expose it also for back compatibility.
+ *
+ * @sa EPS_COR
+ * @sa cel_pole()
+ *
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
+ */
+double PSI_COR = 0.0;
+
+/**
+ * Celestial pole offset &epsilon; for high-precision applications. It was visible to users in NOVAS C 3.1,
+ * hence we continue to expose it also for back compatibility.
+ *
+ * @sa PSI_COR
+ * @sa cel_pole()
+ *
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
+ */
+double EPS_COR = 0.0;
+
+/// \endcond
+
+/**
+ * Specifies the unmodeled celestial pole offsets for high-precision applications to be applied to
+ * the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. These offsets must not
+ * include tidal terms, and should be specified relative to the IAU2006 precession/nutation model
+ * to provide a correction to the modeled (precessed and nutated) position of Earth's pole, such
+ * those derived from observations and published by IERS.
+ *
+ * The call sets the global variables `PSI_COR` and `EPS_COR`, for subsequent calls to `e_tilt()`.
+ * As such, it should be called to specify pole offsets prior to legacy NOVAS C equinox-specific
+ * calls. The global values of `PSI_COR` and `EPS_COR` specified via this function will be
+ * effective until explicitly changed again.
+ *
+ * NOTES:
+ * <ol>
+ * <li>
+ *  The pole offsets et this way will affect all future TOD-based calculations, until the pole
+ *  is changed or reset again. Hence, you should be extremely careful using it (if at all), as it
+ *  may become an unpredictable source of inaccuracy if implicitly applied without intent to do so.
+ * </li>
+ * <li>
+ *  The current UT1 - UTC time difference, and polar offsets, historical data and near-term
+ *  projections are published in the
+ *  <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ * </li>
+ * <li>
+ *  If &Delta;&delta;&psi;, &Delta;&delta;d&epsilon; offsets are specified, these must be the residual
+ *  corrections relative to the IAU 2006 precession/nutation model (not the Lieske et al. 1977 model!).
+ *  As such, they are just a rotated version of the newer dx, dy offsets published by IERS.
+ * </li>
+ * <li>
+ *  The equivalent IAU 2006 standard is to apply dx, dy pole offsets only for converting
+ *  between TIRS and ITRS, e.g. via `wobble()`).
+ * </li>
+ * <li>
+ *  There is no need to define pole offsets this way when using the newer frame-based
+ *  approach introduced in SuperNOVAS. If the pole offsets are specified on a per-frame basis
+ *  during the initialization of each observing frame, the offsets will be applied for the
+ *  TIRS / ITRS conversion only, and not to the TOD equator per se.
+ * </li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ *  <li>Kaplan, G. (2003), USNO/AA Technical Note 2003-03.</li>
+ * </ol>
+ *
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date. Used only if 'type' is
+ *                  POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent &Delta;&delta;&psi;
+ *                  and &Delta;&delta;&epsilon; values.
+ * @param type      POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;,
+ *                  &Delta;&delta;&epsilon; relative to the IAU 20006 precession/nutation model; or
+ *                  POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000/2006
+ *                  precession-nutation model.
+ * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; for
+ *                  or dx) in milliarcseconds, relative to the IAU2006 precession/nutation model.
+ * @param dpole2    [mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon;
+ *                  or dy) in milliarcseconds, relative to the IAU2006 precession/nutation model.
+ * @return          0 if successful, or else 1 if 'type' is invalid.
+ *
+ * @sa wobble()
+ * @sa e_tilt()
+ * @sa place()
+ * @sa cirs_to_itrs()
+ * @sa tod_to_itrs()
+ * @sa get_ut1_to_tt()
+ * @sa sidereal_time()
+ * @sa NOVAS_FULL_ACCURACY
+ *
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
+ */
+short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2) {
+  switch(type) {
+    case POLE_OFFSETS_DPSI_DEPS:
+
+      // Angular coordinates of modeled pole referred to mean ecliptic of
+      // date, that is,delta-delta-psi and delta-delta-epsilon.
+      PSI_COR = 1e-3 * dpole1;
+      EPS_COR = 1e-3 * dpole2;
+      break;
+
+    case POLE_OFFSETS_X_Y: {
+      polar_dxdy_to_dpsideps(jd_tt, dpole1, dpole2, &PSI_COR, &EPS_COR);
+      break;
+    }
+
+    default:
+      return novas_error(1, EINVAL, "cel_pole", "invalid polar offset type: %d", type);
+  }
+
+  return 0;
+}
+
+/// \cond PRIVATE
+
+/**
+ * Converts <i>dx,dy</i> pole offsets to d&psi; d&epsilon;. The former is in GCRS, vs the latter in
+ * True of Date (TOD) -- and note the different units!
+ *
+ * NOTES:
+ * <ol>
+ * <li>The current UT1 - UTC time difference, and polar offsets, historical data and near-term
+ * projections are published in the
+ * <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
+ * </li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ *  <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ *  <li>Kaplan, G. (2003), USNO/AA Technical Note 2003-03.</li>
+ * </ol>
+ *
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian Date.
+ * @param dx          [mas] Earth orientation: GCRS pole offset dx, e.g. as published by IERS Bulletin A.
+ * @param dy          [mas] Earth orientation: GCRS pole offset dy, e.g. as published by IERS Bulletin A.
+ * @param[out] dpsi   [arcsec] Calculated TOD orientation d&psi;.
+ * @param[out] deps   [arcsec] Calculated TOD orientation d&epsilon;.
+ * @return            0
+ *
+ * @sa cel_pole()
+ *
+ * @since 1.1
+ * @author Attila Kovacs
+ */
+int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps) {
+  // Components of modeled pole unit vector referred to GCRS axes, that is, dx and dy.
+  const double t = (jd_tt - JD_J2000) / JULIAN_CENTURY_DAYS;
+
+  // The following algorithm, to transform dx and dy to
+  // delta-delta-psi and delta-delta-epsilon, is from eqs. (7)-(9) of the
+  // second reference.
+  //
+  // Trivial model of pole trajectory in GCRS allows computation of dz.
+  const double x = (2004.190 * t) * ARCSEC;
+  const double dz = -(x + 0.5 * x * x * x) * dx;
+
+  // Form pole offset vector (observed - modeled) in GCRS.
+  double dp[3] = { dx * MAS, dy * MAS, dz * MAS };
+
+  // Precess pole offset vector to mean equator and equinox of date.
+  gcrs_to_mod(jd_tt, dp, dp);
+
+  // Compute delta-delta-psi and delta-delta-epsilon in arcseconds.
+  if(dpsi) {
+    // Compute sin_e of mean obliquity of date.
+    const double sin_e = sin(mean_obliq(jd_tt) * ARCSEC);
+    *dpsi = (dp[0] / sin_e) / ARCSEC;
+  }
+  if(deps)
+    *deps = dp[1] / ARCSEC;
+
+  return 0;
+}
+/// \endcond
+
+/**
+ * Computes quantities related to the orientation of the Earth's rotation axis at the specified Julian
+ * date.
+ *
+ * Unmodelled corrections to earth orientation can be defined via `cel_pole()` prior to this call.
+ *
+ * NOTES:
+ * <ol>
+ * <li>This function caches the results of the last calculation in case it may be re-used at
+ * no extra computational cost for the next call.</li>
+ * </ol>
+ *
+ * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
+ * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] mobl     [deg] Mean obliquity of the ecliptic. It may be NULL if not required.
+ * @param[out] tobl     [deg] True obliquity of the ecliptic. It may be NULL if not required.
+ * @param[out] ee       [s] Equation of the equinoxes in seconds of time. It may be NULL if not required.
+ * @param[out] dpsi     [arcsec] Nutation in longitude. It may be NULL if not required.
+ * @param[out] deps     [arcsec] Nutation in obliquity. It may be NULL if not required.
+ *
+ * @return          0 if successful, or -1 if the accuracy argument is invalid
+ *
+ * @sa cel_pole()
+ * @sa place()
+ * @sa equ2ecl()
+ * @sa ecl2equ()
+ */
+int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
+        double *restrict ee, double *restrict dpsi, double *restrict deps) {
+  double t, d_psi = NAN, d_eps = NAN, mean_ob, true_ob, eqeq;
+
+  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, "e_tilt", "invalid accuracy: %d", accuracy);
+
+  // Compute time in Julian centuries from epoch J2000.0.
+  t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
+
+  nutation_angles(t, accuracy, &d_psi, &d_eps);
+
+  d_psi += PSI_COR;
+  d_eps += EPS_COR;
+
+  // Compute mean obliquity of the ecliptic in degrees.
+  mean_ob = mean_obliq(jd_tdb) / 3600.0;
+
+  // Obtain complementary terms for equation of the equinoxes in seconds of time.
+  eqeq = (d_psi * cos(mean_ob * DEGREE) + ee_ct(jd_tdb, 0.0, accuracy) / ARCSEC) / 15.0;
+
+  // Compute true obliquity of the ecliptic in degrees.
+  true_ob = mean_ob + d_eps / 3600.0;
+
+  // Set output values.
+  if(dpsi)
+    *dpsi = d_psi;
+  if(deps)
+    *deps = d_eps;
+  if(ee)
+    *ee = eqeq;
+  if(mobl)
+    *mobl = mean_ob;
+  if(tobl)
+    *tobl = true_ob;
+
+  return 0;
+}
 
 /**
  * Returns the general precession in longitude (Simon et al. 1994), equivalent to 5028.8200
@@ -35,6 +291,45 @@ double accum_prec(double t) {
   // General precession in longitude (Simon et al. 1994), equivalent
   // to 5028.8200 arcsec/cy at J2000.
   return remainder((0.024380407358 + 0.000005391235 * t) * t, TWOPI);
+}
+
+/**
+ * Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical
+ * ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994,
+ * 5.8.1-5.8.8).
+ *
+ * @param t       [cy] Julian centuries since J2000
+ * @param planet  Novas planet id, e.g. NOVAS_MARS.
+ * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;],
+ *                or NAN if the `planet` id is out of range.
+ *
+ * @sa accum_prec()
+ * @sa nutation_angles()
+ * @sa ee_ct()
+ * @sa NOVAS_JD_J2000
+ *
+ * @since 1.0
+ * @author Attila Kovacs
+ */
+double planet_lon(double t, enum novas_planet planet) {
+  static const double c[9][2] = {
+          { 0.0, 0.0 }, //
+          { 4.402608842461, 2608.790314157421 },  // Mercury
+          { 3.176146696956, 1021.328554621099 },  // Venus
+          { 1.753470459496,  628.307584999142 },  // Earth
+          { 6.203476112911,  334.061242669982 },  // Mars
+          { 0.599547105074,   52.969096264064 },  // Jupiter
+          { 0.874016284019,   21.329910496032 },  // Saturn
+          { 5.481293871537,    7.478159856729 },  // Uranus
+          { 5.311886286677,    3.813303563778 }   // Neptune
+  };
+
+  if(planet < NOVAS_MERCURY || planet > NOVAS_NEPTUNE) {
+    novas_set_errno(EINVAL, "planet_lon", "invalid planet number: %d", planet);
+    return NAN;
+  }
+
+  return remainder(c[planet][0] + c[planet][1] * t, TWOPI);
 }
 
 /**
@@ -172,8 +467,6 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) {
   static THREAD_LOCAL double last_tt = NAN, last_ee;
   static THREAD_LOCAL enum novas_accuracy last_acc = -1;
-
-
 
   // Argument coefficients for t^0.
   const int8_t ke0_t[33][14] = { //
@@ -374,45 +667,6 @@ int fund_args(double t, novas_delaunay_args *restrict a) {
   a->Omega = novas_norm_ang(a->Omega * ARCSEC);
 
   return 0;
-}
-
-/**
- * Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical
- * ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994,
- * 5.8.1-5.8.8).
- *
- * @param t       [cy] Julian centuries since J2000
- * @param planet  Novas planet id, e.g. NOVAS_MARS.
- * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;],
- *                or NAN if the `planet` id is out of range.
- *
- * @sa accum_prec()
- * @sa nutation_angles()
- * @sa ee_ct()
- * @sa NOVAS_JD_J2000
- *
- * @since 1.0
- * @author Attila Kovacs
- */
-double planet_lon(double t, enum novas_planet planet) {
-  static const double c[9][2] = {
-          { 0.0, 0.0 }, //
-          { 4.402608842461, 2608.790314157421 },  // Mercury
-          { 3.176146696956, 1021.328554621099 },  // Venus
-          { 1.753470459496,  628.307584999142 },  // Earth
-          { 6.203476112911,  334.061242669982 },  // Mars
-          { 0.599547105074,   52.969096264064 },  // Jupiter
-          { 0.874016284019,   21.329910496032 },  // Saturn
-          { 5.481293871537,    7.478159856729 },  // Uranus
-          { 5.311886286677,    3.813303563778 }   // Neptune
-  };
-
-  if(planet < NOVAS_MERCURY || planet > NOVAS_NEPTUNE) {
-    novas_set_errno(EINVAL, "planet_lon", "invalid planet number: %d", planet);
-    return NAN;
-  }
-
-  return remainder(c[planet][0] + c[planet][1] * t, TWOPI);
 }
 
 /**
@@ -648,83 +902,6 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
     out[1] = yx * x + yy * y + yz * z;
     out[2] = zx * x + zy * y + zz * z;
   }
-
-  return 0;
-}
-
-/**
- * Returns the values for nutation in longitude and nutation in obliquity for a given TDB
- * Julian date.  The nutation model selected depends upon the input value of 'accuracy'. See
- * notes below for important details.
- *
- * This function selects the nutation model depending first upon the input value of 'accuracy'.
- * If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used. Otherwise
- * the model set by set_nutation_lp_provider() is used, or else the default nu2000k().
- *
- * See the prologs of the nutation functions in file 'nutation.c' for details concerning the
- * models.
- *
- * NOTES:
- * <ol>
- * <li>As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation
- * angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to
- * match the model used by SOFA.</li>
- * </ol>
- *
- * REFERENCES:
- * <ol>
- * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
- * <li>Capitaine, N., P.T. Wallace and J. Chapront (2005), “Improvement of the IAU 2000 precession
- *     model.” Astronomy &amp; Astrophysics, Vol. 432, pp. 355–67.</li>
- * <li>Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159</li>
- * </ol>
- *
- * @param t           [cy] TDB time in Julian centuries since J2000.0
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] dpsi   [arcsec] Nutation in longitude in arcseconds.
- * @param[out] deps   [arcsec] Nutation in obliquity in arcseconds.
- *
- * @return            0 if successful, or -1 if the output pointer arguments are NULL
- *
- * @sa set_nutation_lp_provider()
- * @sa nutation()
- * @sa iau2000b()
- * @sa nu2000k()
- * @sa cio_basis()
- * @sa NOVAS_CIRS
- * @sa NOVAS_JD_J2000
- */
-int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps) {
-  static THREAD_LOCAL double last_t = NAN, last_dpsi, last_deps;
-  static THREAD_LOCAL enum novas_accuracy last_acc = -1;
-
-  // P03 scaling factor.
-  static const double f = -2.7774e-6;
-
-  if(!dpsi || !deps) {
-    if(dpsi)
-      *dpsi = NAN;
-    if(deps)
-      *deps = NAN;
-
-    return novas_error(-1, EINVAL, "nutation_angles", "NULL output pointer: dspi=%p, deps=%p", dpsi, deps);
-  }
-
-  if(!(fabs(t - last_t) < 1e-12) || (accuracy != last_acc)) {
-    novas_nutation_provider nutate_call = (accuracy == NOVAS_FULL_ACCURACY) ? iau2000a : get_nutation_lp_provider();
-    nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
-
-    // Apply P03 (Capitaine et al. 2005) rescaling to IAU 2006 model.
-    // Convert output to arcseconds.
-    last_dpsi *= (1.0000004697 + f) / ARCSEC;
-    last_deps *= (1.0 + f) / ARCSEC;
-
-    last_acc = accuracy;
-    last_t = t;
-  }
-
-  *dpsi = last_dpsi;
-  *deps = last_deps;
 
   return 0;
 }
