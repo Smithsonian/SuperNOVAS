@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [.4.0-rc2] - 2025-05-15
 
 Changes for the upcoming feature release, expected early, probably around 1 June 2025.
 
