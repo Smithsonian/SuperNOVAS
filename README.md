@@ -405,7 +405,7 @@ terms differently:
 
  | Concept                    | Old standard                  | New IAU standard                                  |
  | -------------------------- | ----------------------------- | ------------------------------------------------- |
- | Catalog coordinate system  | FK4, FK5, HIP...              | International Celestial Reference System (ICRS)   |
+ | Catalog coordinate system  | MOD (e.g. FK4, FK5, HIP...)   | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | no tidal terms                | IAU 2000 precession/nutation model                |
@@ -444,7 +444,7 @@ implementation.
 
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
-| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. |
+| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient [matrix transformations](#transforms) between the equatorial systems. |
 
 
 <a name="sidereal-example"></a>
@@ -460,6 +460,7 @@ galactic molecular cloud, or a distant quasar.
  - [Calculate an apparent place on sky](#apparent-place)
  - [Calculate azimuth and elevation angles at the observing location](#horizontal-place)
  - [Calculate rise, set, and transit times](#rise-set-transit)
+ - [Coordinate and velocity transforms](#transforms)
 
 <a name="specify-object"></a>
 #### Specify the object of interest
@@ -787,6 +788,43 @@ While the planet and Moon orbitals are not suitable for precision applications, 
 approximate positions (e.g. via the `novas_approx_heliocentric()` and `novas_approx_sky_pos()` functions), and for 
 approximate rise/set time calculations.
 
+
+<a name="transforms"></a>
+### Coordinate and velocity transforms
+
+SuperNOVAS introduces matrix transforms (correctly since v1.4), which can take a position or velocity vector 
+(geometric or apparent), obtained for an observer frame, from one coordinate system to another efficiently. For 
+example,
+
+```c
+  novas_frame frame = ...  	// The observer frame (time and location)
+  double gcrs[3] = ...;   	// IN: original position vector, say in GCRS.
+  double tirs[3] = {0.0};	// OUT: equivalent vector in TIRS we want to obtain
+  
+  novas_transform T = NOVAS_TRANSFORM_INIT;	// Coordinate transformation object
+  
+  // Calculate the transformation matrix from GCRS to TIRS in the given observer frame.
+  novas_make_transform(&frame, NOVAS_GCRS, NOVAS_TIRS, &T);
+  
+  // Transform the GCRS position or velocity vector to TIRS...
+  novas_transform_vector(gcrs, &T, tirs);
+```
+
+Transformations support all SupeNOVAS reference systems, that is ICRS/GCRS, J2000, TOD, MOD, CIRS, TIRS, and
+ITRS. The same transform can also be used to convert apparent positions in a `sky_pos` structure, e.g.:
+
+```c
+  ...
+  
+  sky_pos tod_pos = ...			// IN: in TOD, e.g. via novas_sky_pos()...
+  sky_pos j2000_pos = SKY_POS_INIT;	// OUT: equivalent J2000 position to calculate...
+  
+  // Calculate the transformation matrix from TOD to J2000 in the given observer frame.
+  novas_make_transform(&frame, NOVAS_TOD, NOVAS_J2000, &T);
+  
+  // Transform the TOD apparent position to J2000....
+  novas_transform_sky_pos(&tod_pos, &T, &j2000_pos);
+```
 
 ------------------------------------------------------------------------------
 

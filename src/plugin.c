@@ -22,9 +22,19 @@
 
 // <---------- GLOBAL VARIABLES -------------->
 
-#if !DEFAULT_SOLSYS
-novas_planet_provider planet_call = (novas_planet_provider) solarsystem;
-novas_planet_provider_hp planet_call_hp = (novas_planet_provider_hp) solarsystem_hp;
+#if DEFAULT_SOLSYS <= 0
+static solarsystem_adapter(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
+  solarsystem(jd_tdb, (short) body, (short) origin, position, velocity);
+}
+
+static solarsystem_hp_adapter(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
+        double *restrict position, double *restrict velocity) {
+  solarsystem_hp(jd_tdb, (short) body, (short) origin, position, velocity);
+}
+
+novas_planet_provider planet_call = solarsystem_adapter;
+novas_planet_provider_hp planet_call_hp = solarsystem_hp_adapter;
 #endif
 /// \endcond
 
@@ -35,6 +45,7 @@ static novas_ephem_provider readeph2_call = NULL;
 /// Function to use for reduced-precision calculations. (The full IAU 2000A model is used
 /// always for high-precision calculations)
 static novas_nutation_provider nutate_lp = iau2000b;
+
 
 /**
  * Sets the function to use for obtaining position / velocity information for minor planets,
