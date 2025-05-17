@@ -432,10 +432,10 @@ coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.
 The old method typically relied on the Lieske et al. 1977 precession and nutation models, which did not include tidal
 terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. SuperNOVAS and NOVAS C rely 
 on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal terms. 
-Hence, the old d&psi;,d&epsilon; corrections should never be used in SuperNOVAS, and applying the residual _dx_,_dy_ 
-polar offsets to the TOD equator (via `cel_pole()`) is also actively discouraged. Instead, the tens of mas level 
-corrections to Earth orientation should be used only for converting between the pseudo Earth-fixed (PEF or TIRS) and 
-ITRS.
+Hence, the old &delta;&psi;,&delta;&epsilon; corrections should never be used in SuperNOVAS, and applying the residual 
+(&Delta;&delta;&psi;,&Delta;&delta;&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
+actively discouraged. Instead, the sub-arcsecond level corrections to Earth orientation should be used only for 
+converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS.
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
