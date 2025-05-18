@@ -57,7 +57,7 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    Earth-Moon Barycenter, using the orbital models mentioned above.
 
  - #176: `novas_moon_phase()` and `novas_next_moon_phase()` to calculate the Moon's apparent phase or the date/time 
-   when it reaches a specific phse, respectively, suing the Keplerian orbitals for the E-M Barycenter by Standish 
+   when it reaches a specific phase, respectively, using the Keplerian orbitals for the E-M Barycenter by Standish 
    &amp; Williams 1992, and the geocentric orbitals of the Moon by Chapront et al. 2002.
  
  - #176: `novas_orbital_native_posvel()` to calculate orbital positions in the native system, in which the orbital 
