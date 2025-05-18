@@ -2123,6 +2123,10 @@ double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy a
 
 double novas_time_lst(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy);
 
+double tt2tdb_fp(double jd_tt, double limit);
+
+double tt2tdb_hp(double jd_tt);
+
 // in refract.c
 int novas_refract_wavelength(double microns);
 

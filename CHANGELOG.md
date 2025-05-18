@@ -74,6 +74,9 @@ Changes for the upcoming feature release, expected early, probably around 1 June
  - #186: Added `NOVAS_RADIO_REFRACTION` and `NOVAS_WAVE_REFRACTION` to `enum novas_refraction_model`, for referencing 
    the Berman &amp; Rockwell 1976 radio-wave model, or the IAU / SOFA wavelength-dependent model, respectively.
    
+ - #191: Added `tt2tdb_hp()` (high-precision) and `tt2tdb_fp()` (flexible-precision) functions for calculating the
+   TDB-TT time difference (in seconds), with up to 0.1 &mu;s accuracy based on Fairhead &amp; Bretagnon 1990.
+   
 ### Changed
 
  - #173: Added parameter range checking to `refract()` function and `novas_radio_refraction()` model. If called with
