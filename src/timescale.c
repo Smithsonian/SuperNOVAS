@@ -40,8 +40,31 @@
 
 // IAU 2006 Resolution B3
 #define TC_T0      2443144.5003725       ///< 1977 January 1, 0h 0m 0s TAI
-#define TC_LB      1.550519768e-8        ///< Relative rate at which Barycentric coordinate time progresses fastern than time on Earth.
-#define TC_LG      6.969291e-10          ///< Relative rate at which Geocentric coordinate time progresses fastern than time on Earth.
+
+/**
+ * Relative rate at which Barycentric coordinate time progresses fastern than time on Earth.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * </ol>
+ */
+#define TC_LB      1.550519768e-8
+
+/**
+ * Relative rate at which Geocentric coordinate time progresses fastern than time on Earth.
+ *
+ * NOTES:
+ * <ol>
+ * <li>Updated to DE440 value (Park et al. 2021) in v1.4</li>
+ * </ol>
+ * REFERENCES:
+ * <ol>
+ * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * </ol>
+ */
+#define TC_LG      6.969290134e-10
+
 #define TC_TDB0    (6.55e-5 / DAY)       ///< TDB time offset at TC_T0
 
 #define E9          1000000000           ///< 10<sup>9</sup> as integer

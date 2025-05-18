@@ -275,9 +275,9 @@ static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_or
  *
  * @param name          The name of the solar-system body. It is important only if the 'id' is
  *                      -1.
- * @param id            The NAIF ID number of the solar-system body for which the position in
- *                      desired, or -1 if the 'name' should be used instead to identify the
- *                      object.
+ * @param id            The NAIF or CALCEPH ID number of the solar-system body for which the
+ *                      position in desired, or -1 if the 'name' should be used instead to
+ *                      identify the object.
  * @param jd_tdb_high   [day] The high-order part of Barycentric Dynamical Time (TDB) based
  *                      Julian date for which to find the position and velocity. Typically
  *                      this may be the integer part of the Julian date for high-precision

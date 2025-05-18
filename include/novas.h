@@ -353,14 +353,25 @@ enum novas_planet {
  * [9]: Pluto (barycenter), [10]: Sun, [11]: Moon.
  * Barycentric reciprocal masses (index 12, 13) are not set.
  *
+ * NOTES:
+ * <ol>
+ * <li>The values have been updated to used DE440 data (Park et al. 2021) in 1.4.
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * </ol>
+ *
  * @sa enum novas_planet
  * @sa NOVAS_PLANETS
  * @since 1.2
  * @author Attila Kovacs
  */
 #define NOVAS_RMASS_INIT  { \
-      328900.561400, 6023600.0, 408523.71, 332946.050895, 3098708.0, 1047.3486, 3497.898, \
-      22902.98, 19412.24, 135200000.0, 1.0, 27068700.387534, 0.0, 0.0 }
+      328900.559708565, 6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
+      1047.348631244, 3497.9018007932, 22902.9507834766, 19412.2597758766, 136045556.16738, \
+      1.0, 27068702.9548773, 0.0, 0.0 }
 
 /**
  * Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface

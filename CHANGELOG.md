@@ -85,6 +85,9 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    
  - #186: Tweaked error handling in atmopsheric refraction functions (in `refract.c`).
  
+ - `NOVAS_RMASS_INIT` (in `novas.h`) and L<sub>G</sub>  (in `timescale.c`) values updated with DE440 data (Park et al. 
+   2021).
+ 
  - Moved some functions around between source files.
    
 ### Deprecated

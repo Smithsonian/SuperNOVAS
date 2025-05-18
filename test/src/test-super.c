@@ -1250,7 +1250,7 @@ static int test_set_time() {
   const double CT0 = 2443144.5003725;
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
-  const double LG = 6.969291e-10;
+  const double LG = 6.969290134e-10;
 
   tdb2tt(ijd, NULL, &dt);
 
