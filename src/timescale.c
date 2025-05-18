@@ -46,7 +46,7 @@
  *
  * REFERENCES:
  * <ol>
- * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * <li>Ryan S. Park et al. 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
  * </ol>
  */
 #define TC_LB      1.550519768e-8
@@ -60,7 +60,7 @@
  * </ol>
  * REFERENCES:
  * <ol>
- * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * <li>Ryan S. Park et al. 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
  * </ol>
  */
 #define TC_LG      6.969290134e-10

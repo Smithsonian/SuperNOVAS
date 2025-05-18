@@ -1312,7 +1312,7 @@ static int test_get_time() {
   const double CT0 = 2443144.5003725;
   const double LB = 1.550519768e-8;
   const double TDB0 = 6.55e-5;
-  const double LG = 6.969291e-10;
+  const double LG = 6.969290134e-10;
 
   if(!is_ok("get_time:set:tt", novas_set_time(NOVAS_TT, tdb + 0.25, leap, dut1, &tt))) return 1;
 
@@ -2088,7 +2088,7 @@ static int test_diff_time() {
   double dt;
 
   const double LB = 1.550519768e-8;
-  const double LG = 6.969291e-10;
+  const double LG = 6.969290134e-10;
 
   if(!is_ok("diff_time:set", novas_set_unix_time(sec, 1, 37, 0.11, &t))) return 1;
   if(!is_ok("diff_time:incr", novas_offset_time(&t, 0.5, &t1))) return 1;
