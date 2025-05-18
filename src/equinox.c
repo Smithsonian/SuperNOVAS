@@ -439,7 +439,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  *
  * REFERENCES:
  * <ol>
- * <li>Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. & Astrophys. 406, p.
+ * <li>Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. &amp; Astrophys. 406, p.
  * 1135-1149. Table 3.</li>
  * <li>IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.<br>
  * (Table 5.2e presented in the printed publication is a truncated

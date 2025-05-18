@@ -35,7 +35,7 @@
  *
  * REFERENCES:
  * <ol>
- *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p.
+ *  <li>Fliegel, H. &amp; Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p.
  *  657.</li>
  * </ol>
  *
@@ -104,7 +104,7 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
  *
  * REFERENCES:
  * <ol>
- *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
+ *  <li>Fliegel, H. &amp; Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
  *  p. 657.</li>
  * </ol>
  *
@@ -211,7 +211,7 @@ int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restric
  *
  * REFERENCES:
  * <ol>
- *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p.
+ *  <li>Fliegel, H. &amp; Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968, p.
  *  657.</li>
  * </ol>
  *
@@ -256,7 +256,7 @@ double julian_date(short year, short month, short day, double hour) {
  * REFERENCES:
  * <ol>
  *
- *  <li>Fliegel, H. & Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
+ *  <li>Fliegel, H. &amp; Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
  *  p. 657.</li>15 October 1582
  * </ol>
  *

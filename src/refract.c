@@ -475,7 +475,7 @@ int novas_refract_wavelength(double microns) {
  *     1987.
  * </li>
  * <li>
- *     Hohenkerk, C.Y., & Sinclair, A.T., NAO Technical Note No. 63,
+ *     Hohenkerk, C.Y., &amp; Sinclair, A.T., NAO Technical Note No. 63,
  *     1985.
  * </li>
  * <li>

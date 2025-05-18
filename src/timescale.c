@@ -117,7 +117,7 @@ int strncasecmp(const char *s1, const char *s2, size_t n);
  *
  * REFERENCES:
  * <ol>
- * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240.</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * </ol>
  *
@@ -159,7 +159,7 @@ int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
  *
  * REFERENCES
  * <ol>
- * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240.</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * <li>Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68<.li>
  * </ol>
@@ -267,7 +267,7 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * <li>IAU 1991, RECOMMENDATION III. XXIst General Assembly of the
  * International Astronomical Union. Retrieved 6 June 2019.</li>
  * <li>IAU 2006 resolution 3, see Recommendation and footnotes, note 3.</li>
- * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240.</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
  * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>
@@ -422,7 +422,7 @@ double novas_get_time(const novas_timespec *restrict time, enum novas_timescale 
  * <li>IAU 1991, RECOMMENDATION III. XXIst General Assembly of the
  * International Astronomical Union. Retrieved 6 June 2019.</li>
  * <li>IAU 2006 resolution 3, see Recommendation and footnotes, note 3.</li>
- * <li>Fairhead, L. & Bretagnon, P. (1990) Astron. & Astrophys. 229, 240.</li>
+ * <li>Fairhead, L. &amp; Bretagnon, P. (1990) Astron. &amp; Astrophys. 229, 240.</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * <li><a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html#The%20Relationship%20between%20TT%20and%20TDB">
  * https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/FORTRAN/req/time.html</a></li>

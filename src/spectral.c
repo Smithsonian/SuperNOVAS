@@ -339,7 +339,7 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
  *
  * REFERENCES:
  * <ol>
- * <li>Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201.</li>
+ * <li>Lindegren &amp; Dravins (2003), Astronomy &amp; Astrophysics 401, 1185-1201.</li>
  * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is gravitationally
  * referenced to the Sun's photosphere. (NOVAS C returns the radial velocity for a massless Sun)</li>
  * </ol>
@@ -433,7 +433,7 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  *
  * REFERENCES:
  * <ol>
- * <li>Lindegren & Dravins (2003), Astronomy & Astrophysics 401, 1185-1201.</li>
+ * <li>Lindegren &amp; Dravins (2003), Astronomy &amp; Astrophysics 401, 1185-1201.</li>
  * </ol>
  *
  * @param source        Celestial object observed

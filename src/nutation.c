@@ -3020,7 +3020,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  * REFERENCES:
  * <ol>
  * <li>McCarthy, D. and Luzum, B. (2003). "An Abridged Model of the
- *     Precession & Nutation of the Celestial Pole," Celestial
+ *     Precession &amp; Nutation of the Celestial Pole," Celestial
  *     Mechanics and Dynamical Astronomy, Volume 85, Issue 1,
  *     Jan. 2003, p. 37. (IAU 2000B) IERS Conventions (2003), Chapter 5.</li>
  * </ol>

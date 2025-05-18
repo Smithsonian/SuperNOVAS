@@ -306,7 +306,7 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  * REFERENCES:
  * <ol>
  * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
- * <li>Lambert & Bizouard (2002), Astronomy and Astrophysics 394, 317-321.</li>
+ * <li>Lambert &amp; Bizouard (2002), Astronomy and Astrophysics 394, 317-321.</li>
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.

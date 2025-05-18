@@ -974,7 +974,7 @@ double novas_epa(double ha, double dec, double lat) {
  *
  * REFERENCES:
  * <ol>
- * <li>Calabretta, M.R., & Greisen, E.W., (2002), Astronomy & Astrophysics, 395, 1077-1122.</li>
+ * <li>Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395, 1077-1122.</li>
  * </ol>
  *
  * @param daz         [arcsec] Projected offset position in the azimuth direction. The projected
@@ -1017,7 +1017,7 @@ int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, do
  *
  * REFERENCES:
  * <ol>
- * <li>Calabretta, M.R., & Greisen, E.W., (2002), Astronomy & Astrophysics, 395, 1077-1122.</li>
+ * <li>Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395, 1077-1122.</li>
  * </ol>
  *
  * @param dra         [arcsec] Projected ffset position in the apparent true-of-date R.A. direction.
