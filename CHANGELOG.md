@@ -32,8 +32,8 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    were zero, then no wobble correction was applied, not even for the TIO location (s'). The error from this 
    omission is very small, at just a few &mu;as (micro-acrseconds) within a couple of centuries of J2000.
    
- - #190: Reverse `wobble()` corrections had wrong 2nd order corrections, resulting in negligible errors below 0.1 
-   &mu;as (micro-arcseconds) typically.
+ - #190: Reverse `wobble()` (ITRS to TIRS/PEF) had wrong 2nd order corrections, resulting in negligible errors below 
+   0.1 &mu;as (micro-arcseconds) typically.
    
 ### Added
 

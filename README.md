@@ -434,8 +434,8 @@ terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator se
 on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal terms. 
 Hence, the old &delta;&psi;,&delta;&epsilon; corrections should never be used in SuperNOVAS, and applying the residual 
 (&Delta;&delta;&psi;,&Delta;&delta;&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
-actively discouraged. Instead, the sub-arcsecond level corrections to Earth orientation should be used only for 
-converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS.
+actively discouraged. Instead, the sub-arcsecond level corrections to Earth orientation (_dx_,_dy_) should be used 
+only for converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS.
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
@@ -797,27 +797,27 @@ SuperNOVAS introduces matrix transforms (correctly since v1.4), which can take a
 example,
 
 ```c
-  novas_frame frame = ...  	// The observer frame (time and location)
-  double gcrs[3] = ...;   	// IN: original position vector, say in GCRS.
-  double tirs[3] = {0.0};	// OUT: equivalent vector in TIRS we want to obtain
+  novas_frame frame = ...       // The observer frame (time and location)
+  double icrs_vec[3] = ...;     // IN: original position vector, say in ICRS.
+  double tirs_vec[3] = {0.0};   // OUT: equivalent vector in TIRS we want to obtain
   
-  novas_transform T = NOVAS_TRANSFORM_INIT;	// Coordinate transformation object
+  novas_transform T;	        // Coordinate transformation object
   
-  // Calculate the transformation matrix from GCRS to TIRS in the given observer frame.
-  novas_make_transform(&frame, NOVAS_GCRS, NOVAS_TIRS, &T);
+  // Calculate the transformation matrix from ICRS to TIRS in the given observer frame.
+  novas_make_transform(&frame, NOVAS_ICRS, NOVAS_TIRS, &T);
   
-  // Transform the GCRS position or velocity vector to TIRS...
-  novas_transform_vector(gcrs, &T, tirs);
+  // Transform the ICRS position or velocity vector to TIRS...
+  novas_transform_vector(icrs_vec, &T, tirs_vec);
 ```
 
 Transformations support all SupeNOVAS reference systems, that is ICRS/GCRS, J2000, TOD, MOD, CIRS, TIRS, and
-ITRS. The same transform can also be used to convert apparent positions in a `sky_pos` structure, e.g.:
+ITRS. The same transform can also be used to convert apparent positions in a `sky_pos` structure also, e.g.:
 
 ```c
   ...
   
-  sky_pos tod_pos = ...			// IN: in TOD, e.g. via novas_sky_pos()...
-  sky_pos j2000_pos = SKY_POS_INIT;	// OUT: equivalent J2000 position to calculate...
+  sky_pos tod_pos = ...         // IN: in TOD, e.g. via novas_sky_pos()...
+  sky_pos j2000_pos;            // OUT: equivalent J2000 position to calculate...
   
   // Calculate the transformation matrix from TOD to J2000 in the given observer frame.
   novas_make_transform(&frame, NOVAS_TOD, NOVAS_J2000, &T);
@@ -920,7 +920,7 @@ Finally, you can combine them to convert between two different conventional unit
 
 ```c
  // Convert angle from [h] -> [rad] -> [deg]
- double lst_d = lst_h * HOURANGLE / DEGREE; 
+ double lst_d = lst_h * NOVAS_HOURANGLE / NOVAS_DEGREE; 
   
  // Convert [AU/day] -> [m/s] (SI) -> [km/s]
  double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KMS
@@ -1186,6 +1186,10 @@ All modern JPL (SPK) ephemeris files should work with the `solsys-calceph` plugi
 add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`), and of course the CSPICE library
 too. That's all there is to it.
 
+Ephemeris objects are referenced by their ID numbers (`object.number`), unless it is set to -1, in which case 
+name-based lookup is used. ID numbers are assumed to be NAIF by default, but `novas_calceph_used_ids()` can select 
+between NAIF or CALCEPH numbering systems, if necessary.
+
 
 <a name="cspice-integration"></a>
 ### Optional NAIF CSPICE toolkit integration
@@ -1234,6 +1238,8 @@ All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking y
 to your link flags (or else link with `solsys-cspice.o`), and link against te calceph library also (`-lcalceph`). 
 That's all there is to it.
 
+Ephemeris objects are referenced by their NAIF ID numbers (`object.number`), unless it is set to -1, in which case 
+name-based lookup is used.
 
 <a name="universal-ephemerides"></a>
 ### Universal ephemeris data / service integration 
