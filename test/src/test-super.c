@@ -1758,6 +1758,25 @@ static int test_tt2tdb() {
   return 0;
 }
 
+static int test_tt2tdb_hp() {
+  int n = 0;
+
+  int i;
+  for(i = -10; i <= 10; i++) {
+    char label[100];
+    double djd = 36525.0 * i;
+    double jd_tt = NOVAS_JD_J2000 + djd;
+
+    sprintf(label, "tt2tdb_hp:%d", (2000 + 100 * i));
+    if(!is_equal(label, tt2tdb_hp(jd_tt), tt2tdb(jd_tt), 1e-5)) n++;
+
+    sprintf(label, "tt2tdb_fp:%d", (2000 + 100 * i));
+    if(!is_equal(label, tt2tdb_fp(jd_tt, 1.0), tt2tdb_hp(jd_tt), 1e-5)) n++;
+  }
+
+  return n;
+}
+
 static int test_grav_vec() {
   double pz[3] = {0.0}, p1[] = {1.0, 0.0, 0.0}, pm[] = {0.5, 0.0, 0.0}, pn[] = {0.0, 1.0, 0.0}, out[3];
 
@@ -4207,6 +4226,8 @@ int main(int argc, char *argv[]) {
 
   if(test_day_of_week()) n++;
   if(test_day_of_year()) n++;
+
+  if(test_tt2tdb_hp()) n++;
 
   n += test_dates();
 
