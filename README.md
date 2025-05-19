@@ -107,8 +107,7 @@ Outside contributions are very welcome. See
 <a name="fixed-issues"></a>
 ## Fixed NOVAS C 3.1 issues
 
-The SuperNOVAS library fixes a number of outstanding issues with NOVAS C 3.1. Here is a list of issues and fixes 
-provided by SuperNOVAS over the upstream NOVAS C 3.1 code:
+SuperNOVAS fixes a number of outstanding issues with NOVAS C 3.1:
 
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
