@@ -193,7 +193,8 @@ double tt2tdb(double jd_tt) {
  * </ol>
  *
  * @param jd_tt   [day] Terrestrial Time (TT) based Julian date, but Barycentric Dynamical Time (TDB)
- * @param limit   [us] Amplitude of limiting term to include in series.
+ * @param limit   [us] Amplitude of limiting term to include in series. 0 or negative values will
+ *                include all terms, producing the same result as `tt2tdb_hp()`.
  * @return        [s] TDB - TT time difference.
  *
  * @since 1.4
@@ -348,6 +349,9 @@ double tt2tdb_fp(double jd_tt, double limit) {
 
   double us = 0.0;
   int i;
+
+  if(limit < 0.0)
+    limit = 0.0;
 
   for(i = 0; a[i][0] > limit; i ++)
     us += a[i][0] * sin(a[i][1] * t + a[i][2]);

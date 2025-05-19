@@ -1772,6 +1772,9 @@ static int test_tt2tdb_hp() {
 
     sprintf(label, "tt2tdb_fp:%d", (2000 + 100 * i));
     if(!is_equal(label, tt2tdb_fp(jd_tt, 1.0), tt2tdb_hp(jd_tt), 1e-5)) n++;
+
+    sprintf(label, "tt2tdb_fp:%d:-1", (2000 + 100 * i));
+        if(!is_equal(label, tt2tdb_fp(jd_tt, -1.0), tt2tdb_hp(jd_tt), 1e-9)) n++;
   }
 
   return n;
