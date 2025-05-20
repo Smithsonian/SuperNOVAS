@@ -35,6 +35,9 @@ Changes for the upcoming feature release, expected early, probably around 1 June
  - #190: Reverse `wobble()` (ITRS to TIRS/PEF) had wrong 2nd order corrections, resulting in negligible errors below 
    0.1 &mu;as (micro-arcseconds) typically.
    
+ - #193: C++ namespace conflict in `novas_frame` declaration. Fixed by declaring and using named structures instread
+   of the conflicting `typedef` names.
+   
 ### Added
 
  - #172: Added `novas_time_gst()` and `novas_time_lst()` convenience functions to calculate the Greenwich (apparent)

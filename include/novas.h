@@ -772,7 +772,7 @@ enum novas_reference_plane {
  * @author Attila Kovacs
  * @sa NOVAS_DELAUNAY_ARGS_INIT
  */
-typedef struct {
+typedef struct novas_delaunay_args {
   double l;           ///< [rad] mean anomaly of the Moon
   double l1;          ///< [rad] mean anomaly of the Sun
   double F;           ///< [rad] mean argument of the latitude of the Moon
@@ -801,7 +801,7 @@ typedef struct {
  *
  * @sa CAT_ENTRY_INIT
  */
-typedef struct {
+typedef struct novas_cat_entry {
   char starname[SIZE_OF_OBJ_NAME];  ///< name of celestial object
   char catalog[SIZE_OF_CAT_NAME];   ///< catalog designator (e.g., HIP)
   long starnumber;                  ///< integer identifier assigned to object
@@ -847,7 +847,7 @@ typedef struct {
  * @sa novas_orbital
  * @sa NOVAS_ORBITAL_SYSTEM_INIT
  */
-typedef struct {
+typedef struct novas_orbital_system {
   enum novas_planet center;          ///< major planet or barycenter at the center of the orbit.
   enum novas_reference_plane plane;  ///< reference plane NOVAS_ECLIPTIC_PLANE or NOVAS_EQUATORIAL_PLANE
   enum novas_reference_system type;  ///< the coordinate reference system used for the reference plane and orbitals.
@@ -898,19 +898,19 @@ typedef struct {
  * @sa enum NOVAS_ORBITAL_OBJECT
  * @sa NOVAS_ORBIT_INIT
  */
-typedef struct {
-  novas_orbital_system system;      ///< orbital reference system assumed for the parametrization
-  double jd_tdb;                    ///< [day] Barycentri Dynamical Time (TDB) based Julian date of the parameters.
-  double a;                         ///< [AU] semi-major axis
-  double e;                         ///< eccentricity
-  double omega;                     ///< [deg] argument of periapsis / perihelion, at the reference time
-  double Omega;                     ///< [deg] argument of ascending node on the reference plane, at the reference time
-  double i;                         ///< [deg] inclination of orbit to the reference plane
-  double M0;                        ///< [deg] mean anomaly at the reference time
-  double n;                         ///< [deg/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
-                                    ///< or 360/T, where T is orbital period in days.
-  double apsis_period;              ///< [day] Precession period of the apsis, if known.
-  double node_period;               ///< [day] Precession period of the ascending node, if known.
+typedef struct novas_orbital {
+  struct novas_orbital_system system; ///< orbital reference system assumed for the parametrization
+  double jd_tdb;                      ///< [day] Barycentri Dynamical Time (TDB) based Julian date of the parameters.
+  double a;                           ///< [AU] semi-major axis
+  double e;                           ///< eccentricity
+  double omega;                       ///< [deg] argument of periapsis / perihelion, at the reference time
+  double Omega;                       ///< [deg] argument of ascending node on the reference plane, at the reference time
+  double i;                           ///< [deg] inclination of orbit to the reference plane
+  double M0;                          ///< [deg] mean anomaly at the reference time
+  double n;                           ///< [deg/day] mean daily motion, i.e. (_GM_/_a_<sup>3</sup>)<sup>1/2</sup> for the central body,
+                                      ///< or 360/T, where T is orbital period in days.
+  double apsis_period;                ///< [day] Precession period of the apsis, if known.
+  double node_period;                 ///< [day] Precession period of the ascending node, if known.
 } novas_orbital;
 
 /**
@@ -944,12 +944,12 @@ typedef struct {
  * @sa NOVAS_MOON_INIT
  * @sa NOVAS_EMB_INIT
  */
-typedef struct {
+typedef struct novas_object {
   enum novas_object_type type;    ///< NOVAS object type
   long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
-  cat_entry star;                 ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
-  novas_orbital orbit;            ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
+  struct novas_cat_entry star;    ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
+  struct novas_orbital orbit;     ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
 } object;
 
 /**
@@ -1078,7 +1078,7 @@ typedef struct {
  * @sa ON_SURFACE_INIT
  * @sa ON_SURFACE_LOC
  */
-typedef struct {
+typedef struct novas_on_surface {
   double latitude;      ///< [deg] geodetic (ITRS) latitude; north positive
   double longitude;     ///< [deg] geodetic (ITRS) longitude; east positive
   double height;        ///< [m] altitude above sea level
@@ -1118,7 +1118,7 @@ typedef struct {
  * @sa IN_SPACE_INIT
  * @sa make_in_space()
  */
-typedef struct {
+typedef struct novas_in_space {
   double sc_pos[3];     ///< [km] geocentric (or [AU] ICRS barycentric) position vector (x, y, z)
   double sc_vel[3];     ///< [km/s] geocentric (or [AU/day] ICRS barycentric) velocity vector (x_dot, y_dot, z_dot)
 } in_space;
@@ -1141,17 +1141,17 @@ typedef struct {
  * @sa make_solar_system_observer()
  * @sa OBSERVER_INIT
  */
-typedef struct {
+typedef struct novas_observer {
   enum novas_observer_place where;    ///< observer location type
 
   /// structure containing data for an observer's location on the surface of the Earth
   /// (if where = NOVAS_OBSERVER_ON_EARTH)
-  on_surface on_surf;
+  struct novas_on_surface on_surf;
 
   /// data for an observer's location in orbit (if where = NOVAS_OBSERVER_IN_EARTH_ORBIT)
   /// As of v1.1 the same structure may be used to store heliocentric location and motion
   /// for any Solar-system observer also (if where = NOVAS_SOLAR_SYSTEM_OBSERVER).
-  in_space near_earth;
+  struct novas_in_space near_earth;
 } observer;
 
 /**
@@ -1170,7 +1170,7 @@ typedef struct {
  * @sa SKY_POS_INIT
  * @sa novas_z_lsr()
  */
-typedef struct {
+typedef struct novas_sky_pos {
   double r_hat[3];  ///< unit vector toward object (dimensionless)
   double ra;        ///< [h] apparent, topocentric, or astrometric right ascension (hours)
   double dec;       ///< [deg] apparent, topocentric, or astrometric declination (degrees)
@@ -1192,7 +1192,7 @@ typedef struct {
  * Right ascension of the Celestial Intermediate Origin (CIO) with respect to the GCRS
  *
  */
-typedef struct {
+typedef struct novas_ra_of_cio {
   double jd_tdb;    ///< [day] Barycentric Dynamical Time (TDB) based Julian date.
   double ra_cio;    ///< [arcsec] right ascension of the CIO with respect to the GCRS (arcseconds)
 } ra_of_cio;
@@ -1235,7 +1235,7 @@ enum novas_timescale {
  * @since 1.1
  * @sa NOVAS_TIMESPEC_INIT
  */
-typedef struct {
+typedef struct novas_timespec {
   long ijd_tt;        ///< [day] Integer part of the Terrestrial Time (TT) based Julian Date
   double fjd_tt;      ///< [day] Terrestrial time (TT) based fractional Julian day.
   double tt2tdb;      ///< [s] TDB - TT time difference
@@ -1259,7 +1259,7 @@ typedef struct {
  * @sa NOVAS_MATRIX_INIT
  * @sa NOVAS_MATRIX_IDENTITY
  */
-typedef struct {
+typedef struct novas_matrix {
   double M[3][3];     ///< matrix elements
 } novas_matrix;
 
@@ -1289,7 +1289,7 @@ typedef struct {
  * @sa enum novas_planet
  * @sa NOVAS_PLANET_BUNDLE_INIT
  */
-typedef struct {
+typedef struct novas_planet_bundle {
   int mask;                      ///< Bitwise mask (1 << planet-number) specifying wich planets have pos/vel data
   double pos[NOVAS_PLANETS][3];  ///< [AU] Apparent positions of planets w.r.t. observer antedated for light-time
   double vel[NOVAS_PLANETS][3];  ///< [AU/day] Apparent velocity of planets w.r.t. barycenter antedated for light-time
@@ -1324,34 +1324,34 @@ typedef struct {
  * @sa novas_change_observer()
  * @sa NOVAS_FRAME_INIT
  */
-typedef struct {
-  uint64_t state;                 ///< An internal state for checking validity.
-  enum novas_accuracy accuracy;   ///< NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
-  novas_timespec time;            ///< The instant of time for which this observing frame is valid
-  observer observer;              ///< The observer location, or NULL for barycentric
-  double mobl;                    ///< [rad] Mean obliquity
-  double tobl;                    ///< [rad] True obliquity
-  double ee;                      ///< [rad] Equation of the equinoxes
-  double dpsi0;                   ///< [rad] Modeled Earth orientation &psi; (not including polar wobble)
-  double deps0;                   ///< [rad] Modeled Earth orientation &epsilon; (not including polar wobble)
-  double dx;                      ///< [mas] Polar wobble parameter dx.
-  double dy;                      ///< [mas] Polar wobble parameter dy.
-  double era;                     ///< [deg] Earth Rotation Angle (ERA);
-  double gst;                     ///< [h] Greenwich (Apparent) Sidereal Time (GST / GAST)
-  double obs_pos[3];              ///< [AU] Observer position rel. to barycenter (ICRS)
-  double obs_vel[3];              ///< [AU/day] Observer movement rel. to barycenter (ICRS)
-  double v_obs;                   ///< [AU/day] Magnitude of observer motion rel. to barycenter
-  double beta;                    ///< Observer relativistic &beta; rel SSB
-  double gamma;                   ///< Observer Lorentz factor &Gamma; rel SSB
-  double sun_pos[3];              ///< [AU] Sun's geometric position, rel SSB. (ICRS)
-  double sun_vel[3];              ///< [AU/day] Sun's velocity, rel SSB. (ICRS)
-  double earth_pos[3];            ///< [AU] Earth's geometric position, rel SSB. (ICRS)
-  double earth_vel[3];            ///< [AU/day] Earth's velocity, rel SSB. (ICRS)
-  novas_matrix icrs_to_j2000;     ///< ICRS to J2000 matrix
-  novas_matrix precession;        ///< precession matrix
-  novas_matrix nutation;          ///< nutation matrix (Lieske 1977 method)
-  novas_matrix gcrs_to_cirs;      ///< GCRS to CIRS conversion matrix
-  novas_planet_bundle planets;    ///< Planet positions and velocities (ICRS)
+typedef struct novas_frame {
+  uint64_t state;                     ///< An internal state for checking validity.
+  enum novas_accuracy accuracy;       ///< NOVAS_FULL_ACCURACY or NOVAS_REDUCED_ACCURACY
+  struct novas_timespec time;         ///< The instant of time for which this observing frame is valid
+  struct novas_observer observer;     ///< The observer location, or NULL for barycentric
+  double mobl;                        ///< [rad] Mean obliquity
+  double tobl;                        ///< [rad] True obliquity
+  double ee;                          ///< [rad] Equation of the equinoxes
+  double dpsi0;                       ///< [rad] Modeled Earth orientation &psi; (not including polar wobble)
+  double deps0;                       ///< [rad] Modeled Earth orientation &epsilon; (not including polar wobble)
+  double dx;                          ///< [mas] Polar wobble parameter dx.
+  double dy;                          ///< [mas] Polar wobble parameter dy.
+  double era;                         ///< [deg] Earth Rotation Angle (ERA);
+  double gst;                         ///< [h] Greenwich (Apparent) Sidereal Time (GST / GAST)
+  double obs_pos[3];                  ///< [AU] Observer position rel. to barycenter (ICRS)
+  double obs_vel[3];                  ///< [AU/day] Observer movement rel. to barycenter (ICRS)
+  double v_obs;                       ///< [AU/day] Magnitude of observer motion rel. to barycenter
+  double beta;                        ///< Observer relativistic &beta; rel SSB
+  double gamma;                       ///< Observer Lorentz factor &Gamma; rel SSB
+  double sun_pos[3];                  ///< [AU] Sun's geometric position, rel SSB. (ICRS)
+  double sun_vel[3];                  ///< [AU/day] Sun's velocity, rel SSB. (ICRS)
+  double earth_pos[3];                ///< [AU] Earth's geometric position, rel SSB. (ICRS)
+  double earth_vel[3];                ///< [AU/day] Earth's velocity, rel SSB. (ICRS)
+  struct novas_matrix icrs_to_j2000;  ///< ICRS to J2000 matrix
+  struct novas_matrix precession;     ///< precession matrix
+  struct novas_matrix nutation;       ///< nutation matrix (Lieske 1977 method)
+  struct novas_matrix gcrs_to_cirs;   ///< GCRS to CIRS conversion matrix
+  struct novas_planet_bundle planets; ///< Planet positions and velocities (ICRS)
   // TODO [v2] add ra_cio
   // TODO [v2] add cirs_to_tirs
   // TODI [v2] add tirs_to_itrs
@@ -1381,11 +1381,11 @@ typedef struct {
  * @sa novas_invert_transform()
  * @sa NOVAS_TRANSFORM_INIT
  */
-typedef struct {
+typedef struct novas_transform {
   enum novas_reference_system from_system;  ///< The original coordinate system
   enum novas_reference_system to_system;    ///< The final coordinate system
-  novas_frame frame;                        ///< The observer place and time for which the transform is valid
-  novas_matrix matrix;                      ///< Transformation matrix elements
+  struct novas_frame frame;                 ///< The observer place and time for which the transform is valid
+  struct novas_matrix matrix;               ///< Transformation matrix elements
 } novas_transform;
 
 /**
@@ -1486,7 +1486,7 @@ typedef double (*RefractionModel)(double jd_tt, const on_surface *loc, enum nova
  * @sa novas_track
  * @sa NOVAS_OBSERVABLE_INIT
  */
-typedef struct {
+typedef struct novas_observable {
   double lon;           ///< [deg] apparent longitude coordinate in coordinate system
   double lat;           ///< [deg] apparent latitude coordinate in coordinate system
   double dist;          ///< [AU] apparent distance to source from observer
@@ -1512,11 +1512,11 @@ typedef struct {
  *
  * @sa NOVAS_TRACK_INIT
  */
-typedef struct {
-  novas_timespec time;     ///< The astronomical time for which the track is calculated.
-  novas_observable pos;    ///< [deg,AU,1] Apparent source position
-  novas_observable rate;   ///< [deg/s,AU/s,1/s] Apparent position rate of change
-  novas_observable accel;  ///< [deg/s<sup>2</sup>,AU/s<sup>2</sup>,1/s<sup>2</sup>] Apparent position acceleration.
+typedef struct novas_track {
+  struct novas_timespec time;     ///< The astronomical time for which the track is calculated.
+  struct novas_observable pos;    ///< [deg,AU,1] Apparent source position
+  struct novas_observable rate;   ///< [deg/s,AU/s,1/s] Apparent position rate of change
+  struct novas_observable accel;  ///< [deg/s<sup>2</sup>,AU/s<sup>2</sup>,1/s<sup>2</sup>] Apparent position acceleration.
 } novas_track;
 
 /**

@@ -384,6 +384,7 @@ switch between different planet and ephemeris calculator functions at will, duri
 ## Example usage
 
  - [Note on alternative methodologies](#methodologies)
+ - [SuperNOVAS and C++](#cpp-headers)
  - [Calculating positions for a sidereal source](#sidereal-example)
  - [Calculating positions for a Solar-system source](#solsys-example)
 
@@ -445,6 +446,19 @@ implementation.
 |:--:| 
 | __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient [matrix transformations](#transforms) between the equatorial systems. |
 
+<a name="cpp-headers"></a>
+### SuperNOVAS and C++
+
+When including SuperNOVAS (C90) headers in your C++ source files, it is necessary to reconcile the different C and C++ 
+namespaces. Therefore, you will have to put the SuperNOVAS header includes inside an `extern "C" {}` block, such as:
+
+```c
+ extern "C" {
+ #  include <novas.h>
+ }
+```
+
+The above is the standard way to include C headers in C++ projects, in general.
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
