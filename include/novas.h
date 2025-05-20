@@ -948,7 +948,7 @@ typedef struct novas_object {
   enum novas_object_type type;    ///< NOVAS object type
   long number;                    ///< enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.
   char name[SIZE_OF_OBJ_NAME];    ///< name of the object (0-terminated)
-  struct novas_cat_entry star;    ///< basic astrometric data for NOVAS_CATALOG_OBJECT type.
+  struct novas_cat_entry star;    ///< basic astrometric data (in ICRS) for NOVAS_CATALOG_OBJECT type.
   struct novas_orbital orbit;     ///< orbital data for NOVAS_ORBITAL_OBJECT type. @since 1.2
 } object;
 

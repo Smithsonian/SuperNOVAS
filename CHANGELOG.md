@@ -29,14 +29,15 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    to ITRS / horizontal (or reverse) calculations, when IERS Earth orientation parameters were explicitly set.
    
  - #187: The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` parameters 
-   were zero, then no wobble correction was applied, not even for the TIO location (s'). The error from this 
-   omission is very small, at just a few &mu;as (micro-acrseconds) within a couple of centuries of J2000.
+   were zero, then no wobble correction was applied, not even for the TIO location (s') when converting between CIRS
+   and ITRS. The error from this omission is very small, at just a few &mu;as (micro-acrseconds) within a couple of 
+   centuries of J2000.
    
  - #190: Reverse `wobble()` (ITRS to TIRS/PEF) had wrong 2nd order corrections, resulting in negligible errors below 
    0.1 &mu;as (micro-arcseconds) typically.
    
- - #193: C++ namespace conflict in `novas_frame` declaration. Fixed by declaring and using named structures instread
-   of the conflicting `typedef` names.
+ - #193: C++ namespace conflict in `novas_frame` declaration. Fixed by declaring and using named structure types 
+   instead of the conflicting `typedef` aliases.
    
 ### Added
 
@@ -48,16 +49,16 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    which is based on the SOFA `iauRefco()` function. The wavelength for which the refraction is calculated can be set 
    by `novas_refract_wavelength()`. By default 550 nm (0.55 &mu;m) is assumed.
    
- - #176: `novas_make_planet_orbit()`  to generate Keplerian orbital elements for the major planets (sans Earth), and the 
+ - #176: `novas_make_planet_orbit()` to generate Keplerian orbital elements for the major planets (sans Earth), and the 
    Earth-Moon Barycenter (EMB), based on Standish &amp; Williams 1992. In most cases such orbitals can provide 
    arcmin-level precisions, especially for current dates.
 
- - #176:`novas_make_moon_orbit()` to generate geocentric Keplerian orbital elements for the Moon using the Chapront et al. 
-   2002 model.
+ - #176:`novas_make_moon_orbit()` to generate geocentric Keplerian orbital elements for the Moon using the Chapront et 
+   al. 2002 model.
 
- - #176: `novas_approx_heliocentric()` and `novas_approx_sky_pos()` to calculate approximate heliocentric ICRS 
-   and observable apparent positions, respectively, for the major planets (including Earth), and Moon and the 
-   Earth-Moon Barycenter, using the orbital models mentioned above.
+ - #176: `novas_approx_heliocentric()` and `novas_approx_sky_pos()` to calculate approximate heliocentric ICRS and 
+   observable apparent positions, respectively, for the major planets (including Earth), and Moon and the Earth-Moon 
+   Barycenter, using the orbital models mentioned above.
 
  - #176: `novas_moon_phase()` and `novas_next_moon_phase()` to calculate the Moon's apparent phase or the date/time 
    when it reaches a specific phase, respectively, using the Keplerian orbitals for the E-M Barycenter by Standish 
@@ -83,13 +84,13 @@ Changes for the upcoming feature release, expected early, probably around 1 June
 ### Changed
 
  - #173: Added parameter range checking to `refract()` function and `novas_radio_refraction()` model. If called with
-   weather parameters or an elevation angle outside of readonable values, NaN will be returned and `errno` will be set 
-   to `EINVAL`.
+   weather parameters or an elevation angle outside of reasonable values, `NaN` will be returned and `errno` will be 
+   set to `EINVAL`.
 
  - #181: Changed `nutation_angles()` to apply P03 model rescaling to IAU2000 nutation angles to provide 'IAU2006'
    values (see Capitaine et al. 2005). The same rescaling has been adopted by SOFA also.
    
- - #186: Tweaked error handling in atmopsheric refraction functions (in `refract.c`).
+ - #186: Tweaked error handling in atmospheric refraction functions (in `refract.c`).
  
  - `NOVAS_RMASS_INIT` (in `novas.h`) and L<sub>G</sub>  (in `timescale.c`) values updated with DE440 data (Park et al. 
    2021).
@@ -98,10 +99,10 @@ Changes for the upcoming feature release, expected early, probably around 1 June
    
 ### Deprecated
 
- - Deprecate `cel_pole()` function and `EPS_COR` / `PSI_COR` global variables, which provided support for the old 
+ - Deprecated `cel_pole()` function and `EPS_COR` / `PSI_COR` global variables, which provided support for the old 
    (now disfavored) way of incorporating Earth orientation parameters as corrections to the true equator and equinox. 
-   The new (preferred) way is to use dx,dy offsets to transform between the Terrestrial Intermediate Reference System 
-   / Pseudo Earth Fixed (PEF) and the International Terrestrial Reference System (ITRS).
+   The new (preferred) way is to use _dx,dy_ offsets to transform between the Terrestrial Intermediate Reference 
+   System / Pseudo Earth Fixed (PEF) system and the International Terrestrial Reference System (ITRS).
 
 
 ## [1.3.1] - 2025-05-07

@@ -399,8 +399,8 @@ showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
 
 The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
 to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
-ways, and in the new IAU standard method. Here is an overview of how the old and new methods define some of the
-terms differently:
+ways, and in the new IAU standard method. The table beow provides an overview of how the old and new methods define 
+some of the terms differently:
 
 
  | Concept                    | Old standard                  | New IAU standard                                  |
@@ -434,8 +434,8 @@ terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator se
 on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal terms. 
 Hence, the old &delta;&psi;,&delta;&epsilon; corrections should never be used in SuperNOVAS, and applying the residual 
 (&Delta;&delta;&psi;,&Delta;&delta;&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
-actively discouraged. Instead, the sub-arcsecond level corrections to Earth orientation (_dx_,_dy_) should be used 
-only for converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS.
+discouraged. Instead, the sub-arcsecond level corrections to Earth orientation (_dx_,_dy_) should be used only when 
+converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS, and vice-versa.
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
@@ -450,7 +450,8 @@ implementation.
 ### SuperNOVAS and C++
 
 When including SuperNOVAS (C90) headers in your C++ source files, it is necessary to reconcile the different C and C++ 
-namespaces. Therefore, you will have to put the SuperNOVAS header includes inside an `extern "C" {}` block, such as:
+namespaces. Therefore, you will have to include the SuperNOVAS headers inside an `extern "C" {}` block in your
+source code, such as:
 
 ```c
  extern "C" {
@@ -458,7 +459,7 @@ namespaces. Therefore, you will have to put the SuperNOVAS header includes insid
  }
 ```
 
-The above is the standard way to include C headers in C++ projects, in general.
+The above is the standard way to include C headers in C++ sources, in general.
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -473,7 +474,7 @@ galactic molecular cloud, or a distant quasar.
  - [Calculate an apparent place on sky](#apparent-place)
  - [Calculate azimuth and elevation angles at the observing location](#horizontal-place)
  - [Calculate rise, set, and transit times](#rise-set-transit)
- - [Coordinate and velocity transforms](#transforms)
+ - [Coordinate and velocity transforms (change of coordinate system)](#transforms)
 
 <a name="specify-object"></a>
 #### Specify the object of interest
@@ -492,7 +493,7 @@ for which we have B1950 (i.e. FK4) coordinates:
 
 Or, if you have coordinates as strings in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
 `novas_str_degrees()` to convert them to hours/degrees for `make_cat_entry()`, with a fair bit of flexibility on the 
-separators used between the components and more, e.g.:
+format of representation, e.g.:
 
 ```c
  make_cat_entry("Antares", "FK4", 1, 
@@ -550,7 +551,13 @@ here, such as:
 ```
 
 Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the 
-geocenter, or at the Solar-system barycenter.
+geocenter, or at the Solar-system barycenter. And, if you intend to use a refraction model that uses humidity also,
+you may set the humidity value _after_ the call to `make_observer_on_surface()`, as needed, e.g.:
+
+```c
+  ...
+  obs.on_surf.humidity = 48.3;	// [%] relative humidity to use for refraction.
+```
 
 
 <a name="specify-time"></a>
@@ -612,8 +619,8 @@ observation:
 
 Here `dx` and `dy` are small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
 in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). They are needed when 
-converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. You may ignore these and set zeroes 
-if sub-arcsecond precision is not required.
+converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed ITRS frame. You may ignore these and 
+set zeroes if sub-arcsecond precision is not required.
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
 in that frame (see the [benchmarks](#benchmarks)). So, if you need to calculate positions for thousands of sources for 
@@ -626,7 +633,8 @@ sub-&mu;as precision, you will you will need a high-precision ephemeris provider
 low-precision Earth and Sun calculator included by default), both for precise Earth-based observer locations and to 
 account for gravitational bending around the Sun and massive planets. Without them, &mu;as accuracy cannot be ensured, 
 in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision ephemeris 
-provider will result in an error from the requisite `ephemeris()` calls. 
+provider will result in an error from the requisite `ephemeris()` calls. (See section on [Incorporating Solar-system 
+ephemeris data or services](#solarsystem) further below.)
 
 <a name="apparent-place"></a>
 #### Calculate an apparent place on sky
@@ -634,7 +642,7 @@ provider will result in an error from the requisite `ephemeris()` calls.
 Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal
 sources) or light-time correction (for Solar-system bodies), and also aberration corrections for the moving observer 
 and gravitational deflection around the major Solar System bodies. You can calculate an apparent location in the 
-coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, or TOD):
+coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, TOD, TIRS, or ITRS):
 
 ```c
  sky_pos apparent;    // Structure containing the precise observed position
@@ -738,7 +746,7 @@ then you might call:
  novas_use_calceph(ephem_data);
 ```
 
-Next, instead of `make_cat_object()` you define your source as an `object` with an name or ID number that is used by 
+Next, instead of `make_cat_object()` you define your source as an `object` with a name or ID number that is used by 
 the ephemeris service you provided. For major planets you might want to use `make_planet()`, if they use a 
 `novas_planet_provider` function to access ephemeris data with their NOVAS IDs, or else `make_ephem_object()` for 
 more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.:
@@ -754,8 +762,9 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
-As of version 1.2 you can also define solar system sources with orbital elements (such as the most up-to-date ones 
-provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for asteroids, comets, etc.):
+As of version 1.2 you can also define solar system sources with Keplerian orbital elements (such as the most 
+up-to-date ones provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for asteroids, comets, 
+etc.):
 
 ```c
  object NEA;		// e.g. a Near-Earth Asteroid
@@ -769,8 +778,8 @@ provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for as
  make_orbital_object("NEAxxx", -1, &orbit, &NEA);
 ```
 
-Note, that even with orbital elements, you will, in general, require a planet calculator (ephemeris provider) also, 
-to provide precisepositions for the Sun or the planet, around which the orbit is defined.
+Note, that even with orbital elements, you will, in general, still require a planet calculator (i.e. ephemeris 
+provider) also, to provide precise positions for the Sun or the planet, around which the orbit is defined.
 
 Other than that, it's the same spiel as before, e.g.:
 
@@ -803,7 +812,7 @@ approximate rise/set time calculations.
 
 
 <a name="transforms"></a>
-### Coordinate and velocity transforms
+### Coordinate and velocity transforms (change of coordinate system)
 
 SuperNOVAS introduces matrix transforms (correctly since v1.4), which can take a position or velocity vector 
 (geometric or apparent), obtained for an observer frame, from one coordinate system to another efficiently. For 
@@ -814,7 +823,7 @@ example,
   double icrs_vec[3] = ...;     // IN: original position vector, say in ICRS.
   double tirs_vec[3] = {0.0};   // OUT: equivalent vector in TIRS we want to obtain
   
-  novas_transform T;	        // Coordinate transformation object
+  novas_transform T;	        // Coordinate transformation data
   
   // Calculate the transformation matrix from ICRS to TIRS in the given observer frame.
   novas_make_transform(&frame, NOVAS_ICRS, NOVAS_TIRS, &T);
@@ -868,11 +877,11 @@ Some of the calculations involved can be expensive from a computational perspect
 however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they 
 may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).
  
-A direct consequence of the caching of results in NOVAS is that calculations are generally not thread-safe as 
-implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one 
-set of input parameters while, at the same time, another thread is saving cached values for a different set of 
-parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, 
-or more precisely they may not correspond to the requested input parameters.
+A direct consequence of the caching of results is that calculations are generally not thread-safe as implemented by 
+the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input 
+parameters while, at the same time, another thread is saving cached values for a different set of parameters. Thus, 
+when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely 
+they may not correspond to the requested input parameters.
  
 While you should never call the original NOVAS C library from multiple threads simultaneously, SuperNOVAS caches the 
 results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in 
@@ -1196,12 +1205,12 @@ code:
 ```
 
 All modern JPL (SPK) ephemeris files should work with the `solsys-calceph` plugin. When linking your application, 
-add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`), and of course the CSPICE library
-too. That's all there is to it.
+add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`), and link against the CALCEPH library 
+also (`-lcalceph`). That's all there is to it.
 
-Ephemeris objects are referenced by their ID numbers (`object.number`), unless it is set to -1, in which case 
-name-based lookup is used. ID numbers are assumed to be NAIF by default, but `novas_calceph_used_ids()` can select 
-between NAIF or CALCEPH numbering systems, if necessary.
+When using CALCEPH, ephemeris objects are referenced by their ID numbers (`object.number`), unless it is set to -1, in 
+which case name-based lookup is used. ID numbers are assumed to be NAIF by default, but `novas_calceph_used_ids()` can 
+select between NAIF or CALCEPH numbering systems, if necessary.
 
 
 <a name="cspice-integration"></a>
@@ -1248,11 +1257,11 @@ Here is an example on how you might use CSPICE with SuperNOVAS in your applicati
 ```
 
 All JPL ephemeris data will work with the `solsys-cspice` plugin. When linking your application, add `-lsolsys-cspice` 
-to your link flags (or else link with `solsys-cspice.o`), and link against te calceph library also (`-lcalceph`). 
-That's all there is to it.
+to your link flags (or else link with `solsys-cspice.o`), and of course the CSPICE library also. That's all there is 
+to it.
 
-Ephemeris objects are referenced by their NAIF ID numbers (`object.number`), unless it is set to -1, in which case 
-name-based lookup is used.
+When using CSPICE, ephemeris objects are referenced by their NAIF ID numbers (`object.number`), unless that number is 
+set to -1, in which case name-based lookup is used.
 
 <a name="universal-ephemerides"></a>
 ### Universal ephemeris data / service integration 
@@ -1304,12 +1313,12 @@ provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`
 ### Legacy support for (older) JPL major planet ephemerides
 
 If you only need support for major planets, you may be able to use one of the modules included with the distribution. 
-The legacy NOVAS modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to DE421), 
-either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph` interface with `solsys2.c`.
+The legacy NOVAS modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to 
+DE421), either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph` interface with `solsys2.c`.
 
 #### Planets via `eph_manager`
 
-To use the `eph_manager` interface for planet 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
+To use the `eph_manager` interface for 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
 SuperNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
 `eph_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
 way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
@@ -1344,7 +1353,7 @@ That's all, except the warning that this method will not work with newer JPL eph
 
 #### Planets via JPL's `pleph` FORTRAN interface
 
-To interface eith the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS 
+To interface with the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS 
 with `BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your appropriately 
 modified `jplint.f` (from the `examples` sub-directory) explicitly, together with the JPL PLEPH library. If you want 
 this to be your default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in 
@@ -1365,8 +1374,8 @@ planetary ephemeris data with SuperNOVAS.
 <a name="explicit-ephem-linking"></a>
 ### Legacy linking of custom ephemeris functions
 
-Finally, if none of the above is appealing, and you are fond of the old ways, you may compile SuperNOVAS with the 
-`DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own implementation of
+Finally, if none of the above is appealingto you, and you are fond of the old ways, you may compile SuperNOVAS with 
+the `DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own implementation of
 `solarsystem()` and `solarsystem_hp()` calls with your application. 
 
 For Solar-system objects other than the major planets, you may also provide your own `readeph()` implementation. (In
@@ -1374,11 +1383,11 @@ this case you will want to set `DEFAULT_READEPH` in `config.mk` to specify your 
 building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link
 your application explicitly with your `readeph()` implementation.
 
-The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing a
-`solarsystem()` / `solarsystem_hp()` and/or `readeph()` implementations for _every_ application that you will want
-to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and
+The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing the one
+and only `solarsystem()` / `solarsystem_hp()` and/or `readeph()` implementations for _every_ application that you will 
+want to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and
 most generic way to add your preferred implementations while also providing some minimum default implementations for
-_other users_ of the library, who may not need _your_ ephemeris service, or have no need for planet data beyond the 
+_other users_ of the library, who may not want _your_ ephemeris service, or have no need for planet data beyond the 
 approximate positions for the Earth and Sun.
 
 -----------------------------------------------------------------------------
