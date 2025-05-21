@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.4.0-rc3] - 2025-05-21
+## [Unreleased]
 
 Changes for the upcoming feature release, expected ahead of schedule, probably around 1 June 2025.
 
@@ -21,8 +21,8 @@ Changes for the upcoming feature release, expected ahead of schedule, probably a
  - #183: IERS Earth orientation corrections set via `cel_pole()` were not taken into account for true obliquity and 
    the equation of equinoxes in `e_tilt()`. This was a bug since v1.0. The bug only affected the old (pre IAU 2006) 
    ways of incorporating polar offsets into TOD coordinates, at the sub-arcsec level. Note, than even with the old 
-   method, it is now preferrable to apply such offsets with `wobble()` instead for the PEF / TIRS to ITRS (and 
-   reverse) conversions.
+   method, it is now preferrable to apply such offsets with `wobble()` for the PEF / TIRS to ITRS (and reverse) 
+   conversions instead.
 
  - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections for transforming 
    between the TIRS) / PEF, and ITRS and vice versa. This resulted in an error at the sub-arcsec level for celestial 
@@ -100,9 +100,11 @@ Changes for the upcoming feature release, expected ahead of schedule, probably a
 ### Deprecated
 
  - Deprecated `cel_pole()` function and `EPS_COR` / `PSI_COR` global variables, which provided support for the old 
-   (now disfavored) way of incorporating Earth orientation parameters as corrections to the true equator and equinox. 
-   The new (preferred) way is to use _dx,dy_ offsets to transform between the Terrestrial Intermediate Reference 
-   System / Pseudo Earth Fixed (PEF) system and the International Terrestrial Reference System (ITRS).
+   (now disfavored) way of incorporating Earth orientation parameters as corrections into the true equator and equinox
+   of date. The preferred way to incorpotate Earth orientation corrections is to use _dx,dy_ offsets relative to the 
+   IAU2006 precession-nutation model only when transforming between the Terrestrial Intermediate Reference System 
+   (TIRS) or Pseudo Earth-Fixed (PEF) system and the International Terrestrial Reference System (ITRS), and vice 
+   versa.
 
 
 ## [1.3.1] - 2025-05-07
