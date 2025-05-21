@@ -23,12 +23,12 @@
 // <---------- GLOBAL VARIABLES -------------->
 
 #if DEFAULT_SOLSYS <= 0
-static int solarsystem_adapter(double jd_tdb, enum novas_planet body, enum novas_origin origin,
+static short solarsystem_adapter(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
   solarsystem(jd_tdb, (short) body, (short) origin, position, velocity);
 }
 
-static int solarsystem_hp_adapter(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
+static short solarsystem_hp_adapter(const double jd_tdb[2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
   solarsystem_hp(jd_tdb, (short) body, (short) origin, position, velocity);
 }
