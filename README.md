@@ -1007,64 +1007,67 @@ E.g.,
  novas_timespec time;           // Astronomical time specification
  char timestamp[40];            // A string to contain an ISO representation
 
- // Parse an ISO timestamp into a Julian day
- double jd = novas_date("2025-02-16T19:35:21Z");
+ // Parse an ISO timestamp into a Julian day (w/o returning the tail).
+ double jd = novas_parse_iso_date("2025-02-16T19:35:21Z", NULL);
  if(isnan(jd)) {
    // Ooops could not parse date.
    ...
  }
    
- // Use the parsed JD date in any timescale, e.g. in TAI
- // with the appropriate leap seconds and UT1-UTC time difference
- novas_set_time(NOVAS_TAI, jd, leap_seconds, dut1, &time);
+ // Use the parsed JD date (in UTC) with the appropriate leap seconds 
+ // and UT1-UTC time difference
+ novas_set_time(NOVAS_UTC, jd, leap_seconds, dut1, &time);
   
  // Print an ISO timestamp, with millisecond precision, into the 
  // designated string buffer.
  novas_iso_timestamp(&time, timestamp, sizeof(timestamp));
 ```
 
-You can also parse a string date/time which includes a timescale specification also:
+ISO 8601 timestamps are always UTC-based and expressed in the Gregorian calendar, as per specification, even for dates 
+that preceded the Gregorian calendar reform of 1582 (i.e. 'proleptic Gregorian' dates). However, other SuperNOVAS 
+string date funtions will process dates in the astronomical calendar of date by default, that is in the Gregorian 
+calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior, and support 
+timescales other than UTC also, e.g.:
 
 ```c
- enum novas_timescale scale;    // Timescale to be parsed
- novas_timespec time;           // Astronomical time specification
- char timestamp[40];            // A string to contain an ISO representation
+ // Print a TDB timestamp in the astronomical calendar of date instead
+ novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
+```
 
- // Parse a timestamp into a Julian day and corresponding timescale
- double jd = novas_date_scale("2025-02-16T19:35:21 TAI", &scale);
+Or, parse an astronomical date:
+
+```c
+ // Parse astronomical dates into a Julian day...
+ double jd = novas_date("2025-02-16T19:35:21");
  if(isnan(jd)) {
    // Ooops could not parse date.
    ...
  }
-  
- // Use the parsed JD date and timescale, rogether with the appropriate 
- // leap seconds and UT1-UTC time difference
- novas_set_time(scale, jd, leap_seconds, dut1, &time);
 ```
 
-The SuperNOVAS string date funtions always interpret dates in the astronomical calendar of date by default, that is in 
-the Gregorian calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior. As
-such, SuperNOVAS string timestamps are also always in the (conventional) astronomical calendar of date also. And while
-`novas_iso_timestamp()` will always express dates as UTC dates, you can use the somewhat more generic 
-`novas_timestamp()` function instead to timestamp in other timescales, e.g.:
+Or, parse an astronomical date, including the timescale specification:
 
 ```c
- // Print a TDB timestamp instead
- novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
+ // Parse a TAI-based timestamp into a Julian day and corresponding timescale
+ double jd = novas_date_scale("2025-02-16T19:35:21+0200 TAI", &scale);
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
 ```
 
-ISO timestamps are best, but sometimes your input dates are represented in other formats. You can have additional 
-flexibility for parsing dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions. E.g.,
+Sometimes your input dates are represented in various other formats. You can have additional flexibility for parsing 
+dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions. E.g.,
 
 ```c
  char *pos = NULL;            // We'll keep track of the string parse position here
  enum novas_timescale scale;  // We'll parse the timescale here (if we can)
 
- // We'll parse the M/D/Y date up to the 'TAI' timescale specification...
+ // Parse the M/D/Y date up to the 'TAI' timescale specification...
  double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_MDY, 
    "2/16/2025 20:08:49.082 TAI", &pos);
   
- // We'll parse the 'TAI' timescale marker, after the date/time specification
+ // Then parse the 'TAI' timescale marker, after the date/time specification
  scale = novas_timescale_for_string(pos);
  if(scale < 0) {
    // Ooops, not a valid timescale marker. Perhaps assume UTC...
