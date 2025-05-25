@@ -25,7 +25,7 @@ Changes for the upcoming feature release, expected ahead of schedule, probably a
    conversions instead.
 
  - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections for transforming 
-   between the TIRS) / PEF, and ITRS and vice versa. This resulted in an error at the sub-arcsec level for celestial 
+   between the TIRS) / PEF and ITRS, and vice versa. This resulted in an error at the sub-arcsec level for celestial 
    to ITRS / horizontal (or reverse) calculations, when IERS Earth orientation parameters were explicitly set.
    
  - #187: The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` parameters 

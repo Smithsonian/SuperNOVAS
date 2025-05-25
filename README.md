@@ -29,7 +29,7 @@ high-precision astrometry such as one might need for running an observatory or a
 fork of the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) 
 C version 3.1, providing bug fixes, tons of extra features, while making it easier (and safer) to use also.
 
-SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
+SuperNOVAS is easy to use and is also very fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
 will scale with the number of CPUs when calculations are performed in parallel threads.
 
@@ -394,6 +394,13 @@ astrometric positions of celestial objects. The guide below is geared towards th
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
 
+In contrast to the original NOVAS C 3.1, on which it is based, __SuperNOVAS__ is really quite easy to use. In general, 
+its new API is just as simple and intuitive as that of __astropy__ (or so we strive for it to be), and it is similarly 
+well documented also (see the [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)). 
+And, despite the famous elegance of Python (and the opposite thereof for C), you can typically achieve the same results 
+in a similar number of lines with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error 
+handling at every step (due to the lack of `try / except` style constructs in C).
+
 <a name="methodologies"></a>
 ### Note on alternative methodologies
 
@@ -424,7 +431,7 @@ them.
 In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin 
 for positions and for velocities, in any reference system, is determined by the `observer` location, while aberration
 and gravitational deflection is included for apparent places only (as seen from the observer location, regardless of
-the observer location). 
+where that is). 
 
 Older catalogs, such as J2000 (FK5), HIP, B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) 
 coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.
@@ -439,7 +446,7 @@ converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS, and vice-versa
 
 WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 
 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed 
-coordinates are effectively assumed as ITRS, whether explicitly or implicitly. There is nothing WGS84-specific in the 
+coordinates are effectively presumed as ITRS, whether explicitly or implicitly. There is nothing WGS84-specific in the 
 implementation.
 
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
@@ -480,7 +487,7 @@ galactic molecular cloud, or a distant quasar.
 #### Specify the object of interest
 
 First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star 
-for which we have B1950 (i.e. FK4) coordinates:
+for which we have B1950 (i.e. FK4) coordinates (including motion):
 
 ```c
  cat_entry star; // Structure to contain information on sidereal source 
@@ -551,8 +558,8 @@ here, such as:
 ```
 
 Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the 
-geocenter, or at the Solar-system barycenter. And, if you intend to use a refraction model that uses humidity also,
-you may set the humidity value _after_ the call to `make_observer_on_surface()`, as needed, e.g.:
+geocenter, or at the Solar-system barycenter. And, if you intend to use a refraction model that uses local weather 
+parameters you may specify there, including humidity also, _after_ the call to `make_observer_on_surface()`, e.g.:
 
 ```c
   ...
@@ -658,7 +665,8 @@ size conversion).
 Note, that if you want geometric positions (and/or velocities) instead, without aberration and gravitational 
 deflection, you might use `novas_geom_posvel()` instead. And regardless, which function you use you can always easily 
 and efficiently change the coordinate system in which your results are expressed by creating an appropriate transform 
-via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`.
+via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()` (more on 
+[coordinate transforms](#transforms) further below).
 
 <a name="horizontal-place"></a>
 #### Calculate azimuth and elevation angles at the observing location
