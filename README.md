@@ -78,6 +78,13 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
 At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a _build-time_ replacement for NOVAS in your application without having 
 to change existing (functional) code you may have written for NOVAS C. 
+
+In contrast to the original NOVAS C, on which it is based, __SuperNOVAS__ is really quite easy to use. In general, its 
+new API is just as simple and intuitive as that of __astropy__ (or so we strive for it to be), and it is similarly 
+well documented also (see the [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)). 
+And, despite the famous elegance of Python (and the opposite thereof for C), you can typically achieve the same 
+results in a similar number of lines with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved 
+error handling at every step (due to the lack of `try / except` style constructs in C).
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
@@ -393,13 +400,6 @@ SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
-
-In contrast to the original NOVAS C 3.1, on which it is based, __SuperNOVAS__ is really quite easy to use. In general, 
-its new API is just as simple and intuitive as that of __astropy__ (or so we strive for it to be), and it is similarly 
-well documented also (see the [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)). 
-And, despite the famous elegance of Python (and the opposite thereof for C), you can typically achieve the same results 
-in a similar number of lines with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error 
-handling at every step (due to the lack of `try / except` style constructs in C).
 
 <a name="methodologies"></a>
 ### Note on alternative methodologies
