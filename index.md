@@ -10,7 +10,7 @@ might need for running an observatory or a precise planetarium program. It is a 
 Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, providing bug fixes and 
 making it safer and easier to use overall.
 
-SuperNOVAS is fast, providing 3--5 orders of magnitude faster position calculations than 
+SuperNOVAS is easy to use and is also very fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](doc/README.md#benchmarks)) in a single thread, 
 and its performance scales with the number of CPUs when parallelized.
 
