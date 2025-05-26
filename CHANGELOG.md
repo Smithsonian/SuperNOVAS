@@ -81,6 +81,9 @@ Changes for the upcoming feature release, expected ahead of schedule, probably a
  - #191: Added `tt2tdb_hp()` (high-precision) and `tt2tdb_fp()` (flexible-precision) functions for calculating the
    TDB-TT time difference (in seconds), with up to 0.1 &mu;s accuracy based on Fairhead &amp; Bretagnon 1990.
    
+ - #194: Added documentation under `resources/` for a side-by-side example comparison with __astropy__.
+ 
+ 
 ### Changed
 
  - #173: Added parameter range checking to `refract()` function and `novas_radio_refraction()` model. If called with
