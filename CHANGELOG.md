@@ -7,9 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.4.0] - 2025-06-02
 
-Changes for the upcoming feature release, expected ahead of schedule, probably around 1 June 2025.
+Feature release, with critical bug fixes. 
 
 ### Fixed
 
@@ -82,7 +82,6 @@ Changes for the upcoming feature release, expected ahead of schedule, probably a
    TDB-TT time difference (in seconds), with up to 0.1 &mu;s accuracy based on Fairhead &amp; Bretagnon 1990.
    
  - #194: Added documentation under `resources/` for a side-by-side example comparison with __astropy__.
- 
  
 ### Changed
 
