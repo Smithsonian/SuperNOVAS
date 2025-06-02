@@ -79,13 +79,13 @@ At the same time, SuperNOVAS aims to be fully backward compatible with the inten
 NOVAS C library, such that it can be used as a _build-time_ replacement for NOVAS in your application without having 
 to change existing (functional) code you may have written for NOVAS C. 
 
-In contrast to the original NOVAS C, on which it is based, __SuperNOVAS__ is really quite easy to use. In general, its 
-new API is just as simple and intuitive as that of __astropy__ (or so we strive for it to be), and it is similarly 
-well documented also (see the [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)). 
-And, despite the famous elegance of Python (and the opposite thereof for C), you can typically achieve the same 
-results in a similar number of lines with __SuperNOVAS__ as with __astropy__ (see an 
-[example](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/supernovas_vs_astropy.md), notwithstanding a 
-little more involved error handling at every step (due to the lack of `try / except` style constructs in C).
+__SuperNOVAS__ is really quite easy to use. Its new API is just as simple and intuitive as that of __astropy__ (or so 
+we strive for it to be), and it is similarly well documented also (see the 
+[API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)). You can typically achieve the 
+same results with 
+[similar lines of code](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/supernovas_vs_astropy.md) 
+with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
+the lack of `try / except` style constructs in C).
  
 SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
 the NOVAS C library, if new releases become available.
