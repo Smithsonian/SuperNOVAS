@@ -313,8 +313,9 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 <a name="integration"></a>
 ## Building your application with SuperNOVAS
 
-Provided you have installed the SuperNOVAS headers into a standard location, you can build your application against it 
-easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have a `Makefile` with contents like:
+Provided you have installed the SuperNOVAS headers and (static or shared) libraries into a standard location, you can 
+build your application against it easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have a 
+`Makefile` with contents like:
 
 ```make
   myastroapp: myastroapp.c 
