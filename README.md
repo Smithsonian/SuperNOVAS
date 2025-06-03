@@ -170,6 +170,10 @@ SuperNOVAS fixes a number of outstanding issues with NOVAS C 3.1:
    parameters were zero, then no wobble correction was applied, not even for the TIO longitude (s'). The error from 
    this omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
    
+ - [__v1.4__] The NOVAS C 3.1 implementation of `nutation_angles()` was not fully consistent with the implemented 
+   IAU2006 precession model. To make it consistent, the IAU2000 nutation angles must be rescaled slightly to match 
+   (see Capitaine et al. 2005).
+   
 -----------------------------------------------------------------------------
 
 <a name="compatibility"></a>
@@ -829,16 +833,16 @@ example,
 
 ```c
   novas_frame frame = ...       // The observer frame (time and location)
-  double icrs_vec[3] = ...;     // IN: original position vector, say in ICRS.
+  double j2000_vec[3] = ...;    // IN: original position vector, say in J2000.
   double tirs_vec[3] = {0.0};   // OUT: equivalent vector in TIRS we want to obtain
   
   novas_transform T;	        // Coordinate transformation data
   
-  // Calculate the transformation matrix from ICRS to TIRS in the given observer frame.
-  novas_make_transform(&frame, NOVAS_ICRS, NOVAS_TIRS, &T);
+  // Calculate the transformation matrix from J2000 to TIRS in the given observer frame.
+  novas_make_transform(&frame, NOVAS_J2000, NOVAS_TIRS, &T);
   
-  // Transform the ICRS position or velocity vector to TIRS...
-  novas_transform_vector(icrs_vec, &T, tirs_vec);
+  // Transform the J2000 position or velocity vector to TIRS...
+  novas_transform_vector(j2000_vec, &T, tirs_vec);
 ```
 
 Transformations support all SupeNOVAS reference systems, that is ICRS/GCRS, J2000, TOD, MOD, CIRS, TIRS, and
@@ -847,14 +851,11 @@ ITRS. The same transform can also be used to convert apparent positions in a `sk
 ```c
   ...
   
-  sky_pos tod_pos = ...         // IN: in TOD, e.g. via novas_sky_pos()...
-  sky_pos j2000_pos;            // OUT: equivalent J2000 position to calculate...
+  sky_pos j2000_pos = ...        // IN: in J2000, e.g. via novas_sky_pos()...
+  sky_pos tirs_pos;              // OUT: equivalent TIRS position to calculate...
   
-  // Calculate the transformation matrix from TOD to J2000 in the given observer frame.
-  novas_make_transform(&frame, NOVAS_TOD, NOVAS_J2000, &T);
-  
-  // Transform the TOD apparent position to J2000....
-  novas_transform_sky_pos(&tod_pos, &T, &j2000_pos);
+  // Transform the J2000 apparent positions to TIRS....
+  novas_transform_sky_pos(&j2000_pos, &T, &tirs_pos);
 ```
 
 ------------------------------------------------------------------------------
