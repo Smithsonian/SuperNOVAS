@@ -1388,7 +1388,7 @@ planetary ephemeris data with SuperNOVAS.
 <a name="explicit-ephem-linking"></a>
 ### Legacy linking of custom ephemeris functions
 
-Finally, if none of the above is appealingto you, and you are fond of the old ways, you may compile SuperNOVAS with 
+Finally, if none of the above is appealing to you, and you are fond of the old ways, you may compile SuperNOVAS with 
 the `DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own implementation of
 `solarsystem()` and `solarsystem_hp()` calls with your application. 
 
