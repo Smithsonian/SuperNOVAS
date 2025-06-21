@@ -30,11 +30,11 @@ analyzing astronomical datasets. It is a fork of the Naval Observatory Vector As
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, providing bug fixes, tons of extra features, 
 while making it easier (and safer) to use also.
 
-SuperNOVAS is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations than 
-[astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
-will scale with the number of CPUs when calculations are performed in parallel threads.
+__SuperNOVAS__ is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations 
+than [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its 
+performance will scale with the number of CPUs when calculations are performed in parallel threads.
 
-SuperNOVAS is entirely free to use without licensing restrictions. Its source code is compatible with the C99 
+__SuperNOVAS__ is entirely free to use without licensing restrictions. Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. And, despite it being a light-weight library,
 it fully supports the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
 
@@ -62,10 +62,10 @@ This document has been updated for the `v1.4` and later releases.
 <a name="introduction"></a>
 ## Introduction
 
-SuperNOVAS is a fork of the The Naval Observatory Vector Astrometry Software 
+__SuperNOVAS__ is a fork of the The Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)). (It is not related to the separate NOVA / libnova library.)
 
-The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
+The primary goal of __SuperNOVAS__ is to improve on the original NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues).
  - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
@@ -76,7 +76,7 @@ The primary goal of SuperNOVAS is to improve on the stock NOVAS C library via:
  - [Debug mode](#debug-support) with informative error tracing.
  - [Regression testing](https://codecov.io/gh/Smithsonian/SuperNOVAS) and continuous integration on GitHub.
 
-At the same time, SuperNOVAS aims to be fully backward compatible with the intended functionality of the upstream 
+At the same time, __SuperNOVAS__ aims to be fully backward compatible with the intended functionality of the upstream 
 NOVAS C library, such that it can be used as a _build-time_ replacement for NOVAS in your application without having 
 to change existing (functional) code you may have written for NOVAS C. 
 
@@ -88,10 +88,10 @@ same results with
 with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
 the lack of `try / except` style constructs in C).
  
-SuperNOVAS is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release of 
-the NOVAS C library, if new releases become available.
+__SuperNOVAS__ is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release 
+of the NOVAS C library, if new releases become available.
  
-SuperNOVAS is maintained by [Attila Kovács](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
+__SuperNOVAS__ is maintained by [Attila Kovács](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
 &amp; Smithsonian, and it is available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) 
 repository on GitHub.
 
@@ -116,7 +116,7 @@ Outside contributions are very welcome. See
 <a name="fixed-issues"></a>
 ## Fixed NOVAS C 3.1 issues
 
-SuperNOVAS fixes a number of outstanding issues with NOVAS C 3.1:
+__SuperNOVAS__ fixes a number of outstanding issues with NOVAS C 3.1:
 
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
@@ -180,15 +180,15 @@ SuperNOVAS fixes a number of outstanding issues with NOVAS C 3.1:
 <a name="compatibility"></a>
 ## Compatibility with NOVAS C 3.1
 
-SuperNOVAS strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary (ABI) 
+__SuperNOVAS__ strives to maintain API compatibility with the upstream NOVAS C 3.1 library, but not binary (ABI) 
 compatibility. 
 
-If you have code that was written for NOVAS C 3.1, it should work with SuperNOVAS as is, without modifications. Simply 
-(re)build your application against SuperNOVAS, and you are good to go. 
+If you have code that was written for NOVAS C 3.1, it should work with __SuperNOVAS__ as is, without modifications. 
+Simply (re)build your application against SuperNOVAS, and you are good to go. 
 
 The lack of binary compatibility just means that you cannot drop-in replace the libraries (e.g. the static 
 `libnovas.a`, or the shared `libnovas.so`), from NOVAS C 3.1 with those from SuperNOVAS. Instead, you will have to 
-build (compile) your application referencing the SuperNOVAS headers and/or libraries from the start.
+build (compile) your application referencing the __SuperNOVAS__ headers and/or libraries from the start.
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
 `short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
@@ -203,9 +203,9 @@ JPL NAIF codes, for which 16-bit storage is insufficient.
 ## Building and installation
 
 
-The SuperNOVAS distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as local 
-documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point we do 
-not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)
+The __SuperNOVAS__ distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as 
+local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point 
+we do not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, or else define
 the necessary variables in the shell prior to invoking `make`. For example:
@@ -314,9 +314,9 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 <a name="integration"></a>
 ## Building your application with SuperNOVAS
 
-Provided you have installed the SuperNOVAS headers and (static or shared) libraries into a standard location, you can 
-build your application against it easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have a 
-`Makefile` with contents like:
+Provided you have installed the __SuperNOVAS__ headers and (static or shared) libraries into a standard location, you 
+can build your application against it easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have 
+a `Makefile` with contents like:
 
 ```make
   myastroapp: myastroapp.c 
@@ -446,8 +446,8 @@ coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.
 The old method typically relied on the Lieske et al. 1977 precession and nutation models, which did not include tidal
 terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. SuperNOVAS and NOVAS C rely 
 on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal terms. 
-Hence, the old &delta;&psi;,&delta;&epsilon; corrections should never be used in SuperNOVAS, and applying the residual 
-(&Delta;&delta;&psi;,&Delta;&delta;&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
+Hence, the old d&psi;,d&epsilon; corrections should never be used in SuperNOVAS, and applying the residual 
+(&Delta;d&psi;,&Delta;d&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
 discouraged. Instead, the sub-arcsecond level corrections to Earth orientation (_dx_,_dy_) should be used only when 
 converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS, and vice-versa.
 
@@ -463,8 +463,8 @@ implementation.
 <a name="cpp-headers"></a>
 ### SuperNOVAS and C++
 
-When including SuperNOVAS (C90) headers in your C++ source files, it is necessary to reconcile the different C and C++ 
-namespaces. Therefore, you will have to include the SuperNOVAS headers inside an `extern "C" {}` block in your
+When including __SuperNOVAS__ (C90) headers in your C++ source files, it is necessary to reconcile the different C and 
+C++ namespaces. Therefore, you will have to include the SuperNOVAS headers inside an `extern "C" {}` block in your
 source code, such as:
 
 ```c
@@ -829,7 +829,7 @@ approximate rise/set time calculations.
 <a name="transforms"></a>
 ### Coordinate and velocity transforms (change of coordinate system)
 
-SuperNOVAS introduces matrix transforms (correctly since v1.4), which can take a position or velocity vector 
+__SuperNOVAS__ introduces matrix transforms (correctly since v1.4), which can take a position or velocity vector 
 (geometric or apparent), obtained for an observer frame, from one coordinate system to another efficiently. For 
 example,
 
@@ -847,8 +847,8 @@ example,
   novas_transform_vector(j2000_vec, &T, tirs_vec);
 ```
 
-Transformations support all SupeNOVAS reference systems, that is ICRS/GCRS, J2000, TOD, MOD, CIRS, TIRS, and
-ITRS. The same transform can also be used to convert apparent positions in a `sky_pos` structure also, e.g.:
+Transformations support all __SupeNOVAS__ reference systems, that is ICRS/GCRS, J2000, TOD, MOD, CIRS, TIRS, and ITRS. 
+The same transform can also be used to convert apparent positions in a `sky_pos` structure also, e.g.:
 
 ```c
   ...
@@ -886,8 +886,8 @@ When one does not need positions at the microarcsecond level, some shortcuts can
 ### Multi-threaded calculations
 
 Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
-however, NOVAS (and SuperNOVAS) has a trick up its sleeve: it caches the last result of intensive calculations so they 
-may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).
+however, NOVAS (and __SuperNOVAS__) has a trick up its sleeve: it caches the last result of intensive calculations so 
+they may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).
  
 A direct consequence of the caching of results is that calculations are generally not thread-safe as implemented by 
 the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input 
@@ -895,8 +895,8 @@ parameters while, at the same time, another thread is saving cached values for a
 when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely 
 they may not correspond to the requested input parameters.
  
-While you should never call the original NOVAS C library from multiple threads simultaneously, SuperNOVAS caches the 
-results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in 
+While you should never call the original NOVAS C library from multiple threads simultaneously, __SuperNOVAS__ caches 
+the results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in 
 multi-threaded applications. Just make sure that you:
 
  - use a compiler which supports the C11 language standard;
@@ -1012,7 +1012,7 @@ all valid ISO date specifications:
  2025-02-16T14:35:21.832+05:00  # alternative time-zone specification
 ```
 
-SuperNOVAS provides functions to convert between ISO dates/times and their string representation for convenience. 
+__SuperNOVAS__ provides functions to convert between ISO dates/times and their string representation for convenience. 
 E.g.,
 
 ```c
@@ -1036,7 +1036,7 @@ E.g.,
 ```
 
 ISO 8601 timestamps are always UTC-based and expressed in the Gregorian calendar, as per specification, even for dates 
-that preceded the Gregorian calendar reform of 1582 (i.e. 'proleptic Gregorian' dates). However, other SuperNOVAS 
+that preceded the Gregorian calendar reform of 1582 (i.e. 'proleptic Gregorian' dates). However, other __SuperNOVAS__ 
 string date funtions will process dates in the astronomical calendar of date by default, that is in the Gregorian 
 calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior, and support 
 timescales other than UTC also, e.g.:
@@ -1111,13 +1111,13 @@ an error if called with `NOVAS_FULL_ACCURACY`.
 
 ### Prerequisites to precise results
 
-The SuperNOVAS library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s, 
-precision for all types of celestial sources. However, there are certain prerequisites and practical considerations 
-before that level of accuracy is reached.
+The __SuperNOVAS__ library is in principle capable of calculating positions to sub-microarcsecond, and velocities to 
+mm/s, precision for all types of celestial sources. However, there are certain prerequisites and practical 
+considerations before that level of accuracy is reached.
 
     
- 1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use SuperNOVAS with the
-    new IAU standard quantities and methods. The old ways were simply not suited for precision much below the 
+ 1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use __SuperNOVAS__ with 
+    the new IAU standard quantities and methods. The old ways were simply not suited for precision much below the 
     milliarcsecond level.
     
  2. __Gravitational bending__: Calculations much below the milliarcsecond level will require to account for 
@@ -1129,22 +1129,22 @@ before that level of accuracy is reached.
 
  3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun. For the highest precision calculations you also need 
-    positions for all major planets to calculate gravitational deflection precisely. By default SuperNOVAS can only 
-    provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly not at 
-    the sub-microarcsecond level, and not for other Solar-system sources. You will need to provide a way to interface 
-    SuperNOVAS with a suitable ephemeris source (such as the CSPICE toolkit from JPL or CALCEPH) if you want to use it 
-    to obtain precise positions for Solar-system bodies. See the [section further below](#solarsystem) for more 
-    information how you can do that.
+    positions for all major planets to calculate gravitational deflection precisely. By default, __SuperNOVAS__ can 
+    only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly 
+    not at the sub-microarcsecond level, and not for other Solar-system sources. You will need to provide a way to 
+    interface __SuperNOVAS__ with a suitable ephemeris source (such as the CSPICE toolkit from JPL or CALCEPH) if you 
+    want to use it to obtain precise positions for Solar-system bodies. See the [section further below](#solarsystem) 
+    for more information how you can do that.
 
  4. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
     knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
     nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
-    time difference and leap-seconds (UTC-TAI). In SuperNOVAS you can use `cel_pole()` and `get_ut1_to_tt()` functions 
-    to apply / use the published values from these to improve the astrometric precision of Earth-orientation based 
-    coordinate calculations. Without setting and using the actual polar offset values for the time of observation, 
-    positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
+    time difference and leap-seconds (UTC-TAI). In __SuperNOVAS__ you can use `cel_pole()` and `get_ut1_to_tt()` 
+    functions to apply / use the published values from these to improve the astrometric precision of Earth-orientation 
+    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
+    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
    
   5. __Refraction__: Ground based observations are also subject to atmospheric refraction. SuperNOVAS offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
@@ -1161,10 +1161,10 @@ before that level of accuracy is reached.
 <a name="solarsystem"></a>
 ## Incorporating Solar-system ephemeris data or services
 
-If you want to use SuperNOVAS to calculate positions for a range of Solar-system objects, and/or to do it with 
+If you want to use __SuperNOVAS__ to calculate positions for a range of Solar-system objects, and/or to do it with 
 precision, you will have to interface it to a suitable provider of ephemeris data. Given the NOVAS C heritage, and 
-some added SuperNOVAS flexibility in this area, you have several options for going about it. These are listed from the 
-most practical (and preferred) to the least so (the old ways). 
+some added __SuperNOVAS__ flexibility in this area, you have several options for going about it. These are listed from 
+the most practical (and preferred) to the least so (the old ways). 
 
 NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/) for the major 
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
@@ -1187,13 +1187,13 @@ The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provi
 INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with the 
 the CALCEPH C library for handling Solar-system objects.
 
-Prior to building SuperNOVAS simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your environment. Depending on the 
-build target, it will build `libsolsys-calceph.so[.1]` (target `shared`) or `libsolsys-calceph.a` (target `static`) 
-libraries or `solsys-calceph.o` (target `solsys`), which provide the `novas_use_calceph()` and 
+Prior to building __SuperNOVAS__ simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your environment. Depending on 
+the build target, it will build `libsolsys-calceph.so[.1]` (target `shared`) or `libsolsys-calceph.a` (target 
+`static`) libraries or `solsys-calceph.o` (target `solsys`), which provide the `novas_use_calceph()` and 
 `novas_use_calceph_planets()`, and `novas_calceph_use_ids()` functions.
 
 Of course, you will need access to the CALCEPH C development files (C headers and unversioned `libcalceph.so` or `.a` 
-library) for the build to succeed. Here is an example on how you'd use CALCEPH with SuperNOVAS in your application 
+library) for the build to succeed. Here is an example on how you'd use CALCEPH with __SuperNOVAS__ in your application 
 code:
 
 ```c
@@ -1232,8 +1232,8 @@ select between NAIF or CALCEPH numbering systems, if necessary.
 ### Optional NAIF CSPICE toolkit integration
 
 The [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) is the canonical standard library for JPL 
-ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing SuperNOVAS with CSPICE for 
-handling Solar-system objects.
+ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing __SuperNOVAS__ with CSPICE 
+for handling Solar-system objects.
 
 Prior to building SuperNOVAS simply set `CSPICE_SUPPORT` to 1 in `config.mk` or in your environment. Depending on the 
 build target, it will build `libsolsys-cspice.so[.1]` (target `shared`) or `libsolsys-cspice.a` (target `static`) 
@@ -1247,7 +1247,7 @@ of an header search location, and the unversioned `libcspice.so` or `.a` library
 want to check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) GitHub 
 repository to help you build CSPICE with shared libraries and dynamically linked tools.
 
-Here is an example on how you might use CSPICE with SuperNOVAS in your application code:
+Here is an example on how you might use CSPICE with __SuperNOVAS__ in your application code:
 
 ```c
  #include <novas.h>
@@ -1281,7 +1281,7 @@ set to -1, in which case name-based lookup is used.
 <a name="universal-ephemerides"></a>
 ### Universal ephemeris data / service integration 
 
-Possibly the most universal way to integrate ephemeris data with SuperNOVAS is to write your own 
+Possibly the most universal way to integrate ephemeris data with __SuperNOVAS__ is to write your own 
 `novas_ephem_provider` function, e.g.:
 
 ```c
@@ -1319,8 +1319,8 @@ major planets, the Sun, Moon, Solar-system Barycenter...). But, you can use the 
  set_planet_provider_hp(planet_ephem_provider_hp);
 ```
 
-provided you compiled SuperNOVAS with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code against
-`solsys-ephem.c` explicitly. Easy-peasy.
+provided you compiled __SuperNOVAS__ with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code 
+against `solsys-ephem.c` explicitly. Easy-peasy.
 
 
 
@@ -1335,8 +1335,8 @@ DE421), either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN
 
 To use the `eph_manager` interface for 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
 SuperNOVAS with `BUILTIN_SOLSYS1 = 1` in `config.mk`, or else link your application with `solsys1.c` and 
-`eph_manager.c` from SuperNOVAS explicitly. If you want `eph_manager` to be your default ephemeris provider (the old 
-way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
+`eph_manager.c` from __SuperNOVAS__ explicitly. If you want `eph_manager` to be your default ephemeris provider (the 
+old way) you might also want to set `DEFAULT_SOLSYS = 1` in `config.mk`. Otherwise, your application should set 
 `eph_manager` as your planetary ephemeris provider at runtime via:
 
 ```c
@@ -1368,11 +1368,11 @@ That's all, except the warning that this method will not work with newer JPL eph
 
 #### Planets via JPL's `pleph` FORTRAN interface
 
-To interface with the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build SuperNOVAS 
-with `BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your appropriately 
-modified `jplint.f` (from the `examples` sub-directory) explicitly, together with the JPL PLEPH library. If you want 
-this to be your default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` in 
-`config.mk`. Otherwise, your application should set your planetary ephemeris provider at runtime via:
+To interface with the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build 
+__SuperNOVAS__ with `BUILTIN_SOLSYS2 = 1` in `config.mk`, or else link your application with `solsys2.c` and your 
+appropriately modified `jplint.f` (from the `examples` sub-directory) explicitly, together with the JPL PLEPH library. 
+If you want this to be your default ephemeris provider (the old way) you might also want to set `DEFAULT_SOLSYS = 2` 
+in `config.mk`. Otherwise, your application should set your planetary ephemeris provider at runtime via:
 
 ```c
  set_planet_provider(planet_jplint);
@@ -1383,27 +1383,27 @@ Integrating JPL ephemeris data this way can be arduous. You will need to compile
 of the world), but you may also have to modify `jplint.f` (providing the intermediate FORTRAN `jplint_()` / 
 `jplihp_()` interfaces to `pleph_()`) to work with the version of `pleph.f` that you will be using. Unless you already 
 have code that relies on this method, you are probably better off choosing one of the other ways for integrating 
-planetary ephemeris data with SuperNOVAS.
+planetary ephemeris data with __SuperNOVAS__.
 
 
 <a name="explicit-ephem-linking"></a>
 ### Legacy linking of custom ephemeris functions
 
-Finally, if none of the above is appealing to you, and you are fond of the old ways, you may compile SuperNOVAS with 
-the `DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own implementation of
-`solarsystem()` and `solarsystem_hp()` calls with your application. 
+Finally, if none of the above is appealing to you, and you are fond of the old ways, you may compile __SuperNOVAS__ 
+with the `DEFAULT_SOLSYS` option disabled (commented, removed, or else set to 0), and then link your own 
+implementation of `solarsystem()` and `solarsystem_hp()` calls with your application. 
 
 For Solar-system objects other than the major planets, you may also provide your own `readeph()` implementation. (In
 this case you will want to set `DEFAULT_READEPH` in `config.mk` to specify your source code for that function before
-building the SuperNOVAS library, or else disable that option entirely (e.g. by commenting or removing it), and link
-your application explicitly with your `readeph()` implementation.
+building the __SuperNOVAS__ library, or else disable that option entirely (e.g. by commenting or removing it), and 
+link your application explicitly with your `readeph()` implementation.
 
-The downside of this approach is that your SuperNOVAS library will not be usable without invariably providing the one
-and only `solarsystem()` / `solarsystem_hp()` and/or `readeph()` implementations for _every_ application that you will 
-want to use SuperNOVAS with. This is why the runtime configuration of the ephemeris provider functions is the best and
-most generic way to add your preferred implementations while also providing some minimum default implementations for
-_other users_ of the library, who may not want _your_ ephemeris service, or have no need for planet data beyond the 
-approximate positions for the Earth and Sun.
+The downside of this approach is that your __SuperNOVAS__ library will not be usable without invariably providing the 
+one and only `solarsystem()` / `solarsystem_hp()` and/or `readeph()` implementations for _every_ application that you 
+will want to use __SuperNOVAS__ with. This is why the runtime configuration of the ephemeris provider functions is the 
+best and most generic way to add your preferred implementations while also providing some minimum default 
+implementations for _other users_ of the library, who may not want _your_ ephemeris service, or have no need for 
+planet data beyond the approximate positions for the Earth and Sun.
 
 -----------------------------------------------------------------------------
 
@@ -1428,7 +1428,7 @@ known. However, `NOVAS_DEBUG_EXTRA` will not give it a free pass, and will make 
 the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.
 
 When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
-be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can havev a 
+be reported to the standard error, complete with call tracing within the __SuperNOVAS__ library, s.t. users can have a 
 better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing 
 `NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application calls 
 `grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug mode is 
@@ -1523,7 +1523,7 @@ one minute.
 <a name="added-functionality"></a>
 ### New functionality highlights
 
- Below is a non-exhaustive overview new features added by SuperNOVAS on top of the existing NOVAS C API. See 
+ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top of the existing NOVAS C API. See 
  `CHANGELOG.md` for more details.
  
  
