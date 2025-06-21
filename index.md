@@ -5,23 +5,21 @@ excerpt: SuperNOVAS is a light-weight, high-precision astrometry C/C++ library. 
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"><br clear="all">
 
 
-__SuperNOVAS__ is a C/C++ astronomy software library, providing high-precision astrometry such as one 
-might need for running an observatory or a precise planetarium program. It is a fork of the Naval Observatory Vector 
-Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, providing bug fixes and 
-making it safer and easier to use overall.
+__SuperNOVAS__ is a C/C++ astronomy software library, providing high-precision astrometry such as one might need for 
+running an observatory, a precise planetarium program, or for analyzing astronomical datasets. It is a fork of the 
+Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, 
+providing bug fixes, tons of extra features, while making it easier (and safer) to use also.
 
-SuperNOVAS is easy to use and is also very fast, providing 3--5 orders of magnitude faster position calculations than 
-[astropy](https://www.astropy.org/) 7.0.0 (see section on [benchmarks](doc/README.md#benchmarks)) in a single thread, 
-and its performance scales with the number of CPUs when parallelized.
+__SuperNOVAS__ is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations than 
+[astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
+will scale with the number of CPUs when calculations are performed in parallel threads.
 
-![SuperNOVAS benchmarks](resources/SuperNOVAS-benchmark.png)
+__SuperNOVAS__ is entirely free to use without licensing restrictions. Its source code is compatible with the C99 
+standard, and hence should be suitable for old and new platforms alike. And, despite it being a light-weight library,
+it fully supports the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
 
-SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C90 
-standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
-support for the IAU 2000/2006 standards for sub-microarcsecond position calculations.
-
-SuperNOVAS is maintained by [Attila Kovacs](https://github.com/attipaci) at the Center for Astrophysics \| Harvard & 
-Smithsonian, and it available via the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/)
+__SuperNOVAS__ is maintained by [Attila Kovacs](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
+& Smithsonian, and it available via the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) 
 repository on GitHub.
 
 This site contains various online resources that support the library:
