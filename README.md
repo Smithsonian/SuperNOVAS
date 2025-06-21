@@ -25,17 +25,18 @@ The NOVAS C astrometry library, made better.
  - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
-high-precision astrometry such as one might need for running an observatory or a precise planetarium program. It is a 
-fork of the Naval Observatory Vector Astrometry Software ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) 
-C version 3.1, providing bug fixes, tons of extra features, while making it easier (and safer) to use also.
+high-precision astrometry such as one might need for running an observatory, a precise planetarium program, or for
+analyzing astronomical datasets. It is a fork of the Naval Observatory Vector Astrometry Software 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, providing bug fixes, tons of extra features, 
+while making it easier (and safer) to use also.
 
-SuperNOVAS is easy to use and is also very fast, providing 3--5 orders of magnitude faster position calculations than 
+SuperNOVAS is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations than 
 [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its performance 
 will scale with the number of CPUs when calculations are performed in parallel threads.
 
-SuperNOVAS is entirely free to use without licensing restrictions.  Its source code is compatible with the C99 
-standard, and hence should be suitable for old and new platforms alike. It is light-weight and easy to use, with full 
-support for the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
+SuperNOVAS is entirely free to use without licensing restrictions. Its source code is compatible with the C99 
+standard, and hence should be suitable for old and new platforms alike. And, despite it being a light-weight library,
+it fully supports the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
 
 This document has been updated for the `v1.4` and later releases.
 
