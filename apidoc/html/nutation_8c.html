@@ -125,6 +125,8 @@ Functions</h2></td></tr>
 <tr class="separator:a6f9cddeb8c3dd906b9b0b5941249ad0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd066c2857d1b1cc06d8bd51b912d841" id="r_abd066c2857d1b1cc06d8bd51b912d841"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k</a> (double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</td></tr>
 <tr class="separator:abd066c2857d1b1cc06d8bd51b912d841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e9ced7b0aec544ad7b057b58f777ec4" id="r_a6e9ced7b0aec544ad7b057b58f777ec4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles</a> (double t, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict dpsi, double *restrict deps)</td></tr>
+<tr class="separator:a6e9ced7b0aec544ad7b057b58f777ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs</dd></dl>
@@ -194,7 +196,7 @@ Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3
 <dd>
 <a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
+<a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
 <dd>
 <a class="el" href="nutation_8h.html#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a> </dd></dl>
 
@@ -244,7 +246,7 @@ Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3
 <p>REFERENCES: </p><ol>
 <li>
 McCarthy, D. and Luzum, B. (2003). "An Abridged Model of the
-    Precession &amp; Nutation of the Celestial Pole," Celestial Mechanics and Dynamical Astronomy, Volume 85, Issue 1, Jan. 2003, p. 37. (IAU 2000B) IERS Conventions (2003), Chapter 5. </li>
+    Precession &amp;amp; Nutation of the Celestial Pole," Celestial Mechanics and Dynamical Astronomy, Volume 85, Issue 1, Jan. 2003, p. 37. (IAU 2000B) IERS Conventions (2003), Chapter 5. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -262,9 +264,9 @@ McCarthy, D. and Luzum, B. (2003). "An Abridged Model of the
 <dd>
 <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd></dl>
+<a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a8a0ef80e44076b86bc707e9414d85d76">ASEC2RAD</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48">novas_delaunay_args::l</a>, <a class="el" href="structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c">novas_delaunay_args::l1</a>, and <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>.</p>
+<p class="reference">References <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48">novas_delaunay_args::l</a>, <a class="el" href="structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c">novas_delaunay_args::l1</a>, and <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>.</p>
 
 </div>
 </div>
@@ -328,11 +330,91 @@ Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3
 <dd>
 <a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
+<a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
 <dd>
 <a class="el" href="nutation_8h.html#a1f0e319630e7a47f17247bf51f7bf36c">novas_nutation_provider</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="novas_8h.html#a8a0ef80e44076b86bc707e9414d85d76">ASEC2RAD</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48">novas_delaunay_args::l</a>, <a class="el" href="structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c">novas_delaunay_args::l1</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a479f3eb097c0aeb4ac7dc3ae2e6c376e">NOVAS_MARS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a7c452cc654265f03e78801f9aead83de">NOVAS_VENUS</a>, <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>, and <a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
+<p class="reference">References <a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48">novas_delaunay_args::l</a>, <a class="el" href="structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c">novas_delaunay_args::l1</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a479f3eb097c0aeb4ac7dc3ae2e6c376e">NOVAS_MARS</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a03b12ea0f93a1a1045d7bcccd613c6f2">NOVAS_SATURN</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a7c452cc654265f03e78801f9aead83de">NOVAS_VENUS</a>, <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>, and <a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
+
+</div>
+</div>
+<a id="a6e9ced7b0aec544ad7b057b58f777ec4" name="a6e9ced7b0aec544ad7b057b58f777ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e9ced7b0aec544ad7b057b58f777ec4">&#9670;&#160;</a></span>nutation_angles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nutation_angles </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>dpsi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>deps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the values for nutation in longitude and nutation in obliquity for a given TDB Julian date. The nutation model selected depends upon the input value of 'accuracy'. See notes below for important details.</p>
+<p>This function selects the nutation model depending first upon the input value of 'accuracy'. If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used. Otherwise the model set by <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> is used, or else the default <a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a>.</p>
+<p>See the prologs of the nutation functions in file '<a class="el" href="nutation_8c.html">nutation.c</a>' for details concerning the models.</p>
+<p>NOTES: </p><ol>
+<li>
+As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to match the model used by SOFA. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
+<li>
+Capitaine, N., P.T. Wallace and J. Chapront (2005), “Improvement of the IAU 2000 precession model.” Astronomy &amp; Astrophysics, Vol. 432, pp. 355–67. </li>
+<li>
+Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159 </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">t</td><td>[cy] TDB time in Julian centuries since J2000.0 </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dpsi</td><td>[arcsec] Nutation in longitude in arcseconds. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">deps</td><td>[arcsec] Nutation in obliquity in arcseconds.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output pointer arguments are NULL</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> </dd>
+<dd>
+<a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd>
+<dd>
+<a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a> </dd>
+<dd>
+<a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a> </dd>
+<dd>
+<a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="plugin_8c.html#a416a96426a0b3c52c1d5fc6452357366">get_nutation_lp_provider()</a>, <a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a>, and <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>.</p>
 
 </div>
 </div>

@@ -7,13 +7,120 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.4.0] - 2025-06-02
 
-Upcoming bug fix release, expected around 1 August 2025.
+Feature release, with critical bug fixes. 
+
+### Fixed
+
+ - #188: Critical bug in `novas_make_transform()` since inception in v1.1. Compound transforms were calculated using
+   matrix products in the wrong commutation order (successive transforms were multiplied from the right instead of
+   from the left). Very embarrasing indeed, and somehow it went unnoticed with the testing suite also (even more 
+   embarrassing...).
+
+ - #183: IERS Earth orientation corrections set via `cel_pole()` were not taken into account for true obliquity and 
+   the equation of equinoxes in `e_tilt()`. This was a bug since v1.0. The bug only affected the old (pre IAU 2006) 
+   ways of incorporating polar offsets into TOD coordinates, at the sub-arcsec level. Note, than even with the old 
+   method, it is now preferrable to apply such offsets with `wobble()` for the PEF / TIRS to ITRS (and reverse) 
+   conversions instead.
+
+ - #184: The frame based approach introduced in v1.1 has ommitted applying polar wobble corrections for transforming 
+   between the TIRS) / PEF and ITRS, and vice versa. This resulted in an error at the sub-arcsec level for celestial 
+   to ITRS / horizontal (or reverse) calculations, when IERS Earth orientation parameters were explicitly set.
+   
+ - #187: The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` parameters 
+   were zero, then no wobble correction was applied, not even for the TIO location (s') when converting between CIRS
+   and ITRS. The error from this omission is very small, at just a few &mu;as (micro-acrseconds) within a couple of 
+   centuries of J2000.
+   
+ - #190: Reverse `wobble()` (ITRS to TIRS/PEF) had wrong 2nd order corrections, resulting in negligible errors below 
+   0.1 &mu;as (micro-arcseconds) typically.
+   
+ - #193: C++ namespace conflict in `novas_frame` declaration. Fixed by declaring and using named structure types 
+   instead of the conflicting `typedef` aliases.
+   
+### Added
+
+ - #172: Added `novas_time_gst()` and `novas_time_lst()` convenience functions to calculate the Greenwich (apparent)
+   Sidereal Time (GST / GaST) and Local (apparent) Sidereal Time (LST / LaST) for a given astrometric time (and
+   observer location) more easily. 
+
+ - #173: Added our own implementation of the wavelength-dependent IAU refraction model as `novas_wave_refraction()`, 
+   which is based on the SOFA `iauRefco()` function. The wavelength for which the refraction is calculated can be set 
+   by `novas_refract_wavelength()`. By default 550 nm (0.55 &mu;m) is assumed.
+   
+ - #176: `novas_make_planet_orbit()` to generate Keplerian orbital elements for the major planets (sans Earth), and the 
+   Earth-Moon Barycenter (EMB), based on Standish &amp; Williams 1992. In most cases such orbitals can provide 
+   arcmin-level precisions, especially for current dates.
+
+ - #176:`novas_make_moon_orbit()` to generate geocentric Keplerian orbital elements for the Moon using the Chapront et 
+   al. 2002 model.
+
+ - #176: `novas_approx_heliocentric()` and `novas_approx_sky_pos()` to calculate approximate heliocentric ICRS and 
+   observable apparent positions, respectively, for the major planets (including Earth), and Moon and the Earth-Moon 
+   Barycenter, using the orbital models mentioned above.
+
+ - #176: `novas_moon_phase()` and `novas_next_moon_phase()` to calculate the Moon's apparent phase or the date/time 
+   when it reaches a specific phase, respectively, using the Keplerian orbitals for the E-M Barycenter by Standish 
+   &amp; Williams 1992, and the geocentric orbitals of the Moon by Chapront et al. 2002.
+ 
+ - #176: `novas_orbital_native_posvel()` to calculate orbital positions in the native system, in which the orbital 
+   is defined (e.g. ecliptic coordinates for planetary orbits).
+   
+ - #177: Added `novas_day_of_week()` and `novas_day_of_year()` functions to convert JD dates to a 1-based day of week
+   index, or to a day of the year in the calendar of choice.
+
+ - #185: Added `NOVAS_TIRS` and `NOVAS_ITRS` to `enum novas_reference_systems`. All frame-based functions now support
+   these. Legacy `place()` and its variants support TIRS but not ITRS (because of the lack of information available
+   to the legacy calls), while Keplerian orbitals may not be be defined in either TIRS or ITRS since these Earth 
+   co-rotating systems are not inertial systems.
+
+ - #186: Added `NOVAS_RADIO_REFRACTION` and `NOVAS_WAVE_REFRACTION` to `enum novas_refraction_model`, for referencing 
+   the Berman &amp; Rockwell 1976 radio-wave model, or the IAU / SOFA wavelength-dependent model, respectively.
+   
+ - #191: Added `tt2tdb_hp()` (high-precision) and `tt2tdb_fp()` (flexible-precision) functions for calculating the
+   TDB-TT time difference (in seconds), with up to 0.1 &mu;s accuracy based on Fairhead &amp; Bretagnon 1990.
+   
+ - #194: Added documentation under `resources/` for a side-by-side example comparison with __astropy__.
+ 
+### Changed
+
+ - #173: Added parameter range checking to `refract()` function and `novas_radio_refraction()` model. If called with
+   weather parameters or an elevation angle outside of reasonable values, `NaN` will be returned and `errno` will be 
+   set to `EINVAL`.
+
+ - #181: Changed `nutation_angles()` to apply P03 model rescaling to IAU2000 nutation angles to provide 'IAU2006'
+   values (see Capitaine et al. 2005). The same rescaling has been adopted by SOFA also.
+   
+ - #186: Tweaked error handling in atmospheric refraction functions (in `refract.c`).
+ 
+ - `NOVAS_RMASS_INIT` (in `novas.h`) and L<sub>G</sub>  (in `timescale.c`) values updated with DE440 data (Park et al. 
+   2021).
+ 
+ - Moved some functions around between source files.
+   
+### Deprecated
+
+ - Deprecated `cel_pole()` function and `EPS_COR` / `PSI_COR` global variables, which provided support for the old 
+   (now disfavored) way of incorporating Earth orientation parameters as corrections into the true equator and equinox
+   of date. The preferred way to incorpotate Earth orientation corrections is to use _dx,dy_ offsets relative to the 
+   IAU2006 precession-nutation model only when transforming between the Terrestrial Intermediate Reference System 
+   (TIRS) or Pseudo Earth-Fixed (PEF) system and the International Terrestrial Reference System (ITRS), and vice 
+   versa.
+
+
+## [1.3.1] - 2025-05-07
+
+Bug fix release with minor enhancements.
 
 ### Fixed
 
  - #167: Fixes for Debian i386 cross builds.
+
+ - #174: `accum_prec()` had linear and quadratic time evolution coefficients swapped since v1.0. The bug affected
+   the IAU2000 precession-nutation calculations, and the calculation of the complementary terms in the equation of
+   equinoxes in `ee_ct()` / `e_tilt()`. The effect however is small, typically just a few micro-arcseconds (&mu;as),
+   for dates within a century of J2000.
 
 ### Changed
 
@@ -21,13 +128,21 @@ Upcoming bug fix release, expected around 1 August 2025.
  
  - #169: `novas_parse_degrees()` to support parsing values in exponential notation also, e.g. `1.23E2`, `1.23E2W` etc.
  
- - #170: `make_on_surface()` to validate temperature and pressure values, and return -1 (with `errno` set to `EINVAL`) if
-   the supplied values are outside of the sensible range.
+ - #170: `make_on_surface()` to validate temperature and pressure values, and return -1 (with `errno` set to `EINVAL`) 
+   if the supplied values are outside of the sensible range.
  
- - #171: Cache `nutation_angles()` instread of `e_tilt()` to improve performance in more usage scenarios. (See updated
+ - #171: Cache `nutation_angles()` instead of `e_tilt()` to improve performance in more usage scenarios. (See updated
    benchmarks).
    
  - #171: Moved `precession()`, `nutation()`, and `nutation_angles()` to `equinox.c`.
+ 
+ - #178: `novas_jd_to_date()` to check if input calendar is valid and return -1 with `errno` set to `EINVAL` if it is
+   not.
+ 
+ - #179: `novas_jd_from_date()` to check if input calendar is valid and return NaN with `errno` set to `EINVAL` if it 
+   is not.
+ 
+ - Corrected benchmarks for individual frames.
  
  - Corrections and edits to API documentation.
 
@@ -35,6 +150,11 @@ Upcoming bug fix release, expected around 1 August 2025.
 
  - Deprecated `ee_ct()` and `ira_equinox()` functions. Both are meant for internal use only, and need not be exposed to
    users in general.
+   
+ - Deprecated `solarsystem()`, `solarsystem_hp()`, and `readeph()` functions. These were prototypes for user-defined 
+   implementations that had to be linked together with NOVAS. In SuperNOVAS, the same functionality can be (should be) 
+   set dynamically, during runtime. Thus, these functions are provided to support building legacy NOVAS applications 
+   only, and should be avoided in new application code going forward. 
  
 
 ## [1.3.0] - 2025-04-15
@@ -45,8 +165,8 @@ changes to improve performance.
    
 ### Fixed
 
- - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs. (This was 
-   a NOVAS C 3.1 bug.)
+ - #116: `transform_cat()` to update parallax to the recalculated value when precessing or changing epochs. This was a
+   SuperNOVAS bug since v1.0.
  
  - #128: `transform_cat()` had insufficient string length checking of `out_id` parameter. Prior to the fix it checked 
    for the longer object name size instead of the catalog name size. However, even if longer than expected input names 

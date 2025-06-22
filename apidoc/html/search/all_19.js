@@ -1,15 +1,10 @@
 var searchData=
 [
-  ['v1_200_0',['New in v1.0',['../index.html#autotoc_md92',1,'']]],
-  ['v1_201_1',['New in v1.1',['../index.html#autotoc_md93',1,'']]],
-  ['v1_202_2',['New in v1.2',['../index.html#autotoc_md94',1,'']]],
-  ['v1_203_3',['New in v1.3',['../index.html#autotoc_md95',1,'']]],
-  ['v_5fobs_4',['v_obs',['../structnovas__frame.html#a52e812c05f108858a4459d937a2115a4',1,'novas_frame']]],
-  ['vc_5',['VC',['../eph__manager_8c.html#afe4ec6caa67baf8fb5b184cc183a07e8',1,'eph_manager.c']]],
-  ['vector2radec_6',['vector2radec',['../util_8c.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c'],['../novas_8h.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c']]],
-  ['vel_7',['vel',['../structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035',1,'novas_planet_bundle']]],
-  ['via_20jpl_20s_20tt_20pleph_20tt_20fortran_20interface_8',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md83',1,'']]],
-  ['via_20tt_20eph_5fmanager_20tt_9',['Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;',['../index.html#autotoc_md82',1,'']]],
-  ['virtual_5fplanet_10',['virtual_planet',['../place_8c.html#a0dc172d82eec79f78c2d218c1a7b9cbe',1,'virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c'],['../novas_8h.html#a0dc172d82eec79f78c2d218c1a7b9cbe',1,'virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c']]],
-  ['virtual_5fstar_11',['virtual_star',['../place_8c.html#aaf187624a93349391518f9d6bb3051e5',1,'virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c'],['../novas_8h.html#aaf187624a93349391518f9d6bb3051e5',1,'virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c']]]
+  ['units_0',['Physical units',['../index.html#autotoc_md77',1,'']]],
+  ['universal_20ephemeris_20data_20service_20integration_1',['Universal ephemeris data / service integration',['../index.html#autotoc_md87',1,'']]],
+  ['unredshift_5fvrad_2',['unredshift_vrad',['../spectral_8c.html#aea89203030ca831260dec18f83081d23',1,'unredshift_vrad(double vrad, double z):&#160;spectral.c'],['../novas_8h.html#aea89203030ca831260dec18f83081d23',1,'unredshift_vrad(double vrad, double z):&#160;spectral.c']]],
+  ['up_20the_20observing_20frame_3',['Set up the observing frame',['../index.html#autotoc_md67',1,'']]],
+  ['usage_4',['Example usage',['../index.html#autotoc_md60',1,'']]],
+  ['ut1_5fto_5ftt_5',['ut1_to_tt',['../structnovas__timespec.html#a2b381954218c16fad4ae585fb90fddbe',1,'novas_timespec']]],
+  ['util_2ec_6',['util.c',['../util_8c.html',1,'']]]
 ];

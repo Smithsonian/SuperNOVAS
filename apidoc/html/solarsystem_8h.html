@@ -155,14 +155,40 @@ Functions</h2></td></tr>
 <tr class="separator:a0f0a786b5614a788c02b37a462eae2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae45badb450c1ca73920d982e12346c5b" id="r_ae45badb450c1ca73920d982e12346c5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="solarsystem_8h.html#ae8d7c10a8b9e69b1f0654ef4038482fd">novas_planet_provider_hp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ae45badb450c1ca73920d982e12346c5b">get_planet_provider_hp</a> ()</td></tr>
 <tr class="separator:ae45badb450c1ca73920d982e12346c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c5e215babeeba078ca7b3e9be42e555" id="r_a3c5e215babeeba078ca7b3e9be42e555"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object</a> (const char *name, long num, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *orbit, <a class="el" href="structobject.html">object</a> *body)</td></tr>
+<tr class="separator:a3c5e215babeeba078ca7b3e9be42e555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c4b3f67a3b82808dd16ae43dfaf0f86" id="r_a1c4b3f67a3b82808dd16ae43dfaf0f86"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86">naif_to_novas_planet</a> (long id)</td></tr>
 <tr class="separator:a1c4b3f67a3b82808dd16ae43dfaf0f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ead627eed7fabd8583f1353e89f42e7" id="r_a9ead627eed7fabd8583f1353e89f42e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id, double jd_tdb, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="separator:a9ead627eed7fabd8583f1353e89f42e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cb01609f76b0ff8487817b9446a3a62" id="r_a4cb01609f76b0ff8487817b9446a3a62"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, <a class="el" href="structsky__pos.html">sky_pos</a> *restrict out)</td></tr>
+<tr class="separator:a4cb01609f76b0ff8487817b9446a3a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4fa5359b8b0167a2780baff17b164a5" id="r_af4fa5359b8b0167a2780baff17b164a5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#af4fa5359b8b0167a2780baff17b164a5">novas_helio_dist</a> (double jd_tdb, const <a class="el" href="structobject.html">object</a> *restrict source, double *restrict rate)</td></tr>
 <tr class="separator:af4fa5359b8b0167a2780baff17b164a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6e6c7f6dc2745030e3fd4d407e982bd" id="r_ad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit</a> (double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
+<tr class="separator:ad6e6c7f6dc2745030e3fd4d407e982bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b094e813d8b752a6f3344419e80031" id="r_a63b094e813d8b752a6f3344419e80031"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id, double jd_tdb, <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit)</td></tr>
+<tr class="separator:a63b094e813d8b752a6f3344419e80031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121940d7f0ef41297d28fab8e6df5998" id="r_a121940d7f0ef41297d28fab8e6df5998"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a121940d7f0ef41297d28fab8e6df5998">novas_moon_angle</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame)</td></tr>
+<tr class="separator:a121940d7f0ef41297d28fab8e6df5998"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dbdafd6b07f079815ae52d00e142861" id="r_a2dbdafd6b07f079815ae52d00e142861"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase</a> (double jd_tdb)</td></tr>
+<tr class="separator:a2dbdafd6b07f079815ae52d00e142861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0bd6e212af549309b0fcb792ed8cb79" id="r_ad0bd6e212af549309b0fcb792ed8cb79"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ad0bd6e212af549309b0fcb792ed8cb79">novas_next_moon_phase</a> (double phase, double jd_tdb)</td></tr>
+<tr class="separator:ad0bd6e212af549309b0fcb792ed8cb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b88d2403a3051ab32229244cf98d7ab" id="r_a6b88d2403a3051ab32229244cf98d7ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a6b88d2403a3051ab32229244cf98d7ab">novas_orbit_native_posvel</a> (double jd_tdb, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="separator:a6b88d2403a3051ab32229244cf98d7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4510a3235a693f122899983901211c30" id="r_a4510a3235a693f122899983901211c30"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a4510a3235a693f122899983901211c30">novas_orbit_posvel</a> (double jd_tdb, const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict orbit, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict pos, double *restrict vel)</td></tr>
+<tr class="separator:a4510a3235a693f122899983901211c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cf7410aa68b980112734227b40890d6" id="r_a2cf7410aa68b980112734227b40890d6"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a2cf7410aa68b980112734227b40890d6">novas_planet_for_name</a> (const char *restrict name)</td></tr>
+<tr class="separator:a2cf7410aa68b980112734227b40890d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a706ecf8998b78e48051d2876efc6e01c" id="r_a706ecf8998b78e48051d2876efc6e01c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a706ecf8998b78e48051d2876efc6e01c">novas_set_orbsys_pole</a> (enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> type, double ra, double dec, <a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a> *restrict sys)</td></tr>
+<tr class="separator:a706ecf8998b78e48051d2876efc6e01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac780bd907a12957995d36ad916dd4ec1" id="r_ac780bd907a12957995d36ad916dd4ec1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ac780bd907a12957995d36ad916dd4ec1">novas_solar_illum</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame)</td></tr>
 <tr class="separator:ac780bd907a12957995d36ad916dd4ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a763f9a9dd2edb4645a5db05184ca7495" id="r_a763f9a9dd2edb4645a5db05184ca7495"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a763f9a9dd2edb4645a5db05184ca7495">novas_solar_power</a> (double jd_tdb, const <a class="el" href="structobject.html">object</a> *restrict source)</td></tr>
 <tr class="separator:a763f9a9dd2edb4645a5db05184ca7495"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d1ef3bc6d99aa473511e45c6e0481e9" id="r_a2d1ef3bc6d99aa473511e45c6e0481e9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame)</td></tr>
+<tr class="separator:a2d1ef3bc6d99aa473511e45c6e0481e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3eb54acf22dc155879163de89c6865e" id="r_ac3eb54acf22dc155879163de89c6865e"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ac3eb54acf22dc155879163de89c6865e">novas_to_dexxx_planet</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id)</td></tr>
 <tr class="separator:ac3eb54acf22dc155879163de89c6865e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab51ac9bdf7736e1c1582e0981046daf3" id="r_ab51ac9bdf7736e1c1582e0981046daf3"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="solarsystem_8h.html#ab51ac9bdf7736e1c1582e0981046daf3">novas_to_naif_planet</a> (enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> id)</td></tr>
@@ -624,6 +650,70 @@ This implementation will always propulate the output position and velocity vecto
 
 </div>
 </div>
+<a id="a3c5e215babeeba078ca7b3e9be42e555" name="a3c5e215babeeba078ca7b3e9be42e555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c5e215babeeba078ca7b3e9be42e555">&#9670;&#160;</a></span>make_orbital_object()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int make_orbital_object </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *&#160;</td>
+          <td class="paramname"><em>orbit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structobject.html">object</a> *&#160;</td>
+          <td class="paramname"><em>body</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets a celestial object to be a Solar-system orbital body. Typically this would be used to define minor planets, asteroids, comets, or even planetary satellites.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">name</td><td>Name of object. It may be NULL if not relevant. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">num</td><td>Solar-system body ID number (e.g. NAIF). It is not required and can be set e.g. to -1 if not relevant to the caller. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">orbit</td><td>The orbital parameters to adopt. The data will be copied, not referenced. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">body</td><td>Pointer to structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or the name is too long.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30">novas_orbit_posvel()</a> </dd>
+<dd>
+<a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a> </dd>
+<dd>
+<a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
+<dd>
+<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+
+<p class="reference">References <a class="el" href="target_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a">NOVAS_ORBITAL_OBJECT</a>, and <a class="el" href="structobject.html#a43225af0345622f8c049032d75a1a3da">object::orbit</a>.</p>
+
+</div>
+</div>
 <a id="a1c4b3f67a3b82808dd16ae43dfaf0f86" name="a1c4b3f67a3b82808dd16ae43dfaf0f86"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c4b3f67a3b82808dd16ae43dfaf0f86">&#9670;&#160;</a></span>naif_to_novas_planet()</h2>
 
@@ -654,6 +744,172 @@ This implementation will always propulate the output position and velocity vecto
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677">NOVAS_PLUTO_BARYCENTER</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
+
+</div>
+</div>
+<a id="a9ead627eed7fabd8583f1353e89f42e7" name="a9ead627eed7fabd8583f1353e89f42e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ead627eed7fabd8583f1353e89f42e7">&#9670;&#160;</a></span>novas_approx_heliocentric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_approx_heliocentric </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>vel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the approximate geometric heliocentric orbital positions and velocities for the major planets, Sun, or Earth-Moon Barycenter (EMB). The returned positions and velocities are not suitable for precise calculations. However, they may be used to provide rough guidance about the approximate locations of the planets, e.g. for determining approximate rise or set times or the approximate azimuth / elevation angles from an observing site.</p>
+<p>The orbitals can provide planet positions to arcmin-level precision for the rocky inner planets, and to a fraction of a degree precision for the gas and ice giants and Pluto. The accuracies for Uranus, Neptune, and Pluto are significantly improved (to the arcmin level) if used in the time range of 1800 AD to 2050 AD. For a more detailed summary of the typical accuracies, see either of the top two references below.</p>
+<p>For accurate positions, you should use planetary ephemerides (such as the JPL ephemerides via the CALCEPH or CSPICE plugins) and <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code> instead.</p>
+<p>While this function is generally similar to creating an orbital object with an orbit initialized with <code><a class="el" href="planets_8c.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> or <code><a class="el" href="planets_8c.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a></code>, and then calling <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code>, there are a few important differences:</p>
+<ol>
+<li>
+This function returns geometric positions referenced to the Sun (i.e., heliocentric), whereas <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code> references the calculated positions to the Solar-system Barycenter (SSB). </li>
+<li>
+This function calculates Earth and Moon positions about the Keplerian orbital position of the Earth-Moon Barycenter (EMB). In constrast, <code><a class="el" href="planets_8c.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> does not provide orbitals for the Earth directly, and <code>make_moot_orbit()</code> references the Moon's orbital to the Earth position returned by the currently configured planet calculator function (see <code><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code>). </li>
+</ol>
+<p>NOTES: </p><ol>
+<li>
+The Sun's position w.r.t. the Solar-system Barycenter is calculated using <code><a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b">earth_sun_calc()</a></code>. All other orbitals are also referenced to the Sun's position calculated that way. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+E.M. Standish and J.G. Williams 1992. </li>
+<li>
+<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">https://ssd.jpl.nasa.gov/planets/approx_pos.html</a> </li>
+<li>
+Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>
+<li>
+Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361), vol. 124, no. 1, July 1983, p. 50-62. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">id</td><td>NOVAS major planet ID. All major planets, plus the Sun, Moon, Earth-Moon Barycenter (EMB), and Pluto system Barycenter are supported. (For Pluto, the Pluto System Barycenter value are returned.) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian Date. Dates between 3000 BC and 3000 AD are supported. For dates between 1800 AD and 2050 AD the returned positions are somewhat more accurate. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Output Heliocentric ICRS position vector, or NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">vel</td><td>[AU/day] Output Heliocentric ICRS velocity vector, or NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or if the JD date is outside of the range with valid parameters, or else -1 if the planet ID is not supported or if both output vectors are NULL. In case of errors errno will be set to indicate the type of error.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="planets_8c.html#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a> </dd>
+<dd>
+<a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b">earth_sun_calc()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
+<dd>
+<a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a> </dd>
+<dd>
+<a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="planets_8c.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="planets_8c.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, <a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30">novas_orbit_posvel()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
+
+</div>
+</div>
+<a id="a4cb01609f76b0ff8487817b9446a3a62" name="a4cb01609f76b0ff8487817b9446a3a62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cb01609f76b0ff8487817b9446a3a62">&#9670;&#160;</a></span>novas_approx_sky_pos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_approx_sky_pos </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a>&#160;</td>
+          <td class="paramname"><em>sys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structsky__pos.html">sky_pos</a> *restrict&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculates an approximate apparent location on sky for a major planet, Sun, Moon, Earth-Moon Barycenter (EMB) &ndash; typically to arcmin level accuracy &ndash; using Keplerian orbital elements. The returned position is antedated for light-travel time (for Solar-System bodies). It also applies an appropriate aberration correction (but not gravitational deflection).</p>
+<p>The orbitals can provide planet positions to arcmin-level precision for the rocky inner planets, and to a fraction of a degree precision for the gas and ice giants and Pluto. The accuracies for Uranus, Neptune, and Pluto are significantly improved (to the arcmin level) if used in the time range of 1800 AD to 2050 AD. For a more detailed summary of the typical accuracies, see either of the top two references below.</p>
+<p>For accurate positions, you should use planetary ephemerides (such as the JPL ephemerides via the CALCEPH or CSPICE plugins) and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> instead.</p>
+<p>While this function is generally similar to creating an orbital object with an orbit initialized with <code><a class="el" href="planets_8c.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> or <code><a class="el" href="planets_8c.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a></code>, and then calling <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code>, there are a few important differences to note:</p>
+<ol>
+<li>
+This function calculates Earth and Moon positions about the Keplerian orbital position of the Earth-Moon Barycenter (EMB). In constrast, <code><a class="el" href="planets_8c.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a></code> does not provide orbitals for the Earth directly, and <code>make_moot_orbit()</code> references the Moon's orbital to the Earth position returned by the currently configured planet calculator function (see <code><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code>). </li>
+<li>
+This function ignores gravitational deflection. It makes little sense to bother about corrections that are orders of magnitude below the accuracy of the orbital positions obtained. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+E.M. Standish and J.G. Williams 1992. </li>
+<li>
+<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">https://ssd.jpl.nasa.gov/planets/approx_pos.html</a> </li>
+<li>
+Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>
+<li>
+Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361), vol. 124, no. 1, July 1983, p. 50-62. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">id</td><td>NOVAS major planet ID. All major planets, plus the Sun, Moon, Earth-Moon Barycenter (EMB), and Pluto system Barycenter are supported. (For Pluto, the Pluto System Barycenter values are returned.) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">frame</td><td>The observer frame, defining the location and time of observation. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">sys</td><td>The coordinate system in which to return the apparent sky location. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Pointer to the data structure which is populated with the calculated approximate apparent location in the designated coordinate system. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 in case of an error (errno will indicate the type of error).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a> </dd>
+<dd>
+make_frame() </dd></dl>
+
+<p class="reference">References <a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="planets_8c.html#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric()</a>, <a class="el" href="frames_8c.html#a4817703c9357f702a27812584c91f87c">novas_geom_to_app()</a>, <a class="el" href="timescale_8c.html#ae30e3dd8e30bdcf4e8486cfce696fb98">novas_get_time()</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d">NOVAS_TDB</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, and <a class="el" href="spectral_8c.html#a37f22e463cc06b4e381aa18659e6319d">rad_vel2()</a>.</p>
 
 </div>
 </div>
@@ -705,6 +961,532 @@ This implementation will always propulate the output position and velocity vecto
 <a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1">novas_solar_illum()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
+
+</div>
+</div>
+<a id="ad6e6c7f6dc2745030e3fd4d407e982bd" name="ad6e6c7f6dc2745030e3fd4d407e982bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6e6c7f6dc2745030e3fd4d407e982bd">&#9670;&#160;</a></span>novas_make_moon_orbit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_make_moon_orbit </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict&#160;</td>
+          <td class="paramname"><em>orbit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch of observation.</p>
+<p>REFERENCES: </p><ol>
+<li>
+Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>
+<li>
+Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361), vol. 124, no. 1, July 1983, p. 50-62. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian Date. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">orbit</td><td>Orbital elements data structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (<code>errno</code> set to <code>EINVAL</code>).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="planets_8c.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a> </dd>
+<dd>
+<a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
+
+</div>
+</div>
+<a id="a63b094e813d8b752a6f3344419e80031" name="a63b094e813d8b752a6f3344419e80031"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63b094e813d8b752a6f3344419e80031">&#9670;&#160;</a></span>novas_make_planet_orbit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_make_planet_orbit </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict&#160;</td>
+          <td class="paramname"><em>orbit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get approximate current heliocentric orbital elements for the major planets. These orbital elements are not suitable for precise position velocity calculations, but they may be useful to obtain approximate positions for the major planets, e.g. to estimate rise or set times, or apparent elevation angles from an observing site.</p>
+<p>These orbitals can provide planet positions to arcmin-level precision for the rocky inner planets, and to a fraction of a degree precision for the gas and ice giants and Pluto. The accuracies for Uranus, Neptune, and Pluto are significantly improved (to the arcmin level) if used in the time range of 1800 AD to 2050 AD. For a more detailed summary of the typical accuracies, see either of the references below.</p>
+<p>NOTES: </p><ol>
+<li>
+The Earth-Moon system is treated as a single orbital of the Earth-Moon Barycenter (EMB). That is, the EMB orbital is returned for both Earth and the Moon also. </li>
+<li>
+For Pluto, the Pluto system barycenter orbit is returned. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+E.M. Standish and J.G. Williams 1992. </li>
+<li>
+<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">https://ssd.jpl.nasa.gov/planets/approx_pos.html</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">id</td><td>NOVAS major planet ID. All major planets, except Earth, are supported. The Earth-Moon Barycenter (EMB), and Pluto system Barycenter are supported also. (For Pluto, the Pluto System Barycenter values are returned.) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian Date. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">orbit</td><td>Orbital elements data structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (<code>errno</code> set to <code>EINVAL</code>).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="planets_8c.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd>
+<dd>
+<a class="el" href="planets_8c.html#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a> </dd>
+<dd>
+<a class="el" href="planets_8c.html#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric()</a> </dd>
+<dd>
+<a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
+<p>Keplerian orbital elements at J2000 from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
+<p>Temporal evolution of the Keplerian orbital elements from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
+<p>Keplerian orbital elements at J2000 from Table 8.10.3 of E.M. Standish and J.G. Williams 1992, valid for 3000 BC to 3000 AD.</p>
+<p>Temporal evolution of the Keplerian orbital elements from Table 8.10.3 of E.M. Standish and J.G. Williams 1992, vaid for 3000 BC to 3000 AD.</p>
+<p>Additional terms for computing M for the outer planets (Jupiter and beyond) from Table 8.10.4 of E.M. Standish and J.G. Williams 1992.</p>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a994baf0c30caeaaee7b8b4d5a12921a3">NOVAS_JUPITER</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a1255a982524abb49bf076014d8d6acb5">NOVAS_PLUTO</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a3503bba5abad8c20c76a6ca87dccf677">NOVAS_PLUTO_BARYCENTER</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
+
+</div>
+</div>
+<a id="a121940d7f0ef41297d28fab8e6df5998" name="a121940d7f0ef41297d28fab8e6df5998"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121940d7f0ef41297d28fab8e6df5998">&#9670;&#160;</a></span>novas_moon_angle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_moon_angle </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *restrict&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict&#160;</td>
+          <td class="paramname"><em>frame</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the apparent angular distance of a source from the Moon from the observer's point of view.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>An observed source </td></tr>
+    <tr><td class="paramname">frame</td><td>Observing frame, defining the observer location and astronomical time of observation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] Apparent angular distance between the source an the Moon, from the observer's point of view</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a4cbd3c168b9357e3af2274252a6d1a5b">NOVAS_MOON_INIT</a>, and <a class="el" href="frames_8c.html#afa5f3a823a895bed01876df6b2a00370">novas_object_sep()</a>.</p>
+
+</div>
+</div>
+<a id="a2dbdafd6b07f079815ae52d00e142861" name="a2dbdafd6b07f079815ae52d00e142861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dbdafd6b07f079815ae52d00e142861">&#9670;&#160;</a></span>novas_moon_phase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_moon_phase </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculates the Moon's phase at a given time. It uses orbital models for Earth (E.M. Standish and J.G. Williams 1992), and for the Moon (Chapront, J. et al., 2002), and takes into account the slightly eccentric nature of both orbits.</p>
+<p>NOTES: </p><ol>
+<li>
+The Moon's phase here follows the definition by the Astronomical Almanac, as the excess ecliptic longitude of the Moon over that of the Sun seen from the geocenter. </li>
+<li>
+There are other definitions of the phase too, depending on which you might find slightly different answers, but regardless of the details most phase calculations should match to within a few degrees. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+The Explanatory Supplement to the Astronomical Almanac, University Science Books, 3rd ed., p. 507 </li>
+<li>
+E.M. Standish and J.G. Williams 1992. </li>
+<li>
+<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">https://ssd.jpl.nasa.gov/planets/approx_pos.html</a> </li>
+<li>
+Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>
+<li>
+Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361), vol. 124, no. 1, July 1983, p. 50-62. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian Date. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] The Moon's phase, or more precisely the ecliptic longitude difference between the Sun and the Moon, as seen from the geocenter. 0: New Moon, 90: 1st quarter, +/- 180 Full Moon, -90: 3rd quarter or NAN if the solution failed to converge (errno will be set to ECANCELED), or if the JD date is outside the range of the orbital model (errno set to EINVAL).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="planets_8c.html#ad0bd6e212af549309b0fcb792ed8cb79">novas_next_moon_phase()</a> </dd>
+<dd>
+<a class="el" href="planets_8c.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1">novas_solar_illum()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="planets_8c.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="planets_8c.html#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, <a class="el" href="orbital_8c.html#a6b88d2403a3051ab32229244cf98d7ab">novas_orbit_native_posvel()</a>, and <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
+
+</div>
+</div>
+<a id="ad0bd6e212af549309b0fcb792ed8cb79" name="ad0bd6e212af549309b0fcb792ed8cb79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0bd6e212af549309b0fcb792ed8cb79">&#9670;&#160;</a></span>novas_next_moon_phase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_next_moon_phase </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>phase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculates the date / time at which the Moon will reach the specified phase next, <em>after</em> the specified time. It uses orbital models for Earth (E.M. Standish and J.G. Williams 1992), and for the Moon (Chapront, J. et al., 2002), and takes into account the slightly eccentric nature of both orbits.</p>
+<p>NOTES: </p><ol>
+<li>
+The Moon's phase here follows the definition by the Astronomical Almanac, as the excess ecliptic longitude of the Moon over that of the Sun seen from the geocenter. </li>
+<li>
+There are other definitions of the phase too, depending on which you might find slightly different answers, but regardless of the details most phase calculations should match give or take a few hours. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+The Explanatory Supplement to the Astronomical Almanac, University Science Books, 3rd ed., p. 507 </li>
+<li>
+E.M. Standish and J.G. Williams 1992. </li>
+<li>
+<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">https://ssd.jpl.nasa.gov/planets/approx_pos.html</a> </li>
+<li>
+Chapront, J. et al., 2002, A&amp;A 387, 700–709 </li>
+<li>
+Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-6361), vol. 124, no. 1, July 1983, p. 50-62. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phase</td><td>[deg] The Moon's phase, or more precisely the ecliptic longitude difference between the Sun and the Moon, as seen from the geocenter. 0: New Moon, 90: 1st quarter, +/- 180 Full Moon, -90: 3rd quarter. </td></tr>
+    <tr><td class="paramname">jd_tdb</td><td>[day] The lower bound date for the phase, as a Barycentric Dynamical Time (TDB) based Julian Date. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] The Barycentric Dynamical Time (TDB) based Julian Date when the Moon will be in the desired phase next after the input date; or NAN if the solution failed to converge (errno will be set to ECANCELED).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="planets_8c.html#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase()</a> </dd>
+<dd>
+<a class="el" href="planets_8c.html#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, and <a class="el" href="planets_8c.html#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase()</a>.</p>
+
+</div>
+</div>
+<a id="a6b88d2403a3051ab32229244cf98d7ab" name="a6b88d2403a3051ab32229244cf98d7ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b88d2403a3051ab32229244cf98d7ab">&#9670;&#160;</a></span>novas_orbit_native_posvel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_orbit_native_posvel </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict&#160;</td>
+          <td class="paramname"><em>orbit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>vel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the specified time of observation, in the native coordinate system in which the orbital is defined (e.g. ecliptic for heliocentric orbitals).</p>
+<p>REFERENCES: </p><ol>
+<li>
+E.M. Standish and J.G. Williams 1992. </li>
+<li>
+<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">https://ssd.jpl.nasa.gov/planets/approx_pos.html</a> </li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Orbital_elements">https://en.wikipedia.org/wiki/Orbital_elements</a> </li>
+<li>
+<a href="https://orbitalofficial.com/">https://orbitalofficial.com/</a> </li>
+<li>
+<a href="https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf">https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamic Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">orbit</td><td>Orbital parameters </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Output ICRS equatorial position vector around orbital center, or NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">vel</td><td>[AU/day] Output ICRS velocity vector rel. to orbital center, in the native system of the orbital, or NULL if not required. 0 if successful, or else -1 if the orbital parameters are NULL, or if the position and velocity output vectors are the same or the orbital system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to ECANCELED), or</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
+<dd>
+<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<dd>
+<a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a></dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
+
+</div>
+</div>
+<a id="a4510a3235a693f122899983901211c30" name="a4510a3235a693f122899983901211c30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4510a3235a693f122899983901211c30">&#9670;&#160;</a></span>novas_orbit_posvel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_orbit_posvel </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__orbital.html">novas_orbital</a> *restrict&#160;</td>
+          <td class="paramname"><em>orbit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a>&#160;</td>
+          <td class="paramname"><em>accuracy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *restrict&#160;</td>
+          <td class="paramname"><em>vel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the specified time of observation.</p>
+<p>REFERENCES: </p><ol>
+<li>
+E.M. Standish and J.G. Williams 1992. </li>
+<li>
+<a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html">https://ssd.jpl.nasa.gov/planets/approx_pos.html</a> </li>
+<li>
+<a href="https://en.wikipedia.org/wiki/Orbital_elements">https://en.wikipedia.org/wiki/Orbital_elements</a> </li>
+<li>
+<a href="https://orbitalofficial.com/">https://orbitalofficial.com/</a> </li>
+<li>
+<a href="https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf">https://downloads.rene-schwarz.com/download/M001-Keplerian_Orbit_Elements_to_Cartesian_State_Vectors.pdf</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamic Time (TDB) based Julian date </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">orbit</td><td>Orbital parameters </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Output ICRS equatorial position vector around orbital center, or NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">vel</td><td>[AU/day] Output ICRS equatorial velocity vector rel. to orbital center, or NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the orbital parameters are NULL, or if the position and velocity output vectors are the same or the orbital system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to ECANCELED), or</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
+<dd>
+<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<dd>
+<a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a></dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+
+<p class="reference">References <a class="el" href="orbital_8c.html#a6b88d2403a3051ab32229244cf98d7ab">novas_orbit_native_posvel()</a>.</p>
+
+</div>
+</div>
+<a id="a2cf7410aa68b980112734227b40890d6" name="a2cf7410aa68b980112734227b40890d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cf7410aa68b980112734227b40890d6">&#9670;&#160;</a></span>novas_planet_for_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> novas_planet_for_name </td>
+          <td>(</td>
+          <td class="paramtype">const char *restrict&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the NOVAS planet ID for a given name (case insensitive), or -1 if no match is found.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The planet name, or that for the "Sun", "Moon" or "SSB" (case insensitive). The spelled out "Solar System Barycenter" is also recognized with either spaces, hyphens ('-') or underscores ('_') separating the case insensitive words. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The NOVAS major planet ID, or -1 (errno set to EINVAL) if the input name is NULL or if there is no match for the name provided.</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>.</p>
+
+</div>
+</div>
+<a id="a706ecf8998b78e48051d2876efc6e01c" name="a706ecf8998b78e48051d2876efc6e01c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a706ecf8998b78e48051d2876efc6e01c">&#9670;&#160;</a></span>novas_set_orbsys_pole()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_set_orbsys_pole </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>ra</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnovas__orbital__system.html">novas_orbital_system</a> *restrict&#160;</td>
+          <td class="paramname"><em>sys</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the orientation of an orbital system using the RA and DEC coordinates of the pole of the Laplace (or else equatorial) plane relative to which the orbital elements are defined. Orbital parameters of planetary satellites normally include the R.A. and declination of the pole of the local Laplace plane in which the Keplerian orbital elements are referenced.</p>
+<p>The system will become referenced to the equatorial plane, the relative obliquity is set to (90&deg; - <code>dec</code>), while the argument of the ascending node ('Omega') is set to (90&deg; + <code>ra</code>).</p>
+<p>NOTES: </p><ol>
+<li>
+You should not expect much precision from the long-range orbital approximations for planetary satellites. For applications that require precision at any level, you should rely on appropriate ephemerides, or else on up-to-date short-term orbital elements. </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">type</td><td>Coordinate reference system in which <code>ra</code> and <code>dec</code> are defined (e.g. NOVAS_GCRS). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] the R.A. of the pole of the oribtal reference plane. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] the declination of the pole of the oribtal reference plane. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">sys</td><td>Orbital system </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (errno will be set to EINVAL) if the output <code>sys</code> pointer is NULL.</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b">NOVAS_EQUATORIAL_PLANE</a>, and <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea524041fc2059f8432b76fad1b8edb89f">NOVAS_TIRS</a>.</p>
 
 </div>
 </div>
@@ -788,6 +1570,48 @@ This implementation will always propulate the output position and velocity vecto
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1">novas_solar_illum()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="target_8c.html#af4fa5359b8b0167a2780baff17b164a5">novas_helio_dist()</a>, and <a class="el" href="novas_8h.html#a5e72489b5d24fa737d04cb9ec303b71e">NOVAS_SOLAR_CONSTANT</a>.</p>
+
+</div>
+</div>
+<a id="a2d1ef3bc6d99aa473511e45c6e0481e9" name="a2d1ef3bc6d99aa473511e45c6e0481e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d1ef3bc6d99aa473511e45c6e0481e9">&#9670;&#160;</a></span>novas_sun_angle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_sun_angle </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structobject.html">object</a> *restrict&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict&#160;</td>
+          <td class="paramname"><em>frame</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the apparent angular distance of a source from the Sun from the observer's point of view.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>An observed source </td></tr>
+    <tr><td class="paramname">frame</td><td>Observing frame, defining the observer location and astronomical time of observation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] the apparent angular distance between the source an the Sun, from the observer's point of view</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a121940d7f0ef41297d28fab8e6df5998">novas_moon_angle()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="frames_8c.html#afa5f3a823a895bed01876df6b2a00370">novas_object_sep()</a>, and <a class="el" href="novas_8h.html#a6afeda74c9df859ae6504eebfee01092">NOVAS_SUN_INIT</a>.</p>
 
 </div>
 </div>
@@ -1338,7 +2162,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
 </div><div class="memdoc">
 <p>Provides a default ephemeris implementation to handle position and velocity calculations for minor planets, which are not handled by the <a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> type calls. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled <a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a> implementation, or else a dynamically defined one via ephemeris_set_reader().</p>
 <p>You can set the built-in implementation for the library at build time by setting the DEFAULT_READEPH variable in the <code>config.mk</code>.</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated:</a></b></dt><dd>This old ephemeris reader is prone to memory leaks, and lacks some useful functionality. Users are strongly encouraged to use the new <code>novas_ephem_provider</code> instead, which can provide dynamically configured implementations at runtime.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Deprecated:</a></b></dt><dd>This old ephemeris reader is prone to memory leaks, and lacks some useful functionality. Users are strongly encouraged to use the new <code>novas_ephem_provider</code> instead, which can provide dynamically configured implementations at runtime.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">mp</td><td>The ID number of the solar-system body for which the position are desired. An actual implementation might use this and/or the name to identify the object. </td></tr>
@@ -1349,15 +2173,14 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[AU, AU/day] A newly allocated 6-vector in rectangular equatorial coordinates, containing the heliocentric position coordinates in AU, followed by hte heliocentric velocity components in AU/day. The caller is responsible for calling free() on the returned value when it is no longer needed.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated:</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="solarsystem_8h.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for Solar-system objects. This prototype is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, as a custom implementation.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solarsystem_8h.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
 <dd>
 <a class="el" href="solarsystem_8h.html#aebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a> </dd>
 <dd>
 <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a></dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a> </dd></dl>
 
 </div>
 </div>
@@ -1522,6 +2345,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated:</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys[1-3].c</code> module, or by providing a custom user implementation.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> </dd>
 <dd>
 <a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> </dd>
@@ -1592,6 +2416,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), or some other error code (NOVAS C was not very consistent here...)</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Deprecated:</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></code> instead to specify what function should be used to calculate high-precision ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys[1-3].c</code> module, or by providing a custom user implementation.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> </dd>
 <dd>
 <a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>

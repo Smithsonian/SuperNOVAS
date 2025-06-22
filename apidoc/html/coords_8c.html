@@ -198,11 +198,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Convert ecliptic longitude and latitude to right ascension and declination. To convert GCRS ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS).">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at'jd_tt'.</p>
+<p>Convert ecliptic longitude and latitude to right ascension and declination. To convert GCRS ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at'jd_tt'.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system of the coordinates. If 'coord_sys' is <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS).">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system of the coordinates. If 'coord_sys' is <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">elon</td><td>[deg] Ecliptic longitude in degrees, referred to specified ecliptic and equinox of date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">elat</td><td>[deg] Ecliptic latitude in degrees, referred to specified ecliptic and equinox of date. </td></tr>
@@ -265,7 +265,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts an ecliptic position vector to an equatorial position vector. To convert ecliptic coordinates (mean ecliptic and equinox of J2000.0) to GCRS RA and dec to, set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS).">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.</p>
+<p>Converts an ecliptic position vector to an equatorial position vector. To convert ecliptic coordinates (mean ecliptic and equinox of J2000.0) to GCRS RA and dec to, set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
@@ -281,7 +281,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="coords_8c.html#aa05ecc76c1ccc0c3445f8b642d6c5311">equ2ecl_vec()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="earth_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, <a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>, <a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66">NOVAS_GCRS_EQUATOR</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a90d1ef6cedd7a9fdfd7e538ecea5a040">NOVAS_MEAN_EQUATOR</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014acca4381f43619e421b26d79c1c77593f">NOVAS_TRUE_EQUATOR</a>.</p>
+<p class="reference">References <a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, <a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea7e5dc966849295dce29fb339b960da4f">J2000_TO_ICRS</a>, <a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66">NOVAS_GCRS_EQUATOR</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a90d1ef6cedd7a9fdfd7e538ecea5a040">NOVAS_MEAN_EQUATOR</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014acca4381f43619e421b26d79c1c77593f">NOVAS_TRUE_EQUATOR</a>.</p>
 
 </div>
 </div>
@@ -340,11 +340,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Convert right ascension and declination to ecliptic longitude and latitude. To convert GCRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS).">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.</p>
+<p>Convert right ascension and declination to ecliptic longitude and latitude. To convert GCRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system of the coordinates. If 'coord_sys' is <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS).">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system of the coordinates. If 'coord_sys' is <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Right ascension in hours, referred to specified equator and equinox of date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Declination in degrees, referred to specified equator and equinox of date. </td></tr>
@@ -405,14 +405,14 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts an equatorial position vector to an ecliptic position vector. To convert ICRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS).">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.</p>
+<p>Converts an equatorial position vector to an ecliptic position vector. To convert ICRS RA and dec to ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>; in this case the value of 'jd_tt' can be set to anything, since J2000.0 is assumed. Otherwise, all input coordinates are dynamical at 'jd_tt'.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is NOVAS_GCRS_EQUATOR[2]) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">coord_sys</td><td>The astrometric reference system type of the coordinates. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Position vector, referred to specified equator and equinox of date. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Position vector, referred to specified ecliptic and equinox of date. It can be the same vector as the input. If 'coord_sys' is <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS).">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Position vector, referred to specified ecliptic and equinox of date. It can be the same vector as the input. If 'coord_sys' is <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66" title="Geocentric Celestial Reference System (GCRS) equator.">NOVAS_GCRS_EQUATOR(2)</a>, the input GCRS coordinates are converted to J2000 ecliptic coordinates. </td></tr>
   </table>
   </dd>
 </dl>
@@ -421,7 +421,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="coords_8c.html#a6fa1eada41005ac70290d0bb5df1ec26">ecl2equ_vec()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="earth_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, <a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>, <a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66">NOVAS_GCRS_EQUATOR</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a90d1ef6cedd7a9fdfd7e538ecea5a040">NOVAS_MEAN_EQUATOR</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014acca4381f43619e421b26d79c1c77593f">NOVAS_TRUE_EQUATOR</a>.</p>
+<p class="reference">References <a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, <a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>, <a class="el" href="novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999">ICRS_TO_J2000</a>, <a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a1248329939f130a4bef0d3ef9ed95c66">NOVAS_GCRS_EQUATOR</a>, <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014a90d1ef6cedd7a9fdfd7e538ecea5a040">NOVAS_MEAN_EQUATOR</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#a2eff9980cb9db96ab41fb564c1b5c014acca4381f43619e421b26d79c1c77593f">NOVAS_TRUE_EQUATOR</a>.</p>
 
 </div>
 </div>
@@ -574,7 +574,7 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 </div><div class="memdoc">
 <p>Transforms topocentric (TOD) right ascension and declination to zenith distance and azimuth. This method should not be used to convert CIRS apparent coordinates (IAU 2000 standard) &ndash; for those you should use <a class="el" href="system_8c.html#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a> followed by <a class="el" href="coords_8c.html#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a> instead.</p>
 <p>It uses a method that properly accounts for polar motion, which is significant at the sub-arcsecond level. This function can also adjust coordinates for atmospheric refraction.</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>The name of this function does not reveal what type of equatorial coordinates it requires. To make it less ambiguous, you should use <a class="el" href="system_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> followed by <a class="el" href="coords_8c.html#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a> instead, possibly following it with <a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a> if you also want to apply optical refraction.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>The name of this function does not reveal what type of equatorial coordinates it requires. To make it less ambiguous, you should use <a class="el" href="system_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> followed by <a class="el" href="coords_8c.html#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a> instead, possibly following it with <a class="el" href="refract_8c.html#afe1d4e96dd66676f5567a279e83e88d9">refract_astro()</a> if you also want to apply optical refraction.</dd></dl>
 <p>NOTES: </p><ul>
 <li>
 'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is not needed. </li>
@@ -612,7 +612,7 @@ Kaplan, G. (2008). USNO/AA Technical Note of 28 Apr 2008, "Refraction as a Vecto
 <dd>
 <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a>, and <a class="el" href="system_8c.html#ac8c5ff3cc13126aba2ec5a6cbe187a31">ter2cel()</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62">EROT_GST</a>, <a class="el" href="novas_8h.html#a3789b2c39c26f01bb1bffe8ebc953467aba4a23444c495f90061ec1a906585faa">NOVAS_DYNAMICAL_CLASS</a>, <a class="el" href="refract_8c.html#afe1d4e96dd66676f5567a279e83e88d9">refract_astro()</a>, and <a class="el" href="system_8c.html#ac8c5ff3cc13126aba2ec5a6cbe187a31">ter2cel()</a>.</p>
 
 </div>
 </div>
@@ -728,7 +728,7 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 <dd>
 <a class="el" href="system_8c.html#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a> </dd>
 <dd>
-<a class="el" href="refract_8c.html#a9f0ad82690613afaa2325f430ac29743">refract()</a></dd></dl>
+<a class="el" href="refract_8c.html#ac7ed2a1a5fb5aea3063d116d3d980eeb">refract()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -788,7 +788,7 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 <dd>
 <a class="el" href="system_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> </dd>
 <dd>
-<a class="el" href="refract_8c.html#ad875289016bb6c3e6ff9e00a9fc2dfd4">refract_astro()</a></dd></dl>
+<a class="el" href="refract_8c.html#afe1d4e96dd66676f5567a279e83e88d9">refract_astro()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 

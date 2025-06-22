@@ -10,5 +10,5 @@ var structnovas__orbital =
     [ "node_period", "structnovas__orbital.html#abc96d50a65bae0b26750df2d93492fea", null ],
     [ "omega", "structnovas__orbital.html#a98ecc32b7ac0cf654d9f883cbe5cab35", null ],
     [ "Omega", "structnovas__orbital.html#a1b5bf6735b7465aec5c931281d240737", null ],
-    [ "system", "structnovas__orbital.html#a2d7f51b64b1f15b7c85fdf1130d3ea87", null ]
+    [ "system", "structnovas__orbital.html#a7ccd081fe6b1424bd644317068578775", null ]
 ];

@@ -238,6 +238,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_DEFAULT_WAVELENGTH</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a4f7dee9d4c9db4cf201af8383c72d4db</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_DEGREE</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a6d9698dbaf6260d7fe8a531a0e96d2a8</anchor>
@@ -553,6 +560,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_REFRACTION_MODELS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a1932e30210aa533136e5848089adf492</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_RMASS_INIT</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a5ddc7a011476a8cffaec1866beaa0095</anchor>
@@ -696,6 +710,13 @@
       <name>NOVAS_VERSION_STRING</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>afc8e7b02d26a13c380dcff4ec2d6530e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_WOBBLE_DIRECTIONS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a3903b6d439f4a25a6482fd073996d9ec</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -1307,6 +1328,18 @@
       <anchor>a7ba038ea34eb901ccfb8f785708c651ea5a2a55ff66f97310a9641d7ffa60b8dd</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enumvalue">
+      <name>NOVAS_TIRS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a7ba038ea34eb901ccfb8f785708c651ea524041fc2059f8432b76fad1b8edb89f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_ITRS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a7ba038ea34eb901ccfb8f785708c651ea826bda7744c11bc1560f4db1848a17c6</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enumeration">
       <type></type>
       <name>novas_refraction_model</name>
@@ -1330,6 +1363,18 @@
       <name>NOVAS_WEATHER_AT_LOCATION</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>abe97e2d459a30db9d0f67d8c60af3b81aaf3bef1a45c5d59df8e779da09cecb68</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_RADIO_REFRACTION</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>abe97e2d459a30db9d0f67d8c60af3b81a165a8cec5e4cd5aeb6f26530022a4761</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_WAVE_REFRACTION</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>abe97e2d459a30db9d0f67d8c60af3b81a75c80913155eddef17af869d6b0d62f6</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">
@@ -1479,6 +1524,18 @@
       <name>novas_wobble_direction</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aab27106a2d5c2c7fa64b2f208deff7f5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>WOBBLE_ITRS_TO_TIRS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aab27106a2d5c2c7fa64b2f208deff7f5a88d1bc6832a20ed34c4dab5753864851</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>WOBBLE_TIRS_TO_ITRS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>aab27106a2d5c2c7fa64b2f208deff7f5a4b792b9dcf18048019f1a4fb486b7c97</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
@@ -2006,13 +2063,6 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>make_orbital_object</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a3c5e215babeeba078ca7b3e9be42e555</anchor>
-      <arglist>(const char *name, long num, const novas_orbital *orbit, object *body)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
       <name>make_planet</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a4c7846be95299769f4d0377bf127bcf5</anchor>
@@ -2108,6 +2158,20 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a66656c3f5a1256f4bfc3ed2e168c70c2</anchor>
       <arglist>(const char *restrict date, enum novas_timescale *restrict scale)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_day_of_week</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a7ee576309aa1977e9b2a3824286f725c</anchor>
+      <arglist>(double tjd)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_day_of_year</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae6eaa610037b0828d473062ab8722f47</anchor>
+      <arglist>(double tjd, enum novas_calendar_type calendar, int *restrict year)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -2328,13 +2392,6 @@
     </member>
     <member kind="function">
       <type>double</type>
-      <name>novas_moon_angle</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a121940d7f0ef41297d28fab8e6df5998</anchor>
-      <arglist>(const object *restrict source, const novas_frame *restrict frame)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
       <name>novas_norm_ang</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a85334614a0f399e0d3cbde68075d0766</anchor>
@@ -2360,13 +2417,6 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>ae4511a80a1defbb1e1fdc29c289e7de4</anchor>
       <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_orbit_posvel</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a4510a3235a693f122899983901211c30</anchor>
-      <arglist>(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy, double *restrict pos, double *restrict vel)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -2425,13 +2475,6 @@
       <arglist>(const char *restrict str, char **restrict tail)</arglist>
     </member>
     <member kind="function">
-      <type>enum novas_planet</type>
-      <name>novas_planet_for_name</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a2cf7410aa68b980112734227b40890d6</anchor>
-      <arglist>(const char *restrict name)</arglist>
-    </member>
-    <member kind="function">
       <type>int</type>
       <name>novas_print_dms</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -2460,6 +2503,13 @@
       <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>novas_refract_wavelength</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ac673c4fef94847b796dc2aa2f4d0807d</anchor>
+      <arglist>(double microns)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>novas_rises_above</name>
       <anchorfile>novas_8h.html</anchorfile>
@@ -2472,13 +2522,6 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a9f33de2b26a19a5e20827e9e918b3375</anchor>
       <arglist>(double lon1, double lat1, double lon2, double lat2)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>novas_set_orbsys_pole</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a706ecf8998b78e48051d2876efc6e01c</anchor>
-      <arglist>(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2545,10 +2588,17 @@
     </member>
     <member kind="function">
       <type>double</type>
-      <name>novas_sun_angle</name>
+      <name>novas_time_gst</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a2d1ef3bc6d99aa473511e45c6e0481e9</anchor>
-      <arglist>(const object *restrict source, const novas_frame *restrict frame)</arglist>
+      <anchor>aaf53fcad3fade814381cef3d06779a8c</anchor>
+      <arglist>(const novas_timespec *restrict time, enum novas_accuracy accuracy)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_time_lst</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a9e99ea879ba0ddc1d9fbefc4b32b1ef1</anchor>
+      <arglist>(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy)</arglist>
     </member>
     <member kind="function">
       <type>enum novas_timescale</type>
@@ -2605,6 +2655,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aa54cd00024b294d38fa29433c017c65f</anchor>
       <arglist>(double vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_wave_refraction</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a7b9ad6dfbd86e4faa2d8068c7d64fac4</anchor>
+      <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2792,15 +2849,15 @@
       <type>double</type>
       <name>refract</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a9f0ad82690613afaa2325f430ac29743</anchor>
-      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs)</arglist>
+      <anchor>ac7ed2a1a5fb5aea3063d116d3d980eeb</anchor>
+      <arglist>(const on_surface *restrict location, enum novas_refraction_model model, double zd_obs)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
       <name>refract_astro</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>ad875289016bb6c3e6ff9e00a9fc2dfd4</anchor>
-      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro)</arglist>
+      <anchor>afe1d4e96dd66676f5567a279e83e88d9</anchor>
+      <arglist>(const on_surface *restrict location, enum novas_refraction_model model, double zd_astro)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2919,6 +2976,20 @@
       <name>tt2tdb</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a129acca41760da486e1179c93cb9e86d</anchor>
+      <arglist>(double jd_tt)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>tt2tdb_fp</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad301a9c74bfbdb8b55513cd005787b22</anchor>
+      <arglist>(double jd_tt, double limit)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>tt2tdb_hp</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5709058076f4aea4eeaeeb000342cd94</anchor>
       <arglist>(double jd_tt)</arglist>
     </member>
     <member kind="function">
@@ -3098,6 +3169,13 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>make_orbital_object</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a3c5e215babeeba078ca7b3e9be42e555</anchor>
+      <arglist>(const char *name, long num, const novas_orbital *orbit, object *body)</arglist>
+    </member>
+    <member kind="function">
       <type>enum novas_planet</type>
       <name>naif_to_novas_planet</name>
       <anchorfile>solarsystem_8h.html</anchorfile>
@@ -3105,11 +3183,88 @@
       <arglist>(long id)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>novas_approx_heliocentric</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a9ead627eed7fabd8583f1353e89f42e7</anchor>
+      <arglist>(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_approx_sky_pos</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a4cb01609f76b0ff8487817b9446a3a62</anchor>
+      <arglist>(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>novas_helio_dist</name>
       <anchorfile>solarsystem_8h.html</anchorfile>
       <anchor>af4fa5359b8b0167a2780baff17b164a5</anchor>
       <arglist>(double jd_tdb, const object *restrict source, double *restrict rate)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_make_moon_orbit</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ad6e6c7f6dc2745030e3fd4d407e982bd</anchor>
+      <arglist>(double jd_tdb, novas_orbital *restrict orbit)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_make_planet_orbit</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a63b094e813d8b752a6f3344419e80031</anchor>
+      <arglist>(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_moon_angle</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a121940d7f0ef41297d28fab8e6df5998</anchor>
+      <arglist>(const object *restrict source, const novas_frame *restrict frame)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_moon_phase</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a2dbdafd6b07f079815ae52d00e142861</anchor>
+      <arglist>(double jd_tdb)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_next_moon_phase</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>ad0bd6e212af549309b0fcb792ed8cb79</anchor>
+      <arglist>(double phase, double jd_tdb)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_orbit_native_posvel</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a6b88d2403a3051ab32229244cf98d7ab</anchor>
+      <arglist>(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_orbit_posvel</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a4510a3235a693f122899983901211c30</anchor>
+      <arglist>(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>enum novas_planet</type>
+      <name>novas_planet_for_name</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a2cf7410aa68b980112734227b40890d6</anchor>
+      <arglist>(const char *restrict name)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_set_orbsys_pole</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a706ecf8998b78e48051d2876efc6e01c</anchor>
+      <arglist>(enum novas_reference_system type, double ra, double dec, novas_orbital_system *restrict sys)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -3124,6 +3279,13 @@
       <anchorfile>solarsystem_8h.html</anchorfile>
       <anchor>a763f9a9dd2edb4645a5db05184ca7495</anchor>
       <arglist>(double jd_tdb, const object *restrict source)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_sun_angle</name>
+      <anchorfile>solarsystem_8h.html</anchorfile>
+      <anchor>a2d1ef3bc6d99aa473511e45c6e0481e9</anchor>
+      <arglist>(const object *restrict source, const novas_frame *restrict frame)</arglist>
     </member>
     <member kind="function">
       <type>long</type>
@@ -3241,6 +3403,20 @@
       <anchorfile>calendar_8c.html</anchorfile>
       <anchor>a7cd85bc0a0248f84d399cbbce9fe9546</anchor>
       <arglist>(short year, short month, short day, double hour)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_day_of_week</name>
+      <anchorfile>calendar_8c.html</anchorfile>
+      <anchor>a7ee576309aa1977e9b2a3824286f725c</anchor>
+      <arglist>(double tjd)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_day_of_year</name>
+      <anchorfile>calendar_8c.html</anchorfile>
+      <anchor>ae6eaa610037b0828d473062ab8722f47</anchor>
+      <arglist>(double tjd, enum novas_calendar_type calendar, int *restrict year)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -3370,20 +3546,6 @@
     <path>src/</path>
     <filename>earth_8c.html</filename>
     <member kind="function">
-      <type>short</type>
-      <name>cel_pole</name>
-      <anchorfile>earth_8c.html</anchorfile>
-      <anchor>a8937180de2ee1545d19b8fc840f35fe2</anchor>
-      <arglist>(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>e_tilt</name>
-      <anchorfile>earth_8c.html</anchorfile>
-      <anchor>ab75165e2d69231da10c67de025ee05d8</anchor>
-      <arglist>(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)</arglist>
-    </member>
-    <member kind="function">
       <type>double</type>
       <name>era</name>
       <anchorfile>earth_8c.html</anchorfile>
@@ -3424,20 +3586,6 @@
       <anchorfile>earth_8c.html</anchorfile>
       <anchor>aead87744eeb3029ce7d5ffb1801ee652</anchor>
       <arglist>(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out)</arglist>
-    </member>
-    <member kind="variable">
-      <type>double</type>
-      <name>EPS_COR</name>
-      <anchorfile>earth_8c.html</anchorfile>
-      <anchor>ac063b61c63e78a4864f2baa4606bab36</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>double</type>
-      <name>PSI_COR</name>
-      <anchorfile>earth_8c.html</anchorfile>
-      <anchor>a103c28cd84e81dde365238ee3599f5b0</anchor>
-      <arglist></arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -3605,6 +3753,20 @@
       <arglist>(double t)</arglist>
     </member>
     <member kind="function">
+      <type>short</type>
+      <name>cel_pole</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>a8937180de2ee1545d19b8fc840f35fe2</anchor>
+      <arglist>(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>e_tilt</name>
+      <anchorfile>equinox_8c.html</anchorfile>
+      <anchor>ab75165e2d69231da10c67de025ee05d8</anchor>
+      <arglist>(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>ee_ct</name>
       <anchorfile>equinox_8c.html</anchorfile>
@@ -3638,13 +3800,6 @@
       <anchorfile>equinox_8c.html</anchorfile>
       <anchor>a69df5671751c09a7575963b94ad1151e</anchor>
       <arglist>(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>nutation_angles</name>
-      <anchorfile>equinox_8c.html</anchorfile>
-      <anchor>a6e9ced7b0aec544ad7b057b58f777ec4</anchor>
-      <arglist>(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -3969,6 +4124,13 @@
       <anchor>abd066c2857d1b1cc06d8bd51b912d841</anchor>
       <arglist>(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps)</arglist>
     </member>
+    <member kind="function">
+      <type>int</type>
+      <name>nutation_angles</name>
+      <anchorfile>nutation_8c.html</anchorfile>
+      <anchor>a6e9ced7b0aec544ad7b057b58f777ec4</anchor>
+      <arglist>(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps)</arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>observer.c</name>
@@ -4133,6 +4295,13 @@
     <name>orbital.c</name>
     <path>src/</path>
     <filename>orbital_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_orbit_native_posvel</name>
+      <anchorfile>orbital_8c.html</anchorfile>
+      <anchor>a6b88d2403a3051ab32229244cf98d7ab</anchor>
+      <arglist>(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel)</arglist>
+    </member>
     <member kind="function">
       <type>int</type>
       <name>novas_orbit_posvel</name>
@@ -4397,6 +4566,53 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>planets.c</name>
+    <path>src/</path>
+    <filename>planets_8c.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_approx_heliocentric</name>
+      <anchorfile>planets_8c.html</anchorfile>
+      <anchor>a9ead627eed7fabd8583f1353e89f42e7</anchor>
+      <arglist>(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_approx_sky_pos</name>
+      <anchorfile>planets_8c.html</anchorfile>
+      <anchor>a4cb01609f76b0ff8487817b9446a3a62</anchor>
+      <arglist>(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_make_moon_orbit</name>
+      <anchorfile>planets_8c.html</anchorfile>
+      <anchor>ad6e6c7f6dc2745030e3fd4d407e982bd</anchor>
+      <arglist>(double jd_tdb, novas_orbital *restrict orbit)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>novas_make_planet_orbit</name>
+      <anchorfile>planets_8c.html</anchorfile>
+      <anchor>a63b094e813d8b752a6f3344419e80031</anchor>
+      <arglist>(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_moon_phase</name>
+      <anchorfile>planets_8c.html</anchorfile>
+      <anchor>a2dbdafd6b07f079815ae52d00e142861</anchor>
+      <arglist>(double jd_tdb)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_next_moon_phase</name>
+      <anchorfile>planets_8c.html</anchorfile>
+      <anchor>ad0bd6e212af549309b0fcb792ed8cb79</anchor>
+      <arglist>(double phase, double jd_tdb)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>plugin.c</name>
     <path>src/</path>
     <filename>plugin_8c.html</filename>
@@ -4462,6 +4678,13 @@
     <path>src/</path>
     <filename>refract_8c.html</filename>
     <includes id="novas_8h" name="novas.h" local="yes" import="no" module="no" objc="no">novas.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_DEFAULT_WAVELENGTH</name>
+      <anchorfile>refract_8c.html</anchorfile>
+      <anchor>a4f7dee9d4c9db4cf201af8383c72d4db</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>double</type>
       <name>novas_inv_refract</name>
@@ -4484,6 +4707,13 @@
       <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>novas_refract_wavelength</name>
+      <anchorfile>refract_8c.html</anchorfile>
+      <anchor>ac673c4fef94847b796dc2aa2f4d0807d</anchor>
+      <arglist>(double microns)</arglist>
+    </member>
+    <member kind="function">
       <type>double</type>
       <name>novas_standard_refraction</name>
       <anchorfile>refract_8c.html</anchorfile>
@@ -4492,17 +4722,24 @@
     </member>
     <member kind="function">
       <type>double</type>
+      <name>novas_wave_refraction</name>
+      <anchorfile>refract_8c.html</anchorfile>
+      <anchor>a7b9ad6dfbd86e4faa2d8068c7d64fac4</anchor>
+      <arglist>(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
       <name>refract</name>
       <anchorfile>refract_8c.html</anchorfile>
-      <anchor>a9f0ad82690613afaa2325f430ac29743</anchor>
-      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_obs)</arglist>
+      <anchor>ac7ed2a1a5fb5aea3063d116d3d980eeb</anchor>
+      <arglist>(const on_surface *restrict location, enum novas_refraction_model model, double zd_obs)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
       <name>refract_astro</name>
       <anchorfile>refract_8c.html</anchorfile>
-      <anchor>ad875289016bb6c3e6ff9e00a9fc2dfd4</anchor>
-      <arglist>(const on_surface *restrict location, enum novas_refraction_model option, double zd_astro)</arglist>
+      <anchor>afe1d4e96dd66676f5567a279e83e88d9</anchor>
+      <arglist>(const on_surface *restrict location, enum novas_refraction_model model, double zd_astro)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -5229,6 +5466,20 @@
       <arglist>(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *restrict time)</arglist>
     </member>
     <member kind="function">
+      <type>double</type>
+      <name>novas_time_gst</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>aaf53fcad3fade814381cef3d06779a8c</anchor>
+      <arglist>(const novas_timespec *restrict time, enum novas_accuracy accuracy)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_time_lst</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a9e99ea879ba0ddc1d9fbefc4b32b1ef1</anchor>
+      <arglist>(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy)</arglist>
+    </member>
+    <member kind="function">
       <type>enum novas_timescale</type>
       <name>novas_timescale_for_string</name>
       <anchorfile>timescale_8c.html</anchorfile>
@@ -5254,6 +5505,20 @@
       <name>tt2tdb</name>
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>a129acca41760da486e1179c93cb9e86d</anchor>
+      <arglist>(double jd_tt)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>tt2tdb_fp</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>ad301a9c74bfbdb8b55513cd005787b22</anchor>
+      <arglist>(double jd_tt, double limit)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>tt2tdb_hp</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>a5709058076f4aea4eeaeeb000342cd94</anchor>
       <arglist>(double jd_tt)</arglist>
     </member>
   </compound>
@@ -5544,10 +5809,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_matrix</type>
+      <type>struct novas_matrix</type>
       <name>gcrs_to_cirs</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>ab0781cc6d1fa84411eeca631bb39d615</anchor>
+      <anchor>a568001e7fc428917d58d1ac16fecb1af</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5558,10 +5823,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_matrix</type>
+      <type>struct novas_matrix</type>
       <name>icrs_to_j2000</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>aae2b172beac21d0c2a5f256bc8ad40bc</anchor>
+      <anchor>ad28815abec2847e4ab01a17dab76f0c5</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5572,10 +5837,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_matrix</type>
+      <type>struct novas_matrix</type>
       <name>nutation</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>ac143b7ebb821de32278d5d4f3a4e75c3</anchor>
+      <anchor>af75d534436e4c2442aae1fbb3572a372</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5593,24 +5858,24 @@
       <arglist>[3]</arglist>
     </member>
     <member kind="variable">
-      <type>observer</type>
+      <type>struct novas_observer</type>
       <name>observer</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>aa792216b0b2601bb9af3b882c87274f8</anchor>
+      <anchor>a70a5703b12da2ee4c801250fdd5708d7</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_planet_bundle</type>
+      <type>struct novas_planet_bundle</type>
       <name>planets</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>a78ace4b8a99aace5313f4011a842d199</anchor>
+      <anchor>a669cb67d7c5765600cb355d37e14f172</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_matrix</type>
+      <type>struct novas_matrix</type>
       <name>precession</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>a1768e94e9ee04287bc18b3eb6a79f36c</anchor>
+      <anchor>ab0ba4960aa038a40165a7131684c6853</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5635,10 +5900,10 @@
       <arglist>[3]</arglist>
     </member>
     <member kind="variable">
-      <type>novas_timespec</type>
+      <type>struct novas_timespec</type>
       <name>time</name>
       <anchorfile>structnovas__frame.html</anchorfile>
-      <anchor>a430880330b471a12c587f77d1c73b49a</anchor>
+      <anchor>a5a61c03607da83f2b44b05e68cc50e5b</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5773,10 +6038,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_orbital_system</type>
+      <type>struct novas_orbital_system</type>
       <name>system</name>
       <anchorfile>structnovas__orbital.html</anchorfile>
-      <anchor>a2d7f51b64b1f15b7c85fdf1130d3ea87</anchor>
+      <anchor>a7ccd081fe6b1424bd644317068578775</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -5887,31 +6152,31 @@
     <name>novas_track</name>
     <filename>structnovas__track.html</filename>
     <member kind="variable">
-      <type>novas_observable</type>
+      <type>struct novas_observable</type>
       <name>accel</name>
       <anchorfile>structnovas__track.html</anchorfile>
-      <anchor>adb92e99ba304d8cba19dbe7f8dee77f2</anchor>
+      <anchor>a8e9a1a492f74f76fb441e62bdd0df852</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_observable</type>
+      <type>struct novas_observable</type>
       <name>pos</name>
       <anchorfile>structnovas__track.html</anchorfile>
-      <anchor>a33e0ba55c500f6f927c7fb21c1710972</anchor>
+      <anchor>ab572f04f2fbe8dd7174a07d4ae914706</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_observable</type>
+      <type>struct novas_observable</type>
       <name>rate</name>
       <anchorfile>structnovas__track.html</anchorfile>
-      <anchor>ab5aa5e48c9fcb9f6bd1031fe9feb80b3</anchor>
+      <anchor>a08de80b2751625d418f907fe7ce0c2e3</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_timespec</type>
+      <type>struct novas_timespec</type>
       <name>time</name>
       <anchorfile>structnovas__track.html</anchorfile>
-      <anchor>a430880330b471a12c587f77d1c73b49a</anchor>
+      <anchor>a5a61c03607da83f2b44b05e68cc50e5b</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -5919,10 +6184,10 @@
     <name>novas_transform</name>
     <filename>structnovas__transform.html</filename>
     <member kind="variable">
-      <type>novas_frame</type>
+      <type>struct novas_frame</type>
       <name>frame</name>
       <anchorfile>structnovas__transform.html</anchorfile>
-      <anchor>aa4ab682491bbdc54f9fbf6a26c8245a1</anchor>
+      <anchor>a89ed0a18f08c2125a0de2c5825c2bb0c</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5933,10 +6198,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_matrix</type>
+      <type>struct novas_matrix</type>
       <name>matrix</name>
       <anchorfile>structnovas__transform.html</anchorfile>
-      <anchor>a7a4a2e27593c1af2ae14cfb323ba4aba</anchor>
+      <anchor>ac528fe7349274fecff6a0c7742414308</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5965,17 +6230,17 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>novas_orbital</type>
+      <type>struct novas_orbital</type>
       <name>orbit</name>
       <anchorfile>structobject.html</anchorfile>
-      <anchor>a92255a8fae4e61f344eaf20e071bcb7e</anchor>
+      <anchor>a43225af0345622f8c049032d75a1a3da</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>cat_entry</type>
+      <type>struct novas_cat_entry</type>
       <name>star</name>
       <anchorfile>structobject.html</anchorfile>
-      <anchor>a0ead8b30742e9c76887f5ff76cabae7c</anchor>
+      <anchor>a499924f8241c3fbb3bf34c5e16f1c7de</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -5990,17 +6255,17 @@
     <name>observer</name>
     <filename>structobserver.html</filename>
     <member kind="variable">
-      <type>in_space</type>
+      <type>struct novas_in_space</type>
       <name>near_earth</name>
       <anchorfile>structobserver.html</anchorfile>
-      <anchor>a447c33455c0da962abf8621638c994b5</anchor>
+      <anchor>a1ab1241c3bb4d3afc4710e02e948c0cb</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>on_surface</type>
+      <type>struct novas_on_surface</type>
       <name>on_surf</name>
       <anchorfile>structobserver.html</anchorfile>
-      <anchor>a0ed422bd2a08c6b3870b545e16484501</anchor>
+      <anchor>a45fe4eb871c346c1b8315c4c6a41e96d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -6143,6 +6408,7 @@
     <docanchor file="index.html">integration</docanchor>
     <docanchor file="index.html">examples</docanchor>
     <docanchor file="index.html">methodologies</docanchor>
+    <docanchor file="index.html">cpp-headers</docanchor>
     <docanchor file="index.html">sidereal-example</docanchor>
     <docanchor file="index.html">specify-object</docanchor>
     <docanchor file="index.html">specify-observer</docanchor>
@@ -6152,6 +6418,7 @@
     <docanchor file="index.html">horizontal-place</docanchor>
     <docanchor file="index.html">rise-set-transit</docanchor>
     <docanchor file="index.html">solsys-example</docanchor>
+    <docanchor file="index.html">transforms</docanchor>
     <docanchor file="index.html">tips</docanchor>
     <docanchor file="index.html">accuracy-notes</docanchor>
     <docanchor file="index.html">multi-threading</docanchor>
