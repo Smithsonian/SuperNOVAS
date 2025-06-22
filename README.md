@@ -88,15 +88,16 @@ same results with
 with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
 the lack of `try / except` style constructs in C).
  
-__SuperNOVAS__ is currently based on NOVAS C version 3.1. We plan to rebase SuperNOVAS to the latest upstream release 
-of the NOVAS C library, if new releases become available.
+__SuperNOVAS__ is currently based on NOVAS C version 3.1. We plan to rebase __SuperNOVAS__ to the latest upstream 
+release of the NOVAS C library, if new releases become available.
  
 __SuperNOVAS__ is maintained by [Attila Kovács](https://github.com/attipaci) at the Center for Astrophysics \| Harvard 
 &amp; Smithsonian, and it is available through the [Smithsonian/SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS) 
 repository on GitHub.
 
 Outside contributions are very welcome. See
-[how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) to make SuperNOVAS even better.
+[how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) on how you can make __SuperNOVAS__ 
+even better.
 
 ### Related links
 
@@ -187,13 +188,13 @@ If you have code that was written for NOVAS C 3.1, it should work with __SuperNO
 Simply (re)build your application against SuperNOVAS, and you are good to go. 
 
 The lack of binary compatibility just means that you cannot drop-in replace the libraries (e.g. the static 
-`libnovas.a`, or the shared `libnovas.so`), from NOVAS C 3.1 with those from SuperNOVAS. Instead, you will have to 
+`libnovas.a`, or the shared `libnovas.so`), from NOVAS C 3.1 with those from __SuperNOVAS__. Instead, you will have to 
 build (compile) your application referencing the __SuperNOVAS__ headers and/or libraries from the start.
 
 This is because some function signatures have changed, e.g. to use an `enum` argument instead of the nondescript 
-`short int` argument of NOVAS C 3.1, or because we added a return value to a function that was declared `void` in 
-NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to accommodate 
-JPL NAIF codes, for which 16-bit storage is insufficient. 
+`short int` option arguments used in NOVAS C 3.1, or because we added a return value to a function that was declared 
+`void` in NOVAS C 3.1. We also changed the `object` structure to contain a `long` ID number instead of `short` to 
+accommodate JPL NAIF codes, for which 16-bit storage is insufficient. 
 
 
 -----------------------------------------------------------------------------
@@ -315,8 +316,8 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 ## Building your application with SuperNOVAS
 
 Provided you have installed the __SuperNOVAS__ headers and (static or shared) libraries into a standard location, you 
-can build your application against it easily. For example, to build `myastroapp.c` against SuperNOVAS, you might have 
-a `Makefile` with contents like:
+can build your application against it easily. For example, to build `myastroapp.c` against __SuperNOVAS__, you might 
+have a `Makefile` with contents like:
 
 ```make
   myastroapp: myastroapp.c 
@@ -324,10 +325,10 @@ a `Makefile` with contents like:
 ```
 
 If you have a legacy NOVAS C 3.1 application, it is possible that the compilation will give you errors due to missing 
-includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`. This is because these headers were explicitly included by 
-`novas.h` in NOVAS C 3.1, but not in SuperNOVAS (at least not by default), as a matter of best practice. If this is a 
-problem for you can 'fix' it in one of two ways: (1) Add the missing `#include` directives to your application source 
-explicitly, or if that's not an option for you, then (2) set the `-DCOMPAT=1` compiler flag when compiling your 
+includes for `stdio.h`, `stdlib.h`, `ctype.h` or `string.h`, because these headers were implicitly included with 
+`novas.h` in NOVAS C 3.1, but not in __SuperNOVAS__ (at least not by default), as a matter of best practice. If this 
+is a problem for you can 'fix' it in one of two ways: (1) Add the missing `#include` directives to your application 
+source explicitly, or if that's not an option for you, then (2) set the `-DCOMPAT=1` compiler flag when compiling your 
 application:
 
 ```make
@@ -403,7 +404,7 @@ switch between different planet and ephemeris calculator functions at will, duri
  - [Calculating positions for a Solar-system source](#solsys-example)
 
 
-SuperNOVAS __v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
+__SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
@@ -444,9 +445,9 @@ Older catalogs, such as J2000 (FK5), HIP, B1950 (FK4) or B1900 are just special 
 coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.
 
 The old method typically relied on the Lieske et al. 1977 precession and nutation models, which did not include tidal
-terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. SuperNOVAS and NOVAS C rely 
-on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal terms. 
-Hence, the old d&psi;,d&epsilon; corrections should never be used in SuperNOVAS, and applying the residual 
+terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. __SuperNOVAS__ and NOVAS C 
+rely on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal 
+terms. Hence, the old d&psi;,d&epsilon; corrections should never be used in SuperNOVAS, and applying the residual 
 (&Delta;d&psi;,&Delta;d&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
 discouraged. Instead, the sub-arcsecond level corrections to Earth orientation (_dx_,_dy_) should be used only when 
 converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS, and vice-versa.
@@ -777,7 +778,7 @@ more generic ephemeris handling via a user-provided `novas_ephem_provider`. E.g.
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
-As of version 1.2 you can also define solar system sources with Keplerian orbital elements (such as the most 
+As of version __1.2__ you can also define solar system sources with Keplerian orbital elements (such as the most 
 up-to-date ones provided by the [Minor Planet Center](https://minorplanetcenter.net/data) for asteroids, comets, 
 etc.):
 
@@ -806,8 +807,8 @@ Other than that, it's the same spiel as before, e.g.:
  }
 ```
 
-Finally, as of version 1.4, you might generate approximate (arcmin-level) orbitals for the major planets (sans Earth), 
-the Moon, and the Earth-Moon Barycenter (EMB) also, e.g.:
+Finally, as of version __1.4__, you might generate approximate (arcmin-level) orbitals for the major planets (sans 
+Earth), the Moon, and the Earth-Moon Barycenter (EMB) also, e.g.:
 
 ```c
  double jd_tdb = ... // Time (epoch) for which to calculate orbital parameters  
@@ -829,8 +830,8 @@ approximate rise/set time calculations.
 <a name="transforms"></a>
 ### Coordinate and velocity transforms (change of coordinate system)
 
-__SuperNOVAS__ introduces matrix transforms (correctly since v1.4), which can take a position or velocity vector 
-(geometric or apparent), obtained for an observer frame, from one coordinate system to another efficiently. For 
+__SuperNOVAS__ introduces matrix transforms (correctly since version __1.4__), which can take a position or velocity 
+vector (geometric or apparent), obtained for an observer frame, from one coordinate system to another efficiently. For 
 example,
 
 ```c
@@ -909,8 +910,8 @@ multi-threaded applications. Just make sure that you:
 ### Physical units
 
 The NOVAS API has been using conventional units (e.g. AU, km, day, deg, h) typically for its parameters and return 
-values alike. Hence, SuperNOVAS follows the same conventions for its added functions and data structures also. 
-However, when interfacing SuperNOVAS with other programs, libraries, or data files, it is often necessary to use
+values alike. Hence, __SuperNOVAS__ follows the same conventions for its added functions and data structures also. 
+However, when interfacing __SuperNOVAS__ with other programs, libraries, or data files, it is often necessary to use
 quantities that are expressed in different units, such as SI or CGS. To facilitate such conversions, `novas.h` 
 provides a set of unit constants, which can be used for converting to/from SI units (and radians). For example, 
 `novas.h` contains the following definitions:
