@@ -6,6 +6,17 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+ - #197: Fix reverse target order builds via `make --shuffle=reverse`, which could also fail parallel builds in some 
+   cases. See also Debian Bug Tracker [#1105702](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1105702).
+
+### Changed
+
+ - Various improvements to documentation.
+ 
 
 ## [1.4.0] - 2025-06-02
 
