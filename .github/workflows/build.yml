@@ -48,3 +48,13 @@ jobs:
 
     - name: Generate CIO locator data
       run: make cio_file
+
+# Reverse build not yet supported in ubuntu-latest
+#
+#  reverse-build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v4
+#    - name: Reverse order build
+#      run: make --shuffle=reverse
+
