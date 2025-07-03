@@ -231,6 +231,9 @@ endif
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
 
+# Compiler flags for building shared .so libraries.
+SOFLAGS = $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
+
 # Search for files in the designated locations
 vpath %.h $(INCLUDE)
 vpath %.c $(SRC)

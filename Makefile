@@ -175,9 +175,8 @@ $(LIB)/libsolsys-cspice.so.$(SO_VERSION): SHLIBS := -lcspice
 $(LIB)/libsolsys-cspice.so.$(SO_VERSION): $(SRC)/solsys-cspice.c
 
 # Link submodules against the supernovas shared lib
-$(LIB)/libsolsys%.so.$(SO_VERSION): | $(LIB)/libsupernovas.so
-	@$(MAKE) $(LIB)
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS) -L$(LIB) -lsupernovas $(SHLIBS)
+$(LIB)/libsolsys%.so.$(SO_VERSION): | $(LIB) $(LIB)/libsupernovas.so
+	$(CC) -o $@ $(SOFLAGS) -L$(LIB) -lsupernovas $(SHLIBS)
 
 # Static library: libsupernovas.a
 $(LIB)/libsupernovas.a: $(OBJECTS) | $(LIB) Makefile
