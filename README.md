@@ -1225,8 +1225,8 @@ add `-lsolsys-calceph` to your link flags (or else link with `solsys-calceph.o`)
 also (`-lcalceph`). That's all there is to it.
 
 When using CALCEPH, ephemeris objects are referenced by their ID numbers (`object.number`), unless it is set to -1, in 
-which case name-based lookup is used. ID numbers are assumed to be NAIF by default, but `novas_calceph_used_ids()` can 
-select between NAIF or CALCEPH numbering systems, if necessary.
+which case name-based lookup will be used instead. ID numbers are assumed to be NAIF by default, but 
+`novas_calceph_use_ids()` can select between NAIF or CALCEPH numbering systems, if necessary.
 
 
 <a name="cspice-integration"></a>
@@ -1277,7 +1277,7 @@ to your link flags (or else link with `solsys-cspice.o`), and of course the CSPI
 to it.
 
 When using CSPICE, ephemeris objects are referenced by their NAIF ID numbers (`object.number`), unless that number is 
-set to -1, in which case name-based lookup is used.
+set to -1, in which case name-based lookup will be used instead.
 
 <a name="universal-ephemerides"></a>
 ### Universal ephemeris data / service integration 
