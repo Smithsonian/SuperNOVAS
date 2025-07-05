@@ -147,34 +147,36 @@ $(LIB)/libsolsys-cspice.so: $(LIB)/libsolsys-cspice.so.$(SO_VERSION)
 
 $(LIB)/libnovas.so: $(LIB)/libsupernovas.so
 
-$(LIB)/libsolsys%.so.$(SO_VERSION): LDFLAGS += -L$(LIB) -lsupernovas
-
 # Shared library: libsupernovas.so.1 -- same as novas.so except the builtin SONAME
 $(LIB)/libsupernovas.so.$(SO_VERSION): $(SOURCES)
 
 # Shared library: libsolsys1.so.1 (standalone solsys1.c functionality)
 $(LIB)/libsolsys1.so.$(SO_VERSION): BUILTIN_SOLSYS1 := 0
-$(LIB)/libsolsys1.so.$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c | $(LIB)/libsupernovas.so
+$(LIB)/libsolsys1.so.$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c
 
 # Shared library: libsolsys2.so.1 (standalone solsys2.c functionality)
 $(LIB)/libsolsys2.so.$(SO_VERSION): BUILTIN_SOLSYS2 := 0
-$(LIB)/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c | $(LIB)/libsupernovas.so
+$(LIB)/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c
 
 # Shared library: libsolsys3.so.1 (standalone solsys1.c functionality)
 $(LIB)/libsolsys3.so.$(SO_VERSION): BUILTIN_SOLSYS3 := 0
-$(LIB)/libsolsys3.so.$(SO_VERSION): $(SRC)/solsys3.c | $(LIB)/libsupernovas.so
+$(LIB)/libsolsys3.so.$(SO_VERSION): $(SRC)/solsys3.c
 
 # Shared library: libsolsys-ephem.so.1 (standalone solsys2.c functionality)
 $(LIB)/libsolsys-ephem.so.$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
-$(LIB)/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c | $(LIB)/libsupernovas.so
+$(LIB)/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c
 
 # Shared library: libsolsys-calceph.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-calceph.so.$(SO_VERSION): LDFLAGS += -lcalceph
-$(LIB)/libsolsys-calceph.so.$(SO_VERSION): $(SRC)/solsys-calceph.c | $(LIB)/libsupernovas.so
+$(LIB)/libsolsys-calceph.so.$(SO_VERSION): SHLIBS := -lcalceph
+$(LIB)/libsolsys-calceph.so.$(SO_VERSION): $(SRC)/solsys-calceph.c
 
 # Shared library: libsolsys-cspice.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-cspice.so.$(SO_VERSION): LDFLAGS += -lcspice
-$(LIB)/libsolsys-cspice.so.$(SO_VERSION): $(SRC)/solsys-cspice.c | $(LIB)/libsupernovas.so
+$(LIB)/libsolsys-cspice.so.$(SO_VERSION): SHLIBS := -lcspice
+$(LIB)/libsolsys-cspice.so.$(SO_VERSION): $(SRC)/solsys-cspice.c
+
+# Link submodules against the supernovas shared lib
+$(LIB)/libsolsys%.so.$(SO_VERSION): | $(LIB) $(LIB)/libsupernovas.so
+	$(CC) -o $@ $(SOFLAGS) -L$(LIB) -lsupernovas $(SHLIBS)
 
 # Static library: libsupernovas.a
 $(LIB)/libsupernovas.a: $(OBJECTS) | $(LIB) Makefile

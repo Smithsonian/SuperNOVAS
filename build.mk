@@ -11,9 +11,8 @@ $(OBJ)/%.o: $(SRC)/%.c $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
 # Share library recipe
-$(LIB)/%.so.$(SO_VERSION):
-	@$(MAKE) $(LIB)
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
+$(LIB)/%.so.$(SO_VERSION): | $(LIB)
+	$(CC) -o $@ $(SOFLAGS)
 
 # Unversioned shared libs (for linking against)
 $(LIB)/lib%.so:
