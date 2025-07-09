@@ -48,10 +48,11 @@ This document has been updated for the `v1.4` and later releases.
  - [Compatibility with NOVAS C 3.1](#compatibility)
  - [Building and installation](#installation)
  - [Building your application with SuperNOVAS](#integration)
+ - [Celestial coordinate systems (old vs. new)](#methodologies)
  - [Example usage](#examples)
- - [Tips and tricks](#tips)
- - [Notes on precision](#precision)
  - [Incorporating Solar-system ephemeris data or services](#solarsystem)
+ - [Notes on precision](#precision)
+ - [Tips and tricks](#tips)
  - [Runtime debug support](#debug-support)
  - [Representative benchmarks](#benchmarks)
  - [SuperNOVAS added features](#supernovas-features)
@@ -394,23 +395,8 @@ switch between different planet and ephemeris calculator functions at will, duri
 
 -----------------------------------------------------------------------------
 
-
-<a name="examples"></a>
-## Example usage
-
- - [Note on alternative methodologies](#methodologies)
- - [SuperNOVAS and C++](#cpp-headers)
- - [Calculating positions for a sidereal source](#sidereal-example)
- - [Calculating positions for a Solar-system source](#solsys-example)
-
-
-__SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
-astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
-NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
-showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
-
 <a name="methodologies"></a>
-### Note on alternative methodologies
+## Celestial coordinate systems (old vs. new)
 
 The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
 to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
@@ -461,20 +447,22 @@ implementation.
 |:--:| 
 | __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient [matrix transformations](#transforms) between the equatorial systems. |
 
-<a name="cpp-headers"></a>
-### SuperNOVAS and C++
 
-When including __SuperNOVAS__ (C90) headers in your C++ source files, it is necessary to reconcile the different C and 
-C++ namespaces. Therefore, you will have to include the __SuperNOVAS__ headers inside an `extern "C" {}` block in your
-source code, such as:
+-----------------------------------------------------------------------------
 
-```c
- extern "C" {
- #  include <novas.h>
- }
-```
+<a name="examples"></a>
+## Example usage
 
-The above is the standard way to include C headers in C++ sources, in general.
+ - [Calculating positions for a sidereal source](#sidereal-example)
+ - [Calculating positions for a Solar-system source](#solsys-example)
+
+__SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
+astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
+NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
+showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
+
+
+
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -861,302 +849,6 @@ The same transform can also be used to convert apparent positions in a `sky_pos`
   novas_transform_sky_pos(&j2000_pos, &T, &tirs_pos);
 ```
 
-------------------------------------------------------------------------------
-
-<a name="tips"></a>
-## Tips and tricks
-
- - [Reduced accuracy shortcuts](#accuracy-notes)
- - [Multi-threaded calculations](#multi-threading)
- - [Physical units](#physical-units)
- - [String times and angles](#string-times-and-angles)
- - [String dates](#string-dates)
-
-
-<a name="accuracy-notes"></a>
-### Reduced accuracy shortcuts
-
-When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
-
- - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
-   effect at or below the milliarcsecond level only, but may be much faster to calculate.
- - You might skip the pole offsets _dx_, _dy_. These are tenths of arcsec, typically.
- 
- 
-<a name="multi-threading"></a>
-### Multi-threaded calculations
-
-Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
-however, NOVAS (and __SuperNOVAS__) has a trick up its sleeve: it caches the last result of intensive calculations so 
-they may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).
- 
-A direct consequence of the caching of results is that calculations are generally not thread-safe as implemented by 
-the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input 
-parameters while, at the same time, another thread is saving cached values for a different set of parameters. Thus, 
-when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely 
-they may not correspond to the requested input parameters.
- 
-While you should never call the original NOVAS C library from multiple threads simultaneously, __SuperNOVAS__ caches 
-the results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in 
-multi-threaded applications. Just make sure that you:
-
- - use a compiler which supports the C11 language standard;
- - or, compile with GCC &gt;= 3.3;
- - or else, set the appropriate non-standard keyword to use for declaring thread-local variables for your compiler in 
-   `config.mk` or in your equivalent build setup.
- 
- 
-<a name="physical-units"></a>
-### Physical units
-
-The NOVAS API has been using conventional units (e.g. AU, km, day, deg, h) typically for its parameters and return 
-values alike. Hence, __SuperNOVAS__ follows the same conventions for its added functions and data structures also. 
-However, when interfacing __SuperNOVAS__ with other programs, libraries, or data files, it is often necessary to use
-quantities that are expressed in different units, such as SI or CGS. To facilitate such conversions, `novas.h` 
-provides a set of unit constants, which can be used for converting to/from SI units (and radians). For example, 
-`novas.h` contains the following definitions:
-
-```c
- /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
- #define NOVAS_DAY                 86400.0
-
- /// [rad] A degree expressed in radians. @since 1.2
- #define NOVAS_DEGREE              (M_PI / 180.0)
-
- /// [rad] An hour of angle expressed in radians. @since 1.2
- #define NOVAS_HOURANGLE           (M_PI / 12.0)
-```
-
-You can use these, for example, to convert quantities expressed in conventional units for NOVAS to standard (SI) 
-values, by multiplying NOVAS quantities with the corresponding unit definition. E.g.:
-
-```c
- // A difference in Julian Dates [day] in seconds.
- double delta_t = (tjd - tjd0) * NOVAS_DAY;
-  
- // R.A. [h] / declination [deg] converted radians (e.g. for trigonometric functions).
- double ra_rad = ra_h * NOVAS_HOURANGLE;
- double dec_rad = dec_d * NOVAS_DEGREE; 
-```
-
-And vice-versa: to convert values expressed in standard (SI) units, you can divide by the appropriate constant to
-'cast' an SI value into the particular physical unit, e.g.:
-
-```c
- // Increment a Julian Date [day] with some time differential [s].
- double tjd = tjd0 + delta_t / NOVAS_DAY;
-  
- // convert R.A. / declination in radians to hours and degrees
- double ra_h = ra_rad / NOVAS_HOURANGLE;
- double dec_d = dec_rad / NOVAS_DEGREE;
-```
-
-Finally, you can combine them to convert between two different conventional units, e.g.:
-
-```c
- // Convert angle from [h] -> [rad] -> [deg]
- double lst_d = lst_h * NOVAS_HOURANGLE / NOVAS_DEGREE; 
-  
- // Convert [AU/day] -> [m/s] (SI) -> [km/s]
- double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KMS
-```
-
-<a name="string-times-and-angles"></a>
-### String times and angles
-
-__SuperNOVAS__ functions typically input and output times and angles as decimal values (hours and degrees, but also as 
-days and hour-angles), but that is not how these are represented in many cases. Time and right-ascention are often 
-given as string values indicating hours, minutes, and seconds (e.g. "11:32:31.595", or "11h 32m 31.595s"). Similarly 
-angles, are commonly represented as degrees, arc-minutes, and arc-seconds (e.g. "+53 60 19.9"). For that reason, 
-__SuperNOVAS__ provides a set of functions to convert string values expressed in decimal or broken-down format to floating
-point representation. E.g.,
-
-```c
- // Right ascention from string
- double ra_h = novas_str_hours("9 18 49.068");
-
- // Declination from string
- double dec_d = novas_str_degrees("-53 10 07.33");
-```
-
-The conversions have a lot of flexibility. Components can be separated by spaces (as above), by colons, commas, or
-underscores, by the letters 'h'/'d', 'm', and 's', by single (minutes) and double quotes (seconds), or any combination 
-thereof. Decimal values may be followed by 'h' or 'd' unit markers. Additionally, angles can end with a compass 
-direction, such as 'N', 'E', 'S' or 'W'. So the above could also have been:
-
-```c
- double ra_h = novas_str_hours("9h_18:49.068\"");
- double dec_d = novas_str_degrees("53d 10'_07.33S");
-```
-
-or as decimals:
-
-```c
- double ra_h = novas_str_hours("9.31363");
- double dec_d = novas_str_degrees("53.16870278d South");
-```
-
-
-<a name="string-dates"></a>
-### String dates
-
-Dates are typically represented broken down into year, month, and day (e.g. "2025-02-16", or "16.02.2025", or 
-"2/16/2025"), with or without a time marker, which itself may or may not include a time-zone specification. In 
-astronomy, the most commonly used string representation of dates is with ISO 8601 timestamps. The following are
-all valid ISO date specifications:
-
-```
- 2025-02-16			# Date only (0 UTC)
- 2025-02-16T19:35:21Z		# UTC date/time
- 2025-02-16T19:35:21.832Z	# UTC date/time with decimals
- 2025-02-16T14:35:21+0500	# date in time-zone (e.g. EST)
- 2025-02-16T14:35:21.832+05:00  # alternative time-zone specification
-```
-
-__SuperNOVAS__ provides functions to convert between ISO dates/times and their string representation for convenience. 
-E.g.,
-
-```c
- novas_timespec time;           // Astronomical time specification
- char timestamp[40];            // A string to contain an ISO representation
-
- // Parse an ISO timestamp into a Julian day (w/o returning the tail).
- double jd = novas_parse_iso_date("2025-02-16T19:35:21Z", NULL);
- if(isnan(jd)) {
-   // Ooops could not parse date.
-   ...
- }
-   
- // Use the parsed JD date (in UTC) with the appropriate leap seconds 
- // and UT1-UTC time difference
- novas_set_time(NOVAS_UTC, jd, leap_seconds, dut1, &time);
-  
- // Print an ISO timestamp, with millisecond precision, into the 
- // designated string buffer.
- novas_iso_timestamp(&time, timestamp, sizeof(timestamp));
-```
-
-ISO 8601 timestamps are always UTC-based and expressed in the Gregorian calendar, as per specification, even for dates 
-that preceded the Gregorian calendar reform of 1582 (i.e. 'proleptic Gregorian' dates). However, other __SuperNOVAS__ 
-string date funtions will process dates in the astronomical calendar of date by default, that is in the Gregorian 
-calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior, and support 
-timescales other than UTC also, e.g.:
-
-```c
- // Print a TDB timestamp in the astronomical calendar of date instead
- novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
-```
-
-Or, parse an astronomical date:
-
-```c
- // Parse astronomical dates into a Julian day...
- double jd = novas_date("2025-02-16T19:35:21");
- if(isnan(jd)) {
-   // Ooops could not parse date.
-   ...
- }
-```
-
-Or, parse an astronomical date, including the timescale specification:
-
-```c
- // Parse a TAI-based timestamp into a Julian day and corresponding timescale
- double jd = novas_date_scale("2025-02-16T19:35:21+0200 TAI", &scale);
- if(isnan(jd)) {
-   // Ooops could not parse date.
-   ...
- }
-```
-
-Sometimes your input dates are represented in various other formats. You can have additional flexibility for parsing 
-dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions. E.g.,
-
-```c
- char *pos = NULL;            // We'll keep track of the string parse position here
- enum novas_timescale scale;  // We'll parse the timescale here (if we can)
-
- // Parse the M/D/Y date up to the 'TAI' timescale specification...
- double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_MDY, 
-   "2/16/2025 20:08:49.082 TAI", &pos);
-  
- // Then parse the 'TAI' timescale marker, after the date/time specification
- scale = novas_timescale_for_string(pos);
- if(scale < 0) {
-   // Ooops, not a valid timescale marker. Perhaps assume UTC...
-   scale = NOVAS_UTC;
- }
-
- // Now set the time for the given calendar, date format, and timescale of the 
- // string representation.
- novas_set_time(scale, jd, leap_seconds, dut1, &time);
-``` 
-
------------------------------------------------------------------------------
-
-<a name="precision"></a>
-## Notes on precision
-
-Many of the (Super)NOVAS functions take an accuracy argument, which determines to what precision quantities are 
-calculated. The argument can have one of two values, which correspond to typical precisions around:
-
- | `enum novas_accuracy` value  | Typical precision                |
- | ---------------------------- | -------------------------------- |
- | `NOVAS_REDUCED_ACCURACY`     | ~ 1 milli-arcsecond (mas)        |
- | `NOVAS_FULL_ACCURACY`        | below 1 micro-arcsecond (&mu;as) |
-
-Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision
-ephemeris provider for the major planets (and any Solar-system bodies of interest), which does not come with 
-__SuperNOVAS__ out of the box. In the absense of a suitable high-precision ephemeris provider, some functions might 
-return an error if called with `NOVAS_FULL_ACCURACY`.
-
-### Prerequisites to precise results
-
-The __SuperNOVAS__ library is in principle capable of calculating positions to sub-microarcsecond, and velocities to 
-mm/s, precision for all types of celestial sources. However, there are certain prerequisites and practical 
-considerations before that level of accuracy is reached.
-
-    
- 1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use __SuperNOVAS__ with 
-    the new IAU standard quantities and methods. The old ways were simply not suited for precision much below the 
-    milliarcsecond level.
-    
- 2. __Gravitational bending__: Calculations much below the milliarcsecond level will require to account for 
-    gravitational bending around massive Solar-system bodies, and hence will require you to provide a high-precision 
-    ephemeris provider for the major planets. Without it, there is no guarantee of achieving the desired &mu;as-level 
-    precision in general, especially when observing near massive planets (e.g. observing Jupiter's or Saturn's moons, 
-    near conjuction with the host planet). Therefore some functions will return with an error, if used with 
-    `NOVAS_FULL_ACCURACY` in the absense of a suitable high-precision planetary ephemeris provider.
-
- 3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
-    the target object as well as for Earth, and the Sun. For the highest precision calculations you also need 
-    positions for all major planets to calculate gravitational deflection precisely. By default, __SuperNOVAS__ can 
-    only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly 
-    not at the sub-microarcsecond level, and not for other Solar-system sources. You will need to provide a way to 
-    interface __SuperNOVAS__ with a suitable ephemeris source (such as the CSPICE toolkit from JPL or CALCEPH) if you 
-    want to use it to obtain precise positions for Solar-system bodies. See the [section further below](#solarsystem) 
-    for more information how you can do that.
-
- 4. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
-    knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
-    nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
-    (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
-    provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
-    time difference and leap-seconds (UTC-TAI). In __SuperNOVAS__ you can use `cel_pole()` and `get_ut1_to_tt()` 
-    functions to apply / use the published values from these to improve the astrometric precision of Earth-orientation 
-    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
-    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
-   
-  5. __Refraction__: Ground based observations are also subject to atmospheric refraction. __SuperNOVAS__ offers the 
-    option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
-    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
-    Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
-    radio refraction model is included as of version 1.1 also. As of v1.4.0 we also offer our implementation of the 
-    wavelength-dependent IAU refraction model based on the SOFA `iauRefco()` function. In any case, you may want to 
-    skip the refraction corrections offered in this library, and instead implement your own as appropriate (or not at 
-    all).
-  
-
 -----------------------------------------------------------------------------
 
 <a name="solarsystem"></a>
@@ -1405,6 +1097,320 @@ will want to use __SuperNOVAS__ with. This is why the runtime configuration of t
 best and most generic way to add your preferred implementations while also providing some minimum default 
 implementations for _other users_ of the library, who may not want _your_ ephemeris service, or have no need for 
 planet data beyond the approximate positions for the Earth and Sun.
+
+
+-----------------------------------------------------------------------------
+
+<a name="precision"></a>
+## Notes on precision
+
+Many of the (Super)NOVAS functions take an accuracy argument, which determines to what precision quantities are 
+calculated. The argument can have one of two values, which correspond to typical precisions around:
+
+ | `enum novas_accuracy` value  | Typical precision                |
+ | ---------------------------- | -------------------------------- |
+ | `NOVAS_REDUCED_ACCURACY`     | ~ 1 milli-arcsecond (mas)        |
+ | `NOVAS_FULL_ACCURACY`        | below 1 micro-arcsecond (&mu;as) |
+
+Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision
+ephemeris provider for the major planets (and any Solar-system bodies of interest), which does not come with 
+__SuperNOVAS__ out of the box. In the absense of a suitable high-precision ephemeris provider, some functions might 
+return an error if called with `NOVAS_FULL_ACCURACY`.
+
+### Prerequisites to precise results
+
+The __SuperNOVAS__ library is in principle capable of calculating positions to sub-microarcsecond, and velocities to 
+mm/s, precision for all types of celestial sources. However, there are certain prerequisites and practical 
+considerations before that level of accuracy is reached.
+
+    
+ 1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use __SuperNOVAS__ with 
+    the new IAU standard quantities and methods. The old ways were simply not suited for precision much below the 
+    milliarcsecond level.
+    
+ 2. __Gravitational bending__: Calculations much below the milliarcsecond level will require to account for 
+    gravitational bending around massive Solar-system bodies, and hence will require you to provide a high-precision 
+    ephemeris provider for the major planets. Without it, there is no guarantee of achieving the desired &mu;as-level 
+    precision in general, especially when observing near massive planets (e.g. observing Jupiter's or Saturn's moons, 
+    near conjuction with the host planet). Therefore some functions will return with an error, if used with 
+    `NOVAS_FULL_ACCURACY` in the absense of a suitable high-precision planetary ephemeris provider.
+
+ 3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
+    the target object as well as for Earth, and the Sun. For the highest precision calculations you also need 
+    positions for all major planets to calculate gravitational deflection precisely. By default, __SuperNOVAS__ can 
+    only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly 
+    not at the sub-microarcsecond level, and not for other Solar-system sources. You will need to provide a way to 
+    interface __SuperNOVAS__ with a suitable ephemeris source (such as the CSPICE toolkit from JPL or CALCEPH) if you 
+    want to use it to obtain precise positions for Solar-system bodies. See the [section further below](#solarsystem) 
+    for more information how you can do that.
+
+ 4. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
+    knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
+    nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
+    (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
+    provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
+    time difference and leap-seconds (UTC-TAI). In __SuperNOVAS__ you can use `cel_pole()` and `get_ut1_to_tt()` 
+    functions to apply / use the published values from these to improve the astrometric precision of Earth-orientation 
+    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
+    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
+   
+  5. __Refraction__: Ground based observations are also subject to atmospheric refraction. __SuperNOVAS__ offers the 
+    option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
+    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
+    Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
+    radio refraction model is included as of version 1.1 also. As of v1.4.0 we also offer our implementation of the 
+    wavelength-dependent IAU refraction model based on the SOFA `iauRefco()` function. In any case, you may want to 
+    skip the refraction corrections offered in this library, and instead implement your own as appropriate (or not at 
+    all).
+  
+
+------------------------------------------------------------------------------
+
+<a name="tips"></a>
+## Tips and tricks
+
+ - [SuperNOVAS and C++](#cpp-headers)
+ - [Reduced accuracy shortcuts](#accuracy-notes)
+ - [Multi-threaded calculations](#multi-threading)
+ - [Physical units](#physical-units)
+ - [String times and angles](#string-times-and-angles)
+ - [String dates](#string-dates)
+
+
+<a name="cpp-headers"></a>
+### SuperNOVAS and C++
+
+When including __SuperNOVAS__ (C90) headers in your C++ source files, it is necessary to reconcile the different C and 
+C++ namespaces. Therefore, you will have to include the __SuperNOVAS__ headers inside an `extern "C" {}` block in your
+source code, such as:
+
+```c
+ extern "C" {
+ #  include <novas.h>
+ }
+```
+
+The above is the standard way to include C headers in C++ sources, in general.
+
+<a name="accuracy-notes"></a>
+### Reduced accuracy shortcuts
+
+When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
+
+ - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
+   effect at or below the milliarcsecond level only, but may be much faster to calculate.
+ - You might skip the pole offsets _dx_, _dy_. These are tenths of arcsec, typically.
+ 
+ 
+<a name="multi-threading"></a>
+### Multi-threaded calculations
+
+Some of the calculations involved can be expensive from a computational perspective. For the most typical use case
+however, NOVAS (and __SuperNOVAS__) has a trick up its sleeve: it caches the last result of intensive calculations so 
+they may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).
+ 
+A direct consequence of the caching of results is that calculations are generally not thread-safe as implemented by 
+the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input 
+parameters while, at the same time, another thread is saving cached values for a different set of parameters. Thus, 
+when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely 
+they may not correspond to the requested input parameters.
+ 
+While you should never call the original NOVAS C library from multiple threads simultaneously, __SuperNOVAS__ caches 
+the results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in 
+multi-threaded applications. Just make sure that you:
+
+ - use a compiler which supports the C11 language standard;
+ - or, compile with GCC &gt;= 3.3;
+ - or else, set the appropriate non-standard keyword to use for declaring thread-local variables for your compiler in 
+   `config.mk` or in your equivalent build setup.
+ 
+ 
+<a name="physical-units"></a>
+### Physical units
+
+The NOVAS API has been using conventional units (e.g. AU, km, day, deg, h) typically for its parameters and return 
+values alike. Hence, __SuperNOVAS__ follows the same conventions for its added functions and data structures also. 
+However, when interfacing __SuperNOVAS__ with other programs, libraries, or data files, it is often necessary to use
+quantities that are expressed in different units, such as SI or CGS. To facilitate such conversions, `novas.h` 
+provides a set of unit constants, which can be used for converting to/from SI units (and radians). For example, 
+`novas.h` contains the following definitions:
+
+```c
+ /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
+ #define NOVAS_DAY                 86400.0
+
+ /// [rad] A degree expressed in radians. @since 1.2
+ #define NOVAS_DEGREE              (M_PI / 180.0)
+
+ /// [rad] An hour of angle expressed in radians. @since 1.2
+ #define NOVAS_HOURANGLE           (M_PI / 12.0)
+```
+
+You can use these, for example, to convert quantities expressed in conventional units for NOVAS to standard (SI) 
+values, by multiplying NOVAS quantities with the corresponding unit definition. E.g.:
+
+```c
+ // A difference in Julian Dates [day] in seconds.
+ double delta_t = (tjd - tjd0) * NOVAS_DAY;
+  
+ // R.A. [h] / declination [deg] converted radians (e.g. for trigonometric functions).
+ double ra_rad = ra_h * NOVAS_HOURANGLE;
+ double dec_rad = dec_d * NOVAS_DEGREE; 
+```
+
+And vice-versa: to convert values expressed in standard (SI) units, you can divide by the appropriate constant to
+'cast' an SI value into the particular physical unit, e.g.:
+
+```c
+ // Increment a Julian Date [day] with some time differential [s].
+ double tjd = tjd0 + delta_t / NOVAS_DAY;
+  
+ // convert R.A. / declination in radians to hours and degrees
+ double ra_h = ra_rad / NOVAS_HOURANGLE;
+ double dec_d = dec_rad / NOVAS_DEGREE;
+```
+
+Finally, you can combine them to convert between two different conventional units, e.g.:
+
+```c
+ // Convert angle from [h] -> [rad] -> [deg]
+ double lst_d = lst_h * NOVAS_HOURANGLE / NOVAS_DEGREE; 
+  
+ // Convert [AU/day] -> [m/s] (SI) -> [km/s]
+ double v_kms = v_auday * (NOVAS_AU / NOVAS_DAY) / NOVAS_KMS
+```
+
+<a name="string-times-and-angles"></a>
+### String times and angles
+
+__SuperNOVAS__ functions typically input and output times and angles as decimal values (hours and degrees, but also as 
+days and hour-angles), but that is not how these are represented in many cases. Time and right-ascention are often 
+given as string values indicating hours, minutes, and seconds (e.g. "11:32:31.595", or "11h 32m 31.595s"). Similarly 
+angles, are commonly represented as degrees, arc-minutes, and arc-seconds (e.g. "+53 60 19.9"). For that reason, 
+__SuperNOVAS__ provides a set of functions to convert string values expressed in decimal or broken-down format to floating
+point representation. E.g.,
+
+```c
+ // Right ascention from string
+ double ra_h = novas_str_hours("9 18 49.068");
+
+ // Declination from string
+ double dec_d = novas_str_degrees("-53 10 07.33");
+```
+
+The conversions have a lot of flexibility. Components can be separated by spaces (as above), by colons, commas, or
+underscores, by the letters 'h'/'d', 'm', and 's', by single (minutes) and double quotes (seconds), or any combination 
+thereof. Decimal values may be followed by 'h' or 'd' unit markers. Additionally, angles can end with a compass 
+direction, such as 'N', 'E', 'S' or 'W'. So the above could also have been:
+
+```c
+ double ra_h = novas_str_hours("9h_18:49.068\"");
+ double dec_d = novas_str_degrees("53d 10'_07.33S");
+```
+
+or as decimals:
+
+```c
+ double ra_h = novas_str_hours("9.31363");
+ double dec_d = novas_str_degrees("53.16870278d South");
+```
+
+
+<a name="string-dates"></a>
+### String dates
+
+Dates are typically represented broken down into year, month, and day (e.g. "2025-02-16", or "16.02.2025", or 
+"2/16/2025"), with or without a time marker, which itself may or may not include a time-zone specification. In 
+astronomy, the most commonly used string representation of dates is with ISO 8601 timestamps. The following are
+all valid ISO date specifications:
+
+```
+ 2025-02-16			# Date only (0 UTC)
+ 2025-02-16T19:35:21Z		# UTC date/time
+ 2025-02-16T19:35:21.832Z	# UTC date/time with decimals
+ 2025-02-16T14:35:21+0500	# date in time-zone (e.g. EST)
+ 2025-02-16T14:35:21.832+05:00  # alternative time-zone specification
+```
+
+__SuperNOVAS__ provides functions to convert between ISO dates/times and their string representation for convenience. 
+E.g.,
+
+```c
+ novas_timespec time;           // Astronomical time specification
+ char timestamp[40];            // A string to contain an ISO representation
+
+ // Parse an ISO timestamp into a Julian day (w/o returning the tail).
+ double jd = novas_parse_iso_date("2025-02-16T19:35:21Z", NULL);
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
+   
+ // Use the parsed JD date (in UTC) with the appropriate leap seconds 
+ // and UT1-UTC time difference
+ novas_set_time(NOVAS_UTC, jd, leap_seconds, dut1, &time);
+  
+ // Print an ISO timestamp, with millisecond precision, into the 
+ // designated string buffer.
+ novas_iso_timestamp(&time, timestamp, sizeof(timestamp));
+```
+
+ISO 8601 timestamps are always UTC-based and expressed in the Gregorian calendar, as per specification, even for dates 
+that preceded the Gregorian calendar reform of 1582 (i.e. 'proleptic Gregorian' dates). However, other __SuperNOVAS__ 
+string date funtions will process dates in the astronomical calendar of date by default, that is in the Gregorian 
+calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior, and support 
+timescales other than UTC also, e.g.:
+
+```c
+ // Print a TDB timestamp in the astronomical calendar of date instead
+ novas_timestamp(&time, NOVAS_TDB, timestamp, sizeof(timestamp));
+```
+
+Or, parse an astronomical date:
+
+```c
+ // Parse astronomical dates into a Julian day...
+ double jd = novas_date("2025-02-16T19:35:21");
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
+```
+
+Or, parse an astronomical date, including the timescale specification:
+
+```c
+ // Parse a TAI-based timestamp into a Julian day and corresponding timescale
+ double jd = novas_date_scale("2025-02-16T19:35:21+0200 TAI", &scale);
+ if(isnan(jd)) {
+   // Ooops could not parse date.
+   ...
+ }
+```
+
+Sometimes your input dates are represented in various other formats. You can have additional flexibility for parsing 
+dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions. E.g.,
+
+```c
+ char *pos = NULL;            // We'll keep track of the string parse position here
+ enum novas_timescale scale;  // We'll parse the timescale here (if we can)
+
+ // Parse the M/D/Y date up to the 'TAI' timescale specification...
+ double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_MDY, 
+   "2/16/2025 20:08:49.082 TAI", &pos);
+  
+ // Then parse the 'TAI' timescale marker, after the date/time specification
+ scale = novas_timescale_for_string(pos);
+ if(scale < 0) {
+   // Ooops, not a valid timescale marker. Perhaps assume UTC...
+   scale = NOVAS_UTC;
+ }
+
+ // Now set the time for the given calendar, date format, and timescale of the 
+ // string representation.
+ novas_set_time(scale, jd, leap_seconds, dut1, &time);
+``` 
+
 
 -----------------------------------------------------------------------------
 
