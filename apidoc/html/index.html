@@ -276,6 +276,12 @@ Legacy modules: a better way...</h3>
 <p><a class="anchor" id="methodologies"></a> </p>
 <h2><a class="anchor" id="autotoc_md63"></a>
 Celestial coordinate systems (old vs. new)</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadCenter"><img src="resources/SuperNOVAS-systems.png" alt="SuperNOVAS coordinate systems and conversions" class="inline"/>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyCenter"><b>Figure 1.</b> SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient <a class="el" href="index.html#transforms">matrix transformations</a> between the equatorial systems.   </td></tr>
+</table>
 <p>The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) ways, and in the new IAU standard method. The table beow provides an overview of how the old and new methods define some of the terms differently:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -304,12 +310,6 @@ Celestial coordinate systems (old vs. new)</h2>
 <p>Older catalogs, such as J2000 (FK5), HIP, B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.</p>
 <p>The old method typically relied on the Lieske et al. 1977 precession and nutation models, which did not include tidal terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. <b>SuperNOVAS</b> and NOVAS C rely on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal terms. Hence, the old d&psi;,d&epsilon; corrections should never be used in <b>SuperNOVAS</b>, and applying the residual (&Delta;d&psi;,&Delta;d&epsilon; or <em>dx</em>,<em>dy</em>) polar offsets to the TOD equator (via <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code>) is also discouraged. Instead, the sub-arcsecond level corrections to Earth orientation (<em>dx</em>,<em>dy</em>) should be used only when converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS, and vice-versa.</p>
 <p>WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to the 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all Earth-fixed coordinates are effectively presumed as ITRS, whether explicitly or implicitly. There is nothing WGS84-specific in the implementation.</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadCenter"><img src="resources/SuperNOVAS-systems.png" alt="SuperNOVAS coordinate systems and conversions" class="inline"/>    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter"><b>Figure 1.</b> SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient <a class="el" href="index.html#transforms">matrix transformations</a> between the equatorial systems.   </td></tr>
-</table>
 <hr  />
 <p><a class="anchor" id="examples"></a> </p>
 <h2><a class="anchor" id="autotoc_md65"></a>
