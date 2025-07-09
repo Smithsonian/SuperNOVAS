@@ -398,6 +398,11 @@ switch between different planet and ephemeris calculator functions at will, duri
 <a name="methodologies"></a>
 ## Celestial coordinate systems (old vs. new)
 
+| ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
+|:--:| 
+| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient [matrix transformations](#transforms) between the equatorial systems. |
+
+
 The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
 to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
 ways, and in the new IAU standard method. The table beow provides an overview of how the old and new methods define 
@@ -443,9 +448,6 @@ WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based
 coordinates are effectively presumed as ITRS, whether explicitly or implicitly. There is nothing WGS84-specific in the 
 implementation.
 
-| ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
-|:--:| 
-| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient [matrix transformations](#transforms) between the equatorial systems. |
 
 
 -----------------------------------------------------------------------------
