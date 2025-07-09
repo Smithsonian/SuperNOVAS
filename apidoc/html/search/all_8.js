@@ -5,7 +5,7 @@ var searchData=
   ['c_203_201_20issues_2',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md53',1,'']]],
   ['c_20api_3',['Refinements to the NOVAS C API',['../index.html#autotoc_md108',1,'']]],
   ['cal_5fdate_4',['cal_date',['../calendar_8c.html#a044f1359abcf0a039ac6452a95729b5a',1,'cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour):&#160;calendar.c'],['../novas_8h.html#a044f1359abcf0a039ac6452a95729b5a',1,'cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour):&#160;calendar.c']]],
-  ['calceph_20integration_5',['Optional CALCEPH integration',['../index.html#autotoc_md78',1,'']]],
+  ['calceph_20integration_5',['CALCEPH integration',['../index.html#autotoc_md78',1,'']]],
   ['calculate_20an_20apparent_20place_20on_20sky_6',['Calculate an apparent place on sky',['../index.html#autotoc_md71',1,'']]],
   ['calculate_20apparent_20positions_20on_20sky_7',['Calculate apparent positions on sky',['../md_LEGACY.html#autotoc_md44',1,'']]],
   ['calculate_20azimuth_20and_20elevation_20angles_20at_20the_20observing_20location_8',['Calculate azimuth and elevation angles at the observing location',['../index.html#autotoc_md72',1,'']]],
@@ -45,7 +45,7 @@ var searchData=
   ['coordinate_20system_42',['Coordinate and velocity transforms (change of coordinate system)',['../index.html#autotoc_md75',1,'']]],
   ['coordinate_20systems_20old_20vs_20new_43',['Celestial coordinate systems (old vs. new)',['../index.html#autotoc_md63',1,'']]],
   ['coords_2ec_44',['coords.c',['../coords_8c.html',1,'']]],
-  ['cspice_20toolkit_20integration_45',['Optional NAIF CSPICE toolkit integration',['../index.html#autotoc_md79',1,'']]],
+  ['cspice_20toolkit_20integration_45',['NAIF CSPICE toolkit integration',['../index.html#autotoc_md79',1,'']]],
   ['cspice_5fadd_5fkernel_46',['cspice_add_kernel',['../novas-cspice_8h.html#ae02d26964099f56c375dc78172ad135b',1,'cspice_add_kernel(const char *filename):&#160;solsys-cspice.c'],['../solsys-cspice_8c.html#ae02d26964099f56c375dc78172ad135b',1,'cspice_add_kernel(const char *filename):&#160;solsys-cspice.c']]],
   ['cspice_5fremove_5fkernel_47',['cspice_remove_kernel',['../solsys-cspice_8c.html#a38e3b3155cad3b3822fbc3e553060ab1',1,'cspice_remove_kernel(const char *filename):&#160;solsys-cspice.c'],['../novas-cspice_8h.html#a38e3b3155cad3b3822fbc3e553060ab1',1,'cspice_remove_kernel(const char *filename):&#160;solsys-cspice.c']]],
   ['custom_20ephemeris_20functions_48',['Legacy linking of custom ephemeris functions',['../index.html#autotoc_md84',1,'']]]

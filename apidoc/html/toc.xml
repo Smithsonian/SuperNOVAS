@@ -24,8 +24,8 @@
       <topic label="Coordinate and velocity transforms (change of coordinate system)" href="index.html#autotoc_md75"/>
     </topic>
     <topic label="Incorporating Solar-system ephemeris data or services" href="index.html#autotoc_md77">
-      <topic label="Optional CALCEPH integration" href="index.html#autotoc_md78"/>
-      <topic label="Optional NAIF CSPICE toolkit integration" href="index.html#autotoc_md79"/>
+      <topic label="CALCEPH integration" href="index.html#autotoc_md78"/>
+      <topic label="NAIF CSPICE toolkit integration" href="index.html#autotoc_md79"/>
       <topic label="Universal ephemeris data / service integration" href="index.html#autotoc_md80"/>
       <topic label="Legacy support for (older) JPL major planet ephemerides" href="index.html#autotoc_md81">
         <topic label="Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;" href="index.html#autotoc_md82"/>

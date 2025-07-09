@@ -14,7 +14,7 @@ var searchData=
   ['in_5fspace_5finit_11',['IN_SPACE_INIT',['../novas_8h.html#a406038a5cbe32b7e0e7233f6145e4cf5',1,'novas.h']]],
   ['incorporating_20solar_20system_20ephemeris_20data_20or_20services_12',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md77',1,'']]],
   ['installation_13',['Building and installation',['../index.html#autotoc_md57',1,'']]],
-  ['integration_14',['integration',['../index.html#autotoc_md78',1,'Optional CALCEPH integration'],['../index.html#autotoc_md79',1,'Optional NAIF CSPICE toolkit integration'],['../index.html#autotoc_md80',1,'Universal ephemeris data / service integration']]],
+  ['integration_14',['integration',['../index.html#autotoc_md78',1,'CALCEPH integration'],['../index.html#autotoc_md79',1,'NAIF CSPICE toolkit integration'],['../index.html#autotoc_md80',1,'Universal ephemeris data / service integration']]],
   ['interest_15',['interest',['../index.html#autotoc_md67',1,'Specify the object of interest'],['../md_LEGACY.html#autotoc_md40',1,'Specify the object of interest']]],
   ['interface_16',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md83',1,'']]],
   ['interpolate_17',['interpolate',['../eph__manager_8c.html#aeda97db4dfac1a80c97ab2f3fb42b4a9',1,'eph_manager.c']]],

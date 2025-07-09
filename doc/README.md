@@ -612,26 +612,28 @@ converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed I
 set zeroes if sub-arcsecond precision is not required.
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
-in that frame (see the [benchmarks](#benchmarks)). So, if you need to calculate positions for thousands of sources for 
-the same observer and time, it will be significantly faster than using the low-level NOVAS C routines instead. You can 
-create derivative frames for different observer locations, if need be, via `novas_change_observer()`.
+in that frame (see the [benchmarks](#benchmarks)), since all sources in a frame have well-defined, fixed, topological 
+positions on the celestial sphere. It is only a matter of expressing these positions as coordinates (and velocities) 
+in a particular coordinate system. So, if you need to calculate positions for thousands of sources for the same 
+observer and time, it will be significantly faster than using the low-level NOVAS C routines instead. You can create 
+derivative frames for different observer locations, if need be, via `novas_change_observer()`.
 
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
 sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
 low-precision Earth and Sun calculator included by default), both for precise Earth-based observer locations and to 
-account for gravitational bending around the Sun and massive planets. Without them, &mu;as accuracy cannot be ensured, 
-in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision ephemeris 
-provider will result in an error from the requisite `ephemeris()` calls. (See section on [Incorporating Solar-system 
-ephemeris data or services](#solarsystem) further below.)
+account for gravitational deflections around the Sun and massive planets. Without these, &mu;as accuracy cannot be 
+ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision 
+ephemeris provider will result in an error from the requisite `ephemeris()` calls. (See section on 
+[Incorporating Solar-system ephemeris data or services](#solarsystem) further below.)
 
 <a name="apparent-place"></a>
 #### Calculate an apparent place on sky
 
 Now we can calculate the apparent R.A. and declination for our source, which includes proper motion (for sidereal
 sources) or light-time correction (for Solar-system bodies), and also aberration corrections for the moving observer 
-and gravitational deflection around the major Solar System bodies. You can calculate an apparent location in the 
-coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, TOD, TIRS, or ITRS):
+and gravitational deflection around the major Solar System bodies (in full accuracy mode). You can calculate an 
+apparent location in the coordinate system of choice (ICRS/GCRS, CIRS, J2000, MOD, TOD, TIRS, or ITRS):
 
 ```c
  sky_pos apparent;    // Structure containing the precise observed position
@@ -708,9 +710,10 @@ updates.
 Solar-system sources work similarly to the above with a few important differences.
 
 First, you will have to provide one or more functions to obtain the barycentric ICRS positions for your Solar-system 
-source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on integrating 
-[External Solar-system ephemeris data or services](#solarsystem) with __SuperNOVAS__. You can specify the functions that 
-will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, e.g.:
+source(s) of interest for the specific Barycentric Dynamical Time (TDB) of observation. See section on 
+[Incorporating Solar-system ephemeris data or services](#solarsystem) with __SuperNOVAS__. You can specify the 
+functions that will handle the respective ephemeris data at runtime before making the NOVAS calls that need them, 
+e.g.:
 
 ```c
  // Set the function to use for regular precision planet position calculations
@@ -852,15 +855,15 @@ and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, yo
 [JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/) system (via the commnad-line / telnet or API interfaces) to 
 generate custom ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.
 
- - [Optional CALCEPH integration](#calceph-integration)
- - [Optional NAIF CSPICE toolkit integration](#cspice-integration)
+ - [CALCEPH integration](#calceph-integration)
+ - [NAIF CSPICE toolkit integration](#cspice-integration)
  - [Universal ephemeris data / service integration](#universal-ephemerides)
  - [Legacy support for (older) JPL major planet ephemerides](#builtin-ephem-readers)
  - [Legacy linking of custom ephemeris functions](#explicit-ephem-linking)
 
 
 <a name="calceph-integration"></a>
-### Optional CALCEPH integration
+### CALCEPH integration
 
 The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provides easy-to-use access to JPL and 
 INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing __SuperNOVAS__ with 
@@ -908,7 +911,7 @@ which case name-based lookup will be used instead. ID numbers are assumed to be 
 
 
 <a name="cspice-integration"></a>
-### Optional NAIF CSPICE toolkit integration
+### NAIF CSPICE toolkit integration
 
 The [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) is the canonical standard library for JPL 
 ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing __SuperNOVAS__ with CSPICE 

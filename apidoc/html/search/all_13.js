@@ -1,7 +1,7 @@
 var searchData=
 [
   ['n_0',['n',['../structnovas__orbital.html#abe63e991a7bf5d666068b15c9064428d',1,'novas_orbital']]],
-  ['naif_20cspice_20toolkit_20integration_1',['Optional NAIF CSPICE toolkit integration',['../index.html#autotoc_md79',1,'']]],
+  ['naif_20cspice_20toolkit_20integration_1',['NAIF CSPICE toolkit integration',['../index.html#autotoc_md79',1,'']]],
   ['naif_2ec_2',['naif.c',['../naif_8c.html',1,'']]],
   ['naif_5fto_5fnovas_5fplanet_3',['naif_to_novas_planet',['../solarsystem_8h.html#a1c4b3f67a3b82808dd16ae43dfaf0f86',1,'naif_to_novas_planet(long id):&#160;naif.c'],['../naif_8c.html#a1c4b3f67a3b82808dd16ae43dfaf0f86',1,'naif_to_novas_planet(long id):&#160;naif.c']]],
   ['name_4',['name',['../structobject.html#ae73ef5f04701dc9d4e7cb1b1c3fa9c12',1,'object']]],
