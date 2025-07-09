@@ -457,6 +457,7 @@ implementation.
 
  - [Calculating positions for a sidereal source](#sidereal-example)
  - [Calculating positions for a Solar-system source](#solsys-example)
+ - [Coordinate and velocity transforms (change of coordinate system)](#transforms)
 
 __SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
