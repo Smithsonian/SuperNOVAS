@@ -7,9 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.4.1-rc1]
-
-Release candidate for the upcoming bug fix release, around 1 August 2025
+## [Unreleased]
 
 ### Fixed
 
@@ -17,6 +15,8 @@ Release candidate for the upcoming bug fix release, around 1 August 2025
    cases. See also Debian Bug Tracker [#1105702](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1105702).
 
 ### Changed
+
+ - #199: Fixed typos in `README.md.` (by Asininite)
 
  - Various improvements to documentation.
  
