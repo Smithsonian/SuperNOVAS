@@ -869,7 +869,7 @@ NASA/JPL provides [generic ephemerides](https://naif.jpl.nasa.gov/pub/naif/gener
 planets, satellites thereof, the 300 largest asteroids, the Lagrange points, and some Earth orbiting stations. For 
 example, [DE440](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp) covers the major planets, 
 and the Sun, Moon, and barycenters for times between 1550 AD and 2650 AD. Or, you can use the 
-[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/) system (via the commnad-line / telnet or API interfaces) to 
+[JPL HORIZONS](https://ssd.jpl.nasa.gov/horizons/) system (via the command-line / telnet or API interfaces) to 
 generate custom ephemerides (SPK/BSP) for just about all known solar systems bodies, down to the tiniest rocks.
 
  - [CALCEPH integration](#calceph-integration)
@@ -1120,7 +1120,7 @@ calculated. The argument can have one of two values, which correspond to typical
 
 Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision
 ephemeris provider for the major planets (and any Solar-system bodies of interest), which does not come with 
-__SuperNOVAS__ out of the box. In the absense of a suitable high-precision ephemeris provider, some functions might 
+__SuperNOVAS__ out of the box. In the absence of a suitable high-precision ephemeris provider, some functions might 
 return an error if called with `NOVAS_FULL_ACCURACY`.
 
 ### Prerequisites to precise results
@@ -1138,8 +1138,8 @@ considerations before that level of accuracy is reached.
     gravitational bending around massive Solar-system bodies, and hence will require you to provide a high-precision 
     ephemeris provider for the major planets. Without it, there is no guarantee of achieving the desired &mu;as-level 
     precision in general, especially when observing near massive planets (e.g. observing Jupiter's or Saturn's moons, 
-    near conjuction with the host planet). Therefore some functions will return with an error, if used with 
-    `NOVAS_FULL_ACCURACY` in the absense of a suitable high-precision planetary ephemeris provider.
+    near conjunction with the host planet). Therefore some functions will return with an error, if used with 
+    `NOVAS_FULL_ACCURACY` in the absence of a suitable high-precision planetary ephemeris provider.
 
  3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun. For the highest precision calculations you also need 
@@ -1443,7 +1443,7 @@ the trace) if it cannot properly account for gravitational bending around the ma
 When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will
 be reported to the standard error, complete with call tracing within the __SuperNOVAS__ library, s.t. users can have a 
 better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing 
-`NOVAS_DEBUF_OFF` (0) as the argument to the same call. Here is an example error trace when your application calls 
+`NOVAS_DEBUG_OFF` (0) as the argument to the same call. Here is an example error trace when your application calls 
 `grav_def()` with `NOVAS_FULL_ACCURACY` while `solsys3` provides Earth and Sun positions only and when debug mode is 
 `NOVAS_DEBUG_EXTRA` (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):
 
@@ -1604,7 +1604,7 @@ one minute.
  - Added support for using orbital elements. `object.type` can now be set to `NOVAS_ORBITAL_OBJECT`, whose orbit can 
    be defined by `novas_orbital`, relative to a `novas_orbital_system`. While orbital elements do not always yield 
    precise positions, they can for shorter periods, provided that the orbital elements are up-to-date. For example, 
-   the [Minor Planer Center](https://www.minorplanetcenter.net/iau/mpc.html) (MPC) publishes accurate orbital elements 
+   the [Minor Planet Center](https://www.minorplanetcenter.net/iau/mpc.html) (MPC) publishes accurate orbital elements 
    for all known asteroids and comets regularly. For newly discovered objects, this may be the only and/or most 
    accurate information available anywhere.
 
@@ -1648,7 +1648,7 @@ one minute.
  - Improved support for expressing and using coordinates in TIRS (Terrestrial Intermediate Reference System) and ITRS 
    (International Terrestrial Reference System).
    
- - Improvemements to atmopsheric refraction modeling.
+ - Improvements to atmospheric refraction modeling.
 
 
 <a name="api-changes"></a>
@@ -1715,7 +1715,7 @@ one minute.
    
  - Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the 
    annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated 
-   guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of 
+   guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAS C 3.1 regardless of 
    observing location.
    
  - [__v1.1__] Improved the precision of some calculations, like `era()`, `fund_args()`, and `planet_lon()` by being 
@@ -1752,7 +1752,7 @@ one minute.
 A predictable release schedule and process can help manage expectations and reduce stress on adopters and developers 
 alike.
 
-__SuperNOVAS__ will try follow a quarterly release schedule. You may expect upcoming releases to be published around 
+__SuperNOVAS__ will try to follow a quarterly release schedule. You may expect upcoming releases to be published around 
 __February 1__, __May 1__, __August 1__, and/or __November 1__ each year, on an as-needed basis. That means that if 
 there are outstanding bugs, or new pull requests (PRs), you may expect a release that addresses these in the upcoming 
 quarter. The dates are placeholders only, with no guarantee that a new release will actually be available every 
