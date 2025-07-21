@@ -1001,8 +1001,9 @@ for the major planets (`NOVAS_PLANET` type objects) also via:
  set_planet_provider_hp(planet_ephem_provider_hp);
 ```
 
-provided you compiled __SuperNOVAS__ with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code 
-against `solsys-ephem.c` explicitly. Easy-peasy.
+The above simply instructs __SuperNOVAS__ to use the same ephemeris provider function for planets as what was set
+for `NOVAS_EPHEM_OBJECT` type objects, provided you compiled __SuperNOVAS__ with `BUILTIN_SOLSYS_EPHEM = 1` (in 
+`config.mk`), or else you link your code against `solsys-ephem.c` explicitly. Easy-peasy.
 
 
 
