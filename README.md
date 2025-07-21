@@ -992,7 +992,7 @@ Possibly the most universal way to integrate ephemeris data with __SuperNOVAS__ 
  }
 ```
 
-which takes an object ID number (such as a NAIF) an object name, and a split TDB date (for precision) as it inputs, 
+which takes an object ID number (such as a NAIF), an object name, and a split TDB date (for precision) as it inputs, 
 and returns the type of origin with corresponding ICRS position and velocity vectors in the supplied pointer 
 locations. The function can use either the ID number or the name to identify the object or file (whatever is the most 
 appropriate for the implementation and for the supplied parameters). The positions and velocities may be returned 
@@ -1009,17 +1009,18 @@ Once you have your adapter function, you can set it as your ephemeris service vi
  set_ephem_provider(my_ephem_reader);
 ```
 
-By default, your custom `my_ephem_reader` function will be used for 'minor planets' only (i.e. anything other than the 
-major planets, the Sun, Moon, Solar-system Barycenter...). But, you can use the same function for the mentioned 
-'major planets' also via:
+By default, your custom `my_ephem_reader` function will be used for `NOVAS_EPHEM_OBJECT` type objects only (i.e. 
+anything other than the major planets, the Sun, Moon, Solar-system Barycenter...). But, you can use the same function 
+for the major planets (`NOVAS_PLANET` type objects) also via:
 
 ```c
  set_planet_provider(planet_ephem_provider);
  set_planet_provider_hp(planet_ephem_provider_hp);
 ```
 
-provided you compiled __SuperNOVAS__ with `BUILTIN_SOLSYS_EPHEM = 1` (in `config.mk`), or else you link your code 
-against `solsys-ephem.c` explicitly. Easy-peasy.
+The above simply instructs __SuperNOVAS__ to use the same ephemeris provider function for planets as what was set
+for `NOVAS_EPHEM_OBJECT` type objects, provided you compiled __SuperNOVAS__ with `BUILTIN_SOLSYS_EPHEM = 1` (in 
+`config.mk`), or else you link your code against `solsys-ephem.c` explicitly. Easy-peasy.
 
 
 
