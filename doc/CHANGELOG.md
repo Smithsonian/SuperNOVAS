@@ -6,6 +6,13 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+ - #201: By default expect to find the CIO locator file (`CIO_RA.TXT`) in its install location, e.g. 
+   in `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
+
 
 ## [1.4.1] - 2025-04-21 
 
