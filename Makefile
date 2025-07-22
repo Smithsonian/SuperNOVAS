@@ -12,6 +12,18 @@ include config.mk
 # Specific build targets and recipes below...
 # ===============================================================================
 
+# Default values for install locations
+# See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
+prefix ?= /usr
+exec_prefix ?= $(prefix)
+libdir ?= $(exec_prefix)/lib
+includedir ?= $(prefix)/include
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+mydatadir ?= $(datadir)/supernovas
+docdir ?= $(datarootdir)/doc/supernovas
+htmldir ?= $(docdir)/html
+
 # The version of the shared .so libraries
 SO_VERSION := 1
 
@@ -32,6 +44,12 @@ else
   ifneq ($(DOXYGEN),none)
     $(info WARNING! Doxygen is not available. Will skip 'dox' target)
   endif
+endif
+
+# Default CIO file location to expect post install...
+ifndef CIO_LOCATOR_FILE
+  # If datadir was defined, then use that...
+  CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(datadir)/CIO_RA.TXT\"
 endif
 
 SOLSYS_TARGETS :=
@@ -218,17 +236,6 @@ local-dox: README-orig.md Doxyfile.local
 	$(DOXYGEN) Doxyfile.local
 	( cd apidoc/html; rm -f resources; ln -s ../../resources )
 
-# Default values for install locations
-# See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
-prefix ?= /usr
-exec_prefix ?= $(prefix)
-libdir ?= $(exec_prefix)/lib
-includedir ?= $(prefix)/include
-datarootdir ?= $(prefix)/share
-datadir ?= $(datarootdir)
-mydatadir ?= $(datadir)/supernovas
-docdir ?= $(datarootdir)/doc/supernovas
-htmldir ?= $(docdir)/html
 
 # Standard install commands
 INSTALL_PROGRAM ?= install

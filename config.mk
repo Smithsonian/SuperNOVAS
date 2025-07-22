@@ -148,11 +148,6 @@ endif
 # If the CIO_LOCATOR_FILE variable is defined, the use its definition
 ifdef CIO_LOCATOR_FILE
   CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(CIO_LOCATOR_FILE)\"
-else 
-  # If installing SuperNOVAS in DESTDIR, then default to the location within.
-  ifdef DESTDIR
-    CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(DESTDIR)/share/supernovas/CIO_RA.TXT\"
-  endif
 endif
 
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
