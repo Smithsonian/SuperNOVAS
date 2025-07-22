@@ -60,13 +60,13 @@ endif
 
 # You can set the default CIO locator file to use depending on where you 
 # installed it. By default, the library will assume 
-# '/usr/share/novas/cio_ra.bin', or else 'cio_ra.bin' if the COMPAT flag is 
-# set to a nonzero value (above). Some other good locations for this file may 
-# be in '/usr/local/share/novas', or '/opt/share/novas' for system-wide
-# availability, or in '$(HOME)/.local/share/novas' for user-specific 
-# installation.
+# '/usr/share/supernovas/cio_ra.bin', or else 'cio_ra.bin' if the COMPAT flag 
+# is set to a nonzero value (above). Some other good locations for this file 
+# may be in '/usr/local/share/supernovas', or '/opt/share/supernovas' for 
+# system-wide availability, or in '$(HOME)/.local/share/supernovas' for 
+# user-specific installation.
 #
-#CIO_LOCATOR_FILE ?= $(DESTDIR)/share/novas/cio_ra.bin
+#CIO_LOCATOR_FILE ?= $(DESTDIR)/share/supernovas/cio_ra.bin
 
 
 # Whether to build into the library planet_eph_manager() routines provided in 
@@ -172,8 +172,8 @@ ifeq ($(DEFAULT_SOLSYS), 3)
 endif
 
 SOURCES = $(SRC)/target.c $(SRC)/observer.c $(SRC)/earth.c $(SRC)/equinox.c $(SRC)/coords.c \
-		  $(SRC)/system.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
-		  $(SRC)/nutation.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/place.c $(SRC)/calendar.c  \
+          $(SRC)/system.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
+          $(SRC)/nutation.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/place.c $(SRC)/calendar.c  \
           $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c $(SRC)/plugin.c $(SRC)/util.c \
           $(SRC)/planets.c
 

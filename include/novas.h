@@ -678,15 +678,15 @@ enum novas_cio_location_type {
 
 #ifndef DEFAULT_CIO_LOCATOR_FILE
 #  if COMPAT
-     /// Path / name of file to use for interpolating the CIO location relative to GCRS
-     /// This file can be generated with the <code>cio_file.c</code> tool using the
-     /// <code>CIO_RA.TXT</code> data (both are included in the distribution)
+/// Path / name of file to use for interpolating the CIO location relative to GCRS
+/// This file can be generated with the <code>cio_file.c</code> tool using the
+/// <code>CIO_RA.TXT</code> data (both are included in the distribution)
 #    define DEFAULT_CIO_LOCATOR_FILE      "cio_ra.bin"
 #  else
 /// Path / name of file to use for interpolating the CIO location relative to GCRS
 /// This file can be generated with the <code>cio_file.c</code> tool using the
 /// <code>CIO_RA.TXT</code> data (both are included in the distribution)
-#    define DEFAULT_CIO_LOCATOR_FILE      "/usr/share/novas/cio_ra.bin"
+#    define DEFAULT_CIO_LOCATOR_FILE      "/usr/share/supernovas/cio_ra.bin"
 #  endif
 #endif
 
