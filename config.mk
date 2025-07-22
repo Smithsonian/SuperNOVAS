@@ -60,13 +60,13 @@ endif
 
 # You can set the default CIO locator file to use depending on where you 
 # installed it. By default, the library will assume 
-# '/usr/share/supernovas/cio_ra.bin', or else 'cio_ra.bin' if the COMPAT flag 
+# '/usr/share/supernovas/CIO_RA.TXT', or else 'cio_ra.bin' if the COMPAT flag 
 # is set to a nonzero value (above). Some other good locations for this file 
 # may be in '/usr/local/share/supernovas', or '/opt/share/supernovas' for 
 # system-wide availability, or in '$(HOME)/.local/share/supernovas' for 
 # user-specific installation.
 #
-#CIO_LOCATOR_FILE ?= $(DESTDIR)/share/supernovas/cio_ra.bin
+#CIO_LOCATOR_FILE ?= $(DESTDIR)/share/supernovas/CIO_RA.TXT
 
 
 # Whether to build into the library planet_eph_manager() routines provided in 
@@ -148,6 +148,11 @@ endif
 # If the CIO_LOCATOR_FILE variable is defined, the use its definition
 ifdef CIO_LOCATOR_FILE
   CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(CIO_LOCATOR_FILE)\"
+else 
+  # If installing SuperNOVAS in DESTDIR, then default to the location within.
+  ifdef DESTDIR
+    CPPFLAGS += -DDEFAULT_CIO_LOCATOR_FILE=\"$(DESTDIR)/share/supernovas/CIO_RA.TXT\"
+  endif
 endif
 
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
