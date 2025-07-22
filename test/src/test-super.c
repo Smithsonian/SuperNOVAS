@@ -4234,5 +4234,8 @@ int main(int argc, char *argv[]) {
 
   n += test_dates();
 
+  if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
+  else fprintf(stderr, " -- OK\n");
+
   return n;
 }

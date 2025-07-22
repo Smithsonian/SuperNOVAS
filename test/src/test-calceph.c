@@ -261,9 +261,12 @@ int main(int argc, char *argv[]) {
   if(test_calceph_lock()) n++;
   if(test_calceph_use_ids()) n++;
 
-
   novas_debug(NOVAS_DEBUG_OFF);
   if(test_errors()) n++;
+
+  if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
+  else fprintf(stderr, " -- OK\n");
+
 
   return n;
 }

@@ -1057,7 +1057,7 @@ static int test_dates() {
     test_time_specific();
 
     if(test_sources() != 0) {
-      fprintf(stderr, " -- FAILED!\n");
+      fprintf(stderr, " -- FAILED\n");
       return -1;
     }
   }

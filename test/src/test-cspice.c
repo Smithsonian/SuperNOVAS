@@ -224,5 +224,8 @@ int main(int argc, char *argv[]) {
 
   if(test_remove_kernel()) n++;
 
+  if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
+  else fprintf(stderr, " -- OK\n");
+
   return n;
 }
