@@ -337,12 +337,12 @@ application:
   	$(CC) -o $@ $(CFLAGS) -DCOMPAT=1 $^ -lm -lsupernovas
 ```
 
-If your application uses optional planet or ephemeris calculator modules, you may need to specify the appropriate 
-optional shared library also:
+If your application uses optional planet or ephemeris calculator modules, you may need to specify the additional 
+shared libraries also:
 
 ```make
   myastroapp: myastroapp.c 
-  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys-calceph
+  	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys-calceph -lcalceph
 ```
 
 ### Legacy linking `solarsystem()` and `readeph()` modules
