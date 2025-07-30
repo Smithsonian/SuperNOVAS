@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
    in `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
 
 
-## [1.4.1] - 2025-04-21 
+## [1.4.1] - 2025-07-21 
 
 Bug fix release.
 
