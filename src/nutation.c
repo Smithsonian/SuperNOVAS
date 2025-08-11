@@ -44,7 +44,8 @@
  * <ol>
  * <li>As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation
  * angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to
- * match the model used by SOFA.</li>
+ * match the model used by SOFA. The initial implementation did not capture the time dependence
+ * of the rescaling, which is now fixed for v1.4.2.</li>
  * </ol>
  *
  * REFERENCES:
@@ -74,8 +75,8 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
   static THREAD_LOCAL double last_t = NAN, last_dpsi, last_deps;
   static THREAD_LOCAL enum novas_accuracy last_acc = -1;
 
-  // P03 scaling factor.
-  static const double f = -2.7774e-6;
+  // P03 scaling factor from Coppola+2009
+  const double f = -2.7774e-6 * t;
 
   if(!dpsi || !deps) {
     if(dpsi)
@@ -90,7 +91,7 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
     novas_nutation_provider nutate_call = (accuracy == NOVAS_FULL_ACCURACY) ? iau2000a : get_nutation_lp_provider();
     nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
 
-    // Apply P03 (Capitaine et al. 2005) rescaling to IAU 2006 model.
+    // Apply P03 (Capitaine et al. 2005) rescaling of IAU2000A to IAU 2006 model.
     // Convert output to arcseconds.
     last_dpsi *= (1.0000004697 + f) / ARCSEC;
     last_deps *= (1.0 + f) / ARCSEC;

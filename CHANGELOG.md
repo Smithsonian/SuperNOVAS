@@ -13,6 +13,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
  - #201: By default expect to find the CIO locator file (`CIO_RA.TXT`) in its install location, e.g. 
    in `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
 
+ - #202: The P03 recommended rescaling of the IAU200A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) 
+   was not correctly implemented in the prior 1.4 releases, having missed a time dependence. The resulting errors are 
+   below 0.1 mas for the present era. 
 
 ## [1.4.1] - 2025-07-21 
 
