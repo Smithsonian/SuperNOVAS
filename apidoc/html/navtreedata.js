@@ -85,10 +85,10 @@ var NAVTREE =
         [ "Refinements to the NOVAS C API", "index.html#autotoc_md110", null ]
       ] ],
       [ "Release schedule", "index.html#autotoc_md112", null ],
-      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[1.4.2-rc1] - 2025-08-11", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ]
       ] ],
-      [ "[1.4.1] - 2025-04-21", "md_CHANGELOG.html#autotoc_md3", [
+      [ "[1.4.1] - 2025-07-21", "md_CHANGELOG.html#autotoc_md3", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md4", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md5", null ]
       ] ],

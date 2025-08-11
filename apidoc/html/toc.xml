@@ -59,10 +59,10 @@
     <topic label="Release schedule" href="index.html#autotoc_md112"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[1.4.2-rc1] - 2025-08-11" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
     </topic>
-    <topic label="[1.4.1] - 2025-04-21" href="md_CHANGELOG.html#autotoc_md3">
+    <topic label="[1.4.1] - 2025-07-21" href="md_CHANGELOG.html#autotoc_md3">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md4"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md5"/>
     </topic>

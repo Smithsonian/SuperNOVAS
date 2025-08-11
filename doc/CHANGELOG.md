@@ -6,13 +6,20 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.4.2-rc1] - 2025-08-11
 
 ### Fixed
 
  - #201: By default expect to find the CIO locator file (`CIO_RA.TXT`) in its install location, e.g. 
    in `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
 
+ - #202: The P03 recommended rescaling of the IAU200A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) 
+   was not correctly implemented in the prior 1.4 releases, having missed a time dependence. The resulting errors are 
+   below 0.1 mas for the present era. In retrospect, these corrections should not be applied by default, since the
+   IAU2000A model remains the standard, and the IERS Earth orientation parameters are also referenced to the IAU2000A
+   model. As such, the rescaling to IAU2006 will not be applied by default here on. A future release may add a separate
+   function to provide the IAU2006 nutation model if needed.
+   
 
 ## [1.4.1] - 2025-07-21 
 

@@ -380,7 +380,7 @@ Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3
 <p>See the prologs of the nutation functions in file '<a class="el" href="nutation_8c.html">nutation.c</a>' for details concerning the models.</p>
 <p>NOTES: </p><ol>
 <li>
-As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to match the model used by SOFA. </li>
+In versions 1.4.0 &ndash; 1.4.1, this function applied a rescaling of the IAU 2000 nutation angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to provide what is referred to as the IAU2006 model. However the implementation did not capture the time dependence of the rescaling, which was therefore incorrect. In retrospect the rescaling should not have been applied by default anyway, as the IAU2000 nutatiomn model remains the standard today, and the IERS Earth orientation parameters are derived relative to it. Thus As of v1.4.2, the functions is reverted to it's original form without rescaling. Future versions may offer the 'IAU2006' nutation model in a separate function. </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>

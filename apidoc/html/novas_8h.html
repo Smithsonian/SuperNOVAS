@@ -429,7 +429,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a9b926427954233b94ebd6925d86f9f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer sub version of the release. <br /></td></tr>
 <tr class="separator:a9b926427954233b94ebd6925d86f9f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadef42ba39811e058ee9efe2c6f7d151" id="r_aadef42ba39811e058ee9efe2c6f7d151"><td class="memItemLeft" align="right" valign="top"><a id="aadef42ba39811e058ee9efe2c6f7d151" name="aadef42ba39811e058ee9efe2c6f7d151"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-devel&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SUPERNOVAS_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc1&quot;</td></tr>
 <tr class="memdesc:aadef42ba39811e058ee9efe2c6f7d151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases. <br /></td></tr>
 <tr class="separator:aadef42ba39811e058ee9efe2c6f7d151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44de9d1672290d153a1dfb0685886208" id="r_a44de9d1672290d153a1dfb0685886208"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a44de9d1672290d153a1dfb0685886208">SUPERNOVAS_VERSION_STRING</a></td></tr>
@@ -13211,7 +13211,7 @@ Explanatory Supplement To The Astronomical Almanac, pp. 114-115. </li>
 <p>See the prologs of the nutation functions in file '<a class="el" href="nutation_8c.html">nutation.c</a>' for details concerning the models.</p>
 <p>NOTES: </p><ol>
 <li>
-As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to match the model used by SOFA. </li>
+In versions 1.4.0 &ndash; 1.4.1, this function applied a rescaling of the IAU 2000 nutation angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to provide what is referred to as the IAU2006 model. However the implementation did not capture the time dependence of the rescaling, which was therefore incorrect. In retrospect the rescaling should not have been applied by default anyway, as the IAU2000 nutatiomn model remains the standard today, and the IERS Earth orientation parameters are derived relative to it. Thus As of v1.4.2, the functions is reverted to it's original form without rescaling. Future versions may offer the 'IAU2006' nutation model in a separate function. </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>

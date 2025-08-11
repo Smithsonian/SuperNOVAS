@@ -117,14 +117,15 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[Unreleased]</h1>
+[1.4.2-rc1] - 2025-08-11</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
 <li>#201: By default expect to find the CIO locator file (<code>CIO_RA.TXT</code>) in its install location, e.g. in <code>/usr/share/supernovas</code> or as set via the <code>datadir</code> or <code>prefix</code> install locations.</li>
+<li>#202: The P03 recommended rescaling of the IAU200A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) was not correctly implemented in the prior 1.4 releases, having missed a time dependence. The resulting errors are below 0.1 mas for the present era. In retrospect, these corrections should not be applied by default, since the IAU2000A model remains the standard, and the IERS Earth orientation parameters are also referenced to the IAU2000A model. As such, the rescaling to IAU2006 will not be applied by default here on. A future release may add a separate function to provide the IAU2006 nutation model if needed.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md3"></a>
-[1.4.1] - 2025-04-21</h1>
+[1.4.1] - 2025-07-21</h1>
 <p>Bug fix release.</p>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Fixed</h2>
