@@ -67,6 +67,7 @@
  *
  * @return            0 if successful, or -1 if the output pointer arguments are NULL
  *
+ * @sa nutation_angles_2006()
  * @sa set_nutation_lp_provider()
  * @sa nutation()
  * @sa iau2000b()
@@ -89,15 +90,8 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
   }
 
   if(!(fabs(t - last_t) < 1e-12) || (accuracy != last_acc)) {
-    // P03 scaling factor from Coppola+2009
-    //const double f = -2.7774e-6 * t;
-
     novas_nutation_provider nutate_call = (accuracy == NOVAS_FULL_ACCURACY) ? iau2000a : get_nutation_lp_provider();
     nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
-
-    // Apply P03 (Capitaine et al. 2005) rescaling of IAU2000A to IAU 2006 model.
-    //last_dpsi *= (1.0000004697 + f) / ARCSEC;
-    //last_deps *= (1.0 + f) / ARCSEC;
 
     // Convert output to arcseconds.
     last_dpsi /= ARCSEC;
@@ -113,7 +107,42 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
   return 0;
 }
 
+/**
+ * Returns 'IAU2006' nutation angles. These are the IAU2000 nutation angles rescaled to better
+ * match the IAU2006 (P03) precession model. However, the IAU2000A nutation model continues to be
+ * the standard model, and IERS Earth orientation parameters are also published referenced to the
+ * IAU2000A model, not the 'IAU2006' model.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Capitaine, N., P.T. Wallace and J. Chapront (2005), “Improvement of the IAU 2000 precession
+ *     model.” Astronomy &amp; Astrophysics, Vol. 432, pp. 355–67.</li>
+ * <li>Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159</li>
+ * </ol>
+ *
+ * @param t           [cy] TDB time in Julian centuries since J2000.0
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @param[out] dpsi   [arcsec] IAU2006 nutation in longitude in arcseconds.
+ * @param[out] deps   [arcsec] IAU2006 nutation in obliquity in arcseconds.
+ *
+ * @return            0 if successful, or -1 if the output pointer arguments are NULL
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa nutation_angles()
+ */
+int nutation_angles_2006(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps) {
+  // P03 scaling factor from Coppola+2009
+  const double f = -2.7774e-6 * t;
 
+  prop_error("notation_angles_2006", nutation_angles(t, accuracy, dpsi, deps), 0);
+
+  *dpsi *= (1.0000004697 + f);
+  *deps *= (1.0 + f);
+
+  return 0;
+}
 
 
 /**

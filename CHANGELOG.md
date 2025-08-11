@@ -9,6 +9,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+Upcoming feature release, expected around 1 February 2026.
+
+### Added
+
+ - #202: New `nutation_angles_2006()` function to provide 'IAU2006' nutation angles, which are rescaled versions of the
+   standard IAU2000 nutatiom model to match the IAU2006 precession (P03) model more closely.
+
+
+## [Unreleased]
+
 Upcoming bug fix release, expected around 1 November 2025.
 
 ### Fixed
