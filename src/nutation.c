@@ -42,10 +42,14 @@
  *
  * NOTES:
  * <ol>
- * <li>As of version 1.4, this function applies the recommended rescaling of the IAU 2000 nutation
- * angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to
- * match the model used by SOFA. The initial implementation did not capture the time dependence
- * of the rescaling, which is now fixed for v1.4.2.</li>
+ * <li>In versions 1.4.0 -- 1.4.1, this function applied a rescaling of the IAU 2000 nutation
+ * angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009),
+ * to provide what is referred to as the IAU2006 model. However the implementation did not capture
+ * the time dependence of the rescaling, which was therefore incorrect. In retrospect the rescaling
+ * should not have been applied by default anyway, as the IAU2000 nutatiomn model remains the
+ * standard today, and the IERS Earth orientation parameters are derived relative to it. Thus
+ * As of v1.4.2, the functions is reverted to it's original form without rescaling. Future versions
+ * may offer the 'IAU2006' nutation model in a separate function.</li>
  * </ol>
  *
  * REFERENCES:
@@ -75,9 +79,6 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
   static THREAD_LOCAL double last_t = NAN, last_dpsi, last_deps;
   static THREAD_LOCAL enum novas_accuracy last_acc = -1;
 
-  // P03 scaling factor from Coppola+2009
-  const double f = -2.7774e-6 * t;
-
   if(!dpsi || !deps) {
     if(dpsi)
       *dpsi = NAN;
@@ -88,13 +89,19 @@ int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dps
   }
 
   if(!(fabs(t - last_t) < 1e-12) || (accuracy != last_acc)) {
+    // P03 scaling factor from Coppola+2009
+    //const double f = -2.7774e-6 * t;
+
     novas_nutation_provider nutate_call = (accuracy == NOVAS_FULL_ACCURACY) ? iau2000a : get_nutation_lp_provider();
     nutate_call(JD_J2000, t * JULIAN_CENTURY_DAYS, &last_dpsi, &last_deps);
 
     // Apply P03 (Capitaine et al. 2005) rescaling of IAU2000A to IAU 2006 model.
+    //last_dpsi *= (1.0000004697 + f) / ARCSEC;
+    //last_deps *= (1.0 + f) / ARCSEC;
+
     // Convert output to arcseconds.
-    last_dpsi *= (1.0000004697 + f) / ARCSEC;
-    last_deps *= (1.0 + f) / ARCSEC;
+    last_dpsi /= ARCSEC;
+    last_deps /= ARCSEC;
 
     last_acc = accuracy;
     last_t = t;

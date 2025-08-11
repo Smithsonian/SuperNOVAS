@@ -15,7 +15,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
  - #202: The P03 recommended rescaling of the IAU200A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) 
    was not correctly implemented in the prior 1.4 releases, having missed a time dependence. The resulting errors are 
-   below 0.1 mas for the present era. 
+   below 0.1 mas for the present era. In restrospect, these corrections should not beapplied by default, since the
+   IAU2000A model remains the standard, and the IERS Earth orientation parameters are also referenced to the IAU2000A
+   model. As such, the rescaling to IAU2006 will not be applied by default here on. A future release may add a separate
+   function to provide the IAU2006 nutation model if needed.
 
 ## [1.4.1] - 2025-07-21 
 
