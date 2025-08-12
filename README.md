@@ -173,10 +173,6 @@ __SuperNOVAS__ fixes a number of outstanding issues with NOVAS C 3.1:
    parameters were zero, then no wobble correction was applied, not even for the TIO longitude (s'). The error from 
    this omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
    
- - [__v1.4__] The NOVAS C 3.1 implementation of `nutation_angles()` was not fully consistent with the implemented 
-   IAU2006 precession model. To make it consistent, the IAU2000 nutation angles must be rescaled slightly to match 
-   (see Capitaine et al. 2005).
-   
 -----------------------------------------------------------------------------
 
 <a name="compatibility"></a>
