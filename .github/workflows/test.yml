@@ -39,7 +39,7 @@ jobs:
       FORTIFY: 3
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: install dependencies
       run: sudo apt-get install -y lcov
@@ -85,7 +85,7 @@ jobs:
           - arch: ppc64le
             distro: ubuntu_latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: uraimo/run-on-arch-action@v3
         name: Run regression tests
         id: test

@@ -35,7 +35,7 @@ jobs:
       WEXTRA: 1
       FORTIFY: 3
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Build static library
       run: make static
@@ -54,7 +54,7 @@ jobs:
 #  reverse-build:
 #    runs-on: ubuntu-latest
 #    steps:
-#    - uses: actions/checkout@v4
+#    - uses: actions/checkout@v5
 #    - name: Reverse order build
 #      run: make --shuffle=reverse
 
