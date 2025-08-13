@@ -13206,13 +13206,7 @@ Explanatory Supplement To The Astronomical Almanac, pp. 114-115. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the values for nutation in longitude and nutation in obliquity for a given TDB Julian date. The nutation model selected depends upon the input value of 'accuracy'. See notes below for important details.</p>
-<p>This function selects the nutation model depending first upon the input value of 'accuracy'. If 'accuracy' is NOVAS_FULL_ACCURACY (0), the IAU 2000A nutation model is used. Otherwise the model set by <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> is used, or else the default <a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a>.</p>
-<p>See the prologs of the nutation functions in file '<a class="el" href="nutation_8c.html">nutation.c</a>' for details concerning the models.</p>
-<p>NOTES: </p><ol>
-<li>
-In versions 1.4.0 &ndash; 1.4.1, this function applied a rescaling of the IAU 2000 nutation angles by the factors recommended by the P03rev2 (Capitaine et al. 2005; Coppola et al. 2009), to provide what is referred to as the IAU2006 model. However the implementation did not capture the time dependence of the rescaling, which was therefore incorrect. In retrospect the rescaling should not have been applied by default anyway, as the IAU2000 nutatiomn model remains the standard today, and the IERS Earth orientation parameters are derived relative to it. Thus As of v1.4.2, the functions is reverted to it's original form without rescaling. Future versions may offer the 'IAU2006' nutation model in a separate function. </li>
-</ol>
+<p>Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB Julian date and the desired level of accuracy. For NOVAS_FULL_ACCURACY (0), the IAU 2000A R06 nutation model is used. Otherwise, the model set by <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> is used, or else the <a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a> by default.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
@@ -13231,9 +13225,11 @@ Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159 </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output pointer arguments are NULL</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd>
+<a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> </dd>
+<dd>
+<a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a> </dd>
 <dd>
 <a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a> </dd>
 <dd>
@@ -14063,8 +14059,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Precesses equatorial rectangular coordinates from one epoch to another. Unlike the original NOVAS routine, this routine works for any pairing of the time arguments.</p>
-<p>This function calculates precession for the old (pre IAU 2000) methodology. Its main use for NOVAS users is to allow converting older catalog coordinates e.g. to J2000 coordinates, which then can be converted to the now standard ICRS system via <a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a>.</p>
+<p>Precesses equatorial rectangular coordinates from one epoch to another using the IAU2006 (P03) precession model of Capitaine et al. 2003.</p>
 <p>NOTE: </p><ol>
 <li>
 <p class="startli">Unlike the original NOVAS C 3.1 version, this one does not require that one of the time arguments must be J2000. You can precess from any date to any other date, and the intermediate epoch of J2000 will be handled internally as needed.</p>
