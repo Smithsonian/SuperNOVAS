@@ -410,7 +410,7 @@ some of the terms differently:
  | Catalog coordinate system  | MOD (e.g. FK4, FK5, HIP...)   | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
- | Precession, nutation, bias | no tidal terms                | IAU 2000 precession/nutation model                |
+ | Precession, nutation, bias | no tidal terms                | IAU 2000/2006 precession/nutation model           |
  | Celestial Pole offsets     | d&psi;, d&epsilon; (for TOD)  | _dx_, _dy_ (for ITRS)                             |
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
  | Pseudo Earth-fixed system  | PEF                           | Terrestrial Intermediate Reference System (TIRS)  |
@@ -431,11 +431,11 @@ where that is).
 Older catalogs, such as J2000 (FK5), HIP, B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) 
 coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.
 
-The old method typically relied on the Lieske et al. 1977 precession and nutation models, which did not include tidal
-terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. __SuperNOVAS__ and NOVAS C 
-rely on the IAU2006 / IAU2000 (respectively) precession/nutation models exclusively, which readily include tidal 
-terms. Hence, the old d&psi;,d&epsilon; corrections should never be used in __SuperNOVAS__, and applying the residual 
-(&Delta;d&psi;,&Delta;d&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
+The old method typically relied on the Lieske et al. 1977 precession and the IAU1980 nutation models, which did not 
+include tidal terms. These were applied as d&psi;,d&epsilon; corrections to the TOD equator separately. __SuperNOVAS__ 
+(and to some degree NOVAS also) relies on the IAU2000 / IAU2006 precession/nutation models, which readily include 
+tidal terms. Hence, the old d&psi;,d&epsilon; corrections should never be used in __SuperNOVAS__, and applying the 
+residual (&Delta;d&psi;,&Delta;d&epsilon; or _dx_,_dy_) polar offsets to the TOD equator (via `cel_pole()`) is also 
 discouraged. Instead, the sub-arcsecond level corrections to Earth orientation (_dx_,_dy_) should be used only when 
 converting between the pseudo Earth-fixed (PEF or TIRS) and ITRS, and vice-versa.
 
