@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-Upcoming bug fix release, expected around 1 November 2025.
+Upcoming bug fix release with updated nutation models, expected around 1 November 2025.
 
 ### Fixed
 
@@ -16,12 +16,22 @@ Upcoming bug fix release, expected around 1 November 2025.
    in `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
 
  - #202: The P03 recommended rescaling of the IAU200A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) 
-   was not correctly implemented in the prior 1.4 releases, having missed a time dependence. The resulting errors are 
-   below 0.1 mas for the present era. In retrospect, these corrections should not be applied by default, since the
-   IAU2000A model remains the standard, and the IERS Earth orientation parameters are also referenced to the IAU2000A
-   model. As such, the rescaling to IAU2006 will not be applied by default here on. A future release may add a separate
-   function to provide the IAU2006 nutation model if needed.
+   was not correctly implemented in the prior 1.4 releases, having missed its time dependence. The resulting errors are 
+   below 0.1 mas for the present era.
+  
+### Changed
+
+ - #206: `iau2000a()` now uses IAU2000A R06 model coefficients 
+   (see https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html), making it dynamically consistent with the IAU2006 
+   (P03) precession model, which was already implemented by NOVAS and SuperNOVAS.
+
+ - #206: `iau2000b()` is now a truncated version of the above, keeping terms with amplitude &lt;10 &mu;as, resulting 
+   in similar number of terms and precision as the original IAU2000B model, while making it dynamically consistent
+   with the IAU2006 (P03) precession model.
    
+ - #206: `nu2000k()` has been rescaled according to Coppola, Seago, &amp; Vallado (2009) to make it more consistent 
+   with the IAU2006 (P03) precession model.
+
 
 ## [1.4.1] - 2025-07-21 
 

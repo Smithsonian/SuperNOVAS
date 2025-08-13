@@ -1738,6 +1738,9 @@ one minute.
    dates of before. Astronomical dates are Julian/Roman calendar dates prior to the Gregorian calendar reform of 1582.
 
  - [__v1.3__] Use C99 `restrict` keyword to prevent pointer argument aliasing as appropriate.
+ 
+ - [__v1.4.2__] Nutation models have been upgraded from the original IAU2000 model to IAU2006 (i.e. IAU2000A R06), 
+   making them dynamically consistent with the implemented IAU2006 (P03) precession model.
 
 
 -----------------------------------------------------------------------------
