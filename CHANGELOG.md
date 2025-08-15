@@ -18,10 +18,17 @@ Upcoming feature release, expected around 1 November 2025.
 
 ### Changed
 
+ - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the same
+   true equator of date). 
+
 
 ### Deprecated
 
-
+ - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files (`CIO_RA.TXT`
+   or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also `ira_equinox()` (which
+   returns the negative of the same value).
+   
+   
 ## [1.4.2-rc2]
 
 Bug fix release with updated nutation models.
