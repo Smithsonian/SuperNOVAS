@@ -581,8 +581,7 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  * @param[out] out  Output position or velocity 3-vector in the True equinox of Date coordinate
  *                  frame. It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
- *                  accuracy is invalid, or an error from cio_location(), or
- *                  else 10 + the error from cio_basis().
+ *                  accuracy is invalid, or else 10 + the error from cio_basis().
  *
  * @sa gcrs_to_j2000()
  * @sa cirs_to_gcrs()
@@ -594,17 +593,20 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
 int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "gcrs_to_cirs";
   double r_cio, v[3], x[3], y[3], z[3];
-  short sys;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
 
   memcpy(v, in, sizeof(v));
 
+  // Check for valid value of 'accuracy'.
+  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
+
   // Obtain the basis vectors, in the GCRS, of the celestial intermediate
   // system.
-  prop_error(fn, cio_location(jd_tdb, accuracy, &r_cio, &sys), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, accuracy, x, y, z), 10);
+  r_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
+  prop_error(fn, cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, accuracy, x, y, z), 10);
 
   // Transform position vector to celestial intermediate system.
   out[0] = novas_vdot(x, v);
@@ -628,8 +630,7 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @param[out] out  Output position or velocity 3-vector in the GCRS coordinate frame.
  *                  It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or an error from cio_location(), or else
- *                  10 + the error from cio_basis().
+ *                  or the accuracy is invalid, or else 10 + the error from cio_basis().
  *
  * @sa tod_to_gcrs()
  * @sa gcrs_to_cirs()
@@ -643,16 +644,19 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
 int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "cirs_to_gcrs";
   double r_cio, vx[3], vy[3], vz[4], x, y, z;
-  short sys;
   int i;
 
   if(!in || !out)
     return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
 
+  // Check for valid value of 'accuracy'.
+  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
+
   // Obtain the basis vectors, in the GCRS, of the celestial intermediate
   // system.
-  prop_error(fn, cio_location(jd_tdb, accuracy, &r_cio, &sys), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, accuracy, vx, vy, vz), 10);
+  r_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
+  prop_error(fn, cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, accuracy, vx, vy, vz), 10);
 
   x = in[0];
   y = in[1];
@@ -958,8 +962,7 @@ int j2000_to_gcrs(const double *in, double *out) {
  * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
  *                  It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or 10 + the error from cio_location(), or
- *                  else 20 + the error from cio_basis().
+ *                  or the accuracy is invalid, or else 20 + the error from cio_basis().
  *
  * @sa tod_to_cirs()
  * @sa cirs_to_app_ra()
@@ -975,8 +978,12 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
 
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
+  // Check for valid value of 'accuracy'.
+  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
+
   // Obtain the R.A. [h] of the CIO at the given date
-  prop_error(fn, cio_ra(jd_tt, accuracy, &ra_cio), 0);
+  ra_cio = -ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy);
   prop_error(fn, spin(-15.0 * ra_cio, in, out), 0);
 
   return 0;
@@ -1005,7 +1012,7 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
  *                  It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or 10 + the error from cio_location(), or
+ *                  or the accuracy is invalid, or 10 + the error from cio_ra(), or
  *                  else 20 + the error from cio_basis().
  *
  * @sa cirs_to_tod()

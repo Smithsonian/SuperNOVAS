@@ -138,12 +138,11 @@ static int set_gcrs_to_cirs(novas_frame *frame) {
   static const char *fn = "set_gcrs_to_cirs";
   const double jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
   double r_cio;
-  short sys;
 
   novas_matrix *T = &frame->gcrs_to_cirs;
 
-  prop_error(fn, cio_location(jd_tdb, frame->accuracy, &r_cio, &sys), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]), 10);
+  prop_error(fn, cio_ra(jd_tdb, frame->accuracy, &r_cio), 0);
+  prop_error(fn, cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]), 10);
 
   return 0;
 }
@@ -1809,7 +1808,7 @@ double novas_unwrap_angles(double *a, double *b, double *c) {
  * @param dt            [s] Time step used for calculating derivatives.
  * @param[out] track    Output tracking parameters to populate
  * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
- *                      or else an error code from cio_ra() or from novas_sky_pos().
+ *                      or else an error code from novas_sky_pos().
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1842,8 +1841,8 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
     return novas_error(-1, EINVAL, fn, "output track is NULL");
 
   track->time = frame->time;
-  prop_error(fn, cio_ra(frame->time.ijd_tt + frame->time.fjd_tt, frame->accuracy, &ra_cio), 0);
 
+  ra_cio = -ira_equinox(frame->time.ijd_tt + frame->time.fjd_tt, NOVAS_TRUE_EQUINOX, frame->accuracy);
   prop_error(fn, novas_sky_pos(source, frame, NOVAS_CIRS, &pos0), 0);
   pos0.ra += ra_cio;
   pos0.rv = novas_v2z(pos0.rv);
@@ -1899,8 +1898,7 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
  * @param ref_model     Refraction model to use, or NULL for an unrefracted track.
  * @param[out] track    Output tracking parameters to populate
  * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
- *                      or else an error code from cio_ra() or from novas_sky_pos(), or from
- *                      novas_app_hor().
+ *                      or else an error code from novas_sky_pos(), or from novas_app_hor().
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1935,7 +1933,7 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
     return novas_error(-1, EINVAL, fn, "output track is NULL");
 
   track->time = frame->time;
-  prop_error(fn, cio_ra(frame->time.ijd_tt + frame->time.fjd_tt, frame->accuracy, &ra_cio), 0);
+  ra_cio = -ira_equinox(frame->time.ijd_tt + frame->time.fjd_tt, NOVAS_TRUE_EQUINOX, frame->accuracy);
 
   prop_error(fn, novas_sky_pos(source, frame, NOVAS_CIRS, &pos), 0);
   prop_error(fn, novas_app_to_hor(frame, NOVAS_TOD, pos.ra + ra_cio, pos.dec, ref_model, &az0, &el0), 0);

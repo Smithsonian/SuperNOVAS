@@ -139,8 +139,7 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * @param[out] gst    [h] Greenwich (mean or apparent) sidereal time, in hours [0:24]. (In case
  *                    the returned error code is &gt;1 the gst value will be set to NAN.)
  * @return            0 if successful, or -1 if the 'gst' argument is NULL, 1 if 'accuracy' is
- *                    invalid 2 if 'method' is invalid, or else 10--30 with 10 + the error from
- *                    cio_location().
+ *                    invalid 2 if 'method' is invalid.
  *
  * @sa novas_time_gst()
  * @sa era()
@@ -198,12 +197,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
       // Use 'CIO-TIO-theta' method.  See Circular 179, Section 6.5.4.
       const double ux[3] = { 1.0, 0.0, 0.0 };
       double ra_cio, ha_eq, x[3], y[3], z[3], eq[3];
-      short ref_sys;
 
       // Obtain the basis vectors, in the GCRS, of the celestial intermediate system.
-      prop_error(fn, cio_location(jd_tdb, accuracy, &ra_cio, &ref_sys), 10);
+      ra_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
 
-      cio_basis(jd_tdb, ra_cio, ref_sys, accuracy, x, y, z);
+      cio_basis(jd_tdb, ra_cio, CIO_VS_EQUINOX, accuracy, x, y, z);
 
       // Compute the direction of the true equinox in the GCRS.
       tod_to_gcrs(jd_tdb, accuracy, ux, eq);
