@@ -29,8 +29,9 @@
 static FILE *cio_file;
 
 /**
- * Computes the true right ascension of the celestial intermediate origin (CIO) at a given TT
- * Julian date.  This is the negative value for the equation of the origins.
+ * Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date
+ * on the true equator of date for a given TT Julian date. This is simply the negated return value of
+ * ira_equinox() for the true equator of date.
  *
  * REFERENCES:
  * <ol>
@@ -44,12 +45,11 @@ static FILE *cio_file;
  * @return            0 if successful, -1 if the output pointer argument is NULL,
  *                    1 if 'accuracy' is invalid, 10--20: 10 + error code from cio_location(),
  *                    or else 20 + error from cio_basis()
+ *
+ * @sa ira_equinox()
  */
 short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio) {
   static const char *fn = "cio_ra";
-  const double unitx[3] = { 1.0, 0.0, 0.0 };
-  double jd_tdb, x[3], y[3], z[3], eq[3], az, r_cio;
-  short rs;
 
   if(!ra_cio)
     return novas_error(-1, EINVAL, fn, "NULL output array");
@@ -62,24 +62,8 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   // For these calculations we can assume TDB = TT (< 2 ms difference)
-  jd_tdb = jd_tt;
 
-  // Obtain the basis vectors, in the GCRS, for the celestial intermediate
-  // system defined by the CIP (in the z direction) and the CIO (in the
-  // x direction).
-  prop_error(fn, cio_location(jd_tdb, accuracy, &r_cio, &rs), 10);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, rs, accuracy, x, y, z), 20);
-
-  // Compute the direction of the true equinox in the GCRS.
-  tod_to_gcrs(jd_tdb, accuracy, unitx, eq);
-
-  // Compute the RA-like coordinate of the true equinox in the celestial
-  // intermediate system, in radians
-  az = atan2(novas_vdot(eq, y), novas_vdot(eq, x));
-
-  // The RA of the CIO is minus this coordinate, cast as hour-angle
-  *ra_cio = -az / HOURANGLE;
-
+  *ra_cio = -ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy);
   return 0;
 }
 
@@ -100,6 +84,9 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
  * @since 1.0
  * @author Attila Kovacs
  *
+ * @deprecated    SuperNOVAS no longer uses a NOVAS-type CIO locator file. However, if users want
+ *                to access such files  directly, this function remains accessible to provide API
+ *                compatibility with previous versions.
  */
 int set_cio_locator_file(const char *restrict filename) {
   FILE *old = cio_file;
@@ -153,9 +140,15 @@ int set_cio_locator_file(const char *restrict filename) {
  * @return            0 if successful, -1 if one of the pointer arguments is NULL or the
  *                    accuracy is invalid.
  *
- * @sa set_cio_locator_file()
  * @sa cio_ra()
- * @sa gcrs_to_cirs()
+ * @sa ira_equinox()
+ *
+ * @deprecated This function is no longer used internally in the library. Given that the CIO
+ *             is defined on the dynamical equator of date, it is not normally meaningful to
+ *             provide an R.A. coordinate for it in GCRS for users also. And, you can
+ *             use cio_ra() to get the same valye w.r.t. the equinox of date (on the same
+ *             CIRS/TOD dynamical equator, or else use  `ira_equinox()` to return its negated
+ *             value.
  */
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type) {
   static const char *fn = "cio_location";
@@ -185,6 +178,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
     *loc_type = ref_sys_last;
     return 0;
   }
+
 
   // We can let slide errors from cio_array since they don't bother us.
   if(saved_debug_state == NOVAS_DEBUG_ON)
@@ -217,7 +211,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
     novas_debug(saved_debug_state);
 
     // Calculate the equation of origins.
-    *ra_cio = -1.0 * ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
+    *ra_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
     *loc_type = CIO_VS_EQUINOX;
   }
 
@@ -230,14 +224,12 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
 }
 
 /**
- * Computes the orthonormal basis vectors, with respect to the GCRS (geocentric ICRS), of the
+ * Computes the CIRS basis vectors, with respect to the GCRS (geocentric ICRS), of the
  * celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z
- * direction) and the celestial intermediate origin (CIO) (in the x direction).  A TDB Julian
- * date and the right ascension of the CIO at that date is required as input.  The right
- * ascension of the CIO can be with respect to either the GCRS origin or the true equinox of
- * date -- different algorithms are used in the two cases.
+ * direction) and the celestial intermediate origin (CIO) (in the x direction).
  *
- * This function effectively constructs the matrix C in eq. (3) of the reference.
+ * This function effectively constructs the CIRS to GCRS transformation matrix C in eq. (3) of the
+ * reference.
  *
  * NOTES:
  * <ol>
@@ -266,6 +258,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
  *
  * @sa cio_location()
  * @sa gcrs_to_cirs()
+ *
  */
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *restrict x, double *restrict y, double *restrict z) {
@@ -383,6 +376,9 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  *
  * @sa set_cio_locator_file()
  * @sa cio_location()
+ *
+ * @deprecated    This function is no longer used within SuperNOVAS. It is still provided, however,
+ *                in order to retain 100% API compatibility with NOVAS C.
  */
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
   static const char *fn = "cio_array";
@@ -394,7 +390,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
     double jd_interval;
     long n_recs;
   };
-
 
 
   static const FILE *last_file;
