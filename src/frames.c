@@ -139,7 +139,8 @@ static int set_gcrs_to_cirs(novas_frame *frame) {
   const double jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
   double r_cio = frame->gst - frame->era / 15.0;
 
-  //prop_error("set_gcrs_to_cirs", cio_ra(jd_tdb, frame->accuracy, &r_cio), 0); // Use available quantities for r_cio above...
+  // TODO comment after merging PR #208
+  prop_error("set_gcrs_to_cirs", cio_ra(jd_tdb, frame->accuracy, &r_cio), 0); // Use available quantities for r_cio above...
   cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]);
 
   return 0;

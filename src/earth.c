@@ -199,6 +199,8 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
         enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst) {
   static const char *fn = "sidereal_time";
 
+  (void) erot; // unused
+
   if(!gst)
     return novas_error(-1, EINVAL, fn, "NULL 'gst' output pointer");
 
