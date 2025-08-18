@@ -107,7 +107,50 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
   return 0;
 }
 
+/**
+ * Returns the Greenwich Mean Sidereal Time (GMST) for a given UT1 date, using eq. 42 from
+ * Capitaine et al. (2003).
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
+ * </ol>
+ *
+ * @param jd_ut1      [day] UT1-based Julian Date.
+ * @param ut1_to_tt   [s] UT1 - UTC time difference.
+ * @return            [h] The Greenwich Mean Sidereal Time (GMST) in the 0-24 range.
+ *
+ * @since 1.5
+ *
+ * @sa novas_gast()
+ */
+double novas_gmst(double jd_ut1, double ut1_to_tt) {
+  double deg = era(jd_ut1, 0.0) + novas_gmst_prec(jd_ut1 + ut1_to_tt / DAY) / 3600.0;
+  double gst = remainder(deg / 15.0, DAY_HOURS);
+  return (gst < 0.0) ? gst + DAY_HOURS : gst;
+}
 
+/**
+ * Returns the Greenwich Apparent Sidereal Time (GAST) for a given UT1 date.
+ *
+ * @param jd_ut1      [day] UT1-based Julian Date.
+ * @param ut1_to_tt   [s] UT1 - UTC time difference.
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
+ * @return            [h] The Greenwich Apparent Sidereal Time (GAST) in the 0-24 range.
+ *
+ * @since 1.5
+ *
+ * @sa novas_gmst()
+ */
+double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy) {
+  double ee = 0.0, gst;
+
+  if(e_tilt(jd_ut1 + ut1_to_tt / DAY, accuracy, NULL, NULL, &ee, NULL, NULL) != 0)
+    return novas_trace_nan("novas_gast");
+
+  gst = remainder(novas_gmst(jd_ut1, ut1_to_tt) + ee / 3600.0, DAY_HOURS);
+  return (gst < 0.0) ? gst + DAY_HOURS : gst;
+}
 
 /**
  * Computes the Greenwich sidereal time, either mean or apparent, at the specified Julian date.
@@ -119,10 +162,15 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * <ol>
  * <li>Contains fix for known <a href="https://aa.usno.navy.mil/software/novas_faq">sidereal time
  * units bug.</a></li>
+ * <li>As of version 1.5.0, the function uses Eq 42 of Capitaine et al. (2003) exclusively. In prior
+ * versions, including NOVAS C the same method was provided twice, with the only difference being
+ * an unnecessary change of coordinate basis to GCRS. This latter, mor roundabout way of getting
+ * the same answer has been eliminated.<.li>
  * </ol>
  *
  * REFERENCES:
  * <ol>
+ * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * </ol>
  *
@@ -132,14 +180,11 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
  * @param gst_type    NOVAS_MEAN_EQUINOX (0) or NOVAS_TRUE_EQUINOX (1), depending on whether
  *                    wanting mean or apparent GST, respectively.
- * @param erot        EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative
- *                    to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006
- *                    standard).
+ * @param erot        Unused as of 1.5.0.
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] gst    [h] Greenwich (mean or apparent) sidereal time, in hours [0:24]. (In case
  *                    the returned error code is &gt;1 the gst value will be set to NAN.)
  * @return            0 if successful, or -1 if the 'gst' argument is NULL, 1 if 'accuracy' is
- *                    invalid 2 if 'method' is invalid.
  *
  * @sa novas_time_gst()
  * @sa era()
@@ -147,11 +192,12 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * @sa itrs_to_tod()
  * @sa cel_pole()
  * @sa get_ut1_to_tt()
+ *
+ * @deprecated Use novas_gmst() or novas_gast() instead to get the same results simpler.
  */
 short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type,
         enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst) {
   static const char *fn = "sidereal_time";
-  double jd_ut, jd_tt, jd_tdb, t, theta, st, eqeq;
 
   if(!gst)
     return novas_error(-1, EINVAL, fn, "NULL 'gst' output pointer");
@@ -162,14 +208,13 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
-  // Time argument for precession and nutation components of sidereal
-  // time is TDB.  First approximation is TDB = TT, then refine.
-  jd_ut = jd_ut1_high + jd_ut1_low;
-  jd_tt = jd_ut + (ut1_to_tt / DAY);
+  jd_ut1_high += jd_ut1_low;
 
-  // For these calculations we can assume TDB = TT (< 2 ms difference)
-  jd_tdb = jd_tt;
+  *gst = (gst_type == NOVAS_TRUE_EQUINOX) ? novas_gast(jd_ut1_high, ut1_to_tt, accuracy) : novas_gmst(jd_ut1_high, ut1_to_tt);
+  if(isnan(*gst))
+    return novas_trace(fn, -1, 0);
 
+<<<<<<< HEAD
   t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
 
   // Compute the Earth Rotation Angle.  Time argument is UT1.
@@ -239,7 +284,11 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
     default:        // Invalid value of 'method'.
       return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
   }
+=======
+  return 0;
+>>>>>>> 4ef306c (Clean up sidereal time calculations.)
 }
+
 
 /**
  * Returns the value of the Earth Rotation Angle (theta) for a given UT1 Julian date.  The
@@ -424,12 +473,9 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
     case NOVAS_OBSERVER_ON_EARTH: {                     // Observer on surface of Earth.
       // Compute UT1 and sidereal time.
       double jd_ut1 = jd_tt - (ut1_to_tt / DAY);
-      double gast = NAN;
-
-      sidereal_time(jd_ut1, 0.0, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gast);
 
       // Function 'terra' does the hard work, given sidereal time.
-      terra(&obs->on_surf, gast, pos1, vel1);
+      terra(&obs->on_surf, novas_gast(jd_ut1, ut1_to_tt, accuracy), pos1, vel1);
       break;
     }
 

@@ -712,7 +712,6 @@ static int test_sidereal_time() {
 
   if(check("sidereal_time:out", -1, sidereal_time(0.0, 0.0, 0.0, NOVAS_MEAN_EQUINOX, EROT_GST, NOVAS_FULL_ACCURACY, NULL))) n++;
   if(check("sidereal_time:accuracy", 1, sidereal_time(0.0, 0.0, 0.0, NOVAS_MEAN_EQUINOX, EROT_GST, -1, &x))) n++;
-  if(check("sidereal_time:erot", 2, sidereal_time(0.0, 0.0, 0.0, NOVAS_MEAN_EQUINOX, -1, NOVAS_FULL_ACCURACY, &x))) n++;
 
   return n;
 }
