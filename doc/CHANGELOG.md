@@ -6,18 +6,18 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.4.2-rc2]
 
-Upcoming bug fix release with updated nutation models, expected around 1 November 2025.
+Bug fix release with updated nutation models.
 
 ### Fixed
 
- - #201: By default expect to find the CIO locator file (`CIO_RA.TXT`) in its install location, e.g. 
-   in `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
+ - #201: By default expect to find the CIO locator file (`CIO_RA.TXT`) in its install location, e.g. in 
+   `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
 
  - #202: The P03 recommended rescaling of the IAU200A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) 
-   was not correctly implemented in the prior 1.4 releases, having missed its time dependence. The resulting errors are 
-   below 0.1 mas for the present era.
+   was not correctly implemented in the prior 1.4 releases, having missed its time dependence. The resulting errors 
+   are below 0.1 mas for the present era.
   
 ### Changed
 
