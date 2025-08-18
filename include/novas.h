@@ -68,7 +68,7 @@
 #define SUPERNOVAS_PATCHLEVEL     2
 
 /// Additional release information in version, e.g. "-1", or "-rc1", or empty string "" for releases.
-#define SUPERNOVAS_RELEASE_STRING "-devel"
+#define SUPERNOVAS_RELEASE_STRING "-rc2"
 
 /// \cond PRIVATE
 
