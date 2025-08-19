@@ -114,6 +114,8 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * REFERENCES:
  * <ol>
  * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
+ * <li>IERS Conventions Chapter 5, Table 5.2e, see at
+ * https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</li>
  * </ol>
  *
  * @param jd_ut1      [day] UT1-based Julian Date.
@@ -121,6 +123,7 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * @return            [h] The Greenwich Mean Sidereal Time (GMST) in the 0-24 range.
  *
  * @since 1.5
+ * @author Attila Kovacs
  *
  * @sa novas_gast()
  */
@@ -138,7 +141,16 @@ double novas_gmst(double jd_ut1, double ut1_to_tt) {
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @return            [h] The Greenwich Apparent Sidereal Time (GAST) in the 0-24 range.
  *
+ * REFERENCES:
+ * <ol>
+ * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
+ * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
+ * <li>IERS Conventions Chapter 5, Table 5.2e, see at
+ * https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</li>
+ * </ol>
+ *
  * @since 1.5
+ * @author Attila Kovacs
  *
  * @sa novas_gmst()
  */
@@ -213,79 +225,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
   jd_ut1_high += jd_ut1_low;
   *gst = (gst_type == NOVAS_TRUE_EQUINOX) ? novas_gast(jd_ut1_high, ut1_to_tt, accuracy) : novas_gmst(jd_ut1_high, ut1_to_tt);
 
-<<<<<<< HEAD
-  t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
-
-  // Compute the Earth Rotation Angle.  Time argument is UT1.
-  theta = era(jd_ut1_high, jd_ut1_low);
-
-  // Compute the equation of the equinoxes if needed, depending upon the
-  // input values of 'gst_type' and 'method'.  If not needed, set to zero.
-  if(((gst_type == NOVAS_MEAN_EQUINOX) && (erot == EROT_ERA))       // GMST; CIO-TIO
-          || ((gst_type == NOVAS_TRUE_EQUINOX) && (erot == EROT_GST))) {    // GAST; equinox
-    double ee = NAN;
-    e_tilt(jd_tdb, accuracy, NULL, NULL, &ee, NULL, NULL);
-    eqeq = 15.0 * ee;
-  }
-  else {
-    eqeq = 0.0;
-  }
-
-  // AK: default return value.
-  *gst = NAN;
-
-  // Compute Greenwich sidereal time depending upon input values of
-  // method' and 'gst_type'.
-  switch(erot) {
-    case EROT_ERA: {
-      // Use 'CIO-TIO-theta' method.  See Circular 179, Section 6.5.4.
-      const double ux[3] = { 1.0, 0.0, 0.0 };
-      double ra_cio, ha_eq, x[3], y[3], z[3], eq[3];
-
-      // Obtain the basis vectors, in the GCRS, of the celestial intermediate system.
-      ra_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
-
-      cio_basis(jd_tdb, ra_cio, CIO_VS_EQUINOX, accuracy, x, y, z);
-
-      // Compute the direction of the true equinox in the GCRS.
-      tod_to_gcrs(jd_tdb, accuracy, ux, eq);
-
-      // Compute the hour angle of the equinox wrt the TIO meridian
-      // (near Greenwich, but passes through the CIP and TIO).
-      ha_eq = theta - atan2(novas_vdot(eq, y), novas_vdot(eq, x)) / DEGREE;
-
-      // For mean sidereal time, subtract the equation of the equinoxes.
-
-      // AK: Fix for documented bug in NOVAS 3.1 --> 3.1.1
-      ha_eq -= (eqeq / 3600.0);
-
-      ha_eq = remainder(ha_eq / 15.0, DAY_HOURS);
-      if(ha_eq < 0.0)
-        ha_eq += DAY_HOURS;
-
-      *gst = ha_eq;
-      return 0;
-    }
-
-    case EROT_GST:
-      // Use equinox method.  See Circular 179, Section 2.6.2.
-
-      // Precession-in-RA terms in mean sidereal time taken from third
-      // reference, eq. (42), with coefficients in arcseconds.
-      st = eqeq + 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
-
-      // Form the Greenwich sidereal time.
-      *gst = remainder((st / 3600.0 + theta) / 15.0, DAY_HOURS);
-      if(*gst < 0.0)
-        *gst += DAY_HOURS;
-      return 0;
-
-    default:        // Invalid value of 'method'.
-      return novas_error(2, EINVAL, fn, "invalid Earth rotation measure type: %d", erot);
-  }
-=======
   return 0;
->>>>>>> 4ef306c (Clean up sidereal time calculations.)
 }
 
 

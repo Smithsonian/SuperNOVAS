@@ -360,12 +360,13 @@ double mean_obliq(double jd_tdb) {
 }
 
 /**
- * Returns the precession term of GMST, which together with the equation of equinoxes translates
- * Earth Rotation Angle (ERA) to Greenwhich Mean Sidereal Time (GMST).
+ * Returns the polynomial precession term of GMST, which together with the equation of equinoxes
+ * translates Earth Rotation Angle (ERA) to Greenwhich Mean Sidereal Time (GMST).
  *
  * REFERENCES:
  * <ol>
  * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
+ * <li>https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</li>
  * </ol>
  *
  * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date, but TT-based date may
