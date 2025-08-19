@@ -211,10 +211,7 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   jd_ut1_high += jd_ut1_low;
-
   *gst = (gst_type == NOVAS_TRUE_EQUINOX) ? novas_gast(jd_ut1_high, ut1_to_tt, accuracy) : novas_gmst(jd_ut1_high, ut1_to_tt);
-  if(isnan(*gst))
-    return novas_trace(fn, -1, 0);
 
 <<<<<<< HEAD
   t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
