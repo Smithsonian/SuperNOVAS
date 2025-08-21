@@ -6,7 +6,7 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.2-rc2]
+## [1.4.2]
 
 Bug fix release with updated nutation models.
 
@@ -21,16 +21,12 @@ Bug fix release with updated nutation models.
   
 ### Changed
 
- - #206: `iau2000a()` now uses IAU2000A R06 model coefficients 
+ - #206: Updated nutation models: `iau2000a()` now uses IAU2000A R06 model coefficients 
    (see https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html), making it dynamically consistent with the IAU2006 
-   (P03) precession model, which was already implemented by NOVAS and SuperNOVAS.
-
- - #206: `iau2000b()` is now a truncated version of the above, keeping terms with amplitude &lt;10 &mu;as, resulting 
-   in similar number of terms and precision as the original IAU2000B model, while making it dynamically consistent
-   with the IAU2006 (P03) precession model.
-   
- - #206: `nu2000k()` has been rescaled according to Coppola, Seago, &amp; Vallado (2009) to make it more consistent 
-   with the IAU2006 (P03) precession model.
+   (P03) precession model, which was already implemented by NOVAS and SuperNOVAS. `iau2000b()` is now a truncated 
+   version of the above, keeping terms with amplitude &lt;10 &mu;as, resulting in similar number of terms and 
+   precision as the original IAU2000B model. And, `nu2000k()` has been rescaled according to Coppola, Seago, &amp; 
+   Vallado (2009) to also bring it in line with the IAU2006 (P03) precession model.
 
 
 ## [1.4.1] - 2025-07-21 
