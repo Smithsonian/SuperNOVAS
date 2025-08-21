@@ -125,6 +125,12 @@ int set_cio_locator_file(const char *restrict filename) {
  *  This function caches the results of the last calculation in case it may be re-used at
  *  no extra computational cost for the next call.
  * </li>
+ * <li>
+ *  Note, that when a CIO location file is used, the bundled CIO locator data was prepared
+ *  with the original IAU2000A nutation model, not with the newer R06 (a.k.a. IAU2006) model,
+ *  resulting in an error up to the few tens of micro-arcseconds level for dates between 1900
+ *  and 2100, and larger errors further away from the current epoch.
+ * </li>
  * </ol>
  *
  * @param jd_tdb           [day] Barycentric Dynamic Time (TDB) based Julian date
@@ -145,10 +151,9 @@ int set_cio_locator_file(const char *restrict filename) {
  *
  * @deprecated This function is no longer used internally in the library. Given that the CIO
  *             is defined on the dynamical equator of date, it is not normally meaningful to
- *             provide an R.A. coordinate for it in GCRS for users also. And, you can
- *             use cio_ra() to get the same valye w.r.t. the equinox of date (on the same
- *             CIRS/TOD dynamical equator, or else use  `ira_equinox()` to return its negated
- *             value.
+ *             provide an R.A. coordinate for it in GCRS, in general. Instead, you might use
+ *             cio_ra() to get the same value w.r.t. the equinox of date (on the same CIRS/TOD
+ *             dynamical equator, or else `ira_equinox()` to return the negated value.
  */
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type) {
   static const char *fn = "cio_location";
@@ -358,8 +363,16 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  *
  * NOTES:
  * <ol>
- * <li>This function has been completely re-written by A. Kovacs to provide much more efficient
- * caching and I/O.</li>
+ * <li>
+ *   This function has been completely re-written by A. Kovacs to provide much more efficient
+ *   caching and I/O.
+ * </li>
+ * <li>
+ *  The CIO locator file that is bundled was prepared with the original IAU2000A nutation model,
+ *  not with the newer R06 (a.k.a. IAU2006) nutation model, resulting in an error up to the few
+ *  tens of micro-arcseconds level for dates between 1900 and 2100, and larger errors further away
+ *  from the current epoch.
+ * </li>
  * </ol>
  *
  * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
