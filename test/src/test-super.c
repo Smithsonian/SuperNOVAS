@@ -1460,6 +1460,27 @@ static int test_geom_posvel() {
   return 0;
 }
 
+static int test_cio_basis() {
+  double h = 0.0;
+  short sys;
+  double x0[3] = {0.0}, y0[3] = {0.0}, z0[3] = {0.0};
+  double x1[3] = {0.0}, y1[3] = {0.0}, z1[3] = {0.0};
+
+  if(!is_ok("cio_basis:cio_location", cio_location(tdb, NOVAS_FULL_ACCURACY, &h, &sys))) return 1;
+  if(!is_equal("cio_basis:cio_location:sys", sys, CIO_VS_GCRS, 1e-12)) return 1;
+
+  if(!is_ok("cio_basis:gcrs", cio_basis(tdb, h, sys, NOVAS_FULL_ACCURACY, x0, y0, z0))) return 1;
+
+  h = -ira_equinox(tdb, NOVAS_TRUE_EQUINOX, NOVAS_FULL_ACCURACY);
+  if(!is_ok("cio_basis:tod", cio_basis(tdb, h, CIO_VS_EQUINOX, NOVAS_FULL_ACCURACY, x1, y1, z1))) return 1;
+
+  if(!is_ok("cio_basis:check:x", check_equal_pos(x0, x1, 1e-11))) return 1;
+  if(!is_ok("cio_basis:check:y", check_equal_pos(y0, y1, 1e-11))) return 1;
+  if(!is_ok("cio_basis:check:z", check_equal_pos(z0, z1, 1e-11))) return 1;
+
+  return 0;
+}
+
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
   int i, n = 0;
@@ -1480,6 +1501,7 @@ static int test_dates() {
     if(test_set_time()) n++;
     if(test_get_time()) n++;
     if(test_geom_posvel()) n++;
+    if(test_cio_basis()) n++;
 
     for(k =0; k < NOVAS_REFERENCE_SYSTEMS; k++) if(test_sky_pos(k)) n++;
 

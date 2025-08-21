@@ -505,6 +505,17 @@ static int test_cirs_to_gcrs() {
   return n;
 }
 
+static int test_cirs_to_tod() {
+  double p[3];
+  int n = 0;
+
+  if(check("cirs_to_tod:in", -1, cirs_to_tod(0.0, NOVAS_FULL_ACCURACY, NULL, p))) n++;
+  if(check("cirs_to_tod:out", -1, cirs_to_tod(0.0, NOVAS_FULL_ACCURACY, p, NULL))) n++;
+  if(check("cirs_to_tod:accuracy", -1, cirs_to_tod(0.0, -1, p, p))) n++;
+
+  return n;
+}
+
 static int test_cirs_to_app_ra() {
   int n = 0;
   if(check_nan("cirs_to_app_ra:accuracy:-1", cirs_to_app_ra(NOVAS_JD_J2000, -1, 0.0))) n++;
@@ -931,6 +942,7 @@ static int test_cio_location() {
 
   if(check("cio_location:ra", -1, cio_location(0.0, NOVAS_FULL_ACCURACY, NULL, &type))) n++;
   if(check("cio_location:type", -1, cio_location(0.0, NOVAS_FULL_ACCURACY, &x, NULL))) n++;
+  if(check("cio_location:accuracy", -1, cio_location(0.0, -1, &x, &type))) n++;
 
   return n;
 }
@@ -2344,6 +2356,7 @@ int main() {
   if(test_tod_to_j2000()) n++;
   if(test_gcrs_to_cirs()) n++;
   if(test_cirs_to_gcrs()) n++;
+  if(test_cirs_to_tod()) n++;
   if(test_cirs_to_app_ra()) n++;
   if(test_app_to_cirs_ra()) n++;
 
