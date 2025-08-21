@@ -31,7 +31,7 @@
 
 int main(int argc, const char *argv[]) {              // observer location
   // Other variables we need ----------------------------------------------->
-  int i, N = 10000;
+  int i, N = 30000;
   double tjd = 2460683.132905, dx, dy;
   struct timespec unix_time, end;
 
