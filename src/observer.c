@@ -953,7 +953,6 @@ double novas_hpa(double az, double el, double lat) {
  * @author Attila Kovacs
  *
  * @sa novas_hpa()
- * @sa novas_lst()
  * @sa novas_e2h_offset()
  */
 double novas_epa(double ha, double dec, double lat) {

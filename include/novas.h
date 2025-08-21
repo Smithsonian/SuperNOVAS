@@ -568,6 +568,7 @@ enum novas_refraction_model {
 
 /**
  * Constants that determine the type of rotation measure to use.
+ *
  */
 enum novas_earth_rotation_measure {
   /// Use Earth Rotation Angle (ERA) as the rotation measure, relative to the CIO (new IAU
@@ -2138,6 +2139,14 @@ int novas_day_of_week(double tjd);
 int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restrict year);
 
 
+// ---------------------- Added in 1.5.0 -------------------------
+
+double novas_gmst(double jd_ut1, double ut1_to_tt);
+
+double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy);
+
+
+
 // <================= END of SuperNOVAS API =====================>
 
 
@@ -2262,6 +2271,8 @@ double novas_vdot(const double *v1, const double *v2);
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
 
 int novas_frame_is_initialized(const novas_frame *frame);
+
+double novas_gmst_prec(double jd_tdb);
 
 extern int novas_inv_max_iter;
 
