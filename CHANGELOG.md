@@ -27,6 +27,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #209: `novas_make_frame()` calculates `gst` and `gcrs_to_cirs` fields faster, using the already available frame
    quantities and thus eliminating duplicate calculations.
 
+ - #210: Speed up `iau2000a()` and `iau2000b()` nutations by restricting the range of multiples that are iterated over.
+
 ### Deprecated
 
  - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files (`CIO_RA.TXT`
