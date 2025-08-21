@@ -1648,6 +1648,11 @@ one minute.
  - Improvements to atmospheric refraction modeling.
 
 
+#### New in 1.5
+
+ - New, simpler functions to calculated Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
+
+
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
 
@@ -1742,6 +1747,10 @@ one minute.
  - [__v1.4.2__] Nutation models have been upgraded from the original IAU2000 model to IAU2006 (i.e. IAU2000A R06), 
    making them dynamically consistent with the implemented IAU2006 (P03) precession model.
 
+ - [__v1.5__] Faster IAU2000A (R06) nutation series and `ee_ct()` calculations, with a ~2x speedup.
+ 
+ - [__v1.5__] Weaned off using CIO locator file internally (but still allowing users to access them if they want to).
+ 
 
 -----------------------------------------------------------------------------
 
