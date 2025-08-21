@@ -15,20 +15,28 @@ Upcoming feature release, expected around 1 November 2025.
 
 ### Added
 
+ - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
+   Sidereal times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal time` with
+   a simpler and more intuitive interface.
 
 ### Changed
 
  - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the same
    true equator of date). 
 
+ - #209: `novas_make_frame()` calculates `gst` and `gcrs_to_cirs` fields faster, using the already available frame
+   quantities and thus eliminating duplicate calculations.
 
 ### Deprecated
 
  - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files (`CIO_RA.TXT`
    or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also `ira_equinox()` (which
    returns the negative of the same value).
+
+ - #209: Deprecate `sidereal_time()`. It is messy and one of its arguments (`erot`) is now a dud. Instead, you should
+   use `novas_gmst()` or `novas_gast()` to get the same results simpler.
    
-   
+
 ## [1.4.2-rc2]
 
 Bug fix release with updated nutation models.

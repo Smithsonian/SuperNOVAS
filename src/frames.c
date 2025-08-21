@@ -135,14 +135,11 @@ static int set_frame_tie(novas_frame *frame) {
 }
 
 static int set_gcrs_to_cirs(novas_frame *frame) {
-  static const char *fn = "set_gcrs_to_cirs";
-  const double jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
-  double r_cio;
-
   novas_matrix *T = &frame->gcrs_to_cirs;
+  const double jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
+  double r_cio = frame->gst - frame->era / 15.0;
 
-  prop_error(fn, cio_ra(jd_tdb, frame->accuracy, &r_cio), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]), 10);
+  cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]);
 
   return 0;
 }
@@ -167,6 +164,12 @@ static int set_precession(novas_frame *frame) {
   //const double chia = t * (10.556240 + t * (-2.3813876 + t * (-0.00121311 + t * (0.000160286 + t * 0.000000086)))) * ARCSEC;
   //const double psia = t * (5038.481270 + t * (-1.0732468 + t * (0.01573403 + t * (0.000127135 - t * 0.0000001020)))) * ARCSEC;
   //const double omegaa = eps0 + t * (-0.024725 + t * (0.0512626 + t * (-0.0077249 + t * (-0.000000267 + t * 0.000000267)))) * ARCSEC;
+
+  // Liu, Capitaine, & Cheng (2019)
+  // Another update on LC17 with new VLBI data
+  //const double chia = t * (10.556240 + t * (-2.3813876 + t * (-0.00121311 + t * (0.000160286 + t * 0.000000086))));
+  //const double psia = t * (5038.482041 + t * (-1.072687 + t * (0.0278555 + t * (0.00012342 - t * 0.0000001096))));
+  //const double omegaa = eps0 + t * (-0.025754 + t * (0.0512626 + t * (-0.0077249 + t * (-0.000000086 + t * 0.000000221))));
 
   const double sa = sin(eps0);
   const double ca = cos(eps0);
@@ -379,11 +382,7 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  * @return            0 if successful,
  *                    10--40: error is 10 + the error from ephemeris(),
  *                    40--50: error is 40 + the error from geo_posvel(),
- *                    50--80: error is 50 + the error from sidereal_time(),
- *                    80--90 error is 80 + error from cio_location(),
- *                    90--100 error is 90 + error from cio_basis().
- *                    or else -1 if there was an error (errno will indicate the
- *                    type of error).
+ *                    or else -1 if there was an error (errno will indicate the type of error).
  *
  * @sa novas_change_observer()
  * @sa novas_sky_pos()
@@ -436,7 +435,7 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   // Compute mean obliquity of the ecliptic in degrees.
   frame->mobl = mean_obliq(tdb2[0] + tdb2[1]) * ARCSEC;
 
-  // Obtain complementary terms for equation of the equinoxes in seconds of time.
+  // Obtain complementary terms for equation of the equinoxes in radians.
   frame->ee = dpsi * ARCSEC * cos(frame->mobl) + ee_ct(time->ijd_tt, time->fjd_tt, accuracy);
 
   // Compute true obliquity of the ecliptic in degrees.
@@ -445,13 +444,15 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
   frame->era = era(ijd_ut1, fjd_ut1);
 
-  prop_error(fn, sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, frame->accuracy, &frame->gst), 50);
+  //frame->gst = novas_gast(ijd_ut1 + fjd_ut1, time->ut1_to_tt, accuracy); // Use faster calc with available quantities.
+  frame->gst = (frame->era + novas_gmst_prec(tdb2[0] + tdb2[1]) / 3600.0) / 15.0 + frame->ee / HOURANGLE;
+  frame->gst = remainder(frame->gst, DAY_HOURS);
+  if(frame->gst < 0) frame->gst += DAY_HOURS;
 
   set_frame_tie(frame);
   set_precession(frame);
   set_nutation(frame);
-
-  prop_error(fn, set_gcrs_to_cirs(frame), 80);
+  set_gcrs_to_cirs(frame);
 
   // Barycentric Earth and Sun positions and velocities
   prop_error(fn, ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, frame->sun_pos, frame->sun_vel), 10);
