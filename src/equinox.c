@@ -384,7 +384,7 @@ double mean_obliq(double jd_tdb) {
  *                    If 'equinox' = 1 (i.e true equinox), then the returned value is
  *                    the equation of the origins.
  *
- * @sa cio_location()
+ * @sa cio_ra()
  * @sa gcrs_to_cirs()
  *
  * @deprecated      (<i>for internal use</i>) There is no good reason why this function should
