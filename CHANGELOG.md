@@ -29,6 +29,9 @@ Upcoming feature release, expected around 1 November 2025.
    quantities and thus eliminating duplicate calculations.
 
  - #210: Speed up `iau2000a()` and `iau2000b()` nutations by restricting the range of multiples that are iterated over.
+ 
+ - #212: Speed up `ee_ct()` by restricting the range of multiples that are iterated over. Also reduced accuracy now
+   uses the same series, only with fewer terms.
 
 ### Deprecated
 

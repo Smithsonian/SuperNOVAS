@@ -433,10 +433,10 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
 }
 
 /**
- * Computes the "complementary terms" of the equation of the equinoxes. The input Julian date
- * can be split into high and low order parts for improved accuracy. Typically, the split is
- * into integer and fractiona parts. If the precision of a single part is sufficient, you may
- * set the low order part to 0.
+ * Computes the "complementary terms" of (i.e. the non-polynomial contribution to) the equation of
+ * the equinoxes. The input Julian date can be split into high and low order parts for improved
+ * accuracy. Typically, the split is into integer and fractiona parts. If the precision of a
+ * single part is sufficient, you may set the low order part to 0.
  *
  * The series used in this function was derived from the first reference.  This same series was
  * also adopted for use in the IAU's Standards of Fundamental Astronomy (SOFA) software (i.e.,
@@ -455,12 +455,11 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * <ol>
  * <li>Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. &amp; Astrophys. 406, p.
  * 1135-1149. Table 3.</li>
+ *
  * <li>IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.<br>
- * (Table 5.2e presented in the printed publication is a truncated
- * series. The full series, which is used in NOVAS, is available
- * on the IERS Conventions Center website:
- * <a href="ftp://tai.bipm.org/iers/conv2010/chapter5/tab5.2e.txt">
- * ftp://tai.bipm.org/iers/conv2010/chapter5/tab5.2e.txt</a>)
+ * (Table 5.2e presented in the printed publication is a truncated series. The full series,
+ * which is used in NOVAS, is available on the IERS Conventions Center website:
+ * https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt)
  * </li>
  * </ol>
  *
@@ -474,7 +473,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @sa nutation()
  * @sa sidereal_time()
  *
- * @deprecated (<i>for intrernal use</i>) There is no good reason why this function should
+ * @deprecated (<i>for internal use</i>) There is no good reason why this function should
  *             be exposed to users of the library. It is intended only for use by `e_tilt()`
  *             internally.
  */
@@ -484,161 +483,94 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
 
   // @formatter:off
 
-  // Argument coefficients for t^0.
-  const int8_t ke0_t[33][14] = { //
-          {  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  1,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  1,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  1,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  4, -4,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  1, -1,  1,  0, -8, 12,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2, -2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  1, -2,  2, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  1, -2,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  0,  0,  0,  0,  8,-13,  0,  0,  0,  0,  0, -1 }, //
-          {  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  2,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0,  0, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  1,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0,  0, -2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  4, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  0,  0,  2, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0, -2,  0, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
-          {  1,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }  //
-  };
+  // Argument multiples and coefficients for time-independent terms.
+  typedef struct {
+    float A;        // Sine coefficient
+    float B;        // Cosie coefficient
+    int8_t n[14];   // argument multiples
+    int8_t from;    // index of first non-zero multiple
+    int8_t to;      // index after last non-zero multiple
+  } ee_terms;
 
-  // Argument coefficients for t^1.
-  //const char ke1[14] = {0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0};
-
-  // Sine and cosine coefficients for t^0.
-  const float se0_t[33][2] = { //
-          {  2640.96e-6, -0.39e-6 }, //
-          {    63.52e-6, -0.02e-6 }, //
-          {    11.75e-6,  0.01e-6 }, //
-          {    11.21e-6,  0.01e-6 }, //
-          {    -4.55e-6,  0.0     }, //
-          {     2.02e-6,  0.0     }, //
-          {     1.98e-6,  0.0     }, //
-          {    -1.72e-6,  0.0     }, //
-          {    -1.41e-6, -0.01e-6 }, //
-          {    -1.26e-6, -0.01e-6 }, //
-          {    -0.63e-6,  0.0     }, //
-          {    -0.63e-6,  0.0     }, //
-          {     0.46e-6,  0.0     }, //
-          {     0.45e-6,  0.0     }, //
-          {     0.36e-6,  0.0     }, //
-          {    -0.24e-6, -0.12e-6 }, //
-          {     0.32e-6,  0.0     }, //
-          {     0.28e-6,  0.0     }, //
-          {     0.27e-6,  0.0     }, //
-          {     0.26e-6,  0.0     }, //
-          {    -0.21e-6,  0.0     }, //
-          {     0.19e-6,  0.0     }, //
-          {     0.18e-6,  0.0     }, //
-          {    -0.10e-6,  0.05e-6 }, //
-          {     0.15e-6,  0.0     }, //
-          {    -0.14e-6,  0.0     }, //
-          {     0.14e-6,  0.0     }, //
-          {    -0.14e-6,  0.0     }, //
-          {     0.14e-6,  0.0     }, //
-          {     0.13e-6,  0.0     }, //
-          {    -0.11e-6,  0.0     }, //
-          {     0.11e-6,  0.0     }, //
-          {     0.11e-6,  0.0     }  //
+  static const ee_terms terms[33] =  { //
+          //          A         B     0   1   2   3   4   5   6   7  #8  #9 #10 #11 #12  13   frm  to
+          {  2640.96e-6, -0.39e-6, {  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  4,  5 }, //
+          {    63.52e-6, -0.02e-6, {  0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  4,  5 }, //
+          {    11.75e-6,  0.01e-6, {  0,  0,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {    11.21e-6,  0.01e-6, {  0,  0,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {    -4.55e-6,  0.0    , {  0,  0,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {     2.02e-6,  0.0    , {  0,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {     1.98e-6,  0.0    , {  0,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {    -1.72e-6,  0.0    , {  0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  4,  5 }, //
+          {    -1.41e-6, -0.01e-6, {  0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  1,  5 }, //
+          {    -1.26e-6, -0.01e-6, {  0,  1,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  1,  5 }, //
+          {    -0.63e-6,  0.0    , {  1,  0,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {    -0.63e-6,  0.0    , {  1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {     0.46e-6,  0.0    , {  0,  1,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  1,  5 }, //
+          {     0.45e-6,  0.0    , {  0,  1,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  1,  5 }, //
+          {     0.36e-6,  0.0    , {  0,  0,  4, -4,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {    -0.24e-6, -0.12e-6, {  0,  0,  1, -1,  1,  0, -8, 12,  0,  0,  0,  0,  0,  0 },  2,  8 }, //
+          {     0.32e-6,  0.0    , {  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  3 }, //
+          {     0.28e-6,  0.0    , {  0,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {     0.27e-6,  0.0    , {  1,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {     0.26e-6,  0.0    , {  1,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {    -0.21e-6,  0.0    , {  0,  0,  2, -2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  4 }, //
+          {     0.19e-6,  0.0    , {  0,  1, -2,  2, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  1,  5 }, //
+          {     0.18e-6,  0.0    , {  0,  1, -2,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  1,  5 }, //
+          {    -0.10e-6,  0.05e-6, {  0,  0,  0,  0,  0,  0,  8,-13,  0,  0,  0,  0,  0, -1 },  6, 14 }, //
+          {     0.15e-6,  0.0    , {  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  3,  4 }, //
+          {    -0.14e-6,  0.0    , {  2,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {     0.14e-6,  0.0    , {  1,  0,  0, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {    -0.14e-6,  0.0    , {  0,  1,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  1,  5 }, //
+          {     0.14e-6,  0.0    , {  1,  0,  0, -2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {     0.13e-6,  0.0    , {  0,  0,  4, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {    -0.11e-6,  0.0    , {  0,  0,  2, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  2,  5 }, //
+          {     0.11e-6,  0.0    , {  1,  0, -2,  0, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }, //
+          {     0.11e-6,  0.0    , {  1,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0 },  0,  5 }  //
   };
 
   // @formatter:on
 
-  // Sine and cosine coefficients for t^1.
-  const double se1[2] = { -0.87e-6, +0.00e-6 };
-
-  novas_delaunay_args fa2;
-  double fa[14];
-
-  // Interval between fundamental epoch J2000.0 and current date.
-  double t;
-
   if(accuracy != NOVAS_FULL_ACCURACY)
     accuracy = NOVAS_REDUCED_ACCURACY;
 
-  if(novas_time_equals(jd_tt_high + jd_tt_low, last_tt) && accuracy == last_acc)
-    return last_ee;
-
-  last_tt = jd_tt_high + jd_tt_low;
-  last_acc = accuracy;
-
-  t = ((jd_tt_high - JD_J2000) + jd_tt_low) / JULIAN_CENTURY_DAYS;
-
-  // High accuracy mode.
-  if(accuracy == NOVAS_FULL_ACCURACY) {
-    double s0 = 0.0, s1 = 0.0;
-    int i;
+  // Recalc values only if parameters changed.
+  if(!novas_time_equals(jd_tt_high + jd_tt_low, last_tt) || accuracy != last_acc) {
+    const double t = ((jd_tt_high - JD_J2000) + jd_tt_low) / JULIAN_CENTURY_DAYS;
+    double a[14] = {0.0};
+    double sum = 0.0;
+    int i, Nt = 33; // Number of terms to sum...
 
     // Fill the 5 Earth-Sun-Moon fundamental args
-    fund_args(t, (novas_delaunay_args*) fa);
+    fund_args(t, (novas_delaunay_args*) a);
 
     // Add planet longitudes
-    for(i = NOVAS_MERCURY; i <= NOVAS_NEPTUNE; i++) {
-      int j = i - NOVAS_MERCURY;
-      fa[5 + j] = planet_lon(t, i);
-    }
+    for(i = NOVAS_MERCURY; i <= NOVAS_EARTH; i++)  // NOTE: Coeffs beyond Earth are zero.
+      a[4 + i] = planet_lon(t, i);
 
     // General accumulated precession longitude
-    fa[13] = accum_prec(t);
+    a[13] = accum_prec(t);
+
+    if(accuracy != NOVAS_FULL_ACCURACY) Nt = 8;
 
     // Evaluate the complementary terms.
-    for(i = 33; --i >= 0;) {
-      const int8_t *ke = &ke0_t[i][0];
-      const float *se = &se0_t[i][0];
-
-      double a = 0.0;
+    for(i = Nt; --i >= 0;) {
+      const ee_terms *T = &terms[i];
+      double arg = 0.0;
       int j;
 
-      for(j = 14; --j >= 0;)
-        if(ke[j])
-          a += ke[j] * fa[j];
+      for(j = T->to; --j >= T->from; )
+        if(T->n[j])
+          arg += T->n[j] * a[j];
 
-      s0 += se[0] * sin(a);
-      if(se[1])
-        s0 += se[1] * cos(a);
+      sum += T->A * sin(arg);
+      if(T->B)
+        sum += T->B * cos(arg);
     }
 
-    // AK: Skip 0 terms from ke1[]
-    //
-    // a = 0.0;
-    // for(j = 0; j < 14; j++) a += (double) (ke1[j]) * fa[j];
-    s1 += se1[0] * sin(fa[4]);
-
-    last_ee = (s0 + s1 * t) * ARCSEC;
-  }
-  else {
-    // Low accuracy mode: Terms smaller than 2 microarcseconds omitted
-    fund_args(t, &fa2);
-
-    last_ee = (2640.96e-6 * sin(fa2.Omega) //
-    + 63.52e-6 * sin(2.0 * fa2.Omega) //
-    + 11.75e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + 3.0 * fa2.Omega) //
-    + 11.21e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + fa2.Omega) //
-    - 4.55e-6 * sin(2.0 * fa2.F - 2.0 * fa2.D + 2.0 * fa2.Omega) //
-    + 2.02e-6 * sin(2.0 * fa2.F + 3.0 * fa2.Omega) //
-    + 1.98e-6 * sin(2.0 * fa2.F + fa2.Omega) //
-    - 1.72e-6 * sin(3.0 * fa2.Omega) //
-    - 0.87e-6 * t * sin(fa2.Omega) //
-    ) * ARCSEC;
+    last_ee = (sum - 0.87e-6 * sin(a[4]) * t) * ARCSEC;
+    last_tt = jd_tt_high + jd_tt_low;
+    last_acc = accuracy;
   }
 
   return last_ee;
