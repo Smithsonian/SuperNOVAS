@@ -360,6 +360,26 @@ double mean_obliq(double jd_tdb) {
 }
 
 /**
+ * Returns the polynomial precession term of GMST, which together with the equation of equinoxes
+ * translates Earth Rotation Angle (ERA) to Greenwhich Mean Sidereal Time (GMST).
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
+ * <li>https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</li>
+ * </ol>
+ *
+ * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date, but TT-based date may
+ *                  also be used without loss of precision.
+ * @return          [arcsec] the precession term for the ERA to GMST conversion according to
+ *                  Capitaine et al. (2003) eq. 42.
+ */
+double novas_gmst_prec(double jd_tdb) {
+  const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
+  return 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
+}
+
+/**
  * Compute the intermediate right ascension of the equinox at the input Julian date, using an
  * analytical expression for the accumulated precession in right ascension.  For the true
  * equinox, the result is the equation of the origins.
@@ -391,14 +411,8 @@ double mean_obliq(double jd_tdb) {
  *                  be exposed to users. It is intended only for `cio_location()` internally.
  */
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy) {
-  // Compute time in Julian centuries from J2000
-  double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
-
-  // Precession in RA in arcseconds taken from the reference.
-  double prec_ra = 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
-
-  // arcsec -> seconds of time
-  prec_ra /= 15.0;
+  // Precession in RA in arcseconds taken from the reference in seconds of time.
+  double prec_ra = novas_gmst_prec(jd_tdb) / 15.0;
 
   // For the true equinox, obtain the equation of the equinoxes in time
   // seconds, which includes the 'complementary terms'.
@@ -410,7 +424,7 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
       accuracy = NOVAS_FULL_ACCURACY;
 
     // Add equation of equinoxes.
-    e_tilt(jd_tdb, accuracy, NULL, NULL, &eqeq, NULL, NULL);
+    prop_error("ira_equinox", e_tilt(jd_tdb, accuracy, NULL, NULL, &eqeq, NULL, NULL), 0);
     prec_ra += eqeq;
   }
 

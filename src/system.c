@@ -110,11 +110,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
- * @param erot          EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative
- *                      to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006
- *                      standard) as the Earth rotation measure. The main effect of this option
- *                      is that it selects the output coordinate system as CIRS or TOD if
- *                      the output coordinate class is NOVAS_DYNAMICAL_CLASS.
+ * @param erot          Unused.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param coordType     Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1)
  *                      or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates are
@@ -177,15 +173,12 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
 
     case EROT_GST: {
-      double gast;
-
       if(xp || yp)
         wobble(jd_tt, WOBBLE_ITRS_TO_PEF, xp, yp, in, out);
       else
         memcpy(out, in, XYZ_VECTOR_SIZE);
 
-      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-      spin(-15.0 * gast, out, out);
+      spin(-15.0 * novas_gast(jd_ut1_high + jd_ut1_low, ut1_to_tt, accuracy), out, out);
 
       if(coordType != NOVAS_DYNAMICAL_CLASS)
         tod_to_gcrs(jd_tdb, accuracy, out, out);
@@ -226,11 +219,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
- * @param erot          EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative to
- *                      equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard)
- *                      as the Earth rotation measure. The main effect of this option
- *                      is that it specifies the input coordinate system as CIRS or TOD when
- *                      the input coordinate class is NOVAS_DYNAMICAL_CLASS.
+ * @param erot          Unused.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param coordType     Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1).
  *                      Use the former if the input coordinates are in the GCRS, and the latter if they
@@ -294,8 +283,6 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       return 0;
 
     case EROT_GST: {
-      double gast;
-
       // Pre IAU 2006 method
       if(coordType != NOVAS_DYNAMICAL_CLASS) {
         gcrs_to_tod(jd_tdb, accuracy, in, out);
@@ -305,8 +292,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       }
 
       // Apply Earth rotation.
-      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-      spin(15.0 * gast, out, out);
+      spin(15.0 * novas_gast(jd_ut1_high + jd_ut1_low, ut1_to_tt, accuracy), out, out);
 
       // Apply polar motion, transforming the vector to the ITRS.
       if(xp || yp)
