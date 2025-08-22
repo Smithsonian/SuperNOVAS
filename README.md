@@ -38,7 +38,7 @@ __SuperNOVAS__ is entirely free to use without licensing restrictions. Its sourc
 standard, and hence should be suitable for old and new platforms alike. And, despite it being a light-weight library,
 it fully supports the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
 
-This document has been updated for the `v1.4` and later releases.
+This document has been updated for the `v1.5` and later releases.
 
 
 ## Table of Contents
@@ -1475,14 +1475,14 @@ aberration and gravitational deflection corrections from the observer's point of
 
  | Description                         | accuracy  | positions / sec |
  |-------------------------------------|:---------:|----------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         2884159 |
- |                                     |   full    |         2881913 |
- | `place()`, same time, same observer | reduced   |          656077 |
- |                                     |   full    |          656112 |
- | `novas_sky_pos()`, individual       | reduced   |          127370 |
- |                                     |   full    |           29674 |
- | `place()`, individual               | reduced   |          132218 |
- |                                     |   full    |           29932 |
+ | `novas_sky_pos()`, same frame       | reduced   |         3100653 |
+ |                                     |   full    |         3093511 |
+ | `place()`, same time, same observer | reduced   |          829483 |
+ |                                     |   full    |          831015 |
+ | `novas_sky_pos()`, individual       | reduced   |          161932 |
+ |                                     |   full    |           25943 |
+ | `place()`, individual               | reduced   |          166714 |
+ |                                     |   full    |           25537 |
 
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
 
