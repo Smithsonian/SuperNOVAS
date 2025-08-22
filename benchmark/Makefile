@@ -1,5 +1,6 @@
 CC ?= gcc
-CFLAGS ?= -O2 -Wall -I../include
+CPPFLAGS += -I../include
+CFLAGS ?= -O2 -Wall
 
 BENCHMARKS = benchmark-nutation benchmark-place
 
@@ -11,7 +12,7 @@ run: all
 all: $(BENCHMARKS)
 
 benchmark-%: benchmark-%.c
-	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS) -L../lib -lsupernovas -lm
+	$(CC) -o $@ $^ $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -L../lib -lsupernovas -lm
 
 .PHONY: clean
 clean:

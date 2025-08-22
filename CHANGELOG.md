@@ -6,14 +6,15 @@ file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to 
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.2]
+
+## [1.4.2] - 2025-08-25
 
 Bug fix release with updated nutation models.
 
 ### Fixed
 
- - #201: By default expect to find the CIO locator file (`CIO_RA.TXT`) in its install location, e.g. in 
-   `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
+ - #201: By default expect to find the CIO locator file (`CIO_RA.TXT` or `cio_ra.bin`) in its install location, e.g. 
+   in `/usr/share/supernovas` or as set via the `datadir` or `prefix` install locations. 
 
  - #202: The P03 recommended rescaling of the original IAU2000A nutation model to IAU2006 (see Coppola, Seago, and 
    Vallado 2009) was not correctly implemented in the prior 1.4 releases. The resulting errors are around or below 40 
@@ -28,6 +29,8 @@ Bug fix release with updated nutation models.
    version of the above, keeping terms with amplitude &lt;100 &mu;as, resulting in similar number of terms and 
    precision as the original IAU2000B model. And, `nu2000k()` has been rescaled according to Coppola, Seago, &amp; 
    Vallado (2009) to also bring it in line with the IAU2006 (P03) precession model.
+
+ - `make benchmark` now uses any user-defined `CPPFLAGS`, automatically adding the `include/` directory to it.
 
 
 ## [1.4.1] - 2025-07-21 
