@@ -1355,7 +1355,7 @@ typedef struct novas_frame {
   struct novas_planet_bundle planets; ///< Planet positions and velocities (ICRS)
   // TODO [v2] add ra_cio
   // TODO [v2] add cirs_to_tirs
-  // TODI [v2] add tirs_to_itrs
+  // TODO [v2] add tirs_to_itrs
 } novas_frame;
 
 /**

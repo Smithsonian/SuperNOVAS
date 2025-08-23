@@ -114,8 +114,8 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * REFERENCES:
  * <ol>
  * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
- * <li>IERS Conventions Chapter 5, Table 5.2e, see at
- * https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</li>
+ * <li>IERS Conventions Chapter 5, Eq. 5.32, see at
+ * https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</li>
  * </ol>
  *
  * @param jd_ut1      [day] UT1-based Julian Date.
@@ -145,7 +145,8 @@ double novas_gmst(double jd_ut1, double ut1_to_tt) {
  * <ol>
  * <li>Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42).</li>
  * <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
- * <li>IERS Conventions Chapter 5, Table 5.2e, see at
+ * <li>IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at
+ * https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf and
  * https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</li>
  * </ol>
  *
