@@ -113,9 +113,8 @@ static double sum_terms(double t, const double *a, const nutation_terms *P0, int
     double arg = 0.0;
     int k;
 
-    for(k = T->to; --k >= T->from; )
-      if(T->n[k])
-        arg += T->n[k] * a[k];
+    for(k = T->from; k < T->to; k++)
+      arg += T->n[k] * a[k];
 
     sum += T->A * sin(arg) + T->B * cos(arg);
   }
@@ -125,9 +124,8 @@ static double sum_terms(double t, const double *a, const nutation_terms *P0, int
     double arg = 0.0;
     int k;
 
-    for(k = T->to; --k >= T->from; )
-      if(T->n[k])
-        arg += T->n[k] * a[k];
+    for(k = T->from; k < T->to; k++)
+      arg += T->n[k] * a[k];
 
     sum += (T->A * sin(arg) + T->B * cos(arg)) * t;
   }
@@ -211,7 +209,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
 /**
  * Computes the forced nutation of the non-rigid Earth based at reduced precision. It reproduces the
  * IAU 2000A (R06) model to a precision of 1 milliarcsecond in the interval 1995-2020, while being
- * about 14x faster than `iau2000a()`.
+ * about 15x faster than `iau2000a()`.
  *
  * NOTES
  * <ol>
@@ -262,7 +260,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  * Computes the forced nutation of the non-rigid Earth: Model NU2000K.  This model is a
  * modified version of the original IAU 2000A, which has been truncated for speed of execution.
  * NU2000K agrees with IAU 2000A at the 0.1 milliarcsecond level from 1700 to 2300, while
- * being is about 4.5x faster than the more precise `iau2000a()`.
+ * being is about 5x faster than the more precise `iau2000a()`.
  *
  * NU2000K was compared to IAU 2000A over six centuries (1700-2300). The average error in
  * d&psi; is 20 microarcseconds, with 98% of the errors < 60 microarcseconds;  the average

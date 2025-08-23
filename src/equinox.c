@@ -559,9 +559,8 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
       double arg = 0.0;
       int j;
 
-      for(j = T->to; --j >= T->from; )
-        if(T->n[j])
-          arg += T->n[j] * a[j];
+      for(j = T->from; j < T->to; j++)
+        arg += T->n[j] * a[j];
 
       sum += T->A * sin(arg);
       if(T->B)
