@@ -39,9 +39,13 @@ Upcoming feature release, expected around 1 November 2025.
    or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also `ira_equinox()` (which
    returns the negative of the same value).
 
- - #209: Deprecate `sidereal_time()`. It is messy and one of its arguments (`erot`) is now a dud. Instead, you should
+ - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now a dud. Instead, you should
    use `novas_gmst()` or `novas_gast()` to get the same results simpler.
 
+ - #214: Deprecated `cio_basis()`. It is no longer used internally in the library, and users are recommended against 
+   using it themselves, since SuperNOVAS provides better ways to convert between GCRS and CIRS using frames or via the
+   `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
+   
    
 ## [1.4.2] - 2025-08-25
 

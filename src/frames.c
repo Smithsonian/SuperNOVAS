@@ -40,6 +40,8 @@
 #define SIDEREAL_RATE       1.002737891         ///< rate at which sidereal time advances faster than UTC
 /// \endcond
 
+
+
 static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b) {
   // GCRS=0, TOD=1, CIRS=2, ICRS=3, J2000=4, MOD=5, TIRS=6, ITRS=7
   // TOD->-3, MOD->-2, J2000->-1, GCRS/ICRS->0, CIRS->1, TIRS->2, ITRS->3
@@ -109,6 +111,45 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   return 0;
 }
 
+static int set_spin_matrix(double angle, novas_matrix *T) {
+  double c, s;
+
+  memset(T, 0, sizeof(novas_matrix));
+
+  angle *= DEGREE;
+  c = cos(angle);
+  s = sin(angle);
+
+  // Rotation matrix (non-zero elements only).
+  T->M[0][0] = c;
+  T->M[0][1] = s;
+  T->M[1][0] = -s;
+  T->M[1][1] = c;
+  T->M[2][2] = 1.0;
+
+  return 0;
+}
+
+static int add_transform(novas_transform *transform, const novas_matrix *component, int dir) {
+  int i;
+  double M0[3][3];
+
+  memcpy(M0, transform->matrix.M, sizeof(M0));
+
+  for(i = 3; --i >= 0;) {
+    int j;
+    for(j = 3; --j >= 0;) {
+      int k;
+      double x = 0.0;
+      for(k = 3; --k >= 0;)
+        x += (dir < 0 ? component->M[k][i] : component->M[i][k]) * M0[k][j];
+      transform->matrix.M[i][j] = x;
+    }
+  }
+
+  return 0;
+}
+
 static int set_frame_tie(novas_frame *frame) {
   // 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
   // from IERS (2003) Conventions, Chapter 5.
@@ -135,11 +176,17 @@ static int set_frame_tie(novas_frame *frame) {
 }
 
 static int set_gcrs_to_cirs(novas_frame *frame) {
-  novas_matrix *T = &frame->gcrs_to_cirs;
-  const double jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
-  double r_cio = frame->gst - frame->era / 15.0;
+  novas_transform T = {};
+  novas_matrix tod2cirs = {};
 
-  cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]);
+  set_spin_matrix(15.0 * frame->gst - frame->era, &tod2cirs);
+
+  T.matrix = frame->icrs_to_j2000;
+  add_transform(&T, &frame->precession, 1);
+  add_transform(&T, &frame->nutation, 1);
+  add_transform(&T, &tod2cirs, 1);
+
+  frame->gcrs_to_cirs = T.matrix;
 
   return 0;
 }
@@ -231,24 +278,7 @@ static int set_nutation(novas_frame *frame) {
   return 0;
 }
 
-static int set_spin_matrix(double angle, novas_matrix *T) {
-  double c, s;
 
-  memset(T, 0, sizeof(novas_matrix));
-
-  angle *= DEGREE;
-  c = cos(angle);
-  s = sin(angle);
-
-  // Rotation matrix (non-zero elements only).
-  T->M[0][0] = c;
-  T->M[0][1] = s;
-  T->M[1][0] = -s;
-  T->M[1][1] = c;
-  T->M[2][2] = 1.0;
-
-  return 0;
-}
 
 static int set_wobble_matrix(const novas_frame *frame, novas_matrix *T) {
   // TIRS / PEF -> ITRS
@@ -1124,25 +1154,7 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
   return 0;
 }
 
-static int add_transform(novas_transform *transform, const novas_matrix *component, int dir) {
-  int i;
-  double M0[3][3];
 
-  memcpy(M0, transform->matrix.M, sizeof(M0));
-
-  for(i = 3; --i >= 0;) {
-    int j;
-    for(j = 3; --j >= 0;) {
-      int k;
-      double x = 0.0;
-      for(k = 3; --k >= 0;)
-        x += (dir < 0 ? component->M[k][i] : component->M[i][k]) * M0[k][j];
-      transform->matrix.M[i][j] = x;
-    }
-  }
-
-  return 0;
-}
 
 /**
  * Calculates a transformation matrix that can be used to convert positions and velocities from
