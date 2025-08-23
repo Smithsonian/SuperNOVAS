@@ -520,7 +520,7 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out) {
  * @author Attila Kovacs
  */
 int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
-  static const char *fn = "gcrs_to_tod [internal]";
+  static const char *fn = "gcrs_to_tod";
   prop_error(fn, frame_tie(in, ICRS_TO_J2000, out), 0);
   prop_error(fn, j2000_to_tod(jd_tdb, accuracy, out, out), 0);
   return 0;
@@ -549,7 +549,7 @@ int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  * @author Attila Kovacs
  */
 int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
-  static const char *fn = "tod_to_gcrs [internal]";
+  static const char *fn = "tod_to_gcrs";
   prop_error(fn, tod_to_j2000(jd_tdb, accuracy, in, out), 0);
   prop_error(fn, frame_tie(out, J2000_TO_ICRS, out), 0);
   return 0;
@@ -578,26 +578,11 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  */
 int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "gcrs_to_cirs";
-  double r_cio, v[3], x[3], y[3], z[3];
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
+  prop_error(fn, gcrs_to_tod(jd_tdb, accuracy, in, out), 0);
 
-  memcpy(v, in, sizeof(v));
-
-  // Check for valid value of 'accuracy'.
-  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
-    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
-
-  // Obtain the basis vectors, in the GCRS, of the celestial intermediate
-  // system.
-  r_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, accuracy, x, y, z), 10);
-
-  // Transform position vector to celestial intermediate system.
-  out[0] = novas_vdot(x, v);
-  out[1] = novas_vdot(y, v);
-  out[2] = novas_vdot(z, v);
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  prop_error(fn, tod_to_cirs(jd_tdb, accuracy, out, out), 0);
 
   return 0;
 }
@@ -629,29 +614,10 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  */
 int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "cirs_to_gcrs";
-  double r_cio, vx[3], vy[3], vz[4], x, y, z;
-  int i;
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
-
-  // Check for valid value of 'accuracy'.
-  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
-    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
-
-  // Obtain the basis vectors, in the GCRS, of the celestial intermediate
-  // system.
-  r_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, CIO_VS_EQUINOX, accuracy, vx, vy, vz), 10);
-
-  x = in[0];
-  y = in[1];
-  z = in[2];
-
-  // Transform position vector to GCRS system.
-  for(i = 3; --i >= 0;) {
-    out[i] = x * vx[i] + y * vy[i] + z * vz[i];
-  }
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  prop_error(fn, cirs_to_tod(jd_tdb, accuracy, in, out), 0);
+  prop_error(fn, tod_to_gcrs(jd_tdb, accuracy, out, out), 0);
 
   return 0;
 }

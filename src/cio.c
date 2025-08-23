@@ -62,7 +62,6 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   // For these calculations we can assume TDB = TT (< 2 ms difference)
-
   *ra_cio = -ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy);
   return 0;
 }
@@ -260,16 +259,19 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
  * @return            0 if successful, or -1 if any of the output vector arguments are NULL
  *                    or if the accuracy is invalid, or else 1 if 'ref-sys' is invalid.
  *
- * @sa cio_location()
  * @sa gcrs_to_cirs()
+ * @sa novas_frame
  *
+ * @deprecated This function is no longer used internally in the library, and users are recommended
+ *             against using it themselves, since SuperNOVAS provides better ways to convert between
+ *             GCRS and CIRS using frames or via gcrs_to_cirs() / cirs_to_gcrs() functions.
  */
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *restrict x, double *restrict y, double *restrict z) {
   static const char *fn = "cio_basis";
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double t_last = NAN;
-  static THREAD_LOCAL double zz[3];
+  static THREAD_LOCAL double xx[3], yy[3], zz[3];
 
   if(!x || !y || !z)
     return novas_error(-1, EINVAL, fn, "NULL output 3-vector: x=%p, y=%p, z=%p", x, y, z);
@@ -283,39 +285,33 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
     tod_to_gcrs(jd_tdb, accuracy, z0, zz);
     t_last = jd_tdb;
     acc_last = accuracy;
-  }
 
-  // Now compute unit vectors x and y.  Method used depends on the
-  // reference system in which right ascension of the CIO is given.
-  ra_cio *= HOURANGLE;
+    // Now compute unit vectors x and y.  Method used depends on the
+    // reference system in which right ascension of the CIO is given.
+    ra_cio *= HOURANGLE;
 
-  switch(loc_type) {
+    switch(loc_type) {
+      case CIO_VS_GCRS: {
 
-    case CIO_VS_GCRS: {
+        // Compute vector x toward CIO in GCRS.
+        const double sinra = sin(ra_cio);
+        const double cosra = cos(ra_cio);
+        double l;
 
-      // Compute vector x toward CIO in GCRS.
-      const double sinra = sin(ra_cio);
-      const double cosra = cos(ra_cio);
-      double l;
+        xx[0] = zz[2] * cosra;
+        xx[1] = zz[2] * sinra;
+        xx[2] = -zz[0] * cosra - zz[1] * sinra;
 
-      x[0] = zz[2] * cosra;
-      x[1] = zz[2] * sinra;
-      x[2] = -zz[0] * cosra - zz[1] * sinra;
+        // Normalize vector x.
+        l = novas_vlen(xx);
+        xx[0] /= l;
+        xx[1] /= l;
+        xx[2] /= l;
 
-      // Normalize vector x.
-      l = novas_vlen(x);
-      x[0] /= l;
-      x[1] /= l;
-      x[2] /= l;
+        break;
+      }
 
-      break;
-    }
-
-    case CIO_VS_EQUINOX: {
-      static THREAD_LOCAL double last_ra = 0.0;
-      static THREAD_LOCAL double xx[3] = { 0.0, 0.0, 1.0 };
-
-      if(xx[2] || fabs(ra_cio - last_ra) > 1e-12) {
+      case CIO_VS_EQUINOX: {
         // Construct unit vector toward CIO in equator-and-equinox-of-date
         // system.
         xx[0] = cos(ra_cio);
@@ -324,28 +320,26 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
 
         // Rotate the vector into the GCRS to form unit vector x.
         tod_to_gcrs(jd_tdb, accuracy, xx, xx);
+        break;
       }
 
-      memcpy(x, xx, sizeof(xx));
+      default:
+        // Invalid value of 'ref_sys'.
+        memset(x, 0, XYZ_VECTOR_SIZE);
+        memset(y, 0, XYZ_VECTOR_SIZE);
+        memset(z, 0, XYZ_VECTOR_SIZE);
 
-      break;
+        return novas_error(1, EINVAL, fn, "invalid input CIO location type: %d", loc_type);
     }
 
-    default:
-      // Invalid value of 'ref_sys'.
-      memset(x, 0, XYZ_VECTOR_SIZE);
-      memset(y, 0, XYZ_VECTOR_SIZE);
-      memset(z, 0, XYZ_VECTOR_SIZE);
-
-      return novas_error(1, EINVAL, fn, "invalid input CIO location type: %d", loc_type);
+    // Compute unit vector y orthogonal to x and z (y = z cross x).
+    yy[0] = zz[1] * xx[2] - zz[2] * xx[1];
+    yy[1] = zz[2] * xx[0] - zz[0] * xx[2];
+    yy[2] = zz[0] * xx[1] - zz[1] * xx[0];
   }
 
-  // Compute unit vector y orthogonal to x and z (y = z cross x).
-  y[0] = zz[1] * x[2] - zz[2] * x[1];
-  y[1] = zz[2] * x[0] - zz[0] * x[2];
-  y[2] = zz[0] * x[1] - zz[1] * x[0];
-
-  // Load the z array.
+  memcpy(x, xx, sizeof(xx));
+  memcpy(y, yy, sizeof(yy));
   memcpy(z, zz, sizeof(zz));
 
   return 0;
