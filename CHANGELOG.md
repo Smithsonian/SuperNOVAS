@@ -17,7 +17,7 @@ Upcoming feature release, expected around 1 November 2025.
 ### Added
 
  - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
-   Sidereal times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal time` with
+   Sidereal times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal_time()` with
    a simpler and more intuitive interface.
 
 ### Changed
@@ -32,6 +32,8 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #212: Speed up `ee_ct()` by restricting the range of multiples that are iterated over. Also reduced accuracy now
    uses the same series, only with fewer terms.
+ 
+ - #214: Reworked GCRS-CIRS transforms without `cio_basis()`.
 
 ### Deprecated
 
