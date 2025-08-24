@@ -2145,6 +2145,15 @@ double novas_gmst(double jd_ut1, double ut1_to_tt);
 
 double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy);
 
+int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
+int novas_libration(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
+int novas_ocean_tides(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
 
 
 // <================= END of SuperNOVAS API =====================>

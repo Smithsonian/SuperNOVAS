@@ -619,10 +619,12 @@ observation:
  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &obs_time, dx, dy, &obs_frame);
 ```
 
-Here `dx` and `dy` are small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
-in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). They are needed when 
-converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed ITRS frame. You may ignore these and 
-set zeroes if sub-arcsecond precision is not required.
+Here `dx` and `dy` are small (sub-arcsec level) corrections to Earth orientation. Values for these are are published 
+in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html), and if accuracy below the
+milli-acsecond level is required, should be corrected for diurnal and semi-diurnal variations caused by librations and
+ocean tides (see `novas_diurnal_eop()` for calculating such corrections). These Earth orientation parameters (EOP) are 
+needed only when converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed ITRS frame. You may 
+ignore these and set zeroes if sub-arcsecond precision is not required. 
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
 in that frame (see the [benchmarks](#benchmarks)), since all sources in a frame have well-defined, fixed, topological 
@@ -1152,10 +1154,13 @@ considerations before that level of accuracy is reached.
     nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
-    time difference and leap-seconds (UTC-TAI). In __SuperNOVAS__ you can use `cel_pole()` and `get_ut1_to_tt()` 
-    functions to apply / use the published values from these to improve the astrometric precision of Earth-orientation 
-    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
-    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
+    time difference and leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be
+    further amended to include corrections for variations caused by librations and ocean tides. As of version 1.5 
+    `novas_diurnal_eop()` may be used to calculate such corrections. In __SuperNOVAS__ you can use `cel_pole()` and 
+    `get_ut1_to_tt()` functions to apply / use the published values from these to improve the astrometric precision of 
+    Earth-orientation based coordinate calculations. Without setting and using the actual polar offset values for the 
+    time of  observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level 
+    only.
    
   5. __Refraction__: Ground based observations are also subject to atmospheric refraction. __SuperNOVAS__ offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
@@ -1651,6 +1656,10 @@ one minute.
 #### New in 1.5
 
  - New, simpler functions to calculated Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
+
+ - New functions to calculate corrections to the Earth orientation parameters published by IERS, to include the effect
+   of librations and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS 
+   coordinates with accuracy below the milli-arcsecond (mas) level.
 
 
 <a name="api-changes"></a>

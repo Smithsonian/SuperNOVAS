@@ -1,7 +1,9 @@
-/*
+/**
  * This file contains coefficents for the NOVAS C reduced precision nutation model. 
  * It is a C code snippet, which should be included in 'nuation.c' inside the
  * 'nu2000k()' function body.
+ *
+ * @version IERS Conventions v1.0.0
  */
 
   // Luni-Solar argument multipliers:
