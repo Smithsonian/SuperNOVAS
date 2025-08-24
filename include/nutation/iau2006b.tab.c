@@ -1,4 +1,4 @@
-/*
+/**
  * IAU 2000 R06 nutation terms in obliquity, derived from the IAU 2000A lunisolar and planetary
  * components with slight IAU 2006 adjustments.
  *
@@ -6,6 +6,8 @@
  *
  * This file a C source code snippet, which should be included in 'nutation.c' after the
  * definition of the 'nutation_terms' data structure.
+ *
+ * @version IERS Conventions v1.3.0
  */
 
 static const nutation_terms B0[1037] = { //

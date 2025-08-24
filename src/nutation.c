@@ -37,11 +37,12 @@ typedef struct {
   int8_t from;       ///< index of first non-zero multiple in n[].
   int8_t to;         ///< index after the last non-zero multiple in n[].
 } nutation_terms;
-/// \endcond
 
-#include "nutation/iau2006a.tab"
-#include "nutation/iau2006b.tab"
-#include "nutation/nu2000k.tab"
+#include "nutation/iau2006a.tab.c"
+#include "nutation/iau2006b.tab.c"
+#include "nutation/nu2000k.tab.c"
+
+/// \endcond
 
 /**
  * Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB

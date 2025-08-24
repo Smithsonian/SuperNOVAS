@@ -402,12 +402,16 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  *                    NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient.
  * @param obs         Observer location
  * @param time        Time of observation
- * @param dx          [mas] Earth orientation parameter, polar offset in x, e.g. from the IERS
- *                    Bulletins. (The global, undated value set by cel_pole() is not not used
- *                    here.) You can use 0.0 if sub-arcsecond accuracy is not required.
- * @param dy          [mas] Earth orientation parameter, polar offset in y, e.g. from the IERS
- *                    Bulletins. (The global, undated value set by cel_pole() is not not used
- *                    here.) You can use 0.0 if sub-arcsecond accuracy is not required.
+ * @param dx          [mas] Earth orientation parameter, polar offset in _x_, e.g. from the IERS
+ *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
+ *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
+ *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
+ *                    required.
+ * @param dy          [mas] Earth orientation parameter, polar offset in _y_, e.g. from the IERS
+ *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
+ *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
+ *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
+ *                    required.
  * @param[out] frame  Pointer to the observing frame to configure.
  * @return            0 if successful,
  *                    10--40: error is 10 + the error from ephemeris(),
@@ -421,6 +425,7 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  * @sa set_nutation_lp_provider()
+ * @sa novas_diurnal_eop()
  *
  * @since 1.1
  * @author Attila Kovacs

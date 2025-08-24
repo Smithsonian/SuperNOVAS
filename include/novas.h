@@ -361,6 +361,7 @@ enum novas_planet {
  * REFERENCES:
  * <ol>
  * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * <li>IERS Conventions, Chapter 3, Table 3.1</li>
  * </ol>
  *
  * @sa enum novas_planet
@@ -2144,6 +2145,17 @@ int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restri
 double novas_gmst(double jd_ut1, double ut1_to_tt);
 
 double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy);
+
+int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restrict dxp, double *restrict dyp, double *restrict dut1);
+
+int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
+int novas_diurnal_libration(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
+int novas_diurnal_ocean_tides(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
 
 
 
