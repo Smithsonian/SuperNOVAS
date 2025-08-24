@@ -298,6 +298,11 @@ double accum_prec(double t) {
  * ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994,
  * 5.8.1-5.8.8).
  *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions Chapter 5, Eq. 5.44.</li>
+ * </ol>
+ *
  * @param t       [cy] Julian centuries since J2000
  * @param planet  Novas planet id, e.g. NOVAS_MARS.
  * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;],
@@ -580,6 +585,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
  *
  * REFERENCES:
  * <ol>
+ * <li>IERS Conventions Chapter 5, Eq. 5.43.</li>
  * <li>Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5.</li>
  * </ol>
  *
