@@ -110,11 +110,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
- * @param erot          EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative
- *                      to equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006
- *                      standard) as the Earth rotation measure. The main effect of this option
- *                      is that it selects the output coordinate system as CIRS or TOD if
- *                      the output coordinate class is NOVAS_DYNAMICAL_CLASS.
+ * @param erot          Unused.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param coordType     Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1)
  *                      or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates are
@@ -177,15 +173,12 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       break;
 
     case EROT_GST: {
-      double gast;
-
       if(xp || yp)
         wobble(jd_tt, WOBBLE_ITRS_TO_PEF, xp, yp, in, out);
       else
         memcpy(out, in, XYZ_VECTOR_SIZE);
 
-      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-      spin(-15.0 * gast, out, out);
+      spin(-15.0 * novas_gast(jd_ut1_high + jd_ut1_low, ut1_to_tt, accuracy), out, out);
 
       if(coordType != NOVAS_DYNAMICAL_CLASS)
         tod_to_gcrs(jd_tdb, accuracy, out, out);
@@ -226,11 +219,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @param jd_ut1_high   [day] High-order part of UT1 Julian date.
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
- * @param erot          EROT_ERA (0) or EROT_GST (1), depending on whether to use GST relative to
- *                      equinox of date (pre IAU 2006) or ERA relative to the CIO (IAU 2006 standard)
- *                      as the Earth rotation measure. The main effect of this option
- *                      is that it specifies the input coordinate system as CIRS or TOD when
- *                      the input coordinate class is NOVAS_DYNAMICAL_CLASS.
+ * @param erot          Unused.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param coordType     Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1).
  *                      Use the former if the input coordinates are in the GCRS, and the latter if they
@@ -294,8 +283,6 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       return 0;
 
     case EROT_GST: {
-      double gast;
-
       // Pre IAU 2006 method
       if(coordType != NOVAS_DYNAMICAL_CLASS) {
         gcrs_to_tod(jd_tdb, accuracy, in, out);
@@ -305,8 +292,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
       }
 
       // Apply Earth rotation.
-      sidereal_time(jd_ut1_high, jd_ut1_low, ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, accuracy, &gast);
-      spin(15.0 * gast, out, out);
+      spin(15.0 * novas_gast(jd_ut1_high + jd_ut1_low, ut1_to_tt, accuracy), out, out);
 
       // Apply polar motion, transforming the vector to the ITRS.
       if(xp || yp)
@@ -534,7 +520,7 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out) {
  * @author Attila Kovacs
  */
 int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
-  static const char *fn = "gcrs_to_tod [internal]";
+  static const char *fn = "gcrs_to_tod";
   prop_error(fn, frame_tie(in, ICRS_TO_J2000, out), 0);
   prop_error(fn, j2000_to_tod(jd_tdb, accuracy, out, out), 0);
   return 0;
@@ -563,7 +549,7 @@ int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  * @author Attila Kovacs
  */
 int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
-  static const char *fn = "tod_to_gcrs [internal]";
+  static const char *fn = "tod_to_gcrs";
   prop_error(fn, tod_to_j2000(jd_tdb, accuracy, in, out), 0);
   prop_error(fn, frame_tie(out, J2000_TO_ICRS, out), 0);
   return 0;
@@ -581,8 +567,7 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  * @param[out] out  Output position or velocity 3-vector in the True equinox of Date coordinate
  *                  frame. It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
- *                  accuracy is invalid, or an error from cio_location(), or
- *                  else 10 + the error from cio_basis().
+ *                  accuracy is invalid, or else 10 + the error from cio_basis().
  *
  * @sa gcrs_to_j2000()
  * @sa cirs_to_gcrs()
@@ -593,23 +578,11 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  */
 int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "gcrs_to_cirs";
-  double r_cio, v[3], x[3], y[3], z[3];
-  short sys;
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
+  prop_error(fn, gcrs_to_tod(jd_tdb, accuracy, in, out), 0);
 
-  memcpy(v, in, sizeof(v));
-
-  // Obtain the basis vectors, in the GCRS, of the celestial intermediate
-  // system.
-  prop_error(fn, cio_location(jd_tdb, accuracy, &r_cio, &sys), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, accuracy, x, y, z), 10);
-
-  // Transform position vector to celestial intermediate system.
-  out[0] = novas_vdot(x, v);
-  out[1] = novas_vdot(y, v);
-  out[2] = novas_vdot(z, v);
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  prop_error(fn, tod_to_cirs(jd_tdb, accuracy, out, out), 0);
 
   return 0;
 }
@@ -628,8 +601,7 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @param[out] out  Output position or velocity 3-vector in the GCRS coordinate frame.
  *                  It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or an error from cio_location(), or else
- *                  10 + the error from cio_basis().
+ *                  or the accuracy is invalid, or else 10 + the error from cio_basis().
  *
  * @sa tod_to_gcrs()
  * @sa gcrs_to_cirs()
@@ -642,26 +614,10 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  */
 int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "cirs_to_gcrs";
-  double r_cio, vx[3], vy[3], vz[4], x, y, z;
-  short sys;
-  int i;
 
-  if(!in || !out)
-    return novas_error(-1, EINVAL, fn, "NULL input or output 3-vector: in=%p, out=%p", in, out);
-
-  // Obtain the basis vectors, in the GCRS, of the celestial intermediate
-  // system.
-  prop_error(fn, cio_location(jd_tdb, accuracy, &r_cio, &sys), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, accuracy, vx, vy, vz), 10);
-
-  x = in[0];
-  y = in[1];
-  z = in[2];
-
-  // Transform position vector to GCRS system.
-  for(i = 3; --i >= 0;) {
-    out[i] = x * vx[i] + y * vy[i] + z * vz[i];
-  }
+  // For these calculations we can assume TDB = TT (< 2 ms difference)
+  prop_error(fn, cirs_to_tod(jd_tdb, accuracy, in, out), 0);
+  prop_error(fn, tod_to_gcrs(jd_tdb, accuracy, out, out), 0);
 
   return 0;
 }
@@ -958,8 +914,7 @@ int j2000_to_gcrs(const double *in, double *out) {
  * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
  *                  It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or 10 + the error from cio_location(), or
- *                  else 20 + the error from cio_basis().
+ *                  or the accuracy is invalid, or else 20 + the error from cio_basis().
  *
  * @sa tod_to_cirs()
  * @sa cirs_to_app_ra()
@@ -975,8 +930,12 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
 
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
+  // Check for valid value of 'accuracy'.
+  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
+
   // Obtain the R.A. [h] of the CIO at the given date
-  prop_error(fn, cio_ra(jd_tt, accuracy, &ra_cio), 0);
+  ra_cio = -ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy);
   prop_error(fn, spin(-15.0 * ra_cio, in, out), 0);
 
   return 0;
@@ -1005,7 +964,7 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
  *                  It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or 10 + the error from cio_location(), or
+ *                  or the accuracy is invalid, or 10 + the error from cio_ra(), or
  *                  else 20 + the error from cio_basis().
  *
  * @sa cirs_to_tod()

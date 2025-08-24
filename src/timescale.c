@@ -1619,19 +1619,12 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
  * @sa novas_set_time()
  */
 double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy accuracy) {
-  const char *fn = "novas_time_gst";
+  double jd_ut1 = novas_get_time(time, NOVAS_UT1);
 
-  double fjd_ut1, gst = NAN;
-  long ijd_ut1 = 0L;
+  if(isnan(jd_ut1))
+    return novas_trace_nan("novas_time_gst");
 
-  fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
-  if(isnan(fjd_ut1))
-    return novas_trace_nan(fn);
-
-  if(sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gst) != 0)
-    return novas_trace_nan(fn);
-
-  return gst;
+  return novas_gast(jd_ut1, time->ut1_to_tt, accuracy);
 }
 
 /**

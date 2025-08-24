@@ -7,6 +7,48 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+Upcoming feature release, expected around 1 November 2025.
+
+### Fixed
+
+
+### Added
+
+ - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
+   Sidereal times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal_time()` with
+   a simpler and more intuitive interface.
+
+### Changed
+
+ - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the same
+   true equator of date). 
+
+ - #209: `novas_make_frame()` calculates `gst` and `gcrs_to_cirs` fields faster, using the already available frame
+   quantities and thus eliminating duplicate calculations.
+
+ - #210: Speed up `iau2000a()` and `iau2000b()` nutations by restricting the range of multiples that are iterated over.
+ 
+ - #212: Speed up `ee_ct()` by restricting the range of multiples that are iterated over. Also reduced accuracy now
+   uses the same series, only with fewer terms.
+ 
+ - #214: Reworked GCRS-CIRS transforms without `cio_basis()`.
+
+### Deprecated
+
+ - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files (`CIO_RA.TXT`
+   or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also `ira_equinox()` (which
+   returns the negative of the same value).
+
+ - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now a dud. Instead, you should
+   use `novas_gmst()` or `novas_gast()` to get the same results simpler.
+
+ - #214: Deprecated `cio_basis()`. It is no longer used internally in the library, and users are recommended against 
+   using it themselves, since SuperNOVAS provides better ways to convert between GCRS and CIRS using frames or via the
+   `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
+   
+   
 ## [1.4.2] - 2025-08-25
 
 Bug fix release with updated nutation models.
@@ -26,7 +68,11 @@ Bug fix release with updated nutation models.
  - #206: Updated nutation models: `iau2000a()` now uses IAU2000A R06 model coefficients 
    (see https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html), making it dynamically consistent with the IAU2006 
    (P03) precession model, which was already implemented by NOVAS and SuperNOVAS. `iau2000b()` is now a truncated 
+<<<<<<< HEAD
    version of the above, keeping terms with amplitude &lt;100 &mu;as, resulting in similar number of terms and 
+=======
+   version of the above, keeping terms with amplitude &lt;10 &mu;as, resulting in similar number of terms and 
+>>>>>>> 01b8086 (changelog update)
    precision as the original IAU2000B model. And, `nu2000k()` has been rescaled according to Coppola, Seago, &amp; 
    Vallado (2009) to also bring it in line with the IAU2006 (P03) precession model.
 
