@@ -117,20 +117,19 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[1.4.2-rc2]</h1>
+[1.4.2] - 2025-08-25</h1>
 <p>Bug fix release with updated nutation models.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
 <ul>
-<li>#201: By default expect to find the CIO locator file (<code>CIO_RA.TXT</code>) in its install location, e.g. in <code>/usr/share/supernovas</code> or as set via the <code>datadir</code> or <code>prefix</code> install locations.</li>
-<li>#202: The P03 recommended rescaling of the IAU200A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) was not correctly implemented in the prior 1.4 releases, having missed its time dependence. The resulting errors are below 0.1 mas for the present era.</li>
+<li>#201: By default expect to find the CIO locator file (<code>CIO_RA.TXT</code> or <code>cio_ra.bin</code>) in its install location, e.g. in <code>/usr/share/supernovas</code> or as set via the <code>datadir</code> or <code>prefix</code> install locations.</li>
+<li>#202: The P03 recommended rescaling of the original IAU2000A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) was not correctly implemented in the prior 1.4 releases. The resulting errors are around or below 40 &mu;as for the present era, and slightly larger than the model discrepancies (~10 &mu;as) that the rescaling was meant to address.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
-<li>#206: <code><a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a></code> now uses IAU2000A R06 model coefficients (see <a href="https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html">https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html</a>), making it dynamically consistent with the IAU2006 (P03) precession model, which was already implemented by NOVAS and SuperNOVAS.</li>
-<li>#206: <code><a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a></code> is now a truncated version of the above, keeping terms with amplitude &lt;10 &mu;as, resulting in similar number of terms and precision as the original IAU2000B model, while making it dynamically consistent with the IAU2006 (P03) precession model.</li>
-<li>#206: <code><a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a></code> has been rescaled according to Coppola, Seago, &amp; Vallado (2009) to make it more consistent with the IAU2006 (P03) precession model.</li>
+<li>#206: Updated nutation models: <code><a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a></code> now uses IAU2000A R06 model coefficients (see <a href="https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html">https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html</a>), making it dynamically consistent with the IAU2006 (P03) precession model, which was already implemented by NOVAS and SuperNOVAS. <code><a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a></code> is now a truncated version of the above, keeping terms with amplitude &lt;100 &mu;as, resulting in similar number of terms and precision as the original IAU2000B model. And, <code><a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a></code> has been rescaled according to Coppola, Seago, &amp; Vallado (2009) to also bring it in line with the IAU2006 (P03) precession model.</li>
+<li><code>make benchmark</code> now uses any user-defined <code>CPPFLAGS</code>, automatically adding the <code>include/</code> directory to it.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md4"></a>
 [1.4.1] - 2025-07-21</h1>
