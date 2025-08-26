@@ -24,15 +24,26 @@ Upcoming feature release, expected around 1 November 2025.
    published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary to include 
    if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.
 
+ - #217: New functions `novas_itrf_transform()` and `novas_itrf_transform_eop()` to enable transforming gecocentric
+   _xyz_ station coordinates between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is
+   based on Chapter 4 of the IERS Conventions.
+   
+ - #217: New functions `novas_geodetic_to_cartesian()` and `novas_cartesian_to_geodetic()` to convert between 
+   geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the reference
+   ellipsoids, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine, except that is uses 
+   the IERS Conventions (Chapter 1) value of 6378136.6 m for the Earth (equatorial) radius, rather than the GRS1980 
+   value of 6378137.0 m used by `GCONV2.F`.
+
 ### Changed
 
- - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the same
-   true equator of date). 
+ - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 
+   same true equator of date). 
 
  - #209: `novas_make_frame()` calculates `gst` and `gcrs_to_cirs` fields faster, using the already available frame
    quantities and thus eliminating duplicate calculations.
 
- - #210: Speed up `iau2000a()` and `iau2000b()` nutations by restricting the range of multiples that are iterated over.
+ - #210: Speed up `iau2000a()` and `iau2000b()` nutations by restricting the range of multiples that are iterated 
+   over.
  
  - #212: Speed up `ee_ct()` by restricting the range of multiples that are iterated over. Also reduced accuracy now
    uses the same series, only with fewer terms.

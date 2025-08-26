@@ -110,6 +110,7 @@ int make_observer_at_geocenter(observer *restrict obs) {
  *
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
+ * @sa novas_cartesian_to_geodetic()
  * @sa make_observer_in_space()
  * @sa make_observer_at_geocenter()
  * @sa place()
@@ -175,6 +176,7 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  *                  or pressure values are impossible for an Earth based observer.
  *
  * @sa make_observer_on_surface()
+ * @sa novas_cartesian_to_geodetic()
  * @sa make_in_space()
  * @sa ON_SURFACE_INIT
  * @sa ON_SURFACE_LOC

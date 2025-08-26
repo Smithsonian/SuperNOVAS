@@ -4232,6 +4232,150 @@ static int test_diurnal_eop_at_time() {
   return n;
 }
 
+static int test_cartesian_to_geodetic() {
+  int n = 0;
+
+  // Test case:
+  //     given input: x = 4075579.496D0 meters  Wettzell (TIGO) station
+  //                  y =  931853.192D0 meters
+  //                  z = 4801569.002D0 meters
+  //
+  //     expected output: phi    =   0.857728298603D0 radians
+  //                      lambda =   0.224779294628D0 radians
+  //                      h      = 665.9207D0 meters
+
+  double x[3] = { 4075579.496, 931853.192, 4801569.002 };
+  double lon = 0.0, lat = 0.0, alt = 0.0, z = 0.0;
+
+  if(!is_ok("cartesian_to_geodetic", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", lat, 0.857728298603 / DEGREE, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.224779294628 / DEGREE, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:alt", alt, 665.9207, 1.0)) n++;
+
+  if(!is_ok("cartesian_to_geodetic:lon:only", novas_cartesian_to_geodetic(x, &z, NULL, NULL))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", z, lon, 1e-9)) n++;
+
+  if(!is_ok("cartesian_to_geodetic:lat:only", novas_cartesian_to_geodetic(x, NULL, &z, NULL))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", z, lat, 1e-9)) n++;
+
+  if(!is_ok("cartesian_to_geodetic:alt:only", novas_cartesian_to_geodetic(x, NULL, NULL, &z))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", z, alt, 1e-3)) n++;
+
+  x[0] = 0.0;
+  x[1] = 0.0;
+  x[2] = NOVAS_EARTH_RADIUS * (1.0 - NOVAS_EARTH_FLATTENING);
+
+  if(!is_ok("cartesian_to_geodetic:pole:north", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", lat, 90.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:alt", alt, 0.0, 1.0)) n++;
+
+  x[2] = -x[2];
+
+  if(!is_ok("cartesian_to_geodetic:pole:south", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", lat, -90.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:alt", alt, 0.0, 1.0)) n++;
+
+  return n;
+}
+
+static int test_geodetic_to_cartesian() {
+  int n = 0;
+
+  double x[3] = { 4075579.496, 931853.192, 4801569.002 }, x1[3] = {0.0};
+  double lon = 0.0, lat = 0.0, alt = 0.0;
+
+  if(!is_ok("geodetic_to_cartesian:geodetic", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_ok("geodetic_to_cartesian", novas_geodetic_to_cartesian(lon, lat, alt, x1))) return 1;
+
+  if(!is_ok("geodetic_to_cartesian:check", check_equal_pos(x1, x, 1e-4))) n++;
+
+  return n;
+}
+
+static int test_itrf_transform() {
+  int n = 0;
+
+  // Test:
+  //
+  // ITRF2014 (epoch 2010.0):
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.2721   486990.7305  4900430.9321 0.0034 0.0013 0.0038  1 00:000:00000 96:275:00000
+  // 14209S001                                  -.01428       0.01691       0.01057 .00015 .00007 .00018
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.2868   486990.7345  4900430.9476 0.0023 0.0010 0.0026  2 96:275:00000 00:000:00000
+  // 14209S001                                  -.01428       0.01691       0.01057 .00015 .00007 .00018
+  //
+  // ITRF2008 (epoch 2005.0):
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.353   486990.646  4900430.889 0.003 0.001 0.003
+  // 14209S001                                  -.0138       0.0169       0.0110 .0002 .0001 .0003
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.366   486990.652  4900430.902 0.001 0.001 0.002  2 96:275:00000 00:000:00000
+  // 14209S001                                  -.0138       0.0169       0.0110 .0002 .0001 .0003
+  //
+  // ITRF2005 (epoch 2000.0):
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.415   486990.562  4900430.827 0.004 0.001 0.004  1 00:000:00000 96:275:00000
+  // 14209S001                                  -.0144       0.0169       0.0099 .0005 .0002 .0005
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.434   486990.567  4900430.848 0.002 0.001 0.002  2 96:275:00000 00:000:00000
+  // 14209S001                                  -.0144       0.0169       0.0099 .0005 .0002 .0005
+  //
+  // ITRF2000 (epoch 1997.0):
+  // 14209S001 EFFELSBERG        VLBI 7203  4033947.453   486990.512  04900430.79  .003  .001  .004
+  // 14209S001                                   -.0149        .0178        .0077 .0006 .0002 .0007
+  // 14209S001 EFFELSBERG        VLBI 7203  4033947.472   486990.514  4900430.813  .003  .001  .004 2 AFTER 96:309
+  // 14209S001                                   -.0149        .0178        .0077 .0006 .0002 .0007
+  //
+
+  double x2000[] = {4033947.453 , 486990.512 , 4900430.79   }, x2014[] = { 4033947.2721 ,  486990.7305 , 4900430.9321  };
+  double v2000[] = {      -.0149,       .017,         .0077 }, v2014[] = {       -.01428,       0.01691,       0.01057 };
+  double x[3] = {}, v[3] = {}, x1[3] = {};
+  int i;
+
+  if(!is_ok("itrf_transform", novas_itrf_transform(2014, x2014, v2014, 2000, x, v))) return 1;
+
+  for(i = 0; i < 3; i++) x1[i] = x[i] + (1997.0 - 2010.0) * v[i];
+
+  if(!is_ok("itrf_transform:check:pos", check_equal_pos(x1, x2000, 1e-2))) n++;
+  if(!is_ok("itrf_transform:check:vel", check_equal_pos(v, v2000, 1e-2))) n++;
+
+  if(!is_ok("itrf_transform:pos:only", novas_itrf_transform(2014, x2014, NULL, 2000, x1, NULL))) return 1;
+  if(!is_ok("itrf_transform:pos:only:check", check_equal_pos(x1, x, 1e-6))) n++;
+
+  if(!is_ok("itrf_transform:vel:only", novas_itrf_transform(2014, x2014, v2014, 2000, NULL, x1))) return 1;
+  if(!is_ok("itrf_transform:vel:only:check", check_equal_pos(x1, v, 1e-6))) n++;
+
+  if(!is_ok("itrf_transform:2100", novas_itrf_transform(2100, x2014, NULL, 2000, x1, NULL))) return 1;
+  if(!is_ok("itrf_transform:2100:check", check_equal_pos(x1, x, 1e-6))) n++;
+
+  return n;
+}
+
+int test_itrf_transform_eop() {
+  int n = 0;
+
+  double xp, yp, dut1, z;
+
+  // 2014 -> 1993 R:  -2.81,   -3.38,    0.40 [mas]
+  double R1 = -2.81e-3; // [arcsec]
+  double R2 = -3.38e-3; // [arcsec]
+  double R3 =  0.40e-3; // [arcsec]
+
+  if(!is_ok("itrf_transform_eop", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, &xp, &yp, &dut1))) return 1;
+
+  if(!is_equal("itrf_transform_eop:check:xp", xp, R2, 2e-6)) n++;
+  if(!is_equal("itrf_transform_eop:check:yp", yp, R1, 2e-6)) n++;
+  if(!is_equal("itrf_transform_eop:check:dut1", dut1, R3 * ARCSEC / NOVAS_EARTH_FLATTENING * (NOVAS_DAY / TWOPI), 2e-6)) n++;
+
+  if(!is_ok("itrf_transform_eop:xp_only", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, &z, NULL, NULL))) return 1;
+  if(!is_equal("itrf_transform_eop:xp_only:check", z, xp, 1e-9)) n++;
+
+  if(!is_ok("itrf_transform_eop:yp_only", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, NULL, &z, NULL))) return 1;
+  if(!is_equal("itrf_transform_eop:yp_only:check", z, yp, 1e-9)) n++;
+
+  if(!is_ok("itrf_transform_eop:dut1_only", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, NULL, NULL, &z))) return 1;
+  if(!is_equal("itrf_transform_eop:dut1_only:check", z, dut1, 1e-9)) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -4363,6 +4507,11 @@ int main(int argc, char *argv[]) {
   if(test_libration()) n++;
   if(test_ocean_tides()) n++;
   if(test_diurnal_eop_at_time()) n++;
+
+  if(test_cartesian_to_geodetic()) n++;
+  if(test_geodetic_to_cartesian()) n++;
+  if(test_itrf_transform()) n++;
+  if(test_itrf_transform_eop()) n++;
 
   n += test_dates();
 

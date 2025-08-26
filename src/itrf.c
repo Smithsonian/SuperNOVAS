@@ -1,0 +1,474 @@
+/**
+ * @file
+ *
+ * @date Created  on Aug 26, 2025
+ * @author Attila Kovacs
+ *
+ *  Transformations of station coordinates, velocities, and Earth orinetation parameters (EOP)
+ *  between various ITRF realizations.
+ *
+ *  REFERENCES:
+ *  <ol>
+ *  <li>ITRS Conventions Chapter 4, see https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</li>
+ *  </ol>
+ */
+
+/// \cond PRIVATE
+#define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
+
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+
+#include "novas.h"
+
+/// \cond PRIVATE
+typedef struct {
+  double T[3];      ///< [mm]   Translation components
+  double D;         ///< [ppb]  scaling
+  double R[3];      ///< [mas]  (small) rotation angles
+} itrf_terms;
+
+typedef struct {
+  int year;		        ///< [yr] Realization yesr, e.g. 1992 for ITRF92, etc.
+  double epoch;       ///< [yr] Epoch for which values are defined
+  itrf_terms terms;	  ///< The time invariant transformation terms
+  itrf_terms rates;	  ///< [/yr] The 1st order time dependence terms
+} itrf_transform;
+
+/**
+ * Extracted from IERS Conventions, Chapter 5, Table 4.1.
+ */
+static const itrf_transform realizations[] = { //
+	{ 1988, 2010.0, //
+		{ {  25.4,   -0.5, -154.8 },  11.29, {    0.10,    0.00,    0.26 } }, //
+		{ {   0.1    -0.5    -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 1989, 2010.0, //
+		{ {  30.4,   35.5, -130.8 },   8.19, {    0.00,    0.00,    0.26 } }, //
+		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 1990, 2010.0, //
+		{ {  25.4,   11.5,  -92.8 },   4.79, {    0.00,    0.00,    0.26 } }, //
+		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 1991, 2010.0, //
+		{ {  27.4,   15.5,  -76.8 },   4.49, {    0.00,    0.00,    0.26 } }, //
+		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 1992, 2010.0, //
+		{ {  15.4,    1.5,  -70.8 },   3.09, {    0.00,    0.00,    0.26 } }, //
+		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 1993, 2010.0, //
+		{ {  -50.4,   3.3,  -60.2 },   4.29, {   -2.81,   -3.38,    0.40 } }, //
+		{ {   -2.8,  -0.1,   -2.5 },   0.12, {   -0.11,   -0.19,    0.07 } }  //
+	}, //
+	{ 1994, 2010.0, //
+		{ {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
+		{ {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 1996, 2010.0, //
+		{ {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
+		{ {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 1997, 2010.0, //
+		{ {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
+		{ {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+	}, //
+	{ 2000, 2010.0, //
+		{ {    0.7,   1.2,  -26.1 },   2.12, {    0.00,    0.00,    0.00 } }, //
+		{ {    0.1,   0.1,   -1.9 },   0.11, {    0.00,    0.00,    0.00 } }  //
+	}, //
+	{ 2005, 2010.0, //
+		{ {    2.6,   1.0,   -2.3 },   0.92, {    0.00,    0.00,    0.00 } }, //
+		{ {    0.3,   0.0,   -0.1 },   0.03, {    0.00,    0.00,    0.00 } }  //
+	}, //
+	{ 2008, 2010.0, //
+		{ {    1.6,   1.9,    2.4 },  -0.02, {    0.00,    0.00,    0.00 } }, //
+		{ {    0.0,   0.0,   -0.1 },   0.03, {    0.00,    0.00,    0.00 } }  //
+	}, //
+	{ 2014, 2010.0, {}, {} }, //
+	{} 
+};
+
+/// \endcond
+
+/**
+ * Returns the matching ITRF realization year for the given input year. For inputs &lt; 1988, 1988 is
+ * returned (corresponding to the ITRF88 realization). Otherwise, it returns the realization year,
+ * which matches, or else immediately precedes, the input year.
+ *
+ * @param y   [yr] Calendar year for which to match an ITRF realization year
+ * @return    [yr] The best match ITRF realization year
+ */
+static const itrf_transform *get_transform(int y) {
+  int i;
+
+  for(i = 0; realizations[i].year; i++) {
+    const itrf_transform *T = &realizations[i];
+
+    if(y <= T->year)
+      return T;
+  }
+
+  return &realizations[i - 1];
+}
+
+/**
+ * Return the differential terms, in S.I. units (m, u, rad).
+ *
+ * @param a           A set of ITRF transformation terms.
+ * @param b           Another set of ITRF transformation terms.
+ * @param[out] diff   Difference terms to populate with terms in standard units (m, u, rad).
+ */
+static void get_diff_terms(const itrf_terms *a, const itrf_terms *b, itrf_terms *diff) {
+  int i;
+
+  diff->D = (a->D - b->D) * 1e-9;             /// [ppb] -> [u]
+
+  for(i = 3; --i >= 0; ) {
+    diff->T[i] = (a->T[i] - b->T[i]) * 1e-3;  /// [mm] -> [m]
+    diff->R[i] = (a->R[i] - b->R[i]) * MAS;   /// [mas] -> [rad]
+  }
+}
+
+/**
+ * Calculates the rotational offset of a vector due to small changes of orientation of the
+ * ITRF frame.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions, Chapter 4, Eq. 4.3, see https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</li>
+ * </ol>
+ *
+ * @param[in] in      Input 3-vector
+ * @param R           [rad] Small angle rotation angles R1, R2, R3
+ * @param[out] out    Output 3-vector populated with the rotational offsets.
+ */
+static void itrf_rotation(const double *in, const double *R, double *out) {
+  out[0] = -R[2] * in[1] + R[2] * in[2];
+  out[1] = R[2] * in[0] - R[0] * in[2];
+  out[2] = -R[1] * in[0] + R[0] * in[1];
+}
+
+/**
+ * Converts ITRF coordinates between different realizations of the ITRF coordinate system. It
+ * does not account for station motions, which the user should apply separately. For example,
+ * consider the use case when input coordinates are given in ITRF88, for measurement in the epoch
+ * 1994.36, and output is expected in ITRF2000 for measurements at 2006.78. This function simply
+ * translates the input, measured in epoch 1994.36, to ITRF2000. Proper motion between the epochs
+ * (2006.78 and 1994.36) can be calculated with the input rates before conversion, e.g.:
+ *
+ * ```c
+ *   // Apply station motion in ITRF88
+ *   for(i = 0; i < 3; i++)
+ *     from_coords[i] += from_rates[i] * (2006.78 - 1994.36)
+ *
+ *   // Convert ITRF88 coordinates to ITRF2000
+ *   novas_itrf_transform(1988, from_coords, from_rates, 2000, ...);
+ * ```
+ *
+ * or equivalently, after the transformation to ITRF2000, as:
+ *
+ * ```c
+ *   // Convert ITRF88 coordinates to ITRF2000
+ *   novas_itrf_transform(1988, from_coords, from_rates, 2000, to_coords, to_rates);
+ *
+ *   // Apply station motion in ITRF2000
+ *   for(i = 0; i < 3; i++)
+ *     to_coords[i] += to_rates[i] * (2006.78 - 1994.36)
+ * ```
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions, Chapter 4, Eq. 4.13 and Table 4.1. See
+ * https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</li>
+ * </ol>
+ *
+ * @param from_year       [yr] ITRF realization year of input coordinates / rates. E.g. 1992 for
+ *                        ITRF92.
+ * @param[in] from_coords [m] input ITRF coordinates.
+ * @param[in] from_rates  [m/yr] input ITRF coordinate rates, or NULL if not known or needed.
+ * @param to_year         [yr] ITRF realization year of output coordinates / rates. E.g. 2014 for
+ *                        ITRF2014.
+ * @param[out] to_coords  [m] ITRF coordinates at final year, or NULL if not required. It may be
+ *                        the same as either of the inputs.
+ * @param[out] to_rates   [m/yr] ITRF coordinate rates at final year, or NULL if not known or
+ *                        needed. It may be the same as either of the inputs.
+ * @return                0 if successful, or else -1 (errno set to EINVAL) if the input
+ *                        coordinates are NULL, or if input rates are NULL _but_ output_rates are
+ *                        not NULL.
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_itrf_transform_eop()
+ * @sa novas_geodetic_to_cartesian()
+ */
+int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates,
+        int to_year, double *to_coords, double *to_rates) {
+  static const char *fn = "novas_itrf_transform";
+
+  const itrf_transform *from = get_transform((int) floor(from_year));
+  const itrf_transform *to = get_transform((int) floor(to_year));
+  const double dt = (to->epoch - from->epoch);
+
+  itrf_terms T0 = {}, T1 = {};
+  double x[3] = {0.0}, r[3] = {0.0}, RX[3], R1X[3];
+  int i;
+
+  if(!from_coords)
+    return novas_error(-1, EINVAL, fn, "input coordinates are NULL");
+
+  if(to_rates && !from_rates)
+    return novas_error(-1, EINVAL, fn, "expecting output rates, but input rates are NULL");
+
+  get_diff_terms(&to->terms, &from->terms, &T0);
+  get_diff_terms(&to->rates, &from->rates, &T1);
+
+  memcpy(x, from_coords, sizeof(x));
+  itrf_rotation(x, T0.R, RX);
+  itrf_rotation(x, T1.R, R1X);
+
+  if(from_rates)
+    memcpy(r, from_rates,  sizeof(r));
+
+  for (i = 0; i < 3; i++) {
+    // x' = x' + T' + D'x + R'(x)
+    if(from_rates)
+      r[i] += T1.T[i] + T1.D * x[i] + R1X[i];
+
+    // x = x + (t-t0) x' + T + Dx + R(x) + (t - tk) * (T' + D'x + R'(x))
+    if(to_coords)
+      x[i] += T0.T[i] + T0.D * x[i] + RX[i] + dt * (T1.T[i] + T1.D * x[i] + R1X[i]);
+  }
+
+  if(to_coords)
+    memcpy(to_coords, x, sizeof(x));
+
+  if(to_rates)
+    memcpy(to_rates, r, sizeof(r));
+
+  return 0;
+}
+
+/**
+ * Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions, Chapter 4, Eq. 4.14 and Table 4.1. See
+ * https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</li>
+ * </ol>
+ *
+ *
+ * @param from_year       [yr] ITRF realization year of input coordinates / rates. E.g. 1992 for
+ *                        ITRF92.
+ * @param[in] from_xp     [arcsec] x-pole Earth orientation parameter (angle) in the input ITRF
+ *                        realization.
+ * @param[in] from_yp     [arcsec] y-pole Earth orientation parameter (angle) in the input ITRF
+ *                        realization.
+ * @param[in] from_dut1   [s] UT1-UTC time difference in the input ITRF realization.
+ * @param to_year         [yr] ITRF realization year of input coordinates / rates. E.g. 2000 for
+ *                        ITRF2000.
+ * @param[out] to_xp      [arcsec] x-pole Earth orientation parameter (angle) in the output ITRF
+ *                        realization, or NULL if not required.
+ * @param[out] to_yp      [arcsec] y-pole Earth orientation parameter (angle) in the output ITRF
+ *                        realization, or NULL if not required.
+ * @param[out] to_dut1    [s] UT1-UTC time difference in the output ITRF realization, or NULL if
+ *                        not required.
+ * @return                0
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_itrf_transform()
+ */
+int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, double from_dut1,
+        int to_year, double *restrict to_xp, double *restrict to_yp, double *restrict to_dut1) {
+  const itrf_transform *from = get_transform((int) floor(from_year));
+  const itrf_transform *to = get_transform((int) floor(to_year));
+
+  itrf_terms T0 = {};
+
+  get_diff_terms(&to->terms, &from->terms, &T0);
+  
+  // xp += R2
+  if(to_xp)
+    *to_xp = from_xp + T0.R[1] / ARCSEC;
+
+  // yp += R1
+  if(to_yp)
+    *to_yp = from_yp + T0.R[0] / ARCSEC;
+
+  // UT +- 1/f R3
+  if(to_dut1)
+    *to_dut1 = from_dut1 + T0.R[2] / NOVAS_EARTH_FLATTENING * (NOVAS_DAY / TWOPI);
+
+  return 0;
+}
+
+/**
+ * Converts geodetic site coordinates to geocentric Cartesian coordinates.
+ *
+ * NOTES:
+ * <ol>
+ * <li>The implementation uses Earth radius being 6378136.6 m, in line with the current IERS
+ * Conventions, whereas `GCONV2.F` uses the GRS1980 value of 6378137 m.
+ * </li>
+ * </ol>
+ *
+ * @param lon     [deg] Geodetic longitude
+ * @param lat     [deg] Geodetic latitude
+ * @param alt     [m] Geodetic altitude (i.e. above sea level).
+ * @param[out] x  [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @return        0 if successful, or else -1 if the output vector is NULL (errno is set to
+ *                EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_cartesian_to_geodetic()
+ * @sa novas_itrf_transform()
+ */
+int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
+  const double a = NOVAS_EARTH_RADIUS;
+  const double f = NOVAS_EARTH_FLATTENING;
+  const double e2 = (2.0 - f) * f;
+  double sinlat, coslat, N;
+
+  if(!x)
+    return novas_error(-1, EINVAL, "novas_geodetic_to_cartesian", "output Cartesian vector is NULL");
+
+  lon *= DEGREE;
+  lat *= DEGREE;
+
+  sinlat = sin(lat);
+  coslat = cos(lat);
+
+  N = a / sqrt(1 - e2 * sinlat * sinlat);
+
+  x[0] = (N + alt) * coslat * cos(lon);
+  x[1] = (N + alt) * coslat * sin(lon);
+  x[2] = (N * (1 - e2) + alt) * sinlat;
+
+  return 0;
+}
+
+/**
+ * Converts geocentric Cartesian site coordinates to geodetic coordinates.
+ *
+ * NOTES:
+ * <ol>
+ * <li>Adapted from the IERS `GCONV2.F` source code, see
+ * https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F. Note, however, that this implementation
+ * uses Earth radius being 6378136.6 m, in line with the current IERS Conventions, whereas `GCONV2.F` uses the
+ * GRS1980 value of 6378137.0 m.
+ * </li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>
+ *     Fukushima, T., "Transformation from Cartesian to geodetic
+ *     coordinates accelerated by Halley's method", J. Geodesy (2006),
+ *     79(12): 689-693
+ * </li>
+ * <li>
+ *     Petit, G. and Luzum, B. (eds.), IERS Conventions (2010),
+ *     IERS Technical Note No. 36, BKG (2010)
+ * </li>
+ * </ol>
+ *
+ * @param x           [m] Input geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @param[out] lon    [deg] Geodetic longitude. It may be NULL if not required.
+ * @param[out] lat    [deg] Geodetic latitude. It may be NULL if not required.
+ * @param[out] alt    [m] Geodetic altitude (i.e. above sea level). It may be NULL if not required.
+ * @return            0 if successful, or else -1 if the input vector is NULL (errno is set to
+ *                    EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_geodetic_to_cartesian()
+ */
+int novas_cartesian_to_geodetic(const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt) {
+  const double a = NOVAS_EARTH_RADIUS;
+  const double f = NOVAS_EARTH_FLATTENING;
+
+  // Compute distance from polar axis squared
+  const double e2 = (2.0 - f) * f;
+  const double ep2 = 1.0 - e2;
+  const double ep = sqrt(ep2);
+  const double aep = a * ep;
+
+  double az, p2;
+  double phi = 0.0, lambda = 0.0, h = 0.0;
+
+  if(!x)
+    return novas_error(-1, EINVAL, "novas_cartesian_to_geodetic", "input Cartesian vector is NULL");
+
+  az = fabs(x[2]);
+  p2 = x[0] * x[0] + x[1] * x[1];
+
+  // Compute longitude lambda
+  lambda = p2 ? atan2(x[1], x[0]) : 0.0;
+
+  if(!p2) {
+    // Special case: pole.
+    phi = 0.5 * M_PI;
+    h = az - aep;
+  }
+  else {
+    const double e4t = 1.5 * e2 * e2;
+
+    // Compute distance from polar axis
+    const double p = sqrt(p2);
+
+    // Normalize
+    const double s0 = az / a;
+    const double pn = p / a;
+    const double zp = ep * s0;
+
+    // Prepare Newton correction factors.
+    const double c0  = ep * pn;
+    const double c02 = c0 * c0;
+    const double c03 = c02 * c0;
+    const double s02 = s0 * s0;
+    const double s03 = s02 * s0;
+    const double a02 = c02 + s02;
+    const double a0  = sqrt(a02);
+    const double a03 = a02 * a0;
+    const double d0  = zp * a03 + e2 * s03;
+    const double f0  = pn * a03 - e2 * c03;
+
+    // Prepare Halley correction factor
+    const double b0 = e4t * s02 * c02 * pn * (a0 - ep);
+    const double s1 = d0 * f0 - b0 * s0;
+    const double cp = ep * (f0 * f0 - b0 * c0);
+
+    const double s12 = s1 * s1;
+    const double cp2 = cp * cp;
+
+    // Evaluate latitude and height.
+    phi = atan2(s1, cp);
+    h = (p * cp + az * s1 - a * sqrt(ep2 * s12 + cp2)) / sqrt(s12 + cp2);
+  }
+
+  // Restore sign of latitude.
+  if (x[2] < 0.0) phi = -phi;
+
+  if(lon)
+    *lon = lambda / DEGREE;
+
+  if(lat)
+    *lat = phi / DEGREE;
+
+  if(alt)
+    *alt = h;
+
+  return 0;
+}
+
