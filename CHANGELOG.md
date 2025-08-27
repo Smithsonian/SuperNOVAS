@@ -72,11 +72,7 @@ Bug fix release with updated nutation models.
  - #206: Updated nutation models: `iau2000a()` now uses IAU2000A R06 model coefficients 
    (see https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html), making it dynamically consistent with the IAU2006 
    (P03) precession model, which was already implemented by NOVAS and SuperNOVAS. `iau2000b()` is now a truncated 
-<<<<<<< HEAD
    version of the above, keeping terms with amplitude &lt;100 &mu;as, resulting in similar number of terms and 
-=======
-   version of the above, keeping terms with amplitude &lt;10 &mu;as, resulting in similar number of terms and 
->>>>>>> 01b8086 (changelog update)
    precision as the original IAU2000B model. And, `nu2000k()` has been rescaled according to Coppola, Seago, &amp; 
    Vallado (2009) to also bring it in line with the IAU2006 (P03) precession model.
 
