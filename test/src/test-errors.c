@@ -2321,6 +2321,42 @@ static int test_next_moon_phase() {
   return n;
 }
 
+static int test_libration() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("libration:args", -1, novas_diurnal_libration(0.0, NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
+static int test_ocean_tides() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("ocean_tides:args", -1, novas_diurnal_ocean_tides(0.0, NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
+static int test_diurnal_eop() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("diurnal_eop:args", -1, novas_diurnal_eop(0.0, NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
+static int test_diurnal_eop_at_time() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("diurnal_eop_at_time:time", -1, novas_diurnal_eop_at_time(NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2509,6 +2545,11 @@ int main() {
   if(test_approx_sky_pos()) n++;
   if(test_moon_phase()) n++;
   if(test_next_moon_phase()) n++;
+
+  if(test_libration()) n++;
+  if(test_ocean_tides()) n++;
+  if(test_diurnal_eop()) n++;
+  if(test_diurnal_eop_at_time()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

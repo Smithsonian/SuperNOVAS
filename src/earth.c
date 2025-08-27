@@ -13,6 +13,21 @@
 /// \cond PRIVATE
 #define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
+
+/**
+ * Structure to contain terms for librational and tidal corrections to earth orientation.
+ */
+typedef struct {
+  int8_t n[6];    ///< [rad] gamma (GMST + &pi;), followed by the Delaunay arguments
+  float A1;       ///< [&mu;as / &mu;s] Sine coefficient for first parameter (xp or UT1)
+  float B1;       ///< [&mu;as / &mu;s] Cosine coefficient for first parameter (xp or UT1)
+  float A2;       ///< [&mu;as / &mu;s] Sine coefficient for second parameter (yp or LOD)
+  float B2;       ///< [&mu;as / &mu;s] Cosine coefficient for second parameter (yp or LOD)
+} novas_eop_terms;
+
+#include "eop/libration.tab.c"
+#include "eop/tidal.tab.c"
+
 /// \endcond
 
 
@@ -231,19 +246,20 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
 
 
 /**
- * Returns the value of the Earth Rotation Angle (theta) for a given UT1 Julian date.  The
+ * Returns the value of the Earth Rotation Angle (&theta;) for a given UT1 Julian date.  The
  * expression used is taken from the note to IAU Resolution B1.8 of 2000. The input Julian date
  * cane be split into an into high and low order parts (e.g. integer and fractional parts) for
  * improved accuracy, or else one of the components (e.g. the low part) can be set to zero if
  * no split is desired.
  *
- * The algorithm used here is equivalent to the canonical theta = 0.7790572732640 +
+ * The algorithm used here is equivalent to the canonical &theta; = 0.7790572732640 +
  * 1.00273781191135448 * t, where t is the time in days from J2000 (t = jd_high + jd_low -
  * JD_J2000), but it avoids many two-PI 'wraps' that decrease precision (adopted from SOFA Fortran
- * routine iau_era00; see also expression at top of page 35 of IERS Conventions (1996)).
+ * routine `iau_era00`; see also expression at top of page 35 of IERS Conventions (1996)).
  *
  * REFERENCES:
  * <ol>
+ *  <li>IERS Conventions, Chapter 5, Eq. 5.15</li>
  *  <li>IAU Resolution B1.8, adopted at the 2000 IAU General Assembly, Manchester, UK.</li>
  *  <li>Kaplan, G. (2005), US Naval Observatory Circular 179.</li>
  * </ol>
@@ -270,30 +286,293 @@ double era(double jd_ut1_high, double jd_ut1_low) {
   return theta;
 }
 
+static void sum_eop_terms(const novas_eop_terms *terms, int n, double gmst, const novas_delaunay_args *da, double *a, double *b) {
+  int i;
+  double x[6];
+
+  x[0] = remainder(gmst + 12.0, 24.0) * HOURANGLE;
+  memcpy(&x[1], da, sizeof(novas_delaunay_args));
+
+  if(a)
+    *a = 0.0;
+  if(b)
+    *b = 0.0;
+
+  for(i = 0; i < n; i++) {
+    const novas_eop_terms *T = &terms[i];
+    double arg = 0.0, c, s;
+    int k;
+
+    for(k = 0; k < 6; k++)
+      arg += T->n[k] * x[k];
+
+    s = sin(arg);
+    c = cos(arg);
+
+    if(a)
+      *a += T->A1 * s + T->B1 * c;
+
+    if(b)
+      *b += T->A2 * s + T->B2 * c;
+  }
+
+  if(a)
+    *a *= 1e-6; // [uas] -> [arcsec] / [us] -> [s]
+
+  if(b)
+    *b *= 1e-6; // [uas] -> [arcsec] / [us] -> [s]
+}
+
+/**
+ * Calculate diurnal and semi-diurnal libration corrections to the Earth orientation parameters (EOP) for
+ * the non-rigid Earth. Only terms with periods less than 2 days are considered, since the longer period
+ * terms are included in the IAU2000A nutation model. See Chapter 5 of the IERS conventions. The typical
+ * amplitude of librations is tens of micro-arcseconds (&mu;as) in polar offsets _x_ and _y_ and tens of
+ * micro-seconds in UT1.
+ *
+ * Normally, you would need the combined effect from librations and ocean tides together to apply diurnal
+ * corrections to the Earth orientation parameters (EOP) published by IERS. For that, `novas_diurnal_eop()`
+ * or `novas_diurnal_eop_at_time()` is more directly suited.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions Chapter 5, Tablea 5.1a and 5.1b, see
+ * https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</li>
+ * </ol>
+ *
+ * @param gmst        [h] Greenwich Mean Sidereal Time of observation, e.g. as obtained by `novas_gmst()`.
+ * @param delaunay    [rad] Delaunay arguments, e.g. as returned by `fund_args()`.
+ * @param[out] dxp    [arcsec] x-pole correction due to librations, or NULL if not required.
+ * @param[out] dyp    [arcsec] y-pole correction due to librations, or NULL if not required.
+ * @param[out] dut1   [s] UT1 correction due to librations, or NULL if not required.
+ * @return            0 if successful, or else -1 if the delaunay arguments are NULL (errno set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_diurnal_eop()
+ * @sa novas_diurnal_ocean_tides()
+ */
+int novas_diurnal_libration(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict dxp, double *restrict dyp,
+        double *restrict dut1) {
+  if(!delaunay)
+    return novas_error(-1, EINVAL, "novas_diurnal_libration", "Delaunay arguments pointer is NULL.");
+
+  if(dxp || dyp) sum_eop_terms(polar_libration_terms, sizeof(polar_libration_terms) / sizeof(novas_eop_terms), gmst, delaunay, dxp, dyp);
+  if(dut1) sum_eop_terms(dut1_libration_terms, sizeof(dut1_libration_terms) / sizeof(novas_eop_terms), gmst, delaunay, dut1, NULL);
+
+  return 0;
+}
+
+/**
+ * Calculate corrections to the Earth orientation parameters (EOP) due to the ocean tides. See Chapter
+ * 8 of the IERS Conventions. Ocean tides manifest at the sub-milliarcsecond level in polar offsets
+ * _x_ and _y_ and sub-millisecond level in UT1.
+ *
+ * Normally, you would need the combined effect from librations and ocean tides together to apply diurnal
+ * corrections to the Earth orientation parameters (EOP) published by IERS. For that, `novas_diurnal_eop()`
+ * or `novas_diurnal_eop_at_time()` is more directly suited.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see
+ * https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</li>
+ * </ol>
+ *
+ * @param gmst        [h] Greenwich Mean Sidereal Time of observation, e.g. as obtained by `novas_gmst()`.
+ * @param delaunay    [rad] Delaunay arguments, e.g. as returned by `fund_args()`.
+ * @param[out] dxp    [arcsec] x-pole correction due to ocean tides, or NULL if not required.
+ * @param[out] dyp    [arcsec] y-pole correction due to ocean tides, or NULL if not required.
+ * @param[out] dut1   [s] UT1 correction due to ocean tides, or NULL if not required.
+ * @return            0 if successful, or else -1 if the delaunay arguments are NULL (errno set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_diurnal_eop()
+ * @sa novas_diurnal_librations()
+ */
+int novas_diurnal_ocean_tides(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict dxp, double *restrict dyp,
+        double *restrict dut1) {
+  if(!delaunay)
+    return novas_error(-1, EINVAL, "novas_diurnal_ocean_tides", "Delaunay arguments pointer is NULL.");
+
+  if(dxp || dyp) sum_eop_terms(polar_tidal_terms, sizeof(polar_tidal_terms) / sizeof(novas_eop_terms), gmst, delaunay, dxp, dyp);
+  if(dut1) sum_eop_terms(dut1_tidal_terms, sizeof(dut1_tidal_terms) / sizeof(novas_eop_terms), gmst, delaunay, dut1, NULL);
+
+  return 0;
+}
+
+/**
+ * Add corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal)
+ * librations and the ocean tides. See Chapters 5 and 8 of the IERS Conventions. These corrections are
+ * typically at the sub-milliarcsecond level in polar offsets _x_ and _y_ and sub-millisecond level in UT1.
+ * Thus, these diurnal and semi-diurnal variations are important for the highest precision astrometry only,
+ * when converting between ITRS and TIRS frames.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions Chapter 5, https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</li>
+ * <li>IERS Conventions Chapter 8, https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</li>
+ * </ol>
+ *
+ * @param gmst           [h] Greenwich Mean Sidereal Time of observation, e.g. as obtained by `novas_gmst()`.
+ * @param delaunay       [rad] Delaunay arguments, e.g. as returned by `fund_args()`.
+ * @param[in,out] xp     [arcsec] x-pole: IERS published value (input), corrected for libration and ocean tides
+ *                       (output), or NULL if not required.
+ * @param[in,out] yp     [arcsec] y-pole: IERS published value (input), corrected for libration and ocean tides
+ *                       (output), or NULL if not required.
+ * @param[in,out] dut1   [s] UT1: IERS published value (input), corrected for libration and ocean tides
+ *                       (output), or NULL if not required.
+ * @return                0 if successful, or else -1 if the delaunay arguments are NULL (errno set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_diurnal_librations()
+ * @sa novas_diurnal_ocean_tides()
+ * @sa novas_diurnal_eop()
+ * @sa novas_set_time()
+ * @sa novas_make_frame()
+ * @sa wobble()
+ */
+static int add_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1) {
+  double x = 0.0, y = 0.0, ut1 = 0.0;
+  double *px = xp ? &x : NULL;
+  double *py = yp ? &y : NULL;
+  double *put1 = dut1 ? &ut1 : NULL;
+
+  if(!delaunay)
+    return novas_error(-1, EINVAL, "add_diurnal_eop", "Delaunay arguments pointer is NULL.");
+
+  novas_diurnal_libration(gmst, delaunay, px, py, put1);
+  if(xp)
+    *xp += x;
+  if(yp)
+    *yp += y;
+  if(dut1)
+    *dut1 += ut1;
+
+  novas_diurnal_ocean_tides(gmst, delaunay, px, py, put1);
+  if(xp)
+    *xp += x;
+  if(yp)
+    *yp += y;
+  if(dut1)
+    *dut1 += ut1;
+
+  return 0;
+}
+
+/**
+ * Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal)
+ * librations and the ocean tides. See Chapters 5 and 8 of the IERS Conventions. This one is faster than
+ * `novas_diurnal_eop_at_time()` if the GMST and/or fundamental arguments are readily avaialbe, e.g. from
+ * a previous calculation.
+ *
+ * These corrections are typically at the sub-milliarcsecond level in polar offsets _x_ and _y_ and
+ * sub-millisecond level in UT1. Thus, these diurnal and semi-diurnal variations are important for the highest
+ * precision astrometry only, when converting between ITRS and TIRS frames.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions Chapter 5, https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</li>
+ * <li>IERS Conventions Chapter 8, https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</li>
+ * </ol>
+ *
+ * @param gmst         [h] Greenwich Mean Sidereal Time of observation, e.g. as obtained by `novas_gmst()`.
+ * @param delaunay     [rad] Delaunay arguments, e.g. as returned by `fund_args()`.
+ * @param[out] dxp     [arcsec] x-pole correction for libration and ocean tides, or NULL if not required.
+ * @param[out] dyp     [arcsec] y-pole corrections for libration and ocean tides, or NULL if not required.
+ * @param[out] dut1    [s] UT1 correction for libration and ocean tides, or NULL if not required.
+ * @return             0 if successful, or else -1 if the delaunay arguments are NULL (errno set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_diurnal_eop_at_time()
+ * @sa novas_diurnal_librations()
+ * @sa novas_diurnal_ocean_tides()
+ */
+int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict dxp, double *restrict dyp,
+        double *restrict dut1) {
+  if(dxp)
+    *dxp = 0.0;
+  if(dyp)
+    *dyp = 0.0;
+  if(dut1)
+    *dut1 = 0.0;
+
+  prop_error("novas_diurnal_eop", add_diurnal_eop(gmst, delaunay, dxp, dyp, dut1), 0);
+  return 0;
+}
+
+/**
+ * Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal)
+ * librations and the ocean tides at a given astromtric time. See Chapters 5 and 8 of the IERS Conventions.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions Chapter 5, https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</li>
+ * <li>IERS Conventions Chapter 8, https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</li>
+ * </ol>
+ *
+ * @param time    Astrometric time specification
+ * @param dxp     [arcsec] x-pole correction for libration and ocean tides, or NULL if not required.
+ * @param dyp     [arcsec] y-pole corrections for libration and ocean tides, or NULL if not required.
+ * @param dut1    [s] UT1 correction for libration and ocean tides, or NULL if not required.
+ * @return        0 if successful, or else -1 if the delaunay arguments are NULL (errno set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_diurnal_eop()
+ */
+int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restrict dxp, double *restrict dyp, double *restrict dut1) {
+  novas_delaunay_args a = {};
+
+  if(!time)
+    return novas_error(-1, EINVAL, "novas_diurnal_eop_at_time", "time argument is NULL");
+
+  fund_args((time->ijd_tt - NOVAS_JD_J2000 + time->fjd_tt) / JULIAN_CENTURY_DAYS, &a);
+
+  return novas_diurnal_eop(novas_time_gst(time, NOVAS_REDUCED_ACCURACY), &a, dxp, dyp, dut1);
+}
 
 /**
  * Corrects a vector in the ITRS (rotating Earth-fixed system) for polar motion, and also
  * corrects the longitude origin (by a tiny amount) to the Terrestrial Intermediate Origin
  * (TIO).  The ITRS vector is thereby transformed to the Terrestrial Intermediate Reference
- * System (TIRS) or Pseudo Earth Fixed (PEF), based on the true (rotational) equator and TIO;
- * or vice versa.  Because the true equator is the plane orthogonal to the direction of the
- * Celestial Intermediate Pole (CIP), the components of the output vector are referred to z
- * and x axes toward the CIP and TIO, respectively.
+ * System (TIRS), or equivalently the Pseudo Earth Fixed (PEF), based on the true (rotational)
+ * equator and TIO; or vice versa.  Because the true equator is the plane orthogonal to the
+ * direction of the Celestial Intermediate Pole (CIP), the components of the output vector are
+ * referred to _z_ and _x_ axes toward the CIP and TIO, respectively.
  *
  * NOTES:
  * <ol>
- * <li>Generally, this function should not be called if global pole offsets were set via
- * cel_pole() and then used via place() or one of its variants to calculate Earth orientation
- * corrected (TOD or CIRS) apparent coordinates. In such cases, calling wobble() would apply
- * duplicate corrections. It is generally best to forgo using cel_pole() going forward, and
- * instead apply Earth orinetation corrections with wobble() only when converting vectors to the
- * Earth-fixed ITRS frame.</li>
+ * <li>
+ *  You may obtain Earth orientation parameters from the IERS site and Bulletins. For sub-mas
+ *  accuracy you should augment the (interpolated) published values for diurnal and semi-diurnal
+ *  librations and the effect of ocean tides, e.g. by using `novas_diurnal_eop()` or
+ *  `novas_diurnal_eop_at_time()`.
+ * </li>
+ * <li>
+ *  Generally, this function should not be called if global pole offsets were set via
+ *  `cel_pole()` and then used via `place()` or one of its variants to calculate Earth orientation
+ *  corrected (TOD or CIRS) apparent coordinates. In such cases, calling `wobble()` would apply
+ *  duplicate corrections. It is generally best to forgo using `cel_pole()` going forward, and
+ *  instead apply Earth orinetation corrections with `wobble()` only when converting vectors between
+ *  the Earth-fixed ITRS and TIRS frames.
+ * </li>
  * </ol>
  *
  * REFERENCES:
  * <ol>
  * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  * <li>Lambert &amp; Bizouard (2002), Astronomy and Astrophysics 394, 317-321.</li>
+ * <li>IERS Conventions Chapter 5, https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</li>
+ * <li>IERS Conventions Chapter 8, https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</li>
  * </ol>
  *
  * @param jd_tt         [day] Terrestrial Time (TT) based Julian date.
@@ -303,9 +582,15 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  *                      not for the TIO's longitude (old, pre IAU 2006 method). Negative values
  *                      default to WOBBLE_TIRS_TO_ITRS.
  * @param xp            [arcsec] Conventionally-defined X coordinate of Celestial Intermediate
- *                      Pole with respect to ITRS pole, in arcseconds.
+ *                      Pole with respect to ITRS pole, in arcseconds. As measured or else the
+ *                      interpolated published value from IERS, possibly augmented for diurnal
+ *                      variations caused by librations ocean tides if precision below the
+ *                      milliarcsecond level is required.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of Celestial Intermediate
- *                      Pole with respect to ITRS pole, in arcseconds.
+ *                      Pole with respect to ITRS pole, in arcseconds. As measured or else the
+ *                      interpolated published value from IERS, possibly augmented for diurnal
+ *                      variations caused by librations ocean tides if precision below the
+ *                      milliarcsecond level is required.
  * @param in            Input position vector, geocentric equatorial rectangular coordinates,
  *                      in the original system defined by 'direction'
  * @param[out] out      Output Position vector, geocentric equatorial rectangular coordinates,
@@ -314,13 +599,8 @@ double era(double jd_ut1_high, double jd_ut1_low) {
  *
  * @return              0 if successful, or -1 if the direction is invalid output vector argument is NULL.
  *
- * @sa cel_pole()
- * @sa cirs_to_itrs()
- * @sa tod_to_itrs()
- * @sa place()
- * @sa sidereal_time()
- * @sa e_tilt()
- * @sa NOVAS_FULL_ACCURACY
+ * @sa novas_diurnal_eop()
+ * @sa novas_diurnal_eop_at_time()
  */
 int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out) {
   static const char *fn = "wobble";
@@ -380,7 +660,6 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
  * @sa place()
  * @sa make_observer()
  * @sa get_ut1_to_tt()
- * @sa cel_pole()
  */
 short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
         double *restrict pos, double *restrict vel) {
@@ -483,7 +762,6 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
   // Transform geocentric velocity vector of observer to GCRS.
   if(vel)
     tod_to_gcrs(jd_tt, accuracy, vel1, vel); // Use TT for TDB
-
 
   return 0;
 }

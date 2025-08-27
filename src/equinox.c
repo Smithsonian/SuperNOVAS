@@ -228,7 +228,6 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
  *
  * @return          0 if successful, or -1 if the accuracy argument is invalid
  *
- * @sa cel_pole()
  * @sa place()
  * @sa equ2ecl()
  * @sa ecl2equ()
@@ -281,7 +280,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
  *
  * @sa planet_lon()
  * @sa nutation_angles()
- * @sa ee_ct()
+ * @sa e_tilt()
  * @sa NOVAS_JD_J2000
  *
  * @since 1.0
@@ -298,6 +297,11 @@ double accum_prec(double t) {
  * ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994,
  * 5.8.1-5.8.8).
  *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions Chapter 5, Eq. 5.44.</li>
+ * </ol>
+ *
  * @param t       [cy] Julian centuries since J2000
  * @param planet  Novas planet id, e.g. NOVAS_MARS.
  * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;],
@@ -305,7 +309,7 @@ double accum_prec(double t) {
  *
  * @sa accum_prec()
  * @sa nutation_angles()
- * @sa ee_ct()
+ * @sa e_tilt()
  * @sa NOVAS_JD_J2000
  *
  * @since 1.0
@@ -576,10 +580,11 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
 }
 
 /**
- * Compute the fundamental arguments (mean elements) of the Sun and Moon.
+ * Compute the fundamental (a.k.a. Delaunay) arguments (mean elements) of the Sun and Moon.
  *
  * REFERENCES:
  * <ol>
+ * <li>IERS Conventions Chapter 5, Eq. 5.43.</li>
  * <li>Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5.</li>
  * </ol>
  *
@@ -589,7 +594,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
  * @return        0 if successful, or -1 if the output pointer argument is NULL.
  *
  * @sa nutation_angles()
- * @sa ee_ct()
+ * @sa e_tilt()
  * @sa NOVAS_JD_J2000
  */
 int fund_args(double t, novas_delaunay_args *restrict a) {
@@ -660,7 +665,6 @@ int fund_args(double t, novas_delaunay_args *restrict a) {
  * @sa frame_tie()
  * @sa novas_epoch()
  * @sa tt2tdb()
- * @sa cio_basis()
  * @sa NOVAS_TOD
  * @sa NOVAS_JD_J2000
  * @sa NOVAS_JD_B1950

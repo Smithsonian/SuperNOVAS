@@ -1796,7 +1796,7 @@ static int test_tt2tdb_hp() {
     if(!is_equal(label, tt2tdb_fp(jd_tt, 1.0), tt2tdb_hp(jd_tt), 1e-5)) n++;
 
     sprintf(label, "tt2tdb_fp:%d:-1", (2000 + 100 * i));
-        if(!is_equal(label, tt2tdb_fp(jd_tt, -1.0), tt2tdb_hp(jd_tt), 1e-9)) n++;
+    if(!is_equal(label, tt2tdb_fp(jd_tt, -1.0), tt2tdb_hp(jd_tt), 1e-9)) n++;
   }
 
   return n;
@@ -4112,7 +4112,7 @@ static int test_day_of_year() {
   if(!is_equal("day_of_year:2000-03-01", 61, novas_day_of_year(2451604.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
 
   // 2000-03-01, Roman/Julian
-   if(!is_equal("day_of_year:2000-03-01:roman", 61, novas_day_of_year(2451604.5 + 12, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+  if(!is_equal("day_of_year:2000-03-01:roman", 61, novas_day_of_year(2451604.5 + 12, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
 
   // 2004-03-01
   if(!is_equal("day_of_year:2004-03-01", 61, novas_day_of_year(2453065.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
@@ -4122,6 +4122,112 @@ static int test_day_of_year() {
 
   // 1500-03-01, Roman/Julian
   if(!is_equal("day_of_year:1500-03-01:roman", 61, novas_day_of_year(2268992.5, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+
+  return n;
+}
+
+
+static int test_libration() {
+  int n = 0;
+  novas_delaunay_args a = {};
+  double jd, x, y, z, u;
+
+  // from IERS PMSDNUT2.F
+  // given input: rmjd = 54335D0 ( August 23, 2007 )
+  //
+  //     expected output: (dx) pm(1)  = 24.83144238273364834D0 microarcseconds
+  //                      (dy) pm(2) = -14.09240692041837661D0 microarcseconds
+  jd = NOVAS_JD_MJD0 + 54335.0;
+  if(!is_ok("libration:fund_args:1", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("libration:1", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, &x, &y, NULL))) return 1;
+  if(!is_equal("libration:1:x", 1e6 * x, 24.83144238273364834, 0.01)) n++;
+  if(!is_equal("libration:1:y", 1e6 * y, -14.09240692041837661, 0.01)) n++;
+
+  if(!is_ok("libration:1", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, &z, NULL, NULL))) return 1;
+  if(!is_equal("libration:1:x:only", x, z, 1e-12)) n++;
+
+  if(!is_ok("libration:1", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, NULL, &z, NULL))) return 1;
+  if(!is_equal("libration:1:y:only", y, z, 1e-12)) n++;
+
+  // from IERS UTLIBR.F
+  //  given input:  rmjd_a = 44239.1 ( January 1, 1980 2:24.00 )
+  //     expected output: dUT1_a =   2.441143834386761746D0 mus;
+  //                      dLOD_a = -14.78971247349449492D0 mus / day
+  jd = NOVAS_JD_MJD0 + 44239.1;
+  if(!is_ok("libration:fund_args:2", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("libration:2", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, NULL, NULL, &u))) return 1;
+  if(!is_equal("libration:2:ut", 1e6 * u, 2.441143834386761746, 0.01)) n++;
+
+  //                 rmjd_b = 55227.4 ( January 31, 2010 9:35.59 )
+  //                      dUT1_b = - 2.655705844335680244D0 mus;
+  //                      dLOD_b =  27.39445826599846967D0 mus / day
+  jd = NOVAS_JD_MJD0 + 55227.4;
+  if(!is_ok("libration:fund_args:3", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("libration:3", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, NULL, NULL, &u))) return 1;
+  if(!is_equal("libration:3:ut", 1e6 * u, -2.655705844335680244, 0.01)) n++;
+
+  return n;
+}
+
+static int test_ocean_tides() {
+  int n = 0;
+  novas_delaunay_args a = {};
+  double jd, x, y, z, u;
+
+  // from IERS ORTHO_EOP.F
+  //     given input: MJD = 47100D0
+  //
+  //     expected output: delta_x = -162.8386373279636530D0 microarcseconds
+  //                      delta_y = 117.7907525842668974D0 microarcseconds
+  //                      delta_UT1 = -23.39092370609808214D0 microseconds
+  jd = NOVAS_JD_MJD0 + 47100.0;
+  if(!is_ok("ocean_tides:fund_args", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, &x, &y, &u))) return 1;
+
+  // Note: ORTHO_EOP.F is not the same series.
+  // Nevertheless, the test case is only for ORTHO_EOP.F, so hence more roomy tolerances here.
+  if(!is_equal("ocean_tides:x", 1e6 * x, -162.8386373279636530, 3.0)) n++;
+  if(!is_equal("ocean_tides:y", 1e6 * y, 117.7907525842668974, 3.0)) n++;
+  if(!is_equal("ocean_tides:ut1", 1e6 * u, -23.39092370609808214, 0.1)) n++;
+
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, &z, NULL, NULL))) return 1;
+  if(!is_equal("ocean_tides:x:only", x, z, 1e-12)) n++;
+
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, NULL, &z, NULL))) return 1;
+  if(!is_equal("ocean_tides:y:only", y, z, 1e-12)) n++;
+
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, NULL, NULL, &z))) return 1;
+  if(!is_equal("ocean_tides:ut1:only", u, z, 1e-12)) n++;
+
+  return n;
+}
+
+static int test_diurnal_eop_at_time() {
+  int n = 0;
+  novas_delaunay_args a = {};
+  novas_timespec j2000 = {};
+  double x[3], y[3], u[3];
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 0.0, 0.0, &j2000);
+
+  if(!is_ok("diurnal_eop_at_time:args", fund_args(0.0, &a))) return 1;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, &x[0], &y[0], &u[0]))) return 1;
+  if(!is_ok("diurnal_eop_at_time:libration", novas_diurnal_libration(novas_gmst(NOVAS_JD_J2000, 0.0), &a, &x[1], &y[1], &u[1]))) return 1;
+  if(!is_ok("diurnal_eop_at_time:ocean_tides", novas_diurnal_ocean_tides(novas_gmst(NOVAS_JD_J2000, 0.0), &a, &x[2], &y[2], &u[2]))) return 1;
+
+  if(!is_equal("ocean_tides:x:only", x[0], x[1] + x[2], 1e-6)) n++;
+  if(!is_equal("ocean_tides:x:only", y[0], y[1] + y[2], 1e-6)) n++;
+  if(!is_equal("ocean_tides:x:only", u[0], u[1] + u[2], 1e-6)) n++;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, &x[1], NULL, NULL))) return 1;
+  if(!is_equal("diurnal_eop_at_time:x:only", x[0], x[1], 1e-12)) n++;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, NULL, &y[1], NULL))) return 1;
+  if(!is_equal("diurnal_eop_at_time:x:only", y[0], y[1], 1e-12)) n++;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, NULL, NULL, &u[1]))) return 1;
+  if(!is_equal("diurnal_eop_at_time:x:only", u[0], u[1], 1e-12)) n++;
 
   return n;
 }
@@ -4253,6 +4359,10 @@ int main(int argc, char *argv[]) {
   if(test_day_of_year()) n++;
 
   if(test_tt2tdb_hp()) n++;
+
+  if(test_libration()) n++;
+  if(test_ocean_tides()) n++;
+  if(test_diurnal_eop_at_time()) n++;
 
   n += test_dates();
 
