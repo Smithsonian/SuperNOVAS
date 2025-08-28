@@ -615,7 +615,7 @@ int radec_planet(double jd_tt, const object *restrict ss_body, const observer *r
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3.</li>
  * </ol>
  *
- * @deprecated Use place_cirs() is now preferred, especially for high accuracy calculations.
+ * @deprecated place_tod() is now preferred.
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param star      Pointer to catalog entry structure containing catalog data for
@@ -740,7 +740,7 @@ short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accura
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
  * </ol>
  *
- * @deprecated Use place_cirs() is now preferred, especially for high accuracy calculations.
+ * @deprecated place_tod() is now preferred.
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar
