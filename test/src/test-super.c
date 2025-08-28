@@ -4363,10 +4363,10 @@ int test_itrf_transform_eop() {
 
   double xp, yp, dut1, z;
 
-  // 2014 -> 1993 R:  -2.81,   -3.38,    0.40 [mas]
-  double R1 = -2.81e-3; // [arcsec]
-  double R2 = -3.38e-3; // [arcsec]
-  double R3 =  0.40e-3; // [arcsec]
+  // 2020 -> 1993 R:  -3.36,   -4.33,    0.75 [mas]
+  double R1 = -3.36e-3; // [arcsec]
+  double R2 = -4.33e-3; // [arcsec]
+  double R3 =  0.75e-3; // [arcsec]
 
   if(!is_ok("itrf_transform_eop", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, &xp, &yp, &dut1))) return 1;
 
