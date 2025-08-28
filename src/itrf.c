@@ -367,14 +367,14 @@ static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, do
  * Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80 reference
  * ellipsoid.
  *
- * @param[in] lon   [deg] Geodetic longitude
- * @param[in] lat   [deg] Geodetic latitude
- * @param[in] alt   [m] Geodetic altitude (i.e. above sea level).
- * @param ellipsoid Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid
- *                  (i.e. `NOVAS_GRS80`).
- * @param[out] x    [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
- * @return          0 if successful, or else -1 if the output vector is NULL (errno is set to
- *                  EINVAL).
+ * @param[in] lon     [deg] Geodetic longitude
+ * @param[in] lat     [deg] Geodetic latitude
+ * @param[in] alt     [m] Geodetic altitude (i.e. above sea level).
+ * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS related
+ *                    applications use `NOVAS_WGS84_ELLIPSOID`.
+ * @param[out] x      [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @return            0 if successful, or else -1 if the output vector is NULL (errno is set to
+ *                    EINVAL).
  *
  * @since 1.5
  * @author Attila Kovacs
@@ -435,8 +435,8 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
  * </ol>
  *
  * @param[in] x       [m] Input geocentric Cartesian coordinates (x, y, z) 3-vector.
- * @param ellipsoid   Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid
- *                    (i.e. `NOVAS_GRS80`).
+ * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS related
+ *                    applications use `NOVAS_WGS84_ELLIPSOID`.
  * @param[out] lon    [deg] Geodetic longitude. It may be NULL if not required.
  * @param[out] lat    [deg] Geodetic latitude. It may be NULL if not required.
  * @param[out] alt    [m] Geodetic altitude (i.e. above sea level). It may be NULL if not required.
