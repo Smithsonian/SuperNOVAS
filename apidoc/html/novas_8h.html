@@ -560,6 +560,10 @@ Enumerations</h2></td></tr>
 , <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77">POLE_OFFSETS_X_Y</a>
  }</td></tr>
 <tr class="separator:a70c3951615b1ecf42818c79893678543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5928ca4a09c2883b58e951a4582255b3" id="r_a5928ca4a09c2883b58e951a4582255b3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> { <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25">NOVAS_GRS80</a> = 0
+, <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a">NOVAS_WGS84</a>
+ }</td></tr>
+<tr class="separator:a5928ca4a09c2883b58e951a4582255b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ee18ab5f8fdc009913c11f04026122f" id="r_a9ee18ab5f8fdc009913c11f04026122f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f">novas_reference_plane</a> { <a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e">NOVAS_ECLIPTIC_PLANE</a> = 0
 , <a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b">NOVAS_EQUATORIAL_PLANE</a>
  }</td></tr>
@@ -795,8 +799,8 @@ Functions</h2></td></tr>
 <tr class="separator:ab7db8026c598e8e126a4725ac3b388bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd947f2e48d6c5cc88ad7a1bab9b8ca" id="r_a3cd947f2e48d6c5cc88ad7a1bab9b8ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, double ra, double dec, <a class="el" href="novas_8h.html#ad4899a6116cfbbe17400e7ef0c8426a9">RefractionModel</a> ref_model, double *restrict az, double *restrict el)</td></tr>
 <tr class="separator:a3cd947f2e48d6c5cc88ad7a1bab9b8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a526c89fa9670d247028c94faf6a8206e" id="r_a526c89fa9670d247028c94faf6a8206e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic</a> (const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt)</td></tr>
-<tr class="separator:a526c89fa9670d247028c94faf6a8206e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb9a26a4658c037b4721fb97cea08ed0" id="r_abb9a26a4658c037b4721fb97cea08ed0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic</a> (const double *restrict x, enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt)</td></tr>
+<tr class="separator:abb9a26a4658c037b4721fb97cea08ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f832afe92680a11c3489aaa224ac2e2" id="r_a8f832afe92680a11c3489aaa224ac2e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive</a> (int value)</td></tr>
 <tr class="separator:a8f832afe92680a11c3489aaa224ac2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2972b3eafa2d7f6c29cff34bad9fcf0d" id="r_a2972b3eafa2d7f6c29cff34bad9fcf0d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d">novas_change_observer</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *orig, const <a class="el" href="structobserver.html">observer</a> *obs, <a class="el" href="structnovas__frame.html">novas_frame</a> *out)</td></tr>
@@ -842,8 +846,8 @@ Functions</h2></td></tr>
 <tr class="separator:a273fd76d83b8e04ced14558c69fd175c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a348c4fd2a4a046e9768038075717b693" id="r_a348c4fd2a4a046e9768038075717b693"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a348c4fd2a4a046e9768038075717b693">novas_gast</a> (double jd_ut1, double ut1_to_tt, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy)</td></tr>
 <tr class="separator:a348c4fd2a4a046e9768038075717b693"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c9b27bff8d228d06ebeded11034ff22" id="r_a4c9b27bff8d228d06ebeded11034ff22"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a4c9b27bff8d228d06ebeded11034ff22">novas_geodetic_to_cartesian</a> (double lon, double lat, double alt, double *x)</td></tr>
-<tr class="separator:a4c9b27bff8d228d06ebeded11034ff22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a908dd3e00d6b27aa73679afc32c31f24" id="r_a908dd3e00d6b27aa73679afc32c31f24"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian</a> (double lon, double lat, double alt, enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> ellipsoid, double *x)</td></tr>
+<tr class="separator:a908dd3e00d6b27aa73679afc32c31f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6652ee3257621080dac342313d0a0a7" id="r_ac6652ee3257621080dac342313d0a0a7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, double *restrict pos, double *restrict vel)</td></tr>
 <tr class="separator:ac6652ee3257621080dac342313d0a0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4817703c9357f702a27812584c91f87c" id="r_a4817703c9357f702a27812584c91f87c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a4817703c9357f702a27812584c91f87c">novas_geom_to_app</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, const double *restrict pos, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, <a class="el" href="structsky__pos.html">sky_pos</a> *restrict out)</td></tr>
@@ -2797,6 +2801,31 @@ IERS Conventions, Chapter 3, Table 3.1 </li>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47" name="a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47"></a>POLE_OFFSETS_DPSI_DEPS&#160;</td><td class="fielddoc"><p>Offsets are &Delta;d&psi;, &Delta;d&epsilon; pairs (pre IAU 2006 precession-nutation model). </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77" name="a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77"></a>POLE_OFFSETS_X_Y&#160;</td><td class="fielddoc"><p>Offsets are dx, dy pairs (IAU 2006 precession-nutation model) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a5928ca4a09c2883b58e951a4582255b3" name="a5928ca4a09c2883b58e951a4582255b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5928ca4a09c2883b58e951a4582255b3">&#9670;&#160;</a></span>novas_reference_ellipsoid</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Type of reference ellipsoid to use.</p>
+<dl class="section since"><dt>Since</dt><dd>1.5</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25" name="a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25"></a>NOVAS_GRS80&#160;</td><td class="fielddoc"><p>The GRS80 reference ellipsoid, used by the IERS Conventions. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a" name="a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a"></a>NOVAS_WGS84&#160;</td><td class="fielddoc"><p>The WGS84 reference ellipsoid. </p>
 </td></tr>
 </table>
 
@@ -7913,7 +7942,7 @@ This call does not initialize the <code>orbit</code> field (added in v1.2) with 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a> </dd>
 <dd>
 <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a> </dd>
 <dd>
@@ -7994,7 +8023,7 @@ This implementation breaks strict v1.0 ABI compatibility since it writes to (ini
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL, or if the temperature or pressure values are impossible for an Earth based observer.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a5eb76fc6e7be571e228d23aee3823cb9">make_observer_on_surface()</a> </dd>
 <dd>
-<a class="el" href="itrf_8c.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic()</a> </dd>
+<a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a> </dd>
 <dd>
 <a class="el" href="observer_8c.html#ac0ca6f330e1795ce811df95986400632">make_in_space()</a> </dd>
 <dd>
@@ -8654,8 +8683,8 @@ novas_geom_to_hor() </dd>
 
 </div>
 </div>
-<a id="a526c89fa9670d247028c94faf6a8206e" name="a526c89fa9670d247028c94faf6a8206e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a526c89fa9670d247028c94faf6a8206e">&#9670;&#160;</a></span>novas_cartesian_to_geodetic()</h2>
+<a id="abb9a26a4658c037b4721fb97cea08ed0" name="abb9a26a4658c037b4721fb97cea08ed0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb9a26a4658c037b4721fb97cea08ed0">&#9670;&#160;</a></span>novas_cartesian_to_geodetic()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8665,6 +8694,12 @@ novas_geom_to_hor() </dd>
           <td>(</td>
           <td class="paramtype">const double *restrict&#160;</td>
           <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a>&#160;</td>
+          <td class="paramname"><em>ellipsoid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -8705,7 +8740,8 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">x</td><td>[m] Input geocentric Cartesian coordinates (x, y, z) 3-vector. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>[m] Input geocentric Cartesian coordinates (x, y, z) 3-vector. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid (i.e. <code>NOVAS_GRS80</code>). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">lon</td><td>[deg] Geodetic longitude. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">lat</td><td>[deg] Geodetic latitude. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">alt</td><td>[m] Geodetic altitude (i.e. above sea level). It may be NULL if not required. </td></tr>
@@ -8715,7 +8751,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the input vector is NULL (errno is set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#a4c9b27bff8d228d06ebeded11034ff22">novas_geodetic_to_cartesian()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>, <a class="el" href="novas_8h.html#ae283901f9a884acc6c5b88c6afb040b4">NOVAS_GRS80_FLATTENING</a>, and <a class="el" href="novas_8h.html#a5518e094e90ed1053aeb03c41d531452">NOVAS_GRS80_RADIUS</a>.</p>
 
@@ -9822,8 +9858,8 @@ IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://ier
 
 </div>
 </div>
-<a id="a4c9b27bff8d228d06ebeded11034ff22" name="a4c9b27bff8d228d06ebeded11034ff22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c9b27bff8d228d06ebeded11034ff22">&#9670;&#160;</a></span>novas_geodetic_to_cartesian()</h2>
+<a id="a908dd3e00d6b27aa73679afc32c31f24" name="a908dd3e00d6b27aa73679afc32c31f24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a908dd3e00d6b27aa73679afc32c31f24">&#9670;&#160;</a></span>novas_geodetic_to_cartesian()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9849,6 +9885,12 @@ IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://ier
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a>&#160;</td>
+          <td class="paramname"><em>ellipsoid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">double *&#160;</td>
           <td class="paramname"><em>x</em>&#160;</td>
         </tr>
@@ -9862,9 +9904,10 @@ IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://ier
 <p>Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80 reference ellipsoid.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">lon</td><td>[deg] Geodetic longitude </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">lat</td><td>[deg] Geodetic latitude </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">alt</td><td>[m] Geodetic altitude (i.e. above sea level). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lon</td><td>[deg] Geodetic longitude </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lat</td><td>[deg] Geodetic latitude </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alt</td><td>[m] Geodetic altitude (i.e. above sea level). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid (i.e. <code>NOVAS_GRS80</code>). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>[m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector. </td></tr>
   </table>
   </dd>
@@ -9872,7 +9915,7 @@ IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://ier
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if the output vector is NULL (errno is set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a> </dd>
 <dd>
 <a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a> </dd></dl>
 
@@ -10809,7 +10852,7 @@ IERS Conventions, Chapter 4, Eq. 4.13 and Table 4.1. See <a href="https://iers-c
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a> </dd>
 <dd>
-<a class="el" href="itrf_8c.html#a4c9b27bff8d228d06ebeded11034ff22">novas_geodetic_to_cartesian()</a> </dd></dl>
+<a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a> </dd></dl>
 
 </div>
 </div>
@@ -16021,7 +16064,7 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth.</p>
+<p>Computes the position and velocity vectors of a terrestrial observer with respect to the center of the Earth, based on the GRS80 reference ellipsoid, consistent with the IERS conventions.</p>
 <p>This function ignores polar motion, unless the observer's longitude and latitude have been corrected for it, and variation in the length of day (angular velocity of earth).</p>
 <p>The true equator and equinox of date do not form an inertial system. Therefore, with respect to an inertial system, the very small velocity component (several meters/day) due to the precession and nutation of the Earth's axis is not accounted for here.</p>
 <p>REFERENCES: </p><ol>

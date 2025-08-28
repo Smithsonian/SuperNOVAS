@@ -1296,6 +1296,25 @@
     </member>
     <member kind="enumeration">
       <type></type>
+      <name>novas_reference_ellipsoid</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5928ca4a09c2883b58e951a4582255b3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_GRS80</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_WGS84</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <type></type>
       <name>novas_reference_plane</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a9ee18ab5f8fdc009913c11f04026122f</anchor>
@@ -2163,8 +2182,8 @@
       <type>int</type>
       <name>novas_cartesian_to_geodetic</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a526c89fa9670d247028c94faf6a8206e</anchor>
-      <arglist>(const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt)</arglist>
+      <anchor>abb9a26a4658c037b4721fb97cea08ed0</anchor>
+      <arglist>(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -2324,8 +2343,8 @@
       <type>int</type>
       <name>novas_geodetic_to_cartesian</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a4c9b27bff8d228d06ebeded11034ff22</anchor>
-      <arglist>(double lon, double lat, double alt, double *x)</arglist>
+      <anchor>a908dd3e00d6b27aa73679afc32c31f24</anchor>
+      <arglist>(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *x)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -4153,15 +4172,15 @@
       <type>int</type>
       <name>novas_cartesian_to_geodetic</name>
       <anchorfile>itrf_8c.html</anchorfile>
-      <anchor>a526c89fa9670d247028c94faf6a8206e</anchor>
-      <arglist>(const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt)</arglist>
+      <anchor>abb9a26a4658c037b4721fb97cea08ed0</anchor>
+      <arglist>(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>novas_geodetic_to_cartesian</name>
       <anchorfile>itrf_8c.html</anchorfile>
-      <anchor>a4c9b27bff8d228d06ebeded11034ff22</anchor>
-      <arglist>(double lon, double lat, double alt, double *x)</arglist>
+      <anchor>a908dd3e00d6b27aa73679afc32c31f24</anchor>
+      <arglist>(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *x)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

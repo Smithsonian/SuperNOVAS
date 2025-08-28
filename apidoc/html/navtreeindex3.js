@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"observer_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0":[5,0,1,10,13],
+"observer_8c.html#a0e4e5ff7c37e6521ca75ae62aaf4050e":[5,0,1,10,21],
+"observer_8c.html#a0f2096c7954b583fe749553b956ff9d2":[5,0,1,10,6],
 "observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f":[5,0,1,10,12],
 "observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17":[5,0,1,10,18],
 "observer_8c.html#a16c920eee105431247e9a1d9bf1c3021":[5,0,1,10,17],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd":[4,0,8,0],
 "structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035":[4,0,8,2],
 "structnovas__planet__bundle.html#afa2104ef635031a82766fd018c9ee9dd":[4,0,8,1],
-"structnovas__timespec.html":[4,0,9],
-"structnovas__timespec.html#a281e93817d681ec4a6cea2601a15c566":[4,0,9,0],
-"structnovas__timespec.html#a2b381954218c16fad4ae585fb90fddbe":[4,0,9,4],
-"structnovas__timespec.html#a696e598955615f729a92870c8213a10c":[4,0,9,1]
+"structnovas__timespec.html":[4,0,9]
 };

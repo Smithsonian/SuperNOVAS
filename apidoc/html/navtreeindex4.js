@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"structnovas__timespec.html#a281e93817d681ec4a6cea2601a15c566":[4,0,9,0],
+"structnovas__timespec.html#a2b381954218c16fad4ae585fb90fddbe":[4,0,9,4],
+"structnovas__timespec.html#a696e598955615f729a92870c8213a10c":[4,0,9,1],
 "structnovas__timespec.html#ab1b769234049ec8d7cdbb22800116184":[4,0,9,2],
 "structnovas__timespec.html#acd6082033a111e30cda6bab81b7a32ec":[4,0,9,3],
 "structnovas__track.html":[4,0,10],

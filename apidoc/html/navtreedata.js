@@ -184,9 +184,9 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "md_CHANGELOG.html#autotoc_md43",
-"novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065",
-"observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f",
-"structnovas__timespec.html#ab1b769234049ec8d7cdbb22800116184"
+"novas_8h.html#a84f672dc1c37e3af374198f29cbcfba9",
+"observer_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0",
+"structnovas__timespec.html#a281e93817d681ec4a6cea2601a15c566"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

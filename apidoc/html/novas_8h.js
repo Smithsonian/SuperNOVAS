@@ -215,6 +215,10 @@ var novas_8h =
       [ "POLE_OFFSETS_DPSI_DEPS", "novas_8h.html#a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47", null ],
       [ "POLE_OFFSETS_X_Y", "novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77", null ]
     ] ],
+    [ "novas_reference_ellipsoid", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3", [
+      [ "NOVAS_GRS80", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25", null ],
+      [ "NOVAS_WGS84", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a", null ]
+    ] ],
     [ "novas_reference_plane", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f", [
       [ "NOVAS_ECLIPTIC_PLANE", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e", null ],
       [ "NOVAS_EQUATORIAL_PLANE", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fa8ab742cbe451963ba66f7bfbdbafb05b", null ]
@@ -352,7 +356,7 @@ var novas_8h =
     [ "mod_to_gcrs", "novas_8h.html#ad9cc07f0e6af9339096e15a440b113e5", null ],
     [ "novas_app_to_geom", "novas_8h.html#ab7db8026c598e8e126a4725ac3b388bf", null ],
     [ "novas_app_to_hor", "novas_8h.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca", null ],
-    [ "novas_cartesian_to_geodetic", "novas_8h.html#a526c89fa9670d247028c94faf6a8206e", null ],
+    [ "novas_cartesian_to_geodetic", "novas_8h.html#abb9a26a4658c037b4721fb97cea08ed0", null ],
     [ "novas_case_sensitive", "novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2", null ],
     [ "novas_change_observer", "novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d", null ],
     [ "novas_date", "novas_8h.html#abaac8a4ea28bc8b811277051e3168468", null ],
@@ -375,7 +379,7 @@ var novas_8h =
     [ "novas_equ_track", "novas_8h.html#a57f4a449754c88cfc87df658a6bc4cb2", null ],
     [ "novas_frame_lst", "novas_8h.html#a273fd76d83b8e04ced14558c69fd175c", null ],
     [ "novas_gast", "novas_8h.html#a348c4fd2a4a046e9768038075717b693", null ],
-    [ "novas_geodetic_to_cartesian", "novas_8h.html#a4c9b27bff8d228d06ebeded11034ff22", null ],
+    [ "novas_geodetic_to_cartesian", "novas_8h.html#a908dd3e00d6b27aa73679afc32c31f24", null ],
     [ "novas_geom_posvel", "novas_8h.html#ac6652ee3257621080dac342313d0a0a7", null ],
     [ "novas_geom_to_app", "novas_8h.html#a4817703c9357f702a27812584c91f87c", null ],
     [ "novas_get_debug_mode", "novas_8h.html#a29cad12337acfce5f1e370320dcefb79", null ],

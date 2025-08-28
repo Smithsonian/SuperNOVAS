@@ -1638,7 +1638,7 @@ one minute.
 
 #### New in 1.5
 
- - Simpler functions to calculated Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
+ - Simpler functions to calculate Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
 
  - Functions to calculate corrections to the Earth orientation parameters published by IERS, to include the effect
    of librations and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS 

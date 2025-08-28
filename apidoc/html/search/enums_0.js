@@ -18,12 +18,13 @@ var searchData=
   ['novas_5forigin_15',['novas_origin',['../novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be',1,'novas.h']]],
   ['novas_5fplanet_16',['novas_planet',['../novas_8h.html#a219df36b21dc4476656e708d14d08045',1,'novas.h']]],
   ['novas_5fpole_5foffset_5ftype_17',['novas_pole_offset_type',['../novas_8h.html#a70c3951615b1ecf42818c79893678543',1,'novas.h']]],
-  ['novas_5freference_5fplane_18',['novas_reference_plane',['../novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f',1,'novas.h']]],
-  ['novas_5freference_5fsystem_19',['novas_reference_system',['../novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e',1,'novas.h']]],
-  ['novas_5frefraction_5fmodel_20',['novas_refraction_model',['../novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81',1,'novas.h']]],
-  ['novas_5frefraction_5ftype_21',['novas_refraction_type',['../novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468',1,'novas.h']]],
-  ['novas_5fseparator_5ftype_22',['novas_separator_type',['../novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e',1,'novas.h']]],
-  ['novas_5ftimescale_23',['novas_timescale',['../novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b',1,'novas.h']]],
-  ['novas_5ftransform_5ftype_24',['novas_transform_type',['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367',1,'novas.h']]],
-  ['novas_5fwobble_5fdirection_25',['novas_wobble_direction',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5',1,'novas.h']]]
+  ['novas_5freference_5fellipsoid_18',['novas_reference_ellipsoid',['../novas_8h.html#a5928ca4a09c2883b58e951a4582255b3',1,'novas.h']]],
+  ['novas_5freference_5fplane_19',['novas_reference_plane',['../novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f',1,'novas.h']]],
+  ['novas_5freference_5fsystem_20',['novas_reference_system',['../novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e',1,'novas.h']]],
+  ['novas_5frefraction_5fmodel_21',['novas_refraction_model',['../novas_8h.html#abe97e2d459a30db9d0f67d8c60af3b81',1,'novas.h']]],
+  ['novas_5frefraction_5ftype_22',['novas_refraction_type',['../novas_8h.html#a8c77758e10b1d3dc8dbd3ab0b694e468',1,'novas.h']]],
+  ['novas_5fseparator_5ftype_23',['novas_separator_type',['../novas_8h.html#acb27ba6ec7f4ed7486f4419f8803f40e',1,'novas.h']]],
+  ['novas_5ftimescale_24',['novas_timescale',['../novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b',1,'novas.h']]],
+  ['novas_5ftransform_5ftype_25',['novas_transform_type',['../novas_8h.html#ace5e59ce1564bf6c61946c290bb05367',1,'novas.h']]],
+  ['novas_5fwobble_5fdirection_26',['novas_wobble_direction',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5',1,'novas.h']]]
 ];
