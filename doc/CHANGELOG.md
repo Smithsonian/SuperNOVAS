@@ -50,6 +50,9 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #214: Reworked GCRS-CIRS transforms without `cio_basis()`.
  
+ - #217: Changed `terra()` to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 
+   ellipsoid. The change restores the original NOVAS C behaviour.
+ 
  - Various API documentation edits.
  
 
