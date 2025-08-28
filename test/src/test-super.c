@@ -4248,9 +4248,9 @@ static int test_cartesian_to_geodetic() {
   double lon = 0.0, lat = 0.0, alt = 0.0, z = 0.0;
 
   if(!is_ok("cartesian_to_geodetic", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
-  if(!is_equal("cartesian_to_geodetic:lon", lat, 0.857728298603 / DEGREE, 1e-6)) n++;
-  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.224779294628 / DEGREE, 1e-6)) n++;
-  if(!is_equal("cartesian_to_geodetic:alt", alt, 665.9207, 1.0)) n++;
+  if(!is_equal("cartesian_to_geodetic:lon", lat, 0.857728298603 / DEGREE, 1e-9)) n++;
+  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.224779294628 / DEGREE, 1e-9)) n++;
+  if(!is_equal("cartesian_to_geodetic:alt", alt, 665.9207, 0.001)) n++;
 
   if(!is_ok("cartesian_to_geodetic:lon:only", novas_cartesian_to_geodetic(x, &z, NULL, NULL))) return 1;
   if(!is_equal("cartesian_to_geodetic:lon", z, lon, 1e-9)) n++;
@@ -4263,19 +4263,19 @@ static int test_cartesian_to_geodetic() {
 
   x[0] = 0.0;
   x[1] = 0.0;
-  x[2] = NOVAS_EARTH_RADIUS * (1.0 - NOVAS_EARTH_FLATTENING);
+  x[2] = NOVAS_GRS80_RADIUS * (1.0 - NOVAS_GRS80_FLATTENING);
 
   if(!is_ok("cartesian_to_geodetic:pole:north", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
-  if(!is_equal("cartesian_to_geodetic:lon", lat, 90.0, 1e-6)) n++;
-  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.0, 1e-6)) n++;
-  if(!is_equal("cartesian_to_geodetic:alt", alt, 0.0, 1.0)) n++;
+  if(!is_equal("cartesian_to_geodetic:south:lon", lat, 90.0, 1e-9)) n++;
+  if(!is_equal("cartesian_to_geodetic:south:lat", lon, 0.0, 1e-9)) n++;
+  if(!is_equal("cartesian_to_geodetic:south:alt", alt, 0.0, 0.001)) n++;
 
   x[2] = -x[2];
 
   if(!is_ok("cartesian_to_geodetic:pole:south", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
-  if(!is_equal("cartesian_to_geodetic:lon", lat, -90.0, 1e-6)) n++;
-  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.0, 1e-6)) n++;
-  if(!is_equal("cartesian_to_geodetic:alt", alt, 0.0, 1.0)) n++;
+  if(!is_equal("cartesian_to_geodetic:south:lon", lat, -90.0, 1e-9)) n++;
+  if(!is_equal("cartesian_to_geodetic:south:lat", lon, 0.0, 1e-9)) n++;
+  if(!is_equal("cartesian_to_geodetic:south:alt", alt, 0.0, 0.001)) n++;
 
   return n;
 }

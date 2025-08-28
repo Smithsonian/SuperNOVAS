@@ -172,8 +172,20 @@
 /// [m] Equatorial radius of Earth in meters from IERS Conventions (2003).
 #define NOVAS_EARTH_RADIUS        6378136.6
 
-/// Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
+/// [m] Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
 #define NOVAS_EARTH_FLATTENING    (1.0 / 298.25642)
+
+/// [m] Equatorial radius of the WGS84 reference ellipsoid.
+#define NOVAS_WGS84_RADIUS        6378137.0
+
+/// [m] WGS84 Earth flattening
+#define NOVAS_WGS84_FLATTENING    (1.0 / 298.257223563)
+
+/// [m] Equatorial radius of the WGS84 reference ellipsoid.
+#define NOVAS_GRS80_RADIUS        6378137.0
+
+/// [m] WGS84 Earth flattening
+#define NOVAS_GRS80_FLATTENING    (1.0 / 298.257222101)
 
 /// [rad/s] Rotational angular velocity of Earth from IERS Conventions (2003).
 #define NOVAS_EARTH_ANGVEL        7.2921150e-5
@@ -2201,8 +2213,8 @@ int novas_cartesian_to_geodetic(const double *restrict x, double *restrict lon, 
 #  define AU_KM               NOVAS_AU_KM
 #  define GS                  NOVAS_G_SUN
 #  define GE                  NOVAS_G_EARTH
-#  define ERAD                NOVAS_EARTH_RADIUS
-#  define EF                  NOVAS_EARTH_FLATTENING
+#  define ERAD                NOVAS_GRS80_RADIUS
+#  define EF                  NOVAS_GRS80_FLATTENING
 #  define ANGVEL              NOVAS_EARTH_ANGVEL
 
 // Various locally used physical units

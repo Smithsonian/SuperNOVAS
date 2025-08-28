@@ -312,14 +312,8 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
 }
 
 /**
- * Converts geodetic site coordinates to geocentric Cartesian coordinates.
- *
- * NOTES:
- * <ol>
- * <li>The implementation uses Earth radius being 6378136.6 m, in line with the current IERS
- * Conventions, whereas `GCONV2.F` uses the GRS1980 value of 6378137 m.
- * </li>
- * </ol>
+ * Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80 reference
+ * ellipsoid.
  *
  * @param lon     [deg] Geodetic longitude
  * @param lat     [deg] Geodetic latitude
@@ -335,8 +329,8 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
  * @sa novas_itrf_transform()
  */
 int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
-  const double a = NOVAS_EARTH_RADIUS;
-  const double f = NOVAS_EARTH_FLATTENING;
+  const double a = NOVAS_GRS80_RADIUS;
+  const double f = NOVAS_GRS80_FLATTENING;
   const double e2 = (2.0 - f) * f;
   double sinlat, coslat, N;
 
@@ -359,14 +353,13 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
 }
 
 /**
- * Converts geocentric Cartesian site coordinates to geodetic coordinates.
+ * Converts geocentric Cartesian site coordinates to geodetic coordinates, based on the GRS80
+ * reference ellipsoid.
  *
  * NOTES:
  * <ol>
  * <li>Adapted from the IERS `GCONV2.F` source code, see
- * https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F. Note, however, that this implementation
- * uses Earth radius being 6378136.6 m, in line with the current IERS Conventions, whereas `GCONV2.F` uses the
- * GRS1980 value of 6378137.0 m.
+ * https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F.
  * </li>
  * </ol>
  *
@@ -396,8 +389,8 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
  * @sa novas_geodetic_to_cartesian()
  */
 int novas_cartesian_to_geodetic(const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt) {
-  const double a = NOVAS_EARTH_RADIUS;
-  const double f = NOVAS_EARTH_FLATTENING;
+  const double a = NOVAS_GRS80_RADIUS;
+  const double f = NOVAS_GRS80_FLATTENING;
 
   // Compute distance from polar axis squared
   const double e2 = (2.0 - f) * f;
