@@ -3,13 +3,13 @@
  *
  * @author G. Kaplan and A. Kovacs
  *
- *  SuperNOVAS header for numerical constants that used to be used internally in novas.c.
- *
- *  @deprecated Use your own version for the selection of the constant you need, expressed in
+ * @deprecated Use your own version for the selection of the constant you need, expressed in
  *              whatever units your application desires. We should not force you to adopt the
  *              internally used convention of NOVAS, not to mention the high chance of namespace
  *              conflicts with the super-simplistic naming scheme here. You are better off
  *              without this.
+ *
+ *  SuperNOVAS header for numerical constants that used to be used internally in novas.c.
  *
  *  Based on the NOVAS C Edition, Version 3.1:
  *

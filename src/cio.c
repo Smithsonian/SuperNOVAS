@@ -67,6 +67,10 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
 }
 
 /**
+ * @deprecated    SuperNOVAS no longer uses a NOVAS-type CIO locator file. However, if users want
+ *                to access such files  directly, this function remains accessible to provide API
+ *                compatibility with previous versions.
+ *
  * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS.
  * You can specify either the original `CIO_RA.TXT` file included in the distribution
  * (preferred since v1.1), or else a platform-specific binary data file compiled from it
@@ -82,10 +86,6 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
  *
  * @since 1.0
  * @author Attila Kovacs
- *
- * @deprecated    SuperNOVAS no longer uses a NOVAS-type CIO locator file. However, if users want
- *                to access such files  directly, this function remains accessible to provide API
- *                compatibility with previous versions.
  */
 int set_cio_locator_file(const char *restrict filename) {
   FILE *old = cio_file;
@@ -101,6 +101,12 @@ int set_cio_locator_file(const char *restrict filename) {
 }
 
 /**
+ * @deprecated This function is no longer used internally in the library. Given that the CIO
+ *             is defined on the dynamical equator of date, it is not normally meaningful to
+ *             provide an R.A. coordinate for it in GCRS, in general. Instead, you might use
+ *             cio_ra() to get the same value w.r.t. the equinox of date (on the same CIRS/TOD
+ *             dynamical equator, or else `ira_equinox()` to return the negated value.
+ *
  * Returns the location of the celestial intermediate origin (CIO) for a given Julian date,
  * as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true
  * equinox of date. The CIO is always located on the true equator (= intermediate equator)
@@ -147,12 +153,6 @@ int set_cio_locator_file(const char *restrict filename) {
  *
  * @sa cio_ra()
  * @sa ira_equinox()
- *
- * @deprecated This function is no longer used internally in the library. Given that the CIO
- *             is defined on the dynamical equator of date, it is not normally meaningful to
- *             provide an R.A. coordinate for it in GCRS, in general. Instead, you might use
- *             cio_ra() to get the same value w.r.t. the equinox of date (on the same CIRS/TOD
- *             dynamical equator, or else `ira_equinox()` to return the negated value.
  */
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type) {
   static const char *fn = "cio_location";
@@ -227,6 +227,10 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
 }
 
 /**
+ * @deprecated This function is no longer used internally in the library, and users are recommended
+ *             against using it themselves, since SuperNOVAS provides better ways to convert between
+ *             GCRS and CIRS using frames or via gcrs_to_cirs() / cirs_to_gcrs() functions.
+ *
  * Computes the CIRS basis vectors, with respect to the GCRS (geocentric ICRS), of the
  * celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z
  * direction) and the celestial intermediate origin (CIO) (in the x direction).
@@ -261,10 +265,6 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
  *
  * @sa gcrs_to_cirs()
  * @sa novas_frame
- *
- * @deprecated This function is no longer used internally in the library, and users are recommended
- *             against using it themselves, since SuperNOVAS provides better ways to convert between
- *             GCRS and CIRS using frames or via gcrs_to_cirs() / cirs_to_gcrs() functions.
  */
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *restrict x, double *restrict y, double *restrict z) {
@@ -346,6 +346,9 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
 }
 
 /**
+ * @deprecated    This function is no longer used within SuperNOVAS. It is still provided, however,
+ *                in order to retain 100% API compatibility with NOVAS C.
+ *
  * Given an input TDB Julian date and the number of data points desired, this function returns
  * a set of Julian dates and corresponding values of the GCRS right ascension of the celestial
  * intermediate origin (CIO).  The range of dates is centered (at least approximately) on the
@@ -382,9 +385,6 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  *
  * @sa set_cio_locator_file()
  * @sa cio_location()
- *
- * @deprecated    This function is no longer used within SuperNOVAS. It is still provided, however,
- *                in order to retain 100% API compatibility with NOVAS C.
  */
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
   static const char *fn = "cio_array";

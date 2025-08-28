@@ -18,36 +18,41 @@
 /// \cond PRIVATE
 
 /**
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
+ *
  * Celestial pole offset &psi; for high-precision applications. It was visible to users in NOVAS C 3.1,
  * hence we continue to expose it also for back compatibility.
  *
  * @sa EPS_COR
  * @sa cel_pole()
- *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, wobble() should be used to convert between
- *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
- *             the International Terrestrial Reference System (ITRS) going forward.
  */
 double PSI_COR = 0.0;
 
 /**
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
+ *
  * Celestial pole offset &epsilon; for high-precision applications. It was visible to users in NOVAS C 3.1,
  * hence we continue to expose it also for back compatibility.
  *
  * @sa PSI_COR
  * @sa cel_pole()
- *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, wobble() should be used to convert between
- *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
- *             the International Terrestrial Reference System (ITRS) going forward.
  */
 double EPS_COR = 0.0;
 
 /// \endcond
 
 /**
+ * @deprecated This old way of incorporating Earth orientation parameters into the true equator
+ *             and equinox is now disfavored. Instead, wobble() should be used to convert between
+ *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
+ *             the International Terrestrial Reference System (ITRS) going forward.
+ *
  * Specifies the unmodeled celestial pole offsets for high-precision applications to be applied to
  * the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. These offsets must not
  * include tidal terms, and should be specified relative to the IAU2006 precession/nutation model
@@ -115,11 +120,6 @@ double EPS_COR = 0.0;
  * @sa get_ut1_to_tt()
  * @sa sidereal_time()
  * @sa NOVAS_FULL_ACCURACY
- *
- * @deprecated This old way of incorporating Earth orientation parameters into the true equator
- *             and equinox is now disfavored. Instead, wobble() should be used to convert between
- *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
- *             the International Terrestrial Reference System (ITRS) going forward.
  */
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2) {
   switch(type) {
@@ -384,6 +384,9 @@ double novas_gmst_prec(double jd_tdb) {
 }
 
 /**
+ * @deprecated      (<i>for internal use</i>) There is no good reason why this function should
+ *                  be exposed to users. It is intended only for `cio_location()` internally.
+ *
  * Compute the intermediate right ascension of the equinox at the input Julian date, using an
  * analytical expression for the accumulated precession in right ascension.  For the true
  * equinox, the result is the equation of the origins.
@@ -410,9 +413,6 @@ double novas_gmst_prec(double jd_tdb) {
  *
  * @sa cio_ra()
  * @sa gcrs_to_cirs()
- *
- * @deprecated      (<i>for internal use</i>) There is no good reason why this function should
- *                  be exposed to users. It is intended only for `cio_location()` internally.
  */
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy) {
   // Precession in RA in arcseconds taken from the reference in seconds of time.
@@ -437,6 +437,10 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
 }
 
 /**
+ * @deprecated (<i>for internal use</i>) There is no good reason why this function should
+ *             be exposed to users of the library. It is intended only for use by `e_tilt()`
+ *             internally.
+ *
  * Computes the "complementary terms" of (i.e. the non-polynomial contribution to) the equation of
  * the equinoxes. The input Julian date can be split into high and low order parts for improved
  * accuracy. Typically, the split is into integer and fractiona parts. If the precision of a
@@ -476,10 +480,6 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @sa cel_pole()
  * @sa nutation()
  * @sa sidereal_time()
- *
- * @deprecated (<i>for internal use</i>) There is no good reason why this function should
- *             be exposed to users of the library. It is intended only for use by `e_tilt()`
- *             internally.
  */
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) {
   static THREAD_LOCAL double last_tt = NAN, last_ee;

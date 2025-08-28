@@ -563,6 +563,11 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 }
 
 /**
+ * @deprecated  The name of this function does not reveal what type of equatorial
+ *              coordinates it requires. To make it less ambiguous, you should use
+ *              tod_to_itrs() followed by itrs_to_hor() instead, possibly following it
+ *              with an atmospheric refraction correction if appropriate.
+ *
  * Transforms topocentric (TOD) right ascension and declination to zenith distance and
  * azimuth. This method should not be used to convert CIRS apparent coordinates (IAU
  * 2000 standard) -- for those you should use cirs_to_itrs() followed by itrs_to_hor()
@@ -571,11 +576,6 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  * It uses a method that properly accounts for polar motion, which is significant at the
  * sub-arcsecond level. This function can also adjust coordinates for atmospheric
  * refraction.
- *
- * @deprecated  The name of this function does not reveal what type of equatorial
- *              coordinates it requires. To make it less ambiguous, you should use
- *              tod_to_itrs() followed by itrs_to_hor() instead, possibly following it
- *              with an atmospheric refraction correction if appropriate.
  *
  * NOTES:
  * <ul>

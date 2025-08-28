@@ -181,6 +181,8 @@ double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy)
 }
 
 /**
+ *  @deprecated Use novas_gmst() or novas_gast() instead to get the same results simpler.
+ *
  * Computes the Greenwich sidereal time, either mean or apparent, at the specified Julian date.
  * The Julian date can be broken into two parts if convenient, but for the highest precision,
  * set 'jd_high' to be the integral part of the Julian date, and set 'jd_low' to be the fractional
@@ -220,8 +222,6 @@ double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy)
  * @sa itrs_to_tod()
  * @sa cel_pole()
  * @sa get_ut1_to_tt()
- *
- * @deprecated Use novas_gmst() or novas_gast() instead to get the same results simpler.
  */
 short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type,
         enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst) {

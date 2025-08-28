@@ -85,6 +85,11 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
 }
 
 /**
+ * @deprecated This function can be confusing to use due to the output coordinate system
+ *             being specified by a combination of two options. Use itrs_to_cirs() or
+ *             itrs_to_tod() instead. You can then follow these with other conversions to
+ *             GCRS (or whatever else) as appropriate.
+ *
  * Rotates a vector from the terrestrial to the celestial system. Specifically, it transforms
  * a vector in the ITRS (rotating earth-fixed system) to the True of Date (TOD), CIRS, or GCRS
  * (a local space-fixed system) by applying rotations for polar motion, Earth rotation (for
@@ -94,11 +99,6 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  * NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
- *
- * @deprecated This function can be confusing to use due to the output coordinate system
- *             being specified by a combination of two options. Use itrs_to_cirs() or
- *             itrs_to_tod() instead. You can then follow these with other conversions to
- *             GCRS (or whatever else) as appropriate.
  *
  * REFERENCES:
  *  <ol>
@@ -194,6 +194,11 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 }
 
 /**
+ * @deprecated This function can be confusing to use due to the input coordinate system
+ *             being specified by a combination of two options. Use itrs_to_cirs() or
+ *             itrs_to_tod() instead. You can then follow these with other conversions to
+ *             GCRS (or whatever else) as appropriate.
+ *
  * Rotates a vector from the celestial to the terrestrial system.  Specifically, it transforms
  * a vector in the GCRS, or the dynamcal CIRS or TOD frames to the ITRS (a rotating earth-fixed
  * system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth
@@ -203,11 +208,6 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * is NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
- *
- * @deprecated This function can be confusing to use due to the input coordinate system
- *             being specified by a combination of two options. Use itrs_to_cirs() or
- *             itrs_to_tod() instead. You can then follow these with other conversions to
- *             GCRS (or whatever else) as appropriate.
  *
  * REFERENCES:
  *  <ol>
