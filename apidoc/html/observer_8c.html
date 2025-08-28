@@ -46,7 +46,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.4</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.5</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -776,7 +776,9 @@ novas_calc_geometric_position() </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic()</a> </dd>
+<dd>
+<a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a> </dd>
 <dd>
 <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a> </dd>
 <dd>
@@ -854,6 +856,8 @@ This implementation breaks strict v1.0 ABI compatibility since it writes to (ini
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL, or if the temperature or pressure values are impossible for an Earth based observer.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a5eb76fc6e7be571e228d23aee3823cb9">make_observer_on_surface()</a> </dd>
+<dd>
+<a class="el" href="itrf_8c.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic()</a> </dd>
 <dd>
 <a class="el" href="observer_8c.html#ac0ca6f330e1795ce811df95986400632">make_in_space()</a> </dd>
 <dd>
@@ -1036,8 +1040,6 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c">novas_hpa()</a> </dd>
-<dd>
-novas_lst() </dd>
 <dd>
 <a class="el" href="observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f">novas_e2h_offset()</a> </dd></dl>
 

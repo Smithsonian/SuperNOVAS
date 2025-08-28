@@ -21,7 +21,7 @@ __SuperNOVAS__ is entirely free to use without licensing restrictions. Its sourc
 standard, and hence should be suitable for old and new platforms alike. And, despite it being a light-weight library,
 it fully supports the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
 
-This document has been updated for the `v1.4` and later releases.
+This document has been updated for the `v1.5` and later releases.
 
 
 ## Table of Contents
@@ -602,10 +602,12 @@ observation:
  novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &obs_time, dx, dy, &obs_frame);
 ```
 
-Here `dx` and `dy` are small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
-in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). They are needed when 
-converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed ITRS frame. You may ignore these and 
-set zeroes if sub-arcsecond precision is not required.
+Here `dx` and `dy` are small (sub-arcsec level) corrections to Earth orientation. Values for these are are published 
+in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html), and if accuracy below the
+milli-acsecond level is required, should be corrected for diurnal and semi-diurnal variations caused by librations and
+ocean tides (see `novas_diurnal_eop()` for calculating such corrections). These Earth orientation parameters (EOP) are 
+needed only when converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed ITRS frame. You may 
+ignore these and set zeroes if sub-arcsecond precision is not required. 
 
 The advantage of using the observing frame, is that it enables very fast position calculations for multiple objects
 in that frame (see the [benchmarks](#benchmarks)), since all sources in a frame have well-defined, fixed, topological 
@@ -1135,10 +1137,13 @@ considerations before that level of accuracy is reached.
     nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
     (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
     provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
-    time difference and leap-seconds (UTC-TAI). In __SuperNOVAS__ you can use `cel_pole()` and `get_ut1_to_tt()` 
-    functions to apply / use the published values from these to improve the astrometric precision of Earth-orientation 
-    based coordinate calculations. Without setting and using the actual polar offset values for the time of 
-    observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
+    time difference and leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be
+    further amended to include corrections for variations caused by librations and ocean tides. As of version 1.5 
+    `novas_diurnal_eop()` may be used to calculate such corrections. In __SuperNOVAS__ you can use `cel_pole()` and 
+    `get_ut1_to_tt()` functions to apply / use the published values from these to improve the astrometric precision of 
+    Earth-orientation based coordinate calculations. Without setting and using the actual polar offset values for the 
+    time of  observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level 
+    only.
    
   5. __Refraction__: Ground based observations are also subject to atmospheric refraction. __SuperNOVAS__ offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
@@ -1458,14 +1463,14 @@ aberration and gravitational deflection corrections from the observer's point of
 
  | Description                         | accuracy  | positions / sec |
  |-------------------------------------|:---------:|----------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         2884159 |
- |                                     |   full    |         2881913 |
- | `place()`, same time, same observer | reduced   |          656077 |
- |                                     |   full    |          656112 |
- | `novas_sky_pos()`, individual       | reduced   |          127370 |
- |                                     |   full    |           29674 |
- | `place()`, individual               | reduced   |          132218 |
- |                                     |   full    |           29932 |
+ | `novas_sky_pos()`, same frame       | reduced   |         3100653 |
+ |                                     |   full    |         3093511 |
+ | `place()`, same time, same observer | reduced   |          829483 |
+ |                                     |   full    |          831015 |
+ | `novas_sky_pos()`, individual       | reduced   |          161932 |
+ |                                     |   full    |           25943 |
+ | `place()`, individual               | reduced   |          166714 |
+ |                                     |   full    |           25537 |
 
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
 
@@ -1631,6 +1636,15 @@ one minute.
  - Improvements to atmospheric refraction modeling.
 
 
+#### New in 1.5
+
+ - New, simpler functions to calculated Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
+
+ - New functions to calculate corrections to the Earth orientation parameters published by IERS, to include the effect
+   of librations and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS 
+   coordinates with accuracy below the milli-arcsecond (mas) level.
+
+
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
 
@@ -1725,6 +1739,10 @@ one minute.
  - [__v1.4.2__] Nutation models have been upgraded from the original IAU2000 model to IAU2006 (i.e. IAU2000A R06), 
    making them dynamically consistent with the implemented IAU2006 (P03) precession model.
 
+ - [__v1.5__] Faster IAU2000A (R06) nutation series and `ee_ct()` calculations, with a ~2x speedup.
+ 
+ - [__v1.5__] Weaned off using CIO locator file internally (but still allowing users to access them if they want to).
+ 
 
 -----------------------------------------------------------------------------
 

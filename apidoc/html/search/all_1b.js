@@ -1,12 +1,18 @@
 var searchData=
 [
-  ['way_0',['way',['../md_LEGACY.html',1,'Astrometric Positions the Old Way'],['../index.html#autotoc_md64',1,'Legacy modules: a better way...']]],
-  ['where_1',['where',['../structobserver.html#a11f2eb69df64b674d938b34bbb842ab1',1,'observer']]],
-  ['with_20novas_20c_203_201_2',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md58',1,'']]],
-  ['with_20supernovas_3',['Building your application with SuperNOVAS',['../index.html#autotoc_md62',1,'']]],
-  ['wobble_4',['wobble',['../earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652',1,'wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out):&#160;earth.c'],['../novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652',1,'wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out):&#160;earth.c']]],
-  ['wobble_5fitrs_5fto_5fpef_5',['WOBBLE_ITRS_TO_PEF',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9',1,'novas.h']]],
-  ['wobble_5fitrs_5fto_5ftirs_6',['WOBBLE_ITRS_TO_TIRS',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a88d1bc6832a20ed34c4dab5753864851',1,'novas.h']]],
-  ['wobble_5fpef_5fto_5fitrs_7',['WOBBLE_PEF_TO_ITRS',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10',1,'novas.h']]],
-  ['wobble_5ftirs_5fto_5fitrs_8',['WOBBLE_TIRS_TO_ITRS',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a4b792b9dcf18048019f1a4fb486b7c97',1,'novas.h']]]
+  ['v1_200_0',['New in v1.0',['../index.html#autotoc_md111',1,'']]],
+  ['v1_201_1',['New in v1.1',['../index.html#autotoc_md112',1,'']]],
+  ['v1_202_2',['New in v1.2',['../index.html#autotoc_md113',1,'']]],
+  ['v1_203_3',['New in v1.3',['../index.html#autotoc_md114',1,'']]],
+  ['v1_204_4',['New in v1.4',['../index.html#autotoc_md115',1,'']]],
+  ['v_5fobs_5',['v_obs',['../structnovas__frame.html#a52e812c05f108858a4459d937a2115a4',1,'novas_frame']]],
+  ['vc_6',['VC',['../eph__manager_8c.html#afe4ec6caa67baf8fb5b184cc183a07e8',1,'eph_manager.c']]],
+  ['vector2radec_7',['vector2radec',['../util_8c.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c'],['../novas_8h.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c']]],
+  ['vel_8',['vel',['../structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035',1,'novas_planet_bundle']]],
+  ['velocity_20transforms_20change_20of_20coordinate_20system_9',['Coordinate and velocity transforms (change of coordinate system)',['../index.html#autotoc_md83',1,'']]],
+  ['via_20jpl_20s_20tt_20pleph_20tt_20fortran_20interface_10',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md91',1,'']]],
+  ['via_20tt_20eph_5fmanager_20tt_11',['Planets via &lt;tt&gt;eph_manager&lt;/tt&gt;',['../index.html#autotoc_md90',1,'']]],
+  ['virtual_5fplanet_12',['virtual_planet',['../novas_8h.html#a0dc172d82eec79f78c2d218c1a7b9cbe',1,'virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c'],['../place_8c.html#a0dc172d82eec79f78c2d218c1a7b9cbe',1,'virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c']]],
+  ['virtual_5fstar_13',['virtual_star',['../novas_8h.html#aaf187624a93349391518f9d6bb3051e5',1,'virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c'],['../place_8c.html#aaf187624a93349391518f9d6bb3051e5',1,'virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c']]],
+  ['vs_20new_14',['Celestial coordinate systems (old vs. new)',['../index.html#autotoc_md71',1,'']]]
 ];

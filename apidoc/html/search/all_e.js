@@ -1,28 +1,8 @@
 var searchData=
 [
-  ['i_0',['i',['../structnovas__orbital.html#a5659a38afd08966e6799fa0fb40a882a',1,'novas_orbital']]],
-  ['iau2000a_1',['iau2000a',['../nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c'],['../nutation_8h.html#a280cbf02b13ca57b3d77451be06e7dbc',1,'iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c']]],
-  ['iau2000b_2',['iau2000b',['../nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c'],['../nutation_8h.html#a6f9cddeb8c3dd906b9b0b5941249ad0c',1,'iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps):&#160;nutation.c']]],
-  ['icrs_5fto_5fj2000_3',['icrs_to_j2000',['../structnovas__frame.html#ad28815abec2847e4ab01a17dab76f0c5',1,'novas_frame::icrs_to_j2000'],['../novas_8h.html#ae8b91a9b4fe4af63c7054d1eacdb996ea8557604d6604356e6620b42f78aec999',1,'ICRS_TO_J2000:&#160;novas.h']]],
-  ['ijd_5ftt_4',['ijd_tt',['../structnovas__timespec.html#ab1b769234049ec8d7cdbb22800116184',1,'novas_timespec']]],
-  ['in_20v1_200_5',['New in v1.0',['../index.html#autotoc_md106',1,'']]],
-  ['in_20v1_201_6',['New in v1.1',['../index.html#autotoc_md107',1,'']]],
-  ['in_20v1_202_7',['New in v1.2',['../index.html#autotoc_md108',1,'']]],
-  ['in_20v1_203_8',['New in v1.3',['../index.html#autotoc_md109',1,'']]],
-  ['in_20v1_204_9',['New in v1.4',['../index.html#autotoc_md110',1,'']]],
-  ['in_5fspace_10',['in_space',['../structin__space.html',1,'']]],
-  ['in_5fspace_5finit_11',['IN_SPACE_INIT',['../novas_8h.html#a406038a5cbe32b7e0e7233f6145e4cf5',1,'novas.h']]],
-  ['incorporating_20solar_20system_20ephemeris_20data_20or_20services_12',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md80',1,'']]],
-  ['installation_13',['Building and installation',['../index.html#autotoc_md60',1,'']]],
-  ['integration_14',['integration',['../index.html#autotoc_md81',1,'CALCEPH integration'],['../index.html#autotoc_md82',1,'NAIF CSPICE toolkit integration'],['../index.html#autotoc_md83',1,'Universal ephemeris data / service integration']]],
-  ['interest_15',['interest',['../index.html#autotoc_md70',1,'Specify the object of interest'],['../md_LEGACY.html#autotoc_md43',1,'Specify the object of interest']]],
-  ['interface_16',['Planets via JPL&apos;s &lt;tt&gt;pleph&lt;/tt&gt; FORTRAN interface',['../index.html#autotoc_md86',1,'']]],
-  ['interpolate_17',['interpolate',['../eph__manager_8c.html#aeda97db4dfac1a80c97ab2f3fb42b4a9',1,'eph_manager.c']]],
-  ['introduction_18',['Introduction',['../index.html#autotoc_md53',1,'']]],
-  ['ipt_19',['IPT',['../eph__manager_8c.html#a3e671032c94fa64bb397d6166fef36f7',1,'eph_manager.c']]],
-  ['ira_5fequinox_20',['ira_equinox',['../novas_8h.html#aea0e1028baf14d16d9de800e36a17086',1,'ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy):&#160;equinox.c'],['../equinox_8c.html#aea0e1028baf14d16d9de800e36a17086',1,'ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy):&#160;equinox.c']]],
-  ['issues_21',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md56',1,'']]],
-  ['itrs_5fto_5fcirs_22',['itrs_to_cirs',['../novas_8h.html#a12953f66c0f774284f0700ae785784d0',1,'itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;system.c'],['../system_8c.html#a12953f66c0f774284f0700ae785784d0',1,'itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;system.c']]],
-  ['itrs_5fto_5fhor_23',['itrs_to_hor',['../novas_8h.html#aef3c1f8e4c443e51e65003018449768a',1,'itrs_to_hor(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za):&#160;coords.c'],['../coords_8c.html#aef3c1f8e4c443e51e65003018449768a',1,'itrs_to_hor(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za):&#160;coords.c']]],
-  ['itrs_5fto_5ftod_24',['itrs_to_tod',['../novas_8h.html#a3f6ae564cfac3766a21e0754905e5f7c',1,'itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;system.c'],['../system_8c.html#a3f6ae564cfac3766a21e0754905e5f7c',1,'itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in, double *out):&#160;system.c']]]
+  ['height_0',['height',['../structon__surface.html#a89f6abd564014faeff7cd20c340a9c7d',1,'on_surface']]],
+  ['helioc_1',['HELIOC',['../novas_8h.html#a5414c24d23ad004a73ec69b1aad9f3e2',1,'novas.h']]],
+  ['highlights_2',['New functionality highlights',['../index.html#autotoc_md110',1,'']]],
+  ['hor_5fto_5fitrs_3',['hor_to_itrs',['../system_8c.html#a19f4f6c7d942dcba5ad2a4d2a60affad',1,'hor_to_itrs(const on_surface *restrict location, double az, double za, double *restrict itrs):&#160;system.c'],['../novas_8h.html#a19f4f6c7d942dcba5ad2a4d2a60affad',1,'hor_to_itrs(const on_surface *restrict location, double az, double za, double *restrict itrs):&#160;system.c']]],
+  ['humidity_4',['humidity',['../structon__surface.html#a987616dbcfdfc936af3e5874ef5a41e7',1,'on_surface']]]
 ];

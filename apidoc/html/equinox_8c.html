@@ -46,7 +46,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.4</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.5</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -133,6 +133,8 @@ Functions</h2></td></tr>
 <tr class="separator:aea0e1028baf14d16d9de800e36a17086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af182ee8cc4239f581f746aa974827d61" id="r_af182ee8cc4239f581f746aa974827d61"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq</a> (double jd_tdb)</td></tr>
 <tr class="separator:af182ee8cc4239f581f746aa974827d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30f34cfb5b601fa3fe8533c4fb47d8b2" id="r_a30f34cfb5b601fa3fe8533c4fb47d8b2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="equinox_8c.html#a30f34cfb5b601fa3fe8533c4fb47d8b2">novas_gmst_prec</a> (double jd_tdb)</td></tr>
+<tr class="separator:a30f34cfb5b601fa3fe8533c4fb47d8b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69df5671751c09a7575963b94ad1151e" id="r_a69df5671751c09a7575963b94ad1151e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#ae2d3d508d68d268bec838bdc013d0ada">novas_nutation_direction</a> direction, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const double *in, double *out)</td></tr>
 <tr class="separator:a69df5671751c09a7575963b94ad1151e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacc6a0daf29b8bdc18f46647a94694d3" id="r_aacc6a0daf29b8bdc18f46647a94694d3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon</a> (double t, enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> planet)</td></tr>
@@ -172,7 +174,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a> </dd>
+<a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a> </dd>
 <dd>
 <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
@@ -219,6 +221,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>This old way of incorporating Earth orientation parameters into the true equator and equinox is now disfavored. Instead, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a> should be used to convert between the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and the International Terrestrial Reference System (ITRS) going forward.</dd></dl>
 <p>Specifies the unmodeled celestial pole offsets for high-precision applications to be applied to the True of Date (TOD) equator, in the old, pre IAU 2006 methodology. These offsets must not include tidal terms, and should be specified relative to the IAU2006 precession/nutation model to provide a correction to the modeled (precessed and nutated) position of Earth's pole, such those derived from observations and published by IERS.</p>
 <p>The call sets the global variables <code>PSI_COR</code> and <code>EPS_COR</code>, for subsequent calls to <code><a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a></code>. As such, it should be called to specify pole offsets prior to legacy NOVAS C equinox-specific calls. The global values of <code>PSI_COR</code> and <code>EPS_COR</code> specified via this function will be effective until explicitly changed again.</p>
 <p>NOTES: </p><ol>
@@ -255,16 +258,15 @@ Kaplan, G. (2003), USNO/AA Technical Note 2003-03. </li>
 <dd>
 <a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
 <dd>
-<a class="el" href="system_8c.html#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a> </dd>
+<a class="el" href="transform_8c.html#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a> </dd>
 <dd>
-<a class="el" href="system_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> </dd>
+<a class="el" href="transform_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd>
 <dd>
 <a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a></dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>This old way of incorporating Earth orientation parameters into the true equator and equinox is now disfavored. Instead, <a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a> should be used to convert between the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and the International Terrestrial Reference System (ITRS) going forward. </dd></dl>
+<a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543a2126557509f896a0aeb435795fe1da47">POLE_OFFSETS_DPSI_DEPS</a>, and <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77">POLE_OFFSETS_X_Y</a>.</p>
 
@@ -344,13 +346,11 @@ This function caches the results of the last calculation in case it may be re-us
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the accuracy argument is invalid</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
 <dd>
-<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<a class="el" href="system_8c.html#a035047336b16951b8b850066e74210a9">equ2ecl()</a> </dd>
 <dd>
-<a class="el" href="coords_8c.html#a035047336b16951b8b850066e74210a9">equ2ecl()</a> </dd>
-<dd>
-<a class="el" href="coords_8c.html#a41ca0cfd79ad07c9e857ba02fa94928e">ecl2equ()</a> </dd></dl>
+<a class="el" href="system_8c.html#a41ca0cfd79ad07c9e857ba02fa94928e">ecl2equ()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a>, <a class="el" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>.</p>
 
@@ -387,7 +387,8 @@ This function caches the results of the last calculation in case it may be re-us
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the "complementary terms" of the equation of the equinoxes. The input Julian date can be split into high and low order parts for improved accuracy. Typically, the split is into integer and fractiona parts. If the precision of a single part is sufficient, you may set the low order part to 0.</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated:</a></b></dt><dd>(<em>for internal use</em>) There is no good reason why this function should be exposed to users of the library. It is intended only for use by <code><a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a></code> internally.</dd></dl>
+<p>Computes the "complementary terms" of (i.e. the non-polynomial contribution to) the equation of the equinoxes. The input Julian date can be split into high and low order parts for improved accuracy. Typically, the split is into integer and fractiona parts. If the precision of a single part is sufficient, you may set the low order part to 0.</p>
 <p>The series used in this function was derived from the first reference. This same series was also adopted for use in the IAU's Standards of Fundamental Astronomy (SOFA) software (i.e., subroutine <code>eect00.for</code> and function <code>eect00.c</code>).</p>
 <p>The low-accuracy series used in this function is a simple implementation derived from the first reference, in which terms smaller than 2 microarcseconds have been omitted.</p>
 <p>NOTES: </p><ol>
@@ -396,10 +397,12 @@ This function caches the results of the last calculation in case it may be re-us
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
-Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. &amp; Astrophys. 406, p. 1135-1149. Table 3. </li>
+<p class="startli">Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. &amp; Astrophys. 406, p. 1135-1149. Table 3.</p>
+<p class="endli"></p>
+</li>
 <li>
 IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.<br  />
- (Table 5.2e presented in the printed publication is a truncated series. The full series, which is used in NOVAS, is available on the IERS Conventions Center website: <a href="ftp://tai.bipm.org/iers/conv2010/chapter5/tab5.2e.txt">ftp://tai.bipm.org/iers/conv2010/chapter5/tab5.2e.txt</a>)  </li>
+ (Table 5.2e presented in the printed publication is a truncated series. The full series, which is used in NOVAS, is available on the IERS Conventions Center website: <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a>)  </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -416,10 +419,9 @@ IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.<br  />
 <dd>
 <a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd>
 <dd>
-<a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a></dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>(<em>for intrernal use</em>) There is no good reason why this function should be exposed to users of the library. It is intended only for use by <code><a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a></code> internally. </dd></dl>
+<a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9">novas_delaunay_args::D</a>, <a class="el" href="structnovas__delaunay__args.html#ae3520ebb3ff8d6feab3e6afb47ed4040">novas_delaunay_args::F</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045af12d26e56aa375fd2aa0c0edfd1c9ae3">NOVAS_NEPTUNE</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737">novas_delaunay_args::Omega</a>, and <a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
+<p class="reference">References <a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="equinox_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
 
 </div>
 </div>
@@ -448,8 +450,10 @@ IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.<br  />
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Compute the fundamental arguments (mean elements) of the Sun and Moon.</p>
+<p>Compute the fundamental (a.k.a. Delaunay) arguments (mean elements) of the Sun and Moon.</p>
 <p>REFERENCES: </p><ol>
+<li>
+IERS Conventions Chapter 5, Eq. 5.43. </li>
 <li>
 Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3.5. </li>
 </ol>
@@ -463,7 +467,7 @@ Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output pointer argument is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a> </dd>
+<a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a> </dd>
 <dd>
 <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a> </dd></dl>
 
@@ -502,6 +506,7 @@ Simon et al. (1994) Astronomy and Astrophysics 282, 663-683, esp. Sections 3.4-3
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000007">Deprecated:</a></b></dt><dd>(<em>for internal use</em>) There is no good reason why this function should be exposed to users. It is intended only for <code><a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a></code> internally.</dd></dl>
 <p>Compute the intermediate right ascension of the equinox at the input Julian date, using an analytical expression for the accumulated precession in right ascension. For the true equinox, the result is the equation of the origins.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -520,12 +525,11 @@ Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[h] Intermediate right ascension of the equinox, in hours (+ or -). If 'equinox' = 1 (i.e true equinox), then the returned value is the equation of the origins.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a> </dd>
 <dd>
-<a class="el" href="system_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a></dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>(<em>for internal use</em>) There is no good reason why this function should be exposed to users. It is intended only for <code><a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a></code> internally. </dd></dl>
+<a class="el" href="transform_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
+<p class="reference">References <a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="equinox_8c.html#a30f34cfb5b601fa3fe8533c4fb47d8b2">novas_gmst_prec()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>.</p>
 
 </div>
 </div>
@@ -558,11 +562,43 @@ Capitaine et al. (2003), Astronomy and Astrophysics 412, 567-586. </li>
 <dl class="section return"><dt>Returns</dt><dd>[arcsec] Mean obliquity of the ecliptic in arcseconds.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a> </dd>
 <dd>
-<a class="el" href="coords_8c.html#a035047336b16951b8b850066e74210a9">equ2ecl()</a> </dd>
+<a class="el" href="system_8c.html#a035047336b16951b8b850066e74210a9">equ2ecl()</a> </dd>
 <dd>
-<a class="el" href="coords_8c.html#a41ca0cfd79ad07c9e857ba02fa94928e">ecl2equ()</a> </dd>
+<a class="el" href="system_8c.html#a41ca0cfd79ad07c9e857ba02fa94928e">ecl2equ()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a30f34cfb5b601fa3fe8533c4fb47d8b2" name="a30f34cfb5b601fa3fe8533c4fb47d8b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30f34cfb5b601fa3fe8533c4fb47d8b2">&#9670;&#160;</a></span>novas_gmst_prec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_gmst_prec </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>jd_tdb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the polynomial precession term of GMST, which together with the equation of equinoxes translates Earth Rotation Angle (ERA) to Greenwhich Mean Sidereal Time (GMST).</p>
+<p>REFERENCES: </p><ol>
+<li>
+Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). </li>
+<li>
+<a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamic Time (TDB) based Julian date, but TT-based date may also be used without loss of precision. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>[arcsec] the precession term for the ERA to GMST conversion according to Capitaine et al. (2003) eq. 42. </dd></dl>
 
 </div>
 </div>
@@ -662,6 +698,10 @@ Explanatory Supplement To The Astronomical Almanac, pp. 114-115. </li>
       </table>
 </div><div class="memdoc">
 <p>Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994, 5.8.1-5.8.8).</p>
+<p>REFERENCES: </p><ol>
+<li>
+IERS Conventions Chapter 5, Eq. 5.44. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">t</td><td>[cy] Julian centuries since J2000 </td></tr>
@@ -674,7 +714,7 @@ Explanatory Supplement To The Astronomical Almanac, pp. 114-115. </li>
 <dd>
 <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a> </dd>
+<a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a> </dd>
 <dd>
 <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
@@ -754,13 +794,11 @@ Liu, J.-C., &amp;amp Capitaine, N. (2017), A&amp;A 597, A83 </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the position vectors is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a> </dd>
 <dd>
-<a class="el" href="system_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> </dd>
+<a class="el" href="transform_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> </dd>
 <dd>
 <a class="el" href="parse_8c.html#af4e18885b7d173eb3fe5f18b06f0b4d4">novas_epoch()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd>
-<dd>
-<a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a> </dd>
 <dd>
 <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a> </dd>
 <dd>

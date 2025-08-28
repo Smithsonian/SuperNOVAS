@@ -46,7 +46,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.4</span>
+   <div id="projectname">SuperNOVAS<span id="projectnumber">&#160;v1.5</span>
    </div>
    <div id="projectbrief">The NOVAS C library, made better</div>
   </td>
@@ -1125,7 +1125,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
     <tr><td class="paramdir"></td><td class="paramname">ijd</td><td>[day] integer part of the Julian day in the specified timescale </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">fjd</td><td>[day] fractional part Julian day value in the specified timescale </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">leap</td><td>[s] Leap seconds, e.g. as published by IERS Bulletin C. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">time</td><td>Pointer to the data structure that uniquely defines the astronomical time for all applications. </td></tr>
   </table>
   </dd>
@@ -1137,7 +1137,9 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dd>
 <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a> </dd>
 <dd>
-<a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a></dd></dl>
+<a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a> </dd>
+<dd>
+<a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -1194,7 +1196,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
     <tr><td class="paramdir"></td><td class="paramname">timescale</td><td>The astronomical time scale in which the Julian Date is given </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">jd</td><td>[day] Julian day value in the specified timescale </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">leap</td><td>[s] Leap seconds, e.g. as published by IERS Bulletin C. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">time</td><td>Pointer to the data structure that uniquely defines the astronomical time for all applications. </td></tr>
   </table>
   </dd>
@@ -1206,7 +1208,9 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dd>
 <a class="el" href="timescale_8c.html#ae30e3dd8e30bdcf4e8486cfce696fb98">novas_get_time()</a> </dd>
 <dd>
-<a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a></dd></dl>
+<a class="el" href="timescale_8c.html#ab344242721ca00709d4dc482a7934e2a">novas_timescale_for_string()</a> </dd>
+<dd>
+<a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -1263,7 +1267,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
     <tr><td class="paramdir"></td><td class="paramname">unix_time</td><td>[s] UNIX time (UTC) seconds </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">nanos</td><td>[ns] UTC sub-second component </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">leap</td><td>[s] Leap seconds, e.g. as published by IERS Bulletin C. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code> </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">time</td><td>Pointer to the data structure that uniquely defines the astronomical time for all applications. </td></tr>
   </table>
   </dd>
@@ -1274,6 +1278,8 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <a class="el" href="timescale_8c.html#afa1a1d804ca70050418429f971c2045a">novas_get_unix_time()</a> </dd>
 <dd>
 clock_gettime() </dd>
+<dd>
+<a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a> </dd>
 <dd>
 struct timespec</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
@@ -1325,7 +1331,7 @@ struct timespec</dd></dl>
 <dd>
 <a class="el" href="timescale_8c.html#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46">EROT_ERA</a>, <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baa6fc4520426c4c9cbe497ab87f2ad583">NOVAS_UT1</a>, and <a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a>.</p>
+<p class="reference">References <a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a>, <a class="el" href="timescale_8c.html#ae30e3dd8e30bdcf4e8486cfce696fb98">novas_get_time()</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baa6fc4520426c4c9cbe497ab87f2ad583">NOVAS_UT1</a>.</p>
 
 </div>
 </div>
