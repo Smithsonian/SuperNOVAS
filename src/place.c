@@ -596,6 +596,8 @@ int radec_planet(double jd_tt, const object *restrict ss_body, const observer *r
 }
 
 /**
+ * @deprecated place_tod() or the frame-based novas_sky_pos() are now preferred.
+ *
  * Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt',
  * given its catalog mean place, proper motion, parallax, and radial velocity.
  *
@@ -615,8 +617,6 @@ int radec_planet(double jd_tt, const object *restrict ss_body, const observer *r
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3.</li>
  * </ol>
  *
- * @deprecated Use place_cirs() is now preferred, especially for high accuracy calculations.
- *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param star      Pointer to catalog entry structure containing catalog data for
  *                  the object in the ICRS.
@@ -629,6 +629,7 @@ int radec_planet(double jd_tt, const object *restrict ss_body, const observer *r
  *                  the error from make_object(), or 20 + the error from place().
  *
  * @sa place_tod()
+ * @sa novas_sky_pos()
  * @sa place_star()
  * @sa astro_star()
  * @sa local_star()
@@ -724,6 +725,8 @@ short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accura
 }
 
 /**
+ * @deprecated place_tod() or the frame-based novas_sky_pos() are now preferred.
+ *
  * Computes the apparent place of a solar system body. This is the same as calling
  * place() for the body with NOVAS_TOD as the system, except the different set of
  * return values used.
@@ -740,8 +743,6 @@ short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accura
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
  * </ol>
  *
- * @deprecated Use place_cirs() is now preferred, especially for high accuracy calculations.
- *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar
  *                  system body.
@@ -757,6 +758,7 @@ short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accura
  *                  error code from place().
  *
  * @sa place_tod()
+ * @sa novas_sky_pos()
  * @sa astro_planet()
  * @sa local_planet()
  * @sa topo_planet()
@@ -845,6 +847,9 @@ short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accu
 }
 
 /**
+ * @deprecated Using the frame-based novas_sky_pos() is now preferred for topocentric calculations,
+ *             especially when high precision is required.
+ *
  * Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given
  * its ICRS catalog place, proper motion, parallax, and radial velocity.
  *
@@ -863,10 +868,6 @@ short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accu
  * <li>Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3.</li>
  * </ol>
  *
- * @deprecated Using place() with system NOVAS_CIRS is now preferred for topocentric calculations,
- *             especially when high precision is required. However, you will have to follow the IAU
- *             2000 method consistently to produce equivalent calculations throughout.
- *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date.
  * @param ut1_to_tt   [s] Difference TT-UT1 at 'jd_tt', in seconds of time.
  * @param star      Pointer to catalog entry structure containing catalog data for
@@ -880,6 +881,7 @@ short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accu
  * @return          0 if successful, -1 if a required pointer argument is NULL, or else
  *                  20 + the error code from place_star().
  *
+ * @sa novas_sky_pos()
  * @sa place_star()
  * @sa app_star()
  * @sa local_star()
@@ -941,6 +943,9 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star,
 }
 
 /**
+ * @deprecated Using the frame-based novas_sky_pos() is now preferred for topocentric calculations,
+ *             especially when high precision is required.
+ *
  * Computes the topocentric apparent place of a solar system body at the specified time.
  * This is the same as calling place() for the body for the same observer location and
  * NOVAS_TOD as the reference system, except the different set of return values used.
@@ -956,11 +961,6 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star,
  *     <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  *     <li>Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3.</li>
  * </ol>
- *
- * @deprecated Using place() with system NOVAS_CIRS is now preferred for topocentric
- *             calculations, especially when high precision is required. However, you will
- *             have to follow the IAU 2000 method consistently to produce equivalent
- *             calculations throughout.
  *
  * @param jd_tt     [day] Terretrial Time (TT) based Julian date.
  * @param ss_body   Pointer to structure containing the body designation for the solar
@@ -978,6 +978,7 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star,
  *                  the value of 'where' in structure 'location' is invalid, or 10 + the
  *                  error code from place().
  *
+ * @sa novas_sky_pos()
  * @sa app_planet()
  * @sa local_planet()
  * @sa topo_planet()

@@ -29,8 +29,9 @@
 static FILE *cio_file;
 
 /**
- * Computes the true right ascension of the celestial intermediate origin (CIO) at a given TT
- * Julian date.  This is the negative value for the equation of the origins.
+ * Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date
+ * on the true equator of date for a given TT Julian date. This is simply the negated return value of
+ * ira_equinox() for the true equator of date.
  *
  * REFERENCES:
  * <ol>
@@ -44,12 +45,11 @@ static FILE *cio_file;
  * @return            0 if successful, -1 if the output pointer argument is NULL,
  *                    1 if 'accuracy' is invalid, 10--20: 10 + error code from cio_location(),
  *                    or else 20 + error from cio_basis()
+ *
+ * @sa ira_equinox()
  */
 short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio) {
   static const char *fn = "cio_ra";
-  const double unitx[3] = { 1.0, 0.0, 0.0 };
-  double jd_tdb, x[3], y[3], z[3], eq[3], az, r_cio;
-  short rs;
 
   if(!ra_cio)
     return novas_error(-1, EINVAL, fn, "NULL output array");
@@ -62,28 +62,15 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
     return novas_error(1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   // For these calculations we can assume TDB = TT (< 2 ms difference)
-  jd_tdb = jd_tt;
-
-  // Obtain the basis vectors, in the GCRS, for the celestial intermediate
-  // system defined by the CIP (in the z direction) and the CIO (in the
-  // x direction).
-  prop_error(fn, cio_location(jd_tdb, accuracy, &r_cio, &rs), 10);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, rs, accuracy, x, y, z), 20);
-
-  // Compute the direction of the true equinox in the GCRS.
-  tod_to_gcrs(jd_tdb, accuracy, unitx, eq);
-
-  // Compute the RA-like coordinate of the true equinox in the celestial
-  // intermediate system, in radians
-  az = atan2(novas_vdot(eq, y), novas_vdot(eq, x));
-
-  // The RA of the CIO is minus this coordinate, cast as hour-angle
-  *ra_cio = -az / HOURANGLE;
-
+  *ra_cio = -ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy);
   return 0;
 }
 
 /**
+ * @deprecated    SuperNOVAS no longer uses a NOVAS-type CIO locator file. However, if users want
+ *                to access such files  directly, this function remains accessible to provide API
+ *                compatibility with previous versions.
+ *
  * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS.
  * You can specify either the original `CIO_RA.TXT` file included in the distribution
  * (preferred since v1.1), or else a platform-specific binary data file compiled from it
@@ -99,7 +86,6 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
  *
  * @since 1.0
  * @author Attila Kovacs
- *
  */
 int set_cio_locator_file(const char *restrict filename) {
   FILE *old = cio_file;
@@ -115,6 +101,12 @@ int set_cio_locator_file(const char *restrict filename) {
 }
 
 /**
+ * @deprecated This function is no longer used internally in the library. Given that the CIO
+ *             is defined on the dynamical equator of date, it is not normally meaningful to
+ *             provide an R.A. coordinate for it in GCRS, in general. Instead, you might use
+ *             cio_ra() to get the same value w.r.t. the equinox of date (on the same CIRS/TOD
+ *             dynamical equator, or else `ira_equinox()` to return the negated value.
+ *
  * Returns the location of the celestial intermediate origin (CIO) for a given Julian date,
  * as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true
  * equinox of date. The CIO is always located on the true equator (= intermediate equator)
@@ -138,6 +130,12 @@ int set_cio_locator_file(const char *restrict filename) {
  *  This function caches the results of the last calculation in case it may be re-used at
  *  no extra computational cost for the next call.
  * </li>
+ * <li>
+ *  Note, that when a CIO location file is used, the bundled CIO locator data was prepared
+ *  with the original IAU2000A nutation model, not with the newer R06 (a.k.a. IAU2006) model,
+ *  resulting in an error up to the few tens of micro-arcseconds level for dates between 1900
+ *  and 2100, and larger errors further away from the current epoch.
+ * </li>
  * </ol>
  *
  * @param jd_tdb           [day] Barycentric Dynamic Time (TDB) based Julian date
@@ -153,9 +151,8 @@ int set_cio_locator_file(const char *restrict filename) {
  * @return            0 if successful, -1 if one of the pointer arguments is NULL or the
  *                    accuracy is invalid.
  *
- * @sa set_cio_locator_file()
  * @sa cio_ra()
- * @sa gcrs_to_cirs()
+ * @sa ira_equinox()
  */
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type) {
   static const char *fn = "cio_location";
@@ -217,7 +214,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
     novas_debug(saved_debug_state);
 
     // Calculate the equation of origins.
-    *ra_cio = -1.0 * ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
+    *ra_cio = -ira_equinox(jd_tdb, NOVAS_TRUE_EQUINOX, accuracy);
     *loc_type = CIO_VS_EQUINOX;
   }
 
@@ -230,14 +227,16 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
 }
 
 /**
- * Computes the orthonormal basis vectors, with respect to the GCRS (geocentric ICRS), of the
- * celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z
- * direction) and the celestial intermediate origin (CIO) (in the x direction).  A TDB Julian
- * date and the right ascension of the CIO at that date is required as input.  The right
- * ascension of the CIO can be with respect to either the GCRS origin or the true equinox of
- * date -- different algorithms are used in the two cases.
+ * @deprecated This function is no longer used internally in the library, and users are recommended
+ *             against using it themselves, since SuperNOVAS provides better ways to convert between
+ *             GCRS and CIRS using frames or via gcrs_to_cirs() / cirs_to_gcrs() functions.
  *
- * This function effectively constructs the matrix C in eq. (3) of the reference.
+ * Computes the CIRS basis vectors, with respect to the GCRS (geocentric ICRS), of the
+ * celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z
+ * direction) and the celestial intermediate origin (CIO) (in the x direction).
+ *
+ * This function effectively constructs the CIRS to GCRS transformation matrix C in eq. (3) of the
+ * reference.
  *
  * NOTES:
  * <ol>
@@ -264,15 +263,15 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
  * @return            0 if successful, or -1 if any of the output vector arguments are NULL
  *                    or if the accuracy is invalid, or else 1 if 'ref-sys' is invalid.
  *
- * @sa cio_location()
  * @sa gcrs_to_cirs()
+ * @sa novas_frame
  */
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *restrict x, double *restrict y, double *restrict z) {
   static const char *fn = "cio_basis";
   static THREAD_LOCAL enum novas_accuracy acc_last = -1;
   static THREAD_LOCAL double t_last = NAN;
-  static THREAD_LOCAL double zz[3];
+  static THREAD_LOCAL double xx[3], yy[3], zz[3];
 
   if(!x || !y || !z)
     return novas_error(-1, EINVAL, fn, "NULL output 3-vector: x=%p, y=%p, z=%p", x, y, z);
@@ -286,39 +285,33 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
     tod_to_gcrs(jd_tdb, accuracy, z0, zz);
     t_last = jd_tdb;
     acc_last = accuracy;
-  }
 
-  // Now compute unit vectors x and y.  Method used depends on the
-  // reference system in which right ascension of the CIO is given.
-  ra_cio *= HOURANGLE;
+    // Now compute unit vectors x and y.  Method used depends on the
+    // reference system in which right ascension of the CIO is given.
+    ra_cio *= HOURANGLE;
 
-  switch(loc_type) {
+    switch(loc_type) {
+      case CIO_VS_GCRS: {
 
-    case CIO_VS_GCRS: {
+        // Compute vector x toward CIO in GCRS.
+        const double sinra = sin(ra_cio);
+        const double cosra = cos(ra_cio);
+        double l;
 
-      // Compute vector x toward CIO in GCRS.
-      const double sinra = sin(ra_cio);
-      const double cosra = cos(ra_cio);
-      double l;
+        xx[0] = zz[2] * cosra;
+        xx[1] = zz[2] * sinra;
+        xx[2] = -zz[0] * cosra - zz[1] * sinra;
 
-      x[0] = zz[2] * cosra;
-      x[1] = zz[2] * sinra;
-      x[2] = -zz[0] * cosra - zz[1] * sinra;
+        // Normalize vector x.
+        l = novas_vlen(xx);
+        xx[0] /= l;
+        xx[1] /= l;
+        xx[2] /= l;
 
-      // Normalize vector x.
-      l = novas_vlen(x);
-      x[0] /= l;
-      x[1] /= l;
-      x[2] /= l;
+        break;
+      }
 
-      break;
-    }
-
-    case CIO_VS_EQUINOX: {
-      static THREAD_LOCAL double last_ra = 0.0;
-      static THREAD_LOCAL double xx[3] = { 0.0, 0.0, 1.0 };
-
-      if(xx[2] || fabs(ra_cio - last_ra) > 1e-12) {
+      case CIO_VS_EQUINOX: {
         // Construct unit vector toward CIO in equator-and-equinox-of-date
         // system.
         xx[0] = cos(ra_cio);
@@ -327,34 +320,35 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
 
         // Rotate the vector into the GCRS to form unit vector x.
         tod_to_gcrs(jd_tdb, accuracy, xx, xx);
+        break;
       }
 
-      memcpy(x, xx, sizeof(xx));
+      default:
+        // Invalid value of 'ref_sys'.
+        memset(x, 0, XYZ_VECTOR_SIZE);
+        memset(y, 0, XYZ_VECTOR_SIZE);
+        memset(z, 0, XYZ_VECTOR_SIZE);
 
-      break;
+        return novas_error(1, EINVAL, fn, "invalid input CIO location type: %d", loc_type);
     }
 
-    default:
-      // Invalid value of 'ref_sys'.
-      memset(x, 0, XYZ_VECTOR_SIZE);
-      memset(y, 0, XYZ_VECTOR_SIZE);
-      memset(z, 0, XYZ_VECTOR_SIZE);
-
-      return novas_error(1, EINVAL, fn, "invalid input CIO location type: %d", loc_type);
+    // Compute unit vector y orthogonal to x and z (y = z cross x).
+    yy[0] = zz[1] * xx[2] - zz[2] * xx[1];
+    yy[1] = zz[2] * xx[0] - zz[0] * xx[2];
+    yy[2] = zz[0] * xx[1] - zz[1] * xx[0];
   }
 
-  // Compute unit vector y orthogonal to x and z (y = z cross x).
-  y[0] = zz[1] * x[2] - zz[2] * x[1];
-  y[1] = zz[2] * x[0] - zz[0] * x[2];
-  y[2] = zz[0] * x[1] - zz[1] * x[0];
-
-  // Load the z array.
+  memcpy(x, xx, sizeof(xx));
+  memcpy(y, yy, sizeof(yy));
   memcpy(z, zz, sizeof(zz));
 
   return 0;
 }
 
 /**
+ * @deprecated    This function is no longer used within SuperNOVAS. It is still provided, however,
+ *                in order to retain 100% API compatibility with NOVAS C.
+ *
  * Given an input TDB Julian date and the number of data points desired, this function returns
  * a set of Julian dates and corresponding values of the GCRS right ascension of the celestial
  * intermediate origin (CIO).  The range of dates is centered (at least approximately) on the
@@ -366,8 +360,16 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  *
  * NOTES:
  * <ol>
- * <li>This function has been completely re-written by A. Kovacs to provide much more efficient
- * caching and I/O.</li>
+ * <li>
+ *   This function has been completely re-written by A. Kovacs to provide much more efficient
+ *   caching and I/O.
+ * </li>
+ * <li>
+ *  The CIO locator file that is bundled was prepared with the original IAU2000A nutation model,
+ *  not with the newer R06 (a.k.a. IAU2006) nutation model, resulting in an error up to the few
+ *  tens of micro-arcseconds level for dates between 1900 and 2100, and larger errors further away
+ *  from the current epoch.
+ * </li>
  * </ol>
  *
  * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
@@ -394,7 +396,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
     double jd_interval;
     long n_recs;
   };
-
 
 
   static const FILE *last_file;

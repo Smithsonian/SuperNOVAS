@@ -505,6 +505,17 @@ static int test_cirs_to_gcrs() {
   return n;
 }
 
+static int test_cirs_to_tod() {
+  double p[3];
+  int n = 0;
+
+  if(check("cirs_to_tod:in", -1, cirs_to_tod(0.0, NOVAS_FULL_ACCURACY, NULL, p))) n++;
+  if(check("cirs_to_tod:out", -1, cirs_to_tod(0.0, NOVAS_FULL_ACCURACY, p, NULL))) n++;
+  if(check("cirs_to_tod:accuracy", -1, cirs_to_tod(0.0, -1, p, p))) n++;
+
+  return n;
+}
+
 static int test_cirs_to_app_ra() {
   int n = 0;
   if(check_nan("cirs_to_app_ra:accuracy:-1", cirs_to_app_ra(NOVAS_JD_J2000, -1, 0.0))) n++;
@@ -701,7 +712,6 @@ static int test_sidereal_time() {
 
   if(check("sidereal_time:out", -1, sidereal_time(0.0, 0.0, 0.0, NOVAS_MEAN_EQUINOX, EROT_GST, NOVAS_FULL_ACCURACY, NULL))) n++;
   if(check("sidereal_time:accuracy", 1, sidereal_time(0.0, 0.0, 0.0, NOVAS_MEAN_EQUINOX, EROT_GST, -1, &x))) n++;
-  if(check("sidereal_time:erot", 2, sidereal_time(0.0, 0.0, 0.0, NOVAS_MEAN_EQUINOX, -1, NOVAS_FULL_ACCURACY, &x))) n++;
 
   return n;
 }
@@ -931,6 +941,7 @@ static int test_cio_location() {
 
   if(check("cio_location:ra", -1, cio_location(0.0, NOVAS_FULL_ACCURACY, NULL, &type))) n++;
   if(check("cio_location:type", -1, cio_location(0.0, NOVAS_FULL_ACCURACY, &x, NULL))) n++;
+  if(check("cio_location:accuracy", -1, cio_location(0.0, -1, &x, &type))) n++;
 
   return n;
 }
@@ -2310,6 +2321,69 @@ static int test_next_moon_phase() {
   return n;
 }
 
+static int test_libration() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("libration:args", -1, novas_diurnal_libration(0.0, NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
+static int test_ocean_tides() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("ocean_tides:args", -1, novas_diurnal_ocean_tides(0.0, NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
+static int test_diurnal_eop() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("diurnal_eop:args", -1, novas_diurnal_eop(0.0, NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
+static int test_diurnal_eop_at_time() {
+  int n = 0;
+  double xp, yp, dut;
+
+  if(check("diurnal_eop_at_time:time", -1, novas_diurnal_eop_at_time(NULL, &xp, &yp, &dut))) n++;
+
+  return n;
+}
+
+static int test_cartesian_to_geodetic() {
+  int n = 0;
+  double lon, lat, alt;
+
+  if(check("cartesian_to_geodetic", -1, novas_cartesian_to_geodetic(NULL, &lon, &lat, &alt))) n++;
+
+  return n;
+}
+
+static int test_geodetic_to_cartesian() {
+  int n = 0;
+
+  if(check("geodetic_to_cartesian", -1, novas_geodetic_to_cartesian(0.0, 0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
+int test_itrf_transform() {
+  int n = 0;
+  double from_coords[3] = {0.0}, from_rates[3] = {0.0}, to_coords[3] = {0.0}, to_rates[3] = {0.0};
+
+  if(check("itrf_transform:from_coords", -1, novas_itrf_transform(2000, NULL, from_rates, 2014, to_coords, to_rates))) n++;
+  if(check("itrf_transform:rates", -1, novas_itrf_transform(2000, from_coords, NULL, 2014, to_coords, to_rates))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2344,6 +2418,7 @@ int main() {
   if(test_tod_to_j2000()) n++;
   if(test_gcrs_to_cirs()) n++;
   if(test_cirs_to_gcrs()) n++;
+  if(test_cirs_to_tod()) n++;
   if(test_cirs_to_app_ra()) n++;
   if(test_app_to_cirs_ra()) n++;
 
@@ -2497,6 +2572,15 @@ int main() {
   if(test_approx_sky_pos()) n++;
   if(test_moon_phase()) n++;
   if(test_next_moon_phase()) n++;
+
+  if(test_libration()) n++;
+  if(test_ocean_tides()) n++;
+  if(test_diurnal_eop()) n++;
+  if(test_diurnal_eop_at_time()) n++;
+
+  if(test_cartesian_to_geodetic()) n++;
+  if(test_geodetic_to_cartesian()) n++;
+  if(test_itrf_transform()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

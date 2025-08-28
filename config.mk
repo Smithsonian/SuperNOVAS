@@ -171,11 +171,11 @@ ifeq ($(DEFAULT_SOLSYS), 3)
   CPPFLAGS += -DDEFAULT_SOLSYS=3
 endif
 
-SOURCES = $(SRC)/target.c $(SRC)/observer.c $(SRC)/earth.c $(SRC)/equinox.c $(SRC)/coords.c \
-          $(SRC)/system.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
+SOURCES = $(SRC)/target.c $(SRC)/observer.c $(SRC)/earth.c $(SRC)/equinox.c $(SRC)/system.c \
+          $(SRC)/transform.c $(SRC)/cio.c $(SRC)/orbital.c $(SRC)/spectral.c $(SRC)/grav.c \
           $(SRC)/nutation.c $(SRC)/timescale.c $(SRC)/frames.c $(SRC)/place.c $(SRC)/calendar.c  \
           $(SRC)/refract.c $(SRC)/naif.c $(SRC)/parse.c $(SRC)/plugin.c $(SRC)/util.c \
-          $(SRC)/planets.c
+          $(SRC)/planets.c $(SRC)/itrf.c
 
 ifeq ($(BUILTIN_SOLSYS1), 1) 
   SOURCES += $(SRC)/solsys1.c $(SRC)/eph_manager.c 

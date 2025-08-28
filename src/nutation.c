@@ -34,12 +34,15 @@ typedef struct {
   int32_t A;         ///< [10 nas] Sine term coefficient
   int32_t B;         ///< [10 nas] Cosine term coefficient
   int8_t n[14];      ///< multiples (5 fund args + 8 planets [Mercury -- Neptune] + accumulated precession)
+  int8_t from;       ///< index of first non-zero multiple in n[].
+  int8_t to;         ///< index after the last non-zero multiple in n[].
 } nutation_terms;
-/// \endcond
 
-#include "nutation/iau2006a.tab"
-#include "nutation/iau2006b.tab"
-#include "nutation/nu2000k.tab"
+#include "nutation/iau2006a.tab.c"
+#include "nutation/iau2006b.tab.c"
+#include "nutation/nu2000k.tab.c"
+
+/// \endcond
 
 /**
  * Returns the IAU2000 / 2006 values for nutation in longitude and nutation in obliquity for a given TDB
@@ -111,9 +114,8 @@ static double sum_terms(double t, const double *a, const nutation_terms *P0, int
     double arg = 0.0;
     int k;
 
-    for(k = 14; --k >= 0; )
-      if(T->n[k])
-        arg += T->n[k] * a[k];
+    for(k = T->from; k < T->to; k++)
+      arg += T->n[k] * a[k];
 
     sum += T->A * sin(arg) + T->B * cos(arg);
   }
@@ -123,9 +125,8 @@ static double sum_terms(double t, const double *a, const nutation_terms *P0, int
     double arg = 0.0;
     int k;
 
-    for(k = 14; --k >= 0; )
-      if(T->n[k])
-        arg += T->n[k] * a[k];
+    for(k = T->from; k < T->to; k++)
+      arg += T->n[k] * a[k];
 
     sum += (T->A * sin(arg) + T->B * cos(arg)) * t;
   }
@@ -202,13 +203,14 @@ static int iau2006_fp(double jd_tt_high, double jd_tt_low, int nA0, int nA1, int
  *
  */
 int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
-  return iau2006_fp(jd_tt_high, jd_tt_low, 1320, 38, 1037, 19, dpsi, deps);
+  prop_error("iau200a", iau2006_fp(jd_tt_high, jd_tt_low, 1320, 38, 1037, 19, dpsi, deps), 0);
+  return 0;
 }
 
 /**
  * Computes the forced nutation of the non-rigid Earth based at reduced precision. It reproduces the
  * IAU 2000A (R06) model to a precision of 1 milliarcsecond in the interval 1995-2020, while being
- * about 25x faster than `iau2000a()`.
+ * about 15x faster than `iau2000a()`.
  *
  * NOTES
  * <ol>
@@ -251,14 +253,15 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  *
  */
 int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
-  return iau2006_fp(jd_tt_high, jd_tt_low, 98, 4, 55, 2, dpsi, deps);
+  prop_error("iau2000b", iau2006_fp(jd_tt_high, jd_tt_low, 98, 4, 55, 2, dpsi, deps), 0);
+  return 0;
 }
 
 /**
  * Computes the forced nutation of the non-rigid Earth: Model NU2000K.  This model is a
  * modified version of the original IAU 2000A, which has been truncated for speed of execution.
  * NU2000K agrees with IAU 2000A at the 0.1 milliarcsecond level from 1700 to 2300, while
- * being is about an order of magnitude (10x) faster than the more precise `iau2000a()`.
+ * being is about 5x faster than the more precise `iau2000a()`.
  *
  * NU2000K was compared to IAU 2000A over six centuries (1700-2300). The average error in
  * d&psi; is 20 microarcseconds, with 98% of the errors < 60 microarcseconds;  the average
@@ -302,7 +305,6 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  *
  */
 int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
-
   // Interval between fundamental epoch J2000.0 and given date.
   const double t = ((jd_tt_high - T0) + jd_tt_low) / JULIAN_CENTURY_DAYS;
 

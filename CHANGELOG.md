@@ -7,6 +7,63 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+
+Upcoming feature release, expected around 1 November 2025.
+
+### Fixed
+
+
+### Added
+
+ - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
+   Sidereal Times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal_time()` with
+   a simpler and more intuitive interface.
+   
+ - #215: New functions (e.g. `novas_diurnal_eop()`) to calculate corrections to the Earth orientation parameters 
+   published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary to include 
+   if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.
+
+ - #217: New functions `novas_itrf_transform()` and `novas_itrf_transform_eop()` to enable transforming gecocentric
+   _xyz_ station coordinates between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is
+   based on Chapter 4 of the IERS Conventions.
+   
+ - #217: New functions `novas_geodetic_to_cartesian()` and `novas_cartesian_to_geodetic()` to convert between 
+   geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the reference
+   ellipsoids, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine, except that is uses 
+   the IERS Conventions (Chapter 1) value of 6378136.6 m for the Earth (equatorial) radius, rather than the GRS1980 
+   value of 6378137.0 m used by `GCONV2.F`.
+
+### Changed
+
+ - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 
+   same true equator of date). 
+
+ - #209: `novas_make_frame()` calculates `gst` and `gcrs_to_cirs` fields faster, using the already available frame
+   quantities and thus eliminating duplicate calculations.
+
+ - #210: Speed up `iau2000a()` and `iau2000b()` nutations by restricting the range of multiples that are iterated 
+   over.
+ 
+ - #212: Speed up `ee_ct()` by restricting the range of multiples that are iterated over. Also reduced accuracy now
+   uses the same series, only with fewer terms.
+ 
+ - #214: Reworked GCRS-CIRS transforms without `cio_basis()`.
+
+### Deprecated
+
+ - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files (`CIO_RA.TXT`
+   or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also `ira_equinox()` (which
+   returns the negative of the same value).
+
+ - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now a dud. Instead, you should
+   use `novas_gmst()` or `novas_gast()` to get the same results simpler.
+
+ - #214: Deprecated `cio_basis()`. It is no longer used internally in the library, and users are recommended against 
+   using it themselves, since SuperNOVAS provides better ways to convert between GCRS and CIRS using frames or via the
+   `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
+   
+   
 ## [1.4.2] - 2025-08-25
 
 Bug fix release with updated nutation models.

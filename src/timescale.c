@@ -446,7 +446,9 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @param timescale     The astronomical time scale in which the Julian Date is given
  * @param jd            [day] Julian day value in the specified timescale
  * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
+ * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
+ *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
+ *                      via `novas_diurnal_eop()`.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
@@ -456,6 +458,7 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @sa novas_set_unix_time()
  * @sa novas_get_time()
  * @sa novas_timescale_for_string()
+ * @sa novas_diurnal_eop()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -492,7 +495,9 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @param ijd           [day] integer part of the Julian day in the specified timescale
  * @param fjd           [day] fractional part Julian day value in the specified timescale
  * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
+ * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
+ *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
+ *                      via `novas_diurnal_eop()`.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
@@ -502,6 +507,7 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @sa novas_set_unix_time()
  * @sa novas_get_split_time()
  * @sa novas_timescale_for_string()
+ * @sa novas_diurnal_eop()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -803,7 +809,9 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * @param unix_time   [s] UNIX time (UTC) seconds
  * @param nanos       [ns] UTC sub-second component
  * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C.
- * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A.
+ * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
+ *                    possibly corrected for diurnal and semi-diurnal variations, e.g.
+ *                    via `novas_diurnal_eop()`
  * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
  *                    for all applications.
  * @return            0 if successful, or else -1 if there was an error (errno will be set to
@@ -812,6 +820,7 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * @sa novas_set_time()
  * @sa novas_get_unix_time()
  * @sa clock_gettime()
+ * @sa novas_diurnal_eop()
  * @sa struct timespec
  *
  * @since 1.1
@@ -1619,19 +1628,12 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
  * @sa novas_set_time()
  */
 double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy accuracy) {
-  const char *fn = "novas_time_gst";
+  double jd_ut1 = novas_get_time(time, NOVAS_UT1);
 
-  double fjd_ut1, gst = NAN;
-  long ijd_ut1 = 0L;
+  if(isnan(jd_ut1))
+    return novas_trace_nan("novas_time_gst");
 
-  fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
-  if(isnan(fjd_ut1))
-    return novas_trace_nan(fn);
-
-  if(sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_ERA, accuracy, &gst) != 0)
-    return novas_trace_nan(fn);
-
-  return gst;
+  return novas_gast(jd_ut1, time->ut1_to_tt, accuracy);
 }
 
 /**

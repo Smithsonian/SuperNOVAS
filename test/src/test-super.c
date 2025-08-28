@@ -1460,6 +1460,27 @@ static int test_geom_posvel() {
   return 0;
 }
 
+static int test_cio_basis() {
+  double h = 0.0;
+  short sys;
+  double x0[3] = {0.0}, y0[3] = {0.0}, z0[3] = {0.0};
+  double x1[3] = {0.0}, y1[3] = {0.0}, z1[3] = {0.0};
+
+  if(!is_ok("cio_basis:cio_location", cio_location(tdb, NOVAS_FULL_ACCURACY, &h, &sys))) return 1;
+  if(!is_equal("cio_basis:cio_location:sys", sys, CIO_VS_GCRS, 1e-12)) return 1;
+
+  if(!is_ok("cio_basis:gcrs", cio_basis(tdb, h, sys, NOVAS_FULL_ACCURACY, x0, y0, z0))) return 1;
+
+  h = -ira_equinox(tdb, NOVAS_TRUE_EQUINOX, NOVAS_FULL_ACCURACY);
+  if(!is_ok("cio_basis:tod", cio_basis(tdb, h, CIO_VS_EQUINOX, NOVAS_FULL_ACCURACY, x1, y1, z1))) return 1;
+
+  if(!is_ok("cio_basis:check:x", check_equal_pos(x0, x1, 1e-11))) return 1;
+  if(!is_ok("cio_basis:check:y", check_equal_pos(y0, y1, 1e-11))) return 1;
+  if(!is_ok("cio_basis:check:z", check_equal_pos(z0, z1, 1e-11))) return 1;
+
+  return 0;
+}
+
 static int test_dates() {
   double offsets[] = {-10000.0, 0.0, 10000.0, 10000.0, 10000.01 };
   int i, n = 0;
@@ -1480,6 +1501,7 @@ static int test_dates() {
     if(test_set_time()) n++;
     if(test_get_time()) n++;
     if(test_geom_posvel()) n++;
+    if(test_cio_basis()) n++;
 
     for(k =0; k < NOVAS_REFERENCE_SYSTEMS; k++) if(test_sky_pos(k)) n++;
 
@@ -1774,7 +1796,7 @@ static int test_tt2tdb_hp() {
     if(!is_equal(label, tt2tdb_fp(jd_tt, 1.0), tt2tdb_hp(jd_tt), 1e-5)) n++;
 
     sprintf(label, "tt2tdb_fp:%d:-1", (2000 + 100 * i));
-        if(!is_equal(label, tt2tdb_fp(jd_tt, -1.0), tt2tdb_hp(jd_tt), 1e-9)) n++;
+    if(!is_equal(label, tt2tdb_fp(jd_tt, -1.0), tt2tdb_hp(jd_tt), 1e-9)) n++;
   }
 
   return n;
@@ -4090,7 +4112,7 @@ static int test_day_of_year() {
   if(!is_equal("day_of_year:2000-03-01", 61, novas_day_of_year(2451604.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
 
   // 2000-03-01, Roman/Julian
-   if(!is_equal("day_of_year:2000-03-01:roman", 61, novas_day_of_year(2451604.5 + 12, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+  if(!is_equal("day_of_year:2000-03-01:roman", 61, novas_day_of_year(2451604.5 + 12, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
 
   // 2004-03-01
   if(!is_equal("day_of_year:2004-03-01", 61, novas_day_of_year(2453065.5, NOVAS_GREGORIAN_CALENDAR, NULL), 1e-6)) n++;
@@ -4100,6 +4122,256 @@ static int test_day_of_year() {
 
   // 1500-03-01, Roman/Julian
   if(!is_equal("day_of_year:1500-03-01:roman", 61, novas_day_of_year(2268992.5, NOVAS_ROMAN_CALENDAR, NULL), 1e-6)) n++;
+
+  return n;
+}
+
+
+static int test_libration() {
+  int n = 0;
+  novas_delaunay_args a = {};
+  double jd, x, y, z, u;
+
+  // from IERS PMSDNUT2.F
+  // given input: rmjd = 54335D0 ( August 23, 2007 )
+  //
+  //     expected output: (dx) pm(1)  = 24.83144238273364834D0 microarcseconds
+  //                      (dy) pm(2) = -14.09240692041837661D0 microarcseconds
+  jd = NOVAS_JD_MJD0 + 54335.0;
+  if(!is_ok("libration:fund_args:1", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("libration:1", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, &x, &y, NULL))) return 1;
+  if(!is_equal("libration:1:x", 1e6 * x, 24.83144238273364834, 0.01)) n++;
+  if(!is_equal("libration:1:y", 1e6 * y, -14.09240692041837661, 0.01)) n++;
+
+  if(!is_ok("libration:1", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, &z, NULL, NULL))) return 1;
+  if(!is_equal("libration:1:x:only", x, z, 1e-12)) n++;
+
+  if(!is_ok("libration:1", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, NULL, &z, NULL))) return 1;
+  if(!is_equal("libration:1:y:only", y, z, 1e-12)) n++;
+
+  // from IERS UTLIBR.F
+  //  given input:  rmjd_a = 44239.1 ( January 1, 1980 2:24.00 )
+  //     expected output: dUT1_a =   2.441143834386761746D0 mus;
+  //                      dLOD_a = -14.78971247349449492D0 mus / day
+  jd = NOVAS_JD_MJD0 + 44239.1;
+  if(!is_ok("libration:fund_args:2", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("libration:2", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, NULL, NULL, &u))) return 1;
+  if(!is_equal("libration:2:ut", 1e6 * u, 2.441143834386761746, 0.01)) n++;
+
+  //                 rmjd_b = 55227.4 ( January 31, 2010 9:35.59 )
+  //                      dUT1_b = - 2.655705844335680244D0 mus;
+  //                      dLOD_b =  27.39445826599846967D0 mus / day
+  jd = NOVAS_JD_MJD0 + 55227.4;
+  if(!is_ok("libration:fund_args:3", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("libration:3", novas_diurnal_libration(novas_gmst(jd, 0.0), &a, NULL, NULL, &u))) return 1;
+  if(!is_equal("libration:3:ut", 1e6 * u, -2.655705844335680244, 0.01)) n++;
+
+  return n;
+}
+
+static int test_ocean_tides() {
+  int n = 0;
+  novas_delaunay_args a = {};
+  double jd, x, y, z, u;
+
+  // from IERS ORTHO_EOP.F
+  //     given input: MJD = 47100D0
+  //
+  //     expected output: delta_x = -162.8386373279636530D0 microarcseconds
+  //                      delta_y = 117.7907525842668974D0 microarcseconds
+  //                      delta_UT1 = -23.39092370609808214D0 microseconds
+  jd = NOVAS_JD_MJD0 + 47100.0;
+  if(!is_ok("ocean_tides:fund_args", fund_args((jd - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS, &a))) return 1;
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, &x, &y, &u))) return 1;
+
+  // Note: ORTHO_EOP.F is not the same series.
+  // Nevertheless, the test case is only for ORTHO_EOP.F, so hence more roomy tolerances here.
+  if(!is_equal("ocean_tides:x", 1e6 * x, -162.8386373279636530, 3.0)) n++;
+  if(!is_equal("ocean_tides:y", 1e6 * y, 117.7907525842668974, 3.0)) n++;
+  if(!is_equal("ocean_tides:ut1", 1e6 * u, -23.39092370609808214, 0.1)) n++;
+
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, &z, NULL, NULL))) return 1;
+  if(!is_equal("ocean_tides:x:only", x, z, 1e-12)) n++;
+
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, NULL, &z, NULL))) return 1;
+  if(!is_equal("ocean_tides:y:only", y, z, 1e-12)) n++;
+
+  if(!is_ok("ocean_tides", novas_diurnal_ocean_tides(novas_gmst(jd, 0.0), &a, NULL, NULL, &z))) return 1;
+  if(!is_equal("ocean_tides:ut1:only", u, z, 1e-12)) n++;
+
+  return n;
+}
+
+static int test_diurnal_eop_at_time() {
+  int n = 0;
+  novas_delaunay_args a = {};
+  novas_timespec j2000 = {};
+  double x[3], y[3], u[3];
+
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 0.0, 0.0, &j2000);
+
+  if(!is_ok("diurnal_eop_at_time:args", fund_args(0.0, &a))) return 1;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, &x[0], &y[0], &u[0]))) return 1;
+  if(!is_ok("diurnal_eop_at_time:libration", novas_diurnal_libration(novas_gmst(NOVAS_JD_J2000, 0.0), &a, &x[1], &y[1], &u[1]))) return 1;
+  if(!is_ok("diurnal_eop_at_time:ocean_tides", novas_diurnal_ocean_tides(novas_gmst(NOVAS_JD_J2000, 0.0), &a, &x[2], &y[2], &u[2]))) return 1;
+
+  if(!is_equal("ocean_tides:x:only", x[0], x[1] + x[2], 1e-6)) n++;
+  if(!is_equal("ocean_tides:x:only", y[0], y[1] + y[2], 1e-6)) n++;
+  if(!is_equal("ocean_tides:x:only", u[0], u[1] + u[2], 1e-6)) n++;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, &x[1], NULL, NULL))) return 1;
+  if(!is_equal("diurnal_eop_at_time:x:only", x[0], x[1], 1e-12)) n++;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, NULL, &y[1], NULL))) return 1;
+  if(!is_equal("diurnal_eop_at_time:x:only", y[0], y[1], 1e-12)) n++;
+
+  if(!is_ok("diurnal_eop_at_time", novas_diurnal_eop_at_time(&j2000, NULL, NULL, &u[1]))) return 1;
+  if(!is_equal("diurnal_eop_at_time:x:only", u[0], u[1], 1e-12)) n++;
+
+  return n;
+}
+
+static int test_cartesian_to_geodetic() {
+  int n = 0;
+
+  // Test case:
+  //     given input: x = 4075579.496D0 meters  Wettzell (TIGO) station
+  //                  y =  931853.192D0 meters
+  //                  z = 4801569.002D0 meters
+  //
+  //     expected output: phi    =   0.857728298603D0 radians
+  //                      lambda =   0.224779294628D0 radians
+  //                      h      = 665.9207D0 meters
+
+  double x[3] = { 4075579.496, 931853.192, 4801569.002 };
+  double lon = 0.0, lat = 0.0, alt = 0.0, z = 0.0;
+
+  if(!is_ok("cartesian_to_geodetic", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", lat, 0.857728298603 / DEGREE, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.224779294628 / DEGREE, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:alt", alt, 665.9207, 1.0)) n++;
+
+  if(!is_ok("cartesian_to_geodetic:lon:only", novas_cartesian_to_geodetic(x, &z, NULL, NULL))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", z, lon, 1e-9)) n++;
+
+  if(!is_ok("cartesian_to_geodetic:lat:only", novas_cartesian_to_geodetic(x, NULL, &z, NULL))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", z, lat, 1e-9)) n++;
+
+  if(!is_ok("cartesian_to_geodetic:alt:only", novas_cartesian_to_geodetic(x, NULL, NULL, &z))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", z, alt, 1e-3)) n++;
+
+  x[0] = 0.0;
+  x[1] = 0.0;
+  x[2] = NOVAS_EARTH_RADIUS * (1.0 - NOVAS_EARTH_FLATTENING);
+
+  if(!is_ok("cartesian_to_geodetic:pole:north", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", lat, 90.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:alt", alt, 0.0, 1.0)) n++;
+
+  x[2] = -x[2];
+
+  if(!is_ok("cartesian_to_geodetic:pole:south", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:lon", lat, -90.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:lat", lon, 0.0, 1e-6)) n++;
+  if(!is_equal("cartesian_to_geodetic:alt", alt, 0.0, 1.0)) n++;
+
+  return n;
+}
+
+static int test_geodetic_to_cartesian() {
+  int n = 0;
+
+  double x[3] = { 4075579.496, 931853.192, 4801569.002 }, x1[3] = {0.0};
+  double lon = 0.0, lat = 0.0, alt = 0.0;
+
+  if(!is_ok("geodetic_to_cartesian:geodetic", novas_cartesian_to_geodetic(x, &lon, &lat, &alt))) return 1;
+  if(!is_ok("geodetic_to_cartesian", novas_geodetic_to_cartesian(lon, lat, alt, x1))) return 1;
+
+  if(!is_ok("geodetic_to_cartesian:check", check_equal_pos(x1, x, 1e-4))) n++;
+
+  return n;
+}
+
+static int test_itrf_transform() {
+  int n = 0;
+
+  // Test:
+  //
+  // ITRF2014 (epoch 2010.0):
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.2721   486990.7305  4900430.9321 0.0034 0.0013 0.0038  1 00:000:00000 96:275:00000
+  // 14209S001                                  -.01428       0.01691       0.01057 .00015 .00007 .00018
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.2868   486990.7345  4900430.9476 0.0023 0.0010 0.0026  2 96:275:00000 00:000:00000
+  // 14209S001                                  -.01428       0.01691       0.01057 .00015 .00007 .00018
+  //
+  // ITRF2008 (epoch 2005.0):
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.353   486990.646  4900430.889 0.003 0.001 0.003
+  // 14209S001                                  -.0138       0.0169       0.0110 .0002 .0001 .0003
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.366   486990.652  4900430.902 0.001 0.001 0.002  2 96:275:00000 00:000:00000
+  // 14209S001                                  -.0138       0.0169       0.0110 .0002 .0001 .0003
+  //
+  // ITRF2005 (epoch 2000.0):
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.415   486990.562  4900430.827 0.004 0.001 0.004  1 00:000:00000 96:275:00000
+  // 14209S001                                  -.0144       0.0169       0.0099 .0005 .0002 .0005
+  // 14209S001 EFFELSBERG       VLBI 7203  4033947.434   486990.567  4900430.848 0.002 0.001 0.002  2 96:275:00000 00:000:00000
+  // 14209S001                                  -.0144       0.0169       0.0099 .0005 .0002 .0005
+  //
+  // ITRF2000 (epoch 1997.0):
+  // 14209S001 EFFELSBERG        VLBI 7203  4033947.453   486990.512  04900430.79  .003  .001  .004
+  // 14209S001                                   -.0149        .0178        .0077 .0006 .0002 .0007
+  // 14209S001 EFFELSBERG        VLBI 7203  4033947.472   486990.514  4900430.813  .003  .001  .004 2 AFTER 96:309
+  // 14209S001                                   -.0149        .0178        .0077 .0006 .0002 .0007
+  //
+
+  double x2000[] = {4033947.453 , 486990.512 , 4900430.79   }, x2014[] = { 4033947.2721 ,  486990.7305 , 4900430.9321  };
+  double v2000[] = {      -.0149,       .017,         .0077 }, v2014[] = {       -.01428,       0.01691,       0.01057 };
+  double x[3] = {}, v[3] = {}, x1[3] = {};
+  int i;
+
+  if(!is_ok("itrf_transform", novas_itrf_transform(2014, x2014, v2014, 2000, x, v))) return 1;
+
+  for(i = 0; i < 3; i++) x1[i] = x[i] + (1997.0 - 2010.0) * v[i];
+
+  if(!is_ok("itrf_transform:check:pos", check_equal_pos(x1, x2000, 1e-2))) n++;
+  if(!is_ok("itrf_transform:check:vel", check_equal_pos(v, v2000, 1e-2))) n++;
+
+  if(!is_ok("itrf_transform:pos:only", novas_itrf_transform(2014, x2014, NULL, 2000, x1, NULL))) return 1;
+  if(!is_ok("itrf_transform:pos:only:check", check_equal_pos(x1, x, 1e-6))) n++;
+
+  if(!is_ok("itrf_transform:vel:only", novas_itrf_transform(2014, x2014, v2014, 2000, NULL, x1))) return 1;
+  if(!is_ok("itrf_transform:vel:only:check", check_equal_pos(x1, v, 1e-6))) n++;
+
+  if(!is_ok("itrf_transform:2100", novas_itrf_transform(2100, x2014, NULL, 2000, x1, NULL))) return 1;
+  if(!is_ok("itrf_transform:2100:check", check_equal_pos(x1, x, 1e-6))) n++;
+
+  return n;
+}
+
+int test_itrf_transform_eop() {
+  int n = 0;
+
+  double xp, yp, dut1, z;
+
+  // 2014 -> 1993 R:  -2.81,   -3.38,    0.40 [mas]
+  double R1 = -2.81e-3; // [arcsec]
+  double R2 = -3.38e-3; // [arcsec]
+  double R3 =  0.40e-3; // [arcsec]
+
+  if(!is_ok("itrf_transform_eop", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, &xp, &yp, &dut1))) return 1;
+
+  if(!is_equal("itrf_transform_eop:check:xp", xp, R2, 2e-6)) n++;
+  if(!is_equal("itrf_transform_eop:check:yp", yp, R1, 2e-6)) n++;
+  if(!is_equal("itrf_transform_eop:check:dut1", dut1, R3 * ARCSEC / NOVAS_EARTH_FLATTENING * (NOVAS_DAY / TWOPI), 2e-6)) n++;
+
+  if(!is_ok("itrf_transform_eop:xp_only", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, &z, NULL, NULL))) return 1;
+  if(!is_equal("itrf_transform_eop:xp_only:check", z, xp, 1e-9)) n++;
+
+  if(!is_ok("itrf_transform_eop:yp_only", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, NULL, &z, NULL))) return 1;
+  if(!is_equal("itrf_transform_eop:yp_only:check", z, yp, 1e-9)) n++;
+
+  if(!is_ok("itrf_transform_eop:dut1_only", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, NULL, NULL, &z))) return 1;
+  if(!is_equal("itrf_transform_eop:dut1_only:check", z, dut1, 1e-9)) n++;
 
   return n;
 }
@@ -4231,6 +4503,15 @@ int main(int argc, char *argv[]) {
   if(test_day_of_year()) n++;
 
   if(test_tt2tdb_hp()) n++;
+
+  if(test_libration()) n++;
+  if(test_ocean_tides()) n++;
+  if(test_diurnal_eop_at_time()) n++;
+
+  if(test_cartesian_to_geodetic()) n++;
+  if(test_geodetic_to_cartesian()) n++;
+  if(test_itrf_transform()) n++;
+  if(test_itrf_transform_eop()) n++;
 
   n += test_dates();
 

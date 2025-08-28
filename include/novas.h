@@ -169,7 +169,7 @@
 /// @since 1.1
 #define NOVAS_SOLAR_RADIUS        696340000.0
 
-/// [m] Radius of Earth in meters from IERS Conventions (2003).
+/// [m] Equatorial radius of Earth in meters from IERS Conventions (2003).
 #define NOVAS_EARTH_RADIUS        6378136.6
 
 /// Earth ellipsoid flattening from IERS Conventions (2003). Value is 1 / 298.25642.
@@ -361,6 +361,7 @@ enum novas_planet {
  * REFERENCES:
  * <ol>
  * <li>Ryan S. Park et al 2021 AJ 161 105, DOI 10.3847/1538-3881/abd414</li>
+ * <li>IERS Conventions, Chapter 3, Table 3.1</li>
  * </ol>
  *
  * @sa enum novas_planet
@@ -568,6 +569,7 @@ enum novas_refraction_model {
 
 /**
  * Constants that determine the type of rotation measure to use.
+ *
  */
 enum novas_earth_rotation_measure {
   /// Use Earth Rotation Angle (ERA) as the rotation measure, relative to the CIO (new IAU
@@ -1354,7 +1356,7 @@ typedef struct novas_frame {
   struct novas_planet_bundle planets; ///< Planet positions and velocities (ICRS)
   // TODO [v2] add ra_cio
   // TODO [v2] add cirs_to_tirs
-  // TODI [v2] add tirs_to_itrs
+  // TODO [v2] add tirs_to_itrs
 } novas_frame;
 
 /**
@@ -2138,6 +2140,33 @@ int novas_day_of_week(double tjd);
 int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restrict year);
 
 
+// ---------------------- Added in 1.5.0 -------------------------
+
+double novas_gmst(double jd_ut1, double ut1_to_tt);
+
+double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy);
+
+int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restrict dxp, double *restrict dyp, double *restrict dut1);
+
+int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
+int novas_diurnal_libration(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
+int novas_diurnal_ocean_tides(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
+        double *restrict dut1);
+
+int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates,
+        int to_year, double *to_coords, double *to_rates);
+
+int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, double from_dut1,
+        int to_year, double *restrict to_xp, double *restrict to_yp, double *restrict to_dut1);
+
+int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x);
+
+int novas_cartesian_to_geodetic(const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt);
+
 // <================= END of SuperNOVAS API =====================>
 
 
@@ -2262,6 +2291,8 @@ double novas_vdot(const double *v1, const double *v2);
 int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict dpsi, double *restrict deps);
 
 int novas_frame_is_initialized(const novas_frame *frame);
+
+double novas_gmst_prec(double jd_tdb);
 
 extern int novas_inv_max_iter;
 

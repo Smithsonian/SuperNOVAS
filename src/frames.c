@@ -40,6 +40,8 @@
 #define SIDEREAL_RATE       1.002737891         ///< rate at which sidereal time advances faster than UTC
 /// \endcond
 
+
+
 static int cmp_sys(enum novas_reference_system a, enum novas_reference_system b) {
   // GCRS=0, TOD=1, CIRS=2, ICRS=3, J2000=4, MOD=5, TIRS=6, ITRS=7
   // TOD->-3, MOD->-2, J2000->-1, GCRS/ICRS->0, CIRS->1, TIRS->2, ITRS->3
@@ -109,6 +111,45 @@ static int invert_matrix(const novas_matrix *A, novas_matrix *I) {
   return 0;
 }
 
+static int set_spin_matrix(double angle, novas_matrix *T) {
+  double c, s;
+
+  memset(T, 0, sizeof(novas_matrix));
+
+  angle *= DEGREE;
+  c = cos(angle);
+  s = sin(angle);
+
+  // Rotation matrix (non-zero elements only).
+  T->M[0][0] = c;
+  T->M[0][1] = s;
+  T->M[1][0] = -s;
+  T->M[1][1] = c;
+  T->M[2][2] = 1.0;
+
+  return 0;
+}
+
+static int add_transform(novas_transform *transform, const novas_matrix *component, int dir) {
+  int i;
+  double M0[3][3];
+
+  memcpy(M0, transform->matrix.M, sizeof(M0));
+
+  for(i = 3; --i >= 0;) {
+    int j;
+    for(j = 3; --j >= 0;) {
+      int k;
+      double x = 0.0;
+      for(k = 3; --k >= 0;)
+        x += (dir < 0 ? component->M[k][i] : component->M[i][k]) * M0[k][j];
+      transform->matrix.M[i][j] = x;
+    }
+  }
+
+  return 0;
+}
+
 static int set_frame_tie(novas_frame *frame) {
   // 'xi0', 'eta0', and 'da0' are ICRS frame biases in arcseconds taken
   // from IERS (2003) Conventions, Chapter 5.
@@ -135,15 +176,17 @@ static int set_frame_tie(novas_frame *frame) {
 }
 
 static int set_gcrs_to_cirs(novas_frame *frame) {
-  static const char *fn = "set_gcrs_to_cirs";
-  const double jd_tdb = novas_get_time(&frame->time, NOVAS_TDB);
-  double r_cio;
-  short sys;
+  novas_transform T = {};
+  novas_matrix tod2cirs = {};
 
-  novas_matrix *T = &frame->gcrs_to_cirs;
+  set_spin_matrix(15.0 * frame->gst - frame->era, &tod2cirs);
 
-  prop_error(fn, cio_location(jd_tdb, frame->accuracy, &r_cio, &sys), 0);
-  prop_error(fn, cio_basis(jd_tdb, r_cio, sys, frame->accuracy, &T->M[0][0], &T->M[1][0], &T->M[2][0]), 10);
+  T.matrix = frame->icrs_to_j2000;
+  add_transform(&T, &frame->precession, 1);
+  add_transform(&T, &frame->nutation, 1);
+  add_transform(&T, &tod2cirs, 1);
+
+  frame->gcrs_to_cirs = T.matrix;
 
   return 0;
 }
@@ -168,6 +211,12 @@ static int set_precession(novas_frame *frame) {
   //const double chia = t * (10.556240 + t * (-2.3813876 + t * (-0.00121311 + t * (0.000160286 + t * 0.000000086)))) * ARCSEC;
   //const double psia = t * (5038.481270 + t * (-1.0732468 + t * (0.01573403 + t * (0.000127135 - t * 0.0000001020)))) * ARCSEC;
   //const double omegaa = eps0 + t * (-0.024725 + t * (0.0512626 + t * (-0.0077249 + t * (-0.000000267 + t * 0.000000267)))) * ARCSEC;
+
+  // Liu, Capitaine, & Cheng (2019)
+  // Another update on LC17 with new VLBI data
+  //const double chia = t * (10.556240 + t * (-2.3813876 + t * (-0.00121311 + t * (0.000160286 + t * 0.000000086))));
+  //const double psia = t * (5038.482041 + t * (-1.072687 + t * (0.0278555 + t * (0.00012342 - t * 0.0000001096))));
+  //const double omegaa = eps0 + t * (-0.025754 + t * (0.0512626 + t * (-0.0077249 + t * (-0.000000086 + t * 0.000000221))));
 
   const double sa = sin(eps0);
   const double ca = cos(eps0);
@@ -229,24 +278,7 @@ static int set_nutation(novas_frame *frame) {
   return 0;
 }
 
-static int set_spin_matrix(double angle, novas_matrix *T) {
-  double c, s;
 
-  memset(T, 0, sizeof(novas_matrix));
-
-  angle *= DEGREE;
-  c = cos(angle);
-  s = sin(angle);
-
-  // Rotation matrix (non-zero elements only).
-  T->M[0][0] = c;
-  T->M[0][1] = s;
-  T->M[1][0] = -s;
-  T->M[1][1] = c;
-  T->M[2][2] = 1.0;
-
-  return 0;
-}
 
 static int set_wobble_matrix(const novas_frame *frame, novas_matrix *T) {
   // TIRS / PEF -> ITRS
@@ -370,21 +402,21 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  *                    NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient.
  * @param obs         Observer location
  * @param time        Time of observation
- * @param dx          [mas] Earth orientation parameter, polar offset in x, e.g. from the IERS
- *                    Bulletins. (The global, undated value set by cel_pole() is not not used
- *                    here.) You can use 0.0 if sub-arcsecond accuracy is not required.
- * @param dy          [mas] Earth orientation parameter, polar offset in y, e.g. from the IERS
- *                    Bulletins. (The global, undated value set by cel_pole() is not not used
- *                    here.) You can use 0.0 if sub-arcsecond accuracy is not required.
+ * @param dx          [mas] Earth orientation parameter, polar offset in _x_, e.g. from the IERS
+ *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
+ *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
+ *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
+ *                    required.
+ * @param dy          [mas] Earth orientation parameter, polar offset in _y_, e.g. from the IERS
+ *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
+ *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
+ *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
+ *                    required.
  * @param[out] frame  Pointer to the observing frame to configure.
  * @return            0 if successful,
  *                    10--40: error is 10 + the error from ephemeris(),
  *                    40--50: error is 40 + the error from geo_posvel(),
- *                    50--80: error is 50 + the error from sidereal_time(),
- *                    80--90 error is 80 + error from cio_location(),
- *                    90--100 error is 90 + error from cio_basis().
- *                    or else -1 if there was an error (errno will indicate the
- *                    type of error).
+ *                    or else -1 if there was an error (errno will indicate the type of error).
  *
  * @sa novas_change_observer()
  * @sa novas_sky_pos()
@@ -393,6 +425,7 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  * @sa set_nutation_lp_provider()
+ * @sa novas_diurnal_eop()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -437,7 +470,7 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   // Compute mean obliquity of the ecliptic in degrees.
   frame->mobl = mean_obliq(tdb2[0] + tdb2[1]) * ARCSEC;
 
-  // Obtain complementary terms for equation of the equinoxes in seconds of time.
+  // Obtain complementary terms for equation of the equinoxes in radians.
   frame->ee = dpsi * ARCSEC * cos(frame->mobl) + ee_ct(time->ijd_tt, time->fjd_tt, accuracy);
 
   // Compute true obliquity of the ecliptic in degrees.
@@ -446,13 +479,15 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   fjd_ut1 = novas_get_split_time(time, NOVAS_UT1, &ijd_ut1);
   frame->era = era(ijd_ut1, fjd_ut1);
 
-  prop_error(fn, sidereal_time(ijd_ut1, fjd_ut1, time->ut1_to_tt, NOVAS_TRUE_EQUINOX, EROT_GST, frame->accuracy, &frame->gst), 50);
+  //frame->gst = novas_gast(ijd_ut1 + fjd_ut1, time->ut1_to_tt, accuracy); // Use faster calc with available quantities.
+  frame->gst = (frame->era + novas_gmst_prec(tdb2[0] + tdb2[1]) / 3600.0) / 15.0 + frame->ee / HOURANGLE;
+  frame->gst = remainder(frame->gst, DAY_HOURS);
+  if(frame->gst < 0) frame->gst += DAY_HOURS;
 
   set_frame_tie(frame);
   set_precession(frame);
   set_nutation(frame);
-
-  prop_error(fn, set_gcrs_to_cirs(frame), 80);
+  set_gcrs_to_cirs(frame);
 
   // Barycentric Earth and Sun positions and velocities
   prop_error(fn, ephemeris(tdb2, &sun, NOVAS_BARYCENTER, accuracy, frame->sun_pos, frame->sun_vel), 10);
@@ -1124,25 +1159,7 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
   return 0;
 }
 
-static int add_transform(novas_transform *transform, const novas_matrix *component, int dir) {
-  int i;
-  double M0[3][3];
 
-  memcpy(M0, transform->matrix.M, sizeof(M0));
-
-  for(i = 3; --i >= 0;) {
-    int j;
-    for(j = 3; --j >= 0;) {
-      int k;
-      double x = 0.0;
-      for(k = 3; --k >= 0;)
-        x += (dir < 0 ? component->M[k][i] : component->M[i][k]) * M0[k][j];
-      transform->matrix.M[i][j] = x;
-    }
-  }
-
-  return 0;
-}
 
 /**
  * Calculates a transformation matrix that can be used to convert positions and velocities from
@@ -1809,7 +1826,7 @@ double novas_unwrap_angles(double *a, double *b, double *c) {
  * @param dt            [s] Time step used for calculating derivatives.
  * @param[out] track    Output tracking parameters to populate
  * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
- *                      or else an error code from cio_ra() or from novas_sky_pos().
+ *                      or else an error code from novas_sky_pos().
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1842,8 +1859,8 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
     return novas_error(-1, EINVAL, fn, "output track is NULL");
 
   track->time = frame->time;
-  prop_error(fn, cio_ra(frame->time.ijd_tt + frame->time.fjd_tt, frame->accuracy, &ra_cio), 0);
 
+  ra_cio = -ira_equinox(frame->time.ijd_tt + frame->time.fjd_tt, NOVAS_TRUE_EQUINOX, frame->accuracy);
   prop_error(fn, novas_sky_pos(source, frame, NOVAS_CIRS, &pos0), 0);
   pos0.ra += ra_cio;
   pos0.rv = novas_v2z(pos0.rv);
@@ -1899,8 +1916,7 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
  * @param ref_model     Refraction model to use, or NULL for an unrefracted track.
  * @param[out] track    Output tracking parameters to populate
  * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
- *                      or else an error code from cio_ra() or from novas_sky_pos(), or from
- *                      novas_app_hor().
+ *                      or else an error code from novas_sky_pos(), or from novas_app_hor().
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1935,7 +1951,7 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
     return novas_error(-1, EINVAL, fn, "output track is NULL");
 
   track->time = frame->time;
-  prop_error(fn, cio_ra(frame->time.ijd_tt + frame->time.fjd_tt, frame->accuracy, &ra_cio), 0);
+  ra_cio = -ira_equinox(frame->time.ijd_tt + frame->time.fjd_tt, NOVAS_TRUE_EQUINOX, frame->accuracy);
 
   prop_error(fn, novas_sky_pos(source, frame, NOVAS_CIRS, &pos), 0);
   prop_error(fn, novas_app_to_hor(frame, NOVAS_TOD, pos.ra + ra_cio, pos.dec, ref_model, &az0, &el0), 0);
