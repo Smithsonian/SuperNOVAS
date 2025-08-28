@@ -323,15 +323,38 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
   return 0;
 }
 
+/**
+ * Returns the equatorial radius and flattening for the given Earth reference ellipsoid model.
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://en.wikipedia.org/wiki/Earth_ellipsoid</li>
+ * </ol>
+ *
+ * @param ellipsoid   The reference ellipsoid model
+ * @param[out] a      [m] Equatorial radius
+ * @param[out] f      Flattening
+ * @return            0 if successful, or else -1 (errno set to EINVAL) if the ellipsoid is
+ *                    invalid.
+ */
 static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, double *f) {
+
   switch(ellipsoid) {
-    case NOVAS_GRS80:
+    case NOVAS_GRS80_ELLIPSOID:
       *a = NOVAS_GRS80_RADIUS;
       *f = NOVAS_GRS80_FLATTENING;
       break;
-    case NOVAS_WGS84:
+    case NOVAS_WGS84_ELLIPSOID:
       *a = NOVAS_WGS84_RADIUS;
       *f = NOVAS_WGS84_FLATTENING;
+      break;
+    case NOVAS_IERS_1989_ELLIPSOID:
+      *a = 6378136.0;
+      *f = 298.257;
+      break;
+    case NOVAS_IERS_2003_ELLIPSOID:
+      *a = 6378136.6;
+      *f = 298.25642;
       break;
     default:
       return novas_error(-1, EINVAL, "get_ellipsoid", "invalid reference ellipsoid: %d", ellipsoid);
@@ -339,7 +362,6 @@ static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, do
 
   return 0;
 }
-
 
 /**
  * Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80 reference
@@ -387,7 +409,6 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
 
   return 0;
 }
-
 
 /**
  * Converts geocentric Cartesian site coordinates to geodetic coordinates, based on the GRS80
