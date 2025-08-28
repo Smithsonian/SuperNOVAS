@@ -29,8 +29,8 @@ Upcoming feature release, expected around 1 November 2025.
    ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions.
    
  - #217: New functions `novas_geodetic_to_cartesian()` and `novas_cartesian_to_geodetic()` to convert between 
-   geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the GRS80 
-   reference ellipsoid, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
+   geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the
+   reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
 
 ### Changed
 

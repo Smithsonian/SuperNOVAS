@@ -42,56 +42,56 @@ typedef struct {
  * Extracted from IERS Conventions, Chapter 5, Table 4.1.
  */
 static const itrf_transform realizations[] = { //
-	{ 1988, 2010.0, //
-		{ {  25.4,   -0.5, -154.8 },  11.29, {    0.10,    0.00,    0.26 } }, //
-		{ {   0.1    -0.5    -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 1989, 2010.0, //
-		{ {  30.4,   35.5, -130.8 },   8.19, {    0.00,    0.00,    0.26 } }, //
-		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 1990, 2010.0, //
-		{ {  25.4,   11.5,  -92.8 },   4.79, {    0.00,    0.00,    0.26 } }, //
-		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 1991, 2010.0, //
-		{ {  27.4,   15.5,  -76.8 },   4.49, {    0.00,    0.00,    0.26 } }, //
-		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 1992, 2010.0, //
-		{ {  15.4,    1.5,  -70.8 },   3.09, {    0.00,    0.00,    0.26 } }, //
-		{ {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 1993, 2010.0, //
-		{ {  -50.4,   3.3,  -60.2 },   4.29, {   -2.81,   -3.38,    0.40 } }, //
-		{ {   -2.8,  -0.1,   -2.5 },   0.12, {   -0.11,   -0.19,    0.07 } }  //
-	}, //
-	{ 1994, 2010.0, //
-		{ {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
-		{ {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 1996, 2010.0, //
-		{ {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
-		{ {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 1997, 2010.0, //
-		{ {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
-		{ {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
-	}, //
-	{ 2000, 2010.0, //
-		{ {    0.7,   1.2,  -26.1 },   2.12, {    0.00,    0.00,    0.00 } }, //
-		{ {    0.1,   0.1,   -1.9 },   0.11, {    0.00,    0.00,    0.00 } }  //
-	}, //
-	{ 2005, 2010.0, //
-		{ {    2.6,   1.0,   -2.3 },   0.92, {    0.00,    0.00,    0.00 } }, //
-		{ {    0.3,   0.0,   -0.1 },   0.03, {    0.00,    0.00,    0.00 } }  //
-	}, //
-	{ 2008, 2010.0, //
-		{ {    1.6,   1.9,    2.4 },  -0.02, {    0.00,    0.00,    0.00 } }, //
-		{ {    0.0,   0.0,   -0.1 },   0.03, {    0.00,    0.00,    0.00 } }  //
-	}, //
-	{ 2014, 2010.0, {}, {} }, //
-	{} 
+        { 1988, 2010.0, //
+                { {  25.4,   -0.5, -154.8 },  11.29, {    0.10,    0.00,    0.26 } }, //
+                { {   0.1    -0.5    -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 1989, 2010.0, //
+                { {  30.4,   35.5, -130.8 },   8.19, {    0.00,    0.00,    0.26 } }, //
+                { {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 1990, 2010.0, //
+                { {  25.4,   11.5,  -92.8 },   4.79, {    0.00,    0.00,    0.26 } }, //
+                { {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 1991, 2010.0, //
+                { {  27.4,   15.5,  -76.8 },   4.49, {    0.00,    0.00,    0.26 } }, //
+                { {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 1992, 2010.0, //
+                { {  15.4,    1.5,  -70.8 },   3.09, {    0.00,    0.00,    0.26 } }, //
+                { {   0.1,   -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 1993, 2010.0, //
+                { {  -50.4,   3.3,  -60.2 },   4.29, {   -2.81,   -3.38,    0.40 } }, //
+                { {   -2.8,  -0.1,   -2.5 },   0.12, {   -0.11,   -0.19,    0.07 } }  //
+        }, //
+        { 1994, 2010.0, //
+                { {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
+                { {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 1996, 2010.0, //
+                { {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
+                { {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 1997, 2010.0, //
+                { {    7.4,  -0.5,  -62.8 },   3.80, {    0.00,    0.00,    0.26 } }, //
+                { {    0.1,  -0.5,   -3.3 },   0.12, {    0.00,    0.00,    0.02 } }  //
+        }, //
+        { 2000, 2010.0, //
+                { {    0.7,   1.2,  -26.1 },   2.12, {    0.00,    0.00,    0.00 } }, //
+                { {    0.1,   0.1,   -1.9 },   0.11, {    0.00,    0.00,    0.00 } }  //
+        }, //
+        { 2005, 2010.0, //
+                { {    2.6,   1.0,   -2.3 },   0.92, {    0.00,    0.00,    0.00 } }, //
+                { {    0.3,   0.0,   -0.1 },   0.03, {    0.00,    0.00,    0.00 } }  //
+        }, //
+        { 2008, 2010.0, //
+                { {    1.6,   1.9,    2.4 },  -0.02, {    0.00,    0.00,    0.00 } }, //
+                { {    0.0,   0.0,   -0.1 },   0.03, {    0.00,    0.00,    0.00 } }  //
+        }, //
+        { 2014, 2010.0, {}, {} }, //
+        {}
 };
 
 /// \endcond
@@ -295,7 +295,7 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
   itrf_terms T0 = {};
 
   get_diff_terms(&to->terms, &from->terms, &T0);
-  
+
   // xp += R2
   if(to_xp)
     *to_xp = from_xp + T0.R[1] / ARCSEC;
@@ -311,16 +311,36 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
   return 0;
 }
 
+static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, double *f) {
+  switch(ellipsoid) {
+    case NOVAS_GRS80:
+      *a = NOVAS_GRS80_RADIUS;
+      *f = NOVAS_GRS80_FLATTENING;
+      break;
+    case NOVAS_WGS84:
+      *a = NOVAS_WGS84_RADIUS;
+      *f = NOVAS_WGS84_FLATTENING;
+      break;
+    default:
+      return novas_error(-1, EINVAL, "get_ellipsoid", "invalid reference ellipsoid: %d", ellipsoid);
+  }
+
+  return 0;
+}
+
+
 /**
  * Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80 reference
  * ellipsoid.
  *
- * @param lon     [deg] Geodetic longitude
- * @param lat     [deg] Geodetic latitude
- * @param alt     [m] Geodetic altitude (i.e. above sea level).
- * @param[out] x  [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
- * @return        0 if successful, or else -1 if the output vector is NULL (errno is set to
- *                EINVAL).
+ * @param[in] lon   [deg] Geodetic longitude
+ * @param[in] lat   [deg] Geodetic latitude
+ * @param[in] alt   [m] Geodetic altitude (i.e. above sea level).
+ * @param ellipsoid Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid
+ *                  (i.e. `NOVAS_GRS80`).
+ * @param[out] x    [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @return          0 if successful, or else -1 if the output vector is NULL (errno is set to
+ *                  EINVAL).
  *
  * @since 1.5
  * @author Attila Kovacs
@@ -328,14 +348,18 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
  * @sa novas_cartesian_to_geodetic()
  * @sa novas_itrf_transform()
  */
-int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
-  const double a = NOVAS_GRS80_RADIUS;
-  const double f = NOVAS_GRS80_FLATTENING;
-  const double e2 = (2.0 - f) * f;
-  double sinlat, coslat, N;
+int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *x) {
+  static const char *fn = "novas_geodetic_to_cartesian";
+
+  double a = NOVAS_GRS80_RADIUS, f = NOVAS_GRS80_FLATTENING;
+  double e2, sinlat, coslat, N;
 
   if(!x)
-    return novas_error(-1, EINVAL, "novas_geodetic_to_cartesian", "output Cartesian vector is NULL");
+    return novas_error(-1, EINVAL, fn, "output Cartesian vector is NULL");
+
+  prop_error(fn, get_ellipsoid(ellipsoid, &a, &f), 0);
+
+  e2 = (2.0 - f) * f;
 
   lon *= DEGREE;
   lat *= DEGREE;
@@ -351,6 +375,7 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
 
   return 0;
 }
+
 
 /**
  * Converts geocentric Cartesian site coordinates to geodetic coordinates, based on the GRS80
@@ -376,7 +401,9 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
  * </li>
  * </ol>
  *
- * @param x           [m] Input geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @param[in] x       [m] Input geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @param ellipsoid   Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid
+ *                    (i.e. `NOVAS_GRS80`).
  * @param[out] lon    [deg] Geodetic longitude. It may be NULL if not required.
  * @param[out] lat    [deg] Geodetic latitude. It may be NULL if not required.
  * @param[out] alt    [m] Geodetic altitude (i.e. above sea level). It may be NULL if not required.
@@ -388,22 +415,23 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x) {
  *
  * @sa novas_geodetic_to_cartesian()
  */
-int novas_cartesian_to_geodetic(const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt) {
-  const double a = NOVAS_GRS80_RADIUS;
-  const double f = NOVAS_GRS80_FLATTENING;
+int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt) {
+  static const char *fn = "novas_cartesian_to_geodetic";
 
-  // Compute distance from polar axis squared
-  const double e2 = (2.0 - f) * f;
-  const double ep2 = 1.0 - e2;
-  const double ep = sqrt(ep2);
-  const double aep = a * ep;
-
-  double az, p2;
+  double a = NOVAS_GRS80_RADIUS, f = NOVAS_GRS80_FLATTENING;
+  double e2, ep2, ep, aep, az, p2;
   double phi = 0.0, lambda = 0.0, h = 0.0;
 
   if(!x)
-    return novas_error(-1, EINVAL, "novas_cartesian_to_geodetic", "input Cartesian vector is NULL");
+    return novas_error(-1, EINVAL, fn, "input Cartesian vector is NULL");
 
+  prop_error(fn, get_ellipsoid(ellipsoid, &a, &f), 0);
+
+  // Compute distance from polar axis squared
+  e2 = (2.0 - f) * f;
+  ep2 = 1.0 - e2;
+  ep = sqrt(ep2);
+  aep = a * ep;
   az = fabs(x[2]);
   p2 = x[0] * x[0] + x[1] * x[1];
 
