@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.5.0-rc1]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -48,7 +48,12 @@ Upcoming feature release, expected around 1 November 2025.
  - #212: Speed up `ee_ct()` by restricting the range of multiples that are iterated over. Also reduced accuracy now
    uses the same series, only with fewer terms.
  
+ - #213: Rename a couple of source modules (`system.c` to `transform.c`, and `coords.c` to `system.c`).
+ 
  - #214: Reworked GCRS-CIRS transforms without `cio_basis()`.
+ 
+ - Various API documentation edits.
+ 
 
 ### Deprecated
 
