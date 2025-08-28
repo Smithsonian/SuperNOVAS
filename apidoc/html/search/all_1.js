@@ -12,9 +12,8 @@ var searchData=
   ['1_204_201_202025_2007_2021_9',['[1.4.1] - 2025-07-21',['../md_CHANGELOG.html#autotoc_md9',1,'']]],
   ['1_204_202_202025_2008_2025_10',['[1.4.2] - 2025-08-25',['../md_CHANGELOG.html#autotoc_md6',1,'']]],
   ['1_205_11',['New in 1.5',['../index.html#autotoc_md116',1,'']]],
-  ['1_205_200_20rc1_12',['[1.5.0-rc1]',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
-  ['1_20issues_13',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md61',1,'']]],
-  ['10_2028_14',['[1.1.1] - 2024-10-28',['../md_CHANGELOG.html#autotoc_md29',1,'']]],
-  ['13_15',['[1.0.1] - 2024-05-13',['../md_CHANGELOG.html#autotoc_md36',1,'']]],
-  ['15_16',['15',['../md_CHANGELOG.html#autotoc_md25',1,'[1.2.0] - 2025-01-15'],['../md_CHANGELOG.html#autotoc_md21',1,'[1.3.0] - 2025-04-15']]]
+  ['1_20issues_12',['Fixed NOVAS C 3.1 issues',['../index.html#autotoc_md61',1,'']]],
+  ['10_2028_13',['[1.1.1] - 2024-10-28',['../md_CHANGELOG.html#autotoc_md29',1,'']]],
+  ['13_14',['[1.0.1] - 2024-05-13',['../md_CHANGELOG.html#autotoc_md36',1,'']]],
+  ['15_15',['15',['../md_CHANGELOG.html#autotoc_md25',1,'[1.2.0] - 2025-01-15'],['../md_CHANGELOG.html#autotoc_md21',1,'[1.3.0] - 2025-04-15']]]
 ];

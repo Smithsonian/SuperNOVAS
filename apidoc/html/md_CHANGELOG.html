@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[1.5.0-rc1]</h1>
+[Unreleased]</h1>
 <p>Upcoming feature release, expected around 1 November 2025.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
@@ -126,8 +126,8 @@ Added</h2>
 <ul>
 <li>#209: Added <code><a class="el" href="earth_8c.html#a231f535f73e846d3867dbd914054d47b">novas_gmst()</a></code> and <code><a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a></code> functions to calculate Greenwich Mean and Apparent (respectively) Sidereal Times for a given UT1 date. The new functions are meant to replace the old NOVAS C <code><a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a></code> with a simpler and more intuitive interface.</li>
 <li>#215: New functions (e.g. <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>) to calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.</li>
-<li>#217: New functions <code><a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a></code> and <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to enable transforming gecocentric <em>xyz</em> station coordinates between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions.</li>
-<li>#217: New functions <code><a class="el" href="itrf_8c.html#a4c9b27bff8d228d06ebeded11034ff22">novas_geodetic_to_cartesian()</a></code> and <code><a class="el" href="itrf_8c.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic()</a></code> to convert between geocentric <em>xyz</em> station coordinates and geodetic (longitude, latitude, altitude) coordinates on the reference ellipsoids, and vice versa. The latter function is adapted from the IERS <code>GCONV2.F</code> routine, except that is uses the IERS Conventions (Chapter 1) value of 6378136.6 m for the Earth (equatorial) radius, rather than the GRS1980 value of 6378137.0 m used by <code>GCONV2.F</code>.</li>
+<li>#217: New functions <code><a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a></code> and <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to enable transforming gecocentric <em>xyz</em> station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions.</li>
+<li>#217: New functions <code><a class="el" href="itrf_8c.html#a4c9b27bff8d228d06ebeded11034ff22">novas_geodetic_to_cartesian()</a></code> and <code><a class="el" href="itrf_8c.html#a526c89fa9670d247028c94faf6a8206e">novas_cartesian_to_geodetic()</a></code> to convert between geocentric <em>xyz</em> station coordinates and geodetic (longitude, latitude, altitude) coordinates on the GRS80 reference ellipsoid, and vice versa. The latter function is adapted from the IERS <code>GCONV2.F</code> routine.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>

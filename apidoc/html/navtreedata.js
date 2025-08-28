@@ -86,7 +86,7 @@ var NAVTREE =
         [ "Refinements to the NOVAS C API", "index.html#autotoc_md117", null ]
       ] ],
       [ "Release schedule", "index.html#autotoc_md119", null ],
-      [ "[1.5.0-rc1]", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Fixed", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Added", "md_CHANGELOG.html#autotoc_md3", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ],
@@ -184,9 +184,9 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "md_CHANGELOG.html#autotoc_md43",
-"novas_8h.html#a859c6c09e05d95d047c92408454a1b1e",
-"observer_8c.html#a42c084465aedee75965f74e23e6571fe",
-"structnovas__track.html#a5a61c03607da83f2b44b05e68cc50e5b"
+"novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065",
+"observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f",
+"structnovas__timespec.html#ab1b769234049ec8d7cdbb22800116184"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

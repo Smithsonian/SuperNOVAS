@@ -329,6 +329,20 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>NOVAS_GRS80_FLATTENING</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ae283901f9a884acc6c5b88c6afb040b4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_GRS80_RADIUS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5518e094e90ed1053aeb03c41d531452</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>NOVAS_HOURANGLE</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>aee2680f03d1dfa4c9fbeea2be806dbf7</anchor>
@@ -710,6 +724,20 @@
       <name>NOVAS_VERSION_STRING</name>
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>afc8e7b02d26a13c380dcff4ec2d6530e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_WGS84_FLATTENING</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ab0f64e76b53aa2c526d9b35930339e2e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>NOVAS_WGS84_RADIUS</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a46a8bebd4fc88bb5056eb820d961aa4f</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">

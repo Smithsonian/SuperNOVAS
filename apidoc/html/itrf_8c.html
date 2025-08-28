@@ -131,7 +131,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Aug 26, 2025 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<p>Transformations of station coordinates, velocities, and Earth orinetation parameters (EOP) between various ITRF realizations.</p>
+<p>Transformations of station coordinates, velocities, and Earth orinetation parameters (EOP) between various ITRF realizations, and conversion between Cartesian (x, y, z) and geodetic (longitude, latitude, altitude) coordinates w.r.t. the reference ellipsoid.</p>
 <p>REFERENCES: </p><ol>
 <li>
 ITRS Conventions Chapter 4, see <a href="https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf">https://iers-conventions.obspm.fr/content/chapter4/icc4.pdf</a> </li>
@@ -174,10 +174,10 @@ ITRS Conventions Chapter 4, see <a href="https://iers-conventions.obspm.fr/conte
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts geocentric Cartesian site coordinates to geodetic coordinates.</p>
+<p>Converts geocentric Cartesian site coordinates to geodetic coordinates, based on the GRS80 reference ellipsoid.</p>
 <p>NOTES: </p><ol>
 <li>
-Adapted from the IERS <code>GCONV2.F</code> source code, see <a href="https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F">https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F</a>. Note, however, that this implementation uses Earth radius being 6378136.6 m, in line with the current IERS Conventions, whereas <code>GCONV2.F</code> uses the GRS1980 value of 6378137.0 m.  </li>
+Adapted from the IERS <code>GCONV2.F</code> source code, see <a href="https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F">https://iers-conventions.obspm.fr/content/chapter4/software/GCONV2.F</a>.  </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
@@ -200,7 +200,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#a4c9b27bff8d228d06ebeded11034ff22">novas_geodetic_to_cartesian()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>, <a class="el" href="novas_8h.html#a1830a25e886366263653167369213d8b">NOVAS_EARTH_FLATTENING</a>, and <a class="el" href="novas_8h.html#a139f16e134bf6119b6e04c8272c85668">NOVAS_EARTH_RADIUS</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>, <a class="el" href="novas_8h.html#ae283901f9a884acc6c5b88c6afb040b4">NOVAS_GRS80_FLATTENING</a>, and <a class="el" href="novas_8h.html#a5518e094e90ed1053aeb03c41d531452">NOVAS_GRS80_RADIUS</a>.</p>
 
 </div>
 </div>
@@ -241,11 +241,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts geodetic site coordinates to geocentric Cartesian coordinates.</p>
-<p>NOTES: </p><ol>
-<li>
-The implementation uses Earth radius being 6378136.6 m, in line with the current IERS Conventions, whereas <code>GCONV2.F</code> uses the GRS1980 value of 6378137 m.  </li>
-</ol>
+<p>Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80 reference ellipsoid.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">lon</td><td>[deg] Geodetic longitude </td></tr>
@@ -262,7 +258,7 @@ The implementation uses Earth radius being 6378136.6 m, in line with the current
 <dd>
 <a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="novas_8h.html#a1830a25e886366263653167369213d8b">NOVAS_EARTH_FLATTENING</a>, and <a class="el" href="novas_8h.html#a139f16e134bf6119b6e04c8272c85668">NOVAS_EARTH_RADIUS</a>.</p>
+<p class="reference">References <a class="el" href="novas_8h.html#ae283901f9a884acc6c5b88c6afb040b4">NOVAS_GRS80_FLATTENING</a>, and <a class="el" href="novas_8h.html#a5518e094e90ed1053aeb03c41d531452">NOVAS_GRS80_RADIUS</a>.</p>
 
 </div>
 </div>
@@ -322,7 +318,7 @@ The implementation uses Earth radius being 6378136.6 m, in line with the current
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, ...);</div>
-<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdef"><b>Definition</b> itrf.c:210</div></div>
+<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdef"><b>Definition</b> itrf.c:211</div></div>
 </div><!-- fragment --><p>or equivalently, after the transformation to ITRF2000, as:</p>
 <div class="fragment"><div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, to_coords, to_rates);</div>

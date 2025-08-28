@@ -60,7 +60,7 @@
     <topic label="Release schedule" href="index.html#autotoc_md119"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[1.5.0-rc1]" href="md_CHANGELOG.html#autotoc_md1">
+    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1">
       <topic label="Fixed" href="md_CHANGELOG.html#autotoc_md2"/>
       <topic label="Added" href="md_CHANGELOG.html#autotoc_md3"/>
       <topic label="Changed" href="md_CHANGELOG.html#autotoc_md4"/>
@@ -460,6 +460,8 @@
           <topic label="NOVAS_G_EARTH" href="novas_8h.html#af125f22b69933024d6a8513b205dca8b"/>
           <topic label="NOVAS_G_SUN" href="novas_8h.html#a6d955f313593b4a56fef202708d5722b"/>
           <topic label="NOVAS_GPS_TO_TAI" href="novas_8h.html#a6355388ff4a44836eda6eb1e97da60cd"/>
+          <topic label="NOVAS_GRS80_FLATTENING" href="novas_8h.html#ae283901f9a884acc6c5b88c6afb040b4"/>
+          <topic label="NOVAS_GRS80_RADIUS" href="novas_8h.html#a5518e094e90ed1053aeb03c41d531452"/>
           <topic label="NOVAS_HOURANGLE" href="novas_8h.html#aee2680f03d1dfa4c9fbeea2be806dbf7"/>
           <topic label="NOVAS_JD_B1900" href="novas_8h.html#af03a1f0412f23cd6edb323297646eb30"/>
           <topic label="NOVAS_JD_B1950" href="novas_8h.html#a3785083ae52bbbc1e749dbedd7e5d85e"/>
@@ -515,6 +517,8 @@
           <topic label="NOVAS_URANUS_INIT" href="novas_8h.html#ad873085559e1141614264d15c4885a87"/>
           <topic label="NOVAS_VENUS_INIT" href="novas_8h.html#af126344dc5cbee61df9e55bd92322839"/>
           <topic label="NOVAS_VERSION_STRING" href="novas_8h.html#afc8e7b02d26a13c380dcff4ec2d6530e"/>
+          <topic label="NOVAS_WGS84_FLATTENING" href="novas_8h.html#ab0f64e76b53aa2c526d9b35930339e2e"/>
+          <topic label="NOVAS_WGS84_RADIUS" href="novas_8h.html#a46a8bebd4fc88bb5056eb820d961aa4f"/>
           <topic label="NOVAS_WOBBLE_DIRECTIONS" href="novas_8h.html#a3903b6d439f4a25a6482fd073996d9ec"/>
           <topic label="OBSERVER_INIT" href="novas_8h.html#a8b1485a1563288c8d060d935c21e3a63"/>
           <topic label="ON_SURFACE_INIT" href="novas_8h.html#ad8e67e1b12b3699a361f87e95d333334"/>

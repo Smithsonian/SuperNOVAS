@@ -1638,11 +1638,17 @@ one minute.
 
 #### New in 1.5
 
- - New, simpler functions to calculated Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
+ - Simpler functions to calculated Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
 
- - New functions to calculate corrections to the Earth orientation parameters published by IERS, to include the effect
+ - Functions to calculate corrections to the Earth orientation parameters published by IERS, to include the effect
    of librations and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS 
    coordinates with accuracy below the milli-arcsecond (mas) level.
+   
+ - Conversion between geodetic (longitude, latitude, altitude) and geocentric Cartesian (x, y, z) site coordinates
+   using the reference ellipsoid of choice (GRS80 or WGS84).
+   
+ - Transformations of site coordinates and Earth orientation parameters between different ITRF realizations (e.g.
+   ITRF2000 snd ITRF2014).
 
 
 <a name="api-changes"></a>
