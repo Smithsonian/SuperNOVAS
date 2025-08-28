@@ -33,7 +33,8 @@ typedef struct {
 
 /**
  * Computes the position and velocity vectors of a terrestrial observer with respect to the
- * center of the Earth.
+ * center of the Earth, based on the GRS80 reference ellipsoid, consistent with the
+ * IERS conventions.
  *
  * This function ignores polar motion, unless the observer's longitude and latitude have been
  * corrected for it, and variation in the length of day (angular velocity of earth).

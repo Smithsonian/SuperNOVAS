@@ -1587,6 +1587,18 @@ enum novas_separator_type {
   NOVAS_SEP_UNITS_AND_SPACES  ///< Useunit markers after each compoent, plus spaces between components, e.g. '12h 34m 56s'
 };
 
+/**
+ * Type of reference ellipsoid to use.
+ *
+ * @since 1.5
+ *
+ * @sa novas_cartesian_to_geodetic()
+ * @sa novas_geodetic_to_cartesian()
+ */
+enum novas_reference_ellipsoid {
+  NOVAS_GRS80 = 0,            ///< The GRS80 reference ellipsoid, used by the IERS Conventions.
+  NOVAS_WGS84                 ///< The WGS84 reference ellipsoid.
+};
 
 // in place.c
 short app_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
@@ -2175,9 +2187,9 @@ int novas_itrf_transform(int from_year, const double *restrict from_coords, cons
 int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, double from_dut1,
         int to_year, double *restrict to_xp, double *restrict to_yp, double *restrict to_dut1);
 
-int novas_geodetic_to_cartesian(double lon, double lat, double alt, double *x);
+int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *x);
 
-int novas_cartesian_to_geodetic(const double *restrict x, double *restrict lon, double *restrict lat, double *restrict alt);
+int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt);
 
 // <================= END of SuperNOVAS API =====================>
 
