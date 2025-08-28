@@ -4247,32 +4247,32 @@ static int test_cartesian_to_geodetic() {
   double x[3] = { 4075579.496, 931853.192, 4801569.002 };
   double lon = 0.0, lat = 0.0, alt = 0.0, z = 0.0;
 
-  if(!is_ok("cartesian_to_geodetic", novas_cartesian_to_geodetic(x, NOVAS_GRS80, &lon, &lat, &alt))) return 1;
+  if(!is_ok("cartesian_to_geodetic", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt))) return 1;
   if(!is_equal("cartesian_to_geodetic:lon", lat, 0.857728298603 / DEGREE, 1e-9)) n++;
   if(!is_equal("cartesian_to_geodetic:lat", lon, 0.224779294628 / DEGREE, 1e-9)) n++;
   if(!is_equal("cartesian_to_geodetic:alt", alt, 665.9207, 0.001)) n++;
 
-  if(!is_ok("cartesian_to_geodetic:lon:only", novas_cartesian_to_geodetic(x, NOVAS_GRS80, &z, NULL, NULL))) return 1;
+  if(!is_ok("cartesian_to_geodetic:lon:only", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, &z, NULL, NULL))) return 1;
   if(!is_equal("cartesian_to_geodetic:lon", z, lon, 1e-9)) n++;
 
-  if(!is_ok("cartesian_to_geodetic:lat:only", novas_cartesian_to_geodetic(x, NOVAS_GRS80, NULL, &z, NULL))) return 1;
+  if(!is_ok("cartesian_to_geodetic:lat:only", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, NULL, &z, NULL))) return 1;
   if(!is_equal("cartesian_to_geodetic:lon", z, lat, 1e-9)) n++;
 
-  if(!is_ok("cartesian_to_geodetic:alt:only", novas_cartesian_to_geodetic(x, NOVAS_GRS80, NULL, NULL, &z))) return 1;
+  if(!is_ok("cartesian_to_geodetic:alt:only", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, NULL, NULL, &z))) return 1;
   if(!is_equal("cartesian_to_geodetic:lon", z, alt, 1e-3)) n++;
 
   x[0] = 0.0;
   x[1] = 0.0;
   x[2] = NOVAS_GRS80_RADIUS * (1.0 - NOVAS_GRS80_FLATTENING);
 
-  if(!is_ok("cartesian_to_geodetic:pole:north", novas_cartesian_to_geodetic(x, NOVAS_GRS80, &lon, &lat, &alt))) return 1;
+  if(!is_ok("cartesian_to_geodetic:pole:north", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt))) return 1;
   if(!is_equal("cartesian_to_geodetic:south:lon", lat, 90.0, 1e-9)) n++;
   if(!is_equal("cartesian_to_geodetic:south:lat", lon, 0.0, 1e-9)) n++;
   if(!is_equal("cartesian_to_geodetic:south:alt", alt, 0.0, 0.001)) n++;
 
   x[2] = -x[2];
 
-  if(!is_ok("cartesian_to_geodetic:pole:south", novas_cartesian_to_geodetic(x, NOVAS_GRS80, &lon, &lat, &alt))) return 1;
+  if(!is_ok("cartesian_to_geodetic:pole:south", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt))) return 1;
   if(!is_equal("cartesian_to_geodetic:south:lon", lat, -90.0, 1e-9)) n++;
   if(!is_equal("cartesian_to_geodetic:south:lat", lon, 0.0, 1e-9)) n++;
   if(!is_equal("cartesian_to_geodetic:south:alt", alt, 0.0, 0.001)) n++;
@@ -4281,8 +4281,22 @@ static int test_cartesian_to_geodetic() {
   x[1] = 0.0;
   x[2] = NOVAS_WGS84_RADIUS * (1.0 - NOVAS_WGS84_FLATTENING);
 
-  if(!is_ok("cartesian_to_geodetic:pole:wgs84:north", novas_cartesian_to_geodetic(x, NOVAS_GRS80, &lon, &lat, &alt))) return 1;
+  if(!is_ok("cartesian_to_geodetic:pole:wgs84:north", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt))) return 1;
   if(!is_equal("cartesian_to_geodetic:north:wgs84:alt", alt, 0.0, 1e-3)) n++;
+
+  x[0] = 0.0;
+  x[1] = 0.0;
+  x[2] = 6378136.0 * (1.0 - 298.257);
+
+  if(!is_ok("cartesian_to_geodetic:pole:iers89:north", novas_cartesian_to_geodetic(x, NOVAS_IERS_1989_ELLIPSOID, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:north:iers89:alt", alt, 0.0, 1e-3)) n++;
+
+  x[0] = 0.0;
+  x[1] = 0.0;
+  x[2] = 6378136.6 * (1.0 - 298.25642);
+
+  if(!is_ok("cartesian_to_geodetic:pole:iers1003:north", novas_cartesian_to_geodetic(x, NOVAS_IERS_2003_ELLIPSOID, &lon, &lat, &alt))) return 1;
+  if(!is_equal("cartesian_to_geodetic:north:iers2003:alt", alt, 0.0, 1e-3)) n++;
 
   return n;
 }
@@ -4293,12 +4307,12 @@ static int test_geodetic_to_cartesian() {
   double x[3] = { 4075579.496, 931853.192, 4801569.002 }, x1[3] = {0.0};
   double lon = 0.0, lat = 0.0, alt = 0.0;
 
-  if(!is_ok("geodetic_to_cartesian:geodetic", novas_cartesian_to_geodetic(x, NOVAS_GRS80, &lon, &lat, &alt))) return 1;
-  if(!is_ok("geodetic_to_cartesian", novas_geodetic_to_cartesian(lon, lat, alt, NOVAS_GRS80, x1))) return 1;
+  if(!is_ok("geodetic_to_cartesian:geodetic", novas_cartesian_to_geodetic(x, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt))) return 1;
+  if(!is_ok("geodetic_to_cartesian", novas_geodetic_to_cartesian(lon, lat, alt, NOVAS_GRS80_ELLIPSOID, x1))) return 1;
 
   if(!is_ok("geodetic_to_cartesian:check", check_equal_pos(x1, x, 1e-4))) n++;
 
-  if(!is_ok("geodetic_to_cartesian", novas_geodetic_to_cartesian(0.0, 90.0, 0.0, NOVAS_WGS84, x1))) return 1;
+  if(!is_ok("geodetic_to_cartesian", novas_geodetic_to_cartesian(0.0, 90.0, 0.0, NOVAS_WGS84_ELLIPSOID, x1))) return 1;
   if(!is_equal("geodetic_to_cartesian:wgs84:check", x1[2], NOVAS_WGS84_RADIUS * (1.0 - NOVAS_WGS84_FLATTENING), 1e-4)) n++;
 
   return n;

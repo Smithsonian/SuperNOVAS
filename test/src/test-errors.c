@@ -2362,7 +2362,7 @@ static int test_cartesian_to_geodetic() {
   double x[3] = {0.0};
   double lon, lat, alt;
 
-  if(check("cartesian_to_geodetic:x", -1, novas_cartesian_to_geodetic(NULL, NOVAS_GRS80, &lon, &lat, &alt))) n++;
+  if(check("cartesian_to_geodetic:x", -1, novas_cartesian_to_geodetic(NULL, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt))) n++;
   if(check("cartesian_to_geodetic:ellipsoid", -1, novas_cartesian_to_geodetic(x, -1, &lon, &lat, &alt))) n++;
 
   return n;
@@ -2372,7 +2372,7 @@ static int test_geodetic_to_cartesian() {
   int n = 0;
   double x[3] = {0.0};
 
-  if(check("geodetic_to_cartesian:x", -1, novas_geodetic_to_cartesian(0.0, 0.0, 0.0, NOVAS_GRS80, NULL))) n++;
+  if(check("geodetic_to_cartesian:x", -1, novas_geodetic_to_cartesian(0.0, 0.0, 0.0, NOVAS_GRS80_ELLIPSOID, NULL))) n++;
   if(check("geodetic_to_cartesian:ellipsoid", -1, novas_geodetic_to_cartesian(0.0, 0.0, 0.0, -1, x))) n++;
 
   return n;

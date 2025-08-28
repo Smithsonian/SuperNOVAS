@@ -1588,7 +1588,8 @@ enum novas_separator_type {
 };
 
 /**
- * Type of reference ellipsoid to use.
+ * Type of Earth reference ellipsoid. Only ellipsoids commonly in use today are listed, ommitting many obsoleted
+ * historical variants.
  *
  * @since 1.5
  *
@@ -1596,8 +1597,10 @@ enum novas_separator_type {
  * @sa novas_geodetic_to_cartesian()
  */
 enum novas_reference_ellipsoid {
-  NOVAS_GRS80 = 0,            ///< The GRS80 reference ellipsoid, used by the IERS Conventions.
-  NOVAS_WGS84                 ///< The WGS84 reference ellipsoid.
+  NOVAS_GRS80_ELLIPSOID = 0,  ///< GRS80 reference ellipsoid, used for the International Terrestrial Reference System (ITRS).
+  NOVAS_WGS84_ELLIPSOID,      ///< WGS84 reference ellipsoid, used for GPS navigation.
+  NOVAS_IERS_1989_ELLIPSOID,  ///< IERS (1989) reference ellipsoid, formerly used by the IERS conventions (but not for ITRS, which uses the GRS80 model).
+  NOVAS_IERS_2003_ELLIPSOID   ///< IERS (2003) reference ellipsoid, used by the IERS conventions (but not for ITRS, which uses the GRS80 model).
 };
 
 // in place.c
@@ -2190,6 +2193,8 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
 int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *x);
 
 int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt);
+
+
 
 // <================= END of SuperNOVAS API =====================>
 
