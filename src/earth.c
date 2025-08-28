@@ -33,8 +33,8 @@ typedef struct {
 
 /**
  * Computes the position and velocity vectors of a terrestrial observer with respect to the
- * center of the Earth, based on the GRS80 reference ellipsoid, consistent with the
- * IERS conventions.
+ * center of the Earth, based on the GRS80 reference ellipsoid, used for the International
+ * Terrestrial Reference Frame (ITRF) and its realizations.
  *
  * This function ignores polar motion, unless the observer's longitude and latitude have been
  * corrected for it, and variation in the length of day (angular velocity of earth).
@@ -43,10 +43,10 @@ typedef struct {
  * respect to an inertial system, the very small velocity component (several meters/day) due
  * to the precession and nutation of the Earth's axis is not accounted for here.
  *
- *  REFERENCES:
- *  <ol>
- *  <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
- *  </ol>
+ * REFERENCES:
+ * <ol>
+ * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
+ * </ol>
  *
  * @param location    Location of observer in Earth's rotating frame
  * @param lst         [h] Local apparent sidereal time at reference meridian in hours.
