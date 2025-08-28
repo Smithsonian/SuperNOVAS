@@ -2357,6 +2357,33 @@ static int test_diurnal_eop_at_time() {
   return n;
 }
 
+static int test_cartesian_to_geodetic() {
+  int n = 0;
+  double lon, lat, alt;
+
+  if(check("cartesian_to_geodetic", -1, novas_cartesian_to_geodetic(NULL, &lon, &lat, &alt))) n++;
+
+  return n;
+}
+
+static int test_geodetic_to_cartesian() {
+  int n = 0;
+
+  if(check("geodetic_to_cartesian", -1, novas_geodetic_to_cartesian(0.0, 0.0, 0.0, NULL))) n++;
+
+  return n;
+}
+
+int test_itrf_transform() {
+  int n = 0;
+  double from_coords[3] = {0.0}, from_rates[3] = {0.0}, to_coords[3] = {0.0}, to_rates[3] = {0.0};
+
+  if(check("itrf_transform:from_coords", -1, novas_itrf_transform(2000, NULL, from_rates, 2014, to_coords, to_rates))) n++;
+  if(check("itrf_transform:rates", -1, novas_itrf_transform(2000, from_coords, NULL, 2014, to_coords, to_rates))) n++;
+
+  return n;
+}
+
 int main() {
   int n = 0;
 
@@ -2550,6 +2577,10 @@ int main() {
   if(test_ocean_tides()) n++;
   if(test_diurnal_eop()) n++;
   if(test_diurnal_eop_at_time()) n++;
+
+  if(test_cartesian_to_geodetic()) n++;
+  if(test_geodetic_to_cartesian()) n++;
+  if(test_itrf_transform()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
