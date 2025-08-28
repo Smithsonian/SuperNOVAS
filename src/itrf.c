@@ -39,7 +39,9 @@ typedef struct {
 } itrf_transform;
 
 /**
- * Extracted from IERS Conventions, Chapter 5, Table 4.1.
+ * Extracted from IERS Conventions, Chapter 5, Table 4.1, and from
+ * https://itrf.ign.fr/en/solutions/itrf2020
+ *
  */
 static const itrf_transform realizations[] = { //
         { 1988, 2010.0, //
@@ -91,6 +93,11 @@ static const itrf_transform realizations[] = { //
                 { {    0.0,   0.0,   -0.1 },   0.03, {    0.00,    0.00,    0.00 } }  //
         }, //
         { 2014, 2010.0, {}, {} }, //
+        // ITRF2020 transformation from https://itrf.ign.fr/en/solutions/itrf2020
+        { 2020, 2010.0, //
+                { {    1.4,   0.9,   -1.4 },   0.42, {    0.00,    0.00,    0.00 } }, //
+                { {    0.0,   0.1,   -0.2 },   0.00, {    0.00,    0.00,    0.00 } }  //
+        }, //
         {}
 };
 
