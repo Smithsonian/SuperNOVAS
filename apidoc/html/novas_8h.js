@@ -216,8 +216,10 @@ var novas_8h =
       [ "POLE_OFFSETS_X_Y", "novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77", null ]
     ] ],
     [ "novas_reference_ellipsoid", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3", [
-      [ "NOVAS_GRS80", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25", null ],
-      [ "NOVAS_WGS84", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a", null ]
+      [ "NOVAS_GRS80_ELLIPSOID", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a4080d8e188d2d352b0f63c759ffee118", null ],
+      [ "NOVAS_WGS84_ELLIPSOID", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a3f73d5ac6ed2f2ed81b4e7b7fdbf1e85", null ],
+      [ "NOVAS_IERS_1989_ELLIPSOID", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3aaabe1698e20a266495556126910640f8", null ],
+      [ "NOVAS_IERS_2003_ELLIPSOID", "novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a5a1b92a226f41c204bcefaf05edd7bd8", null ]
     ] ],
     [ "novas_reference_plane", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f", [
       [ "NOVAS_ECLIPTIC_PLANE", "novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e", null ],

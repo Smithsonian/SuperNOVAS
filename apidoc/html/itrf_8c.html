@@ -195,7 +195,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>[m] Input geocentric Cartesian coordinates (x, y, z) 3-vector. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid (i.e. <code>NOVAS_GRS80</code>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. For ITRF use <code>NOVAS_GRS80_ELLIPSOID</code>, for GPS related applications use <code>NOVAS_WGS84_ELLIPSOID</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">lon</td><td>[deg] Geodetic longitude. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">lat</td><td>[deg] Geodetic latitude. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">alt</td><td>[m] Geodetic altitude (i.e. above sea level). It may be NULL if not required. </td></tr>
@@ -260,7 +260,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
     <tr><td class="paramdir">[in]</td><td class="paramname">lon</td><td>[deg] Geodetic longitude </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">lat</td><td>[deg] Geodetic latitude </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">alt</td><td>[m] Geodetic altitude (i.e. above sea level). </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid (i.e. <code>NOVAS_GRS80</code>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. For ITRF use <code>NOVAS_GRS80_ELLIPSOID</code>, for GPS related applications use <code>NOVAS_WGS84_ELLIPSOID</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>[m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector. </td></tr>
   </table>
   </dd>
@@ -332,7 +332,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, ...);</div>
-<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdef"><b>Definition</b> itrf.c:211</div></div>
+<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdef"><b>Definition</b> itrf.c:223</div></div>
 </div><!-- fragment --><p>or equivalently, after the transformation to ITRF2000, as:</p>
 <div class="fragment"><div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, to_coords, to_rates);</div>

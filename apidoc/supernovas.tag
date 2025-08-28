@@ -1302,15 +1302,27 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>NOVAS_GRS80</name>
+      <name>NOVAS_GRS80_ELLIPSOID</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25</anchor>
+      <anchor>a5928ca4a09c2883b58e951a4582255b3a4080d8e188d2d352b0f63c759ffee118</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
-      <name>NOVAS_WGS84</name>
+      <name>NOVAS_WGS84_ELLIPSOID</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a</anchor>
+      <anchor>a5928ca4a09c2883b58e951a4582255b3a3f73d5ac6ed2f2ed81b4e7b7fdbf1e85</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_IERS_1989_ELLIPSOID</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5928ca4a09c2883b58e951a4582255b3aaabe1698e20a266495556126910640f8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>NOVAS_IERS_2003_ELLIPSOID</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>a5928ca4a09c2883b58e951a4582255b3a5a1b92a226f41c204bcefaf05edd7bd8</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">

@@ -560,8 +560,10 @@ Enumerations</h2></td></tr>
 , <a class="el" href="novas_8h.html#a70c3951615b1ecf42818c79893678543ad304f43b1bf8becb63fc4d972f8b1f77">POLE_OFFSETS_X_Y</a>
  }</td></tr>
 <tr class="separator:a70c3951615b1ecf42818c79893678543"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5928ca4a09c2883b58e951a4582255b3" id="r_a5928ca4a09c2883b58e951a4582255b3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> { <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25">NOVAS_GRS80</a> = 0
-, <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a">NOVAS_WGS84</a>
+<tr class="memitem:a5928ca4a09c2883b58e951a4582255b3" id="r_a5928ca4a09c2883b58e951a4582255b3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3">novas_reference_ellipsoid</a> { <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a4080d8e188d2d352b0f63c759ffee118">NOVAS_GRS80_ELLIPSOID</a> = 0
+, <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a3f73d5ac6ed2f2ed81b4e7b7fdbf1e85">NOVAS_WGS84_ELLIPSOID</a>
+, <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3aaabe1698e20a266495556126910640f8">NOVAS_IERS_1989_ELLIPSOID</a>
+, <a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a5a1b92a226f41c204bcefaf05edd7bd8">NOVAS_IERS_2003_ELLIPSOID</a>
  }</td></tr>
 <tr class="separator:a5928ca4a09c2883b58e951a4582255b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ee18ab5f8fdc009913c11f04026122f" id="r_a9ee18ab5f8fdc009913c11f04026122f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122f">novas_reference_plane</a> { <a class="el" href="novas_8h.html#a9ee18ab5f8fdc009913c11f04026122fac0d0495aebd235ecd346b8932cc1943e">NOVAS_ECLIPTIC_PLANE</a> = 0
@@ -2817,15 +2819,19 @@ IERS Conventions, Chapter 3, Table 3.1 </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Type of reference ellipsoid to use.</p>
+<p>Type of Earth reference ellipsoid. Only ellipsoids commonly in use today are listed, ommitting many obsoleted historical variants.</p>
 <dl class="section since"><dt>Since</dt><dd>1.5</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a> </dd>
 <dd>
 <a class="el" href="novas_8h.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a> </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25" name="a5928ca4a09c2883b58e951a4582255b3ab3062efc3b970895460dc617eec49b25"></a>NOVAS_GRS80&#160;</td><td class="fielddoc"><p>The GRS80 reference ellipsoid, used by the IERS Conventions. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3a4080d8e188d2d352b0f63c759ffee118" name="a5928ca4a09c2883b58e951a4582255b3a4080d8e188d2d352b0f63c759ffee118"></a>NOVAS_GRS80_ELLIPSOID&#160;</td><td class="fielddoc"><p>GRS80 reference ellipsoid, used for the International Terrestrial Reference System (ITRS). </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a" name="a5928ca4a09c2883b58e951a4582255b3aeeba068882459151b93e0d9df7377e7a"></a>NOVAS_WGS84&#160;</td><td class="fielddoc"><p>The WGS84 reference ellipsoid. </p>
+<tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3a3f73d5ac6ed2f2ed81b4e7b7fdbf1e85" name="a5928ca4a09c2883b58e951a4582255b3a3f73d5ac6ed2f2ed81b4e7b7fdbf1e85"></a>NOVAS_WGS84_ELLIPSOID&#160;</td><td class="fielddoc"><p>WGS84 reference ellipsoid, used for GPS navigation. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3aaabe1698e20a266495556126910640f8" name="a5928ca4a09c2883b58e951a4582255b3aaabe1698e20a266495556126910640f8"></a>NOVAS_IERS_1989_ELLIPSOID&#160;</td><td class="fielddoc"><p>IERS (1989) reference ellipsoid, formerly used by the IERS conventions (but not for ITRS, which uses the GRS80 model). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5928ca4a09c2883b58e951a4582255b3a5a1b92a226f41c204bcefaf05edd7bd8" name="a5928ca4a09c2883b58e951a4582255b3a5a1b92a226f41c204bcefaf05edd7bd8"></a>NOVAS_IERS_2003_ELLIPSOID&#160;</td><td class="fielddoc"><p>IERS (2003) reference ellipsoid, used by the IERS conventions (but not for ITRS, which uses the GRS80 model). </p>
 </td></tr>
 </table>
 
@@ -8741,7 +8747,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td>[m] Input geocentric Cartesian coordinates (x, y, z) 3-vector. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid (i.e. <code>NOVAS_GRS80</code>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. For ITRF use <code>NOVAS_GRS80_ELLIPSOID</code>, for GPS related applications use <code>NOVAS_WGS84_ELLIPSOID</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">lon</td><td>[deg] Geodetic longitude. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">lat</td><td>[deg] Geodetic latitude. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">alt</td><td>[m] Geodetic altitude (i.e. above sea level). It may be NULL if not required. </td></tr>
@@ -9907,7 +9913,7 @@ IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://ier
     <tr><td class="paramdir">[in]</td><td class="paramname">lon</td><td>[deg] Geodetic longitude </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">lat</td><td>[deg] Geodetic latitude </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">alt</td><td>[m] Geodetic altitude (i.e. above sea level). </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. The IRS convention is to use the GRS80 ellipsoid (i.e. <code>NOVAS_GRS80</code>). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ellipsoid</td><td>Reference ellipsoid to use. For ITRF use <code>NOVAS_GRS80_ELLIPSOID</code>, for GPS related applications use <code>NOVAS_WGS84_ELLIPSOID</code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">x</td><td>[m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector. </td></tr>
   </table>
   </dd>
@@ -10824,7 +10830,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, ...);</div>
-<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdef"><b>Definition</b> itrf.c:211</div></div>
+<div class="ttc" id="aitrf_8c_html_afd98ed01148f1291018809d77785527f"><div class="ttname"><a href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a></div><div class="ttdeci">int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates, int to_year, double *to_coords, double *to_rates)</div><div class="ttdef"><b>Definition</b> itrf.c:223</div></div>
 </div><!-- fragment --><p>or equivalently, after the transformation to ITRF2000, as:</p>
 <div class="fragment"><div class="line"><span class="comment">// Convert ITRF88 coordinates to ITRF2000</span></div>
 <div class="line"><a class="code hl_function" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform</a>(1988, from_coords, from_rates, 2000, to_coords, to_rates);</div>
