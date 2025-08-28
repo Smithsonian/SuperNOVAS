@@ -5,7 +5,8 @@
  * @author Attila Kovacs
  *
  *  Transformations of station coordinates, velocities, and Earth orinetation parameters (EOP)
- *  between various ITRF realizations.
+ *  between various ITRF realizations, and conversion between Cartesian (x, y, z) and geodetic
+ *  (longitude, latitude, altitude) coordinates w.r.t. the reference ellipsoid.
  *
  *  REFERENCES:
  *  <ol>

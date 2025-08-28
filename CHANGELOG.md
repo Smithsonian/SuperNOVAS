@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc1]
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -25,8 +25,8 @@ Upcoming feature release, expected around 1 November 2025.
    if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.
 
  - #217: New functions `novas_itrf_transform()` and `novas_itrf_transform_eop()` to enable transforming gecocentric
-   _xyz_ station coordinates between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is
-   based on Chapter 4 of the IERS Conventions.
+   _xyz_ station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. 
+   ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions.
    
  - #217: New functions `novas_geodetic_to_cartesian()` and `novas_cartesian_to_geodetic()` to convert between 
    geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the reference
