@@ -24,6 +24,18 @@ CPPFLAGS += -I$(INC)
 # -std=c99 may not be supported by some very old compilers...
 CFLAGS ?= -g -Os -Wall
 
+# Grab the system information
+UNAME_S := $(shell uname -s)
+
+# Set the shared library extension
+ifeq ($(UNAME_S),Darwin)
+  SOEXT := dylib
+  $(info INFO: detected MacOS)
+else
+  SOEXT := so
+  $(info INFO: detected Linux)
+endif
+
 # Compile for specific C standard
 ifdef CSTANDARD
   CFLAGS += -std=$(CSTANDARD)
@@ -153,7 +165,7 @@ endif
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
 # specify the thread local keyword to use. 
 ifdef THREAD_LOCAL
-  CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)"
+  CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)\"
 endif
 
 ifeq ($(DEFAULT_SOLSYS), 1) 
@@ -203,26 +215,27 @@ ifdef DEFAULT_READEPH
 endif
 
 # Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
-ifneq ($(shell which ldconfig), )
-  # Detect CALCEPH automatically, and enable support if present
-  ifndef CALCEPH_SUPPORT 
-    ifneq ($(shell ldconfig -p | grep libcalceph), )
-      $(info INFO: CALCEPH support is enabled automatically.)
-      CALCEPH_SUPPORT = 1
-    else
-      $(info INFO: optional CALCEPH support is not enabled.)
-      CALCEPH_SUPPORT = 0
+# ldconfig not present on macOS, so disable auto-detect there.
+# Mac users need to set CSPICE_SUPPORT or CALCEPH_SUPPORT manually
+ifeq ($(UNAME_S),Linux)
+  ifneq ($(shell which ldconfig 2>/dev/null), )
+    ifndef CALCEPH_SUPPORT
+      ifneq ($(shell ldconfig -p | grep libcalceph), )
+        $(info INFO: CALCEPH support is enabled automatically.)
+        CALCEPH_SUPPORT = 1
+      else
+        $(info INFO: optional CALCEPH support is not enabled.)
+        CALCEPH_SUPPORT = 0
+      endif
     endif
-  endif
-
-  # Detect CSPICE automatically, and enable support if present
-  ifndef CSPICE_SUPPORT
-    ifneq ($(shell ldconfig -p | grep libcspice), )
-      $(info INFO: CSPICE support is enabled automatically.)
-      CSPICE_SUPPORT = 1
-    else
-      $(info INFO: optional CSPICE support is not enabled.)
-      CSPICE_SUPPORT = 0
+    ifndef CSPICE_SUPPORT
+      ifneq ($(shell ldconfig -p | grep libcspice), )
+        $(info INFO: CSPICE support is enabled automatically.)
+        CSPICE_SUPPORT = 1
+      else
+        $(info INFO: optional CSPICE support is not enabled.)
+        CSPICE_SUPPORT = 0
+      endif
     endif
   endif
 endif
@@ -230,9 +243,6 @@ endif
 # Generate a list of object (obj/*.o) files from the input sources
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
-
-# Compiler flags for building shared .so libraries.
-SOFLAGS = $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
 
 # Search for files in the designated locations
 vpath %.h $(INCLUDE)

@@ -65,12 +65,9 @@ jobs:
       uses: coverallsapp/github-action@v2
 
 
-  test-platforms:
-    name: ${{ matrix.arch }}
-    # The host should always be linux
+  test-linux:
+    name: Linux ${{ matrix.arch }}
     runs-on: ubuntu-latest
-
-    # Run steps on a matrix of 4 arch/distro combinations
     strategy:
       matrix:
         include:
@@ -88,7 +85,6 @@ jobs:
       - uses: actions/checkout@v5
       - uses: uraimo/run-on-arch-action@v3
         name: Run regression tests
-        id: test
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
@@ -97,3 +93,13 @@ jobs:
             apt-get install -q -y make gcc gfortran
           run: make test
 
+  test-macos:
+    name: macOS ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build and test on macOS
+        run: make test

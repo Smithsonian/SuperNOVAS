@@ -25,29 +25,39 @@ on:
       - '.github/workflows/build.yml'
 
 jobs:
-
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            cc: gcc
+          - os: macos-latest
+            cc: clang
     env:
-      CC: gcc
       CFLAGS: -Os -Wall -Werror
       CSTANDARD: c99
       WEXTRA: 1
       FORTIFY: 3
+
     steps:
-    - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
 
-    - name: Build static library
-      run: make static
+      - name: Set compiler
+        run: echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
 
-    - name: Build shared library
-      run: make shared
+      - name: Build static library
+        run: make static
 
-    - name: Compile solsys variants
-      run: make solsys
+      - name: Build shared library
+        run: make shared
 
-    - name: Generate CIO locator data
-      run: make cio_file
+      - name: Compile solsys variants
+        run: make solsys
+
+      - name: Generate CIO locator data
+        run: make cio_file
 
 # Reverse build not yet supported in ubuntu-latest
 #
