@@ -40,7 +40,7 @@ run: clean-cov clean-data $(TESTS) data ../cio_ra.bin bad-data
 	./test-compat
 	ln -s ../cio_ra.bin
 	./test-cio_file
-	sed -i "s:-nan: nan:g" data/*
+	sed -i.tmp "s:-nan: nan:g" data/* && rm -f data/*.tmp
 	diff data reference
 	./test-super
 	rm -f cio_ra.bin

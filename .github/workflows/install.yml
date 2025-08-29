@@ -2,8 +2,8 @@ name: Test install
 permissions:
   contents: read
   pull-requests: write
-  
-on: 
+
+on:
   push:
     branches:
       - main
@@ -25,20 +25,33 @@ on:
       - '.github/workflows/install.yml'
 
 jobs:
-
   install:
-    runs-on: ubuntu-latest
+    name: Install on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            cc: gcc
+          - os: macos-latest
+            cc: clang
     env:
-      CC: gcc
+      CC: ${{ matrix.cc }}
     steps:
-    - name: install doxygen
-      run: sudo apt-get install doxygen
-    
-    - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
 
-    - name: Build distro
-      run: make distro
+      - name: Install dependencies
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y doxygen
+          else
+            brew update
+            brew install doxygen
+          fi
 
-    - name: Install to default location
-      run: sudo make install
+      - name: Build distro
+        run: make distro
 
+      - name: Install to local prefix
+        run: make DESTDIR=$HOME/.local install

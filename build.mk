@@ -11,13 +11,23 @@ $(OBJ)/%.o: $(SRC)/%.c $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
 # Share library recipe
-$(LIB)/%.so.$(SO_VERSION): | $(LIB)
-	$(CC) -o $@ $(SOFLAGS)
+$(LIB)/%.$(SOEXT).$(SO_VERSION): | $(LIB)
+ifeq ($(UNAME_S),Darwin)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -dynamiclib -fPIC -Wl,-install_name,@rpath/$(notdir $@) $(LDFLAGS)
+else
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(notdir $@) $(LDFLAGS)
+endif
+
+# Platform-dependent symbolic linkink
+LNFLAGS := -sr
+ifeq ($(UNAME_S),Darwin)
+  LNFLAGS := -s
+endif
 
 # Unversioned shared libs (for linking against)
-$(LIB)/lib%.so:
+$(LIB)/lib%.$(SOEXT):
 	@rm -f $@
-	ln -sr $< $@
+	ln $(LNFLAGS) $< $@
 
 # Static library recipe
 $(LIB)/%.a:
