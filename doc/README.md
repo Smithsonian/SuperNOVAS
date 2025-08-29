@@ -1133,17 +1133,17 @@ considerations before that level of accuracy is reached.
     for more information how you can do that.
 
  4. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
-    knowledge of Earth orientation at the time of observation. The pole is subject to predictable precession and 
-    nutation, but also small irregular variations in the orientation of the rotational axis and the rotation period 
-    (a.k.a polar wobble). The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) 
-    provide up-to-date measurements, historical data, and near-term projections for the polar offsets and the UT1-UTC 
-    time difference and leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be
-    further amended to include corrections for variations caused by librations and ocean tides. As of version 1.5 
-    `novas_diurnal_eop()` may be used to calculate such corrections. In __SuperNOVAS__ you can apply the EOP values
-    in `novas_set_time()` (for UT1-UTC), and `novas_make_frame()` (_xp_ and _yp_) to improve the astrometric precision 
-    of Earth-orientation based coordinate calculations. Without setting and using the appropriate EOP values for the 
-    time of observation, positions for Earth-based observations will be accurate at the tenths of arcsecond level 
-    only.
+    knowledge of Earth orientation parameters (EOP) at the time of observation. Earth's pole is subject to predictable 
+    precession and nutation, but also small irregular variations in the orientation of the rotational axis and the 
+    rotation period (a.k.a polar wobble). The 
+    [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) provide up-to-date 
+    measurements, historical data, and near-term projections for the polar offsets, the UT1-UTC time difference, and 
+    leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be further amended to 
+    include corrections for variations caused by librations and ocean tides. As of version 1.5 `novas_diurnal_eop()` 
+    may be used to calculate such corrections. In __SuperNOVAS__ you can apply the EOP values in `novas_set_time()` 
+    (for UT1-UTC), and `novas_make_frame()` (_xp_ and _yp_) to improve the astrometric precision of Earth-orientation 
+    based coordinate calculations. Without setting and using the appropriate EOP values for the time of observation, 
+    positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
    
   5. __Refraction__: Ground based observations are also subject to atmospheric refraction. __SuperNOVAS__ offers the 
     option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
