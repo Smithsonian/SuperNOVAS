@@ -53,38 +53,41 @@ ifndef CIO_LOCATOR_FILE
 endif
 
 SOLSYS_TARGETS :=
-SHARED_TARGETS := $(LIB)/libsupernovas.so $(LIB)/libnovas.so
+SHARED_TARGETS := $(LIB)/libsupernovas.$(SOEXT) $(LIB)/libnovas.$(SOEXT)
 
 ifneq ($(BUILTIN_SOLSYS1),1)
   SOLSYS_TARGETS += $(OBJ)/solsys1.o $(OBJ)/eph_manager.o
-  SHARED_TARGETS += $(LIB)/libsolsys1.so
+  SHARED_TARGETS += $(LIB)/libsolsys1.$(SOEXT)
 endif
 
 ifneq ($(BUILTIN_SOLSYS2),1)
   SOLSYS_TARGETS += $(OBJ)/solsys2.o
-  SHARED_TARGETS += $(LIB)/libsolsys2.so
+  # Don't build solsys2 shared lib on Mac OS -- it does not like mystery symbols.
+  ifeq ($(BUILD_SOLSYS2_SHARED),1)
+    SHARED_TARGETS += $(LIB)/libsolsys2.$(SOEXT)
+  endif
 endif
 
 ifneq ($(BUILTIN_SOLSYS3),1)
   SOLSYS_TARGETS += $(OBJ)/solsys3.o
-  SHARED_TARGETS += $(LIB)/libsolsys3.so
+  SHARED_TARGETS += $(LIB)/libsolsys3.$(SOEXT)
 endif
 
 ifneq ($(BUILTIN_SOLSYS_EPHEM),1)
   SOLSYS_TARGETS += $(OBJ)/solsys-ephem.o
-  SHARED_TARGETS += $(LIB)/libsolsys-ephem.so
+  SHARED_TARGETS += $(LIB)/libsolsys-ephem.$(SOEXT)
 endif
 
 ifeq ($(CALCEPH_SUPPORT),1)
   CPPFLAGS += -DUSE_CALCEPH=1
   SOLSYS_TARGETS += $(OBJ)/solsys-calceph.o
-  SHARED_TARGETS += $(LIB)/libsolsys-calceph.so
+  SHARED_TARGETS += $(LIB)/libsolsys-calceph.$(SOEXT)
 endif
 
 ifeq ($(CSPICE_SUPPORT),1)
   CPPFLAGS += -DUSE_CSPICE=1
   SOLSYS_TARGETS += $(OBJ)/solsys-cspice.o
-  SHARED_TARGETS += $(LIB)/libsolsys-cspice.so
+  SHARED_TARGETS += $(LIB)/libsolsys-cspice.$(SOEXT)
 endif
 
 # Default target for packaging with Linux distributions
@@ -114,7 +117,7 @@ test: cio_ra.bin
 
 .PHONY: benchmark
 benchmark: shared
-	$(MAKE) LD_LIBRARY_PATH=$(shell pwd)/$(LIB) -C benchmark
+	$(MAKE) $(LIB_PATH_VAR)=$(shell pwd)/$(LIB) -C benchmark
 
 # Perform checks (test + analyze)
 .PHONY: check
@@ -135,7 +138,8 @@ clean:
 # Remove all generated files
 .PHONY: distclean
 distclean: clean
-	rm -f $(LIB)/libsupernovas.so* $(LIB)/libsupernovas.a $(LIB)/libnovas.so* $(LIB)/libnovas.a $(LIB)/libsolsys*.so* cio_ra.bin
+	rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a \
+      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* cio_ra.bin
 	$(MAKE) -C benchmark distclean
 
 .PHONY:
@@ -149,52 +153,54 @@ endif
 # The nitty-gritty stuff below
 # ----------------------------------------------------------------------------
 
-$(LIB)/libsupernovas.so: $(LIB)/libsupernovas.so.$(SO_VERSION)
+$(LIB)/libsupernovas.$(SOEXT): $(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libsolsys1.so: $(LIB)/libsolsys1.so.$(SO_VERSION)
+$(LIB)/libsolsys1.$(SOEXT): $(LIB)/libsolsys1.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libsolsys2.so: $(LIB)/libsolsys2.so.$(SO_VERSION)
+$(LIB)/libsolsys2.$(SOEXT): $(LIB)/libsolsys2.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libsolsys3.so: $(LIB)/libsolsys2.so.$(SO_VERSION)
+$(LIB)/libsolsys3.$(SOEXT): $(LIB)/libsolsys3.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libsolsys-ephem.so: $(LIB)/libsolsys-ephem.so.$(SO_VERSION)
+$(LIB)/libsolsys-ephem.$(SOEXT): $(LIB)/libsolsys-ephem.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libsolsys-calceph.so: $(LIB)/libsolsys-calceph.so.$(SO_VERSION)
+$(LIB)/libsolsys-calceph.$(SOEXT): $(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libsolsys-cspice.so: $(LIB)/libsolsys-cspice.so.$(SO_VERSION)
+$(LIB)/libsolsys-cspice.$(SOEXT): $(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION)
 
-$(LIB)/libnovas.so: $(LIB)/libsupernovas.so
+$(LIB)/libnovas.$(SOEXT): $(LIB)/libsupernovas.$(SOEXT)
 
 # Shared library: libsupernovas.so.1 -- same as novas.so except the builtin SONAME
-$(LIB)/libsupernovas.so.$(SO_VERSION): $(SOURCES)
+$(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION): $(SOURCES)
 
 # Shared library: libsolsys1.so.1 (standalone solsys1.c functionality)
-$(LIB)/libsolsys1.so.$(SO_VERSION): BUILTIN_SOLSYS1 := 0
-$(LIB)/libsolsys1.so.$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c
+$(LIB)/libsolsys1.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS1 := 0
+$(LIB)/libsolsys1.$(SOEXT).$(SO_VERSION): $(SRC)/solsys1.c $(SRC)/eph_manager.c
 
 # Shared library: libsolsys2.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys2.so.$(SO_VERSION): BUILTIN_SOLSYS2 := 0
-$(LIB)/libsolsys2.so.$(SO_VERSION): $(SRC)/solsys2.c
+$(LIB)/libsolsys2.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS2 := 0
+$(LIB)/libsolsys2.$(SOEXT).$(SO_VERSION): $(SRC)/solsys2.c
 
 # Shared library: libsolsys3.so.1 (standalone solsys1.c functionality)
-$(LIB)/libsolsys3.so.$(SO_VERSION): BUILTIN_SOLSYS3 := 0
-$(LIB)/libsolsys3.so.$(SO_VERSION): $(SRC)/solsys3.c
+$(LIB)/libsolsys3.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS3 := 0
+$(LIB)/libsolsys3.$(SOEXT).$(SO_VERSION): $(SRC)/solsys3.c
 
 # Shared library: libsolsys-ephem.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-ephem.so.$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
-$(LIB)/libsolsys-ephem.so.$(SO_VERSION): $(SRC)/solsys-ephem.c
+$(LIB)/libsolsys-ephem.$(SOEXT).$(SO_VERSION): BUILTIN_SOLSYS_EPHEM := 0
+$(LIB)/libsolsys-ephem.$(SOEXT).$(SO_VERSION): $(SRC)/solsys-ephem.c
 
 # Shared library: libsolsys-calceph.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-calceph.so.$(SO_VERSION): SHLIBS := -lcalceph
-$(LIB)/libsolsys-calceph.so.$(SO_VERSION): $(SRC)/solsys-calceph.c
+$(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION): SHLIBS := -lcalceph
+$(LIB)/libsolsys-calceph.$(SOEXT).$(SO_VERSION): $(SRC)/solsys-calceph.c
 
 # Shared library: libsolsys-cspice.so.1 (standalone solsys2.c functionality)
-$(LIB)/libsolsys-cspice.so.$(SO_VERSION): SHLIBS := -lcspice
-$(LIB)/libsolsys-cspice.so.$(SO_VERSION): $(SRC)/solsys-cspice.c
+$(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION): SHLIBS := -lcspice
+$(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION): $(SRC)/solsys-cspice.c
 
 # Link submodules against the supernovas shared lib
-$(LIB)/libsolsys%.so.$(SO_VERSION): | $(LIB) $(LIB)/libsupernovas.so
-	$(CC) -o $@ $(SOFLAGS) -L$(LIB) -lsupernovas $(SHLIBS)
+$(LIB)/libsolsys%.$(SOEXT).$(SO_VERSION): | $(LIB) $(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ \
+		$(SHARED_FLAG) -fPIC $(SONAME_FLAG)$(notdir $@) \
+		$(RPATH_FLAG)$(LIB) $(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION) $(SHLIBS) $(LDFLAGS)
 
 # Static library: libsupernovas.a
 $(LIB)/libsupernovas.a: $(OBJECTS) | $(LIB) Makefile
@@ -264,18 +270,18 @@ install-cio-data:
 install-headers:
 	@echo "installing headers to $(DESTDIR)$(includedir)"
 	install -d $(DESTDIR)$(includedir)
-	$(INSTALL_DATA) -D include/*.h $(DESTDIR)$(includedir)/
+	$(INSTALL_DATA) include/*.h $(DESTDIR)$(includedir)/
 
 .PHONY: install-html
 install-html:
 ifneq ($(wildcard apidoc/html/search/*),)
 	@echo "installing API documentation to $(DESTDIR)$(htmldir)"
 	install -d $(DESTDIR)$(htmldir)/search
-	$(INSTALL_DATA) -D apidoc/html/search/* $(DESTDIR)$(htmldir)/search/
-	$(INSTALL_DATA) -D apidoc/html/*.* $(DESTDIR)$(htmldir)/
+	$(INSTALL_DATA) apidoc/html/search/* $(DESTDIR)$(htmldir)/search/
+	$(INSTALL_DATA) apidoc/html/*.* $(DESTDIR)$(htmldir)/
 	@echo "installing images to $(DESTDIR)$(htmldir)/resources"
 	install -d $(DESTDIR)$(htmldir)/resources
-	$(INSTALL_DATA) -D resources/SuperNOVAS-systems.png $(DESTDIR)$(htmldir)/resources/
+	$(INSTALL_DATA) resources/SuperNOVAS-systems.png $(DESTDIR)$(htmldir)/resources/
 	@echo "installing Doxygen tag file to $(DESTDIR)$(docdir)"
 	install -d $(DESTDIR)$(docdir)
 	$(INSTALL_DATA) apidoc/supernovas.tag $(DESTDIR)$(docdir)/supernovas.tag

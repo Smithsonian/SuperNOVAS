@@ -24,6 +24,37 @@ CPPFLAGS += -I$(INC)
 # -std=c99 may not be supported by some very old compilers...
 CFLAGS ?= -g -Os -Wall
 
+# Grab the system information
+UNAME_S := $(shell uname -s)
+
+# Platform-specific configurations
+ifeq ($(UNAME_S),Darwin)
+  # macOS specific
+  SOEXT := dylib
+  SHARED_FLAG := -dynamiclib
+  SONAME_FLAG := -Wl,-install_name,@rpath/
+  RPATH_FLAG := -Wl,-rpath,
+  LNFLAGS := -s
+  LIB_PATH_VAR := DYLD_LIBRARY_PATH
+  BUILD_SOLSYS2_SHARED := 0
+  AUTO_DETECT_LIBS := 0
+else
+  # Linux/Unix specific
+  SOEXT := so
+  SHARED_FLAG := -shared
+  SONAME_FLAG := -Wl,-soname,
+  RPATH_FLAG := -Wl,-rpath=
+  LNFLAGS := -sr
+  LIB_PATH_VAR := LD_LIBRARY_PATH
+  BUILD_SOLSYS2_SHARED := 1
+  # Check if ldconfig is available for auto-detection
+  ifneq ($(shell which ldconfig 2>/dev/null), )
+    AUTO_DETECT_LIBS := 1
+  else
+    AUTO_DETECT_LIBS := 0
+  endif
+endif
+
 # Compile for specific C standard
 ifdef CSTANDARD
   CFLAGS += -std=$(CSTANDARD)
@@ -153,7 +184,7 @@ endif
 # If the THREAD_LOCAL variable was defined externally, use that definition to 
 # specify the thread local keyword to use. 
 ifdef THREAD_LOCAL
-  CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)"
+  CPPFLAGS += -DTHREAD_LOCAL=\"$(THREAD_LOCAL)\"
 endif
 
 ifeq ($(DEFAULT_SOLSYS), 1) 
@@ -203,9 +234,8 @@ ifdef DEFAULT_READEPH
 endif
 
 # Use ldconfig (if available) to detect CALCEPH / CSPICE shared libs automatically
-ifneq ($(shell which ldconfig), )
-  # Detect CALCEPH automatically, and enable support if present
-  ifndef CALCEPH_SUPPORT 
+ifeq ($(AUTO_DETECT_LIBS),1)
+  ifndef CALCEPH_SUPPORT
     ifneq ($(shell ldconfig -p | grep libcalceph), )
       $(info INFO: CALCEPH support is enabled automatically.)
       CALCEPH_SUPPORT = 1
@@ -214,8 +244,6 @@ ifneq ($(shell which ldconfig), )
       CALCEPH_SUPPORT = 0
     endif
   endif
-
-  # Detect CSPICE automatically, and enable support if present
   ifndef CSPICE_SUPPORT
     ifneq ($(shell ldconfig -p | grep libcspice), )
       $(info INFO: CSPICE support is enabled automatically.)
@@ -230,9 +258,6 @@ endif
 # Generate a list of object (obj/*.o) files from the input sources
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
-
-# Compiler flags for building shared .so libraries.
-SOFLAGS = $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
 
 # Search for files in the designated locations
 vpath %.h $(INCLUDE)
