@@ -1,0 +1,108 @@
+name: Build with CMake
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "include/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - ".github/workflows/build.yml"
+
+  pull_request:
+    paths:
+      - "src/**"
+      - "include/**"
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - ".github/workflows/build.yml"
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        build_type: [Release, Debug]
+        shared_libs: [ON, OFF]
+        include:
+          - os: ubuntu-latest
+            cc: gcc
+            cxx: g++
+          - os: macos-latest
+            cc: clang
+            cxx: clang++
+          - os: windows-latest
+            cc: gcc
+            cxx: g++
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure CMake (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DBUILD_SHARED_LIBS=${{ matrix.shared_libs }} \
+            -DBUILD_STATIC_LIBS=ON \
+            -DCMAKE_C_COMPILER=${{ matrix.cc }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+
+      - name: Configure CMake (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cmake -B build `
+            -G "MinGW Makefiles" `
+            -DCMAKE_C_COMPILER=gcc `
+            -DCMAKE_CXX_COMPILER=g++ `
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
+            -DBUILD_SHARED_LIBS=${{ matrix.shared_libs }} `
+            -DBUILD_STATIC_LIBS=ON
+
+      - name: Build
+        run: cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Install
+        run: cmake --install build --config ${{ matrix.build_type }} --prefix install
+
+      - name: Check Installation (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          echo Installation contents:
+          ls -la install/
+
+      - name: Check Installation (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          echo Installation contents:
+          dir install
+
+  build-freebsd:
+    runs-on: ubuntu-latest
+    name: Build on FreeBSD
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["13.2", "14.0"]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build on FreeBSD ${{ matrix.version }}
+        uses: vmactions/freebsd-vm@v1
+        with:
+          release: ${{ matrix.version }}
+          usesh: true
+          prepare: |
+            pkg install -y cmake
+          run: |
+            echo Building on FreeBSD $(uname -m) version ${{ matrix.version }}
+            cmake -B build -DCMAKE_BUILD_TYPE=Release
+            cmake --build build
+            cmake --install build --prefix install
+            ls -la install/

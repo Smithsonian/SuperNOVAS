@@ -1,0 +1,50 @@
+@PACKAGE_INIT@
+
+# SuperNOVAS CMake configuration file
+
+include(CMakeFindDependencyMacro)
+
+# Find required dependencies
+find_dependency(Threads)
+
+# Find math library if needed
+if(NOT WIN32)
+    find_library(MATH_LIBRARY m)
+    if(NOT MATH_LIBRARY)
+        message(FATAL_ERROR "Math library not found")
+    endif()
+endif()
+
+# Include targets
+include("${CMAKE_CURRENT_LIST_DIR}/SuperNOVASTargets.cmake")
+
+# Set variables for backward compatibility
+set(SuperNOVAS_LIBRARIES SuperNOVAS::supernovas)
+set(SuperNOVAS_INCLUDE_DIRS "")
+
+# Get include directories from target properties
+get_target_property(SuperNOVAS_INCLUDE_DIRS SuperNOVAS::supernovas INTERFACE_INCLUDE_DIRECTORIES)
+
+# Check if optional components are available
+if(TARGET SuperNOVAS::solsys-calceph)
+    set(SuperNOVAS_CALCEPH_FOUND TRUE)
+else()
+    set(SuperNOVAS_CALCEPH_FOUND FALSE)
+endif()
+
+# Component support
+set(SuperNOVAS_FIND_COMPONENTS ${SuperNOVAS_FIND_COMPONENTS})
+
+foreach(component ${SuperNOVAS_FIND_COMPONENTS})
+    if(component STREQUAL "calceph")
+        if(NOT SuperNOVAS_CALCEPH_FOUND)
+            set(SuperNOVAS_FOUND FALSE)
+            set(SuperNOVAS_NOT_FOUND_MESSAGE "SuperNOVAS CALCEPH component not available")
+        endif()
+    else()
+        set(SuperNOVAS_FOUND FALSE)
+        set(SuperNOVAS_NOT_FOUND_MESSAGE "Unknown SuperNOVAS component: ${component}")
+    endif()
+endforeach()
+
+check_required_components(SuperNOVAS)
