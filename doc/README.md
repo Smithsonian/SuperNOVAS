@@ -270,38 +270,6 @@ Or, to stage the installation (to `/usr`) under a 'build root':
   $ make DESTDIR="/tmp/stage" install
 ```
 
-### Legacy NOVAS C build configurations
-
-NOVAS C did not have provide a `Makefile`, and did not offer runtime configurability. It was left up to you to 
-incorporate a selection of NOVAS C sources in your application build, along with your choice of `solarsystem()` and 
-`solarsystem_hp()` provider modules, such as one of the `solsys[1-3].c` modules, or your own adapter module. It also 
-required a `readeph()` implementation wither via the dummy `readeph0.c` or your own custom implementation for the 
-build to succeed.
-
-You can still build you legacy NOVAS C code against __SuperNOVAS__, provided you build the library such that it allows 
-you to include / link your choice of `solarsystem()` / `solarsystem_hp()` and `readeph()` implementations -- either
-as built-in default implemetations within the library, or else left for you to define these at link time.
-
- - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` / 
-   `solarsystem_hp()` implementations for `ephemeris()` calls within `libsupernovas.a` / `.so`, by setting 
-   `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` through `solsys3.c`, respectively. If a default `solarsystem()` is set 
-   this way, you will not be able to link against other `solarsystem()` providers. If `DEFAULT_SOLSYS` is not set, or 
-   it is set to 0, then you will always have to link a module (e.g. `solsys[1-3].o` or `libsolsys[1-3].a` 
-   / `.so` or your custom implementation) explicitly to provides these functions for your application.
-   
- - You may also specify the source file that will provide a `readeph()` implementation within `libsupernovas.a` / 
-   `.so`, by setting `DEFAULT_READEPH` (e.g. the dummy `readep0.c` in `examples/`). If a default `readeph()` module
-   is set, you will not be able to link other `readeph()` implementations together with the library. If 
-   `DEFAULT_READEPH` is not specified, you will always have to link a module explicitly to provide `readeph()` for 
-   your application.
- 
-Finally, to build __SuperNOVAS__ as a set of static libraries (if that's what you want), and `solsys[1-3].o` objects 
-for legacy linking:
- 
-```bash
-  $ make static
-```
-
 -----------------------------------------------------------------------------
 
 
