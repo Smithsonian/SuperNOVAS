@@ -200,54 +200,36 @@ accommodate JPL NAIF codes, for which 16-bit storage is insufficient.
 <a name="installation"></a>
 ## Building and installation
 
-
 The __SuperNOVAS__ distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as 
 local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point 
 we do not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, or else define
 the necessary variables in the shell prior to invoking `make`. For example:
-
- - Choose which planet calculator function routines are built into the library (for example to provide 
-   `earth_sun_calc()` set `BUILTIN_SOLSYS3 = 1`  and/or for `planet_ephem_provider()` set `BUILTIN_SOLSYS_EPHEM = 1`. 
-   You can then specify these functions (or others) as your planet calculator of choice for `ephemeris()` in your 
-   application dynamically via `set_planet_provider()`.
    
- - [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library integration is automatic if `ldconfig` can 
-   locate the `libcalceph` shared library. You can also control CALCEPH integration manually, e.g. by setting 
-   `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CALCEPH integration will require an 
-   accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries 
+ - [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) C library integration is automatic on Linux if 
+   `ldconfig` can locate the `libcalceph` shared library. You can also control CALCEPH integration manually, e.g. by 
+   setting `CALCEPH_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CALCEPH integration will require 
+   an accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries 
    depending on the needs of the build).
    
- - [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) integration automatic, if `ldconfig` can locate 
-   the `libcspice` shared library. You can also control CSPICE integration manually, e.g. by setting 
+ - [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) integration automatic on Linux if `ldconfig` 
+   can locate the `libcspice` shared library. You can also control CSPICE integration manually, e.g. by setting 
    `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CSPICE integration will require an 
    accessible installation of the CSPICE development files (C headers, under a `cspice/` sub-folder in the header 
    search path, and unversioned static or shared libraries depending on the needs of the build). You might want to 
    check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) repository for 
    building CSPICE as a shared library.
    
- - Choose which stock planetary calculator module (if any) should provide a default `solarsystem()` implementation for 
-   `ephemeris()` calls by setting `DEFAULT_SOLSYS` to 1 -- 3 for `solsys1.c` trough `solsys3.c`, respectively. If you 
-   want to link your own `solarsystem()` implementation(s) against the library, you should not set `DEFAULT_SOLSYS` 
-   (i.e. delete or comment out the corresponding line or else set `DEFAULT_SOLSYS` to 0).
-   
- - You may also specify the source file that will provide a `readeph()` implementation, by setting `DEFAULT_READEPH`. 
-   (The default setting uses the dummy `readeph0.c` which simply returns an error). Note, that a `readeph()` 
-   implementation is a relic of NOVAS C and not generally needed. You can provide a superior ephemeris reader 
-   implementation at runtime via the `set_ephem_provider()` call or equivalent (e.g. `novas_use_calceph()` or 
-   `novas_use_cspice()`, if they are available).
-
- - If you want to use a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file (e.g. 
-   `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable 
-   prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless you 
-   specifically require CIO positions relative to GCRS.)
-   
  - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
    quotes in `config.mk`, or unescaped if defining the `THREAD_LOCAL` shell variable prior to invoking `make`.)
 
+ - If you want to use a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file (e.g. 
+   `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable 
+   prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless you 
+   specifically require CIO positions relative to GCRS.)
 
 Additionally, you may set number of environment variables to futher customize the build, such as:
 
@@ -258,6 +240,8 @@ Additionally, you may set number of environment variables to futher customize th
  - `CFLAGS`: Flags to pass onto the C compiler (default: `-g -Os -Wall`). Note, `-Iinclude` will be added 
    automatically.
    
+ - `LDFLAGS`: Extra linker flags (default is _not set_). Note, `-lm` will be added automatically.
+   
  - `CSTANDARD`: Optionally, specify the C standard to compile for, e.g. `c99` to compile for the C99 standard. If
    defined then `-std=$(CSTANDARD)` is added to `CFLAGS` automatically.
    
@@ -265,8 +249,6 @@ Additionally, you may set number of environment variables to futher customize th
    
  - `FORTIFY`: If set it will set the `_FORTIFY_SOURCE` macro to the specified value (`gcc` supports values 1 
    through 3). It affords varying levels of extra compile time / runtime checks.
-   
- - `LDFLAGS`: Extra linker flags (default is _not set_). Note, `-lm -lxchange` will be added automatically.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
  
@@ -280,10 +262,10 @@ Now you are ready to build the library:
   $ make
 ```
 
-will compile the shared (e.g. `lib/libsupernovas.so`) libraries, produce a CIO locator data file (e.g. 
-`tools/data/cio_ra.bin`), and compile the API documentation (into `apidoc/`) using `doxygen` (if available). 
-Alternatively, you can build select components of the above with the `make` targets `shared`, and `local-dox` 
-respectively. And, if unsure, you can always call `make help` to see what build targets are available.
+will compile the shared (e.g. `lib/libsupernovas.so`) libraries, and compile the API documentation (into `apidoc/`) 
+using `doxygen` (if available). Alternatively, you can build select components of the above with the `make` targets 
+`shared`, and `local-dox` respectively. And, if unsure, you can always call `make help` to see what build targets are 
+available.
 
 After building the library you can install the above components to the desired locations on your system. For a 
 system-wide install you may simply run:
@@ -304,7 +286,6 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 ```bash
   $ make DESTDIR="/tmp/stage" install
 ```
-
 
 -----------------------------------------------------------------------------
 
