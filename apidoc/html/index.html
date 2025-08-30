@@ -219,10 +219,10 @@ Building and installation</h2>
 <li><code>CC</code>: The C compiler to use (default: <code>gcc</code>).</li>
 <li><code>CPPFLAGS</code>: C preprocessor flags, such as externally defined compiler constants.</li>
 <li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-g -Os -Wall</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
+<li><code>LDFLAGS</code>: Extra linker flags (default is <em>not set</em>). Note, <code>-lm</code> will be added automatically.</li>
 <li><code>CSTANDARD</code>: Optionally, specify the C standard to compile for, e.g. <code>c99</code> to compile for the C99 standard. If defined then <code>-std=$(CSTANDARD)</code> is added to <code>CFLAGS</code> automatically.</li>
 <li><code>WEXTRA</code>: If set to 1, <code>-Wextra</code> is added to <code>CFLAGS</code> automatically.</li>
 <li><code>FORTIFY</code>: If set it will set the <code>_FORTIFY_SOURCE</code> macro to the specified value (<code>gcc</code> supports values 1 through 3). It affords varying levels of extra compile time / runtime checks.</li>
-<li><code>LDFLAGS</code>: Extra linker flags (default is <em>not set</em>). Note, <code>-lm -lxchange</code> will be added automatically.</li>
 <li><code>CHECKEXTRA</code>: Extra options to pass to <code>cppcheck</code> for the <code>make check</code> target</li>
 <li><code>DOXYGEN</code>: Specify the <code>doxygen</code> executable to use for generating documentation. If not set (default), <code>make</code> will use <code>doxygen</code> in your <code>PATH</code> (if any). You can also set it to <code>none</code> to disable document generation and the checking for a usable <code>doxygen</code> version entirely.</li>
 </ul>
