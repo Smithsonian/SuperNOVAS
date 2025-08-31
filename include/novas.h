@@ -159,11 +159,13 @@
 /// [km] Astronomical Unit (AU) in kilometers.
 #define NOVAS_AU_KM               ( 1e-3 * NOVAS_AU )
 
-/// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant, from DE-405.
-#define NOVAS_G_SUN               1.32712440017987e+20
+/// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant (GM<sub>sun</sub>) from DE440,
+/// see Park et al., AJ, 161, 105 (2021)
+#define NOVAS_G_SUN               1.32712440041279419e20
 
-/// [m<sup>3</sup>/s<sup>2</sup>] Geocentric gravitational constant, from DE-405.
-#define NOVAS_G_EARTH             3.98600433e+14
+/// [m<sup>3</sup>/s<sup>2</sup>] Geocentric gravitational constant (GM<sub>earth</sub>) from DE440,
+/// see Park et al., AJ, 161, 105 (2021)
+#define NOVAS_G_EARTH             3.98600435507e14
 
 /// [m] Solar radius (photosphere)
 /// @since 1.1
@@ -351,13 +353,47 @@ enum novas_planet {
  * const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
  * \endcode
  *
- * @sa novas_majot_planet
+ * @sa novas_major_planet
  * @since 1.2
  * @author Attila Kovacs
  */
 #define NOVAS_PLANET_NAMES_INIT { \
   "SSB", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", \
   "Sun", "Moon", "EMB", "Pluto-Barycenter" }
+
+
+/**
+ * Array initializer for mean planet radii in meters, matching the enum novas_planet. E.g.
+ *
+ * \code
+ * const double *planet_radii[] = NOVAS_PLANET_RADII_INIT;
+ * \endcode
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>https://orbital-mechanics.space/reference/planetary-parameters.html, Table 3.</li>
+ * <li>B. A. Archinal, et al.,
+ * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
+ * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
+ * doi:10.1007/s10569-017-9805-5.</li>
+ * <li>B. A. Archinal, et al.,
+ * Report of the IAU Working Group on Cartographic Coordinates and Rotational Elements:
+ * 2015. Celestial Mechanics and Dynamical Astronomy, 130(3):22, March 2018.
+ * doi:10.1007/s10569-017-9805-5.
+ * </ol>
+ *
+ * @sa novas_major_planet
+ * @since 1.5
+ * @author Attila Kovacs
+ */
+#define NOVAS_PLANET_RADII_INIT { \
+  0.0, \
+  2440530.0, 6051800.0, 6378136.6, 3396190.0, 71492000.0, 60268000.0, 25559000.0, 24764000.0, 1188300.0, \
+  695700000.0, \
+  1737400.0, \
+  0.0, 0.0 \
+}
+
 
 /**
  * Reciprocal masses of solar system bodies, from DE-405 (Sun mass / body mass).
@@ -382,9 +418,11 @@ enum novas_planet {
  * @author Attila Kovacs
  */
 #define NOVAS_RMASS_INIT  { \
-      328900.559708565, 6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
+      328900.559708565, \
+      6023657.9450387, 408523.718656268, 332946.048773067, 3098703.54671961, \
       1047.348631244, 3497.9018007932, 22902.9507834766, 19412.2597758766, 136045556.16738, \
-      1.0, 27068702.9548773, 0.0, 0.0 }
+      1.0, 27068702.9548773, \
+      0.0, 0.0 }
 
 /**
  * Gravitational redshifts for major planets (and Moon and Sun) for light emitted at surface
@@ -2194,6 +2232,11 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
 
 int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt);
 
+double novas_clock_skew_tt(const novas_frame *frame);
+
+double novas_clock_skew_tcg(const novas_frame *frame);
+
+double novas_clock_skew_tcb(const novas_frame *frame);
 
 
 // <================= END of SuperNOVAS API =====================>

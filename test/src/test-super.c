@@ -4372,7 +4372,7 @@ static int test_itrf_transform() {
   return n;
 }
 
-int test_itrf_transform_eop() {
+static int test_itrf_transform_eop() {
   int n = 0;
 
   double xp, yp, dut1, z;
@@ -4396,6 +4396,44 @@ int test_itrf_transform_eop() {
 
   if(!is_ok("itrf_transform_eop:dut1_only", novas_itrf_transform_eop(2014, 0.0, 0.0, 0.0, 1993, NULL, NULL, &z))) return 1;
   if(!is_equal("itrf_transform_eop:dut1_only:check", z, dut1, 1e-9)) n++;
+
+  return n;
+}
+
+static int test_clock_skew() {
+  int n = 0;
+
+  observer obs = {};
+  novas_timespec time = {};
+  novas_frame frame = {};
+  double pos[3] = { 10000.0, 0.0, 0.0 }, vel[3] = {0.0};
+
+  const double LB = 1.550519768e-8;
+  const double LG = 6.969290134e-10;
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32.0, 0.0, &time);
+  if(!is_ok("clock_skew:frame:gc", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+  if(!is_equal("clock_skew:gc:tcg", 0.0, novas_clock_skew_tcg(&frame), 1e-16)) n++;
+  if(!is_equal("clock_skew:gc:tt", LG, novas_clock_skew_tt(&frame), 1e-16)) n++;
+  if(!is_equal("clock_skew:gc:tcb", LG - LB, novas_clock_skew_tcb(&frame), 3e-2 * LB)) n++;
+
+  make_observer_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, &obs);
+  if(!is_ok("clock_skew:frame:earth", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+  if(!is_equal("clock_skew:earth:tcg", -LG, novas_clock_skew_tcg(&frame), 1e-12)) n++;
+  if(!is_equal("clock_skew:earth:tt", 0.0, novas_clock_skew_tt(&frame), 1e-12)) n++;
+  if(!is_equal("clock_skew:earth:tcb", -LB, novas_clock_skew_tcb(&frame), 3e-2 * LB)) n++;
+
+  if(!is_ok("clock_skew:obs:far", make_solar_system_observer(pos, vel, &obs))) n++;
+  if(!is_ok("clock_skew:frame:far", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+  if(!is_equal("clock_skew:far:tcb", 0.0, novas_clock_skew_tcb(&frame), 1e-12)) n++;
+
+  vel[0] = 0.9999999 * NOVAS_C;
+  make_observer_in_space(pos, vel, &obs);
+  if(!is_ok("clock_skew:frame:c", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
+  if(!is_equal("clock_skew:c:tcb", -1.0, novas_clock_skew_tcb(&frame), 1e-3)) n++;
+  if(!is_equal("clock_skew:c:tcg", -1.0, novas_clock_skew_tcg(&frame), 1e-3)) n++;
+  if(!is_equal("clock_skew:c:tt", -1.0, novas_clock_skew_tt(&frame), 1e-3)) n++;
 
   return n;
 }
@@ -4536,6 +4574,7 @@ int main(int argc, char *argv[]) {
   if(test_geodetic_to_cartesian()) n++;
   if(test_itrf_transform()) n++;
   if(test_itrf_transform_eop()) n++;
+  if(test_clock_skew()) n++;
 
   n += test_dates();
 

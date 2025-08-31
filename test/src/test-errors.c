@@ -2378,12 +2378,37 @@ static int test_geodetic_to_cartesian() {
   return n;
 }
 
-int test_itrf_transform() {
+static int test_itrf_transform() {
   int n = 0;
   double from_coords[3] = {0.0}, from_rates[3] = {0.0}, to_coords[3] = {0.0}, to_rates[3] = {0.0};
 
   if(check("itrf_transform:from_coords", -1, novas_itrf_transform(2000, NULL, from_rates, 2014, to_coords, to_rates))) n++;
   if(check("itrf_transform:rates", -1, novas_itrf_transform(2000, from_coords, NULL, 2014, to_coords, to_rates))) n++;
+
+  return n;
+}
+
+static int test_clock_skew() {
+  int n = 0;
+  observer obs = {};
+  novas_timespec time = {};
+  novas_frame frame = {};
+
+  if(check_nan("clock_skew_tcg:frame", novas_clock_skew_tcg(NULL))) n++;
+  if(check_nan("clock_skew_tcb:frame", novas_clock_skew_tcb(NULL))) n++;
+  if(check_nan("clock_skew_tt:frame", novas_clock_skew_tt(NULL))) n++;
+
+  if(check_nan("clock_skew_tcg:frame:init", novas_clock_skew_tcg(&frame))) n++;
+  if(check_nan("clock_skew_tcb:frame:init", novas_clock_skew_tcb(&frame))) n++;
+  if(check_nan("clock_skew_tt:frame:init", novas_clock_skew_tt(&frame))) n++;
+
+  make_observer_at_geocenter(&obs);
+  novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32.0, 0.0, &time);
+
+  enable_earth_sun_hp(1);
+  novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &time, 0.0, 0.0, &frame);
+  if(check_nan("clock_skew_tcb:frame", novas_clock_skew_tcb(&frame))) n++;
+  enable_earth_sun_hp(0);
 
   return n;
 }
@@ -2585,6 +2610,8 @@ int main() {
   if(test_cartesian_to_geodetic()) n++;
   if(test_geodetic_to_cartesian()) n++;
   if(test_itrf_transform()) n++;
+
+  if(test_clock_skew()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

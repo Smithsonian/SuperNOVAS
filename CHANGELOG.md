@@ -31,11 +31,14 @@ Upcoming feature release, expected around 1 November 2025.
  - #217: New functions `novas_geodetic_to_cartesian()` and `novas_cartesian_to_geodetic()` to convert between 
    geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the
    reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
-
+   
  - #221: Now supporting MacOS builds, which are different from standard UNIX build, via GNU `make` also (by 
    kiranshila).
    
  - #222: CMake build support, including MacOS and Windows builds (by kiranshila).
+
+ - #223: New functions `novas_clock_skew_tt()`, `novas_clock_skew_tcg()`, and `novas_clock_skew_tcb()` to calculate
+   the incremental rate at which an observer's clock ticks faster than a TT, TCG, or TCB clock respectively would. 
 
 ### Changed
 
@@ -60,12 +63,11 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #221: GitHub Actions CI now includes `Makefile` builds / tests for MacOS X. (by kiranshila)
  
- - #222: GitHub Ations CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by kiranshila)
+ - #222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by kiranshila)
  
  - #225: GNU `Makefile` fixes for non-Linux builds, and BSD build check in GitHub Actions CI.
  
  - Various API documentation edits.
- 
 
 ### Deprecated
 

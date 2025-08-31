@@ -20,7 +20,7 @@ double novas_add_beta(double beta1, double beta2) {
 }
 
 /**
- * Adds velocities define in AU/day, using the relativistic formula.
+ * Adds velocities defined in AU/day, using the relativistic formula.
  *
  * @param v1  [AU/day] First component
  * @param v2  [AU/day] Second component
