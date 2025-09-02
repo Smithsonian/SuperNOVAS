@@ -42,7 +42,8 @@
 #define TC_T0      2443144.5003725       ///< 1977 January 1, 0h 0m 0s TAI
 
 /**
- * Relative rate at which Barycentric coordinate time progresses fastern than time on Earth.
+ * Relative rate at which Barycentric coordinate time progresses fastern than time on Earth i.e.,
+ * Terrestrial Time (TT).
  *
  * REFERENCES:
  * <ol>
@@ -52,7 +53,8 @@
 #define TC_LB      1.550519768e-8
 
 /**
- * Relative rate at which Geocentric coordinate time progresses fastern than time on Earth.
+ * Relative rate at which Geocentric coordinate time progresses fastern than time on Earth i.e.,
+ * Terrestrial Time (TT).
  *
  * NOTES:
  * <ol>
@@ -78,6 +80,9 @@
 #define DAY_MILLIS    86400000L         ///< milliseconds in a day
 #define HOUR_MILLIS   3600000L          ///< milliseconds in an hour
 #define MIN_MILLIS    60000L            ///< milliseconds in a minute
+
+static const double iM[] = NOVAS_RMASS_INIT;       ///< [1/M<sub>sun</sub>]
+static const double R[] = NOVAS_PLANET_RADII_INIT; ///< [m]
 
 /// \endcond
 
@@ -138,8 +143,8 @@ int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
     // Expression given in USNO Circular 179, eq. 2.6.
     const double t = (jd_tdb - NOVAS_JD_J2000) / JULIAN_CENTURY_DAYS;
     d = 0.001657 * sin(628.3076 * t + 6.2401) + 0.000022 * sin(575.3385 * t + 4.2970) + 0.000014 * sin(1256.6152 * t + 6.1969)
-      + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
-      + 0.000010 * t * sin(628.3076 * t + 4.2490);
+    + 0.000005 * sin(606.9777 * t + 4.0212) + 0.000005 * sin(52.9691 * t + 0.4444) + 0.000002 * sin(21.3299 * t + 5.5431)
+    + 0.000010 * t * sin(628.3076 * t + 4.2490);
 
     last_tdb = jd_tdb;
   }
@@ -1658,4 +1663,316 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
     return novas_trace_nan("novas_time_lst");
   st = remainder(st + lon / 15.0, DAY_HOURS);
   return st < 0.0 ? st + DAY_HOURS : st;
+}
+
+/**
+ * Returns the Solar-system gravitational potential due to the major planets, the Sun, and Moon.
+ * If the position is inside one of the bodies (i.e., its distance from the body's center is less
+ * than 90% of the body's mean radius), then the potential due to that body is not included in the
+ * calculation. For example, if the position is the geocenter (or well below the Earth's surface),
+ * then the calculation will not include Earth potential.
+ *
+ * In reduced accuracy mode, the result may be approximate, as only the bodies with known positions
+ * are included. The gravitational potential due to the Sun and Earth are always included.
+ *
+ * @param frame   The observing frame, defining the observer position as well as the positions
+ *                of the major solar-system bodies at the time of observation.
+ * @param pos     [AU] The observer's position. If it's near the center of one of the gravitating
+ *                bodies, that body's potential is excluded from the calculation.
+ * @return        The Solar-system potential, or NAN (errno set to EAGAIN) if the frame is
+ *                configured for full accuracy but not all planet positions are available.
+ */
+static double solar_system_potential(const novas_frame *frame, const double *pos) {
+  double V = 0.0;
+  int i;
+
+  for(i = NOVAS_MERCURY; i <= NOVAS_MOON; i++) {
+    double d = 0.0;
+
+    if(frame->planets.mask & (1 << i)) {
+      int k;
+      for(k = 3; --k >= 0; ) {
+        double x = frame->planets.pos[i][k] + frame->obs_pos[k] - pos[k];
+        d += x * x;
+      }
+      d = sqrt(d) * AU;
+    }
+    else if(i == NOVAS_EARTH) {
+      // Inlow accuracy mode, we might not have a
+      d = novas_vdist(pos, frame->earth_pos) * AU;
+    }
+    else if(frame->accuracy != NOVAS_REDUCED_ACCURACY) {
+      novas_error(0, EAGAIN, "solar_system_potential", "Missing position data for planet %d", i);
+      return NAN;
+    }
+
+    // Skip object if we are inside it (less than 90% radius from the center).
+    if(d < 0.9 * R[i])
+      continue;
+
+    // Newtonian potential V = -GM / r
+    V -= NOVAS_G_SUN / (d * iM[i]);
+  }
+
+  return V / (C * C);
+}
+
+/**
+ * Returns the first derivative of the Solar-system gravitational potential die to the major planets, the Sun,
+ * and the Moon.
+ *
+ * @param frame     The observing frame, defining the observer position as well as the positions
+ *                  of the major solar-system bodies at the time of observation.
+ * @param pos       [AU] The BCRS position of at which to estimate the tidal potential.
+ * @param[out] V1   [1/AU] The _xyz_ potential gradient in rectangular equatorial coordinates.
+ */
+static void solar_system_tidal_potential(const novas_frame *frame, const double *pos, double *V1) {
+  const double eps = 1e-6;  // [AU] ~ 150 km...
+  double x[3];
+  int i;
+
+  memcpy(x, pos, sizeof(x));
+  memset(V1, 0.0, sizeof(x));
+
+  for(i = 0; i < 3; i++) {
+    x[i] += eps;
+    V1[i] += solar_system_potential(frame, x);
+    x[i] = pos[i] - eps;
+    V1[i] -= solar_system_potential(frame, x);
+    x[i] = pos[i];
+    V1[i] /= (2.0 * eps);
+  }
+}
+
+/**
+ * Returns the dimensionless kinetic potential term for a moving observer.
+ *
+ * @param b     &beta; i.e., _v_ / _c_.
+ * @return      The kinetic potential for the rate at which time advances for the observer.
+ */
+static double kinetic_potential(double b) {
+  double ig;
+
+  if(b < 1e-6)
+    // IERS Conventions, Chapter 10, Eq. 10.6 -- non-relativistic.
+    return -0.5 * b * b;
+
+  ig = sqrt(1.0 - b * b);
+
+  // IERS Conventions, Chapter 10, Eq. 10.6 -- relativistic.
+  // dtau / dTCG = (1 - dV/c2) / gamma - 1 -->
+  return (ig - 1.0);
+}
+
+/**
+ * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than
+ * an Earth-based clock. I.e., it returns _D_, which is defined by:
+ *
+ * d&tau<sub>obs</sub>; / dTCG = (1 + _D_)
+ *
+ * @param frame         The observing frame, defining the observer position as well as the positions
+ *                      of the major solar-system bodies at the time of observation.
+ * @param[out] igamma   The relativsitic correction for additional potential terms.
+ * @return              _D_.
+ */
+static double clock_skew_near_earth(const novas_frame *frame, double *igamma) {
+  static const char *fn = "clock_skew_near_earth";
+
+  enum novas_observer_place loc;
+  double dV, VE1[3] = {0.0};
+  double vo[3], vr, z, b;
+  int i;
+
+  if(!frame) {
+    novas_error(0, EINVAL, fn, "input frame is NULL");
+    return NAN;
+  }
+
+  if(!novas_frame_is_initialized(frame)) {
+    novas_error(0, EINVAL, fn, "input frame is not initialized");
+    return NAN;
+  }
+
+  dV = solar_system_potential(frame, frame->obs_pos) - solar_system_potential(frame, frame->earth_pos);
+
+  loc = frame->observer.where;
+  switch(loc) {
+    case NOVAS_OBSERVER_ON_EARTH:
+    case NOVAS_AIRBORNE_OBSERVER:
+    case NOVAS_OBSERVER_IN_EARTH_ORBIT:
+      // Discount tidal potential for near-Earth observers...
+      solar_system_tidal_potential(frame, frame->earth_pos, VE1);
+
+      for(i = 3; --i >= 0; )
+        dV -= (frame->obs_pos[i] - frame->earth_pos[i]) * VE1[i];
+
+      break;
+
+    default:
+      break;
+  }
+
+  // observer velocity vs reference
+  for(i = 3; --i >= 0; )
+    vo[i] = novas_add_vel(frame->obs_vel[i], -frame->earth_vel[i]);
+
+  vr = novas_vlen(vo) * (AU / DAY); // geocentric motion
+  if(vr >= C) {
+    if(igamma)
+      *igamma = 0.0;
+    return -1.0;
+  }
+
+  z = novas_v2z(vr / KMS) / (1.0 + TC_LG); // Reference velocities to TCG
+  b = novas_z2v(z) * KMS / C;
+
+  return kinetic_potential(b) + sqrt(1.0 - b * b) * dV;
+}
+
+/**
+ * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than
+ * a clock on an Earth-like orbit around the Sun (far away from Earth). I.e., it returns _D_, which is
+ * defined by:
+ *
+ * d&tau<sub>obs</sub>; / dTCG = (1 + _D_)
+ *
+ * For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun
+ * and Earth alone may be accounted for.
+ *
+ * NOTES:
+ * <ol>
+ * <li>Based on Eq. 10.6 of the IERS Conventions, Chapter 10, but modified for relativistic observer
+ * motion.</li>
+ * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's center
+ * will not include the term for that body in the calculation.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions 2010, Chapter 10, see at https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf</li>
+ * </ol>
+ *
+ * @param frame   The observing frame, defining the observer position as well as the positions
+ *                of the major solar-system bodies at the time of observation.
+ * @return        The incremental rate at which the observer's proper time clock ticks faster than
+ *                the Geocentric Coordinate Time (TCG), or else NAN if the input frame is NULL or
+ *                uninitialized (errno set to EINVAL), or if the frame is configured for full accuracy
+ *                but it does not have sufficient planet position information (errno set to EAGAIN).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_clock_skew_tcb()
+ * @sa novas_clock_skew_tt()
+ */
+double novas_clock_skew_tcg(const novas_frame *frame) {
+  double D = clock_skew_near_earth(frame, NULL);
+  if(isnan(D))
+    return novas_trace_nan("novas_clock_skew_tcg");
+
+  return D;
+}
+
+/**
+ * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than
+ * a TT-based clock on Earth's surface. I.e., it returns _D_, which is defined by:
+ *
+ * d&tau<sub>obs</sub>; / dTT = (1 + _D_)
+ *
+ * For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun
+ * and Earth alone may be accounted for.
+ *
+ * NOTES:
+ * <ol>
+ * <li>Adapted from Eq. 10.8 of the IERS Conventions, Chapter 10, and modified for relativistic observer
+ * motion.</li>
+ * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will
+ * not include the term for that body in the calculation.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions 2010, Chapter 10, see at https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf</li>
+ * </ol>
+ *
+ * @param frame   The observing frame, defining the observer position as well as the positions
+ *                of the major solar-system bodies at the time of observation.
+ *
+ * @return        The incremental rate at which the observer's proper time clock ticks faster than
+ *                Terrestrial Time (TT), or else NAN if the input frame is NULL or uninitialized
+ *                (errno set to EINVAL), or if the frame is configured for full accuracy but it does
+ *                not have sufficient planet position information (errno set to EAGAIN).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_clock_skew_tcg()
+ * @sa novas_clock_skew_tcb()
+ */
+double novas_clock_skew_tt(const novas_frame *frame) {
+  double igamma = 1.0;
+  double D = clock_skew_near_earth(frame, &igamma);
+
+  if(isnan(D))
+    return novas_trace_nan("novas_clock_skew_tt");
+
+  return D + igamma * TC_LG;
+}
+
+/**
+ * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than
+ * a clock far from the Solar System, but co-moving with the Solar System. I.e., it return _D_, which is
+ * defined by
+ *
+ * d&tau<sub>obs</sub>; / dTCB = (1 + _D_)
+ *
+ * For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun
+ * and Earth alone may be accounted for.
+ *
+ * NOTES:
+ * <ol>
+ * <li>Based Eq. 10.6 of the IERS Conventions, Chapter 10, without tidal terms, and including corrections
+ * for TCB vs TCG clock rates, and modified for relativistic observer motion.</li>
+ * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will
+ * not include the term for that body in the calculation.</li>
+ * </ol>
+ *
+ * REFERENCES:
+ * <ol>
+ * <li>IERS Conventions 2010, Chapter 10, see at https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf</li>
+ * </ol>
+ *
+ * @param frame   The observing frame, defining the observer position as well as the positions
+ *                of the major solar-system bodies at the time of observation.
+ * @return        The incremental rate at which the observer's proper time clock ticks faster than
+ *                the Barycentric Coordinate Time (TCB), or else NAN if the input frame is NULL or
+ *                uninitialized (errno set to EINVAL), or if the frame is configured for full accuracy
+ *                but it does not have sufficient planet position information (errno set to EAGAIN).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_clock_skew_tcg()
+ * @sa novas_clock_skew_tt()
+ */
+double novas_clock_skew_tcb(const novas_frame *frame) {
+  static const char *fn = "novas_clock_skew_tcb";
+
+  double b;
+
+  if(!frame) {
+    novas_error(0, EINVAL, fn, "input frame is NULL");
+    return NAN;
+  }
+
+  if(!novas_frame_is_initialized(frame)) {
+    novas_error(0, EINVAL, fn, "input frame is not initialized");
+    return NAN;
+  }
+
+  b = novas_vlen(frame->obs_vel) * (AU / DAY) / C; // geocentric motion
+  if(b >= 1.0)
+    return -1.0;
+
+  return kinetic_potential(b) + sqrt(1.0 - b * b) * solar_system_potential(frame, frame->obs_pos);
 }
