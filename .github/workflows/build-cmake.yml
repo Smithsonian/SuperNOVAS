@@ -23,7 +23,7 @@ on:
 
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
+    name: Build ${{ matrix.build_type }} on ${{ matrix.os }} with shared libs ${{ matrix.shared_libs }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
