@@ -128,6 +128,8 @@ Added</h2>
 <li>#215: New functions (e.g. <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>) to calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.</li>
 <li>#217: New functions <code><a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a></code> and <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to enable transforming gecocentric <em>xyz</em> station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions.</li>
 <li>#217: New functions <code><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a></code> and <code><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a></code> to convert between geocentric <em>xyz</em> station coordinates and geodetic (longitude, latitude, altitude) coordinates on the reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS <code>GCONV2.F</code> routine.</li>
+<li>#221: Now supporting MacOS builds, which are different from standard UNIX build, via GNU <code>make</code> also (by kiranshila).</li>
+<li>#222: CMake build support, including MacOS and Windows builds (by kiranshila).</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
@@ -139,6 +141,8 @@ Changed</h2>
 <li>#213: Rename a couple of source modules (<code><a class="el" href="system_8c.html">system.c</a></code> to <code><a class="el" href="transform_8c.html">transform.c</a></code>, and <code>coords.c</code> to <code><a class="el" href="system_8c.html">system.c</a></code>).</li>
 <li>#214: Reworked GCRS-CIRS transforms without <code><a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a></code>.</li>
 <li>#217: Changed <code><a class="el" href="earth_8c.html#a8471f990ad6e3051a0aa584d9cb2d355">terra()</a></code> to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 ellipsoid. The change restores the original NOVAS C behaviour.</li>
+<li>#221: GitHub Actions CI now includes <code>Makefile</code> builds / tests for MacOS X. (by kiranshila)</li>
+<li>#222: GitHub Ations CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by kiranshila)</li>
 <li>Various API documentation edits.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>

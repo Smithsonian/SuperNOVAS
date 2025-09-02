@@ -6617,7 +6617,13 @@
     <docanchor file="index.html">fixed-issues</docanchor>
     <docanchor file="index.html">compatibility</docanchor>
     <docanchor file="index.html">installation</docanchor>
+    <docanchor file="index.html">gnu-build</docanchor>
+    <docanchor file="index.html">cmake-build</docanchor>
     <docanchor file="index.html">integration</docanchor>
+    <docanchor file="index.html">makefile-application</docanchor>
+    <docanchor file="index.html">cmake-application</docanchor>
+    <docanchor file="index.html">legacy-application</docanchor>
+    <docanchor file="index.html">preferred-legacy-application</docanchor>
     <docanchor file="index.html">methodologies</docanchor>
     <docanchor file="index.html">examples</docanchor>
     <docanchor file="index.html">sidereal-example</docanchor>
