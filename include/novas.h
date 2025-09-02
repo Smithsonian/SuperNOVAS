@@ -1131,9 +1131,9 @@ typedef struct novas_object {
  * @sa ON_SURFACE_LOC
  */
 typedef struct novas_on_surface {
-  double latitude;      ///< [deg] geodetic (ITRS) latitude; north positive
-  double longitude;     ///< [deg] geodetic (ITRS) longitude; east positive
-  double height;        ///< [m] altitude above sea level
+  double latitude;      ///< [deg] geodetic (ITRS / GRS80) latitude; north positive
+  double longitude;     ///< [deg] geodetic (ITRS / GRS80) longitude; east positive
+  double height;        ///< [m] geodetic (ITRS / GRS80) altitude above sea level
   double temperature;   ///< [C] temperature (degrees Celsius); for optical refraction
   double pressure;      ///< [mbar] atmospheric pressure for optical refraction
   double humidity;      ///< [%] Relative humidity. @since 1.1
@@ -1998,7 +1998,7 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
 
 
 // in frames.c
-int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double dx, double dy,
+int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double xp, double yp,
         novas_frame *frame);
 
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out);

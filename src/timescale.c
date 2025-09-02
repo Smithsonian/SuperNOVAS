@@ -453,7 +453,9 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
  * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
  *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                      via `novas_diurnal_eop()`.
+ *                      via `novas_diurnal_eop()`. If the time offset is defined for a different
+ *                      ITRS realization than what is used for the coordinates of an Earth-based
+ *                      observer, you can use `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
@@ -502,7 +504,9 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
  * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
  *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                      via `novas_diurnal_eop()`.
+ *                      via `novas_diurnal_eop()`. If the time offset is defined for a different
+ *                      ITRS realization than what is used for the coordinates of an Earth-based
+ *                      observer, you can use `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
  *                      for all applications.
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
@@ -816,7 +820,9 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C.
  * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
  *                    possibly corrected for diurnal and semi-diurnal variations, e.g.
- *                    via `novas_diurnal_eop()`
+ *                    via `novas_diurnal_eop()`. If the time offset is defined for a different
+ *                    ITRS realization than what is used for the coordinates of an Earth-based
+ *                    observer, you can use `novas_itrf_transform_eop()` to make it consistent.
  * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
  *                    for all applications.
  * @return            0 if successful, or else -1 if there was an error (errno will be set to

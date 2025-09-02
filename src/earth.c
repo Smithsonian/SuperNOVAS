@@ -566,6 +566,11 @@ int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restr
  *  instead apply Earth orinetation corrections with `wobble()` only when converting vectors between
  *  the Earth-fixed ITRS and TIRS frames.
  * </li>
+ * <li>
+ *  The Earth orientation parameters xp, yp should be provided in the same ITRF realization as
+ *  the observer location for an Earth-based observer. You can use `novas_itrf_transform_eop()` to
+ *  convert the EOP values as necessary.
+ * </li>
  * </ol>
  *
  * REFERENCES:
@@ -583,7 +588,7 @@ int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restr
  *                      not for the TIO's longitude (old, pre IAU 2006 method). Negative values
  *                      default to WOBBLE_TIRS_TO_ITRS.
  * @param xp            [arcsec] Conventionally-defined X coordinate of Celestial Intermediate
- *                      Pole with respect to ITRS pole, in arcseconds. As measured or else the
+ *                      Pole with respect to ITRS pole. As measured or else the
  *                      interpolated published value from IERS, possibly augmented for diurnal
  *                      variations caused by librations ocean tides if precision below the
  *                      milliarcsecond level is required.
@@ -602,6 +607,7 @@ int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restr
  *
  * @sa novas_diurnal_eop()
  * @sa novas_diurnal_eop_at_time()
+ * @sa novas_itrf_transfor_eop()
  */
 int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out) {
   static const char *fn = "wobble";

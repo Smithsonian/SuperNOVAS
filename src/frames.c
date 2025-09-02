@@ -396,18 +396,21 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  * <ol>
  * <li>This function expects the Earth polar wobble parameters to be defined on a per-frame basis
  * and will not use the legacy global (undated) orientation parameters set via cel_pole().</li>
+ * <li>The Earth orientation parameters xp, yp should be provided in the same ITRF realization as
+ * the observer location for an Earth-based observer. You can use `novas_itrf_transform_eop()` to
+ * convert the EOP values as necessary.</li>
  * </ol>
  *
  * @param accuracy    Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or
  *                    NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient.
  * @param obs         Observer location
  * @param time        Time of observation
- * @param dx          [mas] Earth orientation parameter, polar offset in _x_, e.g. from the IERS
+ * @param xp          [mas] Earth orientation parameter, polar offset in _x_, e.g. from the IERS
  *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
  *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
  *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
  *                    required.
- * @param dy          [mas] Earth orientation parameter, polar offset in _y_, e.g. from the IERS
+ * @param yp          [mas] Earth orientation parameter, polar offset in _y_, e.g. from the IERS
  *                    Bulletins, and possibly corrected for diurnal and semi-diurnal variations,
  *                    e.g. via `novas_diurnal_eop()`. (The global, undated value set by cel_pole()
  *                    is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not
@@ -426,11 +429,12 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  * @sa set_planet_provider_hp()
  * @sa set_nutation_lp_provider()
  * @sa novas_diurnal_eop()
+ * @sa novas_itrf_transform_eop()
  *
  * @since 1.1
  * @author Attila Kovacs
  */
-int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double dx, double dy,
+int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double xp, double yp,
         novas_frame *frame) {
   static const char *fn = "novas_make_frame";
   static const object earth = NOVAS_EARTH_INIT;
@@ -464,8 +468,8 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
   // dpsi0 / dpes0 w/o the global pole offsets set via cel_pole()
   frame->dpsi0 = dpsi * ARCSEC;
   frame->deps0 = deps * ARCSEC;
-  frame->dx = dx;
-  frame->dy = dy;
+  frame->dx = xp;
+  frame->dy = yp;
 
   // Compute mean obliquity of the ecliptic in degrees.
   frame->mobl = mean_obliq(tdb2[0] + tdb2[1]) * ARCSEC;

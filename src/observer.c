@@ -101,9 +101,26 @@ int make_observer_at_geocenter(observer *restrict obs) {
  * of the observer. The output data structure may be used an the the inputs to NOVAS-C
  * function 'place()'.
  *
- * @param latitude      [deg] Geodetic (ITRS) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (ITRS) longitude in degrees; east positive.
- * @param height        [m] Altitude over se level of the observer (meters).
+ * NOTES:
+ * <ol>
+ * <li>You can convert coordinates among ITRF realization using `novas_itrf_transform()`,
+ * possibly after `novas_geodetic_to_cartesian()` with `NOVAS_GRS80_ELLIPSOID` as necessary for
+ * polar ITRF coordinates.</li>
+ * <li>You can convert ITRF Cartesian _xyz_ locations to geodetic locations by using
+ * `novas_cartesian_to_geodetic()` with `NOVAS_GRS80_ELLIPSOID` as the reference
+ * ellipsoid parameter.</li>
+ * <li>If you have longitude, latitude, and height defined on a reference ellipsoid other than
+ * GRS80, you can convert them first to Cartesian coordinates using
+ * `novas_geodetic_to_cartesian()` with the appropriate reference ellipsoid parameter,
+ * and subsequently to GRS80, as described above. For example, if you have GPS coordinates
+ * you will need to use `NOVAS_WGS84_ELLIPSOID` as the reference ellipsoid for
+ * converting to _xyz_ coordinates first, before conversion to geodetic coordinates
+ * on the GRS80 ellipsoid.</li>
+ * </ol>
+ *
+ * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
+ * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
+ * @param height        [m] Geodetic (ITRF / GRS80) altitude above sea level of the observer.
  * @param temperature   [C] Temperature (degrees Celsius).
  * @param pressure      [mbar] Atmospheric pressure (millibars).
  * @param[out] obs      Pointer to the data structure to populate.
@@ -111,8 +128,10 @@ int make_observer_at_geocenter(observer *restrict obs) {
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
  * @sa novas_cartesian_to_geodetic()
+ * @sa novas_geodetic_to_cartesian()
  * @sa make_observer_in_space()
  * @sa make_observer_at_geocenter()
+ * @sa NOVAS_GRS80_ELLIPSOID
  * @sa place()
  */
 int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
@@ -152,9 +171,9 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * the given parameters.
  *
  * Note, that because this is an original NOVAS C routine, it does not have an argument to set
- * a humidity value (e.g. for radio refraction). As such, the humidity value remains undefined
- * after this call. To set the humidity, set the output structure's field after calling this
- * funcion. Its unit is [%], and so the range is 0.0--100.0.
+ * a humidity value (e.g. for radio refraction). As such, the humidity is set to zero
+ * by this call. To set the humidity, set the output structure's field after calling this
+ * funcion.
  *
  * NOTES
  * <ol>
@@ -163,11 +182,24 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * linking SuperNOVAS v1.1 or later with application code compiled for SuperNOVAS v1.0 can
  * result in memory corruption or segmentation fault when this function is called. To be safe,
  * make sure your application has been (re)compiled against SuperNOVAS v1.1 or later.</li>
+ * <li>You can convert coordinates among ITRF realization using `novas_itrf_transform()`,
+ * possibly after `novas_geodetic_to_cartesian()` with `NOVAS_GRS80_ELLIPSOID` as necessary for
+ * polar ITRF coordinates.</li>
+ * <li>You can convert Cartesian _xyz_ locations to geodetic locations by using
+ * `novas_cartesian_to_geodetic()` with `NOVAS_GRS80_ELLIPSOID` as the reference
+ * ellipsoid parameter.</li>
+ * <li>If you have longitude, latitude, and height defined on a reference
+ * ellipsoid other than GRS80, you can convert them first to Cartesian coordinates using
+ * `novas_geodetic_to_cartesian()` with the appropriate reference ellipsoid parameter,
+ * and subsequently to GRS80, as described above. For example, if you have GPS coordinates
+ * you will need to use `NOVAS_WGS84_ELLIPSOID` as the reference ellipsoid for
+ * converting to _xyz_ coordinates first, before conversion to geodetic coordinates
+ * on the GRS80 ellipsoid.
  * </ol>
  *
- * @param latitude      [deg] Geodetic (ITRS) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (ITRS) longitude in degrees; east positive.
- * @param height        [m] Altitude over sea level of the observer (meters).
+ * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
+ * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
+ * @param height        [m] Geodetic (ITRF / GSR80) altitude above sea level of the observer.
  * @param temperature   [C] Temperature (degrees Celsius) [-120:70].
  * @param pressure      [mbar] Atmospheric pressure (millibars) [0:1200].
  * @param[out] loc      Pointer to Earth location data structure to populate.
@@ -180,6 +212,7 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * @sa make_in_space()
  * @sa ON_SURFACE_INIT
  * @sa ON_SURFACE_LOC
+ * @sa NOVAS_GRS80_ELLIPSOID
  */
 int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
         on_surface *restrict loc) {

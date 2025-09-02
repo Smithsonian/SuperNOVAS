@@ -330,13 +330,6 @@ integration for ephemeris support:
   $ cmake --build build
 ```
 
-Or to build with debug mode enabled:
-
-```bash
-  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug
-  $ cmake --build build
-```
-
 After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a 
 `pkg-config` file, as:
 
