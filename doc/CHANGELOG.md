@@ -62,6 +62,8 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #222: GitHub Ations CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by kiranshila)
  
+ - #225: GNU `Makefile` fixes for non-Linux builds, and BSD build check in GitHub Actions CI.
+ 
  - Various API documentation edits.
  
 
