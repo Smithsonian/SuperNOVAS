@@ -150,7 +150,6 @@ ifeq ($(UNAME_S),Darwin)
   SHARED_FLAG := -dynamiclib
   SONAME_FLAG := -Wl,-install_name,@rpath/
   RPATH_FLAG := -Wl,-rpath,
-  LNFLAGS := -s
   LIB_PATH_VAR := DYLD_LIBRARY_PATH
   BUILD_SOLSYS2_SHARED := 0
 else
@@ -166,10 +165,8 @@ endif
 
 # On Linux autodetect calceph / cspice libraties with ldconfig
 ifeq ($(UNAME_S),Linux)
-  LNFLAGS := -sr
   AUTO_DETECT_LIBS := 1
 else 
-  LNFLAGS := -s
   AUTO_DETECT_LIBS := 0
 endif 
 

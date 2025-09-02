@@ -17,7 +17,7 @@ $(LIB)/%.$(SOEXT).$(SO_VERSION): | $(LIB)
 # Unversioned shared libs (for linking against)
 $(LIB)/lib%.$(SOEXT):
 	@rm -f $@
-	ln $(LNFLAGS) $< $@
+	( cd $(LIB); ln -s $(notdir $<) $(notdir $@) )
 
 # Static library recipe
 $(LIB)/%.a:
