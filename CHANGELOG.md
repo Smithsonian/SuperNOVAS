@@ -32,6 +32,11 @@ Upcoming feature release, expected around 1 November 2025.
    geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the
    reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
 
+ - #221: Now supporting MacOS builds, which are different from standard UNIX build, via GNU `make` also (by 
+   kiranshila).
+   
+ - #222: CMake build support, including MacOS and Windows builds (by kiranshila).
+
 ### Changed
 
  - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 
@@ -52,6 +57,10 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #217: Changed `terra()` to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 
    ellipsoid. The change restores the original NOVAS C behaviour.
+ 
+ - #221: GitHub Actions CI now includes `Makefile` builds / tests for MacOS X. (by kiranshila)
+ 
+ - #222: GitHub Ations CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by @kiranshila)
  
  - Various API documentation edits.
  

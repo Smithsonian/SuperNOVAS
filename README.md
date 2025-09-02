@@ -196,13 +196,18 @@ accommodate JPL NAIF codes, for which 16-bit storage is insufficient.
 
 -----------------------------------------------------------------------------
 
-
 <a name="installation"></a>
 ## Building and installation
 
+ - [Build using GNU make](#gnu-build)
+ - [Build using CMake](#cmake-build)
+
+<a name="gnu-build"></a>
+### Build using GNU make] 
+
 The __SuperNOVAS__ distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as 
-local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, MacOS X, or Cygwin or WSL. (At this point 
-we do not provide a similar native build setup for Windows, but speak up if you would like to add it yourself!)
+local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, Cygwin or WSL -- using 
+[GNU `make`](https://www.gnu.org/software/make/).
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, or else define
 the necessary variables in the shell prior to invoking `make`. For example:
@@ -287,11 +292,71 @@ Or, to stage the installation (to `/usr`) under a 'build root':
   $ make DESTDIR="/tmp/stage" install
 ```
 
+Note, that if you want to build __SuperNOVAS__ for with your old NOVAS C applications you might want to further 
+customize the build. See Section(s) on [legacy application](#legacy-application) further below. 
+
+
+<a name="cmake-build"></a>
+### Build using CMake 
+
+As of v1.5, __SuperNOVAS__ can be built using CMake (thanks to Kiran Shila). CMake allows for greater portability
+than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all of the build options 
+of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting 
+legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
+
+The basic build recipe for CMake is:
+
+```bash
+  $ cmake -B build
+  $ cmake --build build
+```
+
+The __SuperNOVAS__ CMake build supports the following options (in addition to the standard CMake options):
+
+ - `BUILD_SHARED_LIBS=ON|OFF` (default: ON) - Build shared libraries
+ - `BUILD_STATIC_LIBS=ON|OFF` (default: ON) - Build static libraries in addition to shared
+ - `BUILD_EXAMPLES=ON|OFF` (default: OFF) - Build the included examples
+ - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH installed.
+
+For example, to build __SuperNOVAS__ with [CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) 
+integration for ephemeris support:
+
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON
+cmake --build build
+```
+
+Or to build with debug mode enabled:
+
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
+```
+
+After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a 
+pkg-config file, as:
+
+```bash
+cmake --build build
+cmake --install build --prefix /usr/local
+```
+
 -----------------------------------------------------------------------------
 
 
 <a name="integration"></a>
 ## Building your application with SuperNOVAS
+
+There are a number of ways you can build your application with __SuperNOVAS__. See which of the options suits your
+needs best:
+
+ - [Using a `Makefile`](#makefile-application)
+ - [Using CMake](#cmake-application)
+ - [Legacy linking `solarsystem()` and `readeph()` modules](#legacy-application)
+ - [Legacy modules: a better way](#preferred-legacy-application)
+
+<a name="makefile-application"></a>
+### Using a `Makefile`
 
 Provided you have installed the __SuperNOVAS__ headers and (static or shared) libraries into a standard location, you 
 can build your application against it easily. For example, to build `myastroapp.c` against __SuperNOVAS__, you might 
@@ -322,6 +387,19 @@ shared libraries also:
   	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys-calceph -lcalceph
 ```
 
+<a name="cmake-application"></a>
+### Using CMake
+
+```cmake
+  # Link core library
+  find_package(SuperNOVAS REQUIRED)
+  target_link_libraries(your_target PRIVATE SuperNOVAS::supernovas)
+
+  # If you built with CALCEPH support, link the plugin library
+  target_link_libraries(your_target PRIVATE SuperNOVAS::solsys-calceph)
+```
+
+<a name="legacy-application"></a>
 ### Legacy linking `solarsystem()` and `readeph()` modules
 
 The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the
@@ -341,7 +419,8 @@ contain something like:
 The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` being unset 
 in `config.mk`).
 
-### Legacy modules: a better way...
+<a name="preferred-legacy-application"></a>
+### Legacy modules: a better way
 
 Note, a better way to recycle your old planet and ephemeris calculator modules may be to rename `solarsystem()` / 
 `solarsystem_hp()` functions therein to e.g. `my_planet_calculator()` / `my_planet_calculator_hp()` and then in your 
@@ -1647,6 +1726,10 @@ one minute.
    
  - Transformations of site coordinates and Earth orientation parameters between different ITRF realizations (e.g.
    ITRF2000 snd ITRF2014).
+   
+ - GNU `make` build support for Mac OS X (by Kiran Shila).
+ 
+ - CMake build support (by Kiran Shila).
 
 
 <a name="api-changes"></a>
