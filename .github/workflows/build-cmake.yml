@@ -23,54 +23,37 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.build_type }} on ${{ matrix.os }} with shared libs ${{ matrix.shared_libs }}
+    name: Build Release on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        build_type: [Release, Debug]
-        shared_libs: [ON, OFF]
         include:
           - os: ubuntu-latest
             cc: gcc
             cxx: g++
+            cmopt:
           - os: macos-latest
             cc: clang
             cxx: clang++
+            cmopt:
           - os: windows-latest
             cc: gcc
             cxx: g++
+            cmopt: -G "MinGW Makefiles"
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Configure CMake (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          cmake -B build \
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-            -DBUILD_SHARED_LIBS=${{ matrix.shared_libs }} \
-            -DBUILD_STATIC_LIBS=ON \
-            -DCMAKE_C_COMPILER=${{ matrix.cc }} \
-            -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
-
-      - name: Configure CMake (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          cmake -B build `
-            -G "MinGW Makefiles" `
-            -DCMAKE_C_COMPILER=gcc `
-            -DCMAKE_CXX_COMPILER=g++ `
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
-            -DBUILD_SHARED_LIBS=${{ matrix.shared_libs }} `
-            -DBUILD_STATIC_LIBS=ON
+        run: cmake -B build ${{ matrix.cmopt }} -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
       - name: Build
-        run: cmake --build build --config ${{ matrix.build_type }}
+        run: cmake --build build --config Release
 
       - name: Install
-        run: cmake --install build --config ${{ matrix.build_type }} --prefix install
+        run: cmake --install build --config Release --prefix install
 
       - name: Check Installation (Unix)
         if: runner.os != 'Windows'
@@ -84,26 +67,33 @@ jobs:
           echo Installation contents:
           dir install
 
+  build-debug:
+    runs-on: ubuntu-latest
+    name: Build Debug on ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+    
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build
+        run: cmake --build build --config Debug
+
   build-freebsd:
     runs-on: ubuntu-latest
-    name: Build on FreeBSD
-    strategy:
-      fail-fast: false
-      matrix:
-        version: ["13.2", "14.0"]
-
+    name: Build Release on FreeBSD
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build on FreeBSD ${{ matrix.version }}
+      - name: Build on FreeBSD
         uses: vmactions/freebsd-vm@v1
         with:
-          release: ${{ matrix.version }}
+          release: "14.0"
           usesh: true
           prepare: |
             pkg install -y cmake
           run: |
-            echo Building on FreeBSD $(uname -m) version ${{ matrix.version }}
+            echo Building on FreeBSD $(uname -m)
             cmake -B build -DCMAKE_BUILD_TYPE=Release
             cmake --build build
             cmake --install build --prefix install
