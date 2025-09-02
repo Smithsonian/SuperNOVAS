@@ -152,7 +152,7 @@ int main(int argc, const char *argv[]) {
   clock_gettime(CLOCK_REALTIME, &unix_time);
   for(i = 0; i < N; i++) calc_pos(&stars[i], &obs_frame);
   clock_gettime(CLOCK_REALTIME, &end);
-  printf(" - novas_sky_pos, same frame, full acc.:          %12.1f positions/sec\n",
+  printf(" - novas_sky_pos(), same frame, full acc.:        %12.1f positions/sec\n",
           N / (end.tv_sec - unix_time.tv_sec + 1e-9 * (end.tv_nsec - unix_time.tv_nsec)));
 
 
