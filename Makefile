@@ -63,7 +63,7 @@ endif
 ifneq ($(BUILTIN_SOLSYS2),1)
   SOLSYS_TARGETS += $(OBJ)/solsys2.o
   # Don't build solsys2 shared lib on Mac OS -- it does not like mystery symbols.
-  ifeq ($(BUILD_SOLSYS2_SHARED),1)
+  ifeq ($(MISSING_SYMBOLS_OK),1)
     SHARED_TARGETS += $(LIB)/libsolsys2.$(SOEXT)
   endif
 endif
