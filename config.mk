@@ -27,34 +27,6 @@ CFLAGS ?= -g -Os -Wall
 # Grab the system information
 UNAME_S := $(shell uname -s)
 
-# Platform-specific configurations
-ifeq ($(UNAME_S),Darwin)
-  # macOS specific
-  SOEXT := dylib
-  SHARED_FLAG := -dynamiclib
-  SONAME_FLAG := -Wl,-install_name,@rpath/
-  RPATH_FLAG := -Wl,-rpath,
-  LNFLAGS := -s
-  LIB_PATH_VAR := DYLD_LIBRARY_PATH
-  BUILD_SOLSYS2_SHARED := 0
-  AUTO_DETECT_LIBS := 0
-else
-  # Linux/Unix specific
-  SOEXT := so
-  SHARED_FLAG := -shared
-  SONAME_FLAG := -Wl,-soname,
-  RPATH_FLAG := -Wl,-rpath=
-  LNFLAGS := -sr
-  LIB_PATH_VAR := LD_LIBRARY_PATH
-  BUILD_SOLSYS2_SHARED := 1
-  # Check if ldconfig is available for auto-detection
-  ifneq ($(shell which ldconfig 2>/dev/null), )
-    AUTO_DETECT_LIBS := 1
-  else
-    AUTO_DETECT_LIBS := 0
-  endif
-endif
-
 # Compile for specific C standard
 ifdef CSTANDARD
   CFLAGS += -std=$(CSTANDARD)
@@ -170,6 +142,34 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 #
 # Below are some generated constants based on the one that were set above
 # ============================================================================
+
+# Platform-specific configurations
+ifeq ($(UNAME_S),Darwin)
+  # macOS specific
+  SOEXT := dylib
+  SHARED_FLAG := -dynamiclib
+  SONAME_FLAG := -Wl,-install_name,@rpath/
+  RPATH_FLAG := -Wl,-rpath,
+  LNFLAGS := -s
+  LIB_PATH_VAR := DYLD_LIBRARY_PATH
+  BUILD_SOLSYS2_SHARED := 0
+  AUTO_DETECT_LIBS := 0
+else
+  # Linux/Unix specific
+  SOEXT := so
+  SHARED_FLAG := -shared
+  SONAME_FLAG := -Wl,-soname,
+  RPATH_FLAG := -Wl,-rpath=
+  LNFLAGS := -sr
+  LIB_PATH_VAR := LD_LIBRARY_PATH
+  BUILD_SOLSYS2_SHARED := 1
+  # Check if ldconfig is available for auto-detection
+  ifneq ($(shell which ldconfig 2>/dev/null), )
+    AUTO_DETECT_LIBS := 1
+  else
+    AUTO_DETECT_LIBS := 0
+  endif
+endif
 
 # If the COMPAT variable is set to one, then force set compatibility mode
 ifeq ($(COMPAT),1)
