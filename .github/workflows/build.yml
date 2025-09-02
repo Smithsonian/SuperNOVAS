@@ -68,3 +68,19 @@ jobs:
 #    - name: Reverse order build
 #      run: make --shuffle=reverse
 
+  build-freebsd:
+    runs-on: ubuntu-latest
+    name: FreeBSD
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build on FreeBSD
+        uses: vmactions/freebsd-vm@v1
+        with:
+          release: "14.0"
+          prepare: |
+            pkg install -y gmake
+          run: |
+            echo Building on FreeBSD $(uname -m) 
+            gmake static
+            gmake shared

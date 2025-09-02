@@ -153,23 +153,25 @@ ifeq ($(UNAME_S),Darwin)
   LNFLAGS := -s
   LIB_PATH_VAR := DYLD_LIBRARY_PATH
   BUILD_SOLSYS2_SHARED := 0
-  AUTO_DETECT_LIBS := 0
 else
   # Linux/Unix specific
   SOEXT := so
   SHARED_FLAG := -shared
   SONAME_FLAG := -Wl,-soname,
   RPATH_FLAG := -Wl,-rpath=
-  LNFLAGS := -sr
+
   LIB_PATH_VAR := LD_LIBRARY_PATH
   BUILD_SOLSYS2_SHARED := 1
-  # Check if ldconfig is available for auto-detection
-  ifneq ($(shell which ldconfig 2>/dev/null), )
-    AUTO_DETECT_LIBS := 1
-  else
-    AUTO_DETECT_LIBS := 0
-  endif
 endif
+
+# On Linux autodetect calceph / cspice libraties with ldconfig
+ifeq ($(UNAME_S),Linux)
+  LNFLAGS := -sr
+  AUTO_DETECT_LIBS := 1
+else 
+  LNFLAGS := -s
+  AUTO_DETECT_LIBS := 0
+endif 
 
 # If the COMPAT variable is set to one, then force set compatibility mode
 ifeq ($(COMPAT),1)
