@@ -918,6 +918,8 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 You may obtain Earth orientation parameters from the IERS site and Bulletins. For sub-mas accuracy you should augment the (interpolated) published values for diurnal and semi-diurnal librations and the effect of ocean tides, e.g. by using <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code> or <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code>.  </li>
 <li>
 Generally, this function should not be called if global pole offsets were set via <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> and then used via <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> or one of its variants to calculate Earth orientation corrected (TOD or CIRS) apparent coordinates. In such cases, calling <code><a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a></code> would apply duplicate corrections. It is generally best to forgo using <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> going forward, and instead apply Earth orinetation corrections with <code><a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a></code> only when converting vectors between the Earth-fixed ITRS and TIRS frames.  </li>
+<li>
+The Earth orientation parameters xp, yp should be provided in the same ITRF realization as the observer location for an Earth-based observer. You can use <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to convert the EOP values as necessary.  </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
@@ -933,7 +935,7 @@ IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/c
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">direction</td><td>WOBBLE_ITRS_TO_TIRS (0) or WOBBLE_TIRS_TO_ITRS (1) to include corrections for the TIO's longitude (IAU 2006 method); or else WOBBLE_ITRS_TO_PEF (2) or WOBBLE_PEF_TO_ITRS (3) to correct for dx, dy but not for the TIO's longitude (old, pre IAU 2006 method). Negative values default to WOBBLE_TIRS_TO_ITRS. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[arcsec] Conventionally-defined X coordinate of Celestial Intermediate Pole with respect to ITRS pole, in arcseconds. As measured or else the interpolated published value from IERS, possibly augmented for diurnal variations caused by librations ocean tides if precision below the milliarcsecond level is required. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[arcsec] Conventionally-defined X coordinate of Celestial Intermediate Pole with respect to ITRS pole. As measured or else the interpolated published value from IERS, possibly augmented for diurnal variations caused by librations ocean tides if precision below the milliarcsecond level is required. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">yp</td><td>[arcsec] Conventionally-defined Y coordinate of Celestial Intermediate Pole with respect to ITRS pole, in arcseconds. As measured or else the interpolated published value from IERS, possibly augmented for diurnal variations caused by librations ocean tides if precision below the milliarcsecond level is required. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Input position vector, geocentric equatorial rectangular coordinates, in the original system defined by 'direction' </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output Position vector, geocentric equatorial rectangular coordinates, in the final system defined by 'direction'. It can be the same vector as the input.</td></tr>
@@ -943,7 +945,9 @@ IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/c
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the direction is invalid output vector argument is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a> </dd>
 <dd>
-<a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a> </dd></dl>
+<a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a> </dd>
+<dd>
+novas_itrf_transfor_eop() </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a3903b6d439f4a25a6482fd073996d9ec">NOVAS_WOBBLE_DIRECTIONS</a>, <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9">WOBBLE_ITRS_TO_PEF</a>, <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a88d1bc6832a20ed34c4dab5753864851">WOBBLE_ITRS_TO_TIRS</a>, and <a class="el" href="novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a4b792b9dcf18048019f1a4fb486b7c97">WOBBLE_TIRS_TO_ITRS</a>.</p>
 

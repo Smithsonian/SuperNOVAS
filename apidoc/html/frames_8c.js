@@ -13,7 +13,7 @@ var frames_8c =
     [ "novas_hor_to_app", "frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89", null ],
     [ "novas_hor_track", "frames_8c.html#a1f29810393108d15fd8312a2a95158dc", null ],
     [ "novas_invert_transform", "frames_8c.html#ad2081e123024609d3071b33b183502b7", null ],
-    [ "novas_make_frame", "frames_8c.html#abfee69517c7432733c8382c88371c983", null ],
+    [ "novas_make_frame", "frames_8c.html#adc72577f99a7b076b23e0e44ddbca838", null ],
     [ "novas_make_transform", "frames_8c.html#a4d179c8573319fc25c775ce56ba055dc", null ],
     [ "novas_moon_angle", "frames_8c.html#a121940d7f0ef41297d28fab8e6df5998", null ],
     [ "novas_object_sep", "frames_8c.html#afa5f3a823a895bed01876df6b2a00370", null ],

@@ -764,11 +764,19 @@ novas_calc_geometric_position() </dd>
       </table>
 </div><div class="memdoc">
 <p>Populates and '<a class="el" href="structon__surface.html">on_surface</a>' data structure with the specified location defining parameters of the observer. The output data structure may be used an the the inputs to NOVAS-C function '<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>'.</p>
+<p>NOTES: </p><ol>
+<li>
+You can convert coordinates among ITRF realization using <code><a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a></code>, possibly after <code><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a></code> with <code>NOVAS_GRS80_ELLIPSOID</code> as necessary for polar ITRF coordinates. </li>
+<li>
+You can convert ITRF Cartesian <em>xyz</em> locations to geodetic locations by using <code><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a></code> with <code>NOVAS_GRS80_ELLIPSOID</code> as the reference ellipsoid parameter. </li>
+<li>
+If you have longitude, latitude, and height defined on a reference ellipsoid other than GRS80, you can convert them first to Cartesian coordinates using <code><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a></code> with the appropriate reference ellipsoid parameter, and subsequently to GRS80, as described above. For example, if you have GPS coordinates you will need to use <code>NOVAS_WGS84_ELLIPSOID</code> as the reference ellipsoid for converting to <em>xyz</em> coordinates first, before conversion to geodetic coordinates on the GRS80 ellipsoid. </li>
+</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">latitude</td><td>[deg] Geodetic (ITRS) latitude in degrees; north positive. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">longitude</td><td>[deg] Geodetic (ITRS) longitude in degrees; east positive. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">height</td><td>[m] Altitude over se level of the observer (meters). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">latitude</td><td>[deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">longitude</td><td>[deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">height</td><td>[m] Geodetic (ITRF / GRS80) altitude above sea level of the observer. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">temperature</td><td>[C] Temperature (degrees Celsius). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pressure</td><td>[mbar] Atmospheric pressure (millibars). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">obs</td><td>Pointer to the data structure to populate.</td></tr>
@@ -778,9 +786,13 @@ novas_calc_geometric_position() </dd>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the output argument is NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a> </dd>
 <dd>
+<a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a> </dd>
+<dd>
 <a class="el" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a> </dd>
 <dd>
 <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a4080d8e188d2d352b0f63c759ffee118" title="GRS80 reference ellipsoid, used for the International Terrestrial Reference System (ITRS).">NOVAS_GRS80_ELLIPSOID</a> </dd>
 <dd>
 <a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd></dl>
 
@@ -838,16 +850,22 @@ novas_calc_geometric_position() </dd>
       </table>
 </div><div class="memdoc">
 <p>Populates an '<a class="el" href="structon__surface.html">on_surface</a>' data structure, for an observer on the surface of the Earth, with the given parameters.</p>
-<p>Note, that because this is an original NOVAS C routine, it does not have an argument to set a humidity value (e.g. for radio refraction). As such, the humidity value remains undefined after this call. To set the humidity, set the output structure's field after calling this funcion. Its unit is [%], and so the range is 0.0&ndash;100.0.</p>
+<p>Note, that because this is an original NOVAS C routine, it does not have an argument to set a humidity value (e.g. for radio refraction). As such, the humidity is set to zero by this call. To set the humidity, set the output structure's field after calling this funcion.</p>
 <p>NOTES </p><ol>
 <li>
 This implementation breaks strict v1.0 ABI compatibility since it writes to (initializes) a field (<code>humidity</code>) that was not yet part of the <code><a class="el" href="structon__surface.html">on_surface</a></code> structure in v1.0. As such, linking SuperNOVAS v1.1 or later with application code compiled for SuperNOVAS v1.0 can result in memory corruption or segmentation fault when this function is called. To be safe, make sure your application has been (re)compiled against SuperNOVAS v1.1 or later. </li>
+<li>
+You can convert coordinates among ITRF realization using <code><a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a></code>, possibly after <code><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a></code> with <code>NOVAS_GRS80_ELLIPSOID</code> as necessary for polar ITRF coordinates. </li>
+<li>
+You can convert Cartesian <em>xyz</em> locations to geodetic locations by using <code><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a></code> with <code>NOVAS_GRS80_ELLIPSOID</code> as the reference ellipsoid parameter. </li>
+<li>
+If you have longitude, latitude, and height defined on a reference ellipsoid other than GRS80, you can convert them first to Cartesian coordinates using <code><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a></code> with the appropriate reference ellipsoid parameter, and subsequently to GRS80, as described above. For example, if you have GPS coordinates you will need to use <code>NOVAS_WGS84_ELLIPSOID</code> as the reference ellipsoid for converting to <em>xyz</em> coordinates first, before conversion to geodetic coordinates on the GRS80 ellipsoid. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">latitude</td><td>[deg] Geodetic (ITRS) latitude in degrees; north positive. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">longitude</td><td>[deg] Geodetic (ITRS) longitude in degrees; east positive. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">height</td><td>[m] Altitude over sea level of the observer (meters). </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">latitude</td><td>[deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">longitude</td><td>[deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">height</td><td>[m] Geodetic (ITRF / GSR80) altitude above sea level of the observer. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">temperature</td><td>[C] Temperature (degrees Celsius) [-120:70]. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pressure</td><td>[mbar] Atmospheric pressure (millibars) [0:1200]. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">loc</td><td>Pointer to Earth location data structure to populate.</td></tr>
@@ -863,7 +881,9 @@ This implementation breaks strict v1.0 ABI compatibility since it writes to (ini
 <dd>
 <a class="el" href="novas_8h.html#ad8e67e1b12b3699a361f87e95d333334">ON_SURFACE_INIT</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#a4fe5e792ca262b3f45fe992b4c49e9b4">ON_SURFACE_LOC</a> </dd></dl>
+<a class="el" href="novas_8h.html#a4fe5e792ca262b3f45fe992b4c49e9b4">ON_SURFACE_LOC</a> </dd>
+<dd>
+<a class="el" href="novas_8h.html#a5928ca4a09c2883b58e951a4582255b3a4080d8e188d2d352b0f63c759ffee118" title="GRS80 reference ellipsoid, used for the International Terrestrial Reference System (ITRS).">NOVAS_GRS80_ELLIPSOID</a> </dd></dl>
 
 </div>
 </div>

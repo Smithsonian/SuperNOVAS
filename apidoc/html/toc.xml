@@ -496,6 +496,7 @@
           <topic label="NOVAS_PLANET_GRAV_Z_INIT" href="novas_8h.html#a0ae90838b446c7d4c1d3386ec8857410"/>
           <topic label="NOVAS_PLANET_INIT" href="novas_8h.html#ad34a88c2c04b624f8f85fc86e7935967"/>
           <topic label="NOVAS_PLANET_NAMES_INIT" href="novas_8h.html#abbd19f57e31db2ac91cbe22f9a95f390"/>
+          <topic label="NOVAS_PLANET_RADII_INIT" href="novas_8h.html#ae48a8495c1ddf3960784aba5189d178e"/>
           <topic label="NOVAS_PLANETS" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08"/>
           <topic label="NOVAS_PLUTO_BARYCENTER_INIT" href="novas_8h.html#aead51c753fb72d7c603298c654795ea1"/>
           <topic label="NOVAS_PLUTO_INIT" href="novas_8h.html#a451602e14e6a5512d0e969e4d9878c34"/>
@@ -775,6 +776,9 @@
           <topic label="novas_cartesian_to_geodetic" href="novas_8h.html#abb9a26a4658c037b4721fb97cea08ed0"/>
           <topic label="novas_case_sensitive" href="novas_8h.html#a8f832afe92680a11c3489aaa224ac2e2"/>
           <topic label="novas_change_observer" href="novas_8h.html#a2972b3eafa2d7f6c29cff34bad9fcf0d"/>
+          <topic label="novas_clock_skew_tcb" href="novas_8h.html#a146b88af3a5aa92edb25de5434e53242"/>
+          <topic label="novas_clock_skew_tcg" href="novas_8h.html#a1ce9328ee4639a70e85b1038b3cb23e0"/>
+          <topic label="novas_clock_skew_tt" href="novas_8h.html#ab820dc413ec41f455b4d098bca457366"/>
           <topic label="novas_date" href="novas_8h.html#abaac8a4ea28bc8b811277051e3168468"/>
           <topic label="novas_date_scale" href="novas_8h.html#a66656c3f5a1256f4bfc3ed2e168c70c2"/>
           <topic label="novas_day_of_week" href="novas_8h.html#a7ee576309aa1977e9b2a3824286f725c"/>
@@ -817,7 +821,7 @@
           <topic label="novas_jd_to_date" href="novas_8h.html#a8ed2fb55bcf86d9f1f434a2f832356a2"/>
           <topic label="novas_los_to_xyz" href="novas_8h.html#a601d246673742cf72a5dbe1449c97560"/>
           <topic label="novas_lsr_to_ssb_vel" href="novas_8h.html#aad80bf94be2efc36c340994829df8207"/>
-          <topic label="novas_make_frame" href="novas_8h.html#abfee69517c7432733c8382c88371c983"/>
+          <topic label="novas_make_frame" href="novas_8h.html#adc72577f99a7b076b23e0e44ddbca838"/>
           <topic label="novas_make_transform" href="novas_8h.html#a4d179c8573319fc25c775ce56ba055dc"/>
           <topic label="novas_norm_ang" href="novas_8h.html#a85334614a0f399e0d3cbde68075d0766"/>
           <topic label="novas_object_sep" href="novas_8h.html#afa5f3a823a895bed01876df6b2a00370"/>
@@ -1047,7 +1051,7 @@
           <topic label="novas_hor_to_app" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89"/>
           <topic label="novas_hor_track" href="frames_8c.html#a1f29810393108d15fd8312a2a95158dc"/>
           <topic label="novas_invert_transform" href="frames_8c.html#ad2081e123024609d3071b33b183502b7"/>
-          <topic label="novas_make_frame" href="frames_8c.html#abfee69517c7432733c8382c88371c983"/>
+          <topic label="novas_make_frame" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838"/>
           <topic label="novas_make_transform" href="frames_8c.html#a4d179c8573319fc25c775ce56ba055dc"/>
           <topic label="novas_moon_angle" href="frames_8c.html#a121940d7f0ef41297d28fab8e6df5998"/>
           <topic label="novas_object_sep" href="frames_8c.html#afa5f3a823a895bed01876df6b2a00370"/>
@@ -1269,6 +1273,9 @@
           <topic label="_GNU_SOURCE" href="timescale_8c.html#a369266c24eacffb87046522897a570d5"/>
           <topic label="get_ut1_to_tt" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6"/>
           <topic label="get_utc_to_tt" href="timescale_8c.html#ab7611704bab9ce717744a8b5575c5378"/>
+          <topic label="novas_clock_skew_tcb" href="timescale_8c.html#a146b88af3a5aa92edb25de5434e53242"/>
+          <topic label="novas_clock_skew_tcg" href="timescale_8c.html#a1ce9328ee4639a70e85b1038b3cb23e0"/>
+          <topic label="novas_clock_skew_tt" href="timescale_8c.html#ab820dc413ec41f455b4d098bca457366"/>
           <topic label="novas_date" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468"/>
           <topic label="novas_date_scale" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2"/>
           <topic label="novas_diff_tcb" href="timescale_8c.html#a4818ab9be2f0891091c719db01bcfa98"/>

@@ -155,8 +155,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1f29810393108d15fd8312a2a95158dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2081e123024609d3071b33b183502b7" id="r_ad2081e123024609d3071b33b183502b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="frames_8c.html#ad2081e123024609d3071b33b183502b7">novas_invert_transform</a> (const <a class="el" href="structnovas__transform.html">novas_transform</a> *transform, <a class="el" href="structnovas__transform.html">novas_transform</a> *inverse)</td></tr>
 <tr class="separator:ad2081e123024609d3071b33b183502b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfee69517c7432733c8382c88371c983" id="r_abfee69517c7432733c8382c88371c983"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="frames_8c.html#abfee69517c7432733c8382c88371c983">novas_make_frame</a> (enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const <a class="el" href="structobserver.html">observer</a> *obs, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, double dx, double dy, <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
-<tr class="separator:abfee69517c7432733c8382c88371c983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc72577f99a7b076b23e0e44ddbca838" id="r_adc72577f99a7b076b23e0e44ddbca838"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame</a> (enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, const <a class="el" href="structobserver.html">observer</a> *obs, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, double xp, double yp, <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
+<tr class="separator:adc72577f99a7b076b23e0e44ddbca838"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d179c8573319fc25c775ce56ba055dc" id="r_a4d179c8573319fc25c775ce56ba055dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="frames_8c.html#a4d179c8573319fc25c775ce56ba055dc">novas_make_transform</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> from_system, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> to_system, <a class="el" href="structnovas__transform.html">novas_transform</a> *transform)</td></tr>
 <tr class="separator:a4d179c8573319fc25c775ce56ba055dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a121940d7f0ef41297d28fab8e6df5998" id="r_a121940d7f0ef41297d28fab8e6df5998"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="frames_8c.html#a121940d7f0ef41297d28fab8e6df5998">novas_moon_angle</a> (const <a class="el" href="structobject.html">object</a> *restrict source, const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame)</td></tr>
@@ -393,7 +393,7 @@ novas_geom_to_hor() </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successfule or else an an error code from <a class="el" href="earth_8c.html#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a> (errno will also indicate the type of error).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#abfee69517c7432733c8382c88371c983">novas_make_frame()</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -455,7 +455,7 @@ novas_geom_to_hor() </dd>
 <dd>
 <a class="el" href="frames_8c.html#a225a2e33684d2c1fe769e5aa718a182a">novas_track_pos()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0">sky_pos::dis</a>, <a class="el" href="structnovas__timespec.html#a696e598955615f729a92870c8213a10c">novas_timespec::fjd_tt</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="frames_8c.html#abfee69517c7432733c8382c88371c983">novas_make_frame()</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, <a class="el" href="spectral_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, and <a class="el" href="novas_8h.html#a462bdac0f370f0c5b421ae5b3f3e35f2">SKY_POS_INIT</a>.</p>
+<p class="reference">References <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0">sky_pos::dis</a>, <a class="el" href="structnovas__timespec.html#a696e598955615f729a92870c8213a10c">novas_timespec::fjd_tt</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, <a class="el" href="spectral_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, and <a class="el" href="novas_8h.html#a462bdac0f370f0c5b421ae5b3f3e35f2">SKY_POS_INIT</a>.</p>
 
 </div>
 </div>
@@ -772,7 +772,7 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
 <dd>
 <a class="el" href="frames_8c.html#a225a2e33684d2c1fe769e5aa718a182a">novas_track_pos()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0">sky_pos::dis</a>, <a class="el" href="structnovas__timespec.html#a696e598955615f729a92870c8213a10c">novas_timespec::fjd_tt</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, <a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="frames_8c.html#abfee69517c7432733c8382c88371c983">novas_make_frame()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, <a class="el" href="spectral_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, and <a class="el" href="novas_8h.html#a462bdac0f370f0c5b421ae5b3f3e35f2">SKY_POS_INIT</a>.</p>
+<p class="reference">References <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0">sky_pos::dis</a>, <a class="el" href="structnovas__timespec.html#a696e598955615f729a92870c8213a10c">novas_timespec::fjd_tt</a>, <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3a1665bf146ca1a4d11380bf4d7d9d7058">NOVAS_AIRBORNE_OBSERVER</a>, <a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4fa1096785746d1a9bc678ea2c51fc21055">NOVAS_TRUE_EQUINOX</a>, <a class="el" href="spectral_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, and <a class="el" href="novas_8h.html#a462bdac0f370f0c5b421ae5b3f3e35f2">SKY_POS_INIT</a>.</p>
 
 </div>
 </div>
@@ -818,8 +818,8 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
 
 </div>
 </div>
-<a id="abfee69517c7432733c8382c88371c983" name="abfee69517c7432733c8382c88371c983"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfee69517c7432733c8382c88371c983">&#9670;&#160;</a></span>novas_make_frame()</h2>
+<a id="adc72577f99a7b076b23e0e44ddbca838" name="adc72577f99a7b076b23e0e44ddbca838"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc72577f99a7b076b23e0e44ddbca838">&#9670;&#160;</a></span>novas_make_frame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -846,13 +846,13 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>dx</em>, </td>
+          <td class="paramname"><em>xp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>dy</em>, </td>
+          <td class="paramname"><em>yp</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -872,14 +872,16 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
 <p>NOTES: </p><ol>
 <li>
 This function expects the Earth polar wobble parameters to be defined on a per-frame basis and will not use the legacy global (undated) orientation parameters set via <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a>. </li>
+<li>
+The Earth orientation parameters xp, yp should be provided in the same ITRF realization as the observer location for an Earth-based observer. You can use <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to convert the EOP values as necessary. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>Accuracy requirement, NOVAS_FULL_ACCURACY (0) for the utmost precision or NOVAS_REDUCED_ACCURACY (1) if ~1 mas accuracy is sufficient. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">obs</td><td>Observer location </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">time</td><td>Time of observation </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dx</td><td>[mas] Earth orientation parameter, polar offset in <em>x</em>, e.g. from the IERS Bulletins, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. (The global, undated value set by <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not required. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dy</td><td>[mas] Earth orientation parameter, polar offset in <em>y</em>, e.g. from the IERS Bulletins, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. (The global, undated value set by <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not required. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[mas] Earth orientation parameter, polar offset in <em>x</em>, e.g. from the IERS Bulletins, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. (The global, undated value set by <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not required. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">yp</td><td>[mas] Earth orientation parameter, polar offset in <em>y</em>, e.g. from the IERS Bulletins, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. (The global, undated value set by <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> is not not used here.) You can use 0.0 if sub-arcsecond accuracy is not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">frame</td><td>Pointer to the observing frame to configure. </td></tr>
   </table>
   </dd>
@@ -899,7 +901,9 @@ This function expects the Earth polar wobble parameters to be defined on a per-f
 <dd>
 <a class="el" href="plugin_8c.html#a694288eb631d6a69ecf313b7b5b4a677">set_nutation_lp_provider()</a> </dd>
 <dd>
-<a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></dd></dl>
+<a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a> </dd>
+<dd>
+<a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 

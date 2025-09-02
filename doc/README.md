@@ -275,8 +275,12 @@ Or, to stage the installation (to `/usr`) under a 'build root':
   $ make DESTDIR="/tmp/stage" install
 ```
 
-Note, that if you want to build __SuperNOVAS__ for with your old NOVAS C applications you might want to further 
-customize the build. See Section(s) on [legacy application](#legacy-application) further below. 
+NOTES:
+
+ - On BSD, you will need to use `gmake` instead of `make`.
+
+ - if you want to build __SuperNOVAS__ for with your old NOVAS C applications you might want to further customize the 
+   build. See Section(s) on [legacy application](#legacy-application) further below. 
 
 
 <a name="cmake-build"></a>
@@ -306,13 +310,6 @@ integration for ephemeris support:
 
 ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON
-  $ cmake --build build
-```
-
-Or to build with debug mode enabled:
-
-```bash
-  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug
   $ cmake --build build
 ```
 
