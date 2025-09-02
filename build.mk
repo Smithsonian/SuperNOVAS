@@ -11,13 +11,13 @@ $(OBJ)/%.o: $(SRC)/%.c $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
 # Share library recipe
-$(LIB)/%.so.$(SO_VERSION): | $(LIB)
-	$(CC) -o $@ $(SOFLAGS)
+$(LIB)/%.$(SOEXT).$(SO_VERSION): | $(LIB)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(SHARED_FLAG) -fPIC $(SONAME_FLAG)$(notdir $@) $(LDFLAGS)
 
 # Unversioned shared libs (for linking against)
-$(LIB)/lib%.so:
+$(LIB)/lib%.$(SOEXT):
 	@rm -f $@
-	ln -sr $< $@
+	ln $(LNFLAGS) $< $@
 
 # Static library recipe
 $(LIB)/%.a:
