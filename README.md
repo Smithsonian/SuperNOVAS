@@ -199,11 +199,11 @@ accommodate JPL NAIF codes, for which 16-bit storage is insufficient.
 <a name="installation"></a>
 ## Building and installation
 
- - [Build using GNU make](#gnu-build)
- - [Build using CMake](#cmake-build)
+ - [Build SuperNOVAS using GNU make](#gnu-build)
+ - [Build SuperNOVAS using CMake](#cmake-build)
 
 <a name="gnu-build"></a>
-### Build using GNU make] 
+### Build SuperNOVAS using GNU make
 
 The __SuperNOVAS__ distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as 
 local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, Cygwin or WSL -- using 
@@ -297,7 +297,7 @@ customize the build. See Section(s) on [legacy application](#legacy-application)
 
 
 <a name="cmake-build"></a>
-### Build using CMake 
+### Build SuperNOVAS using CMake 
 
 As of v1.5, __SuperNOVAS__ can be built using CMake (thanks to Kiran Shila). CMake allows for greater portability
 than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all of the build options 
@@ -322,23 +322,23 @@ For example, to build __SuperNOVAS__ with [CALCEPH](https://calceph.imcce.fr/doc
 integration for ephemeris support:
 
 ```bash
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON
-cmake --build build
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON
+  $ cmake --build build
 ```
 
 Or to build with debug mode enabled:
 
 ```bash
-cmake -B build -DCMAKE_BUILD_TYPE=Debug
-cmake --build build
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Debug
+  $ cmake --build build
 ```
 
 After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a 
-pkg-config file, as:
+`pkg-config` file, as:
 
 ```bash
-cmake --build build
-cmake --install build --prefix /usr/local
+  $ cmake --build build
+  $ cmake --install build --prefix /usr/local
 ```
 
 -----------------------------------------------------------------------------
@@ -350,13 +350,13 @@ cmake --install build --prefix /usr/local
 There are a number of ways you can build your application with __SuperNOVAS__. See which of the options suits your
 needs best:
 
- - [Using a `Makefile`](#makefile-application)
+ - [Using a GNU `Makefile`](#makefile-application)
  - [Using CMake](#cmake-application)
  - [Legacy linking `solarsystem()` and `readeph()` modules](#legacy-application)
  - [Legacy modules: a better way](#preferred-legacy-application)
 
 <a name="makefile-application"></a>
-### Using a `Makefile`
+### Using a GNU `Makefile`
 
 Provided you have installed the __SuperNOVAS__ headers and (static or shared) libraries into a standard location, you 
 can build your application against it easily. For example, to build `myastroapp.c` against __SuperNOVAS__, you might 

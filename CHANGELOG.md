@@ -60,7 +60,7 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #221: GitHub Actions CI now includes `Makefile` builds / tests for MacOS X. (by kiranshila)
  
- - #222: GitHub Ations CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by @kiranshila)
+ - #222: GitHub Ations CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by kiranshila)
  
  - Various API documentation edits.
  
