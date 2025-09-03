@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3":[5,0,0,2,145,1],
 "novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044":[5,0,0,2,145,2],
 "novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9":[5,0,0,2,145,4],
 "novas_8h.html#a7c474aa996c5ccc0c03b1006ea5b30e1":[5,0,0,2,35],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "novas_8h.html#affe559df5bc0f5de1e091037fabfda92":[5,0,0,2,73],
 "nutation_8c.html":[5,0,1,9],
 "nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc":[5,0,1,9,0],
-"nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4":[5,0,1,9,3],
-"nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c":[5,0,1,9,1]
+"nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4":[5,0,1,9,3]
 };
