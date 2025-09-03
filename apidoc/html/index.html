@@ -354,7 +354,7 @@ Celestial coordinate systems (old vs. new)</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Earth rotation origin   </td><td class="markdownTableBodyNone">Greenwich Meridian   </td><td class="markdownTableBodyNone">Terrestrial Intermediate Origin (TIO)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Earth-fixed System   </td><td class="markdownTableBodyNone">WGS84   </td><td class="markdownTableBodyNone">International Terrestrial Reference System (ITRS)   </td></tr>
+<td class="markdownTableBodyNone">Earth-fixed System   </td><td class="markdownTableBodyNone">GRS80   </td><td class="markdownTableBodyNone">International Terrestrial Reference System (ITRS)   </td></tr>
 </table>
 <p>See the various enums and constants defined in <code><a class="el" href="novas_8h.html">novas.h</a></code>, as well as the descriptions on the various NOVAS routines on how they are appropriate for the old and new methodologies respectively. Figure 1 also shows the relation of the various old and new coordinate systems and the (Super)NOVAS functions for converting position / velocity vectors among them.</p>
 <p>In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin for positions and for velocities, in any reference system, is determined by the <code>observer</code> location, while aberration and gravitational deflection is included for apparent places only (as seen from the observer location, regardless of where that is).</p>
