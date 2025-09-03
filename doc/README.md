@@ -460,7 +460,7 @@ some of the terms differently:
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
  | Pseudo Earth-fixed system  | PEF                           | Terrestrial Intermediate Reference System (TIRS)  |
  | Earth rotation origin      | Greenwich Meridian            | Terrestrial Intermediate Origin (TIO)             |
- | Earth-fixed System         | GRS80                         | International Terrestrial Reference System (ITRS) |
+ | Earth-fixed System         | WGS84                         | International Terrestrial Reference System (ITRS) |
  
  
 See the various enums and constants defined in `novas.h`, as well as the descriptions on the various NOVAS routines
