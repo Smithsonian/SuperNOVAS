@@ -45,12 +45,12 @@ set(CMAKE_DEBUG_POSTFIX d)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # RPATH settings for installed binaries
-if(NOT APPLE)
-    set(CMAKE_INSTALL_RPATH $ORIGIN/../${CMAKE_INSTALL_LIBDIR})
-else()
-    set(CMAKE_INSTALL_RPATH @loader_path/../${CMAKE_INSTALL_LIBDIR})
-endif()
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+#if(NOT APPLE)
+#    set(CMAKE_INSTALL_RPATH ${ORIGIN}/../${CMAKE_INSTALL_LIBDIR})
+#else()
+#    set(CMAKE_INSTALL_RPATH @loader_path/../${CMAKE_INSTALL_LIBDIR})
+#endif()
+#set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Windows-specific settings
 if(WIN32)
@@ -222,30 +222,26 @@ if(ENABLE_CALCEPH)
     )
 endif()
 
-# CIO data generator
-add_executable(cio_file src/cio_file.c)
-target_include_directories(cio_file PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(cio_file PRIVATE $<$<BOOL:${HAVE_LIBM}>:m>)
-
-set(CIO_INPUT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/data/CIO_RA.TXT)
-set(CIO_OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/cio_ra.bin)
-
-add_custom_command(
-    OUTPUT ${CIO_OUTPUT_FILE}
-    COMMAND cio_file ${CIO_INPUT_FILE} ${CIO_OUTPUT_FILE}
-    DEPENDS cio_file ${CIO_INPUT_FILE}
-    COMMENT "Generating CIO binary data file"
-    VERBATIM
-)
-
-add_custom_target(cio_data ALL DEPENDS ${CIO_OUTPUT_FILE})
-
 # Examples
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
+
 # Installation
+
+if(UNIX)
+    include(GNUInstallDirs)
+else()
+    set(CMAKE_INSTALL_LIBDIR "lib")
+    set(CMAKE_INSTALL_DATADIR "share")
+    set(CMAKE_INSTALL_INCLUDEDIR "include")
+    set(CMAKE_INSTALL_BINDIR "bin")
+    set(CMAKE_INSTALL_LIBEXECDIR "libexec")
+    set(CMAKE_INSTALL_MANDIR "share/man")
+endif()
+
+
 if(ENABLE_INSTALL)
     set(INSTALL_TARGETS supernovas)
     if(BUILD_STATIC_LIBS AND TARGET supernovas_static)
@@ -270,7 +266,6 @@ if(ENABLE_INSTALL)
 
     install(FILES
         data/CIO_RA.TXT
-        ${CIO_OUTPUT_FILE}
         DESTINATION ${CMAKE_INSTALL_DATADIR}/supernovas
     )
 
