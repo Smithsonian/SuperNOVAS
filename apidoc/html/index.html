@@ -217,7 +217,7 @@ Build SuperNOVAS using GNU make</h3>
 <p>Before compiling the library take a look a <code>config.mk</code> and edit it as necessary for your needs, or else define the necessary variables in the shell prior to invoking <code>make</code>. For example:</p>
 <ul>
 <li><a href="https://www.imcce.fr/recherche/equipes/asd/calceph/">CALCEPH</a> C library integration is automatic on Linux if <code>ldconfig</code> can locate the <code>libcalceph</code> shared library. You can also control CALCEPH integration manually, e.g. by setting <code>CALCEPH_SUPPORT = 1</code> in <code>config.mk</code> or in the shell prior to the build. CALCEPH integration will require an accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries depending on the needs of the build).</li>
-<li><a href="https://naif.jpl.nasa.gov/naif/toolkit.html">NAIF CSPICE Toolkit</a> integration automatic on Linux if <code>ldconfig</code> can locate the <code>libcspice</code> shared library. You can also control CSPICE integration manually, e.g. by setting <code>CSPICE_SUPPORT = 1</code> in <code>config.mk</code> or in the shell prior to the build. CSPICE integration will require an accessible installation of the CSPICE development files (C headers, under a <code>cspice/</code> sub-folder in the header search path, and unversioned static or shared libraries depending on the needs of the build). You might want to check out the <a href="https://github.com/Smithsonian/cspice-sharedlib">Smithsonian/cspice-sharedlib</a> repository for building CSPICE as a shared library.</li>
+<li><a href="https://naif.jpl.nasa.gov/naif/toolkit.html">NAIF CSPICE Toolkit</a> integration is automatic on Linux if <code>ldconfig</code> can locate the <code>libcspice</code> shared library. You can also control CSPICE integration manually, e.g. by setting <code>CSPICE_SUPPORT = 1</code> in <code>config.mk</code> or in the shell prior to the build. CSPICE integration will require an accessible installation of the CSPICE development files (C headers, under a <code>cspice/</code> sub-folder in the header search path, and unversioned static or shared libraries depending on the needs of the build). You might want to check out the <a href="https://github.com/Smithsonian/cspice-sharedlib">Smithsonian/cspice-sharedlib</a> repository for building CSPICE as a shared library.</li>
 <li>If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as thread local via <code>-DTHREAD_LOCAL=...</code> added to <code>CFLAGS</code>. (Don't forget to enclose the string value in escaped quotes in <code>config.mk</code>, or unescaped if defining the <code>THREAD_LOCAL</code> shell variable prior to invoking <code>make</code>.)</li>
 <li>If you want to use a CIO locator file for <code><a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a></code>, you can specify the path to the CIO locator file (e.g. <code>/usr/local/share/supernovas/CIO_RA.TXT</code>) on your system e.g. by setting the <code>CIO_LOCATOR_FILE</code> shell variable prior to calling <code>make</code>. (The CIO locator file is not necessary for the functioning of the library, unless you specifically require CIO positions relative to GCRS.)</li>
 </ul>
@@ -245,6 +245,7 @@ Build SuperNOVAS using GNU make</h3>
 </div><!-- fragment --><p>NOTES:</p>
 <ul>
 <li>On BSD, you will need to use <code>gmake</code> instead of <code>make</code>.</li>
+<li>To build <b>SuperNOVAS</b> as static libraries, use <code>make static</code>.</li>
 <li>if you want to build <b>SuperNOVAS</b> for with your old NOVAS C applications you might want to further customize the build. See Section(s) on <a class="el" href="index.html#legacy-application">legacy application</a> further below.</li>
 </ul>
 <p><a class="anchor" id="cmake-build"></a> </p>
@@ -264,7 +265,7 @@ Build SuperNOVAS using CMake</h3>
 <p>For example, to build <b>SuperNOVAS</b> with <a href="https://calceph.imcce.fr/docs/4.0.0/html/c/index.html">CALCEPH</a> integration for ephemeris support:</p>
 <div class="fragment"><div class="line">$ cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON</div>
 <div class="line">$ cmake --build build</div>
-</div><!-- fragment --><p>After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a <code>pkg-config</code> file, as:</p>
+</div><!-- fragment --><p>After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a <code>pkg-config</code> file, e.g. under <code>/usr/local</code>, as:</p>
 <div class="fragment"><div class="line">$ cmake --build build</div>
 <div class="line">$ cmake --install build --prefix /usr/local</div>
 </div><!-- fragment --><hr  />
@@ -293,6 +294,7 @@ Using a GNU &lt;tt&gt;Makefile&lt;/tt&gt;</h3>
 </div><!-- fragment --><p><a class="anchor" id="cmake-application"></a> </p>
 <h3><a class="anchor" id="autotoc_md71"></a>
 Using CMake</h3>
+<p>Add the appropriate bits from below to the <code>CMakeLists.txt</code> file of your application:</p>
 <div class="fragment"><div class="line"># Link core library</div>
 <div class="line">find_package(SuperNOVAS REQUIRED)</div>
 <div class="line">target_link_libraries(your_target PRIVATE SuperNOVAS::supernovas)</div>
@@ -302,8 +304,8 @@ Using CMake</h3>
 </div><!-- fragment --><p><a class="anchor" id="legacy-application"></a> </p>
 <h3><a class="anchor" id="autotoc_md72"></a>
 Legacy linking &lt;tt&gt;solarsystem()&lt;/tt&gt; and &lt;tt&gt;readeph()&lt;/tt&gt; modules</h3>
-<p>The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> functions. This approach is discouraged in <b>SuperNOVAS</b>, since we now allow selecting different implementations at runtime, but the old way is supported for legacy applications, nevertheless.</p>
-<p>To use your own existing default <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> implementation in this way, you must build the library with <code>DEFAULT_SOLSYS</code> unset (or else set to 0) in <code>config.mk</code> (see section above), and your applications <code>Makefile</code> may contain something like:</p>
+<p>The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> and <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> functions. This approach is discouraged in <b>SuperNOVAS</b>, since it will prevent you from selecting different implementations at runtime. This deprecated way of incorporating solar-system data is supported, nevertheless, for legacy applications.</p>
+<p>To use your own existing default <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> implementation in this way, you must build the library with <code>DEFAULT_SOLSYS</code> unset (or else set to 0) in <code>config.mk</code>, and your applications <code>Makefile</code> may contain something like:</p>
 <div class="fragment"><div class="line">myastroapp: myastroapp.c my_solsys.c </div>
 <div class="line">  $(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas</div>
 </div><!-- fragment --><p>The same principle applies to using your specific <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation (only with <code>DEFAULT_READEPH</code> being unset in <code>config.mk</code>).</p>
@@ -320,7 +322,7 @@ Legacy modules: a better way</h3>
 </div><!-- fragment --><p>and then then apply it in your application as:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider</a>(my_ephem_provider);</div>
 <div class="ttc" id="aplugin_8c_html_a6097083c438a8d1872c2e00a66360030"><div class="ttname"><a href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider</a></div><div class="ttdeci">int set_ephem_provider(novas_ephem_provider func)</div><div class="ttdef"><b>Definition</b> plugin.c:67</div></div>
-</div><!-- fragment --><p>While it requires some minimal changes to the old code, the advantage of this preferred approach is (a) that you do not need to re-build the library with the <code>DEFAULT_SOLSYS</code> and <code>DEFAULT_READEPH</code> options disabled, and (b) you can switch between different planet and ephemeris calculator functions at will, during runtime.</p>
+</div><!-- fragment --><p>While it requires some minimal changes to your old code, the advantage of this preferred approach is (a) that you do not need to re-build the library with the <code>DEFAULT_SOLSYS</code> and <code>DEFAULT_READEPH</code> options disabled, and (b) you, and other users of the library, can switch between different planet and ephemeris calculator functions at will, during runtime.</p>
 <hr  />
 <p><a class="anchor" id="methodologies"></a> </p>
 <h2><a class="anchor" id="autotoc_md75"></a>
