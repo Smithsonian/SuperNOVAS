@@ -214,10 +214,11 @@ the necessary variables in the shell prior to invoking `make`. For example:
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
    quotes in `config.mk`, or unescaped if defining the `THREAD_LOCAL` shell variable prior to invoking `make`.)
 
- - If you want to use a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file (e.g. 
-   `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable 
-   prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless you 
-   specifically require CIO positions relative to GCRS.)
+ - If you insist on using a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file 
+   (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
+   variable prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless 
+   you specifically require CIO positions relative to GCRS -- which is not something that anyone should really need
+   or want, in general).
 
 Additionally, you may set number of environment variables to futher customize the build, such as:
 
@@ -288,10 +289,10 @@ NOTES:
 <a name="cmake-build"></a>
 ### Build SuperNOVAS using CMake 
 
-As of v1.5, __SuperNOVAS__ can be built using CMake (thanks to Kiran Shila). CMake allows for greater portability
-than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all of the build options 
-of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting 
-legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
+As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (thanks to Kiran Shila). CMake allows for 
+greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all 
+of the build options of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration 
+on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
 
 The basic build recipe for CMake is:
 
