@@ -289,10 +289,10 @@ NOTES:
 <a name="cmake-build"></a>
 ### Build SuperNOVAS using CMake 
 
-As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (thanks to Kiran Shila). CMake allows for 
-greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all 
-of the build options of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration 
-on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
+As of v1.5, __SuperNOVAS__ can be built using CMake (thanks to Kiran Shila). CMake allows for greater portability
+than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all of the build options 
+of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting 
+legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
 
 The basic build recipe for CMake is:
 
