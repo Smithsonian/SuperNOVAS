@@ -456,7 +456,7 @@ some of the terms differently:
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
  | Precession, nutation, bias | no tidal terms                | IAU 2000/2006 precession/nutation model           |
- | Celestial Pole offsets     | d&psi;, d&epsilon; (for TOD)  | _dx_, _dy_ (for ITRS)                             |
+ | Celestial Pole offsets     | d&psi;, d&epsilon; (for TOD)  | _x_<sub>p</sub>, _y_<sub>p</sub> (for ITRS)       |
  | Earth rotation measure     | Greenwich Sidereal Time (GST) | Earth Rotation Angle (ERA)                        |
  | Pseudo Earth-fixed system  | PEF                           | Terrestrial Intermediate Reference System (TIRS)  |
  | Earth rotation origin      | Greenwich Meridian            | Terrestrial Intermediate Origin (TIO)             |
