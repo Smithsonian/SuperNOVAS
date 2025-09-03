@@ -147,16 +147,14 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 ifeq ($(UNAME_S),Darwin)
   # macOS specific
   SOEXT := dylib
-  SHARED_FLAG := -dynamiclib
+  SHARED_FLAGS := -dynamiclib -fPIC
   SONAME_FLAG := -Wl,-install_name,@rpath/
-  RPATH_FLAG := -Wl,-rpath,
   LIB_PATH_VAR := DYLD_LIBRARY_PATH
 else
   # Linux/Unix specific
   SOEXT := so
-  SHARED_FLAG := -shared
+  SHARED_FLAGS := -shared -fPIC
   SONAME_FLAG := -Wl,-soname,
-  RPATH_FLAG := -Wl,-rpath=
   LIB_PATH_VAR := LD_LIBRARY_PATH
 endif
 
