@@ -218,7 +218,7 @@ the necessary variables in the shell prior to invoking `make`. For example:
    an accessible installation of the CALCEPH development files (C headers and unversioned static or shared libraries 
    depending on the needs of the build).
    
- - [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) integration automatic on Linux if `ldconfig` 
+ - [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) integration is automatic on Linux if `ldconfig` 
    can locate the `libcspice` shared library. You can also control CSPICE integration manually, e.g. by setting 
    `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CSPICE integration will require an 
    accessible installation of the CSPICE development files (C headers, under a `cspice/` sub-folder in the header 
@@ -231,10 +231,11 @@ the necessary variables in the shell prior to invoking `make`. For example:
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
    quotes in `config.mk`, or unescaped if defining the `THREAD_LOCAL` shell variable prior to invoking `make`.)
 
- - If you want to use a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file (e.g. 
-   `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell variable 
-   prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless you 
-   specifically require CIO positions relative to GCRS.)
+ - If you insist on using a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file 
+   (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
+   variable prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless 
+   you specifically require CIO positions relative to GCRS -- which is not something that anyone should really need
+   or want, in general).
 
 Additionally, you may set number of environment variables to futher customize the build, such as:
 
@@ -295,6 +296,8 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 NOTES:
 
  - On BSD, you will need to use `gmake` instead of `make`.
+ 
+ - To build __SuperNOVAS__ as static libraries, use `make static`.
 
  - if you want to build __SuperNOVAS__ for with your old NOVAS C applications you might want to further customize the 
    build. See Section(s) on [legacy application](#legacy-application) further below. 
@@ -303,10 +306,10 @@ NOTES:
 <a name="cmake-build"></a>
 ### Build SuperNOVAS using CMake 
 
-As of v1.5, __SuperNOVAS__ can be built using CMake (thanks to Kiran Shila). CMake allows for greater portability
-than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all of the build options 
-of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting 
-legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
+As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (thanks to Kiran Shila). CMake allows for 
+greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all 
+of the build options of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration 
+on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
 
 The basic build recipe for CMake is:
 
@@ -331,7 +334,7 @@ integration for ephemeris support:
 ```
 
 After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a 
-`pkg-config` file, as:
+`pkg-config` file, e.g. under `/usr/local`, as:
 
 ```bash
   $ cmake --build build
@@ -387,6 +390,8 @@ shared libraries also:
 <a name="cmake-application"></a>
 ### Using CMake
 
+Add the appropriate bits from below to the `CMakeLists.txt` file of your application:
+
 ```cmake
   # Link core library
   find_package(SuperNOVAS REQUIRED)
@@ -401,12 +406,11 @@ shared libraries also:
 
 The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the
 `solarsystem()` / `solarsystem_hp()` and `readeph()` functions. This approach is discouraged in __SuperNOVAS__, since 
-we now allow selecting different implementations at runtime, but the old way is supported for legacy applications,
-nevertheless.
+it will prevent you from selecting different implementations at runtime. This deprecated way of incorporating 
+solar-system data is supported, nevertheless, for legacy applications.
 
 To use your own existing default `solarsystem()` implementation in this way, you must build the library with 
-`DEFAULT_SOLSYS` unset (or else set to 0) in `config.mk` (see section above), and your applications `Makefile` may 
-contain something like:
+`DEFAULT_SOLSYS` unset (or else set to 0) in `config.mk`, and your applications `Makefile` may contain something like:
 
 ```make
   myastroapp: myastroapp.c my_solsys.c 
@@ -441,9 +445,10 @@ and then then apply it in your application as:
   set_ephem_provider(my_ephem_provider);
 ```
 
-While it requires some minimal changes to the old code, the advantage of this preferred approach is (a) that you do 
-not need to re-build the library with the `DEFAULT_SOLSYS` and `DEFAULT_READEPH` options disabled, and (b) you can 
-switch between different planet and ephemeris calculator functions at will, during runtime.
+While it requires some minimal changes to your old code, the advantage of this preferred approach is (a) that you do 
+not need to re-build the library with the `DEFAULT_SOLSYS` and `DEFAULT_READEPH` options disabled, and (b) you, and
+other users of the library, can switch between different planet and ephemeris calculator functions at will, during 
+runtime.
 
 
 -----------------------------------------------------------------------------
