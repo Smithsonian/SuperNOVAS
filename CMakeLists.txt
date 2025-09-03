@@ -45,12 +45,12 @@ set(CMAKE_DEBUG_POSTFIX d)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # RPATH settings for installed binaries
-if(NOT APPLE)
-    set(CMAKE_INSTALL_RPATH $ORIGIN/../${CMAKE_INSTALL_LIBDIR})
-else()
-    set(CMAKE_INSTALL_RPATH @loader_path/../${CMAKE_INSTALL_LIBDIR})
-endif()
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+#if(NOT APPLE)
+#    set(CMAKE_INSTALL_RPATH ${ORIGIN}/../${CMAKE_INSTALL_LIBDIR})
+#else()
+#    set(CMAKE_INSTALL_RPATH @loader_path/../${CMAKE_INSTALL_LIBDIR})
+#endif()
+#set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Windows-specific settings
 if(WIN32)
