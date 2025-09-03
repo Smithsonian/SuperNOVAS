@@ -289,10 +289,10 @@ NOTES:
 <a name="cmake-build"></a>
 ### Build SuperNOVAS using CMake 
 
-As of v1.5, __SuperNOVAS__ can be built using CMake (thanks to Kiran Shila). CMake allows for greater portability
-than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all of the build options 
-of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting 
-legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
+As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (thanks to Kiran Shila). CMake allows for 
+greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all 
+of the build options of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration 
+on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
 
 The basic build recipe for CMake is:
 
@@ -1169,7 +1169,7 @@ return an error if called with `NOVAS_FULL_ACCURACY`.
 
 ### Prerequisites to precise results
 
-The __SuperNOVAS__ library is in principle capable of calculating positions to sub-microarcsecond, and velocities to 
+The __SuperNOVAS__ library is in principle capable of calculating positions to microarcsecond, and velocities to 
 mm/s, precision for all types of celestial sources. However, there are certain prerequisites and practical 
 considerations before that level of accuracy is reached.
 
@@ -1252,10 +1252,15 @@ The above is the standard way to include C headers in C++ sources, in general.
 
 When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
 
+ - You may forgo reconciling the ITRF realizations of EOP vs. an Earth-based observing site, if precision at the 
+   micro-arcsecond level is not required.
+ - You may skip the interpolation of published EOP values, and skip diurnal corrections for ocean tides and libration,
+   if accuracy below the milliarcsecond level is not required.
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
    effect at or below the milliarcsecond level only, but may be much faster to calculate.
- - You might skip the pole offsets _dx_, _dy_. These are tenths of arcsec, typically.
- 
+ - You might skip the pole offsets _x_<sub>p</sub>, _y_<sub>p</sub>. These are tenths of arcsec, typically.
+ - You may not need to interface to an ephemeris provider if you don't need positions for Solar-system objects, and
+   you are willing to ignore gravitational redhifts / deflections around Solar-system bodies.
  
 <a name="multi-threading"></a>
 ### Multi-threaded calculations
@@ -1267,8 +1272,8 @@ they may be re-used if the call is made with the same environmental parameters a
 A direct consequence of the caching of results is that calculations are generally not thread-safe as implemented by 
 the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input 
 parameters while, at the same time, another thread is saving cached values for a different set of parameters. Thus, 
-when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely 
-they may not correspond to the requested input parameters.
+when running calculations in more than one thread, the NOVAS C results returned may at times be incorrect, or more 
+precisely they may not correspond to the requested input parameters.
  
 While you should never call the original NOVAS C library from multiple threads simultaneously, __SuperNOVAS__ caches 
 the results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in 

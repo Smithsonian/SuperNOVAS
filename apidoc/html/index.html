@@ -251,7 +251,7 @@ Build SuperNOVAS using GNU make</h3>
 <p><a class="anchor" id="cmake-build"></a> </p>
 <h3><a class="anchor" id="autotoc_md67"></a>
 Build SuperNOVAS using CMake</h3>
-<p>As of v1.5, <b>SuperNOVAS</b> can be built using CMake (thanks to Kiran Shila). CMake allows for greater portability than the regular GNU <code>Makefile</code>. Note, however, that the CMake configuration does not support all of the build options of the GNU <code>Makefile</code>, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks.</p>
+<p>As of v1.5, <b>SuperNOVAS</b> can be built using <a href="https://cmake.org/">CMake</a> (thanks to Kiran Shila). CMake allows for greater portability than the regular GNU <code>Makefile</code>. Note, however, that the CMake configuration does not support all of the build options of the GNU <code>Makefile</code>, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks.</p>
 <p>The basic build recipe for CMake is:</p>
 <div class="fragment"><div class="line">$ cmake -B build</div>
 <div class="line">$ cmake --build build</div>
@@ -776,7 +776,7 @@ Notes on precision</h2>
 <p>Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision ephemeris provider for the major planets (and any Solar-system bodies of interest), which does not come with <b>SuperNOVAS</b> out of the box. In the absence of a suitable high-precision ephemeris provider, some functions might return an error if called with <code>NOVAS_FULL_ACCURACY</code>.</p>
 <h3><a class="anchor" id="autotoc_md99"></a>
 Prerequisites to precise results</h3>
-<p>The <b>SuperNOVAS</b> library is in principle capable of calculating positions to sub-microarcsecond, and velocities to mm/s, precision for all types of celestial sources. However, there are certain prerequisites and practical considerations before that level of accuracy is reached.</p>
+<p>The <b>SuperNOVAS</b> library is in principle capable of calculating positions to microarcsecond, and velocities to mm/s, precision for all types of celestial sources. However, there are certain prerequisites and practical considerations before that level of accuracy is reached.</p>
 <ol type="1">
 <li><b>IAU 2000/2006 conventions</b>: High precision calculations will generally require that you use <b>SuperNOVAS</b> with the new IAU standard quantities and methods. The old ways were simply not suited for precision much below the milliarcsecond level. In particular, Earth orientation parameters (EOP) should be applied only for converting between TIRS and ITRS systems, and defined either with <code><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a></code> or else with <code><a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a></code>. The old ways of incorporating (global) offsets in TOD coordinates via <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> should be avoided.</li>
 <li><b>Gravitational bending</b>: Calculations much below the milliarcsecond level will require accounting for gravitational bending around massive Solar-system bodies, and hence will require you to provide a high-precision ephemeris provider for the major planets. Without it, there is no guarantee of achieving precision below the milli-arcsecond level in general, especially when observing near the Sun or massive planets (e.g. observing Jupiter's or Saturn's moons, near conjunction with their host planet). Therefore, some functions will return with an error, if used with <code>NOVAS_FULL_ACCURACY</code> in the absence of a suitable high-precision planetary ephemeris provider.</li>
@@ -811,14 +811,17 @@ SuperNOVAS and C++</h3>
 Reduced accuracy shortcuts</h3>
 <p>When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:</p>
 <ul>
+<li>You may forgo reconciling the ITRF realizations of EOP vs. an Earth-based observing site, if precision at the micro-arcsecond level is not required.</li>
+<li>You may skip the interpolation of published EOP values, and skip diurnal corrections for ocean tides and libration, if accuracy below the milliarcsecond level is not required.</li>
 <li>You can use <code>NOVAS_REDUCED_ACCURACY</code> instead of <code>NOVAS_FULL_ACCURACY</code> for the calculations. This typically has an effect at or below the milliarcsecond level only, but may be much faster to calculate.</li>
-<li>You might skip the pole offsets <em>dx</em>, <em>dy</em>. These are tenths of arcsec, typically.</li>
+<li>You might skip the pole offsets <em>x</em><sub>p</sub>, <em>y</em><sub>p</sub>. These are tenths of arcsec, typically.</li>
+<li>You may not need to interface to an ephemeris provider if you don't need positions for Solar-system objects, and you are willing to ignore gravitational redhifts / deflections around Solar-system bodies.</li>
 </ul>
 <p><a class="anchor" id="multi-threading"></a> </p>
 <h3><a class="anchor" id="autotoc_md104"></a>
 Multi-threaded calculations</h3>
 <p>Some of the calculations involved can be expensive from a computational perspective. For the most typical use case however, NOVAS (and <b>SuperNOVAS</b>) has a trick up its sleeve: it caches the last result of intensive calculations so they may be re-used if the call is made with the same environmental parameters again (such as JD time and accuracy).</p>
-<p>A direct consequence of the caching of results is that calculations are generally not thread-safe as implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input parameters while, at the same time, another thread is saving cached values for a different set of parameters. Thus, when running calculations in more than one thread, the results returned may at times be incorrect, or more precisely they may not correspond to the requested input parameters.</p>
+<p>A direct consequence of the caching of results is that calculations are generally not thread-safe as implemented by the original NOVAS C 3.1 library. One thread may be in the process of returning cached values for one set of input parameters while, at the same time, another thread is saving cached values for a different set of parameters. Thus, when running calculations in more than one thread, the NOVAS C results returned may at times be incorrect, or more precisely they may not correspond to the requested input parameters.</p>
 <p>While you should never call the original NOVAS C library from multiple threads simultaneously, <b>SuperNOVAS</b> caches the results in thread local variables (provided your compiler supports it), and is therefore generally safe to use in multi-threaded applications. Just make sure that you:</p>
 <ul>
 <li>use a compiler which supports the C11 language standard;</li>
