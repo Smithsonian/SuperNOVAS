@@ -1171,45 +1171,47 @@ considerations before that level of accuracy is reached.
     
  1. __IAU 2000/2006 conventions__: High precision calculations will generally require that you use __SuperNOVAS__ with 
     the new IAU standard quantities and methods. The old ways were simply not suited for precision much below the 
-    milliarcsecond level.
+    milliarcsecond level. In particular, Earth orientation parameters (EOP) should be applied only for converting 
+    between TIRS and ITRS systems, and defined either with `novas_make_frame()` or else with `wobble()`. The old ways 
+    of incorporating (global) offsets in TOD coordinates via `cel_pole()` should be avoided.
     
- 2. __Gravitational bending__: Calculations much below the milliarcsecond level will require to account for 
+ 2. __Gravitational bending__: Calculations much below the milliarcsecond level will require accounting for 
     gravitational bending around massive Solar-system bodies, and hence will require you to provide a high-precision 
-    ephemeris provider for the major planets. Without it, there is no guarantee of achieving the desired &mu;as-level 
-    precision in general, especially when observing near massive planets (e.g. observing Jupiter's or Saturn's moons, 
-    near conjunction with the host planet). Therefore some functions will return with an error, if used with 
-    `NOVAS_FULL_ACCURACY` in the absence of a suitable high-precision planetary ephemeris provider.
+    ephemeris provider for the major planets. Without it, there is no guarantee of achieving precision below the 
+    milli-arcsecond level in general, especially when observing near the Sun or massive planets (e.g. observing 
+    Jupiter's or Saturn's moons, near conjunction with their host planet). Therefore, some functions will return with 
+    an error, if used with `NOVAS_FULL_ACCURACY` in the absence of a suitable high-precision planetary ephemeris 
+    provider.
 
  3. __Solar-system sources__: Precise calculations for Solar-system sources requires precise ephemeris data for both
     the target object as well as for Earth, and the Sun. For the highest precision calculations you also need 
     positions for all major planets to calculate gravitational deflection precisely. By default, __SuperNOVAS__ can 
-    only provide approximate positions for the Earth and Sun (see `earth_sun_calc()` in `solsys3.c`), but certainly 
-    not at the sub-microarcsecond level, and not for other Solar-system sources. You will need to provide a way to 
-    interface __SuperNOVAS__ with a suitable ephemeris source (such as the CSPICE toolkit from JPL or CALCEPH) if you 
-    want to use it to obtain precise positions for Solar-system bodies. See the [section further below](#solarsystem) 
-    for more information how you can do that.
+    only provide approximate positions for the Earth and Sun (see `earth_sun_calc()`) at the tens of arcsecond level. 
+    You will need to provide a way to interface __SuperNOVAS__ with a suitable ephemeris source (such as CALCEPH, or 
+    the CSPICE toolkit from JPL) to obtain precise positions for Solar-system bodies. See the 
+    [section further above](#solarsystem) for more information how you can do that.
 
  4. __Earth's polar motion__: Calculating precise positions for any Earth-based observations requires precise 
     knowledge of Earth orientation parameters (EOP) at the time of observation. Earth's pole is subject to predictable 
-    precession and nutation, but also small irregular variations in the orientation of the rotational axis and the 
-    rotation period (a.k.a polar wobble). The 
-    [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) provide up-to-date 
+    precession and nutation, but also small irregular and diurnal variations in the orientation of the rotational axis 
+    and the rotation period (a.k.a. polar wobble). You can apply the EOP values in `novas_set_time()` (for UT1-UTC), 
+    and `novas_make_frame()` (_x_<sub>p</sub> and _y_<sub>p</sub>) to improve the astrometric precision of Earth based 
+    coordinate calculations. Without the EOP values, positions for Earth-based calculations will be accurate at the 
+    tenths of arcsecond level only.
+    The [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html) provide up-to-date 
     measurements, historical data, and near-term projections for the polar offsets, the UT1-UTC time difference, and 
-    leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be further amended to 
-    include corrections for variations caused by librations and ocean tides. As of version 1.5 `novas_diurnal_eop()` 
-    may be used to calculate such corrections. In __SuperNOVAS__ you can apply the EOP values in `novas_set_time()` 
-    (for UT1-UTC), and `novas_make_frame()` (_xp_ and _yp_) to improve the astrometric precision of Earth-orientation 
-    based coordinate calculations. Without setting and using the appropriate EOP values for the time of observation, 
-    positions for Earth-based observations will be accurate at the tenths of arcsecond level only.
+    leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by IERS should be interpolated and 
+    amended to include corrections for variations caused by libration and ocean tides, e.g. via `novas_diurnal_eop()`. 
+    At the micro-arcsecond (&mu;as) level, you will need to ensure also that the EOP values are provided for the same 
+    ITRF realization as the observer's location, e.g. via `novas_itrf_transform_eop()`. 
    
-  5. __Refraction__: Ground based observations are also subject to atmospheric refraction. __SuperNOVAS__ offers the 
-    option to include approximate _optical_ refraction corrections either for a standard atmosphere or more precisely 
-    using the weather parameters defined in the `on_surface` data structure that specifies the observer locations.
-    Note, that refraction at radio wavelengths is notably different from the included optical model, and a standard
-    radio refraction model is included as of version 1.1 also. As of v1.4.0 we also offer our implementation of the 
-    wavelength-dependent IAU refraction model based on the SOFA `iauRefco()` function. In any case, you may want to 
-    skip the refraction corrections offered in this library, and instead implement your own as appropriate (or not at 
-    all).
+  5. __Refraction__: Ground based observations are subject to atmospheric refraction. __SuperNOVAS__ offers the 
+    option to include refraction corrections with a set of atmospheric models. Estimating refraction accurately 
+    requires local weather parameters (pressure, temperature, and humidity), which may be be specified within the 
+    `on_surface` data structure alongside the observer location. A standard radio refraction model is included as of 
+    version 1.1, as well as our implementation of the wavelength-dependent IAU refraction model 
+    (`novas_wave_refraction()` since version 1.4) based on the SOFA `iauRefco()` function. If none of the supplied
+    options satisfies your needs, you may also implement your own refraction correction to use.
   
 
 ------------------------------------------------------------------------------
