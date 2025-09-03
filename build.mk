@@ -12,7 +12,7 @@ $(OBJ)/%.o: $(SRC)/%.c $(OBJ) Makefile
 
 # Share library recipe
 $(LIB)/%.$(SOEXT).$(SO_VERSION): | $(LIB)
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(SHARED_FLAG) -fPIC $(SONAME_FLAG)$(notdir $@) $(LDFLAGS)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(SHARED_FLAGS) $(SONAME_FLAG)$(notdir $@) $(LDFLAGS)
 
 # Unversioned shared libs (for linking against)
 $(LIB)/lib%.$(SOEXT):
