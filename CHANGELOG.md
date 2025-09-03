@@ -18,7 +18,7 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
    Sidereal Times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal_time()` with
-   a simpler and more intuitive interface.
+   a simpler, cleaner interface.
    
  - #215: New functions (e.g. `novas_diurnal_eop()`) to calculate corrections to the Earth orientation parameters 
    published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary to include 
@@ -26,16 +26,16 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #217: New functions `novas_itrf_transform()` and `novas_itrf_transform_eop()` to enable transforming gecocentric
    _xyz_ station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. 
-   ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions.
+   ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions 2010.
    
  - #217: New functions `novas_geodetic_to_cartesian()` and `novas_cartesian_to_geodetic()` to convert between 
    geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the
    reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
    
- - #221: Now supporting MacOS builds, which are different from standard UNIX build, via GNU `make` also (by 
+ - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (by 
    kiranshila).
    
- - #222: CMake build support, including MacOS and Windows builds (by kiranshila).
+ - #222: CMake build support, including Mac OS and Windows builds (by kiranshila).
 
  - #223: New functions `novas_clock_skew_tt()`, `novas_clock_skew_tcg()`, and `novas_clock_skew_tcb()` to calculate
    the incremental rate at which an observer's clock ticks faster than a TT, TCG, or TCB clock respectively would. 
@@ -61,11 +61,11 @@ Upcoming feature release, expected around 1 November 2025.
  - #217: Changed `terra()` to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 
    ellipsoid. The change restores the original NOVAS C behaviour.
  
- - #221: GitHub Actions CI now includes `Makefile` builds / tests for MacOS X. (by kiranshila)
+ - #221: GitHub Actions CI now includes `Makefile` builds / tests for Mac OS X. (by kiranshila)
  
- - #222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, BSD, and Windows. (by kiranshila)
+ - #222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)
  
- - #225: GNU `Makefile` fixes for non-Linux builds, and BSD build check in GitHub Actions CI.
+ - #225: GNU `Makefile` fixes for non-Linux builds, and FreeBSD build check in GitHub Actions CI.
  
  - Various API documentation edits.
 
@@ -78,9 +78,9 @@ Upcoming feature release, expected around 1 November 2025.
  - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now a dud. Instead, you should
    use `novas_gmst()` or `novas_gast()` to get the same results simpler.
 
- - #214: Deprecated `cio_basis()`. It is no longer used internally in the library, and users are recommended against 
-   using it themselves, since SuperNOVAS provides better ways to convert between GCRS and CIRS using frames or via the
-   `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
+ - #214: Deprecated `cio_basis()`. It is no longer used internally by the library, and users are recommended against 
+   using it themselves, since SuperNOVAS provides cleaner ways to convert between GCRS and CIRS using frames and transforms, 
+   or else via the `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
    
    
 ## [1.4.2] - 2025-08-25
