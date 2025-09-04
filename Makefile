@@ -112,7 +112,7 @@ all: distro static test coverage analyze
 
 # Run regression tests
 .PHONY: test
-test: cio_ra.bin
+test: data/cio_ra.bin
 	$(MAKE) -C test run
 
 .PHONY: benchmark
@@ -139,13 +139,13 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a \
-      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* cio_ra.bin
+      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.bin
 	$(MAKE) -C benchmark distclean
 
 .PHONY:
 check-cio-locator:
 ifndef CIO_LOCATOR_FILE
-	  $(info WARNING! No default CIO_LOCATOR_FILE defined. Will use local 'cio_ra.bin' if present.)
+	  $(info WARNING! No default CIO_LOCATOR_FILE defined. Will use local 'data/cio_ra.bin' if present.)
 endif
 
 
@@ -209,7 +209,10 @@ $(LIB)/libnovas.a: $(LIB)/libsupernovas.a
 	( cd $(LIB); ln -s libsupernovas.a libnovas.a )
 
 # CIO locator data
-cio_ra.bin: data/CIO_RA.TXT $(BIN)/cio_file
+.PHONY: cio_ra.bin
+cio_ra.bin: data/cio_ra.bin
+
+data/cio_ra.bin: data/CIO_RA.TXT $(BIN)/cio_file
 	$(BIN)/cio_file $< $@
 
 .INTERMEDIATE: $(BIN)/cio_file
@@ -218,7 +221,6 @@ bin/cio_file: $(OBJ)/cio_file.o | $(BIN)
 
 README-orig.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
-
 
 dox: 
 
@@ -320,7 +322,7 @@ help:
 	@echo "  solsys        Builds only the objects that may provide external 'solarsystem()'"
 	@echo "                call implentations (e.g. 'solsys1.o', 'eph_manager.o'...)."
 	@echo "  cio_ra.bin    Generates a platform-specific binary CIO locator lookup data file"
-	@echo "                'cio_ra.bin' from the ASCII 'data/CIO_RA.TXT'."
+	@echo "                'data/cio_ra.bin' from the ASCII 'data/CIO_RA.TXT'."
 	@echo "  test          Runs regression tests."
 	@echo "  benchmark     Runs benchmarks."
 	@echo "  analyze       Performs static code analysis with 'cppcheck'."

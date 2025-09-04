@@ -97,7 +97,7 @@ int set_cio_locator_file(const char *restrict filename) {
   if(old)
     fclose(old);
 
-  return cio_file ? 0 : novas_error(-1, errno, "set_cio_locator_file", "File could not be opened");
+  return cio_file ? 0 : novas_error(-1, errno, "set_cio_locator_file", "%s: %s", filename, strerror(errno));
 }
 
 /**

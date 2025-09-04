@@ -20,7 +20,7 @@
 #define J2000   NOVAS_JD_J2000
 
 
-static char *workPath;
+static char *dataPath;
 
 static observer obs;
 static object source;
@@ -2008,6 +2008,10 @@ static int test_dxdy_to_dpsideps() {
 static int test_cio_location() {
   double loc, loc1;
   short type;
+  char path[1024] = {'\0'};
+
+  sprintf(path, "%s/CIO_RA.TXT", dataPath);
+  if(!is_ok("cio_location:set_path", set_cio_locator_file(path))) return 1;
 
   if(!is_ok("cio_location", cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc, &type))) return 1;
   if(!is_ok("cio_location:repeat", cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc1, &type))) return 1;
@@ -2031,7 +2035,7 @@ static int test_cio_array() {
 
   memset(data, 0, sizeof(data));
 
-  sprintf(path, "%s/../data/CIO_RA.TXT", workPath);
+  sprintf(path, "%s/CIO_RA.TXT", dataPath);
 
   if(!is_ok("cio_array:ascii:set_cio_locator_file", set_cio_locator_file(path))) return 1;
   if(!is_ok("cio_array:ascii", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
@@ -2039,7 +2043,7 @@ static int test_cio_array() {
   if(!is_ok("cio_array:ascii:check:first", data[0].ra_cio == 0.0)) return 1;
   if(!is_ok("cio_array:ascii:check:last", data[9].ra_cio == 0.0)) return 1;
 
-  sprintf(path, "%s/../cio_ra.bin", workPath);
+  sprintf(path, "%s/cio_ra.bin", dataPath);
 
   if(!is_ok("cio_array:bin:set_cio_locator_file", set_cio_locator_file(path))) return 1;
   if(!is_ok("cio_array:bin", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
@@ -4441,8 +4445,8 @@ static int test_clock_skew() {
 int main(int argc, char *argv[]) {
   int n = 0;
 
-  (void) argc;
-  workPath = dirname(argv[0]);
+  if(argc > 1)
+  dataPath = argv[1];
 
   novas_debug(NOVAS_DEBUG_ON);
   enable_earth_sun_hp(1);

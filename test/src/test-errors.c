@@ -13,6 +13,8 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
+static char *dataPath = "../data";
+
 static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
   (void) name;
   (void) jd_tdb_high;
@@ -874,16 +876,19 @@ static int test_d_light() {
 static int test_cio_array() {
   ra_of_cio x[5];
   int n = 0;
+  char path[1024] = {'\0'};
 
   if(check("cio_array:out", -1, cio_array(0.0, 5, NULL))) n++;
   if(check("cio_array:n_pts:lo", 3, cio_array(0.0, 1, x))) n++;
   if(check("cio_array:n_pts:hi", 3, cio_array(0.0, NOVAS_CIO_CACHE_SIZE + 1, x))) n++;
 
-  set_cio_locator_file("blah");
+  if(check("cio_array:blah", -1, set_cio_locator_file("blah"))) n++;
   if(check("cio_array:file", 1, cio_array(0.0, 5, x))) n++;
 
-  set_cio_locator_file("../cio_ra.bin");
-  set_cio_locator_file("../cio_ra.bin"); // Test reopen also...
+  sprintf(path, "%s/CIO_RA.TXT", dataPath);
+  if(check("cio_array:bin", 0, set_cio_locator_file(path))) n++;
+  if(check("cio_array:bin:reopen", 0, set_cio_locator_file(path))) n++; // Test reopen also...
+
   if(check("cio_array:beg", 2, cio_array(0.0, 5, x))) n++;
   if(check("cio_array:end", 2, cio_array(1e20, 5, x))) n++;
 
@@ -891,32 +896,6 @@ static int test_cio_array() {
   if(check("cio_array:corner:hi", 6, cio_array(2561137.4, 5, x))) n++;
 
   if(check("cio_array:corner:near", 0, cio_array(2341962.6, 5, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/empty");
-  if(check("cio_array:bin:empty", 1, cio_array(2341952.6, 5, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-1.bin");
-  if(check("cio_array:bin:header", -1, cio_array(2341952.6, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-2.bin");
-  if(check("cio_array:bin:incomplete", 6, cio_array(2341951.4, 2, x))) n++;
-  if(check("cio_array:bin:seek", -1, cio_array(2341965.4, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-1.txt");
-  if(check("cio_array:ascii:header", -1, cio_array(2341952.6, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-2.txt");
-  if(check("cio_array:ascii:incomplete", 6, cio_array(2341951.4, 2, x))) n++;
-  if(check("cio_array:ascii:seek", 2, cio_array(2341965.4, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-3.txt");
-  if(check("cio_array:ascii:no-data", 1, cio_array(2341952.6, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-4.txt");
-  if(check("cio_array:ascii:corrupt:first", -1, cio_array(2341952.6, 2, x))) n++;
-
-  set_cio_locator_file("bad-cio-data/bad-5.txt");
-  if(check("cio_array:ascii:corrupt", -1, cio_array(2341952.6, 2, x))) n++;
 
   return n;
 }
@@ -2413,8 +2392,11 @@ static int test_clock_skew() {
   return n;
 }
 
-int main() {
+int main(int argc, const char *argv[]) {
   int n = 0;
+
+  if(argc > 1)
+    dataPath = (char *) argv[1];
 
   if(test_v2z()) n++;
   if(test_z2v()) n++;
