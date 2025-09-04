@@ -4,9 +4,6 @@
 
 include(CMakeFindDependencyMacro)
 
-# Find required dependencies
-find_dependency(Threads)
-
 # Find math library if needed
 if(NOT WIN32)
     find_library(MATH_LIBRARY m)
@@ -33,13 +30,16 @@ else()
 endif()
 
 # Component support
-set(SuperNOVAS_FIND_COMPONENTS ${SuperNOVAS_FIND_COMPONENTS})
-
 foreach(component ${SuperNOVAS_FIND_COMPONENTS})
     if(component STREQUAL "calceph")
         if(NOT SuperNOVAS_CALCEPH_FOUND)
             set(SuperNOVAS_FOUND FALSE)
             set(SuperNOVAS_NOT_FOUND_MESSAGE "SuperNOVAS CALCEPH component not available")
+        endif()
+    elseif(component STREQUAL "calceph")
+        if(NOT SuperNOVAS_CSPICE_FOUND)
+            set(SuperNOVAS_FOUND FALSE)
+            set(SuperNOVAS_NOT_FOUND_MESSAGE "SuperNOVAS CSPICE component not available")
         endif()
     else()
         set(SuperNOVAS_FOUND FALSE)

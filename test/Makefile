@@ -19,7 +19,7 @@ CHECKOPTS = --enable=performance,warning,portability --language=c \
 OBJECTS := $(subst $(OBJ)/,,$(OBJECTS))
 COVFILES := $(subst .o,.c.gcov,$(OBJECTS))
 
-TESTS := test-compat test-cio_file test-super test-errors
+TESTS := test-compat test-cio_file test-cio-data test-super test-errors
 
 ifeq ($(CALCEPH_SUPPORT), 1)
   LDFLAGS += -lcalceph
@@ -35,15 +35,24 @@ ifeq ($(CSPICE_SUPPORT), 1)
   COVFILES += solsys-cspice.c.gcov
 endif
 
-.PHONY: run
-run: clean-cov clean-data $(TESTS) data ../cio_ra.bin bad-data
-	./test-compat
-	ln -s ../cio_ra.bin
-	./test-cio_file
-	sed -i.tmp "s:-nan: nan:g" data/* && rm -f data/*.tmp
+.PHONY: check-compat
+check-compat:
+	@sed -i.tmp "s:-nan: nan:g" data/* && rm -f data/*.tmp
 	diff data reference
-	./test-super
-	rm -f cio_ra.bin
+
+.PHONY: check-cio_file
+check-cio_file: 
+	@ln -s ../data/cio_ra.bin
+	./test-cio_file
+	@rm -f cio_ra.bin
+
+.PHONY: run
+run: clean-cov clean-data $(TESTS) data bad-data
+	./test-compat
+	$(MAKE) check-cio_file
+	$(MAKE) check-compat
+	./test-cio-data
+	./test-super ../data
 	./test-errors
 ifeq ($(CALCEPH_SUPPORT), 1)
 	./test-calceph ephem
@@ -68,10 +77,10 @@ data:
 	mkdir data
 
 .PHONY: bad-data
-bad-data: ../cio_ra.bin bad-cio-data
+bad-data: ../data/cio_ra.bin bad-cio-data
 	@touch bad-cio-data/empty
-	@dd status=none if=../cio_ra.bin of=bad-cio-data/bad-1.bin bs=27 count=1
-	@dd status=none if=../cio_ra.bin of=bad-cio-data/bad-2.bin bs=63 count=1
+	@dd status=none if=../data/cio_ra.bin of=bad-cio-data/bad-1.bin bs=27 count=1
+	@dd status=none if=../data/cio_ra.bin of=bad-cio-data/bad-2.bin bs=63 count=1
 	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-1.txt bs=14 count=1
 	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-2.txt bs=79 count=1
 	@dd status=none if=../data/CIO_RA.TXT of=bad-cio-data/bad-3.txt bs=21 count=1

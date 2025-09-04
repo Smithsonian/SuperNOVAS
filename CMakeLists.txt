@@ -23,15 +23,23 @@ include(CheckLibraryExists)
 # Build options
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(BUILD_STATIC_LIBS "Build static libraries in addition to shared" ON)
+option(BUILD_DOC "Build HTML documetation" OFF)
+option(BUILD_TESTING "Build regression test suite" ON)
 option(BUILD_EXAMPLES "Build example programs" ON)
+option(BUILD_BENCHMARK "Build benchmark programs" OFF)
 option(ENABLE_CALCEPH "Enable CALCEPH support" OFF)
+option(ENABLE_CSPICE "Enable CSPICE support" OFF)
 option(ENABLE_INSTALL "Enable installation" ON)
 
 # Set feature descriptions for summary
 add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build shared libraries")
 add_feature_info(StaticLibs BUILD_STATIC_LIBS "Build static libraries")
-add_feature_info(Examples BUILD_EXAMPLES "Build example programs")
+add_feature_info(Example BUILD_EXAMPLES "Build example programs")
+add_feature_info(Test BUILD_TESTING "Regression testing")
 add_feature_info(CALCEPH ENABLE_CALCEPH "CALCEPH ephemeris support")
+add_feature_info(CSPICE ENABLE_CSPICE "CSPICE ephemeris support")
+add_feature_info(Documentation BUILD_DOC "HTML documentation")
+add_feature_info(Benchmark BUILD_BENCHMARK "Build benchmarking programs")
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -43,14 +51,6 @@ set(CMAKE_DEBUG_POSTFIX d)
 
 # Position Independent Code for shared libs
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
-# RPATH settings for installed binaries
-#if(NOT APPLE)
-#    set(CMAKE_INSTALL_RPATH ${ORIGIN}/../${CMAKE_INSTALL_LIBDIR})
-#else()
-#    set(CMAKE_INSTALL_RPATH @loader_path/../${CMAKE_INSTALL_LIBDIR})
-#endif()
-#set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Windows-specific settings
 if(WIN32)
@@ -104,8 +104,13 @@ if(ENABLE_CALCEPH)
     message(STATUS "Found calceph")
 endif()
 
-# Find threads (may be needed for some platforms)
-find_package(Threads)
+# CSPICE
+if(ENABLE_CSPICE)
+    find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
+    list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CSPICE=1)
+    set(CSPICE_FOUND TRUE)
+    message(STATUS "Found cspice")
+endif()
 
 # Main library target
 add_library(supernovas ${SUPERNOVAS_CORE_SOURCES})
@@ -199,56 +204,112 @@ endif()
 add_library(novas ALIAS supernovas)
 
 # Plugins
-if(ENABLE_CALCEPH)
-    add_library(solsys-calceph SHARED src/solsys-calceph.c)
-    add_library(SuperNOVAS::solsys-calceph ALIAS solsys-calceph)
+function(solsys_plugin PLUGIN_NAME)
+    add_library(solsys-${PLUGIN_NAME} SHARED src/solsys-${PLUGIN_NAME}.c)
+    add_library(SuperNOVAS::solsys-${PLUGIN_NAME} ALIAS solsys-${PLUGIN_NAME})
 
-    set_target_properties(solsys-calceph PROPERTIES
+    set_target_properties(solsys-${PLUGIN_NAME} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
         POSITION_INDEPENDENT_CODE ON
     )
 
-    target_include_directories(solsys-calceph PRIVATE
+    target_include_directories(solsys-${PLUGIN_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
 
-    target_compile_definitions(solsys-calceph PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
+    target_compile_definitions(solsys-${PLUGIN_NAME} PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
 
-    target_link_libraries(solsys-calceph PRIVATE
+    target_link_libraries(solsys-${PLUGIN_NAME} PRIVATE
         supernovas
-        calceph
+        ${PLUGIN_NAME}
         $<$<BOOL:${HAVE_LIBM}>:m>
     )
+endfunction()
+
+if(ENABLE_CALCEPH)
+    solsys_plugin(calceph)
 endif()
+
+if(ENABLE_CSPICE)
+    solsys_plugin(cspice)
+endif()
+
+# Run tests
+enable_testing()
 
 # Examples
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
+# Testing
+if(BUILD_TESTING)
+    add_subdirectory(test)
+endif()
 
-# Installation
+# Benchmarking
+if(BUILD_BENCHMARK)
+    add_subdirectory(benchmark)
+endif()
 
-if(UNIX)
-    include(GNUInstallDirs)
-else()
-    set(CMAKE_INSTALL_LIBDIR "lib")
-    set(CMAKE_INSTALL_DATADIR "share")
-    set(CMAKE_INSTALL_INCLUDEDIR "include")
-    set(CMAKE_INSTALL_BINDIR "bin")
-    set(CMAKE_INSTALL_LIBEXECDIR "libexec")
-    set(CMAKE_INSTALL_MANDIR "share/man")
+if(BUILD_DOC) 
+    find_package(Doxygen)
+
+    set(README ${PROJECT_SOURCE_DIR}/README.md)
+    set(DOXYFILE ${PROJECT_SOURCE_DIR}/Doxyfile)
+
+    if(Doxygen_FOUND)
+  
+        # Strip head from README.md, and from generate html docs
+        # This is a bit ugly as it requires UNIX shell, sed, tail...
+        add_custom_target(prep_docs
+            VERBATIM
+            COMMAND echo "LINE=`sed -n '/\# /{=;q;}' ${README}` && tail -n +$((LINE+2)) ${README}" > tmp.sh
+            COMMAND bash tmp.sh > ${PROJECT_SOURCE_DIR}/README-orig.md && rm -f tmp.sh
+            COMMAND sed s:resources/header.html::g ${DOXYFILE} > Doxyfile.headless
+            COMMAND sed s:apidoc:${CMAKE_CURRENT_BINARY_DIR}:g Doxyfile.headless > Doxyfile.local && rm -f Doxyfile.headless
+        )
+
+        # Run Doxygen
+        add_custom_target(project_docs 
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            COMMAND Doxygen::doxygen ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.local
+        )
+
+        # Clean up temporary generated files in source directory
+        add_custom_target(cleanup_docs
+            VERBATIM
+            COMMAND rm -f ${PROJECT_SOURCE_DIR}/README-orig.md
+        )
+    
+        add_dependencies(cleanup_docs project_docs)
+        add_dependencies(project_docs prep_docs)
+        add_dependencies(supernovas cleanup_docs)
+    endif()
 endif()
 
 
+
+# Installation
 if(ENABLE_INSTALL)
     set(INSTALL_TARGETS supernovas)
+
     if(BUILD_STATIC_LIBS AND TARGET supernovas_static)
         list(APPEND INSTALL_TARGETS supernovas_static)
     endif()
+
     if(ENABLE_CALCEPH)
         list(APPEND INSTALL_TARGETS solsys-calceph)
+    endif()
+
+    if(BUILD_DOC AND TARGET project_docs)
+        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
+           DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+        )
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
+           DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+        )
     endif()
 
     install(TARGETS ${INSTALL_TARGETS}
@@ -317,6 +378,10 @@ if(NOT TARGET uninstall)
     )
 endif()
 
+# Export the package for use from the build-tree
+# (this registers the build-tree with a global CMake-registry)
+export(PACKAGE SuperNOVAS)
+
 # Summary
 feature_summary(WHAT ALL)
 message(STATUS "")
@@ -333,6 +398,26 @@ if(ENABLE_CALCEPH)
     message(STATUS "  CALCEPH support:   YES")
 else()
     message(STATUS "  CALCEPH support:   NO")
+endif()
+if(ENABLE_CALCEPH)
+    message(STATUS "  CSPICE support:    YES")
+else()
+    message(STATUS "  CSPICE support:    NO")
+endif()
+if(BUILD_TESTING)
+    message(STATUS "  Regression test:   YES")
+else()
+    message(STATUS "  Regression test:    NO")
+endif()
+if(BUILD_EXAMPLES)
+    message(STATUS "  Examples:          YES")
+else()
+    message(STATUS "  Examples:          NO")
+endif()
+if(BUILD_DOC)
+    message(STATUS "  HTML docs:         YES")
+else()
+    message(STATUS "  HTML docs:         NO")
 endif()
 message(STATUS "")
 message(STATUS "Detected:")

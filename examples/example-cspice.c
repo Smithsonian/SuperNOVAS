@@ -43,7 +43,10 @@
 #define  POLAR_DX         230.0     ///< [mas] Earth polar offset x, e.g. from IERS Bulletin A.
 #define  POLAR_DY         -62.0     ///< [mas] Earth polar offset y, e.g. from IERS Bulletin A.
 
-int main() {
+int main(int argc, char *argv[]) {
+  // Program Options -------------------------------------------------------->
+   char *datafile = "/path/to/de440s.bsp";  // // Ephemeris file to use
+
   // SuperNOVAS variables used for the calculations ------------------------->
   object source;                    // observed source
   observer obs;                     // observer location
@@ -58,6 +61,9 @@ int main() {
   // Intermediate variables we'll use -------------------------------------->
   struct timespec unix_time;        // Standard precision UNIX time structure
 
+  // Command line argument can define the path where the ephemeris data is
+  if(argc > 1)
+    datafile = argv[1];
 
   // We'll print debugging messages and error traces...
   novas_debug(NOVAS_DEBUG_ON);
@@ -68,7 +74,7 @@ int main() {
 
   // Open one or more ephemeris files to use...'
   // E.g. the DE440 (short-term) ephemeris data from JPL.
-  if(cspice_add_kernel("path/to/de440s.bsp") != 0) {
+  if(cspice_add_kernel(datafile) != 0) {
     fprintf(stderr, "ERROR! could not open ephemeris data\n");
     return 1;
   }

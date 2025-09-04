@@ -308,8 +308,8 @@ NOTES:
 
 As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (thanks to Kiran Shila). CMake allows for 
 greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all 
-of the build options of the GNU `Makefile`, such as building with CSPICE support, automatic CALCEPH/CSPICE integration 
-on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks. 
+of the build options of the GNU `Makefile`, such as automatic CALCEPH/CSPICE integration on Linux, supporting legacy 
+NOVAS C style builds, and code coverage tracking. 
 
 The basic build recipe for CMake is:
 
@@ -320,16 +320,19 @@ The basic build recipe for CMake is:
 
 The __SuperNOVAS__ CMake build supports the following options (in addition to the standard CMake options):
 
- - `BUILD_SHARED_LIBS=ON|OFF` (default: ON) - Build shared libraries
- - `BUILD_STATIC_LIBS=ON|OFF` (default: ON) - Build static libraries in addition to shared
- - `BUILD_EXAMPLES=ON|OFF` (default: OFF) - Build the included examples
- - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH installed.
-
+ - `BUILD_STATIC_LIBS=ON|OFF` (default: OFF) - Build static libraries in addition to shared
+ - `BUILD_DOC=ON|OFF` (default: ON) - Compile HTML documentation. Requires `doxygen`, `bash`, and `sed`.
+ - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
+ - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
+ - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benachmarking programs 
+ - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH package.
+ - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris support. Requires `cspice` library installed.
+ 
 For example, to build __SuperNOVAS__ with [CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) 
-integration for ephemeris support:
+integration for ephemeris support, and HTML documentation:
 
 ```bash
-  $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON -DBUILD_DOC=ON
   $ cmake --build build
 ```
 
