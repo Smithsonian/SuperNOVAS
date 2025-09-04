@@ -21,25 +21,23 @@ include(FeatureSummary)
 include(CheckLibraryExists)
 
 # Build options
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(BUILD_STATIC_LIBS "Build static libraries in addition to shared" ON)
+option(BUILD_STATIC_LIBS "Build static libraries in addition to shared" OFF)
 option(BUILD_DOC "Build HTML documetation" OFF)
 option(BUILD_TESTING "Build regression test suite" ON)
-option(BUILD_EXAMPLES "Build example programs" ON)
+option(BUILD_EXAMPLES "Build example programs" OFF)
 option(BUILD_BENCHMARK "Build benchmark programs" OFF)
 option(ENABLE_CALCEPH "Enable CALCEPH support" OFF)
 option(ENABLE_CSPICE "Enable CSPICE support" OFF)
-option(ENABLE_INSTALL "Enable installation" ON)
+
 
 # Set feature descriptions for summary
-add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build shared libraries")
-add_feature_info(StaticLibs BUILD_STATIC_LIBS "Build static libraries")
-add_feature_info(Example BUILD_EXAMPLES "Build example programs")
-add_feature_info(Test BUILD_TESTING "Regression testing")
-add_feature_info(CALCEPH ENABLE_CALCEPH "CALCEPH ephemeris support")
-add_feature_info(CSPICE ENABLE_CSPICE "CSPICE ephemeris support")
-add_feature_info(Documentation BUILD_DOC "HTML documentation")
-add_feature_info(Benchmark BUILD_BENCHMARK "Build benchmarking programs")
+add_feature_info(StaticLibs BUILD_STATIC_LIBS "Build static libraries also")
+add_feature_info(Examples BUILD_EXAMPLES "Build and test example programs")
+add_feature_info(Testing BUILD_TESTING "Run regression testing")
+add_feature_info(CalcephPlugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
+add_feature_info(CSpicePlugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
+add_feature_info(Documentation BUILD_DOC "developer documentation (HTML)")
+add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -96,15 +94,15 @@ set(SUPERNOVAS_COMPILE_DEFINITIONS
 # Check for math library
 check_library_exists(m sin "" HAVE_LIBM)
 
-# CALCEPH
+# CALCEPH plugin
 if(ENABLE_CALCEPH)
-    find_package(calceph CONFIG REQUIRED)
+    find_package(calceph COMPONENTS Development REQUIRED CONFIG)
     list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CALCEPH=1)
     set(CALCEPH_FOUND TRUE)
     message(STATUS "Found calceph")
 endif()
 
-# CSPICE
+# CSPICE plugin
 if(ENABLE_CSPICE)
     find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
     list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CSPICE=1)
@@ -227,6 +225,9 @@ function(solsys_plugin PLUGIN_NAME)
     )
 endfunction()
 
+# ----------------------------------------------------------------------------
+# Options...
+
 if(ENABLE_CALCEPH)
     solsys_plugin(calceph)
 endif()
@@ -235,7 +236,7 @@ if(ENABLE_CSPICE)
     solsys_plugin(cspice)
 endif()
 
-# Run tests
+# Run tests for the enabled options below...
 enable_testing()
 
 # Examples
@@ -260,7 +261,6 @@ if(BUILD_DOC)
     set(DOXYFILE ${PROJECT_SOURCE_DIR}/Doxyfile)
 
     if(Doxygen_FOUND)
-  
         # Strip head from README.md, and from generate html docs
         # This is a bit ugly as it requires UNIX shell, sed, tail...
         add_custom_target(prep_docs
@@ -289,82 +289,83 @@ if(BUILD_DOC)
     endif()
 endif()
 
-
-
+# ----------------------------------------------------------------------------
 # Installation
-if(ENABLE_INSTALL)
-    set(INSTALL_TARGETS supernovas)
+set(INSTALL_TARGETS supernovas)
+set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME Runtime)
 
-    if(BUILD_STATIC_LIBS AND TARGET supernovas_static)
-        list(APPEND INSTALL_TARGETS supernovas_static)
-    endif()
+if(BUILD_STATIC_LIBS AND TARGET supernovas_static)
+    list(APPEND INSTALL_TARGETS supernovas_static)
+endif()
 
-    if(ENABLE_CALCEPH)
-        list(APPEND INSTALL_TARGETS solsys-calceph)
-    endif()
+if(ENABLE_CALCEPH)
+    list(APPEND INSTALL_TARGETS solsys-calceph)
+endif()
 
-    if(BUILD_DOC AND TARGET project_docs)
-        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
-           DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
-        )
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
-           DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
-        )
-    endif()
-
-    install(TARGETS ${INSTALL_TARGETS}
-        EXPORT SuperNOVASTargets
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+if(BUILD_DOC AND TARGET project_docs)
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas COMPONENT Development
     )
-
-    install(DIRECTORY include/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        FILES_MATCHING PATTERN "*.h"
-    )
-
-    install(FILES
-        data/CIO_RA.TXT
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/supernovas
-    )
-
-    install(EXPORT SuperNOVASTargets
-        FILE SuperNOVASTargets.cmake
-        NAMESPACE SuperNOVAS::
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
-    )
-
-    configure_package_config_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/SuperNOVASConfig.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfig.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
-    )
-
-    write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfigVersion.cmake
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion
-    )
-
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfig.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
-    )
-
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cmake/supernovas.pc.in
-        ${CMAKE_CURRENT_BINARY_DIR}/supernovas.pc
-        @ONLY
-    )
-
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.pc
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas COMPONENT Development
     )
 endif()
 
+install(TARGETS ${INSTALL_TARGETS}
+    EXPORT SuperNOVASTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# ------------------------------------------------------------------------
+# Install files for the Development component
+
+install(DIRECTORY include/
+    COMPONENT Development
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h"
+)
+
+install(EXPORT SuperNOVASTargets
+    COMPONENT Development
+    FILE SuperNOVASTargets.cmake
+    NAMESPACE SuperNOVAS::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
+)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/SuperNOVASConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
+    COMPONENT Development
+)
+
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/supernovas.pc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/supernovas.pc
+    @ONLY
+)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+    COMPONENT Development
+)
+
+# ----------------------------------------------------------------------------
 # Uninstall target
 if(NOT TARGET uninstall)
     configure_file(
@@ -378,10 +379,12 @@ if(NOT TARGET uninstall)
     )
 endif()
 
+# ----------------------------------------------------------------------------
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
 export(PACKAGE SuperNOVAS)
 
+# ----------------------------------------------------------------------------
 # Summary
 feature_summary(WHAT ALL)
 message(STATUS "")
@@ -391,48 +394,4 @@ message(STATUS "  Build type:        ${CMAKE_BUILD_TYPE}")
 message(STATUS "  Install prefix:    ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "  Compiler:          ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}")
 message(STATUS "")
-message(STATUS "Options:")
-message(STATUS "  Shared libraries:  ${BUILD_SHARED_LIBS}")
-message(STATUS "  Static libraries:  ${BUILD_STATIC_LIBS}")
-if(ENABLE_CALCEPH)
-    message(STATUS "  CALCEPH support:   YES")
-else()
-    message(STATUS "  CALCEPH support:   NO")
-endif()
-if(ENABLE_CALCEPH)
-    message(STATUS "  CSPICE support:    YES")
-else()
-    message(STATUS "  CSPICE support:    NO")
-endif()
-if(BUILD_TESTING)
-    message(STATUS "  Regression test:   YES")
-else()
-    message(STATUS "  Regression test:    NO")
-endif()
-if(BUILD_EXAMPLES)
-    message(STATUS "  Examples:          YES")
-else()
-    message(STATUS "  Examples:          NO")
-endif()
-if(BUILD_DOC)
-    message(STATUS "  HTML docs:         YES")
-else()
-    message(STATUS "  HTML docs:         NO")
-endif()
-message(STATUS "")
-message(STATUS "Detected:")
-if(HAVE_LIBM)
-    message(STATUS "  Math library:      Found")
-else()
-    message(STATUS "  Math library:      Not required")
-endif()
-if(CMAKE_THREAD_LIBS_INIT)
-    message(STATUS "  Threads:           ${CMAKE_THREAD_LIBS_INIT}")
-elseif(CMAKE_USE_PTHREADS_INIT)
-    message(STATUS "  Threads:           pthreads")
-elseif(CMAKE_USE_WIN32_THREADS_INIT)
-    message(STATUS "  Threads:           Win32 threads")
-else()
-    message(STATUS "  Threads:           Built-in")
-endif()
-message(STATUS "")
+

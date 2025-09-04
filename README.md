@@ -336,12 +336,19 @@ integration for ephemeris support, and HTML documentation:
   $ cmake --build build
 ```
 
-After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a 
-`pkg-config` file, e.g. under `/usr/local`, as:
+After a successful build, you can install the `Runtime` (libraries) and/or `Development` (headers, CMake config and 
+`pkg-config`) components, e.g. under `/usr/local`, as:
 
 ```bash
   $ cmake --build build
-  $ cmake --install build --prefix /usr/local
+  $ cmake --install build --prefix /usr/local 
+```
+
+You can also use the `--component` option to install just the selected components. For example to install just
+the `Runtime` component:
+
+```bash
+  $ cmake --install build --component Runtime --prefix /usr/local
 ```
 
 -----------------------------------------------------------------------------
