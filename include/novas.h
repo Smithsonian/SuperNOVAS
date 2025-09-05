@@ -2232,11 +2232,8 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
 
 int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt);
 
-double novas_clock_skew_tt(const novas_frame *frame);
+double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
 
-double novas_clock_skew_tcg(const novas_frame *frame);
-
-double novas_clock_skew_tcb(const novas_frame *frame);
 
 
 // <================= END of SuperNOVAS API =====================>
