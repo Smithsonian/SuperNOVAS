@@ -332,7 +332,7 @@ For example, to build __SuperNOVAS__ with [CALCEPH](https://calceph.imcce.fr/doc
 integration for ephemeris support, and HTML documentation:
 
 ```bash
-  $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON -DBUILD_DOC=ON
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_DOC=ON -DENABLE_CALCEPH=ON
   $ cmake --build build
 ```
 
