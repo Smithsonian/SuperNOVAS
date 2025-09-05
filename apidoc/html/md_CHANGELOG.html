@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> All notable changes to the <a href="https://github.com/Smithsonian/SuperNOVAS">SuperNOVAS</a> library will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
-[1.5.0-rc2] - 2025-09-03</h1>
+[Unrelease]</h1>
 <p>Upcoming feature release, expected around 1 November 2025.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Fixed</h2>
@@ -129,7 +129,7 @@ Added</h2>
 <li>#217: New functions <code><a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a></code> and <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to enable transforming gecocentric <em>xyz</em> station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions 2010.</li>
 <li>#217: New functions <code><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a></code> and <code><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a></code> to convert between geocentric <em>xyz</em> station coordinates and geodetic (longitude, latitude, altitude) coordinates on the reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS <code>GCONV2.F</code> routine.</li>
 <li>#221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU <code>make</code> also (by kiranshila and attipaci).</li>
-<li>#222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228 ( (by attipaci).</li>
+<li>#222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228, #229, #230 (by attipaci).</li>
 <li>#223: New functions <code><a class="el" href="timescale_8c.html#ab820dc413ec41f455b4d098bca457366">novas_clock_skew_tt()</a></code>, <code><a class="el" href="timescale_8c.html#a1ce9328ee4639a70e85b1038b3cb23e0">novas_clock_skew_tcg()</a></code>, and <code><a class="el" href="timescale_8c.html#a146b88af3a5aa92edb25de5434e53242">novas_clock_skew_tcb()</a></code> to calculate the incremental rate at which an observer's clock ticks faster than a TT, TCG, or TCB clock respectively would.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
@@ -145,6 +145,8 @@ Changed</h2>
 <li>#221: GitHub Actions CI now includes <code>Makefile</code> builds / tests for Mac OS X. (by kiranshila)</li>
 <li>#222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)</li>
 <li>#225: GNU <code>Makefile</code> fixes for non-Linux builds, and FreeBSD build check in GitHub Actions CI.</li>
+<li>#231: source code (including tests and examples) to use platform-dependent file separator for improved portability to Windows.</li>
+<li>#231: Changed documentation build to wean off the likes of <code>sed</code> or <code>tail</code>, thus allowing to build documentation in a more platform-independent way.</li>
 <li>Various API documentation edits.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>

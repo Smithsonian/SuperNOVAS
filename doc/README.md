@@ -1,5 +1,7 @@
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
+# SuperNOVAS 
+
 [![DOI](resources/748170057.svg)](https://doi.org/10.5281/zenodo.14584983)
 
 The NOVAS C astrometry library, made better.
@@ -315,7 +317,7 @@ For example, to build __SuperNOVAS__ with [CALCEPH](https://calceph.imcce.fr/doc
 integration for ephemeris support, and HTML documentation:
 
 ```bash
-  $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_DOC=ON -DENABLE_CALCEPH=ON
+  $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_CALCEPH=ON
   $ cmake --build build
 ```
 

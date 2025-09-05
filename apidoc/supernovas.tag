@@ -6661,7 +6661,7 @@
     <name>index</name>
     <title>SuperNOVAS</title>
     <filename>index.html</filename>
-    <docanchor file="index.html">md_README-orig</docanchor>
+    <docanchor file="index.html" title="SuperNOVAS">md_README-orig</docanchor>
     <docanchor file="index.html">introduction</docanchor>
     <docanchor file="index.html">fixed-issues</docanchor>
     <docanchor file="index.html">compatibility</docanchor>
