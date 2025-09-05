@@ -20,6 +20,12 @@
 #define PLANET_EPH                  "de440s-j2000.bsp"
 #define MARS_EPH                    "mar097-j2000.bsp"
 
+#if defined _WIN32 || defined __CYGWIN__
+#  define PATH_SEP  "\\"
+#else
+#  define PATH_SEP  "/"
+#endif
+
 static const char *prefix;
 
 static int usage() {
@@ -68,7 +74,7 @@ static int test_calceph() {
   object earth = NOVAS_EARTH_INIT, mars = NOVAS_MARS_INIT;
   t_calcephbin *eph;
 
-  sprintf(filename, "%s/" PLANET_EPH, prefix);
+  sprintf(filename, "%s" PATH_SEP PLANET_EPH, prefix);
   eph = calceph_open(filename);
 
   if(check("calceph:use", 0, novas_use_calceph(eph))) return 1;
@@ -100,11 +106,11 @@ static int test_calceph_planet() {
   make_planet(NOVAS_MARS, &mars);
   make_ephem_object("Phobos", 401, &phobos);
 
-  sprintf(filename, "%s/" MARS_EPH, prefix);
+  sprintf(filename, "%s" PATH_SEP MARS_EPH, prefix);
   eph = calceph_open(filename);
   if(check("calceph_planet:use", 0, novas_use_calceph(eph))) return 1;
 
-  sprintf(filename, "%s/" PLANET_EPH, prefix);
+  sprintf(filename, "%s" PATH_SEP PLANET_EPH, prefix);
   eph = calceph_open(filename);
   if(check("calceph_planet:use_planets", 0, novas_use_calceph_planets(eph))) return 1;
 
@@ -224,7 +230,7 @@ static int test_calceph_use_ids() {
   t_calcephbin *eph;
   enum novas_origin origin = NOVAS_BARYCENTER;
 
-  sprintf(filename, "%s/" PLANET_EPH, prefix);
+  sprintf(filename, "%s" PATH_SEP PLANET_EPH, prefix);
   eph = calceph_open(filename);
   if(novas_use_calceph(eph)) return 1;
 

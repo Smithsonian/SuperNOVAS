@@ -11,6 +11,12 @@
 
 #include "novas.h"
 
+#if defined _WIN32 || defined __CYGWIN__
+#  define PATH_SEP  "\\"
+#else
+#  define PATH_SEP  "/"
+#endif
+
 #define DEGREE  (M_PI / 180.0)
 #define ARCSEC  (DEGREE / 3600.0)
 #define HOURANGLE (M_PI / 12.0)
@@ -54,7 +60,7 @@ static void openfile(const char *name) {
   char filename[100] = {'\0'};
 
   //if(idx >= 0) sprintf(filename, "data/%02d-%s.out", idx++, name);
-  sprintf(filename, "data/%s.out", name);
+  sprintf(filename, "data" PATH_SEP "%s.out", name);
 
   if(fp) {
     fprintf(fp, "\n");

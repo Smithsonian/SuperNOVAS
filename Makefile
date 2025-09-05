@@ -212,36 +212,38 @@ $(LIB)/libnovas.a: $(LIB)/libsupernovas.a
 .PHONY: cio_ra.bin
 cio_ra.bin: data/cio_ra.bin
 
-data/cio_ra.bin: data/CIO_RA.TXT $(BIN)/cio_file
-	$(BIN)/cio_file $< $@
+data/cio_ra.bin: data/CIO_RA.TXT bin/cio_file
+	bin/cio_file $< $@
 
-.INTERMEDIATE: $(BIN)/cio_file
-bin/cio_file: $(OBJ)/cio_file.o | $(BIN)
+.INTERMEDIATE: bin/cio_file
+bin/cio_file: $(OBJ)/cio_file.o | bin
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
 
-README-orig.md: README.md
-	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
+.INTERMEDIATE: bin/docedit
+bin/docedit: $(OBJ)/docedit.o | bin
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
 
-dox: 
+# Generate headless README and Doxyfile variants
+gendocs: bin/docedit Doxyfile README.md
+	@echo "   [doc variants]"
+	@$(BIN)/docedit
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
-dox: README.md Doxyfile apidoc $(SRC) $(INC) README-orig.md
+dox: Doxyfile apidoc gendocs $(SRC) $(INC)
 	@echo "   [doxygen]"
 	@$(DOXYGEN)
 	@rm -f apidoc/html/resources
 	@( cd apidoc/html; rm -f resources; ln -s ../../resources )
 
-.INTERMEDIATE: Doxyfile.local
-Doxyfile.local: Doxyfile Makefile
-	sed "s:resources/header.html::g" Doxyfile > $@
 
 # Local documentation without specialized headers. The resulting HTML documents do not have
 # Google Search or Analytics tracking info.
 .PHONY: local-dox
-local-dox: README-orig.md Doxyfile.local
-	$(DOXYGEN) Doxyfile.local
-	( cd apidoc/html; rm -f resources; ln -s ../../resources )
+local-dox: apidoc gendocs $(SRC) $(INC)
+	@echo "   [doxygen]"
+	@$(DOXYGEN) Doxyfile.local
+	@( cd apidoc/html; rm -f resources; ln -s ../../resources )
 
 
 # Standard install commands
@@ -267,11 +269,32 @@ install-cio-data:
 	install -d $(DESTDIR)$(mydatadir)
 	$(INSTALL_DATA) data/CIO_RA.TXT $(DESTDIR)$(mydatadir)/CIO_RA.TXT
 
+.PHONY: install-compat-headers
+install-compat-headers:
+ifeq ($(COMPAT),1)
+	$(INSTALL_DATA) include/novascon.h $(DESTDIR)$(includedir)/
+endif
+
+.PHONY: install-calceph-headers
+install-calceph-headers:
+ifeq ($(CALCEPH_SUPPORT),1)
+	$(INSTALL_DATA) include/novas-calceph.h $(DESTDIR)$(includedir)/
+endif
+
+.PHONY: install-cspice-headers
+install-cspice-headers:
+ifeq ($(CSPICE_SUPPORT),1) 
+	$(INSTALL_DATA) include/novas-cspice.h $(DESTDIR)$(includedir)/
+endif
+
 .PHONY: install-headers
 install-headers:
 	@echo "installing headers to $(DESTDIR)$(includedir)"
 	install -d $(DESTDIR)$(includedir)
-	$(INSTALL_DATA) include/*.h $(DESTDIR)$(includedir)/
+	$(INSTALL_DATA) include/novas.h include/nutation.h include/solarsystem.h $(DESTDIR)$(includedir)/
+	@$(MAKE) install-compat-headers
+	@$(MAKE) install-calceph-headers
+	@$(MAKE) install-cspice-headers
 
 .PHONY: install-html
 install-html:

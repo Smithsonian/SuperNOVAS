@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc2] - 2025-09-03
+## [Unrelease]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -35,8 +35,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (by 
    kiranshila and attipaci).
    
- - #222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228 (
-   (by attipaci).
+ - #222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228, 
+   #229, #230 (by attipaci).
 
  - #223: New functions `novas_clock_skew_tt()`, `novas_clock_skew_tcg()`, and `novas_clock_skew_tcb()` to calculate
    the incremental rate at which an observer's clock ticks faster than a TT, TCG, or TCB clock respectively would. 
@@ -67,6 +67,12 @@ Upcoming feature release, expected around 1 November 2025.
  - #222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)
  
  - #225: GNU `Makefile` fixes for non-Linux builds, and FreeBSD build check in GitHub Actions CI.
+ 
+ - #231: source code (including tests and examples) to use platform-dependent file separator for improved portability
+   to Windows.
+ 
+ - #231: Changed documentation build to wean off the likes of `sed` or `tail`, thus allowing to build documentation in 
+   a more platform-independent way.
  
  - Various API documentation edits.
 
