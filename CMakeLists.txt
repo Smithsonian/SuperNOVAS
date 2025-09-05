@@ -1,3 +1,22 @@
+# CMake configuration file for the SuperNOVAS library
+#
+# Authors: Kiran Shila, Attila Kovacs
+#
+# Usage: 
+#   
+#  To build under a 'build/' directory:
+#
+#    $ cmake -B build [OPTIONS]
+#    $ cmake --build build
+#  
+#  And then to install, e.g. under '/usr/local':
+#    $ [sudo ] cmake --install --prefix=/usr/local
+#
+#  You may install just a specific component via the --component option, such
+#  as 'Runtime', 'Development', or 'Data'.
+#
+#  
+
 cmake_minimum_required(VERSION 3.20)
 
 # Project definition
@@ -21,7 +40,7 @@ include(FeatureSummary)
 include(CheckLibraryExists)
 
 # Build options
-option(BUILD_STATIC_LIBS "Build static libraries in addition to shared" OFF)
+option(BUILD_SHARED_LIBS "Build as shared libraries instead of static" OFF)
 option(BUILD_DOC "Build HTML documetation" OFF)
 option(BUILD_TESTING "Build regression test suite" ON)
 option(BUILD_EXAMPLES "Build example programs" OFF)
@@ -31,12 +50,12 @@ option(ENABLE_CSPICE "Enable CSPICE support" OFF)
 
 
 # Set feature descriptions for summary
-add_feature_info(StaticLibs BUILD_STATIC_LIBS "Build static libraries also")
+add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build as shared libraries")
 add_feature_info(Examples BUILD_EXAMPLES "Build and test example programs")
 add_feature_info(Testing BUILD_TESTING "Run regression testing")
 add_feature_info(CalcephPlugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
 add_feature_info(CSpicePlugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
-add_feature_info(Documentation BUILD_DOC "developer documentation (HTML)")
+add_feature_info(Documentation BUILD_DOC "Developer documentation (HTML)")
 add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
 
 # Set output directories
@@ -110,8 +129,12 @@ if(ENABLE_CSPICE)
     message(STATUS "Found cspice")
 endif()
 
-# Main library target
+# ----------------------------------------------------------------------------
+# Build the 'supernovas' library as a static OR as a shared lib.
+# depending on BUILD_SHARED_LIBS
 add_library(supernovas ${SUPERNOVAS_CORE_SOURCES})
+
+# Alias to SuperNOVAS:: namespace
 add_library(SuperNOVAS::supernovas ALIAS supernovas)
 
 set_target_properties(supernovas PROPERTIES
@@ -158,49 +181,17 @@ elseif(MSVC)
     )
 endif()
 
-# Link libraries
+# Link with math libs as necessary
 target_link_libraries(supernovas
     PRIVATE
         $<$<BOOL:${HAVE_LIBM}>:m>
         $<$<BOOL:${CMAKE_THREAD_LIBS_INIT}>:${CMAKE_THREAD_LIBS_INIT}>
 )
 
-# Optional static build
-if(BUILD_STATIC_LIBS)
-    add_library(supernovas_static STATIC ${SUPERNOVAS_CORE_SOURCES})
-    add_library(SuperNOVAS::supernovas_static ALIAS supernovas_static)
-
-    set_target_properties(supernovas_static PROPERTIES
-        OUTPUT_NAME supernovas
-        VERSION ${PROJECT_VERSION}
-        POSITION_INDEPENDENT_CODE ON
-        EXPORT_NAME supernovas_static
-        CLEAN_DIRECT_OUTPUT ON
-    )
-
-    target_include_directories(supernovas_static PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    )
-
-    target_compile_definitions(supernovas_static PRIVATE
-        ${SUPERNOVAS_COMPILE_DEFINITIONS}
-    )
-
-    target_compile_options(supernovas_static PRIVATE
-        $<$<C_COMPILER_ID:GNU,Clang>:${CMAKE_C_COMPILE_OPTIONS_PIC}>
-    )
-
-    target_link_libraries(supernovas_static
-        PRIVATE
-            $<$<BOOL:${HAVE_LIBM}>:m>
-            $<$<BOOL:${CMAKE_THREAD_LIBS_INIT}>:${CMAKE_THREAD_LIBS_INIT}>
-    )
-endif()
-
 # Compatibility alias
 add_library(novas ALIAS supernovas)
 
+# ----------------------------------------------------------------------------
 # Plugins
 function(solsys_plugin PLUGIN_NAME)
     add_library(solsys-${PLUGIN_NAME} SHARED src/solsys-${PLUGIN_NAME}.c)
@@ -317,6 +308,13 @@ install(TARGETS ${INSTALL_TARGETS}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# ------------------------------------------------------------------------
+# Install files for the Data component
+install(FILES data/CIO_RA.TXT
+    COMPONENT Data
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/supernovas
 )
 
 # ------------------------------------------------------------------------

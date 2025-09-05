@@ -320,7 +320,7 @@ The basic build recipe for CMake is:
 
 The __SuperNOVAS__ CMake build supports the following options (in addition to the standard CMake options):
 
- - `BUILD_STATIC_LIBS=ON|OFF` (default: OFF) - Build static libraries in addition to shared
+ - `BUILD_SHARED_LIBS=ON|OFF` (default: OFF) - Build shared libraries instead of static
  - `BUILD_DOC=ON|OFF` (default: ON) - Compile HTML documentation. Requires `doxygen`, `bash`, and `sed`.
  - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
  - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
@@ -336,8 +336,8 @@ integration for ephemeris support, and HTML documentation:
   $ cmake --build build
 ```
 
-After a successful build, you can install the `Runtime` (libraries) and/or `Development` (headers, CMake config and 
-`pkg-config`) components, e.g. under `/usr/local`, as:
+After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config and 
+`pkg-config`), and `Data` (CIO locator data) components, e.g. under `/usr/local`, as:
 
 ```bash
   $ cmake --build build

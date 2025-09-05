@@ -29,6 +29,12 @@ else()
     set(SuperNOVAS_CALCEPH_FOUND FALSE)
 endif()
 
+if(TARGET SuperNOVAS::solsys-cspice)
+    set(SuperNOVAS_CSPICE_FOUND TRUE)
+else()
+    set(SuperNOVAS_CSPICE_FOUND FALSE)
+endif()
+
 # Component support
 foreach(component ${SuperNOVAS_FIND_COMPONENTS})
     if(component STREQUAL "calceph")
