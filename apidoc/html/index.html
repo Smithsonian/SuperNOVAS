@@ -251,23 +251,28 @@ Build SuperNOVAS using GNU make</h3>
 <p><a class="anchor" id="cmake-build"></a> </p>
 <h3><a class="anchor" id="autotoc_md67"></a>
 Build SuperNOVAS using CMake</h3>
-<p>As of v1.5, <b>SuperNOVAS</b> can be built using <a href="https://cmake.org/">CMake</a> (thanks to Kiran Shila). CMake allows for greater portability than the regular GNU <code>Makefile</code>. Note, however, that the CMake configuration does not support all of the build options of the GNU <code>Makefile</code>, such as building with CSPICE support, automatic CALCEPH/CSPICE integration on Linux, supporting legacy NOVAS C style builds, compiling the HTML API documentation, unit tests, or benchmarks.</p>
+<p>As of v1.5, <b>SuperNOVAS</b> can be built using <a href="https://cmake.org/">CMake</a> (thanks to Kiran Shila). CMake allows for greater portability than the regular GNU <code>Makefile</code>. Note, however, that the CMake configuration does not support all of the build options of the GNU <code>Makefile</code>, such as automatic CALCEPH/CSPICE integration on Linux, supporting legacy NOVAS C style builds, and code coverage tracking.</p>
 <p>The basic build recipe for CMake is:</p>
 <div class="fragment"><div class="line">$ cmake -B build</div>
 <div class="line">$ cmake --build build</div>
 </div><!-- fragment --><p>The <b>SuperNOVAS</b> CMake build supports the following options (in addition to the standard CMake options):</p>
 <ul>
-<li><code>BUILD_SHARED_LIBS=ON|OFF</code> (default: ON) - Build shared libraries</li>
-<li><code>BUILD_STATIC_LIBS=ON|OFF</code> (default: ON) - Build static libraries in addition to shared</li>
-<li><code>BUILD_EXAMPLES=ON|OFF</code> (default: OFF) - Build the included examples</li>
-<li><code>ENABLE_CALCEPH=ON|OFF</code> (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH installed.</li>
+<li><code>BUILD_SHARED_LIBS=ON|OFF</code> (default: OFF) - Build shared libraries instead of static</li>
+<li><code>BUILD_DOC=ON|OFF</code> (default: ON) - Compile HTML documentation. Requires <code>doxygen</code>, <code>bash</code>, and <code>sed</code>.</li>
+<li><code>BUILD_EXAMPLES=ON|OFF</code> (default: ON) - Build the included examples</li>
+<li><code>BUILD_TESTING=ON|OFF</code> (default: ON - Build regression tests</li>
+<li><code>BUILD_BENCHMARK=ON|OFF</code> (default: OFF - Build benachmarking programs</li>
+<li><code>ENABLE_CALCEPH=ON|OFF</code> (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH package.</li>
+<li><code>ENABLE_CSPICE=ON|OFF</code> (default: OFF) - Enable CSPICE ephemeris support. Requires <code>cspice</code> library installed.</li>
 </ul>
-<p>For example, to build <b>SuperNOVAS</b> with <a href="https://calceph.imcce.fr/docs/4.0.0/html/c/index.html">CALCEPH</a> integration for ephemeris support:</p>
-<div class="fragment"><div class="line">$ cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_CALCEPH=ON</div>
+<p>For example, to build <b>SuperNOVAS</b> with <a href="https://calceph.imcce.fr/docs/4.0.0/html/c/index.html">CALCEPH</a> integration for ephemeris support, and HTML documentation:</p>
+<div class="fragment"><div class="line">$ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_DOC=ON -DENABLE_CALCEPH=ON</div>
 <div class="line">$ cmake --build build</div>
-</div><!-- fragment --><p>After a successful build, you can install all the libraries, headers, CIO data files, CMake config files, and a <code>pkg-config</code> file, e.g. under <code>/usr/local</code>, as:</p>
+</div><!-- fragment --><p>After a successful build, you can install the <code>Runtime</code> (libraries), <code>Development</code> (headers, CMake config and <code>pkg-config</code>), and <code>Data</code> (CIO locator data) components, e.g. under <code>/usr/local</code>, as:</p>
 <div class="fragment"><div class="line">$ cmake --build build</div>
-<div class="line">$ cmake --install build --prefix /usr/local</div>
+<div class="line">$ cmake --install build --prefix /usr/local </div>
+</div><!-- fragment --><p>You can also use the <code>--component</code> option to install just the selected components. For example to install just the <code>Runtime</code> component:</p>
+<div class="fragment"><div class="line">$ cmake --install build --component Runtime --prefix /usr/local</div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="integration"></a> </p>
 <h2><a class="anchor" id="autotoc_md69"></a>

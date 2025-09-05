@@ -33,9 +33,10 @@ Upcoming feature release, expected around 1 November 2025.
    reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
    
  - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (by 
-   kiranshila).
+   kiranshila and attipaci).
    
- - #222: CMake build support, including Mac OS and Windows builds (by kiranshila).
+ - #222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228 (
+   (by attipaci).
 
  - #223: New functions `novas_clock_skew_tt()`, `novas_clock_skew_tcg()`, and `novas_clock_skew_tcb()` to calculate
    the incremental rate at which an observer's clock ticks faster than a TT, TCG, or TCB clock respectively would. 
