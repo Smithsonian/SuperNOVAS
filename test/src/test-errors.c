@@ -13,6 +13,12 @@
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
 
+#if defined _WIN32 || defined __CYGWIN__
+#  define PATH_SEP  "\\"
+#else
+#  define PATH_SEP  "/"
+#endif
+
 static char *dataPath = "../data";
 
 static int dummy_ephem(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
@@ -885,7 +891,7 @@ static int test_cio_array() {
   if(check("cio_array:blah", -1, set_cio_locator_file("blah"))) n++;
   if(check("cio_array:file", 1, cio_array(0.0, 5, x))) n++;
 
-  sprintf(path, "%s/CIO_RA.TXT", dataPath);
+  sprintf(path, "%s" PATH_SEP "CIO_RA.TXT", dataPath);
   if(check("cio_array:bin", 0, set_cio_locator_file(path))) n++;
   if(check("cio_array:bin:reopen", 0, set_cio_locator_file(path))) n++; // Test reopen also...
 

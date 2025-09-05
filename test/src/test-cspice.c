@@ -16,8 +16,15 @@
 #include "novas.h"
 #include "novas-cspice.h"
 
+#if defined _WIN32 || defined __CYGWIN__
+#  define PATH_SEP  "\\"
+#else
+#  define PATH_SEP  "/"
+#endif
+
 #define PLANET_EPH                  "de440s-j2000.bsp"
 #define MARS_EPH                    "mar097-j2000.bsp"
+
 
 static const char *prefix;
 
@@ -168,14 +175,14 @@ static int test_errors() {
 static int load_eph(const char *name) {
   char filename[1024];
 
-  sprintf(filename, "%s/%s", prefix, name);
+  sprintf(filename, "%s" PATH_SEP "%s", prefix, name);
   return cspice_add_kernel(filename);
 }
 
 static int unload_eph(const char *name) {
   char filename[1024];
 
-  sprintf(filename, "%s/%s", prefix, name);
+  sprintf(filename, "%s" PATH_SEP "%s", prefix, name);
   return cspice_remove_kernel(filename);
 }
 

@@ -34,7 +34,7 @@ foreach(TEST ${TEST_PROGRAMS})
     set(TEST_SOURCE src/${TEST}.c)
 
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_SOURCE})
-        add_executable(${TEST} ${TEST_SOURCE})
+        add_executable(${TEST} EXCLUDE_FROM_ALL ${TEST_SOURCE})
         add_dependencies(${TEST} cio_bin_data)
               
         target_include_directories(${TEST} PRIVATE

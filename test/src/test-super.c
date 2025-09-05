@@ -19,6 +19,11 @@
 
 #define J2000   NOVAS_JD_J2000
 
+#if defined _WIN32 || defined __CYGWIN__
+#  define PATH_SEP  "\\"
+#else
+#  define PATH_SEP  "/"
+#endif
 
 static char *dataPath;
 
@@ -2010,7 +2015,7 @@ static int test_cio_location() {
   short type;
   char path[1024] = {'\0'};
 
-  sprintf(path, "%s/CIO_RA.TXT", dataPath);
+  sprintf(path, "%s" PATH_SEP "CIO_RA.TXT", dataPath);
   if(!is_ok("cio_location:set_path", set_cio_locator_file(path))) return 1;
 
   if(!is_ok("cio_location", cio_location(NOVAS_JD_J2000, NOVAS_FULL_ACCURACY, &loc, &type))) return 1;
@@ -2035,7 +2040,7 @@ static int test_cio_array() {
 
   memset(data, 0, sizeof(data));
 
-  sprintf(path, "%s/CIO_RA.TXT", dataPath);
+  sprintf(path, "%s" PATH_SEP "CIO_RA.TXT", dataPath);
 
   if(!is_ok("cio_array:ascii:set_cio_locator_file", set_cio_locator_file(path))) return 1;
   if(!is_ok("cio_array:ascii", cio_array(NOVAS_JD_J2000, 10, data))) return 1;
@@ -2043,7 +2048,7 @@ static int test_cio_array() {
   if(!is_ok("cio_array:ascii:check:first", data[0].ra_cio == 0.0)) return 1;
   if(!is_ok("cio_array:ascii:check:last", data[9].ra_cio == 0.0)) return 1;
 
-  sprintf(path, "%s/cio_ra.bin", dataPath);
+  sprintf(path, "%s" PATH_SEP "cio_ra.bin", dataPath);
 
   if(!is_ok("cio_array:bin:set_cio_locator_file", set_cio_locator_file(path))) return 1;
   if(!is_ok("cio_array:bin", cio_array(NOVAS_JD_J2000, 10, data))) return 1;

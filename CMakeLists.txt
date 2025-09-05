@@ -146,12 +146,15 @@ set_target_properties(supernovas PROPERTIES
     CLEAN_DIRECT_OUTPUT ON
 )
 
-target_include_directories(supernovas
-    PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
+target_include_directories(supernovas PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/eop
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/nutation
+)
+
+target_include_directories(supernovas PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_compile_definitions(supernovas PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
@@ -248,35 +251,24 @@ endif()
 if(BUILD_DOC) 
     find_package(Doxygen)
 
-    set(README ${PROJECT_SOURCE_DIR}/README.md)
-    set(DOXYFILE ${PROJECT_SOURCE_DIR}/Doxyfile)
-
     if(Doxygen_FOUND)
-        # Strip head from README.md, and from generate html docs
-        # This is a bit ugly as it requires UNIX shell, sed, tail...
-        add_custom_target(prep_docs
-            VERBATIM
-            COMMAND echo "LINE=`sed -n '/\# /{=;q;}' ${README}` && tail -n +$((LINE+2)) ${README}" > tmp.sh
-            COMMAND bash tmp.sh > ${PROJECT_SOURCE_DIR}/README-orig.md && rm -f tmp.sh
-            COMMAND sed s:resources/header.html::g ${DOXYFILE} > Doxyfile.headless
-            COMMAND sed s:apidoc:${CMAKE_CURRENT_BINARY_DIR}:g Doxyfile.headless > Doxyfile.local && rm -f Doxyfile.headless
-        )
-
+        add_executable(docedit EXCLUDE_FROM_ALL src/docedit.c)
+   
         # Run Doxygen
         add_custom_target(project_docs 
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-            COMMAND Doxygen::doxygen ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.local
+            COMMAND docedit
+            COMMAND Doxygen::doxygen Doxyfile.local
         )
+        
+        add_custom_target(clean_docs)
+        
+        if(TARGET clean_docs)
+           file(REMOVE Doxyfile.local README-orig.md)
+        endif()
 
-        # Clean up temporary generated files in source directory
-        add_custom_target(cleanup_docs
-            VERBATIM
-            COMMAND rm -f ${PROJECT_SOURCE_DIR}/README-orig.md
-        )
-    
-        add_dependencies(cleanup_docs project_docs)
-        add_dependencies(project_docs prep_docs)
-        add_dependencies(supernovas cleanup_docs)
+        add_dependencies(supernovas clean_docs)
+        add_dependencies(clean_docs project_docs)
     endif()
 endif()
 
@@ -307,7 +299,6 @@ install(TARGETS ${INSTALL_TARGETS}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 # ------------------------------------------------------------------------
@@ -320,11 +311,24 @@ install(FILES data/CIO_RA.TXT
 # ------------------------------------------------------------------------
 # Install files for the Development component
 
-install(DIRECTORY include/
+install(FILES include/novas.h include/nutation.h include/solarsystem.h
     COMPONENT Development
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING PATTERN "*.h"
 )
+
+if(ENABLE_CALCEPH)
+   install(FILES include/novas-calceph.h
+       COMPONENT Development
+       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+   )
+endif()
+
+if(ENABLE_CSPICE)
+   install(FILES include/novas-cspice.h
+       COMPONENT Development
+       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+   )
+endif()
 
 install(EXPORT SuperNOVASTargets
     COMPONENT Development
