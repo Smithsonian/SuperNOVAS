@@ -4424,31 +4424,29 @@ static int test_clock_skew() {
   make_observer_at_geocenter(&obs);
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32.0, 0.0, &time);
   if(!is_ok("clock_skew:frame:gc", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
-  if(!is_equal("clock_skew:gc:tcg", 0.0, novas_clock_skew(&frame, NOVAS_TCG), 1e-16)) n++;
-  if(!is_equal("clock_skew:gc:tt", LG, novas_clock_skew(&frame, NOVAS_TT), 1e-16)) n++;
-  if(!is_equal("clock_skew:gc:tcb", LG - LB, novas_clock_skew(&frame, NOVAS_TCB), 3e-2 * LB)) n++;
+  if(!is_equal("clock_skew:gc:tcg", 0.0, novas_mean_clock_skew(&frame, NOVAS_TCG), 1e-16)) n++;
+  if(!is_equal("clock_skew:gc:tt", LG, novas_mean_clock_skew(&frame, NOVAS_TT), 1e-16)) n++;
+  if(!is_equal("clock_skew:gc:tcb", LG - LB, novas_mean_clock_skew(&frame, NOVAS_TCB), 3e-2 * LB)) n++;
 
   dt1 = (tt2tdb(NOVAS_JD_J2000 + 0.1) - tt2tdb(NOVAS_JD_J2000 - 0.1)) / 0.2;
-  if(!is_equal("clock_skew:gc:tdb", -dt1, novas_clock_skew(&frame, NOVAS_TDB) - novas_clock_skew(&frame, NOVAS_TT), 1e-12)) n++;
+  if(!is_equal("clock_skew:gc:tdb", -dt1, novas_mean_clock_skew(&frame, NOVAS_TDB) - novas_mean_clock_skew(&frame, NOVAS_TT), 1e-12)) n++;
 
   make_observer_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, &obs);
   if(!is_ok("clock_skew:frame:earth", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
-  if(!is_equal("clock_skew:earth:tcg", -LG, novas_clock_skew(&frame, NOVAS_TCG), 1e-12)) n++;
-  if(!is_equal("clock_skew:earth:tt", 0.0, novas_clock_skew(&frame, NOVAS_TT), 1e-12)) n++;
-  if(!is_equal("clock_skew:earth:tcb", -LB, novas_clock_skew(&frame, NOVAS_TCB), 3e-2 * LB)) n++;
+  if(!is_equal("clock_skew:earth:tcg", -LG, novas_mean_clock_skew(&frame, NOVAS_TCG), 1e-12)) n++;
+  if(!is_equal("clock_skew:earth:tt", 0.0, novas_mean_clock_skew(&frame, NOVAS_TT), 1e-12)) n++;
+  if(!is_equal("clock_skew:earth:tcb", -LB, novas_mean_clock_skew(&frame, NOVAS_TCB), 3e-2 * LB)) n++;
 
   if(!is_ok("clock_skew:obs:far", make_solar_system_observer(pos, vel, &obs))) n++;
   if(!is_ok("clock_skew:frame:far", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
-  if(!is_equal("clock_skew:far:tcb", 0.0, novas_clock_skew(&frame, NOVAS_TCB), 1e-12)) n++;
+  if(!is_equal("clock_skew:far:tcb", 0.0, novas_mean_clock_skew(&frame, NOVAS_TCB), 1e-12)) n++;
 
   vel[0] = 0.9999999 * NOVAS_C;
   make_observer_in_space(pos, vel, &obs);
   if(!is_ok("clock_skew:frame:c", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;
-  if(!is_equal("clock_skew:c:tcb", -1.0, novas_clock_skew(&frame, NOVAS_TCB), 1e-3)) n++;
-  if(!is_equal("clock_skew:c:tcg", -1.0, novas_clock_skew(&frame, NOVAS_TCG), 1e-3)) n++;
-  if(!is_equal("clock_skew:c:tt", -1.0, novas_clock_skew(&frame, NOVAS_TT), 1e-3)) n++;
-
-
+  if(!is_equal("clock_skew:c:tcb", -1.0, novas_mean_clock_skew(&frame, NOVAS_TCB), 1e-3)) n++;
+  if(!is_equal("clock_skew:c:tcg", -1.0, novas_mean_clock_skew(&frame, NOVAS_TCG), 1e-3)) n++;
+  if(!is_equal("clock_skew:c:tt", -1.0, novas_mean_clock_skew(&frame, NOVAS_TT), 1e-3)) n++;
 
   return n;
 }
