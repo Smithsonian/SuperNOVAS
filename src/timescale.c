@@ -1685,8 +1685,8 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
  *                of the major solar-system bodies at the time of observation.
  * @param pos     [AU] The observer's position. If it's near the center of one of the gravitating
  *                bodies, that body's potential is excluded from the calculation.
- * @return        The Solar-system potential, or NAN (errno set to EAGAIN) if the frame is
- *                configured for full accuracy but not all planet positions are available.
+ * @return        The dimensionless Solar-system potential, or NAN (errno set to EAGAIN) if the
+ *                frame is configured for full accuracy but not all planet positions are available.
  */
 static double solar_system_potential(const novas_frame *frame, const double *pos) {
   double V = 0.0;
@@ -1730,7 +1730,8 @@ static double solar_system_potential(const novas_frame *frame, const double *pos
  * @param frame     The observing frame, defining the observer position as well as the positions
  *                  of the major solar-system bodies at the time of observation.
  * @param pos       [AU] The BCRS position of at which to estimate the tidal potential.
- * @param[out] V1   [1/AU] The _xyz_ potential gradient in rectangular equatorial coordinates.
+ * @param[out] V1   [1/AU] The _xyz_ gradient of the dimensionless potential in rectangular equatorial
+ *                  coordinates.
  */
 static void solar_system_tidal_potential(const novas_frame *frame, const double *pos, double *V1) {
   const double eps = 1e-6;  // [AU] ~ 150 km...
@@ -1772,7 +1773,7 @@ static double kinetic_potential(double b) {
 
 /**
  * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than
- * an Earth-based clock. I.e., it returns _D_, which is defined by:
+ * a TCG clock. I.e., it returns _D_, which is defined by:
  *
  * d&tau<sub>obs</sub>; / dTCG = (1 + _D_)
  *
@@ -1786,7 +1787,6 @@ static double clock_skew_near_earth(const novas_frame *frame) {
   int i;
 
   dV = solar_system_potential(frame, frame->obs_pos) - solar_system_potential(frame, frame->earth_pos);
-
 
   // observer velocity vs reference
   for(i = 3; --i >= 0; )
@@ -1802,6 +1802,17 @@ static double clock_skew_near_earth(const novas_frame *frame) {
   return kinetic_potential(b) + sqrt(1.0 - b * b) * dV;
 }
 
+/**
+ * Returns the incremenral rate at which an Earth-bound observer's clock (i.e. proper time &tau;) ticks
+ * faster due to the local tidal potential around Earth (mainly due to the Sun and Moon). I.e.,
+ * it returns _D_, which is defined by:
+ *
+ * d&tau<sub>tidal</sub>; / d&tau<sub>obs</sub>; = (1 + _D_)
+ *
+ * @param frame         The observing frame, defining the observer position as well as the positions
+ *                      of the major solar-system bodies at the time of observation.
+ * @return              _D_.
+ */
 static double tidal_clock_skew(const novas_frame *frame) {
   enum novas_observer_place loc;
   double dV = 0.0, VE1[3] = {0.0};
@@ -1812,7 +1823,6 @@ static double tidal_clock_skew(const novas_frame *frame) {
     case NOVAS_OBSERVER_ON_EARTH:
     case NOVAS_AIRBORNE_OBSERVER:
     case NOVAS_OBSERVER_IN_EARTH_ORBIT:
-      // Discount tidal potential for near-Earth observers...
       solar_system_tidal_potential(frame, frame->earth_pos, VE1);
 
       for(i = 3; --i >= 0; )
@@ -1896,7 +1906,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
     case NOVAS_GPS:
     case NOVAS_UTC: {
       D = clock_skew_near_earth(frame);
-      // (1 + D) * (1 + D') - 1 = D + D' + DD'
+      // (1 + D) * (1 + D') = 1 + D + (1+ D) D'
       D += TC_LG * (1.0 + D);
       break;
     }
@@ -1907,7 +1917,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
       double D1 = (tt2tdb(jd + eps) - tt2tdb(jd - eps)) / (2.0 * eps);
       D = novas_clock_skew(frame, NOVAS_TT);
 
-      // (1 + D) * (1 - D') - 1 = D - D' - DD'
+      // (1 + D) * (1 - D') = 1 + D - (1 + D) D'
       D -= D1 * (1.0 + D);
       break;
     }
@@ -1979,5 +1989,6 @@ double novas_mean_clock_skew(const novas_frame *frame, enum novas_timescale time
   if(isnan(D))
       return novas_trace_nan("novas_mean_clock_skew");
 
+  // (1 + D) * (1 - D') = 1 + D - (1 + D) D'
   return D - (1.0 + D) * tidal_clock_skew(frame);
 }
