@@ -120,19 +120,17 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 [Unrelease]</h1>
 <p>Upcoming feature release, expected around 1 November 2025.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
-Fixed</h2>
-<h2><a class="anchor" id="autotoc_md3"></a>
 Added</h2>
 <ul>
 <li>#209: Added <code><a class="el" href="earth_8c.html#a231f535f73e846d3867dbd914054d47b">novas_gmst()</a></code> and <code><a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a></code> functions to calculate Greenwich Mean and Apparent (respectively) Sidereal Times for a given UT1 date. The new functions are meant to replace the old NOVAS C <code><a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a></code> with a simpler, cleaner interface.</li>
-<li>#215: New functions (e.g. <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>) to calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.</li>
+<li>#215: New functions (<code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>, <code>novas_duirnal_ocean_tides()</code> and <code><a class="el" href="earth_8c.html#a9ab448b9d09b5656cf74fe10ab855fd4">novas_diurnal_libration()</a></code>) to calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.</li>
 <li>#217: New functions <code><a class="el" href="itrf_8c.html#afd98ed01148f1291018809d77785527f">novas_itrf_transform()</a></code> and <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to enable transforming gecocentric <em>xyz</em> station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. ITRF2000 to ITRF2014). The implementation is based on Chapter 4 of the IERS Conventions 2010.</li>
 <li>#217: New functions <code><a class="el" href="itrf_8c.html#a908dd3e00d6b27aa73679afc32c31f24">novas_geodetic_to_cartesian()</a></code> and <code><a class="el" href="itrf_8c.html#abb9a26a4658c037b4721fb97cea08ed0">novas_cartesian_to_geodetic()</a></code> to convert between geocentric <em>xyz</em> station coordinates and geodetic (longitude, latitude, altitude) coordinates on the reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS <code>GCONV2.F</code> routine.</li>
 <li>#221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU <code>make</code> also (by kiranshila and attipaci).</li>
-<li>#222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228, #229, #230 (by attipaci).</li>
-<li>#223: New functions <code><a class="el" href="timescale_8c.html#ab820dc413ec41f455b4d098bca457366">novas_clock_skew_tt()</a></code>, <code><a class="el" href="timescale_8c.html#a1ce9328ee4639a70e85b1038b3cb23e0">novas_clock_skew_tcg()</a></code>, and <code><a class="el" href="timescale_8c.html#a146b88af3a5aa92edb25de5434e53242">novas_clock_skew_tcb()</a></code> to calculate the incremental rate at which an observer's clock ticks faster than a TT, TCG, or TCB clock respectively would.</li>
+<li>#222: CMake build support, supporting e.g for Mac OS X or Windows builds also (by kiranshila), with further tweaks in #228, #229, #230, #234 (by attipaci).</li>
+<li>#223: New function <code><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code> / <code><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> to calculate the instantaneous or averaged (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an astronomical timescale. All timescales, except UT1, are supported (see also #232 and #233).</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
 <li>#208: <code><a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a></code> now always returns the CIO's right ascension relative to the true equinox of date (on the same true equator of date).</li>
@@ -142,53 +140,53 @@ Changed</h2>
 <li>#213: Rename a couple of source modules (<code><a class="el" href="system_8c.html">system.c</a></code> to <code><a class="el" href="transform_8c.html">transform.c</a></code>, and <code>coords.c</code> to <code><a class="el" href="system_8c.html">system.c</a></code>).</li>
 <li>#214: Reworked GCRS-CIRS transforms without <code><a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a></code>.</li>
 <li>#217: Changed <code><a class="el" href="earth_8c.html#a8471f990ad6e3051a0aa584d9cb2d355">terra()</a></code> to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 ellipsoid. The change restores the original NOVAS C behaviour.</li>
-<li>#221: GitHub Actions CI now includes <code>Makefile</code> builds / tests for Mac OS X. (by kiranshila)</li>
-<li>#222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)</li>
+<li>#221: GitHub Actions CI now includes <code>Makefile</code> builds and tests for Mac OS X. (by kiranshila)</li>
+<li>#222: GitHub Actions CI now checks CMake build, for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)</li>
 <li>#225: GNU <code>Makefile</code> fixes for non-Linux builds, and FreeBSD build check in GitHub Actions CI.</li>
-<li>#231: source code (including tests and examples) to use platform-dependent file separator for improved portability to Windows.</li>
+<li>#231: The source code (including tests and examples) now uses platform-dependent file separator for improved portability to Windows.</li>
 <li>#231: Changed documentation build to wean off the likes of <code>sed</code> or <code>tail</code>, thus allowing to build documentation in a more platform-independent way.</li>
 <li>Various API documentation edits.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Deprecated</h2>
 <ul>
 <li>#208: Deprecated <code><a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a></code>. Going forward, SuperNOVAS no longer uses the CIO locator data files (<code>CIO_RA.TXT</code> or <code>cio_ra.bin</code>) internally, and so <code><a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a></code> becomes redundant with <code><a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a></code> and also <code><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a></code> (which returns the negative of the same value).</li>
-<li>#209: Deprecated <code><a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a></code>. It is messy and one of its arguments (<code>erot</code>) is now a dud. Instead, you should use <code><a class="el" href="earth_8c.html#a231f535f73e846d3867dbd914054d47b">novas_gmst()</a></code> or <code><a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a></code> to get the same results simpler.</li>
+<li>#209: Deprecated <code><a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a></code>. It is messy and one of its arguments (<code>erot</code>) is now unused. Instead, you should use <code><a class="el" href="earth_8c.html#a231f535f73e846d3867dbd914054d47b">novas_gmst()</a></code> or <code><a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a></code> to get the same results simpler.</li>
 <li>#214: Deprecated <code><a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a></code>. It is no longer used internally by the library, and users are recommended against using it themselves, since SuperNOVAS provides cleaner ways to convert between GCRS and CIRS using frames and transforms, or else via the <code><a class="el" href="transform_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a></code> / <code><a class="el" href="transform_8c.html#ac0ba048cd1732d0d0398397396d158bc">cirs_to_gcrs()</a></code> functions.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 [1.4.2] - 2025-08-25</h1>
 <p>Bug fix release with updated nutation models.</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Fixed</h2>
 <ul>
 <li>#201: By default expect to find the CIO locator file (<code>CIO_RA.TXT</code> or <code>cio_ra.bin</code>) in its install location, e.g. in <code>/usr/share/supernovas</code> or as set via the <code>datadir</code> or <code>prefix</code> install locations.</li>
 <li>#202: The P03 recommended rescaling of the original IAU2000A nutation model to IAU2006 (see Coppola, Seago, and Vallado 2009) was not correctly implemented in the prior 1.4 releases. The resulting errors are around or below 40 &mu;as for the present era, and slightly larger than the model discrepancies (~10 &mu;as) that the rescaling was meant to address.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 Changed</h2>
 <ul>
 <li>#206: Updated nutation models: <code><a class="el" href="nutation_8c.html#a280cbf02b13ca57b3d77451be06e7dbc">iau2000a()</a></code> now uses IAU2000A R06 model coefficients (see <a href="https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html">https://hpiers.obspm.fr/eop-pc/models/nutations/nut.html</a>), making it dynamically consistent with the IAU2006 (P03) precession model, which was already implemented by NOVAS and SuperNOVAS. <code><a class="el" href="nutation_8c.html#a6f9cddeb8c3dd906b9b0b5941249ad0c">iau2000b()</a></code> is now a truncated version of the above, keeping terms with amplitude &lt;100 &mu;as, resulting in similar number of terms and precision as the original IAU2000B model. And, <code><a class="el" href="nutation_8c.html#abd066c2857d1b1cc06d8bd51b912d841">nu2000k()</a></code> has been rescaled according to Coppola, Seago, &amp; Vallado (2009) to also bring it in line with the IAU2006 (P03) precession model.</li>
 <li><code>make benchmark</code> now uses any user-defined <code>CPPFLAGS</code>, automatically adding the <code>include/</code> directory to it.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 [1.4.1] - 2025-07-21</h1>
 <p>Bug fix release.</p>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 Fixed</h2>
 <ul>
 <li>#197: Fix reverse target order builds via <code>make --shuffle=reverse</code>, which could also fail parallel builds in some cases. See also Debian Bug Tracker <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1105702">#1105702</a>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Changed</h2>
 <ul>
 <li>#199: Fixed typos in <code>README.md.</code> (by Asininite)</li>
 <li>Various improvements to documentation.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 [1.4.0] - 2025-06-02</h1>
 <p>Feature release, with critical bug fixes.</p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 Fixed</h2>
 <ul>
 <li>#188: Critical bug in <code><a class="el" href="frames_8c.html#a4d179c8573319fc25c775ce56ba055dc">novas_make_transform()</a></code> since inception in v1.1. Compound transforms were calculated using matrix products in the wrong commutation order (successive transforms were multiplied from the right instead of from the left). Very embarrasing indeed, and somehow it went unnoticed with the testing suite also (even more embarrassing...).</li>
@@ -198,7 +196,7 @@ Fixed</h2>
 <li>#190: Reverse <code><a class="el" href="earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652">wobble()</a></code> (ITRS to TIRS/PEF) had wrong 2nd order corrections, resulting in negligible errors below 0.1 &mu;as (micro-arcseconds) typically.</li>
 <li>#193: C++ namespace conflict in <code><a class="el" href="structnovas__frame.html">novas_frame</a></code> declaration. Fixed by declaring and using named structure types instead of the conflicting <code>typedef</code> aliases.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Added</h2>
 <ul>
 <li>#172: Added <code><a class="el" href="timescale_8c.html#aaf53fcad3fade814381cef3d06779a8c">novas_time_gst()</a></code> and <code><a class="el" href="timescale_8c.html#a9e99ea879ba0ddc1d9fbefc4b32b1ef1">novas_time_lst()</a></code> convenience functions to calculate the Greenwich (apparent) Sidereal Time (GST / GaST) and Local (apparent) Sidereal Time (LST / LaST) for a given astrometric time (and observer location) more easily.</li>
@@ -214,7 +212,7 @@ Added</h2>
 <li>#191: Added <code><a class="el" href="timescale_8c.html#a5709058076f4aea4eeaeeb000342cd94">tt2tdb_hp()</a></code> (high-precision) and <code><a class="el" href="timescale_8c.html#ad301a9c74bfbdb8b55513cd005787b22">tt2tdb_fp()</a></code> (flexible-precision) functions for calculating the TDB-TT time difference (in seconds), with up to 0.1 &mu;s accuracy based on Fairhead &amp; Bretagnon 1990.</li>
 <li>#194: Added documentation under <code>resources/</code> for a side-by-side example comparison with <b>astropy</b>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Changed</h2>
 <ul>
 <li>#173: Added parameter range checking to <code><a class="el" href="refract_8c.html#ac7ed2a1a5fb5aea3063d116d3d980eeb">refract()</a></code> function and <code><a class="el" href="refract_8c.html#a6b49f92f8f818f2272613e3432185a39">novas_radio_refraction()</a></code> model. If called with weather parameters or an elevation angle outside of reasonable values, <code>NaN</code> will be returned and <code>errno</code> will be set to <code>EINVAL</code>.</li>
@@ -223,21 +221,21 @@ Changed</h2>
 <li><code>NOVAS_RMASS_INIT</code> (in <code><a class="el" href="novas_8h.html">novas.h</a></code>) and L<sub>G</sub> (in <code><a class="el" href="timescale_8c.html">timescale.c</a></code>) values updated with DE440 data (Park et al. 2021).</li>
 <li>Moved some functions around between source files.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Deprecated</h2>
 <ul>
 <li>Deprecated <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code> function and <code>EPS_COR</code> / <code>PSI_COR</code> global variables, which provided support for the old (now disfavored) way of incorporating Earth orientation parameters as corrections into the true equator and equinox of date. The preferred way to incorpotate Earth orientation corrections is to use <em>dx,dy</em> offsets relative to the IAU2006 precession-nutation model only when transforming between the Terrestrial Intermediate Reference System (TIRS) or Pseudo Earth-Fixed (PEF) system and the International Terrestrial Reference System (ITRS), and vice versa.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 [1.3.1] - 2025-05-07</h1>
 <p>Bug fix release with minor enhancements.</p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 Fixed</h2>
 <ul>
 <li>#167: Fixes for Debian i386 cross builds.</li>
 <li>#174: <code><a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a></code> had linear and quadratic time evolution coefficients swapped since v1.0. The bug affected the IAU2000 precession-nutation calculations, and the calculation of the complementary terms in the equation of equinoxes in <code><a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a></code> / <code><a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a></code>. The effect however is small, typically just a few micro-arcseconds (&mu;as), for dates within a century of J2000.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Changed</h2>
 <ul>
 <li>#166: Improved detection of invalid seconds in <code>parse_degrees()</code>.</li>
@@ -250,16 +248,16 @@ Changed</h2>
 <li>Corrected benchmarks for individual frames.</li>
 <li>Corrections and edits to API documentation.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Deprecated</h2>
 <ul>
 <li>Deprecated <code><a class="el" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a></code> and <code><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a></code> functions. Both are meant for internal use only, and need not be exposed to users in general.</li>
 <li>Deprecated <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code>, <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code>, and <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> functions. These were prototypes for user-defined implementations that had to be linked together with NOVAS. In SuperNOVAS, the same functionality can be (should be) set dynamically, during runtime. Thus, these functions are provided to support building legacy NOVAS applications only, and should be avoided in new application code going forward.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 [1.3.0] - 2025-04-15</h1>
 <p>Feature release with many new convenience functions, such as for handling times and angles as strings; calculating rise, set, transit times; and other common astrometric calculations. In addition, the release brings various changes to improve performance.</p>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Fixed</h2>
 <ul>
 <li>#116: <code><a class="el" href="target_8c.html#abe0c6e6fc60a49efa88c365aef8cdc50">transform_cat()</a></code> to update parallax to the recalculated value when precessing or changing epochs. This was a SuperNOVAS bug since v1.0.</li>
@@ -267,7 +265,7 @@ Fixed</h2>
 <li>#139: Legacy linking of external <code><a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></code> / <code><a class="el" href="solsys1_8c.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a></code> provider modules was blocked by <code><a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a></code> inadvertently definining these functions when <code>BUILTIN_SOLSYS_EPHEM</code> was set to 1 (default) during the build, even though it was not supposed to.</li>
 <li>#156: <code><a class="el" href="observer_8c.html#a0e4e5ff7c37e6521ca75ae62aaf4050e">obs_posvel()</a></code> called <code><a class="el" href="earth_8c.html#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a></code> with TDB instead of TT. It less than a 2 ms difference, so not typically signifficant, unless &lt;10-m level poitioning is required for Earth-orbiting satellites.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Added</h2>
 <ul>
 <li>#113: New <code><a class="el" href="frames_8c.html#a273fd76d83b8e04ced14558c69fd175c">novas_frame_lst()</a></code> convenience function to readily return the Local (apparent) Sidereal Time for a given Earth-based observing frame.</li>
@@ -296,7 +294,7 @@ Added</h2>
 <li>#155: Added <code><a class="el" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f">novas_parse_iso_date()</a></code> for pasing ISO 8601 timestamps, including those expressed in the proleptic Gregorian calendar prior to the Gregorian calendar reform of 1582, for which the ISO 8601 timestamp differs from the astronomical calendar date assumed by <code>novas_parse_timestamp()</code>.</li>
 <li>Added <code>example-time.c</code> and <code>example-rise-set.c</code> under <code>examples/</code>, for demonstrating date/time handling functions and rise, set, and transit time calculations.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Changed</h2>
 <ul>
 <li>#130 Use C99 <code>restrict</code> keyword to prevent pointer argument aliasing. Modern compilers will warn if restricted pointer arguments are aliased. At the least, it is a hint to users that pointer arguments marked as such should be distinct from (not overlapping with) the other pointer arguments.</li>
@@ -321,17 +319,17 @@ Changed</h2>
 <li>Updated <code>README.md</code> for v1.3 and benchmarks, including comparisons to <b>astropy</b>.</li>
 <li>Default <code>THREAD_LOCAL</code> definition extended to C23 <code>thread_local</code> keyword also.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 [1.2.0] - 2025-01-15</h1>
 <p>Feature release. New easy to use adapter modules for CALCEPH or the NAIF CSPICE Toolkit to provide precise positions for Solar-system sources. Also, added support for Keplerian orbitals, such as the ones published by the IAU Minor Planet Center (MPC) for asteroids, comets, and Near-Earth-Objects (NEOs). And, many more fixes and improvements.</p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Fixed</h2>
 <ul>
 <li>Fixes to GCC version checking for macros.</li>
 <li>Fixed dummy <code><a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a></code> implementation in <code>readeph0.c</code>, and the use of <code>DEFAULT_READEPH</code> in <code>config.mk</code>. <code>readeph0.c</code> is not linked by default, and was not linked in prior releases either.</li>
 <li>Cure LLVM <code>clang</code> compiler warnings, in tests and examples also.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Added</h2>
 <ul>
 <li>#57: New generic redshift-handling functions <code><a class="el" href="spectral_8c.html#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></code>, <code><a class="el" href="spectral_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1" title="==========================================================================">novas_z2v()</a></code>.</li>
@@ -356,7 +354,7 @@ Added</h2>
 <li>Added missing error tracing in <code><a class="el" href="equinox_8c.html#a69df5671751c09a7575963b94ad1151e">nutation()</a></code>.</li>
 <li>Added <code>README.md</code> Figure 1, to clarify relation of coordinate systems and (Super)NOVAS function to convert vectors among them.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Changed</h2>
 <ul>
 <li>#96: Changed <code>object</code> structure to include <code><a class="el" href="structnovas__orbital.html">novas_orbital</a></code> for <code>NOVAS_ORBITAL_OBJECT</code> types. To keep ABI compatibility to earlier SuperNOVAS releases, <code><a class="el" href="target_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a></code> will not initialize the new <code>.orbit</code> field <em>unless</em> <code>type</code> is set to <code>NOVAS_ORBITAL_OBJECT</code> (which was not available before).</li>
@@ -369,17 +367,17 @@ Changed</h2>
 <li>Various small tweaks to Makefiles.</li>
 <li>Updated <code>README.md</code> and API documentation.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 [1.1.1] - 2024-10-28</h1>
 <p>Bug fix release. Nothing too scary, mainly just a collection of smaller fixes and improvements.</p>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Fixed</h2>
 <ul>
 <li>#55: Relativistic corrections to radial velocity were still not applied correctly. The revised calculation now uses the actual relativistic velocity differential between the source and observer to apply the appropriate time dilation factor, and applies gravitational corrections for Sun and Earth consistently at source and observer alike.</li>
 <li>#64: <code>NOVAS_TAI_TO_TT</code> definition had wrong decimal in last place, thus was 3 ms off from what it should have been. (thanks to kiranshila)</li>
 <li>#68: <code>readeph_dummy()</code> dummy implementation in <code>readeph0.c</code> called non existing error handler function.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md31"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Changed</h2>
 <ul>
 <li>#59: For observing major planets (and Sun and Moon) <code><a class="el" href="spectral_8c.html#afca24d914664bb60d20fb428177f329a">rad_vel()</a></code>, <code><a class="el" href="spectral_8c.html#a37f22e463cc06b4e381aa18659e6319d">rad_vel2()</a></code>, <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code>, and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> will include gravitational corrections to radial velocity for light originating at the surface, and observed near Earth or else at a large distance away. These corrections, along with those for the Solar potential at the source, may be skipped for <code><a class="el" href="spectral_8c.html#afca24d914664bb60d20fb428177f329a">rad_vel()</a></code> / <code><a class="el" href="spectral_8c.html#a37f22e463cc06b4e381aa18659e6319d">rad_vel2()</a></code> by setting <code>d_src_sun</code> negative.</li>
@@ -392,10 +390,10 @@ Changed</h2>
 <li>#73: Initializer macros (primarily for internal use), forced 'use' of unused variables after declarations, and no order-only-dependencies in Makefiles &ndash; in order to cure warnings and to conform with older compilers and make.</li>
 <li>Slight tweaks to <code>Makefile</code>, and <code>.mk</code> snippets, with added <code>make</code> configurability.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md32"></a>
+<h1><a class="anchor" id="autotoc_md31"></a>
 [1.1.0] - 2024-08-04</h1>
 <p>Feature release. Introducing a more efficient and elegant approach to position and velocity calculations using observer frames; versatile handling of astronomical timescales; and support for further observer locations, coordinate reference systems, and atmospheric refraction models. The release also fixes a number of bugs, of varying severity, which affected prior SuperNOVAS releases.</p>
-<h2><a class="anchor" id="autotoc_md33"></a>
+<h2><a class="anchor" id="autotoc_md32"></a>
 Fixed</h2>
 <ul>
 <li>#29: Fix portability to non-Intel platforms. Previously, SuperNOVAS used <code>char</code> for storing small integer coefficients, assuming <code>char</code> was signed. However, on some platforms like ARM and PowerPC <code>char</code> is unsigned, which broke calculations badly. As of now, we use the explicit platform independent signed <code>int8_t</code> storage type for these coefficients.</li>
@@ -411,7 +409,7 @@ Fixed</h2>
 <li>#24: Bungled definition of <code>SUPERNOVAS_VERSION_STRING</code> in <code><a class="el" href="novas_8h.html">novas.h</a></code> in v1.0.</li>
 <li>Bungled definition of <code>NOVAS_OBSERVER_PLACES</code> in <code><a class="el" href="novas_8h.html">novas.h</a></code> in v1.0.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md33"></a>
 Added</h2>
 <ul>
 <li>#33: New observing-frame based approach for calculations (<code><a class="el" href="frames_8c.html">frames.c</a></code>). A <code><a class="el" href="structnovas__frame.html">novas_frame</a></code> object uniquely defines both the place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation their internal state is never modified during the calculations. The following new functions were added: <code><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a></code>, <code><a class="el" href="frames_8c.html#a2972b3eafa2d7f6c29cff34bad9fcf0d">novas_change_observer()</a></code>, <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code>, <code><a class="el" href="frames_8c.html#a4817703c9357f702a27812584c91f87c">novas_geom_to_app()</a></code>, <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code>, <code><a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a></code>, <code><a class="el" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom()</a></code>, <code><a class="el" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app()</a></code>.</li>
@@ -433,7 +431,7 @@ Added</h2>
 <li><code>make help</code> to provide a brief list and explanation of the available build targets. (Thanks to <code>@teuben</code> for suggesting this.)</li>
 <li>Added GitHub CI regression testing for non-x86 platforms: <code>armv7</code>, <code>aarch64</code>, <code>riscv64</code>, <code>ppc64le</code>. Thus, we should avoid misphaps, like the platform specific bug Issue #29, in the future.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md35"></a>
+<h2><a class="anchor" id="autotoc_md34"></a>
 Changed</h2>
 <ul>
 <li>#42: <code><a class="el" href="cio_8c.html#afc894b55420495a727a90d3d85188ef4">cio_array()</a></code> can now parse the original ASCII CIO locator data file (<code>data/CIO_RA.TXT</code>) efficiently also, thus no longer requiring a platform-specific binary translation via the <code>cio_file</code> tool.</li>
@@ -461,30 +459,30 @@ Changed</h2>
 <li>Doxygen tag file renamed to <code>supernovas.tag</code> for consistency.</li>
 <li>Initialize test variables for reproducibility</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md36"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 [1.0.1] - 2024-05-13</h1>
 <p>Bug fix release with minor changes.</p>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 Fixed</h2>
 <ul>
 <li><code><a class="el" href="transform_8c.html#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a></code>, <code><a class="el" href="transform_8c.html#a12953f66c0f774284f0700ae785784d0">itrs_to_cirs()</a></code>, <code><a class="el" href="transform_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a></code>, and <code><a class="el" href="transform_8c.html#a3f6ae564cfac3766a21e0754905e5f7c">itrs_to_tod()</a></code> all had a unit conversion bug in using the <code>ut1_to_tt</code> argument [s] when converting TT-based Julian date to UT1-based JD [day] internally. (thanks to hannorein)</li>
 <li>Fixed errors in <code>example.c</code> [by hannorein].</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Added</h2>
 <ul>
 <li>Added <code><a class="el" href="transform_8c.html#af90d52a6527d9b62b8ac35d8c1ac7c6b">cirs_to_app_ra()</a></code> and <code><a class="el" href="transform_8c.html#a3fa57a154f2f423612736e5e3a5addbf">app_to_cirs_ra()</a></code> for convenience to convert between right ascensions measured from the CIO (for CIRS) vs measured from the true equinox of date, on the same true equator of date.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md38"></a>
 Changed</h2>
 <ul>
 <li>Changed definition of <code>NOVAS_AU</code> to the IAU definition of exactly 1.495978707e+11 m. The old definition is also available as <code>DE405_AU</code>. (thanks to hannorein)</li>
 <li>Various corrections and changes to documentation.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 [1.0.0] - 2024-03-01</h1>
 <p>This is the initial release of the SuperNOVAS library. Changes are indicated w.r.t. the upstream NOVAS C 3.1 library from which SuperNOVAS is forked from.</p>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Fixed</h2>
 <ul>
 <li>Fixes the NOVAS C 3.1 <a href="https://aa.usno.navy.mil/software/novas_faq">sidereal_time bug</a>, whereby the <code><a class="el" href="earth_8c.html#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a></code> function had an incorrect unit cast.</li>
@@ -500,7 +498,7 @@ Fixed</h2>
 <li>Fixes the NOVAS C 3.1 <a href="https://aa.usno.navy.mil/software/novas_faq">ephem_close bug</a>, whereby <code><a class="el" href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close()</a></code> in <code><a class="el" href="eph__manager_8c.html">eph_manager.c</a></code> did not reset the <code>EPHFILE</code> pointer to NULL.</li>
 <li>Supports calculations in parallel threads by making cached results thread-local.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Added</h2>
 <ul>
 <li>New debug mode and error traces. Simply call <code>novas_debug(NOVAS_DEBUG_ON)</code> or <code>novas_debug(NOVAS_DEBUG_EXTRA)</code> to enable. When enabled, any error conditions (such as NULL pointer arguments, or invalid input values etc.) will be reported to the standard error, complete with call tracing within the SuperNOVAS library, s.t. users can have a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing <code>NOVAS_DEBUF_OFF</code> (0) as the argument to the same call.</li>
@@ -530,7 +528,7 @@ Added</h2>
 <li>New <code><a class="el" href="target_8c.html#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive(int)</a></code> to enable (or disable) case-sensitive processing of object names. (By default NOVAS <code>object</code> names are converted to upper-case, making them effectively case-insensitive.)</li>
 <li>New <code><a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a></code> and <code><a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a></code> to make it simpler to configure Solar-system objects.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md42"></a>
 Changed</h2>
 <ul>
 <li>Changed to support for calculations in parallel threads by making cached results thread-local (as opposed to the globally cached values in NOVAS C 3.1). This works using the C11 standard <code>_Thread_local</code> or else the earlier GNU C &gt;= 3.3 standard <code>__thread</code> modifier. You can also set the preferred thread-local keyword for your compiler by passing it via <code>-DTHREAD_LOCAL=...</code> in <code>config.mk</code> to ensure that your build is thread-safe. And, if your compiler has no support whatsoever for thread_local variables, then SuperNOVAS will not be thread-safe, just as NOVAS C isn't.</li>
@@ -554,7 +552,7 @@ Changed</h2>
 <li>More efficient paging (cache management) for <code><a class="el" href="cio_8c.html#afc894b55420495a727a90d3d85188ef4">cio_array()</a></code> vs NOVAS C 3.1, including I/O error checking.</li>
 <li>Changed the standard atmospheric model for (optical) refraction calculation to include a simple model for the annual average temperature at the site (based on latitude and elevation). This results is a slightly more educated guess of the actual refraction than the global fixed temperature of 10 &deg;C assumed by NOVAC C 3.1 regardless of observing location.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Deprecated</h2>
 <ul>
 <li><code>novascon.h</code> / <code>novascon.c</code>: These definitions of constants in NOVAS C 3.1 was troublesome for two reasons: (1) They were primarily meant for use internally within the library itself. As the library clearly defines in what units input and output quantities are expressed, the user code can apply its own appropriate conversions that need not match the internal system used by the library. Hence exposing these constants to users was half baked. (2) The naming of constants was too simplistic (with names such as <code>C</code> or <code>F</code>) that it was rather prone to naming conflicts in user code. As a result, the constants have been moved to <code><a class="el" href="novas_8h.html">novas.h</a></code> with more unique names (such as <code>NOVAS_C</code> and <code>NOVAS_EARTH_FLATTENING</code>. New code should rely on these definitions instead of the troubled constants of <code>novascon.c</code> / <code>.h</code> if at all necessary.</li>

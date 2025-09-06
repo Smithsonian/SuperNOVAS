@@ -2220,24 +2220,10 @@
     </member>
     <member kind="function">
       <type>double</type>
-      <name>novas_clock_skew_tcb</name>
+      <name>novas_clock_skew</name>
       <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a146b88af3a5aa92edb25de5434e53242</anchor>
-      <arglist>(const novas_frame *frame)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_clock_skew_tcg</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>a1ce9328ee4639a70e85b1038b3cb23e0</anchor>
-      <arglist>(const novas_frame *frame)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_clock_skew_tt</name>
-      <anchorfile>novas_8h.html</anchorfile>
-      <anchor>ab820dc413ec41f455b4d098bca457366</anchor>
-      <arglist>(const novas_frame *frame)</arglist>
+      <anchor>a9061a46b13dfca669c327283f7357586</anchor>
+      <arglist>(const novas_frame *frame, enum novas_timescale timescale)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -2546,6 +2532,13 @@
       <anchorfile>novas_8h.html</anchorfile>
       <anchor>a4d179c8573319fc25c775ce56ba055dc</anchor>
       <arglist>(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system, novas_transform *transform)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_mean_clock_skew</name>
+      <anchorfile>novas_8h.html</anchorfile>
+      <anchor>ad2d5ef17b41a30ebca91e4c70e636acf</anchor>
+      <arglist>(const novas_frame *frame, enum novas_timescale timescale)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -5422,24 +5415,10 @@
     </member>
     <member kind="function">
       <type>double</type>
-      <name>novas_clock_skew_tcb</name>
+      <name>novas_clock_skew</name>
       <anchorfile>timescale_8c.html</anchorfile>
-      <anchor>a146b88af3a5aa92edb25de5434e53242</anchor>
-      <arglist>(const novas_frame *frame)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_clock_skew_tcg</name>
-      <anchorfile>timescale_8c.html</anchorfile>
-      <anchor>a1ce9328ee4639a70e85b1038b3cb23e0</anchor>
-      <arglist>(const novas_frame *frame)</arglist>
-    </member>
-    <member kind="function">
-      <type>double</type>
-      <name>novas_clock_skew_tt</name>
-      <anchorfile>timescale_8c.html</anchorfile>
-      <anchor>ab820dc413ec41f455b4d098bca457366</anchor>
-      <arglist>(const novas_frame *frame)</arglist>
+      <anchor>a9061a46b13dfca669c327283f7357586</anchor>
+      <arglist>(const novas_frame *frame, enum novas_timescale timescale)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -5503,6 +5482,13 @@
       <anchorfile>timescale_8c.html</anchorfile>
       <anchor>a4d6da26d0a7d7d904f25d2be00030b25</anchor>
       <arglist>(const novas_timespec *restrict time, char *restrict dst, int maxlen)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>novas_mean_clock_skew</name>
+      <anchorfile>timescale_8c.html</anchorfile>
+      <anchor>ad2d5ef17b41a30ebca91e4c70e636acf</anchor>
+      <arglist>(const novas_frame *frame, enum novas_timescale timescale)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

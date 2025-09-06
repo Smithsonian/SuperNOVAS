@@ -310,18 +310,23 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
  - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
  - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
  - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benachmarking programs 
- - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH package.
- - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris support. Requires `cspice` library installed.
+ - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris plugin support. Requires CALCEPH package.
+ - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris plugin support. Requires `cspice` library 
+   installed.
+ - `ENABLE_SOLSYS1=ON|OFF` (default: OFF) - Enable legacy DE200 -- DE421 ephemeris plugin support via 
+   `eph_manager()` (i.e., `solsys1.c`).
+ - `ENABLE_SOLSYS2=ON|OFF` (default: OFF) - Enable ephemeris plugin support via the PLEPH Fortran library and
+   a user-provided `jplint.f` implementation (i.e., `solsys2.c`).
  
-For example, to build __SuperNOVAS__ with [CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) 
-integration for ephemeris support, and HTML documentation:
+For example, to build __SuperNOVAS__ as shared libraries with 
+[CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) integration for ephemeris support:
 
 ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_CALCEPH=ON
   $ cmake --build build
 ```
 
-After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config and 
+After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config, and 
 `pkg-config`), and `Data` (CIO locator data) components, e.g. under `/usr/local`, as:
 
 ```bash
@@ -401,8 +406,8 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
 
 The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the
 `solarsystem()` / `solarsystem_hp()` and `readeph()` functions. This approach is discouraged in __SuperNOVAS__, since 
-it will prevent you from selecting different implementations at runtime. This deprecated way of incorporating 
-solar-system data is supported, nevertheless, for legacy applications.
+it will prevent you from selecting other implementations at runtime. The old, deprecated way, of incorporating 
+Solar-system data is supported, nevertheless, for legacy applications.
 
 To use your own existing default `solarsystem()` implementation in this way, you must build the library with 
 `DEFAULT_SOLSYS` unset (or else set to 0) in `config.mk`, and your applications `Makefile` may contain something like:
@@ -516,9 +521,6 @@ __SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
-
-
-
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -1731,9 +1733,9 @@ one minute.
  - Transformations of site coordinates and Earth orientation parameters between different ITRF realizations (e.g.
    ITRF2000 snd ITRF2014).
    
- - GNU `make` build support for Mac OS X (by Kiran Shila).
+ - GNU `make` build support for Mac OS X and FreeBSD (co-authored with Kiran Shila).
  
- - CMake build support (by Kiran Shila).
+ - CMake build support (co-authored with Kiran Shila).
 
 
 <a name="api-changes"></a>

@@ -131,12 +131,8 @@ Functions</h2></td></tr>
 <tr class="separator:a4d7470ca705efa1953e8b4beab77c6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7611704bab9ce717744a8b5575c5378" id="r_ab7611704bab9ce717744a8b5575c5378"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt</a> (int leap_seconds)</td></tr>
 <tr class="separator:ab7611704bab9ce717744a8b5575c5378"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a146b88af3a5aa92edb25de5434e53242" id="r_a146b88af3a5aa92edb25de5434e53242"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a146b88af3a5aa92edb25de5434e53242">novas_clock_skew_tcb</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
-<tr class="separator:a146b88af3a5aa92edb25de5434e53242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ce9328ee4639a70e85b1038b3cb23e0" id="r_a1ce9328ee4639a70e85b1038b3cb23e0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a1ce9328ee4639a70e85b1038b3cb23e0">novas_clock_skew_tcg</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
-<tr class="separator:a1ce9328ee4639a70e85b1038b3cb23e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab820dc413ec41f455b4d098bca457366" id="r_ab820dc413ec41f455b4d098bca457366"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ab820dc413ec41f455b4d098bca457366">novas_clock_skew_tt</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame)</td></tr>
-<tr class="separator:ab820dc413ec41f455b4d098bca457366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9061a46b13dfca669c327283f7357586" id="r_a9061a46b13dfca669c327283f7357586"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale)</td></tr>
+<tr class="separator:a9061a46b13dfca669c327283f7357586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abaac8a4ea28bc8b811277051e3168468" id="r_abaac8a4ea28bc8b811277051e3168468"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#abaac8a4ea28bc8b811277051e3168468">novas_date</a> (const char *restrict date)</td></tr>
 <tr class="separator:abaac8a4ea28bc8b811277051e3168468"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66656c3f5a1256f4bfc3ed2e168c70c2" id="r_a66656c3f5a1256f4bfc3ed2e168c70c2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a66656c3f5a1256f4bfc3ed2e168c70c2">novas_date_scale</a> (const char *restrict date, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> *restrict scale)</td></tr>
@@ -155,6 +151,8 @@ Functions</h2></td></tr>
 <tr class="separator:afa1a1d804ca70050418429f971c2045a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d6da26d0a7d7d904f25d2be00030b25" id="r_a4d6da26d0a7d7d904f25d2be00030b25"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a4d6da26d0a7d7d904f25d2be00030b25">novas_iso_timestamp</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time, char *restrict dst, int maxlen)</td></tr>
 <tr class="separator:a4d6da26d0a7d7d904f25d2be00030b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d5ef17b41a30ebca91e4c70e636acf" id="r_ad2d5ef17b41a30ebca91e4c70e636acf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *frame, enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale)</td></tr>
+<tr class="separator:ad2d5ef17b41a30ebca91e4c70e636acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01f98b2b8033c8dbacaeab37e9198e91" id="r_a01f98b2b8033c8dbacaeab37e9198e91"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a01f98b2b8033c8dbacaeab37e9198e91">novas_offset_time</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *time, double seconds, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *out)</td></tr>
 <tr class="separator:a01f98b2b8033c8dbacaeab37e9198e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4934da85b9722ef43a5b238f3e1971e4" id="r_a4934da85b9722ef43a5b238f3e1971e4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date</a> (const char *restrict date, char **restrict tail)</td></tr>
@@ -280,27 +278,38 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
 
 </div>
 </div>
-<a id="a146b88af3a5aa92edb25de5434e53242" name="a146b88af3a5aa92edb25de5434e53242"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a146b88af3a5aa92edb25de5434e53242">&#9670;&#160;</a></span>novas_clock_skew_tcb()</h2>
+<a id="a9061a46b13dfca669c327283f7357586" name="a9061a46b13dfca669c327283f7357586"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9061a46b13dfca669c327283f7357586">&#9670;&#160;</a></span>novas_clock_skew()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double novas_clock_skew_tcb </td>
+          <td class="memname">double novas_clock_skew </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *&#160;</td>
-          <td class="paramname"><em>frame</em></td><td>)</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td>
+          <td class="paramname"><em>timescale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock far from the Solar System, but co-moving with the Solar System. I.e., it return <em>D</em>, which is defined by</p>
-<p>d&amp;tau<sub>obs</sub>; / dTCB = (1 + <em>D</em>)</p>
+<p>Returns the instantaneous incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
+<p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
+<p>The instantaneous difference in clock rate reflects a tiny diurnal variation for Earth based observers, and a slight variation for near-Earth observers over the orbital period, as the observer cycles around the tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you will want the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions), which is provided by <code><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> instead.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
 <li>
-Based Eq. 10.6 of the IERS Conventions, Chapter 10, without tidal terms, and including corrections for TCB vs TCG clock rates, and modified for relativistic observer motion. </li>
+Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but not excluding the near-Earth tidal effects, and modified for relativistic observer motion. </li>
 <li>
 The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
 </ol>
@@ -311,103 +320,16 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">frame</td><td>The observing frame, defining the observer position as well as the positions of the major solar-system bodies at the time of observation. </td></tr>
+    <tr><td class="paramname">timescale</td><td>Reference timescale for the comparison. All timescales, except <code>NOVAS_UT1</code>, are supported. (UT1 advances at an irregular rate). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The incremental rate at which the observer's proper time clock ticks faster than the Barycentric Coordinate Time (TCB), or else NAN if the input frame is NULL or uninitialized (errno set to EINVAL), or if the frame is configured for full accuracy but it does not have sufficient planet position information (errno set to EAGAIN).</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The incremental rate at which the observer's proper time clock ticks faster than the specified timescale, or else NAN if the input frame is NULL or uninitialized, or if the timescale is not supported (errno set to EINVAL), or if the frame is configured for full accuracy but it does not have sufficient planet position information to evaluate the local gravitational potential with precision (errno set to EAGAIN).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a1ce9328ee4639a70e85b1038b3cb23e0">novas_clock_skew_tcg()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#ab820dc413ec41f455b4d098bca457366">novas_clock_skew_tt()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, <a class="el" href="structnovas__frame.html#ac2558d2b29171b29bad2599c75d3cc6c">novas_frame::obs_pos</a>, and <a class="el" href="structnovas__frame.html#a66f1e86da27c96c1c920dce442ce78c8">novas_frame::obs_vel</a>.</p>
-
-</div>
-</div>
-<a id="a1ce9328ee4639a70e85b1038b3cb23e0" name="a1ce9328ee4639a70e85b1038b3cb23e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ce9328ee4639a70e85b1038b3cb23e0">&#9670;&#160;</a></span>novas_clock_skew_tcg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double novas_clock_skew_tcg </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *&#160;</td>
-          <td class="paramname"><em>frame</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock on an Earth-like orbit around the Sun (far away from Earth). I.e., it returns <em>D</em>, which is defined by:</p>
-<p>d&amp;tau<sub>obs</sub>; / dTCG = (1 + <em>D</em>)</p>
-<p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
-<p>NOTES: </p><ol>
-<li>
-Based on Eq. 10.6 of the IERS Conventions, Chapter 10, but modified for relativistic observer motion. </li>
-<li>
-The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
-</ol>
-<p>REFERENCES: </p><ol>
-<li>
-IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf">https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf</a> </li>
-</ol>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">frame</td><td>The observing frame, defining the observer position as well as the positions of the major solar-system bodies at the time of observation. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The incremental rate at which the observer's proper time clock ticks faster than the Geocentric Coordinate Time (TCG), or else NAN if the input frame is NULL or uninitialized (errno set to EINVAL), or if the frame is configured for full accuracy but it does not have sufficient planet position information (errno set to EAGAIN).</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a146b88af3a5aa92edb25de5434e53242">novas_clock_skew_tcb()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#ab820dc413ec41f455b4d098bca457366">novas_clock_skew_tt()</a> </dd></dl>
-
-</div>
-</div>
-<a id="ab820dc413ec41f455b4d098bca457366" name="ab820dc413ec41f455b4d098bca457366"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab820dc413ec41f455b4d098bca457366">&#9670;&#160;</a></span>novas_clock_skew_tt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double novas_clock_skew_tt </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *&#160;</td>
-          <td class="paramname"><em>frame</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a TT-based clock on Earth's surface. I.e., it returns <em>D</em>, which is defined by:</p>
-<p>d&amp;tau<sub>obs</sub>; / dTT = (1 + <em>D</em>)</p>
-<p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
-<p>NOTES: </p><ol>
-<li>
-Adapted from Eq. 10.8 of the IERS Conventions, Chapter 10, and modified for relativistic observer motion. </li>
-<li>
-The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
-</ol>
-<p>REFERENCES: </p><ol>
-<li>
-IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf">https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf</a> </li>
-</ol>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">frame</td><td>The observing frame, defining the observer position as well as the positions of the major solar-system bodies at the time of observation.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The incremental rate at which the observer's proper time clock ticks faster than Terrestrial Time (TT), or else NAN if the input frame is NULL or uninitialized (errno set to EINVAL), or if the frame is configured for full accuracy but it does not have sufficient planet position information (errno set to EAGAIN).</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a1ce9328ee4639a70e85b1038b3cb23e0">novas_clock_skew_tcg()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#a146b88af3a5aa92edb25de5434e53242">novas_clock_skew_tcb()</a> </dd></dl>
+<p class="reference">References <a class="el" href="structnovas__timespec.html#a696e598955615f729a92870c8213a10c">novas_timespec::fjd_tt</a>, <a class="el" href="structnovas__timespec.html#ab1b769234049ec8d7cdbb22800116184">novas_timespec::ijd_tt</a>, <a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0bac29f535fdae4e29e1baeccacf8f0b98d">NOVAS_GPS</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba328f2523f4f064c5252f4ac858bddc4b">NOVAS_TAI</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba8301aa6dff381beba373826e137c88c4">NOVAS_TCB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba5935a299729a67971b12a78ee682f89a">NOVAS_TCG</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baf5d992bdf01b4f3fd7b22e3e24c6974d">NOVAS_TDB</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0baadb0d1437b46022bca75d4e7ab0542c7">NOVAS_TT</a>, <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, <a class="el" href="structnovas__frame.html#ac2558d2b29171b29bad2599c75d3cc6c">novas_frame::obs_pos</a>, <a class="el" href="structnovas__frame.html#a66f1e86da27c96c1c920dce442ce78c8">novas_frame::obs_vel</a>, <a class="el" href="structnovas__frame.html#a5a61c03607da83f2b44b05e68cc50e5b">novas_frame::time</a>, and <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>.</p>
 
 </div>
 </div>
@@ -840,6 +762,61 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 <a class="el" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f">novas_parse_iso_date()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="timescale_8c.html#a32d8336084b65fac14d092ab6198c27d">novas_get_split_time()</a>, <a class="el" href="novas_8h.html#aa8cfc18bfdf8ebd0198065c9d07e3bbaa90f19bf1771802f4ad20cf14660c8322">NOVAS_GREGORIAN_CALENDAR</a>, and <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0ba01787464888b92c37b8340174c03cc8d">NOVAS_UTC</a>.</p>
+
+</div>
+</div>
+<a id="ad2d5ef17b41a30ebca91e4c70e636acf" name="ad2d5ef17b41a30ebca91e4c70e636acf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d5ef17b41a30ebca91e4c70e636acf">&#9670;&#160;</a></span>novas_mean_clock_skew()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double novas_mean_clock_skew </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structnovas__frame.html">novas_frame</a> *&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a>&#160;</td>
+          <td class="paramname"><em>timescale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the averaged incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
+<p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
+<p>This is the same as the instantaneous rate (see <code><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code>) for a non-Earth-bound observer. For observers on, or near, Earth however, this function returns the averaged value over the observer's rotation around the geocenter. As such it filters out the tiny diurnal tidal variations for Earth-based observers, or the variation over and orbital period for near-Earth observers, as the observer moves through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.</p>
+<p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
+<p>NOTES: </p><ol>
+<li>
+Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but modified for relativistic observer motion. </li>
+<li>
+The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
+</ol>
+<p>REFERENCES: </p><ol>
+<li>
+IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf">https://iers-conventions.obspm.fr/content/chapter10/tn36_c10.pdf</a> </li>
+</ol>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frame</td><td>The observing frame, defining the observer position as well as the positions of the major solar-system bodies at the time of observation. </td></tr>
+    <tr><td class="paramname">timescale</td><td>Reference timescale for the comparison. All timescales are supported, except <code>NOVAS_UT1</code> (since UT1 advances at an irregular rate). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The average incremental rate over a geocentric rotation, at which the observer's proper time clock ticks faster than the specified timescale, or else NAN if the input frame is NULL or uninitialized, or if the timescale is not supported (errno set to EINVAL), or if the frame is configured for full accuracy but it does not have sufficient planet position information to evaluate of the local gravitational potential with precision (errno set to EAGAIN).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a>.</p>
 
 </div>
 </div>
