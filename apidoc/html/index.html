@@ -258,7 +258,7 @@ Build SuperNOVAS using CMake</h2>
 </div><!-- fragment --><p>The <b>SuperNOVAS</b> CMake build supports the following options (in addition to the standard CMake options):</p>
 <ul>
 <li><code>BUILD_SHARED_LIBS=ON|OFF</code> (default: OFF) - Build shared libraries instead of static</li>
-<li><code>BUILD_DOC=ON|OFF</code> (default: ON) - Compile HTML documentation. Requires <code>doxygen</code>, <code>bash</code>, and <code>sed</code>.</li>
+<li><code>BUILD_DOC=ON|OFF</code> (default: ON) - Compile HTML documentation. Requires <code>doxygen</code>.</li>
 <li><code>BUILD_EXAMPLES=ON|OFF</code> (default: ON) - Build the included examples</li>
 <li><code>BUILD_TESTING=ON|OFF</code> (default: ON - Build regression tests</li>
 <li><code>BUILD_BENCHMARK=ON|OFF</code> (default: OFF - Build benachmarking programs</li>
@@ -270,7 +270,8 @@ Build SuperNOVAS using CMake</h2>
 <p>For example, to build <b>SuperNOVAS</b> as shared libraries with <a href="https://calceph.imcce.fr/docs/4.0.0/html/c/index.html">CALCEPH</a> integration for ephemeris support:</p>
 <div class="fragment"><div class="line">$ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_CALCEPH=ON</div>
 <div class="line">$ cmake --build build</div>
-</div><!-- fragment --><p>After a successful build, you can install the <code>Runtime</code> (libraries), <code>Development</code> (headers, CMake config, and <code>pkg-config</code>), and <code>Data</code> (CIO locator data) components, e.g. under <code>/usr/local</code>, as:</p>
+</div><!-- fragment --><p>If a <code>CMAKE_BUILD_TYPE</code> is not set, the build will only use the <code>CFLAGS</code> (if any) that were set in the environment. This is ideal for those who want to have full control of the compiler flags used in the build. Specifying <code>Release</code> or <code>Debug</code> will append a particular set of appropriate compiler options which are suited for the given build type.</p>
+<p>After a successful build, you can install the <code>Runtime</code> (libraries), <code>Development</code> (headers, CMake config, and <code>pkg-config</code>), and <code>Data</code> (CIO locator data) components, e.g. under <code>/usr/local</code>, as:</p>
 <div class="fragment"><div class="line">$ cmake --build build</div>
 <div class="line">$ cmake --install build --prefix /usr/local </div>
 </div><!-- fragment --><p>You can also use the <code>--component</code> option to install just the selected components. For example to install just the <code>Runtime</code> component:</p>

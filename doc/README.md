@@ -306,17 +306,17 @@ The basic build recipe for CMake is:
 The __SuperNOVAS__ CMake build supports the following options (in addition to the standard CMake options):
 
  - `BUILD_SHARED_LIBS=ON|OFF` (default: OFF) - Build shared libraries instead of static
- - `BUILD_DOC=ON|OFF` (default: ON) - Compile HTML documentation. Requires `doxygen`, `bash`, and `sed`.
+ - `BUILD_DOC=ON|OFF` (default: ON) - Compile HTML documentation. Requires `doxygen`.
  - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
  - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
  - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benachmarking programs 
  - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris plugin support. Requires CALCEPH package.
  - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris plugin support. Requires `cspice` library 
    installed.
- - `ENABLE_SOLSYS1=ON|OFF` (default: OFF) - Enable legacy DE200 -- DE421 ephemeris plugin support via 
-   `eph_manager()` (i.e., `solsys1.c`).
- - `ENABLE_SOLSYS2=ON|OFF` (default: OFF) - Enable ephemeris plugin support via the PLEPH Fortran library and
-   a user-provided `jplint.f` implementation (i.e., `solsys2.c`).
+ - `ENABLE_SOLSYS1=ON|OFF` (default: OFF) - Enable legacy DE200 -- DE421 ephemeris plugin support via `eph_manager()` 
+   (i.e., `solsys1.c`).
+ - `ENABLE_SOLSYS2=ON|OFF` (default: OFF) - Enable ephemeris plugin support via the PLEPH Fortran library and a 
+   user-provided `jplint.f` implementation (i.e., `solsys2.c`).
  
 For example, to build __SuperNOVAS__ as shared libraries with 
 [CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) integration for ephemeris support:
@@ -325,6 +325,11 @@ For example, to build __SuperNOVAS__ as shared libraries with
   $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_CALCEPH=ON
   $ cmake --build build
 ```
+
+If a `CMAKE_BUILD_TYPE` is not set, the build will only use the `CFLAGS` (if any) that were set in the environment.
+This is ideal for those who want to have full control of the compiler flags used in the build. Specifying
+`Release` or `Debug` will append a particular set of appropriate compiler options which are suited for the given 
+build type.
 
 After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config, and 
 `pkg-config`), and `Data` (CIO locator data) components, e.g. under `/usr/local`, as:
