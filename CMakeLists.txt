@@ -15,7 +15,7 @@
 #  You may install just a specific component via the --component option, such
 #  as 'Runtime', 'Development', or 'Data'.
 #
-#  
+
 
 cmake_minimum_required(VERSION 3.20)
 
@@ -26,12 +26,6 @@ project(SuperNOVAS
     HOMEPAGE_URL "https://smithsonian.github.io/SuperNOVAS/"
     LANGUAGES C
 )
-
-# Default build type if not specified
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
-    message(STATUS "Setting build type to 'Release' as none was specified.")
-endif()
 
 # Include required modules
 include(GNUInstallDirs)
@@ -60,6 +54,7 @@ add_feature_info(Solsys1-Plugin ENABLE_SOLSYS1 "Legacy ephemeris support via eph
 add_feature_info(Solsys2-Plugin ENABLE_SOLSYS2 "Legacy ephemeris support via Fortran PLEPH library")
 add_feature_info(Documentation BUILD_DOC "Developer documentation (HTML)")
 add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
+
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -119,6 +114,12 @@ check_library_exists(m sin "" HAVE_LIBM)
 # CALCEPH plugin
 if(ENABLE_CALCEPH)
     find_package(calceph COMPONENTS Development REQUIRED CONFIG)
+    set_package_properties(calceph PROPERTIES
+        URL "https://calceph.imcce.fr"
+        DESCRIPTION  "is designed to access the binary planetary ephemeris files"
+        TYPE REQUIRED
+        PURPOSE "Provides ephemeris support for SuperNOVAS"
+    )
     list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CALCEPH=1)
     set(CALCEPH_FOUND TRUE)
     message(STATUS "Found calceph")
@@ -162,29 +163,32 @@ target_include_directories(supernovas PUBLIC
 
 target_compile_definitions(supernovas PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
 
-# Compiler-specific warnings and flags
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(supernovas PRIVATE
-        $<$<CONFIG:Debug>:-g;-O0;-Wall;-Wextra;-Wpedantic;-Wconversion;-Wshadow>
-        $<$<CONFIG:Release>:-O3;-DNDEBUG;-Wall;-Wextra>
-        $<$<CONFIG:RelWithDebInfo>:-O2;-g;-DNDEBUG;-Wall;-Wextra>
-        $<$<CONFIG:MinSizeRel>:-Os;-DNDEBUG>
-    )
-
-    # Additional security flags
-    if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+# ----------------------------------------------------------------------------
+if(CMAKE_BUILD_TYPE)
+    # Compiler-specific warnings and flags
+    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
         target_compile_options(supernovas PRIVATE
-            -fstack-protector-strong
-            -D_FORTIFY_SOURCE=2
+            $<$<CONFIG:Debug>:-g;-O0;-Wall;-Wextra;-Wpedantic;-Wconversion;-Wshadow>
+            $<$<CONFIG:Release>:-O3;-DNDEBUG;-Wall;-Wextra>
+            $<$<CONFIG:RelWithDebInfo>:-O2;-g;-DNDEBUG;-Wall;-Wextra>
+            $<$<CONFIG:MinSizeRel>:-Os;-DNDEBUG>
+        )
+
+        # Additional security flags
+        if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+            target_compile_options(supernovas PRIVATE
+                -fstack-protector-strong
+                -D_FORTIFY_SOURCE=2
+            )
+        endif()
+    elseif(MSVC)
+        target_compile_options(supernovas PRIVATE
+            /W4
+            /permissive-
+            $<$<CONFIG:Debug>:/Zi;/Od;/RTC1>
+            $<$<CONFIG:Release>:/O2;/DNDEBUG>
         )
     endif()
-elseif(MSVC)
-    target_compile_options(supernovas PRIVATE
-        /W4
-        /permissive-
-        $<$<CONFIG:Debug>:/Zi;/Od;/RTC1>
-        $<$<CONFIG:Release>:/O2;/DNDEBUG>
-    )
 endif()
 
 # Link with math libs as necessary
@@ -276,6 +280,12 @@ endif()
 
 if(BUILD_DOC) 
     find_package(Doxygen)
+        set_package_properties(Doxygen PROPERTIES
+        URL "https://doxygen.nl/"
+        DESCRIPTION  "is a widely-used documentation generator tool in  software development"
+        TYPE REQUIRED
+        PURPOSE "Enables HTML documentation for SuperNOVAS"
+    )
 
     if(Doxygen_FOUND)
         add_executable(docedit EXCLUDE_FROM_ALL src/docedit.c)
@@ -434,7 +444,11 @@ feature_summary(WHAT ALL)
 message(STATUS "")
 message(STATUS "SuperNOVAS Configuration Summary:")
 message(STATUS "  Version:           ${PROJECT_VERSION}")
-message(STATUS "  Build type:        ${CMAKE_BUILD_TYPE}")
+if(CMAKE_BUILD_TYPE)
+    message(STATUS "  Build type:        ${CMAKE_BUILD_TYPE}")
+else()
+    message(STATUS "  Build type:        (default) -- external CFLAGS only")
+endif()
 message(STATUS "  Install prefix:    ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "  Compiler:          ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}")
 message(STATUS "")

@@ -19,7 +19,6 @@ foreach(BENCHMARK ${BENCHMARK_PROGRAMS})
             $<$<BOOL:${HAVE_LIBM}>:m>
         )
 
-        message(STATUS "Added benchmark: ${BENCHMARK}")
     else()
         message(WARNING "Source file ${BENCHMARK_SOURCE} not found - ${BENCHMARK} will not be built")
     endif()
