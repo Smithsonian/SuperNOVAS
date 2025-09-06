@@ -1728,10 +1728,13 @@ one minute.
    coordinates with accuracy below the milli-arcsecond (mas) level.
    
  - Conversion between geodetic (longitude, latitude, altitude) and geocentric Cartesian (x, y, z) site coordinates
-   using the reference ellipsoid of choice (GRS80 or WGS84).
+   using the reference ellipsoid of choice (e.g. GRS80 or WGS84).
    
  - Transformations of site coordinates and Earth orientation parameters between different ITRF realizations (e.g.
    ITRF2000 snd ITRF2014).
+   
+ - Functions to calculate the rate at which an observer's clock ticks differently from a standard astronomical
+   timescale, due to the gravitational potential around the observer and the observer's movement.
    
  - GNU `make` build support for Mac OS X and FreeBSD (co-authored with Kiran Shila).
  
