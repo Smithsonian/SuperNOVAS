@@ -35,6 +35,19 @@ else()
     set(SuperNOVAS_CSPICE_FOUND FALSE)
 endif()
 
+if(TARGET SuperNOVAS::solsys1)
+    set(SuperNOVAS_SOLSYS1_FOUND TRUE)
+else()
+    set(SuperNOVAS_SOLSYS1_FOUND FALSE)
+endif()
+
+if(TARGET SuperNOVAS::solsys2)
+    set(SuperNOVAS_SOLSYS2_FOUND TRUE)
+else()
+    set(SuperNOVAS_SOLSYS2_FOUND FALSE)
+endif()
+
+
 # Component support
 foreach(component ${SuperNOVAS_FIND_COMPONENTS})
     if(component STREQUAL "calceph")
@@ -42,10 +55,23 @@ foreach(component ${SuperNOVAS_FIND_COMPONENTS})
             set(SuperNOVAS_FOUND FALSE)
             set(SuperNOVAS_NOT_FOUND_MESSAGE "SuperNOVAS CALCEPH component not available")
         endif()
+    
     elseif(component STREQUAL "cspice")
         if(NOT SuperNOVAS_CSPICE_FOUND)
             set(SuperNOVAS_FOUND FALSE)
             set(SuperNOVAS_NOT_FOUND_MESSAGE "SuperNOVAS CSPICE component not available")
+        endif()
+    
+    elseif(component STREQUAL "solsys1")
+        if(NOT SuperNOVAS_SOLSYS1_FOUND)
+            set(SuperNOVAS_FOUND FALSE)
+            set(SuperNOVAS_NOT_FOUND_MESSAGE "SuperNOVAS solsys1 component not available")
+        endif()
+        
+    elseif(component STREQUAL "solsys2")
+        if(NOT SuperNOVAS_SOLSYS2_FOUND)
+            set(SuperNOVAS_FOUND FALSE)
+            set(SuperNOVAS_NOT_FOUND_MESSAGE "SuperNOVAS solsys2 component not available")
         endif()
     else()
         set(SuperNOVAS_FOUND FALSE)
