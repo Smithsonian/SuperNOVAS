@@ -334,7 +334,8 @@ int novas_day_of_week(double tjd) {
 int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restrict year) {
   static const int mstart[] = { 0, 31, 59, 9, 120, 151, 181, 212, 243, 273, 304, 334 }; // non-leap year month offsets
 
-  int y = 0, m = 0, d = -1, yday = -1;
+  int y = 0, m = 0, d = -1;
+  int yday;
 
   prop_error("novas_day_of_year", novas_jd_to_date(tjd, calendar, &y, &m, &d, NULL), 0);
   yday = mstart[m - 1] + d;
