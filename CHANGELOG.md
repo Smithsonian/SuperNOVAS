@@ -34,7 +34,7 @@ Upcoming feature release, expected around 1 November 2025.
    kiranshila and attipaci).
    
  - #222: CMake build support, supporting e.g for Mac OS X or Windows builds also (by kiranshila), with further tweaks 
-   in #228, #229, #230 (by attipaci).
+   in #228, #229, #230, #234 (by attipaci).
 
  - #223: New function `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged
    (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 
