@@ -163,34 +163,6 @@ target_include_directories(supernovas PUBLIC
 
 target_compile_definitions(supernovas PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
 
-# ----------------------------------------------------------------------------
-if(CMAKE_BUILD_TYPE)
-    # Compiler-specific warnings and flags
-    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(supernovas PRIVATE
-            $<$<CONFIG:Debug>:-g;-O0;-Wall;-Wextra;-Wpedantic;-Wconversion;-Wshadow>
-            $<$<CONFIG:Release>:-O3;-DNDEBUG;-Wall;-Wextra>
-            $<$<CONFIG:RelWithDebInfo>:-O2;-g;-DNDEBUG;-Wall;-Wextra>
-            $<$<CONFIG:MinSizeRel>:-Os;-DNDEBUG>
-        )
-
-        # Additional security flags
-        if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-            target_compile_options(supernovas PRIVATE
-                -fstack-protector-strong
-                -D_FORTIFY_SOURCE=2
-            )
-        endif()
-    elseif(MSVC)
-        target_compile_options(supernovas PRIVATE
-            /W4
-            /permissive-
-            $<$<CONFIG:Debug>:/Zi;/Od;/RTC1>
-            $<$<CONFIG:Release>:/O2;/DNDEBUG>
-        )
-    endif()
-endif()
-
 # Link with math libs as necessary
 target_link_libraries(supernovas
     PRIVATE
@@ -442,6 +414,13 @@ export(PACKAGE SuperNOVAS)
 # Summary
 feature_summary(WHAT ALL)
 message(STATUS "")
+
+message("CMAKE_C_FLAGS_DEBUG is ${CMAKE_C_FLAGS_DEBUG}")
+message("CMAKE_C_FLAGS_RELEASE is ${CMAKE_C_FLAGS_RELEASE}")
+message("CMAKE_C_FLAGS_RELWITHDEBINFO is ${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+message("CMAKE_C_FLAGS_MINSIZEREL is ${CMAKE_C_FLAGS_MINSIZEREL}")
+message(STATUS "")
+
 message(STATUS "SuperNOVAS Configuration Summary:")
 message(STATUS "  Version:           ${PROJECT_VERSION}")
 if(CMAKE_BUILD_TYPE)

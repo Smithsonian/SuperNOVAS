@@ -68,7 +68,6 @@ foreach(TEST ${TEST_PROGRAMS})
      	    add_test(NAME ${TEST} COMMAND ${TEST} ${CIO_DIR})
         endif()
         
-        message(STATUS "Added test: ${TEST}")
     else()
         message(WARNING "Source file ${TEST_SOURCE} not found - ${TEST} will not be built")
     endif()
