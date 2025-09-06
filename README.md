@@ -1,6 +1,5 @@
 ![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
-![Static Analysis](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/analyze.yml/badge.svg)
 <a href="https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html">
  ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 </a>
@@ -328,15 +327,15 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
  - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH package.
  - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris support. Requires `cspice` library installed.
  
-For example, to build __SuperNOVAS__ with [CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) 
-integration for ephemeris support, and HTML documentation:
+For example, to build __SuperNOVAS__ as shared libraries with 
+[CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) integration for ephemeris support:
 
 ```bash
   $ cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DENABLE_CALCEPH=ON
   $ cmake --build build
 ```
 
-After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config and 
+After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config, and 
 `pkg-config`), and `Data` (CIO locator data) components, e.g. under `/usr/local`, as:
 
 ```bash
@@ -416,8 +415,8 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
 
 The NOVAS C way to handle planet or other ephemeris functions was to link particular modules to provide the
 `solarsystem()` / `solarsystem_hp()` and `readeph()` functions. This approach is discouraged in __SuperNOVAS__, since 
-it will prevent you from selecting different implementations at runtime. This deprecated way of incorporating 
-solar-system data is supported, nevertheless, for legacy applications.
+it will prevent you from selecting other implementations at runtime. The old, deprecated way, of incorporating 
+Solar-system data is supported, nevertheless, for legacy applications.
 
 To use your own existing default `solarsystem()` implementation in this way, you must build the library with 
 `DEFAULT_SOLSYS` unset (or else set to 0) in `config.mk`, and your applications `Makefile` may contain something like:
@@ -531,9 +530,6 @@ __SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
-
-
-
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source

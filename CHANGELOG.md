@@ -11,9 +11,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Upcoming feature release, expected around 1 November 2025.
 
-### Fixed
-
-
 ### Added
 
  - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
@@ -22,8 +19,8 @@ Upcoming feature release, expected around 1 November 2025.
    
  - #215: New functions (`novas_diurnal_eop()`, `novas_duirnal_ocean_tides()` and `novas_diurnal_libration()`) to 
    calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and 
-   ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS coordinates with accuracy 
-   below the milli-arcsecond (mas) level.
+   ocean tides. Such corrections are necessary if needing or using ITRS / TIRS coordinates with accuracy below the 
+   milli-arcsecond (mas) level.
 
  - #217: New functions `novas_itrf_transform()` and `novas_itrf_transform_eop()` to enable transforming gecocentric
    _xyz_ station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. 
