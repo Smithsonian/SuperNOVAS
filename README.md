@@ -340,6 +340,11 @@ For example, to build __SuperNOVAS__ as shared libraries with
   $ cmake --build build
 ```
 
+If a `CMAKE_BUILD_TYPE` is not set, the build will only use the `CFLAGS` (if any) that were set in the environment.
+This is ideal for those who want to have full control of the compiler flags used in the build. Specifying
+`Release` or `Debug` will append a particular set of appropriate compiler options which are suited for the given 
+build type.
+
 After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config, and 
 `pkg-config`), and `Data` (CIO locator data) components, e.g. under `/usr/local`, as:
 
