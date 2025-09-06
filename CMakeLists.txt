@@ -47,7 +47,8 @@ option(BUILD_EXAMPLES "Build example programs" OFF)
 option(BUILD_BENCHMARK "Build benchmark programs" OFF)
 option(ENABLE_CALCEPH "Enable CALCEPH support" OFF)
 option(ENABLE_CSPICE "Enable CSPICE support" OFF)
-
+option(ENABLE_SOLSYS1 "Enable legacy support for DE200 -- DE421 via eph_manager()" OFF)
+option(ENABLE_SOLSYS2 "Enable legacy support for custom Fortran PLEPH plugin" OFF)
 
 # Set feature descriptions for summary
 add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build as shared libraries")
@@ -55,6 +56,8 @@ add_feature_info(Examples BUILD_EXAMPLES "Build and test example programs")
 add_feature_info(Testing BUILD_TESTING "Run regression testing")
 add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
 add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
+add_feature_info(Solsys1-Plugin ENABLE_SOLSYS1 "Legacy ephemeris support via eph_manager()")
+add_feature_info(Solsys2-Plugin ENABLE_SOLSYS2 "Legacy ephemeris support via Fortran PLEPH library")
 add_feature_info(Documentation BUILD_DOC "Developer documentation (HTML)")
 add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
 
@@ -196,32 +199,44 @@ add_library(novas ALIAS supernovas)
 
 # ----------------------------------------------------------------------------
 # Plugins
-function(solsys_plugin PLUGIN_NAME)
-    add_library(solsys-${PLUGIN_NAME} SHARED src/solsys-${PLUGIN_NAME}.c)
-    add_library(SuperNOVAS::solsys-${PLUGIN_NAME} ALIAS solsys-${PLUGIN_NAME})
 
-    set_target_properties(solsys-${PLUGIN_NAME} PROPERTIES
+# configure plugin build (w/o linking)
+function(config_plugin PLUGIN)
+    add_library(${PLUGIN} src/${PLUGIN}.c)
+    add_library(SuperNOVAS::${PLUGIN} ALIAS ${PLUGIN})
+
+    set_target_properties(${PLUGIN} PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
         POSITION_INDEPENDENT_CODE ON
     )
 
-    target_include_directories(solsys-${PLUGIN_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-    )
+    target_include_directories(${PLUGIN} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_compile_definitions(${PLUGIN} PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
+endfunction()
 
-    target_compile_definitions(solsys-${PLUGIN_NAME} PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
-
-    target_link_libraries(solsys-${PLUGIN_NAME} PRIVATE
+# plugins via external libraries (e.g. calceph or cspice). 
+function(solsys_plugin PLUGIN_LIB)
+    config_plugin(solsys-${PLUGIN_LIB})
+    
+    target_link_libraries(solsys-${PLUGIN_LIB} PRIVATE
         supernovas
-        ${PLUGIN_NAME}
+        ${PLUGIN_LIB}
         $<$<BOOL:${HAVE_LIBM}>:m>
     )
 endfunction()
 
-# ----------------------------------------------------------------------------
-# Options...
+# legacy solsys[1-2] plugins
+function(legacy_solsys_plugin IDX)
+    config_plugin(solsys${IDX})
 
+    target_link_libraries(solsys${IDX} PRIVATE
+        supernovas
+        $<$<BOOL:${HAVE_LIBM}>:m>
+    )
+endfunction()
+
+# Process plugin options...
 if(ENABLE_CALCEPH)
     solsys_plugin(calceph)
 endif()
@@ -229,6 +244,17 @@ endif()
 if(ENABLE_CSPICE)
     solsys_plugin(cspice)
 endif()
+
+if(ENABLE_SOLSYS1)
+    legacy_solsys_plugin(1)
+endif()
+
+if(ENABLE_SOLSYS2)
+    legacy_solsys_plugin(2)
+endif()
+
+# ----------------------------------------------------------------------------
+# Testing, examples, and benchmarks...
 
 # Run tests for the enabled options below...
 enable_testing()
@@ -254,15 +280,15 @@ if(BUILD_DOC)
     if(Doxygen_FOUND)
         add_executable(docedit EXCLUDE_FROM_ALL src/docedit.c)
    
-        # Run Doxygen
+        # Generate headless docs and run Doxygen on them.
         add_custom_target(project_docs 
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
             COMMAND docedit
             COMMAND Doxygen::doxygen Doxyfile.local
         )
         
+        # Clean up generated docs after doxygen
         add_custom_target(clean_docs)
-        
         if(TARGET clean_docs)
            file(REMOVE Doxyfile.local README-orig.md)
         endif()
@@ -277,13 +303,28 @@ endif()
 set(INSTALL_TARGETS supernovas)
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME Runtime)
 
-if(BUILD_STATIC_LIBS AND TARGET supernovas_static)
-    list(APPEND INSTALL_TARGETS supernovas_static)
-endif()
-
 if(ENABLE_CALCEPH)
     list(APPEND INSTALL_TARGETS solsys-calceph)
 endif()
+
+if(ENABLE_CSPICE)
+    list(APPEND INSTALL_TARGETS solsys-cspice)
+endif()
+
+if(ENABLE_SOLSYS1)
+    list(APPEND INSTALL_TARGETS solsys1)
+endif()
+
+if(ENABLE_SOLSYS2)
+    list(APPEND INSTALL_TARGETS solsys2)
+endif()
+
+install(TARGETS ${INSTALL_TARGETS}
+    EXPORT SuperNOVASTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
 if(BUILD_DOC AND TARGET project_docs)
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
@@ -294,15 +335,9 @@ if(BUILD_DOC AND TARGET project_docs)
     )
 endif()
 
-install(TARGETS ${INSTALL_TARGETS}
-    EXPORT SuperNOVASTargets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
 # ------------------------------------------------------------------------
 # Install files for the Data component
+
 install(FILES data/CIO_RA.TXT
     COMPONENT Data
     DESTINATION ${CMAKE_INSTALL_DATADIR}/supernovas
@@ -325,6 +360,13 @@ endif()
 
 if(ENABLE_CSPICE)
    install(FILES include/novas-cspice.h
+       COMPONENT Development
+       DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+   )
+endif()
+
+if(ENABLE_SOLSYS1)
+   install(FILES include/eph_manager.h
        COMPONENT Development
        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    )

@@ -324,8 +324,13 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
  - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
  - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
  - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benachmarking programs 
- - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris support. Requires CALCEPH package.
- - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris support. Requires `cspice` library installed.
+ - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris plugin support. Requires CALCEPH package.
+ - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris plugin support. Requires `cspice` library 
+   installed.
+ - `ENABLE_SOLSYS1=ON|OFF` (default: OFF) - Enable legacy DE200 -- DE421 ephemeris plugin support via 
+   `eph_manager()` (i.e., `solsys1.c`).
+ - `ENABLE_SOLSYS2=ON|OFF` (default: OFF) - Enable ephemeris plugin support via the PLEPH Fortran library and
+   a user-provided `jplint.f` implementation (i.e., `solsys2.c`).
  
 For example, to build __SuperNOVAS__ as shared libraries with 
 [CALCEPH](https://calceph.imcce.fr/docs/4.0.0/html/c/index.html) integration for ephemeris support:
