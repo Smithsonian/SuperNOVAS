@@ -52,8 +52,7 @@ foreach(EXAMPLE ${EXAMPLE_PROGRAMS})
         else()
             add_test(NAME ${EXAMPLE} COMMAND ${EXAMPLE})
         endif()
-	
-        message(STATUS "Added example: ${EXAMPLE}")
+
     else()
         message(WARNING "Source file ${EXAMPLE_SOURCE} not found - ${EXAMPLE} will not be built")
     endif()
