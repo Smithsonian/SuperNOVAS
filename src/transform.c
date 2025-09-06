@@ -112,10 +112,11 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param erot          Unused.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param coordType     Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than 1)
- *                      or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates are
- *                      to be in the GCRS, and the latter if they are to be in CIRS or TOD (the 'erot'
- *                      parameter selects which dynamical system to use for the output.)
+ * @param coordType     Output coordinate class NOVAS_REFERENCE_CLASS (0, or any value other than
+ *                      1) or NOVAS_DYNAMICAL_CLASS (1). Use the former if the output coordinates
+ *                      are to be in the GCRS, and the latter if they are to be in CIRS or TOD
+ *                      (the 'erot' parameter selects which dynamical system to use for the
+ *                      output.)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
@@ -221,22 +222,23 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  * @param ut1_to_tt     [s] TT - UT1 Time difference in seconds
  * @param erot          Unused.
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param coordType     Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS (1).
- *                      Use the former if the input coordinates are in the GCRS, and the latter if they
- *                      are CIRS or TOD (the 'erot' parameter selects which dynamical system the input is
- *                      specified in.)
+ * @param coordType     Input coordinate class, NOVAS_REFERENCE_CLASS (0) or NOVAS_DYNAMICAL_CLASS
+ *                      (1). Use the former if the input coordinates are in the GCRS, and the
+ *                      latter if they are CIRS or TOD (the 'erot' parameter selects which
+ *                      dynamical system the input is specified in.)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
  *                      pole with respect to ITRS pole, in arcseconds.
- * @param in            Input position vector, geocentric equatorial rectangular coordinates in the
- *                      specified input coordinate system (GCRS if 'class' is NOVAS_REFERENCE_CLASS;
- *                      or else either CIRS if 'erot' is EROT_ERA, or TOD if 'erot' is EROT_GST).
+ * @param in            Input position vector, geocentric equatorial rectangular coordinates in
+ *                      the specified input coordinate system (GCRS if 'class' is
+ *                      NOVAS_REFERENCE_CLASS; or else either CIRS if 'erot' is EROT_ERA, or TOD
+ *                      if 'erot' is EROT_GST).
  * @param[out] out      ITRS position vector, geocentric equatorial rectangular coordinates
  *                      (terrestrial system). It can be the same vector as the input.
- * @return              0 if successful, -1 if either of the vector arguments is NULL, 1 if 'accuracy'
- *                      is invalid, 2 if 'method' is invalid, or else 10 + the error from
- *                      cio_location(), or 20 + error from cio_basis().
+ * @return              0 if successful, -1 if either of the vector arguments is NULL, 1 if
+ *                      'accuracy' is invalid, 2 if 'method' is invalid, or else 10 + the error
+ *                      from cio_location(), or 20 + error from cio_basis().
  *
  * @sa gcrs_to_cirs()
  * @sa cirs_to_itrs()
@@ -629,8 +631,9 @@ int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param ra          [h] The CIRS right ascension coordinate, measured from the CIO.
- * @return            [h] the apparent R.A. coordinate measured from the true equinox of date [0:24],
- *                    or NAN if the accuracy is invalid, or if there wan an error from cio_ra().
+ * @return            [h] the apparent R.A. coordinate measured from the true equinox of date
+ *                    [0:24], or NAN if the accuracy is invalid, or if there wan an error from
+ *                    cio_ra().
  *
  * @sa app_to_cirs_ra()
  * @sa cirs_to_tod()

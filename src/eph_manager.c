@@ -62,9 +62,8 @@ double *BUFFER;     ///< (<i>for internal use</i>) Array containing Chebyshev co
 FILE *EPHFILE = NULL;     ///< (<i>for internal use</i>) The currently open JPL DE planetary ephemeris file
 
 /**
- * This function opens a JPL planetary ephemeris file and
- * sets initial values.  This function must be called
- * prior to calls to the other JPL ephemeris functions.
+ * This function opens a JPL planetary ephemeris file and sets initial values.  This function must
+ * be called prior to calls to the other JPL ephemeris functions.
  *
  * REFERENCES:
  * <ol>
@@ -73,14 +72,15 @@ FILE *EPHFILE = NULL;     ///< (<i>for internal use</i>) The currently open JPL 
  * </ol>
  *
  * @param ephem_name      Name/path of the direct-access ephemeris file.
- * @param[out] jd_begin   [day] Beginning Julian date of the ephemeris file. It may be NULL if not required.
- * @param[out] jd_end     [day] Ending Julian date of the ephemeris file. It may be NULL if not required.
+ * @param[out] jd_begin   [day] Beginning Julian date of the ephemeris file. It may be NULL if not
+ *                        required.
+ * @param[out] jd_end     [day] Ending Julian date of the ephemeris file. It may be NULL if not
+ *                        required.
  * @param[out] de_number  DE number of the ephemeris file opened. It may be NULL if not required.
  *
- * @return    0 if successful, or -1 if any of the arhuments is NULL, or else
- *            1 if the file could no be opened, 2--10 if (= line + 1) if there
- *            was an error reading the header line, or 11 if the type of DE file is
- *            not supported.
+ * @return    0 if successful, or -1 if any of the arhuments is NULL, or else 1 if the file could
+ *            not be opened, 2--10 if (= line + 1) if there was an error reading the header line,
+ *            or 11 if the type of DE file is not supported.
  *
  * @sa ephem_close()
  */
@@ -217,8 +217,7 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
  * <li>Includes fix for the known resource leak issue in NOVAS C 3.1.
  * </ol>
  *
- * @return  0 if the file successfully closed or was closed already,
- *          or else EOF.
+ * @return  0 if the file successfully closed or was closed already, or else EOF.
  *
  * @sa ephem_open()
  *
@@ -245,20 +244,18 @@ short ephem_close(void) {
  *     Planetary Ephemeris"; JPL document dated 17 June 1988.</li>
  * </ol>
  *
- * @param tjd       [day] Two-element array containing the Julian date, which may be
- *                  split any way (although the first element is usually the
- *                  "integer" part, and the second element is the "fractional"
- *                  part).  Julian date is in the TDB or "T_eph" time scale.
- * @param target    The integer code (see above) for the planet for which coordinates
- *                  are requested, e.g. DE_JUPITER.
- * @param origin    The integer code of the planet or position relative to
- *                  which coordinates are measured.
- * @param[out] position   [AU] Position vector array of target relative to center, measured
- *                        in AU.
- * @param[out] velocity   [AU/day] Velocity vector array of target relative to center,
- *                        measured in AU/day.
- * @return          0 if successful, or -1 if one of the pointer arguments is NULL, or
- *                  else the error returned from state().
+ * @param tjd       [day] Two-element array containing the Julian date, which may be split any way
+ *                  (although the first element is usually the "integer" part, and the second
+ *                  element is the "fractional" part).  Julian date is in the TDB or "T_eph" time
+ *                  scale.
+ * @param target    The integer code (see above) for the planet for which coordinates are
+ *                  requested, e.g. DE_JUPITER.
+ * @param origin    The integer code of the planet or position relative to which coordinates are
+ *                  measured.
+ * @param[out] position   [AU] Position vector array of target relative to center.
+ * @param[out] velocity   [AU/day] Velocity vector array of target relative to center.
+ * @return          0 if successful, or -1 if one of the pointer arguments is NULL, or else the
+ *                  error returned from state().
  *
  * @sa ephem_open()
  */
@@ -409,20 +406,18 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
  *     Planetary Ephemeris"; JPL document dated 17 June 1988.</li>
  * </ol>
  *
- * @param jed         [day] 2-element Julian date (TDB) at which interpolation is wanted.
- *                    Any combination of jed[0]+jed[1] which falls within the time
- *                    span on the file is a permissible epoch.  See Note 1 below.
- *                    target (short)
- * @param target      The integer code (see above) for the planet for which coordinates
- *                    are requested, e.g. DE_JUPITER.
- * @param[out] target_pos   [AU] The barycentric position vector array of the requested
- *                          object, in AU.
- * @param[out] target_vel   [AU/day] The barycentric velocity vector array of the
- *                          requested object, in AU/Day.
+ * @param jed         [day] 2-element Julian date (TDB) at which interpolation is wanted. Any
+ *                    combination of jed[0]+jed[1] which falls within the time span on the file is
+ *                    a permissible epoch.  See Note 1 below.
+ * @param target      The integer code (see above) for the planet for which coordinates are
+ *                    requested, e.g. DE_JUPITER.
+ * @param[out] target_pos   [AU] The barycentric position vector array of the requested object.
+ * @param[out] target_vel   [AU/day] The barycentric velocity vector array of the requested
+ *                          object.
  *
- * @return            0 if successful, -1 if any of the pointer arguments is NULL, or else
- *                    1 if there was an error reading the ephemeris file,
- *                    or 2 if the epoch is out of range.
+ * @return            0 if successful, -1 if any of the pointer arguments is NULL, or else 1 if
+ *                    there was an error reading the ephemeris file, or 2 if the epoch is out of
+ *                    range.
  */
 short state(const double *jed, enum de_planet target, double *target_pos, double *target_vel) {
   static const char *fn = "state";
@@ -574,8 +569,7 @@ int interpolate(const double *buf, const double *t, long ncf, long na, double *p
 }
 
 /**
- * reaks up a double number into a double integer part and a fractional part.
- *
+ * Breaks up a double number into a double integer part and a fractional part.
  *
  * @param tt        Input number.
  * @param[out] fr   2-element output array; fr[0] contains integer part, fr[1] contains

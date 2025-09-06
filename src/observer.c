@@ -97,9 +97,9 @@ int make_observer_at_geocenter(observer *restrict obs) {
 }
 
 /**
- * Populates and 'on_surface' data structure with the specified location defining parameters
- * of the observer. The output data structure may be used an the the inputs to NOVAS-C
- * function 'place()'.
+ * Populates and 'on_surface' data structure with the specified location defining parameters of
+ * the observer. The output data structure may be used an the the inputs to NOVAS-C function
+ * 'place()'.
  *
  * NOTES:
  * <ol>
@@ -107,15 +107,14 @@ int make_observer_at_geocenter(observer *restrict obs) {
  * possibly after `novas_geodetic_to_cartesian()` with `NOVAS_GRS80_ELLIPSOID` as necessary for
  * polar ITRF coordinates.</li>
  * <li>You can convert ITRF Cartesian _xyz_ locations to geodetic locations by using
- * `novas_cartesian_to_geodetic()` with `NOVAS_GRS80_ELLIPSOID` as the reference
- * ellipsoid parameter.</li>
+ * `novas_cartesian_to_geodetic()` with `NOVAS_GRS80_ELLIPSOID` as the reference ellipsoid
+ * parameter.</li>
  * <li>If you have longitude, latitude, and height defined on a reference ellipsoid other than
  * GRS80, you can convert them first to Cartesian coordinates using
- * `novas_geodetic_to_cartesian()` with the appropriate reference ellipsoid parameter,
- * and subsequently to GRS80, as described above. For example, if you have GPS coordinates
- * you will need to use `NOVAS_WGS84_ELLIPSOID` as the reference ellipsoid for
- * converting to _xyz_ coordinates first, before conversion to geodetic coordinates
- * on the GRS80 ellipsoid.</li>
+ * `novas_geodetic_to_cartesian()` with the appropriate reference ellipsoid parameter, and
+ * subsequently to GRS80, as described above. For example, if you have GPS coordinates you will
+ * need to use `NOVAS_WGS84_ELLIPSOID` as the reference ellipsoid for converting to _xyz_
+ * coordinates first, before conversion to geodetic coordinates on the GRS80 ellipsoid.</li>
  * </ol>
  *
  * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
@@ -125,7 +124,7 @@ int make_observer_at_geocenter(observer *restrict obs) {
  * @param pressure      [mbar] Atmospheric pressure (millibars).
  * @param[out] obs      Pointer to the data structure to populate.
  *
- * @return          0 if successful, or -1 if the output argument is NULL.
+ * @return              0 if successful, or -1 if the output argument is NULL.
  *
  * @sa novas_cartesian_to_geodetic()
  * @sa novas_geodetic_to_cartesian()
@@ -167,34 +166,32 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
 }
 
 /**
- * Populates an 'on_surface' data structure, for an observer on the surface of the Earth, with
- * the given parameters.
+ * Populates an 'on_surface' data structure, for an observer on the surface of the Earth, with the
+ * given parameters.
  *
- * Note, that because this is an original NOVAS C routine, it does not have an argument to set
- * a humidity value (e.g. for radio refraction). As such, the humidity is set to zero
- * by this call. To set the humidity, set the output structure's field after calling this
- * funcion.
+ * Note, that because this is an original NOVAS C routine, it does not have an argument to set a
+ * humidity value (e.g. for radio refraction). As such, the humidity is set to zero by this call.
+ * To set the humidity, set the output structure's field after calling this funcion.
  *
  * NOTES
  * <ol>
  * <li>This implementation breaks strict v1.0 ABI compatibility since it writes to (initializes)
  * a field (`humidity`) that was not yet part of the `on_surface` structure in v1.0. As such,
- * linking SuperNOVAS v1.1 or later with application code compiled for SuperNOVAS v1.0 can
- * result in memory corruption or segmentation fault when this function is called. To be safe,
- * make sure your application has been (re)compiled against SuperNOVAS v1.1 or later.</li>
+ * linking SuperNOVAS v1.1 or later with application code compiled for SuperNOVAS v1.0 can result
+ * in memory corruption or segmentation fault when this function is called. To be safe, make sure
+ * your application has been (re)compiled against SuperNOVAS v1.1 or later.</li>
  * <li>You can convert coordinates among ITRF realization using `novas_itrf_transform()`,
  * possibly after `novas_geodetic_to_cartesian()` with `NOVAS_GRS80_ELLIPSOID` as necessary for
  * polar ITRF coordinates.</li>
  * <li>You can convert Cartesian _xyz_ locations to geodetic locations by using
  * `novas_cartesian_to_geodetic()` with `NOVAS_GRS80_ELLIPSOID` as the reference
  * ellipsoid parameter.</li>
- * <li>If you have longitude, latitude, and height defined on a reference
- * ellipsoid other than GRS80, you can convert them first to Cartesian coordinates using
- * `novas_geodetic_to_cartesian()` with the appropriate reference ellipsoid parameter,
- * and subsequently to GRS80, as described above. For example, if you have GPS coordinates
- * you will need to use `NOVAS_WGS84_ELLIPSOID` as the reference ellipsoid for
- * converting to _xyz_ coordinates first, before conversion to geodetic coordinates
- * on the GRS80 ellipsoid.
+ * <li>If you have longitude, latitude, and height defined on a reference ellipsoid other than
+ * GRS80, you can convert them first to Cartesian coordinates using
+ * `novas_geodetic_to_cartesian()` with the appropriate reference ellipsoid parameter, and
+ * subsequently to GRS80, as described above. For example, if you have GPS coordinates you will
+ * need to use `NOVAS_WGS84_ELLIPSOID` as the reference ellipsoid for converting to _xyz_
+ * coordinates first, before conversion to geodetic coordinates on the GRS80 ellipsoid.
  * </ol>
  *
  * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
@@ -241,13 +238,12 @@ int make_on_surface(double latitude, double longitude, double height, double tem
 
 /**
  * Populates an 'in_space' data structure, for an observer situated on a near-Earth spacecraft,
- * with the provided position and velocity components. Both input vectors are assumed with
- * respect to true equator and equinox of date.
+ * with the provided position and velocity components. Both input vectors are assumed with respect
+ * to true equator and equinox of date.
  *
- * @param sc_pos    [km] Geocentric (x, y, z) position vector in km. NULL defaults to the
- *                  origin
- * @param sc_vel    [km/s] Geocentric (x, y, z) velocity vector in km/s. NULL defaults to
- *                  zero speed.
+ * @param sc_pos    [km] Geocentric (x, y, z) position vector in km. NULL defaults to the origin
+ * @param sc_vel    [km/s] Geocentric (x, y, z) velocity vector in km/s. NULL defaults to zero
+ *                  speed.
  * @param[out] loc  Pointer to earth-orbit location data structure to populate.
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
@@ -278,7 +274,8 @@ int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc) {
  * defined by longitude, latitude, and altitude, the same was as for a stationary observer on
  * Earth, but are moving relative to the surface, such as in an aircraft or balloon observatory.
  *
- * @param location    Current longitude, latitude and altitude, and local weather (temperature and pressure)
+ * @param location    Current longitude, latitude and altitude, and local weather (temperature and
+ *                    pressure)
  * @param vel         [km/s] Surface velocity.
  * @param[out] obs    Pointer to data structure to populate.
  * @return            0 if successful, or -1 if the output argument is NULL.
@@ -314,7 +311,7 @@ int make_airborne_observer(const on_surface *location, const double *vel, observ
  * @param sc_pos        [AU] Solar-system barycentric (x, y, z) position vector in ICRS.
  * @param sc_vel        [AU/day] Solar-system barycentric (x, y, z) velocity vector in ICRS.
  * @param[out] obs      Pointer to the data structure to populate
- * @return          0 if successful, or -1 if the output argument is NULL.
+ * @return              0 if successful, or -1 if the output argument is NULL.
  *
  * @sa make_observer_in_space()
  * @sa make_observer_on_surface()
@@ -350,13 +347,12 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
  * </ol>
  *
  * @param pos         [AU]  Position vector of source relative to observer
- * @param vobs        [AU/day]  Velocity vector of observer, relative to the solar system barycenter,
- *                    components in AU/day.
- * @param lighttime   [day] Light time from object to Earth in days (if known). Or set to 0, and this
- *                    function will compute it.
- * @param[out] out    [AU] Position vector, referred to origin at center of mass of the
- *                    Earth, corrected for aberration, components in AU. It can be the same
- *                    vector as one of the inputs.
+ * @param vobs        [AU/day]  Velocity vector of observer, relative to the solar system
+ *                    barycenter.
+ * @param lighttime   [day] Light time from object to Earth in days (if known). Or set to 0, and
+ *                    this function will compute it.
+ * @param[out] out    [AU] Position vector, referred to origin at center of mass of the Earth,
+ *                    corrected for aberration. It can be the same vector as one of the inputs.
  *
  * @return            0 if successful, or -1 if any of the vector arguments are NULL.
  *
@@ -399,25 +395,26 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
 
 
 /**
- * Calculates the ICRS position and velocity of the observer relative to the Solar System Barycenter (SSB).
+ * Calculates the ICRS position and velocity of the observer relative to the Solar System
+ * Barycenter (SSB).
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date.
  * @param ut1_to_tt     [s] TT - UT1 time difference. Used only when 'location->where' is
  *                      NOVAS_OBSERVER_ON_EARTH (1) or NOVAS_OBSERVER_IN_EARTH_ORBIT (2).
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param obs           The observer location, relative to which the output positions and velocities
- *                      are to be calculated
+ * @param obs           The observer location, relative to which the output positions and
+ *                      velocities are to be calculated
  * @param geo_pos       [AU] ICRS position vector of the geocenter w.r.t. the Solar System
- *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be calculated
- *                      when needed.
+ *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be
+ *                      calculated when needed.
  * @param geo_vel       [AU/day] ICRS velocity vector of the geocenter w.r.t. the Solar System
  *                      Barycenter (SSB). If either geo_pos or geo_vel is NULL, it will be
  *                      calculated when needed.
  * @param[out] pos      [AU] Position 3-vector of the observer w.r.t. the Solar System Barycenter
  *                      (SSB). It may be NULL if not required.
  * @param[out] vel      [AU/day] Velocity 3-vector of the observer w.r.t. the Solar System
- *                      Barycenter (SSB). It must be distinct from the pos output vector, and may be
- *                      NULL if not required.
+ *                      Barycenter (SSB). It must be distinct from the pos output vector, and may
+ *                      be NULL if not required.
  * @return              0 if successful, or the error from geo_posvel(), or else -1 (with errno
  *                      indicating the type of error).
  *
@@ -515,7 +512,8 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  *                        as either of the inputs.
  * @param[out] lighttime  [day] Light time from object to Earth in days. It may be NULL if not
  *                        required.
- * @return                0 if successful, or -1 if any of the essential pointer arguments is NULL.
+ * @return                0 if successful, or -1 if any of the essential pointer arguments is
+ *                        NULL.
  *
  * @sa place()
  * @sa light_time2()
@@ -542,29 +540,27 @@ int bary2obs(const double *pos, const double *pos_obs, double *out, double *rest
 }
 
 /**
- * Calculates the positions and velocities for the Solar-system bodies, e.g. for use for graviational
- * deflection calculations. The planet positions are calculated relative to the observer location, while
- * velocities are w.r.t. the SSB. Both positions and velocities are antedated for light travel time, so
- * they accurately reflect the apparent position (and barycentric motion) of the bodies from the
- * observer's perspective.
+ * Calculates the positions and velocities for the Solar-system bodies, e.g. for use for
+ * gravitational deflection calculations. The planet positions are calculated relative to the
+ * observer location, while velocities are w.r.t. the SSB. Both positions and velocities are
+ * antedated for light travel time, so they accurately reflect the apparent position (and
+ * barycentric motion) of the bodies from the observer's perspective.
  *
  *
  * @param jd_tdb        [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1). In full accuracy
- *                      mode, it will calculate the deflection due to the Sun, Jupiter, Saturn
- *                      and Earth. In reduced accuracy mode, only the deflection due to the
- *                      Sun is calculated.
+ *                      mode, it will calculate the deflection due to the Sun, Jupiter, Saturn and
+ *                      Earth. In reduced accuracy mode, only the deflection due to the Sun is
+ *                      calculated.
  * @param pos_obs       [AU] Position 3-vector of observer (or the geocenter), with respect to
- *                      origin at solar system barycenter, referred to ICRS axes,
- *                      components in AU.
+ *                      origin at solar system barycenter, referred to ICRS axes.
  * @param pl_mask       Bitwise `(1 << planet-number)` mask indicating which planets to request
  *                      data for. See enum novas_planet for the enumeration of planet numbers.
- * @param[out] planets  Pointer to apparent planet data to populate.
- *                      have positions and velocities calculated successfully. See enum
+ * @param[out] planets  Pointer to apparent planet data to populate. The planets with non-zero
+ *                      mask bits will have have positions and velocities calculated. See enum
  *                      novas_planet for the enumeration of planet numbers.
- * @return              0 if successful, -1 if any of the pointer arguments is NULL
- *                      or if the output vector is the same as pos_obs, or the error from
- *                      ephemeris().
+ * @return              0 if successful, -1 if any of the pointer arguments is NULL or if the
+ *                      output vector is the same as pos_obs, or the error from ephemeris().
  *
  * @sa enum novas_planet
  * @sa grav_planets()
@@ -650,9 +646,9 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restr
  * and distance for the time when the observed light originated from the source.</li>
  * </ol>
  *
- * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date
- * @param body        Pointer to structure containing the designation for the solar system
- *                    body
+ * @param jd_tdb          [day] Barycentric Dynamical Time (TDB) based Julian date
+ * @param body            Pointer to structure containing the designation for the solar system
+ *                        body
  * @param pos_obs         [AU] Position 3-vector of observer (or the geocenter), with respect
  *                        to origin at solar system barycenter, referred to ICRS axes,
  *                        components in AU.
@@ -732,22 +728,20 @@ int light_time2(double jd_tdb, const object *restrict body, const double *restri
  *
  *
  * @param jd_tdb      [day] Barycentric Dynamical Time (TDB) based Julian date
- * @param body        Pointer to structure containing the designation for the solar system
- *                    body
- * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect
- *                    to origin at solar system barycenter, referred to ICRS axes,
- *                    components in AU.
- * @param tlight0     [day] First approximation to light-time, in days (can be set to 0.0
- *                    if unknown).
+ * @param body        Pointer to structure containing the designation for the solar system body
+ * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
+ *                    origin at solar system barycenter, referred to ICRS axes.
+ * @param tlight0     [day] First approximation to light-time, in days (can be set to 0.0 if
+ *                    unknown).
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] pos_src_obs    [AU] Position 3-vector of body, with respect to origin at observer (or
- *                            the geocenter), referred to ICRS axes, components in AU. It can be the
- *                            same vector as either of the inputs.
+ * @param[out] pos_src_obs    [AU] Position 3-vector of body, with respect to origin at observer
+ *                            (or the geocenter), referred to ICRS axes. It can be the same vector
+ *                            as either of the inputs.
  * @param[out] tlight [day] Calculated light time
  *
  * @return            0 if successful, -1 if any of the poiinter arguments is NULL, 1 if the
- *                    algorithm failed to converge after 10 iterations, or 10 + the error
- *                    from ephemeris().
+ *                    algorithm failed to converge after 10 iterations, or 10 + the error from
+ *                    ephemeris().
  *
  * @sa light_time2()
  * @sa place()
@@ -768,8 +762,8 @@ short light_time(double jd_tdb, const object *restrict body, const double *pos_o
  * @param lat         [deg] Line-of-sight latitude.
  * @param[out] xyz    [arb.u.] Output rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z),
  *                    in the same units as the input. It may be the same vector as the input.
- * @return            0 if successful, or else -1 if either vector argument is NULL (errno will
- *                    be set to EINVAL).
+ * @return            0 if successful, or else -1 if either vector argument is NULL (errno will be
+ *                    set to EINVAL).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -821,10 +815,11 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
  * @param xyz         [arb.u.] Rectangular equatorial 3-vector (&delta;x, &delta;y, &delta;z).
  * @param lon         [deg] Line-of-sight longitude.
  * @param lat         [deg] Line-of-sight latitude.
- * @param[out] los    [arb.u.] Output line-of-sight 3-vector (&delta;&phi;, &delta;&theta; &delta;r),
- *                    in the same units as the input. It may be the same vector as the input.
- * @return            0 if successful, or else -1 if either vector argument is NULL (errno will
- *                    be set to EINVAL).
+ * @param[out] los    [arb.u.] Output line-of-sight 3-vector (&delta;&phi;, &delta;&theta;
+ *                    &delta;r), in the same units as the input. It may be the same vector as the
+ *                    input.
+ * @return            0 if successful, or else -1 if either vector argument is NULL (errno will be
+ *                    set to EINVAL).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -876,20 +871,20 @@ int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
  * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian, in the ITRS frame. The directions
  * are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.
  *
- * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as
- * seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS)
- * coordinates.
+ * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination
+ * directions as seen from a direction on the sky (w). As such, they are effectively ITRS-based
+ * line-of-sight (LOS) coordinates.
  *
  * @param xyz           [arb.u.] Absolute or relative x,y,z coordinates (double[3]).
- * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local
- *                      (apparent) Sidereal Time and the apparent (true-of-date) Right
- *                      Ascension of observed source.
+ * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local (apparent)
+ *                      Sidereal Time and the apparent (true-of-date) Right Ascension of observed
+ *                      source.
  * @param dec           [deg] Apparent (true-of-date) declination of source
  * @param[out] uvw      [arb.u.] Converted u,v,w coordinates (double[3]) in same units as xyz.
  *                      It may be the same vector as the input.
  *
- * @return              0 if successful, or else -1 if either vector argument is NULL
- *                      (errno will be set to EINVAL)
+ * @return              0 if successful, or else -1 if either vector argument is NULL (errno will
+ *                      be set to EINVAL)
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -905,17 +900,17 @@ int novas_xyz_to_uvw(const double *xyz, double ha, double dec, double *uvw) {
  * Converts equatorial u,v,w projected (absolute or relative) coordinates to rectangular telescope
  * x,y,z coordinates (in ITRS) to for a specified line of sight.
  *
- * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination directions as
- * seen from a direction on the sky (w). As such, they are effectively ITRS-based line-of-sight (LOS)
- * coordinates.
+ * u,v,w are Cartesian coordinates (u,v) along the local equatorial R.A. and declination
+ * directions as seen from a direction on the sky (w). As such, they are effectively ITRS-based
+ * line-of-sight (LOS) coordinates.
  *
- * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian in the ITRS frame. The directions are
- * x: long=0, lat=0; y: long=90, lat=0; z: lat=90.
+ * x,y,z are Cartesian coordinates w.r.t the Greenwich meridian in the ITRS frame. The directions
+ * are x: long=0, lat=0; y: long=90, lat=0; z: lat=90.
  *
  * @param xyz           [arb.u.] Absolute or relative u,v,w coordinates (double[3]).
- * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local
- *                      (apparent) Sidereal Time and the apparent (true-of-date) Right
- *                      Ascension of observed source.
+ * @param ha            [h] Hourangle (LST - RA) i.e., the difference between the Local (apparent)
+ *                      Sidereal Time and the apparent (true-of-date) Right Ascension of observed
+ *                      source.
  * @param dec           [deg] Apparent (true-of-date) declination of source
  * @param[out] uvw      [arb.u.] Converted x,y,z coordinates (double[3]) in the same unit as uvw.
  *                      It may be the same vector as the input.
@@ -934,19 +929,21 @@ int novas_uvw_to_xyz(const double *uvw, double ha, double dec, double *xyz) {
 }
 
 /**
- * Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the sky. The PA
- * is the angle between the local horizontal coordinate directions and the local true-of-date equatorial
- * coordinate directions at the given location. The polar wobble is not included in the calculation.
+ * Returns the horizontal Parallactic Angle (PA) calculated for a gorizontal Az/El location of the
+ * sky. The PA is the angle between the local horizontal coordinate directions and the local
+ * true-of-date equatorial coordinate directions at the given location. The polar wobble is not
+ * included in the calculation.
  *
- * The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the
- * same quantity.
+ * The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both
+ * define the same quantity.
  *
  * @param az    [deg] Azimuth angle
  * @param el    [deg] Elevation angle
  * @param lat   [deg] Geodetic latitude of observer
- * @return      [deg] Parallactic Angle (PA). I.e., the clockwise position angle of the declination direction
- *              w.r.t. the elevation axis in the horizontal system. Same as the the clockwise position angle
- *              of the elevation direction w.r.t. the declination axis in the equatorial system.
+ * @return      [deg] Parallactic Angle (PA). I.e., the clockwise position angle of the
+ *              declination direction w.r.t. the elevation axis in the horizontal system. Same as
+ *              the the clockwise position angle of the elevation direction w.r.t. the declination
+ *              axis in the equatorial system.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -968,21 +965,23 @@ double novas_hpa(double az, double el, double lat) {
 }
 
 /**
- * Returns the equatorial Parallactic Angle (PA) calculated for an R.A./Dec location of the sky at a given
- * sidereal time. The PA is the angle between the local horizontal coordinate directions and the local
- * true-of-date equatorial coordinate directions, at the given location and time. The polar wobble is not
- * included in the calculation.
+ * Returns the equatorial Parallactic Angle (PA) calculated for an R.A./Dec location of the sky at
+ * a given sidereal time. The PA is the angle between the local horizontal coordinate directions
+ * and the local true-of-date equatorial coordinate directions, at the given location and time.
+ * The polar wobble is not included in the calculation.
  *
- * The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both define the
- * same quantity.
+ * The Parallactic Angle is sometimes referrred to as the Vertical Position Angle (VPA). Both
+ * define the same quantity.
  *
- * @param ha      [h] Hour angle (LST - RA) i.e., the difference between the Local (apparent) Sidereal Time
- *                and the apparent (true-of-date) Right Ascension of observed source.
+ * @param ha      [h] Hour angle (LST - RA) i.e., the difference between the Local (apparent)
+ *                Sidereal Time and the apparent (true-of-date) Right Ascension of observed
+ *                source.
  * @param dec     [deg] Apparent (true-of-date) declination of observed source
  * @param lat     [deg] Geodetic latitude of observer
- * @return        [deg] Parallactic Angle (PA). I.e., the clockwise position angle of the elevation direction
- *                w.r.t. the declination axis in the equatorial system. Same as the clockwise position angle
- *                of the declination direction w.r.t. the elevation axis, in the horizontal system.
+ * @return        [deg] Parallactic Angle (PA). I.e., the clockwise position angle of the
+ *                elevation direction w.r.t. the declination axis in the equatorial system. Same
+ *                as the clockwise position angle of the declination direction w.r.t. the
+ *                elevation axis, in the horizontal system.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1019,8 +1018,8 @@ double novas_epa(double ha, double dec, double lat) {
  * @param[out] dra    [arcsec] Output offset position in the local true-of-date R.A. direction. It
  *                    can be a pointer to one of the input coordinates, or NULL if not required.
  * @param[out] ddec   [arcsec] Output offset position in the local true-of-date declination
- *                    direction. It can be a pointer to one of the input coordinates, or NULL if not
- *                    required.
+ *                    direction. It can be a pointer to one of the input coordinates, or NULL if
+ *                    not required.
  * @return            0
  *
  * @since 1.3
@@ -1054,15 +1053,14 @@ int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, do
  * <li>Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395, 1077-1122.</li>
  * </ol>
  *
- * @param dra         [arcsec] Projected ffset position in the apparent true-of-date R.A. direction.
- *                    E.g. The projected offset between two RA coordinates at a same reference
- *                    declination, is
- *                    &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>)
+ * @param dra         [arcsec] Projected ffset position in the apparent true-of-date R.A.
+ *                    direction. E.g. The projected offset between two RA coordinates at a same
+ *                    reference declination, is &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>).
  * @param ddec        [arcsec] Projected offset position in the apparent true-of-date declination
  *                    direction.
  * @param pa          [deg] Parallactic Angle
- * @param[out] daz    [arcsec] Output offset position in the local azimuth direction. It can be a pointer
- *                    to one of the input coordinates, or NULL if not required.
+ * @param[out] daz    [arcsec] Output offset position in the local azimuth direction. It can be a
+ *                    pointer to one of the input coordinates, or NULL if not required.
  * @param[out] del    [arcsec] Output offset position in the local elevation direction. It can be a
  *                    pointer to one of the input coordinates, or NULL if not required.
  * @return            0

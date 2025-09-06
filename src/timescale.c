@@ -1129,7 +1129,6 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
 /**
  * Parses an astronomical date/time string into a Julian date specification.
  *
- *
  * The date must be YMD-type with full year, followed the month (numerical or name or 3-letter
  * abbreviation), and the day. The components may be separated by dash `-`, underscore `_`, dot
  * `.`,  slash '/', or spaces/tabs, or any combination thereof. The date may be followed by a time
@@ -1166,9 +1165,10 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * </oL>
  *
  * @param date        The astronomical date specification, possibly including time and timezone,
- *                    in a standard format. The date is assumed to be in the astronomical calendar of
- *                    date, which differs from ISO 8601 timestamps for dates prior to the
- *                    Gregorian calendar reform of 1582 October 15 (otherwise, the two are identical).
+ *                    in a standard format. The date is assumed to be in the astronomical calendar
+ *                    of date, which differs from ISO 8601 timestamps for dates prior to the
+ *                    Gregorian calendar reform of 1582 October 15 (otherwise, the two are
+ *                    identical).
  * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
  *                    after the parsed time.
  *
@@ -1230,10 +1230,10 @@ double novas_parse_iso_date(const char *restrict date, char **restrict tail) {
 }
 
 /**
- * Returns a Julian date (in non-specific timescale) corresponding the specified input
- * string date/time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility
- * on how the date is represented as long as it's YMD date followed by HMS time. For
- * other date formats (MDY or DMY) you can use `novas_parse_date_format()` instead.
+ * Returns a Julian date (in non-specific timescale) corresponding the specified input string date
+ * / time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility on how the date is
+ * represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY)
+ * you can use `novas_parse_date_format()` instead.
  *
  * @param date  The date specification, possibly including time and timezone, in a standard
  *              format. See novas_parse_date() on more information on acceptable date/time
@@ -1258,17 +1258,17 @@ double novas_date(const char *restrict date) {
 }
 
 /**
- * Returns a Julian date and the timescale corresponding the specified input string date/time
- * and timescale marker. E.g. for "2025-02-28T09:41:12.041+0200 TAI", with some flexibility on
- * how the date is represented as long as it's YMD date followed by HMS time. For other date
- * formats (MDY or DMY) you can use `novas_parse_date_format()` instead.
+ * Returns a Julian date and the timescale corresponding the specified input string date/time and
+ * timescale marker. E.g. for "2025-02-28T09:41:12.041+0200 TAI", with some flexibility on how the
+ * date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY
+ * or DMY) you can use `novas_parse_date_format()` instead.
  *
  * @param date          The date specification, possibly including time and timezone, in a
  *                      standard format. See novas_parse_date() on more information on
  *                      acceptable date/time formats.
  * @param[out] scale    The timescale constant, or else -1 if the string could not be parsed
- *                      into a date and timescale. If the string is a bare timestamp without
- *                      an hint of a timescale marker, then NOVAS_UTC will be assumed.
+ *                      into a date and timescale. If the string is a bare timestamp without a
+ *                      hint of a timescale marker, then NOVAS_UTC will be assumed.
  * @return      [day] The Julian Day corresponding to the string date/time specification or
  *              NAN if the string is NULL or if it does not specify a date/time in the
  *              expected format.
@@ -1333,8 +1333,7 @@ static int timestamp(long ijd, double fjd, enum novas_calendar_type cal, char *b
 }
 
 /**
- * Prints a UTC-based ISO timestamp to millisecond precision to the specified string buffer.
- * E.g.:
+ * Prints a UTC-based ISO timestamp to millisecond precision to the specified string buffer. E.g.:
  *
  * <pre>
  *  2025-01-26T21:32:49.701Z
@@ -1350,14 +1349,14 @@ static int timestamp(long ijd, double fjd, enum novas_calendar_type cal, char *b
  * </ol>
  *
  * @param time      Pointer to the astronomical time specification data structure.
- * @param[out] dst  Output string buffer. At least 25 bytes are required for a complete
- *                  timestamp with termination.
- * @param maxlen    The maximum number of characters that can be printed into the output
- *                  buffer, including the string termination. If the full ISO timestamp
- *                  is longer than `maxlen`, then it will be truncated to fit in the allotted
- *                  space, including a termination character.
- * @return          the number of characters printed into the string buffer, not including
- *                  the termination. As such it is at most `maxlen - 1`.
+ * @param[out] dst  Output string buffer. At least 25 bytes are required for a complete timestamp
+ *                  with termination.
+ * @param maxlen    The maximum number of characters that can be printed into the output buffer,
+ *                  including the string termination. If the full ISO timestamp is longer than
+ *                  `maxlen`, then it will be truncated to fit in the allotted space, including a
+ *                  termination character.
+ * @return          the number of characters printed into the string buffer, not including the
+ *                  termination. As such it is at most `maxlen - 1`.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1402,8 +1401,8 @@ int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst,
 
 /**
  * Prints an astronomical timestamp to millisecond precision in the specified timescale to the
- * specified string buffer. It differs from ISO 8601 timestamps for dates prior to the
- * Gregorian calendar reform of 1582 October 15 (otherwise two are identical). E.g.:
+ * specified string buffer. It differs from ISO 8601 timestamps for dates prior to the Gregorian
+ * calendar reform of 1582 October 15 (otherwise two are identical). E.g.:
  *
  * <pre>
  *  2025-01-26T21:32:49.701 TAI
@@ -1411,25 +1410,25 @@ int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst,
  *
  * NOTES:
  * <ol>
- * <li>The timestamp uses the astronomical date. That is Gregorian dates after the
- * Gregorian calendar reform of 15 October 1582, and Julian/Roman dates prior to that.
- * This is in contrast to ISO 8601 timestamps, which use Gregorian dates even for dates
- * the precede the calendar reform that introduced them.</li>
+ * <li>The timestamp uses the astronomical date. That is Gregorian dates after the Gregorian
+ * calendar reform of 15 October 1582, and Julian/Roman dates prior to that. This is in contrast
+ * to ISO 8601 timestamps, which use Gregorian dates even for dates the precede the calendar
+ * reform that introduced them.</li>
  *
- * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601
+ * convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </ol>
  *
  * @param time      Pointer to the astronomical time specification data structure.
  * @param scale     The timescale to use.
- * @param[out] dst  Output string buffer. At least 28 bytes are required for a complete
- *                  timestamp with termination.
- * @param maxlen    The maximum number of characters that can be printed into the output
- *                  buffer, including the string termination. If the full ISO timestamp
- *                  is longer than `maxlen`, then it will be truncated to fit in the allotted
- *                  space, including a termination character.
- * @return          the number of characters printed into the string buffer, not including
- *                  the termination. As such it is at most `maxlen - 1`.
+ * @param[out] dst  Output string buffer. At least 28 bytes are required for a complete timestamp
+ *                  with termination.
+ * @param maxlen    The maximum number of characters that can be printed into the output buffer,
+ *                  including the string termination. If the full ISO timestamp is longer than
+ *                  `maxlen`, then it will be truncated to fit in the allotted space, including a
+ *                  termination character.
+ * @return          the number of characters printed into the string buffer, not including the
+ *                  termination. As such it is at most `maxlen - 1`.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1473,15 +1472,14 @@ int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale sc
 }
 
 /**
- * Prints the standard string representation of the timescale to the specified buffer. The
- * string is terminated after. E.g. "UTC", or "TAI". It will print dates in the Gregorian
- * calendar, which was introduced in was introduced on 15 October 1582 only. Thus the
+ * Prints the standard string representation of the timescale to the specified buffer. The string
+ * is terminated after. E.g. "UTC", or "TAI". It will print dates in the Gregorian calendar, which
+ * was introduced in was introduced on 15 October 1582 only. Thus the
  *
  * @param scale   The timescale
- * @param buf     String in which to print. It should have at least 4-bytes of available
- *                storage.
- * @return        the number of characters printed, not including termination, or else -1
- *                if the timescale is invalid or the output buffer is NULL.
+ * @param buf     String in which to print. It should have at least 4-bytes of available storage.
+ * @return        the number of characters printed, not including termination, or else -1 if the
+ *                timescale is invalid or the output buffer is NULL.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1520,15 +1518,14 @@ int novas_print_timescale(enum novas_timescale scale, char *restrict buf) {
 }
 
 /**
- * Returns the timescale constant for a string that denotes the timescale in
- * with a standard abbreviation (case insensitive). The following values are
- * recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET",
- * "TCG", "TCB", "TDB".
+ * Returns the timescale constant for a string that denotes the timescale in with a standard
+ * abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0",
+ * "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", and "TDB".
  *
  * @param str     String specifying an astronomical timescale
- * @return        The SuperNOVAS timescale constant (&lt;=0), or else -1 if
- *                the string was NULL, empty, or could not be matched to
- *                a timescale value (errno will be set to EINVAL also).
+ * @return        The SuperNOVAS timescale constant (&lt;=0), or else -1 if the string was NULL,
+ *                empty, or could not be matched to a timescale value (errno will be set to EINVAL
+ *                also).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1623,13 +1620,14 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
 }
 
 /**
- * Returns the Greenwich (apparent) Sidereal Time (GST/GaST) for a given astronomical time specification.
- * If you need mean sidereal time (GMST), you should use sidereal_time() instead.
+ * Returns the Greenwich (apparent) Sidereal Time (GST/GaST) for a given astronomical time
+ * specification. If you need mean sidereal time (GMST), you should use sidereal_time() instead.
  *
  * @param time      The astronomoical time specification.
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
- * @return          [h] The Greenwich apparent Sidereal Time (GST / GaST) in the [0:24) hour range, or else
- *                  NAN if there was an error (`errno` will indicate the type of error).
+ * @return          [h] The Greenwich apparent Sidereal Time (GST / GaST) in the [0:24) hour
+ *                  range, or else NAN if there was an error (`errno` will indicate the type of
+ *                  error).
  *
  * @since 1.4
  * @author Attila Kovacs
@@ -1648,14 +1646,14 @@ double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy a
 }
 
 /**
- * Returns the Local (apparent) Sidereal Time (LST/LaST) for a given astronomical time specification and
- * observer location.
+ * Returns the Local (apparent) Sidereal Time (LST/LaST) for a given astronomical time
+ * specification and observer location.
  *
  * @param time      The astronomoical time specification.
  * @param lon       [deg] The geodetic longitude of the observer.
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
- * @return          [h] The Local apparent Sidereal Time (LST / LaST) in the [0:24) hour range, or else
- *                  NAN if there was an error (`errno` will indicate the type of error).
+ * @return          [h] The Local apparent Sidereal Time (LST / LaST) in the [0:24) hour range, or
+ *                  else NAN if there was an error (`errno` will indicate the type of error).
  *
  * @since 1.4
  * @author Attila Kovacs
@@ -1678,8 +1676,9 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
  * calculation. For example, if the position is the geocenter (or well below the Earth's surface),
  * then the calculation will not include Earth potential.
  *
- * In reduced accuracy mode, the result may be approximate, as only the bodies with known positions
- * are included. The gravitational potential due to the Sun and Earth are always included.
+ * In reduced accuracy mode, the result may be approximate, as only the bodies with known
+ * positions are included. The gravitational potential due to the Sun and Earth are always
+ * included.
  *
  * @param frame   The observing frame, defining the observer position as well as the positions
  *                of the major solar-system bodies at the time of observation.
@@ -1724,14 +1723,14 @@ static double solar_system_potential(const novas_frame *frame, const double *pos
 }
 
 /**
- * Returns the first derivative of the Solar-system gravitational potential die to the major planets, the Sun,
- * and the Moon.
+ * Returns the first derivative of the Solar-system gravitational potential die to the major
+ * planets, the Sun, and the Moon.
  *
  * @param frame     The observing frame, defining the observer position as well as the positions
  *                  of the major solar-system bodies at the time of observation.
  * @param pos       [AU] The BCRS position of at which to estimate the tidal potential.
- * @param[out] V1   [1/AU] The _xyz_ gradient of the dimensionless potential in rectangular equatorial
- *                  coordinates.
+ * @param[out] V1   [1/AU] The _xyz_ gradient of the dimensionless potential in rectangular
+ *                  equatorial coordinates.
  */
 static void solar_system_tidal_potential(const novas_frame *frame, const double *pos, double *V1) {
   const double eps = 1e-6;  // [AU] ~ 150 km...
@@ -1772,13 +1771,13 @@ static double kinetic_potential(double b) {
 }
 
 /**
- * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than
- * a TCG clock. I.e., it returns _D_, which is defined by:
+ * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks
+ * faster than a TCG clock. I.e., it returns _D_, which is defined by:
  *
  * d&tau<sub>obs</sub>; / dTCG = (1 + _D_)
  *
- * @param frame         The observing frame, defining the observer position as well as the positions
- *                      of the major solar-system bodies at the time of observation.
+ * @param frame         The observing frame, defining the observer position as well as the
+ *                      positions of the major solar-system bodies at the time of observation.
  * @return              _D_.
  */
 static double clock_skew_near_earth(const novas_frame *frame) {
@@ -1803,14 +1802,14 @@ static double clock_skew_near_earth(const novas_frame *frame) {
 }
 
 /**
- * Returns the incremenral rate at which an Earth-bound observer's clock (i.e. proper time &tau;) ticks
- * faster due to the local tidal potential around Earth (mainly due to the Sun and Moon). I.e.,
- * it returns _D_, which is defined by:
+ * Returns the incremenral rate at which an Earth-bound observer's clock (i.e. proper time &tau;)
+ * ticks faster due to the local tidal potential around Earth (mainly due to the Sun and Moon).
+ * I.e., it returns _D_, which is defined by:
  *
  * d&tau<sub>tidal</sub>; / d&tau<sub>obs</sub>; = (1 + _D_)
  *
- * @param frame         The observing frame, defining the observer position as well as the positions
- *                      of the major solar-system bodies at the time of observation.
+ * @param frame         The observing frame, defining the observer position as well as the
+ *                      positions of the major solar-system bodies at the time of observation.
  * @return              _D_.
  */
 static double tidal_clock_skew(const novas_frame *frame) {
@@ -1838,25 +1837,26 @@ static double tidal_clock_skew(const novas_frame *frame) {
 }
 
 /**
- * Returns the instantaneous incremental rate at which the observer's clock (i.e. proper time &tau;) ticks
- * faster than a clock in the specified timescale. I.e., it returns _D_, which is defined by:
+ * Returns the instantaneous incremental rate at which the observer's clock (i.e. proper time
+ * &tau;) ticks faster than a clock in the specified timescale. I.e., it returns _D_, which is
+ * defined by:
  *
  * d&tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + _D_)
  *
- * The instantaneous difference in clock rate reflects a tiny diurnal variation for Earth based observers, and
- * a slight variation for near-Earth observers over the orbital period, as the observer cycles around the
- * tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based
- * timescales (TCG, TT, TAI, GPS, or UTC) you will want the averaged observer clock rate over the geocentric
- * cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions), which is provided by `novas_mean_clock_skew()`
- * instead.
+ * The instantaneous difference in clock rate reflects a tiny diurnal variation for Earth-based
+ * observers, and a slight variation for near-Earth observers over the orbital period, as the
+ * observer cycles around the tidal potential around the geocenter (mainly due to the Sun and
+ * Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you will want
+ * the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS
+ * Conventions), which is provided by `novas_mean_clock_skew()` instead.
  *
- * For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun
- * and Earth alone may be accounted for.
+ * For reduced accuracy frames, the result will be approximate, because the gravitational effect
+ * of the Sun and Earth alone may be accounted for.
  *
  * NOTES:
  * <ol>
- * <li>Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but not excluding the near-Earth tidal
- * effects, and modified for relativistic observer motion.</li>
+ * <li>Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but not excluding the
+ * near-Earth tidal effects, and modified for relativistic observer motion.</li>
  * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's center
  * will not include the term for that body in the calculation.</li>
  * </ol>
@@ -1868,13 +1868,14 @@ static double tidal_clock_skew(const novas_frame *frame) {
  *
  * @param frame       The observing frame, defining the observer position as well as the positions
  *                    of the major solar-system bodies at the time of observation.
- * @param timescale   Reference timescale for the comparison. All timescales, except `NOVAS_UT1`, are supported.
- *                    (UT1 advances at an irregular rate).
- * @return            The incremental rate at which the observer's proper time clock ticks faster than
- *                    the specified timescale, or else NAN if the input frame is NULL or uninitialized, or if
- *                    the timescale is not supported (errno set to EINVAL), or if the frame is configured for
- *                    full accuracy but it does not have sufficient planet position information to evaluate
- *                    the local gravitational potential with precision (errno set to EAGAIN).
+ * @param timescale   Reference timescale for the comparison. All timescales except `NOVAS_UT1`
+ *                    are supported. (UT1 advances at an irregular rate).
+ * @return            The incremental rate at which the observer's proper time clock ticks faster
+ *                    than the specified timescale, or else NAN if the input frame is NULL or
+ *                    uninitialized, or if the timescale is not supported (errno set to EINVAL),
+ *                    or if the frame is configured for full accuracy but it does not have
+ *                    sufficient planet position information to evaluate the local gravitational
+ *                    potential with precision (errno set to EAGAIN).
  *
  * @since 1.5
  * @author Attila Kovacs
@@ -1940,27 +1941,29 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
 }
 
 /**
- * Returns the averaged incremental rate at which the observer's clock (i.e. proper time &tau;) ticks
- * faster than a clock in the specified timescale. I.e., it returns _D_, which is defined by:
+ * Returns the averaged incremental rate at which the observer's clock (i.e. proper time &tau;)
+ * ticks faster than a clock in the specified timescale. I.e., it returns _D_, which is defined
+ * by:
  *
  * d&tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + _D_)
  *
- * This is the same as the instantaneous rate (see `novas_clock_skew()`) for a non-Earth-bound observer.
- * For observers on, or near, Earth however, this function returns the averaged value over the observer's
- * rotation around the geocenter. As such it filters out the tiny diurnal tidal variations for Earth-based
- * observers, or the variation over and orbital period for near-Earth observers, as the observer moves
- * through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound
- * observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.
+ * For a non-Earth-bound observer, this is the same as the instantaneous rate returned by
+ * `novas_clock_skew()`. For an Earth-bound observer however, this function returns the averaged
+ * value over the observer's rotation around the geocenter. As such it filters out the tiny
+ * diurnal tidal variations for Earth-based observers, or the variation over an orbital period
+ * for near-Earth observers, as the observer moves through the tidal potential around the
+ * geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs.
+ * 10.6 and 10.8 of the IERS Conventions.
  *
- * For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun
- * and Earth alone may be accounted for.
+ * For reduced accuracy frames, the result will be approximate, because the gravitational effect
+ * of the Sun and Earth alone may be accounted for.
  *
  * NOTES:
  * <ol>
- * <li>Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but modified for relativistic observer
- * motion.</li>
- * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's center
- * will not include the term for that body in the calculation.</li>
+ * <li>Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but modified for
+ * relativistic observer motion.</li>
+ * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's
+ * center will not include the term for that body in the calculation.</li>
  * </ol>
  *
  * REFERENCES:
@@ -1970,14 +1973,15 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
  *
  * @param frame       The observing frame, defining the observer position as well as the positions
  *                    of the major solar-system bodies at the time of observation.
- * @param timescale   Reference timescale for the comparison. All timescales are supported, except `NOVAS_UT1`
- *                    (since UT1 advances at an irregular rate).
- * @return            The average incremental rate over a geocentric rotation, at which the observer's proper
- *                    time clock ticks faster than the specified timescale, or else NAN if the input frame is
- *                    NULL or uninitialized, or if the timescale is not supported (errno set to EINVAL), or
- *                    if the frame is configured for full accuracy but it does not have sufficient planet
- *                    position information to evaluate of the local gravitational potential with precision
- *                    (errno set to EAGAIN).
+ * @param timescale   Reference timescale for the comparison. All timescales are supported, except
+ *                    `NOVAS_UT1` (since UT1 advances at an irregular rate).
+ * @return            The average incremental rate over a geocentric rotation, at which the
+ *                    observer's proper time clock ticks faster than the specified timescale, or
+ *                    else NAN if the input frame is NULL or uninitialized, or if the timescale is
+ *                    not supported (errno set to EINVAL), or if the frame is configured for full
+ *                    accuracy but it does not have sufficient planet position information to
+ *                    evaluate of the local gravitational potential with precision (errno set to
+ *                    EAGAIN).
  *
  * @since 1.5
  * @author Attila Kovacs

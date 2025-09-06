@@ -164,15 +164,15 @@ static int iau2006_fp(double jd_tt_high, double jd_tt_low, int nA0, int nA1, int
 }
 
 /**
- * Computes the IAU 2000A high-precision nutation series for the specified date, to 0.1 &mu;as accuracy.
- * It is rather expensive computationally.
+ * Computes the IAU 2000A high-precision nutation series for the specified date, to 0.1 &mu;as
+ * accuracy. It is rather expensive computationally.
  *
  * NOTES:
  * <ol>
  * <li>As of SuperNOVAS v1.4.2, this function has been modified to replace the original IAU2000A
- * model coefficients with the IAU2006 (a.k.a. IAU2000A R06) model coefficients, to provide
- * an updated nutation model, which is dynamically consistent with the IAU2006 (P03) precesion
- * model of Capitaine et al. 2003. This is now the same model with respect to which the IERS Earth
+ * model coefficients with the IAU2006 (a.k.a. IAU2000A R06) model coefficients, to provide an
+ * updated nutation model, which is dynamically consistent with the IAU2006 (P03) precesion model
+ * of Capitaine et al. 2003. This is now the same model with respect to which the IERS Earth
  * orinetation parameters are computed and published.
  * </ol>
  *
@@ -185,15 +185,15 @@ static int iau2006_fp(double jd_tt_high, double jd_tt_low, int nA0, int nA1, int
  * </ol>
  *
  * @param jd_tt_high  [day] High-order part of the Terrestrial Time (TT) based Julian date.
- *                    Typically it may be the integer part of a split date for the highest precision,
- *                    or the full date for normal (reduced) precision.
- * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date. Typically
- *                    it may be the fractional part of a split date for the highest precision, or 0.0
- *                    for normal (reduced) precision.
- * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in radians.
- *                    It may be NULL if not required.
- * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity, in
- *                    radians. It may be NULL if not required.
+ *                    Typically it may be the integer part of a split date for the highest
+ *                    precision, or the full date for normal (reduced) precision.
+ * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date.
+ *                    Typically, it may be the fractional part of a split date for the highest
+ *                    precision, or 0.0 for normal (reduced) precision.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude. It may be
+ *                    NULL if not required.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity. It
+ *                    may be NULL if not required.
  * @return            0
  *
  * @sa iau2000b()
@@ -208,21 +208,21 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
 }
 
 /**
- * Computes the forced nutation of the non-rigid Earth based at reduced precision. It reproduces the
- * IAU 2000A (R06) model to a precision of 1 milliarcsecond in the interval 1995-2020, while being
- * about 15x faster than `iau2000a()`.
+ * Computes the forced nutation of the non-rigid Earth based at reduced precision. It reproduces
+ * the IAU 2000A (R06) model to a precision of 1 milliarcsecond in the interval 1995-2020, while
+ * being about 15x faster than `iau2000a()`.
  *
  * NOTES
  * <ol>
- * <li>Originally this was the IAU2000B series of McCarthy &amp; Luzum (2003), consistent with
- * the original IAU2000 precession model</li>
+ * <li>Originally this was the IAU2000B series of McCarthy &amp; Luzum (2003), consistent with the
+ * original IAU2000 precession model</li>
  *
- * <li>As of SuperNOVAS v1.4.2, this function has been modified to use a truncated series
- * for the IAU2006 (a.k.a. IAU 2000A R06) nutation model, whereby terms with amplitudes larger
- * than 100 &mu;as are omitted, resulting in 102 terms for the longitude and 57 terms the
- * obliquity. This results in similar, or slightly better, precision than the original
- * IAU2000B series of McCarthy &amp; Luzum (2003), and it is now dynamically consistent with the
- * IAU2006 (P03) precession model (Capitaine et al. 2005).</li>
+ * <li>As of SuperNOVAS v1.4.2, this function has been modified to use a truncated series for the
+ * IAU2006 (a.k.a. IAU 2000A R06) nutation model, whereby terms with amplitudes larger than 100
+ * &mu;as are omitted, resulting in 102 terms for the longitude and 57 terms the obliquity. This
+ * results in similar, or slightly better, precision than the original IAU2000B series of McCarthy
+ * &amp; Luzum (2003), and it is now dynamically consistent with the IAU2006 (P03) precession
+ * model (Capitaine et al. 2005).</li>
  * </ol>
  *
  * REFERENCES:
@@ -240,10 +240,10 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date.
  *                    Typically it may be the fractional part of a split date for the highest
  *                    precision, or 0.0 for normal (reduced) precision.
- * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in
- *                    radians. It may be NULL if not required.
- * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity,
- *                    in radians. It may be NULL if not required.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, It may be
+ *                    NULL if not required.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity. It
+ *                    may be NULL if not required.
  * @return            0
  *
  * @sa iau2000a()
@@ -258,14 +258,14 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
 }
 
 /**
- * Computes the forced nutation of the non-rigid Earth: Model NU2000K.  This model is a
- * modified version of the original IAU 2000A, which has been truncated for speed of execution.
- * NU2000K agrees with IAU 2000A at the 0.1 milliarcsecond level from 1700 to 2300, while
- * being is about 5x faster than the more precise `iau2000a()`.
+ * Computes the forced nutation of the non-rigid Earth: Model NU2000K.  This model is a modified
+ * version of the original IAU 2000A, which has been truncated for speed of execution. NU2000K
+ * agrees with IAU 2000A at the 0.1 milliarcsecond level from 1700 to 2300, while being is about
+ * 5x faster than the more precise `iau2000a()`.
  *
- * NU2000K was compared to IAU 2000A over six centuries (1700-2300). The average error in
- * d&psi; is 20 microarcseconds, with 98% of the errors < 60 microarcseconds;  the average
- * error in d&epsilon;is 8 microarcseconds, with 100% of the errors < 60 microarcseconds.
+ * NU2000K was compared to IAU 2000A over six centuries (1700-2300). The average error in d&psi;
+ * is 20 microarcseconds, with 98% of the errors < 60 microarcseconds;  the average error in
+ * d&epsilon;is 8 microarcseconds, with 100% of the errors < 60 microarcseconds.
  *
  * NU2000K was developed by G. Kaplan (USNO) in March 2004
  *
@@ -292,10 +292,10 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  * @param jd_tt_low   [day] Low-order part of the Terrestrial Time (TT) based Julian date.
  *                    Typically it may be the fractional part of a split date for the highest
  *                    precision, or 0.0 for normal (reduced) precision.
- * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, in
- *                    radians. It may be NULL if not required.
- * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity,
- *                    in radians. It may be NULL if not required.
+ * @param[out] dpsi   [rad] &delta;&psi; Nutation (luni-solar + planetary) in longitude, It may be
+ *                    NULL if not required.
+ * @param[out] deps   [rad] &delta;&epsilon; Nutation (luni-solar + planetary) in obliquity. It
+ *                    may be NULL if not required.
  * @return            0
  *
  * @sa iau2000a()

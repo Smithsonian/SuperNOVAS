@@ -412,16 +412,17 @@ int make_redshifted_object_sys(const char *name, double ra, double dec, const ch
 }
 
 /**
- * Sets a celestial object to be a Solar-system ephemeris body. Typically this would be used to define
- * minor planets, asteroids, comets and planetary satellites.
+ * Sets a celestial object to be a Solar-system ephemeris body. Typically this would be used to
+ * define minor planets, asteroids, comets and planetary satellites.
  *
- * @param name          Name of object. By default converted to upper-case, unless novas_case_sensitive()
- *                      was called with a non-zero argument. Max. SIZE_OF_OBJ_NAME long, including
- *                      termination. If the ephemeris provider uses names, then the name should match
- *                      those of the ephemeris provider -- otherwise it is not important.
- * @param num           Solar-system body ID number (e.g. NAIF). The number should match the needs of the
- *                      ephemeris provider used with NOVAS. (If the ephemeris provider is by name and not
- *                      ID number, then the number here is not important).
+ * @param name          Name of object. By default converted to upper-case, unless
+ *                      novas_case_sensitive() was called with a non-zero argument. Max.
+ *                      SIZE_OF_OBJ_NAME long, including termination. If the ephemeris provider
+ *                      uses names, then the name should match those of the ephemeris provider --
+ *                      otherwise it is not important.
+ * @param num           Solar-system body ID number (e.g. NAIF). The number should match the needs
+ *                      of the ephemeris provider used with NOVAS. (If the ephemeris provider is
+ *                      by name and not ID number, then the number here is not important).
  * @param[out] body     Pointer to structure to populate.
  * @return              0 if successful, or else -1 if the 'body' pointer is NULL or the name
  *                      is too long.
@@ -442,16 +443,16 @@ int make_ephem_object(const char *name, long num, object *body) {
 }
 
 /**
- * Sets a celestial object to be a Solar-system orbital body. Typically this would be used to define
- * minor planets, asteroids, comets, or even planetary satellites.
+ * Sets a celestial object to be a Solar-system orbital body. Typically this would be used to
+ * define minor planets, asteroids, comets, or even planetary satellites.
  *
  * @param name          Name of object. It may be NULL if not relevant.
- * @param num           Solar-system body ID number (e.g. NAIF). It is not required and can be set e.g. to
- *                      -1 if not relevant to the caller.
+ * @param num           Solar-system body ID number (e.g. NAIF). It is not required and can be set
+ *                      e.g. to -1 if not relevant to the caller.
  * @param orbit         The orbital parameters to adopt. The data will be copied, not referenced.
  * @param[out] body     Pointer to structure to populate.
- * @return              0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or the name
- *                      is too long.
+ * @return              0 if successful, or else -1 if the 'orbit' or 'body' pointer is NULL or
+ *                      the name is too long.
  *
  *
  * @sa novas_orbit_posvel()
@@ -487,18 +488,17 @@ int make_orbital_object(const char *name, long num, const novas_orbital *orbit, 
  * </ol>
  *
  * @param star         Pointer to catalog entry structure containing ICRS catalog
- * @param[out] pos     [AU] Position vector, equatorial rectangular coordinates,
- *                     components in AU. It may be NULL if not required.
+ * @param[out] pos     [AU] Position vector, equatorial rectangular coordinates, It may be NULL if
+ *                     not required.
  * @param[out] motion  [AU/day] Perceived motion of star, in equatorial rectangular
- *                     coordinates, components in AU/Day. It must be distinct from the
- *                     pos output vector, and may be NULL if not required.
- *                     Note, that it is suitable only for calculating the apparent 3D
- *                     location of the star at a different time, and should not be
- *                     used as a measure of physical velocity, e.g. for spectroscopic
- *                     radial velocity determination.
+ *                     coordinates. It must be distinct from the pos output vector, and may be
+ *                     NULL if not required. Note, that it is suitable only for calculating the
+ *                     apparent 3D location of the star at a different time, and should not be
+ *                     used as a measure of physical velocity, e.g. for spectroscopic radial
+ *                     velocity determination.
  *
- * @return             0 if successful, or -1 if the star argument is NULL or the
- *                     output vectors are the same pointer.
+ * @return             0 if successful, or -1 if the star argument is NULL or the output vectors
+ *                     are the same pointer.
  *
  * @sa make_cat_entry()
  */
@@ -588,48 +588,43 @@ enum novas_planet novas_planet_for_name(const char *restrict name) {
 }
 
 /**
- * Transform a star's catalog quantities for a change the coordinate system
- * and/or the date for which the positions are calculated.  Also used to
- * rotate catalog quantities on the dynamical equator and equinox of J2000.0
- * to the ICRS or vice versa.
+ * Transform a star's catalog quantities for a change the coordinate system and/or the date for
+ * which the positions are calculated.  Also used to rotate catalog quantities on the dynamical
+ * equator and equinox of J2000.0 to the ICRS or vice versa.
  *
- * 'date_incat' and 'date_newcat' may be specified either as a Julian date
- * (e.g., 2433282.5 or NOVAS_JD_B1950) or a fractional Julian year and
- * fraction (e.g., 1950.0). Values less than 10000 are assumed to be years.
- * You can also use the supplied constants NOVAS_JD_J2000 or
- * NOVAS_JD_B1950. The date arguments are ignored for the ICRS frame
- * conversion options.
+ * 'date_incat' and 'date_newcat' may be specified either as a Julian date (e.g., 2433282.5 or
+ * NOVAS_JD_B1950) or a fractional Julian year and fraction (e.g., 1950.0). Values less than 10000
+ * are assumed to be years. You can also use the supplied constants NOVAS_JD_J2000 or
+ * NOVAS_JD_B1950. The date arguments are ignored for the ICRS frame conversion options.
  *
- * If 'option' is PROPER_MOTION (1), input data can be in any reference system.
- * If 'option' is PRECESSION (2) or CHANGE_EPOCH (3), input data is assume to be
- * in the dynamical system of 'date_incat' and produces output in the dynamical
- * system of 'date_outcat'. If 'option' is CHANGE_J2000_TO_ICRS (4), the input
- * data should be in the J2000.0 dynamical frame. And if 'option' is
- * CHANGE_ICRS_TO_J2000 (5), the input data must be in the ICRS, and the output
- * will be in the J2000 dynamical frame.
+ * If 'option' is PROPER_MOTION (1), input data can be in any reference system. If 'option' is
+ * PRECESSION (2) or CHANGE_EPOCH (3), input data is assume to be in the dynamical system of
+ * 'date_incat' and produces output in the dynamical system of 'date_outcat'. If 'option' is
+ * CHANGE_J2000_TO_ICRS (4), the input data should be in the J2000.0 dynamical frame. And if
+ * 'option' is CHANGE_ICRS_TO_J2000 (5), the input data must be in the ICRS, and the output will
+ * be in the J2000 dynamical frame.
  *
- * This function cannot be properly used to bring data from old star catalogs
- * into the modern system, because old catalogs were compiled using a set of
- * constants that are incompatible with modern values.  In particular, it
- * should not be used for catalogs whose positions and proper motions were
- * derived by assuming a precession constant significantly different
- * from the value implicit in function precession().
+ * This function cannot be properly used to bring data from old star catalogs into the modern
+ * system, because old catalogs were compiled using a set of constants that are incompatible with
+ * modern values.  In particular, it should not be used for catalogs whose positions and proper
+ * motions were derived by assuming a precession constant significantly different from the value
+ * implicit in function precession().
  *
  * @param option      Type of transformation
- * @param jd_tt_in    [day|yr] Terrestrial Time (TT) based Julian date, or year, of
- *                    input catalog data. Not used if option is CHANGE_J2000_TO_ICRS (4)
- *                    or CHANGE_ICRS_TO_J2000 (5).
- * @param in          An entry from the input catalog, with units as given in the
- *                    struct definition
- * @param jd_tt_out   [day|yr] Terrestrial Time (TT) based Julian date, or year, of
- *                    output catalog data. Not used if option is CHANGE_J2000_TO_ICRS (4)
- *                    or CHANGE_ICRS_TO_J2000 (5).
- * @param out_id      Catalog identifier (0 terminated). It may also be NULL in which
- *                    case the catalog name is inherited from the input.
- * @param[out] out    The transformed catalog entry, with units as given in the struct
- *                    definition. It may be the same as the input.
- * @return            0 if successful, -1 if either vector argument is NULL or if the
- *                    'option' is invalid, or else 2 if 'out_id' is too long.
+ * @param jd_tt_in    [day|yr] Terrestrial Time (TT) based Julian date, or year, of input catalog
+ *                    data. Not used if option is CHANGE_J2000_TO_ICRS (4) or CHANGE_ICRS_TO_J2000
+ *                    (5).
+ * @param in          An entry from the input catalog, with units as given in the struct
+ *                    definition
+ * @param jd_tt_out   [day|yr] Terrestrial Time (TT) based Julian date, or year, of output catalog
+ *                    data. Not used if option is CHANGE_J2000_TO_ICRS (4) or CHANGE_ICRS_TO_J2000
+ *                    (5).
+ * @param out_id      Catalog identifier (0 terminated). It may also be NULL in which case the
+ *                    catalog name is inherited from the input.
+ * @param[out] out    The transformed catalog entry, with units as given in the struct definition.
+ *                    It may be the same as the input.
+ * @return            0 if successful, -1 if either vector argument is NULL or if the 'option' is
+ *                    invalid, or else 2 if 'out_id' is too long.
  *
  * @sa transform_hip()
  * @sa make_cat_entry()

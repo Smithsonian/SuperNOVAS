@@ -4,10 +4,11 @@
  * @date Created  on Nov 6, 2024
  * @author Attila Kovacs
  *
- *  Solar system ID mappings between NOVAS and NASA's Navigation and Ancillary Information Facility (NAIF), which
- *  is used by the JPL ephemeris systems. The two differ for the numbering convention for major planets, the Sun,
- *  Moon, Solar-System Barycenter (SSB) and the Earth-Moon Barycenter (EMB). NOVAS does not have predefined IDs beyond
- *  this set (and no defined ID for EMB), thus for all other objects we'll assume and use NOVAS IDs that match NAIF.
+ *  Solar system ID mappings between NOVAS and NASA's Navigation and Ancillary Information
+ *  Facility (NAIF), which is used by the JPL ephemeris systems. The two differ for the numbering
+ *  convention for major planets, the Sun, Moon, Solar-System Barycenter (SSB) and the Earth-Moon
+ *  Barycenter (EMB). NOVAS does not have predefined IDs beyond this set (and no defined ID for
+ *  EMB), thus for all other objects we'll assume and use NOVAS IDs that match NAIF.
  *
  * @since 1.2
  *
@@ -21,15 +22,16 @@
 #include "novas.h"
 
 /**
- * Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun, Moon, SSB, EMB
- * and the Pluto system. Otherwise NAIF planet barycenters are mapped to the corresponding bodies. NAIF body centers
- * <i>n</i>99 (e.g. 399 for Earth) are mapped to the corresponding NOVAS planet number <i>n</i>. All other NAIF IDs
- * will return -1, indicating no match to a NOVAS planet ID.
+ * Converts a NAIF ID to a NOVAS major planet ID. It account for the different IDs used for Sun,
+ * Moon, SSB, EMB and the Pluto system. Otherwise NAIF planet barycenters are mapped to the
+ * corresponding bodies. NAIF body centers <i>n</i>99 (e.g. 399 for Earth) are mapped to the
+ * corresponding NOVAS planet number <i>n</i>. All other NAIF IDs will return -1, indicating no
+ * match to a NOVAS planet ID.
  *
  *
  * @param id      The NAIF ID of the major planet of interest
- * @return        the NOVAS ID for the same object (which may or may not be different from the input), or -1 if the
- *                NAIF ID cannot be matched to a NOVAS major planet.
+ * @return        the NOVAS ID for the same object (which may or may not be different from the
+ *                input), or -1 if the NAIF ID cannot be matched to a NOVAS major planet.
  *
  * @sa novas_to_naif_planet()
  * @sa novas_to_dexxx_planet()
@@ -61,15 +63,17 @@ enum novas_planet naif_to_novas_planet(long id) {
 }
 
 /**
- * Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID. NOVAS and NAIF use slightly different IDs for
- * major planets, the Moon, SSB, EMB, and the Pluto system. In NOVAS, major planets are have IDs ranging from
- * 1 through 9, but for NAIF 1--9 are the planetary barycenters and the planet centers have numbers in the hundreds
- * ending with 99 (e.g. the center of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon
- * Barycenter [EMB]). The Sun and Moon also have distinct IDs in NAIF vs NOVAS.
+ * Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID. NOVAS and NAIF use
+ * slightly different IDs for major planets, the Moon, SSB, EMB, and the Pluto system. In NOVAS,
+ * major planets are have IDs ranging from 1 through 9, but for NAIF 1--9 are the planetary
+ * barycenters and the planet centers have numbers in the hundreds ending with 99 (e.g. the center
+ * of Earth is NAIF 399; 3 is the NOVAS ID for Earth and the NAIF ID for the Earth-Moon Barycenter
+ * [EMB]). The Sun and Moon also have distinct IDs in NAIF vs NOVAS.
  *
  *
  * @param id      The NOVAS ID of the major planet of interest
- * @return        the NAIF ID for the same object or planet center (which may or may not be different from the input)
+ * @return        the NAIF ID for the same object or planet center (which may or may not be
+ *                different from the input)
  *
  * @sa naif_to_novas_planet()
  *
@@ -97,14 +101,15 @@ long novas_to_naif_planet(enum novas_planet id) {
 }
 
 /**
- * Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files. The
- * DExxx (e.g. DE440) ephemeris files use NAIF IDs, but for most planets contain barycentric data only
- * rather than that of the planet center. For Earth-based observations, it only really makes a difference
- * whether the 3 is used for the Earth-Moon Barycenter (EMB) or 399 for the geocenter.
+ * Converts a NOVAS Solar-system body ID to a NAIF Solar-system body ID for DExxx ephemeris files.
+ * The DExxx (e.g. DE440) ephemeris files use NAIF IDs, but for most planets contain barycentric
+ * data only rather than that of the planet center. For Earth-based observations, it only really
+ * makes a difference whether the 3 is used for the Earth-Moon Barycenter (EMB) or 399 for the
+ * geocenter.
  *
  * @param id      The NOVAS ID of the major planet of interest
- * @return        the NAIF ID for the same object (which may or may not be different from the input),
- *                as appropriate for use in the DExxx ephemeris files.
+ * @return        the NAIF ID for the same object (which may or may not be different from the
+ *                input), as appropriate for use in the DExxx ephemeris files.
  *
  * @sa novas_to_naif_planet()
  * @sa naif_to_novas_planet()

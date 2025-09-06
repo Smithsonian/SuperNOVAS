@@ -29,9 +29,9 @@
 static FILE *cio_file;
 
 /**
- * Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date
- * on the true equator of date for a given TT Julian date. This is simply the negated return value of
- * ira_equinox() for the true equator of date.
+ * Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of
+ * date on the true equator of date for a given TT Julian date. This is simply the negated return
+ * value ofira_equinox() for the true equator of date.
  *
  * REFERENCES:
  * <ol>
@@ -40,11 +40,11 @@ static FILE *cio_file;
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] ra_cio [h] Right ascension of the CIO, with respect to the true equinox of
- *                    date, in hours (+ or -), or NAN when returning with an error code.
+ * @param[out] ra_cio [h] Right ascension of the CIO, with respect to the true equinox of date, in
+ *                    hours (+ or -), or NAN when returning with an error code.
  * @return            0 if successful, -1 if the output pointer argument is NULL,
- *                    1 if 'accuracy' is invalid, 10--20: 10 + error code from cio_location(),
- *                    or else 20 + error from cio_basis()
+ *                    1 if 'accuracy' is invalid, 10--20: 10 + error code from cio_location(), or
+ *                    else 20 + error from cio_basis()
  *
  * @sa ira_equinox()
  */
@@ -71,15 +71,15 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
  *                to access such files  directly, this function remains accessible to provide API
  *                compatibility with previous versions.
  *
- * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS.
- * You can specify either the original `CIO_RA.TXT` file included in the distribution
- * (preferred since v1.1), or else a platform-specific binary data file compiled from it
- * via the <code>cio_file</code> utility (the old way).
+ * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS. You can
+ * specify either the original `CIO_RA.TXT` file included in the distribution (preferred since
+ * v1.1), or else a platform-specific binary data file compiled from it via the
+ * <code>cio_file</code> utility (the old way).
  *
  * @param filename    Path (preferably absolute path) `CIO_RA.TXT` or else to the binary
  *                    `cio_ra.bin` data.
- * @return            0 if successful, or else -1 if the specified file does not exists or
- *                    we have no permission to read it.
+ * @return            0 if successful, or else -1 if the specified file does not exists or we have
+ *                    no permission to read it.
  *
  * @sa cio_location()
  * @sa gcrs_to_cirs()
@@ -107,46 +107,44 @@ int set_cio_locator_file(const char *restrict filename) {
  *             cio_ra() to get the same value w.r.t. the equinox of date (on the same CIRS/TOD
  *             dynamical equator, or else `ira_equinox()` to return the negated value.
  *
- * Returns the location of the celestial intermediate origin (CIO) for a given Julian date,
- * as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true
- * equinox of date. The CIO is always located on the true equator (= intermediate equator)
- * of date.
+ * Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a
+ * right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of
+ * date. The CIO is always located on the true equator (= intermediate equator) of date.
  *
- * The user may specify an interpolation file to use via set_cio_locator_file() prior to
- * calling this function. In that case the call will return CIO location relative to GCRS.
- * In the absence of the table, it will calculate the CIO location relative to the true
- * equinox. In either case the type of the location is returned alongside the corresponding
- * CIO location value.
+ * The user may specify an interpolation file to use via set_cio_locator_file() prior to calling
+ * this function. In that case the call will return CIO location relative to GCRS. In the absence
+ * of the table, it will calculate the CIO location relative to the true equinox. In either case,
+ * the type of the location is returned alongside the corresponding CIO location value.
  *
  * NOTES:
  * <ol>
  * <li>
  *   Unlike the NOVAS C version of this function, this version will always return a CIO
  *   location as long as the pointer arguments are not NULL. The returned values will be
- *   interpolated from the locator file if possible, otherwise it falls back to calculating
- *   an equinox-based location per default.
+ *   interpolated from the locator file if possible, otherwise it falls back to calculating an
+ *   equinox-based location per default.
  * </li>
  * <li>
- *  This function caches the results of the last calculation in case it may be re-used at
- *  no extra computational cost for the next call.
+ *  This function caches the results of the last calculation in case it may be re-used at no extra
+ *  computational cost for the next call.
  * </li>
  * <li>
- *  Note, that when a CIO location file is used, the bundled CIO locator data was prepared
- *  with the original IAU2000A nutation model, not with the newer R06 (a.k.a. IAU2006) model,
- *  resulting in an error up to the few tens of micro-arcseconds level for dates between 1900
- *  and 2100, and larger errors further away from the current epoch.
+ *  Note, that when a CIO location file is used, the bundled CIO locator data was prepared with
+ *  the original IAU2000A nutation model, not with the newer R06 (a.k.a. IAU2006) model, resulting
+ *  in an error up to the few tens of micro-arcseconds level for dates between 1900 and 2100, and
+ *  larger errors further away from the current epoch.
  * </li>
  * </ol>
  *
  * @param jd_tdb           [day] Barycentric Dynamic Time (TDB) based Julian date
  * @param accuracy         NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] ra_cio      [h] Right ascension of the CIO, in hours, or NAN if returning
- *                         with an error.
+ * @param[out] ra_cio      [h] Right ascension of the CIO, in hours, or NAN if returning with an
+ *                         error.
  * @param[out] loc_type    Pointer in which to return the reference system in which right
- *                         ascension is given, which is either CIO_VS_GCRS (1) if the
- *                         location was obtained via interpolation of the available data
- *                         file, or else CIO_VS_EQUINOX (2) if it was calculated locally.
- *                         It is set to -1 if returning with an error.
+ *                         ascension is given, which is either CIO_VS_GCRS (1) if the location was
+ *                         obtained via interpolation of the available data file, or else
+ *                         CIO_VS_EQUINOX (2) if it was calculated locally. It is set to -1 if
+ *                         returning with an error.
  *
  * @return            0 if successful, -1 if one of the pointer arguments is NULL or the
  *                    accuracy is invalid.
@@ -227,9 +225,10 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
 }
 
 /**
- * @deprecated This function is no longer used internally in the library, and users are recommended
- *             against using it themselves, since SuperNOVAS provides better ways to convert between
- *             GCRS and CIRS using frames or via gcrs_to_cirs() / cirs_to_gcrs() functions.
+ * @deprecated This function is no longer used internally in the library, and users are
+ *             recommended against using it themselves, since SuperNOVAS provides better ways to
+ *             convert between GCRS and CIRS using frames or via gcrs_to_cirs() / cirs_to_gcrs()
+ *             functions.
  *
  * Computes the CIRS basis vectors, with respect to the GCRS (geocentric ICRS), of the
  * celestial intermediate system defined by the celestial intermediate pole (CIP) (in the z
@@ -346,8 +345,8 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
 }
 
 /**
- * @deprecated    This function is no longer used within SuperNOVAS. It is still provided, however,
- *                in order to retain 100% API compatibility with NOVAS C.
+ * @deprecated    This function is no longer used within SuperNOVAS. It is still provided,
+ *                however, in order to retain 100% API compatibility with NOVAS C.
  *
  * Given an input TDB Julian date and the number of data points desired, this function returns
  * a set of Julian dates and corresponding values of the GCRS right ascension of the celestial

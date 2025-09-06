@@ -329,8 +329,9 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
  *
  * NOTES:
  * <ol>
- *  <li>The Sun's position w.r.t. the Solar-system Barycenter is calculated using `earth_sun_calc()`.
- *  All other orbitals are also referenced to the Sun's position calculated that way.</li>
+ *  <li>The Sun's position w.r.t. the Solar-system Barycenter is calculated using
+ *  `earth_sun_calc()`. All other orbitals are also referenced to the Sun's position calculated
+ *  that way.</li>
  * </ol>
  *
  * REFERENCES:
@@ -428,8 +429,8 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
  * the CALCEPH or CSPICE plugins) and `novas_sky_pos()` instead.
  *
  * While this function is generally similar to creating an orbital object with an orbit
- * initialized with `novas_make_planet_orbit()` or `novas_make_moon_orbit()`, and then calling `novas_sky_pos()`,
- * there are a few important differences to note:
+ * initialized with `novas_make_planet_orbit()` or `novas_make_moon_orbit()`, and then calling
+ * `novas_sky_pos()`, there are a few important differences to note:
  *
  * <ol>
  *  <li>This function calculates Earth and Moon positions about the Keplerian orbital position

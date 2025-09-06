@@ -516,8 +516,8 @@ int novas_use_cspice_planets() {
 }
 
 /**
- * Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and
- * NOVAS_EPHEM_OBJECT types).
+ * Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both
+ * NOVAS_PLANET and NOVAS_EPHEM_OBJECT types).
  *
  * CSPICE is configured to suppress error messages and to not exit on errors, since we will check
  * errors and handle them ourselves. You can adjust the behavior after this call with the

@@ -837,11 +837,11 @@ int novas_sky_pos(const object *restrict object, const novas_frame *restrict fra
  * @param frame     The observer frame, defining the location and time of observation
  * @param pos       [AU] Geometric position of source in ICRS coordinates
  * @param sys       The coordinate system in which to return the apparent sky location
- * @param[out] out  Pointer to the data structure which is populated with the calculated
- *                  apparent location in the designated coordinate system. It may be the
- *                  same pounter as the input position.
- * @return          0 if successful, or an error from grav_def2(),
- *                  or else -1 (errno will indicate the type of error).
+ * @param[out] out  Pointer to the data structure which is populated with the calculated apparent
+ *                  location in the designated coordinate system. It may be the same pounter as
+ *                  the input position.
+ * @return          0 if successful, or an error from grav_def2(), or else -1 (errno will indicate
+ *                  the type of error).
  *
  * @sa novas_sky_pos()
  * @sa novas_app_to_geom()
@@ -1460,26 +1460,27 @@ static double calc_lha(double el, double dec, double lat) {
 }
 
 /**
- * Returns the UTC date at which a distant source appears cross the specified elevation angle, or when
- * it transits the local meridian. The calculated time will account for the (slow) motion of the source
- * (for Solar-system objects), and optionally for atmospheric refraction also.
+ * Returns the UTC date at which a distant source appears cross the specified elevation angle, or
+ * when it transits the local meridian. The calculated time will account for the (slow) motion of
+ * the source (for Solar-system objects), and optionally for atmospheric refraction also.
  *
  * NOTES:
  * <ol>
- * <li>The current implementation is not suitable for calculating nearest successive rise/set times for
- * near-Earth objects, at or within the geostationary orbit.</li>
+ * <li>The current implementation is not suitable for calculating nearest successive rise/set
+ * times for near-Earth objects, at or within the geostationary orbit.</li>
  * </ol>
  *
  * @param el          [deg] Elevation angle (not used for transit times).
  * @param sign        1 for rise time, or -1 for setting time, or 0 for transit.
  * @param source      Observed source
- * @param frame       Observing frame, defining the observer location and astronomical time
- *                    of observation, which defines a lower-bound for the returned time.
+ * @param frame       Observing frame, defining the observer location and astronomical time of
+ *                    observation, which defines a lower-bound for the returned time.
  * @param ref_model   Refraction model, or NULL to calculate unrefracted rise/set times.
- * @return            [day] UTC-based Julian date at which the object crosses the specified elevation
- *                    (or transits) in the 24 hour period after the specified date, or else NAN if the
- *                    source stays above or below the given elevation for the entire 24-hour period.
- *                    Valid times have a typical accuracy at the millisecond level.
+ * @return            [day] UTC-based Julian date at which the object crosses the specified
+ *                    elevation (or transits) in the 24 hour period after the specified date, or
+ *                    else NAN if the source stays above or below the given elevation for the
+ *                    entire 24-hour period. Valid times have a typical accuracy at the
+ *                    millisecond level.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1554,13 +1555,13 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
  *
  * NOTES:
  * <ol>
- * <li>The current implementation is not suitable for calculating the nearest successive transit times
- * for near-Earth objects, at or within the geostationary orbit.</li>
+ * <li>The current implementation is not suitable for calculating the nearest successive transit
+ * times for near-Earth objects, at or within the geostationary orbit.</li>
  * </ol>
  *
  * @param source      Observed source
- * @param frame       Observing frame, defining the observer location and astronomical time
- *                    of observation.
+ * @param frame       Observing frame, defining the observer location and astronomical time of
+ *                    observation.
  * @return            [day] UTC-based Julian date at which the object transits the local meridian
  *                    next after the specified date, or NAN if either input pointer is NULL.
  *
@@ -1578,26 +1579,27 @@ double novas_transit_time(const object *restrict source, const novas_frame *rest
 }
 
 /**
- * Returns the UTC date at which a distant source appears to rise above the specified elevation angle.
- * The calculated time will account for the (slow) motion for Solar-system bodies, and optionally for
- * atmospheric refraction also.
+ * Returns the UTC date at which a distant source appears to rise above the specified elevation
+ * angle. The calculated time will account for the (slow) motion for Solar-system bodies, and
+ * optionally for atmospheric refraction also.
  *
  * NOTES:
  * <ol>
- * <li>The current implementation is not suitable for calculating the nearest successive rise times
- * for near-Earth objects, at or within the geostationary orbit.</li>
- * <li>This function calculates the time when the center (not the limb!) of the source rises above the
- * specified elevation threshold. Something to keep in mind for calculating Sun/Moon rise times.</li>
+ * <li>The current implementation is not suitable for calculating the nearest successive rise
+ * times for near-Earth objects, at or within the geostationary orbit.</li>
+ * <li>This function calculates the time when the center (not the limb!) of the source rises
+ * above the specified elevation threshold. Something to keep in mind for calculating Sun/Moon
+ * rise times.</li>
  * </ol>
  *
  * @param el          [deg] Elevation angle.
  * @param source      Observed source
- * @param frame       Observing frame, defining the observer location and astronomical time
- *                    of observation.
+ * @param frame       Observing frame, defining the observer location and astronomical time of
+ *                    observation.
  * @param ref_model   Refraction model, or NULL to calculate unrefracted rise time.
- * @return            [day] UTC-based Julian date at which the object rises above the specified elevation
- *                    next after the specified date, or else NAN if the source stays above or below the
- *                    given elevation for the entire 24-hour period.
+ * @return            [day] UTC-based Julian date at which the object rises above the specified
+ *                    elevation next after the specified date, or else NAN if the source stays
+ *                    above or below the given elevation for the entire 24-hour period.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1618,26 +1620,27 @@ double novas_rises_above(double el, const object *restrict source, const novas_f
 }
 
 /**
- * Returns the UTC date at which a distant source appears to set below the specified elevation angle.
- * The calculated time will account for the (slow) motion of Solar-system bodies, and optionally for
- * atmopsheric refraction also.
+ * Returns the UTC date at which a distant source appears to set below the specified elevation
+ * angle. The calculated time will account for the (slow) motion of Solar-system bodies, and
+ * optionally for atmopsheric refraction also.
  *
  * NOTES:
  * <ol>
- * <li>The current implementation is not suitable for calculating the nearest successive set times
- * for near-Earth objects, at or within the geostationary orbit.</li>
- * <li>This function calculates the time when the center (not the limb!) of the source sets below the
- * specified elevation threshold. Something to keep in mind for calculating Sun/Moon rise times.</li>
+ * <li>The current implementation is not suitable for calculating the nearest successive set
+ * times for near-Earth objects, at or within the geostationary orbit.</li>
+ * <li>This function calculates the time when the center (not the limb!) of the source sets below
+ * the specified elevation threshold. Something to keep in mind for calculating Sun/Moon rise
+ * times.</li>
  * </ol>
  *
  * @param el          [deg] Elevation angle.
  * @param source      Observed source
- * @param frame       Observing frame, defining the observer location and astronomical time
- *                    of observation.
+ * @param frame       Observing frame, defining the observer location and astronomical time of
+ *                    observation.
  * @param ref_model   Refraction model, or NULL to calculate unrefracted setting time.
- * @return            [day] UTC-based Julian date at which the object sets below the specified elevation
- *                    next after the specified date, or else NAN if the source stays above or below the
- *                    given elevation for the entire 24-hour day..
+ * @return            [day] UTC-based Julian date at which the object sets below the specified
+ *                    elevation next after the specified date, or else NAN if the source stays
+ *                    above or below the given elevation for the entire 24-hour day..
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1658,12 +1661,13 @@ double novas_sets_below(double el, const object *restrict source, const novas_fr
 }
 
 /**
- * Returns the Solar illumination fraction of a source, assuming a spherical geometry for the observed body.
+ * Returns the Solar illumination fraction of a source, assuming a spherical geometry for the
+ * observed body.
  *
  * @param source    Observed source. Usually a Solar-system source. (For other source types, 1.0
  *                  is returned by default.)
- * @param frame     Observing frame, defining the observer location and astronomical time
- *                  of observation.
+ * @param frame     Observing frame, defining the observer location and astronomical time of
+ *                  observation.
  * @return          Solar illumination fraction [0.0:1.0] of a spherical body observed at the
  *                  source location from the given observer location, or NAN if there was an error
  *                  (errno will indicate the type of error).
@@ -1710,17 +1714,17 @@ double novas_solar_illum(const object *restrict source, const novas_frame *restr
 }
 
 /**
- * Returns the angular separation of two objects from the observer's point of view.
- * The calculated separation includes light-time corrections, aberration and gravitational
- * deflection for both sources, and thus represents a precise observed separation between
- * the two sources.
+ * Returns the angular separation of two objects from the observer's point of view. The
+ * calculated separation includes light-time corrections, aberration and gravitational
+ * deflection for both sources, and thus represents a precise observed separation between the two
+ * sources.
  *
  * @param source1   An observed source
  * @param source2   Another observed source
- * @param frame     Observing frame, defining the observer location and astronomical time
- *                  of observation.
- * @return          [deg] Apparent angular separation between the two observed sources
- *                  from the observer's point-of-view.
+ * @param frame     Observing frame, defining the observer location and astronomical time of
+ *                  observation.
+ * @return          [deg] Apparent angular separation between the two observed source from the
+ *                  observer's point-of-view.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1759,14 +1763,14 @@ double novas_object_sep(const object *source1, const object *source2, const nova
 }
 
 /**
- * Returns the apparent angular distance of a source from the Sun from the observer's
- * point of view.
+ * Returns the apparent angular distance of a source from the Sun from the observer's point of
+ * view.
  *
  * @param source    An observed source
- * @param frame     Observing frame, defining the observer location and astronomical time
- *                  of observation.
- * @return          [deg] the apparent angular distance between the source an the Sun, from
- *                  the observer's point of view
+ * @param frame     Observing frame, defining the observer location and astronomical time of
+ *                  observation.
+ * @return          [deg] the apparent angular distance between the source an the Sun, from the
+ *                  observer's point of view.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1782,14 +1786,14 @@ double novas_sun_angle(const object *restrict source, const novas_frame *restric
 }
 
 /**
- * Returns the apparent angular distance of a source from the Moon from the observer's
- * point of view.
+ * Returns the apparent angular distance of a source from the Moon from the observer's point of
+ * view.
  *
  * @param source    An observed source
- * @param frame     Observing frame, defining the observer location and astronomical time
- *                  of observation.
- * @return          [deg] Apparent angular distance between the source an the Moon, from
- *                  the observer's point of view
+ * @param frame     Observing frame, defining the observer location and astronomical time of
+ *                  observation.
+ * @return          [deg] Apparent angular distance between the source an the Moon, from the
+ *                  observer's point of view.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1825,12 +1829,12 @@ double novas_unwrap_angles(double *a, double *b, double *c) {
  * via the more precise IAU2006 method, and CIRS.
  *
  * @param source        Observed source
- * @param frame         Observing frame, defining the observer location and astronomical time
- *                      of observation.
+ * @param frame         Observing frame, defining the observer location and astronomical time of
+ *                      observation.
  * @param dt            [s] Time step used for calculating derivatives.
  * @param[out] track    Output tracking parameters to populate
- * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
- *                      or else an error code from novas_sky_pos().
+ * @return              0 if successful, or else -1 if any of the pointer arguments are NULL, or
+ *                      else an error code from novas_sky_pos().
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1915,12 +1919,12 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
  * coordinates using the specified refraction model (if any).
  *
  * @param source        Observed source
- * @param frame         Observing frame, defining the observer location and astronomical time
- *                      of observation.
+ * @param frame         Observing frame, defining the observer location and astronomical time of
+ *                      observation.
  * @param ref_model     Refraction model to use, or NULL for an unrefracted track.
  * @param[out] track    Output tracking parameters to populate
- * @return              0 if successful, or else -1 if any of the pointer arguments are NULL,
- *                      or else an error code from novas_sky_pos(), or from novas_app_hor().
+ * @return              0 if successful, or else -1 if any of the pointer arguments are NULL, or
+ *                      else an error code from novas_sky_pos(), or from novas_app_hor().
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -1996,14 +2000,14 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
 }
 
 /**
- * Calculates a projected position and redshift for a source, given the available tracking position and
- * derivatives. Using 'tracks' to project positions can be much faster than the repeated full recalculation
- * of the source position over some short period.
+ * Calculates a projected position and redshift for a source, given the available tracking
+ * position and derivatives. Using 'tracks' to project positions can be much faster than the
+ * repeated full recalculation of the source position over some short period.
  *
- * In SuperNOVAS terminology a 'track' is a 2nd order Taylor series expansion of the observed position and
- * redshift in time. For most but the fastest moving sources, horizontal (Az/El) tracks are sufficiently
- * precise on minute timescales, whereas depending on the type of source equatorial tracks can be precise for
- * up to days.
+ * In SuperNOVAS terminology a 'track' is a 2nd order Taylor series expansion of the observed
+ * position and redshift in time. For most but the fastest moving sources, horizontal (Az/El)
+ * tracks are sufficiently precise on minute timescales, whereas depending on the type of source
+ * equatorial tracks can be precise for up to days.
  *
  * @param track       Tracking position and motion (first and second derivatives)
  * @param time        Astrometric time of observation
@@ -2011,8 +2015,8 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
  * @param[out] lat    [deg] projected observed latitude in tracking coordinate system
  * @param[out] dist   [AU] projected apparent distance to source from observer
  * @param[out] z      projected observed redshift
- * @return            0 if successful, or else -1 if either input pointer is NULL
- *                    (errno is set to EINVAL).
+ * @return            0 if successful, or else -1 if either input pointer is NULL (errno is set to
+ *                    EINVAL).
  *
  * @since 1.3
  * @author Attila Kovacs

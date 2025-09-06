@@ -943,8 +943,8 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star,
 }
 
 /**
- * @deprecated Using the frame-based novas_sky_pos() is now preferred for topocentric calculations,
- *             especially when high precision is required.
+ * @deprecated Using the frame-based novas_sky_pos() is now preferred for topocentric
+ *             calculations, especially when high precision is required.
  *
  * Computes the topocentric apparent place of a solar system body at the specified time.
  * This is the same as calling place() for the body for the same observer location and

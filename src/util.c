@@ -21,11 +21,11 @@
 static enum novas_debug_mode novas_debug_state = NOVAS_DEBUG_OFF;
 
 /**
- * Maximum number of iterations for convergent inverse calculations. Most iterative inverse functions should
- * normally converge in a handful of iterations. In some pathological cases more iterations may be required.
- * This variable sets an absolute maximum for the number of iterations in order to avoid runaway (zombie)
- * behaviour. If inverse functions fail to converge, they will return a value indicating an error, and
- * errno should be set to ECANCELED.
+ * Maximum number of iterations for convergent inverse calculations. Most iterative inverse
+ * functions should normally converge in a handful of iterations. In some pathological cases more
+ * iterations may be required. This variable sets an absolute maximum for the number of iterations
+ * in order to avoid runaway (zombie) behaviour. If inverse functions fail to converge, they will
+ * return a value indicating an error, and errno should be set to ECANCELED.
  *
  * @since 1.1
  */
@@ -208,8 +208,8 @@ int novas_time_equals(double jd1, double jd2) {
 }
 
 /**
- * (<i>for internal use only</i>) Checks if two Julian dates are precisely equal with regard to the
- * dynamic equator. The two dates are considered equal if they agree within 10<sup>-7</sup>
+ * (<i>for internal use only</i>) Checks if two Julian dates are precisely equal with regard to
+ * the dynamic equator. The two dates are considered equal if they agree within 10<sup>-7</sup>
  * days (or about 10 ms) of each other in reduced accuracy or if they agree within 10<sup>-9</sup>
  * days (or about 100 us), corresponding to double-precision limits, in full accuracy mode.
  *
@@ -255,7 +255,8 @@ void novas_tiny_rotate(const double *in, double ax, double ay, double az, double
 /**
  * Enables or disables reporting errors and traces to the standard error stream.
  *
- * @param mode    NOVAS_DEBUG_OFF (0; or &lt;0), NOVAS_DEBUG_ON (1), or NOVAS_DEBUG_EXTRA (2; or &gt;2).
+ * @param mode    NOVAS_DEBUG_OFF (0; or &lt;0), NOVAS_DEBUG_ON (1), or NOVAS_DEBUG_EXTRA (2; or
+ *                &gt;2).
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -387,9 +388,8 @@ int spin(double angle, const double *in, double *out) {
  * @param[out] dec  [deg] Declination in degrees [-90:90] or NAN if the position vector is NULL or
  *                  a null-vector. It may be NULL if not required.
  * @return          0 if successful, -1 of any of the arguments are NULL, or
- *                  1 if all input components are 0 so 'ra' and 'dec' are indeterminate,
- *                  or else 2 if both x and y are zero, but z is nonzero, and so 'ra' is
- *                  indeterminate.
+ *                  1 if all input components are 0 so 'ra' and 'dec' are indeterminate, or else 2
+ *                  if both x and y are zero, but z is nonzero, and so 'ra' is indeterminate.
  *
  * @sa radec2vector()
  */

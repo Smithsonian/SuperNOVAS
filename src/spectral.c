@@ -39,15 +39,16 @@ double novas_add_vel(double v1, double v2) {
 /// ==========================================================================
 
 /**
- * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of recession.
- * It is based on the relativistic formula:
+ * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of
+ * recession. It is based on the relativistic formula:
  * <pre>
  *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
  * </pre>
  * where &beta; = v / c.
  *
  * @param z   the redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>).
- * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).
+ * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid,
+ *            i.e. z &lt;= -1).
  *
  * @sa novas_v2z()
  * @sa redshift_vrad()
@@ -74,8 +75,8 @@ double novas_z2v(double z) {
  * where &beta; = v / c.
  *
  * @param vel   [km/s] velocity (i.e. rate) of recession.
- * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if
- *              the input velocity is invalid (i.e., it exceeds the speed of light).
+ * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or
+ *              NAN if the input velocity is invalid (i.e., it exceeds the speed of light).
  *
  * @sa novas_z2v()
  * @sa novas_z_add()
@@ -96,8 +97,8 @@ double novas_v2z(double vel) {
  * Applies an incremental redshift correction to a radial velocity. For example, you may
  * use this function to correct a radial velocity calculated by `rad_vel()` or `rad_vel2()`
  * for a Solar-system body to account for the gravitational redshift for light originating
- * at a specific distance away from the body. For the Sun, you may want to undo the redshift
- * correction applied for the photosphere using `unredshift_vrad()` first.
+ * at a specific distance away from the body. For the Sun, you may want to undo the
+ * redshift correction applied for the photosphere using `unredshift_vrad()` first.
  *
  * @param vrad    [km/s] Radial velocity
  * @param z       Redshift correction to apply
@@ -206,23 +207,27 @@ static int convert_lsr_ssb_vel(const double *vLSR, int sign, double *vSSB) {
 }
 
 /**
- * Returns a Solar System Baricentric (SSB) radial velocity for a radial velocity that is referenced to the
- * Local Standard of Rest (LSR). Internally, NOVAS always uses barycentric radial velocities, but it
- * is just as common to have catalogs define radial velocities referenced to the LSR.
+ * Returns a Solar System Baricentric (SSB) radial velocity for a radial velocity that is
+ * referenced to the Local Standard of Rest (LSR). Internally, NOVAS always uses barycentric
+ * radial velocities, but it is just as common to have catalogs define radial velocities
+ * referenced to the LSR.
  *
- * The SSB motion w.r.t. the barycenter is assumed to be (11.1, 12.24, 7.25) km/s in ICRS (Shoenrich et al.
- * 2010).
+ * The SSB motion w.r.t. the barycenter is assumed to be (11.1, 12.24, 7.25) km/s in ICRS
+ * (Shoenrich et al. 2010).
  *
  * REFERENCES:
  * <ol>
- * <li>Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astronomical Society,
- * Volume 403, Issue 4, April 2010, Pages 1829–1833, https://doi.org/10.1111/j.1365-2966.2010.16253.x</li>
+ * <li>Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astronomical
+ * Society, Volume 403, Issue 4, April 2010, Pages 1829–1833,
+ * https://doi.org/10.1111/j.1365-2966.2010.16253.x</li>
  * </ol>
  *
- * @param epoch     [yr] Coordinate epoch in which the coordinates and velocities are defined. E.g. 2000.0.
+ * @param epoch     [yr] Coordinate epoch in which the coordinates and velocities are defined.
+ *                  E.g. 2000.0.
  * @param ra        [h] Right-ascenscion of source at given epoch.
  * @param dec       [deg] Declination of source at given epoch.
- * @param vLSR      [km/s] radial velocity defined against the Local Standard of Rest (LSR), at given epoch.
+ * @param vLSR      [km/s] radial velocity defined against the Local Standard of Rest (LSR), at
+ *                  given epoch.
  *
  * @return          [km/s] Equivalent Solar-System Barycentric radial velocity.
  *
@@ -249,23 +254,27 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
 }
 
 /**
- * Returns a radial-velocity referenced to the Local Standard of Rest (LSR) for a given Solar-System
- * Barycentric (SSB) radial velocity. Internally, NOVAS always uses barycentric radial velocities, but it
- * is just as common to have catalogs define radial velocities referenced to the LSR.
+ * Returns a radial-velocity referenced to the Local Standard of Rest (LSR) for a given
+ * Solar-System Barycentric (SSB) radial velocity. Internally, NOVAS always uses barycentric
+ * radial velocities, but it is just as common to have catalogs define radial velocities
+ * referenced to the LSR.
  *
- * The SSB motion w.r.t. the barycenter is assumed to be (11.1, 12.24, 7.25) km/s in ICRS (Shoenrich et al.
- * 2010).
+ * The SSB motion w.r.t. the barycenter is assumed to be (11.1, 12.24, 7.25) km/s in ICRS
+ * (Shoenrich et al. 2010).
  *
  * REFERENCES:
  * <ol>
- * <li>Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astronomical Society,
- * Volume 403, Issue 4, April 2010, Pages 1829–1833, https://doi.org/10.1111/j.1365-2966.2010.16253.x</li>
+ * <li>Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astronomical
+ * Society, Volume 403, Issue 4, April 2010, Pages 1829–1833,
+ * https://doi.org/10.1111/j.1365-2966.2010.16253.x</li>
  * </ol>
  *
- * @param epoch     [yr] Coordinate epoch in which the coordinates and velocities are defined. E.g. 2000.0.
+ * @param epoch     [yr] Coordinate epoch in which the coordinates and velocities are defined.
+ *                  E.g. 2000.0.
  * @param ra        [h] Right-ascenscion of source at given epoch.
  * @param dec       [deg] Declination of source at given epoch.
- * @param vLSR      [km/s] radial velocity defined against the Local Standard of Rest (LSR), at given epoch.
+ * @param vLSR      [km/s] radial velocity defined against the Local Standard of Rest (LSR), at
+ *                  given epoch.
  *
  * @return          [km/s] Equivalent Solar-System Barycentric radial velocity.
  *
@@ -299,15 +308,15 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
  * other solar system bodies, it applies to a fictitious emitter at the center of the observed
  * object, assumed massless (no gravitational red shift). The corrections do not in general apply
  * to reflected light. For stars, it includes all effects, such as gravitational redshift,
- * contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy.
- * Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can
- * be treated like solar system objects.
+ * contained in the catalog barycentric radial velocity measure, a scalar derived from
+ * spectroscopy. Nearby stars with a known kinematic velocity vector (obtained independently of
+ * spectroscopy) can be treated like solar system objects.
  *
- * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
- * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift
- * correction applied to the radial velocity via `redshift_vrad()`, `unredshift_vrad()` and
- * `grav_redshift()` if necessary.
+ * Gravitational blueshift corrections for the Solar and Earth potential for observers are
+ * included. However, the result does not include a blueshift correction for observers (e.g.
+ * spacecraft) orbiting other major Solar-system bodies. You may adjust the amount of
+ * gravitational redshift correction applied to the radial velocity via `redshift_vrad()`,
+ * `unredshift_vrad()` and `grav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
@@ -330,18 +339,19 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
  * <li>This function does not accont for the gravitational deflection of Solar-system sources.
  * For that purpose, the rad_vel2() function, introduced in v1.1, is more appropriate.</li>
  * <li>The NOVAS C implementation did not include relatistic corrections for a moving observer
- * if both `d_obs_geo` and `d_obs_sun` were zero. As of SuperNOVAS v1.1, the relatistic corrections
- * for a moving observer will be included in the radial velocity measure always.</li>
- * <li>In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and
- * Moon) includes gravitational redshift corrections for light originating at the surface, assuming
- * it's observed from near Earth or else from a large distance away.</li>
+ * if both `d_obs_geo` and `d_obs_sun` were zero. As of SuperNOVAS v1.1, the relatistic
+ * corrections for a moving observer will be included in the radial velocity measure always.</li>
+ * <li>In a departure from the original NOVAS C, the radial velocity for major planets (and Sun
+ * and Moon) includes gravitational redshift corrections for light originating at the surface,
+ * assuming it's observed from near Earth or else from a large distance away.</li>
  * </ol>
  *
  * REFERENCES:
  * <ol>
  * <li>Lindegren &amp; Dravins (2003), Astronomy &amp; Astrophysics 401, 1185-1201.</li>
- * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is gravitationally
- * referenced to the Sun's photosphere. (NOVAS C returns the radial velocity for a massless Sun)</li>
+ * <li>Unlike NOVAS C, this function will return a radial velocity for the Sun that is
+ * gravitationally referenced to the Sun's photosphere. (NOVAS C returns the radial velocity for a
+ * massless Sun)</li>
  * </ol>
  *
  * @param source        Celestial object observed
@@ -396,15 +406,15 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  * other solar system bodies, it applies to a fictitious emitter at the center of the observed
  * object, assumed massless (no gravitational red shift). The corrections do not in general apply
  * to reflected light. For stars, it includes all effects, such as gravitational redshift,
- * contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy.
- * Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can
- * be treated like solar system objects.
+ * contained in the catalog barycentric radial velocity measure, a scalar derived from
+ * spectroscopy. Nearby stars with a known kinematic velocity vector (obtained independently of
+ * spectroscopy) can be treated like solar system objects.
  *
- * Gravitational blueshift corrections for the Solar and Earth potential for observers are included.
- * However, the result does not include a blueshift correction for observers (e.g. spacecraft)
- * orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift
- * correction applied to the radial velocity via `redshift_vrad()`, `unredshift_vrad()` and
- * `grav_redshift()` if necessary.
+ * Gravitational blueshift corrections for the Solar and Earth potential for observers are
+ * included. However, the result does not include a blueshift correction for observers (e.g.
+ * spacecraft) orbiting other major Solar-system bodies. You may adjust the amount of
+ * gravitational redshift correction applied to the radial velocity via `redshift_vrad()`,
+ * `unredshift_vrad()` and `grav_redshift()` if necessary.
  *
  * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
  * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.

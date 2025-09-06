@@ -132,10 +132,10 @@ double novas_epoch(const char *restrict system) {
  * ommitted, they will be assumed zero, i.e. `23:59` is the same as `23:59:00.000`.
  *
  * @param hms         String specifying hours, minutes, and seconds, which correspond to
- *                    a time between 0 and 24 h. Time in any range is permitted, but the minutes and
- *                    seconds must be &gt;=0 and &lt;60.
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string after
- *                    the parsed time.
+ *                    a time between 0 and 24 h. Time in any range is permitted, but the minutes
+ *                    and seconds must be &gt;=0 and &lt;60.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
+ *                    after the parsed time.
  * @return        [hours] Corresponding decimal time value, or else NAN if there was an
  *                error parsing the string (errno will be set to EINVAL).
  *
@@ -222,9 +222,10 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
  *
  * NOTES:
  * <ol>
- * <li> To see if the string was fully parsed when returning a valid (non-NAN) value, you can check
- * `errno`: it should be zero (0) if all non-whitespace characters have been parsed from the input
- * string, or else `EINVAL` if the parsed value used only the leading part of the string.</li>
+ * <li> To see if the string was fully parsed when returning a valid (non-NAN) value, you can
+ * check `errno`: it should be zero (0) if all non-whitespace characters have been parsed from
+ * the input string, or else `EINVAL` if the parsed value used only the leading part of the
+ * string.</li>
  * </ol>
  *
  * @param hms     String specifying hours, minutes, and seconds, which correspond to
@@ -325,8 +326,8 @@ static int parse_compass(const char *restrict str, int *n) {
  * @param dms         String specifying degrees, minutes, and seconds, which correspond to
  *                    an angle. Angles in any range are permitted, but the minutes and
  *                    seconds must be &gt;=0 and &lt;60.
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string after
- *                    the parsed time.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
+ *                    after the parsed time.
  * @return            [deg] Corresponding decimal angle value, or else NAN if there was
  *                    an error parsing the string (errno will be set to EINVAL).
  *
@@ -436,9 +437,10 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  *
  * NOTES:
  * <ol>
- * <li> To see if the string was fully parsed when returning a valid (non-NAN) value, you can check
- * `errno`: it should be zero (0) if all non-whitespace characters have been parsed from the input
- * string, or else `EINVAL` if the parsed value used only the leading part of the string.</li>
+ * <li> To see if the string was fully parsed when returning a valid (non-NAN) value, you can
+ * check `errno`: it should be zero (0) if all non-whitespace characters have been parsed from the
+ * input string, or else `EINVAL` if the parsed value used only the leading part of the
+ * string.</li>
  * </ol>
  *
  * @param dms     String specifying degrees, minutes, and seconds, which correspond to
@@ -502,15 +504,14 @@ double novas_dms_degrees(const char *restrict dms) {
  *  east 179.99 degrees
  * </pre>
  *
- *
  * @param str         The input string that specified an angle either as decimal degrees
  *                    or as a broken down DMS speficication. The decimal value may be
  *                    followed by the letter `d` immediately. And both the decimal and DMS
  *                    representation may be ended with a compass direction marker,
  *                    `N`, `E`, `S`, or `W`. See more in `novas_parse_dms()` on acceptable DMS
  *                    specifications.
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string after
- *                    the parsed angle.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
+ *                    after the parsed angle.
  * @return            [deg] The angle represented by the string, or else NAN if the
  *                    string could not be parsed into an angle value (errno will indicate
  *                    the type of error).
@@ -638,8 +639,8 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
  *                    or as a broken down HMS speficication. The decimal value may be immediately
  *                    followed by a letter 'h'. See more in `novas_parse_hms()` on acceptable HMS
  *                    input specifications.
- * @param[out] tail   (optional) If not NULL it will be set to the next character in the string after
- *                    the parsed angle.
+ * @param[out] tail   (optional) If not NULL it will be set to the next character in the string
+ *                    after the parsed angle.
  * @return            [h] The time-like value represented by the string, or else NAN if the
  *                    string could not be parsed into a time-like value (errno will indicate
  *                    the type of error).
@@ -712,13 +713,14 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
 }
 
 /**
- * Returns an angle parsed from a string that contains either a decimal degrees or else a broken-down
- * DMS representation. See `novas_parse_degrees()` to see what string representations may be used.
+ * Returns an angle parsed from a string that contains either a decimal degrees or else a
+ * broken-down DMS representation. See `novas_parse_degrees()` to see what string
+ * representations may be used.
  *
  * To see if the string was fully parsed when returning a valid (non-NAN) value, you can check
- * `errno`: it should be zero (0) if all non-whitespace and punctuation characters have been parsed
- * from the input string, or else `EINVAL` if the parsed value used only the leading part of the
- * string.
+ * `errno`: it should be zero (0) if all non-whitespace and punctuation characters have been
+ * parsed from the input string, or else `EINVAL` if the parsed value used only the leading part
+ * of the string.
  *
  * @param str     The input string that specified an angle either as decimal degrees
  *                or as a broken down DMS speficication. The decimal value may be immediately
@@ -758,9 +760,9 @@ double novas_str_degrees(const char *restrict str) {
  * representations may be used.
  *
  * To check if the string was fully parsed when returning a valid (non-NAN) value you can check
- * `errno`: it should be zero (0) if all non-whitespace and punctuation characters have been parsed
- * from the input string, or else `EINVAL` if the parsed value used only the leading part of the
- * string.
+ * `errno`: it should be zero (0) if all non-whitespace and punctuation characters have been
+ * parsed from the input string, or else `EINVAL` if the parsed value used only the leading part
+ * of the string.
  *
  * @param str     The input string that specified an angle either as decimal hours
  *                or as a broken down HMS speficication. The decimal value may be

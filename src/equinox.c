@@ -23,8 +23,8 @@
  *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
  *             the International Terrestrial Reference System (ITRS) going forward.
  *
- * Celestial pole offset &psi; for high-precision applications. It was visible to users in NOVAS C 3.1,
- * hence we continue to expose it also for back compatibility.
+ * Celestial pole offset &psi; for high-precision applications. It was visible to users in NOVAS C
+ * 3.1, hence we continue to expose it also for back compatibility.
  *
  * @sa EPS_COR
  * @sa cel_pole()
@@ -37,8 +37,8 @@ double PSI_COR = 0.0;
  *             the Terrestrial Intermediate Reference System (TIRS) / Pseudo Earth Fixed (PEF) and
  *             the International Terrestrial Reference System (ITRS) going forward.
  *
- * Celestial pole offset &epsilon; for high-precision applications. It was visible to users in NOVAS C 3.1,
- * hence we continue to expose it also for back compatibility.
+ * Celestial pole offset &epsilon; for high-precision applications. It was visible to users in
+ * NOVAS C 3.1, hence we continue to expose it also for back compatibility.
  *
  * @sa PSI_COR
  * @sa cel_pole()
@@ -77,19 +77,20 @@ double EPS_COR = 0.0;
  *  <a href="https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html>IERS Bulletins</a>
  * </li>
  * <li>
- *  If &Delta;&delta;&psi;, &Delta;&delta;d&epsilon; offsets are specified, these must be the residual
- *  corrections relative to the IAU 2006 precession/nutation model (not the Lieske et al. 1977 model!).
- *  As such, they are just a rotated version of the newer dx, dy offsets published by IERS.
+ *  If &Delta;&delta;&psi;, &Delta;&delta;d&epsilon; offsets are specified, these must be the
+ *  residual corrections relative to the IAU 2006 precession/nutation model (not the Lieske et al.
+ *  1977 model!). As such, they are just a rotated version of the newer dx, dy offsets published
+ *  by IERS.
  * </li>
  * <li>
  *  The equivalent IAU 2006 standard is to apply dx, dy pole offsets only for converting
  *  between TIRS and ITRS, e.g. via `wobble()`).
  * </li>
  * <li>
- *  There is no need to define pole offsets this way when using the newer frame-based
- *  approach introduced in SuperNOVAS. If the pole offsets are specified on a per-frame basis
- *  during the initialization of each observing frame, the offsets will be applied for the
- *  TIRS / ITRS conversion only, and not to the TOD equator per se.
+ *  There is no need to define pole offsets this way when using the newer frame-based approach
+ *  introduced in SuperNOVAS. If the pole offsets are specified on a per-frame basis during the
+ *  initialization of each observing frame, the offsets will be applied for the TIRS / ITRS
+ *  conversion only, and not to the TOD equator per se.
  * </li>
  * </ol>
  *
@@ -100,16 +101,18 @@ double EPS_COR = 0.0;
  * </ol>
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian date. Used only if 'type' is
- *                  POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent &Delta;&delta;&psi;
- *                  and &Delta;&delta;&epsilon; values.
+ *                  POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent
+ *                  &Delta;&delta;&psi; and &Delta;&delta;&epsilon; values.
  * @param type      POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;,
- *                  &Delta;&delta;&epsilon; relative to the IAU 20006 precession/nutation model; or
- *                  POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000/2006
- *                  precession-nutation model.
- * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; for
- *                  or dx) in milliarcseconds, relative to the IAU2006 precession/nutation model.
- * @param dpole2    [mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon;
- *                  or dy) in milliarcseconds, relative to the IAU2006 precession/nutation model.
+ *                  &Delta;&delta;&epsilon; relative to the IAU 20006 precession/nutation model;
+ *                  or POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000 /
+ *                  2006 precession-nutation model.
+ * @param dpole1    [mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi;
+ *                  for or dx) in milliarcseconds, relative to the IAU2006 precession/nutation
+ *                  model.
+ * @param dpole2    [mas] Value of celestial pole offset in second coordinate,
+ *                  (&Delta;&delta;&epsilon; or dy) in milliarcseconds, relative to the IAU2006
+ *                  precession/nutation model.
  * @return          0 if successful, or else 1 if 'type' is invalid.
  *
  * @sa wobble()
@@ -164,8 +167,10 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
  * </ol>
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian Date.
- * @param dx          [mas] Earth orientation: GCRS pole offset dx, e.g. as published by IERS Bulletin A.
- * @param dy          [mas] Earth orientation: GCRS pole offset dy, e.g. as published by IERS Bulletin A.
+ * @param dx          [mas] Earth orientation: GCRS pole offset dx, e.g. as published by IERS
+ *                    Bulletin A.
+ * @param dy          [mas] Earth orientation: GCRS pole offset dy, e.g. as published by IERS
+ *                    Bulletin A.
  * @param[out] dpsi   [arcsec] Calculated TOD orientation d&psi;.
  * @param[out] deps   [arcsec] Calculated TOD orientation d&epsilon;.
  * @return            0
@@ -207,8 +212,8 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
 /// \endcond
 
 /**
- * Computes quantities related to the orientation of the Earth's rotation axis at the specified Julian
- * date.
+ * Computes quantities related to the orientation of the Earth's rotation axis at the specified
+ * Julian date.
  *
  * Unmodelled corrections to earth orientation can be defined via `cel_pole()` prior to this call.
  *
@@ -222,7 +227,8 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
  * @param accuracy      NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] mobl     [deg] Mean obliquity of the ecliptic. It may be NULL if not required.
  * @param[out] tobl     [deg] True obliquity of the ecliptic. It may be NULL if not required.
- * @param[out] ee       [s] Equation of the equinoxes in seconds of time. It may be NULL if not required.
+ * @param[out] ee       [s] Equation of the equinoxes in seconds of time. It may be NULL if not
+ *                      required.
  * @param[out] dpsi     [arcsec] Nutation in longitude. It may be NULL if not required.
  * @param[out] deps     [arcsec] Nutation in obliquity. It may be NULL if not required.
  *
@@ -791,8 +797,8 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
  * equator and equinox of epoch. Inverse transformation may be applied by setting flag
  * 'direction'.
  *
- * This is the old (pre IAU 2006) method of nutation calculation. If you follow the now
- * standard IAU 2000/2006 methodology you will want to use nutation_angles() instead.
+ * This is the old (pre IAU 2006) method of nutation calculation. If you follow the now standard
+ * IAU 2000 / 2006 methodology you will want to use nutation_angles() instead.
  *
  * REFERENCES:
  * <ol>

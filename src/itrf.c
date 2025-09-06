@@ -109,9 +109,9 @@ static const itrf_transform realizations[] = { //
 /// \endcond
 
 /**
- * Returns the matching ITRF realization year for the given input year. For inputs &lt; 1988, 1988 is
- * returned (corresponding to the ITRF88 realization). Otherwise, it returns the realization year,
- * which matches, or else immediately precedes, the input year.
+ * Returns the matching ITRF realization year for the given input year. For inputs &lt; 1988, 1988
+ * is returned (corresponding to the ITRF88 realization). Otherwise, it returns the realization
+ * year, which matches, or else immediately precedes, the input year.
  *
  * @param y   [yr] Calendar year for which to match an ITRF realization year
  * @return    [yr] The best match ITRF realization year
@@ -364,14 +364,14 @@ static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, do
 }
 
 /**
- * Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80 reference
- * ellipsoid.
+ * Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80
+ * reference ellipsoid.
  *
  * @param[in] lon     [deg] Geodetic longitude
  * @param[in] lat     [deg] Geodetic latitude
  * @param[in] alt     [m] Geodetic altitude (i.e. above sea level).
- * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS related
- *                    applications use `NOVAS_WGS84_ELLIPSOID`.
+ * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS
+ *                    related applications use `NOVAS_WGS84_ELLIPSOID`.
  * @param[out] x      [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
  * @return            0 if successful, or else -1 if the output vector is NULL (errno is set to
  *                    EINVAL).
@@ -435,11 +435,12 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
  * </ol>
  *
  * @param[in] x       [m] Input geocentric Cartesian coordinates (x, y, z) 3-vector.
- * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS related
- *                    applications use `NOVAS_WGS84_ELLIPSOID`.
+ * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS
+ *                    related applications use `NOVAS_WGS84_ELLIPSOID`.
  * @param[out] lon    [deg] Geodetic longitude. It may be NULL if not required.
  * @param[out] lat    [deg] Geodetic latitude. It may be NULL if not required.
- * @param[out] alt    [m] Geodetic altitude (i.e. above sea level). It may be NULL if not required.
+ * @param[out] alt    [m] Geodetic altitude (i.e. above sea level). It may be NULL if not
+ *                    required.
  * @return            0 if successful, or else -1 if the input vector is NULL (errno is set to
  *                    EINVAL).
  *

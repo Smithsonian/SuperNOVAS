@@ -16,12 +16,14 @@
 
 
 /**
- * Change xzy vectors to the new polar orientation. &theta, &phi define the orientation of the input pole in the output system.
+ * Change xzy vectors to the new polar orientation. &theta, &phi define the orientation of the
+ * input pole in the output system.
  *
  * @param in        input 3-vector in the original system (pole = z)
  * @param theta     [deg] polar angle of original pole in the new system
  * @param phi       [deg] azimuthal angle of original pole in the new system
- * @param[out] out  output 3-vector in the new (rotated) system. It may be the same vector as the input.
+ * @param[out] out  output 3-vector in the new (rotated) system. It may be the same vector as the
+ *                  input.
  * @return          0
  *
  */
@@ -56,8 +58,8 @@ static int change_pole(const double *in, double theta, double phi, double *out) 
  *                  MOD, or CIRS). It must be an inertial celestial system, i.e. it cannot be a
  *                  reference system which co-rotates with Earth (like ITRS to TIRS).
  * @param[in, out] vec  vector to change to GCRS.
- * @return          0 if successful, or else -1 (errno set to EINVAL) if the 'sys'
- *                  argument is invalid or unsupported.
+ * @return          0 if successful, or else -1 (errno set to EINVAL) if the 'sys' argument is
+ *                  invalid or unsupported.
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -182,9 +184,9 @@ static int novas_orbital_plane_pos(double M, double e, double *restrict E, doubl
 }
 
 /**
- * Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the
- * specified time of observation, in the native coordinate system in which the orbital is defined (e.g. ecliptic
- * for heliocentric orbitals).
+ * Calculates a rectangular equatorial position and velocity vector for the given orbital elements
+ * for the specified time of observation, in the native coordinate system in which the orbital is
+ * defined (e.g. ecliptic for heliocentric orbitals).
  *
  * REFERENCES:
  * <ol>
@@ -197,12 +199,13 @@ static int novas_orbital_plane_pos(double M, double e, double *restrict E, doubl
  *
  * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
  * @param orbit     Orbital parameters
- * @param[out] pos  [AU] Output ICRS equatorial position vector around orbital center, or NULL if not required.
- * @param[out] vel  [AU/day] Output ICRS velocity vector rel. to orbital center, in the native system of the orbital,
- *                  or NULL if not required. 0 if successful, or else -1 if the orbital parameters are NULL,
- *                  or if the position and velocity output vectors are the same or the orbital
- *                  system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to
- *                  ECANCELED), or
+ * @param[out] pos  [AU] Output ICRS equatorial position vector around orbital center, or NULL if
+ *                  not required.
+ * @param[out] vel  [AU/day] Output ICRS velocity vector rel. to orbital center, in the native
+ *                  system of the orbital, or NULL if not required. 0 if successful, or else -1 if
+ *                  the orbital parameters are NULL, or if the position and velocity output
+ *                  vectors are the same or the orbital system is ill defined (errno set to
+ *                  EINVAL), or if the calculation did not converge (errno set to ECANCELED).
  *
  * @sa ephemeris()
  * @sa novas_geom_posvel()
@@ -282,8 +285,8 @@ int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit
 }
 
 /**
- * Calculates a rectangular equatorial position and velocity vector for the given orbital elements for the
- * specified time of observation.
+ * Calculates a rectangular equatorial position and velocity vector for the given orbital elements
+ * for the specified time of observation.
  *
  * REFERENCES:
  * <ol>
@@ -297,12 +300,14 @@ int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit
  * @param jd_tdb    [day] Barycentric Dynamic Time (TDB) based Julian date
  * @param orbit     Orbital parameters
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1).
- * @param[out] pos  [AU] Output ICRS equatorial position vector around orbital center, or NULL if not required.
- * @param[out] vel  [AU/day] Output ICRS equatorial velocity vector rel. to orbital center, or NULL if not required.
+ * @param[out] pos  [AU] Output ICRS equatorial position vector around orbital center, or NULL if
+ *                  not required.
+ * @param[out] vel  [AU/day] Output ICRS equatorial velocity vector rel. to orbital center, or
+ *                  NULL if not required.
  * @return          0 if successful, or else -1 if the orbital parameters are NULL,
  *                  or if the position and velocity output vectors are the same or the orbital
- *                  system is ill defined (errno set to EINVAL), or if the calculation did not converge (errno set to
- *                  ECANCELED), or
+ *                  system is ill defined (errno set to EINVAL), or if the calculation did not
+ *                  converge (errno set to ECANCELED).
  *
  * @sa ephemeris()
  * @sa novas_geom_posvel()

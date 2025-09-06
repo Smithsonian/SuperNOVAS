@@ -211,7 +211,8 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
  *
  * @param model     The original refraction model
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
+ * @param loc       Pointer to structure defining the observer's location on earth, and local
+ *                  weather
  * @param type      Refraction type to use for the original model: NOVAS_REFRACT_OBSERVED (-1) or
  *                  NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el0       [deg] input elevation for the inverse refraction model.
@@ -250,10 +251,12 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
 /**
  * Returns an optical refraction correction for a standard atmosphere.
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel)
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
- *                  NOVAS_REFRACT_ASTROMETRIC (0).
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this
+ *                  implementation of RefractionModel)
+ * @param loc       Pointer to structure defining the observer's location on earth, and local
+ *                  weather
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED
+ *                  (-1) or NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
@@ -274,12 +277,15 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
 }
 
 /**
- * Returns an optical refraction correction using the weather parameters defined for the observer location.
+ * Returns an optical refraction correction using the weather parameters defined for the observer
+ * location.
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel)
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather
- * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
- *                  NOVAS_REFRACT_ASTROMETRIC (0).
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this
+ *                  implementation of RefractionModel)
+ * @param loc       Pointer to structure defining the observer's location on earth, and local
+ *                  weather
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED
+ *                  (-1) or NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
  * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
@@ -312,17 +318,18 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  * <li>Berman, Allan L., and Rockwell, Stephen T. (1976), NASA JPL Technical Report 32-1601</li>
  * </ol>
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel)
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather.
- *                  Make sure all weather values, including humidity (added in v1.1), are fully
- *                  populated.
- * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
- *                  NOVAS_REFRACT_ASTROMETRIC (0).
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this
+ *                  implementation of RefractionModel)
+ * @param loc       Pointer to structure defining the observer's location on earth, and local
+ *                  weather. Make sure all weather values, including humidity (added in v1.1), are
+ *                  fully populated.
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED
+ *                  (-1) or NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] source elevation of the specified type.
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
- *                  set errno to indicate the type of error). An error is returned if the location is
- *                  NULL, or if the weather parameters are way outside of their resonable ranges, or
- *                  if the elevation is outside the supported [-1:90] range.
+ *                  set errno to indicate the type of error). An error is returned if the location
+ *                  is NULL, or if the weather parameters are way outside of their resonable
+ *                  ranges, or if the elevation is outside the supported [-1:90] range.
  *
  * @sa novas_optical_refraction()
  * @sa make_on_surface()
@@ -399,12 +406,12 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
 }
 
 /**
- * Sets the observing wavelength for which refraction is to be calculated when using a wavelength-depenendent
- * model, such as novas_wave_refraction().
+ * Sets the observing wavelength for which refraction is to be calculated when using a
+ * wavelength-depenendent model, such as novas_wave_refraction().
  *
  * @param microns     [&mu;m] Observed wavelength to assume in refraction calculations
- * @return            0 if successful, or else -1 (errno set to `EINVAL`) if the wavelength invalid
- *                    (zero, negative, or NaN).
+ * @return            0 if successful, or else -1 (errno set to `EINVAL`) if the wavelength
+ *                    invalid (zero, negative, or NaN).
  *
  * @since 1.4
  * @author Attila Kovacs
@@ -420,9 +427,10 @@ int novas_refract_wavelength(double microns) {
 }
 
 /**
- * The wavelength-dependent IAU atmospheric refraction model, based on the SOFA `iauRefco()` function, in
- * compliance to the 'SOFA Software License' terms of the original source. Our implementation is not
- * provided nor it is endorsed by SOFA. The original function has been modified slightly, such as:
+ * The wavelength-dependent IAU atmospheric refraction model, based on the SOFA `iauRefco()`
+ * function, in compliance to the 'SOFA Software License' terms of the original source. Our
+ * implementation is not provided nor it is endorsed by SOFA. The original function has been
+ * modified slightly, such as:
  *
  * <ol>
  * <li>Out-of-range weather parameters will return with an error (`errno` set to `EINVAL`), unlike
@@ -432,15 +440,16 @@ int novas_refract_wavelength(double microns) {
  * implementation returns the refraction correction angle.</li>
  * </ol>
  *
- * The refraction is calculated for the observing wavelenth previously set via `novas_refract_wavelength()`,
- * or for visible light at 550 nm by default.
+ * The refraction is calculated for the observing wavelenth previously set via
+ * `novas_refract_wavelength()`, or for visible light at 550 nm by default.
  *
- * The function uses the weather parameters defined for the location, including humidity. As such, make sure
- * the weather data is fully defined, and that the humidity was explicitly set after calling
- * `make_on_surface()`.
+ * The function uses the weather parameters defined for the location, including humidity. As such,
+ * make sure the weather data is fully defined, and that the humidity was explicitly set after
+ * calling `make_on_surface()`.
  *
- * According to the documentation of SOFA's `iauRefco()` function, the model has the following accuracy
- * for elevation angles between 15 and 75 degrees, under a range of typical surface conditions:
+ * According to the documentation of SOFA's `iauRefco()` function, the model has the following
+ * accuracy for elevation angles between 15 and 75 degrees, under a range of typical surface
+ * conditions:
  *
  *   |                  |    worst   |     RMS    |
  *   |------------------|:----------:|:----------:|
@@ -451,12 +460,12 @@ int novas_refract_wavelength(double microns) {
  * NOTES:
  * <ol>
  * <li>
- * From the SOFA documentation: "The model balances speed and accuracy to give good results in applications
- * where performance at low altitudes is not paramount. Performance is maintained across a range of
- * conditions, and applies to both optical/IR and radio."
+ * From the SOFA documentation: "The model balances speed and accuracy to give good results in
+ * applications where performance at low altitudes is not paramount. Performance is maintained
+ * across a range of conditions, and applies to both optical/IR and radio."
  * </li>
- * <li>The model is divergent in the observed direction of the horizon. As such, it should not be used
- * for calculating refraction at or below the horizon itself.</li>
+ * <li>The model is divergent in the observed direction of the horizon. As such, it should not be
+ * used for calculating refraction at or below the horizon itself.</li>
  * </ol>
  *
  * REFERENCES:
@@ -489,12 +498,13 @@ int novas_refract_wavelength(double microns) {
  * </li>
  * </ol>
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this implementation of RefractionModel)
- * @param loc       Pointer to structure defining the observer's location on earth, and local weather.
- *                  Make sure all weather values, including humidity (added in v1.1), are fully
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this
+ *                  implementation of RefractionModel)
+ * @param loc       Pointer to structure defining the observer's location on earth, and local
+ *                  weather. Make sure all weather values, including humidity (added in v1.1), are fully
  *                  populated.
- * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED (-1) or
- *                  NOVAS_REFRACT_ASTROMETRIC (0).
+ * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED
+ *                  (-1) or NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] observed source elevation of the specified type.
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error), e.g. because the location is NULL, or

@@ -254,7 +254,7 @@ if(BUILD_DOC)
     find_package(Doxygen)
         set_package_properties(Doxygen PROPERTIES
         URL "https://doxygen.nl/"
-        DESCRIPTION  "is a widely-used documentation generator tool in  software development"
+        DESCRIPTION  "is a widely-used documentation generator tool in software development"
         TYPE REQUIRED
         PURPOSE "Enables HTML documentation for SuperNOVAS"
     )
@@ -281,7 +281,8 @@ if(BUILD_DOC)
 endif()
 
 # ----------------------------------------------------------------------------
-# Installation
+# Install section for Runtime component
+
 set(INSTALL_TARGETS supernovas)
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME Runtime)
 

@@ -219,8 +219,8 @@ int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs
 }
 
 /**
- * Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location to a
- * unit position vector in the Earth-fixed ITRS frame.
+ * Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location
+ * to a unit position vector in the Earth-fixed ITRS frame.
  *
  * @param location   Observer location on Earth
  * @param az         [deg] astrometric azimuth angle at observer location [0:360]. It may be
