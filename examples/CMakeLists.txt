@@ -24,7 +24,7 @@ foreach(EXAMPLE ${EXAMPLE_PROGRAMS})
     set(EXAMPLE_SOURCE ${EXAMPLE}.c)
 
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${EXAMPLE_SOURCE})
-        add_executable(${EXAMPLE} EXCLUDE_FROM_ALL ${EXAMPLE_SOURCE})
+        add_executable(${EXAMPLE} ${EXAMPLE_SOURCE})
 
         # Link against the supernovas library
         target_link_libraries(${EXAMPLE} PRIVATE
