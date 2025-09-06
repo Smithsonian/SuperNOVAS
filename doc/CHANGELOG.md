@@ -11,18 +11,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Upcoming feature release, expected around 1 November 2025.
 
-### Fixed
-
-
 ### Added
 
  - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
    Sidereal Times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal_time()` with
    a simpler, cleaner interface.
    
- - #215: New functions (e.g. `novas_diurnal_eop()`) to calculate corrections to the Earth orientation parameters 
-   published by IERS, to include the effect of libration and ocean tides. Such corrections are necessary to include 
-   if needing or using ITRS / TIRS coordinates with accuracy below the milli-arcsecond (mas) level.
+ - #215: New functions (`novas_diurnal_eop()`, `novas_duirnal_ocean_tides()` and `novas_diurnal_libration()`) to 
+   calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and 
+   ocean tides. Such corrections are necessary if needing or using ITRS / TIRS coordinates with accuracy below the 
+   milli-arcsecond (mas) level.
 
  - #217: New functions `novas_itrf_transform()` and `novas_itrf_transform_eop()` to enable transforming gecocentric
    _xyz_ station coordinates, or Earth orientation parameters (EOP), between different ITRF realizations (e.g. 
@@ -35,11 +33,12 @@ Upcoming feature release, expected around 1 November 2025.
  - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (by 
    kiranshila and attipaci).
    
- - #222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228, 
-   #229, #230 (by attipaci).
+ - #222: CMake build support, supporting e.g for Mac OS X or Windows builds also (by kiranshila), with further tweaks 
+   in #228, #229, #230, #234 (by attipaci).
 
- - #223: New functions `novas_clock_skew_tt()`, `novas_clock_skew_tcg()`, and `novas_clock_skew_tcb()` to calculate
-   the incremental rate at which an observer's clock ticks faster than a TT, TCG, or TCB clock respectively would. 
+ - #223: New function `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged
+   (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 
+   astronomical timescale. All timescales, except UT1, are supported (see also #232 and #233). 
 
 ### Changed
 
@@ -62,14 +61,14 @@ Upcoming feature release, expected around 1 November 2025.
  - #217: Changed `terra()` to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 
    ellipsoid. The change restores the original NOVAS C behaviour.
  
- - #221: GitHub Actions CI now includes `Makefile` builds / tests for Mac OS X. (by kiranshila)
+ - #221: GitHub Actions CI now includes `Makefile` builds and tests for Mac OS X. (by kiranshila)
  
- - #222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)
+ - #222: GitHub Actions CI now checks CMake build, for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)
  
  - #225: GNU `Makefile` fixes for non-Linux builds, and FreeBSD build check in GitHub Actions CI.
  
- - #231: source code (including tests and examples) to use platform-dependent file separator for improved portability
-   to Windows.
+ - #231: The source code (including tests and examples) now uses platform-dependent file separator for improved 
+   portability to Windows.
  
  - #231: Changed documentation build to wean off the likes of `sed` or `tail`, thus allowing to build documentation in 
    a more platform-independent way.
@@ -78,16 +77,16 @@ Upcoming feature release, expected around 1 November 2025.
 
 ### Deprecated
 
- - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files (`CIO_RA.TXT`
-   or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also `ira_equinox()` (which
-   returns the negative of the same value).
+ - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files 
+   (`CIO_RA.TXT` or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also 
+   `ira_equinox()` (which returns the negative of the same value).
 
- - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now a dud. Instead, you should
-   use `novas_gmst()` or `novas_gast()` to get the same results simpler.
+ - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now unused. Instead, you 
+   should use `novas_gmst()` or `novas_gast()` to get the same results simpler.
 
  - #214: Deprecated `cio_basis()`. It is no longer used internally by the library, and users are recommended against 
-   using it themselves, since SuperNOVAS provides cleaner ways to convert between GCRS and CIRS using frames and transforms, 
-   or else via the `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
+   using it themselves, since SuperNOVAS provides cleaner ways to convert between GCRS and CIRS using frames and 
+   transforms, or else via the `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
    
    
 ## [1.4.2] - 2025-08-25
