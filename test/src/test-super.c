@@ -4429,7 +4429,7 @@ static int test_clock_skew() {
   if(!is_equal("clock_skew:gc:tcb", LG - LB, novas_clock_skew(&frame, NOVAS_TCB), 3e-2 * LB)) n++;
 
   dt1 = (tt2tdb(NOVAS_JD_J2000 + 0.1) - tt2tdb(NOVAS_JD_J2000 - 0.1)) / 0.2;
-  if(!is_equal("clock_skew:gc:tdb", dt1, novas_clock_skew(&frame, NOVAS_TDB) - novas_clock_skew(&frame, NOVAS_TT), 1e-12)) n++;
+  if(!is_equal("clock_skew:gc:tdb", -dt1, novas_clock_skew(&frame, NOVAS_TDB) - novas_clock_skew(&frame, NOVAS_TT), 1e-12)) n++;
 
   make_observer_on_surface(0.0, 0.0, 0.0, 0.0, 0.0, &obs);
   if(!is_ok("clock_skew:frame:earth", novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, 0.0, 0.0, &frame))) n++;

@@ -1821,7 +1821,7 @@ static double clock_skew_near_earth(const novas_frame *frame) {
 
 /**
  * Returns the incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than
- * the specified timescale. I.e., it returns _D_, which is defined by:
+ * a clock in the specified timescale. I.e., it returns _D_, which is defined by:
  *
  * d&tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + _D_)
  *
@@ -1890,8 +1890,8 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
       double D1 = (tt2tdb(jd + eps) - tt2tdb(jd - eps)) / (2.0 * eps);
       D = novas_clock_skew(frame, NOVAS_TT);
 
-      // (1 + D) * (1 + D') - 1 = D + D' + DD'
-      D += D1 * (1.0 + D);
+      // (1 + D) * (1 - D') - 1 = D - D' - DD'
+      D -= D1 * (1.0 + D);
       break;
     }
 
