@@ -38,8 +38,9 @@ Upcoming feature release, expected around 1 November 2025.
  - #222: CMake build support, including Mac OS and Windows builds (by kiranshila), with further tweaks in #228, 
    #229, #230 (by attipaci).
 
- - #223: New function `novas_clock_skew()` to calculate the incremental rate at which an observer's clock ticks faster 
-   than an astronomical timescale. All timescales, except UT1, are supported (see also #232). 
+ - #223: New function `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged
+   (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 
+   astronomical timescale. All timescales, except UT1, are supported (see also #232 and #233). 
 
 ### Changed
 

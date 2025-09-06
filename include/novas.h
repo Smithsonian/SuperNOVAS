@@ -2234,6 +2234,7 @@ int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_e
 
 double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
 
+double novas_mean_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
 
 
 // <================= END of SuperNOVAS API =====================>

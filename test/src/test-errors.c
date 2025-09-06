@@ -2379,8 +2379,8 @@ static int test_clock_skew() {
   novas_timespec time = {};
   novas_frame frame = {};
 
-  if(check_nan("clock_skew:frame", novas_clock_skew(NULL, NOVAS_TCG))) n++;
-  if(check_nan("clock_skew:frame:init", novas_clock_skew(&frame, NOVAS_TCG))) n++;
+  if(check_nan("clock_skew:frame", novas_mean_clock_skew(NULL, NOVAS_TCG))) n++;
+  if(check_nan("clock_skew:frame:init", novas_mean_clock_skew(&frame, NOVAS_TCG))) n++;
 
   make_observer_at_geocenter(&obs);
   novas_set_time(NOVAS_TT, NOVAS_JD_J2000, 32.0, 0.0, &time);
@@ -2388,10 +2388,10 @@ static int test_clock_skew() {
   enable_earth_sun_hp(1);
   novas_make_frame(NOVAS_FULL_ACCURACY, &obs, &time, 0.0, 0.0, &frame);
 
-  if(check_nan("clock_skew:timescale:-1", novas_clock_skew(&frame, -1))) n++;
-  if(check_nan("clock_skew:timescale:UT1", novas_clock_skew(&frame, NOVAS_UT1))) n++;
+  if(check_nan("clock_skew:timescale:-1", novas_mean_clock_skew(&frame, -1))) n++;
+  if(check_nan("clock_skew:timescale:UT1", novas_mean_clock_skew(&frame, NOVAS_UT1))) n++;
 
-  if(check_nan("clock_skew:hp:no_planets", novas_clock_skew(&frame, NOVAS_TCG))) n++;
+  if(check_nan("clock_skew:hp:no_planets", novas_mean_clock_skew(&frame, NOVAS_TCG))) n++;
   enable_earth_sun_hp(0);
 
   return n;
