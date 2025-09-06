@@ -61,9 +61,9 @@ Upcoming feature release, expected around 1 November 2025.
  - #217: Changed `terra()` to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 
    ellipsoid. The change restores the original NOVAS C behaviour.
  
- - #221: GitHub Actions CI now includes `Makefile` builds / tests for Mac OS X. (by kiranshila)
+ - #221: GitHub Actions CI now includes `Makefile` builds and tests for Mac OS X. (by kiranshila)
  
- - #222: GitHub Actions CI now checks CMake build, also for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)
+ - #222: GitHub Actions CI now checks CMake build, for Linux, Mac OS X, FreeBSD, and Windows. (by kiranshila)
  
  - #225: GNU `Makefile` fixes for non-Linux builds, and FreeBSD build check in GitHub Actions CI.
  
