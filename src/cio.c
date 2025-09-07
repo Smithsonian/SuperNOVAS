@@ -77,7 +77,7 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
  * <code>cio_file</code> utility (the old way).
  *
  * @param filename    Path (preferably absolute path) `CIO_RA.TXT` or else to the binary
- *                    `cio_ra.bin` data.
+ *                    `cio_ra.bin` data, or NULL to disable using a CIO locator file altogether.
  * @return            0 if successful, or else -1 if the specified file does not exists or we have
  *                    no permission to read it.
  *
@@ -91,11 +91,14 @@ int set_cio_locator_file(const char *restrict filename) {
   FILE *old = cio_file;
 
   // Open new file first to ensure it has a distinct pointer from the old one...
-  cio_file = fopen(filename, "r");
+  cio_file = filename ? fopen(filename, "r") : NULL;
 
   // Close the old file.
   if(old)
     fclose(old);
+
+  if(!filename)
+    return 0;
 
   return cio_file ? 0 : novas_error(-1, errno, "set_cio_locator_file", "%s: %s", filename, strerror(errno));
 }
@@ -396,7 +399,6 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
     long n_recs;
   };
 
-
   static const FILE *last_file;
   static struct cio_file_header lookup;
   static ra_of_cio cache[NOVAS_CIO_CACHE_SIZE];
@@ -416,7 +418,7 @@ short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
     set_cio_locator_file(DEFAULT_CIO_LOCATOR_FILE);  // Try default locator file.
 
   if(cio_file == NULL)
-    return novas_error(1, ENODEV, fn, "No default CIO locator file");
+    return novas_error(1, ENOENT, fn, "No default CIO locator file");
 
   // Check if it's a new file
   if(last_file != cio_file) {

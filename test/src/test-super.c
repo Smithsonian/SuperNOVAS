@@ -2015,6 +2015,8 @@ static int test_cio_location() {
   short type;
   char path[1024] = {'\0'};
 
+  if(!is_ok("cio_location:set_path:NULL", set_cio_locator_file(NULL))) return 1;
+
   sprintf(path, "%s" PATH_SEP "CIO_RA.TXT", dataPath);
   if(!is_ok("cio_location:set_path", set_cio_locator_file(path))) return 1;
 

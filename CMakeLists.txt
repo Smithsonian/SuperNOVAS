@@ -13,7 +13,7 @@
 #    $ [sudo ] cmake --install --prefix=/usr/local
 #
 #  You may install just a specific component via the --component option, such
-#  as 'Runtime', 'Development', or 'Data'.
+#  as 'Runtime' or 'Development'.
 #
 
 
@@ -308,14 +308,6 @@ install(TARGETS ${INSTALL_TARGETS}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
-# ------------------------------------------------------------------------
-# Install Data component
-
-install(FILES data/CIO_RA.TXT
-    COMPONENT Data
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/supernovas
 )
 
 # ------------------------------------------------------------------------

@@ -251,7 +251,7 @@ INSTALL_PROGRAM ?= install
 INSTALL_DATA ?= install -m 644
 
 .PHONY: install
-install: install-libs install-cio-data install-headers install-html
+install: install-libs install-headers install-html
 
 .PHONY: install-libs
 install-libs:
@@ -261,18 +261,6 @@ ifneq ($(wildcard $(LIB)/*),)
 	cp -a $(LIB)/* $(DESTDIR)$(libdir)/
 else
 	@echo "WARNING! Skipping libs install: needs 'shared' and/or 'static'"
-endif
-
-.PHONY: install-cio-data
-install-cio-data:
-	@echo "installing CIO locator data to $(DESTDIR)$(mydatadir)"
-	install -d $(DESTDIR)$(mydatadir)
-	$(INSTALL_DATA) data/CIO_RA.TXT $(DESTDIR)$(mydatadir)/CIO_RA.TXT
-
-.PHONY: install-compat-headers
-install-compat-headers:
-ifeq ($(COMPAT),1)
-	$(INSTALL_DATA) include/novascon.h $(DESTDIR)$(includedir)/
 endif
 
 .PHONY: install-calceph-headers
@@ -292,7 +280,6 @@ install-headers:
 	@echo "installing headers to $(DESTDIR)$(includedir)"
 	install -d $(DESTDIR)$(includedir)
 	$(INSTALL_DATA) include/novas.h include/nutation.h include/solarsystem.h $(DESTDIR)$(includedir)/
-	@$(MAKE) install-compat-headers
 	@$(MAKE) install-calceph-headers
 	@$(MAKE) install-cspice-headers
 
