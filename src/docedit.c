@@ -70,34 +70,6 @@ static int make_local_doxyfile() {
   return 0;
 }
 
-static int make_headless_readme() {
-  FILE *in, *out;
-  char line[16384] = {'\0'};
-  int head = 1;
-
-  in = openfile("README.md", "r");
-  if(!in) return -1;
-
-  out = openfile("README-orig.md", "w");
-  if(!out) {
-    fclose(in);
-    return -1;
-  }
-
-  while(fgets(line, sizeof(line) - 1, in) != NULL) {
-    if(head) {
-      if(line[0] != '#') continue;
-      head = 0;
-    }
-    fwrite(line, strlen(line), 1, out);
-  }
-
-  fclose(out);
-  fclose(in);
-
-  return 0;
-}
-
 // Syntax: docedit [input-path] [output-path]
 int main(int argc, const char *argv[]) {
   int nerr = 0;
@@ -109,7 +81,6 @@ int main(int argc, const char *argv[]) {
     outpath = argv[2];
 
   if(make_local_doxyfile() != 0) nerr++;
-  if(make_headless_readme() != 0) nerr++;
 
   return nerr;
 }

@@ -1,3 +1,7 @@
+<!--! 
+\cond MD_HEADER
+-->
+
 ![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
 <a href="https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html">
@@ -14,7 +18,13 @@
 </picture>
 <br clear="all">
 
-# SuperNOVAS 
+# SuperNOVAS
+ 
+<!--!
+\endcond 
+
+## User's guide
+-->
 
 [![DOI](resources/748170057.svg)](https://doi.org/10.5281/zenodo.14584983)
 
@@ -532,7 +542,7 @@ implementation.
 
 __SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
-NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
+NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent legacy example 
 showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
 
 <a name="sidereal-example"></a>

@@ -1,7 +1,8 @@
-# Astrometric Positions the Old Way
+# Old example usage
 
 As of version 1.1, the SuperNOVAS library offers a new, more versatile, more intuitive, and more efficient way to 
-calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see `README.md`). 
+calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see the 
+_Example Usage_ section of the main `README.md`). 
 However the old approach of the NOVAS C library remain viable also. This document demonstrates calculating the 
 astrometric places of sources the old way, without using the observing frames approach that is now preferred in 
 SuperNOVAS.
@@ -45,7 +46,7 @@ adjustment to convert from J2000 to ICRS coordinates.
 (Naturally, you can skip the transformation steps above if you have defined your source in ICRS coordinates from the 
 start.)
 
-### Spefify the observer location
+### Specify the observer location
 
 Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters
 (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):
