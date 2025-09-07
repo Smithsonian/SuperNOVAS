@@ -251,7 +251,7 @@ INSTALL_PROGRAM ?= install
 INSTALL_DATA ?= install -m 644
 
 .PHONY: install
-install: install-libs install-headers install-html
+install: install-libs install-headers install-docs
 
 .PHONY: install-libs
 install-libs:
@@ -283,6 +283,18 @@ install-headers:
 	@$(MAKE) install-calceph-headers
 	@$(MAKE) install-cspice-headers
 
+.PHONY: install-docs
+install-docs: install-markdown install-html install-examples install-legacy
+
+.PHONY: install-markdown
+install-markdown:
+	@echo "installing documentation to $(DESTDIR)$(docdir)"
+	install -d $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) README.md $(DESTDIR)$(docdir)/
+	$(INSTALL_DATA) LEGACY.md $(DESTDIR)$(docdir)/
+	$(INSTALL_DATA) CHANGELOG.md $(DESTDIR)$(docdir)/
+	$(INSTALL_DATA) CONTRIBUTING.md $(DESTDIR)$(docdir)/
+
 .PHONY: install-html
 install-html:
 ifneq ($(wildcard apidoc/html/search/*),)
@@ -299,6 +311,18 @@ ifneq ($(wildcard apidoc/html/search/*),)
 else
 	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
 endif
+
+.PHONY: install-examples
+install-examples:
+	@echo "installing examples to $(DESTDIR)$(docdir)/examples"
+	install -d $(DESTDIR)$(docdir)/examples
+	$(INSTALL_DATA) examples/* $(DESTDIR)$(docdir)/examples/
+
+.PHONY: install-legacy
+install-legacy:
+	@echo "installing legacy source code to $(DESTDIR)$(docdir)/legacy"
+	install -d $(DESTDIR)$(docdir)/legacy
+	$(INSTALL_DATA) legacy/* $(DESTDIR)$(docdir)/legacy/
 
 # Some standard GNU targets, that should always exist...
 .PHONY: html

@@ -79,6 +79,9 @@ Upcoming feature release, expected around 1 November 2025.
    GitHub repo (in any location), and call `set_cio_locator_file()` before using it with `cio_array()` or 
    `cio_location()`.
    
+ - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`
+   `legacy/` source code, and markdown files.
+   
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
  

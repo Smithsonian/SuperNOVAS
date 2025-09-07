@@ -339,16 +339,37 @@ if(ENABLE_SOLSYS1)
    )
 endif()
 
+install(FILES README.md LEGACY.md CHANGELOG.md CONTRIBUTING.md
+    COMPONENT Development
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
+
+# For examples/ dir, list just the directory, not the individual files installed.
+install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/examples\")")
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples
+   DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+   MESSAGE_NEVER
+   COMPONENT Development
+)
+
+# For legacy/ dir, list just the directory, not the individual files installed.
+install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/legacy\")")
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/legacy
+   DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+   MESSAGE_NEVER
+   COMPONENT Development
+)
+
 if(BUILD_DOC AND TARGET project_docs)
     # For html/ dir, list just the directory, not the individual files installed.
-    install(CODE "message(STATUS \"Installing: ${CMAKE_CURRENT_BINARY_DIR}/html\")")
+    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/html\")")
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
         DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
         MESSAGE_NEVER
         COMPONENT Development
     )
     # For resources/ dir, list just the directory, not the individual files installed.
-    install(CODE "message(STATUS \"Installing: ${CMAKE_CURRENT_BINARY_DIR}/html/resources\")")
+    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/html/resources\")")
     install(DIRECTORY ${PROJECT_SOURCE_DIR}/resources
         DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas/html
         MESSAGE_NEVER
