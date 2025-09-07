@@ -1,5 +1,12 @@
+# Additional CMake configuration file for building the regression testing programs
+# of the SuperNOVAS library. The programs are added to the test suite.
+#
+# To invoke simply configure the cmake build in the SuperNOVAS directory with
+# the -DBUILD_TESTING=ON option.
+#
+# Author: Attila Kovacs
 
-# List of example programs to build
+# List of test programs to build
 set(TEST_PROGRAMS
     test-compat
     test-super
@@ -14,20 +21,29 @@ if(ENABLE_CSPICE)
     list(APPEND TEST_PROGRAMS test-cspice)
 endif()
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
-
+# Look for headers in the SuperNOVAS include/ directory
 include_directories(${PROJECT_SOURCE_DIR}/include)
+
+# Link against binaries in the local SuperNOVAS lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
-add_executable(cio_file ${PROJECT_SOURCE_DIR}/src/cio_file.c)
+# Directory where ephemeris data for the tests are found
+set(EPHEM_DIR ${PROJECT_SOURCE_DIR}/test/ephem)
 
+# Directory where the CIO locator data (ASCII and binary) are found
+set(CIO_DIR ${PROJECT_SOURCE_DIR}/data)
+
+# Create a data/ directory for the compat test output
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
+
+# We'll build and use the cio_file program just to use here..
+add_executable(cio_file EXCLUDE_FROM_ALL ${PROJECT_SOURCE_DIR}/src/cio_file.c)
+
+# Generate the binary CIO locator data for the tests
 add_custom_target(cio_bin_data
     DEPENDS cio_file
-    COMMAND cio_file ${PROJECT_SOURCE_DIR}/data/CIO_RA.TXT ${PROJECT_SOURCE_DIR}/data/cio_ra.bin
+    COMMAND cio_file ${PROJECT_SOURCE_DIR}/data/CIO_RA.TXT ${CIO_DIR}/cio_ra.bin
 )
-
-set(EPHEM_DIR ${PROJECT_SOURCE_DIR}/test/ephem)
-set(CIO_DIR ${PROJECT_SOURCE_DIR}/data)
 
 # Build each example
 foreach(TEST ${TEST_PROGRAMS})
@@ -72,3 +88,4 @@ foreach(TEST ${TEST_PROGRAMS})
         message(WARNING "Source file ${TEST_SOURCE} not found - ${TEST} will not be built")
     endif()
 endforeach()
+

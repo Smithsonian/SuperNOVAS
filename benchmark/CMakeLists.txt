@@ -1,9 +1,18 @@
-# List of example programs to build
+# Additional CMake configuration file for building the benchmarking programs
+# of the SuperNOVAS library.
+#
+# To invoke simply configure the cmake build in the SuperNOVAS directory with
+# the -DBUILD_BENCHMARK=ON option.
+#
+# Author: Attila Kovacs
+
+# List of benchmarking programs to build
 set(BENCHMARK_PROGRAMS
     benchmark-nutation
     benchmark-place
 )
 
+# Link against binaries in the local SuperNOVAS lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 # Build each example

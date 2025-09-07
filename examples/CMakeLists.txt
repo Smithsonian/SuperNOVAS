@@ -1,3 +1,12 @@
+# Additional CMake configuration file for building the example programs of the 
+# SuperNOVAS library. The examples are also added to the test suite so they 
+# may be checked for functionality.
+#
+# To invoke simply configure the cmake build in the SuperNOVAS directory with
+# the -DBUILD_EXAMPLES=ON option.
+#
+# Author: Attila Kovacs
+
 # List of example programs to build
 set(EXAMPLE_PROGRAMS
     example-star
@@ -15,8 +24,10 @@ if(ENABLE_CSPICE)
     list(APPEND EXAMPLE_PROGRAMS example-cspice)
 endif()
 
+# Link against binaries in the local SuperNOVAS lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
+# The ephemeris data to use for CALCEPH / CSPICE testing
 set(EPHEM ${PROJECT_SOURCE_DIR}/test/ephem/de440s-j2000.bsp)
 
 # Build each example

@@ -1703,7 +1703,8 @@ static double solar_system_potential(const novas_frame *frame, const double *pos
       d = sqrt(d) * AU;
     }
     else if(i == NOVAS_EARTH) {
-      // Inlow accuracy mode, we might not have a
+      // We might not have an ephemeris position for Earth here, but we always have
+      // an Earth-position (possibly less accurate) as part of the frame itself
       d = novas_vdist(pos, frame->earth_pos) * AU;
     }
     else if(frame->accuracy != NOVAS_REDUCED_ACCURACY) {
@@ -1754,7 +1755,8 @@ static void solar_system_tidal_potential(const novas_frame *frame, const double 
  * Returns the dimensionless kinetic potential term for a moving observer.
  *
  * @param b     &beta; i.e., _v_ / _c_.
- * @return      The kinetic potential for the rate at which time advances for the observer.
+ * @return      The dimensionless kinetic potential for the rate at which time advances for the
+ *              observer.
  */
 static double kinetic_potential(double b) {
   double ig;
@@ -1795,7 +1797,7 @@ static double clock_skew_near_earth(const novas_frame *frame) {
   if(vr >= C)
     return -1.0;
 
-  z = novas_v2z(vr / KMS) / (1.0 + TC_LG); // Reference velocities to TCG
+  z = novas_v2z(vr / KMS) / (1.0 + TC_LG); // Reference velocities from TT/TDB to TCG
   b = novas_z2v(z) * KMS / C;
 
   return kinetic_potential(b) + sqrt(1.0 - b * b) * dV;
@@ -1843,19 +1845,19 @@ static double tidal_clock_skew(const novas_frame *frame) {
  *
  * d&tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + _D_)
  *
- * The instantaneous difference in clock rate reflects a tiny diurnal variation for Earth-based
- * observers, and a slight variation for near-Earth observers over the orbital period, as the
- * observer cycles around the tidal potential around the geocenter (mainly due to the Sun and
- * Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you will want
- * the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS
- * Conventions), which is provided by `novas_mean_clock_skew()` instead.
+ * The instantaneous difference in clock rate includes tiny diurnal or orbital variationd for
+ * Earth-bound observers as the observer cycles through the tidal potential around the geocenter
+ * (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI,
+ * GPS, or UTC) you may want to exclude the periodic tidal effects and calculate the averaged
+ * observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions
+ * 2010), which is provided by `novas_mean_clock_skew()` instead.
  *
  * For reduced accuracy frames, the result will be approximate, because the gravitational effect
  * of the Sun and Earth alone may be accounted for.
  *
  * NOTES:
  * <ol>
- * <li>Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but not excluding the
+ * <li>Based on the IERS Conventions 2010, Chapter 10, Eqa. 10.6 / 10.8 but also including the
  * near-Earth tidal effects, and modified for relativistic observer motion.</li>
  * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's center
  * will not include the term for that body in the calculation.</li>
@@ -1950,9 +1952,8 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
  * For a non-Earth-bound observer, this is the same as the instantaneous rate returned by
  * `novas_clock_skew()`. For an Earth-bound observer however, this function returns the averaged
  * value over the observer's rotation around the geocenter. As such it filters out the tiny
- * diurnal tidal variations for Earth-based observers, or the variation over an orbital period
- * for near-Earth observers, as the observer moves through the tidal potential around the
- * geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs.
+ * diurnal or orbital tidal variations as the observer moves through the tidal potential around
+ * the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs.
  * 10.6 and 10.8 of the IERS Conventions.
  *
  * For reduced accuracy frames, the result will be approximate, because the gravitational effect
@@ -1960,7 +1961,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
  *
  * NOTES:
  * <ol>
- * <li>Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but modified for
+ * <li>Based on the IERS Conventions 2010, Chapter 10, Eqs. 10.6 / 10.8, but modified for
  * relativistic observer motion.</li>
  * <li>The potential for an observer inside 0.9 planet radii of a major Solar-system body's
  * center will not include the term for that body in the calculation.</li>

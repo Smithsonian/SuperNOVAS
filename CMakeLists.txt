@@ -51,10 +51,12 @@ add_feature_info(Testing BUILD_TESTING "Run regression testing")
 add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
 add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
 add_feature_info(Solsys1-Plugin ENABLE_SOLSYS1 "Legacy ephemeris support via eph_manager()")
-add_feature_info(Solsys2-Plugin ENABLE_SOLSYS2 "Legacy ephemeris support via Fortran PLEPH library")
+add_feature_info(Solsys2-Plugin ENABLE_SOLSYS2 "Legacy ephemeris support via the Fortran PLEPH library")
 add_feature_info(Documentation BUILD_DOC "Developer documentation (HTML)")
 add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
 
+# ----------------------------------------------------------------------------
+# Global build configuration
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -72,6 +74,45 @@ if(WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
+
+# Preprocessor definitions
+set(SUPERNOVAS_COMPILE_DEFINITIONS
+    BUILTIN_SOLSYS3=1
+    BUILTIN_SOLSYS_EPHEM_READER=1
+    DEFAULT_SOLSYS=3
+)
+
+# Check for math library
+check_library_exists(m sin "" HAVE_LIBM)
+
+# ----------------------------------------------------------------------------
+# Extenal plugin configuration
+
+# CALCEPH plugin
+if(ENABLE_CALCEPH)
+    find_package(calceph COMPONENTS Development REQUIRED CONFIG)
+    set_package_properties(calceph PROPERTIES
+        URL "https://calceph.imcce.fr"
+        DESCRIPTION  "is designed to access the binary planetary ephemeris files"
+        TYPE REQUIRED
+        PURPOSE "Provides ephemeris support for SuperNOVAS"
+    )
+    list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CALCEPH=1)
+    set(CALCEPH_FOUND TRUE)
+    message(STATUS "Found calceph")
+endif()
+
+# CSPICE plugin
+if(ENABLE_CSPICE)
+    find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
+    list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CSPICE=1)
+    set(CSPICE_FOUND TRUE)
+    message(STATUS "Found cspice")
+endif()
+
+# ----------------------------------------------------------------------------
+# Build the 'supernovas' library as a static OR as a shared lib.
+# depending on BUILD_SHARED_LIBS
 
 # Sources
 set(SUPERNOVAS_CORE_SOURCES
@@ -101,41 +142,6 @@ set(SUPERNOVAS_CORE_SOURCES
     src/solsys-ephem.c
 )
 
-# Preprocessor definitions
-set(SUPERNOVAS_COMPILE_DEFINITIONS
-    BUILTIN_SOLSYS3=1
-    BUILTIN_SOLSYS_EPHEM_READER=1
-    DEFAULT_SOLSYS=3
-)
-
-# Check for math library
-check_library_exists(m sin "" HAVE_LIBM)
-
-# CALCEPH plugin
-if(ENABLE_CALCEPH)
-    find_package(calceph COMPONENTS Development REQUIRED CONFIG)
-    set_package_properties(calceph PROPERTIES
-        URL "https://calceph.imcce.fr"
-        DESCRIPTION  "is designed to access the binary planetary ephemeris files"
-        TYPE REQUIRED
-        PURPOSE "Provides ephemeris support for SuperNOVAS"
-    )
-    list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CALCEPH=1)
-    set(CALCEPH_FOUND TRUE)
-    message(STATUS "Found calceph")
-endif()
-
-# CSPICE plugin
-if(ENABLE_CSPICE)
-    find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
-    list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CSPICE=1)
-    set(CSPICE_FOUND TRUE)
-    message(STATUS "Found cspice")
-endif()
-
-# ----------------------------------------------------------------------------
-# Build the 'supernovas' library as a static OR as a shared lib.
-# depending on BUILD_SHARED_LIBS
 add_library(supernovas ${SUPERNOVAS_CORE_SOURCES})
 
 # Alias to SuperNOVAS:: namespace
@@ -250,6 +256,9 @@ if(BUILD_BENCHMARK)
     add_subdirectory(benchmark)
 endif()
 
+# ----------------------------------------------------------------------------
+# Generate HTML documentation (if enabled)
+
 if(BUILD_DOC) 
     find_package(Doxygen)
         set_package_properties(Doxygen PROPERTIES
@@ -281,7 +290,7 @@ if(BUILD_DOC)
 endif()
 
 # ----------------------------------------------------------------------------
-# Install section for Runtime component
+# Install Runtime component
 
 set(INSTALL_TARGETS supernovas)
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME Runtime)
@@ -319,7 +328,7 @@ if(BUILD_DOC AND TARGET project_docs)
 endif()
 
 # ------------------------------------------------------------------------
-# Install files for the Data component
+# Install Data component
 
 install(FILES data/CIO_RA.TXT
     COMPONENT Data
@@ -327,7 +336,7 @@ install(FILES data/CIO_RA.TXT
 )
 
 # ------------------------------------------------------------------------
-# Install files for the Development component
+# Install Development component
 
 install(FILES include/novas.h include/nutation.h include/solarsystem.h
     COMPONENT Development
