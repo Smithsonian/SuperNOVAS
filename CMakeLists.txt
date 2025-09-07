@@ -270,7 +270,7 @@ if(BUILD_DOC)
 
     if(Doxygen_FOUND)
         add_executable(docedit EXCLUDE_FROM_ALL src/docedit.c)
-   
+
         # Generate headless docs and run Doxygen on them.
         add_custom_target(project_docs 
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
@@ -356,13 +356,21 @@ if(ENABLE_SOLSYS1)
 endif()
 
 if(BUILD_DOC AND TARGET project_docs)
-    # For html dir, list just the directory, not the individual files installed.
+    # For html/ dir, list just the directory, not the individual files installed.
     install(CODE "message(STATUS \"Installing: ${CMAKE_CURRENT_BINARY_DIR}/html\")")
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
         DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
         MESSAGE_NEVER
         COMPONENT Development
     )
+    # For resources/ dir, list just the directory, not the individual files installed.
+    install(CODE "message(STATUS \"Installing: ${CMAKE_CURRENT_BINARY_DIR}/html/resources\")")
+    install(DIRECTORY ${PROJECT_SOURCE_DIR}/resources
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas/html
+        MESSAGE_NEVER
+        COMPONENT Development
+    )
+    # Install Doxygen tag, which downstream docs can link to.
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
         DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
         COMPONENT Development
