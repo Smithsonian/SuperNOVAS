@@ -11,6 +11,7 @@
 #include <errno.h>
 
 #define DOXYGEN_STRING    "resources/header.html"
+#define OUTPATH_STRING    "apidoc"
 
 #if defined _WIN32 || defined __CYGWIN__
 #  define PATH_SEP  "\\"
@@ -18,13 +19,14 @@
 #  define PATH_SEP  "/"
 #endif
 
-static const char *path = ".";
+static const char *inpath = ".";
+static const char *outpath = NULL;
 
 static FILE *openfile(const char *name, const char *mode) {
   char filename[1024] = {'\0'};
   FILE *fp;
 
-  snprintf(filename, sizeof(filename), "%s" PATH_SEP "%s", path, name);
+  snprintf(filename, sizeof(filename), "%s" PATH_SEP "%s", inpath, name);
   fp = fopen(filename, mode);
   if(!fp) fprintf(stderr, "ERROR! opening %s: %s", filename, strerror(errno));
   return fp;
@@ -45,8 +47,18 @@ static int make_local_doxyfile() {
 
   while(fgets(line, sizeof(line) - 1, in) != NULL) {
     char *match = strstr(line, DOXYGEN_STRING);
+
     if(match) {
       memset(match, ' ', sizeof(DOXYGEN_STRING) - 1);
+    }
+
+    else if(outpath) {
+      match = strstr(line, OUTPATH_STRING);
+      if(match) {
+        char *rem = &match[sizeof(OUTPATH_STRING) - 1];
+        memmove(&match[strlen(outpath)], rem, strlen(rem));
+        memcpy(match, outpath, strlen(outpath));
+      }
     }
 
     fwrite(line, strlen(line), 1, out);
@@ -86,12 +98,15 @@ static int make_headless_readme() {
   return 0;
 }
 
-// Syntax: docedit [path]
+// Syntax: docedit [input-path] [output-path]
 int main(int argc, const char *argv[]) {
   int nerr = 0;
 
   if(argc > 1)
-    path = argv[1];
+    inpath = argv[1];
+
+  if(argc > 2)
+    outpath = argv[2];
 
   if(make_local_doxyfile() != 0) nerr++;
   if(make_headless_readme() != 0) nerr++;

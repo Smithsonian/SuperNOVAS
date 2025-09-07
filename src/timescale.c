@@ -1670,11 +1670,11 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
 }
 
 /**
- * Returns the Solar-system gravitational potential due to the major planets, the Sun, and Moon.
- * If the position is inside one of the bodies (i.e., its distance from the body's center is less
- * than 90% of the body's mean radius), then the potential due to that body is not included in the
- * calculation. For example, if the position is the geocenter (or well below the Earth's surface),
- * then the calculation will not include Earth potential.
+ * Returns the Newtonian Solar-system gravitational potential due to the major planets, the Sun,
+ * and Moon. If the position is inside one of the bodies (i.e., its distance from the body's
+ * center is less than 90% of the body's mean radius), then the potential due to that body is not
+ * included in the calculation. For example, if the position is at or near the geocenter (well
+ * below the Earth's surface), then the calculation will not include Earth potential.
  *
  * In reduced accuracy mode, the result may be approximate, as only the bodies with known
  * positions are included. The gravitational potential due to the Sun and Earth are always
@@ -1684,17 +1684,21 @@ double novas_time_lst(const novas_timespec *restrict time, double lon, enum nova
  *                of the major solar-system bodies at the time of observation.
  * @param pos     [AU] The observer's position. If it's near the center of one of the gravitating
  *                bodies, that body's potential is excluded from the calculation.
- * @return        The dimensionless Solar-system potential, or NAN (errno set to EAGAIN) if the
- *                frame is configured for full accuracy but not all planet positions are available.
+ * @return        The dimensionless Newtonian Solar-system potential, or NAN (errno set to EAGAIN)
+ *                if the frame is configured for full accuracy but not all planet positions are
+ *                available.
  */
 static double solar_system_potential(const novas_frame *frame, const double *pos) {
   double V = 0.0;
   int i;
 
+  // Calculate the Newtonian gravitational potential of the major planets, Sun and the Moon
   for(i = NOVAS_MERCURY; i <= NOVAS_MOON; i++) {
     double d = 0.0;
 
     if(frame->planets.mask & (1 << i)) {
+      // Use the apparent positions calculated for gravitational bending. In low
+      // accuracy mode, this may only contain a position for the Sun...
       int k;
       for(k = 3; --k >= 0; ) {
         double x = frame->planets.pos[i][k] + frame->obs_pos[k] - pos[k];
@@ -1703,8 +1707,8 @@ static double solar_system_potential(const novas_frame *frame, const double *pos
       d = sqrt(d) * AU;
     }
     else if(i == NOVAS_EARTH) {
-      // We might not have an ephemeris position for Earth here, but we always have
-      // an Earth-position (possibly less accurate) as part of the frame itself
+      // We might not have an ephemeris position for Earth above, but we always have
+      // an Earth-position (possibly less accurate) as part of the frame itself...
       d = novas_vdist(pos, frame->earth_pos) * AU;
     }
     else if(frame->accuracy != NOVAS_REDUCED_ACCURACY) {
@@ -1804,7 +1808,7 @@ static double clock_skew_near_earth(const novas_frame *frame) {
 }
 
 /**
- * Returns the incremenral rate at which an Earth-bound observer's clock (i.e. proper time &tau;)
+ * Returns the incremental rate at which an Earth-bound observer's clock (i.e. proper time &tau;)
  * ticks faster due to the local tidal potential around Earth (mainly due to the Sun and Moon).
  * I.e., it returns _D_, which is defined by:
  *
@@ -1846,7 +1850,7 @@ static double tidal_clock_skew(const novas_frame *frame) {
  * d&tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + _D_)
  *
  * The instantaneous difference in clock rate includes tiny diurnal or orbital variationd for
- * Earth-bound observers as the observer cycles through the tidal potential around the geocenter
+ * Earth-bound observers as the they cycle through the tidal potential around the geocenter
  * (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI,
  * GPS, or UTC) you may want to exclude the periodic tidal effects and calculate the averaged
  * observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions

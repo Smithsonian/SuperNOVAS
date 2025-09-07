@@ -274,7 +274,7 @@ if(BUILD_DOC)
         # Generate headless docs and run Doxygen on them.
         add_custom_target(project_docs 
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-            COMMAND docedit
+            COMMAND docedit . ${CMAKE_CURRENT_BINARY_DIR}
             COMMAND Doxygen::doxygen Doxyfile.local
         )
         
@@ -318,15 +318,6 @@ install(TARGETS ${INSTALL_TARGETS}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-if(BUILD_DOC AND TARGET project_docs)
-    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas COMPONENT Development
-    )
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas COMPONENT Development
-    )
-endif()
-
 # ------------------------------------------------------------------------
 # Install Data component
 
@@ -363,6 +354,21 @@ if(ENABLE_SOLSYS1)
        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
    )
 endif()
+
+if(BUILD_DOC AND TARGET project_docs)
+    # For html dir, list just the directory, not the individual files installed.
+    install(CODE "message(STATUS \"Installing: ${CMAKE_CURRENT_BINARY_DIR}/html\")")
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+        MESSAGE_NEVER
+        COMPONENT Development
+    )
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+        COMPONENT Development
+    )
+endif()
+
 
 install(EXPORT SuperNOVASTargets
     COMPONENT Development
