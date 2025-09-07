@@ -24,8 +24,8 @@ CPPFLAGS += -I$(INC)
 # -std=c99 may not be supported by some very old compilers...
 CFLAGS ?= -g -Os -Wall
 
-# Grab the system information
-UNAME_S := $(shell uname -s)
+# Grab the build platform (OS type) information
+PLATFORM ?= $(shell uname -s)
 
 # Compile for specific C standard
 ifdef CSTANDARD
@@ -73,9 +73,7 @@ endif
 
 
 # Whether to build into the library planet_eph_manager() routines provided in 
-# solsys1.c. Because the default readeph implementation (readeph0.c) does not
-# provide useful functionality, we do not include solsys1.c in the build
-# by default.
+# solsys1.c. We do not include solsys1.c in the build by default.
 #BUILTIN_SOLSYS1 ?= 1
 
 
@@ -144,7 +142,7 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 # ============================================================================
 
 # Platform-specific configurations
-ifeq ($(UNAME_S),Darwin)
+ifeq ($(PLATFORM),Darwin)
   # macOS specific
   SOEXT := dylib
   SHARED_FLAGS := -dynamiclib -fPIC
@@ -159,7 +157,7 @@ else
 endif
 
 # On Linux autodetect calceph / cspice libraties with ldconfig
-ifeq ($(UNAME_S),Linux)
+ifeq ($(PLATFORM),Linux)
   AUTO_DETECT_LIBS := 1
   MISSING_SYMBOLS_OK := 1
 else 

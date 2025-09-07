@@ -98,16 +98,12 @@ if(ENABLE_CALCEPH)
         PURPOSE "Provides ephemeris support for SuperNOVAS"
     )
     list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CALCEPH=1)
-    set(CALCEPH_FOUND TRUE)
-    message(STATUS "Found calceph")
 endif()
 
 # CSPICE plugin
 if(ENABLE_CSPICE)
     find_library(cspice cspice REGISTRY_VIEW TARGET REQUIRED)
     list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CSPICE=1)
-    set(CSPICE_FOUND TRUE)
-    message(STATUS "Found cspice")
 endif()
 
 # ----------------------------------------------------------------------------
@@ -170,11 +166,7 @@ target_include_directories(supernovas PUBLIC
 target_compile_definitions(supernovas PRIVATE ${SUPERNOVAS_COMPILE_DEFINITIONS})
 
 # Link with math libs as necessary
-target_link_libraries(supernovas
-    PRIVATE
-        $<$<BOOL:${HAVE_LIBM}>:m>
-        $<$<BOOL:${CMAKE_THREAD_LIBS_INIT}>:${CMAKE_THREAD_LIBS_INIT}>
-)
+target_link_libraries(supernovas PRIVATE $<$<BOOL:${HAVE_LIBM}>:m>)
 
 # Compatibility alias
 add_library(novas ALIAS supernovas)
@@ -376,7 +368,6 @@ if(BUILD_DOC AND TARGET project_docs)
         COMPONENT Development
     )
 endif()
-
 
 install(EXPORT SuperNOVASTargets
     COMPONENT Development
