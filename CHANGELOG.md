@@ -36,7 +36,7 @@ Upcoming feature release, expected around 1 November 2025.
  - #222: CMake build support, e.g for Mac OS X or Windows builds also (by kiranshila), with further tweaks in #228, 
    #229, #230, #234, 235 (by attipaci).
 
- - #223: New function `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged
+ - #223: New functions `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged 
    (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 
    astronomical timescale. All timescales, except UT1, are supported (see also #232 and #233). 
 
@@ -73,12 +73,21 @@ Upcoming feature release, expected around 1 November 2025.
  - #231: Changed documentation build to wean off the likes of `sed` or `tail`, thus allowing to build documentation in 
    a more platform-independent way.
  
+ - #236: No longer installing `CIO_RA.TXT` (e.g. to `/usr/share/supernovas`). Not only it is no longer needed by the 
+   library, it is also not precise as the data was generated with the original, now obsoleted, IAU2000 nutation model. 
+   Those who really want it, nevertheless, can install it themselves, to the location of choice, from the SuperNOVAS 
+   GitHub repo (in any location), and call `set_cio_locator_file()` before using it with `cio_array()` or 
+   `cio_location()`.
+   
+ - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
+   `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
+ 
  - Various API documentation edits.
 
 ### Deprecated
 
- - #208: Deprecated `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data files 
-   (`CIO_RA.TXT` or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also 
+ - #208: Deprecated `cio_array()` and `cio_location()`. Going forward, SuperNOVAS no longer uses the CIO locator data 
+   files (`CIO_RA.TXT` or `cio_ra.bin`) internally, and so `cio_location()` becomes redundant with `cio_ra()` and also 
    `ira_equinox()` (which returns the negative of the same value).
 
  - #209: Deprecated `sidereal_time()`. It is messy and one of its arguments (`erot`) is now unused. Instead, you 
