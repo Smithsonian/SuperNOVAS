@@ -220,9 +220,9 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">pos</td><td>[AU] Position vector of source relative to observer </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">vobs</td><td>[AU/day] Velocity vector of observer, relative to the solar system barycenter, components in AU/day. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">vobs</td><td>[AU/day] Velocity vector of observer, relative to the solar system barycenter. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">lighttime</td><td>[day] Light time from object to Earth in days (if known). Or set to 0, and this function will compute it. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>[AU] Position vector, referred to origin at center of mass of the Earth, corrected for aberration, components in AU. It can be the same vector as one of the inputs.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>[AU] Position vector, referred to origin at center of mass of the Earth, corrected for aberration. It can be the same vector as one of the inputs.</td></tr>
   </table>
   </dd>
 </dl>
@@ -353,10 +353,10 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">body</td><td>Pointer to structure containing the designation for the solar system body </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">tlight0</td><td>[day] First approximation to light-time, in days (can be set to 0.0 if unknown). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos_src_obs</td><td>[AU] Position 3-vector of body, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU. It can be the same vector as either of the inputs. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos_src_obs</td><td>[AU] Position 3-vector of body, with respect to origin at observer (or the geocenter), referred to ICRS axes. It can be the same vector as either of the inputs. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tlight</td><td>[day] Calculated light time</td></tr>
   </table>
   </dd>
@@ -996,7 +996,7 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">dra</td><td>[arcsec] Projected ffset position in the apparent true-of-date R.A. direction. E.g. The projected offset between two RA coordinates at a same reference declination, is &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dra</td><td>[arcsec] Projected ffset position in the apparent true-of-date R.A. direction. E.g. The projected offset between two RA coordinates at a same reference declination, is &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ddec</td><td>[arcsec] Projected offset position in the apparent true-of-date declination direction. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pa</td><td>[deg] Parallactic Angle </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">daz</td><td>[arcsec] Output offset position in the local azimuth direction. It can be a pointer to one of the input coordinates, or NULL if not required. </td></tr>
@@ -1453,14 +1453,14 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculates the positions and velocities for the Solar-system bodies, e.g. for use for graviational deflection calculations. The planet positions are calculated relative to the observer location, while velocities are w.r.t. the SSB. Both positions and velocities are antedated for light travel time, so they accurately reflect the apparent position (and barycentric motion) of the bodies from the observer's perspective.</p>
+<p>Calculates the positions and velocities for the Solar-system bodies, e.g. for use for gravitational deflection calculations. The planet positions are calculated relative to the observer location, while velocities are w.r.t. the SSB. Both positions and velocities are antedated for light travel time, so they accurately reflect the apparent position (and barycentric motion) of the bodies from the observer's perspective.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1). In full accuracy mode, it will calculate the deflection due to the Sun, Jupiter, Saturn and Earth. In reduced accuracy mode, only the deflection due to the Sun is calculated. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pl_mask</td><td>Bitwise <code>(1 &lt;&lt; planet-number)</code> mask indicating which planets to request data for. See enum novas_planet for the enumeration of planet numbers. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">planets</td><td>Pointer to apparent planet data to populate. have positions and velocities calculated successfully. See enum novas_planet for the enumeration of planet numbers. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">planets</td><td>Pointer to apparent planet data to populate. The planets with non-zero mask bits will have have positions and velocities calculated. See enum novas_planet for the enumeration of planet numbers. </td></tr>
   </table>
   </dd>
 </dl>

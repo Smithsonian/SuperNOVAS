@@ -3,7 +3,7 @@ var searchData=
   ['units_0',['Physical units',['../index.html#autotoc_md105',1,'']]],
   ['universal_20ephemeris_20data_20service_20integration_1',['Universal ephemeris data / service integration',['../index.html#autotoc_md92',1,'']]],
   ['unredshift_5fvrad_2',['unredshift_vrad',['../spectral_8c.html#aea89203030ca831260dec18f83081d23',1,'unredshift_vrad(double vrad, double z):&#160;spectral.c'],['../novas_8h.html#aea89203030ca831260dec18f83081d23',1,'unredshift_vrad(double vrad, double z):&#160;spectral.c']]],
-  ['unrelease_3',['[Unrelease]',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
+  ['unreleased_3',['[Unreleased]',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
   ['up_20the_20observing_20frame_4',['Set up the observing frame',['../index.html#autotoc_md82',1,'']]],
   ['usage_5',['Example usage',['../index.html#autotoc_md77',1,'']]],
   ['using_20a_20gnu_20tt_20makefile_20tt_6',['Using a GNU &lt;tt&gt;Makefile&lt;/tt&gt;',['../index.html#autotoc_md70',1,'']]],

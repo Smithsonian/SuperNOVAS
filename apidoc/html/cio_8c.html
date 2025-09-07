@@ -318,7 +318,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 </div><div class="memdoc">
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>This function is no longer used internally in the library. Given that the CIO is defined on the dynamical equator of date, it is not normally meaningful to provide an R.A. coordinate for it in GCRS, in general. Instead, you might use <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a> to get the same value w.r.t. the equinox of date (on the same CIRS/TOD dynamical equator, or else <code><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a></code> to return the negated value.</dd></dl>
 <p>Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of date. The CIO is always located on the true equator (= intermediate equator) of date.</p>
-<p>The user may specify an interpolation file to use via <a class="el" href="cio_8c.html#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a> prior to calling this function. In that case the call will return CIO location relative to GCRS. In the absence of the table, it will calculate the CIO location relative to the true equinox. In either case the type of the location is returned alongside the corresponding CIO location value.</p>
+<p>The user may specify an interpolation file to use via <a class="el" href="cio_8c.html#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a> prior to calling this function. In that case the call will return CIO location relative to GCRS. In the absence of the table, it will calculate the CIO location relative to the true equinox. In either case, the type of the location is returned alongside the corresponding CIO location value.</p>
 <p>NOTES: </p><ol>
 <li>
 Unlike the NOVAS C version of this function, this version will always return a CIO location as long as the pointer arguments are not NULL. The returned values will be interpolated from the locator file if possible, otherwise it falls back to calculating an equinox-based location per default.  </li>
@@ -376,7 +376,7 @@ Note, that when a CIO location file is used, the bundled CIO locator data was pr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date on the true equator of date for a given TT Julian date. This is simply the negated return value of <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a> for the true equator of date.</p>
+<p>Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date on the true equator of date for a given TT Julian date. This is simply the negated return value ofira_equinox() for the true equator of date.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>

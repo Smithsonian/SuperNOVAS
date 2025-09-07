@@ -289,7 +289,7 @@ Standish, E.M. and Newhall, X X (1988). "The JPL Export Planetary Ephemeris"; JP
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the arhuments is NULL, or else 1 if the file could no be opened, 2&ndash;10 if (= line + 1) if there was an error reading the header line, or 11 if the type of DE file is not supported.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the arhuments is NULL, or else 1 if the file could not be opened, 2&ndash;10 if (= line + 1) if there was an error reading the header line, or 11 if the type of DE file is not supported.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e">ephem_close()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="eph__manager_8c.html#af1da4b8e59393e73ef0711920e920753">BUFFER</a>, <a class="el" href="eph__manager_8c.html#ad13d93611f33badca5f954f0b7c9c1a3">EM_RATIO</a>, <a class="el" href="eph__manager_8c.html#ab690dba61a7445d8db2c104883fb0fe6">EPHFILE</a>, <a class="el" href="eph__manager_8c.html#a3e671032c94fa64bb397d6166fef36f7">IPT</a>, <a class="el" href="eph__manager_8c.html#a3827e48de0de48feb5b52444d03983d3">JPLAU</a>, <a class="el" href="eph__manager_8c.html#a7c998bf57458a81960a20b58bec630d4">KM</a>, <a class="el" href="eph__manager_8c.html#ad0644039a2a0b1fcf47bf8f97af4d537">LPT</a>, <a class="el" href="eph__manager_8c.html#aa4ad9304a91f586963d80cf4805b9d76">NP</a>, <a class="el" href="eph__manager_8c.html#a1b3f642c5c66eb202b565cbd2ec70194">NRL</a>, <a class="el" href="eph__manager_8c.html#a4f5b18c8499bbc908974749c84eb9ece">NV</a>, <a class="el" href="eph__manager_8c.html#a0fcf3bf4c37f78e5ef7557cb03029eff">PC</a>, <a class="el" href="eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300">RECORD_LENGTH</a>, <a class="el" href="eph__manager_8c.html#a20c09a36fbddf8e712b5f937f06b1b66">SS</a>, <a class="el" href="eph__manager_8c.html#ad741a4fdb6d243507e3be0028cdeea9e">TWOT</a>, and <a class="el" href="eph__manager_8c.html#afe4ec6caa67baf8fb5b184cc183a07e8">VC</a>.</p>
@@ -423,8 +423,8 @@ Standish, E.M. and Newhall, X X (1988). "The JPL Export
     <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Two-element array containing the Julian date, which may be split any way (although the first element is usually the "integer" part, and the second element is the "fractional" part). Julian date is in the TDB or "T_eph" time scale. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">target</td><td>The integer code (see above) for the planet for which coordinates are requested, e.g. DE_JUPITER. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">origin</td><td>The integer code of the planet or position relative to which coordinates are measured. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector array of target relative to center, measured in AU. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector array of target relative to center, measured in AU/day. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">position</td><td>[AU] Position vector array of target relative to center. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">velocity</td><td>[AU/day] Velocity vector array of target relative to center. </td></tr>
   </table>
   </dd>
 </dl>
@@ -460,7 +460,7 @@ Standish, E.M. and Newhall, X X (1988). "The JPL Export
         </tr>
       </table>
 </div><div class="memdoc">
-<p>reaks up a double number into a double integer part and a fractional part.</p>
+<p>Breaks up a double number into a double integer part and a fractional part.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">tt</td><td>Input number. </td></tr>
@@ -518,10 +518,10 @@ Standish, E.M. and Newhall, X X (1988). "The JPL Export
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">jed</td><td>[day] 2-element Julian date (TDB) at which interpolation is wanted. Any combination of jed[0]+jed[1] which falls within the time span on the file is a permissible epoch. See Note 1 below. target (short) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">jed</td><td>[day] 2-element Julian date (TDB) at which interpolation is wanted. Any combination of jed[0]+jed[1] which falls within the time span on the file is a permissible epoch. See Note 1 below. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">target</td><td>The integer code (see above) for the planet for which coordinates are requested, e.g. DE_JUPITER. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">target_pos</td><td>[AU] The barycentric position vector array of the requested object, in AU. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">target_vel</td><td>[AU/day] The barycentric velocity vector array of the requested object, in AU/Day.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">target_pos</td><td>[AU] The barycentric position vector array of the requested object. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">target_vel</td><td>[AU/day] The barycentric velocity vector array of the requested object.</td></tr>
   </table>
   </dd>
 </dl>

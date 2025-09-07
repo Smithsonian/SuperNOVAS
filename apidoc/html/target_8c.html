@@ -1108,8 +1108,8 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to catalog entry structure containing ICRS catalog </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Position vector, equatorial rectangular coordinates, components in AU. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">motion</td><td>[AU/day] Perceived motion of star, in equatorial rectangular coordinates, components in AU/Day. It must be distinct from the pos output vector, and may be NULL if not required. Note, that it is suitable only for calculating the apparent 3D location of the star at a different time, and should not be used as a measure of physical velocity, e.g. for spectroscopic radial velocity determination.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Position vector, equatorial rectangular coordinates, It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">motion</td><td>[AU/day] Perceived motion of star, in equatorial rectangular coordinates. It must be distinct from the pos output vector, and may be NULL if not required. Note, that it is suitable only for calculating the apparent 3D location of the star at a different time, and should not be used as a measure of physical velocity, e.g. for spectroscopic radial velocity determination.</td></tr>
   </table>
   </dd>
 </dl>

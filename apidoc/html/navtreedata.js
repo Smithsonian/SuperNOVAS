@@ -91,7 +91,7 @@ var NAVTREE =
     ] ],
     [ "Release schedule", "index.html#autotoc_md123", null ],
     [ "Changelog", "md_CHANGELOG.html", [
-      [ "[Unrelease]", "md_CHANGELOG.html#autotoc_md1", [
+      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", [
         [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md3", null ],
         [ "Deprecated", "md_CHANGELOG.html#autotoc_md4", null ]

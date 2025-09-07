@@ -305,11 +305,11 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
 </div><div class="memdoc">
 <p>Returns the instantaneous incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
 <p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
-<p>The instantaneous difference in clock rate reflects a tiny diurnal variation for Earth based observers, and a slight variation for near-Earth observers over the orbital period, as the observer cycles around the tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you will want the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions), which is provided by <code><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> instead.</p>
+<p>The instantaneous difference in clock rate includes tiny diurnal or orbital variationd for Earth-bound observers as the observer cycles through the tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you may want to exclude the periodic tidal effects and calculate the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions 2010), which is provided by <code><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> instead.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
 <li>
-Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but not excluding the near-Earth tidal effects, and modified for relativistic observer motion. </li>
+Based on the IERS Conventions 2010, Chapter 10, Eqa. 10.6 / 10.8 but also including the near-Earth tidal effects, and modified for relativistic observer motion. </li>
 <li>
 The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
 </ol>
@@ -320,7 +320,7 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">frame</td><td>The observing frame, defining the observer position as well as the positions of the major solar-system bodies at the time of observation. </td></tr>
-    <tr><td class="paramname">timescale</td><td>Reference timescale for the comparison. All timescales, except <code>NOVAS_UT1</code>, are supported. (UT1 advances at an irregular rate). </td></tr>
+    <tr><td class="paramname">timescale</td><td>Reference timescale for the comparison. All timescales except <code>NOVAS_UT1</code> are supported. (UT1 advances at an irregular rate). </td></tr>
   </table>
   </dd>
 </dl>
@@ -348,7 +348,7 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a Julian date (in non-specific timescale) corresponding the specified input string date/time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
+<p>Returns a Julian date (in non-specific timescale) corresponding the specified input string date / time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
@@ -399,7 +399,7 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>The timescale constant, or else -1 if the string could not be parsed into a date and timescale. If the string is a bare timestamp without an hint of a timescale marker, then NOVAS_UTC will be assumed. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>The timescale constant, or else -1 if the string could not be parsed into a date and timescale. If the string is a bare timestamp without a hint of a timescale marker, then NOVAS_UTC will be assumed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -792,11 +792,11 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 </div><div class="memdoc">
 <p>Returns the averaged incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
 <p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
-<p>This is the same as the instantaneous rate (see <code><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code>) for a non-Earth-bound observer. For observers on, or near, Earth however, this function returns the averaged value over the observer's rotation around the geocenter. As such it filters out the tiny diurnal tidal variations for Earth-based observers, or the variation over and orbital period for near-Earth observers, as the observer moves through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.</p>
+<p>For a non-Earth-bound observer, this is the same as the instantaneous rate returned by <code><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code>. For an Earth-bound observer however, this function returns the averaged value over the observer's rotation around the geocenter. As such it filters out the tiny diurnal or orbital tidal variations as the observer moves through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
 <li>
-Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but modified for relativistic observer motion. </li>
+Based on the IERS Conventions 2010, Chapter 10, Eqs. 10.6 / 10.8, but modified for relativistic observer motion. </li>
 <li>
 The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
 </ol>
@@ -1515,7 +1515,7 @@ struct timespec</dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the timescale constant for a string that denotes the timescale in with a standard abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", "TDB".</p>
+<p>Returns the timescale constant for a string that denotes the timescale in with a standard abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", and "TDB".</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>String specifying an astronomical timescale </td></tr>

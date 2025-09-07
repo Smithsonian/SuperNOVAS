@@ -174,11 +174,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the value of the Earth Rotation Angle (&theta;) for a given UT1 Julian date. The expression used is taken from the note to IAU Resolution B1.8 of 2000. The input Julian date cane be split into an into high and low order parts (e.g. integer and fractional parts) for improved accuracy, or else one of the components (e.g. the low part) can be set to zero if no split is desired.</p>
-<p>The algorithm used here is equivalent to the canonical &theta; = 0.7790572732640 + 1.00273781191135448 * t, where t is the time in days from J2000 (t = jd_high + jd_low - JD_J2000), but it avoids many two-PI 'wraps' that decrease precision (adopted from SOFA Fortran routine <code>iau_era00</code>; see also expression at top of page 35 of IERS Conventions (1996)).</p>
+<p>Returns the value of the Earth Rotation Angle (&theta;) for a given UT1 Julian date. The expression used is taken from the note to IAU Resolution B1.8 of 2000. The input Julian date can be split into an into high and low order parts (e.g. integer and fractional parts) for improved accuracy, or else one of the components (e.g. the low part) can be set to zero if no split is desired.</p>
+<p>The algorithm used here is equivalent to the canonical &theta; = 0.7790572732640 + 1.00273781191135448 * t, where t is the time in days from J2000 (t = jd_high + jd_low - JD_J2000), but it avoids many two-PI 'wraps' that decrease precision (adopted from SOFA Fortran routine <code>iau_era00</code>).</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions, Chapter 5, Eq. 5.15 </li>
+IERS Conventions 2010, Chapter 5, Eq. 5.15 </li>
 <li>
 IAU Resolution B1.8, adopted at the 2000 IAU General Assembly, Manchester, UK. </li>
 <li>
@@ -369,13 +369,13 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) librations and the ocean tides. See Chapters 5 and 8 of the IERS Conventions. This one is faster than <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> if the GMST and/or fundamental arguments are readily avaialbe, e.g. from a previous calculation.</p>
+<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) libration and the ocean tides. See Chapters 5 and 8 of the IERS Conventions. This one is faster than <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> if the GMST and/or fundamental arguments are readily avaialbe, e.g. from a previous calculation.</p>
 <p>These corrections are typically at the sub-milliarcsecond level in polar offsets <em>x</em> and <em>y</em> and sub-millisecond level in UT1. Thus, these diurnal and semi-diurnal variations are important for the highest precision astrometry only, when converting between ITRS and TIRS frames.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 <li>
-IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -435,12 +435,12 @@ novas_diurnal_librations() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) librations and the ocean tides at a given astromtric time. See Chapters 5 and 8 of the IERS Conventions.</p>
+<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) libration and the ocean tides at a given astromtric time. See Chapters 5 and 8 of the IERS Conventions.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 <li>
-IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -503,11 +503,11 @@ IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/c
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate diurnal and semi-diurnal libration corrections to the Earth orientation parameters (EOP) for the non-rigid Earth. Only terms with periods less than 2 days are considered, since the longer period terms are included in the IAU2000A nutation model. See Chapter 5 of the IERS conventions. The typical amplitude of librations is tens of micro-arcseconds (&mu;as) in polar offsets <em>x</em> and <em>y</em> and tens of micro-seconds in UT1.</p>
+<p>Calculate diurnal and semi-diurnal libration corrections to the Earth orientation parameters (EOP) for the non-rigid Earth. Only terms with periods less than 2 days are considered, since the longer period terms are included in the IAU2000A nutation model. See Chapter 5 of the IERS Conventions 2010. The typical amplitude of librations is tens of micro-arcseconds (&mu;as) in polar offsets <em>x</em> and <em>y</em> and tens of micro-seconds in UT1.</p>
 <p>Normally, you would need the combined effect from librations and ocean tides together to apply diurnal corrections to the Earth orientation parameters (EOP) published by IERS. For that, <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code> or <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> is more directly suited.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 5, Tablea 5.1a and 5.1b, see <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, Tablea 5.1a and 5.1b, see <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -571,11 +571,11 @@ IERS Conventions Chapter 5, Tablea 5.1a and 5.1b, see <a href="https://iers-conv
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate corrections to the Earth orientation parameters (EOP) due to the ocean tides. See Chapter 8 of the IERS Conventions. Ocean tides manifest at the sub-milliarcsecond level in polar offsets <em>x</em> and <em>y</em> and sub-millisecond level in UT1.</p>
+<p>Calculate corrections to the Earth orientation parameters (EOP) due to the ocean tides. See Chapter 8 of the IERS Conventions 2010. Ocean tides manifest at the sub-milliarcsecond level in polar offsets <em>x</em> and <em>y</em> and sub-millisecond level in UT1.</p>
 <p>Normally, you would need the combined effect from librations and ocean tides together to apply diurnal corrections to the Earth orientation parameters (EOP) published by IERS. For that, <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code> or <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> is more directly suited.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -643,7 +643,7 @@ Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). 
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <li>
-IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a> </li>
+IERS Conventions 2010, Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a> </li>
 </ol>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
@@ -683,7 +683,7 @@ IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://ier
 <li>
 Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). </li>
 <li>
-IERS Conventions Chapter 5, Eq. 5.32, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, Eq. 5.32, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -927,9 +927,9 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <li>
 Lambert &amp; Bizouard (2002), Astronomy and Astrophysics 394, 317-321. </li>
 <li>
-IERS Conventions Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 <li>
-IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

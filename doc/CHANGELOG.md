@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unrelease]
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -17,7 +17,7 @@ Upcoming feature release, expected around 1 November 2025.
    Sidereal Times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal_time()` with
    a simpler, cleaner interface.
    
- - #215: New functions (`novas_diurnal_eop()`, `novas_duirnal_ocean_tides()` and `novas_diurnal_libration()`) to 
+ - #215: New functions `novas_diurnal_eop()`, `novas_duirnal_ocean_tides()` and `novas_diurnal_libration()` to 
    calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and 
    ocean tides. Such corrections are necessary if needing or using ITRS / TIRS coordinates with accuracy below the 
    milli-arcsecond (mas) level.
@@ -33,8 +33,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (by 
    kiranshila and attipaci).
    
- - #222: CMake build support, supporting e.g for Mac OS X or Windows builds also (by kiranshila), with further tweaks 
-   in #228, #229, #230, #234, 235 (by attipaci).
+ - #222: CMake build support, e.g for Mac OS X or Windows builds also (by kiranshila), with further tweaks in #228, 
+   #229, #230, #234, 235 (by attipaci).
 
  - #223: New function `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged
    (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 

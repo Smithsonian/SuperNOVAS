@@ -3202,9 +3202,9 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">pos</td><td>[AU] Position vector of source relative to observer </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">vobs</td><td>[AU/day] Velocity vector of observer, relative to the solar system barycenter, components in AU/day. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">vobs</td><td>[AU/day] Velocity vector of observer, relative to the solar system barycenter. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">lighttime</td><td>[day] Light time from object to Earth in days (if known). Or set to 0, and this function will compute it. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>[AU] Position vector, referred to origin at center of mass of the Earth, corrected for aberration, components in AU. It can be the same vector as one of the inputs.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>[AU] Position vector, referred to origin at center of mass of the Earth, corrected for aberration. It can be the same vector as one of the inputs.</td></tr>
   </table>
   </dd>
 </dl>
@@ -3962,7 +3962,7 @@ Kaplan, G. (2003), USNO/AA Technical Note 2003-03. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. Used only if 'type' is POLE_OFFSETS_X_Y (2), to transform dx and dy to the equivalent &Delta;&delta;&psi; and &Delta;&delta;&epsilon; values. </td></tr>
-    <tr><td class="paramname">type</td><td>POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;, &Delta;&delta;&epsilon; relative to the IAU 20006 precession/nutation model; or POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000/2006 precession-nutation model. </td></tr>
+    <tr><td class="paramname">type</td><td>POLE_OFFSETS_DPSI_DEPS (1) if the offsets are &Delta;&delta;&psi;, &Delta;&delta;&epsilon; relative to the IAU 20006 precession/nutation model; or POLE_OFFSETS_X_Y (2) if they are dx, dy offsets relative to the IAU 2000 / 2006 precession-nutation model. </td></tr>
     <tr><td class="paramname">dpole1</td><td>[mas] Value of celestial pole offset in first coordinate, (&Delta;&delta;&psi; for or dx) in milliarcseconds, relative to the IAU2006 precession/nutation model. </td></tr>
     <tr><td class="paramname">dpole2</td><td>[mas] Value of celestial pole offset in second coordinate, (&Delta;&delta;&epsilon; or dy) in milliarcseconds, relative to the IAU2006 precession/nutation model. </td></tr>
   </table>
@@ -4172,7 +4172,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 </div><div class="memdoc">
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>This function is no longer used internally in the library. Given that the CIO is defined on the dynamical equator of date, it is not normally meaningful to provide an R.A. coordinate for it in GCRS, in general. Instead, you might use <a class="el" href="cio_8c.html#acc331c69187b3077b98280bfb57f6670">cio_ra()</a> to get the same value w.r.t. the equinox of date (on the same CIRS/TOD dynamical equator, or else <code><a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a></code> to return the negated value.</dd></dl>
 <p>Returns the location of the celestial intermediate origin (CIO) for a given Julian date, as a right ascension with respect to either the GCRS (geocentric ICRS) origin or the true equinox of date. The CIO is always located on the true equator (= intermediate equator) of date.</p>
-<p>The user may specify an interpolation file to use via <a class="el" href="cio_8c.html#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a> prior to calling this function. In that case the call will return CIO location relative to GCRS. In the absence of the table, it will calculate the CIO location relative to the true equinox. In either case the type of the location is returned alongside the corresponding CIO location value.</p>
+<p>The user may specify an interpolation file to use via <a class="el" href="cio_8c.html#ade20b8035266dfe5b082b12248f5affa">set_cio_locator_file()</a> prior to calling this function. In that case the call will return CIO location relative to GCRS. In the absence of the table, it will calculate the CIO location relative to the true equinox. In either case, the type of the location is returned alongside the corresponding CIO location value.</p>
 <p>NOTES: </p><ol>
 <li>
 Unlike the NOVAS C version of this function, this version will always return a CIO location as long as the pointer arguments are not NULL. The returned values will be interpolated from the locator file if possible, otherwise it falls back to calculating an equinox-based location per default.  </li>
@@ -4230,7 +4230,7 @@ Note, that when a CIO location file is used, the bundled CIO locator data was pr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date on the true equator of date for a given TT Julian date. This is simply the negated return value of <a class="el" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a> for the true equator of date.</p>
+<p>Computes the true right ascension of the celestial intermediate origin (CIO) vs the equinox of date on the true equator of date for a given TT Julian date. This is simply the negated return value ofira_equinox() for the true equator of date.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
@@ -5300,11 +5300,11 @@ Kaplan, G. (2008). USNO/AA Technical Note of 28 Apr 2008, "Refraction as a Vecto
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the value of the Earth Rotation Angle (&theta;) for a given UT1 Julian date. The expression used is taken from the note to IAU Resolution B1.8 of 2000. The input Julian date cane be split into an into high and low order parts (e.g. integer and fractional parts) for improved accuracy, or else one of the components (e.g. the low part) can be set to zero if no split is desired.</p>
-<p>The algorithm used here is equivalent to the canonical &theta; = 0.7790572732640 + 1.00273781191135448 * t, where t is the time in days from J2000 (t = jd_high + jd_low - JD_J2000), but it avoids many two-PI 'wraps' that decrease precision (adopted from SOFA Fortran routine <code>iau_era00</code>; see also expression at top of page 35 of IERS Conventions (1996)).</p>
+<p>Returns the value of the Earth Rotation Angle (&theta;) for a given UT1 Julian date. The expression used is taken from the note to IAU Resolution B1.8 of 2000. The input Julian date can be split into an into high and low order parts (e.g. integer and fractional parts) for improved accuracy, or else one of the components (e.g. the low part) can be set to zero if no split is desired.</p>
+<p>The algorithm used here is equivalent to the canonical &theta; = 0.7790572732640 + 1.00273781191135448 * t, where t is the time in days from J2000 (t = jd_high + jd_low - JD_J2000), but it avoids many two-PI 'wraps' that decrease precision (adopted from SOFA Fortran routine <code>iau_era00</code>).</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions, Chapter 5, Eq. 5.15 </li>
+IERS Conventions 2010, Chapter 5, Eq. 5.15 </li>
 <li>
 IAU Resolution B1.8, adopted at the 2000 IAU General Assembly, Manchester, UK. </li>
 <li>
@@ -7001,10 +7001,10 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">body</td><td>Pointer to structure containing the designation for the solar system body </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">tlight0</td><td>[day] First approximation to light-time, in days (can be set to 0.0 if unknown). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos_src_obs</td><td>[AU] Position 3-vector of body, with respect to origin at observer (or the geocenter), referred to ICRS axes, components in AU. It can be the same vector as either of the inputs. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos_src_obs</td><td>[AU] Position 3-vector of body, with respect to origin at observer (or the geocenter), referred to ICRS axes. It can be the same vector as either of the inputs. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">tlight</td><td>[day] Calculated light time</td></tr>
   </table>
   </dd>
@@ -8962,11 +8962,11 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
 </div><div class="memdoc">
 <p>Returns the instantaneous incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
 <p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
-<p>The instantaneous difference in clock rate reflects a tiny diurnal variation for Earth based observers, and a slight variation for near-Earth observers over the orbital period, as the observer cycles around the tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you will want the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions), which is provided by <code><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> instead.</p>
+<p>The instantaneous difference in clock rate includes tiny diurnal or orbital variationd for Earth-bound observers as the observer cycles through the tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you may want to exclude the periodic tidal effects and calculate the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions 2010), which is provided by <code><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> instead.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
 <li>
-Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but not excluding the near-Earth tidal effects, and modified for relativistic observer motion. </li>
+Based on the IERS Conventions 2010, Chapter 10, Eqa. 10.6 / 10.8 but also including the near-Earth tidal effects, and modified for relativistic observer motion. </li>
 <li>
 The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
 </ol>
@@ -8977,7 +8977,7 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">frame</td><td>The observing frame, defining the observer position as well as the positions of the major solar-system bodies at the time of observation. </td></tr>
-    <tr><td class="paramname">timescale</td><td>Reference timescale for the comparison. All timescales, except <code>NOVAS_UT1</code>, are supported. (UT1 advances at an irregular rate). </td></tr>
+    <tr><td class="paramname">timescale</td><td>Reference timescale for the comparison. All timescales except <code>NOVAS_UT1</code> are supported. (UT1 advances at an irregular rate). </td></tr>
   </table>
   </dd>
 </dl>
@@ -9005,7 +9005,7 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns a Julian date (in non-specific timescale) corresponding the specified input string date/time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
+<p>Returns a Julian date (in non-specific timescale) corresponding the specified input string date / time. E.g. for "2025-02-28T09:41:12.041+0200", with some flexibility on how the date is represented as long as it's YMD date followed by HMS time. For other date formats (MDY or DMY) you can use <code><a class="el" href="timescale_8c.html#a5ec9d054b7d363b3db1d065507a1ba41">novas_parse_date_format()</a></code> instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
@@ -9056,7 +9056,7 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">date</td><td>The date specification, possibly including time and timezone, in a standard format. See <a class="el" href="timescale_8c.html#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> on more information on acceptable date/time formats. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>The timescale constant, or else -1 if the string could not be parsed into a date and timescale. If the string is a bare timestamp without an hint of a timescale marker, then NOVAS_UTC will be assumed. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">scale</td><td>The timescale constant, or else -1 if the string could not be parsed into a date and timescale. If the string is a bare timestamp without a hint of a timescale marker, then NOVAS_UTC will be assumed. </td></tr>
   </table>
   </dd>
 </dl>
@@ -9366,13 +9366,13 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) librations and the ocean tides. See Chapters 5 and 8 of the IERS Conventions. This one is faster than <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> if the GMST and/or fundamental arguments are readily avaialbe, e.g. from a previous calculation.</p>
+<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) libration and the ocean tides. See Chapters 5 and 8 of the IERS Conventions. This one is faster than <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> if the GMST and/or fundamental arguments are readily avaialbe, e.g. from a previous calculation.</p>
 <p>These corrections are typically at the sub-milliarcsecond level in polar offsets <em>x</em> and <em>y</em> and sub-millisecond level in UT1. Thus, these diurnal and semi-diurnal variations are important for the highest precision astrometry only, when converting between ITRS and TIRS frames.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 <li>
-IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -9432,12 +9432,12 @@ novas_diurnal_librations() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) librations and the ocean tides at a given astromtric time. See Chapters 5 and 8 of the IERS Conventions.</p>
+<p>Calculate corrections to the Earth orientation parameters (EOP) due to short term (diurnal and semidiurnal) libration and the ocean tides at a given astromtric time. See Chapters 5 and 8 of the IERS Conventions.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 <li>
-IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -9500,11 +9500,11 @@ IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/c
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate diurnal and semi-diurnal libration corrections to the Earth orientation parameters (EOP) for the non-rigid Earth. Only terms with periods less than 2 days are considered, since the longer period terms are included in the IAU2000A nutation model. See Chapter 5 of the IERS conventions. The typical amplitude of librations is tens of micro-arcseconds (&mu;as) in polar offsets <em>x</em> and <em>y</em> and tens of micro-seconds in UT1.</p>
+<p>Calculate diurnal and semi-diurnal libration corrections to the Earth orientation parameters (EOP) for the non-rigid Earth. Only terms with periods less than 2 days are considered, since the longer period terms are included in the IAU2000A nutation model. See Chapter 5 of the IERS Conventions 2010. The typical amplitude of librations is tens of micro-arcseconds (&mu;as) in polar offsets <em>x</em> and <em>y</em> and tens of micro-seconds in UT1.</p>
 <p>Normally, you would need the combined effect from librations and ocean tides together to apply diurnal corrections to the Earth orientation parameters (EOP) published by IERS. For that, <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code> or <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> is more directly suited.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 5, Tablea 5.1a and 5.1b, see <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, Tablea 5.1a and 5.1b, see <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -9568,11 +9568,11 @@ IERS Conventions Chapter 5, Tablea 5.1a and 5.1b, see <a href="https://iers-conv
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculate corrections to the Earth orientation parameters (EOP) due to the ocean tides. See Chapter 8 of the IERS Conventions. Ocean tides manifest at the sub-milliarcsecond level in polar offsets <em>x</em> and <em>y</em> and sub-millisecond level in UT1.</p>
+<p>Calculate corrections to the Earth orientation parameters (EOP) due to the ocean tides. See Chapter 8 of the IERS Conventions 2010. Ocean tides manifest at the sub-milliarcsecond level in polar offsets <em>x</em> and <em>y</em> and sub-millisecond level in UT1.</p>
 <p>Normally, you would need the combined effect from librations and ocean tides together to apply diurnal corrections to the Earth orientation parameters (EOP) published by IERS. For that, <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code> or <code><a class="el" href="earth_8c.html#a087d587e90b4e2138c0dba12d727696e">novas_diurnal_eop_at_time()</a></code> is more directly suited.</p>
 <p>REFERENCES: </p><ol>
 <li>
-IERS Conventions Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, Tables 8.2a, 8.2b, 8.3a, and 8.3b, see <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -9695,7 +9695,7 @@ Calabretta, M.R., &amp; Greisen, E.W., (2002), Astronomy &amp; Astrophysics, 395
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">dra</td><td>[arcsec] Projected ffset position in the apparent true-of-date R.A. direction. E.g. The projected offset between two RA coordinates at a same reference declination, is &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>) </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dra</td><td>[arcsec] Projected ffset position in the apparent true-of-date R.A. direction. E.g. The projected offset between two RA coordinates at a same reference declination, is &delta;RA = (RA2 - RA1) * cos(Dec<sub>0</sub>). </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ddec</td><td>[arcsec] Projected offset position in the apparent true-of-date declination direction. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pa</td><td>[deg] Parallactic Angle </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">daz</td><td>[arcsec] Output offset position in the local azimuth direction. It can be a pointer to one of the input coordinates, or NULL if not required. </td></tr>
@@ -10004,7 +10004,7 @@ Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). 
 <li>
 Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <li>
-IERS Conventions Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a> </li>
+IERS Conventions 2010, Chapter 5, Eq. 5.30 and Table 5.2e, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> and <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a> </li>
 </ol>
 <dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
@@ -10427,7 +10427,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <li>
 Capitaine, N. et al. (2003), Astronomy and Astrophysics 412, 567-586, eq. (42). </li>
 <li>
-IERS Conventions Chapter 5, Eq. 5.32, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, Eq. 5.32, see at <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -11569,11 +11569,11 @@ The Earth orientation parameters xp, yp should be provided in the same ITRF real
 </div><div class="memdoc">
 <p>Returns the averaged incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
 <p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
-<p>This is the same as the instantaneous rate (see <code><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code>) for a non-Earth-bound observer. For observers on, or near, Earth however, this function returns the averaged value over the observer's rotation around the geocenter. As such it filters out the tiny diurnal tidal variations for Earth-based observers, or the variation over and orbital period for near-Earth observers, as the observer moves through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.</p>
+<p>For a non-Earth-bound observer, this is the same as the instantaneous rate returned by <code><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code>. For an Earth-bound observer however, this function returns the averaged value over the observer's rotation around the geocenter. As such it filters out the tiny diurnal or orbital tidal variations as the observer moves through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
 <li>
-Based on Eq. 10.6 / 10.8 of the IERS Conventions, Chapter 10, but modified for relativistic observer motion. </li>
+Based on the IERS Conventions 2010, Chapter 10, Eqs. 10.6 / 10.8, but modified for relativistic observer motion. </li>
 <li>
 The potential for an observer inside 0.9 planet radii of a major Solar-system body's center will not include the term for that body in the calculation. </li>
 </ol>
@@ -11667,7 +11667,7 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[deg] Apparent angular separation between the two observed sources from the observer's point-of-view.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[deg] Apparent angular separation between the two observed source from the observer's point-of-view.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle()</a> </dd>
@@ -13358,7 +13358,7 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the timescale constant for a string that denotes the timescale in with a standard abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", "TDB".</p>
+<p>Returns the timescale constant for a string that denotes the timescale in with a standard abbreviation (case insensitive). The following values are recognised: "UTC", "UT", "UT0", "UT1", "GMT", "TAI", "GPS", "TT", "ET", "TCG", "TCB", and "TDB".</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>String specifying an astronomical timescale </td></tr>
@@ -13821,9 +13821,9 @@ The SOFA function this implementation is based on returns A/B coefficients, wher
 </table>
 <p>NOTES: </p><ol>
 <li>
-From the SOFA documentation: "The model balances speed and accuracy to give good results in applications
-where performance at low altitudes is not paramount. Performance is maintained across a range of
-conditions, and applies to both optical/IR and radio."  </li>
+From the SOFA documentation: "The model balances speed and accuracy to give good results in
+applications where performance at low altitudes is not paramount. Performance is maintained
+across a range of conditions, and applies to both optical/IR and radio."  </li>
 <li>
 The model is divergent in the observed direction of the horizon. As such, it should not be used for calculating refraction at or below the horizon itself. </li>
 </ol>
@@ -14137,7 +14137,7 @@ Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.  </li>
       </table>
 </div><div class="memdoc">
 <p>Nutates equatorial rectangular coordinates from mean equator and equinox of epoch to true equator and equinox of epoch. Inverse transformation may be applied by setting flag 'direction'.</p>
-<p>This is the old (pre IAU 2006) method of nutation calculation. If you follow the now standard IAU 2000/2006 methodology you will want to use <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> instead.</p>
+<p>This is the old (pre IAU 2006) method of nutation calculation. If you follow the now standard IAU 2000 / 2006 methodology you will want to use <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> instead.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Explanatory Supplement To The Astronomical Almanac, pp. 114-115. </li>
@@ -14282,14 +14282,14 @@ Coppola, V., Seago, G.H., &amp; Vallado, D.A. (2009), AAS 09-159 </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Calculates the positions and velocities for the Solar-system bodies, e.g. for use for graviational deflection calculations. The planet positions are calculated relative to the observer location, while velocities are w.r.t. the SSB. Both positions and velocities are antedated for light travel time, so they accurately reflect the apparent position (and barycentric motion) of the bodies from the observer's perspective.</p>
+<p>Calculates the positions and velocities for the Solar-system bodies, e.g. for use for gravitational deflection calculations. The planet positions are calculated relative to the observer location, while velocities are w.r.t. the SSB. Both positions and velocities are antedated for light travel time, so they accurately reflect the apparent position (and barycentric motion) of the bodies from the observer's perspective.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1). In full accuracy mode, it will calculate the deflection due to the Sun, Jupiter, Saturn and Earth. In reduced accuracy mode, only the deflection due to the Sun is calculated. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes, components in AU. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">pos_obs</td><td>[AU] Position 3-vector of observer (or the geocenter), with respect to origin at solar system barycenter, referred to ICRS axes. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pl_mask</td><td>Bitwise <code>(1 &lt;&lt; planet-number)</code> mask indicating which planets to request data for. See enum novas_planet for the enumeration of planet numbers. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">planets</td><td>Pointer to apparent planet data to populate. have positions and velocities calculated successfully. See enum novas_planet for the enumeration of planet numbers. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">planets</td><td>Pointer to apparent planet data to populate. The planets with non-zero mask bits will have have positions and velocities calculated. See enum novas_planet for the enumeration of planet numbers. </td></tr>
   </table>
   </dd>
 </dl>
@@ -16050,8 +16050,8 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to catalog entry structure containing ICRS catalog </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Position vector, equatorial rectangular coordinates, components in AU. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">motion</td><td>[AU/day] Perceived motion of star, in equatorial rectangular coordinates, components in AU/Day. It must be distinct from the pos output vector, and may be NULL if not required. Note, that it is suitable only for calculating the apparent 3D location of the star at a different time, and should not be used as a measure of physical velocity, e.g. for spectroscopic radial velocity determination.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>[AU] Position vector, equatorial rectangular coordinates, It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">motion</td><td>[AU/day] Perceived motion of star, in equatorial rectangular coordinates. It must be distinct from the pos output vector, and may be NULL if not required. Note, that it is suitable only for calculating the apparent 3D location of the star at a different time, and should not be used as a measure of physical velocity, e.g. for spectroscopic radial velocity determination.</td></tr>
   </table>
   </dd>
 </dl>
@@ -17380,9 +17380,9 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
 <li>
 Lambert &amp; Bizouard (2002), Astronomy and Astrophysics 394, 317-321. </li>
 <li>
-IERS Conventions Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
+IERS Conventions 2010, Chapter 5, <a href="https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf">https://iers-conventions.obspm.fr/content/chapter5/icc5.pdf</a> </li>
 <li>
-IERS Conventions Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
+IERS Conventions 2010, Chapter 8, <a href="https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf">https://iers-conventions.obspm.fr/content/chapter8/icc8.pdf</a> </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
