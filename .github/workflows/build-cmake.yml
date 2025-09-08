@@ -44,7 +44,7 @@ jobs:
             cmopt: -G "MinGW Makefiles"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Configure CMake (Unix)
         run: cmake -B build ${{ matrix.cmopt }} -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Debug on ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
     
       - name: Configure CMake
         run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Release on FreeBSD
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Build on FreeBSD
         uses: vmactions/freebsd-vm@v1
