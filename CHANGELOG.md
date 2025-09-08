@@ -74,13 +74,17 @@ Upcoming feature release, expected around 1 November 2025.
    a more platform-independent way.
  
  - #236: No longer installing `CIO_RA.TXT` (e.g. to `/usr/share/supernovas`). Not only it is no longer needed by the 
-   library, it is also not precise as the data was generated with the original, now obsoleted, IAU2000 nutation model. 
-   Those who really want it, nevertheless, can install it themselves, to the location of choice, from the SuperNOVAS 
-   GitHub repo (in any location), and call `set_cio_locator_file()` before using it with `cio_array()` or 
-   `cio_location()`.
+   library, it is also not precise at the tens of microarcsecond (&mu;as) level as the data was generated with the 
+   original, now obsoleted, IAU2000 nutation model. Those who really want it, nevertheless, can install it themselves, 
+   to the location of choice, from the SuperNOVAS GitHub repo (in any location), and call `set_cio_locator_file()` 
+   before using it with `cio_array()` or `cio_location()`.
    
  - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`
    `legacy/` source code, and markdown files.
+   
+ - #238: Added doxygen commands to `README.md` inside HTML comments to exclude rendering the README header (badges
+   and logo) with doxygen, while not rendering the commands in Github (or other viewers) either. The change allows
+   using the README as is, without editing, as input to Doxygen. 
    
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.

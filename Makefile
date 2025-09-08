@@ -131,7 +131,7 @@ coverage:
 # Remove intermediates
 .PHONY: clean
 clean:
-	rm -f $(OBJECTS) README-orig.md Doxyfile.local $(BIN)/cio_file gmon.out
+	rm -f $(OBJECTS) Doxyfile.local $(BIN)/cio_file gmon.out
 	$(MAKE) -C test clean
 	$(MAKE) -C benchmark clean
 
