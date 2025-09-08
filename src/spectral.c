@@ -58,7 +58,7 @@ double novas_add_vel(double v1, double v2) {
  */
 double novas_z2v(double z) {
   if(z <= -1.0) {
-    novas_error(-1, EINVAL, "novas_z2v", "invalid redshift value z=%g", z);
+    novas_error(-1, ERANGE, "novas_z2v", "invalid redshift value z=%g", z);
     return NAN;
   }
   z += 1.0;

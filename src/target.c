@@ -28,59 +28,296 @@ int strcasecmp(const char *s1, const char *s2);
 static int is_case_sensitive = 0; ///< (boolean) whether object names are case-sensitive.
 
 /**
- * Populates the data structure for a 'catalog' source, such as a star.
+ * Initializes a catalog entry, such as a star or a distant galaxy, with a name and coordinates.
+ * All other fields of the `cat_entry` structure will be initialized with zeroes. After the
+ * initialization, you may set further properties, such as:
  *
- * @param star_name   Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL
- *                    if not relevant.
- * @param catalog     Catalog identifier (less than SIZE_OF_CAT_NAME in length). E.g.
- *                    'HIP' = Hipparcos, 'TY2' = Tycho-2. It may be NULL if not relevant.
- * @param cat_num     Object number in the catalog.
- * @param ra          [h] Right ascension of the object (hours).
- * @param dec         [deg] Declination of the object (degrees).
- * @param pm_ra       [mas/yr] Proper motion in right ascension (milliarcseconds/year).
- * @param pm_dec      [mas/yr] Proper motion in declination (milliarcseconds/year).
- * @param parallax    [mas] Parallax (milliarcseconds).
- * @param rad_vel     [km/s] Radial velocity relative to the Solar-System Barycenter (SSB)
- *                    To convert velocities defined against the Local Standard of Rest (LSR),
- *                    you may use `novas_lsr_to_ssb_vel()` to convert appropriately.
- * @param[out] star   Pointer to data structure to populate.
- * @return            0 if successful, or -1 if the output argument is NULL, 1 if the
- *                    'star_name' is too long or 2 if the 'catalog' name is too long.
+ * - a radial velocity, LSR velocity, or redshift.
+ * - a parallax or distance
+ * - proper motion
+ * - optional catalog name an number
  *
+ * The typical process for setting up a catalog source is captured by the following steps:
+ *
+ * 1. Initialize the `cat_entry` with source name and RA / Dec coordinates using
+ *    `novas_init_cat_entry()`.
+ * 2. (optional) Set radial velocity, as needed, via either:
+ *     - radial velocity (km/s) w.r.t SSB using `novas_set_ssb_vel()`, or
+ *     - LSR velocity (km/s) using `novas_set_lsr_vel()`, or
+ *     - redshift using `novas_set_redshift()`.
+ * 3. (optional) Set proper motions (mas/yr), as needed, using `novas_set_proper_motion()`.
+ * 4. (optional) Set parallax, as needed, via either:
+ *     - parallax (mas) using `novas_set_parallax()`, or
+ *     - distance (parcsec) using `novas_set_distance()`.
+ * 5. (optional) Assign catalog info if desired via `novas_set_catalog()`.
+ *
+ * After the initialization (Step 1), order does not matter.
+ *
+ * @param[out] source   Output structure to populate.
+ * @param name          Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL if not
+ *                      relevant.
+ * @param ra            [h] Right ascension of the object.
+ * @param dec           [deg] Declination of the object.
+ * @return              0 if successful, or else -1 in the source is NULL (errno set to EINVAL) or
+ *                      1 if the name is too long (errno is set to ERANGE).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_ssb_vel()
+ * @sa novas_set_lsr_vel()
+ * @sa novas_set_redshift()
+ * @sa novas_set_proper_motion()
+ * @sa novas_set_parallax()
+ * @sa novas_set_distance()
+ * @sa novas_set_cat_info()
+ * @sa novas_make_cat_entry()
+ */
+int novas_init_cat_entry(cat_entry *restrict source, const char *restrict name, double ra, double dec) {
+  static const char *fn = "novas_init_cat_entry";
+
+  if(!source)
+    return novas_error(-1, EINVAL, fn, "NULL input 'source'");
+
+  memset(source, 0, sizeof(cat_entry));
+
+  source->ra = ra;
+  source->dec = dec;
+
+  if(!name)
+    return 0;
+
+  strncpy(source->starname, name, SIZE_OF_OBJ_NAME - 1);
+  if(strlen(name) >= SIZE_OF_OBJ_NAME)
+     return novas_error(1, ERANGE, fn, "input 'name' is too long (%d > %d)", (int) strlen(name), SIZE_OF_OBJ_NAME - 1);
+
+  return 0;
+}
+
+/**
+ * Sets the optional catalog information for a sidereal source. SuperNOVAS does not use the
+ * catalog information internally. It is entirely for the convenience of the user to set these
+ * values if it is useful to them.
+ *
+ * @param[out] source   Output structure to populate with the parameters.
+ * @param catalog       Catalog identifier or epoch (less than SIZE_OF_CAT_NAME in length). E.g.
+ *                      'HIP' for Hipparcos, 'TY2' for Tycho-2; or 'ICRS', 'B1950', 'J2000'. It may
+ *                      be NULL if not relevant.
+ * @param num           Object's number in catalog.
+ * @return              0 if successful, or else -1 in the source is NULL (errno set to EINVAL),
+ *                      or 2 if the catalog name is too long (errno is set to ERANGE).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_init_cat_entry()
+ */
+int novas_set_catalog(cat_entry *restrict source, const char *restrict catalog, long num) {
+  static const char *fn =  "novas_set_cat_info";
+
+  if(!source)
+    return novas_error(-1, EINVAL, fn, "NULL input 'source'");
+
+  source->starnumber = num;
+
+  if(!catalog)
+    return 0;
+
+  strncpy(source->catalog, catalog, SIZE_OF_CAT_NAME - 1);
+  if(strlen(catalog) >= SIZE_OF_CAT_NAME)
+    return novas_error(2, ERANGE, fn, "Input catalog ID is too long (%d > %d)", (int) strlen(catalog), SIZE_OF_CAT_NAME - 1);
+
+  return 0;
+}
+
+/**
+ * Sets a radial velocity for a catalog source, defined w.r.t. the Solar-System Barycenter (SSB).
+ *
+ * @param[out] source Output structure to populate with the parameters.
+ * @param v_kms       [km/s] Radial velocity of source w.r.t. the Solar-System Barycenter (SSB).
+ * @return            0 if successful, or else -1 in the source is NULL (errno is set to EINVAL)
+ *                    or if the velocity exceeds the speed of light (errno set to ERANGE).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_lsr_vel()
+ * @sa novas_set_redshift()
+ * @sa novas_init_cat_entry()
+ */
+int novas_set_ssb_vel(cat_entry *source, double v_kms) {
+  const char *fn = "novas_set_ssb_vel";
+
+  if(!source)
+    return novas_error(-1, EINVAL, fn, "NULL input 'source'");
+
+  if(1000.0 * fabs(v_kms) > NOVAS_C)
+    return novas_error(-1, ERANGE, fn, "input velocity exceeds the speed of light");
+
+  source->radialvelocity = v_kms;
+  return 0;
+}
+
+/**
+ * Sets a radial velocity for a catalog source, defined w.r.t. the Local Standard of Rest (LSR).
+ *
+ * @param[out] source  Output structure to populate with the parameters.
+ * @param v_kms        [km/s] Radial velocity of source w.r.t. the Local Standard of Rest (LSR).
+ * @param epoch        [yr] Coordinate epoch.
+ * @return             0 if successful, or else -1 in the source is NULL (errno is set to EINVAL)
+ *                     or if the velocity exceeds the speed of light (errno set to ERANGE).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_ssb_vel()
+ * @sa novas_lsr_to_ssb_vel()
+ * @sa novas_set_redshift()
+ * @sa novas_init_cat_entry()
+ */
+int novas_set_lsr_vel(cat_entry *source, double epoch, double v_kms) {
+  const char *fn = "novas_set_lsr_vel";
+
+  if(!source)
+    return novas_error(-1, EINVAL, fn, "NULL input 'source'");
+
+  prop_error(fn, novas_set_ssb_vel(source, novas_lsr_to_ssb_vel(epoch, source->ra, source->dec, v_kms)), 0);
+  return 0;
+}
+
+/**
+ * Sets a redhift for a catalog source, as a relativistic measure of velocity.
+ *
+ * @param[out] source  Output structure to populate with the parameters.
+ * @param z            [-1:inf] The redshift measure _z_, defined as (1 + _z_) =
+ *                     sqrt((1 + _v_/_c_) / (1 - _v_/_c_))
+ * @return             0 if successful, or else -1 in the source is NULL (errno is set to EINVAL)
+ *                     or if the redshift is invalid (errno set to ERANGE).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_ssb_vel()
+ * @sa novas_init_cat_entry()
+ */
+int novas_set_redshift(cat_entry *source, double z) {
+  double v = novas_z2v(z);
+
+  if(isnan(v))
+    return novas_error(-1, ERANGE, "novas_set_redshift", "invalid redshift value: %f\n", z);
+
+  prop_error("novas_set_lsr_vel", novas_set_ssb_vel(source, v), 0);
+  return 0;
+}
+
+/**
+ * Sets the proper-motion for a (Galactic) catalog source.
+ *
+ * @param[out] source  Output structure to populate with the parameters.
+ * @param pm_ra        [mas/yr] Proper motion in right ascension.
+ * @param pm_dec       [mas/yr] Proper motion in declination.
+ * @return             0 if successful, or else -1 in the source is NULL (errno is set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_parallax()
+ * @sa novas_set_distance()
+ * @sa novas_init_cat_entry()
+ */
+int novas_set_proper_motion(cat_entry *source, double pm_ra, double pm_dec) {
+  if(!source)
+    return novas_error(-1, EINVAL, "novas_set_proper_motion", "NULL input 'source'");
+
+  source->promora = pm_ra;
+  source->promodec = pm_dec;
+  return 0;
+}
+
+/**
+ * Sets the parallax (a measure of distance) for a catalog source.
+ *
+ * @param[out] source  Output structure to populate with the parameters.
+ * @param mas          [mas] Parallax
+ * @return             0 if successful, or else -1 in the source is NULL (errno is set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_distance()
+ * @sa novas_init_cat_entry()
+ */
+int novas_set_parallax(cat_entry *source, double mas) {
+  if(!source)
+    return novas_error(-1, EINVAL, "novas_set_parallax", "NULL input 'source'");
+
+  source->parallax = fabs(mas);
+  return 0;
+}
+
+/**
+ * Sets the distance for a catalog source.
+ *
+ * @param[out] source  Output structure to populate with the parameters.
+ * @param parsecs      [pc] distance
+ * @return             0 if successful, or else -1 in the source is NULL (errno is set to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_distance()
+ * @sa novas_init_cat_entry()
+ */
+int novas_set_distance(cat_entry *source, double parsecs) {
+  prop_error("novas_set_lsr_vel", novas_set_parallax(source, 1000.0 / parsecs), 0);
+  return 0;
+}
+
+/**
+ * Fully populates the data structure for a catalog source, such as a star, with all parameters
+ * provided at once.
+ *
+ * Alternatively, you may use `novas_init_cat_entry()` to initialize just with the name and
+ * R.A./Dec coordinates, and then add further information step-by-step as needed, icluding using
+ * alternative parameters (SSB vs. LSR velocity, vs. redshift; parallax vs. distance). The latter
+ * approach provides more flexibility, and will result in more readable code, which is also easier
+ * to debug.
+ *
+ * @param name        Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL if not
+ *                    relevant.
+ * @param catalog     Catalog identifier or epoch (less than SIZE_OF_CAT_NAME in length). E.g.
+ *                    'HIP' for Hipparcos, 'TY2' for Tycho-2; or 'ICRS', 'B1950', 'J2000'. It may
+ *                    be NULL if not relevant.
+ * @param cat_num     Object number in the catalog. It is not used internally, so you may set it
+ *                    to anything that is meaningful to you, or set it to 0 as a default.
+ * @param ra          [h] Right ascension of the object.
+ * @param dec         [deg] Declination of the object.
+ * @param pm_ra       [mas/yr] Proper motion in right ascension.
+ * @param pm_dec      [mas/yr] Proper motion in declination.
+ * @param parallax    [mas] Parallax.
+ * @param rad_vel     [km/s] Radial velocity relative to the Solar-System Barycenter (SSB). To
+ *                    convert velocities defined against the Local Standard of Rest (LSR), you may
+ *                    use `novas_lsr_to_ssb_vel()` to convert appropriately. Or, to convert from
+ *                    a redshift value, you might use `novas_z2v()`.
+ * @param[out] source Pointer to data structure to populate.
+ * @return            0 if successful, or -1 if the output argument is NULL, 1 if the 'star_name'
+ *                    is too long or 2 if the 'catalog' name is too long.
+ *
+ * @sa novas_init_cat_entry()
  * @sa novas_lsr_to_ssb_vel()
  * @sa make_redshifted_cat_entry()
  * @sa make_cat_object_sys()
  * @sa transform_cat()
  */
-short make_cat_entry(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec,
-        double parallax, double rad_vel, cat_entry *star) {
+short make_cat_entry(const char *restrict name, const char *restrict catalog, long cat_num, double ra, double dec, double pm_ra, double pm_dec,
+        double parallax, double rad_vel, cat_entry *source) {
   static const char *fn = "make_cat_entry";
 
-  if(!star)
-    return novas_error(-1, EINVAL, fn, "NULL input 'star'");
-
-  memset(star, 0, sizeof(*star));
-
-  // Set up the 'star' structure.
-  if(star_name) {
-    if(strlen(star_name) >= SIZE_OF_OBJ_NAME)
-      return novas_error(1, EINVAL, fn, "Input star_name is too long (%d > %d)", (int) strlen(star_name), SIZE_OF_OBJ_NAME - 1);
-    strncpy(star->starname, star_name, SIZE_OF_OBJ_NAME - 1);
-  }
-
-  if(catalog) {
-    if(strlen(catalog) >= SIZE_OF_CAT_NAME)
-      return novas_error(2, EINVAL, fn, "Input cataog ID is too long (%d > %d)", (int) strlen(catalog), SIZE_OF_CAT_NAME - 1);
-    strncpy(star->catalog, catalog, SIZE_OF_CAT_NAME - 1);
-  }
-
-  star->starnumber = cat_num;
-  star->ra = ra;
-  star->dec = dec;
-  star->promora = pm_ra;
-  star->promodec = pm_dec;
-  star->parallax = parallax;
-  star->radialvelocity = rad_vel;
+  prop_error(fn, novas_init_cat_entry(source, name, ra, dec), 0);
+  prop_error(fn, novas_set_catalog(source, catalog, cat_num), 0);
+  novas_set_proper_motion(source, pm_ra, pm_dec);
+  novas_set_parallax(source, parallax);
+  prop_error(fn, novas_set_ssb_vel(source, rad_vel), 0);
 
   return 0;
 }
@@ -105,6 +342,10 @@ void novas_case_sensitive(int value) {
 }
 
 /**
+ * @deprecated More functionality and more readable, code results from using one of the specific
+ *             alternatives: `make_cat_object()`, `make_redshifted_object()`, `make_planet()`,
+ *             `make_ephem_object()`, or `make_orbital_object()`.
+ *
  * Populates an object data structure using the parameters provided. By default (for
  * compatibility with NOVAS C) source names are converted to upper-case internally. You can
  * however enable case-sensitive processing by calling novas_case_sensitive() before.
@@ -112,8 +353,7 @@ void novas_case_sensitive(int value) {
  * NOTES:
  * <ol>
  * <li>This call does not initialize the `orbit` field (added in v1.2) with zeroes to remain ABI
- * compatible with versions &lt;1.2, and to avoid the possiblity of segfaulting if used to
- * initialize a legacy `object` variable.</li>
+ * compatible with versions &lt;1.2.</li>
  * </ol>
  *
  * @param type          The type of object. NOVAS_PLANET (0), NOVAS_EPHEM_OBJECT (1) or
@@ -139,7 +379,6 @@ void novas_case_sensitive(int value) {
  * @sa make_orbital_object()
  * @sa novas_geom_posvel()
  * @sa place()
- *
  */
 short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star, object *source) {
   static const char *fn = "make_object";
@@ -148,7 +387,7 @@ short make_object(enum novas_object_type type, long number, const char *name, co
     return novas_error(-1, EINVAL, fn, "NULL input source");
 
   // FIXME [v2] will not need special case in v2.x
-  memset(source, 0, type == NOVAS_ORBITAL_OBJECT ? sizeof(object) : offsetof(object, orbit));
+  memset(source, 0, offsetof(object, orbit));
 
   // Set the object type.
   if(type < 0 || type >= NOVAS_OBJECT_TYPES)
@@ -212,17 +451,19 @@ int make_planet(enum novas_planet num, object *restrict planet) {
 }
 
 /**
- * Populates and object data structure with the data for a catalog source. The input source
- * must be defined with ICRS coordinates. To create objects with other types of coordiantes
- * use `make_cat_object_epoch()` instead.
+ * Populates and object data structure with the data for a catalog source. The astrometric
+ * parameters must be defined with ICRS. To create objects in other reference systems, use
+ * `make_cat_object_sys()` instead.
  *
  * @param star          Pointer to structure to populate with the catalog data for a celestial
- *                      object located outside the solar system, specified with ICRS coordinates.
+ *                      object located outside the solar system, specified with ICRS astrometric
+ *                      parameters.
  * @param[out] source   Pointer to the celestial object data structure to be populated.
- * @return              0 if successful, or -1 if either argument is NULL, or else 5 if
- *                      'name' is too long.
+ * @return              0 if successful, or -1 if either argument is NULL, or else 5 if 'name' is
+ *                      too long.
  *
  * @sa make_cat_object_sys()
+ * @sa novas_init_cat_entry()
  * @sa make_cat_entry()
  * @sa make_planet()
  * @sa make_ephem_object()
@@ -265,7 +506,7 @@ static int cat_to_icrs(cat_entry *restrict star, const char *restrict system) {
  *                      "FK4", "FK5", or "HIP". In general, any Besselian or Julian year epoch can
  *                      be used by year (e.g. "B1933.193" or "J2022.033"), or else the fixed value
  *                      listed. If 'B' or 'J' is ommitted in front of the epoch year, then Besselian
- *                      epochs are assumed prior to 1984.0.
+ *                      epochs are assumed prior to 1984.0. (See `novas_epoch() for more).
  * @param[out] source   Pointer to the celestial object data structure to be populated with
  *                      the corresponding ICRS catalog coordinates, after appying proper-motion
  *                      and precession corrections as appropriate.
@@ -274,7 +515,7 @@ static int cat_to_icrs(cat_entry *restrict star, const char *restrict system) {
  *
  * @sa make_cat_object()
  * @sa make_redshifted_object_sys()
- * @sa novas_jd_for_epoch()
+ * @sa novas_epoch()
  * @sa make_cat_entry()
  * @sa place()
  * @sa NOVAS_SYSTEM_ICRS
@@ -315,6 +556,7 @@ int make_cat_object_sys(const cat_entry *star, const char *restrict system, obje
  *                    pointer is NULL.
  *
  * @sa make_redshifted_object_sys()
+ * @sa novas_set_cat_info()
  * @sa novas_v2z()
  *
  * @since 1.2
@@ -323,22 +565,23 @@ int make_cat_object_sys(const cat_entry *star, const char *restrict system, obje
 int make_redshifted_cat_entry(const char *name, double ra, double dec, double z, cat_entry *source) {
   static const char *fn = "make_redshifted_cat_entry";
 
-  double v =  novas_z2v(z);
+  prop_error(fn, novas_init_cat_entry(source, name, ra, dec), 0);
+  prop_error(fn, novas_set_redshift(source, z), 0);
+  novas_set_catalog(source, "EXT", 0);
 
-  if(isnan(v))
-    return novas_error(-1, EINVAL, fn, "invalid redshift value: %f\n", z);
-
-  prop_error(fn, make_cat_entry(name, "EXT", 0, ra, dec, 0.0, 0.0, 0.0, v, source), 0);
   return 0;
 }
 
 /**
- * Populates a celestial object data structure with the parameters for a redhifted catalog
- * source, such as a distant quasar or galaxy. It is similar to `make_cat_object()` except
- * that it takes a Doppler-shift (z) instead of radial velocity and it assumes no parallax
- * and no proper motion (appropriately for a distant redshifted source). The catalog name
- * is set to `EXT` to indicate an extragalactic source, and the catalog number defaults to 0.
- * The user may change these default field values as appropriate afterwards, if necessary.
+ * Populates a celestial object data structure with the ICRS astrometric parameters for a
+ * redhifted catalog source, such as a distant quasar or galaxy. To create redshifted objects with
+ * in other reference systems, use `make_redshifted_object_sys()` instead.
+ *
+ * It is similar to `make_cat_object()` except that it takes a Doppler-shift (z) instead of radial
+ * velocity and it assumes no parallax and no proper motion (appropriately for a distant
+ * redshifted source). The catalog name is set to `EXT` to indicate an extragalactic source, and
+ * the catalog number defaults to 0. The user may change these default field values as appropriate
+ * afterwards, if necessary.
  *
  * @param name        Object name (less than SIZE_OF_OBJ_NAME in length). It may be NULL.
  * @param ra          [h] ICRS Right ascension of the object (hours).
@@ -389,7 +632,7 @@ int make_redshifted_object(const char *name, double ra, double dec, double z, ob
  *
  * @sa make_redshifted_object()
  * @sa make_cat_object_sys()
- * @sa novas_jd_for_epoch()
+ * @sa novas_epoch()
  * @sa place()
  * @sa NOVAS_SYSTEM_ICRS
  * @sa NOVAS_SYSTEM_HIP
@@ -501,6 +744,7 @@ int make_orbital_object(const char *name, long num, const novas_orbital *orbit, 
  *                     are the same pointer.
  *
  * @sa make_cat_entry()
+ * @sa novas_init_cat_entry()
  */
 int starvectors(const cat_entry *restrict star, double *restrict pos, double *restrict motion) {
   static const char *fn = "starvectors";

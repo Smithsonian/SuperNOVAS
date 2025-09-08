@@ -2397,6 +2397,32 @@ static int test_clock_skew() {
   return n;
 }
 
+static int test_cat_entry() {
+  int n = 0;
+  char *name = "blah", longname[SIZE_OF_OBJ_NAME + 2] = {};
+  cat_entry star = {};
+
+  if(check("cat_entry:init", -1, novas_init_cat_entry(NULL, name, 0.0, 0.0))) n++;
+
+  memset(longname, 'x', SIZE_OF_OBJ_NAME);
+  if(check("cat_entry:init:long", -1, novas_init_cat_entry(NULL, longname, 0.0, 0.0))) n++;
+
+  longname[SIZE_OF_OBJ_NAME + 1] = 'x';
+  if(check("cat_entry:init:verylong", -1, novas_init_cat_entry(NULL, longname, 0.0, 0.0))) n++;
+
+  if(check("cat_entry:set_catalog", -1, novas_set_catalog(NULL, name, 0))) n++;
+  if(check("cat_entry:set_proper_motion", -1, novas_set_proper_motion(NULL, 0.0, 0.0))) n++;
+  if(check("cat_entry:set_parallax", -1, novas_set_parallax(NULL, 0.0))) n++;
+  if(check("cat_entry:set_distance", -1, novas_set_distance(NULL, 0.0))) n++;
+  if(check("cat_entry:set_ssb_vel", -1, novas_set_ssb_vel(NULL, 0.0))) n++;
+  if(check("cat_entry:set_ssb_vel:hi", -1, novas_set_ssb_vel(&star, NOVAS_C + 1.0))) n++;
+  if(check("cat_entry:set_ssb_vel:lo", -1, novas_set_ssb_vel(&star, -(NOVAS_C + 1.0)))) n++;
+  if(check("cat_entry:set_lsr_vel", -1, novas_set_lsr_vel(NULL, 2000.0, 0.0))) n++;
+  if(check("cat_entry:set_redshift", -1, novas_set_redshift(NULL, 0.0))) n++;
+
+  return n;
+}
+
 int main(int argc, const char *argv[]) {
   int n = 0;
 
@@ -2599,6 +2625,7 @@ int main(int argc, const char *argv[]) {
   if(test_itrf_transform()) n++;
 
   if(test_clock_skew()) n++;
+  if(test_cat_entry()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");

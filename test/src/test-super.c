@@ -3946,6 +3946,11 @@ static int test_approx_heliocentric() {
   if(!is_ok("approx_heliocentric:neptune:2050:pos", check_equal_pos(pos, pos0, 2e-2))) n++;
   if(!is_ok("approx_heliocentric:neptune:2050:vel", check_equal_pos(vel, vel0, 1e-2))) n++;
 
+
+  // Check that both Pluto and its barycenter process
+  if(!is_ok("approx_heliocentric:neptune:2050", novas_approx_heliocentric(NOVAS_PLUTO, 2469936.0, pos, vel))) n++;
+  if(!is_ok("approx_heliocentric:neptune:2050", novas_approx_heliocentric(NOVAS_PLUTO_BARYCENTER, 2469936.0, pos0, vel0))) n++;
+
   return n;
 }
 
@@ -4453,6 +4458,47 @@ static int test_clock_skew() {
   return n;
 }
 
+static int test_init_cat_entry() {
+  int n = 0;
+
+  cat_entry star = {};
+
+  if(!is_ok("init_cat_entry", novas_init_cat_entry(&star, "TEST", 2.0, 3.0))) n++;
+  if(!is_ok("init_cat_entry:check:name", strcmp(star.starname, "TEST"))) n++;
+  if(!is_equal("init_cat_entry:check:ra", star.ra, 2.0, 1e-16)) n++;
+  if(!is_equal("init_cat_entry:check:dec", star.dec, 3.0, 1e-16)) n++;
+
+  if(!is_ok("init_cat_entry:no_name", novas_init_cat_entry(&star, NULL, -2.0, -3.0))) n++;
+  if(!is_ok("init_cat_entry:no_name:check:name", strcmp(star.starname, ""))) n++;
+  if(!is_equal("init_cat_entry:no_name:check:ra", star.ra, -2.0, 1e-16)) n++;
+  if(!is_equal("init_cat_entry:no_name:check:dec", star.dec, -3.0, 1e-16)) n++;
+
+  return n;
+}
+
+static int test_set_lsr_vel() {
+  int n = 0;
+
+  cat_entry star = {};
+  if(!is_ok("set_lsr_vel:init", novas_init_cat_entry(&star, "TEST", 0.0, 0.0))) n++;
+  if(!is_ok("set_lsr_vel", novas_set_lsr_vel(&star, 2000.0, 0.0))) n++;
+  if(!is_equal("set_lsr_vel:check", star.radialvelocity, novas_lsr_to_ssb_vel(2000, star.ra, star.dec, 0.0), 1e-12)) n++;
+
+  return n;
+}
+
+static int test_set_distance() {
+  int n = 0;
+
+  cat_entry star = {};
+  if(!is_ok("set_distance:init", novas_init_cat_entry(&star, "TEST", 0.0, 0.0))) n++;
+  if(!is_ok("set_distance", novas_set_distance(&star, 10000.0))) n++;
+  if(!is_equal("set_distance:check", star.parallax, 0.1, 1e-12)) n++;
+
+  return n;
+}
+
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -4581,6 +4627,7 @@ int main(int argc, char *argv[]) {
 
   if(test_tt2tdb_hp()) n++;
 
+  // v 1.5
   if(test_libration()) n++;
   if(test_ocean_tides()) n++;
   if(test_diurnal_eop_at_time()) n++;
@@ -4590,6 +4637,10 @@ int main(int argc, char *argv[]) {
   if(test_itrf_transform()) n++;
   if(test_itrf_transform_eop()) n++;
   if(test_clock_skew()) n++;
+
+  if(test_init_cat_entry()) n++;
+  if(test_set_lsr_vel()) n++;
+  if(test_set_distance()) n++;
 
   n += test_dates();
 
