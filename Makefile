@@ -139,7 +139,8 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a \
-      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.bin
+      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.
+	rm -rf build */build 
 	$(MAKE) -C benchmark distclean
 
 .PHONY:
@@ -224,7 +225,7 @@ bin/docedit: $(OBJ)/docedit.o | bin
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
 
 # Generate headless README and Doxyfile variants
-gendocs: bin/docedit Doxyfile README.md
+gendocs: bin/docedit Doxyfile
 	@echo "   [doc variants]"
 	@$(BIN)/docedit
 
@@ -243,6 +244,7 @@ dox: Doxyfile apidoc gendocs $(SRC) $(INC)
 local-dox: apidoc gendocs $(SRC) $(INC)
 	@echo "   [doxygen]"
 	@$(DOXYGEN) Doxyfile.local
+	@rm -f Doxyfile.local
 	@( cd apidoc/html; rm -f resources; ln -s ../../resources )
 
 

@@ -249,7 +249,7 @@ if(BUILD_BENCHMARK)
 endif()
 
 # ----------------------------------------------------------------------------
-# Generate HTML documentation (if enabled)
+# Generate HTML documentation (if enabled and possible)
 
 if(BUILD_DOC) 
     find_package(Doxygen)
@@ -267,17 +267,13 @@ if(BUILD_DOC)
         add_custom_target(project_docs 
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
             COMMAND docedit . ${CMAKE_CURRENT_BINARY_DIR}
-            COMMAND Doxygen::doxygen Doxyfile.local
+            COMMAND Doxygen::doxygen ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.local
         )
-        
-        # Clean up generated docs after doxygen
-        add_custom_target(clean_docs)
-        if(TARGET clean_docs)
-           file(REMOVE Doxyfile.local README-orig.md)
-        endif()
 
-        add_dependencies(supernovas clean_docs)
-        add_dependencies(clean_docs project_docs)
+        add_dependencies(supernovas project_docs)
+    else()
+        message(WARNING "Doxygen not found -- Will skip generating HTML documentation")
+        set(BUILD_DOC "OFF")
     endif()
 endif()
 

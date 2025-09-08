@@ -22,11 +22,11 @@
 static const char *inpath = ".";
 static const char *outpath = NULL;
 
-static FILE *openfile(const char *name, const char *mode) {
+static FILE *openfile(const char *path, const char *name, const char *mode) {
   char filename[1024] = {'\0'};
   FILE *fp;
 
-  snprintf(filename, sizeof(filename), "%s" PATH_SEP "%s", inpath, name);
+  snprintf(filename, sizeof(filename), "%s" PATH_SEP "%s", path, name);
   fp = fopen(filename, mode);
   if(!fp) fprintf(stderr, "ERROR! opening %s: %s", filename, strerror(errno));
   return fp;
@@ -36,10 +36,10 @@ static int make_local_doxyfile() {
   FILE *in, *out;
   char line[16384] = {'\0'};
 
-  in = openfile("Doxyfile", "r");
+  in = openfile(inpath, "Doxyfile", "r");
   if(!in) return -1;
 
-  out = openfile("Doxyfile.local", "w");
+  out = openfile(outpath ? outpath : inpath, "Doxyfile.local", "w");
   if(!out) {
     fclose(in);
     return -1;
