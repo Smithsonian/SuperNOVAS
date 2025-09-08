@@ -993,7 +993,8 @@ WARN_LOGFILE           =
 
 INPUT                  = src \
                          include \
-                         .
+                         . \
+                         resources/supernovas_vs_astropy.md
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1098,7 +1099,8 @@ RECURSIVE              = NO
 
 EXCLUDE                = README.md \
                          CODE_OF_CONDUCT.md \
-                         CMakeLists.txt
+                         CMakeLists.txt \
+                         RELEASE-HOWTO.md
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
