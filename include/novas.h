@@ -123,6 +123,9 @@
 /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
 #define NOVAS_DAY                 86400.0
 
+/// [s] The length of a tropical year (at J2000) in seconds.
+#define NOVAS_TROPICAL_YEAR       365.2421897
+
 /// [rad] A degree expressed in radians. @since 1.2
 #define NOVAS_DEGREE              (M_PI / 180.0)
 
@@ -158,6 +161,12 @@
 
 /// [km] Astronomical Unit (AU) in kilometers.
 #define NOVAS_AU_KM               ( 1e-3 * NOVAS_AU )
+
+/// [m] A light-year in meters
+#define NOVAS_LIGHT_YEAR          (NOVAS_C * NOVAS_TROPICAL_YEAR)
+
+/// [m] A parsec in meters
+#define NOVAS_PARSEC              (NOVAS_AU / ARCSEC)
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant (GM<sub>sun</sub>) from DE440,
 /// see Park et al., AJ, 161, 105 (2021)

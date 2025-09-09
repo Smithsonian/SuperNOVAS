@@ -815,8 +815,8 @@ proper ICRS coordinates, e.g.:
   // lets say in CIRS (but it could also be ICRS, for all that matters). 
   novas_hor_to_app(&obs_frame, az, el, novas_standard_refraction, NOVAS_CIRS, &ra, &dec);
   
-  // Convert apparent to ICRS geometric positions (e.g. at 1000 AU distance)
-  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 1000.0, pos);
+  // Convert apparent to ICRS geometric positions (e.g. at 10 parsec distance)
+  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 10.0 * NOVAS_PARSEC / NOVAS_AU, pos);
   
   // Convert ICRS xyz position to R.A. and Dec
   vector2radec(pos, &ra, &dec);
