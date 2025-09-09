@@ -61,12 +61,12 @@ double novas_epoch(const char *restrict system) {
   char type = 0, *tail = NULL;
 
   if(!system) {
-    novas_error(0, EINVAL, fn, "epoch is NULL");
+    novas_set_errno(EINVAL, fn, "epoch is NULL");
     return NAN;
   }
 
   if(!system[0]) {
-    novas_error(0, EINVAL, fn, "epoch is empty");
+    novas_set_errno(EINVAL, fn, "epoch is empty");
     return NAN;
   }
 
@@ -95,7 +95,7 @@ double novas_epoch(const char *restrict system) {
 
   year = strtod(system, &tail);
   if(tail <= system) {
-    novas_error(0, EINVAL, fn, "Invalid epoch: %s", system);
+    novas_set_errno(EINVAL, fn, "Invalid epoch: %s", system);
     return NAN;
   }
 
@@ -158,26 +158,26 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
     *tail = (char *) hms;
 
   if(!hms) {
-    novas_error(0, EINVAL, fn, "input string is NULL");
+    novas_set_errno(EINVAL, fn, "input string is NULL");
     return NAN;
   }
   if(!hms[0]) {
-    novas_error(0, EINVAL, fn, "input string is empty");
+    novas_set_errno(EINVAL, fn, "input string is empty");
     return NAN;
   }
 
   if(sscanf(hms, "%d%*[:hH _\t]%d%n%*[:mM'’ _\t]%lf%n", &h, &m, &n, &s, &n) < 2) {
-    novas_error(0, EINVAL, fn, "not in HMS format: '%s'", hms);
+    novas_set_errno(EINVAL, fn, "not in HMS format: '%s'", hms);
     return NAN;
   }
 
   if(m < 0 || m >= 60) {
-    novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
+    novas_set_errno(EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
     return NAN;
   }
 
   if(s < 0.0 || s >= 60.0) {
-    novas_error(0, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
+    novas_set_errno(EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
     return NAN;
   }
 
@@ -351,11 +351,11 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
     *tail = (char *) dms;
 
   if(!dms) {
-    novas_error(0, EINVAL, fn, "input string is NULL");
+    novas_set_errno(EINVAL, fn, "input string is NULL");
     return NAN;
   }
   if(!dms[0]) {
-    novas_error(0, EINVAL, fn, "input string is empty");
+    novas_set_errno(EINVAL, fn, "input string is empty");
     return NAN;
   }
 
@@ -363,12 +363,12 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
   str = (char *) dms + nc;
 
   if(sscanf(str, "%d%*[:d _\t]%d%n%*[:m' _\t]%n%39[-+0-9.]", &d, &m, &nv, &nv, ss) < 2) {
-    novas_error(0, EINVAL, fn, "not in DMS format: '%s'", dms);
+    novas_set_errno(EINVAL, fn, "not in DMS format: '%s'", dms);
     return NAN;
   }
 
   if(m < 0 || m >= 60) {
-    novas_error(0, EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
+    novas_set_errno(EINVAL, fn, "invalid minutes: got %d, expected 0-59", m);
     return NAN;
   }
 
@@ -379,7 +379,7 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
   }
 
   if(s < 0.0 || s >= 60.0) {
-    novas_error(0, EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
+    novas_set_errno(EINVAL, fn, "invalid seconds: got %f, expected [0.0:60.0)", s);
     return NAN;
   }
 
@@ -535,7 +535,7 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
     *tail = (char *) str;
 
   if(!str) {
-    novas_error(0, EINVAL, fn, "input string is NULL");
+    novas_set_errno(EINVAL, fn, "input string is NULL");
     return NAN;
   }
 
@@ -608,7 +608,7 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
     }
   }
 
-  novas_error(0, EINVAL, fn, "invalid angle specification: '%s'", str);
+  novas_set_errno(EINVAL, fn, "invalid angle specification: '%s'", str);
   return NAN;
 }
 
@@ -663,7 +663,7 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
     *tail = (char *) str;
 
   if(!str) {
-    novas_error(0, EINVAL, fn, "input string is NULL");
+    novas_set_errno(EINVAL, fn, "input string is NULL");
     return NAN;
   }
 
@@ -704,7 +704,7 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
       *tail += n;
   }
   else {
-    novas_error(0, EINVAL, fn, "invalid time specification: '%s'", str);
+    novas_set_errno(EINVAL, fn, "invalid time specification: '%s'", str);
     return NAN;
   }
 

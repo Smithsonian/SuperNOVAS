@@ -1798,8 +1798,8 @@ double julian_date(short year, short month, short day, double hour);
 int cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour);
 
 // in target.c
-short make_cat_entry(const char *restrict star_name, const char *restrict catalog, long cat_num, double ra, double dec,
-        double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *star);
+short make_cat_entry(const char *restrict name, const char *restrict catalog, long cat_num, double ra, double dec,
+        double pm_ra, double pm_dec, double parallax, double rad_vel, cat_entry *source);
 
 short transform_cat(enum novas_transform_type, double jd_tt_in, const cat_entry *in, double jd_tt_out, const char *out_id,
         cat_entry *out);
@@ -2074,7 +2074,6 @@ int gcrs_to_mod(double jd_tdb, const double *in, double *out);
 int mod_to_gcrs(double jd_tdb, const double *in, double *out);
 
 
-
 // ---------------------- Added in 1.3.0 -------------------------
 
 // in calendar.c
@@ -2207,6 +2206,7 @@ int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restri
 
 // ---------------------- Added in 1.5.0 -------------------------
 
+// in earth.c
 double novas_gmst(double jd_ut1, double ut1_to_tt);
 
 double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy);
@@ -2222,6 +2222,7 @@ int novas_diurnal_libration(double gmst, const novas_delaunay_args *restrict del
 int novas_diurnal_ocean_tides(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
         double *restrict dut1);
 
+// in itrf.c
 int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates,
         int to_year, double *to_coords, double *to_rates);
 
@@ -2232,9 +2233,28 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
 
 int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt);
 
+// in timescale.c
 double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
 
 double novas_mean_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
+
+
+// in target.c
+int novas_init_cat_entry(cat_entry *restrict source, const char *restrict name, double ra, double dec);
+
+int novas_set_catalog(cat_entry *restrict source, const char *restrict catalog, long num);
+
+int novas_set_ssb_vel(cat_entry *source, double v_kms);
+
+int novas_set_lsr_vel(cat_entry *source, double epoch, double v_kms);
+
+int novas_set_redshift(cat_entry *source, double z);
+
+int novas_set_proper_motion(cat_entry *source, double pm_ra, double pm_dec);
+
+int novas_set_parallax(cat_entry *source, double mas);
+
+int novas_set_distance(cat_entry *source, double parsecs);
 
 
 // <================= END of SuperNOVAS API =====================>

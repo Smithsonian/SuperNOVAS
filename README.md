@@ -557,6 +557,7 @@ galactic molecular cloud, or a distant quasar.
  - [Set up the observing frame](#observing-frame)
  - [Calculate an apparent place on sky](#apparent-place)
  - [Calculate azimuth and elevation angles at the observing location](#horizontal-place)
+ - [Going in reverse...](#reverse-place)
  - [Calculate rise, set, and transit times](#rise-set-transit)
  - [Coordinate and velocity transforms (change of coordinate system)](#transforms)
 
@@ -564,44 +565,74 @@ galactic molecular cloud, or a distant quasar.
 #### Specify the object of interest
 
 First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star 
-for which we have B1950 (i.e. FK4) coordinates (including motion):
+for which we have B1950 (i.e. FK4) coordinates. We begin with the assigned name and the R.A. / Dec coordinates.
 
 ```c
  cat_entry star; // Structure to contain information on sidereal source 
 
- // Let's assume we have B1950 (FK4) coordinates...
- // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year, 
- // parallax 5.89 mas, radial velocity -3.4 km/s.
- make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star);
+ // Let's assume we have B1950 (FK4) coordinates of
+ // 16h26m20.1918s, -26d19m23.138s
+ novas_init_cat_entry(&star, "Antares", 16.43894213, -26.323094);
 ```
 
-Or, if you have coordinates as strings in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
-`novas_str_degrees()` to convert them to hours/degrees for `make_cat_entry()`, with a fair bit of flexibility on the 
-format of representation, e.g.:
+If you have coordinates as strings in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
+`novas_str_degrees()` to convert them to hours/degrees for `novas_init_cat_entry()`, with a fair bit of flexibility on 
+the particulars of the representation, e.g.:
 
 ```c
- make_cat_entry("Antares", "FK4", 1, 
+ novas_init_entry(&star, "Antares",
    novas_str_hours("16h 26m 20.1918s"),   // e.g. using h,m,s and spaces as separators 
-   novas_str_degrees("-26:19:23.138"),    // e.g. using colons to separate components
+   novas_str_degrees("-26:19:23.138"));   // e.g. using colons to separate components
+```
+
+Next, if it's a star or some other source within our own Galaxy, you'll want to specify its proper motion (in the same
+reference system as the above coordinates), so we can calculate its position for the epoch of observation.
+
+```c
+ // Now, let's add proper motion of 12.11, -23.30 mas/year.
+ novas_set_proper_motion(&star, -12.11, -23.30);
+``` 
+
+For Galactic sources you will also want to set the parallax using `novas_set_parallax()` or equivalently the distance 
+(in parsecs) using `novas_set_distance()`, e.g.:
+ 
+```c
+ // Add parallax of 5.89 mas
+ novas_set_parallax(&star, 5.89);
+```
+
+Finally, for spectroscopic applications you will also want to set the radial velocity. You can use 
+`novas_set_ssb_vel()` if you have standard radial velocities defined with respect to the Solar System Barycenter; or
+`novas_set_lsr_vel()` if the velocity is relative to the Local Standard of Rest (LSR); or else `novas_set_redshift()`
+if you have a redshift measure (as is typical for distant galaxies and quasars). E.g.:
+
+```c
+ // Add a radial velocity of -3.4 km/s (relative to SSB)
+ novas_set_ssb_vel(&star, -3.4);
+```
+
+Alternatively, if you prefer, you may use the original NOVAS C `make_cat_entry()` to set the astrometric parameters 
+above all at once, e.g. as:
+
+```c
+  make_cat_entry("Antares", "FK4", 1, 
+   novas_str_hours("16h 26m 20.1918s"), 
+   novas_str_degrees("-26:19:23.138"),
    -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
-And, if you have LSR-based radial velocities instead of Solar-system Barycentric radial velocities, you may convert 
-these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_ssb_vel()`.
-
-Next, we create a generic celestial `object` from the catalog source. (The `object` structure handles various 
-Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any 
-epoch / catalog system, the `object` structure shall contain ICRS coordinates always:
+Next, we wrap that catalog source into a generic celestial `object` structure. (An `object` handles various 
+Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any epoch 
+/ catalog system, the `object` structure shall define ICRS coordinates always (no exceptions):
 
 ```c
- object source;   // Common structure for a sidereal or an Solar-system source
+ object source;   // Encapsulates a sidereal or a Solar-system source
   
- // Use the B1950 coodinates for generic source data structure in ICRS...
+ // Use the B1950 astrometric parameters to set up the observables in ICRS...
  make_cat_object_sys(&star, "B1950", &source);
 ```
 
-Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object_sys()` 
-e.g.:
+Alternatively, for high-_z_ sources you might simply use the 1-step `make_redshifted_object_sys()` e.g.:
 
 ```c
  object quasar;
@@ -636,7 +667,7 @@ here, such as:
 
 Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the 
 geocenter, or at the Solar-system barycenter. And, if you intend to use a refraction model that uses local weather 
-parameters you may specify there, including humidity also, _after_ the call to `make_observer_on_surface()`, e.g.:
+parameters you may specify humidity also, _after_ the call to `make_observer_on_surface()`, e.g.:
 
 ```c
   ...
@@ -680,7 +711,7 @@ or, for the best precision we may do the same with an integer / fractional split
  novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, leap_seconds, dut1, &obs_time);
 ```
 
-or, you can use a string date, such as an ISO timestamp:
+You can use string dates, such as an ISO timestamp:
 
 ```c
  novas_set_time(NOVAS_UTC, novas_date("2025-01-26T22:05:14.234+0200"), 37, 0.042, &obs_time);
@@ -717,7 +748,7 @@ derivative frames for different observer locations, if need be, via `novas_chang
 
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
-sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
+&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
 low-precision Earth and Sun calculator included by default), both for precise Earth-based observer locations and to 
 account for gravitational deflections around the Sun and massive planets. Without these, &mu;as accuracy cannot be 
 ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision 
@@ -768,6 +799,42 @@ coordinates at the observing location, using the `novas_standard_refraction()` f
 refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data embedded in the 
 frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate unrefracted elevation 
 angles.
+
+<a name="reverse-place"></a>
+#### Going in reverse...
+
+Of course, __SuperNOVAS__ allows you to go in reverse, for example from an observed Az/El position all the way to
+proper ICRS coordinates, e.g.:
+
+```c
+  double az = ..., el = ...; // [deg] measured azimuth and elevation angles
+  double ra, dec;            // [h, deg] R.A. and declination to populate
+  double pos[3];             // [AU] xyz position vector
+  
+  // Calculate the observer's apparent coordinates from the observed Az/El values,
+  // lets say in CIRS (but it could also be ICRS, for all that matters). 
+  novas_hor_to_app(&obs_frame, az, el, novas_standard_refraction, NOVAS_CIRS, &ra, &dec);
+  
+  // Convert apparent to ICRS geometric positions (e.g. at 1000 AU distance)
+  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 1000.0, pos);
+  
+  // Convert ICRS xyz position to R.A. and Dec
+  vector2radec(pos, &ra, &dec);
+```
+
+Viola! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 
+simply add a transformation before `vector2radec()` above, e.g. as:
+
+```c
+  ...
+  
+  // Transform position from ICRS to B1950
+  gcrs_to_mod(NOVAS_JD_B1950, pos, pos);
+
+  // Convert B1950 xyz position to R.A. and Dec
+  vector2radec(pos, &ra, &dec);
+```
+
 
 <a name="rise-set-transit"></a>
 #### Calculate rise, set, and transit times

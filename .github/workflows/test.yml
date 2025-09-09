@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CC: gcc
-      FORTIFY: 3
+      CFLAGS: -O0
     steps:
 
     - uses: actions/checkout@v5

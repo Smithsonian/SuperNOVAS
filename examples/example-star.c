@@ -64,14 +64,24 @@ int main() {
   // Solar-System Barycenter (SSB). But you can convert LSR-based velocities to
   // the required SSB-based radial velocities using novas_lsr_to_ssb_vel() if needed.
 
-  // Convert string coordinates to hours/degrees...
-  double ra0 = novas_str_hours("16h26m20.1918s");
-  double dec0 = novas_str_degrees("-26d19m23.138s");
-
-  if(make_cat_entry("Antares", "FK4", 1, ra0, dec0, -12.11, -23.30, 5.89, -3.4, &star) != 0) {
+  // E.g. initialize with string coordinates to hours/degrees...
+  if(novas_init_cat_entry(&star, "Antares", novas_str_hours("16h26m20.1918s"), novas_str_degrees("-26d19m23.138s")) != 0) {
     fprintf(stderr, "ERROR! defining cat_entry.\n");
     return 1;
   }
+
+  // Optionally, we might store the catalog information: catalog name (5-chars max) and number.
+  novas_set_catalog(&star, "FK4", 1);
+
+  // Set the proper motion
+  novas_set_proper_motion(&star, -12.11, -23.30);
+
+  // Set the parallax. Alternatively we could set distance with `novas_set_distance()` instead.
+  novas_set_parallax(&star, 5.89);
+
+  // Set radial velocity. Or we could set LSR velocity with 'novas_set_lsr_vel()' instead
+  novas_set_ssb_vel(&star, -3.4);
+
 
   // -------------------------------------------------------------------------
   // Convert to ICRS coordinates and wrap in a generic object structure.

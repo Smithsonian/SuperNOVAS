@@ -40,6 +40,12 @@ Upcoming feature release, expected around 1 November 2025.
    (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 
    astronomical timescale. All timescales, except UT1, are supported (see also #232 and #233). 
 
+ - #239: New step-by-step approach to populate astormetric data for catalog sources, complementing the one-step
+   `make_cat_entry()`. Start with `novas_init_cat_entry()` specifying the name and the R.A. / Dec coordinates, and 
+   then add more information as needed: set radial velocities with `novas_set_ssb_vel()` / `novas_set_lsr_vel()` / 
+   `novas_set_redshift()`; set parallax or distance (if any) with `novas_set_parallax()` or `novas_set_distance()`; 
+   set proper motion (if any) with `novas_set_proper_motion()`; or add catalog information with `novas_set_catalog()`.
+
 ### Changed
 
  - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 
