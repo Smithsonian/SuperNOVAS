@@ -412,7 +412,7 @@ double novas_moon_angle(const object *restrict source, const novas_frame *restri
 // in orbit.c
 int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel);
 
-// in plorbit.c
+// in planets.c
 int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit);
 
 int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit);

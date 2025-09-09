@@ -123,7 +123,7 @@
 /// [s] The length of a synodic day, that is 24 hours exactly. @since 1.2
 #define NOVAS_DAY                 86400.0
 
-/// [s] The length of a tropical year (at J2000) in seconds.
+/// [s] The length of a tropical year (at J2000) in seconds. @since 1.5
 #define NOVAS_TROPICAL_YEAR       365.2421897
 
 /// [rad] A degree expressed in radians. @since 1.2
@@ -162,11 +162,11 @@
 /// [km] Astronomical Unit (AU) in kilometers.
 #define NOVAS_AU_KM               ( 1e-3 * NOVAS_AU )
 
-/// [m] A light-year in meters
-#define NOVAS_LIGHT_YEAR          (NOVAS_C * NOVAS_TROPICAL_YEAR)
+/// [m] A light-year in meters. @since 1.5
+#define NOVAS_LIGHT_YEAR          ( NOVAS_C * NOVAS_TROPICAL_YEAR )
 
-/// [m] A parsec in meters
-#define NOVAS_PARSEC              (NOVAS_AU / ARCSEC)
+/// [m] A parsec in meters. @since 1.5
+#define NOVAS_PARSEC              ( NOVAS_AU / ARCSEC )
 
 /// [m<sup>3</sup>/s<sup>2</sup>] Heliocentric gravitational constant (GM<sub>sun</sub>) from DE440,
 /// see Park et al., AJ, 161, 105 (2021)
@@ -1747,12 +1747,9 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2);
 
 // in equinox.c
-
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy);
 
 int fund_args(double t, novas_delaunay_args *restrict a);
-
-double planet_lon(double t, enum novas_planet planet);
 
 double accum_prec(double t);
 
@@ -1766,6 +1763,9 @@ int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_
         double *out);
 
 int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps);
+
+// in planets.c
+double planet_lon(double t, enum novas_planet planet);
 
 // in earth.c
 short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
@@ -2246,7 +2246,6 @@ int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_e
 double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
 
 double novas_mean_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
-
 
 // in target.c
 int novas_init_cat_entry(cat_entry *restrict source, const char *restrict name, double ra, double dec);
