@@ -1,7 +1,7 @@
 # Additional CMake configuration file for building the benchmarking programs
-# of the SuperNOVAS library.
+# of the supernovas library.
 #
-# To invoke simply configure the cmake build in the SuperNOVAS directory with
+# To invoke simply configure the cmake build in the supernovas directory with
 # the -DBUILD_BENCHMARK=ON option.
 #
 # Author: Attila Kovacs
@@ -12,7 +12,7 @@ set(BENCHMARK_PROGRAMS
     benchmark-place
 )
 
-# Link against binaries in the local SuperNOVAS lib/ directory
+# Link against binaries in the local supernovas lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 # Build each example

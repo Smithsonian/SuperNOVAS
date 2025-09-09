@@ -1,7 +1,7 @@
 # Additional CMake configuration file for building the regression testing programs
-# of the SuperNOVAS library. The programs are added to the test suite.
+# of the supernovas library. The programs are added to the test suite.
 #
-# To invoke simply configure the cmake build in the SuperNOVAS directory with
+# To invoke simply configure the cmake build in the supernovas directory with
 # the -DBUILD_TESTING=ON option.
 #
 # Author: Attila Kovacs
@@ -21,10 +21,10 @@ if(ENABLE_CSPICE)
     list(APPEND TEST_PROGRAMS test-cspice)
 endif()
 
-# Look for headers in the SuperNOVAS include/ directory
+# Look for headers in the supernovas include/ directory
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Link against binaries in the local SuperNOVAS lib/ directory
+# Link against binaries in the local supernovas lib/ directory
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 # Directory where ephemeris data for the tests are found

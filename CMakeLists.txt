@@ -1,4 +1,4 @@
-# CMake configuration file for the SuperNOVAS library
+# CMake configuration file for the supernovas library
 #
 # Authors: Kiran Shila, Attila Kovacs
 #
@@ -20,10 +20,10 @@
 cmake_minimum_required(VERSION 3.20)
 
 # Project definition
-project(SuperNOVAS
+project(supernovas
     VERSION 1.5.0
-    DESCRIPTION "SuperNOVAS astrometry library"
-    HOMEPAGE_URL "https://smithsonian.github.io/SuperNOVAS/"
+    DESCRIPTION "supernovas astrometry library"
+    HOMEPAGE_URL "https://smithsonian.github.io/supernovas/"
     LANGUAGES C
 )
 
@@ -95,7 +95,7 @@ if(ENABLE_CALCEPH)
         URL "https://calceph.imcce.fr"
         DESCRIPTION  "is designed to access the binary planetary ephemeris files"
         TYPE REQUIRED
-        PURPOSE "Provides ephemeris support for SuperNOVAS"
+        PURPOSE "Provides ephemeris support for supernovas"
     )
     list(APPEND SUPERNOVAS_COMPILE_DEFINITIONS USE_CALCEPH=1)
 endif()
@@ -140,8 +140,8 @@ set(SUPERNOVAS_CORE_SOURCES
 
 add_library(supernovas ${SUPERNOVAS_CORE_SOURCES})
 
-# Alias to SuperNOVAS:: namespace
-add_library(SuperNOVAS::supernovas ALIAS supernovas)
+# Alias to supernovas:: namespace
+add_library(supernovas::core ALIAS supernovas)
 
 set_target_properties(supernovas PROPERTIES
     VERSION ${PROJECT_VERSION}
@@ -177,7 +177,7 @@ add_library(novas ALIAS supernovas)
 # configure plugin build (w/o linking)
 function(config_plugin PLUGIN)
     add_library(${PLUGIN} src/${PLUGIN}.c)
-    add_library(SuperNOVAS::${PLUGIN} ALIAS ${PLUGIN})
+    add_library(supernovas::${PLUGIN} ALIAS ${PLUGIN})
 
     set_target_properties(${PLUGIN} PROPERTIES
         VERSION ${PROJECT_VERSION}
@@ -257,7 +257,7 @@ if(BUILD_DOC)
         URL "https://doxygen.nl/"
         DESCRIPTION  "is a widely-used documentation generator tool in software development"
         TYPE REQUIRED
-        PURPOSE "Enables HTML documentation for SuperNOVAS"
+        PURPOSE "Enables HTML documentation for supernovas"
     )
 
     if(Doxygen_FOUND)
@@ -300,7 +300,7 @@ if(ENABLE_SOLSYS2)
 endif()
 
 install(TARGETS ${INSTALL_TARGETS}
-    EXPORT SuperNOVASTargets
+    EXPORT supernovasTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -356,51 +356,51 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/legacy
    COMPONENT Development
 )
 
-if(BUILD_DOC AND TARGET project_docs)
+if(BUILD_DOC)
     # For html/ dir, list just the directory, not the individual files installed.
-    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/html\")")
+    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/html\")")
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}
         MESSAGE_NEVER
         COMPONENT Development
     )
     # For resources/ dir, list just the directory, not the individual files installed.
-    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/html/resources\")")
+    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/html/resources\")")
     install(DIRECTORY ${PROJECT_SOURCE_DIR}/resources
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas/html
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/html
         MESSAGE_NEVER
         COMPONENT Development
     )
     # Install Doxygen tag, which downstream docs can link to.
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}
         COMPONENT Development
     )
 endif()
 
-install(EXPORT SuperNOVASTargets
+install(EXPORT supernovasTargets
     COMPONENT Development
-    FILE SuperNOVASTargets.cmake
-    NAMESPACE SuperNOVAS::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
+    FILE supernovasTargets.cmake
+    NAMESPACE supernovas::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/supernovas
 )
 
 configure_package_config_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/SuperNOVASConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/supernovasConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/supernovasConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/supernovas
 )
 
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/supernovasConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
 install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/SuperNOVASConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SuperNOVAS
+    ${CMAKE_CURRENT_BINARY_DIR}/supernovasConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/supernovasConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/supernovas
     COMPONENT Development
 )
 
@@ -432,7 +432,7 @@ endif()
 # ----------------------------------------------------------------------------
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
-export(PACKAGE SuperNOVAS)
+export(PACKAGE supernovas)
 
 # ----------------------------------------------------------------------------
 # Summary
@@ -445,7 +445,7 @@ message("   RelWithDebInfo:    ${CMAKE_C_FLAGS_RELWITHDEBINFO}")
 message("   MinSizeRel:        ${CMAKE_C_FLAGS_MINSIZEREL}")
 message("")
 
-message(" - SuperNOVAS Configuration Summary:")
+message(" - supernovas Configuration Summary:")
 message("   Version:           ${PROJECT_VERSION}")
 if(CMAKE_BUILD_TYPE)
     message("   Build type:        ${CMAKE_BUILD_TYPE}")

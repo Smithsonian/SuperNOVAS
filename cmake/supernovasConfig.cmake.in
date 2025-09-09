@@ -1,0 +1,82 @@
+@PACKAGE_INIT@
+
+# supernovas CMake configuration file
+
+include(CMakeFindDependencyMacro)
+
+# Find math library if needed
+if(NOT WIN32)
+    find_library(MATH_LIBRARY m)
+    if(NOT MATH_LIBRARY)
+        message(FATAL_ERROR "Math library not found")
+    endif()
+endif()
+
+# Include targets
+include("${CMAKE_CURRENT_LIST_DIR}/supernovasTargets.cmake")
+
+# Set variables for backward compatibility
+set(supernovas_LIBRARIES supernovas::supernovas)
+set(supernovas_INCLUDE_DIRS "")
+
+# Get include directories from target properties
+get_target_property(supernovas_INCLUDE_DIRS supernovas::supernovas INTERFACE_INCLUDE_DIRECTORIES)
+
+# Check if optional components are available
+if(TARGET supernovas::solsys-calceph)
+    set(supernovas_CALCEPH_FOUND TRUE)
+else()
+    set(supernovas_CALCEPH_FOUND FALSE)
+endif()
+
+if(TARGET supernovas::solsys-cspice)
+    set(supernovas_CSPICE_FOUND TRUE)
+else()
+    set(supernovas_CSPICE_FOUND FALSE)
+endif()
+
+if(TARGET supernovas::solsys1)
+    set(supernovas_SOLSYS1_FOUND TRUE)
+else()
+    set(supernovas_SOLSYS1_FOUND FALSE)
+endif()
+
+if(TARGET supernovas::solsys2)
+    set(supernovas_SOLSYS2_FOUND TRUE)
+else()
+    set(supernovas_SOLSYS2_FOUND FALSE)
+endif()
+
+
+# Component support
+foreach(component ${supernovas_FIND_COMPONENTS})
+    if(component STREQUAL "calceph")
+        if(NOT supernovas_CALCEPH_FOUND)
+            set(supernovas_FOUND FALSE)
+            set(supernovas_NOT_FOUND_MESSAGE "supernovas CALCEPH component not available")
+        endif()
+    
+    elseif(component STREQUAL "cspice")
+        if(NOT supernovas_CSPICE_FOUND)
+            set(supernovas_FOUND FALSE)
+            set(supernovas_NOT_FOUND_MESSAGE "supernovas CSPICE component not available")
+        endif()
+    
+    elseif(component STREQUAL "solsys1")
+        if(NOT supernovas_SOLSYS1_FOUND)
+            set(supernovas_FOUND FALSE)
+            set(supernovas_NOT_FOUND_MESSAGE "supernovas solsys1 component not available")
+        endif()
+        
+    elseif(component STREQUAL "solsys2")
+        if(NOT supernovas_SOLSYS2_FOUND)
+            set(supernovas_FOUND FALSE)
+            set(supernovas_NOT_FOUND_MESSAGE "supernovas solsys2 component not available")
+        endif()
+    else()
+        set(supernovas_FOUND FALSE)
+        set(supernovas_NOT_FOUND_MESSAGE "Unknown supernovas component: ${component}")
+    endif()
+endforeach()
+
+check_required_components(supernovas)
