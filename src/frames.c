@@ -863,7 +863,7 @@ int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict 
   if(!novas_frame_is_initialized(frame))
     return novas_error(-1, EINVAL, fn, "frame at %p not initialized", frame);
 
-  if(frame->accuracy != NOVAS_FULL_ACCURACY && frame->accuracy != NOVAS_REDUCED_ACCURACY)
+  if(frame->accuracy < NOVAS_FULL_ACCURACY || frame->accuracy > NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", frame->accuracy);
 
   // Compute gravitational deflection and aberration.

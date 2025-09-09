@@ -979,7 +979,8 @@ static int test_vector2radec() {
 static int test_planet_lon() {
   int n = 0;
 
-  if(check_nan("planet_lon", planet_lon(0.0, -1))) n++;
+  if(check_nan("planet_lon:-1", planet_lon(0.0, -1))) n++;
+  if(check_nan("planet_lon:hi", planet_lon(0.0, NOVAS_PLUTO + 1))) n++;
 
   return n;
 }
@@ -1478,6 +1479,7 @@ static int test_geom_to_app() {
   if(check("geom_to_app:frame:ok", 0, novas_geom_to_app(&frame, pos, NOVAS_ICRS, &out))) n++;
 
   if(check("geom_to_app:pos", -1, novas_geom_to_app(&frame, NULL, NOVAS_ICRS, &out))) n++;
+  if(check("geom_to_app:out", -1, novas_geom_to_app(&frame, pos, NOVAS_ICRS, NULL))) n++;
   if(check("geom_to_app:sys:-1", -1, novas_geom_to_app(&frame, pos, -1, &out))) n++;
   if(check("geom_to_app:sys:hi", -1, novas_geom_to_app(&frame, pos, NOVAS_REFERENCE_SYSTEMS, &out))) n++;
 
