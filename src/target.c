@@ -1102,12 +1102,12 @@ double novas_helio_dist(double jd_tdb, const object *restrict source, double *re
     *rate = NAN;
 
   if(!source) {
-    novas_error(0, EINVAL, fn, "input source is NULL");
+    novas_set_errno(EINVAL, fn, "input source is NULL");
     return NAN;
   }
 
   if(source->type == NOVAS_CATALOG_OBJECT) {
-    novas_error(0, EINVAL, fn, "input source is not a Solar-system body: type %d", source->type);
+    novas_set_errno(EINVAL, fn, "input source is not a Solar-system body: type %d", source->type);
     return NAN;
   }
 

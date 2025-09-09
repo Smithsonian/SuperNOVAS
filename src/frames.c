@@ -1417,17 +1417,17 @@ double novas_frame_lst(const novas_frame *restrict frame) {
   double lst;
 
   if(!frame) {
-    novas_error(0, EINVAL, fn, "input frame is NULL");
+    novas_set_errno(EINVAL, fn, "input frame is NULL");
     return NAN;
   }
 
   if(!novas_frame_is_initialized(frame)) {
-    novas_error(0, EINVAL, fn, "input frame is not initialized");
+    novas_set_errno(EINVAL, fn, "input frame is not initialized");
     return NAN;
   }
 
   if(frame->observer.where != NOVAS_OBSERVER_ON_EARTH && frame->observer.where != NOVAS_AIRBORNE_OBSERVER) {
-    novas_error(0, EINVAL, fn, "Not an Earth-bound observer: where=%d", frame->observer.where);
+    novas_set_errno(EINVAL, fn, "Not an Earth-bound observer: where=%d", frame->observer.where);
     return NAN;
   }
 
@@ -1495,7 +1495,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
   int i;
 
   if(!source) {
-    novas_error(0, EINVAL, fn, "input source is NULL");
+    novas_set_errno(EINVAL, fn, "input source is NULL");
     return NAN;
   }
 
@@ -1545,7 +1545,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
     novas_make_frame(frame->accuracy, &frame->observer, &t, frame->dx, frame->dy, &frame1);
   }
 
-  novas_error(0, ECANCELED, fn, "failed to converge");
+  novas_set_errno(ECANCELED, fn, "failed to converge");
   return NAN;
 }
 
@@ -1682,17 +1682,17 @@ double novas_solar_illum(const object *restrict source, const novas_frame *restr
   int i;
 
   if(!source) {
-    novas_error(0, EINVAL, fn, "input source is NULL");
+    novas_set_errno(EINVAL, fn, "input source is NULL");
     return NAN;
   }
 
   if(!frame) {
-    novas_error(0, EINVAL, fn, "input frame is NULL");
+    novas_set_errno(EINVAL, fn, "input frame is NULL");
     return NAN;
   }
 
   if(!novas_frame_is_initialized(frame)) {
-    novas_error(0, EINVAL, fn, "input frame is not initialized");
+    novas_set_errno(EINVAL, fn, "input frame is not initialized");
     return NAN;
   }
 
@@ -1739,12 +1739,12 @@ double novas_object_sep(const object *source1, const object *source2, const nova
   sky_pos p1 = SKY_POS_INIT, p2 = SKY_POS_INIT;
 
   if(!source1) {
-    novas_error(0, EINVAL, fn, "input source1 is NULL");
+    novas_set_errno(EINVAL, fn, "input source1 is NULL");
     return NAN;
   }
 
   if(!source2) {
-    novas_error(0, EINVAL, fn, "input source2 is NULL");
+    novas_set_errno(EINVAL, fn, "input source2 is NULL");
     return NAN;
   }
 
@@ -1755,7 +1755,7 @@ double novas_object_sep(const object *source1, const object *source2, const nova
     return novas_trace_nan(fn);
 
   if(p1.dis < 1e-11 || p2.dis < 1e-11) {
-    novas_error(0, EINVAL, fn, "source is at observer location");
+    novas_set_errno(EINVAL, fn, "source is at observer location");
     return NAN;
   }
 

@@ -980,7 +980,7 @@ static int test_planet_lon() {
   int n = 0;
 
   if(check_nan("planet_lon:-1", planet_lon(0.0, -1))) n++;
-  if(check_nan("planet_lon:hi", planet_lon(0.0, NOVAS_PLUTO + 1))) n++;
+  if(check_nan("planet_lon:pluto", planet_lon(0.0, NOVAS_PLUTO))) n++;
 
   return n;
 }

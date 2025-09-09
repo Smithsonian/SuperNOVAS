@@ -68,12 +68,12 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
     return novas_error(-1, EINVAL, fn, "invalid calendar type: %d\n", calendar);
 
   if(month < 1 || month > 12) {
-    novas_error(0, EINVAL, fn, "invalid month: %d, expected 1-12", month);
+    novas_set_errno(EINVAL, fn, "invalid month: %d, expected 1-12", month);
     return NAN;
   }
 
   if(day < 1 || day > md[month]) {
-    novas_error(0, EINVAL, fn, "invalid day-of-month: %d, expected 1-%d", day, md[month]);
+    novas_set_errno(EINVAL, fn, "invalid day-of-month: %d, expected 1-%d", day, md[month]);
     return NAN;
   }
 

@@ -1027,11 +1027,11 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
     *tail = (char *) date;
 
   if(!date) {
-    novas_error(0, EINVAL, fn, "input string is NULL");
+    novas_set_errno(EINVAL, fn, "input string is NULL");
     return NAN;
   }
   if(!date[0]) {
-    novas_error(0, EINVAL, fn, "input string is empty");
+    novas_set_errno(EINVAL, fn, "input string is empty");
     return NAN;
   }
 
@@ -1046,19 +1046,19 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
       N = sscanf(date, MONTH_SPEC DATE_SEP "%d" DATE_SEP "%d%n", month, &d, &y, &n);
       break;
     default:
-      novas_error(0, EINVAL, fn, "invalid date format: %d", format);
+      novas_set_errno(EINVAL, fn, "invalid date format: %d", format);
       return NAN;
   }
 
   if(N < 3) {
-    novas_error(0, EINVAL, fn, "invalid date: '%s'", date);
+    novas_set_errno(EINVAL, fn, "invalid date: '%s'", date);
     return NAN;
   }
 
   if(sscanf(month, "%d", &m) == 1) {
     // Month as integer, check if in expected range
     if(m < 1 || m > 12) {
-      novas_error(0, EINVAL, fn, "invalid month: got %d, expected 1-12", m);
+      novas_set_errno(EINVAL, fn, "invalid month: got %d, expected 1-12", m);
       return NAN;
     }
   }
@@ -1074,14 +1074,14 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
     }
     if(m > 12) {
       // No match to month names...
-      novas_error(0, EINVAL, fn, "invalid month: %s", month);
+      novas_set_errno(EINVAL, fn, "invalid month: %s", month);
       return NAN;
     }
   }
 
   // Check that day is valid in principle (for leap years)
   if(d < 1 || d > md[m]) {
-    novas_error(0, EINVAL, fn, "invalid day-of-month: got %d, expected 1-%d", d, md[m]);
+    novas_set_errno(EINVAL, fn, "invalid day-of-month: got %d, expected 1-%d", d, md[m]);
     return NAN;
   }
 
@@ -1286,7 +1286,7 @@ double novas_date_scale(const char *restrict date, enum novas_timescale *restric
   double jd = novas_parse_date(date, &tail);
 
   if(!scale) {
-    novas_error(0, EINVAL, fn, "output scale is NULL");
+    novas_set_errno(EINVAL, fn, "output scale is NULL");
     return NAN;
   }
 
@@ -1712,7 +1712,7 @@ static double solar_system_potential(const novas_frame *frame, const double *pos
       d = novas_vdist(pos, frame->earth_pos) * AU;
     }
     else if(frame->accuracy != NOVAS_REDUCED_ACCURACY) {
-      novas_error(0, EAGAIN, "solar_system_potential", "Missing position data for planet %d", i);
+      novas_set_errno(EAGAIN, "solar_system_potential", "Missing position data for planet %d", i);
       return NAN;
     }
 
@@ -1893,12 +1893,12 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
   double D = 0.0;
 
   if(!frame) {
-    novas_error(0, EINVAL, fn, "input frame is NULL");
+    novas_set_errno(EINVAL, fn, "input frame is NULL");
     return NAN;
   }
 
   if(!novas_frame_is_initialized(frame)) {
-    novas_error(0, EINVAL, fn, "input frame is not initialized");
+    novas_set_errno(EINVAL, fn, "input frame is not initialized");
     return NAN;
   }
 
@@ -1936,7 +1936,7 @@ double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale
     }
 
     default:
-      novas_error(0, EINVAL, fn, "timescale %d not supported.", timescale);
+      novas_set_errno(EINVAL, fn, "timescale %d not supported.", timescale);
       return NAN;
   }
 
