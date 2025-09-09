@@ -149,8 +149,8 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
 /// \cond PRIVATE
 
 /**
- * Converts <i>dx,dy</i> pole offsets to d&psi; d&epsilon;. The former is in GCRS, vs the latter in
- * True of Date (TOD) -- and note the different units!
+ * Converts <i>dx,dy</i> pole offsets to corrections for d&psi; d&epsilon;. The former is in GCRS,
+ * the latter in True of Date (TOD) -- and note the different units!
  *
  * NOTES:
  * <ol>
@@ -171,8 +171,8 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
  *                    Bulletin A.
  * @param dy          [mas] Earth orientation: GCRS pole offset dy, e.g. as published by IERS
  *                    Bulletin A.
- * @param[out] dpsi   [arcsec] Calculated TOD orientation d&psi;.
- * @param[out] deps   [arcsec] Calculated TOD orientation d&epsilon;.
+ * @param[out] dpsi   [arcsec] Calculated correction to the TOD orientation d&psi;.
+ * @param[out] deps   [arcsec] Calculated correction to the TOD orientation d&epsilon;.
  * @return            0
  *
  * @sa cel_pole()

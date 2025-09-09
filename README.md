@@ -35,9 +35,9 @@ The NOVAS C astrometry library, made better.
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory, a precise planetarium program, or for
-analyzing astronomical datasets. It is a fork of the Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, providing bug fixes, tons of extra features, 
-while making it easier (and safer) to use also.
+analyzing astronomical datasets. It started as a fork of the Naval Observatory Vector Astrometry Software 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, but since then it has grown into its own, 
+providing bug fixes, tons of new features, and a much improved API comapred to the original NOVAS.
 
 __SuperNOVAS__ is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations 
 than [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its 
