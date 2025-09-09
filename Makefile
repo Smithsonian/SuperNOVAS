@@ -30,13 +30,6 @@ SO_VERSION := 1
 # We'll need math functions to link
 LDFLAGS += -lm
 
-# Check if there is a doxygen we can run
-ifndef DOXYGEN
-  DOXYGEN := $(shell which doxygen)
-else
-  $(shell test -f $(DOXYGEN))
-endif
-
 # If there is doxygen, build the API documentation also by default
 ifeq ($(.SHELLSTATUS),0)
   DOC_TARGETS += local-dox
@@ -134,14 +127,17 @@ clean:
 	rm -f $(OBJECTS) Doxyfile.local $(BIN)/cio_file gmon.out
 	$(MAKE) -C test clean
 	$(MAKE) -C benchmark clean
+	$(MAKE) -C doc clean
 
 # Remove all generated files
 .PHONY: distclean
 distclean: clean
 	rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a \
-      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.
+      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.bin
+	rm -f doc/Doxyfile.local doc/README.md
 	rm -rf build */build 
 	$(MAKE) -C benchmark distclean
+	$(MAKE) -C doc distclean
 
 .PHONY:
 check-cio-locator:
@@ -149,6 +145,13 @@ ifndef CIO_LOCATOR_FILE
 	  $(info WARNING! No default CIO_LOCATOR_FILE defined. Will use local 'data/cio_ra.bin' if present.)
 endif
 
+.PHONY: dox
+dox:
+	DOXYGEN_HTML_HEADER="resources/header.html" $(MAKE) -C doc
+
+.PHONY: local-dox
+local-dox:
+	$(MAKE) -C doc
 
 # ----------------------------------------------------------------------------
 # The nitty-gritty stuff below
@@ -220,32 +223,6 @@ data/cio_ra.bin: data/CIO_RA.TXT bin/cio_file
 bin/cio_file: $(OBJ)/cio_file.o | bin
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
 
-.INTERMEDIATE: bin/docedit
-bin/docedit: $(OBJ)/docedit.o | bin
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
-
-# Generate headless README and Doxyfile variants
-gendocs: bin/docedit Doxyfile
-	@echo "   [doc variants]"
-	@$(BIN)/docedit
-
-# Doxygen documentation (HTML and man pages) under apidocs/
-.PHONY: dox
-dox: Doxyfile apidoc gendocs $(SRC) $(INC)
-	@echo "   [doxygen]"
-	@$(DOXYGEN)
-	@rm -f apidoc/html/resources
-	@( cd apidoc/html; rm -f resources; ln -s ../../resources )
-
-
-# Local documentation without specialized headers. The resulting HTML documents do not have
-# Google Search or Analytics tracking info.
-.PHONY: local-dox
-local-dox: apidoc gendocs $(SRC) $(INC)
-	@echo "   [doxygen]"
-	@$(DOXYGEN) Doxyfile.local
-	@rm -f Doxyfile.local
-	@( cd apidoc/html; rm -f resources; ln -s ../../resources )
 
 
 # Standard install commands
@@ -292,26 +269,22 @@ install-docs: install-markdown install-html install-examples install-legacy
 install-markdown:
 	@echo "installing documentation to $(DESTDIR)$(docdir)"
 	install -d $(DESTDIR)$(docdir)
-	$(INSTALL_DATA) README.md $(DESTDIR)$(docdir)/
-	$(INSTALL_DATA) LEGACY.md $(DESTDIR)$(docdir)/
+	$(INSTALL_DATA) doc/*.md $(DESTDIR)$(docdir)/
 	$(INSTALL_DATA) CHANGELOG.md $(DESTDIR)$(docdir)/
 	$(INSTALL_DATA) CONTRIBUTING.md $(DESTDIR)$(docdir)/
 
 .PHONY: install-html
 install-html:
-ifneq ($(wildcard apidoc/html/search/*),)
+ifneq ($(wildcard doc/html/search/*),)
 	@echo "installing API documentation to $(DESTDIR)$(htmldir)"
 	install -d $(DESTDIR)$(htmldir)/search
-	$(INSTALL_DATA) apidoc/html/search/* $(DESTDIR)$(htmldir)/search/
-	$(INSTALL_DATA) apidoc/html/*.* $(DESTDIR)$(htmldir)/
-	@echo "installing images to $(DESTDIR)$(htmldir)/resources"
-	install -d $(DESTDIR)$(htmldir)/resources
-	$(INSTALL_DATA) resources/SuperNOVAS-systems.png $(DESTDIR)$(htmldir)/resources/
+	$(INSTALL_DATA) doc/html/search/* $(DESTDIR)$(htmldir)/search/
+	$(INSTALL_DATA) doc/html/*.* $(DESTDIR)$(htmldir)/
 	@echo "installing Doxygen tag file to $(DESTDIR)$(docdir)"
 	install -d $(DESTDIR)$(docdir)
-	$(INSTALL_DATA) apidoc/supernovas.tag $(DESTDIR)$(docdir)/supernovas.tag
+	$(INSTALL_DATA) doc/supernovas.tag $(DESTDIR)$(docdir)/supernovas.tag
 else
-	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
+	@echo "WARNING! Skipping HTML docs install: needs doxygen and 'local-dox'"
 endif
 
 .PHONY: install-examples
