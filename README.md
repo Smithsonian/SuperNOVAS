@@ -1256,7 +1256,7 @@ Many of the (Super)NOVAS functions take an accuracy argument, which determines t
 calculated. The argument can have one of two values, which correspond to typical precisions around:
 
  | `enum novas_accuracy` value  | Typical precision                |
- |:---------------------------- |:-------------------------------- |
+ | ---------------------------- |:-------------------------------- |
  | `NOVAS_REDUCED_ACCURACY`     | ~ 1 milli-arcsecond (mas)        |
  | `NOVAS_FULL_ACCURACY`        | ~ 1 micro-arcsecond (&mu;as) |
 
@@ -1579,7 +1579,7 @@ You can enable or disable debugging output to `stderr` with `novas_debug(enum no
 is one of the defined constants from `novas.h`:
 
  | `novas_debug_mode` value   | Description                                        |
- |:-------------------------- |:-------------------------------------------------- |
+ | -------------------------- |:-------------------------------------------------- |
  | `NOVAS_DEBUG_OFF`          | No debugging output (_default_)                    |
  | `NOVAS_DEBUG_ON`           | Prints error messages and traces to `stderr`       |
  | `NOVAS_DEBUG_EXTRA`        | Same as above but with stricter error checking     |

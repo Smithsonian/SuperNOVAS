@@ -1,8 +1,16 @@
-CC ?= gcc
-CPPFLAGS += -I../include
-CFLAGS ?= -O2 -Wall
+# Part of SuperNOVAS
+#
+# Generates headless README.md and HTML documentation 
+#
+# Author: Attila Kovacs
+
+# Use the definitions project definitions
+include ../config.mk
 
 BENCHMARKS = benchmark-nutation benchmark-place
+
+CPPFLAGS += -I../include
+LDFLAGS += -L$(LIB) -lsupernovas
 
 .PHONY: run
 run: all
@@ -11,12 +19,8 @@ run: all
 .PHONY: all
 all: $(BENCHMARKS)
 
-benchmark-%: benchmark-%.c
-	$(CC) -o $@ $^ $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -L../lib -lsupernovas -lm
-
 .PHONY: clean
 clean:
-	@rm -f *.o
 
 .PHONY: distclean
 distclean: clean

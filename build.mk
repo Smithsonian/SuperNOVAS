@@ -32,13 +32,13 @@ $(OBJ) $(LIB) $(BIN) apidoc:
 # Remove intermediate files locally
 .PHONY: clean-local
 clean-local:
-	rm -rf obj
+	@rm -rf obj
 
 # Remove all locally built files, effectively restoring the repo to its 
 # pristine state
 .PHONY: distclean-local
 distclean-local: clean-local
-	rm -rf bin lib apidoc infer-out
+	@rm -rf bin lib infer-out
 
 # Remove intermediate files (general)
 .PHONY: clean

@@ -110,7 +110,12 @@ test: data/cio_ra.bin
 
 .PHONY: benchmark
 benchmark: shared
-	$(MAKE) $(LIB_PATH_VAR)=$(shell pwd)/$(LIB) -C benchmark
+	$(MAKE) -C benchmark
+
+
+.PHONY: examples
+examples: shared
+	$(MAKE) -C examples
 
 # Perform checks (test + analyze)
 .PHONY: check
@@ -124,20 +129,24 @@ coverage:
 # Remove intermediates
 .PHONY: clean
 clean:
-	rm -f $(OBJECTS) Doxyfile.local $(BIN)/cio_file gmon.out
-	$(MAKE) -C test clean
-	$(MAKE) -C benchmark clean
-	$(MAKE) -C doc clean
+	@rm -f $(OBJECTS) Doxyfile.local $(BIN)/cio_file gmon.out
+	@$(MAKE) -s -C test clean
+	@$(MAKE) -s -C benchmark clean
+	@$(MAKE) -s -C examples clean
+	@$(MAKE) -s -C doc clean
 
 # Remove all generated files
 .PHONY: distclean
 distclean: clean
-	rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a \
+	@rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a \
       $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.bin
-	rm -f doc/Doxyfile.local doc/README.md
-	rm -rf build */build 
-	$(MAKE) -C benchmark distclean
-	$(MAKE) -C doc distclean
+	@rm -f doc/Doxyfile.local doc/README.md
+	@rm -rf build */build 
+	@$(MAKE) -s -C test distclean
+	@$(MAKE) -s -C benchmark distclean
+	@$(MAKE) -s -C examples distclean
+	@$(MAKE) -s -C doc distclean
+
 
 .PHONY:
 check-cio-locator:
@@ -222,7 +231,6 @@ data/cio_ra.bin: data/CIO_RA.TXT bin/cio_file
 .INTERMEDIATE: bin/cio_file
 bin/cio_file: $(OBJ)/cio_file.o | bin
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(LDFLAGS)
-
 
 
 # Standard install commands

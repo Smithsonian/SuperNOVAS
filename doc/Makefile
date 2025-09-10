@@ -2,7 +2,7 @@
 #
 # Generates headless README.md and HTML documentation 
 #
-# Author
+# Author: Attila Kovacs
 
 # Check if there is a doxygen we can run
 ifndef DOXYGEN
