@@ -26,7 +26,7 @@ on:
       - 'Makefile'
       - '*.md'
       - '.github/workflows/dox.yml'
-jobs:   
+jobs:
 
   apidocs:
     name: Generate API documentation
@@ -38,31 +38,31 @@ jobs:
 
     - name: install doxygen
       run: sudo apt-get install doxygen
-   
+
     - uses: actions/checkout@v5
 
     - name: Generate docs
       run: make dox
- 
+
   site-update:
     name: Update github pages
     needs: apidocs
     if: github.repository_owner == 'Smithsonian' && (github.event_name == 'release' || github.event.pull_request.merged || contains(github.event.head_commit.message, 'site update'))
- 
+
     runs-on: ubuntu-latest
     steps:
-    
+
     - name: Checkout source
       uses: actions/checkout@v5
-        
+
     - name: Generate headless README
       run: make -C doc README.md
-        
+
     - uses: mattnotmitt/doxygen-action@edge
       with:
         working-directory: 'doc/'
         additional-packages: font-roboto
-       
+
     - name: Checkout gh-pages
       uses: actions/checkout@v5
       with:
@@ -70,23 +70,23 @@ jobs:
         path: site
 
     - name: Assert site/doc/
-      run: mkdir -p site/doc 
+      run: mkdir -p site/doc
 
     - name: Copy doc/ markdowns
       run: cp doc/*.md site/doc/
-        
+
     - name: Copy CHANGELOG
-      run: cp CHANGELOG.md site/doc/
-      
+      run: cp -a CHANGELOG.md site/doc/
+
     - name: Copy API documentation
       run: cp -a doc/html site/doc/
-        
+
     - name: Assert site/resources/
-      run: mkdir -p site/resources 
-        
+      run: mkdir -p site/resources
+
     - name: Copy Figures
       run: cp -a resources/*.png resources/*.svg site/resources/
-        
+
     - name: Push to pages
       run: |
         cd site
@@ -94,18 +94,18 @@ jobs:
         git config --global user.name "github-actions"
         git add -A
         git commit -m "[automated site update]" && git push || true
-        
-        
+
+
   changelog-update:
     name: Update CHANGELOG on github pages
     if: github.repository_owner == 'Smithsonian' && (github.event.pull_request.merged || contains(github.event.head_commit.message, 'changelog update'))
-   
+
     runs-on: ubuntu-latest
     steps:
-    
+
     - name: Checkout source
       uses: actions/checkout@v5
-       
+
     - name: Checkout gh-pages
       uses: actions/checkout@v5
       with:
@@ -113,11 +113,11 @@ jobs:
         path: site
 
     - name: Assert site/doc/
-      run: mkdir -p site/doc 
-        
+      run: mkdir -p site/doc
+
     - name: Copy CHANGELOG
       run: cp CHANGELOG.md site/doc/
-        
+
     - name: Push to pages
       run: |
         cd site
@@ -125,6 +125,3 @@ jobs:
         git config --global user.name "github-actions"
         git add -A
         git commit -m "[automated site update]" && git push || true
-    
- 
-        
