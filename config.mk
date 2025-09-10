@@ -231,19 +231,19 @@ endif
 ifeq ($(AUTO_DETECT_LIBS),1)
   ifndef CALCEPH_SUPPORT
     ifneq ($(shell ldconfig -p | grep libcalceph), )
-      $(info INFO: CALCEPH support is enabled automatically.)
+      #$(info INFO: CALCEPH support is enabled automatically.)
       CALCEPH_SUPPORT = 1
     else
-      $(info INFO: optional CALCEPH support is not enabled.)
+      #$(info INFO: optional CALCEPH support is not enabled.)
       CALCEPH_SUPPORT = 0
     endif
   endif
   ifndef CSPICE_SUPPORT
     ifneq ($(shell ldconfig -p | grep libcspice), )
-      $(info INFO: CSPICE support is enabled automatically.)
+      #$(info INFO: CSPICE support is enabled automatically.)
       CSPICE_SUPPORT = 1
     else
-      $(info INFO: optional CSPICE support is not enabled.)
+      #$(info INFO: optional CSPICE support is not enabled.)
       CSPICE_SUPPORT = 0
     endif
   endif

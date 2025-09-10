@@ -89,11 +89,11 @@ distro: $(SHARED_TARGETS) $(DOC_TARGETS)
 
 # Shared libraries (versioned and unversioned)
 .PHONY: shared
-shared: check-cio-locator $(SHARED_TARGETS)
+shared: summary check-cio-locator $(SHARED_TARGETS)
 
 # Legacy static libraries (locally built)
 .PHONY: static
-static: check-cio-locator $(LIB)/libnovas.a solsys
+static: summary check-cio-locator $(LIB)/libnovas.a solsys
 
 # solarsystem() call handler objects
 .PHONY: solsys
@@ -320,6 +320,25 @@ ps:
 .PHONY: pdf
 pdf:
 
+# Build configuration summary
+.PHONY: summary
+summary:
+	@echo
+	@echo "SuperNOVAS build configuration:"
+	@echo
+	@echo "    CALCEPH_SUPPORT      = $(CALCEPH_SUPPORT)"
+	@echo "    CSPICE_SUPPORT       = $(CSPICE_SUPPORT)"
+	@echo "    BUILTIN_SOLSYS1      = $(BUILTIN_SOLSYS1)"
+	@echo "    BUILTIN_SOLSYS2      = $(BUILTIN_SOLSYS2)"
+	@echo "    BUILTIN_SOLSYS3      = $(BUILTIN_SOLSYS3)"
+	@echo "    BUILTIN_SOLSYS_EPHEM = $(BUILTIN_SOLSYS_EPHEM)"
+	@echo "    DEFAULT_SOLSYS       = $(DEFAULT_SOLSYS)"
+	@echo "    DEFAULT_READEPH      = $(DEFAULT_READEPH)"
+	@echo "    CIO_LOCATOR_FILE     = $(CIO_LOCATOR_FILE)"
+	@echo 
+	@echo "    CFLAGS = $(CFLAGS)"
+	@echo "    LDFLAGS = $(LDFLAGS)"
+	@echo
 
 # Built-in help screen for `make help`
 .PHONY: help

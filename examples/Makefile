@@ -12,12 +12,12 @@ EXAMPLES = example-star example-high-z example-orbital example-time example-rise
 CPPFLAGS += -I../include
 LDFLAGS += -L$(LIB) -lsupernovas
 
-ifeq ($(USE_CALCEPH),1)
+ifeq ($(CALCEPH_SUPPORT),1)
   EXAMPLES += example-calceph
   LDFLAGS += -lsolsys-calceph -lcalceph
 endif
 
-ifeq ($(USE_CSPICE),1)
+ifeq ($(CSPICE_SUPPORT),1)
   EXAMPLES += example-cspice
   LDFLAGS += -lsolsys-cspice -lcspice
 endif
