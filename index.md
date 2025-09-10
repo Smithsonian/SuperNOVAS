@@ -4,7 +4,10 @@ excerpt: SuperNOVAS is a light-weight, high-precision astrometry C/C++ library. 
 
 <img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"><br clear="all">
 
-<img src="https://img.shields.io/github/v/release/Smithsonian/SuperNOVAS?label=Github" alt="GitHub release version" align="left">
+<img src="https://img.shields.io/github/v/release/Smithsonian/SuperNOVAS?label=Github" alt="GitHub release version" align="left" hspace="1">
+<img src="https://img.shields.io/fedora/v/supernovas" alt="Fedora package version" align="left" hspace="1">
+<img src="https://img.shields.io/debian/v/supernovas" alt="Debian package version" align="left" hspace="1">
+<img src="https://img.shields.io/ubuntu/v/supernovas" alt="Ubuntu package version" align="left" hspace="1">
 <br clear="all">
 
 __SuperNOVAS__ is a C/C++ astronomy software library, providing high-precision astrometry such as one might need for 
@@ -45,10 +48,6 @@ __Documentation__
 
 __Linux Packages__
 
-<img src="https://img.shields.io/fedora/v/supernovas" alt="Fedora package version" align="left">
-<img src="https://img.shields.io/debian/v/supernovas" alt="Debian package version" align="left">
-<img src="https://img.shields.io/ubuntu/v/supernovas" alt="Ubuntu package version" align="left">
-<br clear="all">
 
 SuperNOVAS is also available in packaged for for both RPM and Debian-based Linux distros. It has the following package
 structure, which allows non-bloated installations of just the parts that are needed for the particular use case(s):
