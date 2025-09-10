@@ -817,11 +817,11 @@ Notes on precision</h2>
 <p>Many of the (Super)NOVAS functions take an accuracy argument, which determines to what precision quantities are calculated. The argument can have one of two values, which correspond to typical precisions around:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadLeft"><code>enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a></code> value   </th><th class="markdownTableHeadLeft">Typical precision    </th></tr>
+<th class="markdownTableHeadNone"><code>enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a></code> value   </th><th class="markdownTableHeadLeft">Typical precision    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>NOVAS_REDUCED_ACCURACY</code>   </td><td class="markdownTableBodyLeft">~ 1 milli-arcsecond (mas)    </td></tr>
+<td class="markdownTableBodyNone"><code>NOVAS_REDUCED_ACCURACY</code>   </td><td class="markdownTableBodyLeft">~ 1 milli-arcsecond (mas)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft"><code>NOVAS_FULL_ACCURACY</code>   </td><td class="markdownTableBodyLeft">~ 1 micro-arcsecond (&mu;as)   </td></tr>
+<td class="markdownTableBodyNone"><code>NOVAS_FULL_ACCURACY</code>   </td><td class="markdownTableBodyLeft">~ 1 micro-arcsecond (&mu;as)   </td></tr>
 </table>
 <p>Note, that some functions will not support full accuracy calculations, unless you have provided a high-precision ephemeris provider for the major planets (and any Solar-system bodies of interest), which does not come with <b>SuperNOVAS</b> out of the box. In the absence of a suitable high-precision ephemeris provider, some functions might return an error if called with <code>NOVAS_FULL_ACCURACY</code>.</p>
 <h3><a class="anchor" id="autotoc_md90"></a>
@@ -1006,13 +1006,13 @@ Runtime debug support</h2>
 <p>You can enable or disable debugging output to <code>stderr</code> with <code><a class="el" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3" title="==========================================================================">novas_debug(enum novas_debug_mode)</a></code>, where the argument is one of the defined constants from <code><a class="el" href="novas_8h.html">novas.h</a></code>:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadLeft"><code><a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3ba">novas_debug_mode</a></code> value   </th><th class="markdownTableHeadLeft">Description    </th></tr>
+<th class="markdownTableHeadNone"><code><a class="el" href="novas_8h.html#a9d8d2a1f5c06b488e4c817bc9877e3ba">novas_debug_mode</a></code> value   </th><th class="markdownTableHeadLeft">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>NOVAS_DEBUG_OFF</code>   </td><td class="markdownTableBodyLeft">No debugging output (<em>default</em>)    </td></tr>
+<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_OFF</code>   </td><td class="markdownTableBodyLeft">No debugging output (<em>default</em>)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft"><code>NOVAS_DEBUG_ON</code>   </td><td class="markdownTableBodyLeft">Prints error messages and traces to <code>stderr</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_ON</code>   </td><td class="markdownTableBodyLeft">Prints error messages and traces to <code>stderr</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>NOVAS_DEBUG_EXTRA</code>   </td><td class="markdownTableBodyLeft">Same as above but with stricter error checking   </td></tr>
+<td class="markdownTableBodyNone"><code>NOVAS_DEBUG_EXTRA</code>   </td><td class="markdownTableBodyLeft">Same as above but with stricter error checking   </td></tr>
 </table>
 <p>The main difference between <code>NOVAS_DEBUG_ON</code> and <code>NOVAS_DEBUG_EXTRA</code> is that the latter will treat minor issues as errors also, while the former may ignore them. For example, <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> will return normally by default if it cannot calculate gravitational bending around massive planets in full accuracy mode. It is unlikely that this omission would significantly alter the result in most cases, except for some very specific ones when observing in a direction close to a major planet. Thus, with <code>NOVAS_DEBUG_ON</code>, <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> go about as usual even if the Jupiter's position is not known. However, <code>NOVAS_DEBUG_EXTRA</code> will not give it a free pass, and will make <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> return an error (and print the trace) if it cannot properly account for gravitational bending around the major planets as it is expected to.</p>
 <p>When debug mode is enabled, any error condition (such as NULL pointer arguments, or invalid input values etc.) will be reported to the standard error, complete with call tracing within the <b>SuperNOVAS</b> library, s.t. users can have a better idea of what exactly did not go to plan (and where). The debug messages can be disabled by passing <code>NOVAS_DEBUG_OFF</code> (0) as the argument to the same call. Here is an example error trace when your application calls <code><a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a></code> with <code>NOVAS_FULL_ACCURACY</code> while <code>solsys3</code> provides Earth and Sun positions only and when debug mode is <code>NOVAS_DEBUG_EXTRA</code> (otherwise we'll ignore that we skipped the almost always negligible deflection due to planets):</p>
