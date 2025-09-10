@@ -1,19 +1,24 @@
-<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
+<img src="CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"/>
 <br clear="all">
-# SuperNOVAS 
 
-[![DOI](resources/748170057.svg)](https://doi.org/10.5281/zenodo.14584983)
+# User's guide
+
+
+<a href="https://doi.org/10.5281/zenodo.14584983">
+  <img src="748170057.svg" alt="Zenodo DOI badge" align="left"/>
+</a>
+<br clear="all">
 
 The NOVAS C astrometry library, made better.
 
- - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)
+ - [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)
  - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory, a precise planetarium program, or for
-analyzing astronomical datasets. It is a fork of the Naval Observatory Vector Astrometry Software 
-([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, providing bug fixes, tons of extra features, 
-while making it easier (and safer) to use also.
+analyzing astronomical datasets. It started as a fork of the Naval Observatory Vector Astrometry Software 
+([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, but since then it has grown into its own, 
+providing bug fixes, tons of new features, and a much improved API compared to the original NOVAS.
 
 __SuperNOVAS__ is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations 
 than [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its 
@@ -54,7 +59,7 @@ __SuperNOVAS__ is a fork of the The Naval Observatory Vector Astrometry Software
 The primary goal of __SuperNOVAS__ is to improve on the original NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues).
- - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
+ - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html).
  - [Faster calculations](#benchmarks).
  - [New features](#added-functionality).
  - [Refining the API](#api-changes) to promote best programming practices.
@@ -68,9 +73,9 @@ to change existing (functional) code you may have written for NOVAS C.
 
 __SuperNOVAS__ is really quite easy to use. Its new API is just as simple and intuitive as that of __astropy__ (or so 
 we strive for it to be), and it is similarly well documented also (see the 
-[API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)). You can typically achieve the 
+[API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)). You can typically achieve the 
 same results with 
-[similar lines of code](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/supernovas_vs_astropy.md) 
+[similar lines of code](https://smithsonian.github.io/SuperNOVAS/doc/SuperNOVAS_vs_astropy.html) 
 with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
 the lack of `try / except` style constructs in C).
  
@@ -82,7 +87,7 @@ __SuperNOVAS__ is maintained by [Attila Kovács](https://github.com/attipaci) at
 repository on GitHub.
 
 Outside contributions are very welcome. See
-[how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) on how you can make __SuperNOVAS__ 
+[how you can contribute](https://smithsonian.github.io/SuperNOVAS/doc/CONTRIBUTING.html) on how you can make __SuperNOVAS__ 
 even better.
 
 ### Related links
@@ -216,12 +221,6 @@ the necessary variables in the shell prior to invoking `make`. For example:
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
    quotes in `config.mk`, or unescaped if defining the `THREAD_LOCAL` shell variable prior to invoking `make`.)
 
- - If you insist on using a CIO locator file for `cio_location()`, you can specify the path to the CIO locator file 
-   (e.g. `/usr/local/share/supernovas/CIO_RA.TXT`) on your system e.g. by setting the `CIO_LOCATOR_FILE` shell 
-   variable prior to calling `make`. (The CIO locator file is not necessary for the functioning of the library, unless 
-   you specifically require CIO positions relative to GCRS -- which is not something that anyone should really need
-   or want, in general).
-
 Additionally, you may set number of environment variables to futher customize the build, such as:
 
  - `CC`: The C compiler to use (default: `gcc`).
@@ -253,7 +252,7 @@ Now you are ready to build the library:
   $ make
 ```
 
-will compile the shared (e.g. `lib/libsupernovas.so`) libraries, and compile the API documentation (into `apidoc/`) 
+will compile the shared (e.g. `lib/libsupernovas.so`) libraries, and compile the API documentation (into `doc/`) 
 using `doxygen` (if available). Alternatively, you can build select components of the above with the `make` targets 
 `shared`, and `local-dox` respectively. And, if unsure, you can always call `make help` to see what build targets are 
 available.
@@ -291,10 +290,10 @@ NOTES:
 <a name="cmake-build"></a>
 ### Build SuperNOVAS using CMake 
 
-As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (thanks to Kiran Shila). CMake allows for 
-greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support all 
-of the build options of the GNU `Makefile`, such as automatic CALCEPH/CSPICE integration on Linux, supporting legacy 
-NOVAS C style builds, and code coverage tracking. 
+As of v1.5, __SuperNOVAS__ can be built using [CMake](https://cmake.org/) (many thanks to Kiran Shila). CMake allows 
+for greater portability than the regular GNU `Makefile`. Note, however, that the CMake configuration does not support 
+all of the build options of the GNU `Makefile`, such as automatic CALCEPH/CSPICE integration on Linux, supporting 
+legacy NOVAS C style builds, and code coverage tracking. 
 
 The basic build recipe for CMake is:
 
@@ -331,8 +330,8 @@ This is ideal for those who want to have full control of the compiler flags used
 `Release` or `Debug` will append a particular set of appropriate compiler options which are suited for the given 
 build type.
 
-After a successful build, you can install the `Runtime` (libraries), `Development` (headers, CMake config, and 
-`pkg-config`), and `Data` (CIO locator data) components, e.g. under `/usr/local`, as:
+After a successful build, you can install the `Runtime` (libraries), and `Development` (headers, CMake config, and 
+`pkg-config`) components, e.g. under `/usr/local`, as:
 
 ```bash
   $ cmake --build build
@@ -524,8 +523,9 @@ implementation.
 
 __SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
-NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent example usage 
-showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
+NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent legacy example 
+showcasing the original NOVAS method in 
+[`NOVAS-legacy.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/doc/NOVAS-legacy.md).
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -539,6 +539,7 @@ galactic molecular cloud, or a distant quasar.
  - [Set up the observing frame](#observing-frame)
  - [Calculate an apparent place on sky](#apparent-place)
  - [Calculate azimuth and elevation angles at the observing location](#horizontal-place)
+ - [Going in reverse...](#reverse-place)
  - [Calculate rise, set, and transit times](#rise-set-transit)
  - [Coordinate and velocity transforms (change of coordinate system)](#transforms)
 
@@ -546,44 +547,74 @@ galactic molecular cloud, or a distant quasar.
 #### Specify the object of interest
 
 First, you must provide the coordinates (which may include proper motion and parallax). Let's assume we pick a star 
-for which we have B1950 (i.e. FK4) coordinates (including motion):
+for which we have B1950 (i.e. FK4) coordinates. We begin with the assigned name and the R.A. / Dec coordinates.
 
 ```c
  cat_entry star; // Structure to contain information on sidereal source 
 
- // Let's assume we have B1950 (FK4) coordinates...
- // 16h26m20.1918s, -26d19m23.138s (B1950), proper motion -12.11, -23.30 mas/year, 
- // parallax 5.89 mas, radial velocity -3.4 km/s.
- make_cat_entry("Antares", "FK4", 1, 16.43894213, -26.323094, -12.11, -23.30, 5.89, -3.4, &star);
+ // Let's assume we have B1950 (FK4) coordinates of
+ // 16h26m20.1918s, -26d19m23.138s
+ novas_init_cat_entry(&star, "Antares", 16.43894213, -26.323094);
 ```
 
-Or, if you have coordinates as strings in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
-`novas_str_degrees()` to convert them to hours/degrees for `make_cat_entry()`, with a fair bit of flexibility on the 
-format of representation, e.g.:
+If you have coordinates as strings in decimal or HMS / DMS format, you might use `novas_str_hours()` and/or 
+`novas_str_degrees()` to convert them to hours/degrees for `novas_init_cat_entry()`, with a fair bit of flexibility on 
+the particulars of the representation, e.g.:
 
 ```c
- make_cat_entry("Antares", "FK4", 1, 
+ novas_init_entry(&star, "Antares",
    novas_str_hours("16h 26m 20.1918s"),   // e.g. using h,m,s and spaces as separators 
-   novas_str_degrees("-26:19:23.138"),    // e.g. using colons to separate components
+   novas_str_degrees("-26:19:23.138"));   // e.g. using colons to separate components
+```
+
+Next, if it's a star or some other source within our own Galaxy, you'll want to specify its proper motion (in the same
+reference system as the above coordinates), so we can calculate its position for the epoch of observation.
+
+```c
+ // Now, let's add proper motion of 12.11, -23.30 mas/year.
+ novas_set_proper_motion(&star, -12.11, -23.30);
+``` 
+
+For Galactic sources you will also want to set the parallax using `novas_set_parallax()` or equivalently the distance 
+(in parsecs) using `novas_set_distance()`, e.g.:
+ 
+```c
+ // Add parallax of 5.89 mas
+ novas_set_parallax(&star, 5.89);
+```
+
+Finally, for spectroscopic applications you will also want to set the radial velocity. You can use 
+`novas_set_ssb_vel()` if you have standard radial velocities defined with respect to the Solar System Barycenter; or
+`novas_set_lsr_vel()` if the velocity is relative to the Local Standard of Rest (LSR); or else `novas_set_redshift()`
+if you have a redshift measure (as is typical for distant galaxies and quasars). E.g.:
+
+```c
+ // Add a radial velocity of -3.4 km/s (relative to SSB)
+ novas_set_ssb_vel(&star, -3.4);
+```
+
+Alternatively, if you prefer, you may use the original NOVAS C `make_cat_entry()` to set the astrometric parameters 
+above all at once, e.g. as:
+
+```c
+  make_cat_entry("Antares", "FK4", 1, 
+   novas_str_hours("16h 26m 20.1918s"), 
+   novas_str_degrees("-26:19:23.138"),
    -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
-And, if you have LSR-based radial velocities instead of Solar-system Barycentric radial velocities, you may convert 
-these to SSB-based velocities for use in `make_cat_entry()` with `novas_lsr_to_ssb_vel()`.
-
-Next, we create a generic celestial `object` from the catalog source. (The `object` structure handles various 
-Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any 
-epoch / catalog system, the `object` structure shall contain ICRS coordinates always:
+Next, we wrap that catalog source into a generic celestial `object` structure. (An `object` handles various 
+Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any epoch 
+/ catalog system, the `object` structure shall define ICRS coordinates always (no exceptions):
 
 ```c
- object source;   // Common structure for a sidereal or an Solar-system source
+ object source;   // Encapsulates a sidereal or a Solar-system source
   
- // Use the B1950 coodinates for generic source data structure in ICRS...
+ // Use the B1950 astrometric parameters to set up the observables in ICRS...
  make_cat_object_sys(&star, "B1950", &source);
 ```
 
-Alternatively, for high-_z_ sources you might use `make_redshifted_cat_entry()` or `make_redshifted_object_sys()` 
-e.g.:
+Alternatively, for high-_z_ sources you might simply use the 1-step `make_redshifted_object_sys()` e.g.:
 
 ```c
  object quasar;
@@ -618,7 +649,7 @@ here, such as:
 
 Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the 
 geocenter, or at the Solar-system barycenter. And, if you intend to use a refraction model that uses local weather 
-parameters you may specify there, including humidity also, _after_ the call to `make_observer_on_surface()`, e.g.:
+parameters you may specify humidity also, _after_ the call to `make_observer_on_surface()`, e.g.:
 
 ```c
   ...
@@ -662,7 +693,7 @@ or, for the best precision we may do the same with an integer / fractional split
  novas_set_split_time(NOVAS_TAI, ijd_tai, fjd_tai, leap_seconds, dut1, &obs_time);
 ```
 
-or, you can use a string date, such as an ISO timestamp:
+You can use string dates, such as an ISO timestamp:
 
 ```c
  novas_set_time(NOVAS_UTC, novas_date("2025-01-26T22:05:14.234+0200"), 37, 0.042, &obs_time);
@@ -699,7 +730,7 @@ derivative frames for different observer locations, if need be, via `novas_chang
 
 Note that without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision only. To create `NOVAS_FULL_ACCURACY` frames, with 
-sub-&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
+&mu;as precision, you will you will need a high-precision ephemeris provider for the major planets (beyond the 
 low-precision Earth and Sun calculator included by default), both for precise Earth-based observer locations and to 
 account for gravitational deflections around the Sun and massive planets. Without these, &mu;as accuracy cannot be 
 ensured, in general. Therefore, attempting to construct high-accuracy frames without an appropriate high-precision 
@@ -750,6 +781,42 @@ coordinates at the observing location, using the `novas_standard_refraction()` f
 refraction correction. We could have used `novas_optical_refraction()` instead to use the weather data embedded in the 
 frame's `observer` structure, or some user-defined refraction model, or else `NULL` to calculate unrefracted elevation 
 angles.
+
+<a name="reverse-place"></a>
+#### Going in reverse...
+
+Of course, __SuperNOVAS__ allows you to go in reverse, for example from an observed Az/El position all the way to
+proper ICRS coordinates, e.g.:
+
+```c
+  double az = ..., el = ...; // [deg] measured azimuth and elevation angles
+  double ra, dec;            // [h, deg] R.A. and declination to populate
+  double pos[3];             // [AU] xyz position vector
+  
+  // Calculate the observer's apparent coordinates from the observed Az/El values,
+  // lets say in CIRS (but it could also be ICRS, for all that matters). 
+  novas_hor_to_app(&obs_frame, az, el, novas_standard_refraction, NOVAS_CIRS, &ra, &dec);
+  
+  // Convert apparent to ICRS geometric positions (e.g. at 10 parsec distance)
+  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 10.0 * NOVAS_PARSEC / NOVAS_AU, pos);
+  
+  // Convert ICRS xyz position to R.A. and Dec
+  vector2radec(pos, &ra, &dec);
+```
+
+Viola! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 
+simply add a transformation before `vector2radec()` above, e.g. as:
+
+```c
+  ...
+  
+  // Transform position from ICRS to B1950
+  gcrs_to_mod(NOVAS_JD_B1950, pos, pos);
+
+  // Convert B1950 xyz position to R.A. and Dec
+  vector2radec(pos, &ra, &dec);
+```
+
 
 <a name="rise-set-transit"></a>
 #### Calculate rise, set, and transit times
@@ -1610,8 +1677,7 @@ one minute.
 ### New functionality highlights
 
  Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top of the existing NOVAS C API. See 
- `CHANGELOG.md` for more details.
- 
+ [`CHANGELOG.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/CHANGELOG.md) for more details.
  
 #### New in v1.0
     
@@ -1773,7 +1839,7 @@ one minute.
    data modifications.
 
  - Many __SuperNOVAS__ functions allow `NULL` arguments, both for optional input values as well as outputs that are 
-   not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/) for specifics).
+   not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/) for specifics).
    This eliminates the need to declare dummy variables in your application code.
   
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as
