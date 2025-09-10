@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [1.5.0-rc3] - 2025-09-11
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -97,7 +97,6 @@ Upcoming feature release, expected around 1 November 2025.
    
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
- 
  
  - Various API documentation edits.
 
