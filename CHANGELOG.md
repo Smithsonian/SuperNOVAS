@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc3] - 2025-09-10
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -92,8 +92,12 @@ Upcoming feature release, expected around 1 November 2025.
    and logo) with doxygen, while not rendering the commands in Github (or other viewers) either. The change allows
    using the README as is, without editing, as input to Doxygen. 
    
+ - #241: Overhauled document generation. Non-GitHub markdown files are now in `doc/`, which has it's own `Makefile`
+   and CMake sub-configuration.
+   
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
+ 
  
  - Various API documentation edits.
 

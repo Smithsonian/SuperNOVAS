@@ -311,6 +311,15 @@ if(ENABLE_SOLSYS1)
    )
 endif()
 
+# Install CHANGELOG
+install(FILES CHANGELOG.md DESTINATION ${CMAKE_INSTALL_DOCDIR})
+
+# Install CONTRIBUTING.md (Development)
+install(FILES CONTRIBUTING.md 
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+    COMPONENT Development     
+)
+
 # For examples/ dir, list just the directory, not the individual files installed.
 install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/examples/*\")")
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples

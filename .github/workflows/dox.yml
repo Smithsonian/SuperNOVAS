@@ -60,10 +60,11 @@ jobs:
       uses: actions/checkout@v5
         
     - name: Generate headless README
-      run: make gendocs
+      run: make -C doc README.md
         
-    - uses: mattnotmitt/doxygen-action@v1.9.8
+    - uses: mattnotmitt/doxygen-action@edge
       with:
+        working-directory: 'doc/'
         additional-packages: font-roboto
        
     - name: Checkout gh-pages
@@ -76,8 +77,7 @@ jobs:
       run: mkdir -p site/doc 
 
     - name: Copy doc/ markdowns
-      run: |
-       	cp doc/*.md > site/doc/
+      run: cp doc/*.md site/doc/
         
     - name: Copy CHANGELOG
       run: cp CHANGELOG.md site/doc/

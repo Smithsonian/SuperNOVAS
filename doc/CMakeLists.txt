@@ -19,12 +19,9 @@ add_custom_target(headless_readme
 
 add_dependencies(supernovas headless_readme)
 
-# Install CHANGELOG
-install(FILES CHANGELOG.md DESTINATION ${CMAKE_INSTALL_DOCDIR})
-
 # Install Markdown documentation (Development)
 file(GLOB MD_FILES doc/*.md)
-install(FILES ${MD_FILES} CONTRIBUTING.md
+install(FILES ${MD_FILES}
     COMPONENT Development
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
