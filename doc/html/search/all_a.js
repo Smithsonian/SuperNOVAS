@@ -1,7 +1,7 @@
 var searchData=
 [
   ['d_0',['D',['../structnovas__delaunay__args.html#ad8657a5ec76e12f3066fb4b4eb75ace9',1,'novas_delaunay_args']]],
-  ['d_5flight_1',['d_light',['../novas_8h.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;util.c'],['../util_8c.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;util.c']]],
+  ['d_5flight_1',['d_light',['../util_8c.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;util.c'],['../novas_8h.html#ad799864f637c483fb49491bde5a93e25',1,'d_light(const double *pos_src, const double *pos_body):&#160;util.c']]],
   ['da0_2',['DA0',['../frames_8c.html#a850d4988b6e1ee4e16274b2c723f93c4',1,'frames.c']]],
   ['data_20or_20services_3',['Incorporating Solar-system ephemeris data or services',['../index.html#autotoc_md80',1,'']]],
   ['data_20service_20integration_4',['Universal ephemeris data / service integration',['../index.html#autotoc_md83',1,'']]],
@@ -13,7 +13,7 @@ var searchData=
   ['default_5fgrav_5fbodies_5ffull_5faccuracy_10',['DEFAULT_GRAV_BODIES_FULL_ACCURACY',['../novas_8h.html#a4cb74da554b236c835302480688cfaac',1,'novas.h']]],
   ['default_5fgrav_5fbodies_5freduced_5faccuracy_11',['DEFAULT_GRAV_BODIES_REDUCED_ACCURACY',['../novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de',1,'novas.h']]],
   ['deg2rad_12',['DEG2RAD',['../novas_8h.html#af7e8592d0a634bd3642e9fd508ea8022',1,'novas.h']]],
-  ['deprecated_13',['deprecated',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md43',1,'Deprecated'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md19',1,'Deprecated'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md15',1,'Deprecated'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md4',1,'Deprecated']]],
+  ['deprecated_13',['Deprecated',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md4',1,'Deprecated'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md15',1,'Deprecated'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md19',1,'Deprecated'],['../md__2github_2workspace_2CHANGELOG.html#autotoc_md43',1,'Deprecated']]],
   ['deprecated_20list_14',['Deprecated List',['../deprecated.html',1,'']]],
   ['deps0_15',['deps0',['../structnovas__frame.html#afb1bb47af5a00647759b897f72a68b58',1,'novas_frame']]],
   ['dis_16',['dis',['../structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0',1,'sky_pos']]],

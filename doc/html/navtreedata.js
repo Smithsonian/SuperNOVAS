@@ -37,9 +37,9 @@ var NAVTREE =
         [ "Build SuperNOVAS using CMake", "index.html#autotoc_md57", null ]
       ] ],
       [ "Building your application with SuperNOVAS", "index.html#autotoc_md59", [
-        [ "Using a GNU <tt>Makefile</tt>", "index.html#autotoc_md60", null ],
+        [ "Using a GNU Makefile", "index.html#autotoc_md60", null ],
         [ "Using CMake", "index.html#autotoc_md61", null ],
-        [ "Legacy linking <tt>solarsystem()</tt> and <tt>readeph()</tt> modules", "index.html#autotoc_md62", null ],
+        [ "Legacy linking solarsystem() and readeph() modules", "index.html#autotoc_md62", null ],
         [ "Legacy modules: a better way", "index.html#autotoc_md63", null ]
       ] ],
       [ "Celestial coordinate systems (old vs. new)", "index.html#autotoc_md65", null ],
@@ -62,8 +62,8 @@ var NAVTREE =
         [ "NAIF CSPICE toolkit integration", "index.html#autotoc_md82", null ],
         [ "Universal ephemeris data / service integration", "index.html#autotoc_md83", null ],
         [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md84", [
-          [ "Planets via <tt>eph_manager</tt>", "index.html#autotoc_md85", null ],
-          [ "Planets via JPL's <tt>pleph</tt> FORTRAN interface", "index.html#autotoc_md86", null ]
+          [ "Planets via eph_manager", "index.html#autotoc_md85", null ],
+          [ "Planets via JPL's pleph FORTRAN interface", "index.html#autotoc_md86", null ]
         ] ],
         [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md87", null ]
       ] ],
@@ -184,5 +184,5 @@ var NAVTREEINDEX =
 "structnovas__orbital.html#adc4cda6fcbff8922621b0a08f911957d"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';

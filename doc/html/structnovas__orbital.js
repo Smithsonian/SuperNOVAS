@@ -8,7 +8,7 @@ var structnovas__orbital =
     [ "M0", "structnovas__orbital.html#adc4cda6fcbff8922621b0a08f911957d", null ],
     [ "n", "structnovas__orbital.html#abe63e991a7bf5d666068b15c9064428d", null ],
     [ "node_period", "structnovas__orbital.html#abc96d50a65bae0b26750df2d93492fea", null ],
-    [ "omega", "structnovas__orbital.html#a98ecc32b7ac0cf654d9f883cbe5cab35", null ],
     [ "Omega", "structnovas__orbital.html#a1b5bf6735b7465aec5c931281d240737", null ],
+    [ "omega", "structnovas__orbital.html#a98ecc32b7ac0cf654d9f883cbe5cab35", null ],
     [ "system", "structnovas__orbital.html#a7ccd081fe6b1424bd644317068578775", null ]
 ];

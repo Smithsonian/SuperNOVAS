@@ -243,10 +243,10 @@ var NAVTREEINDEX3 =
 "structnovas__orbital.html#a0aefc536698706b7f8a15f23168c3486":[5,0,6,4],
 "structnovas__orbital.html#a1031d0e0a97a340abfe0a6ab9e831045":[5,0,6,0],
 "structnovas__orbital.html#a18c1c30ab34602026b03269be48d36a1":[5,0,6,1],
-"structnovas__orbital.html#a1b5bf6735b7465aec5c931281d240737":[5,0,6,9],
+"structnovas__orbital.html#a1b5bf6735b7465aec5c931281d240737":[5,0,6,8],
 "structnovas__orbital.html#a5659a38afd08966e6799fa0fb40a882a":[5,0,6,3],
 "structnovas__orbital.html#a7ccd081fe6b1424bd644317068578775":[5,0,6,10],
-"structnovas__orbital.html#a98ecc32b7ac0cf654d9f883cbe5cab35":[5,0,6,8],
+"structnovas__orbital.html#a98ecc32b7ac0cf654d9f883cbe5cab35":[5,0,6,9],
 "structnovas__orbital.html#ab17e17fb32b792781b807505e7f60c9c":[5,0,6,2],
 "structnovas__orbital.html#abc96d50a65bae0b26750df2d93492fea":[5,0,6,7],
 "structnovas__orbital.html#abe63e991a7bf5d666068b15c9064428d":[5,0,6,6]

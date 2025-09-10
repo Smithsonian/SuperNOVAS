@@ -9,7 +9,7 @@ var searchData=
   ['novas_5fc_5fau_5fper_5fday_6',['NOVAS_C_AU_PER_DAY',['../novas_8h.html#a7c474aa996c5ccc0c03b1006ea5b30e1',1,'novas.h']]],
   ['novas_5fcio_5fcache_5fsize_7',['NOVAS_CIO_CACHE_SIZE',['../novas_8h.html#ab7f2aaab5b9fe0be5d77d4cccc3745a9',1,'novas.h']]],
   ['novas_5fday_8',['NOVAS_DAY',['../novas_8h.html#a0b0c2c5ccc61c8740de2e2ac277cd836',1,'novas.h']]],
-  ['novas_5fdefault_5fwavelength_9',['novas_default_wavelength',['../refract_8c.html#a4f7dee9d4c9db4cf201af8383c72d4db',1,'NOVAS_DEFAULT_WAVELENGTH:&#160;refract.c'],['../novas_8h.html#a4f7dee9d4c9db4cf201af8383c72d4db',1,'NOVAS_DEFAULT_WAVELENGTH:&#160;novas.h']]],
+  ['novas_5fdefault_5fwavelength_9',['NOVAS_DEFAULT_WAVELENGTH',['../refract_8c.html#a4f7dee9d4c9db4cf201af8383c72d4db',1,'NOVAS_DEFAULT_WAVELENGTH:&#160;refract.c'],['../novas_8h.html#a4f7dee9d4c9db4cf201af8383c72d4db',1,'NOVAS_DEFAULT_WAVELENGTH:&#160;novas.h']]],
   ['novas_5fdegree_10',['NOVAS_DEGREE',['../novas_8h.html#a6d9698dbaf6260d7fe8a531a0e96d2a8',1,'novas.h']]],
   ['novas_5fdelaunay_5fargs_5finit_11',['NOVAS_DELAUNAY_ARGS_INIT',['../novas_8h.html#abf34092276df6f7e9ddaab92a197179b',1,'novas.h']]],
   ['novas_5fearth_5fangvel_12',['NOVAS_EARTH_ANGVEL',['../novas_8h.html#ac50f27bc66238525124427551a956ec3',1,'novas.h']]],
