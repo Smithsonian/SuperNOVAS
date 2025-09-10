@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc3] - 2025-09-11
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -30,11 +30,11 @@ Upcoming feature release, expected around 1 November 2025.
    geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the
    reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
    
- - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (by 
-   kiranshila and attipaci).
+ - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (in 
+   collaboration with kiranshila).
    
- - #222: CMake build support, e.g for Mac OS X or Windows builds also (by kiranshila), with further tweaks in #228, 
-   #229, #230, #234, 235 (by attipaci).
+ - #222: CMake build support, e.g for Mac OS X or Windows builds also, with further tweaks in #228, #229, #230, #234, 
+   235... (in collaboration with kiranshila).
 
  - #223: New functions `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged 
    (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 
@@ -85,8 +85,8 @@ Upcoming feature release, expected around 1 November 2025.
    to the location of choice, from the SuperNOVAS GitHub repo (in any location), and call `set_cio_locator_file()` 
    before using it with `cio_array()` or `cio_location()`.
    
- - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`
-   `legacy/` source code, and markdown files.
+ - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`,
+   `legacy/`, source code, and markdown files.
    
  - #238: Added doxygen commands to `README.md` inside HTML comments to exclude rendering the README header (badges
    and logo) with doxygen, while not rendering the commands in Github (or other viewers) either. The change allows
