@@ -253,6 +253,18 @@ endif
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
 OBJECTS := $(subst .c,.o,$(OBJECTS))
 
+# Default values for install locations
+# See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
+prefix ?= /usr
+exec_prefix ?= $(prefix)
+libdir ?= $(exec_prefix)/lib
+includedir ?= $(prefix)/include
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+mydatadir ?= $(datadir)/supernovas
+docdir ?= $(datarootdir)/doc/supernovas
+htmldir ?= $(docdir)/html
+
 # Search for files in the designated locations
 vpath %.h $(INCLUDE)
 vpath %.c $(SRC)

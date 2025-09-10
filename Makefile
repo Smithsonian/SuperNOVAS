@@ -12,18 +12,6 @@ include config.mk
 # Specific build targets and recipes below...
 # ===============================================================================
 
-# Default values for install locations
-# See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
-prefix ?= /usr
-exec_prefix ?= $(prefix)
-libdir ?= $(exec_prefix)/lib
-includedir ?= $(prefix)/include
-datarootdir ?= $(prefix)/share
-datadir ?= $(datarootdir)
-mydatadir ?= $(datadir)/supernovas
-docdir ?= $(datarootdir)/doc/supernovas
-htmldir ?= $(docdir)/html
-
 # The version of the shared .so libraries
 SO_VERSION := 1
 
@@ -364,6 +352,7 @@ help:
 	@echo "  analyze       Performs static code analysis with 'cppcheck'."
 	@echo "  check         Same as 'test' and then 'analyze'."
 	@echo "  coverage      Runs 'gcov' to analyze regression test coverage."
+	@echo "  summary       Provides a summary of the current build configuration."
 	@echo "  all           All of the above."
 	@echo "  install       Install components (e.g. 'make prefix=<path> install')"
 	@echo "  clean         Removes intermediate products."
