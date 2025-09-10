@@ -1,5 +1,5 @@
 # Additional CMake configuration file for building the benchmarking programs
-# of the supernovas library.
+# of the SuperNOVAS library.
 #
 # To invoke simply configure the cmake build in the supernovas directory with
 # the -DBUILD_BENCHMARK=ON option.

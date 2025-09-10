@@ -74,7 +74,7 @@ PROJECT_ICON           =
 # entered, it will be relative to the location where Doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = apidoc
+OUTPUT_DIRECTORY       =
 
 # If the CREATE_SUBDIRS tag is set to YES then Doxygen will create up to 4096
 # sub-directories (in 2 levels) under the output directory of each output format
@@ -991,10 +991,10 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = src \
-                         include \
-                         . \
-                         resources/supernovas_vs_astropy.md
+INPUT                  = ../src \
+                         ../include \
+                         .. \
+                         .
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1097,11 +1097,10 @@ RECURSIVE              = NO
 # Note that relative paths are relative to the directory from which Doxygen is
 # run.
 
-EXCLUDE                = CODE_OF_CONDUCT.md \
-                         CMakeLists.txt \
-                         RELEASE-HOWTO.md \
-                         LEGACY.md \
-                         README-orig.md
+EXCLUDE                = ../RELEASE-HOWTO.md \
+                         ../README.md \
+                         ../CODE_OF_CONDUCT.md \
+                         NOVAS-legacy.md
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -1126,7 +1125,8 @@ EXCLUDE_PATTERNS       = */test/* \
                          */examples/* \
                          */tools/* \
                          */ephem/* \
-                         */benchmark/*
+                         */benchmark/* \
+                         */CMakeLists.txt
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1160,7 +1160,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             =
+IMAGE_PATH             = resources
 
 # The INPUT_FILTER tag can be used to specify a program that Doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1390,7 +1390,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            = resources/header.html
+HTML_HEADER            = $(DOXYGEN_HTML_HEADER)
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank Doxygen will generate a standard
@@ -2543,7 +2543,7 @@ TAGFILES               =
 # tag file that is based on the input files it reads. See section "Linking to
 # external documentation" for more information about the usage of tag files.
 
-GENERATE_TAGFILE       = apidoc/supernovas.tag
+GENERATE_TAGFILE       = supernovas.tag
 
 # If the ALLEXTERNALS tag is set to YES, all external classes and namespaces
 # will be listed in the class and namespace index. If set to NO, only the

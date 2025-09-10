@@ -1,4 +1,4 @@
-# CMake configuration file for the supernovas library
+# CMake configuration file for the SuperNOVAS library
 #
 # Authors: Kiran Shila, Attila Kovacs
 #
@@ -248,33 +248,9 @@ if(BUILD_BENCHMARK)
     add_subdirectory(benchmark)
 endif()
 
-# ----------------------------------------------------------------------------
-# Generate HTML documentation (if enabled and possible)
-
+# Documentation
 if(BUILD_DOC) 
-    find_package(Doxygen)
-        set_package_properties(Doxygen PROPERTIES
-        URL "https://doxygen.nl/"
-        DESCRIPTION  "is a widely-used documentation generator tool in software development"
-        TYPE REQUIRED
-        PURPOSE "Enables HTML documentation for supernovas"
-    )
-
-    if(Doxygen_FOUND)
-        add_executable(docedit EXCLUDE_FROM_ALL src/docedit.c)
-
-        # Generate headless docs and run Doxygen on them.
-        add_custom_target(project_docs 
-            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-            COMMAND docedit . ${CMAKE_CURRENT_BINARY_DIR}
-            COMMAND Doxygen::doxygen ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile.local
-        )
-
-        add_dependencies(supernovas project_docs)
-    else()
-        message(WARNING "Doxygen not found -- Will skip generating HTML documentation")
-        set(BUILD_DOC "OFF")
-    endif()
+    add_subdirectory(doc)
 endif()
 
 # ----------------------------------------------------------------------------
@@ -335,13 +311,8 @@ if(ENABLE_SOLSYS1)
    )
 endif()
 
-install(FILES README.md LEGACY.md CHANGELOG.md CONTRIBUTING.md
-    COMPONENT Development
-    DESTINATION ${CMAKE_INSTALL_DOCDIR}
-)
-
 # For examples/ dir, list just the directory, not the individual files installed.
-install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/examples\")")
+install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/examples/*\")")
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples
    DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
    MESSAGE_NEVER
@@ -349,34 +320,12 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples
 )
 
 # For legacy/ dir, list just the directory, not the individual files installed.
-install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/supernovas/legacy\")")
+install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/legacy/*\")")
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/legacy
    DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
    MESSAGE_NEVER
    COMPONENT Development
 )
-
-if(BUILD_DOC)
-    # For html/ dir, list just the directory, not the individual files installed.
-    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/html\")")
-    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}
-        MESSAGE_NEVER
-        COMPONENT Development
-    )
-    # For resources/ dir, list just the directory, not the individual files installed.
-    install(CODE "message(STATUS \"Installing: ${CMAKE_INSTALL_DOCDIR}/html/resources\")")
-    install(DIRECTORY ${PROJECT_SOURCE_DIR}/resources
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}/html
-        MESSAGE_NEVER
-        COMPONENT Development
-    )
-    # Install Doxygen tag, which downstream docs can link to.
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/supernovas.tag
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}
-        COMPONENT Development
-    )
-endif()
 
 install(EXPORT supernovasTargets
     COMPONENT Development

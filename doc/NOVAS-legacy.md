@@ -1,8 +1,8 @@
-# Old example usage
+# Legacy example usage
 
 As of version 1.1, the SuperNOVAS library offers a new, more versatile, more intuitive, and more efficient way to 
 calculate the astrometric positions (and velocities) of celestial sources, via observing frames (see the 
-_Example Usage_ section of the main `README.md`). 
+_Example Usage_ section of the main [`README.md`](https://smithsonian.github.io/SuperNOVAS/doc/README.html)). 
 However the old approach of the NOVAS C library remain viable also. This document demonstrates calculating the 
 astrometric places of sources the old way, without using the observing frames approach that is now preferred in 
 SuperNOVAS.

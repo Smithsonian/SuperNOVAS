@@ -75,25 +75,21 @@ jobs:
     - name: Assert site/doc/
       run: mkdir -p site/doc 
 
-    - name: Edit and Copy README
+    - name: Copy doc/ markdowns
       run: |
-        echo '<img src="/SuperNOVAS/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">' > site/doc/README.md
-        echo '<br clear="all">' >> site/doc/README.md
-        echo '# SuperNOVAS' >> site/doc/README.md
-        echo '' >> site/doc/README.md
-        sed -n '/\[DOI\]/,$p' README.md > site/doc/README.md
+       	cp doc/*.md > site/doc/
         
     - name: Copy CHANGELOG
       run: cp CHANGELOG.md site/doc/
       
     - name: Copy API documentation
-      run: cp -a apidoc site/
+      run: cp -a doc/html site/doc/
         
     - name: Assert site/resources/
       run: mkdir -p site/resources 
         
     - name: Copy Figures
-      run: cp -a resources/SuperNOVAS-*.png site/resources/
+      run: cp -a resources/*.png resources/*.svg site/resources/
         
     - name: Push to pages
       run: |

@@ -1,10 +1,6 @@
-<!--! 
-\cond MD_HEADER
--->
-
 ![Build Status](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/build.yml/badge.svg)
 ![Test](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/test.yml/badge.svg)
-<a href="https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html">
+<a href="https://smithsonian.github.io/SuperNOVAS/doc/html/files.html">
  ![API documentation](https://github.com/Smithsonian/SuperNOVAS/actions/workflows/dox.yml/badge.svg)
 </a>
 <a href="https://codecov.io/gh/Smithsonian/SuperNOVAS">
@@ -13,31 +9,28 @@
 
 <picture>
   <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" media="(prefers-color-scheme: dark)"/>
-  <source srcset="resources/CfA-logo.png" alt="CfA logo" media="(prefers-color-scheme: light)"/>
+  <source srcset="rresources/CfA-logo.png" alt="CfA logo" media="(prefers-color-scheme: light)"/>
   <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"/>
 </picture>
 <br clear="all">
 
 # SuperNOVAS
- 
-<!--!
-\endcond 
 
-## User's guide
--->
-
-[![DOI](resources/748170057.svg)](https://doi.org/10.5281/zenodo.14584983)
+<a href="https://doi.org/10.5281/zenodo.14584983">
+  <img src="resources/748170057.svg" alt="Zenodo DOI badge" align="left"/>
+</a>
+<br clear="all">
 
 The NOVAS C astrometry library, made better.
 
- - [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)
+ - [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)
  - [SuperNOVAS pages](https://smithsonian.github.io/SuperNOVAS) on github.io 
 
 [SuperNOVAS](https://github.com/Smithsonian/SuperNOVAS/) is a C/C++ astronomy software library, providing 
 high-precision astrometry such as one might need for running an observatory, a precise planetarium program, or for
 analyzing astronomical datasets. It started as a fork of the Naval Observatory Vector Astrometry Software 
 ([NOVAS](https://aa.usno.navy.mil/software/novas_info)) C version 3.1, but since then it has grown into its own, 
-providing bug fixes, tons of new features, and a much improved API comapred to the original NOVAS.
+providing bug fixes, tons of new features, and a much improved API compared to the original NOVAS.
 
 __SuperNOVAS__ is easy to use and it is very fast, providing 3--5 orders of magnitude faster position calculations 
 than [astropy](https://www.astropy.org/) 7.0.0 in a single thread (see the [benchmarks](#benchmarks)), and its 
@@ -78,7 +71,7 @@ __SuperNOVAS__ is a fork of the The Naval Observatory Vector Astrometry Software
 The primary goal of __SuperNOVAS__ is to improve on the original NOVAS C library via:
 
  - Fixing [outstanding issues](#fixed-issues).
- - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html).
+ - Improved [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html).
  - [Faster calculations](#benchmarks).
  - [New features](#added-functionality).
  - [Refining the API](#api-changes) to promote best programming practices.
@@ -92,9 +85,9 @@ to change existing (functional) code you may have written for NOVAS C.
 
 __SuperNOVAS__ is really quite easy to use. Its new API is just as simple and intuitive as that of __astropy__ (or so 
 we strive for it to be), and it is similarly well documented also (see the 
-[API documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/files.html)). You can typically achieve the 
+[API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)). You can typically achieve the 
 same results with 
-[similar lines of code](https://github.com/Smithsonian/SuperNOVAS/blob/main/resources/supernovas_vs_astropy.md) 
+[similar lines of code](https://smithsonian.github.io/SuperNOVAS/doc/SuperNOVAS_vs_astropy.html) 
 with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
 the lack of `try / except` style constructs in C).
  
@@ -106,7 +99,7 @@ __SuperNOVAS__ is maintained by [Attila Kovács](https://github.com/attipaci) at
 repository on GitHub.
 
 Outside contributions are very welcome. See
-[how you can contribute](https://github.com/Smithsonian/SuperNOVAS/CONTRIBUTING.md) on how you can make __SuperNOVAS__ 
+[how you can contribute](https://smithsonian.github.io/SuperNOVAS/doc/CONTRIBUTING.html) on how you can make __SuperNOVAS__ 
 even better.
 
 ### Related links
@@ -271,7 +264,7 @@ Now you are ready to build the library:
   $ make
 ```
 
-will compile the shared (e.g. `lib/libsupernovas.so`) libraries, and compile the API documentation (into `apidoc/`) 
+will compile the shared (e.g. `lib/libsupernovas.so`) libraries, and compile the API documentation (into `doc/`) 
 using `doxygen` (if available). Alternatively, you can build select components of the above with the `make` targets 
 `shared`, and `local-dox` respectively. And, if unsure, you can always call `make help` to see what build targets are 
 available.
@@ -543,7 +536,8 @@ implementation.
 __SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more efficient approach for calculating
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient). You may find an equivalent legacy example 
-showcasing the original NOVAS method in [LEGACY.md](LEGACY.html).
+showcasing the original NOVAS method in 
+[`NOVAS-legacy.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/doc/NOVAS-legacy.md).
 
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
@@ -1695,8 +1689,7 @@ one minute.
 ### New functionality highlights
 
  Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top of the existing NOVAS C API. See 
- `CHANGELOG.md` for more details.
- 
+ [`CHANGELOG.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/CHANGELOG.md) for more details.
  
 #### New in v1.0
     
@@ -1858,7 +1851,7 @@ one minute.
    data modifications.
 
  - Many __SuperNOVAS__ functions allow `NULL` arguments, both for optional input values as well as outputs that are 
-   not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/apidoc/html/) for specifics).
+   not required (see the [API Documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/) for specifics).
    This eliminates the need to declare dummy variables in your application code.
   
  - Many output values supplied via pointers are set to clearly invalid values in case of erroneous returns, such as

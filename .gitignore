@@ -17,6 +17,7 @@ site/**
 *.swp
 README-headless.md
 README-orig.md
+UsersGuide.md
 Doxyfile.local
 TODO
 VERSION
