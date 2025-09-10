@@ -472,7 +472,7 @@ some of the terms differently:
 
 
  | Concept                    | Old standard                  | New IAU standard                                  |
- | -------------------------- | ----------------------------- | ------------------------------------------------- |
+ |:-------------------------- | ----------------------------- | ------------------------------------------------- |
  | Catalog coordinate system  | MOD (e.g. FK4, FK5, HIP...)   | International Celestial Reference System (ICRS)   |
  | Dynamical system           | True of Date (TOD)            | Celestial Intermediate Reference System (CIRS)    |
  | Dynamical R.A. origin      | equinox of date               | Celestial Intermediate Origin (CIO)               |
@@ -1244,7 +1244,7 @@ Many of the (Super)NOVAS functions take an accuracy argument, which determines t
 calculated. The argument can have one of two values, which correspond to typical precisions around:
 
  | `enum novas_accuracy` value  | Typical precision                |
- | ---------------------------- | -------------------------------- |
+ |:---------------------------- |:-------------------------------- |
  | `NOVAS_REDUCED_ACCURACY`     | ~ 1 milli-arcsecond (mas)        |
  | `NOVAS_FULL_ACCURACY`        | ~ 1 micro-arcsecond (&mu;as) |
 
@@ -1567,7 +1567,7 @@ You can enable or disable debugging output to `stderr` with `novas_debug(enum no
 is one of the defined constants from `novas.h`:
 
  | `novas_debug_mode` value   | Description                                        |
- | -------------------------- | -------------------------------------------------- |
+ |:-------------------------- |:-------------------------------------------------- |
  | `NOVAS_DEBUG_OFF`          | No debugging output (_default_)                    |
  | `NOVAS_DEBUG_ON`           | Prints error messages and traces to `stderr`       |
  | `NOVAS_DEBUG_EXTRA`        | Same as above but with stricter error checking     |
@@ -1617,7 +1617,7 @@ aberration and gravitational deflection corrections from the observer's point of
 
 
  | Description                         | accuracy  | positions / sec |
- |-------------------------------------|:---------:|----------------:|
+ |:----------------------------------- |:---------:| ---------------:|
  | `novas_sky_pos()`, same frame       | reduced   |         3100653 |
  |                                     |   full    |         3093511 |
  | `place()`, same time, same observer | reduced   |          829483 |
@@ -1630,7 +1630,7 @@ aberration and gravitational deflection corrections from the observer's point of
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
 
  | Description                         | accuracy  | positions / sec |
- |-------------------------------------|:---------:|----------------:|
+ |:------------------------------------|:---------:|----------------:|
  | NOVAS C 3.1 `place()`, same frame   | reduced   |          371164 |
  | NOVAS C 3.1 `place()`, individual   | reduced   |           55484 |
  
@@ -1641,7 +1641,7 @@ __SuperNOVAS__ is a whopping ~40000 times faster than __astropy__ for calculatio
 under the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  
  | Description                                     | positions / sec |
- |-------------------------------------------------|----------------:|
+ |:------------------------------------------------|----------------:|
  | __astropy__ 7.0.0 (python 3.13.1), same frame   |              71 |
  | __astropy__ 7.0.0 (python 3.13.1), individual   |              70 |
  
