@@ -11,23 +11,19 @@ on:
     branches:
       - main
     paths:
+      - 'doc/**'
       - 'src/**'
       - 'include/**'
-      - 'css/**'
-      - 'resources/**'
       - 'Makefile'
-      - 'Doxyfile'
       - '*.md'
       - '.github/workflows/dox.yml'
 
   pull_request:
     paths:
+      - 'doc/**'
       - 'src/**'
       - 'include/**'
-      - 'css/**'
-      - 'resources/**'
       - 'Makefile'
-      - 'Doxyfile'
       - '*.md'
       - '.github/workflows/dox.yml'
 jobs:   
