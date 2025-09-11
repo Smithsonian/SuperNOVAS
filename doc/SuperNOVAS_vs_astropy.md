@@ -56,13 +56,6 @@ apparent = source.transform_to(frame);
 </td>
 <td>
 
-
-
-
-
-
-
-
 ```c
 #include <novas.h>
 
