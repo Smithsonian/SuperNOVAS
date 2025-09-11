@@ -58,9 +58,6 @@ int main(int argc, char *argv[]) {
   // Calculated quantities ------------------------------------------------->
   double az, el;                    // calculated azimuth and elevation at observing site
 
-  // Intermediate variables we'll use -------------------------------------->
-  struct timespec unix_time;        // Standard precision UNIX time structure
-
   // Command line argument can define the path where the ephemeris data is
   if(argc > 1)
     datafile = argv[1];
@@ -127,11 +124,8 @@ int main(int argc, char *argv[]) {
   // -------------------------------------------------------------------------
   // Set the astrometric time of observation...
 
-  // Get the current system time, with up to nanosecond resolution...
-  clock_gettime(CLOCK_REALTIME, &unix_time);
-
-  // Set the time of observation to the precise UTC-based UNIX time
-  if(novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &obs_time) != 0) {
+  // Set the time of observation to the current UTC-based UNIX time
+  if(novas_set_current_time(LEAP_SECONDS, DUT1, &obs_time) != 0) {
     fprintf(stderr, "ERROR! failed to set time of observation.\n");
     return 1;
   }

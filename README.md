@@ -723,13 +723,9 @@ then we can set the time of observation, for example, using the current UNIX tim
 
 ```c
  novas_timespec obs_time;       // Structure that will define astrometric time
- struct timespec unix_time;     // Standard precision UNIX time structure
 
- // Get the current system time, with up to nanosecond resolution...
- clock_gettime(CLOCK_REALTIME, &unix_time);
- 
  // Set the time of observation to the precise UTC-based UNIX time
- novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.042, &obs_time);
+ novas_set_current_time(37, 0.042, &obs_time);
 ```
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 

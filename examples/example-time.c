@@ -47,8 +47,6 @@ int main() {
   double hours;                 // broken-down time-of-day component
   char timestamp[40];           // String timestamp, at leat 29 characters.
 
-  // Intermediate variables we'll use -------------------------------------->
-  struct timespec ts;           // precision UNIX time
 
   // -------------------------------------------------------------------------
   // 1.a. Dates from strings...
@@ -85,11 +83,8 @@ int main() {
   // -------------------------------------------------------------------------
   // 1.c. Current time...
 
-  // - Use the system clock to get a precise system time
-  clock_gettime(CLOCK_REALTIME, &ts);
-
-  // - Convert UNIX time to astronomical time
-  novas_set_unix_time(ts.tv_sec, ts.tv_nsec, LEAP_SECONDS, DUT1, &time3);
+  // Use the current UNIX time to set astronomical time
+  novas_set_current_time(LEAP_SECONDS, DUT1, &time3);
 
 
   // -------------------------------------------------------------------------

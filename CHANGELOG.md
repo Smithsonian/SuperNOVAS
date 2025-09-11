@@ -46,6 +46,10 @@ Upcoming feature release, expected around 1 November 2025.
    `novas_set_redshift()`; set parallax or distance (if any) with `novas_set_parallax()` or `novas_set_distance()`; 
    set proper motion (if any) with `novas_set_proper_motion()`; or add catalog information with `novas_set_catalog()`.
 
+ - #243: Added `novas_set_current_time()` to set astrometric time based on the current system clock UNIX time. This
+   is for making a common use case more convenient, but you should make sure the system clock is well synchronized
+   to a time reference (preferably a local one) for accuracy.
+
 ### Changed
 
  - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 

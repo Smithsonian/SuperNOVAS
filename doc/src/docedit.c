@@ -122,6 +122,7 @@ static int make_undecorated_readme() {
 // Syntax: docedit [docpath]
 // Generates:
 //   ../README.md --> README.md
+//   README.md    --> README-undecorated.md
 int main(int argc, const char *argv[]) {
   int nerr = 0;
 

@@ -463,6 +463,7 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  *
  * @sa novas_set_split_time()
  * @sa novas_set_unix_time()
+ * @sa novas_set_current_time()
  * @sa novas_get_time()
  * @sa novas_timescale_for_string()
  * @sa novas_diurnal_eop()
@@ -828,6 +829,7 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * @return            0 if successful, or else -1 if there was an error (errno will be set to
  *                    indicate the type of error).
  *
+ * @sa novas_set_current_time()
  * @sa novas_set_time()
  * @sa novas_get_unix_time()
  * @sa clock_gettime()
@@ -852,6 +854,34 @@ int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, nov
   }
 
   prop_error("novas_set_unix_time", novas_set_split_time(NOVAS_UTC, jd, (sojd + 1e-9 * nanos) / DAY, leap, dut1, time), 0);
+  return 0;
+}
+
+/**
+ * Sets the time eith the UNIX time obtained from the system clock. This is only as precise as the
+ * system clock is. You should generally make sure the sytem clock is synchronized to a time reference
+ * e.g. via ntp, preferably to a local time reference.
+ *
+ * @param leap        [s] Leap seconds, e.g. as published by IERS Bulletin C.
+ * @param dut1        [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
+ *                    possibly corrected for diurnal and semi-diurnal variations, e.g.
+ *                    via `novas_diurnal_eop()`. If the time offset is defined for a different
+ *                    ITRS realization than what is used for the coordinates of an Earth-based
+ *                    observer, you can use `novas_itrf_transform_eop()` to make it consistent.
+ * @param[out] time   Pointer to the data structure that uniquely defines the astronomical time
+ *                    for all applications.
+ * @return            0 if successful, or else -1 if there was an error (errno will be set to
+ *                    indicate the type of error).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @see novas_set_unix_time()
+ */
+int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time) {
+  struct timespec t = {};
+  clock_gettime(CLOCK_REALTIME, &t);
+  prop_error("novas_set_current_time", novas_set_unix_time(t.tv_sec, t.tv_nsec, leap, dut1, time), 0);
   return 0;
 }
 

@@ -2137,6 +2137,19 @@ static int test_unix_time() {
   return 0;
 }
 
+static int test_current_time() {
+  struct timespec now = {};
+  novas_timespec t1 = {}, t2 = {};
+
+  clock_gettime(CLOCK_REALTIME, &now);
+  novas_set_current_time(37, 0.014, &t1);
+
+  novas_set_unix_time(now.tv_sec, now.tv_nsec, 37, 0.014, &t2);
+
+  if(!is_equal("set_current_time:diff", 0.0, novas_diff_time(&t1, &t2), 1e-3)) return 1;
+  return 0;
+}
+
 static int test_diff_time() {
   novas_timespec t, t1;
   time_t sec = time(NULL);
@@ -4541,6 +4554,7 @@ int main(int argc, char *argv[]) {
 
   // v1.1
   if(test_unix_time()) n++;
+  if(test_current_time()) n++;
   if(test_diff_time()) n++;
   if(test_standard_refraction()) n++;
   if(test_optical_refraction()) n++;
