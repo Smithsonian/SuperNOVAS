@@ -1060,7 +1060,6 @@ The [CALCEPH](https://www.imcce.fr/recherche/equipes/asd/calceph/) library provi
 INPOP ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing __SuperNOVAS__ with 
 the the CALCEPH C library for handling Solar-system objects.
 
-<details open>
 
 Prior to building __SuperNOVAS__ simply set `CALCEPH_SUPPORT` to 1 in `config.mk` or in your environment (or for CMake
 configure with the `-DENABLE_CALCEPH=ON`). Depending on the build target (or type), it will build 
@@ -1848,7 +1847,6 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
  - Improvements to atmospheric refraction modeling.
 
 
-<details open>
 <summary>New in v1.5</summary>
 
  - Simpler functions to calculate Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
