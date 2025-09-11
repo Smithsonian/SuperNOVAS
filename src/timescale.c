@@ -463,6 +463,7 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  *
  * @sa novas_set_split_time()
  * @sa novas_set_unix_time()
+ * @sa novas_set_str_time()
  * @sa novas_set_current_time()
  * @sa novas_get_time()
  * @sa novas_timescale_for_string()
@@ -474,6 +475,42 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *restrict time) {
   prop_error("novas_set_time", novas_set_split_time(timescale, 0, jd, leap, dut1, time), 0);
   return 0;
+}
+
+/**
+ * Sets astronomical time in a specific timescale using a string specification. It is effectively just
+ * a shorthand for using `novas_parse_date()` followed by `novas_set_time()` and the error checking
+ * in-between.
+ *
+ * @param timescale     The astronomical time scale in which the Julian Date is given
+ * @param str           The astronomical date specification, possibly including time and timezone,
+ *                      in a standard format. The date is assumed to be in the astronomical
+ *                      calendar of date, which differs from ISO 8601 timestamps for dates prior
+ *                      to the Gregorian calendar reform of 1582 October 15 (otherwise, the two
+ *                      are identical). See `novas_parse_date()` for more on acceptable formats.
+ * @param leap          [s] Leap seconds, e.g. as published by IERS Bulletin C.
+ * @param dut1          [s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and
+ *                      possibly corrected for diurnal and semi-diurnal variations, e.g.
+ *                      via `novas_diurnal_eop()`. If the time offset is defined for a different
+ *                      ITRS realization than what is used for the coordinates of an Earth-based
+ *                      observer, you can use `novas_itrf_transform_eop()` to make it consistent.
+ * @param[out] time     Pointer to the data structure that uniquely defines the astronomical time
+ *                      for all applications.
+ * @return              0 if successful, or else -1 if there was an error (errno will be set to
+ *                      indicate the type of error).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_set_time()
+ * @sa novas_parse_date()
+ */
+int novas_set_str_time(enum novas_timescale timescale, const char *restrict str, int leap, double dut1, novas_timespec *restrict time) {
+  double jd = novas_parse_date(str, NULL);
+  if(isnan(jd))
+    return novas_trace("novas_set_str_time", -1, 0);
+
+  return novas_set_time(timescale, jd, leap, dut1, time);
 }
 
 /**

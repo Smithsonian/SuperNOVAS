@@ -1245,9 +1245,19 @@ static int test_time() {
   if(check_nan("time:diff_tcb:t2", novas_diff_tcb(&time, NULL))) n++;
   if(check_nan("time:diff_tcb:both", novas_diff_tcb(NULL, NULL))) n++;
 
+  return n;
+}
+
+static int test_set_str_time() {
+  int n = 0;
+
+  if(check("set_str_time:NULL", -1, novas_set_str_time(NOVAS_TT, NULL, 37, 0.11, NULL))) n++;
+  if(check("set_str_time:empty", -1, novas_set_str_time(NOVAS_TT, "", 37, 0.11, NULL))) n++;
+  if(check("set_str_time:invalid", -1, novas_set_str_time(NOVAS_TT, "blah", 37, 0.11, NULL))) n++;
 
   return n;
 }
+
 
 
 static double switching_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
@@ -2628,6 +2638,7 @@ int main(int argc, const char *argv[]) {
 
   if(test_clock_skew()) n++;
   if(test_cat_entry()) n++;
+  if(test_set_str_time()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
