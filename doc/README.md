@@ -26,7 +26,7 @@ performance will scale with the number of CPUs when calculations are performed i
 
 __SuperNOVAS__ is entirely free to use without licensing restrictions. Its source code is compatible with the C99 
 standard, and hence should be suitable for old and new platforms alike. And, despite it being a light-weight library,
-it fully supports the IAU 2000/2006 standards for sub-microarcsecond position calculations. 
+it fully supports the IAU 2000/2006 standards for microarcsecond-level position calculations. 
 
 This document has been updated for the `v1.5` and later releases.
 
@@ -162,7 +162,7 @@ __SuperNOVAS__ fixes a number of outstanding issues with NOVAS C 3.1:
  
  - [__v1.4__] The NOVAS C 3.1 implementation of `cel2ter()` / `ter2cel()` was such that if both `xp` and `yp` 
    parameters were zero, then no wobble correction was applied, not even for the TIO longitude (s'). The error from 
-   this omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
+   this omission is very small, at just a few &mu;as (microarcseconds) within a couple of centuries of J2000.
 
    
 -----------------------------------------------------------------------------
@@ -214,12 +214,12 @@ the necessary variables in the shell prior to invoking `make`. For example:
  - [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) integration is automatic on Linux if `ldconfig` 
    can locate the `libcspice` shared library. You can also control CSPICE integration manually, e.g. by setting 
    `CSPICE_SUPPORT = 1` in `config.mk` or in the shell prior to the build. CSPICE integration will require an 
-   accessible installation of the CSPICE development files (C headers, under a `cspice/` sub-folder in the header 
+   accessible installation of the CSPICE development files (C headers, under a `cspice/` subfolder in the header 
    search path, and unversioned static or shared libraries depending on the needs of the build). You might want to 
    check out the [Smithsonian/cspice-sharedlib](https://github.com/Smithsonian/cspice-sharedlib) repository for 
    building CSPICE as a shared library.
    
- - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some non-standard
+ - If your compiler does not support the C11 standard and it is not GCC &gt;=3.3, but provides some nonstandard
    support for declaring thread-local variables, you may want to pass the keyword to use to declare variables as
    thread local via `-DTHREAD_LOCAL=...` added to `CFLAGS`. (Don't forget to enclose the string value in escaped
    quotes in `config.mk`, or unescaped if defining the `THREAD_LOCAL` shell variable prior to invoking `make`.)
@@ -316,7 +316,7 @@ The __SuperNOVAS__ CMake build supports the following options (in addition to th
  - `BUILD_DOC=ON|OFF` (default: ON) - Compile HTML documentation. Requires `doxygen`.
  - `BUILD_EXAMPLES=ON|OFF` (default: ON) - Build the included examples
  - `BUILD_TESTING=ON|OFF` (default: ON - Build regression tests
- - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benachmarking programs 
+ - `BUILD_BENCHMARK=ON|OFF` (default: OFF - Build benchmarking programs 
  - `ENABLE_CALCEPH=ON|OFF` (default: OFF) - Enable CALCEPH ephemeris plugin support. Requires CALCEPH package.
  - `ENABLE_CSPICE=ON|OFF` (default: OFF) - Enable CSPICE ephemeris plugin support. Requires `cspice` library 
    installed.
@@ -479,12 +479,12 @@ runtime.
 
 | ![SuperNOVAS coordinate systems and conversions](resources/SuperNOVAS-systems.png) |
 |:--:| 
-| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds effcient [matrix transformations](#transforms) between the equatorial systems. |
+| __Figure 1.__ SuperNOVAS Coordinate Systems and Conversions. Functions indicated in bold face are available in NOVAS C also. All other functions are available in SuperNOVAS only. SuperNOVAS also adds efficient [matrix transformations](#transforms) between the equatorial systems. |
 
 
 The IAU 2000 and 2006 resolutions have completely overhauled the system of astronomical coordinate transformations
 to enable higher precision astrometry. (Super)NOVAS supports coordinate calculations both in the old (pre IAU 2000) 
-ways, and in the new IAU standard method. The table beow provides an overview of how the old and new methods define 
+ways, and in the new IAU standard method. The table below provides an overview of how the old and new methods define 
 some of the terms differently:
 
 
@@ -554,7 +554,7 @@ __NOTE__
 <a name="sidereal-example"></a>
 ### Calculating positions for a sidereal source
 
-A sidereal source may be anything beyond the solar-system with 'fixed' catalog coordinates. It may be a star, or a 
+A sidereal source may be anything beyond the Solar system with 'fixed' catalog coordinates. It may be a star, or a 
 galactic molecular cloud, or a distant quasar. 
 
  - [Specify the object of interest](#specify-object)
@@ -753,7 +753,7 @@ observation:
 
 Here `xp` and `yp` are small (sub-arcsec level) corrections to Earth orientation. Values for these are are published 
 in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html), and if accuracy below the
-milli-acsecond level is required, should be corrected for diurnal and semi-diurnal variations caused by librations and
+milliarcsecond level is required, should be corrected for diurnal and semi-diurnal variations caused by libration and
 ocean tides (see `novas_diurnal_eop()` for calculating such corrections). These Earth orientation parameters (EOP) are 
 needed only when converting positions from the celestial CIRS (or PEF) frame to the Earth-fixed ITRS frame. You may 
 ignore these and set zeroes if sub-arcsecond precision is not required. 
@@ -895,8 +895,8 @@ effectively tied to an observer frame.
  double jd_rise = novas_sets_below(30.0, &source, &frame, NULL);
 ```
 
-Note, that in the current implementation these calls are not well-suited sources that are at or within the 
-geostationary orbit, such as such as low-Earth orbit satellites (LEOs), geostationary satellites (which never really 
+Note, that in the current implementation these calls are not well suited sources that are at or within the 
+geostationary orbit, such as such as Low Earth Orbit satellites (LEOs), geostationary satellites (which never really 
 rise, set, or transit), or some Near Earth Objects (NEOs), which will rise set multiple times per day. For the latter, 
 the above calls may still return a valid time, only without the guarantee that it is the time of the first such event 
 after the specified frame instant. A future implementation may address near-Earth orbits better, so stay tuned for 
@@ -970,7 +970,7 @@ etc.):
 
 __NOTE__
 
-> Even with orbital elements, you will, in general, still require am ephemeris provider also, to obtain precise 
+> Even with orbital elements, you will, in general, still require an ephemeris provider also, to obtain precise 
 > positions for the Sun, an Earth-based observer, or the planet, around which the orbit is defined.
 
 
@@ -994,6 +994,7 @@ Earth!), the Moon, and the Earth-Moon Barycenter (EMB) also. E.g.:
 While the planet and Moon orbitals are not suitable for precision applications, they can be useful for determining 
 approximate positions (e.g. via the `novas_approx_heliocentric()` and `novas_approx_sky_pos()` functions), and for 
 rise/set time calculations.
+
 
 <a name="transforms"></a>
 ### Coordinate and velocity transforms (change of coordinate system)
@@ -1392,7 +1393,7 @@ The above is the standard way to include C headers in C++ sources, in general.
 When one does not need positions at the microarcsecond level, some shortcuts can be made to the recipe above:
 
  - You may forgo reconciling the ITRF realizations of EOP vs. an Earth-based observing site, if precision at the 
-   micro-arcsecond level is not required.
+   microarcsecond level is not required.
  - You may skip the interpolation of published EOP values, and skip diurnal corrections for ocean tides and libration,
    if accuracy below the milliarcsecond level is not required.
  - You can use `NOVAS_REDUCED_ACCURACY` instead of `NOVAS_FULL_ACCURACY` for the calculations. This typically has an 
@@ -1520,7 +1521,7 @@ or as decimals:
 ### String dates
 
 Dates are typically represented broken down into year, month, and day (e.g. "2025-02-16", or "16.02.2025", or 
-"2/16/2025"), with or without a time marker, which itself may or may not include a time-zone specification. In 
+"2/16/2025"), with or without a time marker, which itself may or may not include a time zone specification. In 
 astronomy, the most commonly used string representation of dates is with ISO 8601 timestamps. The following are
 all valid ISO date specifications:
 
@@ -1528,8 +1529,8 @@ all valid ISO date specifications:
  2025-02-16			# Date only (0 UTC)
  2025-02-16T19:35:21Z		# UTC date/time
  2025-02-16T19:35:21.832Z	# UTC date/time with decimals
- 2025-02-16T14:35:21+0500	# date in time-zone (e.g. EST)
- 2025-02-16T14:35:21.832+05:00  # alternative time-zone specification
+ 2025-02-16T14:35:21+0500	# date in time zone (e.g. EST)
+ 2025-02-16T14:35:21.832+05:00  # alternative time zone specification
 ```
 
 __SuperNOVAS__ provides functions to convert between ISO dates/times and their string representation for convenience. 
@@ -1560,7 +1561,7 @@ __NOTE__
 > ISO 8601 timestamps are always UTC-based and expressed in the Gregorian calendar, as per specification, even for 
 > dates that preceded the Gregorian calendar reform of 1582 (i.e. 'proleptic Gregorian' dates).
 
-Other __SuperNOVAS__ string date funtions will process dates in the astronomical calendar of date by default, that is 
+Other __SuperNOVAS__ string date functions will process dates in the astronomical calendar of date by default, that is 
 in the Gregorian calendar after the Gregorian calendar reform of 1582, or the Julian/Roman calendar for dates prior, 
 and support timescales other than UTC also. E.g.:
 
@@ -1575,7 +1576,7 @@ Or, parse an astronomical date:
  // Parse astronomical dates into a Julian day...
  double jd = novas_date("2025-02-16T19:35:21");
  if(isnan(jd)) {
-   // Ooops could not parse date.
+   // Oops could not parse date.
    ...
  }
 ```
@@ -1586,7 +1587,7 @@ Or, parse an astronomical date, including the timescale specification:
  // Parse a TAI-based timestamp into a Julian day and corresponding timescale
  double jd = novas_date_scale("2025-02-16T19:35:21+0200 TAI", &scale);
  if(isnan(jd)) {
-   // Ooops could not parse date.
+   // Oops could not parse date.
    ...
  }
 ```
@@ -1758,7 +1759,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
 <summary>New in v1.1</summary>
 
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
-   place and time of observation, with a set of pre-calculated transformations and constants. Once the frame is 
+   place and time of observation, with a set of precalculated transformations and constants. Once the frame is 
    defined it can be used very efficiently to calculate positions for multiple celestial objects with minimum 
    additional computational cost. The frames API is also more elegant and more versatile than the low-level NOVAS C 
    approach for performing the same kind of calculations. And, frames are inherently thread-safe since post-creation 
@@ -1779,7 +1780,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    observers are similar to observers in Earth-orbit but their momentary position and velocity is defined relative
    to the Solar System Barycenter (SSB), instead of the geocenter.
    
- - New set of built-in refraction models to use with the frame-based functions, inclusing a radio refraction model
+ - New set of built-in refraction models to use with the frame-based functions, including a radio refraction model
    based on the formulae by Berman &amp; Rockwell 1976. Users may supply their own custom refraction model also, and 
    may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in the reverse 
    direction (observed vs astrometric elevations as the input) as needed.
@@ -1836,7 +1837,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    match the IAU2006 precession model that was already implemented in NOVAS.
 
  - Approximate Keplerian orbital models for the major planets (Standish &amp; Williams, 1992), EMB, and the Moon 
-   (Chapront et al. 2002), for when arcmin-scale accuracy is sufficient (e.g. rise-set times, approximate sky 
+   (Chapront et al. 2002), for when arcmin-scale accuracy is sufficient (e.g. rise or set times, approximate sky 
    positions).
    
  - Moon phase calculator functions, based on above orbital modeling.
@@ -1852,8 +1853,8 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
  - Simpler functions to calculate Greenwich Mean and Apparent Sidereal Time (GMST / GAST).
 
  - Functions to calculate corrections to the Earth orientation parameters published by IERS, to include the effect
-   of librations and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS 
-   coordinates with accuracy below the milli-arcsecond (mas) level.
+   of libration and ocean tides. Such corrections are necessary to include if needing or using ITRS / TIRS 
+   coordinates with accuracy below the milliarcsecond (mas) level.
    
  - Conversion between geodetic (longitude, latitude, altitude) and geocentric Cartesian (x, y, z) site coordinates
    using the reference ellipsoid of choice (e.g. GRS80 or WGS84).
