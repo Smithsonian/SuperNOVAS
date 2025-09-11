@@ -65,7 +65,7 @@ static int make_headless_readme() {
   while(fgets(line, sizeof(line) - 1, in) != NULL) {
     // In <img /> tags, replace resources/* with local reference.
     const char *img = strstr(line, "<img ");
-    if(img) replace(img, "resources/", "");
+    if(img) replace(img, "resources" PATH_SEP, "");
 
     if(head) {
       if(img) {
