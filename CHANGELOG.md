@@ -94,7 +94,9 @@ Upcoming feature release, expected around 1 November 2025.
    
  - #241: Overhauled document generation. Non-GitHub markdown files are now in `doc/`, which has it's own `Makefile`
    and CMake sub-configuration.
-   
+
+ - #242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.
+
  - Both CMake and GNU make now install only the headers for the components that were included in the build. E.g. 
    `novas-calceph.h` is installed only if the library is built with the CALCEPH support option enabled.
  
