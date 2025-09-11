@@ -73,16 +73,16 @@ jobs:
       run: mkdir -p site/doc
 
     - name: Copy doc/ markdowns
-      run: cp doc/*.md site/doc/
+      run: |
+        rm doc/README.md
+        mv doc/README-undecorated.md doc/README.md
+        cp doc/*.md site/doc/
 
     - name: Copy CHANGELOG
       run: cp -a CHANGELOG.md site/doc/
 
     - name: Copy API documentation
-      run: |
-        rm README.md
-        mv README-undecorated.md README.md
-        cp -a doc/html site/doc/
+      run: cp -a doc/html site/doc/
         
     - name: Assert site/resources/
       run: mkdir -p site/resources

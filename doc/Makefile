@@ -23,9 +23,9 @@ all: Doxyfile README.md $(SRC) $(INC)
 docedit: src/docedit.o
 	$(CC) -o $@ $^
 
-# Generate Headless README.md
+# Generate headless and undecorated README variants
 README.md: ../README.md docedit
-	@echo "   [headless README]"
+	@echo "   [README variants]"
 	@./docedit
 
 .PHONY: clean
@@ -34,4 +34,4 @@ clean:
 
 .PHONY: distclean
 distclean: clean
-	rm -rf README.md html
+	rm -rf README*.md html

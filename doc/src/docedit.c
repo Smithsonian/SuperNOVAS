@@ -108,6 +108,7 @@ static int make_undecorated_readme() {
     char type[100] = {'\0'};
 
     if(sscanf(line, "> [!%99[^]]]", type) == 1) sprintf(line, "__%s__\n\n", type);
+    if(strstr(line, "<details") || strstr(line, "</details>")) continue;
 
     fwrite(line, strlen(line), 1, out);
   }
