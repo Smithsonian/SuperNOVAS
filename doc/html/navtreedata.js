@@ -54,47 +54,41 @@ var NAVTREE =
           [ "Going in reverse...", "index.html#autotoc_md75", null ],
           [ "Calculate rise, set, and transit times", "index.html#autotoc_md76", null ]
         ] ],
-        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md77", null ],
-        [ "Coordinate and velocity transforms (change of coordinate system)", "index.html#autotoc_md78", null ]
-      ] ],
-      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md80", [
-        [ "CALCEPH integration", "index.html#autotoc_md81", null ],
-        [ "NAIF CSPICE toolkit integration", "index.html#autotoc_md82", null ],
-        [ "Universal ephemeris data / service integration", "index.html#autotoc_md83", null ],
-        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md84", [
-          [ "Planets via eph_manager", "index.html#autotoc_md85", null ],
-          [ "Planets via JPL's pleph FORTRAN interface", "index.html#autotoc_md86", null ]
+        [ "Calculating positions for a Solar-system source", "index.html#autotoc_md77", [
+          [ "Planets and/or ephemeris type objects", "index.html#autotoc_md78", null ],
+          [ "Solar-system objects with Keplerian orbital parameters", "index.html#autotoc_md79", null ],
+          [ "Approximate planet and Moon orbitals", "index.html#autotoc_md80", null ]
         ] ],
-        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md87", null ]
+        [ "Coordinate and velocity transforms (change of coordinate system)", "index.html#autotoc_md81", null ]
       ] ],
-      [ "Notes on precision", "index.html#autotoc_md89", [
-        [ "Prerequisites to precise results", "index.html#autotoc_md90", null ]
+      [ "Incorporating Solar-system ephemeris data or services", "index.html#autotoc_md83", [
+        [ "CALCEPH integration", "index.html#autotoc_md84", null ],
+        [ "NAIF CSPICE toolkit integration", "index.html#autotoc_md85", null ],
+        [ "Universal ephemeris data / service integration", "index.html#autotoc_md86", null ],
+        [ "Legacy support for (older) JPL major planet ephemerides", "index.html#autotoc_md87", null ],
+        [ "Legacy linking of custom ephemeris functions", "index.html#autotoc_md88", null ]
       ] ],
-      [ "Tips and tricks", "index.html#autotoc_md92", [
-        [ "SuperNOVAS and C++", "index.html#autotoc_md93", null ],
-        [ "Reduced accuracy shortcuts", "index.html#autotoc_md94", null ],
-        [ "Multi-threaded calculations", "index.html#autotoc_md95", null ],
-        [ "Physical units", "index.html#autotoc_md96", null ],
-        [ "String times and angles", "index.html#autotoc_md97", null ],
-        [ "String dates", "index.html#autotoc_md98", null ]
+      [ "Notes on precision", "index.html#autotoc_md90", [
+        [ "Prerequisites to precise results", "index.html#autotoc_md91", null ]
       ] ],
-      [ "Runtime debug support", "index.html#autotoc_md100", null ],
-      [ "Representative benchmarks", "index.html#autotoc_md102", null ],
-      [ "SuperNOVAS added features", "index.html#autotoc_md104", [
-        [ "New functionality highlights", "index.html#autotoc_md105", [
-          [ "New in v1.0", "index.html#autotoc_md106", null ],
-          [ "New in v1.1", "index.html#autotoc_md107", null ],
-          [ "New in v1.2", "index.html#autotoc_md108", null ],
-          [ "New in v1.3", "index.html#autotoc_md109", null ],
-          [ "New in v1.4", "index.html#autotoc_md110", null ],
-          [ "New in 1.5", "index.html#autotoc_md111", null ]
-        ] ],
-        [ "Refinements to the NOVAS C API", "index.html#autotoc_md112", null ]
+      [ "Tips and tricks", "index.html#autotoc_md93", [
+        [ "SuperNOVAS and C++", "index.html#autotoc_md94", null ],
+        [ "Reduced accuracy shortcuts", "index.html#autotoc_md95", null ],
+        [ "Multi-threaded calculations", "index.html#autotoc_md96", null ],
+        [ "Physical units", "index.html#autotoc_md97", null ],
+        [ "String times and angles", "index.html#autotoc_md98", null ],
+        [ "String dates", "index.html#autotoc_md99", null ]
       ] ],
-      [ "Release schedule", "index.html#autotoc_md114", null ]
+      [ "Runtime debug support", "index.html#autotoc_md101", null ],
+      [ "Representative benchmarks", "index.html#autotoc_md103", null ],
+      [ "SuperNOVAS added features", "index.html#autotoc_md105", [
+        [ "New functionality highlights", "index.html#autotoc_md106", null ],
+        [ "Refinements to the NOVAS C API", "index.html#autotoc_md107", null ]
+      ] ],
+      [ "Release schedule", "index.html#autotoc_md109", null ]
     ] ],
     [ "Changelog", "md__2github_2workspace_2CHANGELOG.html", [
-      [ "[1.5.0-rc3] - 2025-09-11", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
+      [ "[Unreleased]", "md__2github_2workspace_2CHANGELOG.html#autotoc_md1", [
         [ "Added", "md__2github_2workspace_2CHANGELOG.html#autotoc_md2", null ],
         [ "Changed", "md__2github_2workspace_2CHANGELOG.html#autotoc_md3", null ],
         [ "Deprecated", "md__2github_2workspace_2CHANGELOG.html#autotoc_md4", null ]
@@ -178,10 +172,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md38",
-"novas_8h.html#a7ee576309aa1977e9b2a3824286f725c",
-"nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4",
-"structnovas__orbital.html#adc4cda6fcbff8922621b0a08f911957d"
+"md__2github_2workspace_2CHANGELOG.html#autotoc_md42",
+"novas_8h.html#a85334614a0f399e0d3cbde68075d0766",
+"nutation_8h.html#a280cbf02b13ca57b3d77451be06e7dbc",
+"structnovas__orbital__system.html#adaabf923501a3a0a47a8958b6a33c6b3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

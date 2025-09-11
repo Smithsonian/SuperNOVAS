@@ -1,10 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md38":[1,9,2],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md39":[1,10],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md4":[1,0,2],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md40":[1,10,0],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md41":[1,10,1],
 "md__2github_2workspace_2CHANGELOG.html#autotoc_md42":[1,10,2],
 "md__2github_2workspace_2CHANGELOG.html#autotoc_md43":[1,10,3],
 "md__2github_2workspace_2CHANGELOG.html#autotoc_md5":[1,1],
@@ -249,5 +244,10 @@ var NAVTREEINDEX1 =
 "novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044":[6,0,0,2,148,2],
 "novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9":[6,0,0,2,148,4],
 "novas_8h.html#a7c474aa996c5ccc0c03b1006ea5b30e1":[6,0,0,2,35],
-"novas_8h.html#a7cd85bc0a0248f84d399cbbce9fe9546":[6,0,0,2,210]
+"novas_8h.html#a7cd85bc0a0248f84d399cbbce9fe9546":[6,0,0,2,210],
+"novas_8h.html#a7ee576309aa1977e9b2a3824286f725c":[6,0,0,2,244],
+"novas_8h.html#a81da80ae3ab1d0a444f39bde2af3a732":[6,0,0,2,276],
+"novas_8h.html#a8471f990ad6e3051a0aa584d9cb2d355":[6,0,0,2,369],
+"novas_8h.html#a84f672dc1c37e3af374198f29cbcfba9":[6,0,0,2,382],
+"novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065":[6,0,0,2,76]
 };

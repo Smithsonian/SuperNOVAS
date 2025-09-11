@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['4_0',['New in v1.4',['../index.html#autotoc_md110',1,'']]],
-  ['4_200_202025_2006_2002_1',['[1.4.0] - 2025-06-02',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md11',1,'']]],
-  ['4_201_202025_2007_2021_2',['[1.4.1] - 2025-07-21',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md8',1,'']]],
-  ['4_202_202025_2008_2025_3',['[1.4.2] - 2025-08-25',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md5',1,'']]]
+  ['4_200_202025_2006_2002_0',['[1.4.0] - 2025-06-02',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md11',1,'']]],
+  ['4_201_202025_2007_2021_1',['[1.4.1] - 2025-07-21',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md8',1,'']]],
+  ['4_202_202025_2008_2025_2',['[1.4.2] - 2025-08-25',['../md__2github_2workspace_2CHANGELOG.html#autotoc_md5',1,'']]]
 ];
