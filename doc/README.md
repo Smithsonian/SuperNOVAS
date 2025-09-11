@@ -287,10 +287,12 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 
 </details>
 
-> [!TIP]
+__TIP__
+
 > On BSD, you will need to use `gmake` instead of `make`.
 
-> [!NOTE]
+__NOTE__
+
 > if you want to build __SuperNOVAS__ for with your old NOVAS C applications you might want to further customize the 
 > build. See Section(s) on [legacy application](#legacy-application) further below. 
 
@@ -518,23 +520,27 @@ on how they are appropriate for the old and new methodologies respectively. Figu
 various old and new coordinate systems and the (Super)NOVAS functions for converting position / velocity vectors among 
 them.
 
-> [!NOTE]
+__NOTE__
+
 > In NOVAS, the barycentric BCRS and the geocentric GCRS systems are effectively synonymous to ICRS, since the origin 
 > for positions and for velocities, in any reference system, is determined by the `observer` location. Aberration and 
 > gravitational deflection correction included for apparent places only (as seen from the observer location, 
 > regardless of where that is), but not for geometric places. 
 
-> [!TIP]
+__TIP__
+
 > Older catalogs, such as J2000 (FK5), HIP, B1950 (FK4) or B1900 are just special cases of MOD (mean-of-date) 
 > coordinates for the J2000, J1991.25, B1950, and B1900 epochs, respectively.
 
-> [!CAUTION] 
+__CAUTION__
+
 > Applying residual polar offsets (&Delta;d&psi;, &Delta;d&epsilon; or _x_<sub>p</sub>, _y_<sub>p</sub>) to the 
 > TOD equator (via `cel_pole()`) is discouraged. Instead, the sub-arcsecond level corrections to Earth orientation 
 > (_x_<sub>p</sub>, _y_<sub>p</sub>) should be used only for converting between the pseudo Earth-fixed (PEF or TIRS) 
 > and ITRS, and vice-versa (e.g. with `novas_make_frame()` or `wobble()`).
 
-> [!NOTE]
+__NOTE__
+
 > WGS84 has been superseded by ITRS for higher accuracy definitions of Earth-based locations. WGS84 matches ITRS to 
 > the 10m level globally, but it does not account for continental drifts and crustal motion. In (Super)NOVAS all 
 > Earth-base locations are presumed ITRS. ITRS longitude, latitude, and altitude coordinates are referenced to the 
@@ -554,7 +560,8 @@ __SuperNOVAS v1.1__ has introduced a new, more intuitive, more elegant, and more
 astrometric positions of celestial objects. The guide below is geared towards this new method. However, the original
 NOVAS C approach remains viable also (albeit often less efficient).
 
-> [!NOTE]
+__NOTE__
+
 > You may find an equivalent legacy example showcasing the original NOVAS method in 
 > [`NOVAS-legacy.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/doc/NOVAS-legacy.md).
 
@@ -676,7 +683,8 @@ Next, we define the location where we observe from. Here we can (but don't have 
  make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
 ```
 
-> [!NOTE]
+__NOTE__
+
 > High-precision Earth-based observer locations should be specified on the GRS80 reference ellipsoid, which is 
 > slightly different from the WGS84 ellipsoid used for GPS coordinates. You can use `novas_geodetic_to_cartesian()` to 
 > convert locations to _xyz_ coordinates on one ellipsoid, and `novas_cartesian_to_geodetic()` to then _xyz_ to a 
@@ -773,13 +781,15 @@ in a particular coordinate system. So, if you need to calculate positions for th
 observer and time, it will be significantly faster than using the low-level NOVAS C routines instead. You can create 
 derivative frames for different observer locations, if need be, via `novas_change_observer()`.
 
-> [!IMPORTANT]
+__IMPORTANT__
+
 > Without a proper ephemeris provider for the major planets, you are invariably restricted to working with 
 > `NOVAS_REDUCED_ACCURACY` frames, providing milliarcsecond precision at most. Attempting to construct high-accuracy 
 > frames without an appropriate high-precision ephemeris provider will result in an error from the requisite 
 > `ephemeris()` calls.
 
-> [!TIP]
+__TIP__
+
 > `NOVAS_FULL_ACCURACY` frames require a high-precision ephemeris provider for the major planets, e.g. to account 
 > for the gravitational deflections. Without it, &mu;as accuracy cannot be ensured, in general. See section on 
 > [Incorporating Solar-system ephemeris data or services](#solarsystem) further below.
@@ -805,11 +815,13 @@ _x,y,z_ unit vector pointing in the observed direction of the source (in the des
 get radial velocity (for spectroscopy), and apparent distance for Solar-system bodies (e.g. for apparent-to-physical 
 size conversion).
 
-> [!NOTE]
+__NOTE__
+
 > If you want geometric positions (and/or velocities) instead, without aberration and gravitational deflection, you 
 > might use `novas_geom_posvel()`. 
 
-> [!TIP]
+__TIP__
+
 > Regardless, which reference system you have used in the calculations above, you can always easily and efficiently 
 > change the coordinate reference system in which your results are expressed, by creating an appropriate transform 
 > via `novas_make_transform()` and then using `novas_transform_vector()` or `novas_transform_skypos()`. More on 
@@ -937,7 +949,8 @@ they use a `novas_planet_provider` function to access ephemeris data with their 
  make_ephem_object("Ceres", 2000001, &ceres);
 ```
 
-> [!IMPORTANT] 
+__IMPORTANT__
+
 > Before you can handle all major planets and other ephemeris objects this way, you will have to provide one or more 
 > functions to obtain the barycentric ICRS positions for your Solar-system source(s) of interest for the specific 
 > Barycentric Dynamical Time (TDB) of observation. See section on 
@@ -971,7 +984,8 @@ etc.):
  make_orbital_object("NEAxxx", -1, &orbit, &NEA);
 ```
 
-> [!NOTE]
+__NOTE__
+
 > Even with orbital elements, you will, in general, still require am ephemeris provider also, to obtain precise 
 > positions for the Sun, an Earth-based observer, or the planet, around which the orbit is defined.
 
@@ -1579,7 +1593,8 @@ E.g.,
  novas_iso_timestamp(&time, timestamp, sizeof(timestamp));
 ```
 
-> [!NOTE]
+__NOTE__
+
 > ISO 8601 timestamps are always UTC-based and expressed in the Gregorian calendar, as per specification, even for 
 > dates that preceded the Gregorian calendar reform of 1582 (i.e. 'proleptic Gregorian' dates).
 
