@@ -90,7 +90,7 @@ novas_set_str_time(NOVAS_TAI,
 novas_make_frame(NOVAS_FULL_ACCURACY, 
   &loc, &time, DX, DY, &frame);
 
-// apparent coordinates
+// apparent coordinates in system
 novas_sky_pos(&source, &frame, NOVAS_CIRS, 
   &apparent);
 ```
