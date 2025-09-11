@@ -9,10 +9,13 @@ url: "https://smithsonian.github.io"
 read_time: true
 titles_from_headings:
   strip_title: true
+kramdown:
+  input: GFM
 plugins:
   - jekyll-sitemap
   - jekyll-titles-from-headings
   - jekyll-toc
+  
 defaults:
   # Exclude search pages from sitemap
   - scope:
