@@ -110,7 +110,6 @@ even better.
 
 __SuperNOVAS__ fixes a number of outstanding issues with NOVAS C 3.1:
 
-<details>
 
  - Fixes the [sidereal_time bug](https://aa.usno.navy.mil/software/novas_faq), whereby the `sidereal_time()` function 
    had an incorrect unit cast. This was a documented issue of NOVAS C 3.1.
@@ -165,7 +164,6 @@ __SuperNOVAS__ fixes a number of outstanding issues with NOVAS C 3.1:
    parameters were zero, then no wobble correction was applied, not even for the TIO longitude (s'). The error from 
    this omission is very small, at just a few μas (micro-acrseconds) within a couple of centuries of J2000.
 
-</details>
    
 -----------------------------------------------------------------------------
 
@@ -203,7 +201,6 @@ The __SuperNOVAS__ distribution contains a GNU `Makefile`, which is suitable for
 local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, Cygwin or WSL -- using 
 [GNU `make`](https://www.gnu.org/software/make/).
 
-<details>
 
 Before compiling the library take a look a `config.mk` and edit it as necessary for your needs, or else define
 the necessary variables in the shell prior to invoking `make`. For example:
@@ -285,7 +282,6 @@ Or, to stage the installation (to `/usr`) under a 'build root':
   $ make DESTDIR="/tmp/stage" install
 ```
 
-</details>
 
 __TIP__
 
@@ -306,7 +302,6 @@ for greater portability than the regular GNU `Makefile`. Note, however, that the
 all of the build options of the GNU `Makefile`, such as automatic CALCEPH and CSPICE integration on Linux, supporting 
 legacy NOVAS C style builds, and code coverage tracking. 
 
-<details>
 
 The basic build recipe for CMake is:
 
@@ -358,7 +353,6 @@ the `Runtime` component:
   $ cmake --install build --component Runtime --prefix /usr/local
 ```
 
-</details>
 
 -----------------------------------------------------------------------------
 
@@ -377,7 +371,6 @@ needs best:
 <a name="makefile-application"></a>
 ### Using a GNU `Makefile`
 
-<details>
 
 Provided you have installed the __SuperNOVAS__ headers and (static or shared) libraries into a standard location, you 
 can build your application against it easily. For example, to build `myastroapp.c` against __SuperNOVAS__, you might 
@@ -408,12 +401,10 @@ shared libraries also:
   	$(CC) -o $@ $(CFLAGS) $^ -lm -lsupernovas -lsolsys-calceph -lcalceph
 ```
 
-</details>
 
 <a name="cmake-application"></a>
 ### Using CMake
 
-<details>
 
 Add the appropriate bits from below to the `CMakeLists.txt` file of your application:
 
@@ -426,7 +417,6 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
   target_link_libraries(your_target PRIVATE SuperNOVAS::solsys-calceph)
 ```
 
-</details>
 
 <a name="legacy-application"></a>
 ### Legacy linking `solarsystem()` and `readeph()` modules
@@ -436,7 +426,6 @@ The NOVAS C way to handle planet or other ephemeris functions was to link partic
 it will prevent you from selecting other implementations at runtime. The old, deprecated way, of incorporating 
 Solar-system data is supported, nevertheless, for legacy applications.
 
-<details>
 
 To use your own existing default `solarsystem()` implementation in this way, you must build the library with 
 `DEFAULT_SOLSYS` unset (or else set to 0) in `config.mk`, and your applications `Makefile` may contain something like:
@@ -449,7 +438,6 @@ To use your own existing default `solarsystem()` implementation in this way, you
 The same principle applies to using your specific `readeph()` implementation (only with `DEFAULT_READEPH` being unset 
 in `config.mk`).
 
-</details>
 
 <a name="preferred-legacy-application"></a>
 ### Legacy modules: a better way
@@ -458,7 +446,6 @@ A better way to recycle your old planet and ephemeris calculator modules may be 
 `solarsystem_hp()` functions therein to e.g. `my_planet_calculator()` / `my_planet_calculator_hp()` and then in your 
 application can specify these functions as the provider at runtime.
 
-<details>
 E.g.:
 
 ```c
@@ -484,7 +471,6 @@ not need to re-build the library with the `DEFAULT_SOLSYS` and `DEFAULT_READEPH`
 other users of the library, can switch between different planet and ephemeris calculator functions at will, during 
 runtime.
 
-</details>
 
 -----------------------------------------------------------------------------
 
@@ -635,7 +621,6 @@ if you have a redshift measure (as is typical for distant galaxies and quasars).
 Alternatively, if you prefer, you may use the original NOVAS C `make_cat_entry()` to set the astrometric parameters 
 above all at once.
 
-<details>
 
 E.g.:
 
@@ -646,7 +631,6 @@ E.g.:
    -12.11, -23.30, 5.89, -3.4, &star);
 ```
 
-</details>
 
 Next, we wrap that catalog source into a generic celestial `object` structure. (An `object` handles various 
 Solar-system sources also, as you'll see further below). Whereas the catalog source may have been defined in any epoch 
@@ -1119,7 +1103,6 @@ When using CALCEPH, ephemeris objects are referenced by their ID numbers (`objec
 which case name-based lookup will be used instead. ID numbers are assumed to be NAIF by default, but 
 `novas_calceph_use_ids()` can select between NAIF or CALCEPH numbering systems, if necessary.
 
-</details>
 
 <a name="cspice-integration"></a>
 ### NAIF CSPICE toolkit integration
@@ -1128,7 +1111,6 @@ The [NAIF CSPICE Toolkit](https://naif.jpl.nasa.gov/naif/toolkit.html) is the ca
 ephemeris files from C/C++. As of version 1.2, we provide optional support for interfacing __SuperNOVAS__ with CSPICE 
 for handling Solar-system objects.
 
-<details>
 
 Prior to building __SuperNOVAS__ simply set `CSPICE_SUPPORT` to 1 in `config.mk` or in your environment (or for CMake
 configure with `-DENABLE_CSPICE=ON`). Depending on the build target, it will build `libsolsys-cspice.so[.1]` (target 
@@ -1174,7 +1156,6 @@ to it.
 When using CSPICE, ephemeris objects are referenced by their NAIF ID numbers (`object.number`), unless that number is 
 set to -1, in which case name-based lookup will be used instead.
 
-</details>
 
 <a name="universal-ephemerides"></a>
 ### Universal ephemeris data / service integration 
@@ -1182,7 +1163,6 @@ set to -1, in which case name-based lookup will be used instead.
 Possibly the most universal way to integrate ephemeris data with __SuperNOVAS__ is to write your own 
 `novas_ephem_provider` function.
 
-<details>
 
 ```c
  int my_ephem_reader(const char *name, long id, double jd_tdb_high, double jd_tdb_low, 
@@ -1204,7 +1184,6 @@ rectangular ICRS _x,y,z_ vectors in units of AU and AU/day respectively.
 This way you can easily integrate current ephemeris data, e.g. for the Minor Planet Center (MPC), or whatever other 
 ephemeris service you prefer.
 
-</details>
 
 Once you have your adapter function, you can set it as your ephemeris service via `set_ephem_provider()`:
 
@@ -1233,7 +1212,6 @@ If you only need support for major planets, you may be able to use one of the mo
 The legacy NOVAS modules `solsys1.c` and `solsys2.c` provide built-in support to older JPL ephemerides (DE200 to 
 DE421), either via the `eph_manager` interface of `solsys1.c` or via the FORTRAN `pleph` interface with `solsys2.c`.
 
-<details>
 <summary>Planets via `eph_manager`</summary>
 
 To use the `eph_manager` interface for 1997 JPL planet ephemeris (DE200 through DE421), you must either build 
@@ -1268,9 +1246,7 @@ either of which you can interface as discussed further above!)
 
 That's all, except the warning that this method will not work with newer JPL ephemeris data, beyond DE421.
 
-</details>
 
-<details>
 <summary>Planets via JPL's `pleph` FORTRAN interface</summary>
 
 To interface with the venerable JPL PLEPH library (FORTRAN) for planet ephemerides, you must either build 
@@ -1290,7 +1266,6 @@ of the world), but you may also have to modify `jplint.f` (providing the interme
 have code that relies on this method, you are probably better off choosing one of the other ways for integrating 
 planetary ephemeris data with __SuperNOVAS__.
 
-</details>
 
 <a name="explicit-ephem-linking"></a>
 ### Legacy linking of custom ephemeris functions
@@ -1299,7 +1274,6 @@ Finally, if none of the above is appealing to you, and you are fond of the old w
 set of adapter functions, linked from your own source modules, you can do that also. It was the NOVAS C way, after 
 all. 
 
-<details>
 To link your own non-configurable adapter modules, first you compile __SuperNOVAS__ with the `DEFAULT_SOLSYS` option 
 disabled (commented, removed, or else set to 0), and then link your own implementation of `solarsystem()` and 
 `solarsystem_hp()` calls with your application. 
@@ -1315,7 +1289,6 @@ will want to use __SuperNOVAS__ with. This is why the runtime configuration of t
 best and most generic way to add your preferred implementations while also providing some minimum default 
 implementations for _other users_ of the library, who may not want _your_ ephemeris service, or have no need for 
 planet data beyond the approximate positions for the Earth and Sun.
-</details>
 
 -----------------------------------------------------------------------------
 
@@ -1343,24 +1316,19 @@ mm/s, precision for all types of celestial sources. However, there are certain p
 considerations before that level of accuracy is reached. (Click on the wedge next to each heading below to expand
 the details.)
 
-<details><summary>The IAU 2000/2006 conventions and methods</summary>
 High precision calculations will generally require that you use __SuperNOVAS__ with the new IAU standard quantities 
 and methods. The old ways were simply not suited for precision much below the milliarcsecond level. In particular, 
 Earth orientation parameters (EOP) should be applied only for converting between TIRS and ITRS systems, and defined 
 either with `novas_make_frame()` or else with `wobble()`. The old ways of incorporating (global) offsets in TOD 
 coordinates via `cel_pole()` should be avoided.
-</details>
  
-<details><summary>Gravitational effects</summary>
 Calculations much below the milliarcsecond level will require accounting for gravitational bending around massive 
 Solar-system bodies, and hence will require you to provide a high-precision ephemeris provider for the major planets. 
 Without it, there is no guarantee of achieving precision below the milli-arcsecond level in general, especially when 
 observing near the Sun or massive planets (e.g. observing Jupiter's or Saturn's moons, near conjunction with their 
 host planet). Therefore, some functions will return with an error, if used with `NOVAS_FULL_ACCURACY` in the absence 
 of a suitable high-precision planetary ephemeris provider.
-</details>
 
-<details><summary>Solar-system ephemeris</summary>
 Precise calculations for Solar-system sources requires precise ephemeris data for both the target object as well as 
 for Earth, and the Sun. For the highest precision calculations you also need positions for all major planets to 
 calculate gravitational deflection precisely. By default, __SuperNOVAS__ can only provide approximate positions for 
@@ -1368,9 +1336,7 @@ the Earth and Sun (see `earth_sun_calc()`) at the tens of arcsecond level. You w
 __SuperNOVAS__ with a suitable ephemeris source (such as CALCEPH, or the CSPICE toolkit from JPL) to obtain precise 
 positions for Solar-system bodies. See the [section further above](#solarsystem) for more information how you can do 
 that.
-</details>
 
-<details><summary>Earth orientation parameters (EOP)</summary> 
 Calculating precise positions for any Earth-based observations requires precise knowledge of Earth orientation 
 parameters (EOP) at the time of observation. Earth's pole is subject to predictable precession and nutation, but also 
 small irregular and diurnal variations in the orientation of the rotational axis and the rotation period (a.k.a. polar 
@@ -1384,9 +1350,7 @@ leap-seconds (UTC-TAI). For sub-milliarcsecond accuracy the values published by 
 amended to include corrections for variations caused by libration and ocean tides, e.g. via `novas_diurnal_eop()`. At 
 the micro-arcsecond (&mu;as) level, you will need to ensure also that the EOP values are provided for the same ITRF 
 realization as the observer's location, e.g. via `novas_itrf_transform_eop()`. 
-</details>
    
-<details><summary>Atmospheric refraction model</summary>
 Ground based observations are subject to atmospheric refraction. __SuperNOVAS__ offers the option to include 
 refraction corrections with a set of atmospheric models. Estimating refraction accurately requires local weather 
 parameters (pressure, temperature, and humidity), which may be be specified within the `on_surface` data structure 
@@ -1394,7 +1358,6 @@ alongside the observer location. A standard radio refraction model is included a
 implementation of the wavelength-dependent IAU refraction model (`novas_wave_refraction()` since version 1.4) based on 
 the SOFA `iauRefco()` function. If none of the supplied options satisfies your needs, you may also implement your own 
 refraction correction to use.
-</details>
 
 ------------------------------------------------------------------------------
 
@@ -1632,7 +1595,6 @@ Or, parse an astronomical date, including the timescale specification:
 Sometimes your input dates are represented in various other formats. You can have additional flexibility for parsing 
 dates using the `novas_parse_date_format()` and `novas_timescale_for_string()` functions.
 
-<details>
 E.g.,
 
 ```c
@@ -1655,7 +1617,6 @@ E.g.,
  novas_set_time(scale, jd, leap_seconds, dut1, &time);
 ``` 
 
-</details>
 
 -----------------------------------------------------------------------------
 
@@ -1714,7 +1675,6 @@ the __SuperNOVAS__ `novas_sky_pos()` or the legacy NOVAS C `place()`, both in fu
 modes. The two methods are equivalent, and both include calculating a precise geometric position, as well as 
 aberration and gravitational deflection corrections from the observer's point of view.
 
-<details>
 
  | Description                         | accuracy  | positions / sec |
  |:----------------------------------- |:---------:| ---------------:|
@@ -1745,7 +1705,6 @@ under the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  | __astropy__ 7.0.0 (python 3.13.1), same frame   |              71 |
  | __astropy__ 7.0.0 (python 3.13.1), individual   |              70 |
  
-</details>
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
 repeatedly calculating positions for sources for the same instant of time and same observer location, providing 4--5 
@@ -1778,7 +1737,6 @@ one minute.
 Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top of the existing NOVAS C API. See 
 [`CHANGELOG.md`](https://github.com/Smithsonian/SuperNOVAS/blob/main/CHANGELOG.md) for more details.
  
-<details>
 <summary>New in v1.0</summary>
     
  - New runtime configuration:
@@ -1797,9 +1755,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
  
  - Many new functions to provide more coordinate transformations, inverse calculations, and more intuitive usage.
  
-</details>
 
-<details>
 <summary>New in v1.1</summary>
 
  - New observing-frame based approach for calculations (`frames.c`). A `novas_frame` object uniquely defines both the 
@@ -1829,9 +1785,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    may make use of the generic reversal function `novas_inv_refract()` to calculate refraction in the reverse 
    direction (observed vs astrometric elevations as the input) as needed.
 
-</details>
 
-<details>
 <summary>New in v1.2</summary>
 
  - New functions to calculate and apply additional gravitational redshift corrections for light that originates
@@ -1856,9 +1810,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
 
  - Added more physical unit constants to `novas.h`.
  
-</details>
 
-<details>
 <summary>New in v1.3</summary>
 
  - New functions to aid the conversion of LSR velocities to SSB-based velocities, and vice-versa. (Super)NOVAS always 
@@ -1878,9 +1830,7 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    directly useful for controlling telescope drives in horizontal or equatorial mounts to track sources. You can also 
    use them to obtain instantaneous projected (extrapolated) positions at low computational cost.
 
-</details>
 
-<details>
 <summary>New in v1.4</summary>
 
  - Updated nutation model from IAU2000 to IAU2006 (P03) model, by applying scaling factors (Capitaine et al. 2005) to 
@@ -1897,7 +1847,6 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
    
  - Improvements to atmospheric refraction modeling.
 
-</details>
 
 <details open>
 <summary>New in v1.5</summary>
@@ -1921,7 +1870,6 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
  
  - CMake build support (co-authored with Kiran Shila).
 
-</details>
 
 <a name="api-changes"></a>
 ### Refinements to the NOVAS C API
@@ -1930,7 +1878,6 @@ Many __SuperNOVAS__ changes are focused on improving the usability and promote b
 the library and your application will be safer, and less prone to nagging errors. Below is a detailed listing of
 the principal ways __SuperNOVAS__ has improved on the original NOVAS C library in these respects.
 
-<details>
  - Changed to [support for calculations in parallel threads](#multi-threading) by making cached results thread-local.
    This works using the C11 standard `_Thread_local`, or the C23 `thread_local`, or else the earlier GNU C &gt;= 3.3 
    standard `__thread` modifier. You can also set the preferred thread-local keyword for your compiler by passing it 
@@ -2026,7 +1973,6 @@ the principal ways __SuperNOVAS__ has improved on the original NOVAS C library i
  
  - [__v1.5__] Weaned off using CIO locator file internally (but still allowing users to access them if they want to).
  
-</details>
 
 -----------------------------------------------------------------------------
 
