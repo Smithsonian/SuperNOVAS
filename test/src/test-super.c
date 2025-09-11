@@ -2137,7 +2137,7 @@ static int test_unix_time() {
   return 0;
 }
 
-static int test_current_time() {
+static int test_set_current_time() {
   struct timespec now = {};
   novas_timespec t1 = {}, t2 = {};
 
@@ -2147,6 +2147,19 @@ static int test_current_time() {
   novas_set_unix_time(now.tv_sec, now.tv_nsec, 37, 0.014, &t2);
 
   if(!is_equal("set_current_time:diff", 0.0, novas_diff_time(&t1, &t2), 1e-3)) return 1;
+  return 0;
+}
+
+static int test_set_str_time() {
+  const char *ts = "2025-09-11T22:25:29.333+0200";
+  novas_timespec t1 = {}, t2 = {};
+  double jd;
+
+  jd = novas_parse_date(ts, NULL);
+  novas_set_time(NOVAS_UTC, jd, 37, 0.014, &t1);
+  novas_set_str_time(NOVAS_UTC, ts, 37, 0.014, &t2);
+
+  if(!is_equal("set_str_time:diff", 0.0, novas_diff_time(&t1, &t2), 1e-3)) return 1;
   return 0;
 }
 
@@ -4554,7 +4567,8 @@ int main(int argc, char *argv[]) {
 
   // v1.1
   if(test_unix_time()) n++;
-  if(test_current_time()) n++;
+  if(test_set_current_time()) n++;
+  if(test_set_str_time()) n++;
   if(test_diff_time()) n++;
   if(test_standard_refraction()) n++;
   if(test_optical_refraction()) n++;

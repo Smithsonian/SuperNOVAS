@@ -20,15 +20,18 @@ from astropy.coordinates import SkyCoord,
    EarthLocation, Longitude, Latitude,
    CIRS
    
+   
+   
+   
+   
 # Define ICRS coordinates
 source = SkyCoord(
   '16h 29m 24.45970s', 
-  '−26d 25m 55.2094s,
+  '−26d 25m 55.2094s',
   d = u.AU / 5.89 * u.mas,
   pmra = -12.11 * u.mas / u.yr,
   pmdec = -23.30 * u.mas / u.yr,
   rv = -3.4 * u.km / u.s)
-
 
 # Observer location
 loc = EarthLocation.from_geodetic(
@@ -41,58 +44,60 @@ time = astropy.time.Time(
   "2025-02-27T19:57:00.728+0200"
   scale='tai')
 
-
-
 # Observer frame & system
 frame = CIRS(obstime=time, location=loc)
 
 
-
 # apparent coordinates
 apparent = source.transform_to(frame);
- 
  
 ```
 
 </td>
 <td>
 
+
+
+
+
+
+
+
 ```c
 #include <novas.h>
 
-
-
+cat_entry star;
+object source;
+observer loc;
+novas_timespec time;
+novas_frame frame;
+sky_pos apparent;
 
 // Define ICRS coordinates
-cat_entry star;
 make_cat_entry("Antares", "ICRS", 1, 
   novas_hms_hours("16h 29m 24.45970s"), 
   novas_dms_degrees("−26d 25m 55.2094s"),
   -12.11, -23.30, 5.89, -3.4, &star);
-
-object source;
+  
 make_cat_object(&star, &source);
 
+
 // Observer location
-observer loc;
 make_observer_on_surface(50.7374, 7.0982, 
   60.0, 0.0, 0.0, &loc);
 
 
+
 // Set time of observation
-novas_timespec time;
-novas_set_time(NOVAS_TAI, 
-  novas_parse_date(
-    "2025-02-27T19:57:00.728+0200", NULL), 
+novas_set_str_time(NOVAS_TAI,
+  "2025-02-27T19:57:00.728+0200", 
   LEAP_SECONDS, DUT1, &time);
 
 // Observer frame
-novas_frame frame;
 novas_make_frame(NOVAS_FULL_ACCURACY, 
   &loc, &time, DX, DY, &frame);
 
 // apparent coordinates
-sky_pos apparent;
 novas_sky_pos(&source, &frame, NOVAS_CIRS, 
   &apparent);
 ```

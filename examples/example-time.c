@@ -33,11 +33,11 @@
 
 
 int main() {
-  // SuperNOVAS variables -------------------------------------------------->
+  // SuperNOVAS variables --------------------------------------------------->
   // Astronomical time data for SuperNOVAS
   novas_timespec time1 = NOVAS_TIMESPEC_INIT, time2 = NOVAS_TIMESPEC_INIT, time3 = NOVAS_TIMESPEC_INIT;
 
-  // Calculated quantities ------------------------------------------------->
+  // Calculated quantities -------------------------------------------------->
   enum novas_timescale scale;   // astronomical timescale
   double jd;                    // [day] Julian days
   long ijd;                     // [day] integer part of Julian Day
@@ -47,9 +47,20 @@ int main() {
   double hours;                 // broken-down time-of-day component
   char timestamp[40];           // String timestamp, at leat 29 characters.
 
+  // Other used quantities -------------------------------------------------->
+  struct timespec unix_time;
+
 
   // -------------------------------------------------------------------------
-  // 1.a. Dates from strings...
+  // 1.a. Simple dates from strings...
+
+  // Use a UTC string date-time specification in YMD format
+  // (It could also be TAI, or GPS, or TDB...)
+  novas_set_str_time(NOVAS_UTC, "2025-01-29T18:09:29.333+0200", LEAP_SECONDS, DUT1, &time1);
+
+
+  // -------------------------------------------------------------------------
+  // 1.b. Dates from strings more generally...
 
   // - Parse a date/time string in YMD format -- there is a fait bit of
   //   flexibility on how the components are separated, but they must be year,
@@ -68,7 +79,7 @@ int main() {
 
 
   // -------------------------------------------------------------------------
-  // 1.b. Dates from broken-down time
+  // 1.c. Dates from broken-down time
 
   // - Use year, month, day, and time-of-day, e.g. 1974-01-31 23:30
   //   The date is in the astronomical calendar of date (as opposed to a fixed
@@ -81,7 +92,17 @@ int main() {
 
 
   // -------------------------------------------------------------------------
-  // 1.c. Current time...
+  // 1.d. UNIX time
+
+  // We'll set unix_time to current time, but it could be a UNIX timestamp...
+  clock_gettime(CLOCK_REALTIME, &unix_time);
+
+  // Use the UNIX time (seconds + nanoseconds) to define astrometric time
+  novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, LEAP_SECONDS, DUT1, &time3);
+
+
+  // -------------------------------------------------------------------------
+  // 1.e. Current time
 
   // Use the current UNIX time to set astronomical time
   novas_set_current_time(LEAP_SECONDS, DUT1, &time3);
