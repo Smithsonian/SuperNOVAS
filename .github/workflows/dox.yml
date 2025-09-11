@@ -79,8 +79,11 @@ jobs:
       run: cp -a CHANGELOG.md site/doc/
 
     - name: Copy API documentation
-      run: cp -a doc/html site/doc/
-
+      run: |
+        rm README.md
+        mv README-undecorated.md README.md
+        cp -a doc/html site/doc/
+        
     - name: Assert site/resources/
       run: mkdir -p site/resources
 

@@ -89,6 +89,35 @@ static int make_headless_readme() {
   return 0;
 }
 
+static int make_undecorated_readme() {
+  FILE *in, *out;
+  char docpath[1024] = {'\0'};
+  char line[16384] = {'\0'};
+  int head = 1;
+
+  in = openfile(outpath, "README.md", "r");
+  if(!in) return -1;
+
+  out = openfile(outpath, "README-undecorated.md", "w");
+  if(!out) {
+    fclose(in);
+    return -1;
+  }
+
+  while(fgets(line, sizeof(line) - 1, in) != NULL) {
+    char type[100] = {'\0'};
+
+    if(sscanf(line, "> [!%99[^]]]", type) == 1) sprintf(line, "__%s__\n\n", type);
+
+    fwrite(line, strlen(line), 1, out);
+  }
+
+  fclose(out);
+  fclose(in);
+
+  return 0;
+}
+
 // Syntax: docedit [docpath]
 // Generates:
 //   ../README.md --> README.md
@@ -102,6 +131,7 @@ int main(int argc, const char *argv[]) {
   }
 
   if(make_headless_readme() != 0) nerr++;
+  if(make_undecorated_readme() != 0) nerr++;
 
   return nerr;
 }

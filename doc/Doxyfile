@@ -1100,7 +1100,8 @@ RECURSIVE              = NO
 EXCLUDE                = ../RELEASE-HOWTO.md \
                          ../README.md \
                          ../CODE_OF_CONDUCT.md \
-                         NOVAS-legacy.md
+                         NOVAS-legacy.md \
+                         README-undecorated.md
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
