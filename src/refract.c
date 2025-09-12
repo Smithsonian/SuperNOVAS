@@ -127,9 +127,6 @@ double refract_astro(const on_surface *restrict location, enum novas_refraction_
 double refract(const on_surface *restrict location, enum novas_refraction_model model, double zd_obs) {
   static const char *fn = "refract";
 
-  // 's' is the approximate scale height of atmosphere in meters.
-  const double s = 9.1e3;
-  const double ct = 0.065;  // [C/m] averate temperature drop with altitude
   double p, t, h, r;
 
   if(model < 0 || model >= NOVAS_REFRACTION_MODELS) {
@@ -174,11 +171,10 @@ double refract(const on_surface *restrict location, enum novas_refraction_model 
     t = location->temperature;
   }
   else {
-    p = 1010.0 * exp(-location->height / s);
-    // AK: A very rough model of mean annual temperatures vs latitude
-    t = 30.0 - 30.0 * sin(location->latitude * DEGREE);
-    // AK: Estimated temperature drop due to elevation.
-    t -= location->height * ct;
+    on_surface site = *location;
+    novas_set_default_weather(&site);
+    p = site.pressure;
+    t = site.temperature;
   }
 
   h = 90.0 - zd_obs;
