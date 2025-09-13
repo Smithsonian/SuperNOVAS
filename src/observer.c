@@ -46,12 +46,8 @@
  * @return              0 if successful, -1 if a required argument is NULL, or 1 if the 'where'
  *                      argument is invalid.
  *
- * @sa make_observer_at_geocenter()
- * @sa make_itrf_observer()
- * @sa make_gps_observer()
- * @sa make_airborne_observer()
- * @sa make_observer_in_space()
- * @sa make_solar_system_observer()
+ * @sa make_observer_at_geocenter(), make_itrf_observer(), make_gps_observer(),
+ *     make_airborne_observer(), make_observer_in_space(), make_solar_system_observer()
  */
 short make_observer(enum novas_observer_place where, const on_surface *loc_surface, const in_space *loc_space, observer *obs) {
   static const char *fn = "make_observer";
@@ -105,9 +101,9 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
  * @param[out] obs    Pointer to data structure to populate.
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
- * @sa make_observer_in_space()
- * @sa make_observer_on_surface()
- * @sa place()
+ * @sa make_gps_observer(), make_itrf_observer(), make_observer_at_site(),
+ *     make_airborne_observer(), make_observer_in_space(), make_solar_system_observer()
+ * @sa novas_make_frame()
  */
 int make_observer_at_geocenter(observer *restrict obs) {
   prop_error("make_observer_at_geocenter", make_observer(NOVAS_OBSERVER_AT_GEOCENTER, NULL, NULL, obs), 0);
@@ -150,15 +146,9 @@ int make_observer_at_geocenter(observer *restrict obs) {
  *                      is outside of the [-90:90] range, or if the temperature or pressure values
  *                      are impossible for an Earth based observer (errno set to ERANGE).
  *
- * @sa make_itrf_observer()
- * @sa make_gps_observer()
- * @sa novas_set_weather()
- * @sa novas_cartesian_to_geodetic()
- * @sa novas_geodetic_to_cartesian()
- * @sa make_observer_in_space()
- * @sa make_observer_at_geocenter()
- * @sa NOVAS_GRS80_ELLIPSOID
- * @sa place()
+ * @sa make_itrf_observer(), make_gps_observer(), make_observer_at_site()
+ * @sa novas_set_weather(), novas_cartesian_to_geodetic(), novas_geodetic_to_cartesian(),
+ *     NOVAS_GRS80_ELLIPSOID, novas_make_frame()
  */
 int make_observer_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
         observer *restrict obs) {
@@ -182,11 +172,9 @@ int make_observer_on_surface(double latitude, double longitude, double height, d
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_gps_observer()
- * @sa make_itrf_site()
- * @sa make_gps_site()
- * @sa make_xyz_site()
- * @sa novas_set_default_weather()
+ * @sa make_itrf_observer(), make_gps_observer(), make_airborne_observer(),
+ *     make_observer_in_space(), make_observer_at_geocenter(), make_solar_system_observer()
+ * @sa make_itrf_site(), make_gps_site(), make_xyz_site(), novas_make_frame()
  */
 int make_observer_at_site(const on_surface *restrict site, observer *restrict obs) {
   static const char *fn = "make_observer_at_site";
@@ -208,6 +196,12 @@ int make_observer_at_site(const on_surface *restrict site, observer *restrict ob
  * International Terrestrial Reference Fram (ITRF) / GRS80 location, and sets mean (annual)
  * weather parameters based on that location.
  *
+ * For the highest precision (&mu;as level) applications you should make sure that the location
+ * provided here and the Earth-orientation parameters (EOP) used (in setting `novas_timescale`
+ * and in `novas_make_frame()`) are provided in the same ITRF realization. You can use
+ * `novas_itrf_transform_eop()` to change the ITRF realization for the EOP values,
+ * if necessary.
+ *
  * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
  * @param height        [m] Geodetic (ITRF / GRS80) altitude above sea level of the observer.
@@ -220,9 +214,9 @@ int make_observer_at_site(const on_surface *restrict site, observer *restrict ob
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_gps_observer()
- * @sa make_itrf_site()
- * @sa novas_set_default_weather()
+ * @sa make_gps_observer(), make_observer_at_site(), make_airborne_observer(),
+ *     make_observer_in_space(), make_observer_at_geocenter(), make_solar_system_observer()
+ * @sa make_itrf_site(), novas_set_default_weather(), novas_make_frame()
  */
 int make_itrf_observer(double latitude, double longitude, double height, observer *obs) {
   on_surface site = {};
@@ -234,6 +228,9 @@ int make_itrf_observer(double latitude, double longitude, double height, observe
 /**
  * Initializes an observer data structure for a ground-based observer with the specified GPS /
  * WGS84 location, and sets mean (annual) weather parameters based on that location.
+ *
+ * For the highest (&mu;as / mm level) precision, you probably should use an ITRF location
+ * instead of a GPS based location.
  *
  * @param latitude      [deg] Geodetic (GPS / WGS84) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (GPS / WGS84) longitude in degrees; east positive.
@@ -247,9 +244,9 @@ int make_itrf_observer(double latitude, double longitude, double height, observe
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_itrf_observer()
- * @sa make_gps_site()
- * @sa novas_set_default_weather()
+ * @sa make_itrf_observer(), make_observer_at_site(), make_airborne_observer(),
+ *     make_observer_in_space(), make_observer_at_geocenter(), make_solar_system_observer()
+ * @sa make_gps_site(), novas_set_default_weather(), novas_make_frame()
  */
 int make_gps_observer(double latitude, double longitude, double height, observer *obs) {
   on_surface site = {};
@@ -269,9 +266,9 @@ int make_gps_observer(double latitude, double longitude, double height, observer
  * @param[out] obs      Pointer to the data structure to populate
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
- * @sa make_observer_on_surface()
- * @sa make_observer_at_geocenter()
- * @sa place()
+ * @sa make_gps_observer(), make_itrf_observer(), make_observer_at_site(),
+ *     make_airborne_observer(), make_observer_at_geocenter(), make_solar_system_observer()
+ * @sa novas_make_frame()
  */
 int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer *obs) {
   static const char *fn = "make_observer_in_space";
@@ -326,14 +323,9 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  *                  or pressure values are impossible for an Earth based observer (errno set to
  *                  ERANGE).
  *
- * @sa make_itrf_observer()
- * @sa make_gps_observer()
- * @sa novas_set_weather()
- * @sa novas_cartesian_to_geodetic()
- * @sa make_in_space()
- * @sa ON_SURFACE_INIT
- * @sa ON_SURFACE_LOC
- * @sa NOVAS_GRS80_ELLIPSOID
+ * @sa make_itrf_site(), make_gps_site(), make_xyz_site()
+ * @sa novas_set_default_weather(), novas_cartesian_to_geodetic(), ON_SURFACE_INIT, ON_SURFACE_LOC,
+ *     NOVAS_GRS80_ELLIPSOID
  */
 int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
         on_surface *restrict loc) {
@@ -359,6 +351,12 @@ int make_on_surface(double latitude, double longitude, double height, double tem
  * Initializes an observing site with the specified International Terrestrial Reference Frame
  * (ITRF) / GRS80 location, and sets mean (annual) weather parameters based on that location.
  *
+ * For the highest precision (&mu;as level) applications you should make sure that the location
+ * provided here and the Earth-orientation parameters (EOP) used (in setting `novas_timescale`
+ * and in `novas_make_frame()`) are provided in the same ITRF realization. You can use
+ * `novas_itrf_transform_eop()` to change the ITRF realization for the EOP values,
+ * if necessary.
+ *
  * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
  * @param height        [m] Geodetic (ITRF / GRS80) altitude above sea level of the observer.
@@ -371,10 +369,9 @@ int make_on_surface(double latitude, double longitude, double height, double tem
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_itrf_observer()
- * @sa make_gps_site()
- * @sa make_xyz_site()
- * @sa novas_set_default_weather()
+ * @sa make_gps_site(), make_xyz_site()
+ * @sa make_itrf_observer(), make_observer_at_site(), novas_set_default_weather(),
+ *     novas_itrf_transform_eop()
  */
 int make_itrf_site(double latitude, double longitude, double height, on_surface *site) {
   static const char *fn = "make_itrf_site";
@@ -397,6 +394,9 @@ int make_itrf_site(double latitude, double longitude, double height, on_surface 
  * Initializes an observing site with the specified GPS / WGS84 location, and sets mean (annual)
  * weather parameters based on that location.
  *
+ * For the highest (&mu;as / mm level) precision, you probably should use an ITRF location
+ * instead of a GPS based location.
+ *
  * @param latitude      [deg] Geodetic (GPS / WGS84) latitude in degrees; north positive.
  * @param longitude     [deg] Geodetic (GPS / WGS84) longitude in degrees; east positive.
  * @param height        [m] Geodetic (GPS / WGS84) altitude above sea level of the observer.
@@ -409,10 +409,8 @@ int make_itrf_site(double latitude, double longitude, double height, on_surface 
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_itrf_observer()
- * @sa make_gps_site()
- * @sa make_xyz_site()
- * @sa novas_set_default_weather()
+ * @sa make_gps_site(), make_xyz_site()
+ * @sa make_itrf_observer(), make_observer_at_site(), novas_set_default_weather()
  */
 int make_gps_site(double latitude, double longitude, double height, on_surface *site) {
   double xyz[3] = {0.0};
@@ -428,6 +426,12 @@ int make_gps_site(double latitude, double longitude, double height, on_surface *
  * Initializes an observing site with the specified Cartesian geocentric _xyz_ location, and sets
  * mean (annual) weather parameters based on that location.
  *
+ * For the highest precision (&mu;as level) applications you should make sure that the site
+ * coordinates and the Earth-orientation parameters (EOP) used (in setting `novas_timescale` and in
+ * `novas_make_frame()`) are provided in the same ITRF realization. You can use
+ * `novas_itrf_transform()` or `novas_itrf_transform_eop()` to change the ITRF realization for the
+ * site coordinates and/or the EOP values, if necessary.
+ *
  * @param xyz           [m] Cartesian geocentric position.
  * @param[out] site     Pointer to the data structure to populate.
  *
@@ -438,10 +442,9 @@ int make_gps_site(double latitude, double longitude, double height, on_surface *
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_observer_at_site()
- * @sa make_gps_site()
- * @sa make_itrf_site()
- * @sa novas_set_default_weather()
+ * @sa make_gps_site(), make_itrf_site(), make_xyz_site()
+ * @sa make_observer_at_site(), novas_itrf_transform(), novas_itrf_transform_eop(),
+ *     novas_set_default_weather()
  */
 int make_xyz_site(const double *restrict xyz, on_surface *restrict site) {
   static const char *fn = "make_xyz_site";
@@ -466,9 +469,7 @@ int make_xyz_site(const double *restrict xyz, on_surface *restrict site) {
  * @param[out] loc  Pointer to earth-orbit location data structure to populate.
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
- * @sa make_observer_in_space()
- * @sa make_on_surface()
- * @sa IN_SPACE_INIT
+ * @sa make_observer_in_space(), IN_SPACE_INIT
  */
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc) {
   if(!loc)
@@ -499,15 +500,10 @@ int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc) {
  * @param[out] obs    Pointer to data structure to populate.
  * @return            0 if successful, or -1 if the output argument is NULL.
  *
- * @sa make_itrf_site()
- * @sa make_gps_site()
- * @sa make_xyz_site()
- * @sa make_observer_at geocenter()
- * @sa make_observer_in_space()
- * @sa make_observer_on_surface()
- * @sa make_solar_system_observer()
- * @sa novas_calc_geometric_position()
- * @sa place()
+ *
+ * @sa make_itrf_site(), make_gps_site(), make_xyz_site()
+ * @sa make_gps_observer(), make_itrf_observer(), make_observer_at_site(), make_observer_in_space(),
+ *     make_solar_system_observer(), make_observer_at geocenter(), novas_make_frame()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -535,12 +531,9 @@ int make_airborne_observer(const on_surface *location, const double *vel, observ
  * @param[out] obs      Pointer to the data structure to populate
  * @return              0 if successful, or -1 if the output argument is NULL.
  *
- * @sa make_observer_in_space()
- * @sa make_observer_on_surface()
- * @sa make_observer_at_geocenter()
- * @sa make_airborne_observer()
- * @sa novas_calc_geometric_position()
- * @sa place()
+ * @sa make_gps_observer(), make_itrf_observer(), make_observer_at_site(),
+ *     make_airborne_observer(), make_observer_in_space(), make_solar_system_observer()
+ * @sa novas_make_frame()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -578,7 +571,7 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
  *
  * @return            0 if successful, or -1 if any of the vector arguments are NULL.
  *
- * @sa place()
+ * @sa novas_make_frame()
  */
 int aberration(const double *pos, const double *vobs, double lighttime, double *out) {
   double p1mag, vemag, beta, cosd, gammai, p, q, r;
@@ -643,7 +636,7 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
  * @author Attila Kovacs
  * @since 1.3
  *
- * @see place()
+ * @see novas_make_frame()
  */
 int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
         const double *restrict geo_pos, const double *restrict geo_vel, double *restrict pos, double *restrict vel) {
@@ -737,8 +730,7 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * @return                0 if successful, or -1 if any of the essential pointer arguments is
  *                        NULL.
  *
- * @sa place()
- * @sa light_time2()
+ * @sa novas_make_frame(), light_time2()
  */
 int bary2obs(const double *pos, const double *pos_obs, double *out, double *restrict lighttime) {
   int j;
@@ -784,11 +776,8 @@ int bary2obs(const double *pos, const double *pos_obs, double *out, double *rest
  * @return              0 if successful, -1 if any of the pointer arguments is NULL or if the
  *                      output vector is the same as pos_obs, or the error from ephemeris().
  *
- * @sa enum novas_planet
- * @sa grav_planets()
- * @sa grav_undo_planets()
- * @sa set_planet_provider()
- * @sa set_planet_provider_hp()
+ * @sa enum novas_planet, grav_planets(), grav_undo_planets(), set_planet_provider(),
+ *     set_planet_provider_hp()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -888,8 +877,7 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restr
  *                    the algorithm failed to converge after 10 iterations, or 10 + the error
  *                    from ephemeris().
  *
- * @sa light_time()
- * @sa place()
+ * @sa light_time(), novas_make_frame()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -965,8 +953,7 @@ int light_time2(double jd_tdb, const object *restrict body, const double *restri
  *                    algorithm failed to converge after 10 iterations, or 10 + the error from
  *                    ephemeris().
  *
- * @sa light_time2()
- * @sa place()
+ * @sa light_time2(), novas_make_frame()
  */
 short light_time(double jd_tdb, const object *restrict body, const double *pos_obs, double tlight0, enum novas_accuracy accuracy,
         double *pos_src_obs, double *restrict tlight) {
@@ -990,8 +977,7 @@ short light_time(double jd_tdb, const object *restrict body, const double *pos_o
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_xyz_to_los()
- * @sa novas_uvw_to_xyz()
+ * @sa novas_xyz_to_los(), novas_uvw_to_xyz()
  */
 int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
   static const char *fn = "novas_los_to_xyz";
@@ -1046,8 +1032,7 @@ int novas_los_to_xyz(const double *los, double lon, double lat, double *xyz) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_los_to_xyz()
- * @sa novas_xyz_to_uvw()
+ * @sa novas_los_to_xyz(), novas_xyz_to_uvw()
  */
 int novas_xyz_to_los(const double *xyz, double lon, double lat, double *los) {
   static const char *fn = "novas_xyz_to_los";
@@ -1170,8 +1155,7 @@ int novas_uvw_to_xyz(const double *uvw, double ha, double dec, double *xyz) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_epa()
- * @sa novas_h2e_offset()
+ * @sa novas_epa(), novas_h2e_offset()
  */
 double novas_hpa(double az, double el, double lat) {
   double s, c;
@@ -1208,8 +1192,7 @@ double novas_hpa(double az, double el, double lat) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_hpa()
- * @sa novas_e2h_offset()
+ * @sa novas_hpa(), novas_e2h_offset()
  */
 double novas_epa(double ha, double dec, double lat) {
   double coslat;
@@ -1247,8 +1230,7 @@ double novas_epa(double ha, double dec, double lat) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_e2h_offset()
- * @sa novas_hpa()
+ * @sa novas_e2h_offset(), novas_hpa()
  */
 int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, double *restrict ddec) {
   double dx = daz, dy = del, c, s;
@@ -1290,8 +1272,7 @@ int novas_h2e_offset(double daz, double del, double pa, double *restrict dra, do
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_h2e_offset()
- * @sa novas_epa()
+ * @sa novas_h2e_offset(), novas_epa()
  */
 int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, double *restrict del) {
   return novas_h2e_offset(dra, ddec, pa, daz, del);
@@ -1325,12 +1306,8 @@ int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, d
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_itrf_observer()
- * @sa make_itrf_site()
- * @sa make_gps_observer()
- * @sa make_gps_site()
- * @sa make_xyz_site()
- * @sa NOVAS_STANDARD_ATMOSPHERE
+ * @sa make_itrf_observer(), make_gps_observer(), make_itrf_site(), make_gps_site(), make_xyz_site(),
+ *     NOVAS_STANDARD_ATMOSPHERE
  */
 int novas_set_default_weather(on_surface *site) {
   double ct;

@@ -209,7 +209,6 @@ static int novas_orbital_plane_pos(double M, double e, double *restrict E, doubl
  *
  * @sa ephemeris()
  * @sa novas_geom_posvel()
- * @sa place()
  * @sa make_orbital_object()
  *
  * @author Attila Kovacs
@@ -311,7 +310,6 @@ int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit
  *
  * @sa ephemeris()
  * @sa novas_geom_posvel()
- * @sa place()
  * @sa make_orbital_object()
  *
  * @author Attila Kovacs
