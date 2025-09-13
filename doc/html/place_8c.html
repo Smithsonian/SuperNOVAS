@@ -156,7 +156,8 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 5, 2025 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan</dd></dl>
-<p>Various convenience variants of the <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> function. </p>
+<p>Various convenience variants of the NOVAS C <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> function. Using <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> or one of its variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended, via <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> (for apparent positions, including aberration and gravitational deflection) or `novas_geom_posvel() (for geometric positions).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html">frames.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac28dd9a362982cfce150751001a96a8a" name="ac28dd9a362982cfce150751001a96a8a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac28dd9a362982cfce150751001a96a8a">&#9670;&#160;</a></span>app_planet()</h2>
@@ -196,7 +197,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000010">Deprecated</a></b></dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> or the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> are now preferred.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Deprecated</a></b></dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> or the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> are now preferred.</dd></dl>
 <p>Computes the apparent place of a solar system body. This is the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> for the body with NOVAS_TOD as the system, except the different set of return values used.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -271,7 +272,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000009">Deprecated</a></b></dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> or the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> are now preferred.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated</a></b></dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> or the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> are now preferred.</dd></dl>
 <p>Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with a NULL observer location and NOVAS_TOD as the system for an object that specifies the star.</p>
 <p>NOTES: </p><ol>
@@ -1475,7 +1476,7 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> is now preferred for topocentric calculations, especially when high precision is required.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> is now preferred for topocentric calculations, especially when high precision is required.</dd></dl>
 <p>Computes the topocentric apparent place of a solar system body at the specified time. This is the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> for the body for the same observer location and NOVAS_TOD as the reference system, except the different set of return values used.</p>
 <p>NOTES: </p><ol>
 <li>
@@ -1562,7 +1563,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> is now preferred for topocentric calculations, especially when high precision is required.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> is now preferred for topocentric calculations, especially when high precision is required.</dd></dl>
 <p>Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given its ICRS catalog place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with the same observer location and NOVAS_TOD for an object that specifies the star.</p>
 <p>NOTES: </p><ol>

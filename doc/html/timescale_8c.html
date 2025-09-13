@@ -154,8 +154,12 @@ Functions</h2></td></tr>
 <tr class="separator:a72245b3ea6099c573278f721a4bfd3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a084e5a2dcd20860af7176754d3a32202" id="r_a084e5a2dcd20860af7176754d3a32202"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a084e5a2dcd20860af7176754d3a32202">novas_print_timescale</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> scale, char *restrict buf)</td></tr>
 <tr class="separator:a084e5a2dcd20860af7176754d3a32202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a090f608cd5c82622e3534297fc27daa5" id="r_a090f608cd5c82622e3534297fc27daa5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time</a> (int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time)</td></tr>
+<tr class="separator:a090f608cd5c82622e3534297fc27daa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad47bcb1e3c5df56a0ffdf1a127e52598" id="r_ad47bcb1e3c5df56a0ffdf1a127e52598"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale, long ijd, double fjd, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time)</td></tr>
 <tr class="separator:ad47bcb1e3c5df56a0ffdf1a127e52598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5b82161f8eb474aaa650815b7ca66f" id="r_a4b5b82161f8eb474aaa650815b7ca66f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b5b82161f8eb474aaa650815b7ca66f">novas_set_str_time</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale, const char *restrict str, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time)</td></tr>
+<tr class="separator:a4b5b82161f8eb474aaa650815b7ca66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4a1a5180905a7d8f76aeafe3f9a8ebb" id="r_af4a1a5180905a7d8f76aeafe3f9a8ebb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time</a> (enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a> timescale, double jd, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time)</td></tr>
 <tr class="separator:af4a1a5180905a7d8f76aeafe3f9a8ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d54ea7c6cdbc75ee78cf552a7e1858d" id="r_a9d54ea7c6cdbc75ee78cf552a7e1858d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d54ea7c6cdbc75ee78cf552a7e1858d">novas_set_unix_time</a> (time_t unix_time, long nanos, int leap, double dut1, <a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict time)</td></tr>
@@ -217,9 +221,13 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
 <dl class="section return"><dt>Returns</dt><dd>[s] The TT - UT1 time difference that is suitable for used with all calls in this library that require a <code>ut1_to_tt</code> argument.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a> </dd>
 <dd>
-<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd>
 <dd>
-<a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></dd></dl>
+<a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a> </dd>
+<dd>
+<a class="el" href="#aaf53fcad3fade814381cef3d06779a8c">novas_time_gst()</a> </dd>
+<dd>
+<a class="el" href="#a9e99ea879ba0ddc1d9fbefc4b32b1ef1">novas_time_lst()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -1031,6 +1039,47 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 
 </div>
 </div>
+<a id="a090f608cd5c82622e3534297fc27daa5" name="a090f608cd5c82622e3534297fc27daa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a090f608cd5c82622e3534297fc27daa5">&#9670;&#160;</a></span>novas_set_current_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_set_current_time </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>leap</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dut1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>time</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the time eith the UNIX time obtained from the system clock. This is only as precise as the system clock is. You should generally make sure the sytem clock is synchronized to a time reference e.g. via ntp, preferably to a local time reference.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">leap</td><td>[s] Leap seconds, e.g. as published by IERS Bulletin C. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. If the time offset is defined for a different ITRS realization than what is used for the coordinates of an Earth-based observer, you can use <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to make it consistent. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">time</td><td>Pointer to the data structure that uniquely defines the astronomical time for all applications. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to indicate the type of error).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9d54ea7c6cdbc75ee78cf552a7e1858d">novas_set_unix_time()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="#a9d54ea7c6cdbc75ee78cf552a7e1858d">novas_set_unix_time()</a>.</p>
+
+</div>
+</div>
 <a id="ad47bcb1e3c5df56a0ffdf1a127e52598" name="ad47bcb1e3c5df56a0ffdf1a127e52598"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad47bcb1e3c5df56a0ffdf1a127e52598">&#9670;&#160;</a></span>novas_set_split_time()</h2>
 
@@ -1113,6 +1162,61 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 
 </div>
 </div>
+<a id="a4b5b82161f8eb474aaa650815b7ca66f" name="a4b5b82161f8eb474aaa650815b7ca66f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5b82161f8eb474aaa650815b7ca66f">&#9670;&#160;</a></span>novas_set_str_time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int novas_set_str_time </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="novas_8h.html#aa642c4ccc7195dc62fd0dc56567ebd0b">novas_timescale</a></td>          <td class="paramname"><span class="paramname"><em>timescale</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *restrict</td>          <td class="paramname"><span class="paramname"><em>str</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>leap</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>dut1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnovas__timespec.html">novas_timespec</a> *restrict</td>          <td class="paramname"><span class="paramname"><em>time</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets astronomical time in a specific timescale using a string specification. It is effectively just a shorthand for using <code><a class="el" href="#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a></code> followed by <code><a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a></code> and the error checking in-between.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">timescale</td><td>The astronomical time scale in which the Julian Date is given </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">str</td><td>The astronomical date specification, possibly including time and timezone, in a standard format. The date is assumed to be in the astronomical calendar of date, which differs from ISO 8601 timestamps for dates prior to the Gregorian calendar reform of 1582 October 15 (otherwise, the two are identical). See <code><a class="el" href="#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a></code> for more on acceptable formats. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">leap</td><td>[s] Leap seconds, e.g. as published by IERS Bulletin C. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dut1</td><td>[s] UT1-UTC time difference, e.g. as published in IERS Bulletin A, and possibly corrected for diurnal and semi-diurnal variations, e.g. via <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. If the time offset is defined for a different ITRS realization than what is used for the coordinates of an Earth-based observer, you can use <code><a class="el" href="itrf_8c.html#a3c8c9b8f709d1e5a7aa3a915f8fafcbb">novas_itrf_transform_eop()</a></code> to make it consistent. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">time</td><td>Pointer to the data structure that uniquely defines the astronomical time for all applications. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to indicate the type of error).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.5 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd>
+<dd>
+<a class="el" href="#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="#a4934da85b9722ef43a5b238f3e1971e4">novas_parse_date()</a>, and <a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a>.</p>
+
+</div>
+</div>
 <a id="af4a1a5180905a7d8f76aeafe3f9a8ebb" name="af4a1a5180905a7d8f76aeafe3f9a8ebb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">&#9670;&#160;</a></span>novas_set_time()</h2>
 
@@ -1161,6 +1265,10 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad47bcb1e3c5df56a0ffdf1a127e52598">novas_set_split_time()</a> </dd>
 <dd>
 <a class="el" href="#a9d54ea7c6cdbc75ee78cf552a7e1858d">novas_set_unix_time()</a> </dd>
+<dd>
+<a class="el" href="#a4b5b82161f8eb474aaa650815b7ca66f">novas_set_str_time()</a> </dd>
+<dd>
+<a class="el" href="#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time()</a> </dd>
 <dd>
 <a class="el" href="#ae30e3dd8e30bdcf4e8486cfce696fb98">novas_get_time()</a> </dd>
 <dd>
@@ -1219,7 +1327,9 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to indicate the type of error).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time()</a> </dd>
+<dd>
+<a class="el" href="#af4a1a5180905a7d8f76aeafe3f9a8ebb">novas_set_time()</a> </dd>
 <dd>
 <a class="el" href="#afa1a1d804ca70050418429f971c2045a">novas_get_unix_time()</a> </dd>
 <dd>

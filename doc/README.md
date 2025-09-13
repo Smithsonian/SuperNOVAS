@@ -198,7 +198,7 @@ accommodate JPL NAIF codes, for which 16-bit storage is insufficient.
 ### Build SuperNOVAS using GNU make
 
 The __SuperNOVAS__ distribution contains a GNU `Makefile`, which is suitable for compiling the library (as well as 
-local documentation, and tests, etc.) on POSIX systems such as Linux, BSD, Cygwin or WSL -- using 
+local documentation, and tests, etc.) on POSIX systems such as Linux, Mac OS X, BSD, Cygwin or WSL -- using 
 [GNU `make`](https://www.gnu.org/software/make/).
 
 
@@ -662,54 +662,57 @@ Next, we define the location where we observe from. Here we can (but don't have 
 ```c
  observer obs;    // Structure to contain observer location 
 
- // Specify the location we are observing from
+ // Specify the location we are observing from, e.g. a GPS / WGS84 location
  // 50.7374 deg N, 7.0982 deg E, 60m elevation
- make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs);
+ make_gps_observer(50.7374, 7.0982, 60.0, &obs);
 ```
 
-__NOTE__
+__TIP__
 
-> High-precision Earth-based observer locations should be specified on the GRS80 reference ellipsoid, which is 
-> slightly different from the WGS84 ellipsoid used for GPS coordinates. You can use `novas_geodetic_to_cartesian()` to 
-> convert locations to _xyz_ coordinates on one ellipsoid, and `novas_cartesian_to_geodetic()` to then _xyz_ to a 
-> location on another ellipsoid. For the highest precision, you might need to adjust _xyz_ coordinates between
-> different ITRF realizations at the mm level, using `novas_itrf_transform()` as necessary.
+> You might use `make_itrf_observer()` instead if the location is defined on the GRS80 reference ellipsoid, used e.g. 
+> for ITRF locations. Or, if you have geocentric Cartesian coordinates, you could use `make_xyz_site()` and then
+> `make_observer_at_site()`.
 
 Again you might use `novas_str_degrees()` for typical string representations of the longitude and latitude coordinates 
 here, such as:
 
 ```c
- make_observer_on_surface(
+ make_gps_observer(
    novas_str_degrees("50.7374N"),
    novas_str_degrees("7.0982 deg E"),
-   60.0, 0.0, 0.0, &obs);
+   60.0,
+   &obs);
 ```
 
 Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the 
-geocenter, or at the Solar-system barycenter. And, if you intend to use a refraction model that uses local weather 
-parameters you may specify humidity also, _after_ the call to `make_observer_on_surface()`, e.g.:
+geocenter, or at the Solar-system barycenter. The above also sets default, mean annual weather parameters based on
+the location and a global model based on Feulner et al. (2013). You can, of course, set actual weather values _after_, 
+as appropriate, if you need them for the refraction models, e.g.:
 
 ```c
-  ...
-  obs.on_surf.humidity = 48.3;	// [%] relative humidity to use for refraction.
+  obs.on_surf.temperature = 12.4;  // [C] Ambient temperature
+  obs.on_surf.pressure = 973.47;   // [mbar] Atmospheric pressure
+  obs.on_surf.humidity = 48.3;	   // [%] relative humidity to use for refraction.
 ```
 
 <a name="specify-time"></a>
 #### Specify the time of observation
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide __SuperNOVAS__ with the
-UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.042, 
-then we can set the time of observation, for example, using the current UNIX time:
+UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.042,
+
+```c
+  int leap_seconds = 37;        // [s] UTC - TAI time difference
+  double dut1 = 0.042;          // [s] UT1 - UTC time difference
+```
+ 
+Then we can set the time of observation, for example, using the current UNIX time:
 
 ```c
  novas_timespec obs_time;       // Structure that will define astrometric time
- struct timespec unix_time;     // Standard precision UNIX time structure
 
- // Get the current system time, with up to nanosecond resolution...
- clock_gettime(CLOCK_REALTIME, &unix_time);
- 
  // Set the time of observation to the precise UTC-based UNIX time
- novas_set_unix_time(unix_time.tv_sec, unix_time.tv_nsec, 37, 0.042, &obs_time);
+ novas_set_current_time(leap_seconds, dut1, &obs_time);
 ```
 
 Alternatively, you may set the time as a Julian date in the time measure of choice (UTC, UT1, TT, TDB, GPS, TAI, TCG, 
@@ -733,7 +736,7 @@ or, for the best precision we may do the same with an integer / fractional split
 Or, you might use string dates, such as an ISO timestamp:
 
 ```c
- novas_set_time(NOVAS_UTC, novas_date("2025-01-26T22:05:14.234+0200"), 37, 0.042, &obs_time);
+ novas_set_str_time(NOVAS_UTC, "2025-01-26T22:05:14.234+0200", leap_seconds, dut1, &obs_time);
 ```
 
 <a name="observing-frame"></a>

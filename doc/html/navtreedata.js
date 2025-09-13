@@ -173,9 +173,9 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "md__2github_2workspace_2CHANGELOG.html#autotoc_md42",
-"novas_8h.html#a85334614a0f399e0d3cbde68075d0766",
-"nutation_8h.html#a280cbf02b13ca57b3d77451be06e7dbc",
-"structnovas__orbital__system.html#adaabf923501a3a0a47a8958b6a33c6b3"
+"novas_8h.html#a81da80ae3ab1d0a444f39bde2af3a732",
+"novas_8h.html#aff8c2c3fae3be867d3fc73972a158514",
+"structnovas__orbital.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

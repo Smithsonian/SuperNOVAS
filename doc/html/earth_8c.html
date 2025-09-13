@@ -233,7 +233,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if the 'obs' is NULL or the two output vectors are the same, or else 1 if 'accuracy' is invalid, or 2 if 'obserrver-&gt;where' is invalid.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a> </dd>
 <dd>
 <a class="el" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a> </dd>
 <dd>
@@ -281,8 +281,7 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the input vectors is NULL or if either input position is a null vector (at the geocenter).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if either of the input vectors is NULL or if either input position is a null vector (at the geocenter). </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>, and <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>.</p>
 
@@ -740,11 +739,17 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if location is NULL or if the pos and vel output arguments are identical pointers.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="observer_8c.html#a42c084465aedee75965f74e23e6571fe">make_on_surface()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a> </dd>
 <dd>
-<a class="el" href="#ada5ca37110e66c8b65f623c9e26ae52e">geo_posvel()</a> </dd>
+<a class="el" href="#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a> </dd>
 <dd>
-<a class="el" href="#a6eacba14d3c382d67307856a2ea290e3">sidereal_time()</a> </dd></dl>
+<a class="el" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer()</a> </dd>
+<dd>
+<a class="el" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48">make_itrf_observer()</a> </dd>
+<dd>
+<a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a> </dd>
+<dd>
+<a class="el" href="observer_8c.html#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a0a84af1a760ed2aaa01dd93e9e22bdf1">NOVAS_KM</a>.</p>
 

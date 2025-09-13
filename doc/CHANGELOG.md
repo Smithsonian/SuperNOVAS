@@ -46,6 +46,22 @@ Upcoming feature release, expected around 1 November 2025.
    `novas_set_redshift()`; set parallax or distance (if any) with `novas_set_parallax()` or `novas_set_distance()`; 
    set proper motion (if any) with `novas_set_proper_motion()`; or add catalog information with `novas_set_catalog()`.
 
+ - #243: Added `novas_set_current_time()` to set astrometric time based on the current system clock UNIX time. The
+   new function makes a common use case more accessible, but you should make sure the system clock is well 
+   synchronized to a time reference (preferably a local one) for accuracy.
+   
+ - #244: Added `novas_set_str_time()` for convenience. It is the same as using `novas_parse_date()` followed by
+   `novas_set_time()` with error propagation in-between.
+
+ - #245: New `make_itrf_site()`, `make_gps_site()`, `make_xyz_site()`, `make_itrf_observer()`, `make_gps_observer()`,
+   `make_observer_at_site()` to facilitate the creation of sites / observers with GPS, ITRF or geocentry Cartesian
+   (_xyz_) site coordinates. All of the above will also initialize default weather parameters for the location, based
+   on simple global models of pressure scale height, annuaized mean temperatures, and typical humidity values for 
+   the altitude. 
+   
+ - #245: New `novas_set_default_weather()` initialize default weather parameters for the location, based on simple 
+   global models of pressure scale height, annuaized mean temperatures, and typical humidity values for the altitude. 
+
 ### Changed
 
  - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 
@@ -114,6 +130,11 @@ Upcoming feature release, expected around 1 November 2025.
  - #214: Deprecated `cio_basis()`. It is no longer used internally by the library, and users are recommended against 
    using it themselves, since SuperNOVAS provides cleaner ways to convert between GCRS and CIRS using frames and 
    transforms, or else via the `gcrs_to_cirs()` / `cirs_to_gcrs()` functions.
+   
+ - #245: Deprecated `make_on_surface()`, `make_observer_on_surface()`, and `make_observer()` functions. The first two 
+   did not disambiguate between GPS and ITRF locations, and also required to set some weather parameters, while did
+   not set humidity. There are a new set of functions (see further above) which provide more flexibility. And, 
+   `make_observer()` no longer supports all SuperNOVAS observer types, hence it's less relevant now.
    
    
 ## [1.4.2] - 2025-08-25

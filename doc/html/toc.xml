@@ -743,10 +743,15 @@
           <topic label="make_cat_object" href="novas_8h.html#ab9b7a622486f2904615ceed1ba94cd8f"/>
           <topic label="make_cat_object_sys" href="novas_8h.html#a5104d7db66ce2d8c61c7ad21599fb45e"/>
           <topic label="make_ephem_object" href="novas_8h.html#aa22303f98df2d63edf6d8452ff3a43b2"/>
+          <topic label="make_gps_observer" href="novas_8h.html#aa2f9fc986f99c1ec7092330dbf233fef"/>
+          <topic label="make_gps_site" href="novas_8h.html#ab5fb62a9fb185632175ae622bce28dea"/>
           <topic label="make_in_space" href="novas_8h.html#ac0ca6f330e1795ce811df95986400632"/>
+          <topic label="make_itrf_observer" href="novas_8h.html#ad8b2d2e6ca9570f09a0ca1f82957ed48"/>
+          <topic label="make_itrf_site" href="novas_8h.html#a236750f494f3dcd943e71ba24aa2a55b"/>
           <topic label="make_object" href="novas_8h.html#a859c6c09e05d95d047c92408454a1b1e"/>
           <topic label="make_observer" href="novas_8h.html#a8c060b573c5054e77a9fd9df2d785838"/>
           <topic label="make_observer_at_geocenter" href="novas_8h.html#aabb3ab0d99aa6e487cdcf6b454949b75"/>
+          <topic label="make_observer_at_site" href="novas_8h.html#aa82db32ce7b115db4f0a077ca899589b"/>
           <topic label="make_observer_in_space" href="novas_8h.html#a6c146e4d10152d5e1ffb978f2fc962be"/>
           <topic label="make_observer_on_surface" href="novas_8h.html#a5eb76fc6e7be571e228d23aee3823cb9"/>
           <topic label="make_on_surface" href="novas_8h.html#a42c084465aedee75965f74e23e6571fe"/>
@@ -755,6 +760,7 @@
           <topic label="make_redshifted_object" href="novas_8h.html#ae579a49d84696a913fd0d9f348bb5b11"/>
           <topic label="make_redshifted_object_sys" href="novas_8h.html#a257abae9391aec835dc2b94d9788b9f9"/>
           <topic label="make_solar_system_observer" href="novas_8h.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
+          <topic label="make_xyz_site" href="novas_8h.html#a9e3cbe310a40919ff94d2d530ffa74ee"/>
           <topic label="mean_obliq" href="novas_8h.html#af182ee8cc4239f581f746aa974827d61"/>
           <topic label="mean_star" href="novas_8h.html#aaf51bf000e993807101a34adf423d36b"/>
           <topic label="mod_to_gcrs" href="novas_8h.html#ad9cc07f0e6af9339096e15a440b113e5"/>
@@ -830,6 +836,8 @@
           <topic label="novas_rises_above" href="novas_8h.html#aaf38f64304fa0b00c9c56cead62043f3"/>
           <topic label="novas_sep" href="novas_8h.html#a9f33de2b26a19a5e20827e9e918b3375"/>
           <topic label="novas_set_catalog" href="novas_8h.html#a5e92f920835111db719e880a61248045"/>
+          <topic label="novas_set_current_time" href="novas_8h.html#a090f608cd5c82622e3534297fc27daa5"/>
+          <topic label="novas_set_default_weather" href="novas_8h.html#a0fc8f315f8606e09571ab49efb13baca"/>
           <topic label="novas_set_distance" href="novas_8h.html#aa076ebd4c967fb9afa24bd85feb84f63"/>
           <topic label="novas_set_lsr_vel" href="novas_8h.html#a4aa0c52a1d4838feb4255974486462a7"/>
           <topic label="novas_set_parallax" href="novas_8h.html#a69274f4ac2631335e1e901142d31f541"/>
@@ -837,6 +845,7 @@
           <topic label="novas_set_redshift" href="novas_8h.html#a4efac9e50efec20489d47726217e9c7e"/>
           <topic label="novas_set_split_time" href="novas_8h.html#ad47bcb1e3c5df56a0ffdf1a127e52598"/>
           <topic label="novas_set_ssb_vel" href="novas_8h.html#a45f7fdc15580138517ce452a236674d7"/>
+          <topic label="novas_set_str_time" href="novas_8h.html#a4b5b82161f8eb474aaa650815b7ca66f"/>
           <topic label="novas_set_time" href="novas_8h.html#af4a1a5180905a7d8f76aeafe3f9a8ebb"/>
           <topic label="novas_set_unix_time" href="novas_8h.html#a9d54ea7c6cdbc75ee78cf552a7e1858d"/>
           <topic label="novas_sets_below" href="novas_8h.html#a23af09cd8e5ec5ef4d0b03a347a4add0"/>
@@ -1092,18 +1101,25 @@
           <topic label="light_time" href="observer_8c.html#afb2cc37c7bdcd34c5c167afe092aed68"/>
           <topic label="light_time2" href="observer_8c.html#a5c940b62732d74e6c6b1c844931aaa76"/>
           <topic label="make_airborne_observer" href="observer_8c.html#aa423a88cd3f434642fc89d47390184f4"/>
+          <topic label="make_gps_observer" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef"/>
+          <topic label="make_gps_site" href="observer_8c.html#ab5fb62a9fb185632175ae622bce28dea"/>
           <topic label="make_in_space" href="observer_8c.html#ac0ca6f330e1795ce811df95986400632"/>
+          <topic label="make_itrf_observer" href="observer_8c.html#ad8b2d2e6ca9570f09a0ca1f82957ed48"/>
+          <topic label="make_itrf_site" href="observer_8c.html#a236750f494f3dcd943e71ba24aa2a55b"/>
           <topic label="make_observer" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2"/>
           <topic label="make_observer_at_geocenter" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75"/>
+          <topic label="make_observer_at_site" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b"/>
           <topic label="make_observer_in_space" href="observer_8c.html#a6c146e4d10152d5e1ffb978f2fc962be"/>
           <topic label="make_observer_on_surface" href="observer_8c.html#a5eb76fc6e7be571e228d23aee3823cb9"/>
           <topic label="make_on_surface" href="observer_8c.html#a42c084465aedee75965f74e23e6571fe"/>
           <topic label="make_solar_system_observer" href="observer_8c.html#a9c3f1a1bc3fd9ac6d211806913d2d529"/>
+          <topic label="make_xyz_site" href="observer_8c.html#a9e3cbe310a40919ff94d2d530ffa74ee"/>
           <topic label="novas_e2h_offset" href="observer_8c.html#a13cd0b80eaa7bc682013f7e8ffbdbd6f"/>
           <topic label="novas_epa" href="observer_8c.html#a095ba0ee644dc00c11dcdc5616bc96b0"/>
           <topic label="novas_h2e_offset" href="observer_8c.html#a7977de3e3edf8120b50cbd026c155f47"/>
           <topic label="novas_hpa" href="observer_8c.html#a73fcb54e47b2be0aa92810b5f55f7a3c"/>
           <topic label="novas_los_to_xyz" href="observer_8c.html#a601d246673742cf72a5dbe1449c97560"/>
+          <topic label="novas_set_default_weather" href="observer_8c.html#a0fc8f315f8606e09571ab49efb13baca"/>
           <topic label="novas_uvw_to_xyz" href="observer_8c.html#a16c920eee105431247e9a1d9bf1c3021"/>
           <topic label="novas_xyz_to_los" href="observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17"/>
           <topic label="novas_xyz_to_uvw" href="observer_8c.html#a87867e8e7fc7decaa44777a696465353"/>
@@ -1292,7 +1308,9 @@
           <topic label="novas_parse_iso_date" href="timescale_8c.html#ad53b3be5b92ea244cfb0347feb3bec9f"/>
           <topic label="novas_parse_timescale" href="timescale_8c.html#a72245b3ea6099c573278f721a4bfd3d9"/>
           <topic label="novas_print_timescale" href="timescale_8c.html#a084e5a2dcd20860af7176754d3a32202"/>
+          <topic label="novas_set_current_time" href="timescale_8c.html#a090f608cd5c82622e3534297fc27daa5"/>
           <topic label="novas_set_split_time" href="timescale_8c.html#ad47bcb1e3c5df56a0ffdf1a127e52598"/>
+          <topic label="novas_set_str_time" href="timescale_8c.html#a4b5b82161f8eb474aaa650815b7ca66f"/>
           <topic label="novas_set_time" href="timescale_8c.html#af4a1a5180905a7d8f76aeafe3f9a8ebb"/>
           <topic label="novas_set_unix_time" href="timescale_8c.html#a9d54ea7c6cdbc75ee78cf552a7e1858d"/>
           <topic label="novas_time_gst" href="timescale_8c.html#aaf53fcad3fade814381cef3d06779a8c"/>
