@@ -454,7 +454,7 @@ int make_xyz_site(const double *restrict xyz, on_surface *restrict site) {
     return novas_error(-1, EINVAL, fn, "input xzy position is NULL");
 
   prop_error(fn, novas_cartesian_to_geodetic(xyz, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt), 0);
-  prop_error(fn, make_itrf_site(lon, lat, alt, site), 0);
+  prop_error(fn, make_itrf_site(lat, lon, alt, site), 0);
   return 0;
 }
 
@@ -1324,12 +1324,13 @@ int novas_set_default_weather(on_surface *site) {
   site->temperature -= (site->height < 12000.0 ? site->height : 12000.0) * ct;
 
   // A simple model based on data from Mendez-Astudillo et al. (2021).
-  if(site->height > 20800.0) site->humidity = 0.0;
+  if(site->height >= 20800.0)
+    site->humidity = 0.0;
   else if(site->height > 8000.0) {
     double dh = (site->height - 14000.0) / 6000.0;
     site->humidity = 10.0 + 35.0 * (1.0 - dh * dh);
   }
-  else site->humidity = 0.70 - 0.0075 * site->height;
+  else site->humidity = 70.0 - 0.0075 * site->height;
 
   return 0;
 }

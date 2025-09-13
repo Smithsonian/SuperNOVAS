@@ -2435,6 +2435,44 @@ static int test_cat_entry() {
   return n;
 }
 
+static int test_make_itrf_site() {
+  int n = 0;
+  on_surface site;
+
+  if(check("make_itrf_site:site", -1, make_itrf_site(0.0, 0.0, 0.0, NULL))) n++;
+  if(check("make_itrf_site:lat:-91", -1, make_itrf_site(-91.0, 0.0, 0.0, &site))) n++;
+  if(check("make_itrf_site:lat:+91", -1, make_itrf_site(91.0, 0.0, 0.0, &site))) n++;
+
+  return n;
+}
+
+static int test_make_xyz_site() {
+  int n = 0;
+  on_surface site;
+  double xyz[3] = {0.0};
+
+  if(check("make_xyz_site:xyz", -1, make_xyz_site(NULL, &site))) n++;
+  if(check("make_xyz_site:site", -1, make_xyz_site(xyz, NULL))) n++;
+
+  return n;
+}
+
+static int test_make_observer_at_site() {
+  int n = 0;
+  observer obs;
+  on_surface site;
+
+  if(check("make_observer_at_site:site", -1, make_observer_at_site(NULL, &obs))) n++;
+  if(check("make_observer_at_site:obs", -1, make_observer_at_site(&site, NULL))) n++;
+
+  return n;
+}
+
+static int test_set_default_weather() {
+  if(check("set_default_weather", -1, novas_set_default_weather(NULL))) return 1;
+  return 0;
+}
+
 int main(int argc, const char *argv[]) {
   int n = 0;
 
@@ -2639,6 +2677,10 @@ int main(int argc, const char *argv[]) {
   if(test_clock_skew()) n++;
   if(test_cat_entry()) n++;
   if(test_set_str_time()) n++;
+  if(test_make_itrf_site()) n++;
+  if(test_make_xyz_site()) n++;
+  if(test_make_observer_at_site()) n++;
+  if(test_set_default_weather()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
