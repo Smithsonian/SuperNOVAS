@@ -599,8 +599,9 @@ enum novas_refraction_model {
   /// Do not apply atmospheric refraction correction
   NOVAS_NO_ATMOSPHERE = 0,
 
-  /// Uses a standard atmospheric model, ignoring all weather values defined for the specific
-  /// observing location
+  /// Uses a standard atmospheric model, ignoring any weather values defined for the specific
+  /// observing location.
+  /// @sa novas_set_default_weather()
   NOVAS_STANDARD_ATMOSPHERE,
 
   /// Uses the weather parameters that are specified together with the observing location.

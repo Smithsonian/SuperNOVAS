@@ -4524,6 +4524,24 @@ static int test_set_distance() {
   return n;
 }
 
+static int test_make_itrf_observer() {
+  int n = 0;
+  observer o1 = {}, o2 = {};
+
+  if(!is_ok("make_itrf_observer", make_itrf_observer(10.0, 20.0, 30.0, &o1))) n++;
+  make_observer_on_surface(10.0, 20.0, 30.0, 0.0, 0.0, &o2);
+  novas_set_default_weather(&o2.on_surf);
+
+  if(!is_equal("make_itrf_observer:lon", o1.on_surf.longitude, o2.on_surf.longitude, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:lat", o1.on_surf.latitude, o2.on_surf.latitude, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:alt", o1.on_surf.height, o2.on_surf.height, 1e-12)) n++;
+
+  if(!is_equal("make_itrf_observer:T", o1.on_surf.temperature, o2.on_surf.temperature, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:p", o1.on_surf.pressure, o2.on_surf.pressure, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:h", o1.on_surf.humidity, o2.on_surf.humidity, 1e-12)) n++;
+
+  return n;
+}
 
 int main(int argc, char *argv[]) {
   int n = 0;
@@ -4669,6 +4687,7 @@ int main(int argc, char *argv[]) {
   if(test_init_cat_entry()) n++;
   if(test_set_lsr_vel()) n++;
   if(test_set_distance()) n++;
+  if(test_make_itrf_observer()) n++;
 
   n += test_dates();
 
