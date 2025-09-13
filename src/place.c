@@ -4,7 +4,12 @@
  * @date Created  on Mar 5, 2025
  * @author Attila Kovacs and G. Kaplan
  *
- *  Various convenience variants of the place() function.
+ *  Various convenience variants of the NOVAS C place() function. Using `place()` or one of its
+ *  variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended,
+ *  via `novas_sky_pos()` (for apparent positions, including aberration and gravitational
+ *  deflection) or `novas_geom_posvel() (for geometric positions).
+ *
+ *  @sa frames.c
  */
 
 #include <string.h>
