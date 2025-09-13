@@ -64,9 +64,12 @@ typedef struct {
  * @return            0 if successful, or -1 if location is NULL or if the pos and vel output
  *                    arguments are identical pointers.
  *
- * @sa make_on_surface()
  * @sa geo_posvel()
  * @sa sidereal_time()
+ * @sa make_gps_observer()
+ * @sa make_itrf_observer()
+ * @sa make_observer_at_site()
+ * @sa make_airborne_observer()
  */
 int terra(const on_surface *restrict location, double lst, double *restrict pos, double *restrict vel) {
   static const char *fn = "terra";
@@ -678,7 +681,7 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
  *                    the same, or else 1 if 'accuracy' is invalid, or 2 if 'obserrver->where' is
  *                    invalid.
  *
- * @sa place()
+ * @sa novas_make_frame()
  * @sa make_observer()
  * @sa get_ut1_to_tt()
  */
@@ -807,7 +810,6 @@ short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, c
  * @return    0 if successful, or -1 if either of the input vectors is NULL or if either input
  *            position is a null vector (at the geocenter).
  *
- * @sa place()
  */
 int limb_angle(const double *pos_src, const double *pos_obs, double *restrict limb_ang, double *restrict nadir_ang) {
   static const char *fn = "limb_angle";

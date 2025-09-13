@@ -488,7 +488,7 @@ int radec2vector(double ra, double dec, double dist, double *restrict pos) {
  *                  (<i>Usage A</i>) or relative intermediate solar-system body
  *                  (<i>Usage B</i>); or else NAN if either of the input arguments is NULL.
  *
- * @sa place()
+ * @sa novas_make_frame()
  */
 double d_light(const double *pos_src, const double *pos_body) {
   double d_src;

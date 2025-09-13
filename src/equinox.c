@@ -117,11 +117,11 @@ double EPS_COR = 0.0;
  *
  * @sa wobble()
  * @sa e_tilt()
- * @sa place()
  * @sa cirs_to_itrs()
  * @sa tod_to_itrs()
  * @sa get_ut1_to_tt()
  * @sa sidereal_time()
+ * @sa NOVAS_TOD
  * @sa NOVAS_FULL_ACCURACY
  */
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2) {
@@ -234,7 +234,9 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
  *
  * @return          0 if successful, or -1 if the accuracy argument is invalid
  *
- * @sa place()
+ * @sa novas_gast()
+ * @sa nutation()
+ * @sa ira_equinox()
  * @sa equ2ecl()
  * @sa ecl2equ()
  */

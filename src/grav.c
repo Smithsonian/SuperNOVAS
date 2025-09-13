@@ -66,8 +66,8 @@ int grav_bodies_full_accuracy = DEFAULT_GRAV_BODIES_FULL_ACCURACY;
  *                    obs_planets().
  *
  * @sa grav_undef()
- * @sa place()
  * @sa novas_geom_to_app()
+ * @sa novas_app_to_geom()
  * @sa set_planet_provider()
  * @sa set_planet_provider_hp()
  * @sa grav_bodies_full_accuracy
@@ -122,7 +122,6 @@ short grav_def(double jd_tdb, enum novas_observer_place unused, enum novas_accur
  *                  deflection, components in AU. It can the same vector as the input.
  * @return          0 if successful, or -1 if any of the input vectors is NULL.
  *
- * @sa place()
  * @sa grav_def()
  */
 int grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out) {

@@ -473,7 +473,7 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  *                      arguments are NULL, or to some other value to indicate the type of error).
  *
  * @sa rad_vel()
- * @sa place()
+ * @sa novas_make_frame()
  * @sa novas_sky_pos()
  * @sa novas_v2z()
  *

@@ -76,8 +76,8 @@ make_cat_object(&star, &source);
 
 
 // Observer location
-make_observer_on_surface(50.7374, 7.0982, 
-  60.0, 0.0, 0.0, &loc);
+make_gps_observer(50.7374, 7.0982, 60.0,
+  &loc);
 
 
 

@@ -432,8 +432,10 @@ double get_utc_to_tt(int leap_seconds) {
  *                      calls in this library that require a <code>ut1_to_tt</code> argument.
  *
  * @sa get_utc_to_tt()
- * @sa place()
- * @sa cel_pole()
+ * @sa novas_set_time()
+ * @sa novas_gast()
+ * @sa novas_time_gst()
+ * @sa novas_time_lst()
  *
  * @since 1.0
  * @author Attila Kovacs

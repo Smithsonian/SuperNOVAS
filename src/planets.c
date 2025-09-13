@@ -511,7 +511,7 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
  *
  * @sa novas_sky_pos()
  * @sa novas_app_to_hor()
- * @sa make_frame()
+ * @sa novas_make_frame()
  */
 int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out) {
   static const char *fn = "novas_approx_sky_pos";
