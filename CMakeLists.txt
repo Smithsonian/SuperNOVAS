@@ -323,7 +323,7 @@ install(FILES CONTRIBUTING.md
 # For examples/ dir, list just the directory, not the individual files installed.
 install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/examples/*\")")
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples
-   DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+   DESTINATION ${CMAKE_INSTALL_DOCDIR}
    MESSAGE_NEVER
    COMPONENT Development
 )
@@ -331,7 +331,7 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/examples
 # For legacy/ dir, list just the directory, not the individual files installed.
 install(CODE "message(STATUS \"Installing: <prefix>/${CMAKE_INSTALL_DOCDIR}/legacy/*\")")
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/legacy
-   DESTINATION ${CMAKE_INSTALL_DOCDIR}/supernovas
+   DESTINATION ${CMAKE_INSTALL_DOCDIR}
    MESSAGE_NEVER
    COMPONENT Development
 )
