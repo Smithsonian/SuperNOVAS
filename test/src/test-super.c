@@ -4524,6 +4524,97 @@ static int test_set_distance() {
   return n;
 }
 
+static int test_make_itrf_observer() {
+  int n = 0;
+  observer o1 = {}, o2 = {};
+
+  if(!is_ok("make_itrf_observer", make_itrf_observer(10.0, 20.0, 30.0, &o1))) n++;
+
+  make_observer_on_surface(10.0, 20.0, 30.0, 0.0, 0.0, &o2);
+  novas_set_default_weather(&o2.on_surf);
+
+  if(!is_equal("make_itrf_observer:lon", o1.on_surf.longitude, o2.on_surf.longitude, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:lat", o1.on_surf.latitude, o2.on_surf.latitude, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:alt", o1.on_surf.height, o2.on_surf.height, 1e-12)) n++;
+
+  if(!is_equal("make_itrf_observer:T", o1.on_surf.temperature, o2.on_surf.temperature, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:p", o1.on_surf.pressure, o2.on_surf.pressure, 1e-12)) n++;
+  if(!is_equal("make_itrf_observer:h", o1.on_surf.humidity, o2.on_surf.humidity, 1e-12)) n++;
+
+  return n;
+}
+
+static int test_make_gps_observer() {
+  int n = 0;
+  observer o1 = {}, o2 = {};
+  double xyz[3] = {0.0}, lon = 0.0, lat = 0.0, alt = 0.0;
+
+  if(!is_ok("make_itrf_observer", make_gps_observer(10.0, 20.0, 30.0, &o1))) n++;
+
+  novas_geodetic_to_cartesian(20.0, 10.0, 30.0, NOVAS_WGS84_ELLIPSOID, xyz);
+  novas_cartesian_to_geodetic(xyz, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt);
+  make_observer_on_surface(lat, lon, alt, 0.0, 0.0, &o2);
+  novas_set_default_weather(&o2.on_surf);
+
+  if(!is_equal("make_gps_observer:lon", o1.on_surf.longitude, o2.on_surf.longitude, 1e-12)) n++;
+  if(!is_equal("make_gps_observer:lat", o1.on_surf.latitude, o2.on_surf.latitude, 1e-12)) n++;
+  if(!is_equal("make_gps_observer:alt", o1.on_surf.height, o2.on_surf.height, 1e-12)) n++;
+
+  if(!is_equal("make_gps_observer:T", o1.on_surf.temperature, o2.on_surf.temperature, 1e-12)) n++;
+  if(!is_equal("make_gps_observer:p", o1.on_surf.pressure, o2.on_surf.pressure, 1e-12)) n++;
+  if(!is_equal("make_gps_observer:h", o1.on_surf.humidity, o2.on_surf.humidity, 1e-12)) n++;
+
+  return n;
+}
+
+static int test_make_xyz_site() {
+  int n = 0;
+
+  on_surface s1 = {}, s2 = {};
+  double lon = 0.0, lat = 0.0, alt = 0.0;
+  double xyz[3] = { 1000.0, 2000.0, 3000.0 };
+
+  if(!is_ok("make_xyz_site", make_xyz_site(xyz, &s1))) n++;
+
+  novas_cartesian_to_geodetic(xyz, NOVAS_GRS80_ELLIPSOID, &lon, &lat, &alt);
+  make_itrf_site(lat, lon, alt, &s2);
+  novas_set_default_weather(&s2);
+
+  if(!is_equal("make_xyz_site:lon", s1.longitude, s2.longitude, 1e-12)) n++;
+  if(!is_equal("make_xyz_site:lat", s1.latitude, s2.latitude, 1e-12)) n++;
+  if(!is_equal("make_xyz_site:alt", s1.height, s2.height, 1e-12)) n++;
+
+  if(!is_equal("make_xyz_site:T", s1.temperature, s2.temperature, 1e-12)) n++;
+  if(!is_equal("make_xyz_site:p", s1.pressure, s2.pressure, 1e-12)) n++;
+  if(!is_equal("make_xyz_site:h", s1.humidity, s2.humidity, 1e-12)) n++;
+
+  return n;
+}
+
+static int test_set_default_weather() {
+  int n = 0.0;
+  on_surface site = {};
+
+  if(!is_ok("set_default_weather", novas_set_default_weather(&site))) n++;
+
+  if(!is_equal("set_default_weather:T", site.temperature, 27.0, 1e-12)) n++;
+  if(!is_equal("set_default_weather:p", site.pressure, 1010.0, 1e-12)) n++;
+  if(!is_equal("set_default_weather:h", site.humidity, 70.0, 1e-12)) n++;
+
+  site.height = 8000.0;
+  if(!is_ok("set_default_weather:alt=8000", novas_set_default_weather(&site))) n++;
+  if(!is_equal("set_default_weather:alt=8000:h", site.humidity, 10.0, 1e-12)) n++;
+
+  site.height = 14000.0;
+  if(!is_ok("set_default_weather:alt=14000", novas_set_default_weather(&site))) n++;
+  if(!is_equal("set_default_weather:alt=14000:h", site.humidity, 45.0, 1e-12)) n++;
+
+  site.height = 20800.0;
+  if(!is_ok("set_default_weather:alt=20800", novas_set_default_weather(&site))) n++;
+  if(!is_equal("set_default_weather:alt=20800:h", site.humidity, 0.0, 1e-12)) n++;
+
+  return n;
+}
 
 int main(int argc, char *argv[]) {
   int n = 0;
@@ -4669,6 +4760,10 @@ int main(int argc, char *argv[]) {
   if(test_init_cat_entry()) n++;
   if(test_set_lsr_vel()) n++;
   if(test_set_distance()) n++;
+  if(test_make_itrf_observer()) n++;
+  if(test_make_gps_observer()) n++;
+  if(test_make_xyz_site()) n++;
+  if(test_set_default_weather()) n++;
 
   n += test_dates();
 

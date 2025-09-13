@@ -377,8 +377,7 @@ void novas_case_sensitive(int value) {
  * @sa make_planet()
  * @sa make_ephem_object()
  * @sa make_orbital_object()
- * @sa novas_geom_posvel()
- * @sa place()
+ * @sa novas_make_frame()
  */
 short make_object(enum novas_object_type type, long number, const char *name, const cat_entry *star, object *source) {
   static const char *fn = "make_object";
@@ -433,8 +432,11 @@ short make_object(enum novas_object_type type, long number, const char *name, co
  * @return              0 if successful, or else -1 if the 'planet' pointer is NULL.
  *
  * @sa make_ephem_object()
- * @sa make_cat_entry()
- * @sa place()
+ * @sa make_orbital_object()
+ * @sa make_cat_object()
+ * @sa make_redshifted_object()
+ * @sa novas_case_sensitive()
+ * @sa novas_make_frame()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -464,11 +466,12 @@ int make_planet(enum novas_planet num, object *restrict planet) {
  *
  * @sa make_cat_object_sys()
  * @sa novas_init_cat_entry()
- * @sa make_cat_entry()
+ * @sa make_redshifted_object()
  * @sa make_planet()
  * @sa make_ephem_object()
- * @sa novas_geom_posvel()
- * @sa place()
+ * @sa make_orbital_object()
+ * @sa novas_case_sensitive()
+ * @sa novas_make_frame()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -515,9 +518,9 @@ static int cat_to_icrs(cat_entry *restrict star, const char *restrict system) {
  *
  * @sa make_cat_object()
  * @sa make_redshifted_object_sys()
+ * @sa novas_case_sensitive()
  * @sa novas_epoch()
- * @sa make_cat_entry()
- * @sa place()
+ * @sa novas_make_frame()
  * @sa NOVAS_SYSTEM_ICRS
  * @sa NOVAS_SYSTEM_HIP
  * @sa NOVAS_SYSTEM_J2000
@@ -633,7 +636,8 @@ int make_redshifted_object(const char *name, double ra, double dec, double z, ob
  * @sa make_redshifted_object()
  * @sa make_cat_object_sys()
  * @sa novas_epoch()
- * @sa place()
+ * @sa novas_case_sensitive()
+ * @sa novas_make_frame()
  * @sa NOVAS_SYSTEM_ICRS
  * @sa NOVAS_SYSTEM_HIP
  * @sa NOVAS_SYSTEM_J2000
@@ -673,9 +677,11 @@ int make_redshifted_object_sys(const char *name, double ra, double dec, const ch
  *
  * @sa set_ephem_provider()
  * @sa make_planet()
- * @sa make_cat_entry()
- * @sa novas_geom_posvel()
- * @sa place()
+ * @sa make_orbital_object()
+ * @sa make_cat_object()
+ * @sa make_redshifted_object()
+ * @sa novas_case_sensitive()
+ * @sa novas_make_frame()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -701,8 +707,10 @@ int make_ephem_object(const char *name, long num, object *body) {
  * @sa novas_orbit_posvel()
  * @sa make_planet()
  * @sa make_ephem_object()
- * @sa novas_geom_posvel()
- * @sa place()
+ * @sa make_cat_object()
+ * @sa make_redshifted_object()
+ * @sa novas_case_sensitive()
+ * @sa novas_make_frame()
  *
  * @since 1.2
  * @author Attila Kovacs

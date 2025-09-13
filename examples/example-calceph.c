@@ -120,9 +120,9 @@ int main(int argc, char *argv[]) {
   // or Sun orbit, at the geocenter or at the Solary-system barycenter...)
 
   // Specify the location we are observing from
-  // 50.7374 deg N, 7.0982 deg E, 60m elevation
-  // (We'll ignore the local weather parameters here, but you can set those too.)
-  if(make_observer_on_surface(50.7374, 7.0982, 60.0, 0.0, 0.0, &obs) != 0) {
+  // 50.7374 deg N, 7.0982 deg E, 60m elevation (GPS / WGS84)
+  // (You can set local weather parameters after...)
+  if(make_gps_observer(50.7374, 7.0982, 60.0, &obs) != 0) {
     fprintf(stderr, "ERROR! defining Earth-based observer location.\n");
     return 1;
   }

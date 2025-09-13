@@ -370,7 +370,7 @@ static int frame_aberration(const novas_frame *frame, int dir, double *pos) {
  *                !!! It cannot be NULL !!!
  * @return        boolean TRUE (1) if the frame has been initialized, or else FALSE (0).
  *
- * @sa make_frame()
+ * @sa novas_make_frame()
  */
 int novas_frame_is_initialized(const novas_frame *frame) {
   //if(!frame) return 0;
@@ -627,8 +627,7 @@ static int icrs_to_sys(const novas_frame *restrict frame, double *restrict pos, 
  * @sa novas_geom_to_app()
  * @sa novas_sky_pos()
  * @sa novas_transform_vector()
- * @sa place()
- * @sa cirs_to_tod()
+ * @sa novas_make_frame()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -750,9 +749,7 @@ int novas_geom_posvel(const object *restrict source, const novas_frame *restrict
  *
  * @sa novas_geom_to_app()
  * @sa novas_app_to_hor()
- * @sa place()
- * @sa cirs_to_tod()
- * @sa cirs_to_app_ra()
+ * @sa novas_make_frame()
  *
  * @since 1.1
  * @author Attila Kovacs

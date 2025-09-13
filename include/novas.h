@@ -599,8 +599,9 @@ enum novas_refraction_model {
   /// Do not apply atmospheric refraction correction
   NOVAS_NO_ATMOSPHERE = 0,
 
-  /// Uses a standard atmospheric model, ignoring all weather values defined for the specific
-  /// observing location
+  /// Uses a standard atmospheric model, ignoring any weather values defined for the specific
+  /// observing location.
+  /// @sa novas_set_default_weather()
   NOVAS_STANDARD_ATMOSPHERE,
 
   /// Uses the weather parameters that are specified together with the observing location.
@@ -1135,7 +1136,8 @@ typedef struct novas_object {
  * refraction calculations only.
  *
  * @sa observer
- * @sa make_on_surface()
+ * @sa make_itrf_site()
+ * @sa make_gps_site()
  * @sa ON_SURFACE_INIT
  * @sa ON_SURFACE_LOC
  */
@@ -2267,6 +2269,21 @@ int novas_set_proper_motion(cat_entry *source, double pm_ra, double pm_dec);
 int novas_set_parallax(cat_entry *source, double mas);
 
 int novas_set_distance(cat_entry *source, double parsecs);
+
+// in observer.c
+int make_itrf_observer(double latitude, double longitude, double height, observer *obs);
+
+int make_gps_observer(double latitude, double longitude, double height, observer *obs);
+
+int make_observer_at_site(const on_surface *restrict site, observer *restrict obs);
+
+int make_itrf_site(double latitude, double longitude, double height, on_surface *site);
+
+int make_gps_site(double latitude, double longitude, double height, on_surface *site);
+
+int make_xyz_site(const double *restrict xyz, on_surface *restrict site);
+
+int novas_set_default_weather(on_surface *site);
 
 
 // <================= END of SuperNOVAS API =====================>

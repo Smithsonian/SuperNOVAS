@@ -55,8 +55,7 @@ static double lambda = NOVAS_DEFAULT_WAVELENGTH;      ///< [&mu;m] Observing wav
  * @return              [deg] the calculated optical refraction. (to ~0.1 arcsec accuracy),
  *                      or 0.0 if the location is NULL or the option is invalid.
  *
- * @sa refract()
- * @sa itrs_to_hor()
+ * @sa refract(), itrs_to_hor()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -120,16 +119,11 @@ double refract_astro(const on_surface *restrict location, enum novas_refraction_
  * @return              [deg] the calculated optical refraction or 0.0 if the location is
  *                      NULL or the option is invalid or the 'zd_obs' is invalid (&lt;90&deg;).
  *
- * @sa refract_astro()
- * @sa hor_to_itrs()
- *
+ * @sa refract_astro(), hor_to_itrs()
  */
 double refract(const on_surface *restrict location, enum novas_refraction_model model, double zd_obs) {
   static const char *fn = "refract";
 
-  // 's' is the approximate scale height of atmosphere in meters.
-  const double s = 9.1e3;
-  const double ct = 0.065;  // [C/m] averate temperature drop with altitude
   double p, t, h, r;
 
   if(model < 0 || model >= NOVAS_REFRACTION_MODELS) {
@@ -174,11 +168,10 @@ double refract(const on_surface *restrict location, enum novas_refraction_model 
     t = location->temperature;
   }
   else {
-    p = 1010.0 * exp(-location->height / s);
-    // AK: A very rough model of mean annual temperatures vs latitude
-    t = 30.0 - 30.0 * sin(location->latitude * DEGREE);
-    // AK: Estimated temperature drop due to elevation.
-    t -= location->height * ct;
+    on_surface site = *location;
+    novas_set_default_weather(&site);
+    p = site.pressure;
+    t = site.temperature;
   }
 
   h = 90.0 - zd_obs;
@@ -219,8 +212,7 @@ static double novas_refraction(enum novas_refraction_model model, const on_surfa
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
- * @sa refract_astro()
- * @sa itrs_to_hor()
+ * @sa refract_astro(), itrs_to_hor()
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -261,11 +253,8 @@ double novas_inv_refract(RefractionModel model, double jd_tt, const on_surface *
  * @return          [deg] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
- * @sa novas_app_to_hor()
- * @sa novas_optical_refraction()
- * @sa NOVAS_STANDARD_ATMOSPHERE()
- * @sa refract()
- * @sa refract_astro()
+ * @sa novas_optical_refraction(), novas_radio_refraction(), novas_wave_refraction()
+ * @sa refract(), refract_astro()
  */
 double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   double dz = novas_refraction(NOVAS_STANDARD_ATMOSPHERE, loc, type, el);
@@ -278,23 +267,22 @@ double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas
 
 /**
  * Returns an optical refraction correction using the weather parameters defined for the observer
- * location.
+ * location. As such, make sure that temperature and pressure are defined, e.g. set after
+ * calling e.g. `make_gps_site()`, `make_itrf_site(), `make_xyz_site()`, or similar call that
+ * initializes the observing site.
  *
  * @param jd_tt     [day] Terrestrial Time (TT) based Julian data of observation (unused in this
  *                  implementation of RefractionModel)
  * @param loc       Pointer to structure defining the observer's location on earth, and local
- *                  weather
+ *                  weather values (temperature and pressure are used by this call).
  * @param type      Whether the input elevation is observed or astrometric: NOVAS_REFRACT_OBSERVED
  *                  (-1) or NOVAS_REFRACT_ASTROMETRIC (0).
  * @param el        [deg] Astrometric (unrefracted) source elevation
  * @return          [arcsec] Estimated refraction, or NAN if there was an error (it should also
  *                  set errno to indicate the type of error).
  *
- * @sa novas_app_to_hor()
- * @sa novas_optical_refraction()
- * @sa NOVAS_STANDARD_ATMOSPHERE()
- * @sa refract()
- * @sa refract_astro()
+ * @sa novas_wave_refraction(), novas_radio_refraction(), novas_standard_refraction()
+ * @sa refract(), refract_astro()
  */
 double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   double dz = novas_refraction(NOVAS_WEATHER_AT_LOCATION, loc, type, el);
@@ -306,10 +294,13 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
 }
 
 /**
- * Atmospheric refraction model for radio wavelengths (Berman &amp; Rockwell 1976). It uses the
- * weather parameters defined for the location, including humidity. As such, make sure the weather
- * data is fully defined, and that the humidity was explicitly set after calling
- * `make_on_surface()`.
+ * Atmospheric refraction model for radio wavelengths (Berman &amp; Rockwell 1976).
+ *
+ *
+ * It uses the weather parameters defined for the location, including humidity. As such, make sure
+ * the weather data is fully defined, and that the humidity was explicitly set after calling e.g.
+ * `make_gps_site()`, `make_itrf_site(), `make_xyz_site()`, or similar call that initializes the
+ * observing site.
  *
  * Adapted from FORTAN code provided by Berman &amp; Rockwell 1976.
  *
@@ -331,9 +322,8 @@ double novas_optical_refraction(double jd_tt, const on_surface *loc, enum novas_
  *                  is NULL, or if the weather parameters are way outside of their resonable
  *                  ranges, or if the elevation is outside the supported [-1:90] range.
  *
- * @sa novas_optical_refraction()
- * @sa make_on_surface()
- * @sa on_surface
+ * @sa novas_optical_refraction(), novas_wave_refraction(), novas_standard_refraction()
+ * @sa make_itrf_site(), make_gps_site(), make_xyz_site(), make_itrf_observer(), make_gps_observer()
  */
 double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   static const char *fn = "novas_radio_refraction";
@@ -416,8 +406,7 @@ double novas_radio_refraction(double jd_tt, const on_surface *loc, enum novas_re
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_wave_refraction()
- * @sa NOVAS_DEFAULT_WAVELENGTH
+ * @sa novas_wave_refraction(), NOVAS_DEFAULT_WAVELENGTH
  */
 int novas_refract_wavelength(double microns) {
   if(microns <= 0.0 || microns != microns)
@@ -445,7 +434,8 @@ int novas_refract_wavelength(double microns) {
  *
  * The function uses the weather parameters defined for the location, including humidity. As such,
  * make sure the weather data is fully defined, and that the humidity was explicitly set after
- * calling `make_on_surface()`.
+ * calling e.g. `make_gps_site()`, `make_itrf_site(), `make_xyz_site()`, or similar call that
+ * initializes the observing site.
  *
  * According to the documentation of SOFA's `iauRefco()` function, the model has the following
  * accuracy for elevation angles between 15 and 75 degrees, under a range of typical surface
@@ -515,11 +505,8 @@ int novas_refract_wavelength(double microns) {
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_refract_wavelength()
- * @sa novas_optical_refraction()
- * @sa novas_radio_refraction()
- * @sa make_on_surface()
- * @sa on_surface
+ * @sa novas_refract_wavelength(), novas_optical_refraction(), novas_radio_refraction()
+ * @sa make_gps_site(), make_itrf_site(), make_xyz_site(), make_gps_observer(), make_itrf_observer()
  */
 double novas_wave_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el) {
   static const char *fn = "novas_wave_refration";
