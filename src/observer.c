@@ -1280,7 +1280,7 @@ int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, d
 
 /**
  * Sets default weather parameters based on an approximate global model to the mean annualized
- * temperatures, based on Feulner et al. (2013), and scaling relations with altitude.
+ * temperatures, based on Feulner et al. (2013), and scaling relations with altitude (up to 12 km).
  *
  * Humidity is set to 70% at sea level (which is a typical value globally), and adjusted to
  * decrease with altitude linearly at a rate of 7.5% per km up to 8000 meters. Above that a
@@ -1306,7 +1306,7 @@ int novas_e2h_offset(double dra, double ddec, double pa, double *restrict daz, d
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa make_itrf_observer(), make_gps_observer(), make_itrf_site(), make_gps_site(), make_xyz_site(),
+ * @sa make_itrf_site(), make_gps_site(), make_xyz_site(), make_itrf_observer(), make_gps_observer(),
  *     NOVAS_STANDARD_ATMOSPHERE
  */
 int novas_set_default_weather(on_surface *site) {
@@ -1321,9 +1321,9 @@ int novas_set_default_weather(on_surface *site) {
   // A rough model of mean surface temperature based on Feulner et al. (2013)
   ct = site->latitude < ANTARCTIC_LATITUDE ? ANTARCTIC_ADIABATIC_LAPSE_RATE : MOIST_ADIABATIC_LAPSE_RATE;
   site->temperature = 47.0 * cos(site->latitude * DEGREE) - 20.0;
-  site->temperature -= site->height * ct;
+  site->temperature -= (site->height < 12000.0 ? site->height : 12000.0) * ct;
 
-  // A simple model based on data from Mendes-Astudillo et al. (2021).
+  // A simple model based on data from Mendez-Astudillo et al. (2021).
   if(site->height > 20800.0) site->humidity = 0.0;
   else if(site->height > 8000.0) {
     double dh = (site->height - 14000.0) / 6000.0;
