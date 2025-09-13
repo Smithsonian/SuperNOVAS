@@ -1868,6 +1868,9 @@ Below is a non-exhaustive overview new features added by __SuperNOVAS__ on top o
  - Functions to calculate the rate at which an observer's clock ticks differently from a standard astronomical
    timescale, due to the gravitational potential around the observer and the observer's movement.
    
+ - New functions to simplify the handling ground-based observing locations (GPS vs ITRF vs Cartesian locations), 
+   including setting default weather values, at least until actual values are specified if needed.
+   
  - GNU `make` build support for Mac OS X and FreeBSD (co-authored with Kiran Shila).
  
  - CMake build support (co-authored with Kiran Shila).
