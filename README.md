@@ -1719,13 +1719,13 @@ aberration and gravitational deflection corrections from the observer's point of
 
  | Description                         | accuracy  | positions / sec |
  |:----------------------------------- |:---------:| ---------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         3100653 |
- |                                     |   full    |         3093511 |
- | `place()`, same time, same observer | reduced   |          829483 |
+ | `novas_sky_pos()`, same frame       | reduced   |         3130414 |
+ |                                     |   full    |         3149028 |
+ | `place()`, same time, same observer | reduced   |          831101 |
  |                                     |   full    |          831015 |
- | `novas_sky_pos()`, individual       | reduced   |          161932 |
+ | `novas_sky_pos()`, individual       | reduced   |          168212 |
  |                                     |   full    |           25943 |
- | `place()`, individual               | reduced   |          166714 |
+ | `place()`, individual               | reduced   |          167475 |
  |                                     |   full    |           25537 |
 
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
@@ -1749,12 +1749,12 @@ under the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
 </details>
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
-repeatedly calculating positions for sources for the same instant of time and same observer location, providing 4--5 
+repeatedly calculating positions for sources for the same instant of time and same observer location, providing 3--4
 times faster performance than `place()` with the same observer and time. The same performance is maintained even when 
 cycling through different frames, a usage scenario in which the performance advantage over `place()` may be up to 2 
 orders of magnitude. When observing frames are reused, the performance is essentially independent of the accuracy. By 
-contrast, calculations for individual observing times or observer locations are generally around 4x faster if reduced 
-accuracy is sufficient.
+contrast, calculations for individual observing times or observer locations are generally around twice a fast if 
+reduced accuracy is sufficient.
 
 The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
 expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
