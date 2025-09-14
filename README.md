@@ -87,7 +87,7 @@ __SuperNOVAS__ is really quite easy to use. Its new API is just as simple and in
 we strive for it to be), and it is similarly well documented also (see the 
 [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)). You can typically achieve the 
 same results with 
-[similar lines of code](https://smithsonian.github.io/SuperNOVAS/doc/SuperNOVAS_vs_astropy.html) 
+[similar lines of code](https://github.com/Smithsonian/SuperNOVAS/blob/main/doc/SuperNOVAS_vs_astropy.md) 
 with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
 the lack of `try / except` style constructs in C).
  
