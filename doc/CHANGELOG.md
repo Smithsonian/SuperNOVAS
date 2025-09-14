@@ -14,10 +14,10 @@ Upcoming feature release, expected around 1 November 2025.
 ### Added
 
  - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
-   Sidereal Times for a given UT1 date. The new functions are meant to replace the old NOVAS C `sidereal_time()` with
-   a simpler, cleaner interface.
+   Sidereal Times for a given UT1 date. The new functions are meant to provide a cleaner, simpler alternative the old 
+   NOVAS C `sidereal_time()`.
    
- - #215: New functions `novas_diurnal_eop()`, `novas_duirnal_ocean_tides()` and `novas_diurnal_libration()` to 
+ - #215: New functions `novas_diurnal_eop()`, `novas_diurnal_ocean_tides()` and `novas_diurnal_libration()` to 
    calculate corrections to the Earth orientation parameters published by IERS, to include the effect of libration and 
    ocean tides. Such corrections are necessary if needing or using ITRS / TIRS coordinates with accuracy below the 
    milli-arcsecond (mas) level.
@@ -30,7 +30,7 @@ Upcoming feature release, expected around 1 November 2025.
    geocentric _xyz_ station coordinates and geodetic (longitude, latitude, altitude) coordinates on the
    reference ellipsoid of choice, and vice versa. The latter function is adapted from the IERS `GCONV2.F` routine.
    
- - #221: Now supporting Mac OS X builds, which are different from standard UNIX build, via GNU `make` also (in 
+ - #221: Now supporting Mac OS X builds, which are different from the standard UNIX build, via GNU `make` also (in 
    collaboration with kiranshila).
    
  - #222: CMake build support, e.g for Mac OS X or Windows builds also, with further tweaks in #228, #229, #230, #234, 
@@ -38,7 +38,7 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #223: New functions `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged 
    (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 
-   astronomical timescale. All timescales, except UT1, are supported (see also #232 and #233). 
+   astronomical timescale. All reference timescales, except UT1, are supported (see also #232 and #233). 
 
  - #239: New step-by-step approach to populate astormetric data for catalog sources, complementing the one-step
    `make_cat_entry()`. Start with `novas_init_cat_entry()` specifying the name and the R.A. / Dec coordinates, and 
@@ -56,11 +56,14 @@ Upcoming feature release, expected around 1 November 2025.
  - #245: New `make_itrf_site()`, `make_gps_site()`, `make_xyz_site()`, `make_itrf_observer()`, `make_gps_observer()`,
    `make_observer_at_site()` to facilitate the creation of sites / observers with GPS, ITRF or geocentry Cartesian
    (_xyz_) site coordinates. All of the above will also initialize default weather parameters for the location, based
-   on simple global models of pressure scale height, annuaized mean temperatures, and typical humidity values for 
+   on simple global models of pressure scale height, annualized mean temperatures, and typical humidity values for 
    the altitude. 
    
- - #245: New `novas_set_default_weather()` initialize default weather parameters for the location, based on simple 
-   global models of pressure scale height, annuaized mean temperatures, and typical humidity values for the altitude. 
+ - #245: New `novas_set_default_weather()` to initialize default weather parameters for the location, based on simple 
+   global models of pressure scale height, annualized mean temperatures, and typical humidity values for the altitude. 
+
+ - #246: New `novas_geodetic_transform_site()` and `novas_itrf_transform_site()` convenience functions to make it 
+   simpler to change the reference ellipsoid or the ITRF realization of an `on_surface` data structure, respectively.
 
 ### Changed
 
@@ -134,7 +137,8 @@ Upcoming feature release, expected around 1 November 2025.
  - #245: Deprecated `make_on_surface()`, `make_observer_on_surface()`, and `make_observer()` functions. The first two 
    did not disambiguate between GPS and ITRF locations, and also required to set some weather parameters, while did
    not set humidity. There are a new set of functions (see further above) which provide more flexibility. And, 
-   `make_observer()` no longer supports all SuperNOVAS observer types, hence it's less relevant now.
+   `make_observer()` no longer supports all SuperNOVAS observer types, hence it's less relevant now than the targeted 
+   set of SuperNOVAS functions available for every type of observer.
    
    
 ## [1.4.2] - 2025-08-25
