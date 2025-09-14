@@ -62,6 +62,9 @@ Upcoming feature release, expected around 1 November 2025.
  - #245: New `novas_set_default_weather()` initialize default weather parameters for the location, based on simple 
    global models of pressure scale height, annuaized mean temperatures, and typical humidity values for the altitude. 
 
+ - #246: New `novas_geodetic_trasnform_site()` and `novas_itrf_transform_site()` convenience functions to make it 
+   simpler to change the reference ellipsoid or the ITRF realization of an `on_surface` data structure, respectively.
+
 ### Changed
 
  - #208: `cio_location()` now always returns the CIO's right ascension relative to the true equinox of date (on the 

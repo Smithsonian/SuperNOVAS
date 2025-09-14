@@ -2244,6 +2244,11 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
 
 int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt);
 
+int novas_itrf_transform_site(int from_year, const on_surface *in, int to_year, on_surface *out);
+
+int novas_geodetic_transform_site(enum novas_reference_ellipsoid from_ellipsoid, const on_surface *in,
+        enum novas_reference_ellipsoid to_ellipsoid, on_surface *out);
+
 // in timescale.c
 double novas_clock_skew(const novas_frame *frame, enum novas_timescale timescale);
 

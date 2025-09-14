@@ -217,7 +217,7 @@ static void itrf_rotation(const double *in, const double *R, double *out) {
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_itrf_transform_eop()
+ * @sa novas_itrf_transform_site(), novas_itrf_transform_eop()
  * @sa novas_geodetic_to_cartesian()
  */
 int novas_itrf_transform(int from_year, const double *restrict from_coords, const double *restrict from_rates,
@@ -269,6 +269,9 @@ int novas_itrf_transform(int from_year, const double *restrict from_coords, cons
 
 /**
  * Transforms Earth orientation parameters (xp, yp, dUT1) from one ITRF realization to another.
+ * For the highest precision applications, observing sites should be defined in the same ITRF
+ * realization as the IERS Earth orientation parameters (EOP). To reconcile you may transform
+ * either the site location or the EOP between different realizations to match.
  *
  * REFERENCES:
  * <ol>
@@ -297,7 +300,8 @@ int novas_itrf_transform(int from_year, const double *restrict from_coords, cons
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_itrf_transform()
+ * @sa novas_itrf_transform(), novas_itrf_transform_site()
+ * @sa novas_make_frame(), novas_timespec, wobble()
  */
 int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, double from_dut1,
         int to_year, double *restrict to_xp, double *restrict to_yp, double *restrict to_dut1) {
@@ -319,6 +323,91 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
   // UT +- 1/f R3
   if(to_dut1)
     *to_dut1 = from_dut1 + T0.R[2] / NOVAS_EARTH_FLATTENING * (NOVAS_DAY / TWOPI);
+
+  return 0;
+}
+
+/**
+ * Transforms a geodetic location between two ITRF realizations. ITRF realizations differ at the
+ * mm / &mu;as level. Thus for the highest accuracy astrometry, from e.g. VLBI sites, it may be
+ * desirable to ensure that the site coordinates are defined for the same ITRF realization, as
+ * the one in which Earth-orientation parameters (EOP) are provided for `novas_make_frame()`,
+ * `novas_timespec`, or `wobble()`.
+ *
+ * @param from_year       [yr] ITRF realization year of input coordinates / rates. E.g. 1992 for
+ *                        ITRF92.
+ * @param[in] in          Input site, defined in the original ITRF realization.
+ * @param to_year         [yr] ITRF realization year of input coordinates / rates. E.g. 2000 for
+ *                        ITRF2000.
+ * @param[out] out        Output site, calculated for the final ITRF realization. It may be the
+ *                        same as the input.
+ * @return                0 if successful, or else -1 if either site pointer is NULL (errno set to
+ *                        EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_itrf_transform_eop(), novas_itrf_transform(), make_itrf_site(), make_itrf_observer()
+ * @sa novas_transform_ellipsoid()
+ */
+int novas_itrf_transform_site(int from_year, const on_surface *in, int to_year, on_surface *out) {
+  static const char *fn = "novas_itrf_transform_site";
+
+  double xyz[3] = {0.0};
+
+  if(!in)
+    return novas_error(-1, EINVAL, fn, "input site is NULL");
+
+  if(!out)
+    return novas_error(-1, EINVAL, fn, "output site is NULL");
+
+  novas_geodetic_to_cartesian(in->longitude, in->latitude, in->height, NOVAS_GRS80_ELLIPSOID, xyz);
+  novas_itrf_transform(from_year, xyz, NULL, to_year, xyz, NULL);
+  novas_cartesian_to_geodetic(xyz, NOVAS_GRS80_ELLIPSOID, &out->longitude, &out->latitude, &out->height);
+
+  out->temperature = in->temperature;
+  out->pressure = in->pressure;
+  out->humidity = in->humidity;
+
+  return 0;
+}
+
+/**
+ * Transforms a geodetic location from one reference ellipsoid to another. For example to transform
+ * a GPS location (defined on the WGS84 ellipsoid) to an ITRF location (defined on the GRS80
+ * ellipsoid), or vice versa.
+ *
+ * @param from_ellipsoid    Reference ellipsoid of the input coordinates.
+ * @param[in] in            Input site, defined on the original reference ellipsoid.
+ * @param to_ellipsoid      Reference ellipsoid for which to calculate output coordinates.
+ * @param[out] out          Output site, calculated for the final reference ellipsoid. It may be
+ *                          the same as the input.
+ * @return                  0 if successful, or else -1 if either site pointer is NULL (errno set
+ *                          to EINVAL).
+ *
+ * @since 1.5
+ * @author Attila Kovacs
+ *
+ * @sa novas_itrf_transform_site(), make_gps_site(), make_itrf_site()
+ */
+int novas_geodetic_transform_site(enum novas_reference_ellipsoid from_ellipsoid, const on_surface *in,
+        enum novas_reference_ellipsoid to_ellipsoid, on_surface *out) {
+  static const char *fn = "novas_transform_ellipsoid";
+
+  double xyz[3] = {0.0};
+
+  if(!in)
+    return novas_error(-1, EINVAL, fn, "input site is NULL");
+
+  if(!out)
+    return novas_error(-1, EINVAL, fn, "output site is NULL");
+
+  prop_error(fn, novas_geodetic_to_cartesian(in->longitude, in->latitude, in->height, from_ellipsoid, xyz), 0);
+  prop_error(fn, novas_cartesian_to_geodetic(xyz, to_ellipsoid, &out->longitude, &out->latitude, &out->height), 0);
+
+  out->temperature = in->temperature;
+  out->pressure = in->pressure;
+  out->humidity = in->humidity;
 
   return 0;
 }
@@ -380,7 +469,7 @@ static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, do
  * @author Attila Kovacs
  *
  * @sa novas_cartesian_to_geodetic()
- * @sa novas_itrf_transform()
+ * @sa novas_itrf_transform_site(), novas_itrf_transform()
  */
 int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *x) {
   static const char *fn = "novas_geodetic_to_cartesian";
@@ -448,6 +537,7 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
  * @author Attila Kovacs
  *
  * @sa novas_geodetic_to_cartesian()
+ * @sa novas_itrf_transform(), novas_itrf_transform_site()
  */
 int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt) {
   static const char *fn = "novas_cartesian_to_geodetic";

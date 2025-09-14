@@ -2473,6 +2473,26 @@ static int test_set_default_weather() {
   return 0;
 }
 
+static int test_itrf_transform_site() {
+  int n = 0;
+  on_surface site = {};
+
+  if(check("itrf_transform_site:in", -1, novas_itrf_transform_site(2003, NULL, 2014, &site))) n++;
+  if(check("itrf_transform_site:out", -1, novas_itrf_transform_site(2003, &site, 2014, NULL))) n++;
+
+  return n;
+}
+
+static int test_transform_geodetic() {
+  int n = 0;
+  on_surface site = {};
+
+  if(check("transform_geodetic:in", -1, novas_geodetic_transform_site(NOVAS_WGS84_ELLIPSOID, NULL, NOVAS_GRS80_ELLIPSOID, &site))) n++;
+  if(check("transform_geodetic:out", -1, novas_geodetic_transform_site(NOVAS_WGS84_ELLIPSOID, &site, NOVAS_GRS80_ELLIPSOID, NULL))) n++;
+
+  return n;
+}
+
 int main(int argc, const char *argv[]) {
   int n = 0;
 
@@ -2681,6 +2701,8 @@ int main(int argc, const char *argv[]) {
   if(test_make_xyz_site()) n++;
   if(test_make_observer_at_site()) n++;
   if(test_set_default_weather()) n++;
+  if(test_itrf_transform_site()) n++;
+  if(test_transform_geodetic()) n++;
 
   if(n) fprintf(stderr, " -- FAILED %d tests\n", n);
   else fprintf(stderr, " -- OK\n");
