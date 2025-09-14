@@ -4616,6 +4616,41 @@ static int test_set_default_weather() {
   return n;
 }
 
+static int test_itrf_transform_site() {
+  int n = 0;
+  on_surface itrf0 = {}, itrf1 = {};
+  double xyz[3] = {0.0};
+
+  if(!is_ok("itrf_transform_site", novas_itrf_transform_site(1988, &itrf0, 2014, &itrf1))) n++;
+
+  novas_geodetic_to_cartesian(itrf0.longitude, itrf0.latitude, itrf0.height, NOVAS_GRS80_ELLIPSOID, xyz);
+  novas_itrf_transform(1988, xyz, NULL, 2014, xyz, NULL);
+  novas_cartesian_to_geodetic(xyz, NOVAS_GRS80_ELLIPSOID, &itrf0.longitude, &itrf0.latitude, &itrf0.height);
+
+  if(!is_equal("itrf_transform_site:lon", itrf0.longitude, itrf1.longitude, 1e-12)) n++;
+  if(!is_equal("itrf_transform_site:lat", itrf0.latitude, itrf1.latitude, 1e-12)) n++;
+  if(!is_equal("itrf_transform_site:alt", itrf0.height, itrf1.height, 1e-12)) n++;
+
+  return n;
+}
+
+static int test_geodetic_transform_site() {
+  int n = 0;
+  on_surface gps = {}, itrf0 = {}, itrf1 = {};
+  double xyz[3] = {0.0};
+
+  novas_geodetic_to_cartesian(gps.longitude, gps.latitude, gps.height, NOVAS_WGS84_ELLIPSOID, xyz);
+  novas_cartesian_to_geodetic(xyz, NOVAS_GRS80_ELLIPSOID, &itrf0.longitude, &itrf0.latitude, &itrf0.height);
+
+  if(!is_ok("geodetic_transform_site", novas_geodetic_transform_site(NOVAS_WGS84_ELLIPSOID, &gps, NOVAS_GRS80_ELLIPSOID, &itrf1))) n++;
+
+  if(!is_equal("geodetic_transform_site:lon", itrf1.longitude, itrf0.longitude, 1e-12)) n++;
+  if(!is_equal("geodetic_transform_site:lat", itrf1.latitude, itrf0.latitude, 1e-12)) n++;
+  if(!is_equal("geodetic_transform_site:alt", itrf1.height, itrf0.height, 1e-12)) n++;
+
+  return n;
+}
+
 int main(int argc, char *argv[]) {
   int n = 0;
 
@@ -4764,6 +4799,8 @@ int main(int argc, char *argv[]) {
   if(test_make_gps_observer()) n++;
   if(test_make_xyz_site()) n++;
   if(test_set_default_weather()) n++;
+  if(test_itrf_transform_site()) n++;
+  if(test_geodetic_transform_site()) n++;
 
   n += test_dates();
 

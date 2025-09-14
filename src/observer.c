@@ -216,7 +216,8 @@ int make_observer_at_site(const on_surface *restrict site, observer *restrict ob
  *
  * @sa make_gps_observer(), make_observer_at_site(), make_airborne_observer(),
  *     make_observer_in_space(), make_observer_at_geocenter(), make_solar_system_observer()
- * @sa make_itrf_site(), novas_set_default_weather(), novas_make_frame()
+ * @sa make_itrf_site(), novas_itrf_transform_site(), novas_set_default_weather(),
+ *     novas_make_frame()
  */
 int make_itrf_observer(double latitude, double longitude, double height, observer *obs) {
   on_surface site = {};
@@ -246,7 +247,8 @@ int make_itrf_observer(double latitude, double longitude, double height, observe
  *
  * @sa make_itrf_observer(), make_observer_at_site(), make_airborne_observer(),
  *     make_observer_in_space(), make_observer_at_geocenter(), make_solar_system_observer()
- * @sa make_gps_site(), novas_set_default_weather(), novas_make_frame()
+ * @sa make_gps_site(), novas_set_default_weather(), novas_make_frame(),
+ *     novas_geodetic_transform_site()
  */
 int make_gps_observer(double latitude, double longitude, double height, observer *obs) {
   on_surface site = {};
@@ -371,7 +373,7 @@ int make_on_surface(double latitude, double longitude, double height, double tem
  *
  * @sa make_gps_site(), make_xyz_site()
  * @sa make_itrf_observer(), make_observer_at_site(), novas_set_default_weather(),
- *     novas_itrf_transform_eop()
+ *     novas_itrf_transform_site(), novas_itrf_transform_eop()
  */
 int make_itrf_site(double latitude, double longitude, double height, on_surface *site) {
   static const char *fn = "make_itrf_site";
