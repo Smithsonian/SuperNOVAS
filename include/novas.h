@@ -1189,7 +1189,7 @@ typedef struct novas_in_space {
 /**
  * Observer location.
  *
- * @sa make_itrf_observer(), make_gsp_observer(), make_observer_at_site(),
+ * @sa make_itrf_observer(), make_gps_observer(), make_observer_at_site(),
  *     make_airborne_observer(), make_observer_at_geocenter(), make_observer_in_space(),
  *     make_solar_system_observer(), OBSERVER_INIT
  * @sa novas_make_frame()
