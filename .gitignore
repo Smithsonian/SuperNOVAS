@@ -15,6 +15,7 @@
 **/gmon.out
 site/**
 *.swp
+.pydevproject
 README-headless.md
 README-orig.md
 UsersGuide.md
