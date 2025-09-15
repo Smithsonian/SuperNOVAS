@@ -64,14 +64,9 @@ static int is_case_sensitive = 0; ///< (boolean) whether object names are case-s
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_ssb_vel()
- * @sa novas_set_lsr_vel()
- * @sa novas_set_redshift()
- * @sa novas_set_proper_motion()
- * @sa novas_set_parallax()
- * @sa novas_set_distance()
- * @sa novas_set_cat_info()
- * @sa novas_make_cat_entry()
+ * @sa novas_set_ssb_vel(), novas_set_lsr_vel(), novas_set_redshift(), novas_set_proper_motion(),
+ *     novas_set_parallax(), novas_set_distance(), novas_set_cat_info(), novas_make_cat_entry()
+ * @sa novas_str_hours(), novas_str_degrees()
  */
 int novas_init_cat_entry(cat_entry *restrict source, const char *restrict name, double ra, double dec) {
   static const char *fn = "novas_init_cat_entry";
@@ -595,9 +590,8 @@ int make_redshifted_cat_entry(const char *name, double ra, double dec, double z,
  * @return            0 if successful, or 5 if 'name' is too long, else -1 if the 'source'
  *                    pointer is NULL.
  *
- * @sa make_redshifted_object_sys()
- * @sa make_cat_object()
- * @sa novas_v2z()
+ * @sa make_redshifted_object_sys(), make_cat_object(), novas_v2z()
+ * @sa novas_str_hours(), novas_str_degrees()
  *
  * @since 1.2
  * @author Attila Kovacs
@@ -633,15 +627,10 @@ int make_redshifted_object(const char *name, double ra, double dec, double z, ob
  *                      out of legal range or 5 if 'name' is too long.
  *
  *
- * @sa make_redshifted_object()
- * @sa make_cat_object_sys()
- * @sa novas_epoch()
- * @sa novas_case_sensitive()
- * @sa novas_make_frame()
- * @sa NOVAS_SYSTEM_ICRS
- * @sa NOVAS_SYSTEM_HIP
- * @sa NOVAS_SYSTEM_J2000
- * @sa NOVAS_SYSTEM_B1950
+ * @sa make_redshifted_object(), make_cat_object_sys(), novas_epoch(), novas_case_sensitive(),
+ *     novas_make_frame()
+ * @sa novas_str_hours(), novas_str_degrees(), NOVAS_SYSTEM_ICRS, NOVAS_SYSTEM_HIP,
+ *     NOVAS_SYSTEM_J2000, NOVAS_SYSTEM_B1950
  *
  * @since 1.3
  * @author Attila Kovacs

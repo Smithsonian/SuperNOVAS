@@ -39,11 +39,10 @@
 
  * @return            0 if successful, or else 1 if the value of 'coord_sys' is invalid.
  *
- * @sa ecl2equ_vec()
- * @sa equ2ecl()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa ecl2equ_vec(), equ2ecl()
  */
 int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double elon, double elat,
         double *restrict ra, double *restrict dec) {
@@ -93,10 +92,10 @@ int ecl2equ(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy
  * @return            0 if successful, or -1 if either of the output pointer arguments
  *                    are NULL.
  *
- * @sa equ2gal()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa equ2gal()
  */
 int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec) {
   double pos1[3], pos2[3], xyproj, coslat;
@@ -148,13 +147,10 @@ int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec)
  *                   if not required.
  * @return           0 if successful, or else -1 if the location or the input vector is NULL.
  *
- * @sa hor_to_itrs()
- * @sa cirs_to_itrs()
- * @sa tod_to_itrs()
- * @sa refract_astro()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa hor_to_itrs(), cirs_to_itrs(), tod_to_itrs(), refract_astro()
  */
 int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs, double *restrict az, double *restrict za) {
   double uze[3], une[3], uwe[3];
@@ -230,13 +226,10 @@ int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs
  * @param[out] itrs  Unit 3-vector direction in Earth-fixed ITRS frame
  * @return           0 if successful, or else -1 if the location or the input vector is NULL.
  *
- * @sa itrs_to_hor()
- * @sa itrs_to_cirs()
- * @sa itrs_to_tod()
- * @sa refract()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa itrs_to_hor(), itrs_to_cirs(), itrs_to_tod(), refract()
  */
 int hor_to_itrs(const on_surface *restrict location, double az, double za, double *restrict itrs) {
   double in[3], uze[3], une[3], uwe[3];
@@ -364,9 +357,7 @@ int equ2gal(double ra, double dec, double *restrict glon, double *restrict glat)
  *                    equinox of date.
  * @return            0 if successful, or else 1 if the value of 'coord_sys' is invalid.
  *
- * @sa equ2ecl_vec()
- * @sa ecl2equ()
- *
+ * @sa equ2ecl_vec(), ecl2equ()
  */
 short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy, double ra, double dec,
         double *restrict elon, double *restrict elat) {
@@ -419,8 +410,7 @@ short equ2ecl(double jd_tt, enum novas_equator_type coord_sys, enum novas_accura
  * @return            0 if successful, -1 if either vector argument is NULL or the accuracy
  *                    is invalid, or else 1 if the value of 'coord_sys' is invalid.
  *
- * @sa equ2ecl()
- * @sa ecl2equ_vec()
+ * @sa equ2ecl(), ecl2equ_vec()
  */
 short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy,
         const double *in, double *out) {
@@ -497,8 +487,7 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  * @return            0 if successful, -1 if either vector argument is NULL or the accuracy
  *                    is invalid, or else 1 if the value of 'coord_sys' is invalid.
  *
- * @sa ecl2equ()
- * @sa equ2ecl_vec()
+ * @sa ecl2equ(), equ2ecl_vec()
  */
 short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy,
         const double *in, double *out) {
@@ -614,10 +603,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *                    to true equator and equinox of date. (It may be NULL if not required)
  * @return            0 if successful, or -1 if one of the 'zd' or 'az' output pointers are NULL.
  *
- * @sa itrs_to_hor()
- * @sa tod_to_itrs()
- * @sa NOVAS_TOD
- *
+ * @sa itrs_to_hor(), tod_to_itrs(), NOVAS_TOD
  */
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
         const on_surface *restrict location, double ra, double dec, enum novas_refraction_model ref_option,

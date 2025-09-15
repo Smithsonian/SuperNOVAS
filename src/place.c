@@ -37,12 +37,8 @@
  *                  10 + the error code from solarsystem(), or 20 + the error code from
  *                  readeph().
  *
- * @sa set_planet_provider()
- * @sa set_planet_provider_hp()
- * @sa set_ephem_provider()
- * @sa ephem_open()
- * @sa make_planet()
- * @sa make_ephem_object()
+ * @sa set_planet_provider(), set_planet_provider_hp(), set_ephem_provider()
+ * @sa make_planet(), make_ephem_object()
  */
 short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum novas_origin origin,
         enum novas_accuracy accuracy, double *restrict pos, double *restrict vel) {
@@ -217,15 +213,8 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
  *                      80--90: error is 80 + error from cio_location(),<br>
  *                      90--100: error is 90 + error from cio_basis().
  *
- * @sa novas_geom_posvel()
- * @sa novas_sky_pos()
- * @sa place_star()
- * @sa place_icrs()
- * @sa place_gcrs()
- * @sa place_cirs()
- * @sa radec_star()
- * @sa radec_planet()
- * @sa cel_pole()
+ * @sa novas_geom_posvel(), novas_sky_pos(), place_star(), place_icrs(), place_gcrs(), place_cirs(),
+ *     radec_star(), radec_planet()
  * @sa get_ut1_to_tt()
  */
 short place(double jd_tt, const object *restrict source, const observer *restrict location, double ut1_to_tt, enum novas_reference_system coord_sys,
@@ -442,10 +431,10 @@ short place(double jd_tt, const object *restrict source, const observer *restric
  *                  else 1 if the observer location is invalid, or an error code from
  *                  place().
  *
- * @sa get_ut1_to_tt()
- *
  * @author Attila Kovacs
  * @since 1.0
+ *
+ * @sa get_ut1_to_tt()
  */
 int place_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt,
         enum novas_reference_system system, enum novas_accuracy accuracy, sky_pos *restrict pos) {
@@ -493,10 +482,10 @@ int place_star(double jd_tt, const cat_entry *restrict star, const observer *res
  * @return          0 if successful, -1 if a required pointer argument is NULL, or else
  *                  20 + the error code from place_star().
  *
- * @sa radec_planet()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa radec_planet()
  */
 int radec_star(double jd_tt, const cat_entry *restrict star, const observer *restrict obs, double ut1_to_tt,
         enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec,
@@ -556,10 +545,10 @@ int radec_star(double jd_tt, const cat_entry *restrict star, const observer *res
  *                  the value of 'where' in structure 'location' is invalid, or 10 + the
  *                  error code from place().
  *
- * @sa radec_star()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa radec_star()
  */
 int radec_planet(double jd_tt, const object *restrict ss_body, const observer *restrict obs, double ut1_to_tt,
         enum novas_reference_system sys, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec,
@@ -633,14 +622,8 @@ int radec_planet(double jd_tt, const object *restrict ss_body, const observer *r
  * @return          0 if successful, -1 if a required pointer argument is NULL, or else an
  *                  the error from make_object(), or 20 + the error from place().
  *
- * @sa place_tod()
- * @sa novas_sky_pos()
- * @sa place_star()
- * @sa astro_star()
- * @sa local_star()
- * @sa topo_star()
- * @sa virtual_star()
- * @sa app_planet()
+ * @sa place_tod(), novas_sky_pos(), place_star(), astro_star(), local_star(), topo_star(),
+ *     virtual_star(), app_planet()
  */
 short app_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec) {
@@ -673,13 +656,8 @@ short app_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy
  * @return          0 if successful, or -1 if a required pointer argument is NULL, or
  *                  20 + the error from place().
  *
- * @sa place_star()
- * @sa place_gcrs()
- * @sa app_star()
- * @sa astro_star()
- * @sa local_star()
- * @sa topo_star()
- * @sa virtual_planet()
+ * @sa place_star(), place_gcrs(), app_star(), astro_star(), local_star(), topo_star(),
+ *     virtual_planet()
  */
 short virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec) {
@@ -715,13 +693,8 @@ short virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accu
  * @return          0 if successful, or -1 if a required pointer argument is NULL, or
  *                  20 + the error from place().
  *
- * @sa place_star()
- * @sa place_icrs()
- * @sa app_star()
- * @sa local_star()
- * @sa topo_star()
- * @sa virtual_star()
- * @sa astro_planet()
+ * @sa place_star(), place_icrs(), app_star(), local_star(), topo_star(), virtual_star(),
+ *     astro_planet()
  */
 short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec) {
@@ -738,8 +711,8 @@ short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accura
  *
  * NOTES:
  * <ol>
- * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977
- * nutation model, matching the behavior of the original NOVAS C function.</li>
+ * <li>This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al.
+ * 1977 nutation model, matching the behavior of the original NOVAS C function.</li>
  * </ol>
  *
  * REFERENCES:
@@ -762,13 +735,8 @@ short astro_star(double jd_tt, const cat_entry *restrict star, enum novas_accura
  *                  the value of 'type' in structure 'ss_body' is invalid, or 10 + the
  *                  error code from place().
  *
- * @sa place_tod()
- * @sa novas_sky_pos()
- * @sa astro_planet()
- * @sa local_planet()
- * @sa topo_planet()
- * @sa virtual_planet()
- * @sa app_star()
+ * @sa place_tod(), novas_sky_pos(), astro_planet(), local_planet(), topo_planet(),
+ *     virtual_planet(), app_star()
  */
 short app_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec, double *restrict dis) {
@@ -800,12 +768,7 @@ short app_planet(double jd_tt, const object *restrict ss_body, enum novas_accura
  *                  value of 'type' in structure 'ss_body' is invalid, or 10 + the error code
  *                  from place().
  *
- * @sa place_gcrs()
- * @sa app_planet()
- * @sa astro_planet()
- * @sa local_planet()
- * @sa topo_planet()
- * @sa app_star()
+ * @sa place_gcrs(), app_planet(), astro_planet(), local_planet(), topo_planet(), app_star()
  */
 short virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec, double *restrict dis) {
@@ -838,12 +801,7 @@ short virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_ac
  * @return          0 if successful, or -1 if the object is NULL, or else 1 if the value of 'type'
  *                  in structure 'ss_body' is invalid, or 10 + the error code from place().
  *
- * @sa place_icrs()
- * @sa app_planet()
- * @sa local_planet()
- * @sa topo_planet()
- * @sa virtual_planet()
- * @sa astro_star()
+ * @sa place_icrs(), app_planet(), local_planet(), topo_planet(), virtual_planet(), astro_star()
  */
 short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec, double *restrict dis) {
@@ -886,13 +844,8 @@ short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accu
  * @return          0 if successful, -1 if a required pointer argument is NULL, or else
  *                  20 + the error code from place_star().
  *
- * @sa novas_sky_pos()
- * @sa place_star()
- * @sa app_star()
- * @sa local_star()
- * @sa topo_star()
- * @sa virtual_star()
- * @sa astro_planet()
+ * @sa novas_sky_pos(), place_star(), app_star(), local_star(), topo_star(), virtual_star(),
+ *     astro_planet()
  * @sa get_ut1_to_tt()
  */
 short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
@@ -930,12 +883,7 @@ short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, 
  * @return          0 if successful, or -1 if any of the required pointer arguments is NULL,
  *                  or else 20 + the error from place().
  *
- * @sa place_star()
- * @sa app_star()
- * @sa astro_star()
- * @sa topo_star()
- * @sa virtual_star()
- * @sa astro_planet()
+ * @sa place_star(), app_star(), astro_star(), topo_star(), virtual_star(), astro_planet()
  * @sa get_ut1_to_tt()
  */
 short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
@@ -983,12 +931,8 @@ short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star,
  *                  the value of 'where' in structure 'location' is invalid, or 10 + the
  *                  error code from place().
  *
- * @sa novas_sky_pos()
- * @sa app_planet()
- * @sa local_planet()
- * @sa topo_planet()
- * @sa virtual_planet()
- * @sa astro_star()
+ * @sa novas_sky_pos(), app_planet(), local_planet(), topo_planet(), virtual_planet(),
+ *     astro_star()
  * @sa get_ut1_to_tt()
  */
 short topo_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
@@ -1027,10 +971,7 @@ short topo_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt
  *                  the value of 'where' in structure 'location' is invalid, or 10 + the
  *                  error code from place().
  *
- * @sa astro_planet()
- * @sa topo_planet()
- * @sa virtual_planet()
- * @sa app_star()
+ * @sa astro_planet(), topo_planet(), virtual_planet(), app_star()
  * @sa get_ut1_to_tt()
  */
 short local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
@@ -1064,9 +1005,8 @@ short local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_t
  *                      1 if the iterative process did not converge after 30 iterations, or an
  *                      error from vector2radec(), or else &gt; 10 + an error from app_star().
  *
- * @sa make_cat_entry()
- * @sa proper_motion()
- * @sa precession()
+ * @sa make_cat_entry(), proper_motion(), precession()
+ * @sa novas_str_hours(), novas_str_degrees()
  */
 short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy, double *restrict ira, double *restrict idec) {
   static const char *fn = "mean_star";
@@ -1128,13 +1068,10 @@ short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accur
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_gcrs()
- * @sa place_cirs()
- * @sa place_tod()
- * @sa mean_star()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa place_gcrs(), place_cirs(), place_tod(), mean_star()
  */
 int place_icrs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_icrs", place(jd_tt, source, NULL, 0.0, NOVAS_ICRS, accuracy, pos), 0);
@@ -1154,14 +1091,10 @@ int place_icrs(double jd_tt, const object *restrict source, enum novas_accuracy 
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_icrs()
- * @sa place_cirs()
- * @sa place_tod()
- * @sa virtual_star()
- * @sa virtual_planet()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa place_icrs(), place_cirs(), place_tod(), virtual_star(), virtual_planet()
  */
 int place_gcrs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_gcrs", place(jd_tt, source, NULL, 0.0, NOVAS_GCRS, accuracy, pos), 0);
@@ -1180,12 +1113,10 @@ int place_gcrs(double jd_tt, const object *restrict source, enum novas_accuracy 
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_tod()
- * @sa place_gcrs()
- *
  * @since 1.0
  * @author Attila Kovacs
  *
+ * @sa place_tod(), place_gcrs()
  */
 int place_cirs(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_cirs", place(jd_tt, source, NULL, 0.0, NOVAS_CIRS, accuracy, pos), 0);
@@ -1203,14 +1134,10 @@ int place_cirs(double jd_tt, const object *restrict source, enum novas_accuracy 
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_cirs()
- * @sa place_gcrs()
- * @sa app_star()
- * @sa app_planet()
- *
  * @since 1.0
  * @author Attila Kovacs
  *
+ * @sa place_cirs(), place_gcrs(), app_star(), app_planet()
  */
 int place_tod(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_tod", place(jd_tt, source, NULL, 0.0, NOVAS_TOD, accuracy, pos), 0);
@@ -1228,14 +1155,10 @@ int place_tod(double jd_tt, const object *restrict source, enum novas_accuracy a
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_cirs()
- * @sa place_gcrs()
- * @sa app_star()
- * @sa app_planet()
- *
  * @since 1.1
  * @author Attila Kovacs
  *
+ * @sa place_cirs(), place_gcrs(), app_star(), app_planet()
  */
 int place_mod(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_mod", place(jd_tt, source, NULL, 0.0, NOVAS_MOD, accuracy, pos), 0);
@@ -1253,14 +1176,10 @@ int place_mod(double jd_tt, const object *restrict source, enum novas_accuracy a
  * @return            0 if successful, or -1 if any of the input pointer arguments is NULL,
  *                    or else an error from place().
  *
- * @sa place_cirs()
- * @sa place_gcrs()
- * @sa app_star()
- * @sa app_planet()
- *
  * @since 1.1
  * @author Attila Kovacs
  *
+ * @sa place_cirs(), place_gcrs(), app_star(), app_planet()
  */
 int place_j2000(double jd_tt, const object *restrict source, enum novas_accuracy accuracy, sky_pos *restrict pos) {
   prop_error("place_j2000", place(jd_tt, source, NULL, 0.0, NOVAS_J2000, accuracy, pos), 0);

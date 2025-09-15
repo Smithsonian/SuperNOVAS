@@ -173,12 +173,10 @@ int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff) {
  *                  can also be used here without any loss of precision on the result.
  * @return          [s] TDB - TT time difference.
  *
- * @sa tt2tdb_hp()
- * @sa tt2tdb_fp()
- * @sa tdb2tt()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa tt2tdb_hp(), tt2tdb_fp(), tdb2tt()
  */
 double tt2tdb(double jd_tt) {
   double dt;
@@ -205,8 +203,7 @@ double tt2tdb(double jd_tt) {
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa tt2tdb_hp()
- * @sa tt2tdb()
+ * @sa tt2tdb_hp(), tt2tdb()
  */
 double tt2tdb_fp(double jd_tt, double limit) {
   static const double a[][3] = { //
@@ -391,8 +388,7 @@ double tt2tdb_fp(double jd_tt, double limit) {
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa tt2tdb_fp()
- * @sa tt2tdb()
+ * @sa tt2tdb_fp(), tt2tdb()
  */
 double tt2tdb_hp(double jd_tt) {
   return tt2tdb_fp(jd_tt, 0.0);
@@ -404,11 +400,10 @@ double tt2tdb_hp(double jd_tt) {
  * @param leap_seconds  [s] The current leap seconds (see IERS Bulletins)
  * @return              [s] The TT - UTC time difference
  *
- * @sa get_ut1_to_tt()
- * @sa julian_date()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa get_ut1_to_tt()
  */
 double get_utc_to_tt(int leap_seconds) {
   return leap_seconds + NOVAS_TAI_TO_TT;
@@ -431,14 +426,10 @@ double get_utc_to_tt(int leap_seconds) {
  * @return              [s] The TT - UT1 time difference that is suitable for used with all
  *                      calls in this library that require a <code>ut1_to_tt</code> argument.
  *
- * @sa get_utc_to_tt()
- * @sa novas_set_time()
- * @sa novas_gast()
- * @sa novas_time_gst()
- * @sa novas_time_lst()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa get_utc_to_tt(), novas_set_time(), novas_gast(), novas_time_gst(), novas_time_lst()
  */
 double get_ut1_to_tt(int leap_seconds, double dut1) {
   return get_utc_to_tt(leap_seconds) + dut1;
@@ -463,16 +454,12 @@ double get_ut1_to_tt(int leap_seconds, double dut1) {
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
  *                      indicate the type of error).
  *
- * @sa novas_set_split_time()
- * @sa novas_set_unix_time()
- * @sa novas_set_str_time()
- * @sa novas_set_current_time()
- * @sa novas_get_time()
- * @sa novas_timescale_for_string()
- * @sa novas_diurnal_eop()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_split_time(), novas_set_unix_time(), novas_set_str_time(),
+ *     novas_set_current_time(), novas_get_time(), novas_timescale_for_string(),
+ *     novas_diurnal_eop()
  */
 int novas_set_time(enum novas_timescale timescale, double jd, int leap, double dut1, novas_timespec *restrict time) {
   prop_error("novas_set_time", novas_set_split_time(timescale, 0, jd, leap, dut1, time), 0);
@@ -504,8 +491,7 @@ int novas_set_time(enum novas_timescale timescale, double jd, int leap, double d
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_set_time()
- * @sa novas_parse_date()
+ * @sa novas_set_time(), novas_parse_date()
  */
 int novas_set_str_time(enum novas_timescale timescale, const char *restrict str, int leap, double dut1, novas_timespec *restrict time) {
   double jd = novas_parse_date(str, NULL);
@@ -552,14 +538,11 @@ int novas_set_str_time(enum novas_timescale timescale, const char *restrict str,
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
  *                      indicate the type of error).
  *
- * @sa novas_set_time()
- * @sa novas_set_unix_time()
- * @sa novas_get_split_time()
- * @sa novas_timescale_for_string()
- * @sa novas_diurnal_eop()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_time(), novas_set_unix_time(), novas_get_split_time(), novas_timescale_for_string(),
+ *     novas_diurnal_eop()
  */
 int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, int leap, double dut1,
         novas_timespec *restrict time) {
@@ -626,11 +609,10 @@ int novas_set_split_time(enum novas_timescale timescale, long ijd, double fjd, i
  * @return            0 if successful, or else -1 if either the input or the output is NULL
  *                    (errno will be set to EINVAL).
  *
- * @sa novas_set_time()
- * @sa novas_diff_time()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_time(), novas_diff_time()
  */
 int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec *out) {
   long dd;
@@ -662,11 +644,10 @@ int novas_offset_time(const novas_timespec *time, double seconds, novas_timespec
  *                    provided
  * @return            [day] The Julian date in the requested timescale.
  *
- * @sa novas_set_time()
- * @sa novas_get_split_time()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_time(), novas_get_split_time()
  */
 double novas_get_time(const novas_timespec *restrict time, enum novas_timescale timescale) {
   long ijd;
@@ -706,11 +687,10 @@ double novas_get_time(const novas_timespec *restrict time, enum novas_timescale 
  * @return            [day] The fractional part of the Julian date in the requested timescale or
  *                    NAN is the time argument is NULL (ijd will be set to -1 also).
  *
- * @sa novas_set_split_time()
- * @sa novas_get_time()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_split_time(), novas_get_time()
  */
 double novas_get_split_time(const novas_timespec *restrict time, enum novas_timescale timescale, long *restrict ijd) {
   static const char *fn = "novas_get_split_time";
@@ -781,13 +761,10 @@ double novas_get_split_time(const novas_timespec *restrict time, enum novas_time
  * @return      [s] Precise time difference (t1-t2), or NAN if one of the inputs was NULL (errno
  *              will be set to EINVAL)
  *
- * @sa novas_set_time()
- * @sa novas_offset_time()
- * @sa novas_diff_tcb()
- * @sa novas_diff_tcg()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_time(), novas_offset_time(), novas_diff_tcb(), novas_diff_tcg()
  */
 double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
   if(!t1 || !t2) {
@@ -809,11 +786,10 @@ double novas_diff_time(const novas_timespec *t1, const novas_timespec *t2) {
  * @return      [s] Precise TCB time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
- * @sa novas_diff_tcg()
- * @sa novas_diff_time()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_diff_tcg(), novas_diff_time()
  */
 double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
   double dt = novas_diff_time(t1, t2) * (1.0 + TC_LB);
@@ -835,11 +811,10 @@ double novas_diff_tcb(const novas_timespec *t1, const novas_timespec *t2) {
  * @return      [s] Precise TCG time difference (t1-t2), or NAN if one of the inputs was
  *              NULL (errno will be set to EINVAL)
  *
- * @sa novas_diff_tcb()
- * @sa novas_diff_time()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_diff_tcb(), novas_diff_time()
  */
 double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
   double dt = novas_diff_time(t1, t2) * (1.0 + TC_LG);
@@ -868,15 +843,10 @@ double novas_diff_tcg(const novas_timespec *t1, const novas_timespec *t2) {
  * @return            0 if successful, or else -1 if there was an error (errno will be set to
  *                    indicate the type of error).
  *
- * @sa novas_set_current_time()
- * @sa novas_set_time()
- * @sa novas_get_unix_time()
- * @sa clock_gettime()
- * @sa novas_diurnal_eop()
- * @sa struct timespec
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_current_time(), novas_set_time(), novas_get_unix_time(), novas_diurnal_eop()
  */
 int novas_set_unix_time(time_t unix_time, long nanos, int leap, double dut1, novas_timespec *restrict time) {
   long jd, sojd;
@@ -931,11 +901,10 @@ int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time)
  * @param[out] nanos  [ns] UTC sub-second component. It may be NULL if not required.
  * @return            [s] The integer UNIX time, or -1 if the input time is NULL.
  *
- * @sa novas_set_unix_time()
- * @sa novas_get_time()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_set_unix_time(), novas_get_time()
  */
 time_t novas_get_unix_time(const novas_timespec *restrict time, long *restrict nanos) {
   long ijd, isod;
@@ -1077,11 +1046,8 @@ static int parse_zone(const char *str, char **tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_parse_date()
- * @sa novas_parse_iso_date()
- * @sa novas_timescale_for_string()
- * @sa novas_iso_timestamp()
- * @sa julian_date()
+ * @sa novas_parse_date(), novas_parse_iso_date(), novas_timescale_for_string(), novas_iso_timestamp()
+ *     novas_jd_from_date()
  */
 double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_date_format format, const char *restrict date,
         char **restrict tail) {
@@ -1248,13 +1214,8 @@ double novas_parse_date_format(enum novas_calendar_type calendar, enum novas_dat
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_parse_iso_date()
- * @sa novas_parse_date_format()
- * @sa novas_date()
- * @sa novas_date_scale()
- * @sa novas_timescale_for_string()
- * @sa novas_iso_timestamp()
- * @sa novas_timestamp()
+ * @sa novas_parse_iso_date(), novas_parse_date_format(), novas_date(), novas_date_scale(),
+ *     novas_timescale_for_string(), novas_iso_timestamp(), novas_timestamp()
  */
 double novas_parse_date(const char *restrict date, char **restrict tail) {
   double jd = novas_parse_date_format(NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_YMD, date, tail);
@@ -1288,8 +1249,7 @@ double novas_parse_date(const char *restrict date, char **restrict tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_iso_timestamp()
- * @sa novas_parse_date()
+ * @sa novas_iso_timestamp(), novas_parse_date()
  */
 double novas_parse_iso_date(const char *restrict date, char **restrict tail) {
   double jd = novas_parse_date_format(NOVAS_GREGORIAN_CALENDAR, NOVAS_YMD, date, tail);
@@ -1314,10 +1274,7 @@ double novas_parse_iso_date(const char *restrict date, char **restrict tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_date_scale()
- * @sa novas_parse_date()
- * @sa novas_parse_date_format()
- * @sa novas_iso_timestamp()
+ * @sa novas_date_scale(), novas_parse_date(), novas_parse_date_format(), novas_iso_timestamp()
  */
 double novas_date(const char *restrict date) {
   double jd = novas_parse_date(date, NULL);
@@ -1345,8 +1302,7 @@ double novas_date(const char *restrict date) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_date()
- * @sa novas_timestamp()
+ * @sa novas_date(), novas_timestamp()
  */
 double novas_date_scale(const char *restrict date, enum novas_timescale *restrict scale) {
   const char *fn = "novas_date_scale";
@@ -1430,8 +1386,7 @@ static int timestamp(long ijd, double fjd, enum novas_calendar_type cal, char *b
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_timestamp()
- * @sa novas_parse_iso_date()
+ * @sa novas_timestamp(), novas_parse_iso_date()
  */
 int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst, int maxlen) {
   static const char *fn = "novas_iso_timestamp";
@@ -1502,8 +1457,7 @@ int novas_iso_timestamp(const novas_timespec *restrict time, char *restrict dst,
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_iso_timestamp()
- * @sa novas_parse_date()
+ * @sa novas_iso_timestamp(), novas_parse_date()
  */
 int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale scale, char *restrict dst, int maxlen) {
   static const char *fn = "novas_timestamp_scale";
@@ -1553,8 +1507,7 @@ int novas_timestamp(const novas_timespec *restrict time, enum novas_timescale sc
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_timestamp()
- * @sa novas_timescale_for_string()
+ * @sa novas_timestamp(), novas_timescale_for_string()
  */
 int novas_print_timescale(enum novas_timescale scale, char *restrict buf) {
   static const char *fn = "novas_print_timescale";
@@ -1599,10 +1552,7 @@ int novas_print_timescale(enum novas_timescale scale, char *restrict buf) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_parse_timescale()
- * @sa novas_set_time()
- * @sa novas_set_split_time()
- * @sa novas_print_timescale()
+ * @sa novas_parse_timescale(), novas_set_str_time(), novas_print_timescale()
  */
 enum novas_timescale novas_timescale_for_string(const char *restrict str) {
   static const char *fn = "novas_str_timescale";
@@ -1658,10 +1608,7 @@ enum novas_timescale novas_timescale_for_string(const char *restrict str) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_timescale_for_string()
- * @sa novas_set_time()
- * @sa novas_set_split_time()
- * @sa novas_print_timescale()
+ * @sa novas_timescale_for_string(), novas_set_str_time(), novas_print_timescale()
  */
 enum novas_timescale novas_parse_timescale(const char *restrict str, char **restrict tail) {
   static const char *fn = "novas_parse_timescale";
@@ -1701,9 +1648,7 @@ enum novas_timescale novas_parse_timescale(const char *restrict str, char **rest
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_time_lst()
- * @sa sidereal_time()
- * @sa novas_set_time()
+ * @sa novas_time_lst(), novas_set_time()
  */
 double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy accuracy) {
   double jd_ut1 = novas_get_time(time, NOVAS_UT1);
@@ -1727,8 +1672,7 @@ double novas_time_gst(const novas_timespec *restrict time, enum novas_accuracy a
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_frame_lst()
- * @sa novas_set_time()
+ * @sa novas_frame_lst(), novas_set_time()
  */
 double novas_time_lst(const novas_timespec *restrict time, double lon, enum novas_accuracy accuracy) {
   double st = novas_time_gst(time, accuracy);

@@ -106,8 +106,7 @@ static int prep_ephem(t_calcephbin *eph) {
  * @return          0 if successful or else -1 (errno set to EINVAL) if the input value is
  *                  invalid.
  *
- * @sa object
- * @sa NOVAS_EPHEM_OBJECT
+ * @sa make_planet(), make_ephem_object(), NOVAS_EPHEM_OBJECT
  */
 int novas_calceph_use_ids(enum novas_id_type idtype) {
   switch(idtype) {
@@ -155,12 +154,10 @@ int novas_calceph_use_ids(enum novas_id_type idtype) {
  *                       'origin' is invalid, or 3 if there was an error providing ephemeris
  *                       data.
  *
- * @sa planet_calceph
- * @sa novas_use_calceph()
- * @sa novas_use_calceph_planet()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa planet_calceph(), novas_use_calceph(), novas_use_calceph_planet()
  */
 static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -252,14 +249,10 @@ static short planet_calceph_hp(const double jd_tdb[restrict 2], enum novas_plane
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
- * @sa planet_eph_manager_hp()
- * @sa planet_ephem_provider()
- * @sa ephem_open()
- * @sa set_planet_provider()
- * @sa solarsystem()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa set_planet_provider(), solarsystem()
  */
 static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -298,13 +291,10 @@ static short planet_calceph(double jd_tdb, enum novas_planet body, enum novas_or
  *                      non-zero value if the was an error s.t. the position and velocity
  *                      vector should not be used.
  *
- * @sa novas_calceph_use_ids()
- * @sa set_ephem_provider()
- * @sa ephemeris()
- * @sa NOVAS_EPHEM_OBJECT
- *
- *@author Attila Kovacs
+ * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_calceph_use_ids(), make_ephem_object(), set_ephem_provider(), ephemeris()
  */
 static int novas_calceph(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
   static const char *fn = "novas_calceph";
@@ -370,9 +360,7 @@ static int novas_calceph(const char *name, long id, double jd_tdb_high, double j
  * @param eph   Pointer to the CALCEPH ephemeris data that have been opened.
  * @return      0 if successful, or else -1 (errno will indicate the type of error).
  *
- * @sa novas_calceph_use_ids()
- * @sa novas_use_calceph_planets()
- * @sa set_ephem_provider()
+ * @sa novas_calceph_use_ids(), novas_use_calceph_planets(), set_ephem_provider()
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -411,12 +399,10 @@ int novas_use_calceph(t_calcephbin *eph) {
  *              SSB...) that have been opened.
  * @return      0 if successful, or else -1 (errno will indicate the type of error).
  *
- * @sa novas_use_calceph()
- * @sa set_planet_provider()
- * @sa set_planet_provider_hp()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_use_calceph(), set_planet_provider(), set_planet_provider_hp()
  */
 int novas_use_calceph_planets(t_calcephbin *eph) {
   static const char *fn = "novas_use_calceph_planets";

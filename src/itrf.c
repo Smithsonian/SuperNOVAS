@@ -328,11 +328,11 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
 }
 
 /**
- * Transforms a geodetic location between two ITRF realizations. ITRF realizations differ at the
- * mm / &mu;as level. Thus for the highest accuracy astrometry, from e.g. VLBI sites, it may be
- * desirable to ensure that the site coordinates are defined for the same ITRF realization, as
- * the one in which Earth-orientation parameters (EOP) are provided for `novas_make_frame()`,
- * `novas_timespec`, or `wobble()`.
+ * Transforms a geodetic location between two International Terrestrial Reference Frame (ITRF)
+ * realizations. ITRF realizations differ at the mm / &mu;as level. Thus for the highest accuracy
+ * astrometry, from e.g. VLBI sites, it may be desirable to ensure that the site coordinates are
+ * defined for the same ITRF realization, as the one in which Earth-orientation parameters (EOP)
+ * are provided for `novas_make_frame()`, `novas_timespec`, or `wobble()`.
  *
  * @param from_year       [yr] ITRF realization year of input coordinates / rates. E.g. 1992 for
  *                        ITRF92.
@@ -341,8 +341,8 @@ int novas_itrf_transform_eop(int from_year, double from_xp, double from_yp, doub
  *                        ITRF2000.
  * @param[out] out        Output site, calculated for the final ITRF realization. It may be the
  *                        same as the input.
- * @return                0 if successful, or else -1 if either site pointer is NULL (errno set to
- *                        EINVAL).
+ * @return                0 if successful, or else -1 if either site pointer is NULL (errno set
+ *                        to EINVAL).
  *
  * @since 1.5
  * @author Attila Kovacs
@@ -374,8 +374,8 @@ int novas_itrf_transform_site(int from_year, const on_surface *in, int to_year, 
 
 /**
  * Transforms a geodetic location from one reference ellipsoid to another. For example to transform
- * a GPS location (defined on the WGS84 ellipsoid) to an ITRF location (defined on the GRS80
- * ellipsoid), or vice versa.
+ * a GPS location (defined on the WGS84 ellipsoid) to an International Terrestrial Reference Frame
+ * (ITRF) location (defined on the GRS80 ellipsoid), or vice versa.
  *
  * @param from_ellipsoid    Reference ellipsoid of the input coordinates.
  * @param[in] in            Input site, defined on the original reference ellipsoid.
@@ -453,7 +453,7 @@ static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, do
 }
 
 /**
- * Converts geodetic site coordinates to geocentric Cartesian coordinates, based on the GRS80
+ * Converts geodetic site coordinates to geocentric Cartesian coordinates, using the specified
  * reference ellipsoid.
  *
  * @param[in] lon     [deg] Geodetic longitude
@@ -461,7 +461,7 @@ static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, do
  * @param[in] alt     [m] Geodetic altitude (i.e. above sea level).
  * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS
  *                    related applications use `NOVAS_WGS84_ELLIPSOID`.
- * @param[out] x      [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @param[out] xyz    [m] Corresponding geocentric Cartesian coordinates (x, y, z) 3-vector.
  * @return            0 if successful, or else -1 if the output vector is NULL (errno is set to
  *                    EINVAL).
  *
@@ -471,13 +471,13 @@ static int get_ellipsoid(enum novas_reference_ellipsoid ellipsoid, double *a, do
  * @sa novas_cartesian_to_geodetic()
  * @sa novas_itrf_transform_site(), novas_itrf_transform()
  */
-int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *x) {
+int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_reference_ellipsoid ellipsoid, double *xyz) {
   static const char *fn = "novas_geodetic_to_cartesian";
 
   double a = NOVAS_GRS80_RADIUS, f = NOVAS_GRS80_FLATTENING;
   double e2, sinlat, coslat, N;
 
-  if(!x)
+  if(!xyz)
     return novas_error(-1, EINVAL, fn, "output Cartesian vector is NULL");
 
   prop_error(fn, get_ellipsoid(ellipsoid, &a, &f), 0);
@@ -492,16 +492,16 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
 
   N = a / sqrt(1 - e2 * sinlat * sinlat);
 
-  x[0] = (N + alt) * coslat * cos(lon);
-  x[1] = (N + alt) * coslat * sin(lon);
-  x[2] = (N * (1 - e2) + alt) * sinlat;
+  xyz[0] = (N + alt) * coslat * cos(lon);
+  xyz[1] = (N + alt) * coslat * sin(lon);
+  xyz[2] = (N * (1 - e2) + alt) * sinlat;
 
   return 0;
 }
 
 /**
- * Converts geocentric Cartesian site coordinates to geodetic coordinates, based on the GRS80
- * reference ellipsoid.
+ * Converts geocentric Cartesian site coordinates to geodetic coordinates on the given reference
+ * ellipsoid.
  *
  * NOTES:
  * <ol>
@@ -523,7 +523,7 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
  * </li>
  * </ol>
  *
- * @param[in] x       [m] Input geocentric Cartesian coordinates (x, y, z) 3-vector.
+ * @param[in] xyz     [m] Input geocentric Cartesian coordinates (x, y, z) 3-vector.
  * @param ellipsoid   Reference ellipsoid to use. For ITRF use `NOVAS_GRS80_ELLIPSOID`, for GPS
  *                    related applications use `NOVAS_WGS84_ELLIPSOID`.
  * @param[out] lon    [deg] Geodetic longitude. It may be NULL if not required.
@@ -539,14 +539,15 @@ int novas_geodetic_to_cartesian(double lon, double lat, double alt, enum novas_r
  * @sa novas_geodetic_to_cartesian()
  * @sa novas_itrf_transform(), novas_itrf_transform_site()
  */
-int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_ellipsoid ellipsoid, double *restrict lon, double *restrict lat, double *restrict alt) {
+int novas_cartesian_to_geodetic(const double *restrict xyz, enum novas_reference_ellipsoid ellipsoid, double *restrict lon,
+        double *restrict lat, double *restrict alt) {
   static const char *fn = "novas_cartesian_to_geodetic";
 
   double a = NOVAS_GRS80_RADIUS, f = NOVAS_GRS80_FLATTENING;
   double e2, ep2, ep, aep, az, p2;
   double phi = 0.0, lambda = 0.0, h = 0.0;
 
-  if(!x)
+  if(!xyz)
     return novas_error(-1, EINVAL, fn, "input Cartesian vector is NULL");
 
   prop_error(fn, get_ellipsoid(ellipsoid, &a, &f), 0);
@@ -556,11 +557,11 @@ int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_e
   ep2 = 1.0 - e2;
   ep = sqrt(ep2);
   aep = a * ep;
-  az = fabs(x[2]);
-  p2 = x[0] * x[0] + x[1] * x[1];
+  az = fabs(xyz[2]);
+  p2 = xyz[0] * xyz[0] + xyz[1] * xyz[1];
 
   // Compute longitude lambda
-  lambda = p2 ? atan2(x[1], x[0]) : 0.0;
+  lambda = p2 ? atan2(xyz[1], xyz[0]) : 0.0;
 
   if(!p2) {
     // Special case: pole.
@@ -604,7 +605,7 @@ int novas_cartesian_to_geodetic(const double *restrict x, enum novas_reference_e
   }
 
   // Restore sign of latitude.
-  if (x[2] < 0.0) phi = -phi;
+  if (xyz[2] < 0.0) phi = -phi;
 
   if(lon)
     *lon = lambda / DEGREE;

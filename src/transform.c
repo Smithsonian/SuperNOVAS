@@ -132,12 +132,8 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  *                      'accuracy' is invalid, 2 if 'method' is invalid 10--20, or else 10 + the
  *                      error from cio_location(), or 20 + error from cio_basis().
  *
- * @sa itrs_to_cirs()
- * @sa cirs_to_gcrs()
- * @sa itrs_to_tod()
- * @sa tod_to_j2000()
- * @sa frame_tie()
- * @sa cel2ter()
+ * @sa novas_hor_to_app(), itrs_to_cirs(), cirs_to_gcrs(), itrs_to_tod(), tod_to_j2000(),
+ *     frame_tie(), cel2ter()
  */
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy,
         enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out) {
@@ -240,12 +236,8 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *                      'accuracy' is invalid, 2 if 'method' is invalid, or else 10 + the error
  *                      from cio_location(), or 20 + error from cio_basis().
  *
- * @sa gcrs_to_cirs()
- * @sa cirs_to_itrs()
- * @sa frame_tie()
- * @sa j2000_to_tod()
- * @sa tod_to_itrs()
- * @sa ter2cel()
+ * @sa novas_app_to_hor(), gcrs_to_cirs(), cirs_to_itrs(), frame_tie(), j2000_to_tod(),
+ *     tod_to_itrs(), ter2cel()
  */
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy,
         enum novas_equatorial_class coordType, double xp, double yp, const double *in, double *out) {
@@ -336,11 +328,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *                    vector as the input.
  * @return            0 if successfor or -1 if either of the vector arguments is NULL.
  *
- * @sa j2000_to_gcrs()
- * @sa gcrs_to_j2000()
- * @sa tod_to_j2000()
- * @sa j2000_to_tod()
- * @sa j2000_to_gcrs()
+ * @sa j2000_to_gcrs(), gcrs_to_j2000(), tod_to_j2000(), j2000_to_tod(), j2000_to_gcrs()
  */
 int frame_tie(const double *in, enum novas_frametie_direction direction, double *out) {
 
@@ -377,12 +365,10 @@ int frame_tie(const double *in, enum novas_frametie_direction direction, double 
  * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
  *                  accuracy is invalid.
  *
- * @sa j2000_to_gcrs()
- * @sa tod_to_j2000()
- * @sa gcrs_to_j2000()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa j2000_to_gcrs(), tod_to_j2000(), gcrs_to_j2000()
  */
 int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "j2000_to_tod";
@@ -411,14 +397,10 @@ int j2000_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
  *                  'accuracy' is invalid.
  *
- * @sa j2000_to_tod()
- * @sa j2000_to_gcrs()
- * @sa tod_to_gcrs()
- * @sa tod_to_cirs()
- * @sa tod_to_itrs()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa j2000_to_tod(), j2000_to_gcrs(), tod_to_gcrs(), tod_to_cirs(), tod_to_itrs()
  */
 int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "tod_to_j2000";
@@ -439,11 +421,10 @@ int tod_to_j2000(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @param[out] out  J2000 output 3-vector
  * @return          0 if successful, or else an error from frame_tie()
  *
- * @sa j2000_to_gcrs()
- * @sa tod_to_j2000()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa j2000_to_gcrs(), tod_to_j2000()
  */
 int gcrs_to_j2000(const double *in, double *out) {
   prop_error("gcrs_to_j2000", frame_tie(in, ICRS_TO_J2000, out), 0);
@@ -462,11 +443,10 @@ int gcrs_to_j2000(const double *in, double *out) {
  *                  frame. It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL.
  *
- * @sa mod_to_gcrs()
- * @sa gcrs_to_tod()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa mod_to_gcrs(), gcrs_to_tod()
  */
 int gcrs_to_mod(double jd_tdb, const double *in, double *out) {
   static const char *fn = "gcrs_to_tod [internal]";
@@ -488,11 +468,10 @@ int gcrs_to_mod(double jd_tdb, const double *in, double *out) {
  *                  input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL.
  *
- * @sa gcrs_to_mod()
- * @sa tod_to_gcrs()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa gcrs_to_mod(), tod_to_gcrs()
  */
 int mod_to_gcrs(double jd_tdb, const double *in, double *out) {
   static const char *fn = "tod_to_gcrs [internal]";
@@ -514,12 +493,10 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out) {
  *                  frame. It can be the same vector as the input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL.
  *
- * @sa gcrs_to_cirs()
- * @sa tod_to_gcrs()
- * @sa j2000_to_tod()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa gcrs_to_cirs(), tod_to_gcrs(), j2000_to_tod()
  */
 int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "gcrs_to_tod";
@@ -542,13 +519,10 @@ int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  *                  input.
  * @return          0 if successful, or -1 if either of the vector arguments is NULL.
  *
- * @sa j2000_to_tod()
- * @sa tod_to_cirs()
- * @sa tod_to_j2000()
- * @sa tod_to_itrs()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa j2000_to_tod(), tod_to_cirs(), tod_to_j2000(), tod_to_itrs()
  */
 int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "tod_to_gcrs";
@@ -571,12 +545,10 @@ int tod_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
  * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
  *                  accuracy is invalid, or else 10 + the error from cio_basis().
  *
- * @sa gcrs_to_j2000()
- * @sa cirs_to_gcrs()
- *
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa gcrs_to_j2000(), cirs_to_gcrs()
  */
 int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "gcrs_to_cirs";
@@ -605,14 +577,10 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
  *                  or the accuracy is invalid, or else 10 + the error from cio_basis().
  *
- * @sa tod_to_gcrs()
- * @sa gcrs_to_cirs()
- * @sa cirs_to_itrs()
- * @sa cirs_to_tod()
- *
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa tod_to_gcrs(), gcrs_to_cirs(), cirs_to_itrs(), cirs_to_tod()
  */
 int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "cirs_to_gcrs";
@@ -635,11 +603,10 @@ int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
  *                    [0:24], or NAN if the accuracy is invalid, or if there wan an error from
  *                    cio_ra().
  *
- * @sa app_to_cirs_ra()
- * @sa cirs_to_tod()
- *
  * @since 1.0.1
  * @author Attila Kovacs
+ *
+ * @sa app_to_cirs_ra(), cirs_to_tod()
  */
 double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
@@ -667,11 +634,10 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
  * @return            [h] The CIRS right ascension coordinate, measured from the CIO [0:24],
  *                    or NAN if the accuracy is invalid, or if there wan an error from cio_ra().
  *
- * @sa cirs_to_app_ra()
- * @sa tod_to_cirs()
- *
  * @since 1.0.1
  * @author Attila Kovacs
+ *
+ * @sa cirs_to_app_ra(), tod_to_cirs()
  */
 double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
@@ -722,12 +688,10 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
  *                      'accuracy' is invalid, or else 10 + the error from cio_location(), or
  *                      20 + error from cio_basis().
  *
- * @sa itrs_to_tod()
- * @sa cirs_to_itrs()
- * @sa cirs_to_gcrs()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa itrs_to_tod(), cirs_to_itrs(), cirs_to_gcrs()
  */
 int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
         const double *in, double *out) {
@@ -768,13 +732,10 @@ int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  * @return              0 if successful, -1 if either of the vector arguments is NULL, 1 if
  *                      'accuracy' is invalid, or else 10 + the error from cio_location(), or
  *                      20 + error from cio_basis().
- *
- * @sa itrs_to_cirs()
- * @sa tod_to_itrs()
- * @sa tod_to_j2000()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa itrs_to_cirs(), tod_to_itrs(), tod_to_j2000()
  */
 int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
         double *out) {
@@ -818,14 +779,10 @@ int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  *                      and option are mutually incompatible, or else 10 + the error from
  *                      cio_location(), or 20 + error from cio_basis().
  *
- * @sa tod_to_itrs()
- * @sa itrs_to_cirs()
- * @sa gcrs_to_cirs()
- * @sa cirs_to_gcrs()
- * @sa cirs_to_tod()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa tod_to_itrs(), itrs_to_cirs(), gcrs_to_cirs(), cirs_to_gcrs(), cirs_to_tod()
  */
 int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
         const double *in, double *out) {
@@ -868,15 +825,10 @@ int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  *                      and option are mutually incompatible, or else 10 + the error from
  *                      cio_location(), or 20 + error from cio_basis().
  *
- * @sa cirs_to_itrs()
- * @sa itrs_to_tod()
- * @sa j2000_to_tod()
- * @sa tod_to_gcrs()
- * @sa tod_to_j2000()
- * @sa tod_to_cirs()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa cirs_to_itrs(), itrs_to_tod(), j2000_to_tod(), tod_to_gcrs(), tod_to_j2000(), tod_to_cirs()
  */
 int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp, const double *in,
         double *out) {
@@ -892,11 +844,10 @@ int tod_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  * @param[out] out  GCRS output 3-vector
  * @return          0 if successful, or else an error from frame_tie()
  *
- * @sa j2000_to_tod()
- * @sa gcrs_to_j2000()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa j2000_to_tod(), gcrs_to_j2000()
  */
 int j2000_to_gcrs(const double *in, double *out) {
   prop_error("j2000_to_gcrs", frame_tie(in, J2000_TO_ICRS, out), 0);
@@ -919,14 +870,10 @@ int j2000_to_gcrs(const double *in, double *out) {
  * @return          0 if successful, or -1 if either of the vector arguments is NULL
  *                  or the accuracy is invalid, or else 20 + the error from cio_basis().
  *
- * @sa tod_to_cirs()
- * @sa cirs_to_app_ra()
- * @sa cirs_to_gcrs()
- * @sa cirs_to_itrs()
- *
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa tod_to_cirs(), cirs_to_app_ra(), cirs_to_gcrs(), cirs_to_itrs()
  */
 int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "cirs_to_tod";
@@ -970,15 +917,10 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  *                  or the accuracy is invalid, or 10 + the error from cio_ra(), or
  *                  else 20 + the error from cio_basis().
  *
- * @sa cirs_to_tod()
- * @sa app_to_cirs_ra()
- * @sa tod_to_gcrs()
- * @sa tod_to_j2000()
- * @sa tod_to_itrs()
- *
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa cirs_to_tod(), app_to_cirs_ra(), tod_to_gcrs(), tod_to_j2000(), tod_to_itrs()
  */
 int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "tod_to_cirs";

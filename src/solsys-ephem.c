@@ -36,12 +36,11 @@
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem_hp().
  *
- * @sa planet_ephem_provider()
- * @sa set_ephem_provider()
- * @sa solarsystem_hp()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa planet_ephem_provider(), set_ephem_provider()
+ * @sa solarsystem_hp()
  */
 short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -95,12 +94,11 @@ short planet_ephem_provider_hp(const double jd_tdb[restrict 2], enum novas_plane
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
- * @sa planet_ephem_provider_hp()
- * @sa set_ephem_provider()
- * @sa solarsystem()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa planet_ephem_provider_hp(), set_ephem_provider()
+ * @sa solarsystem()
  */
 short planet_ephem_provider(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {

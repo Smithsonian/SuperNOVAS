@@ -33,11 +33,10 @@
  * @return        the NOVAS ID for the same object (which may or may not be different from the
  *                input), or -1 if the NAIF ID cannot be matched to a NOVAS major planet.
  *
- * @sa novas_to_naif_planet()
- * @sa novas_to_dexxx_planet()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_to_naif_planet(), novas_to_dexxx_planet()
  */
 enum novas_planet naif_to_novas_planet(long id) {
   switch (id) {
@@ -75,10 +74,10 @@ enum novas_planet naif_to_novas_planet(long id) {
  * @return        the NAIF ID for the same object or planet center (which may or may not be
  *                different from the input)
  *
- * @sa naif_to_novas_planet()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa naif_to_novas_planet()
  */
 long novas_to_naif_planet(enum novas_planet id) {
   if(id >= NOVAS_MERCURY && id <= NOVAS_PLUTO)
@@ -111,11 +110,10 @@ long novas_to_naif_planet(enum novas_planet id) {
  * @return        the NAIF ID for the same object (which may or may not be different from the
  *                input), as appropriate for use in the DExxx ephemeris files.
  *
- * @sa novas_to_naif_planet()
- * @sa naif_to_novas_planet()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_to_naif_planet(), naif_to_novas_planet()
  */
 long novas_to_dexxx_planet(enum novas_planet id) {
 

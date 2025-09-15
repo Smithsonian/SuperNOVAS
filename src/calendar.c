@@ -52,10 +52,7 @@
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_jd_to_date()
- * @sa get_utc_to_tt()
- * @sa get_ut1_to_tt()
- * @sa tt2tdb()
+ * @sa novas_jd_to_date(), novas_get_time()
  */
 double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month, int day, double hour) {
   static const char *fn = "novas_jd_from_date";
@@ -124,10 +121,7 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_jd_from_date()
- * @sa get_utc_to_tt()
- * @sa get_ut1_to_tt()
- * @sa tt2tdb()
+ * @sa novas_jd_from_date(), novas_set_time()
  */
 int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restrict year, int *restrict month,
         int *restrict day, double *restrict hour) {
@@ -224,10 +218,7 @@ int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restric
  *                month or day components are out of range.
  *
  * @sa novas_jd_from_date()
- * @sa novas_jd_to_date()
- * @sa get_utc_to_tt()
- * @sa get_ut1_to_tt()
- * @sa tt2tdb()
+ * @sa get_utc_to_tt(), get_ut1_to_tt(), tt2tdb()
  */
 double julian_date(short year, short month, short day, double hour) {
   double jd = novas_jd_from_date(NOVAS_ASTRONOMICAL_CALENDAR, year, month, day, hour);
@@ -246,7 +237,7 @@ double julian_date(short year, short month, short day, double hour) {
  * <li>The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5
  * October of the previously used Julian calendar). Prior to it this function returns
  * Julian/Roman calendar dates, e.g. the day before the reform is 1582 October 4. You can
- * use `novas_id_to_calendar()` instead to convert JD days to dates in specific
+ * use `novas_jd_to_date()` instead to convert JD days to dates in specific
  * calendars.</li>
  *
  * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
@@ -272,10 +263,7 @@ double julian_date(short year, short month, short day, double hour) {
  * @return              0
  *
  * @sa novas_jd_to_date()
- * @sa novas_jd_from_date()
- * @sa get_utc_to_tt()
- * @sa get_ut1_to_tt()
- * @sa tt2tdb()
+ * @sa novas_get_time()
  */
 int cal_date(double tjd, short *restrict year, short *restrict month, short *restrict day, double *restrict hour) {
   int y, m, d;
@@ -304,8 +292,7 @@ int cal_date(double tjd, short *restrict year, short *restrict month, short *res
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_day_of_year()
- * @sa novas_jd_to_date()
+ * @sa novas_day_of_year(), novas_jd_to_date()
  */
 int novas_day_of_week(double tjd) {
   int rem = (int) ((long) floor(tjd - NOVAS_JD_J2000 - 1.5) % 7L);
@@ -328,8 +315,7 @@ int novas_day_of_week(double tjd) {
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_day_of_week()
- * @sa novas_jd_to_date()
+ * @sa novas_day_of_week(), novas_jd_to_date()
  */
 int novas_day_of_year(double tjd, enum novas_calendar_type calendar, int *restrict year) {
   static const int mstart[] = { 0, 31, 59, 9, 120, 151, 181, 212, 243, 273, 304, 334 }; // non-leap year month offsets

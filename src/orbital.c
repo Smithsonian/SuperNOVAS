@@ -207,12 +207,10 @@ static int novas_orbital_plane_pos(double M, double e, double *restrict E, doubl
  *                  vectors are the same or the orbital system is ill defined (errno set to
  *                  EINVAL), or if the calculation did not converge (errno set to ECANCELED).
  *
- * @sa ephemeris()
- * @sa novas_geom_posvel()
- * @sa make_orbital_object()
- *
  * @author Attila Kovacs
  * @since 1.4
+ *
+ * @sa novas_geom_posvel(), ephemeris(), make_orbital_object()
  */
 int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit, double *restrict pos, double *restrict vel) {
   static const char *fn = "novas_orbit_native_posvel";
@@ -308,12 +306,10 @@ int novas_orbit_native_posvel(double jd_tdb, const novas_orbital *restrict orbit
  *                  system is ill defined (errno set to EINVAL), or if the calculation did not
  *                  converge (errno set to ECANCELED).
  *
- * @sa ephemeris()
- * @sa novas_geom_posvel()
- * @sa make_orbital_object()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_geom_posvel(), ephemeris(), make_orbital_object()
  */
 int novas_orbit_posvel(double jd_tdb, const novas_orbital *restrict orbit, enum novas_accuracy accuracy,
         double *restrict pos, double *restrict vel) {

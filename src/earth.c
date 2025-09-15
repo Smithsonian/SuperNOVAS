@@ -65,11 +65,7 @@ typedef struct {
  *                    arguments are identical pointers.
  *
  * @sa geo_posvel()
- * @sa sidereal_time()
- * @sa make_gps_observer()
- * @sa make_itrf_observer()
- * @sa make_observer_at_site()
- * @sa make_airborne_observer()
+ * @sa make_gps_site(), make_itrf_site(), make_xyz_site()
  */
 int terra(const on_surface *restrict location, double lst, double *restrict pos, double *restrict vel) {
   static const char *fn = "terra";
@@ -144,7 +140,7 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_gast()
+ * @sa novas_gast(), novas_time_gst()
  */
 double novas_gmst(double jd_ut1, double ut1_to_tt) {
   double deg = era(jd_ut1, 0.0) + novas_gmst_prec(jd_ut1 + ut1_to_tt / DAY) / 3600.0;
@@ -220,12 +216,8 @@ double novas_gast(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy)
  *                    the returned error code is &gt;1 the gst value will be set to NAN.)
  * @return            0 if successful, or -1 if the 'gst' argument is NULL, 1 if 'accuracy' is
  *
- * @sa novas_time_gst()
- * @sa era()
- * @sa tod_to_itrs()
- * @sa itrs_to_tod()
- * @sa cel_pole()
- * @sa get_ut1_to_tt()
+ * @sa novas_gmst(), novas_gast(), novas_time_gst()
+ * @sa era(), get_ut1_to_tt()
  */
 short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type,
         enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst) {
@@ -272,9 +264,8 @@ short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enu
  * @param jd_ut1_low    [day] Low-order part of UT1 Julian date.
  * @return              [deg] The Earth Rotation Angle (theta) in degrees [0:360].
  *
- * @sa sidereal_time()
- * @sa cirs_to_itrs()
- * @sa itrs_to_cirs()
+ * @sa novas_gast(), novas_time_gst()
+ * @sa cirs_to_itrs(), itrs_to_cirs()
  */
 double era(double jd_ut1_high, double jd_ut1_low) {
   double theta, thet1, thet2, thet3;
@@ -356,8 +347,7 @@ static void sum_eop_terms(const novas_eop_terms *terms, int n, double gmst, cons
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_diurnal_eop()
- * @sa novas_diurnal_ocean_tides()
+ * @sa novas_diurnal_eop(), novas_diurnal_ocean_tides()
  */
 int novas_diurnal_libration(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict dxp, double *restrict dyp,
         double *restrict dut1) {
@@ -397,8 +387,7 @@ int novas_diurnal_libration(double gmst, const novas_delaunay_args *restrict del
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa novas_diurnal_eop()
- * @sa novas_diurnal_librations()
+ * @sa novas_diurnal_eop(), novas_diurnal_librations()
  */
 int novas_diurnal_ocean_tides(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict dxp, double *restrict dyp,
         double *restrict dut1) {
@@ -436,15 +425,6 @@ int novas_diurnal_ocean_tides(double gmst, const novas_delaunay_args *restrict d
  * @return               0 if successful, or else -1 if the delaunay arguments are NULL (errno set
  *                       to EINVAL).
  *
- * @since 1.5
- * @author Attila Kovacs
- *
- * @sa novas_diurnal_librations()
- * @sa novas_diurnal_ocean_tides()
- * @sa novas_diurnal_eop()
- * @sa novas_set_time()
- * @sa novas_make_frame()
- * @sa wobble()
  */
 static int add_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict xp, double *restrict yp,
         double *restrict dut1) {
@@ -506,8 +486,7 @@ static int add_diurnal_eop(double gmst, const novas_delaunay_args *restrict dela
  * @author Attila Kovacs
  *
  * @sa novas_diurnal_eop_at_time()
- * @sa novas_diurnal_librations()
- * @sa novas_diurnal_ocean_tides()
+ * @sa novas_diurnal_librations(), novas_diurnal_ocean_tides()
  */
 int novas_diurnal_eop(double gmst, const novas_delaunay_args *restrict delaunay, double *restrict dxp, double *restrict dyp,
         double *restrict dut1) {
@@ -622,9 +601,7 @@ int novas_diurnal_eop_at_time(const novas_timespec *restrict time, double *restr
  *
  * @return              0 if successful, or -1 if the direction is invalid output vector argument is NULL.
  *
- * @sa novas_diurnal_eop()
- * @sa novas_diurnal_eop_at_time()
- * @sa novas_itrf_transfor_eop()
+ * @sa novas_diurnal_eop(), novas_diurnal_eop_at_time(), novas_itrf_transfor_eop()
  */
 int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out) {
   static const char *fn = "wobble";
@@ -681,9 +658,7 @@ int wobble(double jd_tt, enum novas_wobble_direction direction, double xp, doubl
  *                    the same, or else 1 if 'accuracy' is invalid, or 2 if 'obserrver->where' is
  *                    invalid.
  *
- * @sa novas_make_frame()
- * @sa make_observer()
- * @sa get_ut1_to_tt()
+ * @sa novas_make_frame(), make_observer(), get_ut1_to_tt()
  */
 short geo_posvel(double jd_tt, double ut1_to_tt, enum novas_accuracy accuracy, const observer *restrict obs,
         double *restrict pos, double *restrict vel) {

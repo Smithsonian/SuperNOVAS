@@ -65,13 +65,8 @@ typedef struct {
  *
  * @return            0 if successful, or -1 if the output pointer arguments are NULL
  *
- * @sa nutation()
- * @sa set_nutation_lp_provider()
- * @sa iau2000a()
- * @sa iau2000b()
- * @sa nu2000k()
- * @sa cio_basis()
- * @sa NOVAS_CIRS
+ * @sa nutation(), set_nutation_lp_provider()
+ * @sa iau2000a(), iau2000b(), nu2000k()
  * @sa NOVAS_JD_J2000
  */
 int nutation_angles(double t, enum novas_accuracy accuracy, double *restrict dpsi, double *restrict deps) {
@@ -196,11 +191,7 @@ static int iau2006_fp(double jd_tt_high, double jd_tt_low, int nA0, int nA1, int
  *                    may be NULL if not required.
  * @return            0
  *
- * @sa iau2000b()
- * @sa nu2000k()
- * @sa nutation_angles()
- * @sa novas_nutation_provider
- *
+ * @sa iau2000b(), nu2000k(), nutation_angles(), nutation()
  */
 int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
   prop_error("iau200a", iau2006_fp(jd_tt_high, jd_tt_low, 1320, 38, 1037, 19, dpsi, deps), 0);
@@ -246,11 +237,7 @@ int iau2000a(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  *                    may be NULL if not required.
  * @return            0
  *
- * @sa iau2000a()
- * @sa nu2000k()
- * @sa set_nutation_lp_provider()
- * @sa nutation_angles()
- *
+ * @sa iau2000a(), nu2000k(), nutation_angles(), set_nutation_lp_provider(), nutation()
  */
 int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
   prop_error("iau2000b", iau2006_fp(jd_tt_high, jd_tt_low, 98, 4, 55, 2, dpsi, deps), 0);
@@ -298,11 +285,7 @@ int iau2000b(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double 
  *                    may be NULL if not required.
  * @return            0
  *
- * @sa iau2000a()
- * @sa iau2000b()
- * @sa nutation_angles()
- * @sa novas_nutation_provider
- *
+ * @sa iau2000a(), iau2000b(), nutation_angles(), set_nutation_lp_provider(), nutation()
  */
 int nu2000k(double jd_tt_high, double jd_tt_low, double *restrict dpsi, double *restrict deps) {
   // Interval between fundamental epoch J2000.0 and given date.

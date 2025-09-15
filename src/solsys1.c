@@ -20,9 +20,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- * @sa solarsystem.h
- * @sa solsys-calceph.c
- * @sa solsys-cspice.c
+ * @sa solarsystem.h, solsys-calceph.c, solsys-cspice.c
  */
 
 #include <errno.h>
@@ -70,9 +68,7 @@
  *                       'origin' is invalid, or 3 if there was an error providing ephemeris
  *                       data.
  *
- * @sa planet_eph_manager
- * @sa planet_ephem_provider_hp()
- * @sa ephem_open()
+ * @sa planet_eph_manager, planet_ephem_provider_hp(), ephem_open()
  * @sa set_planet_provider_hp()
  *
  * @since 1.0
@@ -160,11 +156,8 @@ short planet_eph_manager_hp(const double jd_tdb[restrict 2], enum novas_planet b
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
- * @sa planet_eph_manager_hp()
- * @sa planet_ephem_provider()
- * @sa ephem_open()
- * @sa set_planet_provider()
- * @sa solarsystem()
+ * @sa planet_eph_manager_hp(), planet_ephem_provider(), ephem_open()
+ * @sa set_planet_provider(), solarsystem()
  *
  * @since 1.0
  */

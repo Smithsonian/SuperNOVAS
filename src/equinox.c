@@ -89,8 +89,8 @@ double EPS_COR = 0.0;
  * <li>
  *  There is no need to define pole offsets this way when using the newer frame-based approach
  *  introduced in SuperNOVAS. If the pole offsets are specified on a per-frame basis during the
- *  initialization of each observing frame, the offsets will be applied for the TIRS / ITRS
- *  conversion only, and not to the TOD equator per se.
+ *  initialization of each observing frame (see `novas_make_frame()`, the offsets will be applied
+ *  for the TIRS / ITRS conversion only, and not to the TOD equator per se.
  * </li>
  * </ol>
  *
@@ -115,14 +115,7 @@ double EPS_COR = 0.0;
  *                  precession/nutation model.
  * @return          0 if successful, or else 1 if 'type' is invalid.
  *
- * @sa wobble()
- * @sa e_tilt()
- * @sa cirs_to_itrs()
- * @sa tod_to_itrs()
- * @sa get_ut1_to_tt()
- * @sa sidereal_time()
- * @sa NOVAS_TOD
- * @sa NOVAS_FULL_ACCURACY
+ * @sa novas_make_frame(), wobble()
  */
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2) {
   switch(type) {
@@ -212,10 +205,12 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
 /// \endcond
 
 /**
- * Computes quantities related to the orientation of the Earth's rotation axis at the specified
- * Julian date.
+ * (<i>primarily for internal use</i>) Computes quantities related to the orientation of the
+ * Earth's rotation axis at the specified Julian date.
  *
- * Unmodelled corrections to earth orientation can be defined via `cel_pole()` prior to this call.
+ * In the pre-IAU2000 method, unmodelled corrections to earth orientation can be defined via
+ * `cel_pole()` prior to this call. However, we strongly recommend against that approach, and
+ * suggest you apply Earth orientation corrections only in `novas_make_frame()` or `wobble()`.
  *
  * NOTES:
  * <ol>
@@ -234,11 +229,7 @@ int polar_dxdy_to_dpsideps(double jd_tt, double dx, double dy, double *restrict 
  *
  * @return          0 if successful, or -1 if the accuracy argument is invalid
  *
- * @sa novas_gast()
- * @sa nutation()
- * @sa ira_equinox()
- * @sa equ2ecl()
- * @sa ecl2equ()
+ * @sa novas_gast(), nutation(), ira_equinox(), equ2ecl(), ecl2equ()
  */
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
         double *restrict ee, double *restrict dpsi, double *restrict deps) {
@@ -286,10 +277,7 @@ int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, d
  * @param t   [cy] Julian centuries since J2000
  * @return    [rad] the approximate precession angle [-&pi;:&pi;].
  *
- * @sa planet_lon()
- * @sa nutation_angles()
- * @sa e_tilt()
- * @sa NOVAS_JD_J2000
+ * @sa planet_lon(), nutation_angles(), e_tilt(), NOVAS_JD_J2000
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -311,10 +299,7 @@ double accum_prec(double t) {
  * @param jd_tdb      [day] Barycentric Dynamic Time (TDB) based Julian date
  * @return            [arcsec] Mean obliquity of the ecliptic in arcseconds.
  *
- * @sa e_tilt()
- * @sa equ2ecl()
- * @sa ecl2equ()
- * @sa tt2tdb()
+ * @sa e_tilt(), equ2ecl(), ecl2equ(), tt2tdb(), novas_get_time()
  *
  */
 double mean_obliq(double jd_tdb) {
@@ -327,8 +312,10 @@ double mean_obliq(double jd_tdb) {
   return ((((-0.0000000434 * t - 0.000000576) * t + 0.00200340) * t - 0.0001831) * t - 46.836769) * t + 84381.406;
 }
 
+/// \cond PROTECTED
+
 /**
- * Returns the polynomial precession term of GMST, which together with the equation of equinoxes
+ * (<i>for internal use</i>) Returns the polynomial precession term of GMST, which together with the equation of equinoxes
  * translates Earth Rotation Angle (ERA) to Greenwhich Mean Sidereal Time (GMST).
  *
  * REFERENCES:
@@ -346,6 +333,8 @@ double novas_gmst_prec(double jd_tdb) {
   const double t = (jd_tdb - JD_J2000) / JULIAN_CENTURY_DAYS;
   return 0.014506 + ((((-0.0000000368 * t - 0.000029956) * t - 0.00000044) * t + 1.3915817) * t + 4612.156534) * t;
 }
+
+/// \endcond
 
 /**
  * @deprecated      (<i>for internal use</i>) There is no good reason why this function should
@@ -376,7 +365,7 @@ double novas_gmst_prec(double jd_tdb) {
  *                    the equation of the origins.
  *
  * @sa cio_ra()
- * @sa gcrs_to_cirs()
+ * @sa gcrs_to_cirs(), cirs_to_gcrs()
  */
 double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_accuracy accuracy) {
   // Precession in RA in arcseconds taken from the reference in seconds of time.
@@ -441,9 +430,6 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
  * @return            [rad] Complementary terms, in radians.
  *
  * @sa e_tilt()
- * @sa cel_pole()
- * @sa nutation()
- * @sa sidereal_time()
  */
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) {
   static THREAD_LOCAL double last_tt = NAN, last_ee;
@@ -557,9 +543,7 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
  *
  * @return        0 if successful, or -1 if the output pointer argument is NULL.
  *
- * @sa nutation_angles()
- * @sa e_tilt()
- * @sa NOVAS_JD_J2000
+ * @sa nutation_angles(), e_tilt(), NOVAS_JD_J2000
  */
 int fund_args(double t, novas_delaunay_args *restrict a) {
   if(!a)
@@ -626,13 +610,8 @@ int fund_args(double t, novas_delaunay_args *restrict a) {
  * @return            0 if successful, or -1 if either of the position vectors is NULL.
  *
  * @sa nutation()
- * @sa frame_tie()
- * @sa novas_epoch()
- * @sa tt2tdb()
- * @sa NOVAS_TOD
- * @sa NOVAS_JD_J2000
- * @sa NOVAS_JD_B1950
- * @sa NOVAS_JD_B1900
+ * @sa tt2tdb(), novas_get_time(), frame_tie(), novas_epoch(), NOVAS_MOD, NOVAS_JD_J2000,
+ *     NOVAS_JD_B1950, NOVAS_JD_B1900
  */
 short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *out) {
   static THREAD_LOCAL double djd_last[2] = { NAN, NAN };
@@ -776,8 +755,7 @@ short precession(double jd_tdb_in, const double *in, double jd_tdb_out, double *
  * @return            0 if successful, or -1 if one of the vector arguments is NULL.
  *
  * @sa nutation_angles()
- * @sa tt2tdb()
- * @sa NOVAS_TOD
+ * @sa tt2tdb(), novas_get_time(), NOVAS_MOD, NOVAS_TOD
  */
 int nutation(double jd_tdb, enum novas_nutation_direction direction, enum novas_accuracy accuracy, const double *in, double *out) {
   double oblm, oblt, psi;

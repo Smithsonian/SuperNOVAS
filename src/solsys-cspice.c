@@ -118,11 +118,10 @@ static int get_cspice_error(char *msg, int len) {
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
  *                      EINVAL).
  *
- * @sa cspice_remove_kernel()
- * @sa novas_use_cspice()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa cspice_remove_kernel(), novas_use_cspice()
  */
 int cspice_add_kernel(const char *filename) {
   static const char *fn = "cspice_add_kernel";
@@ -165,10 +164,10 @@ int cspice_add_kernel(const char *filename) {
  * @return              0 if successful, or else -1 if there was an error (errno will be set to
  *                      EINVAL).
  *
- * @sa cspice_add_kernel()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa cspice_add_kernel()
  */
 int cspice_remove_kernel(const char *filename) {
   static const char *fn = "cspice_remove_kernel";
@@ -232,12 +231,10 @@ int cspice_remove_kernel(const char *filename) {
  *                       'origin' is invalid, or 3 if there was an error providing ephemeris
  *                       data.
  *
- * @sa planet_cspice
- * @sa novas_use_cspice()
- * @sa novas_use_cspice_planet()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa planet_cspice(), novas_use_cspice(), novas_use_cspice_planet()
  */
 static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -336,14 +333,10 @@ static short planet_cspice_hp(const double jd_tdb[restrict 2], enum novas_planet
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
- * @sa planet_eph_manager_hp()
- * @sa planet_ephem_provider()
- * @sa ephem_open()
- * @sa set_planet_provider()
- * @sa solarsystem()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa set_planet_provider(), solarsystem()
  */
 static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_origin origin,
         double *restrict position, double *restrict velocity) {
@@ -390,13 +383,11 @@ static short planet_cspice(double jd_tdb, enum novas_planet body, enum novas_ori
  *                      non-zero value if the was an error s.t. the position and velocity
  *                      vector should not be used.
  *
- * @sa novas_cspice_use_ids()
- * @sa set_ephem_provider()
- * @sa ephemeris()
- * @sa NOVAS_EPHEM_OBJECT
- *
- *@author Attila Kovacs
+ * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_cspice_use_ids()
+ * @sa set_ephem_provider(), ephemeris(), make_ephem_object()
  */
 static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd_tdb_low, enum novas_origin *origin, double *pos, double *vel) {
   static const char *fn = "novas_cspice";
@@ -475,13 +466,11 @@ static int novas_cspice(const char *name, long id, double jd_tdb_high, double jd
  *
  * @return  0
  *
- * @sa novas_use_cspice_planets()
- * @sa novas_use_cspice()
- * @sa cspice_add_kernel()
- * @sa set_ephem_provider()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_use_cspice_planets(), novas_use_cspice(), cspice_add_kernel()
+ * @sa set_ephem_provider()
  */
 int novas_use_cspice_ephem() {
   suppress_cspice_errors();
@@ -499,14 +488,13 @@ int novas_use_cspice_ephem() {
  *
  * @return  0
  *
- * @sa novas_use_cspice_ephem()
- * @sa novas_use_cspice()
- * @sa cspice_add_kernel()
- * @sa set_planet_provider()
- * @sa set_planet_provider_hp()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_use_cspice_ephem(), novas_use_cspice(), cspice_add_kernel()
+ * @sa set_planet_provider(), set_planet_provider_hp()
+ *
+ *
  */
 int novas_use_cspice_planets() {
   suppress_cspice_errors();
@@ -525,12 +513,10 @@ int novas_use_cspice_planets() {
  *
  * @return  0
  *
- * @sa novas_use_cspice_planets()
- * @sa novas_use_cspice_ephem()
- * @sa cspice_add_kernel()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_use_cspice_planets(), novas_use_cspice_ephem(), cspice_add_kernel()
  */
 int novas_use_cspice() {
   novas_use_cspice_planets();

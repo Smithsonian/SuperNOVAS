@@ -421,18 +421,12 @@ int novas_frame_is_initialized(const novas_frame *frame) {
  *                    40--50: error is 40 + the error from geo_posvel(),
  *                    or else -1 if there was an error (errno will indicate the type of error).
  *
- * @sa novas_change_observer()
- * @sa novas_sky_pos()
- * @sa novas_geom_posvel()
- * @sa novas_make_transform()
- * @sa set_planet_provider()
- * @sa set_planet_provider_hp()
- * @sa set_nutation_lp_provider()
- * @sa novas_diurnal_eop()
- * @sa novas_itrf_transform_eop()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_change_observer(), novas_sky_pos(), novas_geom_posvel(), novas_make_transform()
+ * @sa set_planet_provider(), set_planet_provider_hp(), set_nutation_lp_provider(),
+ *     novas_diurnal_eop(), novas_itrf_transform_eop()
  */
 int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double xp, double yp,
         novas_frame *frame) {
@@ -514,10 +508,10 @@ int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const no
  * @return            0 if successfule or else an an error code from geo_posvel()
  *                    (errno will also indicate the type of error).
  *
- * @sa novas_make_frame()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_make_frame()
  */
 int novas_change_observer(const novas_frame *orig, const observer *obs, novas_frame *out) {
   static const char *fn = "novas_change_observer";
@@ -624,13 +618,11 @@ static int icrs_to_sys(const novas_frame *restrict frame, double *restrict pos, 
  * @return              0 if successful, or else -1 if any of the arguments is invalid,
  *                      50--70 error is 50 + error from light_time2().
  *
- * @sa novas_geom_to_app()
- * @sa novas_sky_pos()
- * @sa novas_transform_vector()
- * @sa novas_make_frame()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_geom_to_app(), novas_sky_pos(),
+ * @sa novas_transform_vector(), novas_make_frame()
  */
 int novas_geom_posvel(const object *restrict source, const novas_frame *restrict frame, enum novas_reference_system sys,
         double *restrict pos, double *restrict vel) {
@@ -747,12 +739,10 @@ int novas_geom_posvel(const object *restrict source, const novas_frame *restrict
  *                      70--80 error is 70 + error from grav_def(),
  *                      or else -1 (errno will indicate the type of error).
  *
- * @sa novas_geom_to_app()
- * @sa novas_app_to_hor()
- * @sa novas_make_frame()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_geom_to_app(), novas_app_to_hor(), novas_make_frame()
  */
 int novas_sky_pos(const object *restrict object, const novas_frame *restrict frame, enum novas_reference_system sys,
         sky_pos *restrict out) {
@@ -840,13 +830,11 @@ int novas_sky_pos(const object *restrict object, const novas_frame *restrict fra
  * @return          0 if successful, or an error from grav_def2(), or else -1 (errno will indicate
  *                  the type of error).
  *
- * @sa novas_sky_pos()
- * @sa novas_app_to_geom()
- * @sa novas_app_to_hor()
- * @sa novas_geom_posvel()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_app_to_geom()
+ * @sa novas_app_to_hor(), novas_sky_pos(), novas_geom_posvel()
  */
 int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict pos, enum novas_reference_system sys,
         sky_pos *restrict out) {
@@ -904,15 +892,12 @@ int novas_geom_to_app(const novas_frame *restrict frame, const double *restrict 
  * @return            0 if successful, or else an error from tod_to_itrs() or cirs_to_itrs(), or
  *                    -1 (errno will indicate the type of error).
  *
- * @sa novas_hor_to_app()
- * @sa novas_app_to_geom()
- * @sa novas_standard_refraction()
- * @sa novas_optical_refraction()
- * @sa novas_radio_refraction()
- * @sa novas_wave_refraction()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_hor_to_app()
+ * @sa novas_app_to_geom(), novas_standard_refraction(), novas_optical_refraction(),
+ *     novas_radio_refraction(), novas_wave_refraction()
  */
 int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec,
         RefractionModel ref_model, double *restrict az, double *restrict el) {
@@ -1002,15 +987,12 @@ int novas_app_to_hor(const novas_frame *restrict frame, enum novas_reference_sys
  * @return            0 if successful, or else an error from itrs_to_tod() or itrs_to_cirs(), or
  *                    -1 (errno will indicate the type of error).
  *
- * @sa novas_app_to_hor()
- * @sa novas_app_to_geom()
- * @sa novas_standard_refraction()
- * @sa novas_optical_refraction()
- * @sa novas_radio_refraction()
- * @sa novas_wave_refraction()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_app_to_hor()
+ * @sa novas_app_to_geom(), novas_standard_refraction(), novas_optical_refraction(),
+ *     novas_radio_refraction(), novas_wave_refraction()
  */
 int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, RefractionModel ref_model,
         enum novas_reference_system sys, double *restrict ra, double *restrict dec) {
@@ -1096,13 +1078,11 @@ int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, Re
  * @return              0 if successful, or else an error from grav_undef2(), or -1 (errno will
  *                      indicate the type of error).
  *
- * @sa novas_geom_to_app()
- * @sa novas_hor_to_app()
- * @sa novas_geom_to_hor()
- * @sa novas_transform_vector()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_geom_to_app()
+ * @sa novas_hor_to_app(), novas_geom_to_hor(), novas_transform_vector()
  */
 int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec,
         double dist, double *restrict geom_icrs) {
@@ -1173,14 +1153,11 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
  * @return                0 if successful, or else -1 if there was an error (errno will indicate
  *                        the type of error).
  *
- * @sa novas_transform_vector()
- * @sa novas_transform_sky_pos()
- * @sa novas_invert_transform()
- * @sa novas_geom_posvel()
- * @sa novas_app_to_geom()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_transform_vector(), novas_transform_sky_pos(), novas_invert_transform()
+ * @sa novas_geom_posvel(), novas_app_to_geom()
  */
 int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system,
         novas_transform *transform) {
@@ -1326,10 +1303,10 @@ int novas_make_transform(const novas_frame *frame, enum novas_reference_system f
  * @return              0 if successful, or else -1 if the was an error (errno will indicate the
  *                      type of error).
  *
- * @sa novas_make_transform()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_make_transform()
  */
 int novas_invert_transform(const novas_transform *transform, novas_transform *inverse) {
   novas_transform orig;
@@ -1354,11 +1331,10 @@ int novas_invert_transform(const novas_transform *transform, novas_transform *in
  * @return            0 if successful, or else -1 if there was an error (errno will indicate the
  *                    type of error).
  *
- * @sa novas_make_transform()
- * @sa novas_transform_skypos()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_make_transform(), novas_transform_skypos()
  */
 int novas_transform_vector(const double *in, const novas_transform *restrict transform, double *out) {
   static const char *fn = "novas_matrix_transform";
@@ -1381,11 +1357,10 @@ int novas_transform_vector(const double *in, const novas_transform *restrict tra
  * @return            0 if successful, or else -1 if there was an error (errno will indicate the
  *                    type of error).
  *
- * @sa novas_make_transform()
- * @sa novas_transform_vector()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa novas_sky_pos(), novas_make_transform(), novas_transform_vector()
  */
 int novas_transform_sky_pos(const sky_pos *in, const novas_transform *restrict transform, sky_pos *out) {
   static const char *fn = "novas_matrix_transform";
@@ -1408,6 +1383,8 @@ int novas_transform_sky_pos(const sky_pos *in, const novas_transform *restrict t
  *
  * @since 1.3
  * @author Attila Kovacs
+ *
+ * @sa novas_time_lst()
  */
 double novas_frame_lst(const novas_frame *restrict frame) {
   static const char *fn = "novas_frame_lst";
@@ -1565,8 +1542,7 @@ static double novas_cross_el_date(double el, int sign, const object *source, con
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_rises_above()
- * @sa novas_sets_below()
+ * @sa novas_rises_above(), novas_sets_below()
  */
 double novas_transit_time(const object *restrict source, const novas_frame *restrict frame) {
   double utc = novas_cross_el_date(NAN, 0, source, frame, NULL);
@@ -1601,8 +1577,7 @@ double novas_transit_time(const object *restrict source, const novas_frame *rest
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_sets_below()
- * @sa novas_transit_time()
+ * @sa novas_sets_below(), novas_transit_time()
  */
 double novas_rises_above(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model) {
   double utc;
@@ -1642,8 +1617,7 @@ double novas_rises_above(double el, const object *restrict source, const novas_f
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_rises_above()
- * @sa novas_transit_time()
+ * @sa novas_rises_above(), novas_transit_time()
  */
 double novas_sets_below(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model) {
   double utc;
@@ -1726,9 +1700,7 @@ double novas_solar_illum(const object *restrict source, const novas_frame *restr
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_sun_angle()
- * @sa novas_moon_angle()
- * @sa novas_sep()
+ * @sa novas_sep(), novas_sun_angle(), novas_moon_angle()
  */
 double novas_object_sep(const object *source1, const object *source2, const novas_frame *restrict frame) {
   static const char *fn = "novas_object_sep";
@@ -1836,8 +1808,7 @@ double novas_unwrap_angles(double *a, double *b, double *c) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_hor_track()
- * @sa novas_track_pos()
+ * @sa novas_hor_track(), novas_track_pos()
  */
 int novas_equ_track(const object *restrict source, const novas_frame *restrict frame, double dt, novas_track *restrict track) {
   static const char *fn = "novas_equ_track";
@@ -1926,8 +1897,7 @@ int novas_equ_track(const object *restrict source, const novas_frame *restrict f
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_equ_track()
- * @sa novas_track_pos()
+ * @sa novas_equ_track(), novas_track_pos()
  */
 int novas_hor_track(const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model,
         novas_track *restrict track) {
@@ -2018,8 +1988,7 @@ int novas_hor_track(const object *restrict source, const novas_frame *restrict f
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_equ_track()
- * @sa novas_hor_track()
+ * @sa novas_equ_track(), novas_hor_track()
  * @sa novas_z2v()
  */
 int novas_track_pos(const novas_track *track, const novas_timespec *time, double *restrict lon, double *restrict lat,

@@ -33,10 +33,7 @@
  * @return        [rad] The approximate longitude of the planet in radians [-&pi;:&pi;],
  *                or NAN if the `planet` id is out of range.
  *
- * @sa accum_prec()
- * @sa nutation_angles()
- * @sa e_tilt()
- * @sa NOVAS_JD_J2000
+ * @sa accum_prec(), nutation_angles(), NOVAS_JD_J2000
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -97,10 +94,8 @@ double planet_lon(double t, enum novas_planet planet) {
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_make_moon_orbit()
- * @sa novas_approx_sky_pos()
- * @sa novas_approx_heliocentric()
- * @sa make_orbital_object()
+ * @sa novas_make_moon_orbit(), novas_approx_sky_pos(), novas_approx_heliocentric(),
+ *     make_orbital_object()
  */
 int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *restrict orbit) {
   static const char *fn = "novas_make_planet_orbit";
@@ -285,8 +280,7 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_make_planet_orbit()
- * @sa make_orbital_object()
+ * @sa novas_make_planet_orbit(), make_orbital_object()
  */
 int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
   novas_orbital def = NOVAS_ORBIT_INIT;
@@ -403,11 +397,8 @@ int novas_make_moon_orbit(double jd_tdb, novas_orbital *restrict orbit) {
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_approx_sky_pos()
- * @sa earth_sun_calc()
- * @sa novas_geom_posvel()
- * @sa novas_use_calceph()
- * @sa novas_use_cspice()
+ * @sa novas_approx_sky_pos(), earth_sun_calc(), novas_geom_posvel()
+ * @sa novas_use_calceph(), novas_use_cspice()
  */
 int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restrict pos, double *restrict vel) {
   static const char *fn = "novas_approx_heliocentric";
@@ -509,8 +500,7 @@ int novas_approx_heliocentric(enum novas_planet id, double jd_tdb, double *restr
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_sky_pos()
- * @sa novas_app_to_hor()
+ * @sa novas_sky_pos(), novas_app_to_hor()
  * @sa novas_make_frame()
  */
 int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out) {
@@ -585,9 +575,7 @@ int novas_approx_sky_pos(enum novas_planet id, const novas_frame *restrict frame
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_next_moon_phase()
- * @sa novas_make_moon_orbit()
- * @sa novas_solar_illum()
+ * @sa novas_next_moon_phase(), novas_make_moon_orbit(), novas_solar_illum()
  */
 double novas_moon_phase(double jd_tdb) {
   static const char *fn = "novas_moon_phase";
@@ -647,8 +635,7 @@ double novas_moon_phase(double jd_tdb) {
  * @since 1.4
  * @author Attila Kovacs
  *
- * @sa novas_moon_phase()
- * @sa novas_make_moon_orbit()
+ * @sa novas_moon_phase(), novas_make_moon_orbit()
  */
 double novas_next_moon_phase(double phase, double jd_tdb) {
   static const char *fn = "novas_next_moon_phase";

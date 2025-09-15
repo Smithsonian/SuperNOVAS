@@ -26,10 +26,10 @@ double novas_add_beta(double beta1, double beta2) {
  * @param v2  [AU/day] Second component
  * @return    [AU/day] The relativistically coadded sum of the input velocities.
  *
- * @sa novas_z_add()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa novas_z_add()
  */
 double novas_add_vel(double v1, double v2) {
   return novas_add_beta(v1 / C_AUDAY, v2 / C_AUDAY) * C_AUDAY;
@@ -50,11 +50,10 @@ double novas_add_vel(double v1, double v2) {
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid,
  *            i.e. z &lt;= -1).
  *
- * @sa novas_v2z()
- * @sa redshift_vrad()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_v2z(), redshift_vrad()
  */
 double novas_z2v(double z) {
   if(z <= -1.0) {
@@ -78,11 +77,10 @@ double novas_z2v(double z) {
  * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or
  *              NAN if the input velocity is invalid (i.e., it exceeds the speed of light).
  *
- * @sa novas_z2v()
- * @sa novas_z_add()
- *
  * @author Attila Kovacs
  * @since 1.2
+ *
+ * @sa novas_z2v(), novas_z_add()
  */
 double novas_v2z(double vel) {
   vel *= NOVAS_KMS / C;   // [km/s] -> beta
@@ -105,12 +103,10 @@ double novas_v2z(double vel) {
  * @return        [km/s] The redshift corrected radial velocity or NAN if the redshift value
  *                is invalid (errno will be set to EINVAL).
  *
- * @sa unredshift_vrad()
- * @sa grav_redshift()
- * @sa novas_z_add()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa unredshift_vrad(), grav_redshift(), novas_z_add()
  */
 double redshift_vrad(double vrad, double z) {
   static const char *fn = "redshift_vrad";
@@ -132,11 +128,10 @@ double redshift_vrad(double vrad, double z) {
  * @return        [km/s] The radial velocity without the redshift correction or NAN if the
  *                redshift value is invalid. (errno will be set to EINVAL)
  *
- * @sa redshift_vrad()
- * @sa grav_redshift()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa redshift_vrad(), grav_redshift()
  */
 double unredshift_vrad(double vrad, double z) {
   static const char *fn = "unredshift_vrad";
@@ -160,12 +155,10 @@ double unredshift_vrad(double vrad, double z) {
  * @return      The compound redshift value, ot NAN if either input redshift is invalid (errno
  *              will be set to EINVAL).
  *
- * @sa grav_redshift()
- * @sa redshift_vrad()
- * @sa unredshift_vrad()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa grav_redshift(), redshift_vrad(), unredshift_vrad()
  */
 double novas_z_add(double z1, double z2) {
   if(z1 <= -1.0 || z2 <= -1.0) {
@@ -183,10 +176,10 @@ double novas_z_add(double z1, double z2) {
  * @return      The redshift value for a body moving in the opposite direction with the
  *              same speed, or NAN if the input redshift is invalid.
  *
- * @sa novas_z_add()
- *
  * @since 1.2
  * @author Attila Kovacs
+ *
+ * @sa novas_z_add()
  */
 double novas_z_inv(double z) {
   if(z <= -1.0) {
@@ -234,8 +227,8 @@ static int convert_lsr_ssb_vel(const double *vLSR, int sign, double *vSSB) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa make_cat_entry()
- * @sa novas_ssb_to_lsr_vel()
+ * @sa novas_ssb_to_lsr_vel(), make_cat_entry()
+ * @sa novas_str_hours(), novas_str_degrees()
  */
 double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
   double u[3] = {0.0}, v[3];
@@ -281,8 +274,8 @@ double novas_lsr_to_ssb_vel(double epoch, double ra, double dec, double vLSR) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa make_cat_entry()
- * @sa novas_lsr_to_ssb_vel()
+ * @sa novas_lsr_to_ssb_vel(), make_cat_entry()
+ * @sa novas_str_hours(), novas_str_degrees()
  */
 double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
   double u[3] = {0.0}, v[3];
@@ -472,13 +465,11 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  *                      or NAN if there was an error (errno will be set to EINVAL if any of the
  *                      arguments are NULL, or to some other value to indicate the type of error).
  *
- * @sa rad_vel()
- * @sa novas_make_frame()
- * @sa novas_sky_pos()
- * @sa novas_v2z()
- *
  * @since 1.1
  * @author Attila Kovacs
+ *
+ * @sa rad_vel()
+ * @sa novas_make_frame(), novas_sky_pos(), novas_v2z()
  */
 double rad_vel2(const object *restrict source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
         double d_obs_geo, double d_obs_sun, double d_src_sun) {

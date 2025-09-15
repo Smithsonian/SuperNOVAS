@@ -57,12 +57,8 @@ static novas_nutation_provider nutate_lp = iau2000b;
  * @since 1.0
  * @author Attila Kovacs
  *
- * @sa get_ephem_provider()
- * @sa set_planet_provider()
- * @sa set_planet_provider_hp()
- * @sa ephemeris()
- * @sa solsys-ephem.c
- *
+ * @sa get_ephem_provider(), set_planet_provider(), set_planet_provider_hp()
+ * @sa novas_use_calceph(), novas_use_cspice()
  */
 int set_ephem_provider(novas_ephem_provider func) {
   readeph2_call = func;
@@ -75,13 +71,10 @@ int set_ephem_provider(novas_ephem_provider func) {
  * @return    the currently defined function for accessing ephemeris data for minor planets
  *            or satellites, ot NULL if no function was set via set_ephem_provider() previously.
  *
- * @sa set_ephem_provider()
- * @sa get_planet_provider()
- * @sa get_planet_provider_hp()
- * @sa ephemeris()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa set_ephem_provider(), get_planet_provider(), get_planet_provider_hp(), ephemeris()
  */
 novas_ephem_provider get_ephem_provider() {
   return readeph2_call;
@@ -94,11 +87,10 @@ novas_ephem_provider get_ephem_provider() {
  * @param func  the new function to use for low-precision IAU 2000 nutation calculations
  * @return      0 if successful, or -1 if the input argument is NULL
  *
- * @sa get_nutation_lp_provider()
- * @sa nutation_angles()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa get_nutation_lp_provider(), nutation_angles(), nutation()
  */
 int set_nutation_lp_provider(novas_nutation_provider func) {
   if(!func)
@@ -114,11 +106,10 @@ int set_nutation_lp_provider(novas_nutation_provider func) {
  *
  * @return   the function to use for low-precision IAU 2000 nutation calculations
  *
- * @sa set_nutation_lp_provider()
- * @sa nutation_angles()
- *
  * @since 1.3
  * @author Attila Kovacs
+ *
+ * @sa set_nutation_lp_provider(), nutation_angles(), nutation()
  */
 novas_nutation_provider get_nutation_lp_provider() {
   return nutate_lp;
@@ -135,10 +126,8 @@ novas_nutation_provider get_nutation_lp_provider() {
  * @author Attila Kovacs
  * @since 1.0
  *
- * @sa get_planet_provider()
- * @sa set_planet_provider_hp()
- * @sa solarsystem()
- * @sa NOVAS_REDUCED_ACCURACY
+ * @sa get_planet_provider(), set_planet_provider_hp(), solarsystem(), NOVAS_REDUCED_ACCURACY
+ * @sa novas_use_calceph(), novas_use_cspice()
  */
 int set_planet_provider(novas_planet_provider func) {
   if(!func)
@@ -157,9 +146,7 @@ int set_planet_provider(novas_planet_provider func) {
  * @author Attila Kovacs
  * @since 1.2
  *
- * @sa set_planet_provider()
- * @sa get_planet_provider_hp()
- * @sa get_ephem_provider()
+ * @sa set_planet_provider(), get_planet_provider_hp(), get_ephem_provider()
  */
 novas_planet_provider get_planet_provider() {
   return planet_call;
@@ -176,10 +163,8 @@ novas_planet_provider get_planet_provider() {
  * @author Attila Kovacs
  * @since 1.0
  *
- * @sa get_planet_provider_hp()
- * @sa set_planet_provider()
- * @sa solarsystem_hp()
- * @sa NOVAS_FULL_ACCURACY
+ * @sa get_planet_provider_hp(), set_planet_provider(), solarsystem_hp(), NOVAS_FULL_ACCURACY
+ * @sa novas_use_calceph(), novas_use_cspice()
  */
 int set_planet_provider_hp(novas_planet_provider_hp func) {
   if(!func)
@@ -198,9 +183,7 @@ int set_planet_provider_hp(novas_planet_provider_hp func) {
  * @author Attila Kovacs
  * @since 1.2
  *
- * @sa set_planet_provider_hp()
- * @sa get_planet_provider()
- * @sa get_ephem_provider()
+ * @sa set_planet_provider_hp(), get_planet_provider(), get_ephem_provider()
  */
 novas_planet_provider_hp get_planet_provider_hp() {
   return planet_call_hp;

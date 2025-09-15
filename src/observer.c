@@ -193,7 +193,7 @@ int make_observer_at_site(const on_surface *restrict site, observer *restrict ob
 
 /**
  * Initializes an observer data structure for a ground-based observer with the specified
- * International Terrestrial Reference Fram (ITRF) / GRS80 location, and sets mean (annual)
+ * International Terrestrial Reference Frame (ITRF) / GRS80 location, and sets mean (annual)
  * weather parameters based on that location.
  *
  * For the highest precision (&mu;as level) applications you should make sure that the location
@@ -609,7 +609,6 @@ int aberration(const double *pos, const double *vobs, double lighttime, double *
 
   return 0;
 }
-
 
 /**
  * Calculates the ICRS position and velocity of the observer relative to the Solar System

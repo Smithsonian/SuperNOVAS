@@ -42,6 +42,9 @@ int novas_inv_max_iter = 100;
  * @param n       error code that was received.
  * @param offset  Offset to add to error code (if &lt;0) to return.
  *
+ * @since 1.0
+ * @author Attila Kovacs
+ *
  * @sa novas_error()
  */
 int novas_trace(const char *restrict loc, int n, int offset) {
@@ -60,6 +63,7 @@ int novas_trace(const char *restrict loc, int n, int offset) {
  * @return       NAN
  *
  * @since 1.1.1
+ * @author Attila Kovacs
  */
 double novas_trace_nan(const char *restrict loc) {
   if(novas_get_debug_mode() != NOVAS_DEBUG_OFF) {
@@ -76,11 +80,10 @@ double novas_trace_nan(const char *restrict loc) {
  * @param from  {string} Function (:location) where error originated
  * @param desc  {string} Description of error, with information to convey to user.
  *
- * @sa novas_error()
- * @sa novas_debug()
- *
  * @since 1.0
- * @author Attil Kovacs
+ * @author Attila Kovacs
+ *
+ * @sa novas_error(), novas_debug()
  */
 void novas_set_errno(int en, const char *restrict from, const char *restrict desc, ...) {
   va_list varg;
@@ -105,11 +108,10 @@ void novas_set_errno(int en, const char *restrict from, const char *restrict des
  * @param from  function (:location) where error originated
  * @param desc  description of error, with information to convey to user.
  *
- * @sa novas_set_errno()
- * @sa novas_trace()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa novas_set_errno(), novas_trace()
  */
 int novas_error(int ret, int en, const char *restrict from, const char *restrict desc, ...) {
   va_list varg;
@@ -134,11 +136,10 @@ int novas_error(int ret, int en, const char *restrict from, const char *restrict
  *              be NULL
  * @return      The distance squared between the two vectors
  *
- * @sa vlen()
- * @sa vdot()
- *
  * @since 1.3
  * @author Attila Kovacs
+ *
+ * @sa novas_vlen(), novas_vdot()
  */
 double novas_vdist2(const double *v1, const double *v2) {
   double d2 = 0.0;
@@ -158,11 +159,10 @@ double novas_vdist2(const double *v1, const double *v2) {
  *              be NULL
  * @return      The distance between the two vectors
  *
- * @sa vlen()
- * @sa vdot()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa novas_vlen(), novas_vdot()
  */
 double novas_vdist(const double *v1, const double *v2) {
   return sqrt(novas_vdist2(v1, v2));
@@ -176,11 +176,10 @@ double novas_vdist(const double *v1, const double *v2) {
  *              be NULL
  * @return      The dot product between the two vectors.
  *
- * @sa vlen()
- * @sa vdist()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa novas_vlen(), novas_vdist()
  */
 double novas_vdot(const double *v1, const double *v2) {
   return (v1[0] * v2[0]) + (v1[1] * v2[1]) + (v1[2] * v2[2]);
@@ -202,6 +201,9 @@ double novas_vdot(const double *v1, const double *v2) {
  * @return          TRUE (1) if the two dates are effectively the same at the precision of
  *                  comparison, or else FALSE (0) if they differ by more than the allowed
  *                  tolerance.
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 int novas_time_equals(double jd1, double jd2) {
   return fabs(jd1 - jd2) < 1e-7;
@@ -224,6 +226,9 @@ int novas_time_equals(double jd1, double jd2) {
  * @return          TRUE (1) if the two dates are effectively the same at the precision of
  *                  comparison, or else FALSE (0) if they differ by more than the allowed
  *                  tolerance.
+ *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 int novas_time_equals_hp(double jd1, double jd2) {
   return fabs(jd1 - jd2) < 1e-9;
@@ -238,6 +243,8 @@ int novas_time_equals_hp(double jd1, double jd2) {
  * @param az            (rad) rotation angle around z
  * @param[out] out      Rotated vector. It can be the same as the input.
  *
+ * @since 1.0
+ * @author Attila Kovacs
  */
 void novas_tiny_rotate(const double *in, double ax, double ay, double az, double *out) {
   const double x = in[0], y = in[1], z = in[2];
@@ -309,11 +316,10 @@ double novas_norm_ang(double angle) {
  * @param v     Pointer to a 3-component (x, y, z) vector. The argument cannot be NULL
  * @return      the length of the vector
  *
- * @sa vdot()
- * @sa vdist()
- *
  * @since 1.0
  * @author Attila Kovacs
+ *
+ * @sa novas_vdot(), novas_vdist()
  */
 double novas_vlen(const double *restrict v) {
   return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
@@ -440,8 +446,7 @@ short vector2radec(const double *restrict pos, double *restrict ra, double *rest
  *
  * @return            0 if successful, or -1 if the vector argument is NULL.
  *
- * @sa vector2radec()
- * @sa starvectors()
+ * @sa vector2radec(), starvectors()
  */
 int radec2vector(double ra, double dec, double dist, double *restrict pos) {
   double cosdec;
@@ -517,9 +522,7 @@ double d_light(const double *pos_src, const double *pos_body) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_equ_sep()
- * @sa novas_sun_angle()
- * @sa novas_moon_angle()
+ * @sa novas_equ_sep(), novas_sun_angle(), novas_moon_angle()
  */
 double novas_sep(double lon1, double lat1, double lon2, double lat2) {
   double c = sin(lat1 * DEGREE) * sin(lat2 * DEGREE) + cos(lat1 * DEGREE) * cos(lat2 * DEGREE) * cos((lon1 - lon2) * DEGREE);
@@ -540,9 +543,7 @@ double novas_sep(double lon1, double lat1, double lon2, double lat2) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_sep()
- * @sa novas_sun_angle()
- * @sa novas_moon_angle()
+ * @sa novas_sep(), novas_sun_angle(), novas_moon_angle()
  */
 double novas_equ_sep(double ra1, double dec1, double ra2, double dec2) {
   return novas_sep(15.0 * ra1, dec1, 15.0 * ra2, dec2);

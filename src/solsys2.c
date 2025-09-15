@@ -21,9 +21,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- * @sa solarsystem.h
- * @sa solsys-calceph.c
- * @sa solsys-cspice.c
+ * @sa solarsystem.h, solsys-calceph.c, solsys-cspice.c
  */
 
 #include <errno.h>
@@ -77,9 +75,7 @@ extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel
  * @return               0 if successful, or else 1 if the 'body' or 'origin' argument is
  *                       invalid, or else 2 if the 'jplint_()' call failed.
  *
- * @sa planet_jplint_hp()
- * @sa planet_ephem_provider()
- * @sa set_planet_provider()
+ * @sa planet_jplint_hp(), planet_ephem_provider(), set_planet_provider()
  * @sa solarsystem()
  *
  * @since 1.0
@@ -169,9 +165,7 @@ short planet_jplint(double jd_tdb, enum novas_planet body, enum novas_origin ori
  *                       system referred to the ICRS, in AU/day.
  * @return               0 if successful, or else an error code of solarsystem().
  *
- * @sa planet_jplint()
- * @sa planet_ephem_provider_hp()
- * @sa set_planet_provider_hp()
+ * @sa planet_jplint(), planet_ephem_provider_hp(), set_planet_provider_hp()
  * @sa solarsystem_hp()
  *
  * @since 1.0

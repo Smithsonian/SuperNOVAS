@@ -82,7 +82,6 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
  *                    no permission to read it.
  *
  * @sa cio_location()
- * @sa gcrs_to_cirs()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -152,8 +151,7 @@ int set_cio_locator_file(const char *restrict filename) {
  * @return            0 if successful, -1 if one of the pointer arguments is NULL or the
  *                    accuracy is invalid.
  *
- * @sa cio_ra()
- * @sa ira_equinox()
+ * @sa cio_ra(), ira_equinox()
  */
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type) {
   static const char *fn = "cio_location";
@@ -265,8 +263,7 @@ short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict
  * @return            0 if successful, or -1 if any of the output vector arguments are NULL
  *                    or if the accuracy is invalid, or else 1 if 'ref-sys' is invalid.
  *
- * @sa gcrs_to_cirs()
- * @sa novas_frame
+ * @sa gcrs_to_cirs(), cirs_to_gcrs(), novas_make_transform()
  */
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *restrict x, double *restrict y, double *restrict z) {
@@ -385,8 +382,7 @@ short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_t
  *                  file, 3 if 'n_pts' out of range, or 6 if 'jd_tdb' is too close to either end
  *                  of the CIO file do we are unable to put 'n_pts' data points into the output
  *
- * @sa set_cio_locator_file()
- * @sa cio_location()
+ * @sa set_cio_locator_file(), cio_location()
  */
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio) {
   static const char *fn = "cio_array";

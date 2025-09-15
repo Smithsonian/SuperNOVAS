@@ -27,9 +27,6 @@ int strcasecmp(const char *s1, const char *s2);
 #endif
 
 
-
-
-
 /**
  * Returns the Julian day corresponding to an astronomical coordinate epoch.
  *
@@ -45,14 +42,8 @@ int strcasecmp(const char *s1, const char *s2);
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa make_cat_object_sys()
- * @sa make_redshifted_object_sys()
- * @sa transform_cat()
- * @sa precession()
- * @sa NOVAS_SYSTEM_ICRS
- * @sa NOVAS_SYSTEM_B1950
- * @sa NOVAS_SYSTEM_J2000
- * @sa NOVAS_SYSTEM_HIP
+ * @sa make_cat_object_sys(), make_redshifted_object_sys(), transform_cat(), precession()
+ * @sa NOVAS_SYSTEM_ICRS, NOVAS_SYSTEM_B1950, NOVAS_SYSTEM_J2000, NOVAS_SYSTEM_HIP
  */
 double novas_epoch(const char *restrict system) {
   static const char *fn = "novas_epoch";
@@ -142,10 +133,7 @@ double novas_epoch(const char *restrict system) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_hms_hours()
- * @sa novas_parse_hours()
- * @sa novas_print_hms()
- * @sa novas_parse_dms()
+ * @sa novas_hms_hours(), novas_parse_hours(), novas_print_hms(), novas_parse_dms()
  */
 double novas_parse_hms(const char *restrict hms, char **restrict tail) {
   static const char *fn = "novas_hms_hours";
@@ -237,9 +225,7 @@ double novas_parse_hms(const char *restrict hms, char **restrict tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_str_hours()
- * @sa novas_parse_hms()
- * @sa novas_dms_degrees()
+ * @sa novas_str_hours(), novas_parse_hms(), novas_dms_degrees()
  */
 double novas_hms_hours(const char *restrict hms) {
   char *tail = (char *) hms;
@@ -335,10 +321,7 @@ static int parse_compass(const char *restrict str, int *n) {
  * @author Attila Kovacs
  *
  *
- * @sa novas_dms_degrees()
- * @sa novas_parse_degrees()
- * @sa novas_print_dms()
- * @sa novas_parse_hms()
+ * @sa novas_dms_degrees(), novas_parse_degrees(), novas_print_dms(), novas_parse_hms()
  */
 double novas_parse_dms(const char *restrict dms, char **restrict tail) {
   static const char *fn = "novas_dms_degrees";
@@ -452,9 +435,7 @@ double novas_parse_dms(const char *restrict dms, char **restrict tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_str_degrees()
- * @sa novas_parse_dms()
- * @sa novas_hms_hours()
+ * @sa novas_str_degrees(), novas_parse_dms(), novas_hms_hours()
  */
 double novas_dms_degrees(const char *restrict dms) {
   char *tail = (char *) dms;
@@ -519,9 +500,7 @@ double novas_dms_degrees(const char *restrict dms) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_str_degrees()
- * @sa novas_parse_dms()
- * @sa novas_parse_hours()
+ * @sa novas_str_degrees(), novas_parse_dms(), novas_parse_hours()
  */
 double novas_parse_degrees(const char *restrict str, char **restrict tail) {
   static const char *fn = "novas_parse_degrees";
@@ -648,9 +627,7 @@ double novas_parse_degrees(const char *restrict str, char **restrict tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_str_hours()
- * @sa novas_parse_hms()
- * @sa novas_parse_degrees()
+ * @sa novas_str_hours(), novas_parse_hms(), novas_parse_degrees()
  */
 double novas_parse_hours(const char *restrict str, char **restrict tail) {
   static const char *fn = "novas_parse_hours";
@@ -733,10 +710,7 @@ double novas_parse_hours(const char *restrict str, char **restrict tail) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_parse_degrees()
- * @sa novas_parse_dms()
- * @sa novas_print_dms()
- * @sa novas_str_hours()
+ * @sa novas_parse_degrees(), novas_parse_dms(), novas_print_dms(), novas_str_hours()
  */
 double novas_str_degrees(const char *restrict str) {
   char *tail = (char *) str;
@@ -775,10 +749,7 @@ double novas_str_degrees(const char *restrict str) {
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_parse_hours()
- * @sa novas_parse_hms()
- * @sa novas_print_hms()
- * @sa novas_str_degrees()
+ * @sa novas_parse_hours(), novas_parse_hms(), novas_print_hms(), novas_str_degrees()
  */
 double novas_str_hours(const char *restrict str) {
   char *tail = (char *) str;
@@ -846,9 +817,7 @@ static void breakdown(double value, int decimals, int *h, int *m, int *s, long l
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_parse_hms()
- * @sa novas_print_dms()
- * @sa novas_timestamp()
+ * @sa novas_parse_hms(), novas_print_dms(), novas_timestamp()
  */
 int novas_print_hms(double hours, enum novas_separator_type sep, int decimals, char *restrict buf, int len) {
   static const char *fn = "novas_print_hms";
@@ -945,8 +914,7 @@ int novas_print_hms(double hours, enum novas_separator_type sep, int decimals, c
  * @since 1.3
  * @author Attila Kovacs
  *
- * @sa novas_parse_dms()
- * @sa novas_print_hms()
+ * @sa novas_parse_dms(), novas_print_hms()
  */
 int novas_print_dms(double degrees, enum novas_separator_type sep, int decimals, char *restrict buf, int len) {
   static const char *fn = "novas_print_dms";
