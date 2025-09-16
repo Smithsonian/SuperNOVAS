@@ -424,8 +424,8 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
 ### Deprecated API
 
 __SuperNOVAS__ began deprecating some NOVAS C functions, either because they are no longer needed; or are not easy to 
-use with better alternatives around; or are internals that should never have been exposed to end-users. The 
-deprecations are marked in the inline and HTML API documentations, providing also alternatives. 
+use and have better alternatives around; or are internals that should never have been exposed to end-users. The 
+deprecations are marked in the inline and HTML API documentations, suggesting also alternatives. 
 
 That said, the deprecated parts of the API are NOT removed, nor we plan on removing them for the foreseeable future. 
 Instead, they serve as a gentle reminder to users that perhaps they should stay away from these features for their own 
@@ -865,24 +865,24 @@ angles.
 #### Going in reverse...
 
 Of course, __SuperNOVAS__ allows you to go in reverse, for example from an observed Az/El position all the way to
-proper ICRS coordinates.
+proper ICRS R.A./Dec coordinates.
 
 E.g.:
 
 ```c
   double az = ..., el = ...; // [deg] measured azimuth and elevation angles
+  double icrs[3];            // [arb. u.] xyz position vector in ICRS
   double ra, dec;            // [h, deg] R.A. and declination to populate
-  double pos[3];             // [AU] xyz position vector
   
   // Calculate the observer's apparent coordinates from the observed Az/El values,
   // lets say in CIRS (but it could also be ICRS, for all that matters). 
   novas_hor_to_app(&obs_frame, az, el, novas_standard_refraction, NOVAS_CIRS, &ra, &dec);
   
-  // Convert apparent to ICRS geometric positions (e.g. at 10 parsec distance)
-  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 10.0 * NOVAS_PARSEC / NOVAS_AU, pos);
+  // Convert apparent to ICRS geometric positions (no parallax)
+  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 0.0, icrs);
   
-  // Convert ICRS xyz position to R.A. and Dec
-  vector2radec(pos, &ra, &dec);
+  // Convert ICRS rectangular equatorial to R.A. and Dec
+  vector2radec(icrs, &ra, &dec);
 ```
 
 Viola! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 

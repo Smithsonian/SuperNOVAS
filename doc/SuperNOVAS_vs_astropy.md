@@ -67,7 +67,7 @@ novas_frame frame;
 sky_pos apparent;
 
 // Define ICRS coordinates
-make_cat_entry("Antares", "ICRS", 1, 
+make_cat_entry("Antares", "HIP", 80763, 
   novas_hms_hours("16h 29m 24.45970s"), 
   novas_dms_degrees("−26d 25m 55.2094s"),
   -12.11, -23.30, 5.89, -3.4, &star);

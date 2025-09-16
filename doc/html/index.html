@@ -333,7 +333,7 @@ Details</summary>
 <p><a class="anchor" id="deprecations"></a> </p>
 <h3><a class="anchor" id="autotoc_md62"></a>
 Deprecated API</h3>
-<p><b>SuperNOVAS</b> began deprecating some NOVAS C functions, either because they are no longer needed; or are not easy to use with better alternatives around; or are internals that should never have been exposed to end-users. The deprecations are marked in the inline and HTML API documentations, providing also alternatives.</p>
+<p><b>SuperNOVAS</b> began deprecating some NOVAS C functions, either because they are no longer needed; or are not easy to use and have better alternatives around; or are internals that should never have been exposed to end-users. The deprecations are marked in the inline and HTML API documentations, suggesting also alternatives.</p>
 <p>That said, the deprecated parts of the API are NOT removed, nor we plan on removing them for the foreseeable future. Instead, they serve as a gentle reminder to users that perhaps they should stay away from these features for their own good.</p>
 <p>However, you have the option to force yourself to avoid using the deprecated API if you choose to do so, by compiling your application with <code>-D_EXCLUDE_DEPRECATED</code>, or equivalently, by defining <code>_EXCLUDE_DEPRECATED</code> in your source code <em>before</em> including <code><a class="el" href="novas_8h.html">novas.h</a></code>. E.g.:</p>
 <div class="fragment"><div class="line"><span class="comment">// Include novas.h without the deprecated definitions</span></div>
@@ -594,25 +594,23 @@ Calculate azimuth and elevation angles at the observing location</h4>
 <p><a class="anchor" id="reverse-place"></a> </p>
 <h4><a class="anchor" id="autotoc_md76"></a>
 Going in reverse...</h4>
-<p>Of course, <b>SuperNOVAS</b> allows you to go in reverse, for example from an observed Az/El position all the way to proper ICRS coordinates.</p>
+<p>Of course, <b>SuperNOVAS</b> allows you to go in reverse, for example from an observed Az/El position all the way to proper ICRS R.A./Dec coordinates.</p>
 <p>E.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> az = ..., el = ...; <span class="comment">// [deg] measured azimuth and elevation angles</span></div>
+<div class="line"><span class="keywordtype">double</span> icrs[3];            <span class="comment">// [arb. u.] xyz position vector in ICRS</span></div>
 <div class="line"><span class="keywordtype">double</span> ra, dec;            <span class="comment">// [h, deg] R.A. and declination to populate</span></div>
-<div class="line"><span class="keywordtype">double</span> pos[3];             <span class="comment">// [AU] xyz position vector</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Calculate the observer&#39;s apparent coordinates from the observed Az/El values,</span></div>
 <div class="line"><span class="comment">// lets say in CIRS (but it could also be ICRS, for all that matters). </span></div>
 <div class="line"><a class="code hl_function" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app</a>(&amp;obs_frame, az, el, <a class="code hl_function" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a>, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, &amp;ra, &amp;dec);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Convert apparent to ICRS geometric positions (e.g. at 10 parsec distance)</span></div>
-<div class="line"><a class="code hl_function" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a>(&amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, ra, dec, 10.0 * <a class="code hl_define" href="novas_8h.html#a0408e0c92b505e9914753930ea3f047f">NOVAS_PARSEC</a> / <a class="code hl_define" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>, pos);</div>
+<div class="line"><span class="comment">// Convert apparent to ICRS geometric positions (no parallax)</span></div>
+<div class="line"><a class="code hl_function" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a>(&amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, ra, dec, 0.0, icrs);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Convert ICRS xyz position to R.A. and Dec</span></div>
-<div class="line"><a class="code hl_function" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a>(pos, &amp;ra, &amp;dec);</div>
+<div class="line"><span class="comment">// Convert ICRS rectangular equatorial to R.A. and Dec</span></div>
+<div class="line"><a class="code hl_function" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a>(icrs, &amp;ra, &amp;dec);</div>
 <div class="ttc" id="aframes_8c_html_aa57cbcae2001fece2ee4a2babfbc5f89"><div class="ttname"><a href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app</a></div><div class="ttdeci">int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys, double *restrict ra, double *restrict dec)</div><div class="ttdef"><b>Definition</b> frames.c:997</div></div>
 <div class="ttc" id="aframes_8c_html_ab7db8026c598e8e126a4725ac3b388bf"><div class="ttname"><a href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a></div><div class="ttdeci">int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec, double dist, double *restrict geom_icrs)</div><div class="ttdef"><b>Definition</b> frames.c:1087</div></div>
-<div class="ttc" id="anovas_8h_html_a0408e0c92b505e9914753930ea3f047f"><div class="ttname"><a href="novas_8h.html#a0408e0c92b505e9914753930ea3f047f">NOVAS_PARSEC</a></div><div class="ttdeci">#define NOVAS_PARSEC</div><div class="ttdoc">[m] A parsec in meters.</div><div class="ttdef"><b>Definition</b> novas.h:169</div></div>
-<div class="ttc" id="anovas_8h_html_abc8f275a2d431e59a1ec9e276abaca1a"><div class="ttname"><a href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a></div><div class="ttdeci">#define NOVAS_AU</div><div class="ttdef"><b>Definition</b> novas.h:150</div></div>
 <div class="ttc" id="autil_8c_html_a84f672dc1c37e3af374198f29cbcfba9"><div class="ttname"><a href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a></div><div class="ttdeci">short vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec)</div><div class="ttdef"><b>Definition</b> util.c:402</div></div>
 </div><!-- fragment --><p>Viola! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can simply add a transformation before <code><a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a></code> above, e.g. as:</p>
 <div class="fragment"><div class="line">...</div>
@@ -1017,6 +1015,7 @@ Physical units</h3>
 <div class="line"><span class="comment">// Convert [AU/day] -&gt; [m/s] (SI) -&gt; [km/s]</span></div>
 <div class="line"><span class="keywordtype">double</span> v_kms = v_auday * (<a class="code hl_define" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a> / <a class="code hl_define" href="novas_8h.html#a0b0c2c5ccc61c8740de2e2ac277cd836">NOVAS_DAY</a>) / <a class="code hl_define" href="novas_8h.html#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a></div>
 <div class="ttc" id="anovas_8h_html_a7822b81ad3f75b448f446ed4da774e75"><div class="ttname"><a href="novas_8h.html#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a></div><div class="ttdeci">#define NOVAS_KMS</div><div class="ttdoc">[m] One km/s in m/s.</div><div class="ttdef"><b>Definition</b> novas.h:145</div></div>
+<div class="ttc" id="anovas_8h_html_abc8f275a2d431e59a1ec9e276abaca1a"><div class="ttname"><a href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a></div><div class="ttdeci">#define NOVAS_AU</div><div class="ttdef"><b>Definition</b> novas.h:150</div></div>
 </div><!-- fragment --><p><a class="anchor" id="string-times-and-angles"></a> </p>
 <h3><a class="anchor" id="autotoc_md99"></a>
 String times and angles</h3>
