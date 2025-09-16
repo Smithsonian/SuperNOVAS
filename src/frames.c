@@ -1140,8 +1140,6 @@ int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_sy
   return 0;
 }
 
-
-
 /**
  * Calculates a transformation matrix that can be used to convert positions and velocities from
  * one coordinate reference system to another.
