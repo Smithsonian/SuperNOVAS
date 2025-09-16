@@ -682,8 +682,7 @@ Alternatively, for high-_z_ sources you might simply use the 1-step `make_redshi
 <a name="specify-observer"></a>
 #### Specify the observer location
 
-Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters 
-(temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):
+Next, we define the location where we observe from. Let's assume we have a GPS location:
 
 ```c
  observer obs;    // Structure to contain observer location 
@@ -712,8 +711,10 @@ here, such as:
 
 Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the 
 geocenter, or at the Solar-system barycenter. The above also sets default, mean annual weather parameters based on
-the location and a global model based on Feulner et al. (2013). You can, of course, set actual weather values _after_, 
-as appropriate, if you need them for the refraction models, e.g.:
+the location and a global model based on Feulner et al. (2013). 
+
+You can, of course, set actual weather values _after_, as appropriate, if you need them for the refraction models, 
+e.g.:
 
 ```c
   obs.on_surf.temperature = 12.4;  // [C] Ambient temperature
@@ -725,7 +726,9 @@ as appropriate, if you need them for the refraction models, e.g.:
 #### Specify the time of observation
 
 Next, we set the time of observation. For a ground-based observer, you will need to provide __SuperNOVAS__ with the
-UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.042,
+UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. You can obtain suitable values for DUT1 from 
+IERS, and for the highest precision, interpolate for the time of observations, and add diurnal corrections obtained 
+from `novas_diurnal_eop()`. For the example, let's assume 37 leap seconds, and DUT1 = 0.042,
 
 ```c
   int leap_seconds = 37;        // [s] UTC - TAI time difference
@@ -871,7 +874,7 @@ E.g.:
 
 ```c
   double az = ..., el = ...; // [deg] measured azimuth and elevation angles
-  double icrs[3];            // [arb. u.] xyz position vector in ICRS
+  double pos[3];             // [arb. u.] xyz position vector
   double ra, dec;            // [h, deg] R.A. and declination to populate
   
   // Calculate the observer's apparent coordinates from the observed Az/El values,
@@ -879,10 +882,10 @@ E.g.:
   novas_hor_to_app(&obs_frame, az, el, novas_standard_refraction, NOVAS_CIRS, &ra, &dec);
   
   // Convert apparent to ICRS geometric positions (no parallax)
-  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 0.0, icrs);
+  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 0.0, pos);
   
   // Convert ICRS rectangular equatorial to R.A. and Dec
-  vector2radec(icrs, &ra, &dec);
+  vector2radec(pos, &ra, &dec);
 ```
 
 Voila! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 
@@ -890,7 +893,6 @@ simply add a transformation before `vector2radec()` above, e.g. as:
 
 ```c
   ...
-  
   // Transform position from ICRS to B1950
   gcrs_to_mod(NOVAS_JD_B1950, pos, pos);
 

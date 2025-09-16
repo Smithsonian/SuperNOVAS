@@ -498,7 +498,7 @@ Details</summary>
 </div><!-- fragment --><p><a class="anchor" id="specify-observer"></a> </p>
 <h4><a class="anchor" id="autotoc_md71"></a>
 Specify the observer location</h4>
-<p>Next, we define the location where we observe from. Here we can (but don't have to) specify local weather parameters (temperature and pressure) also for refraction correction later (in this example, we'll skip the weather):</p>
+<p>Next, we define the location where we observe from. Let's assume we have a GPS location:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;    <span class="comment">// Structure to contain observer location </span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Specify the location we are observing from, e.g. a GPS / WGS84 location</span></div>
@@ -513,7 +513,8 @@ Specify the observer location</h4>
 <div class="line">  <a class="code hl_function" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees</a>(<span class="stringliteral">&quot;7.0982 deg E&quot;</span>),</div>
 <div class="line">  60.0,</div>
 <div class="line">  &amp;obs);</div>
-</div><!-- fragment --><p>Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the geocenter, or at the Solar-system barycenter. The above also sets default, mean annual weather parameters based on the location and a global model based on Feulner et al. (2013). You can, of course, set actual weather values <em>after</em>, as appropriate, if you need them for the refraction models, e.g.:</p>
+</div><!-- fragment --><p>Alternatively, you can also specify airborne observers, or observers in Earth orbit, in heliocentric orbit, at the geocenter, or at the Solar-system barycenter. The above also sets default, mean annual weather parameters based on the location and a global model based on Feulner et al. (2013).</p>
+<p>You can, of course, set actual weather values <em>after</em>, as appropriate, if you need them for the refraction models, e.g.:</p>
 <div class="fragment"><div class="line">obs.<a class="code hl_variable" href="structobserver.html#a45fe4eb871c346c1b8315c4c6a41e96d">on_surf</a>.temperature = 12.4;  <span class="comment">// [C] Ambient temperature</span></div>
 <div class="line">obs.<a class="code hl_variable" href="structobserver.html#a45fe4eb871c346c1b8315c4c6a41e96d">on_surf</a>.pressure = 973.47;   <span class="comment">// [mbar] Atmospheric pressure</span></div>
 <div class="line">obs.<a class="code hl_variable" href="structobserver.html#a45fe4eb871c346c1b8315c4c6a41e96d">on_surf</a>.humidity = 48.3;     <span class="comment">// [%] relative humidity to use for refraction.</span></div>
@@ -521,7 +522,7 @@ Specify the observer location</h4>
 </div><!-- fragment --><p><a class="anchor" id="specify-time"></a> </p>
 <h4><a class="anchor" id="autotoc_md72"></a>
 Specify the time of observation</h4>
-<p>Next, we set the time of observation. For a ground-based observer, you will need to provide <b>SuperNOVAS</b> with the UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. Let's assume 37 leap seconds, and DUT1 = 0.042,</p>
+<p>Next, we set the time of observation. For a ground-based observer, you will need to provide <b>SuperNOVAS</b> with the UT1 - UTC time difference (a.k.a. DUT1), and the current leap seconds. You can obtain suitable values for DUT1 from IERS, and for the highest precision, interpolate for the time of observations, and add diurnal corrections obtained from <code><a class="el" href="earth_8c.html#a3fe699281044873f4137344b28884cea">novas_diurnal_eop()</a></code>. For the example, let's assume 37 leap seconds, and DUT1 = 0.042,</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> leap_seconds = 37;        <span class="comment">// [s] UTC - TAI time difference</span></div>
 <div class="line"><span class="keywordtype">double</span> dut1 = 0.042;          <span class="comment">// [s] UT1 - UTC time difference</span></div>
 </div><!-- fragment --><p>Then we can set the time of observation, for example, using the current UNIX time:</p>
@@ -597,7 +598,7 @@ Going in reverse...</h4>
 <p>Of course, <b>SuperNOVAS</b> allows you to go in reverse, for example from an observed Az/El position all the way to proper ICRS R.A./Dec coordinates.</p>
 <p>E.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> az = ..., el = ...; <span class="comment">// [deg] measured azimuth and elevation angles</span></div>
-<div class="line"><span class="keywordtype">double</span> icrs[3];            <span class="comment">// [arb. u.] xyz position vector in ICRS</span></div>
+<div class="line"><span class="keywordtype">double</span> pos[3];             <span class="comment">// [arb. u.] xyz position vector</span></div>
 <div class="line"><span class="keywordtype">double</span> ra, dec;            <span class="comment">// [h, deg] R.A. and declination to populate</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Calculate the observer&#39;s apparent coordinates from the observed Az/El values,</span></div>
@@ -605,16 +606,15 @@ Going in reverse...</h4>
 <div class="line"><a class="code hl_function" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app</a>(&amp;obs_frame, az, el, <a class="code hl_function" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a>, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, &amp;ra, &amp;dec);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert apparent to ICRS geometric positions (no parallax)</span></div>
-<div class="line"><a class="code hl_function" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a>(&amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, ra, dec, 0.0, icrs);</div>
+<div class="line"><a class="code hl_function" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a>(&amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, ra, dec, 0.0, pos);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert ICRS rectangular equatorial to R.A. and Dec</span></div>
-<div class="line"><a class="code hl_function" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a>(icrs, &amp;ra, &amp;dec);</div>
+<div class="line"><a class="code hl_function" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a>(pos, &amp;ra, &amp;dec);</div>
 <div class="ttc" id="aframes_8c_html_aa57cbcae2001fece2ee4a2babfbc5f89"><div class="ttname"><a href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app</a></div><div class="ttdeci">int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys, double *restrict ra, double *restrict dec)</div><div class="ttdef"><b>Definition</b> frames.c:997</div></div>
 <div class="ttc" id="aframes_8c_html_ab7db8026c598e8e126a4725ac3b388bf"><div class="ttname"><a href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a></div><div class="ttdeci">int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec, double dist, double *restrict geom_icrs)</div><div class="ttdef"><b>Definition</b> frames.c:1087</div></div>
 <div class="ttc" id="autil_8c_html_a84f672dc1c37e3af374198f29cbcfba9"><div class="ttname"><a href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a></div><div class="ttdeci">short vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec)</div><div class="ttdef"><b>Definition</b> util.c:402</div></div>
 </div><!-- fragment --><p>Voila! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can simply add a transformation before <code><a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a></code> above, e.g. as:</p>
 <div class="fragment"><div class="line">...</div>
-<div class="line"> </div>
 <div class="line"><span class="comment">// Transform position from ICRS to B1950</span></div>
 <div class="line">gcrs_to_mod(<a class="code hl_define" href="novas_8h.html#a3785083ae52bbbc1e749dbedd7e5d85e">NOVAS_JD_B1950</a>, pos, pos);</div>
 <div class="line"> </div>
