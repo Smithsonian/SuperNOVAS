@@ -82,35 +82,18 @@ UT1 - UTC time difference (a.k.a. DUT1):
  double ut1_to_tt = get_ut1_to_tt(leap_seconds, dut1);
 ```
 
-### Specify Earth orientation parameters
-
-Next, you may want to set the small diurnal (sub-arcsec level) corrections to Earth orientation, which are published
-in the [IERS Bulletins](https://www.iers.org/IERS/EN/Publications/Bulletins/bulletins.html). The obvious utility of 
-these values comes later, when converting positions from the celestial CIRS frame to the Earth-fixed ITRS frame. Less 
-obviously, however, it is also needed for calculating the CIO location for CIRS coordinates when a CIO locator file 
-is not available, or for calculations sidereal time measures etc. Therefore, it's best to set the pole offsets 
-early on:
-
-```c
- // Current polar offsets provided by the IERS Bulletins (in arcsec)
- double dx = ...;
- double dy = ...;
-  
- cel_pole(jd_tt, POLE_OFFSETS_X_Y, dx, dy);
-```
-
 ### Calculate apparent positions on sky
 
-Now we can calculate the precise apparent position (CIRS or TOD) of the source, such as it's right ascension (R.A.) 
+Now we can calculate the precise apparent position (e.g. in TOD) of the source, such as it's right ascension (R.A.) 
 and declination, and the equatorial _x,y,z_ unit vector pointing in the direction of the source (in the requested 
 coordinate system and for the specified observing location). We also get radial velocity (for spectroscopy), and 
 distance (e.g. for apparent-to-physical size conversion):
 
 ```c
- sky_pos pos;	// We'll return the observable positions (in CIRS) in this structure
+ sky_pos pos;	// We'll return the observable positions (in TOD) in this structure
   
- // Calculate the apparent (CIRS) topocentric positions for the above configuration
- int status = place_star(jd_tt, &source, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
+ // Calculate the apparent (TOD) topocentric positions for the above configuration
+ int status = place_star(jd_tt, &source, &obs, ut1_to_tt, NOVAS_TOD, NOVAS_FULL_ACCURACY, &pos);
   
  // You should always check that the calculation was successful...
  if(status) {
@@ -130,8 +113,8 @@ azimuth and elevation at the observing location. We'll consider these two cases 
 
 #### A. True apparent R.A. and declination
 
-If you want to know the apparent R.A. and declination coordinates from the `sky_pos` structure you obtained, then you 
-can follow with:
+If you want to know the True-of-Date apparent R.A. and declination coordinates from the `sky_pos` structure you 
+obtained, then you can follow with:
 
 ```c
   double ra, dec; // [h, deg] We'll return the apparent R.A. [h] and declination [deg] in these
@@ -144,9 +127,9 @@ Alternatively, you can simply call `radec_star()` instead of `place_star()` to g
 single step if you do not need the `sky_pos` data otherwise. If you followed the less-precise old methodology (Lieske 
 et. al. 1977) thus far, calculating TOD coordinates, you are done here. 
 
-If, however, you calculated the position in CIRS with the more precise IAU 2006 methodology (as we did in the example 
-above), you have one more step to go still. The CIRS equator is the true equator of date, however its origin (CIO) is 
-not the true equinox of date. Thus, we must correct for the difference of the origins to get the true apparent R.A.:
+If, however, you calculated the position in CIRS instead of TOD, you have one more step to go still. The CIRS equator 
+is the true equator of date, however its origin (CIO) is not the true equinox of date. Thus, we must correct for the 
+difference of the origins to get the true apparent R.A.:
 
 ```c
   ra = cirs_to_app_ra(jd_tt, NOVAS_FULL_ACCURACY, ra);
@@ -163,21 +146,18 @@ obtained from `place_star()` as:
  double itrs[3];  // ITRS position vector of source to populate
  double az, zd;   // [deg] local azimuth and zenith distance angles to populate
   
- // Convert CIRS to Earth-fixed ITRS using the pole offsets.
- cirs_to_itrs(jd_tt, 0.0, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, pos.r_hat, itrs);
+ // Convert TOD to Earth-fixed ITRS using the pole offsets.
+ tod_to_itrs(jd_tt, 0.0, ut1_to_tt, NOVAS_FULL_ACCURACY, dx, dy, pos.r_hat, itrs);
  
  // Finally convert ITRS to local horizontal coordinates at the observing site
  itrs_to_hor(itrs, &obs.on_surface, &az, &zd);
 ``` 
 
-Above we used `cirs_to_itrs()` function, and then converted the `sky_pos` rectangular equatorial unit vector 
-calculated in CIRS to the Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) 
+Above we used `tod_to_itrs()` function, and then converted the `sky_pos` rectangular equatorial unit vector 
+calculated in TOD to the Earth-fixed International Terrestrial Reference system (ITRS) using the small (arcsec-level) 
 measured variation of the pole (dx, dy) provided explicitly since `cirs_to_itrs()` does not use the values previously 
 set via `cel_pole()`. Finally, `itrs_to_hor()` converts the ITRS coordinates to the horizontal system at the observer 
 location.
-
-If you followed the old (Lieske et al. 1977) method instead to calculate `sky_pos` in the less precise TOD coordinate
-system, then you'd  simply replace the `cirs_to_itrs()` call above with `tod_to_itrs()` accordingly. 
 
 You can additionally apply an approximate optical refraction correction for the astrometric (unrefracted) zenith angle, 
 if you want, e.g.:
@@ -236,7 +216,7 @@ targets instead of `place_star()` for the sidereal sources (or else `radec_plane
 E.g.:
 
 ```c
- int status = place(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_CIRS, NOVAS_FULL_ACCURACY, &pos);
+ int status = place(jd_tt, &mars, &obs, ut1_to_tt, NOVAS_TOD, NOVAS_FULL_ACCURACY, &pos);
  if(status) {
    // Oops, something went wrong...
    ...
