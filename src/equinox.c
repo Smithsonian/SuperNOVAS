@@ -337,9 +337,6 @@ double novas_gmst_prec(double jd_tdb) {
 /// \endcond
 
 /**
- * @deprecated      (<i>for internal use</i>) There is no good reason why this function should
- *                  be exposed to users. It is intended only for `cio_location()` internally.
- *
  * Compute the intermediate right ascension of the equinox at the input Julian date, using an
  * analytical expression for the accumulated precession in right ascension.  For the true
  * equinox, the result is the equation of the origins.

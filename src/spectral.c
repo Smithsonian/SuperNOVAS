@@ -427,8 +427,8 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place() and novas_sky_pos() to calculate radial velocities along
- * with the apparent position of the source.</li>
+ * <li>This function is called by `novas_sky_pos()` and `place()` to calculate radial velocities
+ * along with the apparent position of the source.</li>
  * <li>For major planets (and Sun and Moon), the radial velocity includes gravitational redshift
  * corrections for light originating at the surface, assuming it's observed from near Earth or
  * else from a large distance away.</li>
@@ -469,7 +469,7 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  * @author Attila Kovacs
  *
  * @sa rad_vel()
- * @sa novas_make_frame(), novas_sky_pos(), novas_v2z()
+ * @sa novas_sky_pos(), novas_v2z()
  */
 double rad_vel2(const object *restrict source, const double *pos_emit, const double *vel_src, const double *pos_det, const double *vel_obs,
         double d_obs_geo, double d_obs_sun, double d_src_sun) {

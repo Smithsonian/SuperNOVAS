@@ -381,8 +381,10 @@ needs best:
 
  - [Using a GNU `Makefile`](#makefile-application)
  - [Using CMake](#cmake-application)
+ - [Deprecated API](#deprecations)
  - [Legacy linking `solarsystem()` and `readeph()` modules](#legacy-application)
  - [Legacy modules: a better way](#preferred-legacy-application)
+
 
 <a name="makefile-application"></a>
 ### Using a GNU `Makefile`
@@ -437,6 +439,30 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
 ```
 
 </details>
+
+<a name="deprecations"></a>
+### Deprecated API
+
+__SuperNOVAS__ began deprecating some NOVAS C functions, either because they are no longer needed; or are not easy to 
+use with better alternatives around; or are internals that should never have been exposed to end-users. The 
+deprecations are marked in the inline and HTML API documentations, providing also alternatives. 
+
+That said, the deprecated parts of the API are NOT removed, nor we plan on removing them for the foreseeable future. 
+Instead, they serve as a gentle reminder to users that perhaps they should stay away from these features for their own 
+good.
+
+However, you have the option to force yourself to avoid using the deprecated API if you choose to do so, by compiling
+your application with `-D_EXCLUDE_DEPRECATED`, or equivalently, by defining `_EXCLUDE_DEPRECATED` in your source code 
+_before_ including `novas.h`. E.g.:
+
+```c
+// Include novas.h without the deprecated definitions
+#define _EXCLUDE_DEPRECATED
+#include <novas.h>
+```
+
+After that, your compiler will complain if your source code references any of the deprecated entities, so you may 
+change that part of your code to use the recommended alternatives instead.
 
 <a name="legacy-application"></a>
 ### Legacy linking `solarsystem()` and `readeph()` modules

@@ -33,7 +33,7 @@
  *                will be available for the foreseeable future also.
  *
  * Populates an 'observer' data structure given the parameters. The output data structure may
- * be used an the the inputs to NOVAS-C function 'place()'.
+ * be used an the the inputs to NOVAS-C functions, such as `make_frame()` or `place()`.
  *
  * @param where         The location type of the observer
  * @param loc_surface   Pointer to data structure that defines a location on Earth's surface.
@@ -95,8 +95,8 @@ short make_observer(enum novas_observer_place where, const on_surface *loc_surfa
 
 /**
  * Populates an 'observer' data structure for a hypothetical observer located at Earth's
- * geocenter. The output data structure may be used an the the inputs to NOVAS-C function
- * 'place()'.
+ * geocenter. The output data structure may be used an the the inputs to NOVAS-C functions,
+ * such as `make_frame()` or `place()`.
  *
  * @param[out] obs    Pointer to data structure to populate.
  * @return          0 if successful, or -1 if the output argument is NULL.
@@ -135,11 +135,11 @@ int make_observer_at_geocenter(observer *restrict obs) {
  * to use make_gps_observer() intead</li>
  * </ol>
  *
- * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
+ * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude; north positive.
+ * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude; east positive.
  * @param height        [m] Geodetic (ITRF / GRS80) altitude above sea level of the observer.
  * @param temperature   [C] Temperature (degrees Celsius).
- * @param pressure      [mbar] Atmospheric pressure (millibars).
+ * @param pressure      [mbar] Atmospheric pressure.
  * @param[out] obs      Pointer to the data structure to populate.
  *
  * @return              0 if successful, or -1 if the output argument is NULL, or if the latitude
@@ -202,8 +202,8 @@ int make_observer_at_site(const on_surface *restrict site, observer *restrict ob
  * `novas_itrf_transform_eop()` to change the ITRF realization for the EOP values,
  * if necessary.
  *
- * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
+ * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude; north positive.
+ * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude; east positive.
  * @param height        [m] Geodetic (ITRF / GRS80) altitude above sea level of the observer.
  * @param[out] obs      Pointer to the data structure to populate.
  *
@@ -233,8 +233,8 @@ int make_itrf_observer(double latitude, double longitude, double height, observe
  * For the highest (&mu;as / mm level) precision, you probably should use an ITRF location
  * instead of a GPS based location.
  *
- * @param latitude      [deg] Geodetic (GPS / WGS84) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (GPS / WGS84) longitude in degrees; east positive.
+ * @param latitude      [deg] Geodetic (GPS / WGS84) latitude north positive.
+ * @param longitude     [deg] Geodetic (GPS / WGS84) longitude east positive.
  * @param height        [m] Geodetic (GPS / WGS84) altitude above sea level of the observer.
  * @param[out] obs      Pointer to the data structure to populate.
  *
@@ -261,10 +261,10 @@ int make_gps_observer(double latitude, double longitude, double height, observer
  * Populates an 'observer' data structure, for an observer situated on a near-Earth spacecraft,
  * with the specified geocentric position and velocity vectors. Both input vectors are with
  * respect to true equator and equinox of date. The output data structure may be used an the
- * the inputs to NOVAS-C function 'place()'.
+ * the inputs to NOVAS-C functions, such as `make_frame()` or `place()`.
  *
- * @param sc_pos        [km] Geocentric (x, y, z) position vector in km.
- * @param sc_vel        [km/s] Geocentric (x, y, z) velocity vector in km/s.
+ * @param sc_pos        [km] Geocentric (x, y, z) position vector.
+ * @param sc_vel        [km/s] Geocentric (x, y, z) velocity vector.
  * @param[out] obs      Pointer to the data structure to populate
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
@@ -313,11 +313,11 @@ int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer 
  * </li>
  * </ol>
  *
- * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
+ * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude; north positive.
+ * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude; east positive.
  * @param height        [m] Geodetic (ITRF / GSR80) altitude above sea level of the observer.
  * @param temperature   [C] Temperature (degrees Celsius) [-120:70].
- * @param pressure      [mbar] Atmospheric pressure (millibars) [0:1200].
+ * @param pressure      [mbar] Atmospheric pressure [0:1200].
  * @param[out] loc      Pointer to Earth location data structure to populate.
  *
  * @return          0 if successful, or -1 if the output argument is NULL (errno set to EINVAL),
@@ -359,8 +359,8 @@ int make_on_surface(double latitude, double longitude, double height, double tem
  * `novas_itrf_transform_eop()` to change the ITRF realization for the EOP values,
  * if necessary.
  *
- * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude in degrees; east positive.
+ * @param latitude      [deg] Geodetic (ITRF / GRS80) latitude; north positive.
+ * @param longitude     [deg] Geodetic (ITRF / GRS80) longitude; east positive.
  * @param height        [m] Geodetic (ITRF / GRS80) altitude above sea level of the observer.
  * @param[out] site     Pointer to the data structure to populate.
  *
@@ -399,8 +399,8 @@ int make_itrf_site(double latitude, double longitude, double height, on_surface 
  * For the highest (&mu;as / mm level) precision, you probably should use an ITRF location
  * instead of a GPS based location.
  *
- * @param latitude      [deg] Geodetic (GPS / WGS84) latitude in degrees; north positive.
- * @param longitude     [deg] Geodetic (GPS / WGS84) longitude in degrees; east positive.
+ * @param latitude      [deg] Geodetic (GPS / WGS84) latitude; north positive.
+ * @param longitude     [deg] Geodetic (GPS / WGS84) longitude; east positive.
  * @param height        [m] Geodetic (GPS / WGS84) altitude above sea level of the observer.
  * @param[out] site     Pointer to the data structure to populate.
  *
@@ -465,9 +465,8 @@ int make_xyz_site(const double *restrict xyz, on_surface *restrict site) {
  * with the provided position and velocity components. Both input vectors are assumed with respect
  * to true equator and equinox of date.
  *
- * @param sc_pos    [km] Geocentric (x, y, z) position vector in km. NULL defaults to the origin
- * @param sc_vel    [km/s] Geocentric (x, y, z) velocity vector in km/s. NULL defaults to zero
- *                  speed.
+ * @param sc_pos    [km] Geocentric (x, y, z) position vector. NULL defaults to the origin
+ * @param sc_vel    [km/s] Geocentric (x, y, z) velocity vector. NULL defaults to zero speed.
  * @param[out] loc  Pointer to earth-orbit location data structure to populate.
  * @return          0 if successful, or -1 if the output argument is NULL.
  *
@@ -553,8 +552,8 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place() to account for aberration when calculating the position
- * of the source.</li>
+ * <li>This function is called by `place()` to account for aberration when calculating the
+ * position of the source.</li>
  * </ol>
  *
  * REFERENCES:
@@ -566,14 +565,14 @@ int make_solar_system_observer(const double *sc_pos, const double *sc_vel, obser
  * @param pos         [AU]  Position vector of source relative to observer
  * @param vobs        [AU/day]  Velocity vector of observer, relative to the solar system
  *                    barycenter.
- * @param lighttime   [day] Light time from object to Earth in days (if known). Or set to 0, and
- *                    this function will compute it.
+ * @param lighttime   [day] Light time from object to Earth (if known). Or set to 0, and this
+ *                    function will compute it as needed.
  * @param[out] out    [AU] Position vector, referred to origin at center of mass of the Earth,
  *                    corrected for aberration. It can be the same vector as one of the inputs.
  *
  * @return            0 if successful, or -1 if any of the vector arguments are NULL.
  *
- * @sa novas_make_frame()
+ * @sa frame_aberration()
  */
 int aberration(const double *pos, const double *vobs, double lighttime, double *out) {
   double p1mag, vemag, beta, cosd, gammai, p, q, r;
@@ -719,15 +718,13 @@ int obs_posvel(double jd_tdb, double ut1_to_tt, enum novas_accuracy accuracy, co
  * <li>Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.</li>
  * </ol>
  *
- * @param pos             [AU] Position vector, referred to origin at solar system barycenter,
- *                        components in AU.
+ * @param pos             [AU] Position vector, referred to origin at solar system barycenter.
  * @param pos_obs         [AU] Position vector of observer (or the geocenter), with respect to
- *                        origin at solar system barycenter, components in AU.
- * @param[out] out        [AU] Position vector, referred to origin at center of mass of the Earth,
- *                        components in AU. It may be NULL if not required, or be the same vector
- *                        as either of the inputs.
- * @param[out] lighttime  [day] Light time from object to Earth in days. It may be NULL if not
- *                        required.
+ *                        origin at solar system barycenter.
+ * @param[out] out        [AU] Position vector, referred to origin at center of mass of the Earth.
+ *                        It may be NULL if not required, or be the same vector as either of the
+ *                        inputs.
+ * @param[out] lighttime  [day] Light time from object to Earth. It may be NULL if not required.
  * @return                0 if successful, or -1 if any of the essential pointer arguments is
  *                        NULL.
  *
@@ -854,23 +851,23 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restr
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place() to calculate observed positions, radial velocity,
- * and distance for the time when the observed light originated from the source.</li>
+ * <li>This function is called by `novas_geom_posvel()` or `place()` to calculate observed
+ * positions, radial velocity, and distance for the time when the observed light originated
+ * from the source.</li>
  * </ol>
  *
  * @param jd_tdb          [day] Barycentric Dynamical Time (TDB) based Julian date
  * @param body            Pointer to structure containing the designation for the solar system
  *                        body
  * @param pos_obs         [AU] Position 3-vector of observer (or the geocenter), with respect
- *                        to origin at solar system barycenter, referred to ICRS axes,
- *                        components in AU.
- * @param tlight0         [day] First approximation to light-time, in days (can be set to 0.0
- *                        if unknown).
+ *                        to origin at solar system barycenter, referred to ICRS axes.
+ * @param tlight0         [day] First approximation to light-time (can be set to 0.0 if not
+ *                        readily avasilable -- so it will be calculated as needed).
  * @param accuracy        NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] p_src_obs  [AU] Position 3-vector of body, relative to observer, referred to ICRS
  *                        axes, components in AU.
  * @param[out] v_ssb      [AU/day] Velocity 3-vector of body, with respect to the Solar-system
- *                        barycenter, referred to ICRS axes, components in AU/day.
+ *                        barycenter, referred to ICRS axes.
  * @param[out] tlight     [day] Calculated light time, or NAN when returning with an error code.
  *
  * @return            0 if successful, -1 if any of the pointer arguments is NULL or if the
@@ -878,7 +875,8 @@ int obs_planets(double jd_tdb, enum novas_accuracy accuracy, const double *restr
  *                    the algorithm failed to converge after 10 iterations, or 10 + the error
  *                    from ephemeris().
  *
- * @sa light_time(), novas_make_frame()
+ * @sa light_time()
+ * @sa novas_sky_pos()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -942,8 +940,8 @@ int light_time2(double jd_tdb, const object *restrict body, const double *restri
  * @param body        Pointer to structure containing the designation for the solar system body
  * @param pos_obs     [AU] Position 3-vector of observer (or the geocenter), with respect to
  *                    origin at solar system barycenter, referred to ICRS axes.
- * @param tlight0     [day] First approximation to light-time, in days (can be set to 0.0 if
- *                    unknown).
+ * @param tlight0     [day] First approximation to light-time (can be set to 0.0 if not readily
+ *                    available -- it will then be computed as needed).
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param[out] pos_src_obs    [AU] Position 3-vector of body, with respect to origin at observer
  *                            (or the geocenter), referred to ICRS axes. It can be the same vector
