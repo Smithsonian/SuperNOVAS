@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.5.0-rc4] - 2025-09-16
+## [Unreleased]
 
 Upcoming feature release, expected around 1 November 2025.
 
@@ -34,7 +34,7 @@ Upcoming feature release, expected around 1 November 2025.
    collaboration with kiranshila).
    
  - #222: CMake build support, e.g for Mac OS X or Windows builds also, with further tweaks in #228, #229, #230, #234, 
-   235... (in collaboration with kiranshila).
+   #235... (in collaboration with kiranshila).
 
  - #223: New functions `novas_clock_skew()` / `novas_mean_clock_skew()` to calculate the instantaneous or averaged 
    (for Earth-bound observers) incremental rate, respectively, at which an observer's clock ticks faster than an 

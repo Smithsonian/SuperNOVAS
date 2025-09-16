@@ -67,8 +67,8 @@ int main() {
     return 1;
   }
 
-  // Optionally, we might store the catalog information: catalog name (5-chars max) and number.
-  novas_set_catalog(&star, "FK4", 1);
+  // Optionally, we might store the catalog information: catalog ID (5-chars max) and number.
+  novas_set_catalog(&star, "HIP", 80763);
 
   // Set the proper motion
   novas_set_proper_motion(&star, -12.11, -23.30);

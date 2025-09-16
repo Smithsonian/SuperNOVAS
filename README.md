@@ -444,8 +444,8 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
 ### Deprecated API
 
 __SuperNOVAS__ began deprecating some NOVAS C functions, either because they are no longer needed; or are not easy to 
-use with better alternatives around; or are internals that should never have been exposed to end-users. The 
-deprecations are marked in the inline and HTML API documentations, providing also alternatives. 
+use and have better alternatives around; or are internals that should never have been exposed to end-users. The 
+deprecations are marked in the inline and HTML API documentations, suggesting also alternatives. 
 
 That said, the deprecated parts of the API are NOT removed, nor we plan on removing them for the foreseeable future. 
 Instead, they serve as a gentle reminder to users that perhaps they should stay away from these features for their own 
