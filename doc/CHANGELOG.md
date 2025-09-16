@@ -54,7 +54,7 @@ Upcoming feature release, expected around 1 November 2025.
    `novas_set_time()` with error propagation in-between.
 
  - #245: New `make_itrf_site()`, `make_gps_site()`, `make_xyz_site()`, `make_itrf_observer()`, `make_gps_observer()`,
-   `make_observer_at_site()` to facilitate the creation of sites / observers with GPS, ITRF or geocentry Cartesian
+   `make_observer_at_site()` to facilitate the creation of sites / observers with GPS, ITRF or geocentric Cartesian
    (_xyz_) site coordinates. All of the above will also initialize default weather parameters for the location, based
    on simple global models of pressure scale height, annualized mean temperatures, and typical humidity values for 
    the altitude. 
@@ -64,6 +64,10 @@ Upcoming feature release, expected around 1 November 2025.
 
  - #246: New `novas_geodetic_transform_site()` and `novas_itrf_transform_site()` convenience functions to make it 
    simpler to change the reference ellipsoid or the ITRF realization of an `on_surface` data structure, respectively.
+
+ - #249: Option to exclude deprecated API from `novas.h` defitions for your application. Simplt compile your 
+   application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source __before_ including
+   `novas.h`. 
 
 ### Changed
 
@@ -81,7 +85,7 @@ Upcoming feature release, expected around 1 November 2025.
  
  - #213: Rename a couple of source modules (`system.c` to `transform.c`, and `coords.c` to `system.c`).
  
- - #214: Reworked GCRS-CIRS transforms without `cio_basis()`.
+ - #214: Reworked GCRS-CIRS transforms without `cio_basis()` (IERS method 2).
  
  - #217: Changed `terra()` to use GRS80 reference ellipsoid insread of the IERS 2003 ellipsoid. ITRF uses the GRS80 
    ellipsoid. The change restores the original NOVAS C behaviour.
@@ -107,11 +111,7 @@ Upcoming feature release, expected around 1 November 2025.
  - #237: Both CMake and GNU make now install more developer docs into `$(docdir)/supernovas`, such as `examples/`,
    `legacy/`, source code, and markdown files.
    
- - #238: Added doxygen commands to `README.md` inside HTML comments to exclude rendering the README header (badges
-   and logo) with doxygen, while not rendering the commands in Github (or other viewers) either. The change allows
-   using the README as is, without editing, as input to Doxygen. 
-   
- - #241: Overhauled document generation. Non-GitHub markdown files are now in `doc/`, which has it's own `Makefile`
+ - #241: Overhauled document generation. Non-GitHub markdown files are now in `doc/`, which has its own `Makefile`
    and CMake sub-configuration.
 
  - #242: README edits and collapsible sections, as well as Github style highlighting of notes, warnings etc.
