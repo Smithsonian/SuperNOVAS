@@ -65,7 +65,7 @@ Upcoming feature release, expected around 1 November 2025.
  - #246: New `novas_geodetic_transform_site()` and `novas_itrf_transform_site()` convenience functions to make it 
    simpler to change the reference ellipsoid or the ITRF realization of an `on_surface` data structure, respectively.
 
- - #249: Option to exclude deprecated API from `novas.h` defitions for your application. Simplt compile your 
+ - #249: Option to exclude deprecated API from `novas.h` definitions for your application. Simply compile your 
    application with `-D_EXCLUDE_DEPRECATED` or else define `EXCLUDE_DEPRECATED` in your source __before_ including
    `novas.h`. 
 
