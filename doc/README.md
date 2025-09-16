@@ -871,7 +871,7 @@ E.g.:
 
 ```c
   double az = ..., el = ...; // [deg] measured azimuth and elevation angles
-  double icrs[3];            // [arb. u.] xyz position vector in ICRS
+  double pos[3];             // [arb. u.] xyz position vector
   double ra, dec;            // [h, deg] R.A. and declination to populate
   
   // Calculate the observer's apparent coordinates from the observed Az/El values,
@@ -879,18 +879,17 @@ E.g.:
   novas_hor_to_app(&obs_frame, az, el, novas_standard_refraction, NOVAS_CIRS, &ra, &dec);
   
   // Convert apparent to ICRS geometric positions (no parallax)
-  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 0.0, icrs);
+  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 0.0, pos);
   
   // Convert ICRS rectangular equatorial to R.A. and Dec
-  vector2radec(icrs, &ra, &dec);
+  vector2radec(pos, &ra, &dec);
 ```
 
-Viola! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 
+Voila! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 
 simply add a transformation before `vector2radec()` above, e.g. as:
 
 ```c
   ...
-  
   // Transform position from ICRS to B1950
   gcrs_to_mod(NOVAS_JD_B1950, pos, pos);
 

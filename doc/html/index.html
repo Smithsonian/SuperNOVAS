@@ -597,7 +597,7 @@ Going in reverse...</h4>
 <p>Of course, <b>SuperNOVAS</b> allows you to go in reverse, for example from an observed Az/El position all the way to proper ICRS R.A./Dec coordinates.</p>
 <p>E.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> az = ..., el = ...; <span class="comment">// [deg] measured azimuth and elevation angles</span></div>
-<div class="line"><span class="keywordtype">double</span> icrs[3];            <span class="comment">// [arb. u.] xyz position vector in ICRS</span></div>
+<div class="line"><span class="keywordtype">double</span> pos[3];             <span class="comment">// [arb. u.] xyz position vector</span></div>
 <div class="line"><span class="keywordtype">double</span> ra, dec;            <span class="comment">// [h, deg] R.A. and declination to populate</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Calculate the observer&#39;s apparent coordinates from the observed Az/El values,</span></div>
@@ -605,16 +605,15 @@ Going in reverse...</h4>
 <div class="line"><a class="code hl_function" href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app</a>(&amp;obs_frame, az, el, <a class="code hl_function" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a>, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, &amp;ra, &amp;dec);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert apparent to ICRS geometric positions (no parallax)</span></div>
-<div class="line"><a class="code hl_function" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a>(&amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, ra, dec, 0.0, icrs);</div>
+<div class="line"><a class="code hl_function" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a>(&amp;obs_frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, ra, dec, 0.0, pos);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Convert ICRS rectangular equatorial to R.A. and Dec</span></div>
-<div class="line"><a class="code hl_function" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a>(icrs, &amp;ra, &amp;dec);</div>
+<div class="line"><a class="code hl_function" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a>(pos, &amp;ra, &amp;dec);</div>
 <div class="ttc" id="aframes_8c_html_aa57cbcae2001fece2ee4a2babfbc5f89"><div class="ttname"><a href="frames_8c.html#aa57cbcae2001fece2ee4a2babfbc5f89">novas_hor_to_app</a></div><div class="ttdeci">int novas_hor_to_app(const novas_frame *restrict frame, double az, double el, RefractionModel ref_model, enum novas_reference_system sys, double *restrict ra, double *restrict dec)</div><div class="ttdef"><b>Definition</b> frames.c:997</div></div>
 <div class="ttc" id="aframes_8c_html_ab7db8026c598e8e126a4725ac3b388bf"><div class="ttname"><a href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a></div><div class="ttdeci">int novas_app_to_geom(const novas_frame *restrict frame, enum novas_reference_system sys, double ra, double dec, double dist, double *restrict geom_icrs)</div><div class="ttdef"><b>Definition</b> frames.c:1087</div></div>
 <div class="ttc" id="autil_8c_html_a84f672dc1c37e3af374198f29cbcfba9"><div class="ttname"><a href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec</a></div><div class="ttdeci">short vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec)</div><div class="ttdef"><b>Definition</b> util.c:402</div></div>
-</div><!-- fragment --><p>Viola! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can simply add a transformation before <code><a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a></code> above, e.g. as:</p>
+</div><!-- fragment --><p>Voila! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can simply add a transformation before <code><a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a></code> above, e.g. as:</p>
 <div class="fragment"><div class="line">...</div>
-<div class="line"> </div>
 <div class="line"><span class="comment">// Transform position from ICRS to B1950</span></div>
 <div class="line">gcrs_to_mod(<a class="code hl_define" href="novas_8h.html#a3785083ae52bbbc1e749dbedd7e5d85e">NOVAS_JD_B1950</a>, pos, pos);</div>
 <div class="line"> </div>
