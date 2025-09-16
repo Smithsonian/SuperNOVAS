@@ -481,7 +481,7 @@ int radec2vector(double ra, double dec, double dist, double *restrict pos) {
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place()</li>
+ * <li>This function is called by `novas_geom_posvel()`, novas_sky_pos(), or `place()`</li>
  * </ol>
  *
  * @param pos_src   Position vector towards observed object, with respect to the SSB
@@ -493,7 +493,7 @@ int radec2vector(double ra, double dec, double dist, double *restrict pos) {
  *                  (<i>Usage A</i>) or relative intermediate solar-system body
  *                  (<i>Usage B</i>); or else NAN if either of the input arguments is NULL.
  *
- * @sa novas_make_frame()
+ * @sa novas_sky_pos(), novas_geom_posvel()
  */
 double d_light(const double *pos_src, const double *pos_body) {
   double d_src;

@@ -685,11 +685,15 @@ enum novas_origin {
  */
 #define NOVAS_ORIGIN_TYPES        (NOVAS_HELIOCENTER + 1)
 
+#ifndef _EXCLUDE_DEPRECATED
+
 /** @deprecated Old definition of the Barycenter origin. NOVAS_BARYCENTER is preferred. */
-#define BARYC                     NOVAS_BARYCENTER
+#  define BARYC                     NOVAS_BARYCENTER
 
 /** @deprecated Old definition of the Center of Sun as the origin. NOVAS_HELIOCENTER is preferred. */
-#define HELIOC                    NOVAS_HELIOCENTER
+#  define HELIOC                    NOVAS_HELIOCENTER
+
+#endif // _EXCLUDE_DEPRECATED
 
 /**
  * The types of coordinate transformations available for tranform_cat().
@@ -1652,17 +1656,25 @@ short virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_ac
 short astro_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy,
         double *restrict ra, double *restrict dec, double *restrict dis);
 
+#ifndef _EXCLUDE_DEPRECATED
 short topo_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec);
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 short local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec);
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 short topo_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis);
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 short local_planet(double jd_tt, const object *restrict ss_body, double ut1_to_tt, const on_surface *restrict position,
         enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis);
+#endif
 
 short mean_star(double jd_tt, double tra, double tdec, enum novas_accuracy accuracy,
         double *restrict ira, double *restrict idec);
@@ -1685,9 +1697,11 @@ short equ2ecl_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_accuracy accuracy,
         const double *in, double *out);
 
+#ifndef _EXCLUDE_DEPRECATED
 int equ2hor(double jd_ut1, double ut1_to_tt, enum novas_accuracy accuracy, double xp, double yp,
         const on_surface *restrict location, double ra, double dec, enum novas_refraction_model ref_option,
         double *restrict zd, double *restrict az, double *restrict rar, double *restrict decr);
+#endif
 
 // in system.c
 int frame_tie(const double *in, enum novas_frametie_direction direction, double *out);
@@ -1695,16 +1709,22 @@ int frame_tie(const double *in, enum novas_frametie_direction direction, double 
 short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg,
         double *restrict ra, double *restrict dec);
 
+#ifndef _EXCLUDE_DEPRECATED
 short sidereal_time(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_equinox_type gst_type,
         enum novas_earth_rotation_measure erot, enum novas_accuracy accuracy, double *restrict gst);
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
         enum novas_accuracy accuracy, enum novas_equatorial_class coordType, double xp, double yp, const double *in,
         double *out);
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum novas_earth_rotation_measure erot,
         enum novas_accuracy accuracy, enum novas_equatorial_class coordType, double xp, double yp, const double *in,
         double *out);
+#endif
 
 // in util.c
 int spin(double angle, const double *in, double *out);
@@ -1714,8 +1734,6 @@ double d_light(const double *pos_src, const double *pos_body);
 short vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec);
 
 int radec2vector(double ra, double dec, double dist, double *restrict pos);
-
-double novas_norm_ang(double angle);
 
 // in earth.c
 double era(double jd_ut1_high, double jd_ut1_low);
@@ -1727,10 +1745,14 @@ int terra(const on_surface *restrict location, double lst, double *restrict pos,
 int e_tilt(double jd_tdb, enum novas_accuracy accuracy, double *restrict mobl, double *restrict tobl,
         double *restrict ee, double *restrict dpsi, double *restrict deps);
 
+#ifndef _EXCLUDE_DEPRECATED
 short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, double dpole2);
+#endif
 
 // in equinox.c
+#ifndef _EXCLUDE_DEPRECATED
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy);
+#endif
 
 int fund_args(double t, novas_delaunay_args *restrict a);
 
@@ -1774,12 +1796,18 @@ int tdb2tt(double jd_tdb, double *restrict jd_tt, double *restrict secdiff);
 // in  cio.c
 short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio);
 
+#ifndef _EXCLUDE_DEPRECATED
 short cio_location(double jd_tdb, enum novas_accuracy accuracy, double *restrict ra_cio, short *restrict loc_type);
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 short cio_basis(double jd_tdb, double ra_cio, enum novas_cio_location_type loc_type, enum novas_accuracy accuracy,
         double *restrict x, double *restrict y, double *restrict z);
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 short cio_array(double jd_tdb, long n_pts, ra_of_cio *restrict cio);
+#endif
 
 // in refract.c
 double refract(const on_surface *restrict location, enum novas_refraction_model model, double zd_obs);
@@ -1800,13 +1828,17 @@ int transform_hip(const cat_entry *hipparcos, cat_entry *hip_2000);
 
 int starvectors(const cat_entry *restrict star, double *restrict pos, double *restrict motion);
 
+#ifndef _EXCLUDE_DEPRECATED
 short make_object(enum novas_object_type, long number, const char *name, const cat_entry *star, object *source);
+#endif
 
 int proper_motion(double jd_tdb_in, const double *pos, const double *restrict vel, double jd_tdb_out, double *out);
 
 // in observer.c
+#ifndef _EXCLUDE_DEPRECATED
 short make_observer(enum novas_observer_place, const on_surface *loc_surface, const in_space *loc_space,
         observer *obs);
+#endif
 
 int make_observer_at_geocenter(observer *restrict obs);
 
@@ -1815,8 +1847,10 @@ int make_observer_on_surface(double latitude, double longitude, double height, d
 
 int make_observer_in_space(const double *sc_pos, const double *sc_vel, observer *obs);
 
+#ifndef _EXCLUDE_DEPRECATED
 int make_on_surface(double latitude, double longitude, double height, double temperature, double pressure,
         on_surface *restrict loc);
+#endif
 
 int make_in_space(const double *sc_pos, const double *sc_vel, in_space *loc);
 
@@ -1836,6 +1870,8 @@ void novas_debug(enum novas_debug_mode mode);
 
 enum novas_debug_mode novas_get_debug_mode();
 
+double novas_norm_ang(double angle);
+
 // in target.c
 void novas_case_sensitive(int value);
 
@@ -1844,7 +1880,9 @@ int make_planet(enum novas_planet num, object *restrict planet);
 int make_ephem_object(const char *name, long num, object *body);
 
 // in cio.c
+#ifndef _EXCLUDE_DEPRECATED
 int set_cio_locator_file(const char *restrict filename);
+#endif
 
 // in plugin.c
 int set_nutation_lp_provider(novas_nutation_provider func);

@@ -200,7 +200,7 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
         enum novas_origin *restrict origin, double *restrict pos, double *restrict vel);
 
 
-
+#ifndef _EXCLUDE_DEPRECATED
 /**
  * @deprecated This old ephemeris reader is prone to memory leaks, and lacks some useful
  *             functionality. Users are strongly encouraged to use the new
@@ -243,7 +243,7 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  * @sa NOVAS_EPHEM_OBJECT
  */
 double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error);
-
+#endif
 
 int set_planet_provider(novas_planet_provider func);
 
@@ -253,7 +253,7 @@ int set_ephem_provider(novas_ephem_provider func);
 
 novas_ephem_provider get_ephem_provider();
 
-
+#ifndef _EXCLUDE_DEPRECATED
 /**
  * @deprecated (<i>legacy function</i>) Use `set_planet_provider()` instead to specify what
  *             function should be used to calculate ephemeris positions for major planets. This
@@ -296,8 +296,9 @@ novas_ephem_provider get_ephem_provider();
  * @sa ephemeris()
  */
 short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity);
+#endif
 
-
+#ifndef _EXCLUDE_DEPRECATED
 /**
  * @deprecated (<i>legacy function</i>) Use `set_planet_provider_hp()` instead to specify what
  *             function should be used to calculate high-precision ephemeris positions for major
@@ -341,7 +342,7 @@ short solarsystem(double jd_tdb, short body, short origin, double *restrict posi
  * @sa ephemeris()
  */
 short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity);
-
+#endif
 
 short earth_sun_calc(double jd_tdb, enum novas_planet body, enum novas_origin origin, double *restrict position,
         double *restrict velocity);

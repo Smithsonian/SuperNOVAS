@@ -34,9 +34,10 @@ int grav_bodies_full_accuracy = DEFAULT_GRAV_BODIES_FULL_ACCURACY;
  *
  * NOTES:
  * <ol>
- * <li>This function is called by place() to calculate gravitational deflections as
- * appropriate for positioning sources precisely. The gravitational deflection due to
- * planets requires a planet calculator function to be configured, e.g. via set_planet_provider().
+ * <li>This function is called by place() and `novas_sky_pos()` to calculate gravitational
+ * deflections as appropriate for positioning sources precisely. The gravitational deflection due
+ * to planets requires a planet calculator function to be configured, e.g.
+ * via set_planet_provider().
  * </li>
  * </ol>
  *
