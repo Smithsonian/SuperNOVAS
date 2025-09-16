@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['way_0',['Legacy modules: a better way',['../index.html#autotoc_md63',1,'']]],
-  ['where_1',['where',['../structobserver.html#a11f2eb69df64b674d938b34bbb842ab1',1,'observer']]],
-  ['with_20keplerian_20orbital_20parameters_2',['Solar-system objects with Keplerian orbital parameters',['../index.html#autotoc_md79',1,'']]],
-  ['with_20novas_20c_203_201_3',['Compatibility with NOVAS C 3.1',['../index.html#autotoc_md53',1,'']]],
-  ['with_20supernovas_4',['Building your application with SuperNOVAS',['../index.html#autotoc_md59',1,'']]],
-  ['wobble_5',['wobble',['../earth_8c.html#aead87744eeb3029ce7d5ffb1801ee652',1,'wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out):&#160;earth.c'],['../novas_8h.html#aead87744eeb3029ce7d5ffb1801ee652',1,'wobble(double jd_tt, enum novas_wobble_direction direction, double xp, double yp, const double *in, double *out):&#160;earth.c']]],
-  ['wobble_5fitrs_5fto_5fpef_6',['WOBBLE_ITRS_TO_PEF',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5ac1fc144f868517a2268a56343cc218a9',1,'novas.h']]],
-  ['wobble_5fitrs_5fto_5ftirs_7',['WOBBLE_ITRS_TO_TIRS',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a88d1bc6832a20ed34c4dab5753864851',1,'novas.h']]],
-  ['wobble_5fpef_5fto_5fitrs_8',['WOBBLE_PEF_TO_ITRS',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a6148979c7c2a121fc0852ec129eb4b10',1,'novas.h']]],
-  ['wobble_5ftirs_5fto_5fitrs_9',['WOBBLE_TIRS_TO_ITRS',['../novas_8h.html#aab27106a2d5c2c7fa64b2f208deff7f5a4b792b9dcf18048019f1a4fb486b7c97',1,'novas.h']]]
+  ['v_5fobs_0',['v_obs',['../structnovas__frame.html#a52e812c05f108858a4459d937a2115a4',1,'novas_frame']]],
+  ['vc_1',['VC',['../eph__manager_8c.html#afe4ec6caa67baf8fb5b184cc183a07e8',1,'eph_manager.c']]],
+  ['vector2radec_2',['vector2radec',['../util_8c.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c'],['../novas_8h.html#a84f672dc1c37e3af374198f29cbcfba9',1,'vector2radec(const double *restrict pos, double *restrict ra, double *restrict dec):&#160;util.c']]],
+  ['vel_3',['vel',['../structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035',1,'novas_planet_bundle']]],
+  ['velocity_20transforms_20change_20of_20coordinate_20system_4',['Coordinate and velocity transforms (change of coordinate system)',['../index.html#autotoc_md82',1,'']]],
+  ['virtual_5fplanet_5',['virtual_planet',['../place_8c.html#a0dc172d82eec79f78c2d218c1a7b9cbe',1,'virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c'],['../novas_8h.html#a0dc172d82eec79f78c2d218c1a7b9cbe',1,'virtual_planet(double jd_tt, const object *restrict ss_body, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec, double *restrict dis):&#160;place.c']]],
+  ['virtual_5fstar_6',['virtual_star',['../place_8c.html#aaf187624a93349391518f9d6bb3051e5',1,'virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c'],['../novas_8h.html#aaf187624a93349391518f9d6bb3051e5',1,'virtual_star(double jd_tt, const cat_entry *restrict star, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c']]],
+  ['vs_20astropy_7',['SuperNOVAS vs. astropy',['../md_SuperNOVAS__vs__astropy.html',1,'']]],
+  ['vs_20new_8',['Celestial coordinate systems (old vs. new)',['../index.html#autotoc_md66',1,'']]]
 ];

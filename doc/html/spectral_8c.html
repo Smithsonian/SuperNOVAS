@@ -181,9 +181,9 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
 <dl class="section return"><dt>Returns</dt><dd>[km/s] Equivalent Solar-System Barycentric radial velocity.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#aa040bcfe8bee7d8e1307800f48efddd7">make_cat_entry()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a99ed25baa029f3980924da8c8af54d1a">novas_ssb_to_lsr_vel()</a>, <a class="el" href="target_8c.html#aa040bcfe8bee7d8e1307800f48efddd7">make_cat_entry()</a> </dd>
 <dd>
-<a class="el" href="#a99ed25baa029f3980924da8c8af54d1a">novas_ssb_to_lsr_vel()</a> </dd></dl>
+<a class="el" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours()</a>, <a class="el" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, and <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>.</p>
 
@@ -235,9 +235,9 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
 <dl class="section return"><dt>Returns</dt><dd>[km/s] Equivalent Solar-System Barycentric radial velocity.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#aa040bcfe8bee7d8e1307800f48efddd7">make_cat_entry()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel()</a>, <a class="el" href="target_8c.html#aa040bcfe8bee7d8e1307800f48efddd7">make_cat_entry()</a> </dd>
 <dd>
-<a class="el" href="#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel()</a> </dd></dl>
+<a class="el" href="parse_8c.html#ac69c17c646ddf3a5447557338a8490b4">novas_str_hours()</a>, <a class="el" href="parse_8c.html#a10a24fc28fa74efa75abf566bb61af5b">novas_str_degrees()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, and <a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a>.</p>
 
@@ -267,11 +267,9 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if the input velocity is invalid (i.e., it exceeds the speed of light).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a63621cea3b4985c1bfcc4514a7aa3fb1" title="==========================================================================">novas_z2v()</a> </dd>
-<dd>
-<a class="el" href="#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a63621cea3b4985c1bfcc4514a7aa3fb1" title="==========================================================================">novas_z2v()</a>, <a class="el" href="#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a>.</p>
 
@@ -303,11 +301,9 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid, i.e. z &lt;= -1).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a> </dd>
-<dd>
-<a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, <a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a>.</p>
 
@@ -340,13 +336,9 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The compound redshift value, ot NAN if either input redshift is invalid (errno will be set to EINVAL).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a> </dd>
-<dd>
-<a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a> </dd>
-<dd>
-<a class="el" href="#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a>, <a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a>, <a class="el" href="#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a> </dd></dl>
 
 </div>
 </div>
@@ -372,9 +364,9 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The redshift value for a body moving in the opposite direction with the same speed, or NAN if the input redshift is invalid.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a> </dd></dl>
 
 </div>
 </div>
@@ -521,7 +513,7 @@ Unlike NOVAS C, this function will return a radial velocity for the Sun that is 
 <p>Any of the distances (last three input arguments) can be set to a negative value if the corresponding general relativistic gravitational potential term is not to be evaluated. These terms generally are important only at the meter/second level. If 'd_obs_geo' and 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the observer, appropriate for an observer on the surface of the Earth. 'd_src_sun', if given, is used only for solar system objects.</p>
 <p>NOTES: </p><ol>
 <li>
-This function is called by <a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> and <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> to calculate radial velocities along with the apparent position of the source. </li>
+This function is called by <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> and <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> to calculate radial velocities along with the apparent position of the source. </li>
 <li>
 For major planets (and Sun and Moon), the radial velocity includes gravitational redshift corrections for light originating at the surface, assuming it's observed from near Earth or else from a large distance away. </li>
 </ol>
@@ -543,15 +535,11 @@ Lindegren &amp; Dravins (2003), Astronomy &amp; Astrophysics 401, 1185-1201. </l
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[km/s] The observed radial velocity measure times the speed of light, or NAN if there was an error (errno will be set to EINVAL if any of the arguments are NULL, or to some other value to indicate the type of error).</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#afca24d914664bb60d20fb428177f329a">rad_vel()</a> </dd>
 <dd>
-<a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a> </dd>
-<dd>
-<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
-<dd>
-<a class="el" href="#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a></dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="structcat__entry.html#ac4ae7989694321b540abb75c30eec690">cat_entry::dec</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a139f16e134bf6119b6e04c8272c85668">NOVAS_EARTH_RADIUS</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a>, <a class="el" href="novas_8h.html#a7822b81ad3f75b448f446ed4da774e75">NOVAS_KMS</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a">NOVAS_ORBITAL_OBJECT</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="novas_8h.html#a0ae90838b446c7d4c1d3386ec8857410">NOVAS_PLANET_GRAV_Z_INIT</a>, <a class="el" href="novas_8h.html#a1853540eae9f8699b6aaff9c0b518e08">NOVAS_PLANETS</a>, <a class="el" href="novas_8h.html#ae548ecdfc646914084936acb32e9c993">NOVAS_SOLAR_RADIUS</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, <a class="el" href="#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>, <a class="el" href="structcat__entry.html#a18f7f3626661dbf57ce9eaec51840eb8">cat_entry::parallax</a>, <a class="el" href="structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422">cat_entry::ra</a>, and <a class="el" href="structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a">cat_entry::radialvelocity</a>.</p>
 
@@ -584,13 +572,9 @@ Lindegren &amp; Dravins (2003), Astronomy &amp; Astrophysics 401, 1185-1201. </l
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[km/s] The redshift corrected radial velocity or NAN if the redshift value is invalid (errno will be set to EINVAL).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a> </dd>
-<dd>
-<a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a> </dd>
-<dd>
-<a class="el" href="#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a>, <a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a>, <a class="el" href="#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, and <a class="el" href="#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>.</p>
 
@@ -623,11 +607,9 @@ Lindegren &amp; Dravins (2003), Astronomy &amp; Astrophysics 401, 1185-1201. </l
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[km/s] The radial velocity without the redshift correction or NAN if the redshift value is invalid. (errno will be set to EINVAL)</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a> </dd>
-<dd>
-<a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a>, <a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#aa54cd00024b294d38fa29433c017c65f">novas_v2z()</a>, and <a class="el" href="#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>.</p>
 

@@ -192,15 +192,9 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or if the JD date is outside of the range with valid parameters, or else -1 if the planet ID is not supported or if both output vectors are NULL. In case of errors errno will be set to indicate the type of error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a>, <a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b">earth_sun_calc()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
 <dd>
-<a class="el" href="solsys3_8c.html#a580f5949c8a29cdd7bf4787aee891f2b">earth_sun_calc()</a> </dd>
-<dd>
-<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
-<dd>
-<a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a> </dd>
-<dd>
-<a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
+<a class="el" href="solsys-calceph_8c.html#a35fc86a939602ec910dbdfde180d7f31">novas_use_calceph()</a>, <a class="el" href="solsys-cspice_8c.html#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a9fcf58133828600a062725ced448cfcf">NOVAS_MOON</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, <a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30">novas_orbit_posvel()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>.</p>
 
@@ -266,9 +260,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 in case of an error (errno will indicate the type of error).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
-<dd>
-<a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a> </dd>
 <dd>
 <a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a> </dd></dl>
 
@@ -311,9 +303,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (<code>errno</code> set to <code>EINVAL</code>).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#abc8f275a2d431e59a1ec9e276abaca1a">NOVAS_AU</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, and <a class="el" href="novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a">TWOPI</a>.</p>
 
@@ -367,13 +357,7 @@ E.M. Standish and J.G. Williams 1992. </li>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 (<code>errno</code> set to <code>EINVAL</code>).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd>
-<dd>
-<a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a> </dd>
-<dd>
-<a class="el" href="#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="#a4cb01609f76b0ff8487817b9446a3a62">novas_approx_sky_pos()</a>, <a class="el" href="#a9ead627eed7fabd8583f1353e89f42e7">novas_approx_heliocentric()</a>, <a class="el" href="target_8c.html#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a> </dd></dl>
 <p>Keplerian orbital elements at J2000 from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
 <p>Temporal evolution of the Keplerian orbital elements from Table 8.10.2 of E.M. Standish and J.G. Williams 1992, valid for 1800 AD to 2050 AD.</p>
 <p>Keplerian orbital elements at J2000 from Table 8.10.3 of E.M. Standish and J.G. Williams 1992, valid for 3000 BC to 3000 AD.</p>
@@ -426,11 +410,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>[deg] The Moon's phase, or more precisely the ecliptic longitude difference between the Sun and the Moon, as seen from the geocenter. 0: New Moon, 90: 1st quarter, +/- 180 Full Moon, -90: 3rd quarter or NAN if the solution failed to converge (errno will be set to ECANCELED), or if the JD date is outside the range of the orbital model (errno set to EINVAL).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad0bd6e212af549309b0fcb792ed8cb79">novas_next_moon_phase()</a> </dd>
-<dd>
-<a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd>
-<dd>
-<a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1">novas_solar_illum()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad0bd6e212af549309b0fcb792ed8cb79">novas_next_moon_phase()</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="frames_8c.html#ac780bd907a12957995d36ad916dd4ec1">novas_solar_illum()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045ad1785b619d72877c4eb78d61aedf9e1a">NOVAS_EMB</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a>, <a class="el" href="#a63b094e813d8b752a6f3344419e80031">novas_make_planet_orbit()</a>, <a class="el" href="novas_8h.html#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a>, <a class="el" href="orbital_8c.html#a6b88d2403a3051ab32229244cf98d7ab">novas_orbit_native_posvel()</a>, and <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
 
@@ -483,9 +463,7 @@ Chapront-Touze, M, and Chapront, J. 1983, Astronomy and Astrophysics (ISSN 0004-
 <dl class="section return"><dt>Returns</dt><dd>[day] The Barycentric Dynamical Time (TDB) based Julian Date when the Moon will be in the desired phase next after the input date; or NAN if the solution failed to converge (errno will be set to ECANCELED).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.4 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase()</a> </dd>
-<dd>
-<a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase()</a>, <a class="el" href="#ad6e6c7f6dc2745030e3fd4d407e982bd">novas_make_moon_orbit()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422">NOVAS_JD_J2000</a>, and <a class="el" href="#a2dbdafd6b07f079815ae52d00e142861">novas_moon_phase()</a>.</p>
 
@@ -522,13 +500,7 @@ IERS Conventions Chapter 5, Eq. 5.44. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[rad] The approximate longitude of the planet in radians [-&pi;:&pi;], or NAN if the <code>planet</code> id is out of range.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a> </dd>
-<dd>
-<a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a> </dd>
-<dd>
-<a class="el" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a> </dd>
-<dd>
-<a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>, <a class="el" href="novas_8h.html#a31bf4a08940bfa3e97ae6a1abee80422" title="[day] Julian date at J2000">NOVAS_JD_J2000</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 

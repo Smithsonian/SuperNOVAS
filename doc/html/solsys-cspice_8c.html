@@ -161,11 +161,9 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to EINVAL).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a> </dd>
-<dd>
-<a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a38e3b3155cad3b3822fbc3e553060ab1">cspice_remove_kernel()</a>, <a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd></dl>
 
 </div>
 </div>
@@ -195,9 +193,9 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or else -1 if there was an error (errno will be set to EINVAL).</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd></dl>
 
 </div>
 </div>
@@ -218,13 +216,9 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
 <p>Sets CSPICE as the default ephemeris provider for all types of Solar-system objects (both NOVAS_PLANET and NOVAS_EPHEM_OBJECT types).</p>
 <p>CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively.</p>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a> </dd>
-<dd>
-<a class="el" href="#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a> </dd>
-<dd>
-<a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a>, <a class="el" href="#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a>, <a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a>, and <a class="el" href="#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a>.</p>
 
@@ -247,15 +241,11 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
 <p>Sets a ephemeris provider for NOVAS_EPHEM_OBJECT types using the NAIF CSPICE library.</p>
 <p>CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively.</p>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a> </dd>
-<dd>
-<a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd>
-<dd>
-<a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
-<dd>
-<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a943549e395b19f6a91064e3d6fa1c577">novas_use_cspice_planets()</a>, <a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a>, <a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
+<dd>
+<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>.</p>
 
@@ -278,17 +268,11 @@ the Smithsonian/cspice-sharedlib repository: <a href="https://github.com/Smithso
 <p>Sets CSPICE as the ephemeris provider for the major planets (and Sun, Moon, SSB...) using the NAIF CSPICE library.</p>
 <p>CSPICE is configured to suppress error messages and to not exit on errors, since we will check errors and handle them ourselves. You can adjust the behavior after this call with the CSPICE errprt_c() and erract_c() functions, respectively.</p>
 <dl class="section return"><dt>Returns</dt><dd>0</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a> </dd>
-<dd>
-<a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a> </dd>
-<dd>
-<a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
-<dd>
-<a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
-<dd>
-<a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#afb078e1df9b5b08999d24e68d7b4ecdc">novas_use_cspice_ephem()</a>, <a class="el" href="#a9b44218bca5fce1e9e5103494c15dde4">novas_use_cspice()</a>, <a class="el" href="#ae02d26964099f56c375dc78172ad135b">cspice_add_kernel()</a> </dd>
+<dd>
+<a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, and <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
 

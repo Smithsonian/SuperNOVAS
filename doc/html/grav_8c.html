@@ -176,7 +176,7 @@ Variables</h2></td></tr>
 <p>If 'accuracy' is NOVAS_FULL_ACCURACY (0), the deflections due to the Sun, Jupiter, Saturn, and Earth are calculated. Otherwise, only the deflection due to the Sun is calculated. In either case, deflection for a given body is ignored if the observer is within ~1500 km of the center of the gravitating body.</p>
 <p>NOTES: </p><ol>
 <li>
-This function is called by <a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> to calculate gravitational deflections as appropriate for positioning sources precisely. The gravitational deflection due to planets requires a planet calculator function to be configured, e.g. via <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>.  </li>
+This function is called by <a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> and <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> to calculate gravitational deflections as appropriate for positioning sources precisely. The gravitational deflection due to planets requires a planet calculator function to be configured, e.g. via <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>.  </li>
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
@@ -514,14 +514,10 @@ Kaplan, G. et al. (1989) Astronomical Journal 97, 1197-1210, section iii f. </li
       </table>
 </div><div class="memdoc">
 <p>Current set of gravitating bodies to use for deflection calculations in full accuracy mode. Each bit signifies whether a given body is to be accounted for as a gravitating body that bends light, such as the bit <code>(1 &lt;&lt; NOVAS_JUPITER)</code> indicates whether or not Jupiter is considered as a deflecting body. You should also be sure that you provide ephemeris data for bodies that are designated for the deflection calculation.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a>, <a class="el" href="novas_8h.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="novas_8h.html#a4cb74da554b236c835302480688cfaac">DEFAULT_GRAV_BODIES_FULL_ACCURACY</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a> </dd>
-<dd>
-<a class="el" href="novas_8h.html#a4cb74da554b236c835302480688cfaac">DEFAULT_GRAV_BODIES_FULL_ACCURACY</a> </dd>
-<dd>
-set_ephem_provider_hp()</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+set_ephem_provider_hp() </dd></dl>
 
 </div>
 </div>
@@ -537,14 +533,10 @@ set_ephem_provider_hp()</dd></dl>
       </table>
 </div><div class="memdoc">
 <p>Current set of gravitating bodies to use for deflection calculations in reduced accuracy mode. Each bit signifies whether a given body is to be accounted for as a gravitating body that bends light, such as the bit <code>(1 &lt;&lt; NOVAS_JUPITER)</code> indicates whether or not Jupiter is considered as a deflecting body. You should also be sure that you provide ephemeris data for bodies that are designated for the deflection calculation.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a> </dd>
+<dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a>, <a class="el" href="novas_8h.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> </dd>
 <dd>
-<a class="el" href="novas_8h.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a> </dd>
-<dd>
-<a class="el" href="novas_8h.html#aec64bf67d5a03b2b4fb2583e5918f1de">DEFAULT_GRAV_BODIES_REDUCED_ACCURACY</a> </dd>
-<dd>
-<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a></dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd></dl>
 
 </div>
 </div>

@@ -157,6 +157,43 @@ Functions</h2></td></tr>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 5, 2025 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs and G. Kaplan</dd></dl>
 <p>Various convenience variants of the NOVAS C <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> function. Using <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> or one of its variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended, via <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> (for apparent positions, including aberration and gravitational deflection) or `novas_geom_posvel() (for geometric positions).</p>
+<p>Many of the functions here are now deprecated, since the new frame-based approach, introduced in v1.2 offers more versatile and transparent ways of calculated the same quantities.</p>
+<p>Nevertheless, if you insist on using these older methods, here's a primer on the differences among the <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> variants:</p>
+<p><b>reference system</b>: The coordinate reference system in which the output position is expressed. Often it is ICRS / GCRS, or True of Date (TOD), but occasionally something else.</p>
+<p><b>observer location</b>: If the observer is not one of the call parameters than a fictitious observer located at the geocenter is assumed (e.g. for <code><a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a>,</code><a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a><code>or </code><a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a>`).</p>
+<p><b>position type</b>: The positions calculated can be geometric or apparent. Both include light-time correction (for Solar-system sources), but geometric positions do not correct for the aberration due to observer movement, and gravitational deflections around the major Solar-system bodies. Apparent positions, however, do include such corrections. The contract of the <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> function is that if the <code>coord_sys</code> call parameter is <code>NOVAS_ICRS</code>, then it calculates a geometric place, while for all other reference systems it returns an apparent place.</p>
+<p>For example, the following <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> variants may be used for a geocentric observer place and a sidereal (non-Solar-system) source, depending on the reference system and the type of position to be calculated:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">system \ type   </th><th class="markdownTableHeadNone">geocentric / geometric   </th><th class="markdownTableHeadNone">geocentric / apparent   </th><th class="markdownTableHeadNone">topocentric / apparent    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">ICRS / GCRS   </td><td class="markdownTableBodyNone"><code><a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a></code>   </td><td class="markdownTableBodyNone"><code><a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a></code>   </td><td class="markdownTableBodyNone"><code><a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a></code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">TOD   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"><code><a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a></code>   </td><td class="markdownTableBodyNone"><code><a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a></code>   </td></tr>
+</table>
+<p>For Solar-system sources you have a matching set of functions but with <code>planet</code> in their name instead of <code>star</code>, e.g. <code><a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a></code> instead of <code><a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a></code>.</p>
+<p>And for geocentric observer locations, the functions below can be used to support further reference systems and can be used with both Solar-system and sidereal sources:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">system \ type   </th><th class="markdownTableHeadNone">geocentric / geometric   </th><th class="markdownTableHeadNone">geocentric / apparent    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">ICRS / GCRS   </td><td class="markdownTableBodyNone"><code><a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a></code>   </td><td class="markdownTableBodyNone"><code><a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a></code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">J2000   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"><code><a class="el" href="#a1ea9b377426b1800535e85fab47bfc1b">place_j2000()</a></code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">MOD   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"><code><a class="el" href="#ac53d150d1f6b96c83d1516a66c699e63">place_mod()</a></code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft">TOD   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"><code><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a></code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft">CIRS   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"><code><a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a></code>   </td></tr>
+</table>
+<p>As you can see it's a little scattered and the nomenclature is not so telling either. Thus, the preferred way is to use a universal recipe and specify the (a) reference system; (b) observer location; and (c) whether to calculate geometric or apparent positions explcitly. Even if it means a few more lines of code. In the new frame based approach this boils down to the following steps:</p>
+<ol type="1">
+<li>Specify the observer location, (ground-based, airborne, on Earth-orbit, geocentric or heliocentric orbit). See <a class="el" href="structobserver.html">observer</a> for options.</li>
+<li>Create an observing frame for the type of observer and time of observation using <code><a class="el" href="frames_8c.html#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a></code>.</li>
+<li>Calculate geometric positions using <code><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></code>, or apparent positions using <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code>. Set the reference system as one of the call parameters, e.g. <code>NOVAS_ICRS</code> for ICRS, <code>NOVAS_TOD</code> for TOD etc.</li>
+<li>If needed convert between position 3-vectors and RA/Dec coordinates using <code><a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a></code> / <code><a class="el" href="util_8c.html#ae104afd1bc638def9bdbce1801e5054a">radec2vector()</a></code> as necessary.</li>
+</ol>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html">frames.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac28dd9a362982cfce150751001a96a8a" name="ac28dd9a362982cfce150751001a96a8a"></a>
@@ -197,12 +234,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Deprecated</a></b></dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> or the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> are now preferred.</dd></dl>
-<p>Computes the apparent place of a solar system body. This is the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> for the body with NOVAS_TOD as the system, except the different set of return values used.</p>
-<p>NOTES: </p><ol>
-<li>
-This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
-</ol>
+<p><b>reference_system</b>: TOD <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
+<p>Computes the True-of-Date (TOD) apparent place of a solar system body as would be seen by an observer at the geocenter. This is the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> for the body with NOVAS_TOD as the system and a geocentric observer, except the different set of return values used.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -214,26 +251,16 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terretrial Time (TT) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ss_body</td><td>Pointer to structure containing the body designation for the solar system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Apparent right ascension in hours, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Apparent declination in degrees, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] True distance from Earth to the body at 'jd_tt' in AU (can be NULL if not needed). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Apparent (TOD) right ascension for a fictitous geocentric observer, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Apparent (TOD) declination for a fictitous geocentric observer, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] Apparent distance from Earth to the body at 'jd_tt' (it may be NULL if not needed). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or 10 + the error code from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or 10 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a>, <a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a>, <a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a>, <a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a>, <a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
 <dd>
-<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
-<dd>
-<a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
-<dd>
-<a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a> </dd>
-<dd>
-<a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a> </dd>
-<dd>
-<a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
 
@@ -272,13 +299,13 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated</a></b></dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> or the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> are now preferred.</dd></dl>
-<p>Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity.</p>
+<p><b>reference_system</b>: TOD <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
+<p>Computes the True-of-Date (TOD) apparent place of a star, as would be seen by an observer at the geocenter, referenced to the dynamical equator of date, given its catalog mean place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with a NULL observer location and NOVAS_TOD as the system for an object that specifies the star.</p>
-<p>NOTES: </p><ol>
-<li>
-This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
-</ol>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -290,27 +317,15 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terretrial Time (TT) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to catalog entry structure containing catalog data for the object in the ICRS. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Apparent right ascension in hours, referred to true equator and equinox of date 'jd_tt' (it may be NULL if not required). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Apparent declination in degrees, referred to true equator and equinox of date 'jd_tt' (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Apparent (TOD) right ascension for a fictitous geocentric observer, referred to true equator and equinox of date 'jd_tt' (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Apparent (TOD) declination in degrees for a fictitous geocentric observer, referred to true equator and equinox of date 'jd_tt' (it may be NULL if not required). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if a required pointer argument is NULL, or else an the error from <a class="el" href="target_8c.html#a411f70fb77582d750c5269fcd64b0ce2">make_object()</a>, or 20 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a>, <a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a>, <a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a>, <a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a>, <a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd>
 <dd>
-<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
-<dd>
-<a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> </dd>
-<dd>
-<a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a> </dd>
-<dd>
-<a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a> </dd>
-<dd>
-<a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a> </dd>
-<dd>
-<a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a> </dd>
-<dd>
-<a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, and <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>.</p>
 
@@ -354,7 +369,11 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the astrometric place of a solar system body, referenced to the ICRS without light deflection or aberration. This is the same as calling <a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a> for the body, except the different set of return values used.</p>
+<p><b>reference_system</b>: ICRS / GCRS <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: geometric <br  />
+</p>
+<p>Computes the astrometric place of a solar system body, as would be seen by a non-moving observer located at the current position of the geocenter, referenced to the ICRS without light deflection or aberration. This is the same as calling <a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a> for the body, except the different set of return values used.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -366,24 +385,16 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terretrial Time (TT) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ss_body</td><td>Pointer to structure containing the body designation for the solar system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Astrometric right ascension in hours, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Astrometric declination in degrees, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] True distance from Earth to the body at 'jd_tt' in AU (can be NULL if not needed). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Astrometric (geometric) right ascension for a fictitous geocentric observer, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Astrometric (geometric) declination, for a fictitous geocentric observer, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] Apparent distance from Earth to the body at 'jd_tt' (it may be NULL if not needed). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object is NULL, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or 10 + the error code from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object is NULL, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or 10 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a>, <a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a>, <a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a>, <a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a>, <a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a>, <a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a> </dd>
 <dd>
-<a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd>
-<dd>
-<a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a> </dd>
-<dd>
-<a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a> </dd>
-<dd>
-<a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a> </dd>
-<dd>
-<a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
 
@@ -422,7 +433,11 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the astrometric place of a star, referred to the ICRS without light deflection or aberration, at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity.</p>
+<p><b>reference_system</b>: ICRS / GCRS <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: geometric <br  />
+</p>
+<p>Computes the astrometric place of a star, as would be seen by a non-moving observer at the current location of the geocenter, referred to the ICRS without light deflection or aberration, at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with a NULL observer location and NOVAS_ICRS as the system, or <a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a> for an object that specifies the star.</p>
 <p>REFERENCES: </p><ol>
 <li>
@@ -435,25 +450,15 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to catalog entry structure containing catalog data for the object in the ICRS. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Astrometric right ascension in hours, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Astrometric declination in degrees, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Astrometric (geometric) right ascension for a fictitous geocentric observer, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Astrometric (geometric) declination for a fictitous geocentric observer, referred to the ICRS, without light deflection or aberration. (It may be NULL if not required) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if a required pointer argument is NULL, or 20 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a>, <a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a>, <a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a>, <a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
 <dd>
-<a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a> </dd>
-<dd>
-<a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a> </dd>
-<dd>
-<a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a> </dd>
-<dd>
-<a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, and <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>.</p>
 
@@ -511,17 +516,9 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if the 'jd_tdb' or input object argument is NULL, or else 1 if 'origin' is invalid, 2 if <code>cel_obj-&gt;type</code> is invalid, 10 + the error code from <a class="el" href="solsys1_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a>, or 20 + the error code from <a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>, <a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
 <dd>
-<a class="el" href="plugin_8c.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
-<dd>
-<a class="el" href="plugin_8c.html#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
-<dd>
-<a class="el" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80">ephem_open()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a> </dd></dl>
+<a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="plugin_8c.html#aa6fad38297a49ba78a6bd49cedf889b1">get_ephem_provider()</a>, <a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27bea13c0711a025b9aebd4186ab9127cbd7b">NOVAS_HELIOCENTER</a>, <a class="el" href="orbital_8c.html#a4510a3235a693f122899983901211c30">novas_orbit_posvel()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a">NOVAS_ORBITAL_OBJECT</a>, <a class="el" href="novas_8h.html#aab57b6b4c8c96ed32414fe3964813e5f">NOVAS_ORIGIN_TYPES</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045aaeb39686d0e998c9188b47c31ee9c6b5">NOVAS_SSB</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a170e1c704bd29c8d46f66d4d9a03d9c2">NOVAS_SUN</a>, and <a class="el" href="solarsystem_8h.html#aa5f22db2fa785675372d45b88f2f1736">readeph()</a>.</p>
 
@@ -575,7 +572,13 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> with NOVAS_ICRS or NOVARS_GCRS as the reference system is now preferred for the equivalent calculations.</dd></dl>
+<p><b>reference_system</b>: ICRS/GCRS <br  />
+ <b>observer location</b>: topocentric (on Earth) <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the local apparent place of a solar system body, in the GCRS. This is the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> for the body for the same observer location and NOVAS_GCRS as the reference system, except the different set of return values used.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -589,24 +592,18 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] Difference TT-UT1 at 'jd_tt', in seconds of time. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">position</td><td>Position of the observer </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Local right ascension in hours, referred to the GCRS (it may be NULL if not required). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Local right ascension in hours, referred to the GCRS (it may be NULL if not required). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] True distance from Earth to the body at 'jd_tt' in AU (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Local apparent right ascension, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Local apparent right ascension, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] Apparent distance from Earth to the body at 'jd_tt' (it may be NULL if not required). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'where' in structure 'location' is invalid, or 10 + the error code from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a>, <a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a>, <a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
 <dd>
-<a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a> </dd>
-<dd>
-<a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
+<p class="reference">References <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
 
 </div>
 </div>
@@ -653,8 +650,14 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> with NOVAS_ICRS or NOVARS_GCRS as the reference system is now preferred for the equivalent calculations.</dd></dl>
+<p><b>reference_system</b>: ICRS / GCRS <br  />
+ <b>observer location</b>: topocentric (on Earth) <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the local apparent place of a star at date 'jd_tt', in the GCRS, given its catalog mean place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with the same observer location NOVAS_GCRS for an object that specifies the star.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -668,27 +671,17 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to catalog entry structure containing catalog data for the object in the ICRS. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">position</td><td>Position of the observer </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Local right ascension in hours, referred to the GCRS (it may be NULL if not required). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Local right ascension in hours, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Local apparent right ascension, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Local apparent right ascension, referred to the GCRS (it may be NULL if not required). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the required pointer arguments is NULL, or else 20 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a>, <a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a>, <a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a>, <a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
 <dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a> </dd>
-<dd>
-<a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a> </dd>
-<dd>
-<a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a> </dd>
-<dd>
-<a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, and <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>.</p>
+<p class="reference">References <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, and <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>.</p>
 
 </div>
 </div>
@@ -730,7 +723,12 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the ICRS position of a star, given its True of Date (TOD) apparent place at date 'jd_tt'. Proper motion, parallax and radial velocity are assumed to be zero.</p>
+<p><b>reference system: TOD &rarr; ICRS<br  />
+ __observer location</b>: geocenter &rarr; SSB <br  />
+ <b>position_type</b>: apparent &rarr; geometric <br  />
+</p>
+<p>Computes the barycentric ICRS position of a star, given its True of Date (TOD) apparent place, as seen by an observer at the geocenter, at date 'jd_tt'. Proper motion, parallax and radial velocity are assumed to be zero.</p>
+<p>Equivalently, in the new frame-based approach, you might use <code><a class="el" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom()</a></code> with NOVAS_TOD as the reference system, and distance set to 0, and then convert the geometric position to the output <code>ira</code>, <code>idec</code> coordinates using <code><a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a></code>. The advantage of using <code><a class="el" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom()</a></code> is that you are not restricted to using TOD input coordinates, but rather the apparent RA/Dec may be specified in any reference system.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -740,20 +738,16 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">tra</td><td>[h] Apparent (TOD) right ascension in hours, referred to true equator and equinox of date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">tdec</td><td>[deg] Apparent (TOD) declination in degrees, referred to true equator and equinox of date. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tra</td><td>[h] Geocentric apparent (TOD) right ascension, referred to true equator and equinox of date. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tdec</td><td>[deg] Geocentric apparent (TOD) declination, referred to true equator and equinox of date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ira</td><td>[h] ICRS right ascension in hours, or NAN when returning with an error code. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">idec</td><td>[deg] ICRS declination in degrees, or NAN when returning with an error code. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ira</td><td>[h] Barycentric geometric ICRS right ascension, or NAN if returning with an error code. It may be a pointer to the input value. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">idec</td><td>[deg] Barycentric geometric ICRS declination, or NAN if returning with an error code. It may be a pointer to the input value. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful; -1 if the supplied output pointers are NULL, 1 if the iterative process did not converge after 30 iterations, or an error from <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>, or else &gt; 10 + an error from <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="target_8c.html#aa040bcfe8bee7d8e1307800f48efddd7">make_cat_entry()</a> </dd>
-<dd>
-<a class="el" href="target_8c.html#a24b69e1809a33113d4a041dd3e4082ad">proper_motion()</a> </dd>
-<dd>
-<a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="novas_8h.html#a0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a>, <a class="el" href="structcat__entry.html#ac4ae7989694321b540abb75c30eec690">cat_entry::dec</a>, <a class="el" href="util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0">novas_inv_max_iter</a>, <a class="el" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3">precession()</a>, <a class="el" href="structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422">cat_entry::ra</a>, <a class="el" href="target_8c.html#a27bae6c9efdab763dba9f1ae36a04669">starvectors()</a>, and <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
 
@@ -802,8 +796,8 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the apparent direction of a celestial object at a specified time and in a specified coordinate system and a specific near-Earth origin.</p>
-<p>While <code>coord_sys</code> defines the celestial pole (i.e. equator) orientation of the coordinate system, <code>location-&gt;where</code> sets the origin of the reference place relative to which positions and velocities are reported.</p>
+<p>Computes the apparent direction of a celestial object at a specified time and in a specified coordinate system and for a given observer location.</p>
+<p>While <code>coord_sys</code> defines the coordinate referfence system, it is <code>location-&gt;where</code> sets the origin of the reference place relative to which positions and velocities are reported.</p>
 <p>For all but ICRS coordinate outputs, the calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>In case of a dynamical equatorial system (such as CIRS or TOD) and an Earth-based observer, the polar wobble parameters set via a prior call to <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> together with he ut1_to_tt argument decide whether the resulting 'topocentric' output frame is Pseudo Earth Fixed (PEF; if <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> was not set and DUT1 is 0) or ITRS (actual rotating Earth; if <a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> was set and ut1_to_tt includes the DUT1 component).</p>
 <p>NOTES: </p><ol>
@@ -811,8 +805,6 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 This version fixes a NOVAS C 3.1 issue that velocities and solar-system distances were not antedated for light-travel time. </li>
 <li>
 In a departure from the original NOVAS C, the radial velocity for major planets (and Sun and Moon) includes gravitational redshift corrections for light originating at the surface, assuming it's observed from near Earth or else from a large distance away. </li>
-<li>
-If <code>sys</code> is <code>NOVAS_TOD</code> (true equator and equinox of date), the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> for that system. To obtain more precise TOD coordinates, set <code>sys</code> to <code>NOVAS_CIRS</code> here, and follow with <a class="el" href="transform_8c.html#a9cac4f3a18d4c14939519e7123b4d504">cirs_to_tod()</a> after. </li>
 <li>
 As of SuperNOVAS v1.3, the returned radial velocity component is a proper observer-based spectroscopic measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with pseudo LSR-based measures being returned for catalog sources. </li>
 </ol>
@@ -844,25 +836,9 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
  70&ndash;80: error is 70 + error from <a class="el" href="grav_8c.html#a48f90ac20950507fad9b880a7f7f2383">grav_def()</a>,<br  />
  80&ndash;90: error is 80 + error from <a class="el" href="cio_8c.html#a65ffaaa2b527ed03149eadc7568f3714">cio_location()</a>,<br  />
  90&ndash;100: error is 90 + error from <a class="el" href="cio_8c.html#a51bfbe9b491f50851326b2522dc2a29f">cio_basis()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>, <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a> </dd>
 <dd>
-<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
-<dd>
-<a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> </dd>
-<dd>
-<a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a> </dd>
-<dd>
-<a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
-<dd>
-<a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a> </dd>
-<dd>
-<a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a> </dd>
-<dd>
-<a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a> </dd>
-<dd>
-<a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="observer_8c.html#a033f1bf4b01e0e21a0e05e13c19c02f6">aberration()</a>, <a class="el" href="observer_8c.html#a1d58fd371e7604f75df315365672941e">bary2obs()</a>, <a class="el" href="util_8c.html#ad799864f637c483fb49491bde5a93e25">d_light()</a>, <a class="el" href="#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="earth_8c.html#aef1f8daaad470353648de90576aefc66">era()</a>, <a class="el" href="transform_8c.html#a51ea4a016336dd3cf7783061c14d165c">gcrs_to_cirs()</a>, <a class="el" href="transform_8c.html#aeea4b5085c7267714492fae6108fb975">gcrs_to_j2000()</a>, <a class="el" href="transform_8c.html#a75de6cca190c5fbc3056db726f317c7f">gcrs_to_mod()</a>, <a class="el" href="transform_8c.html#a9c900b81a718a184281a8a0b733b4db7">gcrs_to_tod()</a>, <a class="el" href="grav_8c.html#a18647d39520d1a15a137661f698cb12a">grav_bodies_full_accuracy</a>, <a class="el" href="grav_8c.html#a03a4df8961a0cd05f89aca478d2dcd24">grav_bodies_reduced_accuracy</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="observer_8c.html#a5c940b62732d74e6c6b1c844931aaa76">light_time2()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27beade504a1c5ccf790ce9d8ad52797bb94c">NOVAS_BARYCENTER</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="novas_8h.html#abad802a863342aebe9a40587b4e47bab">NOVAS_EARTH_INIT</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea826bda7744c11bc1560f4db1848a17c6">NOVAS_ITRS</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9">NOVAS_J2000</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5a2a55ff66f97310a9641d7ffa60b8dd">NOVAS_MOD</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, <a class="el" href="novas_8h.html#a6afeda74c9df859ae6504eebfee01092">NOVAS_SUN_INIT</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea524041fc2059f8432b76fad1b8edb89f">NOVAS_TIRS</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="util_8c.html#a0f41cefb8c872973b07e936b5026d143">novas_vlen()</a>, <a class="el" href="observer_8c.html#a07490a134a685fe0842b2b4816559292">obs_planets()</a>, <a class="el" href="observer_8c.html#a0e4e5ff7c37e6521ca75ae62aaf4050e">obs_posvel()</a>, <a class="el" href="target_8c.html#a24b69e1809a33113d4a041dd3e4082ad">proper_motion()</a>, <a class="el" href="spectral_8c.html#a37f22e463cc06b4e381aa18659e6319d">rad_vel2()</a>, <a class="el" href="util_8c.html#af4090e519d7ce7ab1fcdb24b10126eb4">spin()</a>, <a class="el" href="target_8c.html#a27bae6c9efdab763dba9f1ae36a04669">starvectors()</a>, <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a>, and <a class="el" href="util_8c.html#a84f672dc1c37e3af374198f29cbcfba9">vector2radec()</a>.</p>
 
@@ -896,22 +872,27 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><b>reference_system</b>: CIRS <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the Celestial Intermediate Reference System (CIRS) dynamical position position of a source as 'seen' from the geocenter at the given time of observation. See <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> for more information.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated CIRS position data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated apparent CIRS position data for a fictitous geocentric observer. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> </dd>
-<dd>
-<a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eacbee2de517939c156e61fb5f9631e044">NOVAS_CIRS</a>, and <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
 
@@ -945,28 +926,26 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><b>reference_system</b>: ICRS/GCRS <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the Geocentric Celestial Reference System (GCRS) position of a source (as 'seen' from the geocenter) at the given time of observation. Unlike <code><a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a></code>, this includes aberration for the moving frame of the geocenter as well as gravitational deflections calculated for a virtual observer located at the geocenter. See <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> for more information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated GCRS position data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated apparent GCRS position data for a fictitous geocentric observer. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a> </dd>
-<dd>
-<a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a> </dd>
-<dd>
-<a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> </dd>
-<dd>
-<a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a> </dd>
-<dd>
-<a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad465eafe65e3d701fc4bd57efa793a12">place_icrs()</a>, <a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a>, <a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a>, <a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, and <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
 
@@ -1000,26 +979,26 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><b>reference_system</b>: ICRS / GCRS <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: geometric <br  />
+</p>
 <p>Computes the International Celestial Reference System (ICRS) position of a source. (from the geocenter). Unlike <code><a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a></code>, this version does not include aberration or gravitational deflection corrections.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated geocentric ICRS position data (Unlike <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, the calculated coordinates do not account for aberration or gravitational deflection). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated geometric ICRS position data for a fictitous geocentric observer. (Unlike <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, the calculated coordinates do not account for aberration or gravitational deflection). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
-<dd>
-<a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a> </dd>
-<dd>
-<a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a> </dd>
-<dd>
-<a class="el" href="#aaf51bf000e993807101a34adf423d36b">mean_star()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#ab6908b0eee06b4a44242fba1fd9d506c">place_tod()</a>, <a class="el" href="#aaf51bf000e993807101a34adf423d36b">mean_star()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, and <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
 
@@ -1053,26 +1032,27 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><b>reference_system</b>: J2000 <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the J2000 dynamical position position of a source as 'seen' from the geocenter at the given time of observation. See <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> for more information.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated CIRS position data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated apparent J2000 position data for a fictitous geocentric observer. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a> </dd>
-<dd>
-<a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9">NOVAS_J2000</a>, and <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
 
@@ -1106,26 +1086,27 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><b>reference_system</b>: MOD <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the Mean of Date (MOD) dynamical position position of a source as 'seen' from the geocenter at the given time of observation. See <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> for more information.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated CIRS position data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated apparent Mean-of-Date (MOD) position data for a fictitous geocentric observer. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a> </dd>
-<dd>
-<a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5a2a55ff66f97310a9641d7ffa60b8dd">NOVAS_MOD</a>, and <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
 
@@ -1174,7 +1155,9 @@ Klioner, S. (2003), Astronomical Journal 125, 1580-1597. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the apparent place of a star, referenced to dynamical equator at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity. See <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> for more information.</p>
+<p>Computes the apparent place of a star at the specified date, given its catalog mean place, proper motion, parallax, and radial velocity. See <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> for more information.</p>
+<p>It is effectively the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>, except for the <code><a class="el" href="structcat__entry.html">cat_entry</a></code> type target argument.</p>
+<p>For all but ICRS coordinate outputs, the calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -1194,9 +1177,9 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if one of the required arguments is NULL, or else 1 if the observer location is invalid, or an error code from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
-<dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.0</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa4f9ab9cec85498c41f90c33794d032e5">NOVAS_CATALOG_OBJECT</a>, <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>, <a class="el" href="structobject.html#a499924f8241c3fbb3bf34c5e16f1c7de">object::star</a>, and <a class="el" href="structobject.html#a2cc80aad5c0303449e2412b122504a10">object::type</a>.</p>
 
@@ -1230,26 +1213,27 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><b>reference_system</b>: TOD <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the True of Date (TOD) dynamical position position of a source as 'seen' from the geocenter at the given time of observation. See <code><a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> for more information.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date of observation. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">source</td><td>Catalog source or solar_system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated CIRS position data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td>Structure to populate with the calculated apparent True-of-Date (TOD) position data for a fictitous geocentric observer. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if any of the input pointer arguments is NULL, or else an error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a> </dd>
-<dd>
-<a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a49bd2b398f7eab3e98823cb1a7403ed5">place_cirs()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, and <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</p>
 
@@ -1314,6 +1298,8 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
       </table>
 </div><div class="memdoc">
 <p>Computes the place of a solar system body at the specified time for an observer in the specified coordinate system. This is the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> with the same arguments, except the different set of return values used.</p>
+<p>Notwithstanding the different set of return values, this is the same as calling place_planet() with the same arguments.</p>
+<p>For all but ICRS coordinate outputs, the calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -1336,9 +1322,11 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL or if the value of 'where' in structure 'location' is invalid, or 10 + the error code from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="structsky__pos.html#aeedff25e8c80502a891e8af33d35b3c0">sky_pos::dis</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa17562d2cd1b0b56d59d31f6ca51c759a">NOVAS_ORBITAL_OBJECT</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, and <a class="el" href="novas_8h.html#a462bdac0f370f0c5b421ae5b3f3e35f2">SKY_POS_INIT</a>.</p>
 
@@ -1399,6 +1387,7 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
 </div><div class="memdoc">
 <p>Computes the place of a star at date 'jd_tt', for an observer in the specified coordinate system, given the star's ICRS catalog place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with the same arguments.</p>
+<p>For all but ICRS coordinate outputs, the calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -1419,10 +1408,12 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if a required pointer argument is NULL, or else 20 + the error code from <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if a required pointer argument is NULL, or else 20 + the error from <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
-<dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a> </dd>
+<dd>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="structsky__pos.html#ac4ae7989694321b540abb75c30eec690">sky_pos::dec</a>, <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422">sky_pos::ra</a>, <a class="el" href="structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55">sky_pos::rv</a>, and <a class="el" href="novas_8h.html#a462bdac0f370f0c5b421ae5b3f3e35f2">SKY_POS_INIT</a>.</p>
 
@@ -1476,12 +1467,13 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> is now preferred for topocentric calculations, especially when high precision is required.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> with NOVAS_TOD as the reference system is now preferred for topocentric calculations.</dd></dl>
+<p><b>reference_system</b>: TOD <br  />
+ <b>observer location</b>: topocentric (on Earth) <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the topocentric apparent place of a solar system body at the specified time. This is the same as calling <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> for the body for the same observer location and NOVAS_TOD as the reference system, except the different set of return values used.</p>
-<p>NOTES: </p><ol>
-<li>
-This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
-</ol>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -1495,28 +1487,18 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] Difference TT-UT1 at 'jd_tt', in seconds of time. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">position</td><td>Position of the observer </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Topocentric apparent right ascension in hours, referred to the true equator and equinox of date. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Topocentric apparent declination in degrees referred to the true equator and equinox of date. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] True distance from Earth to the body at 'jd_tt' in AU (may be NULL if not needed). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Topocentric apparent right ascension, referred to the true equator and equinox of date. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Topocentric apparent declination, referred to the true equator and equinox of date. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] Apparent distance from Earth to the body at 'jd_tt' (may be NULL if not needed). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'where' in structure 'location' is invalid, or 10 + the error code from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'where' in structure 'location' is invalid, or 10 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a>, <a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a>, <a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a>, <a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a>, <a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a> </dd>
 <dd>
-<a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd>
-<dd>
-<a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a> </dd>
-<dd>
-<a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a> </dd>
-<dd>
-<a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a> </dd>
-<dd>
-<a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
+<p class="reference">References <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
 
 </div>
 </div>
@@ -1563,13 +1545,14 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> is now preferred for topocentric calculations, especially when high precision is required.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated</a></b></dt><dd>Using the frame-based <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> with NOVAS_TOD as the reference system is now preferred for topocentric calculations.</dd></dl>
+<p><b>reference_system</b>: TOD <br  />
+ <b>observer location</b>: topocentric (on Earth) <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
 <p>Computes the topocentric (True of Date; TOD) apparent place of a star at date 'jd_tt', given its ICRS catalog place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with the same observer location and NOVAS_TOD for an object that specifies the star.</p>
-<p>NOTES: </p><ol>
-<li>
-This call uses the less precise old (pre IAU 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the original NOVAS C function. </li>
-</ol>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -1583,29 +1566,17 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to catalog entry structure containing catalog data for the object in the ICRS. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">position</td><td>Position of the observer </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Topocentric right ascension in hours, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Topocentric declination in degrees, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Topocentric appatent right ascension, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Topocentric apparent declination, referred to true equator and equinox of date 'jd_tt'. (It may be NULL if not required) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if a required pointer argument is NULL, or else 20 + the error code from <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if a required pointer argument is NULL, or else 20 + the error from <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a>, <a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a>, <a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a>, <a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
 <dd>
-<a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a> </dd>
-<dd>
-<a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a> </dd>
-<dd>
-<a class="el" href="#aaf187624a93349391518f9d6bb3051e5">virtual_star()</a> </dd>
-<dd>
-<a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
-<dd>
-<a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="observer_8c.html#a0f2096c7954b583fe749553b956ff9d2">make_observer()</a>, <a class="el" href="novas_8h.html#a6140c39d1526b137f827e2091ecc36b3aadb64b75d1bf5344760b942f241e52e8">NOVAS_OBSERVER_ON_EARTH</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, and <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>.</p>
+<p class="reference">References <a class="el" href="observer_8c.html#aa82db32ce7b115db4f0a077ca899589b">make_observer_at_site()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, and <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>.</p>
 
 </div>
 </div>
@@ -1647,7 +1618,12 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the virtual place of a solar system body, referenced to the GCRS. This is the same as calling <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> for the body, except the different set of return values used.</p>
+<p><b>reference_system</b>: ICRS / GCRS <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
+<p>Computes the virtual place of a solar system body, as would be seen by an observer at the geocenter, referenced to the GCRS. This is the same as calling <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> for the body, except the different set of return values used.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -1659,24 +1635,16 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terretrial Time (TT) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ss_body</td><td>Pointer to structure containing the body designation for the solar system body. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Virtual right ascension in hours, referred to the GCRS (it may be NULL if not required). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Virtual declination in degrees, referred to the GCRS (it may be NULL if not required). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] True distance from Earth to the body at 'jd_tt' in AU (can be NULL if not needed). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Virtual apparent right ascension for a fictitous geocentric observer, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Virtual apparent declination, for a fictitous geocentric observer, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dis</td><td>[AU] Apparent distance from Earth to the body at 'jd_tt' (it may be NULL if not needed). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or 10 + the error code from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the object argument is NULL, or else 1 if the value of 'type' in structure 'ss_body' is invalid, or 10 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a>, <a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a>, <a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a>, <a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
 <dd>
-<a class="el" href="#ac28dd9a362982cfce150751001a96a8a">app_planet()</a> </dd>
-<dd>
-<a class="el" href="#a9ea79f60493a3a21a9228d048fa5a9a2">astro_planet()</a> </dd>
-<dd>
-<a class="el" href="#adcb9b273dfda5d97a1c01379a16997f9">local_planet()</a> </dd>
-<dd>
-<a class="el" href="#aaf3d450c87f545acfa7ab7e2b6c229d9">topo_planet()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, and <a class="el" href="#a918c8244e44c69f1589d9f4bf5355d16">radec_planet()</a>.</p>
 
@@ -1715,8 +1683,13 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the virtual place of a star, referenced to GCRS, at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity.</p>
+<p><b>reference_system</b>: ICRS / GCRS <br  />
+ <b>observer location</b>: geocenter <br  />
+ <b>position_type</b>: apparent <br  />
+</p>
+<p>Computes the virtual place of a star, as would be seen by an observer at the geocenter, referenced to GCRS, at date 'jd_tt', given its catalog mean place, proper motion, parallax, and radial velocity.</p>
 <p>Notwithstanding the different set of return values, this is the same as calling <a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> with a NULL observer location and NOVAS_GCRS as the system, or <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> for an object that specifies the star.</p>
+<p>The calculated positions and velocities include aberration corrections for the moving frame of the observer as well as gravitational deflection due to the Sun and Earth and other major gravitating bodies in the Solar system, provided planet positions are available via a <a class="el" href="solarsystem_8h.html#aae2b06af367d7b0a70a8b89c258b00b0">novas_planet_provider</a> function.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
@@ -1728,25 +1701,15 @@ Explanatory Supplement to the Astronomical Almanac (1992), Chapter 3. </li>
     <tr><td class="paramdir"></td><td class="paramname">jd_tt</td><td>[day] Terrestrial Time (TT) based Julian date. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">star</td><td>Pointer to catalog entry structure containing catalog data for the object in the ICRS. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Virtual right ascension in hours, referred to the GCRS (it may be NULL if not required). </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Virtual declination in degrees, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ra</td><td>[h] Virtual apparent right ascension for a fictitous geocentric observer, referred to the GCRS (it may be NULL if not required). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dec</td><td>[deg] Virtual apparent declination for a fictitous geocentric observer, referred to the GCRS (it may be NULL if not required). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if a required pointer argument is NULL, or 20 + the error from <a class="el" href="#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a1504058672e6e3cf24ce6b7189ede005">place_star()</a>, <a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a>, <a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a>, <a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a>, <a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a>, <a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a>, <a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a> </dd>
 <dd>
-<a class="el" href="#aea583f6f785fa42f46710288e8a4e083">place_gcrs()</a> </dd>
-<dd>
-<a class="el" href="#a906b17f06b42e31a29cafad4856f565f">app_star()</a> </dd>
-<dd>
-<a class="el" href="#a9530c770e83db2cbc5a31d8d1f8c36f4">astro_star()</a> </dd>
-<dd>
-<a class="el" href="#acd56c41e811a002d6280b3b315730fbd">local_star()</a> </dd>
-<dd>
-<a class="el" href="#a86e4f52e832879a33aefc28803e2690f">topo_star()</a> </dd>
-<dd>
-<a class="el" href="#a0dc172d82eec79f78c2d218c1a7b9cbe">virtual_planet()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="observer_8c.html#aabb3ab0d99aa6e487cdcf6b454949b75">make_observer_at_geocenter()</a>, <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea8c3e21e3d68b39b0b0ca28f99b8cacf4">NOVAS_GCRS</a>, and <a class="el" href="#a0f307c2a37d594a68e99c5c8af6d50c9">radec_star()</a>.</p>
 

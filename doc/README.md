@@ -75,7 +75,7 @@ __SuperNOVAS__ is really quite easy to use. Its new API is just as simple and in
 we strive for it to be), and it is similarly well documented also (see the 
 [API documentation](https://smithsonian.github.io/SuperNOVAS/doc/html/files.html)). You can typically achieve the 
 same results with 
-[similar lines of code](https://smithsonian.github.io/SuperNOVAS/doc/SuperNOVAS_vs_astropy.html) 
+[similar lines of code](https://github.com/Smithsonian/SuperNOVAS/blob/main/doc/SuperNOVAS_vs_astropy.md) 
 with __SuperNOVAS__ as with __astropy__, notwithstanding a little more involved error handling at every step (due to 
 the lack of `try / except` style constructs in C).
  
@@ -365,8 +365,10 @@ needs best:
 
  - [Using a GNU `Makefile`](#makefile-application)
  - [Using CMake](#cmake-application)
+ - [Deprecated API](#deprecations)
  - [Legacy linking `solarsystem()` and `readeph()` modules](#legacy-application)
  - [Legacy modules: a better way](#preferred-legacy-application)
+
 
 <a name="makefile-application"></a>
 ### Using a GNU `Makefile`
@@ -417,6 +419,30 @@ Add the appropriate bits from below to the `CMakeLists.txt` file of your applica
   target_link_libraries(your_target PRIVATE SuperNOVAS::solsys-calceph)
 ```
 
+
+<a name="deprecations"></a>
+### Deprecated API
+
+__SuperNOVAS__ began deprecating some NOVAS C functions, either because they are no longer needed; or are not easy to 
+use with better alternatives around; or are internals that should never have been exposed to end-users. The 
+deprecations are marked in the inline and HTML API documentations, providing also alternatives. 
+
+That said, the deprecated parts of the API are NOT removed, nor we plan on removing them for the foreseeable future. 
+Instead, they serve as a gentle reminder to users that perhaps they should stay away from these features for their own 
+good.
+
+However, you have the option to force yourself to avoid using the deprecated API if you choose to do so, by compiling
+your application with `-D_EXCLUDE_DEPRECATED`, or equivalently, by defining `_EXCLUDE_DEPRECATED` in your source code 
+_before_ including `novas.h`. E.g.:
+
+```c
+// Include novas.h without the deprecated definitions
+#define _EXCLUDE_DEPRECATED
+#include <novas.h>
+```
+
+After that, your compiler will complain if your source code references any of the deprecated entities, so you may 
+change that part of your code to use the recommended alternatives instead.
 
 <a name="legacy-application"></a>
 ### Legacy linking `solarsystem()` and `readeph()` modules
@@ -1681,13 +1707,13 @@ aberration and gravitational deflection corrections from the observer's point of
 
  | Description                         | accuracy  | positions / sec |
  |:----------------------------------- |:---------:| ---------------:|
- | `novas_sky_pos()`, same frame       | reduced   |         3100653 |
- |                                     |   full    |         3093511 |
- | `place()`, same time, same observer | reduced   |          829483 |
+ | `novas_sky_pos()`, same frame       | reduced   |         3130414 |
+ |                                     |   full    |         3149028 |
+ | `place()`, same time, same observer | reduced   |          831101 |
  |                                     |   full    |          831015 |
- | `novas_sky_pos()`, individual       | reduced   |          161932 |
+ | `novas_sky_pos()`, individual       | reduced   |          168212 |
  |                                     |   full    |           25943 |
- | `place()`, individual               | reduced   |          166714 |
+ | `place()`, individual               | reduced   |          167475 |
  |                                     |   full    |           25537 |
 
 For reference, we also provide the reduced accuracy benchmarks from NOVAS C 3.1.
@@ -1710,12 +1736,12 @@ under the `benchmark/` folder in the __SuperNOVAS__ GitHub repository).
  
  
 As one may observe, the __SuperNOVAS__ `novas_sky_pos()` significantly outperforms the legacy `place()` function, when 
-repeatedly calculating positions for sources for the same instant of time and same observer location, providing 4--5 
+repeatedly calculating positions for sources for the same instant of time and same observer location, providing 3--4
 times faster performance than `place()` with the same observer and time. The same performance is maintained even when 
 cycling through different frames, a usage scenario in which the performance advantage over `place()` may be up to 2 
 orders of magnitude. When observing frames are reused, the performance is essentially independent of the accuracy. By 
-contrast, calculations for individual observing times or observer locations are generally around 4x faster if reduced 
-accuracy is sufficient.
+contrast, calculations for individual observing times or observer locations are generally around twice a fast if 
+reduced accuracy is sufficient.
 
 The above benchmarks are all for single-threaded performance. Since __SuperNOVAS__ is generally thread-safe, you can 
 expect that performance shall scale with the number of concurrent CPUs used. So, on a 16-core PC, with similar single 
