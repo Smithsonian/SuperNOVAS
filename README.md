@@ -881,32 +881,31 @@ angles.
 #### Going in reverse...
 
 Of course, __SuperNOVAS__ allows you to go in reverse, for example from an observed Az/El position all the way to
-proper ICRS coordinates.
+proper ICRS R.A./Dec coordinates.
 
 E.g.:
 
 ```c
   double az = ..., el = ...; // [deg] measured azimuth and elevation angles
+  double pos[3];             // [arb. u.] xyz position vector
   double ra, dec;            // [h, deg] R.A. and declination to populate
-  double pos[3];             // [AU] xyz position vector
   
   // Calculate the observer's apparent coordinates from the observed Az/El values,
   // lets say in CIRS (but it could also be ICRS, for all that matters). 
   novas_hor_to_app(&obs_frame, az, el, novas_standard_refraction, NOVAS_CIRS, &ra, &dec);
   
-  // Convert apparent to ICRS geometric positions (e.g. at 10 parsec distance)
-  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 10.0 * NOVAS_PARSEC / NOVAS_AU, pos);
+  // Convert apparent to ICRS geometric positions (no parallax)
+  novas_app_to_geom(&obs_frame, NOVAS_CIRS, ra, dec, 0.0, pos);
   
-  // Convert ICRS xyz position to R.A. and Dec
+  // Convert ICRS rectangular equatorial to R.A. and Dec
   vector2radec(pos, &ra, &dec);
 ```
 
-Viola! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 
+Voila! And, of course you might want the coordinates in some other reference systems, such as B1950. For that you can 
 simply add a transformation before `vector2radec()` above, e.g. as:
 
 ```c
   ...
-  
   // Transform position from ICRS to B1950
   gcrs_to_mod(NOVAS_JD_B1950, pos, pos);
 
