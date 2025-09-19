@@ -39,7 +39,10 @@
  * @sa frame.c, observer.c, timescale.c
  */
 
+/// \cond PRIVATE
 #define _GNU_SOURCE               ///< for strcasecmp()
+#define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
+/// \endcond
 
 #include <string.h>
 #include <ctype.h>
@@ -47,10 +50,7 @@
 #include <stdarg.h>   // stdarg.h before stdio.h (for older gcc...)
 #include <stddef.h>
 
-/// \cond PRIVATE
-#define __NOVAS_INTERNAL_API__    ///< Use definitions meant for internal use by SuperNOVAS only
 #include "novas.h"
-/// \endcond
 
 #if __Lynx__ && __powerpc__
 // strcasecmp() / strncasecmp() are not defined on PowerPC / LynxOS 3.1

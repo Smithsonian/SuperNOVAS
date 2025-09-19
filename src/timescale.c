@@ -11,9 +11,8 @@
  * @sa frames.c, observer.c
  */
 
-#define _GNU_SOURCE                 ///< for strcasecmp()
-
 /// \cond PRIVATE
+#define _GNU_SOURCE                 ///< for strcasecmp()
 #define __NOVAS_INTERNAL_API__      ///< Use definitions meant for internal use by SuperNOVAS only
 /// \endcond
 
@@ -25,6 +24,7 @@
 #include <errno.h>
 #include <math.h>
 #include <ctype.h>                // isspace()
+
 #include "novas.h"
 
 /// \cond PRIVATE
