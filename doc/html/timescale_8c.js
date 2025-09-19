@@ -1,6 +1,5 @@
 var timescale_8c =
 [
-    [ "_GNU_SOURCE", "timescale_8c.html#a369266c24eacffb87046522897a570d5", null ],
     [ "get_ut1_to_tt", "timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6", null ],
     [ "get_utc_to_tt", "timescale_8c.html#ab7611704bab9ce717744a8b5575c5378", null ],
     [ "novas_clock_skew", "timescale_8c.html#a9061a46b13dfca669c327283f7357586", null ],
