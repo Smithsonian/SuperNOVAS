@@ -4,7 +4,51 @@
  * @date Created  on Mar 6, 2025
  * @author Attila Kovacs
  *
- *  Function relating to the use of orbital elements
+ *  Function relating to the use of Keplerian orbital elements. For example, the IAU Minor Planet
+ *  Center publishes up-to-date Keplerial orbital elements for all asteroids, comets, and
+ *  Near-Earth Objects (NEOs) regularly. On short timescales these can provide accurate positions
+ *  for such objects, that are as good as, or comparable to, the ephemeris data provided by NASA
+ *  JPL.
+ *
+ *  For newly discovered objects, the MPC orbital elements may be the only source, or the most
+ *  accurate source, of position information.
+ *
+ *  To use Keplerian orbital elements with __SuperNOVAS__, simply define the orbital parameters
+ *  in a `novas_orbital` structure. By default heliocentric orbits are assumed, but you may also
+ *  define orbitals around other bodies, such as a major planet, by defining the body (or
+ *  barycenter) that is at the center of the orbital, and the orientation of the orbital system
+ *  (w.r.t. the ecliptic or equator of date) with `novas_set_orbsys_pole()`. E.g.:
+ *
+ *  ```c
+ *    novas_orbit orb = NOVAS_ORBIT_INIT;
+ *
+ *    orb.a = ...    // [AU] semi-major axis
+ *    ...            // populate the rest of the orbital parameters.
+ *
+ *    // Set Jupiter as the orbital center
+ *    orb.system.center = NOVAS_JUPITER_INIT;
+ *
+ *    // Set the orintation by defining the RA/Dec of the orbital pole, say in ICRS
+ *    novas_set_orbsys_pole(NOVAS_ICRS, ra_pole, dec_pole, &orb.system);
+ *  ```
+ *
+ *  Once the orbital is defined, you can use it to define a generic @ref object via
+ *  `make_orbital_object()` to enable the the same astrometric calculations as for ephemeris
+ *  sources, e.g.:
+ *
+ *  ```c
+ *    object source;
+ *
+ *    // Let's say the orbital is that for Callisto, so we set the source name
+ *    // and NAIF ID number (504) accordingly.
+ *    make_orbital_object("Callisto", 504, &orb, &source);
+ *  ```
+ *
+ *  Or, you can calculate geometric orbital positions and velocities directly via
+ *  `novas_orbit_posvel()`, while `novas_orbit_native_posvel()` will do the same, but in
+ *  the native coordinate system in which the orbital is defined.
+ *
+ *  @sa make_orbital_object()
  */
 
 #include <errno.h>

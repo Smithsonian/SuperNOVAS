@@ -4,7 +4,39 @@
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Functions that define an observing target.
+ *  This module contains functions that define an observing target, or which are target related.
+ *  In general, the @ref object data structure contains information on the astronomical target of
+ *  observation. Depending on the type of astronomical source, you might use different functions
+ *  to define the observing target:
+ *
+ *  - For __major planets__, Sun, Moon, Solar-system barycenter (SSB), Earth-Moon barycenter
+ *    (EMB), or the Pluto system barycenter: Use `make_planet()` or else one of the static
+ *    initializers, such as `NOVAS_MARS_INIT`.
+ *
+ *  - For __Solar-system bodies__, that is everything with ephemeris data other than a 'major
+ *    planet', such as asteroids, comets, moons, spacecraft, you'd use `make_ephem_object()`.
+ *
+ *  - For __Keplerian orbital elements__, such as the ones published by the Minor Planet Center
+ *    (MPC) for asteroids, comets, or Near-Earth Objects (NEOs), you will want
+ *    `make_orbital_object()`.
+ *
+ *  - For __catalog sources__, especially within our own Galaxy, you might start with
+ *    `novas_init_cat_entry()` and then set additional parameters as needed, and then define an
+ *    @ref object with ICRS coordinates, e.g. via `make_cat_object_sys()`.
+ *
+ *  - For __extragalactic sources__ (with no proper motion or parallax) you might use
+ *    `novas_make_redshifted_object()` with ICRS coordinates, or else
+ *    `novas_make_redshifted_object_sys()` with coordinates in other reference systems.
+ *
+ * By default SuperNOVAS treats object names as case insensitive (for historical reasons), and
+ * will use capitalized versions of the names supplied by the user. You can enable case-sensitive
+ * name processing with `novas_case_sensitive()` if needed.
+ *
+ * Once an @ref object is defined, you may calculate astrometric properties, such as apparent or
+ * geometric positions; rise, set, or transit times, etc. through observing frames, which are
+ * defined for a specific observer location and time of observation.
+ *
+ * @sa frame.c, observer.c, timescale.c
  */
 
 #define _GNU_SOURCE               ///< for strcasecmp()

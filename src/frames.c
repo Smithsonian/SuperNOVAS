@@ -5,12 +5,96 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- *  SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using
- *  observer frames. Observer frames represent an observer location at a specific astronomical
- *  time (instant), which can be re-used again and again to calculate or transform positions of
- *  celestial sources in a a range of astronomical coordinate systems.
+ * SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using
+ * observer frames. Observer frames represent an observer location at a specific astronomical
+ * time (instant), which can be re-used again and again to calculate or transform positions of
+ * celestial sources in a a range of astronomical coordinate systems.
  *
- *  @sa timescale.c
+ * To use frames, you start with `novas_make_frame()` with an astrometric time and an observer
+ * location, and optionally Earth-orientation parameters if precision below the arcsecond
+ * level is needed. E.g.:
+ *
+ * ```c
+ *   observer obs;         // observer location
+ *   novas_timespec time;  // astrometric time
+ *   novas_frame frame;    // observing frame
+ *
+ *   // Specify an observer, with GPS coordinates
+ *   make_gps_observer(gps_lat, gps_lon, gps_alt, &obs);
+ *
+ *   // Specify time, e.g. current time with leap seconds and UT1-UTC time difference:
+ *   novas_set_current_time(leap_seconds, dut1, &time);
+ *
+ *   // Set up a frame with the desired accuracy and Earth orientation parameters xp, yp.
+ *   novas_make_frame(NOVAS_REDUCED_ACCURACY, &obs, &time, xp, yp, &frame);
+ * ```
+ *
+ * Once a frame is defined, you can perform various astrometric calculation within it
+ * efficiently. For example, calculate apparent positions, in the coordinate system of choice, to
+ * predict where objects would be seen by the observer:
+ *
+ * ```c
+ *   object source = ...;   // observed source
+ *   sky_pos app;           // apparent position to calculate.
+ *
+ *   // Calculate True-of-Date apparent coordinates for a source.
+ *   novas_sky_pos(&source, &frame, NOVAS_TOD, &app);
+ * ```
+ *
+ * If your observer was defined on Earth (ground-based or airborne), you might continue to
+ * calculate Az/El positions using `novas_app_to_hor()`, or you might just want to know the same
+ * position in another reference system also:
+ *
+ * ```c
+ *   novas_transform T;     // Transformation between reference systems
+ *   sky_pos tirs;          // calculated apparent position in TIRS
+ *
+ *   // Transform from True-of-Date to TIRS coordinates
+ *   novas_make_transform(&frame, NOVAS_TOD, NOVAS_TIRS, &T);
+ *
+ *   // Transform the above position to TIRS...
+ *   novas_transform_sky_pos(&app, T, &tirs);
+ * ```
+ *
+ * Or, you can calculate geometric positions, which are not corrected for aberration or
+ * gravitational deflection (but still corrected for light travel time in case of Solar-system
+ * sources):
+ *
+ * ```c
+ *   object source = ...;   // observed source
+ *   double pos[3], vel[3]; // geometric position and velocity vectors to calculate.
+ *
+ *   // Calculate geometric positions / velocities, say in ICRS
+ *   novas_geom_posvel(&source, &frame, NOVAS_ICRS, pos, vel);
+ * ```
+ *
+ * You can also transform geometric positions / velocities to other reference frames using the
+ * same `novas_transform` as above.
+ *
+ * Or, perhaps you are interested when the source will rise (or transit, or set) next, for a
+ * ground-based or airborne observer:
+ *
+ * ```c
+ *   object source = ...;   // observed source
+ *
+ *   // UTC-based Julian date when source rises above 20 degrees given a refraction model.
+ *   double jd_rise = novas_rises_above(20.0, &source, &frame, novas_standard_refraction);
+ * ```
+ *
+ * Or, you might simply want to know how far your source is from the Sun or Moon (or another
+ * source) on the sky:
+ *
+ * ```c
+ *   object source = ...;   // observed source
+ *
+ *   // Calculate the angular distance of the source from the Sun.
+ *   double angle_deg = novas_sun_angle(&source, &frame);
+ * ```
+ *
+ * These are just some of the common use-case scenarios. There is even more possibilities with
+ * frames...
+ *
+ * @sa timescale.c, observer.c, target.c
  */
 
 /// \cond PRIVATE
@@ -26,11 +110,11 @@
 
 #include "novas.h"
 
+/// \cond PRIVATE
 #define XI0       (-0.0166170 * ARCSEC)         ///< Frame bias term &xi;<sub>0</sub>
 #define ETA0      (-0.0068192 * ARCSEC)         ///< Frame bias term &eta;<sub>0</sub>
 #define DA0       (-0.01460 * ARCSEC)           ///< Frame bias term da<sub>0</sub>
 
-/// \cond PRIVATE
 #define FRAME_DEFAULT       0                   ///< frame.state value we set to indicate the frame is not configured
 #define FRAME_INITIALIZED   0xdeadbeadcafeba5e  ///< frame.state for a properly initialized frame.
 #define GEOM_TO_APP         1                   ///< Geometric to apparent conversion

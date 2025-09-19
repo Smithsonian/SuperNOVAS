@@ -4,7 +4,40 @@
  * @date Created  on Mar 6, 2025
  * @author Attila Kovacs and G. Kaplan
  *
- *  Function that define an astronomical observer location or are related to observer location.
+ *  This module provides a set of functions that define an astronomical observer location, or ones
+ *  that relate to observer location.
+ *
+ *  The following type of observer locations are supported:
+ *
+ *  1. Geodetic Earth-based observer locations:
+ *    a. ground-based observer sites:
+ *       - GPS locations via `make_gps_observer()`
+ *       - ITRF / GRS80 locations via `make_itrs_observer()`
+ *       - Cartesian _x_, _y_, _z_ coordinates via `make_xyz_site()` and make_site_observer()
+ *    b. airborne observers, via a location (e.g. `make_gps_site()`, `make_itrf_site()` or
+ *       `make_xyz_site()`), and a ground velocity.
+ *
+ *  2. Near Earth Orbit (NEO) locations, via `make_observer_in_space()` specifying momentary
+ *     position and velocity w.r.t. the geocenter.
+ *
+ *  3. Virtual observer at the geocenter via `make_observer_at_geocecenter()`.
+ *
+ *  4. Solar-system locations via `make_solar_system_observer()`, specifying a momentary
+ *     barycentric (that is w.r.t. the SSB) position and velocity vector.
+ *
+ * Once an observer is defined, it maybe used to set up an observing frame when paired with an
+ * astronomical time of observation. Observing frames allow efficient and precise position
+ * calculations from an observer's point-of-view.
+ *
+ * This module also provides functions otherwise relating to the observer locations.
+ *
+ * For Earth-based geodetic locations, the module provides a set of functions to convert between
+ * various (local) coordinate systems. For example, calculating parallactic angles (a.k.a.
+ * vertical position angle or VPA), for converting between horizontal and equatorial offsets,
+ * and various functions for converting equatorial vectors to a line-of-sight, or _u_, _v_, _w_
+ * coordinate bases, and vice-versa.
+ *
+ * @sa timescale.c, frame.c
  */
 
 #include <string.h>

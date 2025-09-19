@@ -4,7 +4,7 @@
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Various function for calculating the equator and equinox of date, and related quatities.
+ *  Various functions for calculating the equator and equinox of date, and related quatities.
  */
 
 #include <string.h>

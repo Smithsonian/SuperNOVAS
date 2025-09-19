@@ -16,6 +16,37 @@
  *  `Smithsonian/cspice-sharedlib` repository on Github to facilitate the building of CSPICE
  *  as a shared library instead of the static library built by the uptream distribution.
  *
+ *  To use, simply include `novas-cspice.h` in your application source, load the requisite
+ *  SPICE kernels (ephemeris data and more) using `cspice_add_kernel()`, and then activate
+ *  them with `novas_use_cspice()`. E.g.,
+ *
+ *  ```c
+ *    #include <novas.h>
+ *    #include <novas-cspice.h>
+ *
+ *    // You can load the desired kernels for CSPICE
+ *    // E.g. load DE440s and the Mars satellites:
+ *    int status;
+ *
+ *    status = cspice_add_kernel("/path/to/de440s.bsp");
+ *    if(status < 0) {
+ *      // oops, the kernels must not have loaded...
+ *      ...
+ *    }
+ *
+ *    // Load additional kernels as needed...
+ *    status = cspice_add_kernel("/path/to/mar097.bsp");
+ *    ...
+ *
+ *    // Then use CSPICE as your SuperNOVAS ephemeris provider
+ *    novas_use_cspice();
+ *  ```
+ *
+ *  The CSPICE plugin will use the ID numbers stored in the @ref object structure. For planets, it
+ *  will automatically translate NOVAS planet IDs to NAIF IDs, while for other Solar-system
+ *  bodies, you should set the NAIF ID when defining the object via `make_ephem_object()`. If the
+ *  ID is set to -1, then name-based lookup will be used instead.
+ *
  *  REFERENCES:
  *  <ol>
  *  <li>The NAIF CSPICE Toolkit: https://naif.jpl.nasa.gov/naif/toolkit.html</li>

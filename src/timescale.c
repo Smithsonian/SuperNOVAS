@@ -8,7 +8,7 @@
  *   A set of SuperNOVAS routines to make handling of astronomical timescales and conversions
  *   among them easier.
  *
- * @sa frames.c
+ * @sa frames.c, observer.c
  */
 
 #define _GNU_SOURCE                 ///< for strcasecmp()

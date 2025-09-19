@@ -6,11 +6,45 @@
  *
  *  SuperNOVAS Solar-system ephemeris lookup implementation via the CALCEPH C library.
  *
- *  This is an optional component of SuperNOVAS, which interfaces to the CALCEPH C library.
- *  As such, you may need the CALCEPH runtime libraries in an accessible location (such
- *  as in `/usr/lib`) to use, and you will need development files (C headers and unversioned
- *  libraries) to build. Thus, this module is compiled only if `CALCEPH_SUPPORT` is set
- *  to 1 prior to the build.
+ *  This is an optional component of SuperNOVAS, which interfaces to the CALCEPH C library. As
+ *  such, you may need the CALCEPH runtime libraries in an accessible location (such as in
+ *  `/usr/lib`) to use, and you will need development files (C headers and unversioned libraries)
+ *  to build. Thus, this module is compiled only if `CALCEPH_SUPPORT` is set to 1 prior to the
+ *  build.
+ *
+ *  To use, simply include `novas-calceph.h` in your application source, configure a
+ *  `t_calcephbin` object with the requisite ephemeris data, and then call `novas_use_calceph()`
+ *  with it to activate. E.g.:
+ *
+ *  ```c
+ *    #include <novas.h>
+ *    #include <novas-calceph.h>
+ *
+ *    // You can open a set of JPL/INPOP ephemeris files with CALCEPH...
+ *    t_calcephbin *eph = calceph_open_array(...);
+ *
+ *    // Then use them as your generic SuperNOVAS ephemeris provider
+ *    int status = novas_use_calceph(eph);
+ *    if(status < 0) {
+ *      // Ooops something went wrong...
+ *    }
+ *  ```
+ *
+ * Optionally, you may use a separate ephemeris dataset for major planets (or if planet
+ * ephemeris was included in 'eph' above, you don't have to):
+ *
+ *  ```c
+ *    t_calcephbin *pleph = calceph_open(...);
+ *    status = novas_use_calceph_planets(pleph);
+ *    if(status < 0) {
+ *      // Ooops something went wrong...
+ *    }
+ *  ```
+ *
+ * By default the CALCEPH plugin will use NAIF ID numbers for the lookup (for planets the
+ * NOVAS IDs will be mapped to NAIF IDs automatically). You can enable name-based lookup by
+ * setting the @ref object number to -1 (e.g. in `make_ephem_object()`), or else switch to
+ * using CALCEPH IDs by calling `novas_calceph_use_ids(NOVAS_ID_CALCEPH)`.
  *
  * REFERENCES:
  * <ol>

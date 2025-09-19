@@ -4,7 +4,7 @@
  * @date Created  on Mar 6, 2025
  * @author Attila Kovacs and G. Kaplan
  *
- *  Various functions to convert between calendar date and Julian days.
+ *  Various functions to convert between calendar dates and Julian days.
  */
 
 #include <errno.h>

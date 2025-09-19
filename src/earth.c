@@ -4,7 +4,7 @@
  * @date Created  on Mar 6, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Various finctions relating to Earth position and orientation
+ *  Various functions relating to Earth position and orientation.
  */
 
 #include <string.h>

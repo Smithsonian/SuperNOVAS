@@ -4,7 +4,8 @@
  * @date Created  on Mar 5, 2025
  * @author G. Kaplan and Attila Kovacs
  *
- *  Various transformations between different coordinate systems
+ *  Various transformations between different coordinate systems used in astronomy, such as
+ *  equatorial, ecliptic, Galactic, or local horizontal coordinate systems.
  */
 
 #include <string.h>

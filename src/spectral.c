@@ -4,7 +4,7 @@
  * @date Created  on Mar 5, 2025
  * @author Attila Kovacs
  *
- *  Various spectral / velocity related extensions to novas.c
+ *  Various spectral / velocity related functions.
  */
 
 #include <errno.h>
