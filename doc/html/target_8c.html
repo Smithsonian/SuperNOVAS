@@ -172,7 +172,17 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 6, 2025 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>G. Kaplan and Attila Kovacs</dd></dl>
-<p>Functions that define an observing target. </p>
+<p>This module contains functions that define an observing target, or which are target related. In general, the <a class="el" href="structobject.html">object</a> data structure contains information on the astronomical target of observation. Depending on the type of astronomical source, you might use different functions to define the observing target:</p>
+<ul>
+<li>For <b>major planets</b>, Sun, Moon, Solar-system barycenter (SSB), Earth-Moon barycenter (EMB), or the Pluto system barycenter: Use <code><a class="el" href="#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a></code> or else one of the static initializers, such as <code>NOVAS_MARS_INIT</code>.</li>
+<li>For <b>Solar-system bodies</b>, that is everything with ephemeris data other than a 'major planet', such as asteroids, comets, moons, spacecraft, you'd use <code><a class="el" href="#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a></code>.</li>
+<li>For <b>Keplerian orbital elements</b>, such as the ones published by the Minor Planet Center (MPC) for asteroids, comets, or Near-Earth Objects (NEOs), you will want <code><a class="el" href="#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a></code>.</li>
+<li>For <b>catalog sources</b>, especially within our own Galaxy, you might start with <code><a class="el" href="#af0137aa791dd29278904e53498fb9515">novas_init_cat_entry()</a></code> and then set additional parameters as needed, and then define an <a class="el" href="structobject.html">object</a> with ICRS coordinates, e.g. via <code><a class="el" href="#a5104d7db66ce2d8c61c7ad21599fb45e">make_cat_object_sys()</a></code>.</li>
+<li>For <b>extragalactic sources</b> (with no proper motion or parallax) you might use <code>novas_make_redshifted_object()</code> with ICRS coordinates, or else <code>novas_make_redshifted_object_sys()</code> with coordinates in other reference systems.</li>
+</ul>
+<p>By default SuperNOVAS treats object names as case insensitive (for historical reasons), and will use capitalized versions of the names supplied by the user. You can enable case-sensitive name processing with <code><a class="el" href="#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive()</a></code> if needed.</p>
+<p>Once an <a class="el" href="structobject.html">object</a> is defined, you may calculate astrometric properties, such as apparent or geometric positions; rise, set, or transit times, etc. through observing frames, which are defined for a specific observer location and time of observation.</p>
+<dl class="section see"><dt>See also</dt><dd>frame.c, <a class="el" href="observer_8c.html">observer.c</a>, <a class="el" href="timescale_8c.html">timescale.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="aa040bcfe8bee7d8e1307800f48efddd7" name="aa040bcfe8bee7d8e1307800f48efddd7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa040bcfe8bee7d8e1307800f48efddd7">&#9670;&#160;</a></span>make_cat_entry()</h2>

@@ -101,27 +101,11 @@ $(function(){initNavTree('frames_8c.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">frames.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a850d4988b6e1ee4e16274b2c723f93c4" id="r_a850d4988b6e1ee4e16274b2c723f93c4"><td class="memItemLeft" align="right" valign="top"><a id="a850d4988b6e1ee4e16274b2c723f93c4" name="a850d4988b6e1ee4e16274b2c723f93c4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>DA0</b>&#160;&#160;&#160;(-0.01460 * ARCSEC)</td></tr>
-<tr class="memdesc:a850d4988b6e1ee4e16274b2c723f93c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame bias term da<sub>0</sub> <br /></td></tr>
-<tr class="separator:a850d4988b6e1ee4e16274b2c723f93c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3263879bdfa579845d9bf404ab20208" id="r_ac3263879bdfa579845d9bf404ab20208"><td class="memItemLeft" align="right" valign="top"><a id="ac3263879bdfa579845d9bf404ab20208" name="ac3263879bdfa579845d9bf404ab20208"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ETA0</b>&#160;&#160;&#160;(-0.0068192 * ARCSEC)</td></tr>
-<tr class="memdesc:ac3263879bdfa579845d9bf404ab20208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame bias term &eta;<sub>0</sub> <br /></td></tr>
-<tr class="separator:ac3263879bdfa579845d9bf404ab20208"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e131aa097cc3b5dd7d66533780aff3e" id="r_a9e131aa097cc3b5dd7d66533780aff3e"><td class="memItemLeft" align="right" valign="top"><a id="a9e131aa097cc3b5dd7d66533780aff3e" name="a9e131aa097cc3b5dd7d66533780aff3e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>XI0</b>&#160;&#160;&#160;(-0.0166170 * ARCSEC)</td></tr>
-<tr class="memdesc:a9e131aa097cc3b5dd7d66533780aff3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frame bias term &xi;<sub>0</sub> <br /></td></tr>
-<tr class="separator:a9e131aa097cc3b5dd7d66533780aff3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab7db8026c598e8e126a4725ac3b388bf" id="r_ab7db8026c598e8e126a4725ac3b388bf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7db8026c598e8e126a4725ac3b388bf">novas_app_to_geom</a> (const <a class="el" href="structnovas__frame.html">novas_frame</a> *restrict frame, enum <a class="el" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651e">novas_reference_system</a> sys, double ra, double dec, double dist, double *restrict geom_icrs)</td></tr>
@@ -176,7 +160,72 @@ Functions</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
 <p>SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using observer frames. Observer frames represent an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html">timescale.c</a> </dd></dl>
+<p>To use frames, you start with <code><a class="el" href="#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a></code> with an astrometric time and an observer location, and optionally Earth-orientation parameters if precision below the arcsecond level is needed. E.g.:</p>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;         <span class="comment">// observer location</span></div>
+<div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;  <span class="comment">// astrometric time</span></div>
+<div class="line"><a class="code hl_struct" href="structnovas__frame.html">novas_frame</a> frame;    <span class="comment">// observing frame</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Specify an observer, with GPS coordinates</span></div>
+<div class="line"><a class="code hl_function" href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer</a>(gps_lat, gps_lon, gps_alt, &amp;obs);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Specify time, e.g. current time with leap seconds and UT1-UTC time difference:</span></div>
+<div class="line"><a class="code hl_function" href="timescale_8c.html#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time</a>(leap_seconds, dut1, &amp;time);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set up a frame with the desired accuracy and Earth orientation parameters xp, yp.</span></div>
+<div class="line"><a class="code hl_function" href="#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame</a>(<a class="code hl_enumvalue" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, &amp;obs, &amp;time, xp, yp, &amp;frame);</div>
+<div class="ttc" id="aframes_8c_html_adc72577f99a7b076b23e0e44ddbca838"><div class="ttname"><a href="#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame</a></div><div class="ttdeci">int novas_make_frame(enum novas_accuracy accuracy, const observer *obs, const novas_timespec *time, double xp, double yp, novas_frame *frame)</div><div class="ttdef"><b>Definition</b> frames.c:515</div></div>
+<div class="ttc" id="anovas_8h_html_a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846"><div class="ttname"><a href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a></div><div class="ttdeci">@ NOVAS_REDUCED_ACCURACY</div><div class="ttdef"><b>Definition</b> novas.h:588</div></div>
+<div class="ttc" id="aobserver_8c_html_aa2f9fc986f99c1ec7092330dbf233fef"><div class="ttname"><a href="observer_8c.html#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer</a></div><div class="ttdeci">int make_gps_observer(double latitude, double longitude, double height, observer *obs)</div><div class="ttdef"><b>Definition</b> observer.c:286</div></div>
+<div class="ttc" id="astructnovas__frame_html"><div class="ttname"><a href="structnovas__frame.html">novas_frame</a></div><div class="ttdef"><b>Definition</b> novas.h:1383</div></div>
+<div class="ttc" id="astructnovas__timespec_html"><div class="ttname"><a href="structnovas__timespec.html">novas_timespec</a></div><div class="ttdef"><b>Definition</b> novas.h:1297</div></div>
+<div class="ttc" id="astructobserver_html"><div class="ttname"><a href="structobserver.html">observer</a></div><div class="ttdef"><b>Definition</b> novas.h:1201</div></div>
+<div class="ttc" id="atimescale_8c_html_a090f608cd5c82622e3534297fc27daa5"><div class="ttname"><a href="timescale_8c.html#a090f608cd5c82622e3534297fc27daa5">novas_set_current_time</a></div><div class="ttdeci">int novas_set_current_time(int leap, double dut1, novas_timespec *restrict time)</div><div class="ttdef"><b>Definition</b> timescale.c:890</div></div>
+</div><!-- fragment --><p>Once a frame is defined, you can perform various astrometric calculation within it efficiently. For example, calculate apparent positions, in the coordinate system of choice, to predict where objects would be seen by the observer:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">object</span> source = ...;   <span class="comment">// observed source</span></div>
+<div class="line"><a class="code hl_struct" href="structsky__pos.html">sky_pos</a> app;           <span class="comment">// apparent position to calculate.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Calculate True-of-Date apparent coordinates for a source.</span></div>
+<div class="line"><a class="code hl_function" href="#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos</a>(&amp;source, &amp;frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, &amp;app);</div>
+<div class="ttc" id="aframes_8c_html_ac365a1e015ae1f875dc5a66fd5435b2f"><div class="ttname"><a href="#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos</a></div><div class="ttdeci">int novas_sky_pos(const object *restrict object, const novas_frame *restrict frame, enum novas_reference_system sys, sky_pos *restrict out)</div><div class="ttdef"><b>Definition</b> frames.c:831</div></div>
+<div class="ttc" id="anovas_8h_html_a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3"><div class="ttname"><a href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a></div><div class="ttdeci">@ NOVAS_TOD</div><div class="ttdef"><b>Definition</b> novas.h:501</div></div>
+<div class="ttc" id="astructsky__pos_html"><div class="ttname"><a href="structsky__pos.html">sky_pos</a></div><div class="ttdef"><b>Definition</b> novas.h:1229</div></div>
+</div><!-- fragment --><p>If your observer was defined on Earth (ground-based or airborne), you might continue to calculate Az/El positions using <code><a class="el" href="#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a></code>, or you might just want to know the same position in another reference system also:</p>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="structnovas__transform.html">novas_transform</a> T;     <span class="comment">// Transformation between reference systems</span></div>
+<div class="line"><a class="code hl_struct" href="structsky__pos.html">sky_pos</a> tirs;          <span class="comment">// calculated apparent position in TIRS</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Transform from True-of-Date to TIRS coordinates</span></div>
+<div class="line"><a class="code hl_function" href="#a4d179c8573319fc25c775ce56ba055dc">novas_make_transform</a>(&amp;frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651eaa4bcd4fdb15ba77023241689a5608df3">NOVAS_TOD</a>, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea524041fc2059f8432b76fad1b8edb89f">NOVAS_TIRS</a>, &amp;T);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Transform the above position to TIRS...</span></div>
+<div class="line"><a class="code hl_function" href="#acfcfb90637cd1fdb25ef9afd1bda8e30">novas_transform_sky_pos</a>(&amp;app, T, &amp;tirs);</div>
+<div class="ttc" id="aframes_8c_html_a4d179c8573319fc25c775ce56ba055dc"><div class="ttname"><a href="#a4d179c8573319fc25c775ce56ba055dc">novas_make_transform</a></div><div class="ttdeci">int novas_make_transform(const novas_frame *frame, enum novas_reference_system from_system, enum novas_reference_system to_system, novas_transform *transform)</div><div class="ttdef"><b>Definition</b> frames.c:1244</div></div>
+<div class="ttc" id="aframes_8c_html_acfcfb90637cd1fdb25ef9afd1bda8e30"><div class="ttname"><a href="#acfcfb90637cd1fdb25ef9afd1bda8e30">novas_transform_sky_pos</a></div><div class="ttdeci">int novas_transform_sky_pos(const sky_pos *in, const novas_transform *restrict transform, sky_pos *out)</div><div class="ttdef"><b>Definition</b> frames.c:1447</div></div>
+<div class="ttc" id="anovas_8h_html_a7ba038ea34eb901ccfb8f785708c651ea524041fc2059f8432b76fad1b8edb89f"><div class="ttname"><a href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea524041fc2059f8432b76fad1b8edb89f">NOVAS_TIRS</a></div><div class="ttdeci">@ NOVAS_TIRS</div><div class="ttdef"><b>Definition</b> novas.h:525</div></div>
+<div class="ttc" id="astructnovas__transform_html"><div class="ttname"><a href="structnovas__transform.html">novas_transform</a></div><div class="ttdef"><b>Definition</b> novas.h:1438</div></div>
+</div><!-- fragment --><p>Or, you can calculate geometric positions, which are not corrected for aberration or gravitational deflection (but still corrected for light travel time in case of Solar-system sources):</p>
+<div class="fragment"><div class="line"><span class="keywordtype">object</span> source = ...;   <span class="comment">// observed source</span></div>
+<div class="line"><span class="keywordtype">double</span> pos[3], vel[3]; <span class="comment">// geometric position and velocity vectors to calculate.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Calculate geometric positions / velocities, say in ICRS</span></div>
+<div class="line"><a class="code hl_function" href="#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel</a>(&amp;source, &amp;frame, <a class="code hl_enumvalue" href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a>, pos, vel);</div>
+<div class="ttc" id="aframes_8c_html_ac6652ee3257621080dac342313d0a0a7"><div class="ttname"><a href="#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel</a></div><div class="ttdeci">int novas_geom_posvel(const object *restrict source, const novas_frame *restrict frame, enum novas_reference_system sys, double *restrict pos, double *restrict vel)</div><div class="ttdef"><b>Definition</b> frames.c:711</div></div>
+<div class="ttc" id="anovas_8h_html_a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10"><div class="ttname"><a href="novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ea5bf6e497c776a4a8168b23db062e8a10">NOVAS_ICRS</a></div><div class="ttdeci">@ NOVAS_ICRS</div><div class="ttdef"><b>Definition</b> novas.h:509</div></div>
+</div><!-- fragment --><p>You can also transform geometric positions / velocities to other reference frames using the same <code><a class="el" href="structnovas__transform.html">novas_transform</a></code> as above.</p>
+<p>Or, perhaps you are interested when the source will rise (or transit, or set) next, for a ground-based or airborne observer:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">object</span> source = ...;   <span class="comment">// observed source</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// UTC-based Julian date when source rises above 20 degrees given a refraction model.</span></div>
+<div class="line"><span class="keywordtype">double</span> jd_rise = <a class="code hl_function" href="#aaf38f64304fa0b00c9c56cead62043f3">novas_rises_above</a>(20.0, &amp;source, &amp;frame, <a class="code hl_function" href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a>);</div>
+<div class="ttc" id="aframes_8c_html_aaf38f64304fa0b00c9c56cead62043f3"><div class="ttname"><a href="#aaf38f64304fa0b00c9c56cead62043f3">novas_rises_above</a></div><div class="ttdeci">double novas_rises_above(double el, const object *restrict source, const novas_frame *restrict frame, RefractionModel ref_model)</div><div class="ttdef"><b>Definition</b> frames.c:1664</div></div>
+<div class="ttc" id="arefract_8c_html_ab04bff3b97c132e358e11c3a5b7a3081"><div class="ttname"><a href="refract_8c.html#ab04bff3b97c132e358e11c3a5b7a3081">novas_standard_refraction</a></div><div class="ttdeci">double novas_standard_refraction(double jd_tt, const on_surface *loc, enum novas_refraction_type type, double el)</div><div class="ttdef"><b>Definition</b> refract.c:259</div></div>
+</div><!-- fragment --><p>Or, you might simply want to know how far your source is from the Sun or Moon (or another source) on the sky:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">object</span> source = ...;   <span class="comment">// observed source</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Calculate the angular distance of the source from the Sun.</span></div>
+<div class="line"><span class="keywordtype">double</span> angle_deg = <a class="code hl_function" href="#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a>(&amp;source, &amp;frame);</div>
+<div class="ttc" id="aframes_8c_html_a2d1ef3bc6d99aa473511e45c6e0481e9"><div class="ttname"><a href="#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a></div><div class="ttdeci">double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame)</div><div class="ttdef"><b>Definition</b> frames.c:1831</div></div>
+</div><!-- fragment --><p>These are just some of the common use-case scenarios. There is even more possibilities with frames...</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html">timescale.c</a>, <a class="el" href="observer_8c.html">observer.c</a>, <a class="el" href="target_8c.html">target.c</a> </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ab7db8026c598e8e126a4725ac3b388bf" name="ab7db8026c598e8e126a4725ac3b388bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7db8026c598e8e126a4725ac3b388bf">&#9670;&#160;</a></span>novas_app_to_geom()</h2>

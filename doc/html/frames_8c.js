@@ -1,8 +1,5 @@
 var frames_8c =
 [
-    [ "DA0", "frames_8c.html#a850d4988b6e1ee4e16274b2c723f93c4", null ],
-    [ "ETA0", "frames_8c.html#ac3263879bdfa579845d9bf404ab20208", null ],
-    [ "XI0", "frames_8c.html#a9e131aa097cc3b5dd7d66533780aff3e", null ],
     [ "novas_app_to_geom", "frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf", null ],
     [ "novas_app_to_hor", "frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca", null ],
     [ "novas_change_observer", "frames_8c.html#a2972b3eafa2d7f6c29cff34bad9fcf0d", null ],

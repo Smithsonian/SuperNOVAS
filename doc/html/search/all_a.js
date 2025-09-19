@@ -32,6 +32,5 @@ var searchData=
   ['era_29',['era',['../structnovas__frame.html#aa7f218ad801848e38dc25323b8f0197b',1,'novas_frame::era'],['../earth_8c.html#aef1f8daaad470353648de90576aefc66',1,'era(double jd_ut1_high, double jd_ut1_low):&#160;earth.c'],['../novas_8h.html#aef1f8daaad470353648de90576aefc66',1,'era(double jd_ut1_high, double jd_ut1_low):&#160;earth.c']]],
   ['erot_5fera_30',['EROT_ERA',['../novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609ab07b6e5ed11fd50e7c2287b5b6626b46',1,'novas.h']]],
   ['erot_5fgst_31',['EROT_GST',['../novas_8h.html#a9e882d9c9055f187d3a8dc9b019f0609a1d56a4fb59b567049ed1937bfcdf0f62',1,'novas.h']]],
-  ['eta0_32',['ETA0',['../frames_8c.html#ac3263879bdfa579845d9bf404ab20208',1,'frames.c']]],
-  ['example_20usage_33',['Example usage',['../index.html#autotoc_md68',1,'']]]
+  ['example_20usage_32',['Example usage',['../index.html#autotoc_md68',1,'']]]
 ];

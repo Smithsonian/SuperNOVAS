@@ -1042,9 +1042,6 @@
           <topic label="precession" href="equinox_8c.html#a9178358732325399f3a5e3582080ced3"/>
         </topic>
         <topic label="frames.c" href="frames_8c.html">
-          <topic label="DA0" href="frames_8c.html#a850d4988b6e1ee4e16274b2c723f93c4"/>
-          <topic label="ETA0" href="frames_8c.html#ac3263879bdfa579845d9bf404ab20208"/>
-          <topic label="XI0" href="frames_8c.html#a9e131aa097cc3b5dd7d66533780aff3e"/>
           <topic label="novas_app_to_geom" href="frames_8c.html#ab7db8026c598e8e126a4725ac3b388bf"/>
           <topic label="novas_app_to_hor" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca"/>
           <topic label="novas_change_observer" href="frames_8c.html#a2972b3eafa2d7f6c29cff34bad9fcf0d"/>
@@ -1390,7 +1387,6 @@
         <topic label="u" href="globals_u.html"/>
         <topic label="v" href="globals_v.html"/>
         <topic label="w" href="globals_w.html"/>
-        <topic label="x" href="globals_x.html"/>
       </topic>
       <topic label="Functions" href="globals_func.html">
         <topic label="a" href="globals_func.html"/>

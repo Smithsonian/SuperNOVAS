@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xi0_0',['XI0',['../frames_8c.html#a9e131aa097cc3b5dd7d66533780aff3e',1,'frames.c']]]
+  ['your_20application_20with_20supernovas_0',['Building your application with SuperNOVAS',['../index.html#autotoc_md59',1,'']]]
 ];
