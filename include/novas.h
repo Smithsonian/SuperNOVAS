@@ -512,9 +512,9 @@ enum novas_reference_system {
   /// @since 1.1
   NOVAS_J2000,
 
-  /// Mean equinox of date:  dynamical system of the 'mean' equator, with its origin at the
+  /// Mean of date:  dynamical system of the 'mean' equator, with its origin at the
   /// 'mean' equinox (pre IAU 2006 system). It includes precession (Lieske et. al. 1977),
-  /// but no nutation. For example, FK4 / B1950 is a MOD coordinate system.
+  /// but not nutation. For example, FK4 or B1950 are MOD coordinate systems.
   /// @since 1.1
   NOVAS_MOD,
 
@@ -558,15 +558,18 @@ enum novas_equator_type {
 #define NOVAS_EQUATOR_TYPES (NOVAS_GCRS_EQUATOR + 1)
 
 /**
- * Constants that determine the type of dynamical system. I.e., the 'current' equatorial coordinate
- * system used for a given epoch of observation.
+ * Constants that determine the type of dynamical system. I.e., the 'current' equatorial
+ * coordinate system used for a given epoch of observation.
  */
 enum novas_dynamical_type {
-  /// Mean equinox Of Date (TOD): dynamical system not including nutation (pre IAU 2006 system).
+  /// Mean Of Date (TOD): dynamical system that include precession but not including nutation,
+  /// such as commonly used for older catalogs like FK4, KF5, B1950, or HIP.
   NOVAS_DYNAMICAL_MOD = 0,
 
-  /// True equinox Of Date (TOD): dynamical system of the 'true' equator, with its origin at the
-  /// true equinox (pre IAU 2006 system; Lieske et. al. 1977).
+  /// True Of Date (TOD): dynamical system of the 'true' equator of date, with its origin at the
+  /// true equinox of date. In the IAU 2000 methodology, it includes precession and nutation, but
+  /// not the sub-arcsecond level Earth Orientation Parameters (EOP). The latter are used only
+  /// when converting to the Earth-fixed TIRS system.
   NOVAS_DYNAMICAL_TOD,
 
   /// Celestial Intermediate Reference System (CIRS): dynamical system of the true equator,
@@ -589,7 +592,8 @@ enum novas_accuracy {
 };
 
 /**
- * Constants that determine whether what model (if any) to use for implicit refraction calculations.
+ * Constants that determine whether what model (if any) to use for implicit refraction
+ * calculations.
  *
  * @sa on_surface, novas_app_to_hor(), novas_hor_to_app(), refract(), refract_astro()
  */
@@ -1247,6 +1251,9 @@ typedef struct novas_sky_pos {
 #define SKY_POS_INIT { {0.0}, 0.0, 0.0, 0.0, 0.0 }
 
 /**
+ * @deprecated  The functions that use this structure have been deprecated also. There is no
+ *              compelling reason why users should want/need it otherwise.
+ *
  * Right ascension of the Celestial Intermediate Origin (CIO) with respect to the GCRS
  *
  * @sa cio_ra(), ira_equinox()
@@ -1405,7 +1412,7 @@ typedef struct novas_frame {
   double earth_vel[3];                ///< [AU/day] Earth's velocity, rel SSB. (ICRS)
   struct novas_matrix icrs_to_j2000;  ///< ICRS to J2000 matrix
   struct novas_matrix precession;     ///< precession matrix
-  struct novas_matrix nutation;       ///< nutation matrix (Lieske 1977 method)
+  struct novas_matrix nutation;       ///< nutation matrix (IAU 2006 model)
   struct novas_matrix gcrs_to_cirs;   ///< GCRS to CIRS conversion matrix
   struct novas_planet_bundle planets; ///< Planet positions and velocities (ICRS)
   // TODO [v2] add ra_cio
@@ -1428,7 +1435,7 @@ typedef struct novas_frame {
  * location and time. This allows for more elegant, generic, and efficient coordinate
  * transformations than the low-level NOVAS functions.
  *
- * The transformation can be (should be) initialized via novas_make_trasform(), or via
+ * The transformation can be (should be) initialized via novas_make_transform(), or via
  * novas_invert_transform().
  *
  * @since 1.1

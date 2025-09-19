@@ -679,10 +679,6 @@ static int icrs_to_sys(const novas_frame *restrict frame, double *restrict pos, 
  *
  * NOTES:
  * <ol>
- * <li>If `sys` is `NOVAS_TOD` (true equator and equinox of date), the less precise old (pre IAU
- * 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the
- * original NOVAS C place() for that system. To obtain more precise TOD coordinates, set `sys` to
- * `NOVAS_CIRS` here, and follow with cirs_to_tod() after.</li>
  * <li>As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based
  * velocity measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with
  * pseudo LSR-based measures being returned for catalog sources.</li>
@@ -800,12 +796,6 @@ int novas_geom_posvel(const object *restrict source, const novas_frame *restrict
  *
  * NOTES:
  * <ol>
- * <li>If `sys` is `NOVAS_TOD` (true equator and equinox of date), the less precise old (pre IAU
- * 2006) method is used, with the Lieske et al. 1977 nutation model, matching the behavior of the
- * original NOVAS C place() for that system. To obtain more precise TOD coordinates, set `sys` to
- * `NOVAS_CIRS` here, and follow with cirs_to_tod() / cirs_to_app_ra() on the `out->r_hat` /
- * `out->ra` respectively after (or you can use just convert one of the quantities, and use
- * radec2vector() or vector2radec() to get the other even faster).</li>
  * <li>As of SuperNOVAS v1.3, the returned radial velocity component is a proper observer-based
  * spectroscopic measure. In prior releases, and in NOVAS C 3.1, this was inconsistent, with
  * LSR-based measures being returned for catalog sources.</li>

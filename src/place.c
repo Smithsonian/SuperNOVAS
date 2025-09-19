@@ -72,7 +72,7 @@
  *  4. If needed convert between position 3-vectors and RA/Dec coordinates using
  *  `vector2radec()` / `radec2vector()` as necessary.
  *
- *  @sa frames.c
+ *  @sa target.c, observer.c, timescale.c, frames.c
  */
 
 #include <string.h>
