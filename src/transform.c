@@ -17,13 +17,13 @@
 /// \endcond
 
 /**
- * Converts GCRS right ascension and declination to coordinates with respect to the equator
- * of date (mean or true). For coordinates with respect to the true equator of date, the
- * origin of right ascension can be either the true equinox or the celestial intermediate
- * origin (CIO). This function only supports the CIO-based method.
+ * Converts GCRS right ascension and declination to coordinates with respect to the equator of
+ * date (mean or true). For coordinates with respect to the true equator of date, the origin of
+ * right ascension can be either the true equinox or the celestial intermediate origin (CIO).
+ * This function only supports the CIO-based method.
  *
- * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys'
- *                    is NOVAS_ICRS_EQUATOR)
+ * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is
+ *                    NOVAS_ICRS_EQUATOR)
  * @param sys         Dynamical equatorial system type
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) (unused if
  *                    'coord_sys' is not NOVAS_ICRS [3])
@@ -77,10 +77,10 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
 }
 
 /**
- * @deprecated This function can be confusing to use due to the output coordinate system
- *             being specified by a combination of two options. Use itrs_to_cirs() or
- *             itrs_to_tod() instead. You can then follow these with other conversions to
- *             GCRS (or whatever else) as appropriate.
+ * @deprecated This function can be confusing to use due to the output coordinate system being
+ *             specified by a combination of two options. Use itrs_to_cirs() or itrs_to_tod()
+ *             instead. You can then follow these with other conversions to GCRS (or whatever
+ *             else) as appropriate.
  *
  * Rotates a vector from the terrestrial to the celestial system. Specifically, it transforms
  * a vector in the ITRS (rotating earth-fixed system) to the True of Date (TOD), CIRS, or GCRS
@@ -184,18 +184,18 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 }
 
 /**
- * @deprecated This function can be confusing to use due to the input coordinate system
- *             being specified by a combination of two options. Use itrs_to_cirs() or
- *             itrs_to_tod() instead. You can then follow these with other conversions to
- *             GCRS (or whatever else) as appropriate.
+ * @deprecated This function can be confusing to use due to the input coordinate system being
+ *             specified by a combination of two options. Use itrs_to_cirs() or itrs_to_tod()
+ *             instead. You can then follow these with other conversions to GCRS (or whatever
+ *             else) as appropriate.
  *
  * Rotates a vector from the celestial to the terrestrial system.  Specifically, it transforms
  * a vector in the GCRS, or the dynamical (CIRS or TOD) frames to the ITRS (a rotating Earth-fixed
  * system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth
  * rotation, and polar motion.
  *
- * If 'system' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'system'
- * is NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.
+ * If 'system' is NOVAS_CIRS then method EROT_ERA must be used. Similarly, if 'system' is
+ * NOVAS_TOD then method must be EROT_ERA. Otherwise an error 3 is returned.
  *
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
  *
@@ -297,8 +297,8 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 /**
  * Transforms a vector from the dynamical reference system to the International Celestial
  * Reference System (ICRS), or vice versa. The dynamical reference system is based on the
- * dynamical mean equator and equinox of J2000.0.  The ICRS is based on the space-fixed ICRS
- * axes defined by the radio catalog positions of several hundred extragalactic objects.
+ * dynamical mean equator and equinox of J2000.0.  The ICRS is based on the space-fixed ICRS axes
+ * defined by the radio catalog positions of several hundred extragalactic objects.
  *
  * For geocentric coordinates, the same transformation is used between the dynamical reference
  * system and the GCRS.
@@ -345,13 +345,12 @@ int frame_tie(const double *in, enum novas_frametie_direction direction, double 
 }
 
 /**
- * Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the
- * True of Date (TOD) reference frame at the given epoch
+ * Transforms a rectangular equatorial (x, y, z) vector from J2000 coordinates to the True of Date
+ * (TOD) reference frame at the given epoch
  *
- * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines
- *                  the output epoch. Typically it does not require much precision, and
- *                  Julian dates in other time measures will be unlikely to affect the
- *                  result
+ * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the
+ *                  output epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param in        Input (x, y, z) position or velocity vector in rectangular equatorial
  *                  coordinates at J2000
@@ -427,12 +426,12 @@ int gcrs_to_j2000(const double *in, double *out) {
 }
 
 /**
- * Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial
- * Reference System (GCRS) to the Mean of Date (MOD) reference frame at the given epoch
+ * Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference
+ * System (GCRS) to the Mean of Date (MOD) reference frame at the given epoch
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TT) based Julian date that defines the
- *                  output epoch. Typically it does not require much precision, and Julian
- *                  dates in other time measures will be unlikely to affect the result
+ *                  output epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
  * @param in        GCRS Input (x, y, z) position or velocity vector
  * @param[out] out  Output position or velocity 3-vector in the Mean wquinox of Date coordinate
  *                  frame. It can be the same vector as the input.
@@ -451,12 +450,12 @@ int gcrs_to_mod(double jd_tdb, const double *in, double *out) {
 }
 
 /**
- * Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference
- * frame at the given epoch to the Geocentric Celestial Reference System(GCRS)
+ * Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at
+ * the given epoch to the Geocentric Celestial Reference System(GCRS)
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the
- *                  input epoch. Typically it does not require much precision, and Julian dates
- *                  in other time measures will be unlikely to affect the result
+ *                  input epoch. Typically it does not require much precision, and Julian dates in
+ *                  other time measures will be unlikely to affect the result
  * @param in        Input (x, y, z)  position or velocity 3-vector in the Mean equinox of Date
  *                  coordinate frame.
  * @param[out] out  Output GCRS position or velocity vector. It can be the same vector as the
@@ -476,18 +475,18 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out) {
 }
 
 /**
- * Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial
- * Reference System (GCRS) to the True of Date (TOD) reference frame at the given epoch
+ * Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference
+ * System (GCRS) to the True of Date (TOD) reference frame at the given epoch
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TT) based Julian date that defines the
- *                  output epoch. Typically it does not require much precision, and Julian
- *                  dates in other time measures will be unlikely to affect the result
+ *                  output epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param in        GCRS Input (x, y, z) position or velocity vector
  * @param[out] out  Output position or velocity 3-vector in the True equinox of Date coordinate
  *                  frame. It can be the same vector as the input.
- * @return          0 if successful, or -1 if either of the vector arguments is NULL, or if
- *                  the accuracy argument is invalid.
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL, or if the
+ *                  accuracy argument is invalid.
  *
  * @since 1.2
  * @author Attila Kovacs
@@ -502,12 +501,12 @@ int gcrs_to_tod(double jd_tdb, enum novas_accuracy accuracy, const double *in, d
 }
 
 /**
- * Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference
- * frame at the given epoch to the Geocentric Celestial Reference System(GCRS)
+ * Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at
+ * the given epoch to the Geocentric Celestial Reference System(GCRS)
  *
  * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the
- *                  input epoch. Typically it does not require much precision, and Julian dates
- *                  in other time measures will be unlikely to affect the result
+ *                  input epoch. Typically it does not require much precision, and Julian dates in
+ *                  other time measures will be unlikely to affect the result
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param in        Input (x, y, z)  position or velocity 3-vector in the True equinox of Date
  *                  coordinate frame.
@@ -558,20 +557,18 @@ int gcrs_to_cirs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
 }
 
 /**
- * Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate
- * Reference System (CIRS) frame at the given epoch to the Geocentric Celestial Reference
- * System (GCRS).
+ * Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference
+ * System (CIRS) frame at the given epoch to the Geocentric Celestial Reference System (GCRS).
  *
- * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines
- *                  the output epoch. Typically it does not require much precision, and
- *                  Julian dates in other time measures will be unlikely to affect the
- *                  result
+ * @param jd_tdb    [day] Barycentric Dynamical Time (TDB) based Julian date that defines the
+ *                  output epoch. Typically it does not require much precision, and Julian dates
+ *                  in other time measures will be unlikely to affect the result
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param in        CIRS Input (x, y, z) position or velocity vector
  * @param[out] out  Output position or velocity 3-vector in the GCRS coordinate frame.
  *                  It can be the same vector as the input.
- * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or else 10 + the error from cio_basis().
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
+ *                  accuracy is invalid, or else 10 + the error from cio_basis().
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -589,8 +586,8 @@ int cirs_to_gcrs(double jd_tdb, enum novas_accuracy accuracy, const double *in, 
 }
 
 /**
- * Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R.A.
- * measured from the true equinox of date.
+ * Converts a CIRS right ascension coordinate (measured from the CIO) to an apparent R.A. measured
+ * from the true equinox of date.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
@@ -873,15 +870,12 @@ int j2000_to_gcrs(const double *in, double *out) {
 int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "cirs_to_tod";
 
-  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
-
   // Check for valid value of 'accuracy'.
   if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
     return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   // Obtain the R.A. [h] of the CIO at the given date
-  ra_cio = -ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy);
-  prop_error(fn, spin(-15.0 * ra_cio, in, out), 0);
+  prop_error(fn, spin(15.0 * ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy), in, out), 0);
 
   return 0;
 }
@@ -909,11 +903,12 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
 int tod_to_cirs(double jd_tt, enum novas_accuracy accuracy, const double *in, double *out) {
   static const char *fn = "tod_to_cirs";
 
-  double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
+  // Check for valid value of 'accuracy'.
+  if(accuracy != NOVAS_FULL_ACCURACY && accuracy != NOVAS_REDUCED_ACCURACY)
+    return novas_error(-1, EINVAL, fn, "invalid accuracy: %d", accuracy);
 
   // Obtain the R.A. [h] of the CIO at the given date
-  prop_error(fn, cio_ra(jd_tt, accuracy, &ra_cio), 0);
-  prop_error(fn, spin(15.0 * ra_cio, in, out), 0);
+  prop_error(fn, spin(-15.0 * ira_equinox(jd_tt, NOVAS_TRUE_EQUINOX, accuracy), in, out), 0);
 
   return 0;
 }
