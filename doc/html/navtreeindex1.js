@@ -1,10 +1,11 @@
 var NAVTREEINDEX1 =
 {
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md5":[1,1],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md6":[1,1,0],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md7":[1,1,1],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md8":[1,2],
-"md__2github_2workspace_2CHANGELOG.html#autotoc_md9":[1,2,0],
+"md__2github_2workspace_2CHANGELOG.html#autotoc_md44":[1,10,3],
+"md__2github_2workspace_2CHANGELOG.html#autotoc_md5":[1,0,3],
+"md__2github_2workspace_2CHANGELOG.html#autotoc_md6":[1,1],
+"md__2github_2workspace_2CHANGELOG.html#autotoc_md7":[1,1,0],
+"md__2github_2workspace_2CHANGELOG.html#autotoc_md8":[1,1,1],
+"md__2github_2workspace_2CHANGELOG.html#autotoc_md9":[1,2],
 "md__2github_2workspace_2CONTRIBUTING.html":[2],
 "naif_8c.html":[6,0,1,8],
 "naif_8c.html#a1c4b3f67a3b82808dd16ae43dfaf0f86":[6,0,1,8,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "novas_8h.html#a7ba038ea34eb901ccfb8f785708c651ead110200de7f232d9110467c0862733d9":[6,0,0,2,148,4],
 "novas_8h.html#a7c474aa996c5ccc0c03b1006ea5b30e1":[6,0,0,2,35],
 "novas_8h.html#a7cd85bc0a0248f84d399cbbce9fe9546":[6,0,0,2,210],
-"novas_8h.html#a7ee576309aa1977e9b2a3824286f725c":[6,0,0,2,250],
-"novas_8h.html#a81da80ae3ab1d0a444f39bde2af3a732":[6,0,0,2,283]
+"novas_8h.html#a7ee576309aa1977e9b2a3824286f725c":[6,0,0,2,250]
 };

@@ -14,9 +14,9 @@ var searchData=
   ['get_5fplanet_5fprovider_5fhp_11',['get_planet_provider_hp',['../plugin_8c.html#ae45badb450c1ca73920d982e12346c5b',1,'get_planet_provider_hp():&#160;plugin.c'],['../solarsystem_8h.html#ae45badb450c1ca73920d982e12346c5b',1,'get_planet_provider_hp():&#160;plugin.c']]],
   ['get_5fut1_5fto_5ftt_12',['get_ut1_to_tt',['../timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6',1,'get_ut1_to_tt(int leap_seconds, double dut1):&#160;timescale.c'],['../novas_8h.html#a4d7470ca705efa1953e8b4beab77c6b6',1,'get_ut1_to_tt(int leap_seconds, double dut1):&#160;timescale.c']]],
   ['get_5futc_5fto_5ftt_13',['get_utc_to_tt',['../timescale_8c.html#ab7611704bab9ce717744a8b5575c5378',1,'get_utc_to_tt(int leap_seconds):&#160;timescale.c'],['../novas_8h.html#ab7611704bab9ce717744a8b5575c5378',1,'get_utc_to_tt(int leap_seconds):&#160;timescale.c']]],
-  ['gnu_20make_14',['Build SuperNOVAS using GNU make',['../index.html#autotoc_md56',1,'']]],
-  ['gnu_20tt_20makefile_20tt_15',['Using a GNU &lt;tt&gt;Makefile&lt;/tt&gt;',['../index.html#autotoc_md60',1,'']]],
-  ['going_20in_20reverse_16',['Going in reverse...',['../index.html#autotoc_md76',1,'']]],
+  ['gnu_20make_14',['Build SuperNOVAS using GNU make',['../index.html#autotoc_md57',1,'']]],
+  ['gnu_20tt_20makefile_20tt_15',['Using a GNU &lt;tt&gt;Makefile&lt;/tt&gt;',['../index.html#autotoc_md61',1,'']]],
+  ['going_20in_20reverse_16',['Going in reverse...',['../index.html#autotoc_md77',1,'']]],
   ['grav_2ec_17',['grav.c',['../grav_8c.html',1,'']]],
   ['grav_5fbodies_5ffull_5faccuracy_18',['grav_bodies_full_accuracy',['../grav_8c.html#a18647d39520d1a15a137661f698cb12a',1,'grav_bodies_full_accuracy:&#160;grav.c'],['../novas_8h.html#a18647d39520d1a15a137661f698cb12a',1,'grav_bodies_full_accuracy:&#160;grav.c']]],
   ['grav_5fbodies_5freduced_5faccuracy_19',['grav_bodies_reduced_accuracy',['../grav_8c.html#a03a4df8961a0cd05f89aca478d2dcd24',1,'grav_bodies_reduced_accuracy:&#160;grav.c'],['../novas_8h.html#a03a4df8961a0cd05f89aca478d2dcd24',1,'grav_bodies_reduced_accuracy:&#160;grav.c']]],
@@ -27,5 +27,5 @@ var searchData=
   ['grav_5fundo_5fplanets_24',['grav_undo_planets',['../grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16',1,'grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out):&#160;grav.c'],['../novas_8h.html#a1b107a24b9fadc79cc5df8c6f5505d16',1,'grav_undo_planets(const double *pos_app, const double *pos_obs, const novas_planet_bundle *restrict planets, double *out):&#160;grav.c']]],
   ['grav_5fvec_25',['grav_vec',['../grav_8c.html#a08a008572e2746a70bec19739b5fb7e6',1,'grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out):&#160;grav.c'],['../novas_8h.html#a08a008572e2746a70bec19739b5fb7e6',1,'grav_vec(const double *pos_src, const double *pos_obs, const double *pos_body, double rmass, double *out):&#160;grav.c']]],
   ['gst_26',['gst',['../structnovas__frame.html#aef07d7946615098b170225edc81bd4a7',1,'novas_frame']]],
-  ['guide_27',['User&apos;s guide',['../index.html#autotoc_md45',1,'']]]
+  ['guide_27',['User&apos;s guide',['../index.html#autotoc_md46',1,'']]]
 ];

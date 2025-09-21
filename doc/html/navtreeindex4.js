@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"structnovas__observable.html#accf93555161c9eedf006462a228af523":[5,0,5,0],
 "structnovas__orbital.html":[5,0,6],
 "structnovas__orbital.html#a0aefc536698706b7f8a15f23168c3486":[5,0,6,4],
 "structnovas__orbital.html#a1031d0e0a97a340abfe0a6ab9e831045":[5,0,6,0],

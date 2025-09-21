@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"novas_8h.html#afe1d4e96dd66676f5567a279e83e88d9":[6,0,0,2,372],
 "novas_8h.html#aff8c2c3fae3be867d3fc73972a158514":[6,0,0,2,305],
 "novas_8h.html#affe559df5bc0f5de1e091037fabfda92":[6,0,0,2,74],
 "nutation_8c.html":[6,0,1,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "structnovas__observable.html":[5,0,5],
 "structnovas__observable.html#a7972334534f68166121a6e51b0aac2d6":[5,0,5,1],
 "structnovas__observable.html#aa96391e04b5977c50b96d77bea86a01d":[5,0,5,2],
-"structnovas__observable.html#ab3e6ed577a7c669c19de1f9c1b46c872":[5,0,5,3],
-"structnovas__observable.html#accf93555161c9eedf006462a228af523":[5,0,5,0]
+"structnovas__observable.html#ab3e6ed577a7c669c19de1f9c1b46c872":[5,0,5,3]
 };

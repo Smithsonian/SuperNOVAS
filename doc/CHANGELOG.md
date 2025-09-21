@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 Upcoming feature release, expected around 1 November 2025.
 
+### Fixed
+
+ - `gcrs2equ()`: propagate error if converting to TOD and the `accuracy` is invalid.
+
 ### Added
 
  - #209: Added `novas_gmst()` and `novas_gast()` functions to calculate Greenwich Mean and Apparent (respectively)
