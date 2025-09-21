@@ -176,14 +176,14 @@ Functions</h2></td></tr>
 <li>Geodetic Earth-based observer locations: a. ground-based observer sites:<ul>
 <li>GPS locations via <code><a class="el" href="#aa2f9fc986f99c1ec7092330dbf233fef">make_gps_observer()</a></code></li>
 <li>ITRF / GRS80 locations via <code>make_itrs_observer()</code></li>
-<li>Cartesian <em>x</em>, <em>y</em>, <em>z</em> coordinates via <code><a class="el" href="#a9e3cbe310a40919ff94d2d530ffa74ee">make_xyz_site()</a></code> and make_site_observer() b. airborne observers, via a location (e.g. <code><a class="el" href="#ab5fb62a9fb185632175ae622bce28dea">make_gps_site()</a></code>, <code><a class="el" href="#a236750f494f3dcd943e71ba24aa2a55b">make_itrf_site()</a></code> or <code><a class="el" href="#a9e3cbe310a40919ff94d2d530ffa74ee">make_xyz_site()</a></code>), and a ground velocity.</li>
+<li>Cartesian <em>x</em>, <em>y</em>, <em>z</em> coordinates via <code><a class="el" href="#a9e3cbe310a40919ff94d2d530ffa74ee">make_xyz_site()</a></code> and <code>make_site_observer()</code> b. airborne observers, via a location (e.g. <code><a class="el" href="#ab5fb62a9fb185632175ae622bce28dea">make_gps_site()</a></code>, <code><a class="el" href="#a236750f494f3dcd943e71ba24aa2a55b">make_itrf_site()</a></code> or <code><a class="el" href="#a9e3cbe310a40919ff94d2d530ffa74ee">make_xyz_site()</a></code>), and a ground velocity using <code><a class="el" href="#aa423a88cd3f434642fc89d47390184f4">make_airborne_observer()</a></code>.</li>
 </ul>
 </li>
 <li>Near Earth Orbit (NEO) locations, via <code><a class="el" href="#a6c146e4d10152d5e1ffb978f2fc962be">make_observer_in_space()</a></code> specifying momentary position and velocity w.r.t. the geocenter.</li>
 <li>Virtual observer at the geocenter via <code>make_observer_at_geocecenter()</code>.</li>
 <li>Solar-system locations via <code><a class="el" href="#a9c3f1a1bc3fd9ac6d211806913d2d529">make_solar_system_observer()</a></code>, specifying a momentary barycentric (that is w.r.t. the SSB) position and velocity vector.</li>
 </ol>
-<p>Once an observer is defined, it maybe used to set up an observing frame when paired with an astronomical time of observation. Observing frames allow efficient and precise position calculations from an observer's point-of-view.</p>
+<p>Once an observer is defined, it maybe used to set up an observing frame for a specific time of observation. Observing frames allow efficient and precise position calculations from an observer's point-of-view.</p>
 <p>This module also provides functions otherwise relating to the observer locations.</p>
 <p>For Earth-based geodetic locations, the module provides a set of functions to convert between various (local) coordinate systems. For example, calculating parallactic angles (a.k.a. vertical position angle or VPA), for converting between horizontal and equatorial offsets, and various functions for converting equatorial vectors to a line-of-sight, or <em>u</em>, <em>v</em>, <em>w</em> coordinate bases, and vice-versa.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="timescale_8c.html">timescale.c</a>, frame.c </dd></dl>

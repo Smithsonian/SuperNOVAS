@@ -482,7 +482,7 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated</a></b></dt><dd>The name of this function does not reveal what type of equatorial coordinates it requires. To make it less ambiguous, you should use <a class="el" href="transform_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a> followed by <a class="el" href="#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a> instead, possibly following it with an atmospheric refraction correction if appropriate.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated</a></b></dt><dd>You should use the frame-based <code><a class="el" href="frames_8c.html#a3cd947f2e48d6c5cc88ad7a1bab9b8ca">novas_app_to_hor()</a></code> instead, or else the more explicit (less ambiguous) <code><a class="el" href="transform_8c.html#a4551e2ac083e34c1b2b61b3805efb9a3">tod_to_itrs()</a></code> followed by <code><a class="el" href="#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a></code>, and possibly following it with an atmospheric refraction correction if appropriate.</dd></dl>
 <p>Transforms topocentric (TOD) right ascension and declination to zenith distance and azimuth. This method should not be used to convert CIRS apparent coordinates (IAU 2000 standard) &ndash; for those you should use <a class="el" href="transform_8c.html#aa2768d89d499a7155f90a6fd8c176d8d">cirs_to_itrs()</a> followed by <a class="el" href="#aef3c1f8e4c443e51e65003018449768a">itrs_to_hor()</a> instead.</p>
 <p>It uses a method that properly accounts for polar motion, which is significant at the sub-arcsecond level. This function can also adjust coordinates for atmospheric refraction.</p>
 <p>NOTES: </p><ul>
@@ -502,12 +502,12 @@ Kaplan, G. (2008). USNO/AA Technical Note of 28 Apr 2008, "Refraction as a Vecto
     <tr><td class="paramdir"></td><td class="paramname">jd_ut1</td><td>[day] UT1 based Julian date </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">ut1_to_tt</td><td>[s] TT - UT1 Time difference in seconds </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[arcsec] Conventionally-defined x coordinate of celestial intermediate pole with respect to ITRS reference pole, in arcseconds. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">yp</td><td>[arcsec] Conventionally-defined y coordinate of celestial intermediate pole with respect to ITRS reference pole, in arcseconds. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">xp</td><td>[arcsec] Conventionally-defined x coordinate of celestial intermediate pole with respect to ITRS reference pole, e.g. from IERS Bulletin A. If you have defined pole offsets to be incorporated into the TOD input coordinates (pre-IAU2000 method) via <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code>, then you should set this to 0. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">yp</td><td>[arcsec] Conventionally-defined y coordinate of celestial intermediate pole with respect to ITRS reference pole, e.g. from IERS Bulletin A. If you have defined pole offsets to be incorporated into the TOD input coordinates (pre-IAU2000 method) via <code><a class="el" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2">cel_pole()</a></code>, then you should set this to 0. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">location</td><td>The observer location </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Topocentric right ascension of object of interest, in hours, referred to true equator and equinox of date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Topocentric declination of object of interest, in degrees, referred to true equator and equinox of date. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">ref_option</td><td>NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ra</td><td>[h] Topocentric apparent (TOD) right ascension of object of interest, referred to true equator and equinox of date. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">dec</td><td>[deg] Topocentric apparent (TOD) declination of object of interest, referred to true equator and equinox of date. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">ref_option</td><td>Refraction model to use. E.g., NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use the weather. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">zd</td><td>[deg] Topocentric zenith distance in degrees (unrefracted). </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">az</td><td>[deg] Topocentric azimuth (measured east from north) in degrees. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">rar</td><td>[h] Topocentric right ascension of object of interest, in hours, referred to true equator and equinox of date, affected by refraction if 'ref_option' is non-zero. (It may be NULL if not required) </td></tr>
@@ -603,8 +603,8 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">location</td><td>Observer location on Earth </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">az</td><td>[deg] astrometric azimuth angle at observer location [0:360]. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">za</td><td>[deg] astrometric zenith angle at observer location [0:180]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">az</td><td>[deg] astrometric (unrefracted) azimuth angle at observer location [0:360]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">za</td><td>[deg] astrometric (unrefracted) zenith angle at observer location [0:180]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">itrs</td><td>Unit 3-vector direction in Earth-fixed ITRS frame </td></tr>
   </table>
   </dd>
@@ -649,8 +649,8 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">location</td><td>Observer location on Earth </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">itrs</td><td>3-vector position in Earth-fixed ITRS frame </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">az</td><td>[deg] astrometric azimuth angle at observer location [0:360]. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">za</td><td>[deg] astrometric zenith angle at observer location [0:180]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">az</td><td>[deg] astrometric (unrefracted) azimuth angle at observer location [0:360]. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">za</td><td>[deg] astrometric (unrefracted) zenith angle at observer location [0:180]. It may be NULL if not required. </td></tr>
   </table>
   </dd>
 </dl>

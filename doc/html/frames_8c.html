@@ -159,7 +159,7 @@ Functions</h2></td></tr>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Jun 23, 2024 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1</dd></dl>
-<p>SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using observer frames. Observer frames represent an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems.</p>
+<p>SuperNOVAS routines for higher-level and efficient astrometric calculations using observer frames. Observer frames represent an observer location at a specific astronomical time (instant), which can be re-used again and again to calculate or transform positions of celestial sources in a a range of astronomical coordinate systems.</p>
 <p>To use frames, you start with <code><a class="el" href="#adc72577f99a7b076b23e0e44ddbca838">novas_make_frame()</a></code> with an astrometric time and an observer location, and optionally Earth-orientation parameters if precision below the arcsecond level is needed. E.g.:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structobserver.html">observer</a> obs;         <span class="comment">// observer location</span></div>
 <div class="line"><a class="code hl_struct" href="structnovas__timespec.html">novas_timespec</a> time;  <span class="comment">// astrometric time</span></div>
@@ -221,7 +221,7 @@ Functions</h2></td></tr>
 </div><!-- fragment --><p>Or, you might simply want to know how far your source is from the Sun or Moon (or another source) on the sky:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">object</span> source = ...;   <span class="comment">// observed source</span></div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Calculate the angular distance of the source from the Sun.</span></div>
+<div class="line"><span class="comment">// Calculate the angular distance, in degrees, of the source from the Sun.</span></div>
 <div class="line"><span class="keywordtype">double</span> angle_deg = <a class="code hl_function" href="#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a>(&amp;source, &amp;frame);</div>
 <div class="ttc" id="aframes_8c_html_a2d1ef3bc6d99aa473511e45c6e0481e9"><div class="ttname"><a href="#a2d1ef3bc6d99aa473511e45c6e0481e9">novas_sun_angle</a></div><div class="ttdeci">double novas_sun_angle(const object *restrict source, const novas_frame *restrict frame)</div><div class="ttdef"><b>Definition</b> frames.c:1821</div></div>
 </div><!-- fragment --><p>These are just some of the common use-case scenarios. There is even more possibilities with frames...</p>
