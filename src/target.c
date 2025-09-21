@@ -17,7 +17,7 @@
  *    planet', such as asteroids, comets, moons, spacecraft, you'd use `make_ephem_object()`.
  *
  *  - For __Keplerian orbital elements__, such as the ones published by the Minor Planet Center
- *    (MPC) for asteroids, comets, or Near-Earth Objects (NEOs), you will want
+ *    (MPC) for asteroids, comets, or Near-Earth Objects (NEOs), you will want to use
  *    `make_orbital_object()`.
  *
  *  - For __catalog sources__, especially within our own Galaxy, you might start with

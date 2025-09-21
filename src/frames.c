@@ -5,9 +5,9 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- * SuperNOVAS routines for higher-level and efficient repeat coordinate transformations using
- * observer frames. Observer frames represent an observer location at a specific astronomical
- * time (instant), which can be re-used again and again to calculate or transform positions of
+ * SuperNOVAS routines for higher-level and efficient astrometric calculations using observer
+ * frames. Observer frames represent an observer location at a specific astronomical time
+ * (instant), which can be re-used again and again to calculate or transform positions of
  * celestial sources in a a range of astronomical coordinate systems.
  *
  * To use frames, you start with `novas_make_frame()` with an astrometric time and an observer
@@ -87,7 +87,7 @@
  * ```c
  *   object source = ...;   // observed source
  *
- *   // Calculate the angular distance of the source from the Sun.
+ *   // Calculate the angular distance, in degrees, of the source from the Sun.
  *   double angle_deg = novas_sun_angle(&source, &frame);
  * ```
  *

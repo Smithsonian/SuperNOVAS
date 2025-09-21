@@ -142,10 +142,10 @@ int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec)
  *
  * @param location   Observer location on Earth
  * @param itrs       3-vector position in Earth-fixed ITRS frame
- * @param[out] az    [deg] astrometric azimuth angle at observer location [0:360]. It may be
- *                   NULL if not required.
- * @param[out] za    [deg] astrometric zenith angle at observer location [0:180]. It may be NULL
- *                   if not required.
+ * @param[out] az    [deg] astrometric (unrefracted) azimuth angle at observer location [0:360].
+ *                   It may be NULL if not required.
+ * @param[out] za    [deg] astrometric (unrefracted) zenith angle at observer location [0:180].
+ *                   It may be NULL if not required.
  * @return           0 if successful, or else -1 if the location or the input vector is NULL.
  *
  * @since 1.0
@@ -220,10 +220,10 @@ int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs
  * to a unit position vector in the Earth-fixed ITRS frame.
  *
  * @param location   Observer location on Earth
- * @param az         [deg] astrometric azimuth angle at observer location [0:360]. It may be
- *                   NULL if not required.
- * @param za         [deg] astrometric zenith angle at observer location [0:180]. It may be NULL
- *                   if not required.
+ * @param az         [deg] astrometric (unrefracted) azimuth angle at observer location [0:360].
+ *                   It may be NULL if not required.
+ * @param za         [deg] astrometric (unrefracted) zenith angle at observer location [0:180]. It
+ *                   may be NULL if not required.
  * @param[out] itrs  Unit 3-vector direction in Earth-fixed ITRS frame
  * @return           0 if successful, or else -1 if the location or the input vector is NULL.
  *
@@ -553,10 +553,10 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
 }
 
 /**
- * @deprecated  The name of this function does not reveal what type of equatorial
- *              coordinates it requires. To make it less ambiguous, you should use
- *              tod_to_itrs() followed by itrs_to_hor() instead, possibly following it
- *              with an atmospheric refraction correction if appropriate.
+ * @deprecated  You should use the frame-based `novas_app_to_hor()` instead, or else the
+ *              more explicit (less ambiguous) `tod_to_itrs()` followed by `itrs_to_hor()`,
+ *              and possibly following it with an atmospheric refraction correction if
+ *              appropriate.
  *
  * Transforms topocentric (TOD) right ascension and declination to zenith distance and
  * azimuth. This method should not be used to convert CIRS apparent coordinates (IAU
@@ -585,16 +585,21 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  * @param ut1_to_tt   [s] TT - UT1 Time difference in seconds
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param xp          [arcsec] Conventionally-defined x coordinate of celestial intermediate
- *                    pole with respect to ITRS reference pole, in arcseconds.
+ *                    pole with respect to ITRS reference pole, e.g. from IERS Bulletin A.
+ *                    If you have defined pole offsets to be incorporated into the TOD input
+ *                    coordinates (pre-IAU2000 method) via `cel_pole()`, then you should set this
+ *                    to 0.
  * @param yp          [arcsec] Conventionally-defined y coordinate of celestial intermediate
- *                    pole with respect to ITRS reference pole, in arcseconds.
+ *                    pole with respect to ITRS reference pole, e.g. from IERS Bulletin A. If you
+ *                    have defined pole offsets to be incorporated into the TOD input coordinates
+ *                    (pre-IAU2000 method) via `cel_pole()`, then you should set this to 0.
  * @param location    The observer location
- * @param ra          [h] Topocentric right ascension of object of interest, in hours, referred
+ * @param ra          [h] Topocentric apparent (TOD) right ascension of object of interest,
+ *                    referred to true equator and equinox of date.
+ * @param dec         [deg] Topocentric apparent (TOD) declination of object of interest, referred
  *                    to true equator and equinox of date.
- * @param dec         [deg] Topocentric declination of object of interest, in degrees, referred
- *                    to true equator and equinox of date.
- * @param ref_option  NOVAS_STANDARD_ATMOSPHERE (1), or NOVAS_WEATHER_AT_LOCATION (2) if to use
- *                    the weather
+ * @param ref_option  Refraction model to use. E.g., NOVAS_STANDARD_ATMOSPHERE (1), or
+ *                    NOVAS_WEATHER_AT_LOCATION (2) if to use the weather.
  * @param[out] zd     [deg] Topocentric zenith distance in degrees (unrefracted).
  * @param[out] az     [deg] Topocentric azimuth (measured east from north) in degrees.
  * @param[out] rar    [h] Topocentric right ascension of object of interest, in hours, referred

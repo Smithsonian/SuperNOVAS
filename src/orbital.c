@@ -28,7 +28,7 @@
  *    // Set Jupiter as the orbital center
  *    orb.system.center = NOVAS_JUPITER_INIT;
  *
- *    // Set the orintation by defining the RA/Dec of the orbital pole, say in ICRS
+ *    // Set the orientation by defining the RA/Dec of the orbital pole, say in ICRS
  *    novas_set_orbsys_pole(NOVAS_ICRS, ra_pole, dec_pole, &orb.system);
  *  ```
  *

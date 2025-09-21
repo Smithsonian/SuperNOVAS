@@ -1404,7 +1404,7 @@ typedef struct novas_frame {
   double obs_pos[3];                  ///< [AU] Observer position rel. to barycenter (ICRS)
   double obs_vel[3];                  ///< [AU/day] Observer movement rel. to barycenter (ICRS)
   double v_obs;                       ///< [AU/day] Magnitude of observer motion rel. to barycenter
-  double beta;                        ///< Observer relativistic &beta; rel SSB
+  double beta;                        ///< Observer relativistic pseed, &beta; = _v_/_c_ rel SSB
   double gamma;                       ///< Observer Lorentz factor &Gamma; rel SSB
   double sun_pos[3];                  ///< [AU] Sun's geometric position, rel SSB. (ICRS)
   double sun_vel[3];                  ///< [AU/day] Sun's velocity, rel SSB. (ICRS)

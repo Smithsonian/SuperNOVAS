@@ -4,7 +4,13 @@
  * @date Created  on Mar 5, 2025
  * @author Attila Kovacs
  *
- *  Various spectral / velocity related functions.
+ *  Various spectral / velocity related functions. __SuperNOVAS__ velocities are always calculated
+ *  with relativistic corrections for motion (both source and observer), and gravitational effects
+ *  (both at the source and at the observer), so they represent spectroscopically accurate values.
+ *
+ *  As such radial velocity measures are always specroscopically precise, and follow the relation:
+ *  &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + _z_) = ((1 + _v_<sub>rad</sub>/_c_) /
+ *  (1 - _v_<sub>rad</sub>/_c_))<sup>1/2</sup>.
  */
 
 #include <errno.h>

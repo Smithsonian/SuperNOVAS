@@ -4,16 +4,16 @@
  * @date Created  on Mar 5, 2025
  * @author Attila Kovacs and G. Kaplan
  *
- *  Various convenience variants of the NOVAS C place() function. Using `place()` or one of its
+ *  Various convenience variants of the NOVAS C `place()` function. Using `place()` or one of its
  *  variants is disfavored in SuperNOVAS. Instead, the new frame-based approach is recommended,
  *  via `novas_sky_pos()` (for apparent positions, including aberration and gravitational
  *  deflection) or `novas_geom_posvel() (for geometric positions).
  *
- *  Many of the functions here are now deprecated, since the new frame-based approach, introduced
- *  in v1.2 offers more versatile and transparent ways of calculated the same quantities.
+ *  Some of the functions here are now deprecated, since the new frame-based approach, introduced
+ *  in v1.2 offers more versatile and transparent ways of calculating the same quantities.
  *
- *  Nevertheless, if you insist on using these older methods, here's a primer on the differences
- *  among the `place()` variants:
+ *  Nevertheless, if you insist on using these older methods, here's a primer on the ways the
+ *  `place()` variants differ from one-another:
  *
  *  __reference system__: The coordinate reference system in which the output position is
  *  expressed. Often it is ICRS / GCRS, or True of Date (TOD), but occasionally something else.
@@ -53,10 +53,10 @@
  *  | TOD               |                        | `place_tod()`         |
  *  | CIRS              |                        | `place_cirs()`        |
  *
- * As you can see it's a little scattered and the nomenclature is not so telling either. Thus, the
- * preferred way is to use a universal recipe and specify the (a) reference system; (b) observer
- * location; and (c) whether to calculate geometric or apparent positions explcitly. Even if it
- * means a few more lines of code. In the new frame based approach this boils down to the
+ * As you can see it's a little scattered and the nomenclature is not always telling either. Thus,
+ * the preferred way is to use a universal recipe and specify the (a) reference system; (b)
+ * observer location; and (c) whether to calculate geometric or apparent positions explcitly. Even
+ * if it means a few more lines of code. In the new frame based approach this boils down to the
  * following steps:
  *
  *  1. Specify the observer location, (ground-based, airborne, on Earth-orbit, geocentric

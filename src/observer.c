@@ -13,9 +13,9 @@
  *    a. ground-based observer sites:
  *       - GPS locations via `make_gps_observer()`
  *       - ITRF / GRS80 locations via `make_itrs_observer()`
- *       - Cartesian _x_, _y_, _z_ coordinates via `make_xyz_site()` and make_site_observer()
+ *       - Cartesian _x_, _y_, _z_ coordinates via `make_xyz_site()` and `make_site_observer()`
  *    b. airborne observers, via a location (e.g. `make_gps_site()`, `make_itrf_site()` or
- *       `make_xyz_site()`), and a ground velocity.
+ *       `make_xyz_site()`), and a ground velocity using `make_airborne_observer()`.
  *
  *  2. Near Earth Orbit (NEO) locations, via `make_observer_in_space()` specifying momentary
  *     position and velocity w.r.t. the geocenter.
@@ -25,9 +25,9 @@
  *  4. Solar-system locations via `make_solar_system_observer()`, specifying a momentary
  *     barycentric (that is w.r.t. the SSB) position and velocity vector.
  *
- * Once an observer is defined, it maybe used to set up an observing frame when paired with an
- * astronomical time of observation. Observing frames allow efficient and precise position
- * calculations from an observer's point-of-view.
+ * Once an observer is defined, it maybe used to set up an observing frame for a specific time of
+ * observation. Observing frames allow efficient and precise position calculations from an
+ * observer's point-of-view.
  *
  * This module also provides functions otherwise relating to the observer locations.
  *

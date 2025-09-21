@@ -119,9 +119,11 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
  *                      (the 'erot' parameter selects which dynamical system to use for the
  *                      output.)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
- *                      pole with respect to ITRS pole, in arcseconds.
+ *                      pole with respect to ITRS pole. If you have defined pole offsets the old
+ *                      (pre IAU2000) way, via `cel_pole()`, then use 0 here.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
- *                      pole with respect to ITRS pole, in arcseconds.
+ *                      pole with respect to ITRS pole. If you have defined pole offsets the old
+ *                      (pre IAU2000) way, via `cel_pole()`, then use 0 here.
  * @param in            Position vector, geocentric equatorial rectangular coordinates,
  *                      referred to ITRS axes (terrestrial system) in the normal case
  *                      where 'option' is NOVAS_GCRS (0).
@@ -198,7 +200,7 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *             GCRS (or whatever else) as appropriate.
  *
  * Rotates a vector from the celestial to the terrestrial system.  Specifically, it transforms
- * a vector in the GCRS, or the dynamcal CIRS or TOD frames to the ITRS (a rotating earth-fixed
+ * a vector in the GCRS, or the dynamical (CIRS or TOD) frames to the ITRS (a rotating Earth-fixed
  * system) by applying rotations for the GCRS-to-dynamical frame tie, precession, nutation, Earth
  * rotation, and polar motion.
  *
@@ -224,9 +226,11 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *                      latter if they are CIRS or TOD (the 'erot' parameter selects which
  *                      dynamical system the input is specified in.)
  * @param xp            [arcsec] Conventionally-defined X coordinate of celestial intermediate
- *                      pole with respect to ITRS pole, in arcseconds.
+ *                      pole with respect to ITRS pole. If you have defined pole offsets the old
+ *                      (pre IAU2000) way, via `cel_pole()`, then use 0 here.
  * @param yp            [arcsec] Conventionally-defined Y coordinate of celestial intermediate
- *                      pole with respect to ITRS pole, in arcseconds.
+ *                      pole with respect to ITRS pole. If you have defined pole offsets the old
+ *                      (pre IAU2000) way, via `cel_pole()`, then use 0 here.
  * @param in            Input position vector, geocentric equatorial rectangular coordinates in
  *                      the specified input coordinate system (GCRS if 'class' is
  *                      NOVAS_REFERENCE_CLASS; or else either CIRS if 'erot' is EROT_ERA, or TOD
@@ -329,7 +333,7 @@ short cel2ter(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
  *                    vector as the input.
  * @return            0 if successfor or -1 if either of the vector arguments is NULL.
  *
- * @sa j2000_to_gcrs(), gcrs_to_j2000(), tod_to_j2000(), j2000_to_tod(), j2000_to_gcrs()
+ * @sa j2000_to_gcrs(), gcrs_to_j2000()
  */
 int frame_tie(const double *in, enum novas_frametie_direction direction, double *out) {
 
@@ -663,8 +667,8 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
  *
  * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
- * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
- * use UTC-based Julian date the same way.for arcsec-level precision also.
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use
+ * UTC-based Julian date the same way.for arcsec-level precision also.
  *
  * REFERENCES:
  *  <ol>
@@ -708,8 +712,8 @@ int itrs_to_cirs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
  *
  * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
- * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
- * use UTC-based Julian date the same way.for arcsec-level precision also.
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use
+ * UTC-based Julian date the same way.for arcsec-level precision also.
  *
  * REFERENCES:
  *  <ol>
@@ -752,8 +756,8 @@ int itrs_to_tod(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nova
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
  *
  * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
- * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
- * use UTC-based Julian date the same way.for arcsec-level precision also.
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use
+ * UTC-based Julian date the same way.for arcsec-level precision also.
  *
  *
  * REFERENCES:
@@ -799,8 +803,8 @@ int cirs_to_itrs(double jd_tt_high, double jd_tt_low, double ut1_to_tt, enum nov
  * If both 'xp' and 'yp' are set to 0 no polar motion is included in the transformation.
  *
  * If extreme (sub-microarcsecond) accuracy is not required, you can use UT1-based Julian date
- * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can
- * use UTC-based Julian date the same way.for arcsec-level precision also.
+ * instead of the TT-based Julian date and set the 'ut1_to_tt' argument to 0.0. and you can use
+ * UTC-based Julian date the same way.for arcsec-level precision also.
  *
  * REFERENCES:
  *  <ol>
@@ -860,16 +864,15 @@ int j2000_to_gcrs(const double *in, double *out) {
  * Reference System (CIRS) at the given epoch to the True of Date (TOD) reference
  * system.
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian date that defines
- *                  the output epoch. Typically it does not require much precision, and
- *                  Julian dates in other time measures will be unlikely to affect the
- *                  result
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date that defines the output epoch.
+ *                  Typically it does not require much precision, and Julian dates in other time
+ *                  measures will be unlikely to affect the result
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param in        CIRS Input (x, y, z) position or velocity vector
  * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
  *                  It can be the same vector as the input.
- * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or else 20 + the error from cio_basis().
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
+ *                  accuracy is invalid, or else 20 + the error from cio_basis().
  *
  * @since 1.1
  * @author Attila Kovacs
@@ -896,17 +899,16 @@ int cirs_to_tod(double jd_tt, enum novas_accuracy accuracy, const double *in, do
  * Transforms a rectangular equatorial (x, y, z) vector from the True of Date (TOD) reference
  * system to the Celestial Intermediate Reference System (CIRS) at the given epoch to the .
  *
- * @param jd_tt     [day] Terrestrial Time (TT) based Julian date that defines
- *                  the output epoch. Typically it does not require much precision, and
- *                  Julian dates in other time measures will be unlikely to affect the
- *                  result
+ * @param jd_tt     [day] Terrestrial Time (TT) based Julian date that defines the output epoch.
+ *                  Typically it does not require much precision, and Julian dates in other time
+ *                  measures will be unlikely to affect the result
  * @param accuracy  NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
  * @param in        CIRS Input (x, y, z) position or velocity vector
  * @param[out] out  Output position or velocity 3-vector in the True of Date (TOD) frame.
  *                  It can be the same vector as the input.
- * @return          0 if successful, or -1 if either of the vector arguments is NULL
- *                  or the accuracy is invalid, or 10 + the error from cio_ra(), or
- *                  else 20 + the error from cio_basis().
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL or the
+ *                  accuracy is invalid, or 10 + the error from cio_ra(), or else 20 + the error
+ *                  from cio_basis().
  *
  * @since 1.1
  * @author Attila Kovacs
