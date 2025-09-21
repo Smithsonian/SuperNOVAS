@@ -33,14 +33,16 @@
  *                    ascension origin of date.
  * @param[out] dec    [deg] Declination in degrees, referred to specified equator of date.
  * @return            0 if successful, or -1 with errno set to EINVAL if the output pointers
- *                    are NULL or the coord_sys is invalid, otherwise &lt;0 if an error from
- *                    vector2radec(), 10--20 error is  10 + error cio_location(); or else
- *                    20 + error from cio_basis()
+ *                    are NULL, or sys and/or accuracy is invalid;
+ *                    otherwise &lt;0 if an error from vector2radec(); 10--20 error is 10 +
+ *                    error cio_location(); or else 20 + error from cio_basis()
+ *
+ * @sa gcrs_to_tod(), gcrs_to_mod(), gcrs_to_cirs(), novas_transform_sky_pos()
  */
 short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy accuracy, double rag, double decg,
         double *restrict ra, double *restrict dec) {
   static const char *fn = "gcrs2equ";
-  double jd_tdb, r, d, pos1[3], pos2[3];
+  double jd_tdb, pos[3];
 
   if(!ra || !dec)
     return novas_error(-1, EINVAL, fn, "NULL output pointer: ra=%p, dec=%p", ra, dec);
@@ -48,31 +50,20 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
   // For these calculations we can assume TDB = TT (< 2 ms difference)
   jd_tdb = jd_tt;
 
-  // Form position vector in equatorial system from input coordinates.
-  r = rag * 15.0 * DEG2RAD;
-  d = decg * DEG2RAD;
-
-  pos1[0] = cos(d) * cos(r);
-  pos1[1] = cos(d) * sin(r);
-  pos1[2] = sin(d);
+  radec2vector(rag, decg, 1.0, pos);
 
   // Transform the position vector based on the value of 'coord_sys'.
   switch(sys) {
-    // Transform the position vector from GCRS to mean equator and equinox
-    // of date.
-
-    // If requested, transform further to true equator and equinox of date.
     case NOVAS_DYNAMICAL_TOD:
-      gcrs_to_tod(jd_tdb, accuracy, pos1, pos2);
+      prop_error(fn, gcrs_to_tod(jd_tdb, accuracy, pos, pos), 0);
       break;
 
-    case NOVAS_DYNAMICAL_MOD: {
-      gcrs_to_mod(jd_tdb, pos1, pos2);
+    case NOVAS_DYNAMICAL_MOD:
+      gcrs_to_mod(jd_tdb, pos, pos);
       break;
-    }
 
     case NOVAS_DYNAMICAL_CIRS:
-      prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos1, pos2), 10);
+      prop_error(fn, gcrs_to_cirs(jd_tdb, accuracy, pos, pos), 10);
       break;
 
     default:
@@ -80,7 +71,7 @@ short gcrs2equ(double jd_tt, enum novas_dynamical_type sys, enum novas_accuracy 
   }
 
   // Convert the position vector to equatorial spherical coordinates.
-  prop_error(fn, -vector2radec(pos2, ra, dec), 0);
+  prop_error(fn, -vector2radec(pos, ra, dec), 0);
 
   return 0;
 }
@@ -156,7 +147,6 @@ short ter2cel(double jd_ut1_high, double jd_ut1_low, double ut1_to_tt, enum nova
 
   // For these calculations we can assume TDB = TT (< 2 ms difference)
   jd_tdb = jd_tt;
-
 
   switch(erot) {
     case EROT_ERA:
@@ -496,7 +486,8 @@ int mod_to_gcrs(double jd_tdb, const double *in, double *out) {
  * @param in        GCRS Input (x, y, z) position or velocity vector
  * @param[out] out  Output position or velocity 3-vector in the True equinox of Date coordinate
  *                  frame. It can be the same vector as the input.
- * @return          0 if successful, or -1 if either of the vector arguments is NULL.
+ * @return          0 if successful, or -1 if either of the vector arguments is NULL, or if
+ *                  the accuracy argument is invalid.
  *
  * @since 1.2
  * @author Attila Kovacs
