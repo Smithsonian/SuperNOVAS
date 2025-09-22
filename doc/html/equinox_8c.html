@@ -114,8 +114,6 @@ Functions</h2></td></tr>
 <tr class="separator:a8937180de2ee1545d19b8fc840f35fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab75165e2d69231da10c67de025ee05d8" id="r_ab75165e2d69231da10c67de025ee05d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab75165e2d69231da10c67de025ee05d8">e_tilt</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy, double *restrict mobl, double *restrict tobl, double *restrict ee, double *restrict dpsi, double *restrict deps)</td></tr>
 <tr class="separator:ab75165e2d69231da10c67de025ee05d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add7a260017fad0d59c943a0a8d935fcf" id="r_add7a260017fad0d59c943a0a8d935fcf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add7a260017fad0d59c943a0a8d935fcf">ee_ct</a> (double jd_tt_high, double jd_tt_low, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy)</td></tr>
-<tr class="separator:add7a260017fad0d59c943a0a8d935fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a312b5ab1a004b179d80463a07ca7da8f" id="r_a312b5ab1a004b179d80463a07ca7da8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a312b5ab1a004b179d80463a07ca7da8f">fund_args</a> (double t, <a class="el" href="structnovas__delaunay__args.html">novas_delaunay_args</a> *restrict a)</td></tr>
 <tr class="separator:a312b5ab1a004b179d80463a07ca7da8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea0e1028baf14d16d9de800e36a17086" id="r_aea0e1028baf14d16d9de800e36a17086"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea0e1028baf14d16d9de800e36a17086">ira_equinox</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#ab970f5de5d5e04874cb31865459b0b4f">novas_equinox_type</a> equinox, enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a> accuracy)</td></tr>
@@ -291,62 +289,7 @@ This function caches the results of the last calculation in case it may be re-us
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, or -1 if the accuracy argument is invalid</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="earth_8c.html#a348c4fd2a4a046e9768038075717b693">novas_gast()</a>, <a class="el" href="#a69df5671751c09a7575963b94ad1151e">nutation()</a>, <a class="el" href="#aea0e1028baf14d16d9de800e36a17086">ira_equinox()</a>, <a class="el" href="system_8c.html#a035047336b16951b8b850066e74210a9">equ2ecl()</a>, <a class="el" href="system_8c.html#a41ca0cfd79ad07c9e857ba02fa94928e">ecl2equ()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="#add7a260017fad0d59c943a0a8d935fcf">ee_ct()</a>, <a class="el" href="#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>.</p>
-
-</div>
-</div>
-<a id="add7a260017fad0d59c943a0a8d935fcf" name="add7a260017fad0d59c943a0a8d935fcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add7a260017fad0d59c943a0a8d935fcf">&#9670;&#160;</a></span>ee_ct()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double ee_ct </td>
-          <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_high</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>jd_tt_low</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">enum <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56">novas_accuracy</a></td>          <td class="paramname"><span class="paramname"><em>accuracy</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000007">Deprecated</a></b></dt><dd>(<em>for internal use</em>) There is no good reason why this function should be exposed to users of the library. It is intended only for use by <code><a class="el" href="#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a></code> internally.</dd></dl>
-<p>Computes the "complementary terms" of (i.e. the non-polynomial contribution to) the equation of the equinoxes. The input Julian date can be split into high and low order parts for improved accuracy. Typically, the split is into integer and fractiona parts. If the precision of a single part is sufficient, you may set the low order part to 0.</p>
-<p>The series used in this function was derived from the first reference. This same series was also adopted for use in the IAU's Standards of Fundamental Astronomy (SOFA) software (i.e., subroutine <code>eect00.for</code> and function <code>eect00.c</code>).</p>
-<p>The low-accuracy series used in this function is a simple implementation derived from the first reference, in which terms smaller than 2 microarcseconds have been omitted.</p>
-<p>NOTES: </p><ol>
-<li>
-This function caches the results of the last calculation in case it may be re-used at no extra computational cost for the next call. </li>
-</ol>
-<p>REFERENCES: </p><ol>
-<li>
-<p class="startli">Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. &amp; Astrophys. 406, p. 1135-1149. Table 3.</p>
-<p class="endli"></p>
-</li>
-<li>
-IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.<br  />
- (Table 5.2e presented in the printed publication is a truncated series. The full series, which is used in NOVAS, is available on the IERS Conventions Center website: <a href="https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt">https://iers-conventions.obspm.fr/content/chapter5/additional_info/tab5.2e.txt</a>)  </li>
-</ol>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">jd_tt_high</td><td>[day] High-order part of TT based Julian date. </td></tr>
-    <tr><td class="paramname">jd_tt_low</td><td>[day] Low-order part of TT based Julian date. </td></tr>
-    <tr><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>[rad] Complementary terms, in radians.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ab75165e2d69231da10c67de025ee05d8">e_tilt()</a> </dd></dl>
-
-<p class="reference">References <a class="el" href="#ad1de5b481e41cf193c199bd0dc5084bd">accum_prec()</a>, <a class="el" href="#a312b5ab1a004b179d80463a07ca7da8f">fund_args()</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045adc941f5a3613952d6d6102281e70e5c0">NOVAS_EARTH</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045a40678cd248bd2edca8f59ddfee20ab74">NOVAS_MERCURY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="planets_8c.html#aacc6a0daf29b8bdc18f46647a94694d3">planet_lon()</a>.</p>
+<p class="reference">References <a class="el" href="#af182ee8cc4239f581f746aa974827d61">mean_obliq()</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="el" href="novas_8h.html#a3cba2735c32163fab062b1a904a83b56a2047c8bae25010adb60d895a83079846">NOVAS_REDUCED_ACCURACY</a>, and <a class="el" href="nutation_8c.html#a6e9ced7b0aec544ad7b057b58f777ec4">nutation_angles()</a>.</p>
 
 </div>
 </div>

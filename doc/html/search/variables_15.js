@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['where_0',['where',['../structobserver.html#a11f2eb69df64b674d938b34bbb842ab1',1,'observer']]]
+  ['z_0',['z',['../structnovas__observable.html#ab3e6ed577a7c669c19de1f9c1b46c872',1,'novas_observable']]]
 ];

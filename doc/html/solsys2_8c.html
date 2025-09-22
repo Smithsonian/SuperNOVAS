@@ -110,11 +110,11 @@ $(function(){initNavTree('solsys2_8c.html',''); initResizable(true); });
 Functions</h2></td></tr>
 <tr class="memitem:a14752a69e14c399d5ee82e83f22acf68" id="r_a14752a69e14c399d5ee82e83f22acf68"><td class="memItemLeft" align="right" valign="top"><a id="a14752a69e14c399d5ee82e83f22acf68" name="a14752a69e14c399d5ee82e83f22acf68"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>jplihp_</b> (const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg)</td></tr>
-<tr class="memdesc:a14752a69e14c399d5ee82e83f22acf68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the FORTRAN subroutine <code>jplihp</code> in jplint.f. <br /></td></tr>
+<tr class="memdesc:a14752a69e14c399d5ee82e83f22acf68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the FORTRAN subroutine <code>jplihp()</code> e.g. in <code>jplint.f</code> <br /></td></tr>
 <tr class="separator:a14752a69e14c399d5ee82e83f22acf68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab53652c0e203b166427464ee1691c236" id="r_ab53652c0e203b166427464ee1691c236"><td class="memItemLeft" align="right" valign="top"><a id="ab53652c0e203b166427464ee1691c236" name="ab53652c0e203b166427464ee1691c236"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>jplint_</b> (const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg)</td></tr>
-<tr class="memdesc:ab53652c0e203b166427464ee1691c236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the FORTRAN subroutine <code>jplint</code> in jplint.f. <br /></td></tr>
+<tr class="memdesc:ab53652c0e203b166427464ee1691c236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the FORTRAN subroutine <code>jplint()</code> e.g. in <code>jplint.f</code> <br /></td></tr>
 <tr class="separator:ab53652c0e203b166427464ee1691c236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1300b6559a08ef90ae9b9d8d33a22220" id="r_a1300b6559a08ef90ae9b9d8d33a22220"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint</a> (double jd_tdb, enum <a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> body, enum <a class="el" href="novas_8h.html#a208120c5fa3e12853eb37cb99d3e27be">novas_origin</a> origin, double *restrict position, double *restrict velocity)</td></tr>
 <tr class="separator:a1300b6559a08ef90ae9b9d8d33a22220"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,7 +127,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>jplint_</b> (const do
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs</dd></dl>
-<p>SuperNOVAS major planet ephemeris lookup wrapper for JPL ephemerides accessed over <code>pleph()</code>. It is a top-level wrapper, with an intermediate Fortran routine, <a class="el" href="#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a> providing the interface between the NOVAS planet calculator functions here and the pleph() call of the JPL library. (The sample source code of jplint.f is included in the distribution).</p>
+<p>SuperNOVAS major planet ephemeris lookup wrapper for JPL ephemerides accessed over <code>pleph()</code>. It is a top-level wrapper, with an intermediate Fortran routine, <a class="el" href="#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint() e.g. in jplint.f">jplint_()</a> providing the interface between the NOVAS planet calculator functions here and the pleph() call of the JPL library. (The sample source code of jplint.f is included in the distribution).</p>
 <p>For supporting JPL ephemerides more generally, including for satellites, asteroids, and comets, you are probably better off using <a class="el" href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider()</a>, and provide an interface, e.g. to the SPICE library, via <a class="el" href="solarsystem_8h.html#aebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a> instead, which you can then activate at runtime with <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>.</p>
 <p>Based on the NOVAS C Edition, Version 3.1:</p>
 <p>U. S. Naval Observatory<br  />
@@ -189,7 +189,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else 1 if the 'body' or 'origin' argument is invalid, or else 2 if the '<a class="el" href="#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a>' call failed.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else 1 if the 'body' or 'origin' argument is invalid, or else 2 if the '<a class="el" href="#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint() e.g. in jplint.f">jplint_()</a>' call failed.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp()</a>, <a class="el" href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider()</a>, <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>
 <a class="el" href="#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></dd></dl>
@@ -295,7 +295,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000023">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000026">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
 <p>A default implementation for regular (reduced) precision handling of major planets, Sun, Moon and the Solar-system barycenter. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into with the library as a default. Applications can define their own preferred implementations at runtime via <a class="el" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>.</p>
 <p>Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums).</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -309,15 +309,9 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>, <a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a>, <a class="el" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
 <dd>
-<a class="el" href="solarsystem_8h.html#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> </dd>
-<dd>
-<a class="el" href="solarsystem_8h.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint()</a>.</p>
 
@@ -356,7 +350,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000024">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></code> instead to specify what function should be used to calculate high-precision ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000027">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></code> instead to specify what function should be used to calculate high-precision ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
 <p>A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter (and other barycenters). See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default. Applications can define their own preferred implementations at runtime via <a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
 <p>Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums).</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -370,13 +364,9 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), or some other error code (NOVAS C was not very consistent here...</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solarsystem_8h.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a>, <a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
 <dd>
-<a class="el" href="solarsystem_8h.html#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16">grav_undo_planets()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp()</a>.</p>
 

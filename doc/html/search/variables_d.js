@@ -1,13 +1,11 @@
 var searchData=
 [
-  ['n_0',['n',['../structnovas__orbital.html#abe63e991a7bf5d666068b15c9064428d',1,'novas_orbital']]],
-  ['name_1',['name',['../structobject.html#ae73ef5f04701dc9d4e7cb1b1c3fa9c12',1,'object']]],
-  ['near_5fearth_2',['near_earth',['../structobserver.html#a1ab1241c3bb4d3afc4710e02e948c0cb',1,'observer']]],
-  ['node_5fperiod_3',['node_period',['../structnovas__orbital.html#abc96d50a65bae0b26750df2d93492fea',1,'novas_orbital']]],
-  ['novas_5finv_5fmax_5fiter_4',['novas_inv_max_iter',['../util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0',1,'util.c']]],
-  ['np_5',['NP',['../eph__manager_8c.html#aa4ad9304a91f586963d80cf4805b9d76',1,'eph_manager.c']]],
-  ['nrl_6',['NRL',['../eph__manager_8c.html#a1b3f642c5c66eb202b565cbd2ec70194',1,'eph_manager.c']]],
-  ['number_7',['number',['../structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74',1,'object']]],
-  ['nutation_8',['nutation',['../structnovas__frame.html#af75d534436e4c2442aae1fbb3572a372',1,'novas_frame']]],
-  ['nv_9',['NV',['../eph__manager_8c.html#a4f5b18c8499bbc908974749c84eb9ece',1,'eph_manager.c']]]
+  ['obl_0',['obl',['../structnovas__orbital__system.html#ae5014f0e96e7c220c55eb82d11c4133a',1,'novas_orbital_system']]],
+  ['obs_5fpos_1',['obs_pos',['../structnovas__frame.html#ac2558d2b29171b29bad2599c75d3cc6c',1,'novas_frame']]],
+  ['obs_5fvel_2',['obs_vel',['../structnovas__frame.html#a66f1e86da27c96c1c920dce442ce78c8',1,'novas_frame']]],
+  ['observer_3',['observer',['../structnovas__frame.html#a70a5703b12da2ee4c801250fdd5708d7',1,'novas_frame']]],
+  ['omega_4',['Omega',['../structnovas__delaunay__args.html#a1b5bf6735b7465aec5c931281d240737',1,'novas_delaunay_args::Omega'],['../structnovas__orbital__system.html#a1b5bf6735b7465aec5c931281d240737',1,'novas_orbital_system::Omega'],['../structnovas__orbital.html#a1b5bf6735b7465aec5c931281d240737',1,'novas_orbital::Omega']]],
+  ['omega_5',['omega',['../structnovas__orbital.html#a98ecc32b7ac0cf654d9f883cbe5cab35',1,'novas_orbital']]],
+  ['on_5fsurf_6',['on_surf',['../structobserver.html#a45fe4eb871c346c1b8315c4c6a41e96d',1,'observer']]],
+  ['orbit_7',['orbit',['../structobject.html#a43225af0345622f8c049032d75a1a3da',1,'object']]]
 ];

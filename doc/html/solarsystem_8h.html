@@ -219,17 +219,7 @@ Functions</h2></td></tr>
  Astronomical Applications Dept.<br  />
  Washington, DC<br  />
  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">http://www.usno.navy.mil/USNO/astronomical-applications</a></p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-calceph_8c.html">solsys-calceph.c</a> </dd>
-<dd>
-<a class="el" href="solsys-cspice_8c.html">solsys-cspice.c</a> </dd>
-<dd>
-<a class="el" href="solsys1_8c.html">solsys1.c</a> </dd>
-<dd>
-<a class="el" href="solsys2_8c.html">solsys2.c</a> </dd>
-<dd>
-<a class="el" href="solsys3_8c.html">solsys3.c</a> </dd>
-<dd>
-<a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys-calceph_8c.html">solsys-calceph.c</a>, <a class="el" href="solsys-cspice_8c.html">solsys-cspice.c</a>, <a class="el" href="solsys1_8c.html">solsys1.c</a>, <a class="el" href="solsys2_8c.html">solsys2.c</a>, <a class="el" href="solsys3_8c.html">solsys3.c</a>, <a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a9a736e59fc9bfdc92b7245aa37d529ee" name="a9a736e59fc9bfdc92b7245aa37d529ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a736e59fc9bfdc92b7245aa37d529ee">&#9670;&#160;</a></span>NOVAS_ID_TYPES</h2>
@@ -276,13 +266,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if any of the pointer arguments are NULL, or some non-zero value if the was an error s.t. the position and velocity vector should not be used.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a>, <a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a> </dd>
 <dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
-<dd>
-<a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a> </dd>
-<dd>
-<a class="el" href="solsys-ephem_8c.html">solsys-ephem.c</a></dd></dl>
+<a class="el" href="target_8c.html#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -312,11 +298,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a>, novas_solarsystem_hp_func </dd>
 <dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
-<dd>
-novas_solarsystem_hp_func</dd></dl>
+<a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a></dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -346,11 +330,9 @@ novas_solarsystem_hp_func</dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>, novas_solarsystem_func, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
 <dd>
-novas_solarsystem_func </dd>
-<dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a></dd></dl>
+<a class="el" href="target_8c.html#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a>, <a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16">grav_undo_planets()</a> </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 
@@ -369,11 +351,7 @@ novas_solarsystem_func </dd>
       </table>
 </div><div class="memdoc">
 <p>Solar-system body IDs to use as <a class="el" href="structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74" title="enum novas_planet, or minor planet ID (e.g. NAIF), or star catalog ID.">object.number</a> with NOVAS_EPHEM_OBJECT types. JPL ephemerides use <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/naif_ids.html">NAIF IDs</a> to identify objects in the Solar-system, which is thus the most widely adopted convention for numbering Solar-system bodies. But other numbering systems also exists, for example the CALCEPH library uses its own convention for the numbering of asteroids.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structobject.html">object</a> </dd>
-<dd>
-<a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a> </dd>
-<dd>
-<a class="el" href="#a9a736e59fc9bfdc92b7245aa37d529ee">NOVAS_ID_TYPES</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structobject.html">object</a>, <a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a>, <a class="el" href="#a9a736e59fc9bfdc92b7245aa37d529ee">NOVAS_ID_TYPES</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <table class="fieldtable">
@@ -1760,7 +1738,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else 1 if the 'body' or 'origin' argument is invalid, or else 2 if the '<a class="el" href="solsys2_8c.html#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint in jplint.f.">jplint_()</a>' call failed.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful, or else 1 if the 'body' or 'origin' argument is invalid, or else 2 if the '<a class="el" href="solsys2_8c.html#ab53652c0e203b166427464ee1691c236" title="Function prototype for the FORTRAN subroutine jplint() e.g. in jplint.f">jplint_()</a>' call failed.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="solsys2_8c.html#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp()</a>, <a class="el" href="solsys-ephem_8c.html#a9d0f54c0ab00827768e61a353488b0ee">planet_ephem_provider()</a>, <a class="el" href="plugin_8c.html#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
 <dd>
 <a class="el" href="solsys2_8c.html#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a></dd></dl>
@@ -1861,7 +1839,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000022">Deprecated</a></b></dt><dd>This old ephemeris reader is prone to memory leaks, and lacks some useful functionality. Users are strongly encouraged to use the new <code><a class="el" href="#aebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a></code> / <code>novas_set_ephem_provider()</code> instead, for dynamically configured implementations at runtime. This prototype is provided only to extend support for legacy NOVAS applications only, where an inplementation had to be linked always.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000025">Deprecated</a></b></dt><dd>This old ephemeris reader is prone to memory leaks, and lacks some useful functionality. Users are strongly encouraged to use the new <code><a class="el" href="#aebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a></code> / <code>novas_set_ephem_provider()</code> instead, for dynamically configured implementations at runtime. This prototype is provided only to extend support for legacy NOVAS applications only, where an inplementation had to be linked always.</dd></dl>
 <p>Provides a default ephemeris implementation to handle position and velocity calculations for minor planets, which are not handled by the <a class="el" href="#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> type calls. The library does not provide a default implementation, but users can provide their own, either as a default statically compiled <a class="el" href="#aa5f22db2fa785675372d45b88f2f1736">readeph()</a> implementation, or else a dynamically defined one via ephemeris_set_reader().</p>
 <p>You can set the built-in implementation for the library at build time by setting the DEFAULT_READEPH variable in the <code>config.mk</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1874,13 +1852,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>[AU, AU/day] A newly allocated 6-vector in rectangular equatorial coordinates, containing the heliocentric position coordinates in AU, followed by hte heliocentric velocity components in AU/day. The caller is responsible for calling free() on the returned value when it is no longer needed.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a6097083c438a8d1872c2e00a66360030">set_ephem_provider()</a> </dd>
-<dd>
-<a class="el" href="#aebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
-<dd>
-<a class="el" href="novas_8h.html#a1eecb357eeea0de4759e9c8d55af238fa58f22833170aee0959154d3a7be6c269">NOVAS_EPHEM_OBJECT</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aebb3d71006e8d93de242df61510374ad">novas_ephem_provider</a> </dd></dl>
 
 </div>
 </div>
@@ -1898,7 +1870,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets the function to use for obtaining position / velocity information for minor planets, or sattelites.</p>
+<p>Sets the function to use for obtaining position / velocity information for minor planets, or satellites.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">func</td><td>new function to use for accessing ephemeris data for minor planets or satellites. </td></tr>
@@ -2005,7 +1977,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000023">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000026">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a></code> instead to specify what function should be used to calculate ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
 <p>A default implementation for regular (reduced) precision handling of major planets, Sun, Moon and the Solar-system barycenter. See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into with the library as a default. Applications can define their own preferred implementations at runtime via <a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>.</p>
 <p>Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums).</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2019,15 +1991,9 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), 1 if the input Julian date ('tjd') is out of range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be produced for other reasons.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="novas_8h.html#a219df36b21dc4476656e708d14d08045">novas_planet</a>, <a class="el" href="#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a>, <a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
 <dd>
-<a class="el" href="#a17846f3fafcce208dbbca1384e3a7fb0">solarsystem_hp()</a> </dd>
-<dd>
-<a class="el" href="#a9904c454bc7148b42d0f927b82ea3973">set_planet_provider()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="solsys1_8c.html#a841f04bf04e6dd8a5ae96f8ea729090d">planet_eph_manager()</a>, and <a class="el" href="solsys2_8c.html#a1300b6559a08ef90ae9b9d8d33a22220">planet_jplint()</a>.</p>
 
@@ -2066,7 +2032,7 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000024">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></code> instead to specify what function should be used to calculate high-precision ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000027">Deprecated</a></b></dt><dd>(<em>legacy function</em>) Use <code><a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a></code> instead to specify what function should be used to calculate high-precision ephemeris positions for major planets. This function is provided to extend support for legacy NOVAS C applications only. In NOVAS, the function had to be user defined, either by linking against a <code>solsys*.c</code> module, or by providing a custom user implementation.</dd></dl>
 <p>A default implementation for high precision handling of major planets, Sun, Moon and the Solar-system barycenter (and other barycenters). See DEFAULT_SOLSYS in Makefile to choose the implementation that is built into the library as a default. Applications can define their own preferred implementations at runtime via <a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>.</p>
 <p>Since this is a function that may be provided by existing custom user implementations, we keep the original argument types for compatibility, hence 'short' instead of the more informative enums).</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2080,13 +2046,9 @@ Kaplan, G. H. "NOVAS: Naval Observatory Vector Astrometry
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 if successful, -1 if there is a required function is not provided (errno set to ENOSYS), or some other error code (NOVAS C was not very consistent here...</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a37c25dbc2683dc9e3b1d187e13f68330">solarsystem()</a>, <a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a>, <a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd>
 <dd>
-<a class="el" href="#a418f45a11ce7f92ba0ef817558415640">set_planet_provider_hp()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a> </dd>
-<dd>
-<a class="el" href="place_8c.html#a713982e1f2bae0a72b39d03007f00d23">ephemeris()</a> </dd></dl>
+<a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a>, <a class="el" href="frames_8c.html#ac6652ee3257621080dac342313d0a0a7">novas_geom_posvel()</a>, <a class="el" href="grav_8c.html#ae36bc31e1dad8a68f94f7a6414f0519f">grav_planets()</a>, <a class="el" href="grav_8c.html#a1b107a24b9fadc79cc5df8c6f5505d16">grav_undo_planets()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="solsys1_8c.html#a8b471fd187aebc33b1f9fd4c2ff60c90">planet_eph_manager_hp()</a>, and <a class="el" href="solsys2_8c.html#a2fe8cd1a87f96611f78edc36b4960d63">planet_jplint_hp()</a>.</p>
 

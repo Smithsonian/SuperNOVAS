@@ -19,6 +19,5 @@ var searchData=
   ['local_5fstar_16',['local_star',['../place_8c.html#acd56c41e811a002d6280b3b315730fbd',1,'local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c'],['../novas_8h.html#acd56c41e811a002d6280b3b315730fbd',1,'local_star(double jd_tt, double ut1_to_tt, const cat_entry *restrict star, const on_surface *restrict position, enum novas_accuracy accuracy, double *restrict ra, double *restrict dec):&#160;place.c']]],
   ['location_17',['location',['../index.html#autotoc_md76',1,'Calculate azimuth and elevation angles at the observing location'],['../index.html#autotoc_md72',1,'Specify the observer location']]],
   ['lon_18',['lon',['../structnovas__observable.html#aa96391e04b5977c50b96d77bea86a01d',1,'novas_observable']]],
-  ['longitude_19',['longitude',['../structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6',1,'on_surface']]],
-  ['lpt_20',['LPT',['../eph__manager_8c.html#ad0644039a2a0b1fcf47bf8f97af4d537',1,'eph_manager.c']]]
+  ['longitude_19',['longitude',['../structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6',1,'on_surface']]]
 ];

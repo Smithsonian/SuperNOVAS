@@ -47,7 +47,6 @@ var searchData=
   ['tt2tdb_5ffp_44',['tt2tdb_fp',['../timescale_8c.html#ad301a9c74bfbdb8b55513cd005787b22',1,'tt2tdb_fp(double jd_tt, double limit):&#160;timescale.c'],['../novas_8h.html#ad301a9c74bfbdb8b55513cd005787b22',1,'tt2tdb_fp(double jd_tt, double limit):&#160;timescale.c']]],
   ['tt2tdb_5fhp_45',['tt2tdb_hp',['../timescale_8c.html#a5709058076f4aea4eeaeeb000342cd94',1,'tt2tdb_hp(double jd_tt):&#160;timescale.c'],['../novas_8h.html#a5709058076f4aea4eeaeeb000342cd94',1,'tt2tdb_hp(double jd_tt):&#160;timescale.c']]],
   ['twopi_46',['TWOPI',['../novas_8h.html#a4912c64aec0c943b7985db6cb61ff83a',1,'novas.h']]],
-  ['twot_47',['TWOT',['../eph__manager_8c.html#ad741a4fdb6d243507e3be0028cdeea9e',1,'eph_manager.c']]],
-  ['type_48',['type',['../structnovas__orbital__system.html#adaabf923501a3a0a47a8958b6a33c6b3',1,'novas_orbital_system::type'],['../structobject.html#a2cc80aad5c0303449e2412b122504a10',1,'object::type']]],
-  ['type_20objects_49',['Planets and/or ephemeris type objects',['../index.html#autotoc_md80',1,'']]]
+  ['type_47',['type',['../structnovas__orbital__system.html#adaabf923501a3a0a47a8958b6a33c6b3',1,'novas_orbital_system::type'],['../structobject.html#a2cc80aad5c0303449e2412b122504a10',1,'object::type']]],
+  ['type_20objects_48',['Planets and/or ephemeris type objects',['../index.html#autotoc_md80',1,'']]]
 ];

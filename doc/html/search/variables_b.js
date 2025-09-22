@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['l_0',['l',['../structnovas__delaunay__args.html#a59e80b8ba32c12c6d0a868f17a19ae48',1,'novas_delaunay_args']]],
-  ['l1_1',['l1',['../structnovas__delaunay__args.html#ad7a541093aca44890413459c6248db6c',1,'novas_delaunay_args']]],
-  ['lat_2',['lat',['../structnovas__observable.html#a7972334534f68166121a6e51b0aac2d6',1,'novas_observable']]],
-  ['latitude_3',['latitude',['../structon__surface.html#a76714bdbc5c536fa77dfb14533ff82a9',1,'on_surface']]],
-  ['lon_4',['lon',['../structnovas__observable.html#aa96391e04b5977c50b96d77bea86a01d',1,'novas_observable']]],
-  ['longitude_5',['longitude',['../structon__surface.html#ac155e35fdeebafc89723a51520fb9fe6',1,'on_surface']]],
-  ['lpt_6',['LPT',['../eph__manager_8c.html#ad0644039a2a0b1fcf47bf8f97af4d537',1,'eph_manager.c']]]
+  ['m_0',['M',['../structnovas__matrix.html#ac842f2eec8c8b880e2aca8792d63359b',1,'novas_matrix']]],
+  ['m0_1',['M0',['../structnovas__orbital.html#adc4cda6fcbff8922621b0a08f911957d',1,'novas_orbital']]],
+  ['mask_2',['mask',['../structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd',1,'novas_planet_bundle']]],
+  ['matrix_3',['matrix',['../structnovas__transform.html#ac528fe7349274fecff6a0c7742414308',1,'novas_transform']]],
+  ['mobl_4',['mobl',['../structnovas__frame.html#adcbb032bae5aa01bff2501f40527943e',1,'novas_frame']]]
 ];

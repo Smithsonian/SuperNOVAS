@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['ut1_5fto_5ftt_0',['ut1_to_tt',['../structnovas__timespec.html#a2b381954218c16fad4ae585fb90fddbe',1,'novas_timespec']]]
+  ['v_5fobs_0',['v_obs',['../structnovas__frame.html#a52e812c05f108858a4459d937a2115a4',1,'novas_frame']]],
+  ['vel_1',['vel',['../structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035',1,'novas_planet_bundle']]]
 ];

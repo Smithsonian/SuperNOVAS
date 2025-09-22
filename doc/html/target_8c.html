@@ -246,7 +246,7 @@ Functions</h2></td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pm_ra</td><td>[mas/yr] Proper motion in right ascension. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">pm_dec</td><td>[mas/yr] Proper motion in declination. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">parallax</td><td>[mas] Parallax. </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">rad_vel</td><td>[km/s] Radial velocity relative to the Solar-System Barycenter (SSB). To convert velocities defined against the Local Standard of Rest (LSR), you may use <code><a class="el" href="spectral_8c.html#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel()</a></code> to convert appropriately. Or, to convert from a redshift value, you might use <code><a class="el" href="spectral_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1" title="==========================================================================">novas_z2v()</a></code>. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">rad_vel</td><td>[km/s] Radial velocity relative to the Solar-System Barycenter (SSB). To convert velocities defined against the Local Standard of Rest (LSR), you may use <code><a class="el" href="spectral_8c.html#aad80bf94be2efc36c340994829df8207">novas_lsr_to_ssb_vel()</a></code> to convert appropriately. Or, to convert from a redshift value, you might use <code><a class="el" href="spectral_8c.html#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a></code>. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">source</td><td>Pointer to data structure to populate. </td></tr>
   </table>
   </dd>
@@ -458,7 +458,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Deprecated</a></b></dt><dd>More functionality and more readable, code results from using one of the specific alternatives: <code><a class="el" href="#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a></code>, <code><a class="el" href="#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a></code>, <code><a class="el" href="#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a></code>, <code><a class="el" href="#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a></code>, or <code><a class="el" href="#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a></code>.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated</a></b></dt><dd>More functionality and more readable, code results from using one of the specific alternatives: <code><a class="el" href="#ab9b7a622486f2904615ceed1ba94cd8f">make_cat_object()</a></code>, <code><a class="el" href="#ae579a49d84696a913fd0d9f348bb5b11">make_redshifted_object()</a></code>, <code><a class="el" href="#a4c7846be95299769f4d0377bf127bcf5">make_planet()</a></code>, <code><a class="el" href="#aa22303f98df2d63edf6d8452ff3a43b2">make_ephem_object()</a></code>, or <code><a class="el" href="#a3c5e215babeeba078ca7b3e9be42e555">make_orbital_object()</a></code>.</dd></dl>
 <p>Populates an object data structure using the parameters provided. By default (for compatibility with NOVAS C) source names are converted to upper-case internally. You can however enable case-sensitive processing by calling <a class="el" href="#a8f832afe92680a11c3489aaa224ac2e2">novas_case_sensitive()</a> before.</p>
 <p>NOTES: </p><ol>
 <li>

@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['r_5fhat_0',['r_hat',['../structsky__pos.html#a5fd669be4d5224aa192afa368a6e3173',1,'sky_pos']]],
-  ['ra_1',['ra',['../structcat__entry.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'cat_entry::ra'],['../structsky__pos.html#a713a0c71a86d92fa6892fdb2cb7c9422',1,'sky_pos::ra']]],
-  ['ra_5fcio_2',['ra_cio',['../structra__of__cio.html#aba4253d16ca8c644b29da1e727d787aa',1,'ra_of_cio']]],
-  ['radialvelocity_3',['radialvelocity',['../structcat__entry.html#aa2b5e5ca3a5df1765b49a6c6b110a36a',1,'cat_entry']]],
-  ['rate_4',['rate',['../structnovas__track.html#a08de80b2751625d418f907fe7ce0c2e3',1,'novas_track']]],
-  ['record_5flength_5',['RECORD_LENGTH',['../eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300',1,'eph_manager.c']]],
-  ['rv_6',['rv',['../structsky__pos.html#ad9e8b5daff39072d109a6f4f1fa61f55',1,'sky_pos']]]
+  ['sc_5fpos_0',['sc_pos',['../structin__space.html#abc3736b39d63bfabf73a25e3b03b91d8',1,'in_space']]],
+  ['sc_5fvel_1',['sc_vel',['../structin__space.html#a9615dabeef0c31f47546c8083b768257',1,'in_space']]],
+  ['star_2',['star',['../structobject.html#a499924f8241c3fbb3bf34c5e16f1c7de',1,'object']]],
+  ['starname_3',['starname',['../structcat__entry.html#ad26c9b08b1028d2a7f35c447841022b1',1,'cat_entry']]],
+  ['starnumber_4',['starnumber',['../structcat__entry.html#a2cc0369c1acae73cf6f3e06f1a8ddab8',1,'cat_entry']]],
+  ['state_5',['state',['../structnovas__frame.html#ac8ddcc571efb6061ddf9dfbcfffb4cd1',1,'novas_frame']]],
+  ['sun_5fpos_6',['sun_pos',['../structnovas__frame.html#a3d3fc00c5477b8f7a9b6593a748949d0',1,'novas_frame']]],
+  ['sun_5fvel_7',['sun_vel',['../structnovas__frame.html#ae949db92ce7c56e4b5ada1b8f80002d3',1,'novas_frame']]],
+  ['system_8',['system',['../structnovas__orbital.html#a7ccd081fe6b1424bd644317068578775',1,'novas_orbital']]]
 ];

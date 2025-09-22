@@ -5,9 +5,8 @@ var searchData=
   ['benchmarks_2',['Representative benchmarks',['../index.html#autotoc_md105',1,'']]],
   ['beta_3',['beta',['../structnovas__frame.html#a9424343761f8c4f4c1afe8f5b6bf471b',1,'novas_frame']]],
   ['better_20way_4',['Legacy modules: a better way',['../index.html#autotoc_md65',1,'']]],
-  ['buffer_5',['BUFFER',['../eph__manager_8c.html#af1da4b8e59393e73ef0711920e920753',1,'eph_manager.c']]],
-  ['build_20supernovas_20using_20cmake_6',['Build SuperNOVAS using CMake',['../index.html#autotoc_md58',1,'']]],
-  ['build_20supernovas_20using_20gnu_20make_7',['Build SuperNOVAS using GNU make',['../index.html#autotoc_md57',1,'']]],
-  ['building_20and_20installation_8',['Building and installation',['../index.html#autotoc_md56',1,'']]],
-  ['building_20your_20application_20with_20supernovas_9',['Building your application with SuperNOVAS',['../index.html#autotoc_md60',1,'']]]
+  ['build_20supernovas_20using_20cmake_5',['Build SuperNOVAS using CMake',['../index.html#autotoc_md58',1,'']]],
+  ['build_20supernovas_20using_20gnu_20make_6',['Build SuperNOVAS using GNU make',['../index.html#autotoc_md57',1,'']]],
+  ['building_20and_20installation_7',['Building and installation',['../index.html#autotoc_md56',1,'']]],
+  ['building_20your_20application_20with_20supernovas_8',['Building your application with SuperNOVAS',['../index.html#autotoc_md60',1,'']]]
 ];

@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['m_0',['M',['../structnovas__matrix.html#ac842f2eec8c8b880e2aca8792d63359b',1,'novas_matrix']]],
-  ['m0_1',['M0',['../structnovas__orbital.html#adc4cda6fcbff8922621b0a08f911957d',1,'novas_orbital']]],
-  ['mask_2',['mask',['../structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd',1,'novas_planet_bundle']]],
-  ['matrix_3',['matrix',['../structnovas__transform.html#ac528fe7349274fecff6a0c7742414308',1,'novas_transform']]],
-  ['mobl_4',['mobl',['../structnovas__frame.html#adcbb032bae5aa01bff2501f40527943e',1,'novas_frame']]]
+  ['n_0',['n',['../structnovas__orbital.html#abe63e991a7bf5d666068b15c9064428d',1,'novas_orbital']]],
+  ['name_1',['name',['../structobject.html#ae73ef5f04701dc9d4e7cb1b1c3fa9c12',1,'object']]],
+  ['near_5fearth_2',['near_earth',['../structobserver.html#a1ab1241c3bb4d3afc4710e02e948c0cb',1,'observer']]],
+  ['node_5fperiod_3',['node_period',['../structnovas__orbital.html#abc96d50a65bae0b26750df2d93492fea',1,'novas_orbital']]],
+  ['novas_5finv_5fmax_5fiter_4',['novas_inv_max_iter',['../util_8c.html#ad2b933ce2f58e8b04bbe76ffbff99eb0',1,'util.c']]],
+  ['number_5',['number',['../structobject.html#a7d578acc2a3e88ef2435fe0e88d01a74',1,'object']]],
+  ['nutation_6',['nutation',['../structnovas__frame.html#af75d534436e4c2442aae1fbb3572a372',1,'novas_frame']]]
 ];

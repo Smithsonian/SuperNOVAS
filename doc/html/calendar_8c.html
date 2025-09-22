@@ -159,10 +159,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function will compute a broken down date on the astronomical calendar for given the Julian day input. Input Julian day can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
+<p>This function will compute a broken down date on the astronomical calendar given the Julian day input. Input Julian day can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output time value will have same basis.</p>
 <p>NOTES: </p><ol>
 <li>
-<p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Prior to it this function returns Julian/Roman calendar dates, e.g. the day before the reform is 1582 October 4. You can use <code><a class="el" href="#a8ed2fb55bcf86d9f1f434a2f832356a2">novas_jd_to_date()</a></code> instead to convert JD days to dates in specific calendars.</p>
+<p class="startli">The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5 October of the previously used Julian calendar). Prior to it this function returns Julian / Roman calendar dates, e.g. the day before the reform is 1582 October 4. You can use <code><a class="el" href="#a8ed2fb55bcf86d9f1f434a2f832356a2">novas_jd_to_date()</a></code> instead to convert JD days to dates in specific calendars.</p>
 <p class="endli"></p>
 </li>
 <li>
@@ -170,7 +170,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
 </ol>
 <p>REFERENCES: </p><ol>
 <li>
-Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657.15 October 1582 </li>
+Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 1968, p. 657. </li>
 </ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -178,7 +178,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
     <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Astronomical calendar year. It may be NULL if not required. B.C. years are represented as &lt;=0, i.e. 1 B.C. as 0 and <em>X</em> B.C. as (1 - <em>X</em>) </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Astronomical calendar month [1:12]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required. </td></tr>
   </table>
   </dd>
 </dl>
@@ -245,7 +245,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian date for the input calendar date, ot NAN if month or day components are out of range.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[day] the fractional Julian date for the input calendar date, ot NAN if the month or day components are out of range.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a54eee84c46900c80ca9966857c217cc8">novas_jd_from_date()</a> </dd>
 <dd>
 <a class="el" href="timescale_8c.html#ab7611704bab9ce717744a8b5575c5378">get_utc_to_tt()</a>, <a class="el" href="timescale_8c.html#a4d7470ca705efa1953e8b4beab77c6b6">get_ut1_to_tt()</a>, <a class="el" href="timescale_8c.html#a129acca41760da486e1179c93cb9e86d">tt2tdb()</a> </dd></dl>
@@ -359,7 +359,9 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
       </table>
 </div><div class="memdoc">
 <p>Returns the Julian day for a given calendar date. Input time value can be based on any astronomical time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.</p>
-<p>The input date is the conventional calendar date, affected by the Gregorian calendar reform of 1582. Thus, the input date is for the Gregorian calendar for dates starting 15 October 1582, and for the Julian (Roman) calendar (introduced in 45 B.C.) for dates prior to that.</p>
+<p>The input date is the conventional calendar date, affected by the Gregorian calendar reform of</p><ol type="1">
+<li>Thus, the input date is for the Gregorian calendar for dates starting 15 October 1582, and for the Julian (Roman) calendar (introduced in 45 B.C.) for dates prior to that.</li>
+</ol>
 <p>NOTES: </p><ol>
 <li>
 <p class="startli">B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</p>
@@ -375,7 +377,7 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
-    <tr><td class="paramname">year</td><td>[yr] Calendar year. B.C. years can be simply represented as negative years, e.g. 1 B.C. as -1. </td></tr>
+    <tr><td class="paramname">year</td><td>[yr] Calendar year. B.C. years can be simply represented as &lt;=0, e.g. 1 B.C. as 0, and <em>X</em> B.C. as (1 - <em>X</em>). </td></tr>
     <tr><td class="paramname">month</td><td>[month] Calendar month [1:12] </td></tr>
     <tr><td class="paramname">day</td><td>[day] Day of month [1:31] </td></tr>
     <tr><td class="paramname">hour</td><td>[hr] Hour of day [0:24] </td></tr>
@@ -442,10 +444,10 @@ Fliegel, H. &amp; Van Flandern, T. Comm. of the ACM, Vol. 11, No. 10, October 19
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">tjd</td><td>[day] Julian day. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">calendar</td><td>The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR, NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Calendar year. B.C. years are represented as negative values, e.g. -1 corresponds to 1 B.C. It may be NULL if not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">year</td><td>[yr] Calendar year. B.C. years are represented as &lt;=0, e.g. 1 B.C. as 0, and <em>X</em> B.C. as (1 - <em>X</em>). It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">month</td><td>[month] Calendar month [1:12]. It may be NULL if not required. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">day</td><td>[day] Day of the month [1:31]. It may be NULL if not required. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">hour</td><td>[h] Hour of day [0:24]. It may be NULL if not required. </td></tr>
   </table>
   </dd>
 </dl>

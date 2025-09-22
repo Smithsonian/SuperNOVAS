@@ -702,7 +702,6 @@
           <topic label="e_tilt" href="novas_8h.html#ab75165e2d69231da10c67de025ee05d8"/>
           <topic label="ecl2equ" href="novas_8h.html#a41ca0cfd79ad07c9e857ba02fa94928e"/>
           <topic label="ecl2equ_vec" href="novas_8h.html#a6fa1eada41005ac70290d0bb5df1ec26"/>
-          <topic label="ee_ct" href="novas_8h.html#add7a260017fad0d59c943a0a8d935fcf"/>
           <topic label="ephemeris" href="novas_8h.html#a713982e1f2bae0a72b39d03007f00d23"/>
           <topic label="equ2ecl" href="novas_8h.html#a035047336b16951b8b850066e74210a9"/>
           <topic label="equ2ecl_vec" href="novas_8h.html#aa05ecc76c1ccc0c3445f8b642d6c5311"/>
@@ -1011,31 +1010,12 @@
         <topic label="eph_manager.c" href="eph__manager_8c.html">
           <topic label="ephem_close" href="eph__manager_8c.html#a333da81ba7453316e26f32f628fefc0e"/>
           <topic label="ephem_open" href="eph__manager_8c.html#aabd581657809499fb433e4f9f56ace80"/>
-          <topic label="interpolate" href="eph__manager_8c.html#aeda97db4dfac1a80c97ab2f3fb42b4a9"/>
           <topic label="planet_ephemeris" href="eph__manager_8c.html#ad36bc85b6f1cfb01ffc638b54552e15b"/>
-          <topic label="split" href="eph__manager_8c.html#a50981955ef4594e094650db69472ec94"/>
-          <topic label="state" href="eph__manager_8c.html#af10ac2743bb9187d010e06722bb0cc75"/>
-          <topic label="BUFFER" href="eph__manager_8c.html#af1da4b8e59393e73ef0711920e920753"/>
-          <topic label="EM_RATIO" href="eph__manager_8c.html#ad13d93611f33badca5f954f0b7c9c1a3"/>
-          <topic label="EPHFILE" href="eph__manager_8c.html#ab690dba61a7445d8db2c104883fb0fe6"/>
-          <topic label="IPT" href="eph__manager_8c.html#a3e671032c94fa64bb397d6166fef36f7"/>
-          <topic label="JPLAU" href="eph__manager_8c.html#a3827e48de0de48feb5b52444d03983d3"/>
-          <topic label="KM" href="eph__manager_8c.html#a7c998bf57458a81960a20b58bec630d4"/>
-          <topic label="LPT" href="eph__manager_8c.html#ad0644039a2a0b1fcf47bf8f97af4d537"/>
-          <topic label="NP" href="eph__manager_8c.html#aa4ad9304a91f586963d80cf4805b9d76"/>
-          <topic label="NRL" href="eph__manager_8c.html#a1b3f642c5c66eb202b565cbd2ec70194"/>
-          <topic label="NV" href="eph__manager_8c.html#a4f5b18c8499bbc908974749c84eb9ece"/>
-          <topic label="PC" href="eph__manager_8c.html#a0fcf3bf4c37f78e5ef7557cb03029eff"/>
-          <topic label="RECORD_LENGTH" href="eph__manager_8c.html#a56a89d553bafe2d8c4a7e37f2997c300"/>
-          <topic label="SS" href="eph__manager_8c.html#a20c09a36fbddf8e712b5f937f06b1b66"/>
-          <topic label="TWOT" href="eph__manager_8c.html#ad741a4fdb6d243507e3be0028cdeea9e"/>
-          <topic label="VC" href="eph__manager_8c.html#afe4ec6caa67baf8fb5b184cc183a07e8"/>
         </topic>
         <topic label="equinox.c" href="equinox_8c.html">
           <topic label="accum_prec" href="equinox_8c.html#ad1de5b481e41cf193c199bd0dc5084bd"/>
           <topic label="cel_pole" href="equinox_8c.html#a8937180de2ee1545d19b8fc840f35fe2"/>
           <topic label="e_tilt" href="equinox_8c.html#ab75165e2d69231da10c67de025ee05d8"/>
-          <topic label="ee_ct" href="equinox_8c.html#add7a260017fad0d59c943a0a8d935fcf"/>
           <topic label="fund_args" href="equinox_8c.html#a312b5ab1a004b179d80463a07ca7da8f"/>
           <topic label="ira_equinox" href="equinox_8c.html#aea0e1028baf14d16d9de800e36a17086"/>
           <topic label="mean_obliq" href="equinox_8c.html#af182ee8cc4239f581f746aa974827d61"/>
@@ -1348,7 +1328,7 @@
         </topic>
         <topic label="util.c" href="util_8c.html">
           <topic label="d_light" href="util_8c.html#ad799864f637c483fb49491bde5a93e25"/>
-          <topic label="novas_debug" href="util_8c.html#a5f35633b872751df4dacd2fb2cbe4ac3"/>
+          <topic label="novas_debug" href="util_8c.html#aab45a580efb78b53bcb4a09d40868e4d"/>
           <topic label="novas_equ_sep" href="util_8c.html#a4f7e06b2fa5b3145b37aec4f9c2d1602"/>
           <topic label="novas_get_debug_mode" href="util_8c.html#a29cad12337acfce5f1e370320dcefb79"/>
           <topic label="novas_norm_ang" href="util_8c.html#a85334614a0f399e0d3cbde68075d0766"/>
@@ -1374,7 +1354,6 @@
         <topic label="h" href="globals_h.html"/>
         <topic label="i" href="globals_i.html"/>
         <topic label="j" href="globals_j.html"/>
-        <topic label="k" href="globals_k.html"/>
         <topic label="l" href="globals_l.html"/>
         <topic label="m" href="globals_m.html"/>
         <topic label="n" href="globals_n.html"/>
