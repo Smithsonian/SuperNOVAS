@@ -35,12 +35,7 @@
  *  <a href="http://www.usno.navy.mil/USNO/astronomical-applications">
  *  http://www.usno.navy.mil/USNO/astronomical-applications</a>
  *
- *  @sa solsys-calceph.c
- *  @sa solsys-cspice.c
- *  @sa solsys1.c
- *  @sa solsys2.c
- *  @sa solsys3.c
- *  @sa solsys-ephem.c
+ *  @sa solsys-calceph.c, solsys-cspice.c, solsys1.c, solsys2.c, solsys3.c, solsys-ephem.c
  */
 
 #ifndef _SOLSYS_
@@ -53,9 +48,7 @@
  * numbering Solar-system bodies. But other numbering systems also exists, for example the
  * CALCEPH library uses its own convention for the numbering of asteroids.
  *
- * @sa object
- * @sa NOVAS_EPHEM_OBJECT
- * @sa NOVAS_ID_TYPES
+ * @sa object, NOVAS_EPHEM_OBJECT, NOVAS_ID_TYPES
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -101,9 +94,8 @@ enum novas_id_type {
  *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
  *                      produced for other reasons.
  *
- * @sa set_planet_provider()
- * @sa ephemeris()
- * @sa novas_solarsystem_hp_func
+ * @sa set_planet_provider(), ephemeris(), novas_solarsystem_hp_func
+ * @sa make_planet(), novas_sky_pos(), novas_geom_posvel()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -140,10 +132,8 @@ typedef short (*novas_planet_provider)(double jd_tdb, enum novas_planet body, en
  *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
  *                      produced for other reasons.
  *
- * @sa set_planet_provider_hp()
- * @sa novas_solarsystem_func
- * @sa ephemeris()
- *
+ * @sa set_planet_provider_hp(), novas_solarsystem_func, ephemeris()
+ * @sa make_planet(), novas_sky_pos(), novas_geom_posvel(), grav_planets(), grav_undo_planets()
  * @since 1.0
  * @author Attila Kovacs
  */
@@ -188,10 +178,8 @@ typedef short (*novas_planet_provider_hp)(const double jd_tdb[2], enum novas_pla
  *                      non-zero value if the was an error s.t. the position and velocity
  *                      vector should not be used.
  *
- * @sa set_ephem_provider()
- * @sa ephemeris()
- * @sa NOVAS_EPHEM_OBJECT
- * @sa solsys-ephem.c
+ * @sa set_ephem_provider(), ephemeris(), NOVAS_EPHEM_OBJECT, solsys-ephem.c
+ * @sa make_ephem_object(), novas_sky_pos(), novas_geom_posvel()
  *
  * @since 1.0
  * @author Attila Kovacs
@@ -237,10 +225,8 @@ typedef int (*novas_ephem_provider)(const char *name, long id, double jd_tdb_hig
  *
  *
  *
- * @sa set_ephem_provider()
  * @sa novas_ephem_provider
- * @sa ephemeris()
- * @sa NOVAS_EPHEM_OBJECT
+ *
  */
 double *readeph(int mp, const char *restrict name, double jd_tdb, int *restrict error);
 #endif
@@ -289,11 +275,8 @@ novas_ephem_provider get_ephem_provider();
  *                      range, 2 if 'body' is invalid, or 3 if the ephemeris data cannot be
  *                      produced for other reasons.
  *
- * @sa novas_planet
- * @sa solarsystem_hp()
- * @sa set_planet_provider()
- * @sa place()
- * @sa ephemeris()
+ * @sa novas_planet, solarsystem_hp(), set_planet_provider(), ephemeris()
+ * @sa novas_sky_pos(), novas_geom_posvel()
  */
 short solarsystem(double jd_tdb, short body, short origin, double *restrict position, double *restrict velocity);
 #endif
@@ -336,10 +319,8 @@ short solarsystem(double jd_tdb, short body, short origin, double *restrict posi
  *                      (errno set to ENOSYS), or some other error code (NOVAS C was not very
  *                      consistent here...
  *
- * @sa solarsystem()
- * @sa set_planet_provider_hp()
- * @sa place()
- * @sa ephemeris()
+ * @sa solarsystem(), set_planet_provider_hp(), ephemeris()
+ * @sa novas_sky_pos(), novas_geom_posvel(), grav_planets(), grav_undo_planets()
  */
 short solarsystem_hp(const double jd_tdb[restrict 2], short body, short origin, double *restrict position, double *restrict velocity);
 #endif

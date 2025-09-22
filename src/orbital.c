@@ -60,7 +60,7 @@
 
 
 /**
- * Change xzy vectors to the new polar orientation. &theta, &phi define the orientation of the
+ * Change _xyz_ vectors to the new polar orientation. &theta, &phi define the orientation of the
  * input pole in the output system.
  *
  * @param in        input 3-vector in the original system (pole = z)

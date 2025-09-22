@@ -42,14 +42,14 @@ novas_planet_provider_hp planet_call_hp = solarsystem_hp_adapter;
 /// function to use for reading ephemeris data for all types of solar system sources
 static novas_ephem_provider readeph2_call = NULL;
 
-/// Function to use for reduced-precision calculations. (The full IAU 2000A model is used
-/// always for high-precision calculations)
+/// Function to use for reduced-precision calculations. (The full IAU 2000A model is used always
+/// for high-precision calculations)
 static novas_nutation_provider nutate_lp = iau2000b;
 
 
 /**
- * Sets the function to use for obtaining position / velocity information for minor planets,
- * or sattelites.
+ * Sets the function to use for obtaining position / velocity information for minor planets, or
+ * satellites.
  *
  * @param func   new function to use for accessing ephemeris data for minor planets or satellites.
  * @return       0 if successful, or else -1 if the function argument is NULL.
@@ -81,8 +81,8 @@ novas_ephem_provider get_ephem_provider() {
 }
 
 /**
- * Set the function to use for low-precision IAU 2000 nutation calculations instead of the
- * default nu2000k().
+ * Set the function to use for low-precision IAU 2000 nutation calculations instead of the default
+ * nu2000k().
  *
  * @param func  the new function to use for low-precision IAU 2000 nutation calculations
  * @return      0 if successful, or -1 if the input argument is NULL
@@ -101,8 +101,8 @@ int set_nutation_lp_provider(novas_nutation_provider func) {
 }
 
 /**
- * Returns the function configured for low-precision IAU 2000 nutation calculations instead
- * of the default nu2000k().
+ * Returns the function configured for low-precision IAU 2000 nutation calculations instead of the
+ * default nu2000k().
  *
  * @return   the function to use for low-precision IAU 2000 nutation calculations
  *
@@ -116,8 +116,8 @@ novas_nutation_provider get_nutation_lp_provider() {
 }
 
 /**
- * Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY)
- * ephemeris calculations instead of the default solarsystem() routine.
+ * Set a custom function to use for regular precision (see NOVAS_REDUCED_ACCURACY) ephemeris
+ * calculations instead of the default solarsystem() routine.
  *
  * @param func    The function to use for solar system position/velocity calculations.
  *                See solarsystem() for further details on what is required of this
@@ -138,8 +138,8 @@ int set_planet_provider(novas_planet_provider func) {
 }
 
 /**
- * Returns the custom (low-precision) ephemeris provider function for major planets
- * (and Sun, Moon, SSB...), if any.
+ * Returns the custom (low-precision) ephemeris provider function for major planets (and Sun,
+ * Moon, SSB...), if any.
  *
  * @return    the custom (low-precision) planet ephemeris provider function.
  *
@@ -175,8 +175,8 @@ int set_planet_provider_hp(novas_planet_provider_hp func) {
 }
 
 /**
- * Returns the custom high-precision ephemeris provider function for major planets
- * (and Sun, Moon, SSB...), if any.
+ * Returns the custom high-precision ephemeris provider function for major planets (and Sun, Moon,
+ * SSB...), if any.
  *
  * @return    the custom high-precision planet ephemeris provider function.
  *

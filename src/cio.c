@@ -40,8 +40,8 @@ static FILE *cio_file;
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date
  * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1)
- * @param[out] ra_cio [h] Right ascension of the CIO, with respect to the true equinox of date, in
- *                    hours (+ or -), or NAN when returning with an error code.
+ * @param[out] ra_cio [h] Right ascension of the CIO, with respect to the true equinox of date (+
+ *                    or -), or NAN when returning with an error code.
  * @return            0 if successful, -1 if the output pointer argument is NULL,
  *                    1 if 'accuracy' is invalid, 10--20: 10 + error code from cio_location(), or
  *                    else 20 + error from cio_basis()
@@ -74,7 +74,7 @@ short cio_ra(double jd_tt, enum novas_accuracy accuracy, double *restrict ra_cio
  * Sets the CIO interpolaton data file to use to interpolate CIO locations vs the GCRS. You can
  * specify either the original `CIO_RA.TXT` file included in the distribution (preferred since
  * v1.1), or else a platform-specific binary data file compiled from it via the
- * <code>cio_file</code> utility (the old way).
+ * `cio_file` utility (the old way).
  *
  * @param filename    Path (preferably absolute path) `CIO_RA.TXT` or else to the binary
  *                    `cio_ra.bin` data, or NULL to disable using a CIO locator file altogether.

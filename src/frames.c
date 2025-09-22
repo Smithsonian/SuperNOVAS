@@ -5,8 +5,8 @@
  * @author Attila Kovacs
  * @since 1.1
  *
- * SuperNOVAS routines for higher-level and efficient astrometric calculations using observer
- * frames. Observer frames represent an observer location at a specific astronomical time
+ * SuperNOVAS routines for higher-level and efficient astrometric calculations using observing
+ * frames. An observing frames represents an observer location at a specific astronomical time
  * (instant), which can be re-used again and again to calculate or transform positions of
  * celestial sources in a a range of astronomical coordinate systems.
  *

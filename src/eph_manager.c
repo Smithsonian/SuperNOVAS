@@ -37,6 +37,8 @@
 
 #include "novas.h"
 
+/// \cond PROTECTED
+
 /// Flag that defines physical units of the output states. 1: km and km/sec; 0: AU and AU/day.
 /// Its default value is 0 (KM determines time unit for nutations. Angle unit is always radians.)
 short KM;           ///< Flag that defines physical units of the output states.
@@ -58,8 +60,10 @@ double TWOT;        ///< (<i>for internal use</i>)
 double EM_RATIO;    ///< (<i>for internal use</i>)
 double *BUFFER;     ///< (<i>for internal use</i>) Array containing Chebyshev coefficients of position.
 
-
 FILE *EPHFILE = NULL;     ///< (<i>for internal use</i>) The currently open JPL DE planetary ephemeris file
+
+/// \endcond
+
 
 /**
  * This function opens a JPL planetary ephemeris file and sets initial values.  This function must
@@ -220,7 +224,6 @@ short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short
  * @return  0 if the file successfully closed or was closed already, or else EOF.
  *
  * @sa ephem_open()
- *
  */
 short ephem_close(void) {
   if(EPHFILE) {
@@ -390,6 +393,8 @@ short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_plane
 
   return 0;
 }
+
+/// \cond PROTECTED
 
 /**
  * Reads and interpolates the JPL planetary ephemeris file.
@@ -587,3 +592,5 @@ int split(double tt, double *fr) {
   fr[1] = tt - fr[0];
   return 0;
 }
+
+/// \endcond PROTECTED

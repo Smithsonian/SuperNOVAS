@@ -96,7 +96,7 @@
  * @param[out] vel  [AU/day] Velocity vector of the body at 'jd_tdb'; equatorial rectangular
  *                  coordinates in AU/day referred to the ICRS.
  * @return          0 if successful, -1 if the 'jd_tdb' or input object argument is NULL, or
- *                  else 1 if 'origin' is invalid, 2 if <code>cel_obj->type</code> is invalid,
+ *                  else 1 if 'origin' is invalid, 2 if `cel_obj->type` is invalid,
  *                  10 + the error code from solarsystem(), or 20 + the error code from
  *                  readeph().
  *
@@ -213,9 +213,8 @@ short ephemeris(const double *restrict jd_tdb, const object *restrict body, enum
  * Computes the apparent direction of a celestial object at a specified time and in a specified
  * coordinate system and for a given observer location.
  *
- * While <code>coord_sys</code> defines the coordinate referfence system, it is
- * <code>location->where</code> sets the origin of the reference place relative to which positions
- * and velocities are reported.
+ * While `coord_sys` defines the coordinate referfence system, it is `location->where` sets the
+ * origin of the reference place relative to which positions and velocities are reported.
  *
  * For all but ICRS coordinate outputs, the calculated positions and velocities include aberration
  * corrections for the moving frame of the observer as well as gravitational deflection due to the

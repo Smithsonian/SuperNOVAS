@@ -33,10 +33,10 @@
 #define T0        NOVAS_JD_J2000
 /// \endcond
 
-/// Function prototype for the FORTRAN subroutine <code>jplint</code> in jplint.f
+/// Function prototype for the FORTRAN subroutine `jplint()` e.g. in `jplint.f`
 extern void jplint_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
-/// Function prototype for the FORTRAN subroutine <code>jplihp</code> in jplint.f
+/// Function prototype for the FORTRAN subroutine `jplihp()` e.g. in `jplint.f`
 extern void jplihp_(const double *jd_tdb, long *targ, long *cent, double *posvel, long *err_flg);
 
 /**

@@ -19,18 +19,17 @@
  * Returns the Julian day for a given calendar date. Input time value can be based on any
  * astronomical time scale (UTC, UT1, TT, etc.) - output Julian date will have the same basis.
  *
- * The input date is the conventional calendar date, affected by the Gregorian calendar
- * reform of 1582. Thus, the input date is for the Gregorian calendar for dates starting
- * 15 October 1582, and for the Julian (Roman) calendar (introduced in 45 B.C.) for
- * dates prior to that.
+ * The input date is the conventional calendar date, affected by the Gregorian calendar reform of
+ * 1582. Thus, the input date is for the Gregorian calendar for dates starting 15 October 1582,
+ * and for the Julian (Roman) calendar (introduced in 45 B.C.) for dates prior to that.
  *
  * NOTES:
  * <ol>
- * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601
+ * convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  *
- * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of
- * the normal range (for a leap year).</li>
+ * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of the
+ * normal range (for a leap year).</li>
  * </ol>
  *
  * REFERENCES:
@@ -41,13 +40,13 @@
  *
  * @param calendar  The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR,
  *                  NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
- * @param year      [yr] Calendar year. B.C. years can be simply represented as
- *                  negative years, e.g. 1 B.C. as -1.
+ * @param year      [yr] Calendar year. B.C. years can be simply represented as &lt;=0, e.g. 1
+ *                  B.C. as 0, and _X_ B.C. as (1 - _X_).
  * @param month     [month] Calendar month [1:12]
  * @param day       [day] Day of month [1:31]
  * @param hour      [hr] Hour of day [0:24]
- * @return          [day] the fractional Julian day for the input calendar date, ot NAN if
- *                  the calendar is invalid or the month or day components are out of range.
+ * @return          [day] the fractional Julian day for the input calendar date, ot NAN if the
+ *                  calendar is invalid or the month or day components are out of range.
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -108,15 +107,13 @@ double novas_jd_from_date(enum novas_calendar_type calendar, int year, int month
  * @param tjd          [day] Julian day.
  * @param calendar     The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR,
  *                     NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
- * @param[out] year    [yr] Calendar year. B.C. years are represented as negative values,
- *                     e.g. -1 corresponds to 1 B.C. It may be NULL if not required.
- * @param[out] month   [month] Calendar month [1:12]. It may be NULL if not
- *                     required.
+ * @param[out] year    [yr] Calendar year. B.C. years are represented as &lt;=0, e.g. 1 B.C. as 0,
+ *                     and _X_ B.C. as (1 - _X_). It may be NULL if not required.
+ * @param[out] month   [month] Calendar month [1:12]. It may be NULL if not required.
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
  * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
- *
- * @return             0 if successful, or else -1 if the calendar is invalid (errno will
- *                     be set to EINVAL).
+ * @return             0 if successful, or else -1 if the calendar is invalid (errno will be set
+ *                     to EINVAL).
  *
  * @since 1.3
  * @author Attila Kovacs
@@ -196,11 +193,11 @@ int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restric
  * dates are Julian/Roman dates, so the day before the reform was 1582 October 4. You can also
  * use `novas_jd_from_date()` to convert dates with more flexibility.</li>
  *
- * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601
+ * convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  *
- * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of
- * the normal range (for a leap year).</li>
+ * <li>Added argument range checking in v1.3.0, returning NAN if the month or day are out of the
+ * normal range (for a leap year).</li>
  * </ol>
  *
  * REFERENCES:
@@ -209,12 +206,12 @@ int novas_jd_to_date(double tjd, enum novas_calendar_type calendar, int *restric
  *  657.</li>
  * </ol>
  *
- * @param year    [yr] Astronomical calendar year. B.C. years can be simply represented as
- *                &lt;=0, e.g. 1 B.C. as 0, and _X_ B.C. as (1 - _X_).
+ * @param year    [yr] Astronomical calendar year. B.C. years can be simply represented as &lt;=0,
+ *                e.g. 1 B.C. as 0, and _X_ B.C. as (1 - _X_).
  * @param month   [month] Astronomical calendar month [1:12]
  * @param day     [day] Astronomical day of month [1:31]
  * @param hour    [hr] Hour of day [0:24]
- * @return        [day] the fractional Julian date for the input calendar date, ot NAN if
+ * @return        [day] the fractional Julian date for the input calendar date, ot NAN if the
  *                month or day components are out of range.
  *
  * @sa novas_jd_from_date()
@@ -228,38 +225,33 @@ double julian_date(short year, short month, short day, double hour) {
 }
 
 /**
- * This function will compute a broken down date on the astronomical calendar for
- * given the Julian day input. Input Julian day can be based on any UT-like time scale
- * (UTC, UT1, TT, etc.) - output time value will have same basis.
+ * This function will compute a broken down date on the astronomical calendar given the Julian day
+ * input. Input Julian day can be based on any UT-like time scale (UTC, UT1, TT, etc.) - output
+ * time value will have same basis.
  *
  * NOTES:
  * <ol>
  * <li>The Gregorian calendar was introduced on 15 October 1582 only (corresponding to 5
- * October of the previously used Julian calendar). Prior to it this function returns
- * Julian/Roman calendar dates, e.g. the day before the reform is 1582 October 4. You can
- * use `novas_jd_to_date()` instead to convert JD days to dates in specific
- * calendars.</li>
+ * October of the previously used Julian calendar). Prior to it this function returns Julian /
+ * Roman calendar dates, e.g. the day before the reform is 1582 October 4. You can use
+ * `novas_jd_to_date()` instead to convert JD days to dates in specific calendars.</li>
  *
- * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical
- * and ISO 8601 convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
+ * <li>B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO 8601
+ * convention, i.e., X B.C. as (1-X), so 45 B.C. as -44.</li>
  * </ol>
  *
  * REFERENCES:
  * <ol>
- *
  *  <li>Fliegel, H. &amp; Van Flandern, T.  Comm. of the ACM, Vol. 11, No. 10, October 1968,
- *  p. 657.</li>15 October 1582
+ *  p. 657.</li>
  * </ol>
  *
  * @param tjd          [day] Julian date
- * @param[out] year    [yr] Astronomical calendar year. It may be NULL if not required.
- *                     B.C. years are represented as &lt;=0, i.e. 1 B.C. as 0 and _X_ B.C.
- *                     as (1 - _X_)
- * @param[out] month   [month] Astronomical calendar month [1:12]. It may be NULL if not
- *                     required.
+ * @param[out] year    [yr] Astronomical calendar year. It may be NULL if not required. B.C. years
+ *                     are represented as &lt;=0, i.e. 1 B.C. as 0 and _X_ B.C. as (1 - _X_)
+ * @param[out] month   [month] Astronomical calendar month [1:12]. It may be NULL if not required.
  * @param[out] day     [day] Day of the month [1:31]. It may be NULL if not required.
  * @param[out] hour    [h] Hour of day [0:24]. It may be NULL if not required.
- *
  * @return              0
  *
  * @sa novas_jd_to_date()
@@ -281,13 +273,13 @@ int cal_date(double tjd, short *restrict year, short *restrict month, short *res
 }
 
 /**
- * Returns the one-based ISO 8601 day-of-week index of a given Julian Date. The ISO 8601
- * week begins on Monday, thus index 1 corresponds to Monday, while index 7 is a Sunday.
+ * Returns the one-based ISO 8601 day-of-week index of a given Julian Date. The ISO 8601 week
+ * begins on Monday, thus index 1 corresponds to Monday, while index 7 is a Sunday.
  *
- * @param tjd   [day] Julian Date in the timescale of choice. (e.g. UTC-based if you want
- *              a UTC-based return value).
- * @return      [1:7] The day-of-week index in the same timescale as the input date.
- *              1:Monday ... 7:Sunday.
+ * @param tjd   [day] Julian Date in the timescale of choice. (e.g. UTC-based if you want a
+ *              UTC-based return value).
+ * @return      [1:7] The day-of-week index in the same timescale as the input date. 1:Monday ...
+ *              7:Sunday.
  *
  * @since 1.4
  * @author Attila Kovacs
@@ -304,12 +296,12 @@ int novas_day_of_week(double tjd) {
 /**
  * Returns the one-based day index in the calendar year for a given Julian Date.
  *
- * @param tjd       [day] Julian Date in the timescale of choice. (e.g. UTC-based if you want
- *                  a UTC-based return value).
+ * @param tjd       [day] Julian Date in the timescale of choice. (e.g. UTC-based if you want a
+ *                  UTC-based return value).
  * @param calendar  The type of calendar to use: NOVAS_ASTRONOMICAL_CALENDAR,
  *                  NOVAS_GREGORIAN_CALENDAR, or NOVAS_ROMAN_CALENDAR.
- * @param[out] year [yr] Optional pointer to which to return the calendar year. It may be
- *                  NULL if not required.
+ * @param[out] year [yr] Optional pointer to which to return the calendar year. It may be NULL if
+ *                  not required.
  * @return          [1:366] The day-of-year index in the same timescale as the input date.
  *
  * @since 1.4

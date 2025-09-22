@@ -30,8 +30,7 @@
 /**
  * Planet codes for JPL DE ephemeris files.
  *
- * @sa DE_PLANETS
- * @sa eph_manager.c
+ * @sa DE_PLANETS, eph_manager.c
  *
  * @author Attila Kovacs
  * @since 1.0
@@ -63,6 +62,7 @@ enum de_planet {
  */
 #define DE_PLANETS (DE_NUTATIONS + 1)
 
+/// \cond PRIVATE
 
 // External variables ------------------------------>
 extern short KM;
@@ -77,6 +77,7 @@ extern double *BUFFER;
 
 extern FILE *EPHFILE;
 
+/// \endcond
 
 short ephem_open(const char *ephem_name, double *jd_begin, double *jd_end, short *de_number);
 
@@ -84,10 +85,14 @@ short ephem_close(void);
 
 short planet_ephemeris(const double tjd[2], enum de_planet target, enum de_planet origin, double *position, double *velocity);
 
+/// \cond PRIVATE
+
 short state(const double *jed, enum de_planet target, double *target_pos, double *target_vel);
 
 int interpolate(const double *buf, const double *t, long ncf, long na, double *position, double *velocity);
 
 int split(double tt, double *fr);
+
+/// \endcond
 
 #endif

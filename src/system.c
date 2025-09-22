@@ -18,10 +18,10 @@
 
 
 /**
- * Convert ecliptic longitude and latitude to right ascension and declination.  To convert
- * GCRS ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to
- * NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to anything, since
- * J2000.0 is assumed. Otherwise, all input coordinates are dynamical at'jd_tt'.
+ * Convert ecliptic longitude and latitude to right ascension and declination.  To convert GCRS
+ * ecliptic coordinates (mean ecliptic and equinox of J2000.0), set 'coord_sys' to
+ * NOVAS_GCRS_EQUATOR(2); in this case the value of 'jd_tt' can be set to anything, since J2000.0
+ * is assumed. Otherwise, all input coordinates are dynamical at'jd_tt'.
  *
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys'
  *                    is NOVAS_GCRS_EQUATOR[2])
@@ -140,7 +140,7 @@ int gal2equ(double glon, double glat, double *restrict ra, double *restrict dec)
  * Converts a position vector in the Earth-fixed ITRS frame to astrometric (unrefracted) azimuth
  * and zenith angles at the specified observer location.
  *
- * @param location   Observer location on Earth
+ * @param location   Geodetic (ITRF / GRS80) observer location on Earth.
  * @param itrs       3-vector position in Earth-fixed ITRS frame
  * @param[out] az    [deg] astrometric (unrefracted) azimuth angle at observer location [0:360].
  *                   It may be NULL if not required.
@@ -219,7 +219,7 @@ int itrs_to_hor(const on_surface *restrict location, const double *restrict itrs
  * Converts astrometric (unrefracted) azimuth and zenith angles at the specified observer location
  * to a unit position vector in the Earth-fixed ITRS frame.
  *
- * @param location   Observer location on Earth
+ * @param location   Geodetic (ITRF / GRS80) observer location on Earth
  * @param az         [deg] astrometric (unrefracted) azimuth angle at observer location [0:360].
  *                   It may be NULL if not required.
  * @param za         [deg] astrometric (unrefracted) zenith angle at observer location [0:180]. It
@@ -558,10 +558,9 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *              and possibly following it with an atmospheric refraction correction if
  *              appropriate.
  *
- * Transforms topocentric (TOD) right ascension and declination to zenith distance and
- * azimuth. This method should not be used to convert CIRS apparent coordinates (IAU
- * 2000 standard) -- for those you should use cirs_to_itrs() followed by itrs_to_hor()
- * instead.
+ * Transforms topocentric (TOD) apparent right ascension and declination to zenith distance and
+ * azimuth. This method should not be used to convert CIRS apparent coordinates (IAU 2000
+ * standard) -- for those you should use cirs_to_itrs() followed by itrs_to_hor() instead.
  *
  * It uses a method that properly accounts for polar motion, which is significant at the
  * sub-arcsecond level. This function can also adjust coordinates for atmospheric
@@ -593,7 +592,7 @@ short ecl2equ_vec(double jd_tt, enum novas_equator_type coord_sys, enum novas_ac
  *                    pole with respect to ITRS reference pole, e.g. from IERS Bulletin A. If you
  *                    have defined pole offsets to be incorporated into the TOD input coordinates
  *                    (pre-IAU2000 method) via `cel_pole()`, then you should set this to 0.
- * @param location    The observer location
+ * @param location    Geodetic (ITRF / GRS80) observer location on Earth
  * @param ra          [h] Topocentric apparent (TOD) right ascension of object of interest,
  *                    referred to true equator and equinox of date.
  * @param dec         [deg] Topocentric apparent (TOD) declination of object of interest, referred

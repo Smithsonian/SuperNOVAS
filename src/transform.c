@@ -25,8 +25,8 @@
  * @param jd_tt       [day] Terrestrial Time (TT) based Julian date. (Unused if 'coord_sys' is
  *                    NOVAS_ICRS_EQUATOR)
  * @param sys         Dynamical equatorial system type
- * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) (unused if
- *                    'coord_sys' is not NOVAS_ICRS [3])
+ * @param accuracy    NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) (unused if 'coord_sys'
+ *                    is not NOVAS_ICRS [3])
  * @param rag         [h] GCRS right ascension in hours.
  * @param decg        [deg] GCRS declination in degrees.
  * @param[out] ra     [h] Right ascension in hours, referred to specified equator and right
@@ -605,8 +605,7 @@ double cirs_to_app_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
   // Obtain the R.A. [h] of the CIO at the given date
-  int stat = cio_ra(jd_tt, accuracy, &ra_cio);
-  if(stat)
+  if(cio_ra(jd_tt, accuracy, &ra_cio) != 0)
     return novas_trace_nan("cirs_to_app_ra");
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range
@@ -636,8 +635,7 @@ double app_to_cirs_ra(double jd_tt, enum novas_accuracy accuracy, double ra) {
   double ra_cio;  // [h] R.A. of the CIO (from the true equinox) we'll calculate
 
   // Obtain the R.A. [h] of the CIO at the given date
-  int stat = cio_ra(jd_tt, accuracy, &ra_cio);
-  if(stat)
+  if(cio_ra(jd_tt, accuracy, &ra_cio) != 0)
     return novas_trace_nan("app_to_cirs_ra");
 
   // Convert CIRS R.A. to true apparent R.A., keeping the result in the [0:24] h range

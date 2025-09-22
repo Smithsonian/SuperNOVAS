@@ -126,8 +126,8 @@ clean:
 # Remove all generated files
 .PHONY: distclean
 distclean: clean
-	@rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a \
-      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libnovas.a $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.bin
+	@rm -f $(LIB)/libsupernovas.$(SOEXT)* $(LIB)/libsupernovas.a $(LIB)/libnovas.a \
+      $(LIB)/libnovas.$(SOEXT)* $(LIB)/libsolsys*.$(SOEXT)* data/cio_ra.bin
 	@rm -f doc/Doxyfile.local doc/README.md
 	@rm -rf build */build 
 	@$(MAKE) -s -C test distclean
@@ -199,8 +199,7 @@ $(LIB)/libsolsys-cspice.$(SOEXT).$(SO_VERSION): $(SRC)/solsys-cspice.c
 
 # Link submodules against the supernovas shared lib
 $(LIB)/libsolsys%.$(SOEXT).$(SO_VERSION): | $(LIB) $(LIB)/libsupernovas.$(SOEXT).$(SO_VERSION)
-	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(SHARED_FLAGS) $(SONAME_FLAG)$(notdir $@) \
-		-L$(LIB) -lsupernovas $(SHLIBS) $(LDFLAGS)
+	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ $(SHARED_FLAGS) $(SONAME_FLAG)$(notdir $@) -L$(LIB) -lsupernovas $(SHLIBS) $(LDFLAGS)
 
 # Static library: libsupernovas.a
 $(LIB)/libsupernovas.a: $(OBJECTS) | $(LIB) Makefile

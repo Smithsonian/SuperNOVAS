@@ -31,7 +31,7 @@ static enum novas_debug_mode novas_debug_state = NOVAS_DEBUG_OFF;
  */
 int novas_inv_max_iter = 100;
 
-/// \cond PRIVATE
+/// \cond PROTECTED
 
 /**
  * (<i>for internal use</i>) Propagates an error (if any) with an offset. If the error is
@@ -255,7 +255,7 @@ void novas_tiny_rotate(const double *in, double ax, double ay, double az, double
   out[2] = z - 0.5 * (A[0] + A[1]) * z - ay * x + ax * y;
 }
 
-/// \endcond
+/// \endcond PROTECTED
 
 /// ==========================================================================
 

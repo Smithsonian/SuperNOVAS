@@ -5,12 +5,12 @@
  * @author Attila Kovacs
  *
  *  Various spectral / velocity related functions. __SuperNOVAS__ velocities are always calculated
- *  with relativistic corrections for motion (both source and observer), and gravitational effects
+ *  with relativistic corrections for motion (both source and observer) and gravitational effects
  *  (both at the source and at the observer), so they represent spectroscopically accurate values.
  *
  *  As such radial velocity measures are always specroscopically precise, and follow the relation:
- *  &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + _z_) = ((1 + _v_<sub>rad</sub>/_c_) /
- *  (1 - _v_<sub>rad</sub>/_c_))<sup>1/2</sup>.
+ *  &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + _z_) = &radic;((1 + _v_<sub>rad</sub> / _c_) /
+ *  (1 - _v_<sub>rad</sub> / _c_)).
  */
 
 #include <errno.h>
@@ -42,15 +42,13 @@ double novas_add_vel(double v1, double v2) {
 }
 /// \endcond
 
-/// ==========================================================================
-
 /**
  * Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of
  * recession. It is based on the relativistic formula:
  * <pre>
- *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+ *  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
  * </pre>
- * where &beta; = v / c.
+ * where &beta; = _v_ / _c_.
  *
  * @param z   the redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>).
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid,
@@ -75,9 +73,9 @@ double novas_z2v(double z) {
  * Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>).
  * It is based on the relativistic formula:
  * <pre>
- *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+ *  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
  * </pre>
- * where &beta; = v / c.
+ * where &beta; = _v_ / _c_.
  *
  * @param vel   [km/s] velocity (i.e. rate) of recession.
  * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or
@@ -154,7 +152,7 @@ double unredshift_vrad(double vrad, double z) {
 /**
  * Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift
  * corrections and/or corrections for a moving observer. It's effectively using
- * (1 + z) = (1 + z1) * (1 + z2).
+ * (1 + z) = (1 + `z1`) * (1 + `z2`).
  *
  * @param z1    One of the redshift values
  * @param z2    The other redshift value

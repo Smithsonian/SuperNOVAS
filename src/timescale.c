@@ -424,7 +424,7 @@ double get_utc_to_tt(int leap_seconds) {
  * @param leap_seconds  [s] Leap seconds at the time of observations
  * @param dut1          [s] UT1 - UTC time difference [-0.5:0.5]
  * @return              [s] The TT - UT1 time difference that is suitable for used with all
- *                      calls in this library that require a <code>ut1_to_tt</code> argument.
+ *                      calls in this library that require a `ut1_to_tt` argument.
  *
  * @since 1.0
  * @author Attila Kovacs

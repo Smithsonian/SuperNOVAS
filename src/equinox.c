@@ -139,7 +139,7 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
   return 0;
 }
 
-/// \cond PRIVATE
+/// \cond PROTECTED
 
 /**
  * Converts <i>dx,dy</i> pole offsets to corrections for d&psi; d&epsilon;. The former is in GCRS,
@@ -386,6 +386,8 @@ double ira_equinox(double jd_tdb, enum novas_equinox_type equinox, enum novas_ac
   return -prec_ra / 3600.0;
 }
 
+/// \cond PROTECTED
+
 /**
  * @deprecated (<i>for internal use</i>) There is no good reason why this function should
  *             be exposed to users of the library. It is intended only for use by `e_tilt()`
@@ -525,6 +527,8 @@ double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy) 
 
   return last_ee;
 }
+
+/// \endcond
 
 /**
  * Compute the fundamental (a.k.a. Delaunay) arguments (mean elements) of the Sun and Moon.

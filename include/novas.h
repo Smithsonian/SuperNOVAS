@@ -295,24 +295,22 @@ enum novas_debug_mode {
  */
 enum novas_object_type {
   /// A major planet, or else the Sun, the Moon, or the Solar-System Barycenter (SSB).
-  /// @sa enum novas_planet
-  /// @sa novas_planet_provider
-  /// @sa novas_planet_provider_hp
+  /// @sa make_planet(), enum novas_planet, novas_planet_provider, novas_planet_provider_hp
   NOVAS_PLANET = 0,
 
   /// A Solar-system body that does not fit the major planet type, and requires specific
   /// user-provided novas_ephem_provider implementation.
-  /// @sa novas_ephem_provider
+  /// @sa make_ephem_object(), novas_ephem_provider
   NOVAS_EPHEM_OBJECT,
 
   /// Any non-solar system object that may be handled via 'catalog' coordinates, such as a star
   /// or a quasar.
-  /// @sa cat_entry
+  /// @sa make_cat_object_sys(), make_redshifted_object_sys(), cat_entry
   NOVAS_CATALOG_OBJECT,
 
   /// Any Solar-system body, whose position is determined by a set of orbital elements
   /// @since 1.2
-  /// @sa novas_orbital
+  /// @sa make_orbital_object(), novas_orbital
   NOVAS_ORBITAL_OBJECT
 };
 
@@ -357,9 +355,9 @@ enum novas_planet {
 /**
  * String array initializer for Major planet names, matching the enum novas_planet. E.g.
  *
- * \code
+ * ```c
  * const char *planet_names[] = NOVAS_PLANET_NAMES_INIT;
- * \endcode
+ * ```
  *
  * @since 1.2
  * @author Attila Kovacs
@@ -374,9 +372,9 @@ enum novas_planet {
 /**
  * Array initializer for mean planet radii in meters, matching the enum novas_planet. E.g.
  *
- * \code
+ * ```c
  * const double *planet_radii[] = NOVAS_PLANET_RADII_INIT;
- * \endcode
+ * ```
  *
  * REFERENCES:
  * <ol>
@@ -394,7 +392,7 @@ enum novas_planet {
  * @since 1.5
  * @author Attila Kovacs
  *
- * @sa enum novas_planet
+ * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_RMASS_INIT
  */
 #define NOVAS_PLANET_RADII_INIT { \
   0.0, \
@@ -425,7 +423,7 @@ enum novas_planet {
  * @since 1.2
  * @author Attila Kovacs
  *
- * @sa enum novas_planet
+ * @sa enum novas_planet, NOVAS_PLANET_NAMES_INIT, NOVAS_PLANET_RAII_INIT, NOVAS_PLANETS_GRAV_Z_INIT
  */
 #define NOVAS_RMASS_INIT  { \
       328900.559708565, \
@@ -457,22 +455,27 @@ enum novas_planet {
 enum novas_observer_place {
   /// Calculate coordinates as if observing from the geocenter for location and Earth rotation
   /// independent coordinates.
+  /// @sa make_observer_at_geocenter()
   NOVAS_OBSERVER_AT_GEOCENTER = 0,
 
   /// Stationary observer in the corotating frame of Earth.
+  /// @sa make_gps_observer(), make_itrf_observer(), make_site_observer()
   NOVAS_OBSERVER_ON_EARTH,
 
   /// Observer is on Earth orbit, with a position and velocity vector relative to geocenter.
   /// This may also be appropriate for observatories at the L2 or other Earth-based Langrange
   /// points.
+  /// @sa make_observer_in_space()
   NOVAS_OBSERVER_IN_EARTH_ORBIT,
 
   /// Observer airborne, moving relative to the surface of Earth.
   /// @since 1.1
+  /// @sa make_airborne_observer()
   NOVAS_AIRBORNE_OBSERVER,
 
   /// Observer is orbiting the Sun.
   /// @since 1.1
+  /// @sa make_solar_system_observer()
   NOVAS_SOLAR_SYSTEM_OBSERVER
 };
 
@@ -490,6 +493,8 @@ enum novas_observer_place {
  * specify one of the values defined here.
  *
  * @sa novas_frame, NOVAS_REFERENCE_SYSTEMS
+ * @sa novas_sky_pos(), novas_geom_posvel(), novas_geom_to_app(), novas_app_to_geom(), novas_app_to_hor(),
+ *     novas_hor_to_app(), novas_make_transform()
  */
 enum novas_reference_system {
   /// Geocentric Celestial Reference system. Essentially the same as ICRS but includes
@@ -542,6 +547,7 @@ enum novas_reference_system {
  * Constants that determine the type of equator to be used for the coordinate system.
  *
  * @sa NOVAS_EQUATOR_TYPES
+ * @sa equ2ecl(), ecl2equ()
  */
 enum novas_equator_type {
   NOVAS_MEAN_EQUATOR = 0, ///< Mean celestial equator of date without nutation (pre IAU 2006 system).
@@ -560,6 +566,8 @@ enum novas_equator_type {
 /**
  * Constants that determine the type of dynamical system. I.e., the 'current' equatorial
  * coordinate system used for a given epoch of observation.
+ *
+ * @sa gcrs2equ()
  */
 enum novas_dynamical_type {
   /// Mean Of Date (TOD): dynamical system that include precession but not including nutation,
@@ -580,6 +588,7 @@ enum novas_dynamical_type {
 /**
  * Constants to control the precision of NOVAS nutation calculations.
  *
+ * @sa novas_make_frame()
  */
 enum novas_accuracy {
   /// Use full precision calculations to micro-arcsecond accuracy. It can be computationally
@@ -603,22 +612,24 @@ enum novas_refraction_model {
 
   /// Uses a standard atmospheric model, ignoring any weather values defined for the specific
   /// observing location.
-  /// @sa novas_set_default_weather()
+  /// @sa novas_standard_refraction(), novas_set_default_weather()
   NOVAS_STANDARD_ATMOSPHERE,
 
   /// Uses the weather parameters that are specified together with the observing location.
+  /// @sa novas_optical_refraction()
   NOVAS_WEATHER_AT_LOCATION,
 
   /// Uses the Berman &amp; Rockwell 1976 refraction model for Radio wavelengths with the
   /// weather parameters specified together with the observing location.
   /// @since 1.4
+  /// @sa novas_radio_refraction()
   NOVAS_RADIO_REFRACTION,
 
   /// Uses the IAU / SOFA wavelength-depended refraction model with the weather parameters
   /// specified together with the observing location. The wavelength can be  specified
   /// via `novas_refract_wavelength()` or else it is assumed to be 550 nm (visible light).
-  /// @sa novas_refract_wavelength()
   /// @since 1.4
+  /// @sa novas_wave_refraction(), novas_refract_wavelength()
   NOVAS_WAVE_REFRACTION
 };
 
@@ -629,7 +640,11 @@ enum novas_refraction_model {
  */
 #define NOVAS_REFRACTION_MODELS   (NOVAS_WAVE_REFRACTION + 1)
 
+#ifndef _EXCLUDE_DEPRECATED
 /**
+ * @deprecated This enum is used only by functions which have been deprecated. Hence you
+ *             probably won't need this either.
+ *
  * Constants that determine the type of rotation measure to use.
  *
  */
@@ -641,18 +656,27 @@ enum novas_earth_rotation_measure {
   /// Use GST as the rotation measure, relative to the true equinox (pre IAU 20006 standard)
   EROT_GST
 };
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 /**
+ * @deprecated This enum is used only by functions which have been deprecated. Hence you
+ *             probably won't need this either.
+ *
  * The class of celestial coordinates used as parameters for ter2cel() and cel2ter().
  */
 enum novas_equatorial_class {
   NOVAS_REFERENCE_CLASS = 0,        ///< Celestial coordinates are in GCRS
   NOVAS_DYNAMICAL_CLASS             ///< Celestial coordinates are apparent values (CIRS or TOD)
 };
+#endif
 
+#ifndef _EXCLUDE_DEPRECATED
 /**
- * The convention in which the celestial pole offsets are defined for polar wobble.
+ * @deprecated This enum is used only by functions which have been deprecated. Hence you
+ *             probably won't need this either.
  *
+ * The convention in which the celestial pole offsets are defined for polar wobble.
  */
 enum novas_pole_offset_type {
   /// Offsets are &Delta;d&psi;, &Delta;d&epsilon; pairs (pre IAU 2006 precession-nutation
@@ -662,10 +686,12 @@ enum novas_pole_offset_type {
   /// Offsets are dx, dy pairs (IAU 2006 precession-nutation model)
   POLE_OFFSETS_X_Y
 };
+#endif
 
 /**
  * The type of equinox used in the pre IAU 2006 (old) methodology.
  *
+ * @sa ira_equinox()
  */
 enum novas_equinox_type {
   NOVAS_MEAN_EQUINOX = 0,         /// Mean equinox: includes precession but not nutation
@@ -675,7 +701,7 @@ enum novas_equinox_type {
 /**
  * The origin of the ICRS system for referencing positions and velocities for solar-system bodies.
  *
- * @sa NOVAS_ORIGIN_TYPES
+ * @sa ephemeris(), NOVAS_ORIGIN_TYPES
  */
 enum novas_origin {
   NOVAS_BARYCENTER = 0,           ///< Origin at the Solar-system baricenter (i.e. BCRS)
@@ -702,7 +728,7 @@ enum novas_origin {
 /**
  * The types of coordinate transformations available for tranform_cat().
  *
- * @sa transform_cat(), NOVAS_TRANSFORM_TYPES
+ * @sa transform_cat(), make_cat_object_sys(), make_redshifted_object_sys(), NOVAS_TRANSFORM_TYPES
  */
 enum novas_transform_type {
   /// Updates the star's data to account for the star's space motion between
@@ -732,7 +758,11 @@ enum novas_transform_type {
  */
 #define NOVAS_TRANSFORM_TYPES     (ICRS_TO_J2000 + 1)
 
+#ifndef _EXCLUDE_DEPRECATED
 /**
+ * @deprecated This enum is used only by functions which have been deprecated. Hence you
+ *             probably won't need this either.
+ *
  * System in which CIO location is calculated.
  */
 enum novas_cio_location_type {
@@ -742,17 +772,16 @@ enum novas_cio_location_type {
   /// The location of the CIO relative to the true equinox in the dynamical frame
   CIO_VS_EQUINOX
 };
+#endif
 
 #ifndef DEFAULT_CIO_LOCATOR_FILE
 #  if COMPAT
-/// Path / name of file to use for interpolating the CIO location relative to GCRS
-/// This file can be generated with the <code>cio_file.c</code> tool using the
-/// <code>CIO_RA.TXT</code> data (both are included in the distribution)
+/// Path / name of file to use for interpolating the CIO location relative to GCRS.
+/// A binary file can be generated with the `cio_file.c` tool using the `CIO_RA.TXT` as the input.
 #    define DEFAULT_CIO_LOCATOR_FILE      "cio_ra.bin"
 #  else
-/// Path / name of file to use for interpolating the CIO location relative to GCRS
-/// This file can be generated with the <code>cio_file.c</code> tool using the
-/// <code>CIO_RA.TXT</code> data (both are included in the distribution)
+/// Path / name of file to use for interpolating the CIO location relative to GCRS.
+/// As of version 1.5, a CIO locator data is not necessary.
 #    define DEFAULT_CIO_LOCATOR_FILE      NULL
 #  endif
 #endif
@@ -760,7 +789,7 @@ enum novas_cio_location_type {
 /**
  * Direction constants for polar wobble corrections via the wobble() function.
  *
- * @sa wobble(), NOVAS_WOBBLE_DIRECTIONS
+ * @sa novas_app_to_hor(), novas_hor_to_app(), wobble(), NOVAS_WOBBLE_DIRECTIONS
  */
 enum novas_wobble_direction {
   /// use for wobble() to change from ITRS (Earth-fixed) to TIRS (pseudo Earth-fixed). It includes TIO
@@ -799,16 +828,19 @@ enum novas_wobble_direction {
 enum novas_frametie_direction {
   /// Change coordinates from ICRS to the J2000 (dynamical) frame. (You can also use any
   /// negative value for the same effect).
+  /// @sa j2000_to_gcrs()
   J2000_TO_ICRS = -1,
 
   /// Change coordinates from J2000 (dynamical) frame to the ICRS. (You can use any value
   /// &gt;=0 for the same effect).
+  /// @sa gcrs_to_j2000()
   ICRS_TO_J2000
 };
 
 /**
  * Direction constant for nutation(), between mean and true equatorial coordinates.
  *
+ * @sa nutation()
  */
 enum novas_nutation_direction {
   /// Change from true equator to mean equator (i.e. undo wobble corrections). You may use
@@ -820,9 +852,10 @@ enum novas_nutation_direction {
 };
 
 /**
- * The plane in which values, such as orbital parameyters are referenced.
+ * The plane in which values, such as orbital parameters are referenced.
  * @author Attila Kovacs
  * @since 1.2
+ * @sa novas_orbital_system
  */
 enum novas_reference_plane {
   NOVAS_ECLIPTIC_PLANE = 0,     ///< the plane of the ecliptic
@@ -1002,8 +1035,8 @@ typedef struct novas_orbital {
  *     NOVAS_JUPITER_INIT, NOVAS_SATURN_INIT, NOVAS_URANUS_INIT, NOVAS_NEPTUNE_INIT,
  *     NOVAS_PLUTO_INIT, NOVAS_PLUTO_BARYCENTER_INIT, NOVAS_SUN_INIT, NOVAS_SSB_INIT,
  *     NOVAS_MOON_INIT, NOVAS_EMB_INIT
- * @sa novas_sky_pos()
- *
+ * @sa novas_sky_pos(), novas_geom_posvel(), novas_rises_above(), novas_transit_time(), novas_sets_below()
+ *     novas_sun_angle(), novas_moon_angle(), novas_object_sep()
  */
 typedef struct novas_object {
   enum novas_object_type type;    ///< NOVAS object type
@@ -1228,7 +1261,7 @@ typedef struct novas_observer {
 /**
  * Celestial object's place on the sky; contains the output from place()
  *
- * @sa novas_sky_pos(), SKY_POS_INIT, novas_z_lsr()
+ * @sa novas_sky_pos(), novas_transform_sky_pos(), SKY_POS_INIT
  */
 typedef struct novas_sky_pos {
   double r_hat[3];  ///< unit vector toward object (dimensionless)
@@ -1238,6 +1271,7 @@ typedef struct novas_sky_pos {
   double rv;        ///< [km/s] radial velocity (km/s). As of SuperNOVAS v1.3, this is always a proper
                     ///< observer-based spectroscopic velocity measure, which relates the observed wavelength
                     ///< to the rest wavelength as &lambda;<sub>obs</sub> = (1 + rv / c) &lambda;<sub>rest</sub>.
+                    ///< novas_ssb_to_lsr_vel(), novas_v2z()
 } sky_pos;
 
 /**
@@ -1250,6 +1284,7 @@ typedef struct novas_sky_pos {
  */
 #define SKY_POS_INIT { {0.0}, 0.0, 0.0, 0.0, 0.0 }
 
+#ifndef _EXCLUDE_DEPRECATED
 /**
  * @deprecated  The functions that use this structure have been deprecated also. There is no
  *              compelling reason why users should want/need it otherwise.
@@ -1262,14 +1297,14 @@ typedef struct novas_ra_of_cio {
   double jd_tdb;    ///< [day] Barycentric Dynamical Time (TDB) based Julian date.
   double ra_cio;    ///< [arcsec] right ascension of the CIO with respect to the GCRS (arcseconds)
 } ra_of_cio;
-
+#endif
 
 /**
  * Constants to reference various astrnomical timescales used
  *
  * @since 1.1
  *
- * @sa novas_set_time(), novas_get_time(), NOVAS_TIMESCALES
+ * @sa novas_set_time(), novas_get_time(), novas_diff_time(), novas_clock_skew(), NOVAS_TIMESCALES
  * @sa timescale.c
  */
 enum novas_timescale {
@@ -1298,8 +1333,8 @@ enum novas_timescale {
  * plenty accurate for any real astronomical application.
  *
  * @since 1.1
- * @sa novas_set_time(), novas_get_time(), NOVAS_TIMESPEC_INIT, enum novas_timescale
- * @sa timescale.c
+ * @sa novas_set_time(), novas_get_time(), NOVAS_TIMESPEC_INIT, enum novas_timescale, timescale.c
+ * @sa novas_make_frame()
  */
 typedef struct novas_timespec {
   long ijd_tt;        ///< [day] Integer part of the Terrestrial Time (TT) based Julian Date
@@ -1322,8 +1357,7 @@ typedef struct novas_timespec {
  * A 3x3 matrix for coordinate transformations
  *
  * @since 1.1
- * @sa NOVAS_MATRIX_INIT
- * @sa NOVAS_MATRIX_IDENTITY
+ * @sa novas_transform, NOVAS_MATRIX_INIT, NOVAS_MATRIX_IDENTITY
  */
 typedef struct novas_matrix {
   double M[3][3];     ///< matrix elements
@@ -1333,8 +1367,7 @@ typedef struct novas_matrix {
  * Empty initializer for novas_matrix
  *
  * @since 1.3
- * @sa novas_matrix
- * @sa NOVAS_MATRIX_IDENTITY
+ * @sa novas_matrix, NOVAS_MATRIX_IDENTITY
  */
 #define NOVAS_MATRIX_INIT {{{0.0}}}
 
@@ -1342,8 +1375,7 @@ typedef struct novas_matrix {
  * novas_matric initializer for an indentity matrix
  *
  * @since 1.3
- * @sa novas_matrix
- * @sa NOVAS_MATRIX_INIT
+ * @sa novas_matrix, NOVAS_MATRIX_INIT
  */
 #define NOVAS_MATRIX_IDENTITY {{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}}}
 
@@ -1385,7 +1417,10 @@ typedef struct novas_planet_bundle {
  *
  * @since 1.1
  *
- * @sa novas_make_frame(), novas_change_observer(), NOVAS_FRAME_INIT
+ * @sa novas_make_frame(), novas_change_observer(), novas_make_transform(), NOVAS_FRAME_INIT
+ * @sa novas_sky_pos(), novas_geom_posvel(), novas_geom_to_app(), novas_app_to_geom(),
+ *     novas_app_to_hor(), novas_hor_to_app(), novas_rises_above(), novas_sets_below(),
+ *     novas_transit_time()
  */
 typedef struct novas_frame {
   uint64_t state;                     ///< An internal state for checking validity.
@@ -1441,6 +1476,7 @@ typedef struct novas_frame {
  * @since 1.1
  *
  * @sa novas_make_transform(), novas_invert_transform(), NOVAS_TRANSFORM_INIT
+ * @sa novas_transform_vector(), novas_transform_sky_pos()
  */
 typedef struct novas_transform {
   enum novas_reference_system from_system;  ///< The original coordinate system
@@ -1460,7 +1496,7 @@ typedef struct novas_transform {
 /**
  * The type of elevation value for which to calculate a refraction.
  *
- * @sa RefractionModel
+ * @sa RefractionModel, novas_app_to_hor(), novas_hor_to_app()
  *
  * @since 1.1
  */
@@ -1476,7 +1512,7 @@ enum novas_refraction_type {
  * @since 1.1
  * @author Attila Kovacs
  *
- * @sa grav_bodies_reduced_accuracy
+ * @sa grav_bodies_reduced_accuracy, grav_planets(), grav_undo_planets()
  */
 #define DEFAULT_GRAV_BODIES_REDUCED_ACCURACY   ( (1 << NOVAS_SUN) )
 
@@ -1486,7 +1522,7 @@ enum novas_refraction_type {
  * @since 1.1
  * @author Attila Kovacs
  *
- * @sa grav_bodies_full_accuracy
+ * @sa grav_bodies_full_accuracy, grav_planets(), grav_undo_planets()
  */
 #define DEFAULT_GRAV_BODIES_FULL_ACCURACY      ( DEFAULT_GRAV_BODIES_REDUCED_ACCURACY | (1 << NOVAS_JUPITER) | (1 << NOVAS_SATURN) )
 
@@ -1758,7 +1794,9 @@ short cel_pole(double jd_tt, enum novas_pole_offset_type type, double dpole1, do
 
 // in equinox.c
 #ifndef _EXCLUDE_DEPRECATED
+/// \cond PRIVATE
 double ee_ct(double jd_tt_high, double jd_tt_low, enum novas_accuracy accuracy);
+/// \endcond
 #endif
 
 int fund_args(double t, novas_delaunay_args *restrict a);

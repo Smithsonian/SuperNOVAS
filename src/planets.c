@@ -19,9 +19,8 @@
 /// \endcond
 
 /**
- * Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical
- * ecliptic and equinox of J2000, with high order terms omitted (Simon et al. 1994,
- * 5.8.1-5.8.8).
+ * Returns the planetary longitude, for Mercury through Neptune, w.r.t. mean dynamical ecliptic
+ * and equinox of J2000, with high order terms omitted (Simon et al. 1994, 5.8.1-5.8.8).
  *
  * REFERENCES:
  * <ol>
@@ -263,8 +262,8 @@ int novas_make_planet_orbit(enum novas_planet id, double jd_tdb, novas_orbital *
 }
 
 /**
- * Gets the current orbital elements for the Moon relative to the geocenter for the specified
- * epoch of observation.
+ * Gets the current orbital elements for the Moon relative to the geocenter for the specified epoch
+ * of observation.
  *
  * REFERENCES:
  * <ol>
