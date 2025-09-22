@@ -22,8 +22,8 @@ cmake_minimum_required(VERSION 3.20)
 # Project definition
 project(supernovas
     VERSION 1.5.0
-    DESCRIPTION "supernovas astrometry library"
-    HOMEPAGE_URL "https://smithsonian.github.io/supernovas/"
+    DESCRIPTION "SuperNOVAS astrometry library"
+    HOMEPAGE_URL "https://smithsonian.github.io/SuperNOVAS/"
     LANGUAGES C
 )
 
@@ -46,14 +46,16 @@ option(ENABLE_SOLSYS2 "Enable legacy support for custom Fortran PLEPH plugin" OF
 
 # Set feature descriptions for summary
 add_feature_info(SharedLibs BUILD_SHARED_LIBS "Build as shared libraries")
+add_feature_info(Documentation BUILD_DOC "Developer documentation (HTML)")
 add_feature_info(Examples BUILD_EXAMPLES "Build and test example programs")
 add_feature_info(Testing BUILD_TESTING "Run regression testing")
+add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
+
 add_feature_info(Calceph-Plugin ENABLE_CALCEPH "Optional ephemeris support via CALCEPH")
 add_feature_info(CSPICE-Plugin ENABLE_CSPICE "Optional ephemeris support via CSPICE")
 add_feature_info(Solsys1-Plugin ENABLE_SOLSYS1 "Legacy ephemeris support via eph_manager()")
 add_feature_info(Solsys2-Plugin ENABLE_SOLSYS2 "Legacy ephemeris support via the Fortran PLEPH library")
-add_feature_info(Documentation BUILD_DOC "Developer documentation (HTML)")
-add_feature_info(Benchmarks BUILD_BENCHMARK "Build benchmarking programs")
+
 
 # ----------------------------------------------------------------------------
 # Global build configuration
