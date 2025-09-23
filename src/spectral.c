@@ -9,8 +9,11 @@
  *  (both at the source and at the observer), so they represent spectroscopically accurate values.
  *
  *  As such radial velocity measures are always specroscopically precise, and follow the relation:
- *  &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + _z_) = &radic;((1 + _v_<sub>rad</sub> / _c_) /
- *  (1 - _v_<sub>rad</sub> / _c_)).
+ *
+ *  &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + _z_) = sqrt((1 + &beta;) /
+ *  (1 - &beta;)),
+ *
+ *  where &beta; = _v_<sub>rad</sub> / _c_.
  */
 
 #include <errno.h>
@@ -43,14 +46,14 @@ double novas_add_vel(double v1, double v2) {
 /// \endcond
 
 /**
- * Converts a redshift value (z = &delta;&lambda / &lambda<sub>rest</sub>) to a radial velocity (i.e. rate) of
- * recession. It is based on the relativistic formula:
+ * Converts a redshift value (z = &Delta;&lambda; / &lambda;<sub>rest</sub>) to a radial velocity
+ * (i.e. rate) of recession. It is based on the relativistic formula:
  * <pre>
- *  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
+ *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
  * </pre>
- * where &beta; = _v_ / _c_.
+ * where &beta; = _v_<sub>rad</sub> / _c_.
  *
- * @param z   the redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>).
+ * @param z   the redshift value (z = &Delta;&lambda; / &lambda;<sub>rest</sub>).
  * @return    [km/s] Corresponding velocity of recession, or NAN if the input redshift is invalid,
  *            i.e. z &lt;= -1).
  *
@@ -70,16 +73,16 @@ double novas_z2v(double z) {
 }
 
 /**
- * Converts a radial recession velocity to a redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>).
- * It is based on the relativistic formula:
+ * Converts a radial recession velocity to a redshift value (z = &Delta;&lambda; /
+ * &lambda;<sub>rest</sub>). It is based on the relativistic formula:
  * <pre>
- *  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
+ *  1 + z = sqrt((1 + &beta;) / (1 - &beta;))
  * </pre>
- * where &beta; = _v_ / _c_.
+ * where &beta; = _v_<sub>rad</sub> / _c_.
  *
  * @param vel   [km/s] velocity (i.e. rate) of recession.
- * @return      the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or
- *              NAN if the input velocity is invalid (i.e., it exceeds the speed of light).
+ * @return      the corresponding redshift value (z = &Delta;&lambda; / &lambda;<sub>rest</sub>),
+ *              or NAN if the input velocity is invalid (i.e., it exceeds the speed of light).
  *
  * @author Attila Kovacs
  * @since 1.2
@@ -152,7 +155,8 @@ double unredshift_vrad(double vrad, double z) {
 /**
  * Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift
  * corrections and/or corrections for a moving observer. It's effectively using
- * (1 + _z_) = (1 + `z1`) * (1 + `z2`).
+ *
+ * (1 + _z_) = (1 + _z_<sub>1</sub>) * (1 + _z_<sub>2</sub>).
  *
  * @param z1    One of the redshift values
  * @param z2    The other redshift value
@@ -299,8 +303,16 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
 
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
- * means.  Radial velocity is here defined as the radial velocity measure (z) times the speed of
- * light. For major planets (and Sun and Moon), it includes gravitational corrections for light
+ * means.
+ *
+ * Radial velocity is defined here as a spectroscopic measure, defined by the relation:
+ *
+ * &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + _z_) = sqrt((1 + &beta;) /
+ *  (1 - &beta;)),
+ *
+ * where &beta; = _v_<sub>rad</sub> / _c_.
+ *
+ * For the major planets (and Sun and Moon), it includes gravitational corrections for light
  * originating at the surface and observed from near Earth or else from a large distance away. For
  * other solar system bodies, it applies to a fictitious emitter at the center of the observed
  * object, assumed massless (no gravitational red shift). The corrections do not in general apply
@@ -315,8 +327,8 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
  * gravitational redshift correction applied to the radial velocity via `redshift_vrad()`,
  * `unredshift_vrad()` and `grav_redshift()` if necessary.
  *
- * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
- * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
+ * The input velocities are barycentric, expressed with respect to the ICRS axes. `vel_src` and
+ * `vel_obs` are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
  *
  * If the object is outside the solar system, the algorithm used will be consistent with the
  * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
@@ -326,9 +338,9 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
  *
  * Any of the distances (last three input arguments) can be set to zero (0.0) or negative if the
  * corresponding general relativistic gravitational potential term is not to be evaluated.
- * These terms generally are important at the meter/second level only. If 'd_obs_geo' and
- * 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the
- * observer, appropriate for an observer on the surface of the Earth. 'd_src_sun', if given, is
+ * These terms generally are important at the meter/second level only. If `d_obs_geo` and
+ * `d_obs_sun` are both zero, an average value will be used for the relativistic term for the
+ * observer, appropriate for an observer on the surface of the Earth. `d_src_sun`, if given, is
  * used only for solar system objects.
  *
  * NOTES:
@@ -367,8 +379,8 @@ double novas_ssb_to_lsr_vel(double epoch, double ra, double dec, double vLSR) {
  *                      bluehifting due to Solar potential around observer can be ignored.
  * @param d_src_sun     [AU] Distance from object to Sun, or &lt;=0.0 if gravitational
  *                      redshifting due to Solar potential around source can be ignored.
- * @param[out] rv       [km/s] The observed radial velocity measure times the speed of light,
- *                      or NAN if there was an error.
+ * @param[out] rv       [km/s] The spectroscopic radial velocity measure from the observer's point
+ *                      of view, or NAN if there was an error.
  * @return              0 if successfule, or else -1 if there was an error (errno will be set
  *                      to EINVAL if any of the arguments are NULL, or to some other value to
  *                      indicate the type of error).
@@ -394,11 +406,17 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
 /**
  * Predicts the radial velocity of the observed object as it would be measured by spectroscopic
  * means. This is a modified version of the original NOVAS C 3.1 rad_vel(), to account for
- * the different directions in which light is emitted vs in which it detected, e.g. when it is
- * gravitationally deflected.
+ * the slightly different directions in which light is emitted vs in which it is detected, e.g.
+ * when it is gravitationally deflected.
  *
- * Radial velocity is here defined as the radial velocity measure (z) times the speed of light.
- * For major planets (and Sun and Moon), it includes gravitational corrections for light
+ * Radial velocity is defined here as a spectroscopic measure, defined by the relation:
+ *
+ * &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + _z_) = sqrt((1 + &beta;) /
+ *  (1 - &beta;)),
+ *
+ * where &beta; = _v_<sub>rad</sub> / _c_.
+ *
+ * For the major planets (and Sun and Moon), it includes gravitational corrections for light
  * originating at the surface and observed from near Earth or else from a large distance away. For
  * other solar system bodies, it applies to a fictitious emitter at the center of the observed
  * object, assumed massless (no gravitational red shift). The corrections do not in general apply
@@ -413,8 +431,8 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  * gravitational redshift correction applied to the radial velocity via `redshift_vrad()`,
  * `unredshift_vrad()` and `grav_redshift()` if necessary.
  *
- * All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src'
- * and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
+ * The input velocities are barycentric, expressed with respect to the ICRS axes. `vel_src` and
+ * `vel_obs` are kinematic velocities - derived from geometry or dynamics, not spectroscopy.
  *
  * If the object is outside the solar system, the algorithm used will be consistent with the
  * IAU definition of stellar radial velocity, specifically, the barycentric radial velocity
@@ -424,9 +442,9 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  *
  * Any of the distances (last three input arguments) can be set to a negative value if the
  * corresponding general relativistic gravitational potential term is not to be evaluated.
- * These terms generally are important only at the meter/second level. If 'd_obs_geo' and
- * 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the
- * observer, appropriate for an observer on the surface of the Earth. 'd_src_sun', if given, is
+ * These terms generally are important only at the meter/second level. If `d_obs_geo` and
+ * `d_obs_sun` are both zero, an average value will be used for the relativistic term for the
+ * observer, appropriate for an observer on the surface of the Earth. `d_src_sun`, if given, is
  * used only for solar system objects.
  *
  * NOTES:
@@ -465,9 +483,10 @@ int rad_vel(const object *restrict source, const double *restrict pos_src, const
  *                      redshifting due to Solar potential around source can be ignored.
  *                      Additionally, a value &lt;0 will also skip corrections for light
  *                      originating at the surface of the observed major solar-system body.
- * @return              [km/s] The observed radial velocity measure times the speed of light,
- *                      or NAN if there was an error (errno will be set to EINVAL if any of the
- *                      arguments are NULL, or to some other value to indicate the type of error).
+ * @return              [km/s] The spectroscopic radial velocity measure from the observer's point
+ *                      of view, or NAN if there was an error (errno will be set to EINVAL if any
+ *                      of the arguments are NULL, or to some other value to indicate the type of
+ *                      error).
  *
  * @since 1.1
  * @author Attila Kovacs
