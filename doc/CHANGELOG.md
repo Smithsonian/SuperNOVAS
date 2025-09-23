@@ -147,8 +147,18 @@ Upcoming feature release, expected around 1 November 2025.
  - Deprecated the functions in `solsys2.c`. This NOVAS C module is half-baked at best, requiring a custom Fortran 
    interface to the PLEPH library. You probably should stay away from it for your own good, and use instead the
    provided CALCEPH or CSPICE plugins for a more up-to-date and modern JPL ephemeris support.
+  
+ - Deprecated the internal variables and functions of `eph_manager.c`. They should never have been exposed to users
+   in the first place. The definitions can also be hidden from `eph_manager.h` by setting `-D_EXCLUDE_DEPRECATED`
+   compiler flag, or adding `#define _EXCLUDE_DEPRECATED` in your application source code _before_ including
+   `eph_manager.h`.
    
+ - Deprecated the functions of `solsys1.c` and `eph_manager.c`. These provide built-in support for older JPL planetary
+   ephemerides DE200 -- DE405 only. Given its lack of support for more recent ephemeris data, users should probably
+   stay away from this NOVAS C legacy module, and instead opt for one the built-in CALCEPH and/or CSPICE plugins
+   to allow accessing a wider variety, and more up-to-date, ephemeris data -- with a lot more flexibility also.
    
+ 
 ## [1.4.2] - 2025-08-25
 
 Bug fix release with updated nutation models.
