@@ -268,7 +268,7 @@ The current UT1 - UTC time difference, and polar offsets, historical data and ne
       </table>
 </div><div class="memdoc">
 <p>Returns the instantaneous incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
-<p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
+<p>d&tau;<sub>obs</sub> / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
 <p>The instantaneous difference in clock rate includes tiny diurnal or orbital variationd for Earth-bound observers as the they cycle through the tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you may want to exclude the periodic tidal effects and calculate the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions 2010), which is provided by <code><a class="el" href="#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> instead.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
@@ -663,7 +663,7 @@ B.C. dates are indicated with years &lt;=0 according to the astronomical and ISO
       </table>
 </div><div class="memdoc">
 <p>Returns the averaged incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
-<p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
+<p>d&tau;<sub>obs</sub> / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
 <p>For a non-Earth-bound observer, this is the same as the instantaneous rate returned by <code><a class="el" href="#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code>. For an Earth-bound observer however, this function returns the averaged value over the observer's rotation around the geocenter. As such it filters out the tiny diurnal or orbital tidal variations as the observer moves through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
@@ -1513,7 +1513,7 @@ Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68&lt;.li&gt
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the TDB-TT time difference with flexible precision. This implementation uses the series expansion by Fairhead &amp; Bretagnon 1990, terminating theterm at or below the specified limiting amplitude.</p>
+<p>Returns the TDB-TT time difference with flexible precision. This implementation uses the series expansion by Fairhead &amp; Bretagnon 1990, terminating the terms at or below the specified limiting amplitude.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>
@@ -1548,7 +1548,7 @@ Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the TDB-TT time difference with flexible precision. This implementation uses the full series expansion by Fairhead &amp; Bretagnon 1990, resulting in an accuracy below 100 ns.</p>
+<p>Returns the TDB-TT time difference with high precision. This implementation uses the full series expansion by Fairhead &amp; Bretagnon 1990, resulting in an accuracy below 100 ns.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>

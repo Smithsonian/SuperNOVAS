@@ -1066,7 +1066,6 @@
           <topic label="novas_itrf_transform_site" href="itrf_8c.html#ad252294c7d4b3e62609c21f7550e2d09"/>
         </topic>
         <topic label="naif.c" href="naif_8c.html">
-          <topic label="__NOVAS_INTERNAL_API__" href="naif_8c.html#af46d8e51fc53d94b0d48c8201c3c84a6"/>
           <topic label="naif_to_novas_planet" href="naif_8c.html#a1c4b3f67a3b82808dd16ae43dfaf0f86"/>
           <topic label="novas_to_dexxx_planet" href="naif_8c.html#ac3eb54acf22dc155879163de89c6865e"/>
           <topic label="novas_to_naif_planet" href="naif_8c.html#ab51ac9bdf7736e1c1582e0981046daf3"/>
@@ -1343,8 +1342,7 @@
     </topic>
     <topic label="Globals" href="globals.html">
       <topic label="All" href="globals.html">
-        <topic label="_" href="globals.html"/>
-        <topic label="a" href="globals_a.html"/>
+        <topic label="a" href="globals.html"/>
         <topic label="b" href="globals_b.html"/>
         <topic label="c" href="globals_c.html"/>
         <topic label="d" href="globals_d.html"/>

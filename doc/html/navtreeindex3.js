@@ -1,7 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"observer_8c.html#a14deb6fdce80ba213e1f1d5238306e17":[6,0,1,10,25],
-"observer_8c.html#a16c920eee105431247e9a1d9bf1c3021":[6,0,1,10,24],
 "observer_8c.html#a1d58fd371e7604f75df315365672941e":[6,0,1,10,1],
 "observer_8c.html#a236750f494f3dcd943e71ba24aa2a55b":[6,0,1,10,9],
 "observer_8c.html#a42c084465aedee75965f74e23e6571fe":[6,0,1,10,15],
@@ -249,5 +247,7 @@ var NAVTREEINDEX3 =
 "structnovas__orbital__system.html#adaabf923501a3a0a47a8958b6a33c6b3":[5,0,7,4],
 "structnovas__orbital__system.html#ae5014f0e96e7c220c55eb82d11c4133a":[5,0,7,1],
 "structnovas__planet__bundle.html":[5,0,8],
-"structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd":[5,0,8,0]
+"structnovas__planet__bundle.html#ab77cc972f3ee899689ba053015472ccd":[5,0,8,0],
+"structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035":[5,0,8,2],
+"structnovas__planet__bundle.html#afa2104ef635031a82766fd018c9ee9dd":[5,0,8,1]
 };

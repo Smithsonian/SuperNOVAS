@@ -822,7 +822,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ae6eaa610037b0828d473062ab8722f47" id="r_ae6eaa610037b0828d473062ab8722f47"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6eaa610037b0828d473062ab8722f47">novas_day_of_year</a> (double tjd, enum <a class="el" href="#aa8cfc18bfdf8ebd0198065c9d07e3bba">novas_calendar_type</a> calendar, int *restrict year)</td></tr>
 <tr class="separator:ae6eaa610037b0828d473062ab8722f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f35633b872751df4dacd2fb2cbe4ac3" id="r_a5f35633b872751df4dacd2fb2cbe4ac3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug</a> (enum <a class="el" href="#a9d8d2a1f5c06b488e4c817bc9877e3ba">novas_debug_mode</a> mode)</td></tr>
-<tr class="memdesc:a5f35633b872751df4dacd2fb2cbe4ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">==========================================================================  <br /></td></tr>
 <tr class="separator:a5f35633b872751df4dacd2fb2cbe4ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4818ab9be2f0891091c719db01bcfa98" id="r_a4818ab9be2f0891091c719db01bcfa98"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4818ab9be2f0891091c719db01bcfa98">novas_diff_tcb</a> (const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t1, const <a class="el" href="structnovas__timespec.html">novas_timespec</a> *t2)</td></tr>
 <tr class="separator:a4818ab9be2f0891091c719db01bcfa98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1123,7 +1122,7 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>G. Kaplan and A. Kovacs </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.4.2</dd></dl>
-<p>SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS). It has been modified to fix outstanding issues and to make it easier to use.</p>
+<p>SuperNOVAS astrometry software based on the Naval Observatory Vector Astrometry Software (NOVAS). It has been modified to fix outstanding issues, make it easier to use, and provide a ton of new features.</p>
 <p>Based on the NOVAS C Edition, Version 3.1:</p>
 <p>U. S. Naval Observatory<br  />
  Astronomical Applications Dept.<br  />
@@ -1441,11 +1440,11 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  { 0, <a class="code hl_enumvalue" href="#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a>, <a class="code hl_define" href="#addf3ffbfe4ed05288b689e861600194f">NOVAS_TIMESPEC_INIT</a>, <a class="code hl_define" href="#a8b1485a1563288c8d060d935c21e3a63">OBSERVER_INIT</a>, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, \</div>
 <div class="line">  0.0, 0.0, {0.0}, {0.0}, 0.0, 0.0, 0.0, {0.0}, {0.0}, {0.0}, {0.0}, <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, \</div>
 <div class="line">  <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, <a class="code hl_define" href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a>, <a class="code hl_define" href="#a4cc558a8e366bfea3be40777ea0fcbc3">NOVAS_PLANET_BUNDLE_INIT</a> }</div>
-<div class="ttc" id="anovas_8h_html_a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660"><div class="ttname"><a href="#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a></div><div class="ttdeci">@ NOVAS_FULL_ACCURACY</div><div class="ttdef"><b>Definition</b> novas.h:596</div></div>
-<div class="ttc" id="anovas_8h_html_a4cc558a8e366bfea3be40777ea0fcbc3"><div class="ttname"><a href="#a4cc558a8e366bfea3be40777ea0fcbc3">NOVAS_PLANET_BUNDLE_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_BUNDLE_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1401</div></div>
-<div class="ttc" id="anovas_8h_html_a8b1485a1563288c8d060d935c21e3a63"><div class="ttname"><a href="#a8b1485a1563288c8d060d935c21e3a63">OBSERVER_INIT</a></div><div class="ttdeci">#define OBSERVER_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1259</div></div>
-<div class="ttc" id="anovas_8h_html_ad10fc7f05b49bc1ac1110817dc25834e"><div class="ttname"><a href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a></div><div class="ttdeci">#define NOVAS_MATRIX_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1372</div></div>
-<div class="ttc" id="anovas_8h_html_addf3ffbfe4ed05288b689e861600194f"><div class="ttname"><a href="#addf3ffbfe4ed05288b689e861600194f">NOVAS_TIMESPEC_INIT</a></div><div class="ttdeci">#define NOVAS_TIMESPEC_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1354</div></div>
+<div class="ttc" id="anovas_8h_html_a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660"><div class="ttname"><a href="#a3cba2735c32163fab062b1a904a83b56aebffd24170ffab949609a8dcfc201660">NOVAS_FULL_ACCURACY</a></div><div class="ttdeci">@ NOVAS_FULL_ACCURACY</div><div class="ttdef"><b>Definition</b> novas.h:597</div></div>
+<div class="ttc" id="anovas_8h_html_a4cc558a8e366bfea3be40777ea0fcbc3"><div class="ttname"><a href="#a4cc558a8e366bfea3be40777ea0fcbc3">NOVAS_PLANET_BUNDLE_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_BUNDLE_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1402</div></div>
+<div class="ttc" id="anovas_8h_html_a8b1485a1563288c8d060d935c21e3a63"><div class="ttname"><a href="#a8b1485a1563288c8d060d935c21e3a63">OBSERVER_INIT</a></div><div class="ttdeci">#define OBSERVER_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1260</div></div>
+<div class="ttc" id="anovas_8h_html_ad10fc7f05b49bc1ac1110817dc25834e"><div class="ttname"><a href="#ad10fc7f05b49bc1ac1110817dc25834e">NOVAS_MATRIX_INIT</a></div><div class="ttdeci">#define NOVAS_MATRIX_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1373</div></div>
+<div class="ttc" id="anovas_8h_html_addf3ffbfe4ed05288b689e861600194f"><div class="ttname"><a href="#addf3ffbfe4ed05288b689e861600194f">NOVAS_TIMESPEC_INIT</a></div><div class="ttdeci">#define NOVAS_TIMESPEC_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1355</div></div>
 </div><!-- fragment --><p>Empty initializer for <a class="el" href="structnovas__frame.html">novas_frame</a></p>
 <dl class="section since"><dt>Since</dt><dd>1.3 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structnovas__frame.html">novas_frame</a> </dd></dl>
@@ -1874,9 +1873,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">{ <a class="code hl_enumvalue" href="#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a>, num, name, <a class="code hl_define" href="#a0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a>, <a class="code hl_define" href="#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a> }</div>
-<div class="ttc" id="anovas_8h_html_a0a185da3a347343e5dd21d41a598d0fa"><div class="ttname"><a href="#a0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a></div><div class="ttdeci">#define CAT_ENTRY_INIT</div><div class="ttdef"><b>Definition</b> novas.h:926</div></div>
-<div class="ttc" id="anovas_8h_html_a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8"><div class="ttname"><a href="#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a></div><div class="ttdeci">@ NOVAS_PLANET</div><div class="ttdef"><b>Definition</b> novas.h:299</div></div>
-<div class="ttc" id="anovas_8h_html_a85243a6b9eee259d3fb84ee1a587e065"><div class="ttname"><a href="#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a></div><div class="ttdeci">#define NOVAS_ORBIT_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1024</div></div>
+<div class="ttc" id="anovas_8h_html_a0a185da3a347343e5dd21d41a598d0fa"><div class="ttname"><a href="#a0a185da3a347343e5dd21d41a598d0fa">CAT_ENTRY_INIT</a></div><div class="ttdeci">#define CAT_ENTRY_INIT</div><div class="ttdef"><b>Definition</b> novas.h:927</div></div>
+<div class="ttc" id="anovas_8h_html_a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8"><div class="ttname"><a href="#a1eecb357eeea0de4759e9c8d55af238fad1eeaddaa96b028742a8ba424e311aa8">NOVAS_PLANET</a></div><div class="ttdeci">@ NOVAS_PLANET</div><div class="ttdef"><b>Definition</b> novas.h:300</div></div>
+<div class="ttc" id="anovas_8h_html_a85243a6b9eee259d3fb84ee1a587e065"><div class="ttname"><a href="#a85243a6b9eee259d3fb84ee1a587e065">NOVAS_ORBIT_INIT</a></div><div class="ttdeci">#define NOVAS_ORBIT_INIT</div><div class="ttdef"><b>Definition</b> novas.h:1025</div></div>
 </div><!-- fragment --><p><code>object</code> initializer macro for major planets, the Sun, Moon, and barycenters.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1906,7 +1905,7 @@ Variables</h2></td></tr>
 <div class="line">  <span class="stringliteral">&quot;Sun&quot;</span>, <span class="stringliteral">&quot;Moon&quot;</span>, <span class="stringliteral">&quot;EMB&quot;</span>, <span class="stringliteral">&quot;Pluto-Barycenter&quot;</span> }</div>
 </div><!-- fragment --><p>String array initializer for Major planet names, matching the enum <a class="el" href="#a219df36b21dc4476656e708d14d08045">novas_planet</a>. E.g.</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *planet_names[] = <a class="code hl_define" href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a>;</div>
-<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdef"><b>Definition</b> novas.h:367</div></div>
+<div class="ttc" id="anovas_8h_html_abbd19f57e31db2ac91cbe22f9a95f390"><div class="ttname"><a href="#abbd19f57e31db2ac91cbe22f9a95f390">NOVAS_PLANET_NAMES_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_NAMES_INIT</div><div class="ttdef"><b>Definition</b> novas.h:368</div></div>
 </div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>1.2 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="#a219df36b21dc4476656e708d14d08045">novas_planet</a> </dd></dl>
@@ -1933,7 +1932,7 @@ Variables</h2></td></tr>
 <div class="line">}</div>
 </div><!-- fragment --><p>Array initializer for mean planet radii in meters, matching the enum <a class="el" href="#a219df36b21dc4476656e708d14d08045">novas_planet</a>. E.g.</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">double</span> *planet_radii[] = <a class="code hl_define" href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a>;</div>
-<div class="ttc" id="anovas_8h_html_ae48a8495c1ddf3960784aba5189d178e"><div class="ttname"><a href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_RADII_INIT</div><div class="ttdef"><b>Definition</b> novas.h:397</div></div>
+<div class="ttc" id="anovas_8h_html_ae48a8495c1ddf3960784aba5189d178e"><div class="ttname"><a href="#ae48a8495c1ddf3960784aba5189d178e">NOVAS_PLANET_RADII_INIT</a></div><div class="ttdeci">#define NOVAS_PLANET_RADII_INIT</div><div class="ttdef"><b>Definition</b> novas.h:398</div></div>
 </div><!-- fragment --><p>REFERENCES: </p><ol>
 <li>
 <a href="https://orbital-mechanics.space/reference/planetary-parameters.html">https://orbital-mechanics.space/reference/planetary-parameters.html</a>, Table 3. </li>
@@ -2665,8 +2664,8 @@ IERS Conventions, Chapter 3, Table 3.1 </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Settings for '<a class="el" href="#a5f35633b872751df4dacd2fb2cbe4ac3" title="==========================================================================">novas_debug()</a>'</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a5f35633b872751df4dacd2fb2cbe4ac3" title="==========================================================================">novas_debug()</a> </dd></dl>
+<p>Settings for '<a class="el" href="#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a>'</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a5f35633b872751df4dacd2fb2cbe4ac3">novas_debug()</a> </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf" name="a9d8d2a1f5c06b488e4c817bc9877e3baa0b25a908023b92a2f4f42114736de9cf"></a>NOVAS_DEBUG_OFF&#160;</td><td class="fielddoc"><p>Do not print errors and traces to the standard error (default). </p>
 </td></tr>
@@ -4194,13 +4193,13 @@ Kaplan, G. (2005), US Naval Observatory Circular 179. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the Geocentric Celestial Reference System (GCRS).</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>CIRS Input (x, y, z) position or velocity vector </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the GCRS coordinate frame. It can be the same vector as the input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the ICRS / GCRS coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
 </dl>
@@ -5164,12 +5163,12 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the Celestial Intermediate Reference System (CIRS) frame at the given epoch</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermediate Reference System (CIRS) frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS Input (x, y, z) position or velocity vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS Input (x, y, z) position or velocity vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the True equinox of Date coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
@@ -5201,10 +5200,10 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Change GCRS coordinates to J2000 coordinates. Same as <a class="el" href="transform_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with ICRS_TO_J2000</p>
+<p>Changes ICRS / GCRS coordinates to J2000 coordinates. Same as <a class="el" href="transform_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with ICRS_TO_J2000. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS input 3-vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS input 3-vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>J2000 output 3-vector </td></tr>
   </table>
   </dd>
@@ -5241,11 +5240,11 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the Mean of Date (MOD) reference frame at the given epoch</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Mean of Date (MOD) reference frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS Input (x, y, z) position or velocity vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS Input (x, y, z) position or velocity vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the Mean wquinox of Date coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
@@ -5287,12 +5286,12 @@ Hipparcos and Tycho Catalogues, Vol. 1, Section 1.5.3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the True of Date (TOD) reference frame at the given epoch</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the True of Date (TOD) reference frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS Input (x, y, z) position or velocity vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS Input (x, y, z) position or velocity vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the True equinox of Date coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
@@ -6136,11 +6135,11 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Change J2000 coordinates to GCRS coordinates. Same as <a class="el" href="transform_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with J2000_TO_ICRS</p>
+<p>Change J2000 coordinates to ICRS / GCRS coordinates. Same as <a class="el" href="transform_8c.html#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with J2000_TO_ICRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>J2000 input 3-vector </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>GCRS output 3-vector </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>ICRS / GCRS output 3-vector </td></tr>
   </table>
   </dd>
 </dl>
@@ -7921,12 +7920,12 @@ Explanatory Supplement to the Astronomical Almanac (1992),Chapter 3. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the Geocentric Celestial Reference System(GCRS)</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Input (x, y, z) position or velocity 3-vector in the Mean equinox of Date coordinate frame. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output ICRS / GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
 </dl>
@@ -8220,7 +8219,7 @@ Petit, G. and Luzum, B. (eds.), IERS Conventions (2010), IERS Technical Note No.
       </table>
 </div><div class="memdoc">
 <p>Returns the instantaneous incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
-<p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
+<p>d&tau;<sub>obs</sub> / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
 <p>The instantaneous difference in clock rate includes tiny diurnal or orbital variationd for Earth-bound observers as the they cycle through the tidal potential around the geocenter (mainly due to the Sun and Moon). For a closer match to Earth-based timescales (TCG, TT, TAI, GPS, or UTC) you may want to exclude the periodic tidal effects and calculate the averaged observer clock rate over the geocentric cycle (see Eqs. 10.6 and 10.8 of the IERS Conventions 2010), which is provided by <code><a class="el" href="timescale_8c.html#ad2d5ef17b41a30ebca91e4c70e636acf">novas_mean_clock_skew()</a></code> instead.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
@@ -8399,8 +8398,6 @@ IERS Conventions 2010, Chapter 10, see at <a href="https://iers-conventions.obsp
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>========================================================================== </p>
 <p>Enables or disables reporting errors and traces to the standard error stream.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -9326,7 +9323,7 @@ As of SuperNOVAS v1.3, the returned velocity vector is a proper observer-based v
 <dl class="section return"><dt>Returns</dt><dd>The current debug mode in the calling thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.0 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="util_8c.html#aab45a580efb78b53bcb4a09d40868e4d" title="==========================================================================">novas_debug()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="util_8c.html#aab45a580efb78b53bcb4a09d40868e4d">novas_debug()</a> </dd></dl>
 
 </div>
 </div>
@@ -10535,7 +10532,7 @@ The Earth orientation parameters xp, yp should be provided in the same ITRF real
       </table>
 </div><div class="memdoc">
 <p>Returns the averaged incremental rate at which the observer's clock (i.e. proper time &tau;) ticks faster than a clock in the specified timescale. I.e., it returns <em>D</em>, which is defined by:</p>
-<p>d&amp;tau<sub>obs</sub>; / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
+<p>d&tau;<sub>obs</sub> / dt<sub>timescale</sub> = (1 + <em>D</em>)</p>
 <p>For a non-Earth-bound observer, this is the same as the instantaneous rate returned by <code><a class="el" href="timescale_8c.html#a9061a46b13dfca669c327283f7357586">novas_clock_skew()</a></code>. For an Earth-bound observer however, this function returns the averaged value over the observer's rotation around the geocenter. As such it filters out the tiny diurnal or orbital tidal variations as the observer moves through the tidal potential around the geocenter (mainly due to the Sun and Moon). Thus, for Earth-bound observers it returns Eqs. 10.6 and 10.8 of the IERS Conventions.</p>
 <p>For reduced accuracy frames, the result will be approximate, because the gravitational effect of the Sun and Earth alone may be accounted for.</p>
 <p>NOTES: </p><ol>
@@ -12694,7 +12691,7 @@ The current implementation is not suitable for calculating the nearest successiv
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts a radial recession velocity to a redshift value (z = &delta;f / f<sub>rest</sub>). It is based on the relativistic formula: </p><pre>
+<p>Converts a radial recession velocity to a redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>). It is based on the relativistic formula: </p><pre>
  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
 </pre><p> where &beta; = <em>v</em> / <em>c</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -12912,12 +12909,12 @@ Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.  </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts a redshift value (z = &delta;f / f<sub>rest</sub>) to a radial velocity (i.e. rate) of recession. It is based on the relativistic formula: </p><pre>
+<p>Converts a redshift value (z = &delta;&amp;lambda / &amp;lambda<sub>rest</sub>) to a radial velocity (i.e. rate) of recession. It is based on the relativistic formula: </p><pre>
  1 + z = &radic;((1 + &beta;) / (1 - &beta;))
 </pre><p> where &beta; = <em>v</em> / <em>c</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">z</td><td>the redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>). </td></tr>
+    <tr><td class="paramname">z</td><td>the redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>). </td></tr>
   </table>
   </dd>
 </dl>
@@ -12948,7 +12945,7 @@ Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.  </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer. It's effectively using (1 + z) = (1 + <code>z1</code>) * (1 + <code>z2</code>).</p>
+<p>Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer. It's effectively using (1 + <em>z</em>) = (1 + <code>z1</code>) * (1 + <code>z2</code>).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">z1</td><td>One of the redshift values </td></tr>
@@ -14907,13 +14904,13 @@ Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the Geocentric Celestial Reference System(GCRS)</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Input (x, y, z) position or velocity 3-vector in the True equinox of Date coordinate frame. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output ICRS / GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
 </dl>
@@ -15374,7 +15371,7 @@ Moyer, T.D. (1981), Celestial mechanics, Volume 23, Issue 1, pp. 57-68&lt;.li&gt
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the TDB-TT time difference with flexible precision. This implementation uses the series expansion by Fairhead &amp; Bretagnon 1990, terminating theterm at or below the specified limiting amplitude.</p>
+<p>Returns the TDB-TT time difference with flexible precision. This implementation uses the series expansion by Fairhead &amp; Bretagnon 1990, terminating the terms at or below the specified limiting amplitude.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>
@@ -15409,7 +15406,7 @@ Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns the TDB-TT time difference with flexible precision. This implementation uses the full series expansion by Fairhead &amp; Bretagnon 1990, resulting in an accuracy below 100 ns.</p>
+<p>Returns the TDB-TT time difference with high precision. This implementation uses the full series expansion by Fairhead &amp; Bretagnon 1990, resulting in an accuracy below 100 ns.</p>
 <p>REFERENCES: </p><ol>
 <li>
 Fairhead, L., &amp; Bretagnon, P. (1990) A&amp;A, 229, 240 </li>

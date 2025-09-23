@@ -1,7 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"structnovas__planet__bundle.html#af2bad6c1e0659e0e508492669eb67035":[5,0,8,2],
-"structnovas__planet__bundle.html#afa2104ef635031a82766fd018c9ee9dd":[5,0,8,1],
 "structnovas__timespec.html":[5,0,9],
 "structnovas__timespec.html#a281e93817d681ec4a6cea2601a15c566":[5,0,9,0],
 "structnovas__timespec.html#a2b381954218c16fad4ae585fb90fddbe":[5,0,9,4],

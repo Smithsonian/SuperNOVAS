@@ -358,13 +358,13 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the Geocentric Celestial Reference System (GCRS).</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the Celestial Intermediate Reference System (CIRS) frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>CIRS Input (x, y, z) position or velocity vector </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the GCRS coordinate frame. It can be the same vector as the input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the ICRS / GCRS coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
 </dl>
@@ -642,12 +642,12 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the Celestial Intermediate Reference System (CIRS) frame at the given epoch</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Celestial Intermediate Reference System (CIRS) frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS Input (x, y, z) position or velocity vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS Input (x, y, z) position or velocity vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the True equinox of Date coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
@@ -679,10 +679,10 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Change GCRS coordinates to J2000 coordinates. Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with ICRS_TO_J2000</p>
+<p>Changes ICRS / GCRS coordinates to J2000 coordinates. Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with ICRS_TO_J2000. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS input 3-vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS input 3-vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>J2000 output 3-vector </td></tr>
   </table>
   </dd>
@@ -719,11 +719,11 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the Mean of Date (MOD) reference frame at the given epoch</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the Mean of Date (MOD) reference frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS Input (x, y, z) position or velocity vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS Input (x, y, z) position or velocity vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the Mean wquinox of Date coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
@@ -765,12 +765,12 @@ IERS (2003) Conventions, Chapter 5. </li>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from the Geocentric Celestial Reference System (GCRS) to the True of Date (TOD) reference frame at the given epoch</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from the ICRS / GCRS to the True of Date (TOD) reference frame at the given epoch. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TT) based Julian date that defines the output epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
-    <tr><td class="paramdir"></td><td class="paramname">in</td><td>GCRS Input (x, y, z) position or velocity vector </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">in</td><td>ICRS / GCRS Input (x, y, z) position or velocity vector </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output position or velocity 3-vector in the True equinox of Date coordinate frame. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
@@ -960,11 +960,11 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Change J2000 coordinates to GCRS coordinates. Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with J2000_TO_ICRS</p>
+<p>Change J2000 coordinates to ICRS / GCRS coordinates. Same as <a class="el" href="#aa11d2253a44261370af8d0c32f0715e9">frame_tie()</a> called with J2000_TO_ICRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>J2000 input 3-vector </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>GCRS output 3-vector </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>ICRS / GCRS output 3-vector </td></tr>
   </table>
   </dd>
 </dl>
@@ -1047,12 +1047,12 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the Geocentric Celestial Reference System(GCRS)</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from Mean of Date (MOD) reference frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Input (x, y, z) position or velocity 3-vector in the Mean equinox of Date coordinate frame. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output ICRS / GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1230,13 +1230,13 @@ Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins', Proceedings of IAU
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the Geocentric Celestial Reference System(GCRS)</p>
+<p>Transforms a rectangular equatorial (x, y, z) vector from True of Date (TOD) reference frame at the given epoch to the ICRS / GCRS. (We treat ICRS and GCRS the same, since they only define the orientation of the equator, and not the origin. The origin is defined by the observer location separately.)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">jd_tdb</td><td>[day] Barycentric Dynamical Time (TDB) based Julian date that defines the input epoch. Typically it does not require much precision, and Julian dates in other time measures will be unlikely to affect the result </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">accuracy</td><td>NOVAS_FULL_ACCURACY (0) or NOVAS_REDUCED_ACCURACY (1) </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">in</td><td>Input (x, y, z) position or velocity 3-vector in the True equinox of Date coordinate frame. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out</td><td>Output ICRS / GCRS position or velocity vector. It can be the same vector as the input. </td></tr>
   </table>
   </dd>
 </dl>
