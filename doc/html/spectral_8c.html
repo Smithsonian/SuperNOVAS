@@ -133,7 +133,9 @@ Functions</h2></td></tr>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>Created on Mar 5, 2025 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <p>Various spectral / velocity related functions. <b>SuperNOVAS</b> velocities are always calculated with relativistic corrections for motion (both source and observer) and gravitational effects (both at the source and at the observer), so they represent spectroscopically accurate values.</p>
-<p>As such radial velocity measures are always specroscopically precise, and follow the relation: &lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + <em>z</em>) = &radic;((1 + <em>v</em><sub>rad</sub> / <em>c</em>) / (1 - <em>v</em><sub>rad</sub> / <em>c</em>)). </p>
+<p>As such radial velocity measures are always specroscopically precise, and follow the relation:</p>
+<p>&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + <em>z</em>) = sqrt((1 + &beta;) / (1 - &beta;)),</p>
+<p>where &beta; = <em>v</em><sub>rad</sub> / <em>c</em>. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="aad80bf94be2efc36c340994829df8207" name="aad80bf94be2efc36c340994829df8207"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aad80bf94be2efc36c340994829df8207">&#9670;&#160;</a></span>novas_lsr_to_ssb_vel()</h2>
@@ -257,16 +259,16 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts a radial recession velocity to a redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>). It is based on the relativistic formula: </p><pre>
- 1 + z = &radic;((1 + &beta;) / (1 - &beta;))
-</pre><p> where &beta; = <em>v</em> / <em>c</em>.</p>
+<p>Converts a radial recession velocity to a redshift value (z = &Delta;&lambda; / &lambda;<sub>rest</sub>). It is based on the relativistic formula: </p><pre>
+ 1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+</pre><p> where &beta; = <em>v</em><sub>rad</sub> / <em>c</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">vel</td><td>[km/s] velocity (i.e. rate) of recession. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the corresponding redshift value (&delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if the input velocity is invalid (i.e., it exceeds the speed of light).</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the corresponding redshift value (z = &Delta;&lambda; / &lambda;<sub>rest</sub>), or NAN if the input velocity is invalid (i.e., it exceeds the speed of light).</dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.2</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a63621cea3b4985c1bfcc4514a7aa3fb1">novas_z2v()</a>, <a class="el" href="#a493ab751eee5804db77157c37e94e5c3">novas_z_add()</a> </dd></dl>
@@ -289,12 +291,12 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Converts a redshift value (z = &delta;&amp;lambda / &amp;lambda<sub>rest</sub>) to a radial velocity (i.e. rate) of recession. It is based on the relativistic formula: </p><pre>
- 1 + z = &radic;((1 + &beta;) / (1 - &beta;))
-</pre><p> where &beta; = <em>v</em> / <em>c</em>.</p>
+<p>Converts a redshift value (z = &Delta;&lambda; / &lambda;<sub>rest</sub>) to a radial velocity (i.e. rate) of recession. It is based on the relativistic formula: </p><pre>
+ 1 + z = sqrt((1 + &beta;) / (1 - &beta;))
+</pre><p> where &beta; = <em>v</em><sub>rad</sub> / <em>c</em>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">z</td><td>the redshift value (z = &delta;&lambda; / &lambda;<sub>rest</sub>). </td></tr>
+    <tr><td class="paramname">z</td><td>the redshift value (z = &Delta;&lambda; / &lambda;<sub>rest</sub>). </td></tr>
   </table>
   </dd>
 </dl>
@@ -325,7 +327,8 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer. It's effectively using (1 + <em>z</em>) = (1 + <code>z1</code>) * (1 + <code>z2</code>).</p>
+<p>Compounds two redshift corrections, e.g. to apply (or undo) a series gravitational redshift corrections and/or corrections for a moving observer. It's effectively using</p>
+<p>(1 + <em>z</em>) = (1 + <em>z</em><sub>1</sub>) * (1 + <em>z</em><sub>2</sub>).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">z1</td><td>One of the redshift values </td></tr>
@@ -416,11 +419,15 @@ Ralph Schoenrich, James Binney, Walter Dehnen, Monthly Notices of the Royal Astr
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Predicts the radial velocity of the observed object as it would be measured by spectroscopic means. Radial velocity is here defined as the radial velocity measure (z) times the speed of light. For major planets (and Sun and Moon), it includes gravitational corrections for light originating at the surface and observed from near Earth or else from a large distance away. For other solar system bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift). The corrections do not in general apply to reflected light. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects.</p>
+<p>Predicts the radial velocity of the observed object as it would be measured by spectroscopic means.</p>
+<p>Radial velocity is defined here as a spectroscopic measure, defined by the relation:</p>
+<p>&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + <em>z</em>) = sqrt((1 + &beta;) / (1 - &beta;)),</p>
+<p>where &beta; = <em>v</em><sub>rad</sub> / <em>c</em>.</p>
+<p>For the major planets (and Sun and Moon), it includes gravitational corrections for light originating at the surface and observed from near Earth or else from a large distance away. For other solar system bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift). The corrections do not in general apply to reflected light. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects.</p>
 <p>Gravitational blueshift corrections for the Solar and Earth potential for observers are included. However, the result does not include a blueshift correction for observers (e.g. spacecraft) orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift correction applied to the radial velocity via <code><a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a></code>, <code><a class="el" href="#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a></code> and <code><a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a></code> if necessary.</p>
-<p>All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src' and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.</p>
+<p>The input velocities are barycentric, expressed with respect to the ICRS axes. <code>vel_src</code> and <code>vel_obs</code> are kinematic velocities - derived from geometry or dynamics, not spectroscopy.</p>
 <p>If the object is outside the solar system, the algorithm used will be consistent with the IAU definition of stellar radial velocity, specifically, the barycentric radial velocity measure, which is derived from spectroscopy. In that case, the vector 'vel_src' can be very approximate &ndash; or, for distant stars or galaxies, zero &ndash; as it will be used only for a small geometric correction that is proportional to proper motion.</p>
-<p>Any of the distances (last three input arguments) can be set to zero (0.0) or negative if the corresponding general relativistic gravitational potential term is not to be evaluated. These terms generally are important at the meter/second level only. If 'd_obs_geo' and 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the observer, appropriate for an observer on the surface of the Earth. 'd_src_sun', if given, is used only for solar system objects.</p>
+<p>Any of the distances (last three input arguments) can be set to zero (0.0) or negative if the corresponding general relativistic gravitational potential term is not to be evaluated. These terms generally are important at the meter/second level only. If <code>d_obs_geo</code> and <code>d_obs_sun</code> are both zero, an average value will be used for the relativistic term for the observer, appropriate for an observer on the surface of the Earth. <code>d_src_sun</code>, if given, is used only for solar system objects.</p>
 <p>NOTES: </p><ol>
 <li>
 This function does not accont for the gravitational deflection of Solar-system sources. For that purpose, the <a class="el" href="#a37f22e463cc06b4e381aa18659e6319d">rad_vel2()</a> function, introduced in v1.1, is more appropriate. </li>
@@ -444,7 +451,7 @@ Unlike NOVAS C, this function will return a radial velocity for the Sun that is 
     <tr><td class="paramdir"></td><td class="paramname">d_obs_geo</td><td>[AU] Distance from observer to geocenter, or &lt;=0.0 if gravitational blueshifting due to Earth potential around observer can be ignored. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">d_obs_sun</td><td>[AU] Distance from observer to Sun, or &lt;=0.0 if gravitational bluehifting due to Solar potential around observer can be ignored. </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">d_src_sun</td><td>[AU] Distance from object to Sun, or &lt;=0.0 if gravitational redshifting due to Solar potential around source can be ignored. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">rv</td><td>[km/s] The observed radial velocity measure times the speed of light, or NAN if there was an error. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">rv</td><td>[km/s] The spectroscopic radial velocity measure from the observer's point of view, or NAN if there was an error. </td></tr>
   </table>
   </dd>
 </dl>
@@ -503,12 +510,15 @@ Unlike NOVAS C, this function will return a radial velocity for the Sun that is 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Predicts the radial velocity of the observed object as it would be measured by spectroscopic means. This is a modified version of the original NOVAS C 3.1 <a class="el" href="#afca24d914664bb60d20fb428177f329a">rad_vel()</a>, to account for the different directions in which light is emitted vs in which it detected, e.g. when it is gravitationally deflected.</p>
-<p>Radial velocity is here defined as the radial velocity measure (z) times the speed of light. For major planets (and Sun and Moon), it includes gravitational corrections for light originating at the surface and observed from near Earth or else from a large distance away. For other solar system bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift). The corrections do not in general apply to reflected light. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects.</p>
+<p>Predicts the radial velocity of the observed object as it would be measured by spectroscopic means. This is a modified version of the original NOVAS C 3.1 <a class="el" href="#afca24d914664bb60d20fb428177f329a">rad_vel()</a>, to account for the slightly different directions in which light is emitted vs in which it is detected, e.g. when it is gravitationally deflected.</p>
+<p>Radial velocity is defined here as a spectroscopic measure, defined by the relation:</p>
+<p>&lambda;<sub>obs</sub> / &lambda;<sub>rest</sub> = (1 + <em>z</em>) = sqrt((1 + &beta;) / (1 - &beta;)),</p>
+<p>where &beta; = <em>v</em><sub>rad</sub> / <em>c</em>.</p>
+<p>For the major planets (and Sun and Moon), it includes gravitational corrections for light originating at the surface and observed from near Earth or else from a large distance away. For other solar system bodies, it applies to a fictitious emitter at the center of the observed object, assumed massless (no gravitational red shift). The corrections do not in general apply to reflected light. For stars, it includes all effects, such as gravitational redshift, contained in the catalog barycentric radial velocity measure, a scalar derived from spectroscopy. Nearby stars with a known kinematic velocity vector (obtained independently of spectroscopy) can be treated like solar system objects.</p>
 <p>Gravitational blueshift corrections for the Solar and Earth potential for observers are included. However, the result does not include a blueshift correction for observers (e.g. spacecraft) orbiting other major Solar-system bodies. You may adjust the amount of gravitational redshift correction applied to the radial velocity via <code><a class="el" href="#af56088995d42a0673e03bca1f3891544">redshift_vrad()</a></code>, <code><a class="el" href="#aea89203030ca831260dec18f83081d23">unredshift_vrad()</a></code> and <code><a class="el" href="grav_8c.html#a3ce6b306bc183387d0aaac97abbd82e8">grav_redshift()</a></code> if necessary.</p>
-<p>All the input arguments are BCRS quantities, expressed with respect to the ICRS axes. 'vel_src' and 'vel_obs' are kinematic velocities - derived from geometry or dynamics, not spectroscopy.</p>
+<p>The input velocities are barycentric, expressed with respect to the ICRS axes. <code>vel_src</code> and <code>vel_obs</code> are kinematic velocities - derived from geometry or dynamics, not spectroscopy.</p>
 <p>If the object is outside the solar system, the algorithm used will be consistent with the IAU definition of stellar radial velocity, specifically, the barycentric radial velocity measure, which is derived from spectroscopy. In that case, the vector 'vel_src' can be very approximate &ndash; or, for distant stars or galaxies, zero &ndash; as it will be used only for a small geometric and relativistic (time dilation) correction, including the proper motion.</p>
-<p>Any of the distances (last three input arguments) can be set to a negative value if the corresponding general relativistic gravitational potential term is not to be evaluated. These terms generally are important only at the meter/second level. If 'd_obs_geo' and 'd_obs_sun' are both zero, an average value will be used for the relativistic term for the observer, appropriate for an observer on the surface of the Earth. 'd_src_sun', if given, is used only for solar system objects.</p>
+<p>Any of the distances (last three input arguments) can be set to a negative value if the corresponding general relativistic gravitational potential term is not to be evaluated. These terms generally are important only at the meter/second level. If <code>d_obs_geo</code> and <code>d_obs_sun</code> are both zero, an average value will be used for the relativistic term for the observer, appropriate for an observer on the surface of the Earth. <code>d_src_sun</code>, if given, is used only for solar system objects.</p>
 <p>NOTES: </p><ol>
 <li>
 This function is called by <code><a class="el" href="frames_8c.html#ac365a1e015ae1f875dc5a66fd5435b2f">novas_sky_pos()</a></code> and <code><a class="el" href="place_8c.html#aca09ed0d2379ac4a4841c9e3edeeee4c">place()</a></code> to calculate radial velocities along with the apparent position of the source. </li>
@@ -532,7 +542,7 @@ Lindegren &amp; Dravins (2003), Astronomy &amp; Astrophysics 401, 1185-1201. </l
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>[km/s] The observed radial velocity measure times the speed of light, or NAN if there was an error (errno will be set to EINVAL if any of the arguments are NULL, or to some other value to indicate the type of error).</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>[km/s] The spectroscopic radial velocity measure from the observer's point of view, or NAN if there was an error (errno will be set to EINVAL if any of the arguments are NULL, or to some other value to indicate the type of error).</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Attila Kovacs</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#afca24d914664bb60d20fb428177f329a">rad_vel()</a> </dd>
